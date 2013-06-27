@@ -1,0 +1,4 @@
+# Example app/auth config (used with example).
+/*.app
+/*.auth
+/web-file-browser.db

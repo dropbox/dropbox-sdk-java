@@ -1,0 +1,63 @@
+#! /bin/bash
+# ------------------------------------------------------------------
+# A script to run the example programs.
+#
+# Usage: ./run <example-name>
+#
+# For example: ./run web-file-browser
+# ------------------------------------------------------------------
+set -e
+
+die() {
+    for line in "$@"; do
+        echo "$line" > /dev/stderr
+    done
+    exit 1
+}
+
+# Locate the script file.  Cross symlinks if necessary.
+loc="$0"
+while [ -h "$loc" ]; do
+    ls=`ls -ld "$loc"`
+    link=`expr "$ls" : '.*-> \(.*\)$'`
+    if expr "$link" : '/.*' > /dev/null; then
+        loc="$link"  # Absolute link
+    else
+        loc="`dirname "$loc"`/$link"  # Relative link
+    fi
+done
+
+base_dir="$(dirname "$loc")"
+
+if [ $# -eq 0 ]; then
+    die "" \
+        "Usage: run <example-name> example-args..." \
+        "" \
+        "For example: run web-file-browser ..." \
+        ""
+fi
+
+example_name="$1" ; shift
+example_name="$(echo "$example_name" | sed 's|/*$||')"
+    # Remove trailing slashes, since shell tab completion will usually add one.
+
+example_folder=${example_name//_/-}
+example_package=${example_name//-/_}
+
+if [ ! -f "$base_dir/$example_folder/pom.xml" ]; then
+    die "Invalid example \"$example_name\"." \
+        "(Couldn't find \"pom.xml\" in \"$base_dir/$example_folder\".)"
+fi
+
+if [ ! -f "$base_dir/$example_folder/target/runtime-classpath" ]; then
+    die "Unable to run example \"$example_name\"." \
+        "Couldn't find \"target/runtime-classpath\" in \"$base_dir/$example_folder\"."
+        "Run \"mvn compile\" at the top-level of the project first."
+fi
+
+base_dir=`dirname "$loc"`
+
+classpath="$base_dir/$example_folder/target/classes:$(cat $base_dir/$example_folder/target/runtime-classpath)"
+main_class=com.dropbox.core.examples."$example_package".Main
+
+exec java -ea -cp "$classpath" "$main_class" "$@"

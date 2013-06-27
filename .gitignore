@@ -1,0 +1,6 @@
+# Maven build output folder
+/target
+
+# IntelliJ project folder
+/intellij
+

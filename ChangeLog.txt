@@ -1,0 +1,6 @@
+---------------------------------------------
+1.6 (2013-07-07)
+
+- Completely rewritten SDK, focused on web apps (no Android support).
+- Many API calls not yet implemented.
+- Not backwards compatible with previous versions.
