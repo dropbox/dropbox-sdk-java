@@ -25,6 +25,15 @@
         </dependency>
     </dependencies>
 
+    <repositories>
+        <!--
+        <repository>
+            <id>Release Staging</id>
+            <url>...</url>
+        </repository>
+        -->
+    </repositories>
+
     <build>
         <sourceDirectory>src</sourceDirectory>
         <testSourceDirectory>test</testSourceDirectory>
