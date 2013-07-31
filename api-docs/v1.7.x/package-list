@@ -1,0 +1,4 @@
+com.dropbox.core
+com.dropbox.core.http
+com.dropbox.core.json
+com.dropbox.core.util
