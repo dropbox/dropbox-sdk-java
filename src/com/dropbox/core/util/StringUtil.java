@@ -1,7 +1,11 @@
 package com.dropbox.core.util;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
 
 public class StringUtil
 {
@@ -9,15 +13,11 @@ public class StringUtil
     public static final char[] HexDigits = {'0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f',};
 
     public static String utf8ToString(byte[] utf8data)
+        throws CharacterCodingException
     {
-        try {
-            // Java 1.5 doesn't have the constructor that takes a Charset object, so we
-            // just use this one and catch the exception.
-            return new String(utf8data, "UTF-8");
-        }
-        catch (UnsupportedEncodingException ex) {
-            throw new AssertionError("UTF-8 is unsupported: " + ex.getMessage());
-        }
+        CharsetDecoder decoder = UTF8.newDecoder();
+        CharBuffer result = decoder.decode(ByteBuffer.wrap(utf8data));
+        return result.toString();
     }
 
     public static byte[] stringToUtf8(String s)
@@ -160,10 +160,10 @@ public class StringUtil
             int d3 = ((b2 & 0xf) << 2) | (b3 >>> 6);
             int d4 = b3 & 0x3f;
 
-            buf.append(Base64Digits.charAt(d1));
-            buf.append(Base64Digits.charAt(d2));
-            buf.append(Base64Digits.charAt(d3));
-            buf.append(Base64Digits.charAt(d4));
+            buf.append(digits.charAt(d1));
+            buf.append(digits.charAt(d2));
+            buf.append(digits.charAt(d3));
+            buf.append(digits.charAt(d4));
         }
 
         // Do the leftover bytes (either 1 or 2)
@@ -177,8 +177,8 @@ public class StringUtil
             int d1 = b1 >>> 2;
             int d2 = (b1 & 0x3) << 4;
 
-            buf.append(Base64Digits.charAt(d1));
-            buf.append(Base64Digits.charAt(d2));
+            buf.append(digits.charAt(d1));
+            buf.append(digits.charAt(d2));
             buf.append("==");
         }
         else if (remaining == 2) {
@@ -189,9 +189,9 @@ public class StringUtil
             int d2 = ((b1 & 0x3) << 4) | (b2 >>> 4);
             int d3 = ((b2 & 0xf) << 2);
 
-            buf.append(Base64Digits.charAt(d1));
-            buf.append(Base64Digits.charAt(d2));
-            buf.append(Base64Digits.charAt(d3));
+            buf.append(digits.charAt(d1));
+            buf.append(digits.charAt(d2));
+            buf.append(digits.charAt(d3));
             buf.append('=');
         }
         else {

@@ -12,14 +12,13 @@ public class IOUtil
         copyStreamToStream(in, out, DefaultCopyBufferSize);
     }
 
-    public static void copyStreamToStream(InputStream in, OutputStream out, int copyBufferSize)
-        throws ReadException, WriteException
+    public static void copyStreamToStream(InputStream in, OutputStream out, byte[] copyBuffer)
+            throws ReadException, WriteException
     {
-        byte[] buffer = new byte[copyBufferSize];
         while (true) {
             int count;
             try {
-                count = in.read(buffer);
+                count = in.read(copyBuffer);
             }
             catch (IOException ex) {
                 throw new ReadException(ex);
@@ -28,7 +27,7 @@ public class IOUtil
             if (count == -1) break;
 
             try {
-               out.write(buffer, 0, count);
+                out.write(copyBuffer, 0, count);
             }
             catch (IOException ex) {
                 throw new WriteException(ex);
@@ -36,21 +35,25 @@ public class IOUtil
         }
     }
 
-    public static void copyStreamToStreamAndCloseInput(InputStream in, OutputStream out, int copyBufferSize)
+    public static void copyStreamToStream(InputStream in, OutputStream out, int copyBufferSize)
         throws ReadException, WriteException
     {
-        try {
-            copyStreamToStream(in, out, copyBufferSize);
-        }
-        finally {
-            closeInput(in);
-        }
+        copyStreamToStream(in, out, new byte[copyBufferSize]);
     }
 
-    public static void copyStreamToStreamAndCloseInput(InputStream in, OutputStream out)
-        throws ReadException, WriteException
+    private static final ThreadLocal<byte[]> slurpBuffer = new ThreadLocal<byte[]>() {
+        protected byte[] initialValue() { return new byte[4096]; }
+    };
+
+    public static byte[] slurp(InputStream in, int byteLimit)
+        throws IOException
     {
-        copyStreamToStreamAndCloseInput(in, out, DefaultCopyBufferSize);
+        if (byteLimit < 0) throw new RuntimeException("'byteLimit' must be non-negative: " + byteLimit);
+
+        byte[] copyBuffer = slurpBuffer.get();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        copyStreamToStream(in, baos, copyBuffer);
+        return baos.toByteArray();
     }
 
     public void copyFileToStream(File fin, OutputStream out)

@@ -1,6 +1,5 @@
 package com.dropbox.core;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -8,6 +7,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
+import java.nio.charset.CharacterCodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -124,11 +124,15 @@ public class DbxRequestUtil
     /**
      * Convenience function for making HTTP PUT requests.
      */
-    public static HttpRequestor.Uploader startPut(DbxRequestConfig requestConfig, String accessToken, String host, String path, String[] params, ArrayList<HttpRequestor.Header> headers)
+    public static HttpRequestor.Uploader startPut(DbxRequestConfig requestConfig, String accessToken, String host, String path, String[] params, long contentLength, ArrayList<HttpRequestor.Header> headers)
         throws DbxException.NetworkIO
     {
         headers = addUserAgentHeader(headers, requestConfig);
         headers = addAuthHeader(headers, accessToken);
+
+        if (contentLength >= 0) {
+            headers.add(new HttpRequestor.Header("Content-Length", Long.toString(contentLength)));
+        }
 
         String url = buildUrlWithParams(requestConfig.userLocale, host, path, params);
         try {
@@ -167,23 +171,37 @@ public class DbxRequestUtil
         }
     }
 
-    public static DbxException unexpectedStatus(HttpRequestor.Response response)
+    public static byte[] loadErrorBody(HttpRequestor.Response response)
         throws DbxException.NetworkIO
     {
         // Slurp the body into memory (up to 4k; anything past that is probably not useful).
-        byte[] body;
         try {
-            body = slurp(response.body, 4096);
+            return IOUtil.slurp(response.body, 4096);
         }
         catch (IOException ex) {
             throw new DbxException.NetworkIO(ex);
         }
 
+    }
+
+    public static String parseErrorBody(int statusCode, byte[] body)
+        throws DbxException.BadResponse
+    {
         // Read the error message from the body.
         // TODO: Get charset from the HTTP Content-Type header.  It's wrong to just assume UTF-8.
-        String message = StringUtil.utf8ToString(body);
-
         // TODO: Maybe try parsing the message as JSON and do something more structured?
+        try {
+            return StringUtil.utf8ToString(body);
+        } catch (CharacterCodingException e) {
+            throw new DbxException.BadResponse("Got non-UTF8 response body: " + statusCode + ": " + e.getMessage());
+        }
+    }
+
+    public static DbxException unexpectedStatus(HttpRequestor.Response response)
+        throws DbxException.NetworkIO, DbxException.BadResponse
+    {
+        byte[] body = loadErrorBody(response);
+        String message = parseErrorBody(response.statusCode, body);
 
         if (response.statusCode == 400) return new DbxException.BadRequest(message);
         if (response.statusCode == 401) return new DbxException.InvalidAccessToken(message);
@@ -193,26 +211,11 @@ public class DbxRequestUtil
         return new DbxException.BadResponseCode("unexpected HTTP status code: " + response.statusCode + ": " + message, response.statusCode);
     }
 
-    public static byte[] slurp(InputStream in, int byteLimit)
-        throws IOException
-    {
-        // This is kinda slow, but it's only used in error cases so that's ok for now.
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        int count = 0;
-        while (count < byteLimit) {
-            int c = in.read();
-            if (c < 0) break;
-            baos.write(c);
-            count++;
-        }
-        return baos.toByteArray();
-    }
-
-    public static <T> T extractJsonFromResponse(JsonReader<T> extractor, InputStream body)
+    public static <T> T readJsonFromResponse(JsonReader<T> reader, InputStream body)
         throws DbxException.BadResponse, DbxException.NetworkIO
     {
         try {
-            return extractor.readFullyAndClose(body);
+            return reader.readFully(body);
         }
         catch (JsonReadException ex) {
             throw new DbxException.BadResponse("error in response JSON: " + ex.getMessage(), ex);
@@ -321,4 +324,30 @@ public class DbxRequestUtil
         return values.get(0);
     }
 
+    public static abstract class RequestMaker<T, E extends Throwable>
+    {
+        public abstract T run() throws DbxException, E;
+    }
+
+    public static <T, E extends Throwable> T runAndRetry(int maxTries, RequestMaker<T,E> requestMaker)
+        throws DbxException, E
+    {
+        int numTries = 0;
+        while (true) {
+            try {
+                numTries++;
+                return requestMaker.run();
+            }
+            catch (DbxException ex) {
+                // If we can't retry, just let this exception through.
+                if (!isRetriableException(ex) || numTries >= maxTries) throw ex;
+                // Otherwise, run through the loop again.
+            }
+        }
+    }
+
+    private static boolean isRetriableException(DbxException ex)
+    {
+        return ex instanceof DbxException.RetryLater || ex instanceof DbxException.ServerError;
+    }
 }

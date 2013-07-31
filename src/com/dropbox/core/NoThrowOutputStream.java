@@ -10,7 +10,7 @@ import java.io.OutputStream;
  *
  * <p>
  * NOTE: The name is slightly misleading in that these methods still might throw an
- * {@code IOException} wrapped in a {@code HiddentException}, just not an
+ * {@code IOException} wrapped in a {@code HiddenException}, just not an
  * {@code IOException} directly.
  * </p>
  *
@@ -22,6 +22,7 @@ import java.io.OutputStream;
 public final class NoThrowOutputStream extends OutputStream
 {
     private final OutputStream underlying;
+    private long bytesWritten = 0;
 
     public NoThrowOutputStream(OutputStream underlying)
     {
@@ -49,6 +50,7 @@ public final class NoThrowOutputStream extends OutputStream
     public void write(byte[] b, int off, int len)
     {
         try {
+            bytesWritten += len;
             underlying.write(b, off, len);
         }
         catch (IOException ex) {
@@ -60,6 +62,7 @@ public final class NoThrowOutputStream extends OutputStream
     public void write(byte[] b)
     {
         try {
+            bytesWritten += b.length;
             underlying.write(b);
         }
         catch (IOException ex) {
@@ -71,6 +74,7 @@ public final class NoThrowOutputStream extends OutputStream
     public void write(int b)
     {
         try {
+            bytesWritten += 1;
             underlying.write(b);
         }
         catch (IOException ex) {
@@ -89,5 +93,10 @@ public final class NoThrowOutputStream extends OutputStream
         }
 
         public static final long serialVersionUID = 0;
+    }
+
+    public long getBytesWritten()
+    {
+        return bytesWritten;
     }
 }

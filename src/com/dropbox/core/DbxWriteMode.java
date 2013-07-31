@@ -46,7 +46,7 @@ public final class DbxWriteMode
      * Returns a {@link DbxWriteMode} for updating an existing file.  This is useful
      * for when you have downloaded a file and made modifications and want to save
      * your modifications back to Dropbox.  You need to specify the revision of the
-     * copy of the file you downloaded (it's in {@link DbxEntry.File#revision}).
+     * copy of the file you downloaded (it's in {@link DbxEntry.File#rev}).
      *
      * <p>
      * If, when you attempt to save, the revision of the file currently on Dropbox
@@ -55,7 +55,7 @@ public final class DbxWriteMode
      * </p>
      *
      * <p>
-     * If the revision of the file currently on Dropbox doesn't match {@code revisionToReplace},
+     * If the rev of the file currently on Dropbox doesn't match {@code revisionToReplace},
      * Dropbox leave the original file alone and save your contents to a new file.  For example,
      * if the original file path is {@literal "/Notes/Groceries.txt"}, the new file's path might
      * be {@literal "/Notes/Groceries (conflicted copy).txt"}.

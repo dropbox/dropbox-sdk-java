@@ -4,17 +4,24 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import com.dropbox.core.http.HttpRequestor;
+import com.dropbox.core.json.JsonArrayReader;
+import com.dropbox.core.json.JsonDateReader;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
 import com.dropbox.core.util.*;
+import com.fasterxml.jackson.core.JsonLocation;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
+
+import static com.dropbox.core.util.StringUtil.jq;
 
 /**
- * <p>
  * Use this class to make remote calls to the Dropbox API.  You'll need an access token first,
  * normally acquired via {@link DbxWebAuth}.
- * </p>
  *
  * <p>
  * This class has no mutable state, so it's thread safe as long as you pass in a thread safe
@@ -104,7 +111,7 @@ public final class DbxClient
                 if (response.statusCode == 404) return null;
                 if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
                 // Will return 'null' for "is_deleted=true" entries.
-                return DbxRequestUtil.extractJsonFromResponse(DbxEntry.Reader, response.body);
+                return DbxRequestUtil.readJsonFromResponse(DbxEntry.Reader, response.body);
             }
         });
     }
@@ -156,7 +163,7 @@ public final class DbxClient
         return getMetadataWithChildrenBase(path, new DbxEntry.WithChildrenC.Reader<C>(collector));
     }
 
-    private <T> T getMetadataWithChildrenBase(String path, final JsonReader<? extends T> extractor)
+    private <T> T getMetadataWithChildrenBase(String path, final JsonReader<? extends T> reader)
         throws DbxException
     {
         DbxPath.checkArg("path", path);
@@ -173,7 +180,7 @@ public final class DbxClient
                 if (response.statusCode == 404) return null;
                 if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
                 // Will return 'null' for "is_deleted=true" entries.
-                return DbxRequestUtil.extractJsonFromResponse(extractor, response.body);
+                return DbxRequestUtil.readJsonFromResponse(reader, response.body);
             }
         });
     }
@@ -224,7 +231,7 @@ public final class DbxClient
     }
 
     private <T> Maybe<T> getMetadataWithChildrenIfChangedBase(
-            String path, String previousFolderHash, final JsonReader<T> extractor)
+            String path, String previousFolderHash, final JsonReader<T> reader)
         throws DbxException
     {
         if (previousFolderHash == null) throw new IllegalArgumentException("'previousFolderHash' must not be null");
@@ -243,7 +250,7 @@ public final class DbxClient
                 if (response.statusCode == 404) return Maybe.Just(null);
                 if (response.statusCode == 304) return Maybe.Nothing();
                 if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
-                return Maybe.Just(DbxRequestUtil.extractJsonFromResponse(extractor, response.body));
+                return Maybe.Just(DbxRequestUtil.readJsonFromResponse(reader, response.body));
             }
         });
     }
@@ -265,7 +272,7 @@ public final class DbxClient
             public DbxAccountInfo handle(HttpRequestor.Response response) throws DbxException
             {
                 if (response.statusCode != 200) throw new DbxException.BadResponse("unexpected response code: " + response.statusCode);
-                return DbxRequestUtil.extractJsonFromResponse(DbxAccountInfo.Reader, response.body);
+                return DbxRequestUtil.readJsonFromResponse(DbxAccountInfo.Reader, response.body);
             }
         });
     }
@@ -289,17 +296,17 @@ public final class DbxClient
      * }
      * </pre>
      *
-     * @param revision
-     *    The {@link DbxEntry.File#revision }revision} of the file to retrieve,
+     * @param rev
+     *    The {@link DbxEntry.File#rev rev} of the file to retrieve,
      *    or {@code null} if you want the latest revision of the file.
      *
      * @throws IOException
      *    If there's an error writing to {@code target}.
      */
-    public DbxEntry.File getFile(String path, String revision, OutputStream target)
+    public DbxEntry.File getFile(String path, String rev, OutputStream target)
         throws DbxException, IOException
     {
-        Downloader downloader = startGetFile(path, revision);
+        Downloader downloader = startGetFile(path, rev);
         if (downloader == null) return null;
         return downloader.copyBodyAndClose(target);
     }
@@ -326,7 +333,7 @@ public final class DbxClient
      * </pre>
      *
      * @param revision
-     *    The {@link DbxEntry.File#revision }revision} of the file to retrieve,
+     *    The {@link DbxEntry.File#rev rev} of the file to retrieve,
      *    or {@code null} if you want the latest revision of the file.
      *
      * @param path
@@ -430,18 +437,14 @@ public final class DbxClient
         }
     }
 
-    // --------------------------------------------------------
-    // /files_put
 
-    // TODO: Maybe switch to /files (POST) so we won't accidentally upload partial
-    // files (multi-part form encoding will ensure that the server knows when the
-    // upload is actually complete).
+    // --------------------------------------------------------
+    // File uploads -- automatically choose between /files_put and /chunked_upload
 
     /**
      * A wrapper around {@link #uploadFile(String, DbxWriteMode, long, DbxStreamWriter)} that
      * lets you pass in an {@link InputStream}.  The entire stream {@code contents} will
-     * be uploaded and the stream will be closed automatically (whether or not the upload
-     * succeeds or fails).
+     * be uploaded.
      *
      * <pre>
      * DbxClient dbxClient = ...
@@ -470,8 +473,6 @@ public final class DbxClient
     public DbxEntry.File uploadFile(String targetPath, DbxWriteMode writeMode, long numBytes, InputStream contents)
         throws DbxException, IOException
     {
-        DbxPath.checkArgNonRoot("targetPath", targetPath);
-
         return uploadFile(targetPath, writeMode, numBytes, new DbxStreamWriter.InputStreamCopier(contents));
     }
 
@@ -511,9 +512,7 @@ public final class DbxClient
      *
      * @param writer
      *     A callback that will be called when it's time to actually write out the
-     *     body of the file.  We will always call {@link DbxStreamWriter#close} on it (whether
-     *     or not the upload succeeds) so you can put resource cleanup code in it (for example,
-     *     closing an {@code InputStream}).
+     *     body of the file.
      *
      * @throws E
      *     If {@code writer.write()} throws an exception, it will propagate out of this function.
@@ -521,33 +520,16 @@ public final class DbxClient
     public <E extends Throwable> DbxEntry.File uploadFile(String targetPath, DbxWriteMode writeMode, long numBytes, DbxStreamWriter<E> writer)
         throws DbxException, E
     {
-        DbxPath.checkArgNonRoot("targetPath", targetPath);
-
-        try {
-            Uploader uploader = startUploadFile(targetPath, writeMode, numBytes);
-            NoThrowOutputStream streamWrapper = new NoThrowOutputStream(uploader.body);
-            try {
-                writer.write(streamWrapper);
-                return uploader.finish();
-            }
-            catch (NoThrowOutputStream.HiddenException ex) {
-                // We hid our OutputStream's IOException from their writer.write() function so that
-                // we could properly raise a NetworkIO exception if something went wrong with the
-                // network stream.
-                throw new DbxException.NetworkIO(ex.underlying);
-            }
-            finally {
-                uploader.close();
-            }
-        }
-        finally {
-            writer.close();
-        }
+        Uploader uploader = startUploadFile(targetPath, writeMode, numBytes);
+        return finishUploadFile(uploader, writer);
     }
+
+    private static final long ChunkedUploadThreshold = 8 * 1024 * 1024;
+    private static final int ChunkedUploadChunkSize = 4 * 1024;
 
     /**
      * Start an API request to upload a file to Dropbox.  Returns a {@link DbxClient.Uploader} object
-     * that lets you actually send the file contents via {@link DbxClient.Uploader#body}.  When
+     * that lets you actually send the file contents via {@link DbxClient.Uploader#getBody()}.  When
      * you're done copying the file body, call {@link DbxClient.Uploader#finish}.
      *
      * <p>
@@ -583,158 +565,77 @@ public final class DbxClient
     public Uploader startUploadFile(String targetPath, DbxWriteMode writeMode, long numBytes)
         throws DbxException
     {
+        if (numBytes < 0) {
+            if (numBytes != -1) {
+                throw new IllegalArgumentException("numBytes must be -1 or greater; given " + numBytes);
+            }
+            // If the number of bytes isn't given in advance, use chunked uploads.
+            return startUploadFileChunked(targetPath, writeMode, numBytes);
+        }
+        else if (numBytes > ChunkedUploadThreshold) {
+            // If the number of bytes is more than some threshold, use chunked uploads.
+            return startUploadFileChunked(targetPath, writeMode, numBytes);
+        }
+        else {
+            // Otherwise, use the regular /files_put upload.
+            return startUploadFileSingle(targetPath, writeMode, numBytes);
+        }
+    }
+
+    public <E extends Throwable> DbxEntry.File finishUploadFile(Uploader uploader, DbxStreamWriter<E> writer)
+        throws DbxException, E
+    {
+        NoThrowOutputStream streamWrapper = new NoThrowOutputStream(uploader.getBody());
+        try {
+            writer.write(streamWrapper);
+            return uploader.finish();
+        }
+        catch (NoThrowOutputStream.HiddenException ex) {
+            // We hid our OutputStream's IOException from their writer.write() function so that
+            // we could properly raise a NetworkIO exception if something went wrong with the
+            // network stream.
+            throw new DbxException.NetworkIO(ex.underlying);
+        }
+        finally {
+            uploader.close();
+        }
+    }
+
+    // --------------------------------------------------------
+    // /files_put
+
+    /**
+     * Similar to {@link #uploadFile}, except always uses the /files_put API call.
+     * One difference is that {@code numBytes} must not be negative.
+     */
+    public Uploader startUploadFileSingle(String targetPath, DbxWriteMode writeMode, long numBytes)
+        throws DbxException
+    {
         DbxPath.checkArg("targetPath", targetPath);
+        if (numBytes < 0) throw new IllegalArgumentException("numBytes must be zero or greater");
 
         String host = this.host.content;
         String apiPath = "1/files_put/auto" + targetPath;
 
-        HttpRequestor.Uploader uploader = DbxRequestUtil.startPut(requestConfig, accessToken, host, apiPath, writeMode.params, null);
+        HttpRequestor.Uploader uploader = DbxRequestUtil.startPut(requestConfig, accessToken, host, apiPath, writeMode.params, numBytes, null);
 
-        return new Uploader(uploader, numBytes);
+        return new SingleUploader(uploader, numBytes);
     }
 
-    // -----------------------------------------------------------------
-    // /delta
-
-    /**
-     * Return "delta" entries for the contents of a user's Dropbox.  This lets you
-     * efficiently keep up with the latest state of the files and folders.  See
-     * {@link DbxDelta} for more documentation on what each entry means.
-     *
-     * <p>
-     * To start, pass in {@code null} for {@code cursor}.  For subsequent calls
-     * To get the next set of delta entries, pass in the {@link DbxDelta#cursor cursor} returned
-     * by the previous call.
-     * </p>
-     *
-     * <p>
-     * To catch up to the current state, keep calling this method until the returned
-     * object's {@link DbxDelta#hasMore hasMore} field is {@code false}.
-     * </p>
-     *
-     * <p>
-     * If your app is a "Full Dropbox" app, this will return all entries for the user's entire
-     * Dropbox folder.  If your app is an "App Folder" app, this will only return entries
-     * for the App Folder's contents.
-     * </p>
-     */
-    public DbxDelta<DbxEntry> getDelta(String cursor)
-        throws DbxException
+    public <E extends Throwable> DbxEntry.File uploadFileSingle(String targetPath, DbxWriteMode writeMode, long numBytes, DbxStreamWriter<E> writer)
+        throws DbxException, E
     {
-        String host = this.host.api;
-        String apiPath = "1/delta";
-
-        String[] params = {"cursor", cursor};
-
-        return doPost(host, apiPath, params, null, new DbxRequestUtil.ResponseHandler<DbxDelta<DbxEntry>>() {
-            @Override
-            public DbxDelta<DbxEntry> handle(HttpRequestor.Response response) throws DbxException {
-                if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
-                return DbxRequestUtil.extractJsonFromResponse(
-                        new DbxDelta.Reader<DbxEntry>(DbxEntry.Reader), response.body);
-            }
-        });
+        Uploader uploader = startUploadFileSingle(targetPath, writeMode, numBytes);
+        return finishUploadFile(uploader, writer);
     }
 
-    /**
-     * This is a more generic version of {@link #getDelta}.  It allows you to specify
-     * a <em>collector</em>, which lets you process the delta entries as they arrive over
-     * the network, and aggregate them however you want.
-     */
-    public <C> DbxDeltaC<C, DbxEntry> getDeltaC(String cursor, final Collector<DbxDeltaC.Entry<DbxEntry>, C> collector)
-        throws DbxException
-    {
-        String host = this.host.api;
-        String apiPath = "1/delta";
-
-        return doPost(host, apiPath, new String[]{"cursor", cursor}, null, new DbxRequestUtil.ResponseHandler<DbxDeltaC<C, DbxEntry>>() {
-            @Override
-            public DbxDeltaC<C, DbxEntry> handle(HttpRequestor.Response response) throws DbxException {
-                if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
-                return DbxRequestUtil.extractJsonFromResponse(
-                        new DbxDeltaC.Reader<C,DbxEntry>(DbxEntry.Reader, collector), response.body);
-            }
-        });
-    }
-
-    // -----------------------------------------------------------------
-    // /thumbnails
-
-    public DbxEntry.File getThumbnail(DbxThumbnailSize size, DbxThumbnailFormat format,
-                                      String path, String revision, OutputStream target)
-            throws DbxException, IOException
-    {
-        if (target == null) throw new IllegalArgumentException("'target' can't be null");
-
-        Downloader downloader = startGetThumbnail(size, format, path, revision);
-        if (downloader == null) return null;
-        return downloader.copyBodyAndClose(target);
-    }
-
-    public Downloader startGetThumbnail(DbxThumbnailSize size, DbxThumbnailFormat format,
-                                        String path, String revision)
-        throws DbxException
-    {
-        DbxPath.checkArgNonRoot("path", path);
-        if (size == null) throw new IllegalArgumentException("'size' can't be null");
-        if (format == null) throw new IllegalArgumentException("'format' can't be null");
-
-        String apiPath = "1/thumbnails/auto" + path;
-        String[] params = {
-            "size", size.ident,
-            "format", format.ident,
-            "rev", revision,
-        };
-
-        return startGetSomething(apiPath, params);
-    }
-
-    // --------------------------------------------------------
-
-    // Convenience function that calls RequestUtil.doGet with the first two parameters filled in.
-    private <T> T doGet(String host, String path, String[] params, ArrayList<HttpRequestor.Header> headers, DbxRequestUtil.ResponseHandler<T> handler)
-        throws DbxException
-    {
-        return DbxRequestUtil.doGet(requestConfig, accessToken, host, path, params, headers, handler);
-    }
-
-    // Convenience function that calls RequestUtil.doPost with the first two parameters filled in.
-    public <T> T doPost(String host, String path, String[] params, ArrayList<HttpRequestor.Header> headers, DbxRequestUtil.ResponseHandler<T> handler)
-            throws DbxException
-    {
-        return DbxRequestUtil.doPost(requestConfig, accessToken, host, path, params, headers, handler);
-    }
-
-    /**
-     * For uploading file content to Dropbox.  Write stuff to the {@link #body} stream.
-     *
-     * <p>
-     * Don't call {@code close()} directly on the {@link #body}.  Instead call either
-     * call either {@link #finish} or {@link #close} to make sure the stream and other
-     * resources are released.  A safe idiom is to use the object within a {@code try}
-     * block and put a call to {@link #close()} in the {@code finally} block.
-     * </p>
-     *
-     * <pre>
-     * DbxClient.Uploader uploader = ...
-     * try {
-     *     uploader.body.write("Hello, world!".getBytes("UTF-8"));
-     *     uploader.finish();
-     * }
-     * finally {
-     *     uploader.close();
-     * }
-     * </pre>
-     */
-    public static final class Uploader
+    private static final class SingleUploader extends Uploader
     {
         private HttpRequestor.Uploader httpUploader;
         private final long claimedBytes;
-        private final CountingOutputStream countingStream;
+        private final CountingOutputStream body;
 
-        public final OutputStream body;
-
-        public Uploader(HttpRequestor.Uploader httpUploader, long claimedBytes)
+        public SingleUploader(HttpRequestor.Uploader httpUploader, long claimedBytes)
         {
             if (claimedBytes < 0) {
                 throw new IllegalArgumentException("'numBytes' must be greater than or equal to 0");
@@ -742,9 +643,12 @@ public final class DbxClient
 
             this.httpUploader = httpUploader;
             this.claimedBytes = claimedBytes;
-            this.countingStream = new CountingOutputStream(httpUploader.body);
+            this.body = new CountingOutputStream(httpUploader.body);
+        }
 
-            this.body = countingStream;
+        public OutputStream getBody()
+        {
+            return this.body;
         }
 
         /**
@@ -791,7 +695,7 @@ public final class DbxClient
             HttpRequestor.Response response;
             final long bytesWritten;
             try {
-                bytesWritten = this.countingStream.getBytesWritten();
+                bytesWritten = this.body.getBytesWritten();
 
                 // Make sure the uploaded the same number of bytes they said they were going to upload.
                 if (claimedBytes != bytesWritten) {
@@ -814,7 +718,7 @@ public final class DbxClient
                 public DbxEntry.File handle(HttpRequestor.Response response) throws DbxException
                 {
                     if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
-                    DbxEntry entry = DbxRequestUtil.extractJsonFromResponse(DbxEntry.Reader, response.body);
+                    DbxEntry entry = DbxRequestUtil.readJsonFromResponse(DbxEntry.Reader, response.body);
                     if (entry instanceof DbxEntry.Folder) {
                         throw new DbxException.BadResponse("uploaded file, but server returned metadata entry for a folder");
                     }
@@ -827,5 +731,1098 @@ public final class DbxClient
                 }
             });
         }
+    }
+
+    // -----------------------------------------------------------------
+    // /chunked_upload, /commit_chunked_upload
+
+    private static final class ChunkedUploadState extends Dumpable
+    {
+        public final String uploadId;
+        public final long offset;
+
+        public ChunkedUploadState(String uploadId, long offset)
+        {
+            if (uploadId == null) throw new IllegalArgumentException("'uploadId' can't be null");
+            if (uploadId.length() == 0) throw new IllegalArgumentException("'uploadId' can't be empty");
+            if (offset < 0) throw new IllegalArgumentException("'offset' can't be negative");
+            this.uploadId = uploadId;
+            this.offset = offset;
+        }
+
+        protected void dumpFields(DumpWriter w)
+        {
+            w.field("uploadId", uploadId);
+            w.field("offset", offset);
+        }
+
+        public static final JsonReader<ChunkedUploadState> Reader = new JsonReader<ChunkedUploadState>()
+        {
+            @Override
+            public ChunkedUploadState read(JsonParser parser) throws IOException, JsonReadException
+            {
+                JsonLocation top = JsonReader.expectObjectStart(parser);
+
+                String uploadId = null;
+                long bytesComplete = -1;
+
+                while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String fieldName = parser.getCurrentName();
+                    parser.nextToken();
+
+                    try {
+                        if (fieldName.equals("upload_id")) {
+                            uploadId = JsonReader.StringReader.readField(parser, fieldName, uploadId);
+                        }
+                        else if (fieldName.equals("offset")) {
+                            bytesComplete = JsonReader.readUnsignedLongField(parser, fieldName, bytesComplete);
+                        }
+                        else {
+                            JsonReader.skipValue(parser);
+                        }
+                    }
+                    catch (JsonReadException ex) {
+                        throw ex.addFieldContext(fieldName);
+                    }
+                }
+
+                JsonReader.expectObjectEnd(parser);
+
+                if (uploadId == null) throw new JsonReadException("missing field \"upload_id\"", top);
+                if (bytesComplete == -1) throw new JsonReadException("missing field \"offset\"", top);
+
+                return new ChunkedUploadState(uploadId, bytesComplete);
+            }
+        };
+    }
+    /**
+     * Internal function called by both chunkedUploadFirst and chunkedUploadAppend.
+     */
+    private <E extends Throwable> HttpRequestor.Response chunkedUploadCommon(String[] params, long chunkSize, DbxStreamWriter<E> writer)
+        throws DbxException, E
+    {
+        String apiPath = "1/chunked_upload";
+
+        HttpRequestor.Uploader uploader = DbxRequestUtil.startPut(requestConfig, accessToken, host.content, apiPath, params, chunkSize, null);
+        try {
+            try {
+                NoThrowOutputStream nt = new NoThrowOutputStream(uploader.body);
+                writer.write(nt);
+                long bytesWritten = nt.getBytesWritten();
+                if (bytesWritten != chunkSize) {
+                    throw new IllegalStateException("'chunkSize' is " + chunkSize + ", but 'writer' only wrote " + bytesWritten + " bytes");
+                }
+                return uploader.finish();
+            }
+            catch (IOException ex) {
+                throw new DbxException.NetworkIO(ex);
+            }
+            catch (NoThrowOutputStream.HiddenException ex) {
+                throw new DbxException.NetworkIO(ex.underlying);
+            }
+        }
+        finally {
+            uploader.close();
+        }
+    }
+
+    private ChunkedUploadState chunkedUploadCheckForOffsetCorrection(HttpRequestor.Response response)
+        throws DbxException
+    {
+        if (response.statusCode != 400) return null;
+
+        byte[] data = DbxRequestUtil.loadErrorBody(response);
+
+        try {
+            return ChunkedUploadState.Reader.readFully(data);
+        }
+        catch (JsonReadException ex) {
+            // Couldn't parse out an offset correction message.  Treat it like a regular HTTP 400 then.
+            throw new DbxException.BadRequest(DbxRequestUtil.parseErrorBody(400, data));
+        }
+    }
+
+    private ChunkedUploadState chunkedUploadParse200(HttpRequestor.Response response)
+        throws DbxException.BadResponse, DbxException.NetworkIO
+    {
+        assert response.statusCode == 200 : response.statusCode;
+        return DbxRequestUtil.readJsonFromResponse(ChunkedUploadState.Reader, response.body);
+    }
+
+    /**
+     * Equivalent to {@link #chunkedUploadFirst(byte[], int, int)
+     * chunkedUploadFirst(data, 0, data.length)}.
+     */
+    public String chunkedUploadFirst(byte[] data)
+        throws DbxException
+    {
+        return chunkedUploadFirst(data, 0, data.length);
+    }
+
+    /**
+     * Upload the first chunk of a multi-chunk upload.
+     *
+     * @param data
+     *    The data to append.
+     * @param dataOffset
+     *    The start offset in {@code data} to read from.
+     * @param dataLength
+     *    The number of bytes to read from {@code data}, starting from {@code dataOffset}.
+     *
+     * @return
+     *    The ID designated by the Dropbox server to identify the chunked upload.
+     *
+     * @throws DbxException
+     */
+    public String chunkedUploadFirst(byte[] data, int dataOffset, int dataLength)
+        throws DbxException
+    {
+        return chunkedUploadFirst(dataLength, new DbxStreamWriter.ByteArrayCopier(data, dataOffset, dataLength));
+    }
+
+    /**
+     * Upload the first chunk of a multi-chunk upload.
+     *
+     * @param chunkSize
+     *    The number of bytes you're going to upload in this chunk.
+     *
+     * @param writer
+     *     A callback that will be called when it's time to actually write out the
+     *     body of the chunk.
+     *
+     * @return
+     *    The ID designated by the Dropbox server to identify the chunked upload.
+     *
+     * @throws DbxException
+     */
+    public <E extends Throwable> String chunkedUploadFirst(int chunkSize, DbxStreamWriter<E> writer)
+        throws DbxException, E
+    {
+        HttpRequestor.Response response = chunkedUploadCommon(new String[0], chunkSize, writer);
+        try {
+            ChunkedUploadState correctedState = chunkedUploadCheckForOffsetCorrection(response);
+            if (correctedState != null) {
+                throw new DbxException.BadResponse("Got offset correction response on first chunk.");
+            }
+
+            if (response.statusCode == 404) {
+                throw new DbxException.BadResponse("Got a 404, but we didn't send an upload_id");
+            }
+
+            if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+            ChunkedUploadState returnedState = chunkedUploadParse200(response);
+
+            if (returnedState.offset != chunkSize) {
+                throw new DbxException.BadResponse("Sent " + chunkSize + " bytes, but returned offset is " + returnedState.offset);
+            }
+
+            return returnedState.uploadId;
+        }
+        finally {
+            IOUtil.closeInput(response.body);
+        }
+    }
+
+    /**
+     * Equivalent to {@link #chunkedUploadAppend(String, long, byte[], int, int)
+     * chunkedUploadAppend(uploadId, uploadOffset, data, 0, data.length)}.
+     */
+    public long chunkedUploadAppend(String uploadId, long uploadOffset, byte[] data)
+        throws DbxException
+    {
+        return chunkedUploadAppend(uploadId, uploadOffset, data, 0, data.length);
+    }
+
+    /**
+     * Append data to a chunked upload session.
+     *
+     * @param uploadId
+     *    The identifier returned by {@link #chunkedUploadFirst} to identify the chunked upload
+     *    session.
+     *
+     * @param uploadOffset
+     *    The current number of bytes uploaded to the chunked upload session.  The server checks
+     *    this value to make sure it is correct.  If it is correct, the contents of {@code data}
+     *    is appended and -1 is returned.  If it is incorrect, the correct offset is returned.
+     *
+     * @param data
+     *    The data to append.
+     *
+     * @param dataOffset
+     *    The start offset in {@code data} to read from.
+     *
+     * @param dataLength
+     *    The number of bytes to read from {@code data}, starting from {@code dataOffset}.
+     *
+     * @return
+     *    If everything goes correctly, returns {@code -1}.  If the given {@code offset} didn't
+     *    match the actual number of bytes in the chunked upload session, returns the correct
+     *    number of bytes.
+     *
+     * @throws DbxException
+     */
+    public long chunkedUploadAppend(String uploadId, long uploadOffset, byte[] data, int dataOffset, int dataLength)
+        throws DbxException
+    {
+        return chunkedUploadAppend(uploadId, uploadOffset, dataLength, new DbxStreamWriter.ByteArrayCopier(data, dataOffset, dataLength));
+    }
+
+    /**
+     * Append a chunk of data to a chunked upload session.
+     *
+     * @param uploadId
+     *    The identifier returned by {@link #chunkedUploadFirst} to identify the chunked upload
+     *    session.
+     *
+     * @param uploadOffset
+     *    The current number of bytes uploaded to the chunked upload session.  The server checks
+     *    this value to make sure it is correct.  If it is correct, the contents of {@code data}
+     *    is appended and -1 is returned.  If it is incorrect, the correct offset is returned.
+     *
+     * @param chunkSize
+     *    The size of the chunk.
+     *
+     * @param writer
+     *    A callback that will be called when it's time to actually write out the
+     *    body of the chunk.
+     *
+     * @return
+     *    If everything goes correctly, returns {@code -1}.  If the given {@code offset} didn't
+     *    match the actual number of bytes in the chunked upload session, returns the correct
+     *    number of bytes.
+     *
+     * @throws DbxException
+     */
+    public <E extends Throwable> long chunkedUploadAppend(String uploadId, long uploadOffset, long chunkSize, DbxStreamWriter<E> writer)
+        throws DbxException, E
+    {
+        if (uploadId == null) throw new IllegalArgumentException("'uploadId' can't be null");
+        if (uploadId.length() == 0) throw new IllegalArgumentException("'uploadId' can't be empty");
+        if (uploadOffset < 0) throw new IllegalArgumentException("'offset' can't be negative");
+
+        String[] params = {
+            "upload_id", uploadId,
+            "offset", Long.toString(uploadOffset),
+        };
+        HttpRequestor.Response response = chunkedUploadCommon(params, chunkSize, writer);
+        try {
+            ChunkedUploadState correctedState = chunkedUploadCheckForOffsetCorrection(response);
+            if (correctedState != null) {
+                if (!correctedState.uploadId.equals(uploadId)) {
+                    throw new DbxException.BadResponse("uploadId mismatch: us=" + jq(uploadId)
+                                                       + ", server=" + jq(correctedState.uploadId));
+                }
+
+                if (correctedState.offset == uploadOffset) {
+                    throw new DbxException.BadResponse("Corrected offset is same as given: " + uploadOffset);
+                }
+
+                return correctedState.offset;
+            }
+
+            if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+            ChunkedUploadState returnedState = chunkedUploadParse200(response);
+
+            long expectedOffset = uploadOffset + chunkSize;
+            if (returnedState.offset != expectedOffset) {
+                throw new DbxException.BadResponse("Expected offset " + expectedOffset + " bytes, but returned offset is " + returnedState.offset);
+            }
+
+            return -1;
+        }
+        finally {
+            IOUtil.closeInput(response.body);
+        }
+    }
+
+    /**
+     * Creates a file in the user's Dropbox at the given path, with file data previously uploaded
+     * via {@link #chunkedUploadFirst} and {@link #chunkedUploadAppend}.
+     *
+     * @param targetPath
+     *     The path to the file on Dropbox (see {@link DbxPath}).  If a file at
+     *     that path already exists on Dropbox, then the {@code writeMode} parameter
+     *     will determine what happens.
+     *
+     * @param writeMode
+     *     Determines what to do if there's already a file at the given {@code targetPath}.
+     *
+     * @param uploadId
+     *     The identifier returned by {@link #chunkedUploadFirst} to identify the uploaded data.
+     */
+    public DbxEntry.File chunkedUploadFinish(String targetPath, DbxWriteMode writeMode, String uploadId)
+        throws DbxException
+    {
+        DbxPath.checkArgNonRoot("targetPath", targetPath);
+
+        String apiPath = "1/commit_chunked_upload/auto" + targetPath;
+
+        String[] params = {
+            "upload_id", uploadId,
+        };
+        params = LangUtil.arrayConcat(params, writeMode.params);
+
+        return doPost(host.content, apiPath, params, null, new DbxRequestUtil.ResponseHandler<DbxEntry.File>() {
+            @Override
+            public DbxEntry.File handle(HttpRequestor.Response response) throws DbxException
+            {
+                if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+
+                DbxEntry entry = DbxRequestUtil.readJsonFromResponse(DbxEntry.Reader, response.body);
+                if (entry instanceof DbxEntry.Folder) {
+                    throw new DbxException.BadResponse("uploaded file, but server returned metadata entry for a folder");
+                }
+                return (DbxEntry.File) entry;
+            }
+        });
+    }
+
+    /**
+     * Similar to {@link #startUploadFile}, except always uses the chunked upload API.
+     */
+    public Uploader startUploadFileChunked(String targetPath, DbxWriteMode writeMode, long numBytes)
+    {
+        return startUploadFileChunked(ChunkedUploadChunkSize, targetPath, writeMode, numBytes);
+    }
+
+    /**
+     * Similar to {@link #startUploadFile}, except always uses the chunked upload API.
+     */
+    public Uploader startUploadFileChunked(int chunkSize, String targetPath, DbxWriteMode writeMode, long numBytes)
+    {
+        DbxPath.checkArg("targetPath", targetPath);
+        if (writeMode == null) throw new IllegalArgumentException("'writeMode' can't be null");
+
+        return new ChunkedUploader(targetPath, writeMode, numBytes, new ChunkedUploadOutputStream(chunkSize));
+    }
+
+    /**
+     * Similar to {@link #uploadFile}, except always uses the chunked upload API.
+     */
+    public <E extends Throwable> DbxEntry.File uploadFileChunked(String targetPath, DbxWriteMode writeMode, long numBytes, DbxStreamWriter<E> writer)
+        throws DbxException, E
+    {
+        Uploader uploader = startUploadFileChunked(targetPath, writeMode, numBytes);
+        return finishUploadFile(uploader, writer);
+    }
+
+    /**
+     * Similar to {@link #uploadFile}, except always uses the chunked upload API.
+     */
+    public <E extends Throwable> DbxEntry.File uploadFileChunked(int chunkSize, String targetPath, DbxWriteMode writeMode, long numBytes, DbxStreamWriter<E> writer)
+        throws DbxException, E
+    {
+        Uploader uploader = startUploadFileChunked(chunkSize, targetPath, writeMode, numBytes);
+        return finishUploadFile(uploader, writer);
+    }
+
+    private final class ChunkedUploader extends Uploader
+    {
+        private final String targetPath;
+        private final DbxWriteMode writeMode;
+        private final long numBytes;
+        private final ChunkedUploadOutputStream body;
+
+        private ChunkedUploader(String targetPath, DbxWriteMode writeMode, long numBytes, ChunkedUploadOutputStream body)
+        {
+            this.targetPath = targetPath;
+            this.writeMode = writeMode;
+            this.numBytes = numBytes;
+            this.body = body;
+        }
+
+        @Override
+        public OutputStream getBody()
+        {
+            return body;
+        }
+
+        @Override
+        public void abort()
+        {
+            HttpRequestor.Uploader u = body.currentUploader;
+            if (u != null) {
+                u.abort();
+            }
+        }
+
+        @Override
+        public DbxEntry.File finish()
+            throws DbxException
+        {
+            if (body.uploadId == null) {
+                // They didn't upload any chunks.  This must mean the file is empty.  Just use
+                // the regular file upload call.
+                Uploader u = startUploadFileSingle(targetPath, writeMode, 0);
+                return u.finish();
+            }
+            else {
+                if (numBytes != -1) {
+                    // Make sure the number of bytes they sent matches what they said they'd send.
+                    if (numBytes != body.uploadOffset) {
+                        throw new IllegalStateException("'numBytes' is " + numBytes + " but you wrote " + body.uploadOffset + " bytes");
+                    }
+                }
+                return DbxRequestUtil.runAndRetry(3, new DbxRequestUtil.RequestMaker<DbxEntry.File, RuntimeException>() {
+                    public DbxEntry.File run() throws DbxException {
+                        return chunkedUploadFinish(targetPath, writeMode, body.uploadId);
+                    }
+                });
+            }
+        }
+
+        @Override
+        public void close()
+        {
+            HttpRequestor.Uploader u = body.currentUploader;
+            if (u != null) {
+                u.abort();
+            }
+        }
+    }
+
+    private final class ChunkedUploadOutputStream extends OutputStream
+    {
+        private final byte[] chunk;
+        private int chunkPos = 0;
+        private String uploadId;
+        private long uploadOffset;
+        private HttpRequestor.Uploader currentUploader;
+        private boolean closed = false;
+
+        private ChunkedUploadOutputStream(int chunkSize)
+        {
+            this.chunk = new byte[chunkSize];
+            this.chunkPos = 0;
+        }
+
+        @Override
+        public void write(int i)
+            throws IOException
+        {
+            chunk[chunkPos++] = (byte) i;
+            finishChunkIfNecessary();
+        }
+
+        private void finishChunkIfNecessary()
+            throws IOException
+        {
+            assert chunkPos <= chunk.length;
+            if (chunkPos == chunk.length) {
+                finishChunk();
+            }
+        }
+
+        private void finishChunk()
+            throws IOException
+        {
+            try {
+                if (uploadId == null) {
+                    uploadId = DbxRequestUtil.runAndRetry(3, new DbxRequestUtil.RequestMaker<String, RuntimeException>() {
+                        public String run() throws DbxException {
+                            return chunkedUploadFirst(chunk, 0, chunkPos);
+                        }
+                    });
+                    uploadOffset = chunkPos;
+                } else {
+                    int arrayOffset = 0;
+                    while (true) {
+                        final int arrayOffsetFinal = arrayOffset;
+                        long correctedOffset = DbxRequestUtil.runAndRetry(3, new DbxRequestUtil.RequestMaker<Long, RuntimeException>() {
+                            public Long run() throws DbxException {
+                                return chunkedUploadAppend(uploadId, uploadOffset, chunk, arrayOffsetFinal, chunk.length-arrayOffsetFinal);
+                            }
+                        });
+                        long expectedOffset = uploadOffset + chunkPos;
+                        if (correctedOffset == -1) {
+                            // Everything went ok.
+                            uploadOffset = expectedOffset;
+                            break;
+                        } else {
+                            // Make sure the returned offset is within what we expect.
+                            assert correctedOffset != expectedOffset;
+                            if (correctedOffset < uploadOffset) {
+                                // Somehow the server lost track of the previous data we sent it.
+                                throw new DbxException.BadResponse("we were at offset " + uploadOffset + ", server said " + correctedOffset);
+                            }
+                            else if (correctedOffset > expectedOffset) {
+                                // Somehow the server has more data than we gave it!
+                                throw new DbxException.BadResponse("we were at offset " + uploadOffset + ", server said " + correctedOffset);
+                            }
+                            // Server needs us to resend partial data.
+                            int adjustAmount = (int) (correctedOffset - uploadOffset);
+                            arrayOffset += adjustAmount;
+                        }
+                    }
+                }
+            }
+            catch (DbxException ex) {
+                throw new IODbxException(ex);
+            }
+            chunkPos = 0;
+        }
+
+        @Override
+        public void write(byte[] bytes, int offset, int length)
+            throws IOException
+        {
+            int leftToWrite = length;
+            while (leftToWrite > 0) {
+                int spaceInChunk = chunk.length - chunkPos;
+                int bytesToCopy = Math.min(leftToWrite, spaceInChunk);
+                System.arraycopy(bytes, offset, chunk, chunkPos, bytesToCopy);
+                chunkPos += bytesToCopy;
+                leftToWrite -= bytesToCopy;
+                finishChunkIfNecessary();
+            }
+        }
+
+        @Override
+        public void close()
+            throws IOException
+        {
+        }
+    }
+
+    /**
+     * A DbxException wrapped inside an IOException.  This is necessary because sometimes we
+     * present an interface (such as OutputStream.write) that is only declared to throw
+     * {@code IOException}, but we need to throw {@code DbxException}.
+     */
+    public static final class IODbxException extends IOException
+    {
+        public final DbxException underlying;
+
+        public IODbxException(DbxException underlying)
+        {
+            super(underlying);
+            this.underlying = underlying;
+        }
+    }
+
+    // -----------------------------------------------------------------
+    // /delta
+
+    /**
+     * Return "delta" entries for the contents of a user's Dropbox.  This lets you
+     * efficiently keep up with the latest state of the files and folders.  See
+     * {@link DbxDelta} for more documentation on what each entry means.
+     *
+     * <p>
+     * To start, pass in {@code null} for {@code cursor}.  For subsequent calls
+     * To get the next set of delta entries, pass in the {@link DbxDelta#cursor cursor} returned
+     * by the previous call.
+     * </p>
+     *
+     * <p>
+     * To catch up to the current state, keep calling this method until the returned
+     * object's {@link DbxDelta#hasMore hasMore} field is {@code false}.
+     * </p>
+     *
+     * <p>
+     * If your app is a "Full Dropbox" app, this will return all entries for the user's entire
+     * Dropbox folder.  If your app is an "App Folder" app, this will only return entries
+     * for the App Folder's contents.
+     * </p>
+     */
+    public DbxDelta<DbxEntry> getDelta(String cursor)
+        throws DbxException
+    {
+        String host = this.host.api;
+        String apiPath = "1/delta";
+
+        String[] params = {"cursor", cursor};
+
+        return doPost(host, apiPath, params, null, new DbxRequestUtil.ResponseHandler<DbxDelta<DbxEntry>>() {
+            @Override
+            public DbxDelta<DbxEntry> handle(HttpRequestor.Response response) throws DbxException {
+                if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+                return DbxRequestUtil.readJsonFromResponse(
+                        new DbxDelta.Reader<DbxEntry>(DbxEntry.Reader), response.body);
+            }
+        });
+    }
+
+    /**
+     * This is a more generic version of {@link #getDelta}.  It allows you to specify
+     * a <em>collector</em>, which lets you process the delta entries as they arrive over
+     * the network, and aggregate them however you want.
+     */
+    public <C> DbxDeltaC<C> getDeltaC(String cursor, final Collector<DbxDeltaC.Entry<DbxEntry>, C> collector)
+        throws DbxException
+    {
+        String host = this.host.api;
+        String apiPath = "1/delta";
+
+        return doPost(host, apiPath, new String[]{"cursor", cursor}, null, new DbxRequestUtil.ResponseHandler<DbxDeltaC<C>>() {
+            @Override
+            public DbxDeltaC<C> handle(HttpRequestor.Response response) throws DbxException {
+                if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+                return DbxRequestUtil.readJsonFromResponse(
+                        new DbxDeltaC.Reader<C, DbxEntry>(DbxEntry.Reader, collector), response.body);
+            }
+        });
+    }
+
+    // -----------------------------------------------------------------
+    // /thumbnails
+
+    public DbxEntry.File getThumbnail(DbxThumbnailSize size, DbxThumbnailFormat format,
+                                      String path, String revision, OutputStream target)
+            throws DbxException, IOException
+    {
+        if (target == null) throw new IllegalArgumentException("'target' can't be null");
+
+        Downloader downloader = startGetThumbnail(size, format, path, revision);
+        if (downloader == null) return null;
+        return downloader.copyBodyAndClose(target);
+    }
+
+    public Downloader startGetThumbnail(DbxThumbnailSize size, DbxThumbnailFormat format,
+                                        String path, String revision)
+        throws DbxException
+    {
+        DbxPath.checkArgNonRoot("path", path);
+        if (size == null) throw new IllegalArgumentException("'size' can't be null");
+        if (format == null) throw new IllegalArgumentException("'format' can't be null");
+
+        String apiPath = "1/thumbnails/auto" + path;
+        String[] params = {
+            "size", size.ident,
+            "format", format.ident,
+            "rev", revision,
+        };
+
+        return startGetSomething(apiPath, params);
+    }
+
+    // -----------------------------------------------------------------
+
+    /**
+     * Gets the metadata for the current and past revisions of a file (up to some limit) at
+     * a given path.
+     *
+     * @param path
+     *     The Dropbox path that you want file revision metadata for.
+     *
+     * @return
+     *     A list of metadata objects, one for each file revision.
+     */
+    public List<DbxEntry.File> getRevisions(String path)
+        throws DbxException
+    {
+        DbxPath.checkArgNonRoot("path", path);
+
+        String apiPath = "1/revisions/auto" + path;
+
+        return doGet(host.api, apiPath, null, null, new DbxRequestUtil.ResponseHandler<List<DbxEntry.File>>() {
+            public List<DbxEntry.File> handle(HttpRequestor.Response response)
+                throws DbxException
+            {
+                if (response.statusCode == 406) return null;
+                if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+                return DbxRequestUtil.readJsonFromResponse(JsonArrayReader.mk(DbxEntry.File.Reader), response.body);
+            }
+        });
+    }
+
+    /**
+     * Takes a copy of the file at the given revision and saves it over the current latest copy.
+     * This will create a new revision, but the file contents will match the revision you
+     * specified.
+     *
+     * @param path
+     *     The Dropbox path of the file to restore.
+     *
+     * @param rev
+     *     The revision of the file you want to use to overwrite the latest revision.
+     *
+     * @return
+     *     If the specified {@code path}/{@code rev} couldn't be found, return {@code null}.
+     *     Otherwise, return metadata for the newly-created latest revision of the file.
+     */
+    public DbxEntry.File restoreFile(String path, String rev)
+        throws DbxException
+    {
+        DbxPath.checkArgNonRoot("path", path);
+        if (rev == null) throw new IllegalArgumentException("'rev' can't be null");
+        if (rev.length() == 0) throw new IllegalArgumentException("'rev' can't be empty");
+
+        String apiPath = "1/restore/auto" + path;
+        String[] params = {"rev", rev};
+
+        return doGet(host.api, apiPath, params, null, new DbxRequestUtil.ResponseHandler<DbxEntry.File>() {
+            public DbxEntry.File handle(HttpRequestor.Response response)
+                throws DbxException
+            {
+                if (response.statusCode == 404) return null;
+                if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+                return DbxRequestUtil.readJsonFromResponse(DbxEntry.File.Reader, response.body);
+            }
+        });
+    }
+
+    /**
+     * Returns metadata for all files and folders whose name matches the query string.
+     *
+     * @param basePath
+     *    The path to search under (recursively).  Pass in {@code "/"} to search everything.
+     * @param query
+     *    A space-separated list of substrings to search for.  A file matches only if it contains
+     *    all the substrings.
+     * @return
+     *    The list of metadata entries that match the search query.
+     */
+    public List<DbxEntry> searchFileAndFolderNames(String basePath, String query)
+        throws DbxException
+    {
+        DbxPath.checkArg("basePath", basePath);
+        if (query == null) throw new IllegalArgumentException("'query' can't be null");
+        if (query.length() == 0) throw new IllegalArgumentException("'query' can't be empty");
+
+        String apiPath = "1/search/auto" + basePath;
+        String[] params = {"query", query};
+
+        return doPost(host.api, apiPath, params, null, new DbxRequestUtil.ResponseHandler<List<DbxEntry>>()
+        {
+            @Override
+            public List<DbxEntry> handle(HttpRequestor.Response response)
+                throws DbxException
+            {
+                if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+                return DbxRequestUtil.readJsonFromResponse(JsonArrayReader.mk(DbxEntry.Reader), response.body);
+            }
+        });
+    }
+
+    /**
+     * Creates and returns a publicly-shareable URL to a file or folder's "preview page".
+     * This URL can be used without authentication.  The preview page may contain a thumbnail or
+     * some other preview of the file, along with a link to download the actual filel.
+     *
+     * @param path
+     *     The Dropbox path to a file or folder.
+     *
+     * @return
+     *     If there is no file or folder at that path, return {@code null}.  Otherwise return
+     *     a shareable URL.
+     */
+    public String createShareableUrl(String path)
+        throws DbxException
+    {
+        DbxPath.checkArg("path", path);
+
+        String apiPath = "1/shares/auto" + path;
+        String[] params = {"short_url", "false"};
+
+        return doPost(host.api, apiPath, params, null, new DbxRequestUtil.ResponseHandler<String>() {
+            @Override
+            public String handle(HttpRequestor.Response response)
+                throws DbxException
+            {
+                if (response.statusCode == 404) return null;
+                if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+                DbxUrlWithExpiration uwe = DbxRequestUtil.readJsonFromResponse(DbxUrlWithExpiration.Reader, response.body);
+                return uwe.url;
+            }
+        });
+    }
+
+    /**
+     * Creates and returns a publicly-shareable URL to a file's contents.  This URL can be used
+     * without authentication.  This link will stop working after a few hours.
+     *
+     * @param path
+     *     The Dropbox path to a file.
+     *
+     * @return
+     *     If there is no file at that path, return {@code null}.  Otherwise return
+     *     a shareable URL along with the expiration time.
+     */
+    public DbxUrlWithExpiration createTemporaryDirectUrl(String path)
+        throws DbxException
+    {
+        DbxPath.checkArgNonRoot("path", path);
+
+        String apiPath = "1/media/auto" + path;
+
+        return doPost(host.api, apiPath, null, null, new DbxRequestUtil.ResponseHandler<DbxUrlWithExpiration>() {
+            @Override
+            public DbxUrlWithExpiration handle(HttpRequestor.Response response)
+                throws DbxException
+            {
+                if (response.statusCode == 404) return null;
+                if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+                return DbxRequestUtil.readJsonFromResponse(DbxUrlWithExpiration.Reader, response.body);
+            }
+        });
+    }
+
+    /**
+     * Creates and returns a "copy ref" to a file.  A copy ref can be used to copy a file across
+     * different Dropbox accounts without downloading and re-uploading.
+     *
+     * <p>
+     * For example, create a {@code DbxClient} using the access token from one account and call
+     * {@code createCopyRef}.  Then, create a {@code DbxClient} using the access token for another
+     * account and call {@code copyFromCopyRef} using the copy ref.
+     * </p>
+     *
+     * <p>
+     * A copy ref created by an app can only be used by that app.
+     * </p>
+     *
+     * @param path
+     *     The Dropbox path to a file.
+     *
+     * @return
+     *     The copy ref's identifier, suitable for passing in to {@link #copyFromCopyRef}.
+     */
+    public String createCopyRef(String path)
+        throws DbxException
+    {
+        DbxPath.checkArgNonRoot("path", path);
+
+        String apiPath = "1/copy_ref/auto" + path;
+
+        return doPost(host.api, apiPath, null, null, new DbxRequestUtil.ResponseHandler<String>()
+        {
+            @Override
+            public String handle(HttpRequestor.Response response)
+                throws DbxException
+            {
+                if (response.statusCode == 404) return null;
+                if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+                CopyRef copyRef = DbxRequestUtil.readJsonFromResponse(CopyRef.Reader, response.body);
+                return copyRef.id;
+            }
+        });
+    }
+
+    private static final class CopyRef
+    {
+        public final String id;
+        public final Date expires;
+
+        private CopyRef(String id, Date expires)
+        {
+            this.id = id;
+            this.expires = expires;
+        }
+
+        public static final JsonReader<CopyRef> Reader = new JsonReader<CopyRef>() {
+            @Override
+            public CopyRef read(JsonParser parser)
+                throws IOException, JsonReadException
+            {
+                JsonLocation top = JsonReader.expectObjectStart(parser);
+
+                String id = null;
+                Date expires = null;
+
+                while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String fieldName = parser.getCurrentName();
+                    parser.nextToken();
+
+                    try {
+                        if (fieldName.equals("copy_ref")) {
+                            id = JsonReader.StringReader.readField(parser, fieldName, id);
+                        }
+                        else if (fieldName.equals("expires")) {
+                            expires = JsonDateReader.Dropbox.readField(parser, fieldName, expires);
+                        }
+                        else {
+                            JsonReader.skipValue(parser);
+                        }
+                    }
+                    catch (JsonReadException ex) {
+                        throw ex.addFieldContext(fieldName);
+                    }
+                }
+
+                JsonReader.expectObjectEnd(parser);
+
+                if (id == null) throw new JsonReadException("missing field \"copy_ref\"", top);
+                if (expires == null) throw new JsonReadException("missing field \"expires\"", top);
+
+                return new CopyRef(id, expires);
+            }
+        };
+    }
+
+    public DbxEntry copy(String fromPath, String toPath)
+        throws DbxException
+    {
+        DbxPath.checkArg("fromPath", fromPath);
+        DbxPath.checkArgNonRoot("toPath", toPath);
+
+        String[] params = {
+            "root", "auto",
+            "from_path", fromPath,
+            "to_path", toPath,
+        };
+
+        return doPost(host.api, "1/fileops/copy", params, null, new DbxRequestUtil.ResponseHandler<DbxEntry>() {
+            @Override
+            public DbxEntry handle(HttpRequestor.Response response)
+                throws DbxException
+            {
+                if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+                return DbxRequestUtil.readJsonFromResponse(DbxEntry.Reader, response.body);
+            }
+        });
+    }
+
+    public DbxEntry copyFromCopyRef(String copyRef, String toPath)
+        throws DbxException
+    {
+        if (copyRef == null) throw new IllegalArgumentException("'copyRef' can't be null");
+        if (copyRef.length() == 0) throw new IllegalArgumentException("'copyRef' can't be empty");
+        DbxPath.checkArgNonRoot("toPath", toPath);
+
+        String[] params = {
+            "root", "auto",
+            "from_copy_ref", copyRef,
+            "to_path", toPath,
+        };
+
+        return doPost(host.api, "1/fileops/copy", params, null, new DbxRequestUtil.ResponseHandler<DbxEntry>()
+        {
+            @Override
+            public DbxEntry handle(HttpRequestor.Response response)
+                throws DbxException
+            {
+                if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+                return DbxRequestUtil.readJsonFromResponse(DbxEntry.Reader, response.body);
+            }
+        });
+    }
+
+    public DbxEntry.Folder createFolder(String path)
+        throws DbxException
+    {
+        DbxPath.checkArgNonRoot("path", path);
+
+        String[] params = {
+            "root", "auto",
+            "path", path,
+        };
+
+        return doPost(host.api, "1/fileops/create_folder", params, null, new DbxRequestUtil.ResponseHandler<DbxEntry.Folder>() {
+            @Override
+            public DbxEntry.Folder handle(HttpRequestor.Response response)
+                throws DbxException
+            {
+                if (response.statusCode == 403) return null;
+                if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+                return DbxRequestUtil.readJsonFromResponse(DbxEntry.Folder.Reader, response.body);
+            }
+        });
+    }
+
+    public void delete(String path)
+        throws DbxException
+    {
+        DbxPath.checkArgNonRoot("path", path);
+
+        String[] params = {
+            "root", "auto",
+            "path", path,
+        };
+
+        doPost(host.api, "1/fileops/delete", params, null, new DbxRequestUtil.ResponseHandler<Void>() {
+            @Override
+            public Void handle(HttpRequestor.Response response)
+                throws DbxException
+            {
+                if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+                return null;
+            }
+        });
+    }
+
+    public DbxEntry move(String fromPath, String toPath)
+        throws DbxException
+    {
+        DbxPath.checkArgNonRoot("fromPath", fromPath);
+        DbxPath.checkArgNonRoot("toPath", toPath);
+
+        String[] params = {
+            "root", "auto",
+            "from_path", fromPath,
+            "to_path", toPath,
+        };
+
+        return doPost(host.api, "1/fileops/move", params, null, new DbxRequestUtil.ResponseHandler<DbxEntry>()
+        {
+            @Override
+            public DbxEntry handle(HttpRequestor.Response response)
+                throws DbxException
+            {
+                if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+                return DbxRequestUtil.readJsonFromResponse(DbxEntry.Reader, response.body);
+            }
+        });
+    }
+
+    // --------------------------------------------------------
+
+    // Convenience function that calls RequestUtil.doGet with the first two parameters filled in.
+    private <T> T doGet(String host, String path, String[] params, ArrayList<HttpRequestor.Header> headers, DbxRequestUtil.ResponseHandler<T> handler)
+        throws DbxException
+    {
+        return DbxRequestUtil.doGet(requestConfig, accessToken, host, path, params, headers, handler);
+    }
+
+    // Convenience function that calls RequestUtil.doPost with the first two parameters filled in.
+    public <T> T doPost(String host, String path, String[] params, ArrayList<HttpRequestor.Header> headers, DbxRequestUtil.ResponseHandler<T> handler)
+        throws DbxException
+    {
+        return DbxRequestUtil.doPost(requestConfig, accessToken, host, path, params, headers, handler);
+    }
+
+    /**
+     * For uploading file content to Dropbox.  Write stuff to the {@link #getBody} stream.
+     *
+     * <p>
+     * Don't call {@code close()} directly on the {@link #getBody}.  Instead call either
+     * call either {@link #finish} or {@link #close} to make sure the stream and other
+     * resources are released.  A safe idiom is to use the object within a {@code try}
+     * block and put a call to {@link #close()} in the {@code finally} block.
+     * </p>
+     *
+     * <pre>
+     * DbxClient.Uploader uploader = ...
+     * try {
+     *     uploader.body.write("Hello, world!".getBytes("UTF-8"));
+     *     uploader.finish();
+     * }
+     * finally {
+     *     uploader.close();
+     * }
+     * </pre>
+     */
+    public static abstract class Uploader
+    {
+        public abstract OutputStream getBody();
+
+        /**
+         * Cancel the upload.
+         */
+        public abstract void abort();
+
+        /**
+         * Release the resources related to this {@code Uploader} instance.  If
+         * {@code close()} or {@link #abort()} has already been called, this does nothing.
+         * If neither has been called, this is equivalent to calling {@link #abort()}.
+         */
+        public abstract void close();
+
+        /**
+         * When you're done writing the file contents to {@link #getBody}, call this
+         * to indicate that you're done.  This will actually finish the underlying HTTP
+         * request and return the uploaded file's {@link DbxEntry}.
+         */
+        public abstract DbxEntry.File finish() throws DbxException;
     }
 }

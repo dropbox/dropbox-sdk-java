@@ -12,17 +12,6 @@ public abstract class JsonWriter<T>
     public abstract void write(T value, JsonGenerator g)
         throws IOException;
 
-    public final void writeAndClose(T value, JsonGenerator g)
-        throws IOException
-    {
-        try {
-            write(value, g);
-        }
-        finally {
-            g.close();
-        }
-    }
-
     public final void writeToStream(T value, OutputStream out, boolean indent)
         throws IOException
     {

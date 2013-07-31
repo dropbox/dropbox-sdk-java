@@ -12,7 +12,7 @@ import java.util.TimeZone;
 public class JsonDateReader
 {
     /**
-     * An extractor for dates returned by the Dropbox API.
+     * A parser for dates returned by the Dropbox API.
      */
     public static final JsonReader<Date> Dropbox = new JsonReader<Date>() {
         @Override

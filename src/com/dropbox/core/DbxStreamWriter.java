@@ -25,18 +25,6 @@ public abstract class DbxStreamWriter<E extends Throwable>
     public abstract void write(NoThrowOutputStream out) throws E;
 
     /**
-     * Called when we're done with this object.  This will be called even if
-     * the overall action fails so you have an opportunity to clean up resources.
-     *
-     * <p>
-     * For example, {@link DbxClient#uploadFile} will call {@code close()} whether
-     * the upload succeeds or not.  {@link InputStreamCopier} uses
-     * this method to close the underlying {@code InputStream}.
-     * </p>
-     */
-    public abstract void close();
-
-    /**
      * A {@link DbxStreamWriter} that gets its source data from the given {@code InputStream}.
      * The {@code InputStream} will be closed automatically.
      */
@@ -53,15 +41,33 @@ public abstract class DbxStreamWriter<E extends Throwable>
         {
             IOUtil.copyStreamToStream(source, out);
         }
+    }
 
-        public void close()
+    public static final class ByteArrayCopier extends DbxStreamWriter<RuntimeException>
+    {
+        private final byte[] data;
+        private final int offset;
+        private final int length;
+
+        public ByteArrayCopier(byte[] data, int offset, int length)
         {
-            try {
-                source.close();
-            }
-            catch (IOException ex) {
-                // Ignore the I/O exception; we already got the data we wanted.
-            }
+            if (data == null) throw new IllegalArgumentException("'data' can't be null");
+            if (offset < 0 || offset >= data.length) throw new IllegalArgumentException("'offset' is out of bounds");
+            if ((offset + length) < offset || (offset + length) > data.length) throw new IllegalArgumentException("'offset+length' is out of bounds");
+            this.data = data;
+            this.offset = offset;
+            this.length = length;
+        }
+
+        public ByteArrayCopier(byte[] data)
+        {
+            this(data, 0, data.length);
+        }
+
+        @Override
+        public void write(NoThrowOutputStream out)
+        {
+            out.write(this.data, this.offset, this.length);
         }
     }
 }

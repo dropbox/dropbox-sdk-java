@@ -38,7 +38,13 @@ public class ConfigHelper
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
         try {
-            IOUtil.copyStreamToStreamAndCloseInput(new FileInputStream(file), out);
+            FileInputStream fin = new FileInputStream(file);
+            try {
+                IOUtil.copyStreamToStream(fin, out);
+            }
+            finally {
+                IOUtil.closeInput(fin);
+            }
         }
         catch (IOException ex) {
             throw new Exception("unable to read file \"" + file + "\": " + ex.getMessage());

@@ -3,14 +3,15 @@ package com.dropbox.core;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
 import com.dropbox.core.util.DumpWriter;
-import static com.dropbox.core.util.StringUtil.jq;
+import com.dropbox.core.util.Dumpable;
+
 import com.fasterxml.jackson.core.JsonLocation;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 
 import java.io.IOException;
 
-public class DbxAccountInfo extends DbxDataObject
+public class DbxAccountInfo extends Dumpable
 {
     public final long userId;
     public final String displayName;
@@ -30,28 +31,14 @@ public class DbxAccountInfo extends DbxDataObject
     @Override
     protected void dumpFields(DumpWriter out)
     {
-        out.field("userId");
-        dump(out, Long.toString(userId));
-
-        out.field("displayName");
-        dump(out, displayName);
-
-        out.field("country");
-        dump(out, country);
-
-        out.field("referralLink");
-        dump(out, referralLink);
-
-        out.field("quota");
-        dump(out, quota);
+        out.field("userId", userId);
+        out.field("displayName", displayName);
+        out.field("country", country);
+        out.field("referralLink", referralLink);
+        out.field("quota", quota);
     }
 
-    public String toString()
-    {
-        return "(" + userId + ", " + jq(displayName) + ")";
-    }
-
-    public static final class Quota extends DbxDataObject
+    public static final class Quota extends Dumpable
     {
         public final long total;
         public final long normal;
@@ -67,14 +54,9 @@ public class DbxAccountInfo extends DbxDataObject
         @Override
         protected void dumpFields(DumpWriter out)
         {
-            out.field("total");
-            dump(out, Long.toString(total));
-
-            out.field("normal");
-            dump(out, Long.toString(normal));
-
-            out.field("shared");
-            dump(out, Long.toString(shared));
+            out.field("total", total);
+            out.field("normal", normal);
+            out.field("shared", shared);
         }
 
         // ------------------------------------------------------
@@ -102,9 +84,9 @@ public class DbxAccountInfo extends DbxDataObject
                             JsonReader.skipValue(parser);
                         }
                         switch (fi) {
-                            case FM_quota: quota = JsonReader.extractUnsignedLongField(parser, fieldName, quota); break;
-                            case FM_normal: normal = JsonReader.extractUnsignedLongField(parser, fieldName, normal); break;
-                            case FM_shared: shared = JsonReader.extractUnsignedLongField(parser, fieldName, shared); break;
+                            case FM_quota: quota = JsonReader.readUnsignedLongField(parser, fieldName, quota); break;
+                            case FM_normal: normal = JsonReader.readUnsignedLongField(parser, fieldName, normal); break;
+                            case FM_shared: shared = JsonReader.readUnsignedLongField(parser, fieldName, shared); break;
                             default:
                                 throw new AssertionError("bad index: " + fi + ", field = \"" + fieldName + "\"");
                         }
@@ -163,7 +145,7 @@ public class DbxAccountInfo extends DbxDataObject
                     int fi = FM.get(fieldName);
                     switch (fi) {
                         case -1: JsonReader.skipValue(parser); break;
-                        case FM_uid: uid = JsonReader.extractUnsignedLongField(parser, fieldName, uid); break;
+                        case FM_uid: uid = JsonReader.readUnsignedLongField(parser, fieldName, uid); break;
                         case FM_display_name: display_name = JsonReader.StringReader.readField(parser, fieldName, display_name); break;
                         case FM_country: country = JsonReader.StringReader.readField(parser, fieldName, country); break;
                         case FM_referral_link: referral_link = JsonReader.StringReader.readField(parser, fieldName, referral_link); break;

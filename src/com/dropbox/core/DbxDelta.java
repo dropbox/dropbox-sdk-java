@@ -3,8 +3,10 @@ package com.dropbox.core;
 import com.dropbox.core.json.JsonArrayReader;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
+import com.dropbox.core.util.Dumpable;
 import com.dropbox.core.util.DumpWriter;
 import static com.dropbox.core.util.StringUtil.jq;
+
 import com.fasterxml.jackson.core.JsonLocation;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
@@ -20,7 +22,7 @@ import java.util.List;
  *     The type of metadata being returned in the delta results.  For example, in the
  *     {@link DbxClient#getDelta}, this has type {@link DbxEntry}.
  */
-public final class DbxDelta<MD extends DbxDataObject> extends DbxDataObject
+public final class DbxDelta<MD extends Dumpable> extends Dumpable
 {
     /**
      * If {@code true}, then you should reset your local state to be an empty
@@ -76,21 +78,16 @@ public final class DbxDelta<MD extends DbxDataObject> extends DbxDataObject
 
     protected void dumpFields(DumpWriter out)
     {
-        out.field("reset");
-        out.writeln(Boolean.toString(reset));
-        out.field("entries");
-        dump(out, entries);
-    }
-
-    public String toString()
-    {
-        return "{reset=" + reset + ", entries.size=" + entries.size() + ", cursor=" + jq(cursor) + ", hasMore=" + hasMore + "}";
+        out.field("reset", reset);
+        out.field("hasMore", hasMore);
+        out.field("cursor", cursor);
+        out.fieldStart("entries").list(entries);
     }
 
     /**
      * For JSON parsing.
      */
-    public static final class Reader<MD extends DbxDataObject> extends JsonReader<DbxDelta<MD>>
+    public static final class Reader<MD extends Dumpable> extends JsonReader<DbxDelta<MD>>
     {
         public final JsonReader<MD> metadataReader;
 
@@ -101,10 +98,10 @@ public final class DbxDelta<MD extends DbxDataObject> extends DbxDataObject
 
         public DbxDelta<MD> read(JsonParser parser) throws IOException, JsonReadException
         {
-            return extract(parser, metadataReader);
+            return read(parser, metadataReader);
         }
 
-        public static <MD extends DbxDataObject> DbxDelta<MD> extract(JsonParser parser, JsonReader<MD> metadataReader)
+        public static <MD extends Dumpable> DbxDelta<MD> read(JsonParser parser, JsonReader<MD> metadataReader)
             throws IOException, JsonReadException
         {
             JsonLocation top = JsonReader.expectObjectStart(parser);
@@ -174,7 +171,7 @@ public final class DbxDelta<MD extends DbxDataObject> extends DbxDataObject
      * @param <MD>
      *     The type of metadata being returned in the delta results.
      */
-    public static final class Entry<MD extends DbxDataObject> extends DbxDataObject
+    public static final class Entry<MD extends Dumpable> extends Dumpable
     {
         /**
          * The lower-cased path of the entry.  Dropbox compares file paths in a
@@ -229,23 +226,14 @@ public final class DbxDelta<MD extends DbxDataObject> extends DbxDataObject
 
         protected void dumpFields(DumpWriter out)
         {
-            out.field(lcPath);
-            dump(out, metadata);
-        }
-
-        public String toString()
-        {
-            if (metadata == null) {
-                return "-" + jq(lcPath);
-            } else {
-                return "+" + metadata.toString();
-            }
+            out.field("lcPath", lcPath);
+            out.field("metadata", metadata);
         }
 
         /**
          * For JSON parsing.
          */
-        public static final class Reader<MD extends DbxDataObject> extends JsonReader<Entry<MD>>
+        public static final class Reader<MD extends Dumpable> extends JsonReader<Entry<MD>>
         {
             public final JsonReader<MD> metadataReader;
 
@@ -256,10 +244,10 @@ public final class DbxDelta<MD extends DbxDataObject> extends DbxDataObject
 
             public Entry<MD> read(JsonParser parser) throws IOException, JsonReadException
             {
-                return extract(parser, metadataReader);
+                return read(parser, metadataReader);
             }
 
-            public static <MD extends DbxDataObject> Entry<MD> extract(JsonParser parser, JsonReader<MD> metadataReader)
+            public static <MD extends Dumpable> Entry<MD> read(JsonParser parser, JsonReader<MD> metadataReader)
                 throws IOException, JsonReadException
             {
                 JsonLocation arrayStart = JsonReader.expectArrayStart(parser);

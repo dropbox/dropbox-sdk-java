@@ -44,7 +44,7 @@ abstract class DbxWebAuthHelper
             public DbxAuthFinish handle(HttpRequestor.Response response) throws DbxException
             {
                 if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
-                return DbxRequestUtil.extractJsonFromResponse(DbxAuthFinish.Reader, response.body);
+                return DbxRequestUtil.readJsonFromResponse(DbxAuthFinish.Reader, response.body);
             }
         });
     }

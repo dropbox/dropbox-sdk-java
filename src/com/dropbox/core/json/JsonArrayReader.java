@@ -30,10 +30,10 @@ public class JsonArrayReader<T,L> extends JsonReader<L>
     public L read(JsonParser parser)
         throws JsonReadException, IOException
     {
-        return extract(elementReader, collector, parser);
+        return read(elementReader, collector, parser);
     }
 
-    public static <T,L> L extract(JsonReader<? extends T> elementReader, Collector<T,? extends L> collector, JsonParser parser)
+    public static <T,L> L read(JsonReader<? extends T> elementReader, Collector<T, ? extends L> collector, JsonParser parser)
         throws JsonReadException, IOException
     {
         expectArrayStart(parser);

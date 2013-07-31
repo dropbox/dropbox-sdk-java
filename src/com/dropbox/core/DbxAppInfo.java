@@ -6,6 +6,7 @@ import static com.dropbox.core.util.StringUtil.jq;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
 import com.dropbox.core.util.DumpWriter;
+import com.dropbox.core.util.Dumpable;
 
 import com.fasterxml.jackson.core.JsonLocation;
 import com.fasterxml.jackson.core.JsonParseException;
@@ -15,7 +16,7 @@ import com.fasterxml.jackson.core.JsonToken;
 /**
  * Identifying information about your application.
  */
-public class DbxAppInfo extends DbxDataObject implements java.io.Serializable
+public class DbxAppInfo extends Dumpable implements java.io.Serializable
 {
     public static final long serialVersionUID = 0;
 
@@ -75,11 +76,8 @@ public class DbxAppInfo extends DbxDataObject implements java.io.Serializable
     @Override
     protected void dumpFields(DumpWriter out)
     {
-        out.field("key");
-        dump(out, key);
-
-        out.field("secret");
-        dump(out, secret);
+        out.field("key", key);
+        out.field("secret", secret);
     }
 
     /**

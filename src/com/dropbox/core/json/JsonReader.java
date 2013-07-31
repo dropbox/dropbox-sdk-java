@@ -1,5 +1,6 @@
 package com.dropbox.core.json;
 
+import com.dropbox.core.util.IOUtil;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonLocation;
 import com.fasterxml.jackson.core.JsonParseException;
@@ -126,7 +127,7 @@ public abstract class JsonReader<T>
         }
     }
 
-    public static long extractUnsignedLongField(JsonParser parser, String fieldName, long v)
+    public static long readUnsignedLongField(JsonParser parser, String fieldName, long v)
         throws IOException, JsonReadException
     {
         if (v >= 0) throw new JsonReadException("duplicate field \"" + fieldName + "\"", parser.getCurrentLocation());
@@ -229,20 +230,15 @@ public abstract class JsonReader<T>
 
     static final JsonFactory jsonFactory = new JsonFactory();
 
-    public T readFullyAndClose(InputStream utf8Body)
+    public T readFully(InputStream utf8Body)
         throws IOException, JsonReadException
     {
         try {
             JsonParser parser = jsonFactory.createParser(utf8Body);
-            return readFullyAndClose(parser);
+            return readFully(parser);
         }
         catch (JsonParseException ex) {
             throw JsonReadException.fromJackson(ex);
-        }
-        finally {
-            try { utf8Body.close(); } catch (IOException ex) {
-                // Can ignore, because we got everything we wanted.
-            }
         }
     }
 
@@ -251,7 +247,12 @@ public abstract class JsonReader<T>
     {
         try {
             JsonParser parser = jsonFactory.createParser(body);
-            return readFullyAndClose(parser);
+            try {
+                return readFully(parser);
+            }
+            finally {
+                parser.close();
+            }
         }
         catch (JsonParseException ex) {
             throw JsonReadException.fromJackson(ex);
@@ -268,7 +269,12 @@ public abstract class JsonReader<T>
     {
         try {
             JsonParser parser = jsonFactory.createParser(utf8Body);
-            return readFullyAndClose(parser);
+            try {
+                return readFully(parser);
+            }
+            finally {
+                parser.close();
+            }
         }
         catch (JsonParseException ex) {
             throw JsonReadException.fromJackson(ex);
@@ -292,12 +298,10 @@ public abstract class JsonReader<T>
         try {
             InputStream in = new FileInputStream(file);
             try {
-                return readFullyAndClose(in);
+                return readFully(in);
             }
             finally {
-                try { in.close(); } catch (IOException ex) {
-                    // We already have our data, so ignore.
-                }
+                IOUtil.closeInput(in);
             }
         }
         catch (JsonReadException ex) {
@@ -338,20 +342,15 @@ public abstract class JsonReader<T>
         }
     }
 
-    public T readFullyAndClose(JsonParser parser)
+    public T readFully(JsonParser parser)
         throws IOException, JsonReadException
     {
-        try {
-            parser.nextToken();
-            T value = this.read(parser);
-            if (parser.getCurrentToken() != null) {
-                throw new AssertionError("The JSON library should ensure there's no tokens after the main value: "
-                                         + parser.getCurrentToken() + "@" + parser.getCurrentLocation());
-            }
-            return value;
+        parser.nextToken();
+        T value = this.read(parser);
+        if (parser.getCurrentToken() != null) {
+            throw new AssertionError("The JSON library should ensure there's no tokens after the main value: "
+                                     + parser.getCurrentToken() + "@" + parser.getCurrentLocation());
         }
-        finally {
-            if (parser != null) parser.close();
-        }
+        return value;
     }
 }

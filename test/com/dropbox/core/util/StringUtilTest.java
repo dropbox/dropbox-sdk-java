@@ -1,8 +1,7 @@
-package com.dropbox.core;
+package com.dropbox.core.util;
 
 import static com.dropbox.core.util.StringUtil.jq;
 
-import com.dropbox.core.util.StringUtil;
 import org.testng.annotations.Test;
 
 import java.nio.charset.Charset;
