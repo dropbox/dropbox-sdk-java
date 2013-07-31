@@ -6,7 +6,7 @@ License: [MIT](License.txt)
 
 This is for web applications.  If you want to use Dropbox's API from Android, try the [Sync SDK](https://www.dropbox.com/developers/sync)
 
-[Javadoc.](http://dropbox.github.io/dropbox-sdk-java/api-docs/v1.6.x/)
+[Javadoc.](http://dropbox.github.io/dropbox-sdk-java/api-docs/v1.7.x/)
 
 ## Setup
 
@@ -16,12 +16,12 @@ If you're using Maven, then edit your project's "pom.xml" and add this to the `<
 <dependency>
     <groupId>com.dropbox.core</groupId>
     <artifactId>dropbox-core-sdk</artifactId>
-    <version>[1.6,1.7)</version>
+    <version>[1.7,1.8)</version>
 </dependency>
 ```
 
 If you aren't using Maven, here are the JARs you need:
-- [Dropbox Core SDK](http://repo1.maven.org/maven2/com/dropbox/core/dropbox-core-sdk/1.6-beta-1/dropbox-core-sdk-1.6-beta-1.jar)
+- [Dropbox Core SDK](http://repo1.maven.org/maven2/com/dropbox/core/dropbox-core-sdk/1.7/dropbox-core-sdk-1.7.jar)
 - [Jackson Core](http://repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-core/2.2.2/jackson-core-2.2.2.jar) (JSON parser)
 
 ## Get a Dropbox API key
@@ -47,7 +47,7 @@ Before your app can access a Dropbox user's files, the user must authorize your 
   * Authorization example for a simple web app: [Web File Browser example](examples/web-file-browser/src/com/dropbox/core/examples/web_file_browser/DropboxAuth.java)
   * Authorization example for a command-line tool: [Command-Line Authorization example](examples/authorize/src/com/dropbox/core/examples/authorize/Main.java)
 
-Once you have an access token, create a [`DbxClient`](http://dropbox.github.io/dropbox-sdk-java/api-docs/v1.6.x/com/dropbox/core/DbxClient.html) and start making API calls.
+Once you have an access token, create a [`DbxClient`](http://dropbox.github.io/dropbox-sdk-java/api-docs/v1.7.x/com/dropbox/core/DbxClient.html) and start making API calls.
 
 You only need to perform the authorization process once per user.  Once you have an access token for a user, save it somewhere persistent, like in a database.  The next time that user visits your app's, you can skip the authorization process and go straight to creating a `DbxClient` and making API calls.
 
