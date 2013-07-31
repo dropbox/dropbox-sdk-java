@@ -1,5 +1,8 @@
+---------------------------------------------
+1.7 (2013-07-31)
+
 - Added support for most API calls.
-- Very minor backwards-incompatibility.
+- A few minor backwards-incompatibilities.
 
 ---------------------------------------------
 1.6 (2013-07-07)
