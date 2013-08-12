@@ -5,8 +5,9 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import com.dropbox.core.json.*;
 import com.dropbox.core.json.JsonArrayReader;
+import com.dropbox.core.json.JsonDateReader;
+import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
 import com.dropbox.core.util.Collector;
 import com.dropbox.core.util.DumpWriter;
@@ -70,7 +71,8 @@ public abstract class DbxEntry extends Dumpable implements Serializable
         this.mightHaveThumbnail = mightHaveThumbnail;
     }
 
-    protected void dumpFields(DumpWriter w)
+    @Override
+	protected void dumpFields(DumpWriter w)
     {
         w.value(path);
         w.field("iconName", iconName);
@@ -128,16 +130,22 @@ public abstract class DbxEntry extends Dumpable implements Serializable
             super(path, iconName, mightHaveThumbnail);
         }
 
-        protected String getTypeName() { return "Folder"; }
+        @Override
+		protected String getTypeName() { return "Folder"; }
 
-        public boolean isFolder() { return true; }
-        public boolean isFile() { return false; }
-        public Folder asFolder() { return this; }
-        public File asFile() { throw new RuntimeException("not a file"); }
+        @Override
+		public boolean isFolder() { return true; }
+        @Override
+		public boolean isFile() { return false; }
+        @Override
+		public Folder asFolder() { return this; }
+        @Override
+		public File asFile() { throw new RuntimeException("not a file"); }
 
         public static final JsonReader<DbxEntry.Folder> Reader = new JsonReader<DbxEntry.Folder>()
         {
-            public final DbxEntry.Folder read(JsonParser parser)
+            @Override
+			public final DbxEntry.Folder read(JsonParser parser)
                 throws IOException, JsonReadException
             {
                 JsonLocation top = parser.getCurrentLocation();
@@ -150,10 +158,11 @@ public abstract class DbxEntry extends Dumpable implements Serializable
 
         };
 
-        public boolean equals(Object o)
+        @Override
+		public boolean equals(Object o)
         {
             if (!getClass().equals(o.getClass())) return false;
-            return equals((Folder) o);
+            return equals(o);
         }
 
     }
@@ -206,6 +215,11 @@ public abstract class DbxEntry extends Dumpable implements Serializable
         public final String rev;
 
         /**
+         * The mime-type of the file content.
+         */
+        public final String mimeType;
+
+        /**
          * @param path {@link #path}
          * @param iconName {@link #iconName}
          * @param mightHaveThumbnail {@link #mightHaveThumbnail}
@@ -214,8 +228,9 @@ public abstract class DbxEntry extends Dumpable implements Serializable
          * @param lastModified {@link #lastModified}
          * @param clientMtime {@link #clientMtime}
          * @param rev {@link #rev}
+         * @Param mimeType {@link #mimeType}
          */
-        public File(String path, String iconName, boolean mightHaveThumbnail, long numBytes, String humanSize, Date lastModified, Date clientMtime, String rev)
+        public File(String path, String iconName, boolean mightHaveThumbnail, long numBytes, String humanSize, Date lastModified, Date clientMtime, String rev, String mimeType)
         {
             super(path, iconName, mightHaveThumbnail);
             this.numBytes = numBytes;
@@ -223,9 +238,11 @@ public abstract class DbxEntry extends Dumpable implements Serializable
             this.lastModified = lastModified;
             this.clientMtime = clientMtime;
             this.rev = rev;
+            this.mimeType = mimeType;
         }
 
-        protected void dumpFields(DumpWriter w)
+        @Override
+		protected void dumpFields(DumpWriter w)
         {
             super.dumpFields(w);
             w.field("numBytes", numBytes);
@@ -233,18 +250,25 @@ public abstract class DbxEntry extends Dumpable implements Serializable
             w.field("lastModified", lastModified);
             w.field("clientMtime", clientMtime);
             w.field("rev", rev);
+            w.field("mimeType", mimeType);
         }
 
-        protected String getTypeName() { return "File"; }
+        @Override
+		protected String getTypeName() { return "File"; }
 
-        public boolean isFolder() { return false; }
-        public boolean isFile() { return true; }
-        public Folder asFolder() { throw new RuntimeException("not a folder"); }
-        public File asFile() { return this; }
+        @Override
+		public boolean isFolder() { return false; }
+        @Override
+		public boolean isFile() { return true; }
+        @Override
+		public Folder asFolder() { throw new RuntimeException("not a folder"); }
+        @Override
+		public File asFile() { return this; }
 
         public static final JsonReader<DbxEntry.File> Reader = new JsonReader<DbxEntry.File>()
         {
-            public final DbxEntry.File read(JsonParser parser)
+            @Override
+			public final DbxEntry.File read(JsonParser parser)
                 throws IOException, JsonReadException
             {
                 JsonLocation top = parser.getCurrentLocation();
@@ -257,7 +281,8 @@ public abstract class DbxEntry extends Dumpable implements Serializable
 
         };
 
-        public boolean equals(Object o)
+        @Override
+		public boolean equals(Object o)
         {
             if (!getClass().equals(o.getClass())) return false;
             return equals((File) o);
@@ -271,6 +296,8 @@ public abstract class DbxEntry extends Dumpable implements Serializable
             if (!lastModified.equals(o.lastModified)) return false;
             if (!clientMtime.equals(o.clientMtime)) return false;
             if (!rev.equals(o.rev)) return false;
+            if ((mimeType != null && !mimeType.equals(o.mimeType)) ||
+            	(mimeType == null && o.mimeType != null)) return false;
             return true;
         }
     }
@@ -280,7 +307,8 @@ public abstract class DbxEntry extends Dumpable implements Serializable
 
     public static final JsonReader<DbxEntry> Reader = new JsonReader<DbxEntry>()
     {
-        public final DbxEntry read(JsonParser parser)
+        @Override
+		public final DbxEntry read(JsonParser parser)
             throws IOException, JsonReadException
         {
             return DbxEntry.read(parser, null).entry;
@@ -330,7 +358,8 @@ public abstract class DbxEntry extends Dumpable implements Serializable
 
         public static final JsonReader<WithChildren> Reader = new JsonReader<WithChildren>()
         {
-            public final WithChildren read(JsonParser parser)
+            @Override
+			public final WithChildren read(JsonParser parser)
                 throws IOException, JsonReadException
             {
                 WithChildrenC<List<DbxEntry>> c = DbxEntry.<List<DbxEntry>>read(parser, new Collector.ArrayListCollector<DbxEntry>());
@@ -381,7 +410,8 @@ public abstract class DbxEntry extends Dumpable implements Serializable
             private final Collector<DbxEntry,? extends C> collector;
             public Reader(Collector<DbxEntry, ? extends C> collector) { this.collector = collector; }
 
-            public final WithChildrenC<C> read(JsonParser parser)
+            @Override
+			public final WithChildrenC<C> read(JsonParser parser)
                 throws IOException, JsonReadException
             {
                 return DbxEntry.read(parser, collector);
@@ -410,6 +440,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
         Date client_mtime = null;
         String hash = null;
         C contents = null;
+        String mime_type = null;
 
         while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
             String fieldName = parser.getCurrentName();
@@ -435,6 +466,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
                     case FM_contents:
                         if (collector == null) throw new JsonReadException("not expecting \"contents\" field, since we didn't ask for children", parser.getCurrentLocation());
                         contents = JsonArrayReader.mk(Reader, collector).readField(parser, fieldName, contents); break;
+                    case FM_mime_type: mime_type = JsonReader.StringReader.readField(parser, fieldName, mime_type); break;
                     default:
                         throw new AssertionError("bad index: " + fi + ", field = \"" + fieldName + "\"");
                 }
@@ -468,7 +500,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
             if (modified == null) throw new JsonReadException("missing \"modified\" for a file entry", top);
             if (client_mtime == null) throw new JsonReadException("missing \"client_mtime\" for a file entry", top);
             if (rev == null) throw new JsonReadException("missing \"rev\" for a file entry", top);
-            e = new File(path, icon, thumb_exists, bytes, size, modified, client_mtime, rev);
+            e = new File(path, icon, thumb_exists, bytes, size, modified, client_mtime, rev, mime_type);
         }
 
         if (is_deleted) return null;
@@ -487,6 +519,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
     private static final int FM_client_mtime = 9;
     private static final int FM_hash = 10;
     private static final int FM_contents = 11;
+    private static final int FM_mime_type = 12;
     private static final JsonReader.FieldMapping FM;
 
     static {
@@ -503,6 +536,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
         b.add("client_mtime", FM_client_mtime);
         b.add("hash", FM_hash);
         b.add("contents", FM_contents);
+        b.add("mime_type", FM_mime_type);
         FM = b.build();
     }
 }
