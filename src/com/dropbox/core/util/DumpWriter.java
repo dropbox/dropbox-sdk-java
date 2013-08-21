@@ -21,7 +21,7 @@ public abstract class DumpWriter
         private final int indentAmount;
         private int currentIndent;
 
-        public Multiline(StringBuilder buf, int indentAmount, int currentIndent)
+        public Multiline(StringBuilder buf, int indentAmount, int currentIndent, boolean nl)
         {
             if (buf == null) throw new IllegalArgumentException("'buf' must not be null");
             if (indentAmount < 0) throw new IllegalArgumentException("'indentAmount' must be non-negative");
@@ -29,11 +29,12 @@ public abstract class DumpWriter
             this.buf = buf;
             this.indentAmount = indentAmount;
             this.currentIndent = currentIndent;
+            this.nl = nl;
         }
 
-        public Multiline(StringBuilder buf, int indentAmount)
+        public Multiline(StringBuilder buf, int indentAmount, boolean nl)
         {
-            this(buf, indentAmount, 0);
+            this(buf, indentAmount, 0, nl);
         }
 
         boolean nl = true;

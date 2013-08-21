@@ -30,7 +30,7 @@ public abstract class Dumpable
     public final String toStringMultiline()
     {
         StringBuilder buf = new StringBuilder();
-        toString(buf);
+        toStringMultiline(buf, 0, true);
         return buf.toString();
     }
 
@@ -45,10 +45,14 @@ public abstract class Dumpable
      *
      * @param currentIndent
      *    The number of spaces to use as the initial indentation level.
+     *
+     * @param nl
+     *    Whether you will start displaying this value on its own line (and will need indentation
+     *    on the first line) or not.
      */
-    public final void toStringMultiline(StringBuilder buf, int currentIndent)
+    public final void toStringMultiline(StringBuilder buf, int currentIndent, boolean nl)
     {
-        new DumpWriter.Multiline(buf, currentIndent, 2).value(this);
+        new DumpWriter.Multiline(buf, 2, currentIndent, nl).value(this);
     }
 
     protected String getTypeName() { return null; }
