@@ -525,7 +525,7 @@ public final class DbxClient
     }
 
     private static final long ChunkedUploadThreshold = 8 * 1024 * 1024;
-    private static final int ChunkedUploadChunkSize = 4 * 1024;
+    private static final int ChunkedUploadChunkSize = 4 * 1024 * 1024;
 
     /**
      * Start an API request to upload a file to Dropbox.  Returns a {@link DbxClient.Uploader} object
@@ -1140,10 +1140,7 @@ public final class DbxClient
         @Override
         public void abort()
         {
-            HttpRequestor.Uploader u = body.currentUploader;
-            if (u != null) {
-                u.abort();
-            }
+            // TODO: Figure out how to abort chunked uploads.
         }
 
         @Override
@@ -1151,12 +1148,15 @@ public final class DbxClient
             throws DbxException
         {
             if (body.uploadId == null) {
-                // They didn't upload any chunks.  This must mean the file is empty.  Just use
-                // the regular file upload call.
-                Uploader u = startUploadFileSingle(targetPath, writeMode, 0);
-                return u.finish();
+                // They didn't write enough data to fill up a chunk.  Use the regular file upload
+                // call to create the file with a single call.
+                return uploadFileSingle(targetPath, writeMode, body.chunkPos,
+                                        new DbxStreamWriter.ByteArrayCopier(body.chunk, 0, body.chunkPos));
             }
             else {
+                body.finishChunk();
+
+                // Upload whatever is left in the current chunk.
                 if (numBytes != -1) {
                     // Make sure the number of bytes they sent matches what they said they'd send.
                     if (numBytes != body.uploadOffset) {
@@ -1174,10 +1174,7 @@ public final class DbxClient
         @Override
         public void close()
         {
-            HttpRequestor.Uploader u = body.currentUploader;
-            if (u != null) {
-                u.abort();
-            }
+            // TODO: Figure out how to abort chunked uploads.
         }
     }
 
@@ -1187,8 +1184,6 @@ public final class DbxClient
         private int chunkPos = 0;
         private String uploadId;
         private long uploadOffset;
-        private HttpRequestor.Uploader currentUploader;
-        private boolean closed = false;
 
         private ChunkedUploadOutputStream(int chunkSize)
         {
@@ -1201,11 +1196,16 @@ public final class DbxClient
             throws IOException
         {
             chunk[chunkPos++] = (byte) i;
-            finishChunkIfNecessary();
+            try {
+                finishChunkIfNecessary();
+            }
+            catch (DbxException ex) {
+                throw new IODbxException(ex);
+            }
         }
 
         private void finishChunkIfNecessary()
-            throws IOException
+            throws DbxException
         {
             assert chunkPos <= chunk.length;
             if (chunkPos == chunk.length) {
@@ -1214,50 +1214,47 @@ public final class DbxClient
         }
 
         private void finishChunk()
-            throws IOException
+            throws DbxException
         {
-            try {
-                if (uploadId == null) {
-                    uploadId = DbxRequestUtil.runAndRetry(3, new DbxRequestUtil.RequestMaker<String, RuntimeException>() {
-                        public String run() throws DbxException {
-                            return chunkedUploadFirst(chunk, 0, chunkPos);
+            if (chunkPos == 0) return;
+
+            if (uploadId == null) {
+                uploadId = DbxRequestUtil.runAndRetry(3, new DbxRequestUtil.RequestMaker<String, RuntimeException>() {
+                    public String run() throws DbxException {
+                        return chunkedUploadFirst(chunk, 0, chunkPos);
+                    }
+                });
+                uploadOffset = chunkPos;
+            } else {
+                int arrayOffset = 0;
+                while (true) {
+                    final int arrayOffsetFinal = arrayOffset;
+                    long correctedOffset = DbxRequestUtil.runAndRetry(3, new DbxRequestUtil.RequestMaker<Long, RuntimeException>() {
+                                                                     public Long run() throws DbxException {
+                            return chunkedUploadAppend(uploadId, uploadOffset, chunk, arrayOffsetFinal, chunkPos-arrayOffsetFinal);
+                    }
+                });
+                    long expectedOffset = uploadOffset + chunkPos;
+                    if (correctedOffset == -1) {
+                        // Everything went ok.
+                        uploadOffset = expectedOffset;
+                        break;
+                    } else {
+                        // Make sure the returned offset is within what we expect.
+                        assert correctedOffset != expectedOffset;
+                        if (correctedOffset < uploadOffset) {
+                            // Somehow the server lost track of the previous data we sent it.
+                            throw new DbxException.BadResponse("we were at offset " + uploadOffset + ", server said " + correctedOffset);
                         }
-                    });
-                    uploadOffset = chunkPos;
-                } else {
-                    int arrayOffset = 0;
-                    while (true) {
-                        final int arrayOffsetFinal = arrayOffset;
-                        long correctedOffset = DbxRequestUtil.runAndRetry(3, new DbxRequestUtil.RequestMaker<Long, RuntimeException>() {
-                            public Long run() throws DbxException {
-                                return chunkedUploadAppend(uploadId, uploadOffset, chunk, arrayOffsetFinal, chunk.length-arrayOffsetFinal);
-                            }
-                        });
-                        long expectedOffset = uploadOffset + chunkPos;
-                        if (correctedOffset == -1) {
-                            // Everything went ok.
-                            uploadOffset = expectedOffset;
-                            break;
-                        } else {
-                            // Make sure the returned offset is within what we expect.
-                            assert correctedOffset != expectedOffset;
-                            if (correctedOffset < uploadOffset) {
-                                // Somehow the server lost track of the previous data we sent it.
-                                throw new DbxException.BadResponse("we were at offset " + uploadOffset + ", server said " + correctedOffset);
-                            }
-                            else if (correctedOffset > expectedOffset) {
-                                // Somehow the server has more data than we gave it!
-                                throw new DbxException.BadResponse("we were at offset " + uploadOffset + ", server said " + correctedOffset);
-                            }
-                            // Server needs us to resend partial data.
-                            int adjustAmount = (int) (correctedOffset - uploadOffset);
-                            arrayOffset += adjustAmount;
+                        else if (correctedOffset > expectedOffset) {
+                            // Somehow the server has more data than we gave it!
+                            throw new DbxException.BadResponse("we were at offset " + uploadOffset + ", server said " + correctedOffset);
                         }
+                        // Server needs us to resend partial data.
+                        int adjustAmount = (int) (correctedOffset - uploadOffset);
+                        arrayOffset += adjustAmount;
                     }
                 }
-            }
-            catch (DbxException ex) {
-                throw new IODbxException(ex);
             }
             chunkPos = 0;
         }
@@ -1266,14 +1263,21 @@ public final class DbxClient
         public void write(byte[] bytes, int offset, int length)
             throws IOException
         {
-            int leftToWrite = length;
-            while (leftToWrite > 0) {
+            int inputEnd = offset + length;
+            int inputPos = offset;
+            while (inputPos < inputEnd) {
                 int spaceInChunk = chunk.length - chunkPos;
+                int leftToWrite = inputEnd - inputPos;
                 int bytesToCopy = Math.min(leftToWrite, spaceInChunk);
-                System.arraycopy(bytes, offset, chunk, chunkPos, bytesToCopy);
+                System.arraycopy(bytes, inputPos, chunk, chunkPos, bytesToCopy);
                 chunkPos += bytesToCopy;
-                leftToWrite -= bytesToCopy;
-                finishChunkIfNecessary();
+                inputPos += bytesToCopy;
+                try {
+                    finishChunkIfNecessary();
+                }
+                catch (DbxException ex) {
+                    throw new IODbxException(ex);
+                }
             }
         }
 

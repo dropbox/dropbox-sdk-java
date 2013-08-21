@@ -311,19 +311,57 @@ public class DbxClientTest
         init();
 
         byte[] contents = StringUtil.stringToUtf8("A simple test file");
+        int chunkSize = 7;
+        assert (contents.length % chunkSize) != 0;  // Make sure the last chunk is not full-sized.
 
-        String remotePath = p("test-fil" + E_ACCENT + ".txt");
 
-        DbxEntry.File up = client.uploadFileChunked(6, remotePath, DbxWriteMode.add(), contents.length, new DbxStreamWriter.ByteArrayCopier(contents));
-        assertEquals(up.path, remotePath);
-        assertEquals(up.numBytes, contents.length);
+        // Pass in the correct file size.
+        {
+            String remotePath = p("test-fil" + E_ACCENT + ".txt");
+            DbxEntry.File up = client.uploadFileChunked(chunkSize, remotePath, DbxWriteMode.add(),
+                                                        contents.length, new DbxStreamWriter.ByteArrayCopier(contents));
+            assertEquals(up.path, remotePath);
+            assertEquals(up.numBytes, contents.length);
 
-        ByteArrayOutputStream downBodyStream = new ByteArrayOutputStream();
-        DbxEntry.File down = client.getFile(remotePath, null, downBodyStream);
-        byte[] downBody = downBodyStream.toByteArray();
+            ByteArrayOutputStream downBodyStream = new ByteArrayOutputStream();
+            DbxEntry.File down = client.getFile(remotePath, null, downBodyStream);
+            byte[] downBody = downBodyStream.toByteArray();
 
-        assertEquals(up.numBytes, down.numBytes);
-        assertEquals(up.numBytes, downBody.length);
+            assertEquals(up.numBytes, down.numBytes);
+            assertEquals(downBody, contents);
+        }
+
+        // Pass in "-1" for file size.
+        {
+            String remotePath = p("test-fil" + E_ACCENT + "-2.txt");
+            DbxEntry.File up = client.uploadFileChunked(chunkSize, remotePath, DbxWriteMode.add(),
+                                                        -1, new DbxStreamWriter.ByteArrayCopier(contents));
+            assertEquals(up.path, remotePath);
+            assertEquals(up.numBytes, contents.length);
+
+            ByteArrayOutputStream downBodyStream = new ByteArrayOutputStream();
+            DbxEntry.File down = client.getFile(remotePath, null, downBodyStream);
+            byte[] downBody = downBodyStream.toByteArray();
+
+            assertEquals(up.numBytes, down.numBytes);
+            assertEquals(downBody, contents);
+        }
+
+        // Try uploading a file that is smaller than the first chunk.
+        {
+            String remotePath = p("test-fil" + E_ACCENT + "-3.txt");
+            DbxEntry.File up = client.uploadFileChunked(contents.length + 2, remotePath, DbxWriteMode.add(),
+                                                        -1, new DbxStreamWriter.ByteArrayCopier(contents));
+            assertEquals(up.path, remotePath);
+            assertEquals(up.numBytes, contents.length);
+
+            ByteArrayOutputStream downBodyStream = new ByteArrayOutputStream();
+            DbxEntry.File down = client.getFile(remotePath, null, downBodyStream);
+            byte[] downBody = downBodyStream.toByteArray();
+
+            assertEquals(up.numBytes, down.numBytes);
+            assertEquals(downBody, contents);
+        }
     }
 
     @Test
