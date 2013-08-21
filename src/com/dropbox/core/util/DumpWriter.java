@@ -117,6 +117,7 @@ public abstract class DumpWriter
         @Override
         public DumpWriter verbatim(String s)
         {
+            prefix();
             buf.append(s);
             buf.append('\n');
             nl = true;
