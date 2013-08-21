@@ -10,7 +10,7 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Date;
 
-final class DbxUrlWithExpiration
+public final class DbxUrlWithExpiration
 {
     public final String url;
     public final Date expires;
