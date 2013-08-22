@@ -1,5 +1,8 @@
 package com.dropbox.core;
 
+/**
+ * Thumbnail image format presets, to be used with {@link DbxClient#getThumbnail}.
+ */
 public class DbxThumbnailFormat
 {
     public final String ident;

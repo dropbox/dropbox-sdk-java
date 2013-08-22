@@ -1371,28 +1371,54 @@ public final class DbxClient
     // -----------------------------------------------------------------
     // /thumbnails
 
-    public DbxEntry.File getThumbnail(DbxThumbnailSize size, DbxThumbnailFormat format,
+    /**
+     * Downloads a thumbnail for the image file at the given path in Dropbox.
+     *
+     * @param sizeBound
+     *    The returned thumbnail will never be greater than the dimensions given here.
+     *
+     * @param format
+     *    The image format to use for thumbnail data.
+     *
+     * @param path
+     *    The path to the image file on Dropbox.
+     *
+     * @param revision
+     *    The {@link DbxEntry.File#rev rev} of the file on Dropbox
+     *    or {@code null} if you want the latest revision of the file.
+     *
+     * @param target
+     *    The stream to write the thumbnail image data to.
+     *
+     * @return
+     *    The metadata for the original file (not the thumbnail).
+     */
+    public DbxEntry.File getThumbnail(DbxThumbnailSize sizeBound, DbxThumbnailFormat format,
                                       String path, String revision, OutputStream target)
             throws DbxException, IOException
     {
         if (target == null) throw new IllegalArgumentException("'target' can't be null");
 
-        Downloader downloader = startGetThumbnail(size, format, path, revision);
+        Downloader downloader = startGetThumbnail(sizeBound, format, path, revision);
         if (downloader == null) return null;
         return downloader.copyBodyAndClose(target);
     }
 
-    public Downloader startGetThumbnail(DbxThumbnailSize size, DbxThumbnailFormat format,
+    /**
+     * Similar to {@link #getThumbnail}, except the thumbnail contents are returned via
+     * a {@link Downloader}.
+     */
+    public Downloader startGetThumbnail(DbxThumbnailSize sizeBound, DbxThumbnailFormat format,
                                         String path, String revision)
         throws DbxException
     {
         DbxPath.checkArgNonRoot("path", path);
-        if (size == null) throw new IllegalArgumentException("'size' can't be null");
+        if (sizeBound == null) throw new IllegalArgumentException("'size' can't be null");
         if (format == null) throw new IllegalArgumentException("'format' can't be null");
 
         String apiPath = "1/thumbnails/auto" + path;
         String[] params = {
-            "size", size.ident,
+            "size", sizeBound.ident,
             "format", format.ident,
             "rev", revision,
         };

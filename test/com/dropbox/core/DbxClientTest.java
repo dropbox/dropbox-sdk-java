@@ -11,15 +11,17 @@ import static org.testng.Assert.*;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.MemoryCacheImageInputStream;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class DbxClientTest
 {
@@ -147,7 +149,7 @@ public class DbxClientTest
 
         // Folder metadata should be the same if we call /metadata again.
         Maybe<DbxEntry.WithChildren> r2 = client.getMetadataWithChildrenIfChanged(p(), mwc.hash);
-        assert r2.isNothing();
+        assertTrue(r2.isNothing());
     }
 
     @Test
@@ -301,7 +303,75 @@ public class DbxClientTest
     public void testThumbnail()
         throws DbxException, IOException
     {
-        // TODO
+        init();
+
+        String orig = p("test-imag" + E_ACCENT + ".jpeg");
+
+        // Upload an image.
+        InputStream in = this.getClass().getResourceAsStream("test-image.jpeg");
+        if (in == null) {
+            throw new AssertionError("couldn't load test image \"test-image.jpeg\"");
+        }
+        DbxEntry.File origMD;
+        try {
+            origMD = client.uploadFile(orig, DbxWriteMode.add(), -1, in);
+        }
+        finally {
+            IOUtil.closeInput(in);
+        }
+
+        BufferedImage origImage = ImageIO.read(getClass().getResource("test-image.jpeg"));
+        int origW = origImage.getWidth();
+        int origH = origImage.getHeight();
+
+        DbxThumbnailFormat[] formats = { DbxThumbnailFormat.JPEG, DbxThumbnailFormat.PNG, };
+        DbxThumbnailSize[] sizes = {
+            DbxThumbnailSize.w32h32,
+            DbxThumbnailSize.w64h64,
+            DbxThumbnailSize.w64h64,
+            DbxThumbnailSize.w640h480,
+            DbxThumbnailSize.w1024h768,
+        };
+
+        for (DbxThumbnailFormat format : formats) {
+
+            long prevSize = 0;
+            ImageReader reader = getImageReaderForFormat(format);
+
+            for (DbxThumbnailSize size : sizes) {
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                DbxEntry.File md = client.getThumbnail(size, format, orig, null, out);
+                byte[] data = out.toByteArray();
+
+                assertEquals(origMD, md);
+
+                // We're getting bigger and bigger thumbnails, so they should have more bytes
+                // than the previous ones.
+                assertTrue(data.length > prevSize);
+
+                reader.setInput(new MemoryCacheImageInputStream(new ByteArrayInputStream(data)));
+                int w = reader.getWidth(0);
+                int h = reader.getHeight(0);
+                int expectedW = Math.min(size.width, origW);
+                int expectedH = Math.min(size.width, origW);
+                assertTrue((w == expectedW && h <= expectedH) || (h == expectedH && w <= expectedW),
+                    "expected = " + expectedW + "x" + expectedH + ", got = " + w + "x" + h);
+            }
+        }
+    }
+
+    private static ImageReader getImageReaderForFormat(DbxThumbnailFormat format)
+    {
+        Iterator<ImageReader> readers = ImageIO.getImageReadersByFormatName(format.ident);
+
+        if (!readers.hasNext()) {
+            throw new AssertionError("no ImageReader for " + jq(format.ident));
+        }
+        ImageReader reader = readers.next();
+        if (readers.hasNext()) {
+            throw new AssertionError("multiple ImageReaders for " + jq(format.ident));
+        }
+        return reader;
     }
 
     @Test
@@ -312,7 +382,7 @@ public class DbxClientTest
 
         byte[] contents = StringUtil.stringToUtf8("A simple test file");
         int chunkSize = 7;
-        assert (contents.length % chunkSize) != 0;  // Make sure the last chunk is not full-sized.
+        assertNotEquals(contents.length % chunkSize, 0);  // Make sure the last chunk is not full-sized.
 
 
         // Pass in the correct file size.
@@ -397,7 +467,7 @@ public class DbxClientTest
         assertEquals(mwc.children.size(), 1);
 
         DbxEntry folderMd = client.getMetadata(p("a"));
-        assert folderMd.isFolder();
+        assertTrue(folderMd.isFolder());
     }
 
     @Test
