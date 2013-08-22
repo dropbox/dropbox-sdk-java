@@ -82,6 +82,17 @@ cd examples
 
 (You must first generate "test.auth" using the "authorize" example above.)
 
+### account-info
+
+Uploads a file to Dropbox.
+
+```
+cd examples
+./run upload-file test.auth local-path/file.txt /dropbox-path/file.txt
+```
+
+(You must first generate "test.auth" using the "authorize" example above.)
+
 ### web-file-browser
 
 A tiny web app that runs through the OAuth 2 authorization flow and then uses Dropbox API calls to let the user browse their Dropbox files.
