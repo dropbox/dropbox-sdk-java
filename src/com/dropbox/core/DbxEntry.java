@@ -334,6 +334,9 @@ public abstract class DbxEntry extends Dumpable implements Serializable
                 throws IOException, JsonReadException
             {
                 WithChildrenC<List<DbxEntry>> c = DbxEntry.<List<DbxEntry>>read(parser, new Collector.ArrayListCollector<DbxEntry>());
+                if (c == null) {
+                    return null;
+                }
                 return new WithChildren(c.entry, c.hash, c.children);
             }
         };
