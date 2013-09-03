@@ -110,6 +110,16 @@ public abstract class DbxEntry extends Dumpable implements Serializable
         return true;
     }
 
+    protected int partialHashCode()
+    {
+        int h = name.hashCode();
+        h = h*31 + path.hashCode();
+        h = h*31 + iconName.hashCode();
+        h = h*31 + path.hashCode();
+        h = h*31 + (mightHaveThumbnail ? 1 : 0);
+        return h;
+    }
+
     /**
      * The subclass of {@link DbxEntry} used to represent folder metadata.  Folders
      * actually only have the same set of fields as {@link DbxEntry}.
@@ -156,6 +166,16 @@ public abstract class DbxEntry extends Dumpable implements Serializable
             return equals((Folder) o);
         }
 
+        public boolean equals(Folder o)
+        {
+            if (!partialEquals(o)) return false;
+            return true;
+        }
+
+        public int hashCode()
+        {
+            return partialHashCode();
+        }
     }
 
     /**
@@ -272,6 +292,17 @@ public abstract class DbxEntry extends Dumpable implements Serializable
             if (!clientMtime.equals(o.clientMtime)) return false;
             if (!rev.equals(o.rev)) return false;
             return true;
+        }
+
+        public int hashCode()
+        {
+            // Not including 'humanSize' since it's mostly derivable from 'numBytes'
+            int h = partialHashCode();
+            h = h*31 + (int) numBytes;
+            h = h*31 + lastModified.hashCode();
+            h = h*31 + clientMtime.hashCode();
+            h = h*31 + rev.hashCode();
+            return h;
         }
     }
 
