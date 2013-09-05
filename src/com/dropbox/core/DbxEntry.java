@@ -314,7 +314,9 @@ public abstract class DbxEntry extends Dumpable implements Serializable
         public final DbxEntry read(JsonParser parser)
             throws IOException, JsonReadException
         {
-            return DbxEntry.read(parser, null).entry;
+            WithChildrenC<?> wc = DbxEntry.read(parser, null);
+            if (wc == null) return null;
+            return wc.entry;
         }
     };
 
@@ -325,7 +327,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
      * @see DbxClient#getMetadataWithChildren
      * @see DbxClient#getMetadataWithChildrenIfChanged
      */
-    public static final class WithChildren implements Serializable
+    public static final class WithChildren extends Dumpable implements Serializable
     {
         public static final long serialVersionUID = 0;
 
@@ -365,9 +367,43 @@ public abstract class DbxEntry extends Dumpable implements Serializable
                 throws IOException, JsonReadException
             {
                 WithChildrenC<List<DbxEntry>> c = DbxEntry.<List<DbxEntry>>read(parser, new Collector.ArrayListCollector<DbxEntry>());
+                if (c == null) return null;
                 return new WithChildren(c.entry, c.hash, c.children);
             }
         };
+
+        @Override
+        public boolean equals(Object o)
+        {
+            return getClass().equals(o.getClass()) && equals((WithChildren) o);
+        }
+
+        public boolean equals(WithChildren o)
+        {
+            if (children != null ? !children.equals(o.children) : o.children != null)
+                return false;
+            if (!entry.equals(o.entry)) return false;
+            if (hash != null ? !hash.equals(o.hash) : o.hash != null) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode()
+        {
+            int result = entry.hashCode();
+            result = 31 * result + (hash != null ? hash.hashCode() : 0);
+            result = 31 * result + (children != null ? children.hashCode() : 0);
+            return result;
+        }
+
+        @Override
+        protected void dumpFields(DumpWriter w)
+        {
+            w.value(entry);
+            w.field("hash", hash);
+            w.fieldStart("children").list(children);
+        }
     }
 
     /**
@@ -376,7 +412,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
      * to allow you to process the {@link DbxEntry} values as the come in and aggregate them into
      * your own object (instead of the default {@link List}) using a custom {@link Collector}.
      */
-    public static final class WithChildrenC<C> implements Serializable
+    public static final class WithChildrenC<C> extends Dumpable implements Serializable
     {
         public static final long serialVersionUID = 0;
 
@@ -417,6 +453,39 @@ public abstract class DbxEntry extends Dumpable implements Serializable
             {
                 return DbxEntry.read(parser, collector);
             }
+        }
+
+        @Override
+        public boolean equals(Object o)
+        {
+            return getClass().equals(o.getClass()) && equals((WithChildren) o);
+        }
+
+        public boolean equals(WithChildren o)
+        {
+            if (children != null ? !children.equals(o.children) : o.children != null)
+                return false;
+            if (!entry.equals(o.entry)) return false;
+            if (hash != null ? !hash.equals(o.hash) : o.hash != null) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode()
+        {
+            int result = entry.hashCode();
+            result = 31 * result + (hash != null ? hash.hashCode() : 0);
+            result = 31 * result + (children != null ? children.hashCode() : 0);
+            return result;
+        }
+
+        @Override
+        protected void dumpFields(DumpWriter w)
+        {
+            w.value(entry);
+            w.field("hash", hash);
+            w.fieldVebatim("children", children.toString());
         }
     }
 
