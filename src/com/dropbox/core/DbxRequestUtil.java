@@ -131,6 +131,7 @@ public class DbxRequestUtil
         headers = addAuthHeader(headers, accessToken);
 
         if (contentLength >= 0) {
+            headers.add(new HttpRequestor.Header("Content-Type", "content/unknown"));
             headers.add(new HttpRequestor.Header("Content-Length", Long.toString(contentLength)));
         }
 
