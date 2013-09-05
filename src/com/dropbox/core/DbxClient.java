@@ -1680,6 +1680,9 @@ public final class DbxClient
         };
     }
 
+    /**
+     * Copy a file or folder from one path in Dropbox to another path in Dropbox.
+     */
     public DbxEntry copy(String fromPath, String toPath)
         throws DbxException
     {
@@ -1698,11 +1701,17 @@ public final class DbxClient
                 throws DbxException
             {
                 if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
-                return DbxRequestUtil.readJsonFromResponse(DbxEntry.Reader, response.body);
+                DbxEntry.WithChildren dwc = DbxRequestUtil.readJsonFromResponse(DbxEntry.WithChildren.Reader, response.body);
+                if (dwc == null) return null;
+                return dwc.entry;
             }
         });
     }
 
+    /**
+     * Create a file or folder at {@code toPath} based on the given copy ref (created with
+     * {@link #createCopyRef}).
+     */
     public DbxEntry copyFromCopyRef(String copyRef, String toPath)
         throws DbxException
     {
@@ -1723,11 +1732,16 @@ public final class DbxClient
                 throws DbxException
             {
                 if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
-                return DbxRequestUtil.readJsonFromResponse(DbxEntry.Reader, response.body);
+                DbxEntry.WithChildren dwc = DbxRequestUtil.readJsonFromResponse(DbxEntry.WithChildren.Reader, response.body);
+                if (dwc == null) return null;
+                return dwc.entry;
             }
         });
     }
 
+    /**
+     * Create a new folder in Dropbox.
+     */
     public DbxEntry.Folder createFolder(String path)
         throws DbxException
     {
@@ -1750,6 +1764,9 @@ public final class DbxClient
         });
     }
 
+    /**
+     * Delete a file or folder from Dropbox.
+     */
     public void delete(String path)
         throws DbxException
     {
@@ -1771,6 +1788,9 @@ public final class DbxClient
         });
     }
 
+    /**
+     * Move a file or folder from one path in Dropbox to another path in Dropbox.
+     */
     public DbxEntry move(String fromPath, String toPath)
         throws DbxException
     {
@@ -1790,7 +1810,9 @@ public final class DbxClient
                 throws DbxException
             {
                 if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
-                return DbxRequestUtil.readJsonFromResponse(DbxEntry.Reader, response.body);
+                DbxEntry.WithChildren dwc = DbxRequestUtil.readJsonFromResponse(DbxEntry.WithChildren.Reader, response.body);
+                if (dwc == null) return null;
+                return dwc.entry;
             }
         });
     }

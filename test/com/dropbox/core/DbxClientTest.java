@@ -144,12 +144,35 @@ public class DbxClientTest
 
         addFile(p("a.txt"), 100);
 
-        DbxEntry.WithChildren mwc = client.getMetadataWithChildren(p());
-        assertEquals(mwc.children.size(), 1);
+        {
+            DbxEntry entry = client.getMetadata(p("a.txt"));
+            assertEquals(entry.path, p("a.txt"));
+            assertTrue(entry instanceof DbxEntry.File);
+            DbxEntry.File f = (DbxEntry.File) entry;
+            assertEquals(f.numBytes, 100);
 
-        // Folder metadata should be the same if we call /metadata again.
-        Maybe<DbxEntry.WithChildren> r2 = client.getMetadataWithChildrenIfChanged(p(), mwc.hash);
-        assertTrue(r2.isNothing());
+            DbxEntry.WithChildren mwc = client.getMetadataWithChildren(p("a.txt"));
+            assertEquals(mwc.entry, entry);
+        }
+
+        // Containing folder.
+        {
+            DbxEntry.WithChildren mwc = client.getMetadataWithChildren(p());
+            assertEquals(mwc.children.size(), 1);
+
+            // Folder metadata should be the same if we call /metadata again.
+            Maybe<DbxEntry.WithChildren> r2 = client.getMetadataWithChildrenIfChanged(p(), mwc.hash);
+            assertTrue(r2.isNothing());
+        }
+
+        // File not found.
+        {
+            DbxEntry entry = client.getMetadata(p("does not exists.txt"));
+            assertNull(entry);
+
+            DbxEntry.WithChildren mwc = client.getMetadataWithChildren(p("does not exist.txt"));
+            assertNull(mwc);
+        }
     }
 
     @Test
@@ -280,7 +303,7 @@ public class DbxClientTest
     }
 
     @Test
-    public void testCopyRef()
+    public void testCopyRefFile()
         throws DbxException, IOException
     {
         init();
@@ -297,6 +320,48 @@ public class DbxClientTest
 
         DbxEntry.WithChildren mwc = client.getMetadataWithChildren(p());
         assertEquals(mwc.children.size(), 2);
+    }
+
+    @Test
+    public void testCopyRefFolder()
+        throws DbxException, IOException
+    {
+        init();
+
+        String source = p("some folder");
+        client.createFolder(source);
+        addFile(source + "/a.txt", 10);
+        addFile(source + "/b.txt", 20);
+
+        String dest = p("copied folder");
+        String copyRef = client.createCopyRef(source);
+        DbxEntry r = client.copyFromCopyRef(copyRef, dest);
+
+        assertTrue(r.isFolder());
+        assertEquals(r.path, dest);
+
+        DbxEntry.WithChildren c = client.getMetadataWithChildren(dest);
+        assertEquals(c.children.size(), 2);
+    }
+
+    @Test
+    public void testCopyRefEmptyFolder()
+        throws DbxException, IOException
+    {
+        init();
+
+        String source = p("empty folder");
+        client.createFolder(source);
+
+        String dest = p("copied empty folder");
+        String copyRef = client.createCopyRef(source);
+        DbxEntry r = client.copyFromCopyRef(copyRef, dest);
+
+        assertTrue(r.isFolder());
+        assertEquals(r.path, dest);
+
+        DbxEntry.WithChildren c = client.getMetadataWithChildren(dest);
+        assertEquals(c.children.size(), 0);
     }
 
     @Test
@@ -353,7 +418,7 @@ public class DbxClientTest
                 int w = reader.getWidth(0);
                 int h = reader.getHeight(0);
                 int expectedW = Math.min(size.width, origW);
-                int expectedH = Math.min(size.width, origW);
+                int expectedH = Math.min(size.width, origH);
                 assertTrue((w == expectedW && h <= expectedH) || (h == expectedH && w <= expectedW),
                     "expected = " + expectedW + "x" + expectedH + ", got = " + w + "x" + h);
             }
@@ -435,7 +500,7 @@ public class DbxClientTest
     }
 
     @Test
-    public void testCopy()
+    public void testCopyFile()
         throws DbxException, IOException
     {
         init();
@@ -451,6 +516,47 @@ public class DbxClientTest
 
         DbxEntry.WithChildren mwc = client.getMetadataWithChildren(p());
         assertEquals(mwc.children.size(), 2);
+    }
+
+
+    @Test
+    public void testCopyFolder()
+        throws DbxException, IOException
+    {
+        init();
+
+        String source = p("some folder");
+        client.createFolder(source);
+        addFile(source + "/a.txt", 10);
+        addFile(source + "/b.txt", 20);
+
+        String dest = p("copied folder");
+        DbxEntry r = client.copy(source, dest);
+
+        assertTrue(r.isFolder());
+        assertEquals(r.path, dest);
+
+        DbxEntry.WithChildren c = client.getMetadataWithChildren(dest);
+        assertEquals(c.children.size(), 2);
+    }
+
+    @Test
+    public void testCopyEmptyFolder()
+        throws DbxException, IOException
+    {
+        init();
+
+        String source = p("empty folder");
+        client.createFolder(source);
+
+        String dest = p("copied empty folder");
+        DbxEntry r = client.copy(source, dest);
+
+        assertTrue(r.isFolder());
+        assertEquals(r.path, dest);
+
+        DbxEntry.WithChildren c = client.getMetadataWithChildren(dest);
+        assertEquals(c.children.size(), 0);
     }
 
     @Test
@@ -487,7 +593,7 @@ public class DbxClientTest
     }
 
     @Test
-    public void testMove()
+    public void testMoveFile()
         throws DbxException, IOException
     {
         init();
@@ -505,5 +611,53 @@ public class DbxClientTest
 
         mwc = client.getMetadataWithChildren(p());
         assertEquals(mwc.children.size(), 1);
+    }
+
+    @Test
+    public void testMoveFolder()
+        throws DbxException, IOException
+    {
+        init();
+
+        String source = p("some folder");
+        client.createFolder(source);
+        addFile(source + "/a.txt", 10);
+        addFile(source + "/b.txt", 20);
+
+        String dest = p("moved folder");
+        DbxEntry r = client.move(source, dest);
+
+        assertTrue(r.isFolder());
+        assertEquals(r.path, dest);
+
+        DbxEntry.WithChildren c = client.getMetadataWithChildren(dest);
+        assertEquals(c.children.size(), 2);
+
+        // Make sure source is now gone.
+        DbxEntry deleted = client.getMetadata(source);
+        assertTrue(deleted == null);
+    }
+
+    @Test
+    public void testMoveEmptyFolder()
+        throws DbxException, IOException
+    {
+        init();
+
+        String source = p("empty folder");
+        client.createFolder(source);
+
+        String dest = p("moved empty folder");
+        DbxEntry r = client.move(source, dest);
+
+        assertTrue(r.isFolder());
+        assertEquals(r.path, dest);
+
+        DbxEntry.WithChildren c = client.getMetadataWithChildren(dest);
+        assertEquals(c.children.size(), 0);
+
+        // Make sure source is now gone.
+        DbxEntry deleted = client.getMetadata(source);
+        assertTrue(deleted == null);
     }
 }

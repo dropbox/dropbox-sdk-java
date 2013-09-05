@@ -1,3 +1,6 @@
+- Fix copy/move for folders.
+- Fix getMetadataWithChildren for when the file/folder doesn't exist.
+
 ---------------------------------------------
 1.7.2 (2013-08-22)
 
@@ -7,7 +10,7 @@
 1.7.1 (2013-08-21)
 
 - Get chunked uploads working (they were almost completely broken).
-	
+
 ---------------------------------------------
 1.7 (2013-07-31)
 
