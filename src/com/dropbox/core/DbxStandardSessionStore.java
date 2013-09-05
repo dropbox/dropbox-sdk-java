@@ -28,7 +28,6 @@ public final class DbxStandardSessionStore implements DbxSessionStore
         this.key = key;
     }
 
-    @Override
     public String get()
     {
         Object v = session.getAttribute(key);
@@ -36,13 +35,11 @@ public final class DbxStandardSessionStore implements DbxSessionStore
         return null;
     }
 
-    @Override
     public void set(String value)
     {
         session.setAttribute(key, value);
     }
 
-    @Override
     public void clear()
     {
         session.removeAttribute(key);

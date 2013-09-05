@@ -4,7 +4,7 @@ import static com.dropbox.core.util.StringUtil.jq;
 
 import org.testng.annotations.Test;
 
-import java.nio.charset.Charset;
+import java.io.UnsupportedEncodingException;
 
 public class StringUtilTest
 {
@@ -33,7 +33,12 @@ public class StringUtilTest
 
     private void checkBase64(String original, String expected)
     {
-        byte[] raw = original.getBytes(Charset.forName("ASCII"));
+        byte[] raw;
+        try {
+            raw = original.getBytes("ASCII");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
         String encoded = StringUtil.base64Encode(raw);
         if (!encoded.equals(expected)) {
             throw new AssertionError("original=" + jq(original) + ", encoded=" +  jq(encoded) + ", expected=" + jq(expected));
