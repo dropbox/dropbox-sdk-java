@@ -1,3 +1,6 @@
+---------------------------------------------
+1.7.3 (2013-09-05)
+
 - Fix copy/move for folders.
 - Fix getMetadataWithChildren for when the file/folder doesn't exist.
 
