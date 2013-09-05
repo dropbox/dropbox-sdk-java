@@ -143,13 +143,14 @@ public class IOUtil
 
         public WrappedException(String message, IOException underlying)
         {
-            super(message + ": " + underlying.getMessage(), underlying);
+            super(message + ": " + underlying.getMessage());
+	    initCause(underlying);
             this.underlying = underlying;
         }
 
         public WrappedException(IOException underlying)
         {
-            super(underlying);
+            initCause(underlying);
             this.underlying = underlying;
         }
 

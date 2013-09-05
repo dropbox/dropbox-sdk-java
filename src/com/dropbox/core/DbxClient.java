@@ -1299,7 +1299,7 @@ public final class DbxClient
 
         public IODbxException(DbxException underlying)
         {
-            super(underlying);
+            initCause(underlying);
             this.underlying = underlying;
         }
     }

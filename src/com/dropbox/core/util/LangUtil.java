@@ -1,6 +1,7 @@
 package com.dropbox.core.util;
 
 import java.util.Arrays;
+import java.lang.reflect.Array;
 
 public class LangUtil
 {
@@ -18,7 +19,8 @@ public class LangUtil
     {
         if (a == null) throw new IllegalArgumentException("'a' can't be null");
         if (b == null) throw new IllegalArgumentException("'b' can't be null");
-        T[] r = Arrays.copyOf(a, a.length + b.length);
+	T[] r = (T[]) Array.newInstance(a.getClass().getComponentType(), a.length + b.length);
+        System.arraycopy(a, 0, r, 0, a.length);
         System.arraycopy(b, 0, r, a.length, b.length);
         return r;
     }
