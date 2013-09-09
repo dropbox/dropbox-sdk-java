@@ -617,7 +617,11 @@ public final class DbxClient
         String host = this.host.content;
         String apiPath = "1/files_put/auto" + targetPath;
 
-        HttpRequestor.Uploader uploader = DbxRequestUtil.startPut(requestConfig, accessToken, host, apiPath, writeMode.params, numBytes, null);
+        ArrayList<HttpRequestor.Header> headers = new ArrayList<HttpRequestor.Header>();
+        headers.add(new HttpRequestor.Header("Content-Type", "application/octet-stream"));
+        headers.add(new HttpRequestor.Header("Content-Length", Long.toString(numBytes)));
+
+        HttpRequestor.Uploader uploader = DbxRequestUtil.startPut(requestConfig, accessToken, host, apiPath, writeMode.params, headers);
 
         return new SingleUploader(uploader, numBytes);
     }
@@ -803,7 +807,11 @@ public final class DbxClient
     {
         String apiPath = "1/chunked_upload";
 
-        HttpRequestor.Uploader uploader = DbxRequestUtil.startPut(requestConfig, accessToken, host.content, apiPath, params, chunkSize, null);
+        ArrayList<HttpRequestor.Header> headers = new ArrayList<HttpRequestor.Header>();
+        headers.add(new HttpRequestor.Header("Content-Type", "application/octet-stream"));
+        headers.add(new HttpRequestor.Header("Content-Length", Long.toString(chunkSize)));
+
+        HttpRequestor.Uploader uploader = DbxRequestUtil.startPut(requestConfig, accessToken, host.content, apiPath, params, headers);
         try {
             try {
                 NoThrowOutputStream nt = new NoThrowOutputStream(uploader.body);

@@ -124,15 +124,11 @@ public class DbxRequestUtil
     /**
      * Convenience function for making HTTP PUT requests.
      */
-    public static HttpRequestor.Uploader startPut(DbxRequestConfig requestConfig, String accessToken, String host, String path, String[] params, long contentLength, ArrayList<HttpRequestor.Header> headers)
+    public static HttpRequestor.Uploader startPut(DbxRequestConfig requestConfig, String accessToken, String host, String path, String[] params, ArrayList<HttpRequestor.Header> headers)
         throws DbxException.NetworkIO
     {
         headers = addUserAgentHeader(headers, requestConfig);
         headers = addAuthHeader(headers, accessToken);
-
-        if (contentLength >= 0) {
-            headers.add(new HttpRequestor.Header("Content-Length", Long.toString(contentLength)));
-        }
 
         String url = buildUrlWithParams(requestConfig.userLocale, host, path, params);
         try {
