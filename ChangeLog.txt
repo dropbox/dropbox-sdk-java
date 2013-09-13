@@ -1,3 +1,6 @@
+---------------------------------------------
+1.7.4 (2013-09-13)
+
 - Fix crash in getAccountInfo, caused by new quota field "datastores".
 - Fix file uploading by setting Content-Type explicitly.
 
