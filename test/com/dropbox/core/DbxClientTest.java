@@ -92,6 +92,15 @@ public class DbxClientTest
     private static final String E_ACCENT = "\u00e9";
 
     @Test
+    public void testAccountInfo()
+        throws DbxException, IOException
+    {
+        init();
+
+        client.getAccountInfo();
+    }
+
+    @Test
     public void testUploadAndDownload()
         throws DbxException, IOException
     {

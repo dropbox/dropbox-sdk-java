@@ -79,11 +79,8 @@ public class DbxAccountInfo extends Dumpable
 
                     int fi = FM.get(fieldName);
                     try {
-                        if (fi == -1) {
-                            // Unknown field.  Skip over it.
-                            JsonReader.skipValue(parser);
-                        }
                         switch (fi) {
+                            case -1: JsonReader.skipValue(parser); break;
                             case FM_quota: quota = JsonReader.readUnsignedLongField(parser, fieldName, quota); break;
                             case FM_normal: normal = JsonReader.readUnsignedLongField(parser, fieldName, normal); break;
                             case FM_shared: shared = JsonReader.readUnsignedLongField(parser, fieldName, shared); break;
