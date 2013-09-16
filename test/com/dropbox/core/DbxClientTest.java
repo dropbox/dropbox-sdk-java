@@ -217,8 +217,12 @@ public class DbxClientTest
     {
         init();
 
-        String path = p("revisions.txt");
+        String path = p("r"+E_ACCENT+"visions.txt");
+
         DbxEntry.File e2 = uploadFile(path, 100, DbxWriteMode.force());
+        assertEquals(client.getRevisions(path).size(), 1);
+        client.delete(path);
+        assertEquals(client.getRevisions(path).size(), 1);
         DbxEntry.File e1 = uploadFile(path, 200, DbxWriteMode.force());
         DbxEntry.File e0 = uploadFile(path, 300, DbxWriteMode.force());
 

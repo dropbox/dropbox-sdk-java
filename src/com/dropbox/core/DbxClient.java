@@ -1459,7 +1459,9 @@ public final class DbxClient
             {
                 if (response.statusCode == 406) return null;
                 if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
-                return DbxRequestUtil.readJsonFromResponse(JsonArrayReader.mk(DbxEntry.File.Reader), response.body);
+                Collector<DbxEntry.File,ArrayList<DbxEntry.File>> collector =
+                    Collector.NullSkipper.mk(new Collector.ArrayListCollector<DbxEntry.File>());
+                return DbxRequestUtil.readJsonFromResponse(JsonArrayReader.mk(DbxEntry.File.Reader, collector), response.body);
             }
         });
     }
@@ -1767,7 +1769,9 @@ public final class DbxClient
             {
                 if (response.statusCode == 403) return null;
                 if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
-                return DbxRequestUtil.readJsonFromResponse(DbxEntry.Folder.Reader, response.body);
+                DbxEntry.Folder e = DbxRequestUtil.readJsonFromResponse(DbxEntry.Folder.Reader, response.body);
+                if (e == null) throw new DbxException.BadResponse("got deleted folder entry");
+                return e;
             }
         });
     }

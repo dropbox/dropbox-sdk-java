@@ -23,4 +23,31 @@ public abstract class Collector<E,L>
             return list;
         }
     }
+
+    public static final class NullSkipper<E,L> extends Collector<E,L>
+    {
+        private final Collector<E,L> underlying;
+
+        public NullSkipper(Collector<E, L> underlying)
+        {
+            this.underlying = underlying;
+        }
+
+        public static <E,L> Collector<E,L> mk(Collector<E,L> underlying)
+        {
+            return new NullSkipper<E,L>(underlying);
+        }
+
+        public void add(E element)
+        {
+            if (element != null) {
+                underlying.add(element);
+            }
+        }
+
+        public L finish()
+        {
+            return underlying.finish();
+        }
+    }
 }

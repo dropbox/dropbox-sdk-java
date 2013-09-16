@@ -151,7 +151,9 @@ public abstract class DbxEntry extends Dumpable implements Serializable
                 throws IOException, JsonReadException
             {
                 JsonLocation top = parser.getCurrentLocation();
-                DbxEntry e = DbxEntry.read(parser, null).entry;
+                DbxEntry.WithChildrenC<?> ewc = DbxEntry.read(parser, null);
+                if (ewc == null) return null;
+                DbxEntry e = ewc.entry;
                 if (!(e instanceof DbxEntry.Folder)) {
                     throw new JsonReadException("Expecting a file entry, got a folder entry", top);
                 }
@@ -268,7 +270,9 @@ public abstract class DbxEntry extends Dumpable implements Serializable
                 throws IOException, JsonReadException
             {
                 JsonLocation top = parser.getCurrentLocation();
-                DbxEntry e = DbxEntry.read(parser, null).entry;
+                DbxEntry.WithChildrenC<?> ewc = DbxEntry.read(parser, null);
+                if (ewc == null) return null;
+                DbxEntry e = ewc.entry;
                 if (!(e instanceof DbxEntry.File)) {
                     throw new JsonReadException("Expecting a file entry, got a folder entry", top);
                 }
