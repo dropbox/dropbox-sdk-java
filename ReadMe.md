@@ -29,7 +29,7 @@ If you aren't using Maven, here are the JARs you need:
 You need a Dropbox API key to make API requests.
   * Go to: [https://www.dropbox.com/developers/apps](https://www.dropbox.com/developers/apps)
   * If you've already registered an app, click on the "Options" link to see the app's API key and secret.
-  * Otherwise, click "Create an app" to register an app.  Choose "Full Dropbox" or "App Folder" [depending on your needs](https://www.dropbox.com/developers/reference#permissions).
+  * Otherwise, click "Create an app" to register an app.  Choose "Dropbox API app", then "Files and datastores", then "Yes" or "No" [depending on your needs](https://www.dropbox.com/developers/reference#permissions).
 
 Save the API key to a JSON file called, say, "test.app":
 
