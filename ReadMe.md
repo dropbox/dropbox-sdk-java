@@ -82,7 +82,7 @@ cd examples
 
 (You must first generate "test.auth" using the "authorize" example above.)
 
-### account-info
+### upload-file
 
 Uploads a file to Dropbox.
 
