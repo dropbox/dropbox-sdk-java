@@ -1,12 +1,7 @@
 package com.dropbox.core.examples.authorize;
 
 import com.dropbox.core.*;
-
 import com.dropbox.core.json.JsonReader;
-import com.fasterxml.jackson.core.*;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.*;
 import java.util.Locale;
@@ -87,7 +82,7 @@ public class Main
         catch (IOException ex) {
             System.err.println("Error saving to <auth-file-out>: " + ex.getMessage());
             System.err.println("Dumping to stderr instead:");
-            DbxAuthInfo.Writer.writeToStream(authInfo, System.out);
+            DbxAuthInfo.Writer.writeToStream(authInfo, System.err);
             System.exit(1); return;
         }
     }
