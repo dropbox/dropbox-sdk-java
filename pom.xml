@@ -68,6 +68,11 @@
 
     <build>
         <sourceDirectory>src</sourceDirectory>
+        <resources>
+            <resource>
+                <directory>${project.build.directory}/generated-resources/pem-to-jks</directory>
+            </resource>
+        </resources>
         <testSourceDirectory>test</testSourceDirectory>
         <testResources>
             <testResource>
@@ -93,6 +98,22 @@
                 <configuration>
                     <skipTests>${skipTests}</skipTests>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.dropbox.maven</groupId>
+                <artifactId>pem-to-jks-maven-plugin</artifactId>
+                <version>1.0</version>
+                <executions>
+                    <execution>
+                        <configuration>
+                            <inputPem>src/com/dropbox/core/http/trusted-certs.crt</inputPem>
+                            <outputJks>${project.build.directory}/generated-resources/pem-to-jks/com/dropbox/core/http/trusted-certs.jks</outputJks>
+                        </configuration>
+                        <goals>
+                            <goal>convert</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

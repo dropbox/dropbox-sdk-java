@@ -159,6 +159,7 @@ public class StandardHttpRequestor extends HttpRequestor
         URL urlObject = new URL(url);
         HttpsURLConnection conn = (HttpsURLConnection) urlObject.openConnection(this.proxy);
 
+        SSLConfig.apply(conn);
         conn.setConnectTimeout(DefaultConnectTimeoutMillis);
         conn.setReadTimeout(DefaultReadTimeoutMillis);
         conn.setUseCaches(false);
