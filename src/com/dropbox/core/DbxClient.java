@@ -278,11 +278,11 @@ public final class DbxClient
     }
 
     // -----------------------------------------------------------------
-    // /unlink_access_token
+    // /disable_access_token
 
     /**
      * Disable the access token that you constructed this {@code DbxClient}
-     * with.  After calling this, API calls made with this {@DbxClient} will
+     * with.  After calling this, API calls made with this {@code DbxClient} will
      * fail.
      */
     public void disableAccessToken()

@@ -84,7 +84,7 @@ public final class JsonReadException extends java.lang.Exception
         }
     }
 
-    public static final JsonReadException fromJackson(JsonProcessingException ex)
+    public static JsonReadException fromJackson(JsonProcessingException ex)
     {
         String message = ex.getMessage();
 

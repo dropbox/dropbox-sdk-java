@@ -123,20 +123,17 @@ public class Main
         ArrayList<String> remainingArgs = new ArrayList<String>();
         boolean optionsAllowed = true;
         boolean disable = false;
-        boolean sawDisable = false;
-        for (int i = 0; i < args.length; i++) {
-            String arg = args[i];
+        for (String arg : args) {
             if (optionsAllowed && arg.startsWith("-")) {
                 if (arg.equals("--")) {
                     optionsAllowed = false;
                     continue;
                 }
                 if (arg.equals("--disable")) {
-                    if (sawDisable) {
+                    if (disable) {
                         System.err.println("Option \"--disable\" used more than once.");
                         return null;
                     }
-                    sawDisable = true;
                     disable = true;
                 }
                 else {
@@ -144,7 +141,8 @@ public class Main
                     System.err.println("Run with no arguments for help.");
                     return null;
                 }
-            } else {
+            }
+            else {
                 remainingArgs.add(arg);
             }
         }
