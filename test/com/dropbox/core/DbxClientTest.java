@@ -190,25 +190,58 @@ public class DbxClientTest
     {
         init();
 
-        // Eat up all the deltas up to the current point.
-        DbxDelta<DbxEntry> d = client.getDelta(null);
-        assertTrue(d.reset);
-        while (d.hasMore) {
-            d = client.getDelta(d.cursor);
+        DbxEntry.Folder top = (DbxEntry.Folder) client.getMetadata(p());
+        DbxEntry.File a = addFile(p("a.txt"), 10);
+        DbxEntry.Folder b = client.createFolder(p("b"));
+        DbxEntry.File b_1 = addFile(p("b/1.txt"), 20);
+        DbxEntry.File b_2 = addFile(p("b/2.txt"), 30);
+        DbxEntry.Folder c = client.createFolder(p("b/c"));
+        DbxEntry.File c_1 = addFile(p("b/c/1.txt"), 40);
+        DbxEntry.File c_2 = addFile(p("b/c/2.txt"), 50);
+
+        // getDelta
+        {
+            HashSet<DbxEntry> expected = new HashSet<DbxEntry>(Arrays.asList(top, a, b, b_1, b_2, c, c_1, c_2));
+
+            String lcPrefix = p().toLowerCase();
+            String cursor = null;
+            while (true) {
+                DbxDelta<DbxEntry> d = client.getDelta(cursor);
+                for (DbxDelta.Entry<DbxEntry> e : d.entries) {
+                    if (e.lcPath.startsWith(lcPrefix+"/") || e.lcPath.equals(lcPrefix)) {
+                        assertNotNull(e.metadata);  // We shouldn't see deletes in our test folder.
+                        boolean removed = expected.remove(e.metadata);
+                        assertTrue(removed);
+                    }
+                }
+                cursor = d.cursor;
+                if (!d.hasMore) break;
+            }
+
+            assertEquals(expected.size(), 0);
         }
 
-        String path = p("make a delta.txt");
-        addFile(path, 100);
+        // getDeltaWithPathPrefix
+        {
+            HashSet<DbxEntry> expected = new HashSet<DbxEntry>(Arrays.asList(b, b_1, b_2, c, c_1, c_2));
 
-        d = client.getDelta(d.cursor);
-        assertEquals(d.entries.size(), 1);
+            String prefix = b.path;
+            String lcPrefix = prefix.toLowerCase();
+            String cursor = null;
+            while (true) {
+                DbxDelta<DbxEntry> d = client.getDeltaWithPathPrefix(cursor, prefix);
+                for (DbxDelta.Entry<DbxEntry> e : d.entries) {
+                    assertTrue(e.lcPath.startsWith(lcPrefix+"/") || e.lcPath.equals(lcPrefix));
+                    assertNotNull(e.metadata);  // We should never see deletes.
+                    boolean removed = expected.remove(e.metadata);
+                    assertTrue(removed);
+                }
+                cursor = d.cursor;
+                if (!d.hasMore) break;
+            }
 
-        DbxDelta.Entry<DbxEntry> deltaEntry = d.entries.get(0);
-        assertEquals(deltaEntry.lcPath, path.toLowerCase());
-
-        DbxEntry.File md = deltaEntry.metadata.asFile();
-        assertEquals(md.path, path);
-        assertEquals(md.numBytes, 100);
+            assertEquals(expected.size(), 0);
+        }
     }
 
     @Test

@@ -1364,10 +1364,60 @@ public final class DbxClient
     public DbxDelta<DbxEntry> getDelta(String cursor)
         throws DbxException
     {
+        return _getDelta(cursor, null);
+    }
+
+    /**
+     * A more generic version of {@link #getDelta}.  You provide a <em>collector</em>,
+     * which lets you process the delta entries as they arrive over the network.
+     */
+    public <C> DbxDeltaC<C> getDeltaC(Collector<DbxDeltaC.Entry<DbxEntry>, C> collector, String cursor)
+        throws DbxException
+    {
+        return _getDeltaC(collector, cursor, null);
+    }
+
+    /**
+     * Same as {@link #getDelta}, except results are limited to files and folders whose
+     * paths are equal to or under the specified {@code pathPrefix}.
+     *
+     * <p>
+     * The {@code pathPrefix} is fixed for a given cursor.  Whatever {@code pathPrefix}
+     * you use on the first call to {@code getDelta()} must also be passed in on
+     * subsequent calls that use the returned cursor.
+     * </p>
+     *
+     * @param pathPrefix
+     *    A path on Dropbox to limit results to.
+     */
+    public DbxDelta<DbxEntry> getDeltaWithPathPrefix(String cursor, String pathPrefix)
+        throws DbxException
+    {
+        DbxPath.checkArg("path", pathPrefix);
+        return _getDelta(cursor, pathPrefix);
+    }
+
+    /**
+     * A more generic version of {@link #getDeltaWithPathPrefix}.  You provide a <em>collector</em>,
+     * which lets you process the delta entries as they arrive over the network.
+     */
+    public <C> DbxDeltaC<C> getDeltaCWithPathPrefix(Collector<DbxDeltaC.Entry<DbxEntry>, C> collector, String cursor, String pathPrefix)
+        throws DbxException
+    {
+        DbxPath.checkArg("path", pathPrefix);
+        return _getDeltaC(collector, cursor, pathPrefix);
+    }
+
+    private DbxDelta<DbxEntry> _getDelta(String cursor, String pathPrefix)
+        throws DbxException
+    {
         String host = this.host.api;
         String apiPath = "1/delta";
 
-        String[] params = {"cursor", cursor};
+        String[] params = {
+            "cursor", cursor,
+            "path_prefix", pathPrefix,
+        };
 
         return doPost(host, apiPath, params, null, new DbxRequestUtil.ResponseHandler<DbxDelta<DbxEntry>>() {
             @Override
@@ -1379,18 +1429,18 @@ public final class DbxClient
         });
     }
 
-    /**
-     * This is a more generic version of {@link #getDelta}.  It allows you to specify
-     * a <em>collector</em>, which lets you process the delta entries as they arrive over
-     * the network, and aggregate them however you want.
-     */
-    public <C> DbxDeltaC<C> getDeltaC(String cursor, final Collector<DbxDeltaC.Entry<DbxEntry>, C> collector)
+    private <C> DbxDeltaC<C> _getDeltaC(final Collector<DbxDeltaC.Entry<DbxEntry>, C> collector, String cursor, String pathPrefix)
         throws DbxException
     {
         String host = this.host.api;
         String apiPath = "1/delta";
 
-        return doPost(host, apiPath, new String[]{"cursor", cursor}, null, new DbxRequestUtil.ResponseHandler<DbxDeltaC<C>>() {
+        String[] params = {
+            "cursor", cursor,
+            "path_prefix", pathPrefix,
+        };
+
+        return doPost(host, apiPath, params, null, new DbxRequestUtil.ResponseHandler<DbxDeltaC<C>>() {
             @Override
             public DbxDeltaC<C> handle(HttpRequestor.Response response) throws DbxException {
                 if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
