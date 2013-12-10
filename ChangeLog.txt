@@ -1,3 +1,6 @@
+---------------------------------------------
+1.7.6 (2013-12-09)
+
 - Stricter SSL: Hard-code the ciphersuites and trusted root
   certificates (instead of using the system defaults).
 - Add DbxOAuth1Upgrader, which upgrades existing OAuth 1 access tokens
