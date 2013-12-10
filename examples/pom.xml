@@ -16,6 +16,7 @@
         <module>account-info</module>
         <module>upload-file</module>
         <module>web-file-browser</module>
+        <module>upgrade-oauth1-token</module>
     </modules>
 
     <dependencies>

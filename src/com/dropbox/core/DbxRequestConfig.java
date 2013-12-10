@@ -3,10 +3,6 @@ package com.dropbox.core;
 import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.http.StandardHttpRequestor;
 
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Set;
-
 /**
  * A grouping of a few configuration parameters for how we should make requests to the
  * Dropbox servers.

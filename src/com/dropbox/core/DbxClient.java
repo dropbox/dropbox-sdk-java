@@ -278,6 +278,30 @@ public final class DbxClient
     }
 
     // -----------------------------------------------------------------
+    // /unlink_access_token
+
+    /**
+     * Disable the access token that you constructed this {@code DbxClient}
+     * with.  After calling this, API calls made with this {@DbxClient} will
+     * fail.
+     */
+    public void disableAccessToken()
+        throws DbxException
+    {
+        String host = this.host.api;
+        String apiPath = "1/disable_access_token";
+
+        doPost(host, apiPath, null, null, new DbxRequestUtil.ResponseHandler<Void>() {
+            @Override
+            public Void handle(HttpRequestor.Response response) throws DbxException
+            {
+                if (response.statusCode != 200) throw new DbxException.BadResponse("unexpected response code: " + response.statusCode);
+                return null;
+            }
+        });
+    }
+
+    // -----------------------------------------------------------------
     // /files (GET)
 
     /**
