@@ -235,9 +235,15 @@ public abstract class DumpWriter
 
     public DumpWriter value(Dumpable v)
     {
-        recordStart(v.getTypeName());
-        v.dumpFields(this);
-        return recordEnd();
+        if (v == null) {
+            verbatim("null");
+        }
+        else {
+            recordStart(v.getTypeName());
+            v.dumpFields(this);
+            recordEnd();
+        }
+        return this;
     }
 
     public DumpWriter values(Iterable<? extends Dumpable> list)
