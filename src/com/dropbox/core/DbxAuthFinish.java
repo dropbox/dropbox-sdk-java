@@ -11,6 +11,8 @@ import com.fasterxml.jackson.core.JsonToken;
 
 import java.io.IOException;
 
+/*>>> import checkers.nullness.quals.Nullable; */
+
 /**
  * When you successfully complete the authorization process, the Dropbox server returns
  * this information to you.
@@ -35,13 +37,14 @@ public final class DbxAuthFinish implements java.io.Serializable
      * The state data you passed in to {@link DbxWebAuth#start}.  If you didn't pass anything
      * in, or you used {@link DbxWebAuthNoRedirect}, this will be {@code null}.
      */
-    public final String urlState;
+    public final /*@Nullable*/String urlState;
 
     /**
      * @param accessToken {@link #accessToken}
      * @param userId {@link #userId}
+     * @param urlState {@link #urlState}
      */
-    public DbxAuthFinish(String accessToken, String userId, String urlState)
+    public DbxAuthFinish(String accessToken, String userId, /*@Nullable*/String urlState)
     {
         this.accessToken = accessToken;
         this.userId = userId;

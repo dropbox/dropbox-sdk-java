@@ -2,6 +2,8 @@ package com.dropbox.core;
 
 import javax.servlet.http.HttpSession;
 
+/*>>> import checkers.nullness.quals.Nullable; */
+
 /**
  * A {@link DbxSessionStore} implementation that stores the value using the standard
  * {@link HttpSession} interface from the Java Servlet API.
@@ -29,7 +31,7 @@ public final class DbxStandardSessionStore implements DbxSessionStore
     }
 
     @Override
-    public String get()
+    public /*@Nullable*/String get()
     {
         Object v = session.getAttribute(key);
         if (v instanceof String) return (String) v;

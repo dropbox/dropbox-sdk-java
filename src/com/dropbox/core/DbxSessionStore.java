@@ -1,5 +1,7 @@
 package com.dropbox.core;
 
+/*>>> import checkers.nullness.quals.Nullable; */
+
 /**
  * An interface that lets you save, retrieve, and clear a single value in the user's web
  * session.
@@ -11,7 +13,7 @@ package com.dropbox.core;
  */
 public interface DbxSessionStore
 {
-    public String get();
+    public /*@Nullable*/String get();
     public void set(String value);
     public void clear();
 }

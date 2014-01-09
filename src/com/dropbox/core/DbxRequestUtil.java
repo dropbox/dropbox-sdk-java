@@ -20,6 +20,8 @@ import com.dropbox.core.json.JsonReader;
 import com.dropbox.core.util.IOUtil;
 import com.dropbox.core.util.StringUtil;
 
+/*>>> import checkers.nullness.quals.Nullable; */
+
 public class DbxRequestUtil
 {
     public static String encodeUrlParam(String s)
@@ -34,7 +36,8 @@ public class DbxRequestUtil
         }
     }
 
-    public static String buildUrlWithParams(String userLocale, String host, String path, String[] params)
+    public static String buildUrlWithParams(/*@Nullable*/String userLocale, String host, String path,
+                                            /*@Nullable*/String/*@Nullable*/[] params)
     {
         return buildUri(host, path) + "?" + encodeUrlParams(userLocale, params);
     }
@@ -56,7 +59,8 @@ public class DbxRequestUtil
         }
     }
 
-    private static String encodeUrlParams(String userLocale, String[] params)
+    private static String encodeUrlParams(/*@Nullable*/String userLocale,
+                                          /*@Nullable*/String/*@Nullable*/[] params)
     {
         StringBuilder buf = new StringBuilder();
         String sep = "";
@@ -70,28 +74,32 @@ public class DbxRequestUtil
                 throw new IllegalArgumentException("'params.length' is " + params.length + "; expecting a multiple of two");
             }
             for (int i = 0; i < params.length; ) {
-                String key = params[i++];
-                String value = params[i++];
+                String key = params[i];
+                String value = params[i+1];
+                if (key == null) throw new IllegalArgumentException("params[" + i + "] is null");
                 if (value != null) {
                     buf.append(sep); sep = "&";
                     buf.append(encodeUrlParam(key));
                     buf.append("=");
                     buf.append(encodeUrlParam(value));
                 }
+                i += 2;
             }
         }
 
         return buf.toString();
     }
 
-    private static ArrayList<HttpRequestor.Header> addAuthHeader(ArrayList<HttpRequestor.Header> headers, String accessToken)
+    private static ArrayList<HttpRequestor.Header> addAuthHeader(/*@Nullable*/ArrayList<HttpRequestor.Header> headers,
+                                                                 String accessToken)
     {
         if (headers == null) headers = new ArrayList<HttpRequestor.Header>();
         headers.add(new HttpRequestor.Header("Authorization", "Bearer " + accessToken));
         return headers;
     }
 
-    public static ArrayList<HttpRequestor.Header> addUserAgentHeader(ArrayList<HttpRequestor.Header> headers, DbxRequestConfig requestConfig)
+    public static ArrayList<HttpRequestor.Header> addUserAgentHeader(/*@Nullable*/ArrayList<HttpRequestor.Header> headers,
+                                                                     DbxRequestConfig requestConfig)
     {
         if (headers == null) headers = new ArrayList<HttpRequestor.Header>();
         headers.add(buildUserAgentHeader(requestConfig));
@@ -106,7 +114,9 @@ public class DbxRequestUtil
     /**
      * Convenience function for making HTTP GET requests.
      */
-    public static HttpRequestor.Response startGet(DbxRequestConfig requestConfig, String accessToken, String host, String path, String[] params, ArrayList<HttpRequestor.Header> headers)
+    public static HttpRequestor.Response startGet(DbxRequestConfig requestConfig, String accessToken, String host, String path,
+                                                  /*@Nullable*/String/*@Nullable*/[] params,
+                                                  /*@Nullable*/ArrayList<HttpRequestor.Header> headers)
         throws DbxException.NetworkIO
     {
         headers = addUserAgentHeader(headers, requestConfig);
@@ -124,7 +134,10 @@ public class DbxRequestUtil
     /**
      * Convenience function for making HTTP PUT requests.
      */
-    public static HttpRequestor.Uploader startPut(DbxRequestConfig requestConfig, String accessToken, String host, String path, String[] params, ArrayList<HttpRequestor.Header> headers)
+    public static HttpRequestor.Uploader startPut(DbxRequestConfig requestConfig, String accessToken,
+                                                  String host, String path,
+                                                  /*@Nullable*/String/*@Nullable*/[] params,
+                                                  /*@Nullable*/ArrayList<HttpRequestor.Header> headers)
         throws DbxException.NetworkIO
     {
         headers = addUserAgentHeader(headers, requestConfig);
@@ -142,7 +155,10 @@ public class DbxRequestUtil
     /**
      * Convenience function for making HTTP POST requests.
      */
-    public static HttpRequestor.Response startPostNoAuth(DbxRequestConfig requestConfig, String host, String path, String[] params, ArrayList<HttpRequestor.Header> headers)
+    public static HttpRequestor.Response startPostNoAuth(DbxRequestConfig requestConfig, String host,
+                                                         String path,
+                                                         /*@Nullable*/String/*@Nullable*/[] params,
+                                                         /*@Nullable*/ArrayList<HttpRequestor.Header> headers)
         throws DbxException.NetworkIO
     {
         String uri = buildUri(host, path);
@@ -257,7 +273,10 @@ public class DbxRequestUtil
         return result;
     }
 
-    public static <T> T doGet(DbxRequestConfig requestConfig, String accessToken, String host, String path, String[] params, ArrayList<HttpRequestor.Header> headers, ResponseHandler<T> handler)
+    public static <T> T doGet(DbxRequestConfig requestConfig, String accessToken, String host, String path,
+                             /*@Nullable*/String/*@Nullable*/[] params,
+                             /*@Nullable*/ArrayList<HttpRequestor.Header> headers,
+                             ResponseHandler<T> handler)
         throws DbxException
     {
         HttpRequestor.Response response = startGet(requestConfig, accessToken, host, path, params, headers);
@@ -275,14 +294,20 @@ public class DbxRequestUtil
         }
     }
 
-    public static <T> T doPost(DbxRequestConfig requestConfig, String accessToken, String host, String path, String[] params, ArrayList<HttpRequestor.Header> headers, ResponseHandler<T> handler)
+    public static <T> T doPost(DbxRequestConfig requestConfig, String accessToken, String host, String path,
+                               /*@Nullable*/String/*@Nullable*/[] params,
+                               /*@Nullable*/ArrayList<HttpRequestor.Header> headers,
+                               ResponseHandler<T> handler)
             throws DbxException
     {
         headers = addAuthHeader(headers, accessToken);
         return doPostNoAuth(requestConfig, host, path, params, headers, handler);
     }
 
-    public static <T> T doPostNoAuth(DbxRequestConfig requestConfig, String host, String path, String[] params, ArrayList<HttpRequestor.Header> headers, ResponseHandler<T> handler)
+    public static <T> T doPostNoAuth(DbxRequestConfig requestConfig, String host, String path,
+                                     /*@Nullable*/String/*@Nullable*/[] params,
+                                     /*@Nullable*/ArrayList<HttpRequestor.Header> headers,
+                                     ResponseHandler<T> handler)
         throws DbxException
     {
         HttpRequestor.Response response = startPostNoAuth(requestConfig, host, path, params, headers);
@@ -311,7 +336,7 @@ public class DbxRequestUtil
         return values.get(0);
     }
 
-    public static String getFirstHeaderMaybe(HttpRequestor.Response response, String name)
+    public static /*@Nullable*/String getFirstHeaderMaybe(HttpRequestor.Response response, String name)
         throws DbxException
     {
         List<String> values = response.headers.get(name);

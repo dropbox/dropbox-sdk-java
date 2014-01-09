@@ -1,0 +1,26 @@
+import checkers.nullness.quals.Nullable;
+
+package java.net;
+
+class URI
+{
+    URI(@Nullable String scheme, @Nullable String host, @Nullable String path, @Nullable String fragment);
+    URI(@Nullable String scheme, @Nullable String ssp, @Nullable String fragment);
+}
+
+package javax.net.ssl;
+
+class SSLContext
+{
+    void init(KeyManager @Nullable [] km,
+              TrustManager @Nullable [] tm,
+              @Nullable SecureRandom random);
+}
+
+package java.security;
+
+class KeyStore
+{
+    void load(@Nullable InputStream in,
+              char @Nullable [] password);
+}

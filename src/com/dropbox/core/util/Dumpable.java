@@ -1,5 +1,7 @@
 package com.dropbox.core.util;
 
+/*>>> import checkers.nullness.quals.Nullable; */
+
 /**
  * A common superclass for pure-data classes.  Contains a function to dump
  * the data (for debugging purposes).
@@ -55,6 +57,6 @@ public abstract class Dumpable
         new DumpWriter.Multiline(buf, 2, currentIndent, nl).value(this);
     }
 
-    protected String getTypeName() { return null; }
+    protected /*@Nullable*/String getTypeName() { return null; }
     protected abstract void dumpFields(DumpWriter out);
 }

@@ -10,6 +10,8 @@ import com.fasterxml.jackson.core.JsonToken;
 
 import java.io.IOException;
 
+/*>>> import checkers.nullness.quals.Nullable; */
+
 /**
  * This is for mocking things out during testing.  Most of the time you won't have to deal with
  * this class; just use the default value: {@link DbxHost#Default}.
@@ -52,9 +54,9 @@ public final class DbxHost
 		this.web = web;
 	}
 
-    public boolean equals(Object o)
+    public boolean equals(/*@Nullable*/Object o)
     {
-        return getClass().equals(o.getClass()) && equals((DbxHost)o);
+        return o != null && getClass().equals(o.getClass()) && equals((DbxHost)o);
     }
 
     public boolean equals(DbxHost o)
@@ -123,7 +125,7 @@ public final class DbxHost
         }
     };
 
-    private String inferBaseHost()
+    private /*@Nullable*/String inferBaseHost()
     {
         if (web.startsWith("meta-") && api.startsWith("api-") && content.startsWith("api-content-")) {
             String webBase = web.substring("meta-".length());

@@ -2,6 +2,9 @@ package com.dropbox.core.util;
 
 import java.util.Arrays;
 
+/*>>> import checkers.nullness.quals.Nullable; */
+/*>>> import checkers.nullness.quals.NonNull; */
+
 public class LangUtil
 {
     public static RuntimeException mkAssert(String messagePrefix, Throwable cause)
@@ -14,12 +17,37 @@ public class LangUtil
         // RuntimeException worked.
     }
 
+    public static AssertionError badType(Object a)
+    {
+        String msg;
+        if (a == null) {
+            msg = "bad type: null";
+        } else {
+            msg = "bad type: " + a.getClass().getName();
+        }
+        return new AssertionError(msg);
+    }
+
     public static <T> T[] arrayConcat(T[] a, T[] b)
     {
         if (a == null) throw new IllegalArgumentException("'a' can't be null");
         if (b == null) throw new IllegalArgumentException("'b' can't be null");
-        T[] r = Arrays.copyOf(a, a.length + b.length);
-        System.arraycopy(b, 0, r, a.length, b.length);
+        /*@Nullable*/T[] rn = Arrays.copyOf(a, a.length + b.length);
+        System.arraycopy(b, 0, rn, a.length, b.length);
+        @SuppressWarnings("nullness") T[] r = rn;
         return r;
+    }
+
+    public static <T> boolean nullableEquals(/*@Nullable*/T a, /*@Nullable*/T b)
+    {
+        if (a == null) return (b == null);
+        if (b == null) return false;
+        return a.equals(b);
+    }
+
+    public static int nullableHashCode(/*@Nullable*/Object o)
+    {
+        if (o == null) return 0;
+        return o.hashCode() + 1;
     }
 }

@@ -42,6 +42,20 @@
         <skipTests>true</skipTests>
     </properties>
 
+    <!-- Checker Framework repositories (the Maven Central artifacts aren't always up to date) -->
+    <repositories>
+        <repository>
+            <id>checker-framework-repo</id>
+            <url>http://types.cs.washington.edu/m2-repo</url>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>checker-framework-repo</id>
+            <url>http://types.cs.washington.edu/m2-repo</url>
+        </pluginRepository>
+    </pluginRepositories>
+
     <dependencies>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -160,6 +174,35 @@
                         </configuration>
                         <goals>
                             <goal>convert</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Checker Framework -->
+            <plugin>
+                <groupId>types.checkers</groupId>
+                <artifactId>checkers-maven-plugin</artifactId>
+                <version>1.7.2</version>
+                <configuration>
+                    <processors>
+                        <processor>checkers.nullness.NullnessChecker</processor>
+                    </processors>
+                    <!--
+                        "-AassumeSideEffectFree"
+                            This is unsound, but makes it easier to get started.
+                        "-AsuppressWarnings=purity.invalid.overriding"
+                            Purity warnings are noisy right now, so disable them.
+                        TODO:
+                            Add "-AinvariantArrays" when it's fixed: https://code.google.com/p/checker-framework/issues/detail?id=299
+                    -->
+                    <javacParams>-AstubWarnIfNotFound -Astubs=checker-stubs -AassumeSideEffectFree -AsuppressWarnings=purity.invalid.overriding -AprintErrorStack</javacParams>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>check</goal>
                         </goals>
                     </execution>
                 </executions>

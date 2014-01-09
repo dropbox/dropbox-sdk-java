@@ -5,10 +5,13 @@ import com.dropbox.core.util.StringUtil;
 
 import java.util.ArrayList;
 
+/*>>> import checkers.nullness.quals.Nullable; */
+/*>>> import checkers.nullness.quals.NonNull; */
+
 abstract class DbxWebAuthHelper
 {
-    public static String getAuthorizeUrl(DbxAppInfo appInfo, String userLocale,
-                                         String redirectUri, String state)
+    public static String getAuthorizeUrl(DbxAppInfo appInfo, /*@Nullable*/String userLocale,
+                                         /*@Nullable*/String redirectUri, /*@Nullable*/String state)
     {
         return DbxRequestUtil.buildUrlWithParams(userLocale,
             appInfo.host.web, "1/oauth2/authorize", new String[] {
@@ -20,12 +23,12 @@ abstract class DbxWebAuthHelper
     }
 
     public static DbxAuthFinish finish(DbxAppInfo appInfo, DbxRequestConfig requestConfig,
-                                       String code, String originalRedirectUri)
+                                       String code, /*@Nullable*/String originalRedirectUri)
             throws DbxException
     {
         if (code == null) throw new IllegalArgumentException("'code' can't be null");
 
-        String[] params = {
+        /*@Nullable*/String[] params = {
             "grant_type", "authorization_code",
             "code", code,
             "redirect_uri", originalRedirectUri,

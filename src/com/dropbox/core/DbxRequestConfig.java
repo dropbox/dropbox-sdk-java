@@ -3,6 +3,8 @@ package com.dropbox.core;
 import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.http.StandardHttpRequestor;
 
+/*>>> import checkers.nullness.quals.Nullable; */
+
 /**
  * A grouping of a few configuration parameters for how we should make requests to the
  * Dropbox servers.
@@ -45,7 +47,7 @@ public class DbxRequestConfig
      * strings will be in English.
      * </p>
      */
-	public final String userLocale;
+	public final /*@Nullable*/String userLocale;
 
     /**
      * The {@link HttpRequestor} implementation to use when making
@@ -59,7 +61,7 @@ public class DbxRequestConfig
      * @param userLocale {@link #userLocale}
      * @param httpRequestor {@link #httpRequestor}
      */
-    public DbxRequestConfig(String clientIdentifier, String userLocale, HttpRequestor httpRequestor)
+    public DbxRequestConfig(String clientIdentifier, /*@Nullable*/String userLocale, HttpRequestor httpRequestor)
     {
         if (clientIdentifier == null) throw new IllegalArgumentException("'clientIdentifier' should not be null");
         if (httpRequestor == null) throw new IllegalArgumentException("'httpRequestor' should not be null");

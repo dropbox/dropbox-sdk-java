@@ -2,6 +2,8 @@ package com.dropbox.core.util;
 
 import java.util.ArrayList;
 
+/*>>> import checkers.nullness.quals.Nullable; */
+
 public abstract class Collector<E,L>
 {
     public abstract void add(E element);
@@ -9,16 +11,18 @@ public abstract class Collector<E,L>
 
     public static final class ArrayListCollector<E> extends Collector<E,ArrayList<E>>
     {
-        private ArrayList<E> list = new ArrayList<E>();
+        private /*@Nullable*/ArrayList<E> list = new ArrayList<E>();
 
         public void add(E element)
         {
+            if (list == null) throw new IllegalStateException("already called finish()");
             this.list.add(element);
         }
 
         public ArrayList<E> finish()
         {
             ArrayList<E> list = this.list;
+            if (list == null) throw new IllegalStateException("already called finish()");
             this.list = null;
             return list;
         }

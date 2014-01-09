@@ -24,6 +24,9 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 
+/*>>> import checkers.nullness.quals.Nullable; */
+/*>>> import checkers.nullness.quals.MonotonicNonNull; */
+
 /**
  * The proper SSL configuration that should be used when connecting to Dropbox
  * API servers.  This includes:
@@ -160,7 +163,7 @@ public class SSLConfig
         return filteredArray;
     }
 
-    private static CipherSuiteFilterationResults cachedCipherSuiteFilterationResults = null;
+    private static /*@MonotonicNonNull*/CipherSuiteFilterationResults cachedCipherSuiteFilterationResults;
 
     private static final class CipherSuiteFilterationResults
     {

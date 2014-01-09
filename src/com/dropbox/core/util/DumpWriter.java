@@ -6,9 +6,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+/*>>> import checkers.nullness.quals.Nullable; */
+
 public abstract class DumpWriter
 {
-    public abstract DumpWriter recordStart(String name);
+    public abstract DumpWriter recordStart(/*@Nullable*/String name);
     public abstract DumpWriter recordEnd();
     public abstract DumpWriter fieldStart(String name);
     public abstract DumpWriter listStart();
@@ -61,7 +63,7 @@ public abstract class DumpWriter
         }
 
         @Override
-        public DumpWriter recordStart(String name)
+        public DumpWriter recordStart(/*@Nullable*/String name)
         {
             prefix();
             if (name != null) {
@@ -146,7 +148,7 @@ public abstract class DumpWriter
         }
 
         @Override
-        public DumpWriter recordStart(String name)
+        public DumpWriter recordStart(/*@Nullable*/String name)
         {
             if (name != null) {
                 buf.append(name);
@@ -204,21 +206,26 @@ public abstract class DumpWriter
         return fieldStart(name).verbatim(s);
     }
 
-    public DumpWriter field(String name, String v) { return fieldStart(name).value(v); }
+    public DumpWriter field(String name, /*@Nullable*/String v) { return fieldStart(name).value(v); }
     public DumpWriter field(String name, int v) { return fieldStart(name).value(v); }
     public DumpWriter field(String name, long v) { return fieldStart(name).value(v); }
     public DumpWriter field(String name, boolean v) { return fieldStart(name).value(v); }
-    public DumpWriter field(String name, Date v) { return fieldStart(name).value(v); }
-    public DumpWriter field(String name, Dumpable v) { return fieldStart(name).value(v); }
+    public DumpWriter field(String name, /*@Nullable*/Date v) { return fieldStart(name).value(v); }
+    public DumpWriter field(String name, /*@Nullable*/Dumpable v) { return fieldStart(name).value(v); }
 
-    public DumpWriter list(Iterable<? extends Dumpable> list)
+    public DumpWriter list(/*@Nullable*/Iterable<? extends Dumpable> list)
     {
-        listStart();
-        values(list);
-        return listEnd();
+        if (list == null) {
+            verbatim("null");
+        } else {
+            listStart();
+            values(list);
+            listEnd();
+        }
+        return this;
     }
 
-    public DumpWriter value(String v)
+    public DumpWriter value(/*@Nullable*/String v)
     {
         if (v == null) {
             verbatim("null");
@@ -231,9 +238,9 @@ public abstract class DumpWriter
     public DumpWriter value(int v) { return verbatim(Integer.toString(v)); }
     public DumpWriter value(long v) { return verbatim(Long.toString(v)); }
     public DumpWriter value(boolean v) { return verbatim(Boolean.toString(v)); }
-    public DumpWriter value(Date v) { return verbatim(toStringDate(v)); }
+    public DumpWriter value(/*@Nullable*/ Date v) { return verbatim(toStringDate(v)); }
 
-    public DumpWriter value(Dumpable v)
+    public DumpWriter value(/*@Nullable*/Dumpable v)
     {
         if (v == null) {
             verbatim("null");
@@ -255,7 +262,7 @@ public abstract class DumpWriter
         return listEnd();
     }
 
-    public static String toStringDate(Date date)
+    public static String toStringDate(/*@Nullable*/Date date)
     {
         if (date == null) {
             return "null";

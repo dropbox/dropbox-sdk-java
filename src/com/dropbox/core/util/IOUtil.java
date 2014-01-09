@@ -41,6 +41,7 @@ public class IOUtil
         copyStreamToStream(in, out, new byte[copyBufferSize]);
     }
 
+    @SuppressWarnings("nullness:type.argument.type.incompatible")
     private static final ThreadLocal<byte[]> slurpBuffer = new ThreadLocal<byte[]>() {
         protected byte[] initialValue() { return new byte[4096]; }
     };

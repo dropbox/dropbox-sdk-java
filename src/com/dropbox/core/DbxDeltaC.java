@@ -12,6 +12,8 @@ import com.fasterxml.jackson.core.JsonToken;
 
 import java.io.IOException;
 
+/*>>> import checkers.nullness.quals.Nullable; */
+
 /**
  * Represents a single "page" of results from a delta-style API call.  This is the more
  * generic version of {@link DbxDelta} object.
@@ -212,13 +214,13 @@ public class DbxDeltaC<C> extends Dumpable
          * </li>
          * </ul>
          */
-        public final MD metadata;
+        public final /*@Nullable*/MD metadata;
 
         /**
          * @param lcPath {@link #lcPath}
          * @param metadata {@link #metadata}
          */
-        public Entry(String lcPath, MD metadata)
+        public Entry(String lcPath, /*@Nullable*/MD metadata)
         {
             this.lcPath = lcPath;
             this.metadata = metadata;
@@ -268,7 +270,7 @@ public class DbxDeltaC<C> extends Dumpable
                     throw new JsonReadException("expecting a two-element array of [path, metadata], found a one-element array", arrayStart);
                 }
 
-                MD metadata;
+                /*@Nullable*/MD metadata;
                 try {
                     metadata = metadataReader.readOptional(parser);
                 }

@@ -13,6 +13,8 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 
+/*>>> import checkers.nullness.quals.Nullable; */
+
 /**
  * Identifying information about your application.
  */
@@ -86,11 +88,11 @@ public class DbxAppInfo extends Dumpable implements java.io.Serializable
      *
      * <p>
      * NOTE: This function only performs some cursory checks on the format of the key.
-     * Even if it * returns {@code null} (which means "no problem"), it doesn't mean
+     * Even if it returns {@code null} (which means "no problem"), it doesn't mean
      * that what you passed in is an actual valid Dropbox API app key.
      * </p>
      */
-    public static String getKeyFormatError(String key) { return getTokenPartError(key); }
+    public static /*@Nullable*/String getKeyFormatError(String key) { return getTokenPartError(key); }
 
     /**
      * If they secret's format looks correct, return {@code null}.  Otherwise return
@@ -102,7 +104,7 @@ public class DbxAppInfo extends Dumpable implements java.io.Serializable
      * you passed in is an actual valid Dropbox API app key.
      * </p>
      */
-    public static String getSecretFormatError(String key) { return getTokenPartError(key); }
+    public static /*@Nullable*/String getSecretFormatError(String key) { return getTokenPartError(key); }
 
     // ------------------------------------------------------
     // JSON parsing
@@ -194,7 +196,7 @@ public class DbxAppInfo extends Dumpable implements java.io.Serializable
 
     };
 
-    public static String getTokenPartError(String s)
+    public static /*@Nullable*/String getTokenPartError(String s)
     {
         if (s == null) return "can't be null";
         if (s.length() == 0) return "can't be empty";

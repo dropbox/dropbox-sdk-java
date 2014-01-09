@@ -8,6 +8,8 @@ import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
 
+/*>>> import checkers.nullness.quals.Nullable; */
+
 /**
  * {@link HttpRequestor} implementation that uses Java's standard library
  * {@link HttpsURLConnection}.  If you just want a connection with the
@@ -109,7 +111,7 @@ public class StandardHttpRequestor extends HttpRequestor
 
     private static class Uploader extends HttpRequestor.Uploader
     {
-        private HttpsURLConnection conn;
+        private /*@Nullable*/ HttpsURLConnection conn;
 
         public Uploader(HttpsURLConnection conn)
             throws IOException
@@ -129,17 +131,19 @@ public class StandardHttpRequestor extends HttpRequestor
         @Override
         public void abort()
         {
+            HttpsURLConnection conn = this.conn;
             if (conn == null) {
                 throw new IllegalStateException("Can't abort().  Uploader already closed.");
             }
-            this.conn.disconnect();
+            conn.disconnect();
         }
 
         @Override
         public void close()
         {
+            HttpsURLConnection conn = this.conn;
             if (conn == null) return;
-            this.conn.disconnect();
+            conn.disconnect();
         }
 
         @Override

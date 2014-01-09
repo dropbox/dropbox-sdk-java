@@ -15,6 +15,9 @@ import com.fasterxml.jackson.core.JsonLocation;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 
+/*>>> import checkers.nullness.quals.Nullable; */
+/*>>> import checkers.nullness.quals.PolyNull; */
+
 /**
  * Holds the metadata for a Dropbox file system entry.  Can either be a regular file or a folder.
  */
@@ -151,9 +154,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
                 throws IOException, JsonReadException
             {
                 JsonLocation top = parser.getCurrentLocation();
-                DbxEntry.WithChildrenC<?> ewc = DbxEntry.read(parser, null);
-                if (ewc == null) return null;
-                DbxEntry e = ewc.entry;
+                DbxEntry e = DbxEntry.read(parser, null).entry;
                 if (!(e instanceof DbxEntry.Folder)) {
                     throw new JsonReadException("Expecting a file entry, got a folder entry", top);
                 }
@@ -162,10 +163,9 @@ public abstract class DbxEntry extends Dumpable implements Serializable
 
         };
 
-        public boolean equals(Object o)
+        public boolean equals(/*@Nullable*/Object o)
         {
-            if (!getClass().equals(o.getClass())) return false;
-            return equals((Folder) o);
+            return o != null && getClass().equals(o.getClass()) && equals((Folder) o);
         }
 
         public boolean equals(Folder o)
@@ -270,9 +270,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
                 throws IOException, JsonReadException
             {
                 JsonLocation top = parser.getCurrentLocation();
-                DbxEntry.WithChildrenC<?> ewc = DbxEntry.read(parser, null);
-                if (ewc == null) return null;
-                DbxEntry e = ewc.entry;
+                DbxEntry e = DbxEntry.read(parser, null).entry;
                 if (!(e instanceof DbxEntry.File)) {
                     throw new JsonReadException("Expecting a file entry, got a folder entry", top);
                 }
@@ -281,10 +279,26 @@ public abstract class DbxEntry extends Dumpable implements Serializable
 
         };
 
-        public boolean equals(Object o)
+        public static final JsonReader<DbxEntry.File> ReaderMaybeDeleted = new JsonReader<DbxEntry.File>()
         {
-            if (!getClass().equals(o.getClass())) return false;
-            return equals((File) o);
+            public final DbxEntry./*@Nullable*/File read(JsonParser parser)
+                    throws IOException, JsonReadException
+            {
+                JsonLocation top = parser.getCurrentLocation();
+                WithChildrenC<?> wc = DbxEntry._read(parser, null, true);
+                if (wc == null) return null;
+                DbxEntry e = wc.entry;
+                if (!(e instanceof DbxEntry.File)) {
+                    throw new JsonReadException("Expecting a file entry, got a folder entry", top);
+                }
+                return (DbxEntry.File) e;
+            }
+
+        };
+
+        public boolean equals(/*@Nullable*/Object o)
+        {
+            return o != null && getClass().equals(o.getClass()) && equals((File) o);
         }
 
         public boolean equals(File o)
@@ -316,9 +330,18 @@ public abstract class DbxEntry extends Dumpable implements Serializable
     public static final JsonReader<DbxEntry> Reader = new JsonReader<DbxEntry>()
     {
         public final DbxEntry read(JsonParser parser)
-            throws IOException, JsonReadException
+                throws IOException, JsonReadException
         {
-            WithChildrenC<?> wc = DbxEntry.read(parser, null);
+            return DbxEntry.read(parser, null).entry;
+        }
+    };
+
+    public static final JsonReader</*@Nullable*/DbxEntry> ReaderMaybeDeleted = new JsonReader</*@Nullable*/DbxEntry>()
+    {
+        public final /*@Nullable*/DbxEntry read(JsonParser parser)
+                throws IOException, JsonReadException
+        {
+            WithChildrenC<?> wc = DbxEntry.readMaybeDeleted(parser, null);
             if (wc == null) return null;
             return wc.entry;
         }
@@ -345,20 +368,20 @@ public abstract class DbxEntry extends Dumpable implements Serializable
          * contents.  This value can be used with {@link DbxClient#getMetadataWithChildrenIfChanged}
          * to void downloading the folder contents if they havne't changed.
          */
-        public final String hash;
+        public final /*@PolyNull*/String hash;
 
         /**
          * If {@link #entry} is a folder, this will contain the metadata of the folder's
          * immediate children.  If it's not a folder, this will be {@code null}.
          */
-        public final List<DbxEntry> children;
+        public final /*@PolyNull*/List<DbxEntry> children;
 
         /**
          * @param entry {@link #entry}
          * @param hash {@link #hash}
          * @param children {@link #children}
          */
-        public WithChildren(DbxEntry entry, String hash, List<DbxEntry> children)
+        public WithChildren(DbxEntry entry, /*@PolyNull*/String hash, /*@PolyNull*/List<DbxEntry> children)
         {
             this.entry = entry;
             this.hash = hash;
@@ -368,18 +391,27 @@ public abstract class DbxEntry extends Dumpable implements Serializable
         public static final JsonReader<WithChildren> Reader = new JsonReader<WithChildren>()
         {
             public final WithChildren read(JsonParser parser)
-                throws IOException, JsonReadException
+                    throws IOException, JsonReadException
             {
                 WithChildrenC<List<DbxEntry>> c = DbxEntry.<List<DbxEntry>>read(parser, new Collector.ArrayListCollector<DbxEntry>());
+                return new WithChildren(c.entry, c.hash, c.children);
+            }
+        };
+
+        public static final JsonReader</*@Nullable*/WithChildren> ReaderMaybeDeleted = new JsonReader</*@Nullable*/WithChildren>()
+        {
+            public final /*@Nullable*/WithChildren read(JsonParser parser)
+                throws IOException, JsonReadException
+            {
+                WithChildrenC<List<DbxEntry>> c = DbxEntry.<List<DbxEntry>>readMaybeDeleted(parser, new Collector.ArrayListCollector<DbxEntry>());
                 if (c == null) return null;
                 return new WithChildren(c.entry, c.hash, c.children);
             }
         };
 
-        @Override
-        public boolean equals(Object o)
+        public boolean equals(/*@Nullable*/Object o)
         {
-            return getClass().equals(o.getClass()) && equals((WithChildren) o);
+            return o != null && getClass().equals(o.getClass()) && equals((WithChildren) o);
         }
 
         public boolean equals(WithChildren o)
@@ -427,20 +459,20 @@ public abstract class DbxEntry extends Dumpable implements Serializable
          * contents.  This value can be used with {@link DbxClient#getMetadataWithChildrenIfChanged}
          * to void downloading the folder contents if they havne't changed.
          */
-        public final String hash;
+        public final /*@PolyNull*/String hash;
 
         /**
          * If {@link #entry} is a folder, this will contain the metadata of the folder's
          * immediate children.  If it's not a folder, this will be {@code null}.
          */
-        public final C children;
+        public final /*@PolyNull*/C children;
 
         /**
          * @param entry {@link #entry}
          * @param hash {@link #hash}
          * @param children {@link #children}
          */
-        public WithChildrenC(DbxEntry entry, String hash, C children)
+        public WithChildrenC(DbxEntry entry, /*@PolyNull*/String hash, /*@PolyNull*/C children)
         {
             this.entry = entry;
             this.hash = hash;
@@ -450,19 +482,31 @@ public abstract class DbxEntry extends Dumpable implements Serializable
         public static class Reader<C> extends JsonReader<WithChildrenC<C>>
         {
             private final Collector<DbxEntry,? extends C> collector;
-            public Reader(Collector<DbxEntry, ? extends C> collector) { this.collector = collector; }
+            public Reader(Collector<DbxEntry,? extends C> collector) { this.collector = collector; }
 
             public final WithChildrenC<C> read(JsonParser parser)
-                throws IOException, JsonReadException
+                    throws IOException, JsonReadException
             {
                 return DbxEntry.read(parser, collector);
             }
         }
 
-        @Override
-        public boolean equals(Object o)
+        public static class ReaderMaybeDeleted<C> extends JsonReader</*@Nullable*/WithChildrenC<C>>
         {
-            return getClass().equals(o.getClass()) && equals((WithChildren) o);
+            private final Collector<DbxEntry,? extends C> collector;
+            public ReaderMaybeDeleted(Collector<DbxEntry,? extends C> collector) { this.collector = collector; }
+
+            public final /*@Nullable*/WithChildrenC<C> read(JsonParser parser)
+                throws IOException, JsonReadException
+            {
+                return DbxEntry.readMaybeDeleted(parser, collector);
+            }
+        }
+
+        @Override
+        public boolean equals(/*@Nullable*/Object o)
+        {
+            return o != null && getClass().equals(o.getClass()) && equals((WithChildren) o);
         }
 
         public boolean equals(WithChildren o)
@@ -489,15 +533,31 @@ public abstract class DbxEntry extends Dumpable implements Serializable
         {
             w.value(entry);
             w.field("hash", hash);
-            w.fieldVebatim("children", children.toString());
+            if (children != null) {
+                w.fieldVebatim("children", children.toString());
+            }
         }
+    }
+
+    public static <C> /*@Nullable*/WithChildrenC<C> readMaybeDeleted(JsonParser parser, /*@Nullable*/Collector<DbxEntry, ? extends C> collector)
+            throws IOException, JsonReadException
+    {
+        return _read(parser, collector, true);
+    }
+
+    public static <C> WithChildrenC<C> read(JsonParser parser, /*@Nullable*/Collector<DbxEntry, ? extends C> collector)
+        throws IOException, JsonReadException
+    {
+        WithChildrenC<C> r = _read(parser, collector, false);
+        assert r != null : "@AssumeAssertion(nullness)";
+        return r;
     }
 
     /**
      * @return
      *     {@code null} if the entry is an 'is_deleted' entry.
      */
-    public static <C> WithChildrenC<C> read(JsonParser parser, Collector<DbxEntry, ? extends C> collector)
+    private static <C> /*@Nullable*/WithChildrenC<C> _read(JsonParser parser, /*@Nullable*/Collector<DbxEntry, ? extends C> collector, boolean allowDeleted)
         throws IOException, JsonReadException
     {
         JsonLocation top = JsonReader.expectObjectStart(parser);
@@ -575,7 +635,13 @@ public abstract class DbxEntry extends Dumpable implements Serializable
             e = new File(path, icon, thumb_exists, bytes, size, modified, client_mtime, rev);
         }
 
-        if (is_deleted) return null;
+        if (is_deleted) {
+            if (allowDeleted) {
+                return null;
+            } else {
+                throw new JsonReadException("not expecting \"is_deleted\" entry here", top);
+            }
+        }
         return new WithChildrenC<C>(e, hash, contents);
     }
 

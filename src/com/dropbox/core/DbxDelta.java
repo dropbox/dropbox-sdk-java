@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/*>>> import checkers.nullness.quals.Nullable; */
+
 /**
  * Represents a single "page" of results from a delta-style API call.
  *
@@ -212,13 +214,13 @@ public final class DbxDelta<MD extends Dumpable> extends Dumpable
          * </li>
          * </ul>
          */
-        public final MD metadata;
+        public final /*@Nullable*/MD metadata;
 
         /**
          * @param lcPath {@link #lcPath}
          * @param metadata {@link #metadata}
          */
-        public Entry(String lcPath, MD metadata)
+        public Entry(String lcPath, /*@Nullable*/MD metadata)
         {
             this.lcPath = lcPath;
             this.metadata = metadata;
@@ -268,7 +270,7 @@ public final class DbxDelta<MD extends Dumpable> extends Dumpable
                     throw new JsonReadException("expecting a two-element array of [path, metadata], found a one-element array: " + jq(lcPath), arrayStart);
                 }
 
-                MD metadata;
+                /*@Nullable*/MD metadata;
                 try {
                     metadata = metadataReader.readOptional(parser);
                 }

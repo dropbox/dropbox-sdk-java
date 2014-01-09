@@ -5,13 +5,15 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.io.File;
 
+/*>>> import checkers.nullness.quals.Nullable; */
+
 public final class JsonReadException extends java.lang.Exception
 {
 	public static final long serialVersionUID = 0;
 	
     public final String error;
     public final JsonLocation location;
-    private PathPart path;
+    private /*@Nullable*/PathPart path;
 
     public JsonReadException(String error, JsonLocation location)
     {
@@ -75,9 +77,9 @@ public final class JsonReadException extends java.lang.Exception
     public static final class PathPart
     {
         public final String description;
-        public final PathPart next;
+        public final /*@Nullable*/PathPart next;
 
-        public PathPart(String description, PathPart next)
+        public PathPart(String description, /*@Nullable*/PathPart next)
         {
             this.description = description;
             this.next = next;

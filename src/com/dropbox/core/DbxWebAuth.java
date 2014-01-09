@@ -6,6 +6,8 @@ import static com.dropbox.core.util.StringUtil.jq;
 import java.security.SecureRandom;
 import java.util.Map;
 
+/*>>> import checkers.nullness.quals.Nullable; */
+
 /**
  * Does the OAuth 2 "authorization code" flow.  (This SDK does not support the "token" flow.)
  *
@@ -107,7 +109,7 @@ public class DbxWebAuth
      * access token.
      * </p>
      */
-    public String start(String urlState)
+    public String start(/*@Nullable*/String urlState)
     {
         SecureRandom r = new SecureRandom();
         byte[] csrfRaw = new byte[16];
@@ -209,13 +211,13 @@ public class DbxWebAuth
             }
         }
 
-        assert code != null;
+        assert code != null : "@AssumeAssertion(nullness)";
 
         DbxAuthFinish finish = DbxWebAuthHelper.finish(this.appInfo, this.requestConfig, code, this.redirectUri);
         return new DbxAuthFinish(finish.accessToken, finish.userId, givenUrlState);
     }
 
-    private static String getParam(Map<String, String[]> params, String name)
+    private static /*@Nullable*/String getParam(Map<String,String[]> params, String name)
         throws BadRequestException
     {
         String[] v = params.get(name);
