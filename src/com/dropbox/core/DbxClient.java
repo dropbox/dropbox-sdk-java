@@ -1782,6 +1782,10 @@ public final class DbxClient
 
     /**
      * Copy a file or folder from one path in Dropbox to another path in Dropbox.
+     *
+     * @return
+     *    If successful, returns the metadata for new copy of the file or folder,
+     *    otherwise returns {@code null}.
      */
     public /*@Nullable*/DbxEntry copy(String fromPath, String toPath)
         throws DbxException
@@ -1800,6 +1804,7 @@ public final class DbxClient
             public /*@Nullable*/DbxEntry handle(HttpRequestor.Response response)
                 throws DbxException
             {
+                if (response.statusCode == 403) return null;
                 if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
                 DbxEntry.WithChildren dwc = DbxRequestUtil.readJsonFromResponse(DbxEntry.WithChildren.Reader, response.body);
                 if (dwc == null) return null;  // TODO: When can this happen?
@@ -1841,6 +1846,10 @@ public final class DbxClient
 
     /**
      * Create a new folder in Dropbox.
+     *
+     * @return
+     *    If successful, returns the metadata for the newly created folder, otherwise
+     *    returns {@code null}.
      */
     public DbxEntry./*@Nullable*/Folder createFolder(String path)
         throws DbxException
@@ -1890,6 +1899,10 @@ public final class DbxClient
 
     /**
      * Move a file or folder from one path in Dropbox to another path in Dropbox.
+     *
+     * @return
+     *    If successful, returns the metadata for the file or folder at its new location,
+     *    otherwise returns {@code null}.
      */
     public /*@Nullable*/DbxEntry move(String fromPath, String toPath)
         throws DbxException
@@ -1909,6 +1922,7 @@ public final class DbxClient
             public /*@Nullable*/DbxEntry handle(HttpRequestor.Response response)
                 throws DbxException
             {
+                if (response.statusCode == 403) return null;
                 if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
                 DbxEntry.WithChildren dwc = DbxRequestUtil.readJsonFromResponse(DbxEntry.WithChildren.Reader, response.body);
                 if (dwc == null) return null;  // TODO: In what situations can this happen?
