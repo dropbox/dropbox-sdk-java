@@ -28,21 +28,21 @@ public abstract class Collector<E,L>
         }
     }
 
-    public static final class NullSkipper<E,L> extends Collector<E,L>
+    public static final class NullSkipper<E,L> extends Collector</*@Nullable*/E,L>
     {
         private final Collector<E,L> underlying;
 
-        public NullSkipper(Collector<E, L> underlying)
+        public NullSkipper(Collector<E,L> underlying)
         {
             this.underlying = underlying;
         }
 
-        public static <E,L> Collector<E,L> mk(Collector<E,L> underlying)
+        public static <E,L> Collector</*@Nullable*/E,L> mk(Collector<E,L> underlying)
         {
             return new NullSkipper<E,L>(underlying);
         }
 
-        public void add(E element)
+        public void add(/*@Nullable*/E element)
         {
             if (element != null) {
                 underlying.add(element);

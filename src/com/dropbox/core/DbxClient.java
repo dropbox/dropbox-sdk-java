@@ -1546,8 +1546,8 @@ public final class DbxClient
                 throws DbxException
             {
                 if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
-                Collector<DbxEntry.File,ArrayList<DbxEntry.File>> collector =
-                    Collector.NullSkipper.mk(new Collector.ArrayListCollector<DbxEntry.File>());
+                Collector<DbxEntry./*@Nullable*/File,ArrayList<DbxEntry.File>> collector = 
+                    Collector.NullSkipper.<DbxEntry.File,ArrayList<DbxEntry.File>>mk(new Collector.ArrayListCollector<DbxEntry.File>());
                 return DbxRequestUtil.readJsonFromResponse(JsonArrayReader.mk(DbxEntry.File.ReaderMaybeDeleted, collector), response.body);
             }
         });

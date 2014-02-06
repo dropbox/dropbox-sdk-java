@@ -279,7 +279,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
 
         };
 
-        public static final JsonReader<DbxEntry.File> ReaderMaybeDeleted = new JsonReader<DbxEntry.File>()
+        public static final JsonReader<DbxEntry./*@Nullable*/File> ReaderMaybeDeleted = new JsonReader<DbxEntry./*@Nullable*/File>()
         {
             public final DbxEntry./*@Nullable*/File read(JsonParser parser)
                     throws IOException, JsonReadException
