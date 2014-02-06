@@ -198,14 +198,6 @@
                     -->
                     <javacParams>-AstubWarnIfNotFound -Astubs=checker-stubs -AassumeSideEffectFree -AsuppressWarnings=purity.invalid.overriding -AprintErrorStack</javacParams>
                 </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
