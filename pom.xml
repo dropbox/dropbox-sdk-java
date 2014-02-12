@@ -199,6 +199,19 @@
                     <javacParams>-AstubWarnIfNotFound -Astubs=checker-stubs -AassumeSideEffectFree -AsuppressWarnings=purity.invalid.overriding -AprintErrorStack</javacParams>
                 </configuration>
             </plugin>
+
+            <!-- FindBugs -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>findbugs-maven-plugin</artifactId>
+                <version>2.5.3</version>
+                <configuration>
+                    <effort>max</effort>
+                    <threshold>low</threshold>
+                    <xmlOutput>true</xmlOutput>
+                    <excludeFilterFile>support/findbugs-exclude.xml</excludeFilterFile>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 

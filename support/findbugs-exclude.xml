@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Tell FindBugs not to report these issues. -->
+<FindBugsFilter>
+
+    <Match>
+        <Class name="com.dropbox.core.util.Maybe" />
+        <Or>
+            <Method name="Nothing" />
+            <Method name="Just" />
+        </Or>
+        <Bug pattern="NM_METHOD_NAMING_CONVENTION" />
+    </Match>
+
+    <Match>
+        <Class name="com.dropbox.core.json.JsonDateReader" />
+        <Method name="parseDropboxDate" />
+        <Or>
+            <Bug pattern="NS_NON_SHORT_CIRCUIT" />
+            <Bug pattern="NS_DANGEROUS_NON_SHORT_CIRCUIT" />
+        </Or>
+    </Match>
+
+    <Match>
+        <Bug pattern="EI_EXPOSE_REP2" />
+    </Match>
+
+</FindBugsFilter>
