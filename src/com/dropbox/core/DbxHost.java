@@ -16,8 +16,10 @@ import java.io.IOException;
  * This is for mocking things out during testing.  Most of the time you won't have to deal with
  * this class; just use the default value: {@link DbxHost#Default}.
  */
-public final class DbxHost
+public final class DbxHost implements java.io.Serializable
 {
+    public static final long serialVersionUID = 0;
+
     /**
      * The standard Dropbox hosts: "api.dropbox.com", "api-content.dropbox.com",
      * and "www.dropbox.com"
@@ -62,6 +64,11 @@ public final class DbxHost
     public boolean equals(DbxHost o)
     {
         return api.equals(o.api) && content.equals(o.content) && web.equals(o.web);
+    }
+
+    public int hashCode()
+    {
+        return api.hashCode() + content.hashCode() + web.hashCode();
     }
 
     private static DbxHost fromBaseHost(String s)

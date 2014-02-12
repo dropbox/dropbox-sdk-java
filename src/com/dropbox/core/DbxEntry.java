@@ -506,10 +506,10 @@ public abstract class DbxEntry extends Dumpable implements Serializable
         @Override
         public boolean equals(/*@Nullable*/Object o)
         {
-            return o != null && getClass().equals(o.getClass()) && equals((WithChildren) o);
+            return o != null && getClass().equals(o.getClass()) && equals((WithChildrenC) o);
         }
 
-        public boolean equals(WithChildren o)
+        public boolean equals(WithChildrenC o)
         {
             if (children != null ? !children.equals(o.children) : o.children != null)
                 return false;
