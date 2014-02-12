@@ -8,10 +8,7 @@ import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.nio.charset.CharacterCodingException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
 
 import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.json.JsonReadException;
@@ -234,37 +231,6 @@ public class DbxRequestUtil
     public static abstract class ResponseHandler<T>
     {
         public abstract T handle(HttpRequestor.Response response) throws DbxException;
-    }
-
-    public static Map<String,String> parseAsQueryString(InputStream in)
-        throws DbxException
-    {
-        // TODO: Maybe just slurp string up to a max limit.
-        Scanner scanner = new Scanner(in).useDelimiter("&");
-        Map<String,String> result = new HashMap<String,String>();
-        while (scanner.hasNext()) {
-            String pair = scanner.next();
-
-            // The 'Scanner' class masks any IOExceptions that happen on '.next()', so we
-            // have to check for them explicitly.
-            IOException ioe = scanner.ioException();
-            if (ioe != null) {
-                throw new DbxException.NetworkIO(ioe);
-            }
-
-            String[] parts = pair.split("=");
-            if (parts.length < 2) {
-                throw new DbxException.BadResponse("expecting a name-value pair, but there's no '=': \"" + pair + "\"");
-            }
-            else if (parts.length > 2) {
-                throw new DbxException.BadResponse("expecting a single name-value pair, but there's more than one '=': \"" + pair + "\"");
-            }
-            String displaced = result.put(parts[0], parts[1]);
-            if (displaced != null) {
-                throw new DbxException.BadResponse("duplicate query parameter name: \"" + parts[0] + "\"");
-            }
-        }
-        return result;
     }
 
     public static <T> T doGet(DbxRequestConfig requestConfig, String accessToken, String host, String path,
