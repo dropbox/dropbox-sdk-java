@@ -3,7 +3,6 @@ package com.dropbox.core;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
@@ -45,12 +44,7 @@ public class DbxRequestUtil
     public static String buildUri(String host, String path)
     {
         try {
-            return new URI("https", host, "/" + path, null).toURL().toExternalForm();
-        }
-        catch (MalformedURLException ex) {
-            AssertionError ae = new AssertionError();
-            ae.initCause(ex);
-            throw ae;
+            return new URI("https", host, "/" + path, null).toASCIIString();
         }
         catch (URISyntaxException ex) {
             AssertionError ae = new AssertionError();
