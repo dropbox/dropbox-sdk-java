@@ -196,7 +196,7 @@
                         TODO:
                             Add "-AinvariantArrays" when it's fixed: https://code.google.com/p/checker-framework/issues/detail?id=299
                     -->
-                    <javacParams>-AstubWarnIfNotFound -Astubs=checker-stubs -AassumeSideEffectFree -AsuppressWarnings=purity.invalid.overriding -AprintErrorStack</javacParams>
+                    <javacParams>-AstubWarnIfNotFound -Astubs=support/checker-framework-stubs -AassumeSideEffectFree -AsuppressWarnings=purity.invalid.overriding -AprintErrorStack</javacParams>
                 </configuration>
             </plugin>
 
