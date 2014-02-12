@@ -15,6 +15,8 @@ import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
 import com.dropbox.core.util.IOUtil;
 import com.dropbox.core.util.StringUtil;
+import static com.dropbox.core.util.StringUtil.jq;
+import static com.dropbox.core.util.LangUtil.mkAssert;
 
 /*>>> import checkers.nullness.quals.Nullable; */
 
@@ -26,9 +28,7 @@ public class DbxRequestUtil
             return URLEncoder.encode(s, "UTF-8");
         }
         catch (UnsupportedEncodingException ex) {
-            AssertionError ae = new AssertionError("UTF-8 not supported?  Should never happen, right?");
-            ae.initCause(ex);
-            throw ae;
+            throw mkAssert("UTF-8 should always be supported", ex);
         }
     }
 
@@ -44,9 +44,7 @@ public class DbxRequestUtil
             return new URI("https", host, "/" + path, null).toASCIIString();
         }
         catch (URISyntaxException ex) {
-            AssertionError ae = new AssertionError();
-            ae.initCause(ex);
-            throw ae;
+            throw mkAssert("URI creation failed, host=" + jq(host) + ", path=" + jq(path), ex);
         }
     }
 

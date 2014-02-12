@@ -1,6 +1,8 @@
 package com.dropbox.core.json;
 
 import com.dropbox.core.util.IOUtil;
+import static com.dropbox.core.util.LangUtil.mkAssert;
+
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonLocation;
 import com.fasterxml.jackson.core.JsonParseException;
@@ -260,9 +262,7 @@ public abstract class JsonReader<T>
             throw JsonReadException.fromJackson(ex);
         }
         catch (IOException ex) {
-            AssertionError ae = new AssertionError("Got IOException reading from String");
-            ae.initCause(ae);
-            throw ae;
+            throw mkAssert("IOException reading from String", ex);
         }
     }
 
@@ -282,9 +282,7 @@ public abstract class JsonReader<T>
             throw JsonReadException.fromJackson(ex);
         }
         catch (IOException ex) {
-            AssertionError ae = new AssertionError("Got IOException reading from byte[]");
-            ae.initCause(ae);
-            throw ae;
+            throw mkAssert("IOException reading from byte[]", ex);
         }
     }
 

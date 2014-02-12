@@ -1,5 +1,7 @@
 package com.dropbox.core.util;
 
+import static com.dropbox.core.util.LangUtil.mkAssert;
+
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
@@ -30,7 +32,7 @@ public class StringUtil
             return s.getBytes("UTF-8");
         }
         catch (UnsupportedEncodingException ex) {
-            throw new AssertionError("UTF-8 is unsupported: " + ex.getMessage());
+            throw mkAssert("UTF-8 should always be supported", ex);
         }
     }
 

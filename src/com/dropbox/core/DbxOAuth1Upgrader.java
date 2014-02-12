@@ -3,6 +3,8 @@ package com.dropbox.core;
 import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
+import static com.dropbox.core.util.LangUtil.mkAssert;
+
 import com.fasterxml.jackson.core.JsonLocation;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
@@ -93,9 +95,7 @@ public final class DbxOAuth1Upgrader
             return URLEncoder.encode(s, "UTF-8");
         }
         catch (UnsupportedEncodingException ex) {
-            AssertionError ae = new AssertionError("UTF-8 isn't available");
-            ae.initCause(ex);
-            throw ae;
+            throw mkAssert("UTF-8 should always be supported", ex);
         }
     }
 
