@@ -10,7 +10,9 @@ import java.nio.charset.CharsetDecoder;
 public class StringUtil
 {
     public static final Charset UTF8 = Charset.forName("UTF-8");
-    public static final char[] HexDigits = {'0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f',};
+
+    private static final char[] HexDigits = {'0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f',};
+    public static char hexDigit(int i) { return HexDigits[i]; }
 
     public static String utf8ToString(byte[] utf8data)
         throws CharacterCodingException
@@ -58,10 +60,10 @@ public class StringUtil
                         int h3 = (c >> 4) & 0xf;
                         int h4 = c & 0xf;
                         b.append("\\u");
-                        b.append(HexDigits[h1]);
-                        b.append(HexDigits[h2]);
-                        b.append(HexDigits[h3]);
-                        b.append(HexDigits[h4]);
+                        b.append(hexDigit(h1));
+                        b.append(hexDigit(h2));
+                        b.append(hexDigit(h3));
+                        b.append(hexDigit(h4));
                     }
                     break;
             }
@@ -93,8 +95,8 @@ public class StringUtil
         int j = 0;
         for (int i = offset; i < end; i++) {
             int b = data[i];
-            chars[j++] = StringUtil.HexDigits[b >>> 4 & 0xF];
-            chars[j++] = StringUtil.HexDigits[b & 0xF];
+            chars[j++] = hexDigit(b >>> 4 & 0xF);
+            chars[j++] = hexDigit(b & 0xF);
         }
 
         return new String(chars);
