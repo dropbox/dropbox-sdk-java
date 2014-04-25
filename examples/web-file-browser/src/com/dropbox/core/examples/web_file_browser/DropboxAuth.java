@@ -37,7 +37,7 @@ public class DropboxAuth
         String authorizeUrl = getWebAuth(request).start();
 
         // Redirect the user to the Dropbox website so they can approve our application.
-        // They'll be sent back to /dropbox-auth-finish when they're done.
+        // The Dropbox website will send them back to /dropbox-auth-finish when they're done.
         response.sendRedirect(authorizeUrl);
     }
 
@@ -86,11 +86,12 @@ public class DropboxAuth
         }
         catch (DbxWebAuth.ProviderException e) {
             common.log.println("On /dropbox-auth-finish: Auth failed: " + e.getMessage());
-            response.sendError(500, "Error communicating with Dropbox.");
+            response.sendError(503, "Error communicating with Dropbox.");
             return;
         }
         catch (DbxException e) {
             common.log.println("On /dropbox-auth-finish: Error getting token: " + e);
+            response.sendError(503, "Error communicating with Dropbox.");
             return;
         }
 

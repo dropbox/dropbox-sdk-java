@@ -25,53 +25,80 @@ import java.util.Map;
  * String userLocale = ...
  * {@link DbxRequestConfig} requestConfig = new DbxRequestConfig("text-edit/0.1", userLocale);
  * {@link DbxAppInfo} appInfo = DbxAppInfo.Reader.readFromFile("api.app");
- * String redirectUri = "http://my-server.com/dropbox-auth-finish"
- * HttpSession session = request.getSession(true);
+ *
+ * <b>// Select a spot in the session for DbxWebAuth to store the CSRF token.</b>
+ * javax.servlet.http.HttpServletRequest request = ...
+ * javax.servlet.http.HttpSession session = request.getSession(true);
  * String sessionKey = "dropbox-auth-csrf-token";
  * DbxSessionStore csrfTokenStore = new DbxStandardSessionStore(session, sessionKey);
- * DbxWebAuth webAuth = new DbxWebAuth(requestConfig, appInfo, redirectUri, csrfTokenStore);
+ *
+ * String redirectUri = "http://my-server.com/dropbox-auth-finish"
+ * DbxWebAuth auth = new DbxWebAuth(requestConfig, appInfo, redirectUri, csrfTokenStore);
  * </pre>
  *
  * <p>
- * Example, part 1 (doesn't include error handling code):
+ * Part 1 (handler for "http://my-server.com/dropbox-auth-start").
  * </p>
  * <pre>
+ * javax.servlet.http.HttpServletResponse response = ...
+ *
  * <b>// Start authorization.</b>
- * String authorizeUrl = auth.{@link #start start}();
+ * String authorizePageUrl = auth.{@link #start start}();
  *
- * <b>// Send user to Dropbox authorization page, which will redirect back to your</b>
- * <b>// "callback URL" after the user authorizes your app (part 2, below).</b>
- * sendRedirect(authUrl);
+ * <b>// Redirect the user to the Dropbox website so they can approve our application.</b>
+ * <b>// The Dropbox website will send them back to "http://my-server.com/dropbox-auth-finish"</b>
+ * <b>// when they're done.</b>
+ * response.sendRedirect(authorizePageUrl);
  * </pre>
  *
  * <p>
- * Servlet Example, part 2 (handler for "http://my-server.com/dropbox-auth"; doesn't
- * include error-handling code)
+ * Part 2 (handler for "http://my-server.com/dropbox-auth-finish").
  * </p>
  * <pre>
- * <b>// Load the request token we saved in part 1.</b>
- * DbxRequestToken requestToken = (RequestToken) session.getAttribute("dropbox-request-token");
- * if (requestToken == null) return error("Couldn't find request token in session.");
- * session.removeAttribute("dropbox-request-token");
+ * javax.servlet.http.HttpServletResponse response = ...
  *
- * <b>// Check 'oauth_token' to make sure this request is really from Dropbox.</b>
- * String key = request.getParameter("oauth_token");
- * if (key == null) return error("Missing parameter 'oauth_token'.");
- * if (!secureStringEquals(key, requestToken.key)) return error("Invalid 'oauth_token' parameter.");
- *
- * <b>// Finish authorization to get an "access token".</b>
  * {@link DbxAuthFinish} authFinish;
  * try {
- *     authFinish = auth.{@link #finish finish}(requestToken);
+ *     authFinish = auth.{@link #finish finish}(request.getParameterMap());
  * }
- * DbxAccessToken accessToken = authResponse.accessToken;
+ * catch (DbxWebAuth.BadRequestException ex) {
+ *     log("On /dropbox-auth-finish: Bad request: " + ex.getMessage());
+ *     response.sendError(400);
+ *     return;
+ * }
+ * catch (DbxWebAuth.BadStateException ex) {
+ *     // Send them back to the start of the auth flow.
+ *     response.sendRedirect("http://my-server.com/dropbox-auth-start");
+ *     return;
+ * }
+ * catch (DbxWebAuth.CsrfException ex) {
+ *     log("On /dropbox-auth-finish: CSRF mismatch: " + ex.getMessage());
+ *     return;
+ * }
+ * catch (DbxWebAuth.NotApprovedException ex) {
+ *     <b>// When Dropbox asked "Do you want to allow this app to access your</b>
+ *     <b>// Dropbox account?", the user clicked "No".</b>
+ *     ...
+ *     return;
+ * }
+ * catch (DbxWebAuth.ProviderException ex) {
+ *     log("On /dropbox-auth-finish: Auth failed: " + ex.getMessage());
+ *     response.sendError(503, "Error communicating with Dropbox.");
+ *     return;
+ * }
+ * catch (DbxException ex) {
+ *     log("On /dropbox-auth-finish: Error getting token: " + ex.getMessage());
+ *     response.sendError(503, "Error communicating with Dropbox.");
+ *     return;
+ * }
+ * String accessToken = authResponse.accessToken;
  *
  * <b>// Save the access token somewhere (probably in your database) so you</b>
  * <b>// don't need to send the user through the authorization process again.</b>
  * ...
  *
  * <b>// Now use the access token to make Dropbox API calls.</b>
- * {@link DbxClient} client = new DbxClient(requestConfig, authFinish.accessToken);
+ * {@link DbxClient} client = new DbxClient(requestConfig, accessToken);
  * ...
  * </pre>
  */
