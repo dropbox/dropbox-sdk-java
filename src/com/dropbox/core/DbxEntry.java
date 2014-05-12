@@ -226,6 +226,8 @@ public abstract class DbxEntry extends Dumpable implements Serializable
          * the file you think you're overwriting.
          */
         public final String rev;
+        
+        public boolean deleted = Boolean.FALSE;
 
         /**
          * @param path {@link #path}
@@ -237,14 +239,26 @@ public abstract class DbxEntry extends Dumpable implements Serializable
          * @param clientMtime {@link #clientMtime}
          * @param rev {@link #rev}
          */
-        public File(String path, String iconName, boolean mightHaveThumbnail, long numBytes, String humanSize, Date lastModified, Date clientMtime, String rev)
+//        public File(String path, String iconName, boolean mightHaveThumbnail, long numBytes, String humanSize, Date lastModified, Date clientMtime, String rev)
+//        {
+//            super(path, iconName, mightHaveThumbnail);
+//            this.numBytes = numBytes;
+//            this.humanSize = humanSize;
+//            this.lastModified = lastModified;
+//            this.clientMtime = clientMtime;
+//            this.rev = rev;
+//        }
+        
+        public File(String path, String iconName, boolean mightHaveThumbnail, long numBytes, String humanSize, Date lastModified, Date clientMtime, String rev, boolean deleted)
         {
+//            this(path, iconName, mightHaveThumbnail, numBytes, humanSize, lastModified, clientMtime, rev);
             super(path, iconName, mightHaveThumbnail);
             this.numBytes = numBytes;
             this.humanSize = humanSize;
             this.lastModified = lastModified;
             this.clientMtime = clientMtime;
             this.rev = rev;
+            this.deleted = deleted;
         }
 
         protected void dumpFields(DumpWriter w)
@@ -632,16 +646,16 @@ public abstract class DbxEntry extends Dumpable implements Serializable
             if (modified == null) throw new JsonReadException("missing \"modified\" for a file entry", top);
             if (client_mtime == null) throw new JsonReadException("missing \"client_mtime\" for a file entry", top);
             if (rev == null) throw new JsonReadException("missing \"rev\" for a file entry", top);
-            e = new File(path, icon, thumb_exists, bytes, size, modified, client_mtime, rev);
+            e = new File(path, icon, thumb_exists, bytes, size, modified, client_mtime, rev, is_deleted);
         }
 
-        if (is_deleted) {
-            if (allowDeleted) {
-                return null;
-            } else {
-                throw new JsonReadException("not expecting \"is_deleted\" entry here", top);
-            }
-        }
+//        if (is_deleted) {
+//            if (allowDeleted) {
+//                return null;
+//            } else {
+//                throw new JsonReadException("not expecting \"is_deleted\" entry here", top);
+//            }
+//        }
         return new WithChildrenC<C>(e, hash, contents);
     }
 

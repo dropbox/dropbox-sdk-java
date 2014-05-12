@@ -176,7 +176,7 @@ public final class DbxClient
         String host = this.host.api;
         String apiPath = "1/metadata/auto" + path;
 
-        String[] params = { "list", "true", "file_limit", "25000", };
+        String[] params = { "list", "true", "file_limit", "25000", "include_deleted", "true", };
 
         return doGet(host, apiPath, params, null, new DbxRequestUtil.ResponseHandler</*@Nullable*/T>() {
             @Override
