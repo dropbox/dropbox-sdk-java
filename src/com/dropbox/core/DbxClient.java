@@ -142,10 +142,10 @@ public final class DbxClient
      *    Otherwise, return the metadata for that path and the metadata for all its immediate
      *    children (if it's a folder).
      */
-    public DbxEntry./*@Nullable*/WithChildren getMetadataWithChildren(String path)
+    public DbxEntry./*@Nullable*/WithChildren getMetadataWithChildren(String path, boolean includeDeleted)
         throws DbxException
     {
-        return getMetadataWithChildrenBase(path, DbxEntry.WithChildren.ReaderMaybeDeleted);
+        return getMetadataWithChildrenBase(path, DbxEntry.WithChildren.ReaderMaybeDeleted, includeDeleted);
     }
 
     /**
@@ -162,13 +162,13 @@ public final class DbxClient
      * the entire call succeeds.
      * </p>
      */
-    public <C> DbxEntry./*@Nullable*/WithChildrenC<C> getMetadataWithChildrenC(String path, final Collector<DbxEntry, ? extends C> collector)
+    public <C> DbxEntry./*@Nullable*/WithChildrenC<C> getMetadataWithChildrenC(String path, final Collector<DbxEntry, ? extends C> collector, boolean includeDeleted)
         throws DbxException
     {
-        return getMetadataWithChildrenBase(path, new DbxEntry.WithChildrenC.ReaderMaybeDeleted<C>(collector));
+        return getMetadataWithChildrenBase(path, new DbxEntry.WithChildrenC.ReaderMaybeDeleted<C>(collector), includeDeleted);
     }
 
-    private <T> /*@Nullable*/T getMetadataWithChildrenBase(String path, final JsonReader<? extends T> reader)
+    private <T> /*@Nullable*/T getMetadataWithChildrenBase(String path, final JsonReader<? extends T> reader, boolean includeDeleted)
         throws DbxException
     {
         DbxPath.checkArg("path", path);
@@ -176,7 +176,7 @@ public final class DbxClient
         String host = this.host.api;
         String apiPath = "1/metadata/auto" + path;
 
-        String[] params = { "list", "true", "file_limit", "25000", "include_deleted", "true", };
+        String[] params = { "list", "true", "file_limit", "25000", "include_deleted", ""+includeDeleted, };
 
         return doGet(host, apiPath, params, null, new DbxRequestUtil.ResponseHandler</*@Nullable*/T>() {
             @Override
