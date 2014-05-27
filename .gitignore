@@ -4,3 +4,6 @@
 # IntelliJ project folder
 /intellij
 
+/.settings/*
+/.classpath
+/.project
