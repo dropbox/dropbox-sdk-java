@@ -692,7 +692,7 @@ public class DbxClientTest
         assertTrue(r.isFolder());
         assertEquals(r.path, dest);
 
-        DbxEntry.WithChildren c = client.getMetadataWithChildren(dest, false);
+        DbxEntry.WithChildren c = client.getMetadataWithChildren(dest);
         assertEquals(c.children.size(), 2);
 
         // Make sure source is now gone.
@@ -715,7 +715,7 @@ public class DbxClientTest
         assertTrue(r.isFolder());
         assertEquals(r.path, dest);
 
-        DbxEntry.WithChildren c = client.getMetadataWithChildren(dest, false);
+        DbxEntry.WithChildren c = client.getMetadataWithChildren(dest);
         assertEquals(c.children.size(), 0);
 
         // Make sure source is now gone.
