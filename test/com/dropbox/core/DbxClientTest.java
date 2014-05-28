@@ -1,19 +1,12 @@
 package com.dropbox.core;
 
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.util.IOUtil;
 import static com.dropbox.core.util.StringUtil.jq;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotEquals;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertNull;
+import static org.testng.Assert.assertTrue;
 
-import com.dropbox.core.util.Maybe;
-import com.dropbox.core.util.StringUtil;
-import static org.testng.Assert.*;
-
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.Test;
-
-import javax.imageio.ImageIO;
-import javax.imageio.ImageReader;
-import javax.imageio.stream.MemoryCacheImageInputStream;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -21,7 +14,24 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
+
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.MemoryCacheImageInputStream;
+
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.Test;
+
+import com.dropbox.core.json.JsonReader;
+import com.dropbox.core.util.IOUtil;
+import com.dropbox.core.util.Maybe;
+import com.dropbox.core.util.StringUtil;
 
 public class DbxClientTest
 {
@@ -60,7 +70,9 @@ public class DbxClientTest
         while (entry == null) {
             String tryPath = basePath + "(" + i + ")";
             i++;
-            if (i > 100) throw new RuntimeException("Unable to create folder " + jq(basePath));
+            if (i > 100) {
+                throw new RuntimeException("Unable to create folder " + jq(basePath));
+            }
             entry = client.createFolder(tryPath);
         }
 
@@ -160,13 +172,13 @@ public class DbxClientTest
             DbxEntry.File f = (DbxEntry.File) entry;
             assertEquals(f.numBytes, 100);
 
-            DbxEntry.WithChildren mwc = client.getMetadataWithChildren(p("a.txt"), false);
+            DbxEntry.WithChildren mwc = client.getMetadataWithChildren(p("a.txt"));
             assertEquals(mwc.entry, entry);
         }
 
         // Containing folder.
         {
-            DbxEntry.WithChildren mwc = client.getMetadataWithChildren(p(), false);
+            DbxEntry.WithChildren mwc = client.getMetadataWithChildren(p());
             assertEquals(mwc.children.size(), 1);
 
             // Folder metadata should be the same if we call /metadata again.
@@ -179,7 +191,7 @@ public class DbxClientTest
             DbxEntry entry = client.getMetadata(p("does not exists.txt"));
             assertNull(entry);
 
-            DbxEntry.WithChildren mwc = client.getMetadataWithChildren(p("does not exist.txt"), false);
+            DbxEntry.WithChildren mwc = client.getMetadataWithChildren(p("does not exist.txt"));
             assertNull(mwc);
         }
     }
@@ -215,7 +227,9 @@ public class DbxClientTest
                     }
                 }
                 cursor = d.cursor;
-                if (!d.hasMore) break;
+                if (!d.hasMore) {
+                    break;
+                }
             }
 
             assertEquals(expected.size(), 0);
@@ -237,7 +251,9 @@ public class DbxClientTest
                     assertTrue(removed);
                 }
                 cursor = d.cursor;
-                if (!d.hasMore) break;
+                if (!d.hasMore) {
+                    break;
+                }
             }
 
             assertEquals(expected.size(), 0);
@@ -364,7 +380,7 @@ public class DbxClientTest
         DbxEntry.File destMd = client.copyFromCopyRef(copyRef, dest).asFile();
         assertEquals(size, destMd.numBytes);
 
-        DbxEntry.WithChildren mwc = client.getMetadataWithChildren(p(), false);
+        DbxEntry.WithChildren mwc = client.getMetadataWithChildren(p());
         assertEquals(mwc.children.size(), 2);
     }
 
@@ -386,7 +402,7 @@ public class DbxClientTest
         assertTrue(r.isFolder());
         assertEquals(r.path, dest);
 
-        DbxEntry.WithChildren c = client.getMetadataWithChildren(dest, false);
+        DbxEntry.WithChildren c = client.getMetadataWithChildren(dest);
         assertEquals(c.children.size(), 2);
     }
 
@@ -406,7 +422,7 @@ public class DbxClientTest
         assertTrue(r.isFolder());
         assertEquals(r.path, dest);
 
-        DbxEntry.WithChildren c = client.getMetadataWithChildren(dest, false);
+        DbxEntry.WithChildren c = client.getMetadataWithChildren(dest);
         assertEquals(c.children.size(), 0);
     }
 
@@ -560,7 +576,7 @@ public class DbxClientTest
         assertEquals(md.numBytes, size);
         assertEquals(md.path, dest);
 
-        DbxEntry.WithChildren mwc = client.getMetadataWithChildren(p(), false);
+        DbxEntry.WithChildren mwc = client.getMetadataWithChildren(p());
         assertEquals(mwc.children.size(), 2);
     }
 
@@ -582,7 +598,7 @@ public class DbxClientTest
         assertTrue(r.isFolder());
         assertEquals(r.path, dest);
 
-        DbxEntry.WithChildren c = client.getMetadataWithChildren(dest, false);
+        DbxEntry.WithChildren c = client.getMetadataWithChildren(dest);
         assertEquals(c.children.size(), 2);
     }
 
@@ -601,7 +617,7 @@ public class DbxClientTest
         assertTrue(r.isFolder());
         assertEquals(r.path, dest);
 
-        DbxEntry.WithChildren c = client.getMetadataWithChildren(dest, false);
+        DbxEntry.WithChildren c = client.getMetadataWithChildren(dest);
         assertEquals(c.children.size(), 0);
     }
 
@@ -611,11 +627,11 @@ public class DbxClientTest
     {
         init();
 
-        DbxEntry.WithChildren mwc = client.getMetadataWithChildren(p(), false);
+        DbxEntry.WithChildren mwc = client.getMetadataWithChildren(p());
         assertEquals(mwc.children.size(), 0);
 
         client.createFolder(p("a"));
-        mwc = client.getMetadataWithChildren(p(), false);
+        mwc = client.getMetadataWithChildren(p());
         assertEquals(mwc.children.size(), 1);
 
         DbxEntry folderMd = client.getMetadata(p("a"));
@@ -634,7 +650,7 @@ public class DbxClientTest
         addFile(path, size);
         client.delete(path);
 
-        DbxEntry.WithChildren mwc = client.getMetadataWithChildren(p(), false);
+        DbxEntry.WithChildren mwc = client.getMetadataWithChildren(p());
         assertEquals(mwc.children.size(), 0);
     }
 
@@ -649,13 +665,13 @@ public class DbxClientTest
         int size = 1024;
 
         addFile(source, size);
-        DbxEntry.WithChildren mwc = client.getMetadataWithChildren(p(), false);
+        DbxEntry.WithChildren mwc = client.getMetadataWithChildren(p());
         assertEquals(mwc.children.size(), 1);
 
         DbxEntry.File destMd = client.move(source, dest).asFile();
         assertEquals(destMd.numBytes, size);
 
-        mwc = client.getMetadataWithChildren(p(), false);
+        mwc = client.getMetadataWithChildren(p());
         assertEquals(mwc.children.size(), 1);
     }
 
