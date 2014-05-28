@@ -9,7 +9,7 @@
 
     <groupId>com.dropbox.core</groupId>
     <artifactId>dropbox-core-sdk</artifactId>
-    <version>GHajba-1</version>
+    <version>0-SNAPSHOT</version>
 
     <packaging>jar</packaging>
 
