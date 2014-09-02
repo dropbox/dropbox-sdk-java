@@ -103,3 +103,10 @@ Prerequisite: In the Dropbox API [app configuration console](https://www.dropbox
 cd examples
 ./run web-file-browser 5000 test.app web-file-browser.db
 ```
+
+## Running the tests
+
+1. Run through the `authorize` example above to get a "test.auth" file.
+2. `./run-tests <path-to-test.auth>`
+
+Run `./run-tests` with no arguments to see how to run individual tests.

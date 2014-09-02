@@ -1,0 +1,38 @@
+#! /usr/bin/env bash
+# ------------------------------------------------------------------------------
+# A wrapper script for "mvn test".  Primarily just for the help message.
+# ------------------------------------------------------------------------------
+
+if [ $# -eq 0 ]; then
+    cat <<END
+
+Usage: $0 <path-to-auth-file> [ <test-selector> ]
+
+<path-to-auth-file>: The path to a ".auth" file.  You can generate a
+    ".auth" file by running the "authorize" example program (see
+    ReadMe.md for instructions on how to do that).
+
+<test-selector> [optional]: If omitted, all the tests are run.  If 
+    provided, only the specified tests are run.  Example values:
+    - "DbxClientTest"
+    - "DbxClientTest,StringUtilTest"
+    - "DbxClientTest#testMoveFolder"
+    - "DbxClientTest#testMove*"
+    - "DbxClientTest#testMoveFolder+testMoveEmptyFolder"
+
+    For the full specification, see:
+      http://maven.apache.org/surefire/maven-surefire-plugin/examples/single-test.html
+
+END
+    exit
+elif [ $# -eq 1 ]; then
+    args=("-DdbxAuthInfoFile=$1")
+elif [ $# -eq 2 ]; then
+    args=("-DdbxAuthInfoFile=$1" "-Dtest=$2")
+else
+    echo 1>&2 "Expecting at most 2 arguments, got $#."
+    echo 1>&2 "Run with no arguments for help."
+    exit 1
+fi
+
+exec mvn test -DskipTests=false "${args[@]}"
