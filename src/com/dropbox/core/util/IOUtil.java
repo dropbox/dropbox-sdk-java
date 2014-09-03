@@ -41,19 +41,19 @@ public class IOUtil
         copyStreamToStream(in, out, new byte[copyBufferSize]);
     }
 
-    @SuppressWarnings("nullness:type.argument.type.incompatible")
-    private static final ThreadLocal<byte[]> slurpBuffer = new ThreadLocal<byte[]>() {
-        protected byte[] initialValue() { return new byte[4096]; }
-    };
-
     public static byte[] slurp(InputStream in, int byteLimit)
+            throws IOException
+    {
+        return slurp(in, byteLimit, new byte[DefaultCopyBufferSize]);
+    }
+
+    public static byte[] slurp(InputStream in, int byteLimit, byte[] slurpBuffer)
         throws IOException
     {
         if (byteLimit < 0) throw new RuntimeException("'byteLimit' must be non-negative: " + byteLimit);
 
-        byte[] copyBuffer = slurpBuffer.get();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        copyStreamToStream(in, baos, copyBuffer);
+        copyStreamToStream(in, baos, slurpBuffer);
         return baos.toByteArray();
     }
 
