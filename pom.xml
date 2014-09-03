@@ -259,6 +259,24 @@
                     <excludeFilterFile>support/findbugs-exclude.xml</excludeFilterFile>
                 </configuration>
             </plugin>
+
+            <!-- Write test classpath to a file. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <configuration>
+                    <outputFile>${project.build.directory}/test-classpath</outputFile>
+                    <includeScope>test</includeScope>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>test-compile</phase>
+                        <goals>
+                            <goal>build-classpath</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 

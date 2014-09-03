@@ -110,3 +110,11 @@ cd examples
 2. `./run-tests <path-to-test.auth>`
 
 Run `./run-tests` with no arguments to see how to run individual tests.
+
+## Running the benchmarks
+
+1. `mvn test-compile`
+2. `./run-bench <fully-qualified-benchmark-class>`
+
+For example: `./run-bench com.dropbox.core.json.JsonDateReaderBench.ParseDropboxDate`
+

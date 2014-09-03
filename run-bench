@@ -1,0 +1,35 @@
+#! /usr/bin/env bash
+
+mvn_target_dir="target"
+
+# Locate the script file.  Cross symlinks if necessary.
+loc="$0"
+while [ -h "$loc" ]; do
+	ls=`ls -ld "$loc"`
+	link=`expr "$ls" : '.*-> \(.*\)$'`
+	if expr "$link" : '/.*' > /dev/null; then
+		loc="$link"  # Absolute link
+	else
+		loc="`dirname "$loc"`/$link"  # Relative link
+	fi
+done
+
+die() {
+    for line in "$@"; do
+        echo 1>&2 "$line"
+    done
+    exit 1
+}
+
+base_dir=`dirname "$loc"`
+build_dir="$base_dir/$mvn_target_dir"
+
+classpath_file="$build_dir/test-classpath"
+
+[ -f "$classpath_file" ] || die \
+    "Missing file \"$classpath_file\"." \
+    "Did you run \"mvn test-compile\" yet?"
+
+classpath="$build_dir/classes:$build_dir/test-classes"
+classpath="$classpath:$(cat "$classpath_file")"
+exec java -cp "$classpath" com.dropbox.core.CaliperMainRelay "$@"
