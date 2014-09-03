@@ -111,6 +111,7 @@ public abstract class DumpWriter
         {
             if (!nl) throw new AssertionError("called listEnd() in a bad state");
             indentLess();
+            prefix();
             buf.append("]\n");
             nl = true;
             return this;
