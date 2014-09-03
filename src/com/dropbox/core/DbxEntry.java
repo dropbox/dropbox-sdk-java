@@ -5,8 +5,9 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import com.dropbox.core.json.*;
 import com.dropbox.core.json.JsonArrayReader;
+import com.dropbox.core.json.JsonDateReader;
+import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
 import com.dropbox.core.util.Collector;
 import com.dropbox.core.util.DumpWriter;
@@ -73,6 +74,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
         this.mightHaveThumbnail = mightHaveThumbnail;
     }
 
+    @Override
     protected void dumpFields(DumpWriter w)
     {
         w.value(path);
@@ -106,10 +108,18 @@ public abstract class DbxEntry extends Dumpable implements Serializable
 
     protected boolean partialEquals(DbxEntry o)
     {
-        if (!name.equals(o.name)) return false;
-        if (!path.equals(o.path)) return false;
-        if (!iconName.equals(o.iconName)) return false;
-        if (mightHaveThumbnail != o.mightHaveThumbnail) return false;
+        if (!name.equals(o.name)) {
+            return false;
+        }
+        if (!path.equals(o.path)) {
+            return false;
+        }
+        if (!iconName.equals(o.iconName)) {
+            return false;
+        }
+        if (mightHaveThumbnail != o.mightHaveThumbnail) {
+            return false;
+        }
         return true;
     }
 
@@ -141,15 +151,21 @@ public abstract class DbxEntry extends Dumpable implements Serializable
             super(path, iconName, mightHaveThumbnail);
         }
 
+        @Override
         protected String getTypeName() { return "Folder"; }
 
+        @Override
         public boolean isFolder() { return true; }
+        @Override
         public boolean isFile() { return false; }
+        @Override
         public Folder asFolder() { return this; }
+        @Override
         public File asFile() { throw new RuntimeException("not a file"); }
 
         public static final JsonReader<DbxEntry.Folder> Reader = new JsonReader<DbxEntry.Folder>()
         {
+            @Override
             public final DbxEntry.Folder read(JsonParser parser)
                 throws IOException, JsonReadException
             {
@@ -163,6 +179,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
 
         };
 
+        @Override
         public boolean equals(/*@Nullable*/Object o)
         {
             return o != null && getClass().equals(o.getClass()) && equals((Folder) o);
@@ -170,10 +187,13 @@ public abstract class DbxEntry extends Dumpable implements Serializable
 
         public boolean equals(Folder o)
         {
-            if (!partialEquals(o)) return false;
+            if (!partialEquals(o)) {
+                return false;
+            }
             return true;
         }
 
+        @Override
         public int hashCode()
         {
             return partialHashCode();
@@ -226,6 +246,11 @@ public abstract class DbxEntry extends Dumpable implements Serializable
          * the file you think you're overwriting.
          */
         public final String rev;
+        
+        /**
+         * Indicates if this file is deleted or not.
+         */
+        public boolean deleted = Boolean.FALSE;
 
         /**
          * @param path {@link #path}
@@ -247,6 +272,24 @@ public abstract class DbxEntry extends Dumpable implements Serializable
             this.rev = rev;
         }
 
+        /**
+         * @param path {@link #path}
+         * @param iconName {@link #iconName}
+         * @param mightHaveThumbnail {@link #mightHaveThumbnail}
+         * @param numBytes {@link #numBytes}
+         * @param humanSize {@link #humanSize}
+         * @param lastModified {@link #lastModified}
+         * @param clientMtime {@link #clientMtime}
+         * @param rev {@link #rev}
+         * @param deleted {@link #deleted}
+         */
+        public File(String path, String iconName, boolean mightHaveThumbnail, long numBytes, String humanSize, Date lastModified, Date clientMtime, String rev, boolean deleted)
+        {
+            this(path, iconName, mightHaveThumbnail, numBytes, humanSize, lastModified, clientMtime, rev);
+            this.deleted = deleted;
+        }
+
+        @Override
         protected void dumpFields(DumpWriter w)
         {
             super.dumpFields(w);
@@ -257,15 +300,21 @@ public abstract class DbxEntry extends Dumpable implements Serializable
             w.field("rev", rev);
         }
 
+        @Override
         protected String getTypeName() { return "File"; }
 
+        @Override
         public boolean isFolder() { return false; }
+        @Override
         public boolean isFile() { return true; }
+        @Override
         public Folder asFolder() { throw new RuntimeException("not a folder"); }
+        @Override
         public File asFile() { return this; }
 
         public static final JsonReader<DbxEntry.File> Reader = new JsonReader<DbxEntry.File>()
         {
+            @Override
             public final DbxEntry.File read(JsonParser parser)
                 throws IOException, JsonReadException
             {
@@ -281,12 +330,15 @@ public abstract class DbxEntry extends Dumpable implements Serializable
 
         public static final JsonReader<DbxEntry./*@Nullable*/File> ReaderMaybeDeleted = new JsonReader<DbxEntry./*@Nullable*/File>()
         {
+            @Override
             public final DbxEntry./*@Nullable*/File read(JsonParser parser)
                     throws IOException, JsonReadException
             {
                 JsonLocation top = parser.getCurrentLocation();
                 WithChildrenC<?> wc = DbxEntry._read(parser, null, true);
-                if (wc == null) return null;
+                if (wc == null) {
+                    return null;
+                }
                 DbxEntry e = wc.entry;
                 if (!(e instanceof DbxEntry.File)) {
                     throw new JsonReadException("Expecting a file entry, got a folder entry", top);
@@ -296,6 +348,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
 
         };
 
+        @Override
         public boolean equals(/*@Nullable*/Object o)
         {
             return o != null && getClass().equals(o.getClass()) && equals((File) o);
@@ -303,15 +356,28 @@ public abstract class DbxEntry extends Dumpable implements Serializable
 
         public boolean equals(File o)
         {
-            if (!partialEquals(o)) return false;
-            if (numBytes != o.numBytes) return false;
-            if (!humanSize.equals(o.humanSize)) return false;
-            if (!lastModified.equals(o.lastModified)) return false;
-            if (!clientMtime.equals(o.clientMtime)) return false;
-            if (!rev.equals(o.rev)) return false;
+            if (!partialEquals(o)) {
+                return false;
+            }
+            if (numBytes != o.numBytes) {
+                return false;
+            }
+            if (!humanSize.equals(o.humanSize)) {
+                return false;
+            }
+            if (!lastModified.equals(o.lastModified)) {
+                return false;
+            }
+            if (!clientMtime.equals(o.clientMtime)) {
+                return false;
+            }
+            if (!rev.equals(o.rev)) {
+                return false;
+            }
             return true;
         }
 
+        @Override
         public int hashCode()
         {
             // Not including 'humanSize' since it's mostly derivable from 'numBytes'
@@ -329,6 +395,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
 
     public static final JsonReader<DbxEntry> Reader = new JsonReader<DbxEntry>()
     {
+        @Override
         public final DbxEntry read(JsonParser parser)
                 throws IOException, JsonReadException
         {
@@ -338,11 +405,14 @@ public abstract class DbxEntry extends Dumpable implements Serializable
 
     public static final JsonReader</*@Nullable*/DbxEntry> ReaderMaybeDeleted = new JsonReader</*@Nullable*/DbxEntry>()
     {
+        @Override
         public final /*@Nullable*/DbxEntry read(JsonParser parser)
                 throws IOException, JsonReadException
         {
             WithChildrenC<?> wc = DbxEntry.readMaybeDeleted(parser, null);
-            if (wc == null) return null;
+            if (wc == null) {
+                return null;
+            }
             return wc.entry;
         }
     };
@@ -390,6 +460,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
 
         public static final JsonReader<WithChildren> Reader = new JsonReader<WithChildren>()
         {
+            @Override
             public final WithChildren read(JsonParser parser)
                     throws IOException, JsonReadException
             {
@@ -400,15 +471,19 @@ public abstract class DbxEntry extends Dumpable implements Serializable
 
         public static final JsonReader</*@Nullable*/WithChildren> ReaderMaybeDeleted = new JsonReader</*@Nullable*/WithChildren>()
         {
+            @Override
             public final /*@Nullable*/WithChildren read(JsonParser parser)
                 throws IOException, JsonReadException
             {
                 WithChildrenC<List<DbxEntry>> c = DbxEntry.<List<DbxEntry>>readMaybeDeleted(parser, new Collector.ArrayListCollector<DbxEntry>());
-                if (c == null) return null;
+                if (c == null) {
+                    return null;
+                }
                 return new WithChildren(c.entry, c.hash, c.children);
             }
         };
 
+        @Override
         public boolean equals(/*@Nullable*/Object o)
         {
             return o != null && getClass().equals(o.getClass()) && equals((WithChildren) o);
@@ -416,10 +491,15 @@ public abstract class DbxEntry extends Dumpable implements Serializable
 
         public boolean equals(WithChildren o)
         {
-            if (children != null ? !children.equals(o.children) : o.children != null)
+            if (children != null ? !children.equals(o.children) : o.children != null) {
                 return false;
-            if (!entry.equals(o.entry)) return false;
-            if (hash != null ? !hash.equals(o.hash) : o.hash != null) return false;
+            }
+            if (!entry.equals(o.entry)) {
+                return false;
+            }
+            if (hash != null ? !hash.equals(o.hash) : o.hash != null) {
+                return false;
+            }
 
             return true;
         }
@@ -484,6 +564,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
             private final Collector<DbxEntry,? extends C> collector;
             public Reader(Collector<DbxEntry,? extends C> collector) { this.collector = collector; }
 
+            @Override
             public final WithChildrenC<C> read(JsonParser parser)
                     throws IOException, JsonReadException
             {
@@ -496,6 +577,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
             private final Collector<DbxEntry,? extends C> collector;
             public ReaderMaybeDeleted(Collector<DbxEntry,? extends C> collector) { this.collector = collector; }
 
+            @Override
             public final /*@Nullable*/WithChildrenC<C> read(JsonParser parser)
                 throws IOException, JsonReadException
             {
@@ -511,10 +593,15 @@ public abstract class DbxEntry extends Dumpable implements Serializable
 
         public boolean equals(WithChildrenC o)
         {
-            if (children != null ? !children.equals(o.children) : o.children != null)
+            if (children != null ? !children.equals(o.children) : o.children != null) {
                 return false;
-            if (!entry.equals(o.entry)) return false;
-            if (hash != null ? !hash.equals(o.hash) : o.hash != null) return false;
+            }
+            if (!entry.equals(o.entry)) {
+                return false;
+            }
+            if (hash != null ? !hash.equals(o.hash) : o.hash != null) {
+                return false;
+            }
 
             return true;
         }
@@ -594,10 +681,14 @@ public abstract class DbxEntry extends Dumpable implements Serializable
                     case FM_modified: modified = JsonDateReader.Dropbox.readField(parser, fieldName, modified); break;
                     case FM_client_mtime: client_mtime = JsonDateReader.Dropbox.readField(parser, fieldName, client_mtime); break;
                     case FM_hash:
-                        if (collector == null) throw new JsonReadException("not expecting \"hash\" field, since we didn't ask for children", parser.getCurrentLocation());
+                        if (collector == null) {
+                            throw new JsonReadException("not expecting \"hash\" field, since we didn't ask for children", parser.getCurrentLocation());
+                        }
                         hash = JsonReader.StringReader.readField(parser, fieldName, hash); break;
                     case FM_contents:
-                        if (collector == null) throw new JsonReadException("not expecting \"contents\" field, since we didn't ask for children", parser.getCurrentLocation());
+                        if (collector == null) {
+                            throw new JsonReadException("not expecting \"contents\" field, since we didn't ask for children", parser.getCurrentLocation());
+                        }
                         contents = JsonArrayReader.mk(Reader, collector).readField(parser, fieldName, contents); break;
                     default:
                         throw new AssertionError("bad index: " + fi + ", field = \"" + fieldName + "\"");
@@ -610,15 +701,29 @@ public abstract class DbxEntry extends Dumpable implements Serializable
 
         JsonReader.expectObjectEnd(parser);
 
-        if (path == null) throw new JsonReadException("missing field \"path\"", top);
-        if (icon == null) throw new JsonReadException("missing field \"icon\"", top);
-        if (is_deleted == null) is_deleted = Boolean.FALSE;
-        if (is_dir == null) is_dir = Boolean.FALSE;
-        if (thumb_exists == null) thumb_exists = Boolean.FALSE;
+        if (path == null) {
+            throw new JsonReadException("missing field \"path\"", top);
+        }
+        if (icon == null) {
+            throw new JsonReadException("missing field \"icon\"", top);
+        }
+        if (is_deleted == null) {
+            is_deleted = Boolean.FALSE;
+        }
+        if (is_dir == null) {
+            is_dir = Boolean.FALSE;
+        }
+        if (thumb_exists == null) {
+            thumb_exists = Boolean.FALSE;
+        }
 
         if (is_dir && (contents != null || hash != null)) {
-            if (hash == null) throw new JsonReadException("missing \"hash\", when we asked for children", top);
-            if (contents == null) throw new JsonReadException("missing \"contents\", when we asked for children", top);
+            if (hash == null) {
+                throw new JsonReadException("missing \"hash\", when we asked for children", top);
+            }
+            if (contents == null) {
+                throw new JsonReadException("missing \"contents\", when we asked for children", top);
+            }
         }
 
         DbxEntry e;
@@ -627,21 +732,24 @@ public abstract class DbxEntry extends Dumpable implements Serializable
         }
         else {
             // Normal File
-            if (size == null) throw new JsonReadException("missing \"size\" for a file entry", top);
-            if (bytes == -1) throw new JsonReadException("missing \"bytes\" for a file entry", top);
-            if (modified == null) throw new JsonReadException("missing \"modified\" for a file entry", top);
-            if (client_mtime == null) throw new JsonReadException("missing \"client_mtime\" for a file entry", top);
-            if (rev == null) throw new JsonReadException("missing \"rev\" for a file entry", top);
-            e = new File(path, icon, thumb_exists, bytes, size, modified, client_mtime, rev);
+            if (size == null) {
+                throw new JsonReadException("missing \"size\" for a file entry", top);
+            }
+            if (bytes == -1) {
+                throw new JsonReadException("missing \"bytes\" for a file entry", top);
+            }
+            if (modified == null) {
+                throw new JsonReadException("missing \"modified\" for a file entry", top);
+            }
+            if (client_mtime == null) {
+                throw new JsonReadException("missing \"client_mtime\" for a file entry", top);
+            }
+            if (rev == null) {
+                throw new JsonReadException("missing \"rev\" for a file entry", top);
+            }
+            e = new File(path, icon, thumb_exists, bytes, size, modified, client_mtime, rev, is_deleted);
         }
 
-        if (is_deleted) {
-            if (allowDeleted) {
-                return null;
-            } else {
-                throw new JsonReadException("not expecting \"is_deleted\" entry here", top);
-            }
-        }
         return new WithChildrenC<C>(e, hash, contents);
     }
 

@@ -1,19 +1,12 @@
 package com.dropbox.core;
 
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.util.IOUtil;
 import static com.dropbox.core.util.StringUtil.jq;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotEquals;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertNull;
+import static org.testng.Assert.assertTrue;
 
-import com.dropbox.core.util.Maybe;
-import com.dropbox.core.util.StringUtil;
-import static org.testng.Assert.*;
-
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.Test;
-
-import javax.imageio.ImageIO;
-import javax.imageio.ImageReader;
-import javax.imageio.stream.MemoryCacheImageInputStream;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -21,7 +14,24 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
+
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.MemoryCacheImageInputStream;
+
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.Test;
+
+import com.dropbox.core.json.JsonReader;
+import com.dropbox.core.util.IOUtil;
+import com.dropbox.core.util.Maybe;
+import com.dropbox.core.util.StringUtil;
 
 public class DbxClientTest
 {
@@ -60,7 +70,9 @@ public class DbxClientTest
         while (entry == null) {
             String tryPath = basePath + "(" + i + ")";
             i++;
-            if (i > 100) throw new RuntimeException("Unable to create folder " + jq(basePath));
+            if (i > 100) {
+                throw new RuntimeException("Unable to create folder " + jq(basePath));
+            }
             entry = client.createFolder(tryPath);
         }
 
@@ -215,7 +227,9 @@ public class DbxClientTest
                     }
                 }
                 cursor = d.cursor;
-                if (!d.hasMore) break;
+                if (!d.hasMore) {
+                    break;
+                }
             }
 
             assertEquals(expected.size(), 0);
@@ -237,7 +251,9 @@ public class DbxClientTest
                     assertTrue(removed);
                 }
                 cursor = d.cursor;
-                if (!d.hasMore) break;
+                if (!d.hasMore) {
+                    break;
+                }
             }
 
             assertEquals(expected.size(), 0);

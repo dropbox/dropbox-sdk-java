@@ -145,8 +145,39 @@ public final class DbxClient
     public DbxEntry./*@Nullable*/WithChildren getMetadataWithChildren(String path)
         throws DbxException
     {
-        return getMetadataWithChildrenBase(path, DbxEntry.WithChildren.ReaderMaybeDeleted);
+        return getMetadataWithChildren(path, false);
     }
+    
+    /**
+     * Get the metadata for a given path; if the path refers to a folder,
+     * get all the children's metadata as well.
+     *
+     * <pre>
+     * DbxClient dbxClient = ...
+     * DbxEntry entry = dbxClient.getMetadata("/Photos");
+     * if (entry == null) {
+     *     System.out.println("No file or folder at that path.");
+     * } else {
+     *     System.out.print(entry.toStringMultiline());
+     * }
+     * </pre>
+     *
+     * @param path
+     *     The path (starting with "/") to the file or folder (see {@link DbxPath}).
+     *     
+     * @param includeDeleted indicates if deleted files should be included or not
+     * 
+     * @return If there is no file or folder at the given path, return {@code null}.
+     *    Otherwise, return the metadata for that path and the metadata for all its immediate
+     *    children (if it's a folder).
+     *    
+     * @throws DbxException if something goes wrong
+     */
+    public DbxEntry./*@Nullable*/WithChildren getMetadataWithChildren(String path, boolean includeDeleted)
+            throws DbxException
+        {
+            return getMetadataWithChildrenBase(path, DbxEntry.WithChildren.ReaderMaybeDeleted, includeDeleted);
+        }
 
     /**
      * Same as {@link #getMetadataWithChildren} except instead of always returning a list of
@@ -162,13 +193,13 @@ public final class DbxClient
      * the entire call succeeds.
      * </p>
      */
-    public <C> DbxEntry./*@Nullable*/WithChildrenC<C> getMetadataWithChildrenC(String path, final Collector<DbxEntry, ? extends C> collector)
+    public <C> DbxEntry./*@Nullable*/WithChildrenC<C> getMetadataWithChildrenC(String path, final Collector<DbxEntry, ? extends C> collector, boolean includeDeleted)
         throws DbxException
     {
-        return getMetadataWithChildrenBase(path, new DbxEntry.WithChildrenC.ReaderMaybeDeleted<C>(collector));
+        return getMetadataWithChildrenBase(path, new DbxEntry.WithChildrenC.ReaderMaybeDeleted<C>(collector), includeDeleted);
     }
 
-    private <T> /*@Nullable*/T getMetadataWithChildrenBase(String path, final JsonReader<? extends T> reader)
+    private <T> /*@Nullable*/T getMetadataWithChildrenBase(String path, final JsonReader<? extends T> reader, boolean includeDeleted)
         throws DbxException
     {
         DbxPath.checkArg("path", path);
@@ -176,7 +207,7 @@ public final class DbxClient
         String host = this.host.api;
         String apiPath = "1/metadata/auto" + path;
 
-        String[] params = { "list", "true", "file_limit", "25000", };
+        String[] params = { "list", "true", "file_limit", "25000", "include_deleted", ""+includeDeleted, };
 
         return doGet(host, apiPath, params, null, new DbxRequestUtil.ResponseHandler</*@Nullable*/T>() {
             @Override
