@@ -201,7 +201,7 @@ public abstract class DumpWriter
         }
     }
 
-    public DumpWriter fieldVebatim(String name, String s)
+    public DumpWriter fieldVerbatim(String name, String s)
     {
         return fieldStart(name).verbatim(s);
     }

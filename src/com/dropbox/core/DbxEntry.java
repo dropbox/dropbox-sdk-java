@@ -534,7 +534,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
             w.value(entry);
             w.field("hash", hash);
             if (children != null) {
-                w.fieldVebatim("children", children.toString());
+                w.fieldVerbatim("children", children.toString());
             }
         }
     }
