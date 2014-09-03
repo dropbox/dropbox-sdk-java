@@ -256,11 +256,10 @@ public abstract class DumpWriter
 
     public DumpWriter values(Iterable<? extends Dumpable> list)
     {
-        listStart();
         for (Dumpable d : list) {
             value(d);
         }
-        return listEnd();
+        return this;
     }
 
     public static String toStringDate(/*@Nullable*/Date date)
