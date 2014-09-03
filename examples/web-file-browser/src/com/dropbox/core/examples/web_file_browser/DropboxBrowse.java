@@ -114,7 +114,8 @@ public class DropboxBrowse
             // Listing of folder contents.
             out.println("<ul>");
             for (DbxEntry child : listing.children) {
-                out.println("  <li><a href='/browse?path=" + escapeHtml4(child.path) + "'>" + escapeHtml4(child.name) + "</a></li>");
+                String href = "/browse?path=" + DbxRequestUtil.encodeUrlParam(child.path);
+                out.println("  <li><a href='" + escapeHtml4(href) + "'>" + escapeHtml4(child.name) + "</a></li>");
             }
             out.println("</ul>");
         }
