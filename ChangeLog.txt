@@ -1,3 +1,6 @@
+---------------------------------------------
+1.7.7 (2014-09-02)
+
 - Fix encoding of Unicode characters in API request URL paths.  Bug
   affected systems where Java's "file.encoding" wasn't UTF-8.
 
