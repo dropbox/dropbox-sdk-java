@@ -2,6 +2,7 @@
 # ------------------------------------------------------------------------------
 # A wrapper script for "mvn test".  Primarily just for the help message.
 # ------------------------------------------------------------------------------
+set -euo pipefail
 
 if [ $# -eq 0 ]; then
     cat <<END
