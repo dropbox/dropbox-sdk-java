@@ -207,7 +207,7 @@ public class DbxWebAuth
             givenUrlState = null;
         } else {
             givenCsrfToken = state.substring(0, divPos);
-            givenUrlState = state.substring(divPos);
+            givenUrlState = state.substring(divPos + 1);
         }
         if (!StringUtil.secureStringEquals(csrfTokenFromSession, givenCsrfToken)) {
             throw new CsrfException("expecting " + jq(csrfTokenFromSession) + ", got " + jq(givenCsrfToken));
