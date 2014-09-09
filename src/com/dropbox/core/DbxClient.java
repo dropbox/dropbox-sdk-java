@@ -348,18 +348,12 @@ public final class DbxClient
     }
 
     /**
-     * Retrieve a file's content and content metadata.  Returns a {@link Downloader}
-     * which is just an {@link InputStream} (can be used to read the file contents) and
-     * a {@link DbxEntry.File} (the file's metadata).
-     *
-     * <p>
-     * You need to close the {@link Downloader} yourself.
-     * Use a {@code try}/{@code finally} to make sure you close it in all cases.
-     * </p>
+     * Retrieve a file's content and content metadata.  You must call the {@link Downloader}'s
+     * {@code close()} method; use a {@code try}/{@code finally}.
      *
      * <pre>
      * DbxClient dbxClient = ...
-     * DbxClient.Downloader downloader = dbxClient.getFileStart("/ReadMe.txt")
+     * DbxClient.Downloader downloader = dbxClient.startGetFile("/ReadMe.txt")
      * try {
      *     printStream(downloader.body)
      * }
@@ -435,8 +429,8 @@ public final class DbxClient
     }
 
     /**
-     * A pairing of the file content's metadata and an {@link InputStream} to read the
-     * file content.  Make sure you always close the {@code InputStream}.
+     * A pairing of a metadata and main content of a download.  Make sure you always
+     * call {@code close()}.
      */
     public static final class Downloader
     {
@@ -449,6 +443,10 @@ public final class DbxClient
             this.body = body;
         }
 
+        /**
+         * Copies all of {@code #body} to the given output stream.  As a convenience, also
+         * returns {@code #metadata}.
+         */
         DbxEntry.File copyBodyAndClose(OutputStream target)
             throws DbxException, IOException
         {
