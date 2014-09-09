@@ -118,3 +118,6 @@ Run `./run-tests` with no arguments to see how to run individual tests.
 
 For example: `./run-bench com.dropbox.core.json.JsonDateReaderBench.ParseDropboxDate`
 
+## Running the Checker Framework static analysis
+
+`mvn checker:check`

@@ -42,20 +42,6 @@
         <skipTests>true</skipTests>
     </properties>
 
-    <!-- Checker Framework repositories (the Maven Central artifacts aren't always up to date) -->
-    <repositories>
-        <repository>
-            <id>checker-framework-repo</id>
-            <url>http://types.cs.washington.edu/m2-repo</url>
-        </repository>
-    </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>checker-framework-repo</id>
-            <url>http://types.cs.washington.edu/m2-repo</url>
-        </pluginRepository>
-    </pluginRepositories>
-
     <dependencies>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -228,9 +214,9 @@
 
             <!-- Checker Framework -->
             <plugin>
-                <groupId>types.checkers</groupId>
-                <artifactId>checkers-maven-plugin</artifactId>
-                <version>1.7.3</version>
+                <groupId>edu.washington.cs.types.checker</groupId>
+                <artifactId>checker-maven-plugin</artifactId>
+                <version>1.7.5</version>
                 <configuration>
                     <processors>
                         <processor>checkers.nullness.NullnessChecker</processor>
