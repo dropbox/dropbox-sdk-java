@@ -6,8 +6,6 @@ import java.util.Date;
 import java.util.List;
 
 import com.dropbox.core.json.*;
-import com.dropbox.core.json.JsonArrayReader;
-import com.dropbox.core.json.JsonReader;
 import com.dropbox.core.util.Collector;
 import com.dropbox.core.util.DumpWriter;
 import com.dropbox.core.util.Dumpable;
@@ -503,13 +501,15 @@ public abstract class DbxEntry extends Dumpable implements Serializable
             }
         }
 
-        @Override
+        @SuppressWarnings("rawtypes")
+		@Override
         public boolean equals(/*@Nullable*/Object o)
         {
             return o != null && getClass().equals(o.getClass()) && equals((WithChildrenC) o);
         }
 
-        public boolean equals(WithChildrenC o)
+        @SuppressWarnings("rawtypes")
+		public boolean equals(WithChildrenC o)
         {
             if (children != null ? !children.equals(o.children) : o.children != null)
                 return false;

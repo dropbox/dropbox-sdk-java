@@ -34,7 +34,7 @@ public class LangUtil
         if (b == null) throw new IllegalArgumentException("'b' can't be null");
         /*@Nullable*/T[] rn = Arrays.copyOf(a, a.length + b.length);
         System.arraycopy(b, 0, rn, a.length, b.length);
-        @SuppressWarnings("nullness") T[] r = rn;
+        T[] r = rn;
         return r;
     }
 

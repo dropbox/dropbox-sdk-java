@@ -753,7 +753,6 @@ public final class DbxClient
                 u.close();
             }
 
-            @SuppressWarnings("nullness")  // Workaround for bug in Checker Framework: https://code.google.com/p/checker-framework/issues/detail?id=293
             final HttpRequestor./*@Initialized*//*@NonNull*/Response nonNullResponse = response;
 
             return DbxRequestUtil.finishResponse(nonNullResponse, new DbxRequestUtil.ResponseHandler<DbxEntry.File>() {
@@ -1335,7 +1334,11 @@ public final class DbxClient
      */
     public static final class IODbxException extends IOException
     {
-        public final DbxException underlying;
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = 2467113802284666386L;
+		public final DbxException underlying;
 
         public IODbxException(DbxException underlying)
         {
@@ -1730,7 +1733,8 @@ public final class DbxClient
     private static final class CopyRef
     {
         public final String id;
-        public final Date expires;
+        @SuppressWarnings("unused")
+		public final Date expires;
 
         private CopyRef(String id, Date expires)
         {
