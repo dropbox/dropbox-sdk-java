@@ -265,7 +265,12 @@ public class DbxWebAuth
      */
     public static abstract class Exception extends java.lang.Exception
     {
-        public Exception(String message) { super(message); }
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = 815060557010534305L;
+
+		public Exception(String message) { super(message); }
     }
 
     /**
@@ -281,7 +286,12 @@ public class DbxWebAuth
      */
     public static final class BadRequestException extends Exception
     {
-        public BadRequestException(String message) { super(message); }
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = -2241168393151228186L;
+
+		public BadRequestException(String message) { super(message); }
     }
 
     /**
@@ -299,7 +309,12 @@ public class DbxWebAuth
      */
     public static final class BadStateException extends Exception
     {
-        public BadStateException() { super("Not expecting Dropbox auth redirect (session doesn't have CSRF token)"); }
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = -3269577312630528757L;
+
+		public BadStateException() { super("Not expecting Dropbox auth redirect (session doesn't have CSRF token)"); }
     }
 
     /**
@@ -316,7 +331,12 @@ public class DbxWebAuth
      */
     public static final class CsrfException extends Exception
     {
-        public CsrfException(String message) { super(message); }
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = -2833916043213993716L;
+
+		public CsrfException(String message) { super(message); }
     }
 
     /**
@@ -329,7 +349,12 @@ public class DbxWebAuth
      */
     public static final class NotApprovedException extends Exception
     {
-        public NotApprovedException(String message) { super(message); }
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = -1401352754264448241L;
+
+		public NotApprovedException(String message) { super(message); }
     }
 
     /**
@@ -341,6 +366,11 @@ public class DbxWebAuth
      */
     public static final class ProviderException extends Exception
     {
-        public ProviderException(String message) { super(message); }
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = -7484234347123519685L;
+
+		public ProviderException(String message) { super(message); }
     }
 }

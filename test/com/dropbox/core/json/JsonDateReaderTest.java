@@ -1,11 +1,12 @@
 package com.dropbox.core.json;
 
 import static com.dropbox.core.util.StringUtil.jq;
-import org.testng.annotations.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
+
+import org.testng.annotations.Test;
 
 public class JsonDateReaderTest
 {
@@ -41,6 +42,7 @@ public class JsonDateReaderTest
 
         if (count < 1000) throw new AssertionError("Loop didn't run enough: " + count);
     }
+
 
     private static final ThreadLocal<SimpleDateFormat> dateFormatHolder =  new ThreadLocal<SimpleDateFormat>() {
         protected SimpleDateFormat initialValue()
