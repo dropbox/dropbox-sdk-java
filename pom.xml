@@ -75,6 +75,13 @@
         <sourceDirectory>src</sourceDirectory>
         <resources>
             <resource>
+                <directory>${project.build.sourceDirectory}</directory>
+                <includes>
+                    <include>com/dropbox/core/sdk-version.txt</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+            <resource>
                 <directory>${project.build.directory}/generated-resources/pem-to-jks</directory>
             </resource>
         </resources>
