@@ -30,9 +30,11 @@ import javax.net.ssl.TrustManagerFactory;
 /**
  * The proper SSL configuration that should be used when connecting to Dropbox
  * API servers.  This includes:
+ * <ul>
  * <li>A custom set of trusted root SSL certificates.</li>
  * <li>Requiring TLS v1.0 and above (TLS v1.2 if supported)</li>
  * <li>A limited set of allowed SSL ciphersuites.</li>
+ * </ul>
  *
  * <p>
  * {@link #getSSLSocketFactory} returns a properly configured object that you can use
