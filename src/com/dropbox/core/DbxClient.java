@@ -526,7 +526,7 @@ public final class DbxClient
      *         {
      *             Random rand = new Random();
      *             PrintWriter pw = new PrintWriter(out);
-     *             for (int i = 0; i < numRandoms; i++) {
+     *             for (int i = 0; i &lt; numRandoms; i++) {
      *                 pw.printf("%03d\n", rand.nextInt(1000));
      *             }
      *             pw.flush();
