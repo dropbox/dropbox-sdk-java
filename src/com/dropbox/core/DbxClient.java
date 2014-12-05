@@ -914,8 +914,6 @@ public final class DbxClient
      *
      * @return
      *    The ID designated by the Dropbox server to identify the chunked upload.
-     *
-     * @throws DbxException
      */
     public String chunkedUploadFirst(byte[] data, int dataOffset, int dataLength)
         throws DbxException
@@ -935,8 +933,6 @@ public final class DbxClient
      *
      * @return
      *    The ID designated by the Dropbox server to identify the chunked upload.
-     *
-     * @throws DbxException
      */
     public <E extends Throwable> String chunkedUploadFirst(int chunkSize, DbxStreamWriter<E> writer)
         throws DbxException, E
@@ -1001,8 +997,6 @@ public final class DbxClient
      *    If everything goes correctly, returns {@code -1}.  If the given {@code offset} didn't
      *    match the actual number of bytes in the chunked upload session, returns the correct
      *    number of bytes.
-     *
-     * @throws DbxException
      */
     public long chunkedUploadAppend(String uploadId, long uploadOffset, byte[] data, int dataOffset, int dataLength)
         throws DbxException
@@ -1033,8 +1027,6 @@ public final class DbxClient
      *    If everything goes correctly, returns {@code -1}.  If the given {@code offset} didn't
      *    match the actual number of bytes in the chunked upload session, returns the correct
      *    number of bytes.
-     *
-     * @throws DbxException
      */
     public <E extends Throwable> long chunkedUploadAppend(String uploadId, long uploadOffset, long chunkSize, DbxStreamWriter<E> writer)
         throws DbxException, E
