@@ -121,3 +121,17 @@ For example: `./run-bench com.dropbox.core.json.JsonDateReaderBench.ParseDropbox
 ## Running the Checker Framework static analysis
 
 `mvn checker:check`
+
+## Loading the project in IntelliJ 14
+
+Assume "{sdk}" represents the top-level folder of this SDK.
+
+1. Click *Import Project*, select "{sdk}/pom.xml".
+2. You'll see the *Import Project From Maven* dialog.
+   - Check *Search for projects recursively*
+   - Check *Keep project files in*, set it to "{sdk}/intellij"
+   - Check *Import Maven projects automatically*
+   - Uncheck *Use Maven output directories*
+   - Click *Next*
+3. Clicking *Next* on the rest of the dialogs.
+4. On the last dialog, you can change *Project name* if you want **but make sure** you set *Project file location* back to "{sdk}/intellij".
