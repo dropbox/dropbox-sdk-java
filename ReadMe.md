@@ -4,7 +4,7 @@ A Java library to access [Dropbox's HTTP-based Core API](https://www.dropbox.com
 
 License: [MIT](License.txt)
 
-This is for web applications.  If you want to use Dropbox's API from Android, try the [Sync SDK](https://www.dropbox.com/developers/sync)
+This is for web applications.  If you want to use Dropbox's API from Android, try the [Dropbox Core SDK for Android](https://www.dropbox.com/developers/core/sdks/android).
 
 [Javadoc.](http://dropbox.github.io/dropbox-sdk-java/api-docs/v1.7.x/)
 
