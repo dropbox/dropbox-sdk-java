@@ -38,17 +38,21 @@ public final class DbxAuthFinish implements java.io.Serializable
      * in, or you used {@link DbxWebAuthNoRedirect}, this will be {@code null}.
      */
     public final /*@Nullable*/String urlState;
+    
+    /** The team id. */
+    public final /*@Nullable*/String teamId;
 
     /**
      * @param accessToken {@link #accessToken}
      * @param userId {@link #userId}
      * @param urlState {@link #urlState}
      */
-    public DbxAuthFinish(String accessToken, String userId, /*@Nullable*/String urlState)
+    public DbxAuthFinish(String accessToken, String userId, /*@Nullable*/String urlState, /*@Nullable*/String teamId)
     {
         this.accessToken = accessToken;
         this.userId = userId;
         this.urlState = urlState;
+        this.teamId = teamId;
     }
 
     /**
@@ -63,6 +67,7 @@ public final class DbxAuthFinish implements java.io.Serializable
             String accessToken = null;
             String tokenType = null;
             String userId = null;
+            String teamId = null;
 
             while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
                 String fieldName = parser.getCurrentName();
@@ -77,6 +82,9 @@ public final class DbxAuthFinish implements java.io.Serializable
                     }
                     else if (fieldName.equals("uid")) {
                         userId = JsonReader.StringReader.readField(parser, fieldName, userId);
+                    }
+                    else if (fieldName.equals("team_id")) {
+                        teamId = JsonReader.StringReader.readField(parser, fieldName, teamId);
                     }
                     else {
                         // Unknown field.  Skip over it.
@@ -94,7 +102,7 @@ public final class DbxAuthFinish implements java.io.Serializable
             if (accessToken == null) throw new JsonReadException("missing field \"access_token\"", top);
             if (userId == null) throw new JsonReadException("missing field \"uid\"", top);
 
-            return new DbxAuthFinish(accessToken, userId, null);
+            return new DbxAuthFinish(accessToken, userId, null, teamId);
         }
     };
 
