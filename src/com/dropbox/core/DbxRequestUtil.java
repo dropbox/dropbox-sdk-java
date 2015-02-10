@@ -15,6 +15,7 @@ import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
 import com.dropbox.core.util.IOUtil;
 import com.dropbox.core.util.StringUtil;
+
 import static com.dropbox.core.util.StringUtil.jq;
 import static com.dropbox.core.util.LangUtil.mkAssert;
 
@@ -86,6 +87,15 @@ public class DbxRequestUtil
         headers.add(new HttpRequestor.Header("Authorization", "Bearer " + accessToken));
         return headers;
     }
+    
+	private static ArrayList<HttpRequestor.Header> addAsMemberHeader(
+			/*@Nullable*/ArrayList<HttpRequestor.Header> headers, DbxRequestConfig requestConfig) {
+		if (headers == null) headers = new ArrayList<HttpRequestor.Header>();
+		if(requestConfig.memberIdPresent()){
+			headers.add(new HttpRequestor.Header("X-Dropbox-Perform-As-Team-Member", requestConfig.asMemberId));
+    	}
+		return headers;
+	}
 
     public static ArrayList<HttpRequestor.Header> addUserAgentHeader(/*@Nullable*/ArrayList<HttpRequestor.Header> headers,
                                                                      DbxRequestConfig requestConfig)
@@ -110,6 +120,7 @@ public class DbxRequestUtil
     {
         headers = addUserAgentHeader(headers, requestConfig);
         headers = addAuthHeader(headers, accessToken);
+        headers = addAsMemberHeader(headers, requestConfig);
 
         String url = buildUrlWithParams(requestConfig.userLocale, host, path, params);
         try {
@@ -131,6 +142,7 @@ public class DbxRequestUtil
     {
         headers = addUserAgentHeader(headers, requestConfig);
         headers = addAuthHeader(headers, accessToken);
+        headers = addAsMemberHeader(headers, requestConfig);
 
         String url = buildUrlWithParams(requestConfig.userLocale, host, path, params);
         try {

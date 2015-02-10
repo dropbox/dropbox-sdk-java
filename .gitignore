@@ -6,3 +6,7 @@
 
 # Output file when rendering ReadMe.md locally.
 /ReadMe.html
+
+.classpath
+.settings
+.project
