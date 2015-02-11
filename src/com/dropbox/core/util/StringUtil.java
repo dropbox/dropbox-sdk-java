@@ -105,7 +105,7 @@ public class StringUtil
     }
 
     /**
-     * When you're compating two strings for equality and one of them is a value that could be
+     * When you're comparing two strings for equality and one of them is a value that could be
      * provided by an attacker and the other is a value that the attacker shouldn't know, use
      * this function to check for equality.  Using regular {@code String.equals} is not
      * secure.

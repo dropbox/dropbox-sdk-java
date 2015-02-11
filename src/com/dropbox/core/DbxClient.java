@@ -77,6 +77,11 @@ public final class DbxClient
      */
     public String getAccessToken() { return accessToken; }
 
+    /**
+     * Returns the {@code DbxHost} that was passed in to the constructor.
+     */
+    public DbxHost getHost() { return host; }
+
     // -----------------------------------------------------------------
     // /metadata
 

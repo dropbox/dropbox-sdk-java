@@ -1,0 +1,55 @@
+#! /usr/bin/env bash
+set -euo pipefail
+
+mvn_target_dir="target"
+
+# Locate the script file.  Cross symlinks if necessary.
+loc="$0"
+while [ -h "$loc" ]; do
+    ls=`ls -ld "$loc"`
+    link=`expr "$ls" : '.*-> \(.*\)$'`
+    if expr "$link" : '/.*' > /dev/null; then
+        loc="$link"  # Absolute link
+    else
+        loc="`dirname "$loc"`/$link"  # Relative link
+    fi
+done
+
+if [[ $# -ne 0 ]]; then
+    echo "$0: Not expecting any command-line arguments, got $#." 1>&2
+    exit 1
+fi
+
+base_dir=`dirname "$loc"`
+
+babel_dir="$base_dir/babel"
+spec_dir="$base_dir/spec"
+gen_dir="$base_dir/$mvn_target_dir/generated-sources/babel"
+generator="$base_dir/generator/java.babelg.py"
+
+up_to_date() {
+    local target="$1"; shift
+    [[ -f "$target" && $(find "$@" -newer "$target" | head -n 1 | wc -l) -eq 0 ]]
+}
+
+if [[ -e "$gen_dir" ]]; then
+    # If Babel and the specs haven't changed, there's nothing to do.
+    if up_to_date "$gen_dir/stamp" "$babel_dir" "$spec_dir" "generator" "$loc"; then
+        echo "Already up to date."
+        exit 0
+    fi
+    rm -r "$gen_dir"
+fi
+
+mkdir -p "$gen_dir"
+touch "$gen_dir/stamp.tmp"  # Create here to get the timestamp from before codegen.
+
+echo "Generating..."
+PYTHONPATH="$babel_dir" python3 -m babelapi.cli \
+    "$generator" \
+    "$spec_dir"/*.babel \
+    "$gen_dir"\
+     --\
+     --package com.dropbox.core
+
+mv "$gen_dir/stamp.tmp" "$gen_dir/stamp"  # Only move to "stamp" when codegen succeeds.

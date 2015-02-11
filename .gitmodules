@@ -1,0 +1,6 @@
+[submodule "spec"]
+	path = spec
+	url = git@github.com:dropbox/dropbox-api-spec.git
+[submodule "babel"]
+	path = babel
+	url = repo@tails.corp.dropbox.com:diffusion/BABEL/babel.git

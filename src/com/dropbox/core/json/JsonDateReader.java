@@ -8,11 +8,18 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
+import javax.xml.bind.DatatypeConverter;
 
 public class JsonDateReader
 {
     /**
      * A parser for dates returned by the Dropbox API.
+     *
+     * This parses both the old, verbose format
+     * (e.g. {@literal "Fri, 06 Feb 2015 18:21:17 +0000"})
+     * and the new ISO 8601 format
+     * (e.g. {@literal "2010-01-01T12:00:00Z"}
+     * or {@literal "2010-01-01T12:00:00.000Z"}).
      */
     public static final JsonReader<Date> Dropbox = new JsonReader<Date>() {
         @Override
@@ -42,6 +49,17 @@ public class JsonDateReader
     {
         int i = offset;
         char[] b = buffer;
+
+        if (length == 20 || length == 24) {
+            // Assume this is an ISO 8601 date, e.g. "2015-04-01T12:01:12Z",
+            // or, with milliseconds, e.g. "2012-04-23T18:25:43.511Z".
+            String s = new String(b, i, length);
+            try {
+                return javax.xml.bind.DatatypeConverter.parseDateTime(s).getTime();
+            } catch (IllegalArgumentException ex) {
+                throw new java.text.ParseException("invalid date "+s, 0);
+            }
+        }
 
         if (length != 31) {
             throw new java.text.ParseException("expecting date to be 31 characters, got " + length, 0);

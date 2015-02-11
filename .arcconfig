@@ -1,0 +1,7 @@
+{
+  "project_id" : "Dropbox Java SDK",
+  "conduit_uri" : "https://tails.corp.dropbox.com/api/",
+  "copyright_holder" : "Dropbox",
+  "repository.callsign": "APISDKJAVANEW",
+  "immutable_history": false
+}
