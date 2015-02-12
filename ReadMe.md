@@ -58,7 +58,8 @@ Prerequisites: Apache Maven
 1. Download this repository.
 2. Save your Dropbox API key in a file called "test.app".  See: [Get a Dropbox API key](#get-a-dropbox-api-key), above.
 3. `mvn install`
-4. `mvn -f examples/pom.xml compile`
+4. To compile all the examples: `mvn -f examples/pom.xml compile`
+5. To compile just one example: `mvn -f examples/<example-name>/pom.xml compile`.
 
 ### authorize
 
