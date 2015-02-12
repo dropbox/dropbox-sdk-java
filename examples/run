@@ -51,8 +51,8 @@ fi
 
 if [ ! -f "$base_dir/$example_folder/target/runtime-classpath" ]; then
     die "Unable to run example \"$example_name\"." \
-        "Couldn't find \"target/runtime-classpath\" in \"$base_dir/$example_folder\"."
-        "Run \"mvn compile\" at the top-level of the project first."
+        "Couldn't find \"target/runtime-classpath\" in \"$base_dir/$example_folder\"." \
+        "\"ReadMe.md\" at the top level has instructions for running the examples."
 fi
 
 base_dir=`dirname "$loc"`
