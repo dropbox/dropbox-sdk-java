@@ -40,6 +40,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <skipTests>true</skipTests>
+        <osgi.bnd.noee>false</osgi.bnd.noee>
     </properties>
 
     <dependencies>
@@ -211,6 +212,11 @@
                 <artifactId>maven-bundle-plugin</artifactId>
                 <version>2.5.0</version>
                 <extensions>true</extensions>
+                <configuration>
+                    <instructions>
+                        <_noee>${osgi.bnd.noee}</_noee>
+                    </instructions>
+                </configuration>
                 <executions>
                     <execution>
                         <id>bundle-manifest</id>

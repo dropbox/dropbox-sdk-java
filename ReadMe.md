@@ -136,3 +136,26 @@ Assume "{sdk}" represents the top-level folder of this SDK.
    - Click *Next*
 3. Clicking *Next* on the rest of the dialogs.
 4. On the last dialog, you can change *Project name* if you want **but make sure** you set *Project file location* back to "{sdk}/intellij".
+
+## FAQ
+
+### When I use the bundle JAR with some OSGi containers within an OSGi subsystem, I get a "Missing required capability" error.
+
+The JAR's manifest has the following line:
+
+```
+Require-Capability: osgi.ee;filter="(&(osgi.ee=JavaSE)(version=1.6))"
+```
+
+OSGi containers running on Java 1.6 or above should provide this capability.  Unfortunately, some OSGi containers don't do this correctly and will reject the bundle JAR in the OSGi subsystem context.
+
+As a workaround, you can build your own version of the JAR that omits the "osgi.ee" capability by running:
+
+```
+mvn clean
+mvn package -Dosgi.bnd.noee=true
+```
+
+(This is equivalent to passing the "-noee" option to the OSGi "bnd" tool.)
+
+Another workaround is to tell your OSGi container to provide that requirement: [StackOverflow answer](http://stackoverflow.com/a/24673359/163832).
