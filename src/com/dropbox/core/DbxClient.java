@@ -96,18 +96,25 @@ public final class DbxClient
      * @param path
      *     The path to the file or folder (see {@link DbxPath}).
      *
+     * @param includeMediaInfo
+     *     If {@code true}, then if the return value is a {@link DbxEntry.File}, it might have
+     *     its {@code photoInfo} and {@code mediaInfo} fields filled in.
+     *
      * @return If there is a file or folder at the given path, return the
      *    metadata for that path.  If there is no file or folder there,
      *    return {@code null}.
      */
-    public /*@Nullable*/DbxEntry getMetadata(final String path)
+    public /*@Nullable*/DbxEntry getMetadata(final String path, boolean includeMediaInfo)
         throws DbxException
     {
         DbxPath.checkArg("path", path);
 
         String host = this.host.api;
         String apiPath = "1/metadata/auto" + path;
-        String[] params = { "list", "false", };
+        String[] params = {
+            "list", "false",
+            "include_media_info", includeMediaInfo ? "true" : null,
+        };
 
         return doGet(host, apiPath, params, null, new DbxRequestUtil.ResponseHandler</*@Nullable*/DbxEntry>() {
             @Override
@@ -119,6 +126,16 @@ public final class DbxClient
                 return DbxRequestUtil.readJsonFromResponse(DbxEntry.ReaderMaybeDeleted, response.body);
             }
         });
+    }
+
+    /**
+     * Same as {@link #getMetadata(String, boolean)} with {@code includeMediaInfo} set
+     * to {@code false}.
+     */
+    public /*@Nullable*/DbxEntry getMetadata(final String path)
+        throws DbxException
+    {
+        return getMetadata(path, false);
     }
 
     /**
@@ -138,14 +155,28 @@ public final class DbxClient
      * @param path
      *     The path (starting with "/") to the file or folder (see {@link DbxPath}).
      *
+     * @param includeMediaInfo
+     *     If {@code true}, then if the return value is a {@link DbxEntry.File}, it might have
+     *     its {@code photoInfo} and {@code mediaInfo} fields filled in.
+     *
      * @return If there is no file or folder at the given path, return {@code null}.
      *    Otherwise, return the metadata for that path and the metadata for all its immediate
      *    children (if it's a folder).
      */
+    public DbxEntry./*@Nullable*/WithChildren getMetadataWithChildren(String path, boolean includeMediaInfo)
+        throws DbxException
+    {
+        return getMetadataWithChildrenBase(path, includeMediaInfo, DbxEntry.WithChildren.ReaderMaybeDeleted);
+    }
+
+    /**
+     * Same as {@link #getMetadataWithChildren(String, boolean)} with {@code includeMediaInfo} set
+     * to {@code false}.
+     */
     public DbxEntry./*@Nullable*/WithChildren getMetadataWithChildren(String path)
         throws DbxException
     {
-        return getMetadataWithChildrenBase(path, DbxEntry.WithChildren.ReaderMaybeDeleted);
+        return getMetadataWithChildren(path, false);
     }
 
     /**
@@ -162,13 +193,23 @@ public final class DbxClient
      * the entire call succeeds.
      * </p>
      */
+    public <C> DbxEntry./*@Nullable*/WithChildrenC<C> getMetadataWithChildrenC(String path, boolean includeMediaInfo, final Collector<DbxEntry, ? extends C> collector)
+        throws DbxException
+    {
+        return getMetadataWithChildrenBase(path, includeMediaInfo, new DbxEntry.WithChildrenC.ReaderMaybeDeleted<C>(collector));
+    }
+
+    /**
+     * Same as {@link #getMetadataWithChildrenC(String, boolean, Collector)} with {@code includeMediaInfo} set
+     * to {@code false}.
+     */
     public <C> DbxEntry./*@Nullable*/WithChildrenC<C> getMetadataWithChildrenC(String path, final Collector<DbxEntry, ? extends C> collector)
         throws DbxException
     {
-        return getMetadataWithChildrenBase(path, new DbxEntry.WithChildrenC.ReaderMaybeDeleted<C>(collector));
+        return getMetadataWithChildrenC(path, false, collector);
     }
 
-    private <T> /*@Nullable*/T getMetadataWithChildrenBase(String path, final JsonReader<? extends T> reader)
+    private <T> /*@Nullable*/T getMetadataWithChildrenBase(String path, boolean includeMediaInfo, final JsonReader<? extends T> reader)
         throws DbxException
     {
         DbxPath.checkArg("path", path);
@@ -176,7 +217,11 @@ public final class DbxClient
         String host = this.host.api;
         String apiPath = "1/metadata/auto" + path;
 
-        String[] params = { "list", "true", "file_limit", "25000", };
+        String[] params = {
+            "list", "true",
+            "file_limit", "25000",
+            "include_media_info", includeMediaInfo ? "true" : null,
+        };
 
         return doGet(host, apiPath, params, null, new DbxRequestUtil.ResponseHandler</*@Nullable*/T>() {
             @Override
@@ -208,10 +253,20 @@ public final class DbxClient
      *    {@code Maybe.Just(null)} if there's nothing there or {@code Maybe.Just} with the
      *    metadata.
      */
+    public Maybe<DbxEntry./*@Nullable*/WithChildren> getMetadataWithChildrenIfChanged(String path, boolean includeMediaInfo, /*@Nullable*/String previousFolderHash)
+        throws DbxException
+    {
+        return getMetadataWithChildrenIfChangedBase(path, includeMediaInfo, previousFolderHash, DbxEntry.WithChildren.ReaderMaybeDeleted);
+    }
+
+    /**
+     * Same as {@link #getMetadataWithChildrenIfChanged(String, boolean, String)} with {@code includeMediaInfo} set
+     * to {@code false}.
+     */
     public Maybe<DbxEntry./*@Nullable*/WithChildren> getMetadataWithChildrenIfChanged(String path, /*@Nullable*/String previousFolderHash)
         throws DbxException
     {
-        return getMetadataWithChildrenIfChangedBase(path, previousFolderHash, DbxEntry.WithChildren.ReaderMaybeDeleted);
+        return getMetadataWithChildrenIfChanged(path, false, previousFolderHash);
     }
 
     /**
@@ -229,14 +284,25 @@ public final class DbxClient
      * </p>
      */
     public <C> Maybe<DbxEntry./*@Nullable*/WithChildrenC<C>> getMetadataWithChildrenIfChangedC(
+            String path, boolean includeMediaInfo, /*@Nullable*/String previousFolderHash, Collector<DbxEntry,? extends C> collector)
+        throws DbxException
+    {
+        return getMetadataWithChildrenIfChangedBase(path, includeMediaInfo, previousFolderHash, new DbxEntry.WithChildrenC.ReaderMaybeDeleted<C>(collector));
+    }
+
+    /**
+     * Same as {@link #getMetadataWithChildrenIfChangedC(String, boolean, String, Collector)} with
+     * {@code includeMediaInfo} set to {@code false}.
+     */
+    public <C> Maybe<DbxEntry./*@Nullable*/WithChildrenC<C>> getMetadataWithChildrenIfChangedC(
             String path, /*@Nullable*/String previousFolderHash, Collector<DbxEntry,? extends C> collector)
         throws DbxException
     {
-        return getMetadataWithChildrenIfChangedBase(path, previousFolderHash, new DbxEntry.WithChildrenC.ReaderMaybeDeleted<C>(collector));
+        return getMetadataWithChildrenIfChangedC(path, false, previousFolderHash, collector);
     }
 
     private <T> Maybe</*@Nullable*/T> getMetadataWithChildrenIfChangedBase(
-            String path, /*@Nullable*/String previousFolderHash, final JsonReader<T> reader)
+            String path, boolean includeMediaInfo, /*@Nullable*/String previousFolderHash, final JsonReader<T> reader)
         throws DbxException
     {
         if (previousFolderHash == null) throw new IllegalArgumentException("'previousFolderHash' must not be null");
@@ -250,6 +316,7 @@ public final class DbxClient
             "list", "true",
             "file_limit", "25000",
             "hash", previousFolderHash,
+            "include_media_info", includeMediaInfo ? "true" : null,
         };
 
         return doGet(host, apiPath, params, null, new DbxRequestUtil.ResponseHandler<Maybe</*@Nullable*/T>>() {
@@ -1361,20 +1428,39 @@ public final class DbxClient
      * for the App Folder's contents.
      * </p>
      */
+    public DbxDelta<DbxEntry> getDelta(/*@Nullable*/String cursor, boolean includeMediaInfo)
+        throws DbxException
+    {
+        return _getDelta(cursor, null, includeMediaInfo);
+    }
+
+    /**
+     * Same as {@link #getDelta(String, boolean)} with {@code includeMediaInfo} set to {@code false}.
+     */
     public DbxDelta<DbxEntry> getDelta(/*@Nullable*/String cursor)
         throws DbxException
     {
-        return _getDelta(cursor, null);
+        return getDelta(cursor, false);
     }
 
     /**
      * A more generic version of {@link #getDelta}.  You provide a <em>collector</em>,
      * which lets you process the delta entries as they arrive over the network.
      */
+    public <C> DbxDeltaC<C> getDeltaC(Collector<DbxDeltaC.Entry<DbxEntry>, C> collector, /*@Nullable*/String cursor,
+                                      boolean includeMediaInfo)
+        throws DbxException
+    {
+        return _getDeltaC(collector, cursor, null, includeMediaInfo);
+    }
+
+    /**
+     * Same as {@link #getDeltaC(Collector, String, boolean)} with {@code includeMediaInfo} set to {@code false}.
+     */
     public <C> DbxDeltaC<C> getDeltaC(Collector<DbxDeltaC.Entry<DbxEntry>, C> collector, /*@Nullable*/String cursor)
         throws DbxException
     {
-        return _getDeltaC(collector, cursor, null);
+        return getDeltaC(collector, cursor, false);
     }
 
     /**
@@ -1390,11 +1476,23 @@ public final class DbxClient
      * @param pathPrefix
      *    A path on Dropbox to limit results to.
      */
+    public DbxDelta<DbxEntry> getDeltaWithPathPrefix(/*@Nullable*/String cursor, String pathPrefix,
+                                                     boolean includeMediaInfo)
+        throws DbxException
+    {
+        DbxPath.checkArg("path", pathPrefix);
+        return _getDelta(cursor, pathPrefix, includeMediaInfo);
+    }
+
+    /**
+     * Same as {@link #getDeltaWithPathPrefix(String, String, boolean)} with {@code includeMediaInfo}
+     * set to {@code false}.
+     */
     public DbxDelta<DbxEntry> getDeltaWithPathPrefix(/*@Nullable*/String cursor, String pathPrefix)
         throws DbxException
     {
         DbxPath.checkArg("path", pathPrefix);
-        return _getDelta(cursor, pathPrefix);
+        return _getDelta(cursor, pathPrefix, false);
     }
 
     /**
@@ -1402,14 +1500,26 @@ public final class DbxClient
      * which lets you process the delta entries as they arrive over the network.
      */
     public <C> DbxDeltaC<C> getDeltaCWithPathPrefix(Collector<DbxDeltaC.Entry<DbxEntry>, C> collector,
-                                                    /*@Nullable*/String cursor, String pathPrefix)
+                                                    /*@Nullable*/String cursor, String pathPrefix,
+                                                    boolean includeMediaInfo)
         throws DbxException
     {
         DbxPath.checkArg("path", pathPrefix);
-        return _getDeltaC(collector, cursor, pathPrefix);
+        return _getDeltaC(collector, cursor, pathPrefix, includeMediaInfo);
     }
 
-    private DbxDelta<DbxEntry> _getDelta(/*@Nullable*/String cursor, /*@Nullable*/String pathPrefix)
+    /**
+     * Same as {@link #getDeltaCWithPathPrefix(Collector, String, String, boolean)} with {@code includeMediaInfo}
+     * set to {@code false}.
+     */
+    public <C> DbxDeltaC<C> getDeltaCWithPathPrefix(Collector<DbxDeltaC.Entry<DbxEntry>, C> collector,
+                                                    /*@Nullable*/String cursor, String pathPrefix)
+        throws DbxException
+    {
+        return getDeltaCWithPathPrefix(collector, cursor, pathPrefix, false);
+    }
+
+    private DbxDelta<DbxEntry> _getDelta(/*@Nullable*/String cursor, /*@Nullable*/String pathPrefix, boolean includeMediaInfo)
         throws DbxException
     {
         String host = this.host.api;
@@ -1418,6 +1528,7 @@ public final class DbxClient
         /*@Nullable*/String[] params = {
             "cursor", cursor,
             "path_prefix", pathPrefix,
+            "include_media_info", includeMediaInfo ? "true" : null,
         };
 
         return doPost(host, apiPath, params, null, new DbxRequestUtil.ResponseHandler<DbxDelta<DbxEntry>>() {
@@ -1431,7 +1542,8 @@ public final class DbxClient
     }
 
     private <C> DbxDeltaC<C> _getDeltaC(final Collector<DbxDeltaC.Entry<DbxEntry>, C> collector,
-                                        /*@Nullable*/String cursor, /*@Nullable*/String pathPrefix)
+                                        /*@Nullable*/String cursor, /*@Nullable*/String pathPrefix,
+                                        boolean includeMediaInfo)
         throws DbxException
     {
         String host = this.host.api;
@@ -1440,6 +1552,7 @@ public final class DbxClient
         /*@Nullable*/String[] params = {
             "cursor", cursor,
             "path_prefix", pathPrefix,
+            "include_media_info", includeMediaInfo ? "true" : null,
         };
 
         return doPost(host, apiPath, params, null, new DbxRequestUtil.ResponseHandler<DbxDeltaC<C>>() {
@@ -1456,9 +1569,18 @@ public final class DbxClient
      * Get a cursor for the current state of a user's Dropbox folder. Can be passed to {@link #getDelta}
      * to retrieve changes since this method was called.
      */
+    public String getDeltaLatestCursor(boolean includeMediaInfo) throws DbxException
+    {
+        return _getDeltaLatestCursor(null, includeMediaInfo);
+    }
+
+    /**
+     * Same as {@link #getDeltaLatestCursor(boolean)} with {@code includeMediaInfo}
+     * set to {@code false}.
+     */
     public String getDeltaLatestCursor() throws DbxException
     {
-        return _getDeltaLatestCursor(null);
+        return _getDeltaLatestCursor(null, false);
     }
 
     /**
@@ -1468,19 +1590,29 @@ public final class DbxClient
      * @param pathPrefix
      *    A path on Dropbox to limit the cursor to.
      */
-    public String getDeltaLatestCursorWithPathPrefix(String pathPrefix) throws DbxException
+    public String getDeltaLatestCursorWithPathPrefix(String pathPrefix, boolean includeMediaInfo) throws DbxException
     {
         DbxPath.checkArg("path", pathPrefix);
-        return _getDeltaLatestCursor(pathPrefix);
+        return _getDeltaLatestCursor(pathPrefix, includeMediaInfo);
     }
 
-    private String _getDeltaLatestCursor(/*@Nullable*/String pathPrefix) throws DbxException
+    /**
+     * Same as {@link #getDeltaLatestCursorWithPathPrefix(String, boolean)} with {@code includeMediaInfo}
+     * set to {@code false}.
+     */
+    public String getDeltaLatestCursorWithPathPrefix(String pathPrefix) throws DbxException
+    {
+        return getDeltaLatestCursorWithPathPrefix(pathPrefix, false);
+    }
+
+    private String _getDeltaLatestCursor(/*@Nullable*/String pathPrefix, boolean includeMediaInfo) throws DbxException
     {
         String host = this.host.api;
         String apiPath = "1/delta/latest_cursor";
 
         /*@Nullable*/String[] params = {
             "path_prefix", pathPrefix,
+            "include_media_info", includeMediaInfo ? "true" : null,
         };
 
         return doPost(host, apiPath, params, null, new DbxRequestUtil.ResponseHandler<String>() {

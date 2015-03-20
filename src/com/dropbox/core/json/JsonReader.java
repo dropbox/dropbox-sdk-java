@@ -95,9 +95,25 @@ public abstract class JsonReader<T>
         return loc;
     }
 
+    public static JsonLocation expectArrayEnd(JsonParser parser)
+        throws IOException, JsonReadException
+    {
+        if (parser.getCurrentToken() != JsonToken.END_ARRAY) {
+            throw new JsonReadException("expecting the end of an array (\"[\")", parser.getTokenLocation());
+        }
+        JsonLocation loc = parser.getTokenLocation();
+        nextToken(parser);
+        return loc;
+    }
+
     public static boolean isArrayEnd(JsonParser parser)
     {
         return (parser.getCurrentToken() == JsonToken.END_ARRAY);
+    }
+
+    public static boolean isArrayStart(JsonParser parser)
+    {
+        return (parser.getCurrentToken() == JsonToken.START_ARRAY);
     }
 
     public static void skipValue(JsonParser parser)
@@ -172,6 +188,18 @@ public abstract class JsonReader<T>
             return b;
         }
         catch (JsonParseException ex) {
+            throw JsonReadException.fromJackson(ex);
+        }
+    }
+
+    public static double readDouble(JsonParser parser)
+        throws  IOException, JsonReadException
+    {
+        try {
+            double v = parser.getDoubleValue();
+            parser.nextToken();
+            return v;
+        } catch (JsonParseException ex) {
             throw JsonReadException.fromJackson(ex);
         }
     }

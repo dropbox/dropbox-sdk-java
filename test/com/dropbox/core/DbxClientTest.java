@@ -1,6 +1,7 @@
 package com.dropbox.core;
 
 import com.dropbox.core.json.JsonReader;
+import com.dropbox.core.util.Dumpable;
 import com.dropbox.core.util.IOUtil;
 import static com.dropbox.core.util.StringUtil.jq;
 
@@ -262,7 +263,7 @@ public class DbxClientTest
             while (true) {
                 DbxDelta<DbxEntry> d = client.getDelta(cursor);
                 for (DbxDelta.Entry<DbxEntry> e : d.entries) {
-                    // Should only see updates from test folder
+                    System.out.print(e.toStringMultiline());
                     assertTrue(e.lcPath.startsWith(lcPrefix+"/") || e.lcPath.equals(lcPrefix));
                     assertNotNull(e.metadata);  // We shouldn't see deletes in our test folder.
                     boolean removed = expected.remove(e.metadata);
@@ -471,6 +472,51 @@ public class DbxClientTest
     }
 
     @Test
+    public void testPhotoInfo()
+        throws DbxException, IOException, InterruptedException
+    {
+        init();
+
+        final String folder = p("photo-info-folder");
+        final String orig = folder + "/test-imag"+E_ACCENT+".jpeg";
+
+        // Upload an image.
+        InputStream in = this.getClass().getResourceAsStream("test-image.jpeg");
+        if (in == null) {
+            throw new AssertionError("couldn't load test image \"test-image.jpeg\"");
+        }
+        DbxEntry.File uploadEntry;
+        try {
+            uploadEntry = client.uploadFile(orig, DbxWriteMode.add(), -1, in).asFile();
+        }
+        finally {
+            IOUtil.closeInput(in);
+        }
+        assertEquals(uploadEntry.path.toLowerCase(), orig.toLowerCase());
+
+        // Get metadata with photo info (keep trying until photo info is available)
+        int maxTries = 20;
+        int delaySeconds = 2;
+        DbxEntry.File origEntry;
+        for (int tries = 0; ; tries++) {
+            if (tries == maxTries) {
+                int waited = delaySeconds * tries;
+                throw new AssertionError("Photo info was pending after " + waited + " seconds.  Server slowness?");
+            }
+            Thread.sleep(delaySeconds * 1000);
+            origEntry = client.getMetadata(orig, true).asFile();
+            if (origEntry.photoInfo == DbxEntry.File.PhotoInfo.PENDING) break;
+        }
+
+        assertEquals(origEntry.path.toLowerCase(), orig.toLowerCase());
+        assertNotNull(origEntry.photoInfo);
+
+        // List folder with photo info.
+        DbxEntry.File childEntry = client.getMetadataWithChildren(folder, true).children.get(0).asFile();
+        assertEquals(childEntry, origEntry);
+    }
+
+    @Test
     public void testThumbnail()
         throws DbxException, IOException
     {
@@ -623,7 +669,6 @@ public class DbxClientTest
         DbxEntry.WithChildren mwc = client.getMetadataWithChildren(p());
         assertEquals(mwc.children.size(), 2);
     }
-
 
     @Test
     public void testCopyFolder()

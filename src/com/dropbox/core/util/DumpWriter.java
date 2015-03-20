@@ -211,6 +211,7 @@ public abstract class DumpWriter
     public DumpWriter field(String name, int v) { return fieldStart(name).value(v); }
     public DumpWriter field(String name, long v) { return fieldStart(name).value(v); }
     public DumpWriter field(String name, boolean v) { return fieldStart(name).value(v); }
+    public DumpWriter field(String name, double v) { return fieldStart(name).value(v); }
     public DumpWriter field(String name, /*@Nullable*/Date v) { return fieldStart(name).value(v); }
     public DumpWriter field(String name, /*@Nullable*/Dumpable v) { return fieldStart(name).value(v); }
 
@@ -239,6 +240,7 @@ public abstract class DumpWriter
     public DumpWriter value(int v) { return verbatim(Integer.toString(v)); }
     public DumpWriter value(long v) { return verbatim(Long.toString(v)); }
     public DumpWriter value(boolean v) { return verbatim(Boolean.toString(v)); }
+    public DumpWriter value(double v) { return verbatim(Double.toString(v)); }
     public DumpWriter value(/*@Nullable*/ Date v) { return verbatim(toStringDate(v)); }
 
     public DumpWriter value(/*@Nullable*/Dumpable v)
