@@ -2,6 +2,7 @@ package com.dropbox.core;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -232,6 +233,8 @@ public abstract class DbxEntry extends Dumpable implements Serializable
          */
         public final String mimeType;
 
+        public final PhotoInfo photoInfo;
+
         /**
          * @param path {@link #path}
          * @param iconName {@link #iconName}
@@ -243,7 +246,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
          * @param rev {@link #rev}
          * @param mimeType {@link #mimeType}
          */
-        public File(String path, String iconName, boolean mightHaveThumbnail, long numBytes, String humanSize, Date lastModified, Date clientMtime, String rev, String mimeType)
+        public File(String path, String iconName, boolean mightHaveThumbnail, long numBytes, String humanSize, Date lastModified, Date clientMtime, String rev, String mimeType, PhotoInfo photoInfo)
         {
             super(path, iconName, mightHaveThumbnail);
             this.numBytes = numBytes;
@@ -252,6 +255,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
             this.clientMtime = clientMtime;
             this.rev = rev;
             this.mimeType = mimeType;
+            this.photoInfo = photoInfo;
         }
 
         protected void dumpFields(DumpWriter w)
@@ -262,6 +266,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
             w.field("lastModified", lastModified);
             w.field("clientMtime", clientMtime);
             w.field("rev", rev);
+            w.field("mimeType", mimeType);
         }
 
         protected String getTypeName() { return "File"; }
@@ -316,6 +321,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
             if (!lastModified.equals(o.lastModified)) return false;
             if (!clientMtime.equals(o.clientMtime)) return false;
             if (!rev.equals(o.rev)) return false;
+            if (!mimeType.equals(o.mimeType)) return false;
             return true;
         }
 
@@ -327,7 +333,40 @@ public abstract class DbxEntry extends Dumpable implements Serializable
             h = h*31 + lastModified.hashCode();
             h = h*31 + clientMtime.hashCode();
             h = h*31 + rev.hashCode();
+            h = h*31 + mimeType.hashCode();
             return h;
+        }
+
+        public static class PhotoInfo {
+            public final Date timeTaken;
+            public final Location location;
+
+            public PhotoInfo(Date timeTaken, Location location) {
+                this.timeTaken = timeTaken;
+                this.location = location;
+            }
+        }
+
+        public static class VideoInfo {
+            public final Date timeTaken;
+            public final Location location;
+            public final long duration;
+
+            public VideoInfo(Date timeTaken, Location location, long duration) {
+                this.timeTaken = timeTaken;
+                this.location = location;
+                this.duration = duration;
+            }
+        }
+
+        public static class Location {
+            public final BigDecimal latitude;
+            public final BigDecimal longitude;
+
+            public Location(BigDecimal latitude, BigDecimal longitude) {
+                this.latitude = latitude;
+                this.longitude = longitude;
+            }
         }
     }
 
@@ -582,6 +621,8 @@ public abstract class DbxEntry extends Dumpable implements Serializable
         String hash = null;
         C contents = null;
         String mime_type = null;
+        File.PhotoInfo photo_info = null;
+        File.VideoInfo video_info = null;
 
         while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
             String fieldName = parser.getCurrentName();
@@ -608,6 +649,8 @@ public abstract class DbxEntry extends Dumpable implements Serializable
                         if (collector == null) throw new JsonReadException("not expecting \"contents\" field, since we didn't ask for children", parser.getCurrentLocation());
                         contents = JsonArrayReader.mk(Reader, collector).readField(parser, fieldName, contents); break;
                     case FM_mime_type: mime_type = JsonReader.StringReader.readField(parser, fieldName, mime_type); break;
+                    case FM_photo_info: photo_info = readPhotoInfo(parser); break;
+                    case FM_video_info: video_info = readVideoInfo(parser); break;
                     default:
                         throw new AssertionError("bad index: " + fi + ", field = \"" + fieldName + "\"");
                 }
@@ -641,7 +684,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
             if (modified == null) throw new JsonReadException("missing \"modified\" for a file entry", top);
             if (client_mtime == null) throw new JsonReadException("missing \"client_mtime\" for a file entry", top);
             if (rev == null) throw new JsonReadException("missing \"rev\" for a file entry", top);
-            e = new File(path, icon, thumb_exists, bytes, size, modified, client_mtime, rev, mime_type);
+            e = new File(path, icon, thumb_exists, bytes, size, modified, client_mtime, rev, mime_type, photo_info);
         }
 
         if (is_deleted) {
@@ -653,6 +696,62 @@ public abstract class DbxEntry extends Dumpable implements Serializable
         }
         return new WithChildrenC<C>(e, hash, contents);
     }
+
+    private static DbxEntry.File.PhotoInfo readPhotoInfo(JsonParser parser) throws IOException, JsonReadException {
+        JsonReader.expectObjectStart(parser);
+        Date time_taken = null;
+        File.Location location = null;
+        while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
+            String fieldName = parser.getCurrentName();
+            JsonReader.nextToken(parser);
+            if ("lat_long".equals(fieldName)) {
+                location = readLocation(parser);
+            } else if ("time_taken".equals(fieldName)) {
+                time_taken = JsonDateReader.Dropbox.readOptional(parser); break;
+            } else {
+                JsonReader.skipValue(parser);
+            }
+        }
+        JsonReader.expectObjectEnd(parser);
+        return new File.PhotoInfo(time_taken, location);
+    }
+
+    private static DbxEntry.File.VideoInfo readVideoInfo(JsonParser parser) throws IOException, JsonReadException {
+        JsonReader.expectObjectStart(parser);
+        File.Location location = null;
+        Date time_taken = null;
+        long duration = 0;
+        while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
+            String fieldName = parser.getCurrentName();
+            JsonReader.nextToken(parser);
+            if ("lat_long".equals(fieldName)) {
+                location = readLocation(parser);
+            } else if ("time_taken".equals(fieldName)) {
+                time_taken = JsonDateReader.Dropbox.readOptional(parser); break;
+            } else if ("duration".equals(fieldName)) {
+                duration = JsonReader.readUnsignedLong(parser);
+            } else {
+                JsonReader.skipValue(parser);
+            }
+        }
+        JsonReader.expectObjectEnd(parser);
+        return new File.VideoInfo(time_taken, location, duration);
+    }
+
+    private static File.Location readLocation(JsonParser parser) throws IOException, JsonReadException {
+        File.Location location = null;
+        if (JsonArrayReader.isArrayStart(parser)) {
+            JsonReader.expectArrayStart(parser);
+            BigDecimal latitude = JsonReader.readBigDecimal(parser);
+            BigDecimal longitude = JsonReader.readBigDecimal(parser);
+            location = new File.Location(latitude,longitude);
+            JsonReader.expectArrayEnd(parser);
+        } else {
+            JsonReader.skipValue(parser);
+        }
+        return location;
+    }
+
 
     private static final int FM_size = 0;
     private static final int FM_bytes = 1;
@@ -667,6 +766,8 @@ public abstract class DbxEntry extends Dumpable implements Serializable
     private static final int FM_hash = 10;
     private static final int FM_contents = 11;
     private static final int FM_mime_type = 12;
+    private static final int FM_photo_info = 13;
+    private static final int FM_video_info = 14;
     private static final JsonReader.FieldMapping FM;
 
     static {
@@ -684,6 +785,8 @@ public abstract class DbxEntry extends Dumpable implements Serializable
         b.add("hash", FM_hash);
         b.add("contents", FM_contents);
         b.add("mime_type", FM_mime_type);
+        b.add("photo_info", FM_photo_info);
+        b.add("video_info", FM_video_info);
         FM = b.build();
     }
 }

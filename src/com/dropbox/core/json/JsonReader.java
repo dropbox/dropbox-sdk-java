@@ -14,6 +14,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 
 /*>>> import checkers.nullness.quals.Nullable; */
@@ -95,9 +96,25 @@ public abstract class JsonReader<T>
         return loc;
     }
 
+    public static JsonLocation expectArrayEnd(JsonParser parser)
+        throws IOException, JsonReadException
+    {
+        if (parser.getCurrentToken() != JsonToken.END_ARRAY) {
+            throw new JsonReadException("expecting the end of an array (\"[\")", parser.getTokenLocation());
+        }
+        JsonLocation loc = parser.getTokenLocation();
+        nextToken(parser);
+        return loc;
+    }
+
     public static boolean isArrayEnd(JsonParser parser)
     {
         return (parser.getCurrentToken() == JsonToken.END_ARRAY);
+    }
+
+    public static boolean isArrayStart(JsonParser parser)
+    {
+        return (parser.getCurrentToken() == JsonToken.START_ARRAY);
     }
 
     public static void skipValue(JsonParser parser)
@@ -172,6 +189,18 @@ public abstract class JsonReader<T>
             return b;
         }
         catch (JsonParseException ex) {
+            throw JsonReadException.fromJackson(ex);
+        }
+    }
+
+    public static BigDecimal readBigDecimal(JsonParser parser)
+        throws  IOException, JsonReadException
+    {
+        try {
+            BigDecimal bd = parser.getDecimalValue();
+            parser.nextToken();
+            return bd;
+        } catch (JsonParseException ex) {
             throw JsonReadException.fromJackson(ex);
         }
     }

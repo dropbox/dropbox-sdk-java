@@ -12,4 +12,13 @@ public class DbxEntryTest {
         assertEquals("/Photos/Sample Album/Boston City Flow.jpg", entry.path);
         assertEquals(entry.asFile().mimeType,"image/jpeg");
     }
+
+    @Test
+    public void parseFileWithPhotoInfoMetadata() throws Exception {
+        InputStream in = this.getClass().getResourceAsStream("file-with-photo_info-metadata.json");
+        DbxEntry entry = DbxRequestUtil.readJsonFromResponse(DbxEntry.ReaderMaybeDeleted, in);
+        assertNotNull(entry.asFile().photoInfo, "Expected entry to have a photo info");
+        assertNotNull(entry.asFile().photoInfo.timeTaken, "Expected entry to have a time taken");
+        assertNotNull(entry.asFile().photoInfo.location, "Expected entry to have a location");
+    }
 }
