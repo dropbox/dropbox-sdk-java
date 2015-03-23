@@ -14,14 +14,16 @@ import java.io.IOException;
 public class DbxAccountInfo extends Dumpable
 {
     public final long userId;
+    public final String email;
     public final String displayName;
     public final String country;
     public final String referralLink;
     public final Quota quota;
 
-    public DbxAccountInfo(long userId, String displayName, String country, String referralLink, Quota quota)
+    public DbxAccountInfo(long userId, String email, String displayName, String country, String referralLink, Quota quota)
     {
         this.userId = userId;
+        this.email = email;
         this.displayName = displayName;
         this.country = country;
         this.referralLink = referralLink;
@@ -32,6 +34,7 @@ public class DbxAccountInfo extends Dumpable
     protected void dumpFields(DumpWriter out)
     {
         out.field("userId", userId);
+        out.field("email", email);
         out.field("displayName", displayName);
         out.field("country", country);
         out.field("referralLink", referralLink);
@@ -129,6 +132,7 @@ public class DbxAccountInfo extends Dumpable
             JsonLocation top = JsonReader.expectObjectStart(parser);
 
             long uid = -1;
+            String email = null;
             String display_name = null;
             String country = null;
             String referral_link = null;
@@ -143,6 +147,7 @@ public class DbxAccountInfo extends Dumpable
                     switch (fi) {
                         case -1: JsonReader.skipValue(parser); break;
                         case FM_uid: uid = JsonReader.readUnsignedLongField(parser, fieldName, uid); break;
+                        case FM_email: email = JsonReader.StringReader.readField(parser, fieldName, email); break;
                         case FM_display_name: display_name = JsonReader.StringReader.readField(parser, fieldName, display_name); break;
                         case FM_country: country = JsonReader.StringReader.readField(parser, fieldName, country); break;
                         case FM_referral_link: referral_link = JsonReader.StringReader.readField(parser, fieldName, referral_link); break;
@@ -160,11 +165,12 @@ public class DbxAccountInfo extends Dumpable
 
             if (uid < 0) throw new JsonReadException("missing field \"uid\"", top);
             if (display_name == null) throw new JsonReadException("missing field \"display_name\"", top);
+            if (email == null) throw new JsonReadException("missing field \"email\"", top);
             if (country == null) throw new JsonReadException("missing field \"country\"", top);
             if (referral_link == null) throw new JsonReadException("missing field \"referral_link\"", top);
             if (quota_info == null) throw new JsonReadException("missing field \"quota_info\"", top);
 
-            return new DbxAccountInfo(uid, display_name, country, referral_link, quota_info);
+            return new DbxAccountInfo(uid, email, display_name, country, referral_link, quota_info);
         }
     };
 
@@ -173,6 +179,7 @@ public class DbxAccountInfo extends Dumpable
     private static final int FM_country = 2;
     private static final int FM_referral_link = 3;
     private static final int FM_quota_info = 4;
+    private static final int FM_email = 5;
     private static final JsonReader.FieldMapping FM;
 
     static {
@@ -182,6 +189,7 @@ public class DbxAccountInfo extends Dumpable
         b.add("country", FM_country);
         b.add("referral_link", FM_referral_link);
         b.add("quota_info", FM_quota_info);
+        b.add("email", FM_email);
         FM = b.build();
     }
 }

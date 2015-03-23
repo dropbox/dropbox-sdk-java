@@ -48,6 +48,9 @@ public class DbxRequestConfig
      * </p>
      */
 	public final /*@Nullable*/String userLocale;
+	
+	/** The as member id. */
+	public final /*@Nullable*/String asMemberId; 
 
     /**
      * The {@link HttpRequestor} implementation to use when making
@@ -61,14 +64,15 @@ public class DbxRequestConfig
      * @param userLocale {@link #userLocale}
      * @param httpRequestor {@link #httpRequestor}
      */
-    public DbxRequestConfig(String clientIdentifier, /*@Nullable*/String userLocale, HttpRequestor httpRequestor)
+    public DbxRequestConfig(String clientIdentifier, /*@Nullable*/String userLocale, /*@Nullable*/String asMemberId, HttpRequestor httpRequestor)
     {
-        if (clientIdentifier == null) throw new IllegalArgumentException("'clientIdentifier' should not be null");
+		if (clientIdentifier == null) throw new IllegalArgumentException("'clientIdentifier' should not be null");
         if (httpRequestor == null) throw new IllegalArgumentException("'httpRequestor' should not be null");
 
         this.clientIdentifier = clientIdentifier;
         this.userLocale = userLocale;
         this.httpRequestor = httpRequestor;
+        this.asMemberId = asMemberId;
     }
 
     /**
@@ -77,6 +81,26 @@ public class DbxRequestConfig
      */
     public DbxRequestConfig(String clientIdentifier, String userLocale)
     {
-        this(clientIdentifier, userLocale, StandardHttpRequestor.Instance);
+        this(clientIdentifier, userLocale, null, StandardHttpRequestor.Instance);
     }
+
+	/**
+	 * Instantiates a new dbx request config.
+	 *
+	 * @param clientIdentifier the client identifier
+	 * @param memberId the member id
+	 * @param userLocale the user locale
+	 */
+	public DbxRequestConfig(String clientIdentifier, String memberId, String userLocale) {
+		this(clientIdentifier, userLocale, memberId, StandardHttpRequestor.Instance);
+	}
+
+	/**
+	 * Member id present.
+	 *
+	 * @return true, if successful
+	 */
+	public boolean memberIdPresent() {
+		return asMemberId != null && asMemberId.length() > 0;
+	}
 }

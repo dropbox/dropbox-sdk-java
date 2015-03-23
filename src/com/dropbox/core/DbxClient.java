@@ -1,5 +1,7 @@
 package com.dropbox.core;
 
+import static com.dropbox.core.util.StringUtil.jq;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -12,12 +14,16 @@ import com.dropbox.core.json.JsonArrayReader;
 import com.dropbox.core.json.JsonDateReader;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.util.*;
+import com.dropbox.core.util.Collector;
+import com.dropbox.core.util.CountingOutputStream;
+import com.dropbox.core.util.DumpWriter;
+import com.dropbox.core.util.Dumpable;
+import com.dropbox.core.util.IOUtil;
+import com.dropbox.core.util.LangUtil;
+import com.dropbox.core.util.Maybe;
 import com.fasterxml.jackson.core.JsonLocation;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
-
-import static com.dropbox.core.util.StringUtil.jq;
 
 /*>>> import checkers.nullness.quals.NonNull; */
 /*>>> import checkers.nullness.quals.Nullable; */
@@ -119,7 +125,27 @@ public final class DbxClient
                 return DbxRequestUtil.readJsonFromResponse(DbxEntry.ReaderMaybeDeleted, response.body);
             }
         });
+    } 
+    
+    public DbxMember getMember(/*@Nullable*/String email)throws DbxException
+    {
+        String apiPath = "1/team/members/get_info";
+
+        String[] params = {
+            "email", email,
+        };
+
+        return doPost(host.api, apiPath, params, null, new DbxRequestUtil.ResponseHandler<DbxMember>() {
+            @Override
+            public DbxMember handle(HttpRequestor.Response response) throws DbxException
+            {
+                if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+                return DbxRequestUtil.readJsonFromResponse(DbxMember.Reader, response.body);
+            }
+        });
+
     }
+
 
     /**
      * Get the metadata for a given path; if the path refers to a folder,
@@ -1941,7 +1967,7 @@ public final class DbxClient
     {
         return DbxRequestUtil.doPost(requestConfig, accessToken, host, path, params, headers, handler);
     }
-
+    
     /**
      * For uploading file content to Dropbox.  Write stuff to the {@link #getBody} stream.
      *
@@ -1986,4 +2012,7 @@ public final class DbxClient
          */
         public abstract DbxEntry.File finish() throws DbxException;
     }
+
+
+	
 }

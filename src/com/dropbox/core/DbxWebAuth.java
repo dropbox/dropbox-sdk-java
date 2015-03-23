@@ -1,10 +1,11 @@
 package com.dropbox.core;
 
-import com.dropbox.core.util.StringUtil;
 import static com.dropbox.core.util.StringUtil.jq;
 
 import java.security.SecureRandom;
 import java.util.Map;
+
+import com.dropbox.core.util.StringUtil;
 
 /*>>> import checkers.nullness.quals.Nullable; */
 
@@ -241,7 +242,7 @@ public class DbxWebAuth
         assert code != null : "@AssumeAssertion(nullness)";
 
         DbxAuthFinish finish = DbxWebAuthHelper.finish(this.appInfo, this.requestConfig, code, this.redirectUri);
-        return new DbxAuthFinish(finish.accessToken, finish.userId, givenUrlState);
+        return new DbxAuthFinish(finish.accessToken, finish.userId, givenUrlState, finish.teamId);
     }
 
     private static /*@Nullable*/String getParam(Map<String,String[]> params, String name)
