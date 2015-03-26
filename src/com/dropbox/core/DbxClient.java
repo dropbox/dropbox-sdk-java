@@ -1452,11 +1452,28 @@ public final class DbxClient
         });
     }
 
+    /**
+     * Get a cursor for the current state of a user's Dropbox folder. Can be passed to getDelta
+     * to retrieve changes since this method was called.
+     */
     public String getDeltaLatestCursor() throws DbxException
     {
         return _getDeltaLatestCursor(null);
     }
 
+    /**
+     * Same as {@link #getDeltaLatestCursor}, except results are limited to files and folders whose
+     * paths are equal to or under the specified {@code pathPrefix}.
+     *
+     * <p>
+     * The {@code pathPrefix} is fixed for a given cursor.  Whatever {@code pathPrefix}
+     * you use on this call must also be passed in on subsequent calls to {@code getDeltaWithPathPrefix()}
+     * that use the returned cursor.
+     * </p>
+     *
+     * @param pathPrefix
+     *    A path on Dropbox to limit results to.
+     */
     public String getDeltaLatestCursorWithPathPrefix(String pathPrefix) throws DbxException
     {
         DbxPath.checkArg("path", pathPrefix);
@@ -1505,7 +1522,7 @@ public final class DbxClient
 
             JsonReader.expectObjectEnd(parser);
 
-            if (cursorId == null) throw new JsonReadException("missing field \"upload_id\"", top);
+            if (cursorId == null) throw new JsonReadException("missing field \"cursor\"", top);
 
             return cursorId;
         }
