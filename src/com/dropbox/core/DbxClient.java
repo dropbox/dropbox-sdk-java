@@ -1452,6 +1452,65 @@ public final class DbxClient
         });
     }
 
+    public String getDeltaLatestCursor() throws DbxException
+    {
+        return _getDeltaLatestCursor(null);
+    }
+
+    public String getDeltaLatestCursorWithPathPrefix(String pathPrefix) throws DbxException
+    {
+        DbxPath.checkArg("path", pathPrefix);
+        return _getDeltaLatestCursor(pathPrefix);
+    }
+
+    private String _getDeltaLatestCursor(String pathPrefix) throws DbxException
+    {
+        String host = this.host.api;
+        String apiPath = "1/delta/latest_cursor";
+
+        /*@Nullable*/String[] params = {
+            "path_prefix", pathPrefix,
+        };
+
+        return doPost(host, apiPath, params, null, new DbxRequestUtil.ResponseHandler<String>() {
+            @Override
+            public String handle(HttpRequestor.Response response) throws DbxException {
+                if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+                return DbxRequestUtil.readJsonFromResponse(LatestCursorReader, response.body);
+            }
+        });
+    }
+
+    private static JsonReader<String> LatestCursorReader = new JsonReader<String>() {
+        @Override
+        public String read(JsonParser parser) throws IOException, JsonReadException {
+            JsonLocation top = JsonReader.expectObjectStart(parser);
+
+            String cursorId = null;
+
+            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String fieldName = parser.getCurrentName();
+                parser.nextToken();
+
+                try {
+                    if (fieldName.equals("cursor")) {
+                        cursorId = JsonReader.StringReader.readField(parser, fieldName, cursorId);
+                    } else {
+                        JsonReader.skipValue(parser);
+                    }
+                } catch (JsonReadException ex) {
+                    throw ex.addFieldContext(fieldName);
+                }
+            }
+
+            JsonReader.expectObjectEnd(parser);
+
+            if (cursorId == null) throw new JsonReadException("missing field \"upload_id\"", top);
+
+            return cursorId;
+        }
+    };
+
     // -----------------------------------------------------------------
     // /thumbnails
 

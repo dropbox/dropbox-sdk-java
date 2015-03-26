@@ -24,7 +24,7 @@ public final class DbxHost implements java.io.Serializable
      * The standard Dropbox hosts: "api.dropbox.com", "api-content.dropbox.com",
      * and "www.dropbox.com"
      */
-	public static final DbxHost Default = new DbxHost("api.dropbox.com", "api-content.dropbox.com", "www.dropbox.com");
+	public static final DbxHost Default = new DbxHost("api.dropbox.com", "api-content.dropbox.com", "www.dropbox.com", "api-notify.dropbox.com");
 
     /**
      * The host name of the main Dropbox API server.
@@ -45,15 +45,22 @@ public final class DbxHost implements java.io.Serializable
 	public final String web;
 
     /**
+     * The host name of the Dropbox notification server. Used by the longpoll_notify API.
+     * The default is "api-notify.dropbox.com".
+     */
+    public final String notify;
+
+    /**
      * @param api {@link #api}
      * @param content {@link #content}
      * @param web {@link #web}
      */
-	public DbxHost(String api, String content, String web)
+	public DbxHost(String api, String content, String web, String notify)
 	{
 		this.api = api;
 		this.content = content;
 		this.web = web;
+        this.notify = notify;
 	}
 
     public boolean equals(/*@Nullable*/Object o)
@@ -73,7 +80,7 @@ public final class DbxHost implements java.io.Serializable
 
     private static DbxHost fromBaseHost(String s)
     {
-        return new DbxHost("api-" + s, "api-content-" + s, "meta-" + s);
+        return new DbxHost("api-" + s, "api-content-" + s, "meta-" + s, "api-notify" + s);
     }
 
     public static final JsonReader<DbxHost> Reader = new JsonReader<DbxHost>()
@@ -94,6 +101,7 @@ public final class DbxHost implements java.io.Serializable
                 String api = null;
                 String content = null;
                 String web = null;
+                String notify = null;
 
                 while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String fieldName = parser.getCurrentName();
@@ -109,6 +117,9 @@ public final class DbxHost implements java.io.Serializable
                         else if (fieldName.equals("web")) {
                             web = JsonReader.StringReader.readField(parser, fieldName, web);
                         }
+                        else if (fieldName.equals("notify")) {
+                            notify = JsonReader.StringReader.readField(parser, fieldName, notify);
+                        }
                         else {
                             throw new JsonReadException("unknown field", parser.getCurrentLocation());
                         }
@@ -123,8 +134,9 @@ public final class DbxHost implements java.io.Serializable
                 if (api == null) throw new JsonReadException("missing field \"api\"", top);
                 if (content == null) throw new JsonReadException("missing field \"content\"", top);
                 if (web == null) throw new JsonReadException("missing field \"web\"", top);
+                if (notify == null) throw new JsonReadException("missing field \"notify\"", top);
 
-                return new DbxHost(api, content, web);
+                return new DbxHost(api, content, web, notify);
             }
             else {
                 throw new JsonReadException("expecting a string or an object", parser.getTokenLocation());
@@ -159,6 +171,7 @@ public final class DbxHost implements java.io.Serializable
                 g.writeStringField("api", host.api);
                 g.writeStringField("content", host.content);
                 g.writeStringField("web", host.web);
+                g.writeStringField("notify", host.notify);
                 g.writeEndObject();
             }
         }
