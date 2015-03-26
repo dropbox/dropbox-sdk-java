@@ -1528,6 +1528,27 @@ public final class DbxClient
         }
     };
 
+    public DbxLongpollDelta getLongpollDelta(String cursor, int timeout)
+        throws DbxException
+    {
+        if (cursor == null) throw new IllegalArgumentException("'cursor' can't be null");
+        if (timeout < 30 || timeout > 480) throw new IllegalArgumentException("'timeout' must be >=30 and <= 480");
+        String[] params = {
+                "cursor", cursor,
+                "timeout", Integer.toString(timeout),
+        };
+
+        return DbxRequestUtil.doGet(getRequestConfig(), getAccessToken(), host.notify,
+                "1/longpoll_delta", params, null,
+                new DbxRequestUtil.ResponseHandler<DbxLongpollDelta>() {
+                    @Override
+                    public DbxLongpollDelta handle(HttpRequestor.Response response) throws DbxException {
+                        if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+                        return DbxRequestUtil.readJsonFromResponse(DbxLongpollDelta.Reader, response.body);
+                    }
+                });
+    }
+
     // -----------------------------------------------------------------
     // /thumbnails
 

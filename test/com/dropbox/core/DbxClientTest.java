@@ -291,6 +291,12 @@ public class DbxClientTest
 
             assertEquals(expected.size(), 0);
         }
+
+        // Test longpoll_delta
+        {
+            DbxLongpollDelta longpollDelta = client.getLongpollDelta( latestCursor, 30 );
+            assertTrue(longpollDelta.changes);
+        }
     }
 
     @Test
