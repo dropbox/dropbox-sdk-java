@@ -9,11 +9,19 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 
 /**
- * Created by jefflub on 3/26/15.
+ * The response from a longpoll_delta request.
  */
 public class DbxLongpollDelta
 {
+    /**
+     * If true, then there are changes and one of the DbxClient delta methods can be used to retrieve them. If false,
+     * then the poll timed out.
+     */
     public boolean changes;
+
+    /**
+     * If non-zero, then wait {@code backoff} seconds before attempting to call longpoll_delta again.
+     */
     public long backoff;
 
     public DbxLongpollDelta(boolean changes, long backoff) {
@@ -51,4 +59,5 @@ public class DbxLongpollDelta
 
             return new DbxLongpollDelta(changes, backoff);
         }
-    };}
+    };
+}

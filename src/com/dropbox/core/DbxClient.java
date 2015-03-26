@@ -1528,6 +1528,15 @@ public final class DbxClient
         }
     };
 
+    /**
+     * Waits for changes on an account, starting from the state represented by {@code cursor}.
+     *
+     * @param cursor
+     *          A cursor returned by on of the Delta methods that is the starting point for this poll.
+     *
+     * @param timeout
+     *          How long this poll should run before timing out, in seconds.
+     */
     public DbxLongpollDelta getLongpollDelta(String cursor, int timeout)
         throws DbxException
     {
