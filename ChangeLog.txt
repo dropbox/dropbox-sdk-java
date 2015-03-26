@@ -1,6 +1,7 @@
 - Include SDK version in HTTP requests (via the User-Agent header).
 - Fix 'urlState' handling in DbxWebAuth.  Was mistakenly include the
   '|' separator.
+- Add support for /delta/latest_cursor and /longpoll_delta.
 
 ---------------------------------------------
 1.7.7 (2014-09-02)

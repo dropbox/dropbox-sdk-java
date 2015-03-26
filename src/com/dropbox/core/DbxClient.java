@@ -1452,6 +1452,109 @@ public final class DbxClient
         });
     }
 
+    /**
+     * Get a cursor for the current state of a user's Dropbox folder. Can be passed to {@link #getDelta}
+     * to retrieve changes since this method was called.
+     */
+    public String getDeltaLatestCursor() throws DbxException
+    {
+        return _getDeltaLatestCursor(null);
+    }
+
+    /**
+     * Same as {@link #getDeltaLatestCursor}, except the cursor is limited to files and folders whose
+     * paths are equal to or under the specified {@code pathPrefix}.
+     *
+     * @param pathPrefix
+     *    A path on Dropbox to limit the cursor to.
+     */
+    public String getDeltaLatestCursorWithPathPrefix(String pathPrefix) throws DbxException
+    {
+        DbxPath.checkArg("path", pathPrefix);
+        return _getDeltaLatestCursor(pathPrefix);
+    }
+
+    private String _getDeltaLatestCursor(/*@Nullable*/String pathPrefix) throws DbxException
+    {
+        String host = this.host.api;
+        String apiPath = "1/delta/latest_cursor";
+
+        /*@Nullable*/String[] params = {
+            "path_prefix", pathPrefix,
+        };
+
+        return doPost(host, apiPath, params, null, new DbxRequestUtil.ResponseHandler<String>() {
+            @Override
+            public String handle(HttpRequestor.Response response) throws DbxException {
+                if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+                return DbxRequestUtil.readJsonFromResponse(LatestCursorReader, response.body);
+            }
+        });
+    }
+
+    private static JsonReader<String> LatestCursorReader = new JsonReader<String>() {
+        @Override
+        public String read(JsonParser parser) throws IOException, JsonReadException {
+            JsonLocation top = JsonReader.expectObjectStart(parser);
+
+            String cursorId = null;
+
+            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String fieldName = parser.getCurrentName();
+                parser.nextToken();
+
+                try {
+                    if (fieldName.equals("cursor")) {
+                        cursorId = JsonReader.StringReader.readField(parser, fieldName, cursorId);
+                    } else {
+                        JsonReader.skipValue(parser);
+                    }
+                } catch (JsonReadException ex) {
+                    throw ex.addFieldContext(fieldName);
+                }
+            }
+
+            JsonReader.expectObjectEnd(parser);
+
+            if (cursorId == null) throw new JsonReadException("missing field \"cursor\"", top);
+
+            return cursorId;
+        }
+    };
+
+    /**
+     * Waits for changes to files on an account, starting from the state represented by {@code cursor}.
+     *
+     * @param cursor
+     *          A cursor returned by ono of the "delta" methods.
+     *
+     * @param timeout
+     *          How long poll should run before timing out, in seconds.
+     */
+    public DbxLongpollDeltaResult getLongpollDelta(String cursor, int timeout)
+        throws DbxException
+    {
+        if (cursor == null) throw new IllegalArgumentException("'cursor' can't be null");
+        if (timeout < 30 || timeout > 480) throw new IllegalArgumentException("'timeout' must be >=30 and <= 480");
+        String[] params = {
+                "cursor", cursor,
+                "timeout", Integer.toString(timeout),
+        };
+
+        return DbxRequestUtil.doGet(getRequestConfig(), getAccessToken(), host.notify,
+            "1/longpoll_delta", params, null,
+            new DbxRequestUtil.ResponseHandler<DbxLongpollDeltaResult>()
+            {
+                @Override
+                public DbxLongpollDeltaResult handle(HttpRequestor.Response response)
+                    throws DbxException
+                {
+                    if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+                    return DbxRequestUtil.readJsonFromResponse(DbxLongpollDeltaResult.Reader, response.body);
+                }
+            });
+    }
+
     // -----------------------------------------------------------------
     // /thumbnails
 

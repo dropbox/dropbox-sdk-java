@@ -190,6 +190,12 @@ public class DbxClientTest
     {
         init();
 
+        // Get latest cursors before modifying dropbox folders
+        String latestCursor = client.getDeltaLatestCursor();
+        String latestCursorWithPath = client.getDeltaLatestCursorWithPathPrefix(p("b"));
+        assertNotNull(latestCursor);
+        assertNotNull(latestCursorWithPath);
+
         DbxEntry.Folder top = (DbxEntry.Folder) client.getMetadata(p());
         DbxEntry.File a = addFile(p("a.txt"), 10);
         DbxEntry.Folder b = client.createFolder(p("b"));
@@ -241,6 +247,55 @@ public class DbxClientTest
             }
 
             assertEquals(expected.size(), 0);
+        }
+
+        // Test latest cursor responses
+        {
+            HashSet<DbxEntry> expected = new HashSet<DbxEntry>(Arrays.asList(a, b, b_1, b_2, c, c_1, c_2));
+            String lcPrefix = p().toLowerCase();
+            String cursor = latestCursor;
+            while (true) {
+                DbxDelta<DbxEntry> d = client.getDelta(cursor);
+                for (DbxDelta.Entry<DbxEntry> e : d.entries) {
+                    // Should only see updates from test folder
+                    assertTrue(e.lcPath.startsWith(lcPrefix+"/") || e.lcPath.equals(lcPrefix));
+                    assertNotNull(e.metadata);  // We shouldn't see deletes in our test folder.
+                    boolean removed = expected.remove(e.metadata);
+                    assertTrue(removed);
+                }
+                cursor = d.cursor;
+                if (!d.hasMore) break;
+            }
+
+            assertEquals(expected.size(), 0);
+        }
+
+        // Test latest cursor with path prefix
+        {
+            HashSet<DbxEntry> expected = new HashSet<DbxEntry>(Arrays.asList(b, b_1, b_2, c, c_1, c_2));
+
+            String prefix = b.path;
+            String lcPrefix = prefix.toLowerCase();
+            String cursor = latestCursorWithPath;
+            while (true) {
+                DbxDelta<DbxEntry> d = client.getDeltaWithPathPrefix(cursor, prefix);
+                for (DbxDelta.Entry<DbxEntry> e : d.entries) {
+                    assertTrue(e.lcPath.startsWith(lcPrefix+"/") || e.lcPath.equals(lcPrefix));
+                    assertNotNull(e.metadata);  // We should never see deletes.
+                    boolean removed = expected.remove(e.metadata);
+                    assertTrue(removed);
+                }
+                cursor = d.cursor;
+                if (!d.hasMore) break;
+            }
+
+            assertEquals(expected.size(), 0);
+        }
+
+        // Test longpoll_delta
+        {
+            DbxLongpollDeltaResult longpollDelta = client.getLongpollDelta(latestCursor, 30);
+            assertTrue(longpollDelta.mightHaveChanges);
         }
     }
 
