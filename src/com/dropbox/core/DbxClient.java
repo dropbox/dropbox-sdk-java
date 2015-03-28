@@ -1480,7 +1480,7 @@ public final class DbxClient
         return _getDeltaLatestCursor(pathPrefix);
     }
 
-    private String _getDeltaLatestCursor(String pathPrefix) throws DbxException
+    private String _getDeltaLatestCursor(/*@Nullable*/String pathPrefix) throws DbxException
     {
         String host = this.host.api;
         String apiPath = "1/delta/latest_cursor";
