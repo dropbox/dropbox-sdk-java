@@ -1452,6 +1452,112 @@ public final class DbxClient
         });
     }
 
+    /**
+     * Get a cursor for the current state of a user's Dropbox folder. Can be passed to getDelta
+     * to retrieve changes since this method was called.
+     */
+    public String getDeltaLatestCursor() throws DbxException
+    {
+        return _getDeltaLatestCursor(null);
+    }
+
+    /**
+     * Same as {@link #getDeltaLatestCursor}, except results are limited to files and folders whose
+     * paths are equal to or under the specified {@code pathPrefix}.
+     *
+     * <p>
+     * The {@code pathPrefix} is fixed for a given cursor.  Whatever {@code pathPrefix}
+     * you use on this call must also be passed in on subsequent calls to {@code getDeltaWithPathPrefix()}
+     * that use the returned cursor.
+     * </p>
+     *
+     * @param pathPrefix
+     *    A path on Dropbox to limit results to.
+     */
+    public String getDeltaLatestCursorWithPathPrefix(String pathPrefix) throws DbxException
+    {
+        DbxPath.checkArg("path", pathPrefix);
+        return _getDeltaLatestCursor(pathPrefix);
+    }
+
+    private String _getDeltaLatestCursor(/*@Nullable*/String pathPrefix) throws DbxException
+    {
+        String host = this.host.api;
+        String apiPath = "1/delta/latest_cursor";
+
+        /*@Nullable*/String[] params = {
+            "path_prefix", pathPrefix,
+        };
+
+        return doPost(host, apiPath, params, null, new DbxRequestUtil.ResponseHandler<String>() {
+            @Override
+            public String handle(HttpRequestor.Response response) throws DbxException {
+                if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+                return DbxRequestUtil.readJsonFromResponse(LatestCursorReader, response.body);
+            }
+        });
+    }
+
+    private static JsonReader<String> LatestCursorReader = new JsonReader<String>() {
+        @Override
+        public String read(JsonParser parser) throws IOException, JsonReadException {
+            JsonLocation top = JsonReader.expectObjectStart(parser);
+
+            String cursorId = null;
+
+            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String fieldName = parser.getCurrentName();
+                parser.nextToken();
+
+                try {
+                    if (fieldName.equals("cursor")) {
+                        cursorId = JsonReader.StringReader.readField(parser, fieldName, cursorId);
+                    } else {
+                        JsonReader.skipValue(parser);
+                    }
+                } catch (JsonReadException ex) {
+                    throw ex.addFieldContext(fieldName);
+                }
+            }
+
+            JsonReader.expectObjectEnd(parser);
+
+            if (cursorId == null) throw new JsonReadException("missing field \"cursor\"", top);
+
+            return cursorId;
+        }
+    };
+
+    /**
+     * Waits for changes on an account, starting from the state represented by {@code cursor}.
+     *
+     * @param cursor
+     *          A cursor returned by on of the Delta methods that is the starting point for this poll.
+     *
+     * @param timeout
+     *          How long this poll should run before timing out, in seconds.
+     */
+    public DbxLongpollDelta getLongpollDelta(String cursor, int timeout)
+        throws DbxException
+    {
+        if (cursor == null) throw new IllegalArgumentException("'cursor' can't be null");
+        if (timeout < 30 || timeout > 480) throw new IllegalArgumentException("'timeout' must be >=30 and <= 480");
+        String[] params = {
+                "cursor", cursor,
+                "timeout", Integer.toString(timeout),
+        };
+
+        return DbxRequestUtil.doGet(getRequestConfig(), getAccessToken(), host.notify,
+                "1/longpoll_delta", params, null,
+                new DbxRequestUtil.ResponseHandler<DbxLongpollDelta>() {
+                    @Override
+                    public DbxLongpollDelta handle(HttpRequestor.Response response) throws DbxException {
+                        if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+                        return DbxRequestUtil.readJsonFromResponse(DbxLongpollDelta.Reader, response.body);
+                    }
+                });
+    }
+
     // -----------------------------------------------------------------
     // /thumbnails
 
