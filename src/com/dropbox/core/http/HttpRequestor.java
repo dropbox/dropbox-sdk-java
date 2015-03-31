@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public abstract class HttpRequestor
 {
-	public abstract Response doGet(String url, Iterable<Header> headers) throws IOException;
+    public abstract Response doGet(String url, Iterable<Header> headers) throws IOException;
     public abstract Uploader startPost(String url, Iterable<Header> headers) throws IOException;
     public abstract Uploader startPut(String url, Iterable<Header> headers) throws IOException;
 

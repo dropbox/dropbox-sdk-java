@@ -24,37 +24,37 @@ public final class DbxHost implements java.io.Serializable
      * The standard Dropbox hosts: "api.dropbox.com", "api-content.dropbox.com",
      * and "www.dropbox.com"
      */
-	public static final DbxHost Default = new DbxHost("api.dropbox.com", "api-content.dropbox.com", "www.dropbox.com");
+    public static final DbxHost Default = new DbxHost("api.dropbox.com", "api-content.dropbox.com", "www.dropbox.com");
 
     /**
      * The host name of the main Dropbox API server.
      * The default is "api.dropbox.com".
      */
-	public final String api;
+    public final String api;
 
     /**
      * The host name of the Dropbox API content server.
      * The default is "api-content.dropbox.com".
      */
-	public final String content;
+    public final String content;
 
     /**
      * The host name of the Dropbox web server.  Used during user authorization.
      * The default is "www.dropbox.com".
      */
-	public final String web;
+    public final String web;
 
     /**
      * @param api {@link #api}
      * @param content {@link #content}
      * @param web {@link #web}
      */
-	public DbxHost(String api, String content, String web)
-	{
-		this.api = api;
-		this.content = content;
-		this.web = web;
-	}
+    public DbxHost(String api, String content, String web)
+    {
+        this.api = api;
+        this.content = content;
+        this.web = web;
+    }
 
     public boolean equals(/*@Nullable*/Object o)
     {

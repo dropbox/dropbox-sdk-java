@@ -6,13 +6,13 @@ mvn_target_dir="target"
 # Locate the script file.  Cross symlinks if necessary.
 loc="$0"
 while [ -h "$loc" ]; do
-	ls=`ls -ld "$loc"`
-	link=`expr "$ls" : '.*-> \(.*\)$'`
-	if expr "$link" : '/.*' > /dev/null; then
-		loc="$link"  # Absolute link
-	else
-		loc="`dirname "$loc"`/$link"  # Relative link
-	fi
+    ls=`ls -ld "$loc"`
+    link=`expr "$ls" : '.*-> \(.*\)$'`
+    if expr "$link" : '/.*' > /dev/null; then
+        loc="$link"  # Absolute link
+    else
+        loc="`dirname "$loc"`/$link"  # Relative link
+    fi
 done
 
 die() {

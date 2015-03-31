@@ -9,8 +9,8 @@ import java.io.File;
 
 public final class JsonReadException extends java.lang.Exception
 {
-	public static final long serialVersionUID = 0;
-	
+    public static final long serialVersionUID = 0;
+
     public final String error;
     public final JsonLocation location;
     private /*@Nullable*/PathPart path;

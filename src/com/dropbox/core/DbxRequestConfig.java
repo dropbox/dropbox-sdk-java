@@ -47,7 +47,7 @@ public class DbxRequestConfig
      * strings will be in English.
      * </p>
      */
-	public final /*@Nullable*/String userLocale;
+    public final /*@Nullable*/String userLocale;
 
     /**
      * The {@link HttpRequestor} implementation to use when making

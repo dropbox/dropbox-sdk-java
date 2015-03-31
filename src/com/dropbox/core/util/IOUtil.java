@@ -138,7 +138,7 @@ public class IOUtil
 
     public static abstract class WrappedException extends IOException
     {
-		public static final long serialVersionUID = 0;
+        public static final long serialVersionUID = 0;
 
         public final IOException underlying;
 
@@ -180,8 +180,8 @@ public class IOUtil
         {
             super(underlying);
         }
-        
-		public static final long serialVersionUID = 0;
+
+        public static final long serialVersionUID = 0;
     }
 
     public static final class WriteException extends WrappedException
@@ -195,8 +195,8 @@ public class IOUtil
         {
             super(underlying);
         }
-        
-		public static final long serialVersionUID = 0;
+
+        public static final long serialVersionUID = 0;
     }
 
     public static final InputStream EmptyInputStream = new InputStream()

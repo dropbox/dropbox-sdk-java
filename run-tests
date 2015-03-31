@@ -13,7 +13,7 @@ Usage: $0 <path-to-auth-file> [ <test-selector> ]
     ".auth" file by running the "authorize" example program (see
     ReadMe.md for instructions on how to do that).
 
-<test-selector> [optional]: If omitted, all the tests are run.  If 
+<test-selector> [optional]: If omitted, all the tests are run.  If
     provided, only the specified tests are run.  Example values:
     - "DbxClientTest"
     - "DbxClientTest,StringUtilTest"

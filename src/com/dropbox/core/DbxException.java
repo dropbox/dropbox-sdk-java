@@ -10,12 +10,12 @@ import java.io.IOException;
  */
 public class DbxException extends Exception
 {
-	public DbxException(String message) { super(message); }
+    public DbxException(String message) { super(message); }
     public DbxException(String message, Throwable cause) { super(message, cause); }
-	public static final long serialVersionUID = 0;
+    public static final long serialVersionUID = 0;
 
-	/**
-	 * The server said that something went wrong on its end (HTTP 500 error code).
+    /**
+     * The server said that something went wrong on its end (HTTP 500 error code).
      * This indicates bug on the Dropbox server, but there are multiple potential causes.
      *
      * <ul>
@@ -36,12 +36,12 @@ public class DbxException extends Exception
      *     might stop happening.  You might want to check the forums to see if other
      *     people are seeing the same thing.</li>
      * </ul>
-	 */
-	public static final class ServerError extends DbxException
-	{
-		public ServerError(String message) { super(message); }
-		public static final long serialVersionUID = 0;
-	}
+     */
+    public static final class ServerError extends DbxException
+    {
+        public ServerError(String message) { super(message); }
+        public static final long serialVersionUID = 0;
+    }
 
     /**
      * The server is overloaded, or you have hit a rate limit.  Try again later.
@@ -53,7 +53,7 @@ public class DbxException extends Exception
         {
             super(message);
         }
-		public static final long serialVersionUID = 0;
+        public static final long serialVersionUID = 0;
     }
 
     /**
@@ -72,18 +72,18 @@ public class DbxException extends Exception
     {
         public ProtocolError(String message) { super(message); }
         public ProtocolError(String message, Throwable cause) { super(message, cause); }
-		public static final long serialVersionUID = 0;
+        public static final long serialVersionUID = 0;
     }
 
     /**
      * This is what is thrown when the Dropbox server tells us that it didn't
      * like something about our request.  This corresponds to the HTTP 400 status code.
      */
-	public static final class BadRequest extends ProtocolError
-	{
-		public BadRequest(String message) { super(message); }
-		public static final long serialVersionUID = 0;
-	}
+    public static final class BadRequest extends ProtocolError
+    {
+        public BadRequest(String message) { super(message); }
+        public static final long serialVersionUID = 0;
+    }
 
     /**
      * Thrown when we the response from the Dropbox server isn't something we expect.
@@ -99,8 +99,8 @@ public class DbxException extends Exception
     /**
      * Thrown when the Dropbox server responds with an HTTP status code we didn't expect.
      */
-	public static class BadResponseCode extends BadResponse
-	{
+    public static class BadResponseCode extends BadResponse
+    {
         public final int statusCode;
 
         public BadResponseCode(String message, int statusCode)
@@ -109,14 +109,14 @@ public class DbxException extends Exception
             this.statusCode = statusCode;
         }
 
-		public BadResponseCode(String message, int statusCode, Throwable cause)
+        public BadResponseCode(String message, int statusCode, Throwable cause)
         {
             super(message, cause);
             this.statusCode = statusCode;
         }
 
-		public static final long serialVersionUID = 0;
-	}
+        public static final long serialVersionUID = 0;
+    }
 
     /**
      * This is what gets thrown when there's an IOException when reading or writing
@@ -136,7 +136,7 @@ public class DbxException extends Exception
             super(underlying.toString(), underlying);
             this.underlying = underlying;
         }
-		public static final long serialVersionUID = 0;
+        public static final long serialVersionUID = 0;
     }
 
     /**
@@ -158,6 +158,6 @@ public class DbxException extends Exception
     public static final class InvalidAccessToken extends DbxException
     {
         public InvalidAccessToken(String message) { super(message); }
-		public static final long serialVersionUID = 0;
+        public static final long serialVersionUID = 0;
     }
 }

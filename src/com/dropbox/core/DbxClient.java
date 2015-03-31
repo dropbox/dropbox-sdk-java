@@ -36,7 +36,7 @@ import static com.dropbox.core.util.StringUtil.jq;
 public final class DbxClient
 {
     private final DbxRequestConfig requestConfig;
-	private final String accessToken;
+    private final String accessToken;
     private final DbxHost host;
 
     /**
@@ -1536,7 +1536,7 @@ public final class DbxClient
                 throws DbxException
             {
                 if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
-                Collector<DbxEntry./*@Nullable*/File,ArrayList<DbxEntry.File>> collector = 
+                Collector<DbxEntry./*@Nullable*/File,ArrayList<DbxEntry.File>> collector =
                     Collector.NullSkipper.<DbxEntry.File,ArrayList<DbxEntry.File>>mk(new Collector.ArrayListCollector<DbxEntry.File>());
                 return DbxRequestUtil.readJsonFromResponse(JsonArrayReader.mk(DbxEntry.File.ReaderMaybeDeleted, collector), response.body);
             }

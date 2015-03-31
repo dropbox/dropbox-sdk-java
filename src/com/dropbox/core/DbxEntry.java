@@ -129,7 +129,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
      */
     public static final class Folder extends DbxEntry
     {
-		public static final long serialVersionUID = 0;
+        public static final long serialVersionUID = 0;
 
         /**
          * @param path {@link #path}
@@ -186,7 +186,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
      */
     public static final class File extends DbxEntry
     {
-		public static final long serialVersionUID = 0;
+        public static final long serialVersionUID = 0;
 
         /**
          * The size, in bytes, of the file content.
