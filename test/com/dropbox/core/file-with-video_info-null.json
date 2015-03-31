@@ -1,0 +1,21 @@
+{
+  "rev": "1b610113f659",
+  "thumb_exists": false,
+  "path": "/videos/test.AVI",
+  "is_dir": false,
+  "client_mtime": "Fri, 20 Mar 2015 17:45:56 +0000",
+  "icon": "page_white_film",
+  "read_only": false,
+  "modifier": null,
+  "bytes": 802996,
+  "modified": "Fri, 20 Mar 2015 17:45:56 +0000",
+  "video_info": {
+    "duration": 1000,
+    "lat_long": null,
+    "time_taken": null
+  },
+  "size": "784.2 KB",
+  "root": "dropbox",
+  "mime_type": "video/x-msvideo",
+  "revision": 7009
+}
