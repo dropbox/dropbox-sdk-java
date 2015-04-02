@@ -52,7 +52,7 @@ public class DbxClientTest
         DbxRequestConfig requestConfig = new DbxRequestConfig("sdk-test", null);
         DbxClient client = new DbxClient(requestConfig, authInfo.accessToken, authInfo.host);
 
-        String timestamp = new SimpleDateFormat("yyyy-mm-dd HH.mm.ss").format(new Date());
+        String timestamp = new SimpleDateFormat("yyyy-MM-dd HH.mm.ss").format(new Date());
         String basePath = "/Java SDK Tests/" + timestamp;
 
         DbxEntry entry = client.createFolder(basePath);
