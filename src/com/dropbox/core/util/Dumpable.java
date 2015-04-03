@@ -17,7 +17,7 @@ public abstract class Dumpable
 
     public final void toString(StringBuilder buf)
     {
-        new DumpWriter.Plain(buf).value(this);
+        new DumpWriter.Plain(buf).v(this);
     }
 
     /**
@@ -54,7 +54,7 @@ public abstract class Dumpable
      */
     public final void toStringMultiline(StringBuilder buf, int currentIndent, boolean nl)
     {
-        new DumpWriter.Multiline(buf, 2, currentIndent, nl).value(this);
+        new DumpWriter.Multiline(buf, 2, currentIndent, nl).v(this);
     }
 
     protected /*@Nullable*/String getTypeName() { return null; }

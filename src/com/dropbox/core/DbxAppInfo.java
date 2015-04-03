@@ -78,8 +78,8 @@ public class DbxAppInfo extends Dumpable implements java.io.Serializable
     @Override
     protected void dumpFields(DumpWriter out)
     {
-        out.field("key", key);
-        out.field("secret", secret);
+        out.f("key").v(key);
+        out.f("secret").v(secret);
     }
 
     /**

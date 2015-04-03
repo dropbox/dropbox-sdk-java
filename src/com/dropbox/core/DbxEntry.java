@@ -76,9 +76,9 @@ public abstract class DbxEntry extends Dumpable implements Serializable
 
     protected void dumpFields(DumpWriter w)
     {
-        w.value(path);
-        w.field("iconName", iconName);
-        w.field("mightHaveThumbnail", mightHaveThumbnail);
+        w.v(path);
+        w.f("iconName").v(iconName);
+        w.f("mightHaveThumbnail").v(mightHaveThumbnail);
     }
 
     /**
@@ -276,11 +276,11 @@ public abstract class DbxEntry extends Dumpable implements Serializable
         protected void dumpFields(DumpWriter w)
         {
             super.dumpFields(w);
-            w.field("numBytes", numBytes);
-            w.field("humanSize", humanSize);
-            w.field("lastModified", lastModified);
-            w.field("clientMtime", clientMtime);
-            w.field("rev", rev);
+            w.f("numBytes").v(numBytes);
+            w.f("humanSize").v(humanSize);
+            w.f("lastModified").v(lastModified);
+            w.f("clientMtime").v(clientMtime);
+            w.f("rev").v(rev);
             nullablePendingField(w, "photoInfo", photoInfo, PhotoInfo.PENDING);
             nullablePendingField(w, "videoInfo", videoInfo, VideoInfo.PENDING);
         }
@@ -289,11 +289,11 @@ public abstract class DbxEntry extends Dumpable implements Serializable
         {
             if (value == null) return;
 
-            w.fieldStart(fieldName);
+            w.f(fieldName);
             if (value == pendingValue) {
                 w.verbatim("pending");
             } else {
-                w.value(value);
+                w.v(value);
             }
         }
 
@@ -417,8 +417,8 @@ public abstract class DbxEntry extends Dumpable implements Serializable
             @Override
             protected void dumpFields(DumpWriter w)
             {
-                w.field("timeTaken", timeTaken);
-                w.field("location", location);
+                w.f("timeTaken").v(timeTaken);
+                w.f("location").v(location);
             }
 
             @Override
@@ -510,9 +510,9 @@ public abstract class DbxEntry extends Dumpable implements Serializable
             @Override
             protected void dumpFields(DumpWriter w)
             {
-                w.field("timeTaken", timeTaken);
-                w.field("location", location);
-                w.field("duration", duration);
+                w.f("timeTaken").v(timeTaken);
+                w.f("location").v(location);
+                w.f("duration").v(duration);
             }
 
             @Override
@@ -580,8 +580,8 @@ public abstract class DbxEntry extends Dumpable implements Serializable
             @Override
             protected void dumpFields(DumpWriter w)
             {
-                w.field("latitude", latitude);
-                w.field("longitude", longitude);
+                w.f("latitude").v(latitude);
+                w.f("longitude").v(longitude);
             }
 
             @Override
@@ -712,9 +712,9 @@ public abstract class DbxEntry extends Dumpable implements Serializable
         @Override
         protected void dumpFields(DumpWriter w)
         {
-            w.value(entry);
-            w.field("hash", hash);
-            w.fieldStart("children").list(children);
+            w.v(entry);
+            w.f("hash").v(hash);
+            w.f("children").v(children);
         }
     }
 
@@ -807,10 +807,10 @@ public abstract class DbxEntry extends Dumpable implements Serializable
         @Override
         protected void dumpFields(DumpWriter w)
         {
-            w.value(entry);
-            w.field("hash", hash);
+            w.v(entry);
+            w.f("hash").v(hash);
             if (children != null) {
-                w.fieldVerbatim("children", children.toString());
+                w.f("children").verbatim(children.toString());
             }
         }
     }

@@ -12,7 +12,7 @@ public abstract class DumpWriter
 {
     public abstract DumpWriter recordStart(/*@Nullable*/String name);
     public abstract DumpWriter recordEnd();
-    public abstract DumpWriter fieldStart(String name);
+    public abstract DumpWriter f(String name);  // Write a field name.  You should write a value after.
     public abstract DumpWriter listStart();
     public abstract DumpWriter listEnd();
     public abstract DumpWriter verbatim(String s);
@@ -87,7 +87,7 @@ public abstract class DumpWriter
         }
 
         @Override
-        public DumpWriter fieldStart(String name)
+        public DumpWriter f(String name)
         {
             if (!nl) throw new AssertionError("called fieldStart() in a bad state");
             prefix();
@@ -168,7 +168,7 @@ public abstract class DumpWriter
         }
 
         @Override
-        public DumpWriter fieldStart(String name)
+        public DumpWriter f(String name)
         {
             sep();
             buf.append(name).append('=');
@@ -204,30 +204,24 @@ public abstract class DumpWriter
 
     public DumpWriter fieldVerbatim(String name, String s)
     {
-        return fieldStart(name).verbatim(s);
+        return f(name).verbatim(s);
     }
 
-    public DumpWriter field(String name, /*@Nullable*/String v) { return fieldStart(name).value(v); }
-    public DumpWriter field(String name, int v) { return fieldStart(name).value(v); }
-    public DumpWriter field(String name, long v) { return fieldStart(name).value(v); }
-    public DumpWriter field(String name, boolean v) { return fieldStart(name).value(v); }
-    public DumpWriter field(String name, double v) { return fieldStart(name).value(v); }
-    public DumpWriter field(String name, /*@Nullable*/Date v) { return fieldStart(name).value(v); }
-    public DumpWriter field(String name, /*@Nullable*/Dumpable v) { return fieldStart(name).value(v); }
-
-    public DumpWriter list(/*@Nullable*/Iterable<? extends Dumpable> list)
+    public DumpWriter v(/*@Nullable*/Iterable<? extends Dumpable> list)
     {
         if (list == null) {
             verbatim("null");
         } else {
             listStart();
-            values(list);
+            for (Dumpable d : list) {
+                v(d);
+            }
             listEnd();
         }
         return this;
     }
 
-    public DumpWriter value(/*@Nullable*/String v)
+    public DumpWriter v(/*@Nullable*/String v)
     {
         if (v == null) {
             verbatim("null");
@@ -237,13 +231,13 @@ public abstract class DumpWriter
         return this;
     }
 
-    public DumpWriter value(int v) { return verbatim(Integer.toString(v)); }
-    public DumpWriter value(long v) { return verbatim(Long.toString(v)); }
-    public DumpWriter value(boolean v) { return verbatim(Boolean.toString(v)); }
-    public DumpWriter value(double v) { return verbatim(Double.toString(v)); }
-    public DumpWriter value(/*@Nullable*/ Date v) { return verbatim(toStringDate(v)); }
+    public DumpWriter v(int v) { return verbatim(Integer.toString(v)); }
+    public DumpWriter v(long v) { return verbatim(Long.toString(v)); }
+    public DumpWriter v(boolean v) { return verbatim(Boolean.toString(v)); }
+    public DumpWriter v(double v) { return verbatim(Double.toString(v)); }
+    public DumpWriter v(/*@Nullable*/Date v) { return verbatim(toStringDate(v)); }
 
-    public DumpWriter value(/*@Nullable*/Dumpable v)
+    public DumpWriter v(/*@Nullable*/Dumpable v)
     {
         if (v == null) {
             verbatim("null");
@@ -252,14 +246,6 @@ public abstract class DumpWriter
             recordStart(v.getTypeName());
             v.dumpFields(this);
             recordEnd();
-        }
-        return this;
-    }
-
-    public DumpWriter values(Iterable<? extends Dumpable> list)
-    {
-        for (Dumpable d : list) {
-            value(d);
         }
         return this;
     }

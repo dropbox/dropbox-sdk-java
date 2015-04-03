@@ -80,10 +80,10 @@ public final class DbxDelta<MD extends Dumpable> extends Dumpable
 
     protected void dumpFields(DumpWriter out)
     {
-        out.field("reset", reset);
-        out.field("hasMore", hasMore);
-        out.field("cursor", cursor);
-        out.fieldStart("entries").list(entries);
+        out.f("reset").v(reset);
+        out.f("hasMore").v(hasMore);
+        out.f("cursor").v(cursor);
+        out.f("entries").v(entries);
     }
 
     /**
@@ -228,8 +228,8 @@ public final class DbxDelta<MD extends Dumpable> extends Dumpable
 
         protected void dumpFields(DumpWriter out)
         {
-            out.field("lcPath", lcPath);
-            out.field("metadata", metadata);
+            out.f("lcPath").v(lcPath);
+            out.f("metadata").v(metadata);
         }
 
         /**

@@ -78,9 +78,9 @@ public class DbxDeltaC<C> extends Dumpable
 
     protected void dumpFields(DumpWriter out)
     {
-        out.field("reset", reset);
-        out.field("cursor", cursor);
-        out.field("entries", hasMore);
+        out.f("reset").v(reset);
+        out.f("cursor").v(cursor);
+        out.f("entries").v(hasMore);
         // TODO: Figure out how to print 'entries'.  Might be too much to make it a Dumpable?
     }
 
@@ -228,8 +228,8 @@ public class DbxDeltaC<C> extends Dumpable
 
         protected void dumpFields(DumpWriter out)
         {
-            out.field("lcPath", lcPath);
-            out.field("metadata", metadata);
+            out.f("lcPath").v(lcPath);
+            out.f("metadata").v(metadata);
         }
 
         /**

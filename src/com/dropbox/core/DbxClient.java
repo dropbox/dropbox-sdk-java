@@ -858,8 +858,8 @@ public final class DbxClient
 
         protected void dumpFields(DumpWriter w)
         {
-            w.field("uploadId", uploadId);
-            w.field("offset", offset);
+            w.f("uploadId").v(uploadId);
+            w.f("offset").v(offset);
         }
 
         public static final JsonReader<ChunkedUploadState> Reader = new JsonReader<ChunkedUploadState>()

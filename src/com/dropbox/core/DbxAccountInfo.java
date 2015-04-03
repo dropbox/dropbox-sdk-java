@@ -31,11 +31,11 @@ public class DbxAccountInfo extends Dumpable
     @Override
     protected void dumpFields(DumpWriter out)
     {
-        out.field("userId", userId);
-        out.field("displayName", displayName);
-        out.field("country", country);
-        out.field("referralLink", referralLink);
-        out.field("quota", quota);
+        out.f("userId").v(userId);
+        out.f("displayName").v(displayName);
+        out.f("country").v(country);
+        out.f("referralLink").v(referralLink);
+        out.f("quota").v(quota);
     }
 
     public static final class Quota extends Dumpable
@@ -54,9 +54,9 @@ public class DbxAccountInfo extends Dumpable
         @Override
         protected void dumpFields(DumpWriter out)
         {
-            out.field("total", total);
-            out.field("normal", normal);
-            out.field("shared", shared);
+            out.f("total").v(total);
+            out.f("normal").v(normal);
+            out.f("shared").v(shared);
         }
 
         // ------------------------------------------------------
