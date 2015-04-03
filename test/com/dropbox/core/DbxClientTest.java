@@ -190,8 +190,13 @@ public class DbxClientTest
     {
         init();
 
+        // NOTE: In these tests, we never actually perform a non-path-prefix /delta call.  This is so that
+        // you can run these tests against a Dropbox account that is having modifications performed on it
+        // by other clients.  This is unfortunate, so maybe we should switch to requiring that the test
+        // be run on an account that has nothing else going on?
+
         // Get latest cursors before modifying dropbox folders
-        String latestCursor = client.getDeltaLatestCursor();
+        String latestCursor = client.getDeltaLatestCursorWithPathPrefix(p());
         String latestCursorWithPath = client.getDeltaLatestCursorWithPathPrefix(p("b"));
         assertNotNull(latestCursor);
         assertNotNull(latestCursorWithPath);
