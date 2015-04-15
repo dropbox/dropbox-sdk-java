@@ -131,6 +131,15 @@ public abstract class JsonReader<T>
     // ------------------------------------------------------------------
     // Helpers for various types.
 
+    public static final JsonReader<Long> UnsignedLongReader = new JsonReader<Long>() {
+        @Override
+        public Long read(JsonParser parser)
+            throws IOException, JsonReadException
+        {
+            return readUnsignedLong(parser);
+        }
+    };
+
     public static long readUnsignedLong(JsonParser parser)
         throws IOException, JsonReadException
     {
