@@ -83,4 +83,16 @@ public class DbxEntryTest
         assertTrue(f.videoInfo == DbxEntry.File.VideoInfo.PENDING);
         assertTrue(f.photoInfo == DbxEntry.File.PhotoInfo.PENDING);
     }
+
+    @Test
+    public void parseFileWithParentSharedFolderId() throws Exception {
+        DbxEntry.File f = loadJsonResource(DbxEntry.Reader, "file-with-parent-shared-folder-id.json").asFile();
+        assertEquals(f.parentSharedFolderId, "1234567", "Expected a parentSharedFolderId");
+    }
+
+    @Test
+    public void parseFolderWithParentSharedFolderId() throws Exception {
+        DbxEntry.Folder folder = loadJsonResource(DbxEntry.Reader, "folder-with-parent-shared-folder-id.json").asFolder();
+        assertEquals(folder.parentSharedFolderId,"1234567", "Expected a parentSharedFolderId");
+    }
 }
