@@ -72,6 +72,7 @@ public class DbxEntryTest
     public void parseFileWithVideoInfoNullFields() throws Exception
     {
         DbxEntry.File f = loadJsonResource(DbxEntry.Reader, "file-with-video-info-null-fields.json").asFile();
+        assertNull(f.videoInfo.duration);
         assertNull(f.videoInfo.location);
         assertNull(f.videoInfo.timeTaken);
     }

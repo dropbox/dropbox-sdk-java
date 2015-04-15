@@ -483,7 +483,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
                     JsonReader.expectObjectStart(parser);
                     File.Location location = null;
                     Date time_taken = null;
-                    long duration = 0;
+                    Long duration = null;
                     while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
                         String fieldName = parser.getCurrentName();
                         JsonReader.nextToken(parser);
@@ -492,7 +492,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
                         } else if (fieldName.equals("time_taken")) {
                             time_taken = JsonDateReader.Dropbox.readOptional(parser);
                         } else if (fieldName.equals("duration")) {
-                            duration = JsonReader.readUnsignedLong(parser);
+                            duration = JsonReader.readOptionalUnsignedLong(parser);
                         } else {
                             JsonReader.skipValue(parser);
                         }

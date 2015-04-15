@@ -10,7 +10,7 @@
   "bytes": 802996,
   "modified": "Fri, 20 Mar 2015 17:45:56 +0000",
   "video_info": {
-    "duration": 1000,
+    "duration": null,
     "lat_long": null,
     "time_taken": null
   },
