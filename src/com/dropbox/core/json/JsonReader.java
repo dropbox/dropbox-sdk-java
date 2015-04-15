@@ -147,6 +147,16 @@ public abstract class JsonReader<T>
         }
     }
 
+    public static Long readOptionalUnsignedLong(JsonParser parser)
+        throws IOException, JsonReadException
+    {
+        if (parser.getCurrentToken() == JsonToken.VALUE_NULL) {
+            parser.nextToken();
+            return null;
+        }
+        return readUnsignedLong(parser);
+    }
+
     public static long readUnsignedLongField(JsonParser parser, String fieldName, long v)
         throws IOException, JsonReadException
     {
