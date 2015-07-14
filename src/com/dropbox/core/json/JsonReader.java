@@ -179,6 +179,24 @@ public abstract class JsonReader<T>
         }
     };
 
+    public static final JsonReader<byte[]> BinaryReader = new JsonReader<byte[]>()
+    {
+        public byte[] read(JsonParser parser)
+            throws IOException, JsonReadException
+        {
+            try {
+                // TODO: Jackson's base64 parser is more lenient than we want (it allows whitespace
+                // and other junk in some places).  Switch to something more strict.
+                byte[] v = parser.getBinaryValue();
+                parser.nextToken();
+                return v;
+            }
+            catch (JsonParseException ex) {
+                throw JsonReadException.fromJackson(ex);
+            }
+        }
+    };
+
     public static final JsonReader<Boolean> BooleanReader = new JsonReader<Boolean>()
     {
         public Boolean read(JsonParser parser)
