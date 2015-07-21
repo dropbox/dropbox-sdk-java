@@ -83,7 +83,7 @@
                 <filtering>true</filtering>
             </resource>
             <resource>
-                <directory>${project.build.directory}/generated-resources/pem-to-jks</directory>
+                <directory>${project.build.directory}/generated-resources/certs</directory>
             </resource>
         </resources>
         <testSourceDirectory>test</testSourceDirectory>
@@ -182,13 +182,13 @@
             </plugin>
             <plugin>
                 <groupId>com.dropbox.maven</groupId>
-                <artifactId>pem-to-jks-maven-plugin</artifactId>
+                <artifactId>pem-converter-maven-plugin</artifactId>
                 <version>1.0</version>
                 <executions>
                     <execution>
                         <configuration>
-                            <inputPem>src/com/dropbox/core/http/trusted-certs.crt</inputPem>
-                            <outputJks>${project.build.directory}/generated-resources/pem-to-jks/com/dropbox/core/http/trusted-certs.jks</outputJks>
+                            <input>src/com/dropbox/core/http/trusted-certs.crt</input>
+                            <output>${project.build.directory}/generated-resources/certs/com/dropbox/core/http/trusted-certs.raw</output>
                         </configuration>
                         <goals>
                             <goal>convert</goal>

@@ -3,6 +3,8 @@ package com.dropbox.core.http;
 import com.dropbox.core.util.IOUtil;
 import static com.dropbox.core.util.LangUtil.mkAssert;
 
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
@@ -12,6 +14,8 @@ import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -181,7 +185,7 @@ public class SSLConfig
         }
     }
 
-    private static final String RootCertsResourceName = "trusted-certs.jks";
+    private static final String RootCertsResourceName = "trusted-certs.raw";
 
     private static SSLSocketFactory createSSLSocketFactory()
     {
@@ -299,36 +303,94 @@ public class SSLConfig
         return tmf.getTrustManagers();
     }
 
-    private static KeyStore loadKeyStore(String jksFileResourceName)
+    private static KeyStore loadKeyStore(String certFileResourceName)
     {
         KeyStore keyStore;
         try {
-            keyStore = KeyStore.getInstance("JKS");
+            keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+            char[] password = {};
+            keyStore.load(null, password);
         }
         catch (KeyStoreException ex) {
-            throw mkAssert("Couldn't initialize JKS key store", ex);
-        }
-
-        InputStream in = SSLConfig.class.getResourceAsStream(jksFileResourceName);
-        if (in == null) {
-            throw new AssertionError("Couldn't find resource \"" + jksFileResourceName + "\"");
-        }
-        try {
-            keyStore.load(in, null);
+            throw mkAssert("Couldn't initialize KeyStore", ex);
         }
         catch (CertificateException ex) {
-            throw mkAssert("Error loading from \"" + jksFileResourceName + "\"", ex);
+            throw mkAssert("Couldn't initialize KeyStore", ex);
         }
         catch (NoSuchAlgorithmException ex) {
-            throw mkAssert("Error loading from \"" + jksFileResourceName + "\"", ex);
+            throw mkAssert("Couldn't initialize KeyStore", ex);
         }
         catch (IOException ex) {
-            throw mkAssert("Error loading from \"" + jksFileResourceName + "\"", ex);
+            throw mkAssert("Couldn't initialize KeyStore", ex);
+        }
+
+        InputStream in = SSLConfig.class.getResourceAsStream(certFileResourceName);
+        if (in == null) {
+            throw new AssertionError("Couldn't find resource \"" + certFileResourceName + "\"");
+        }
+        try {
+            loadKeyStore(keyStore, in);
+        }
+        catch (KeyStoreException ex) {
+            throw mkAssert("Error loading from \"" + certFileResourceName + "\"", ex);
+        }
+        catch (LoadException ex) {
+            throw mkAssert("Error loading from \"" + certFileResourceName + "\"", ex);
+        }
+        catch (IOException ex) {
+            throw mkAssert("Error loading from \"" + certFileResourceName + "\"", ex);
         }
         finally {
             IOUtil.closeInput(in);
         }
 
         return keyStore;
+    }
+
+    public static final int MaxCertLength = 10 * 1024;
+
+    public static final class LoadException extends Exception
+    {
+        public LoadException(String message) { super(message); }
+    }
+
+    private static void loadKeyStore(KeyStore keyStore, InputStream in)
+        throws IOException, LoadException, KeyStoreException
+    {
+        CertificateFactory x509CertFactory;
+        try {
+            x509CertFactory = CertificateFactory.getInstance("X.509");
+        }
+        catch (CertificateException ex) {
+            throw mkAssert("Couldn't initialize X.509 CertificateFactory", ex);
+        }
+
+        DataInputStream din = new DataInputStream(in);
+        byte[] data = new byte[MaxCertLength];
+        while (true) {
+            int length = din.readUnsignedShort();
+            if (length == 0) break;
+            if (length > MaxCertLength) {
+                throw new LoadException("Invalid length for certificate entry: " + length);
+            }
+            din.readFully(data, 0, length);
+            X509Certificate cert;
+            try {
+                cert = (X509Certificate) x509CertFactory.generateCertificate(new ByteArrayInputStream(data, 0, length));
+            }
+            catch (CertificateException ex) {
+                throw new LoadException("Error loading certificate: " + ex.getMessage());
+            }
+            String alias = cert.getSubjectX500Principal().getName();
+            try {
+                keyStore.setCertificateEntry(alias, cert);
+            }
+            catch (KeyStoreException ex) {
+                throw new LoadException("Error loading certificate: " + ex.getMessage());
+            }
+        }
+        if (din.read() >= 0) {
+            throw new LoadException("Found data after after zero-length header.");
+        }
     }
 }
