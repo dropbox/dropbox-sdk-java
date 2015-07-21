@@ -197,7 +197,7 @@ public class DbxClientTest
         // be run on an account that has nothing else going on?
 
         // Get latest cursors before modifying dropbox folders
-        String latestCursor = client.getDeltaLatestCursorWithPathPrefix(p());
+        String latestCursor = client.getDeltaLatestCursor();
         String latestCursorWithPath = client.getDeltaLatestCursorWithPathPrefix(p("b"));
         assertNotNull(latestCursor);
         assertNotNull(latestCursorWithPath);
@@ -263,7 +263,6 @@ public class DbxClientTest
             while (true) {
                 DbxDelta<DbxEntry> d = client.getDelta(cursor);
                 for (DbxDelta.Entry<DbxEntry> e : d.entries) {
-                    System.out.print(e.toStringMultiline());
                     assertTrue(e.lcPath.startsWith(lcPrefix+"/") || e.lcPath.equals(lcPrefix));
                     assertNotNull(e.metadata);  // We shouldn't see deletes in our test folder.
                     boolean removed = expected.remove(e.metadata);
