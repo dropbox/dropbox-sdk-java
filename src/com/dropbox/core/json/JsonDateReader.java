@@ -8,18 +8,13 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
-import javax.xml.bind.DatatypeConverter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 public class JsonDateReader
 {
     /**
      * A parser for dates returned by the Dropbox API.
-     *
-     * This parses both the old, verbose format
-     * (e.g. {@literal "Fri, 06 Feb 2015 18:21:17 +0000"})
-     * and the new ISO 8601 format
-     * (e.g. {@literal "2010-01-01T12:00:00Z"}
-     * or {@literal "2010-01-01T12:00:00.000Z"}).
      */
     public static final JsonReader<Date> Dropbox = new JsonReader<Date>() {
         @Override
@@ -43,23 +38,11 @@ public class JsonDateReader
         }
     };
 
-
     public static Date parseDropboxDate(char[] buffer, int offset, int length)
         throws java.text.ParseException
     {
         int i = offset;
         char[] b = buffer;
-
-        if (length == 20 || length == 24) {
-            // Assume this is an ISO 8601 date, e.g. "2015-04-01T12:01:12Z",
-            // or, with milliseconds, e.g. "2012-04-23T18:25:43.511Z".
-            String s = new String(b, i, length);
-            try {
-                return javax.xml.bind.DatatypeConverter.parseDateTime(s).getTime();
-            } catch (IllegalArgumentException ex) {
-                throw new java.text.ParseException("invalid date "+s, 0);
-            }
-        }
 
         if (length != 31) {
             throw new java.text.ParseException("expecting date to be 31 characters, got " + length, 0);
@@ -237,5 +220,73 @@ public class JsonDateReader
             default:
                 return -1;
         }
+    }
+
+    /**
+     * A parser for dates returned by the Dropbox V2 API.
+     *
+     * This parses only the new ISO 8601 format
+     * (e.g. {@literal "2010-01-01T12:00:00Z"}
+     * or {@literal "2010-01-01T12:00:00.000Z"}).
+     */
+    public static final JsonReader<Date> DropboxV2 = new JsonReader<Date>() {
+        @Override
+        public Date read(JsonParser parser) throws IOException, JsonReadException
+        {
+            JsonLocation l = parser.getCurrentLocation();
+            try {
+                char[] buffer = parser.getTextCharacters();
+                int offset = parser.getTextOffset();
+                int length = parser.getTextLength();
+                Date d = parseDropbox8601Date(buffer, offset, length);
+                parser.nextToken();
+                return d;
+            }
+            catch (JsonParseException ex) {
+                throw JsonReadException.fromJackson(ex);
+            }
+            catch (java.text.ParseException ex) {
+                throw new JsonReadException("bad date: \"" + ex.getMessage() + " at offset " + ex.getErrorOffset(), l);
+            }
+        }
+    };
+
+    public static Date parseDropbox8601Date(char[] buffer, int offset, int length)
+        throws java.text.ParseException
+    {
+        int i = offset;
+        char[] b = buffer;
+
+        if (length != 20 && length != 24) {
+            throw new java.text.ParseException("expecting date to be 20 or 24 characters, got " + length, 0);
+        }
+
+        // TODO: This needs to be looked at further.
+        // Does this need to handle arbitrary timezones?
+        String s = new String(b, i, length);
+        final DateFormat format;
+        if (length == 20) {
+            // Assume this is an ISO 8601 date with a trailing Z to indicate UTC:
+            // e.g. "2015-04-01T12:01:12Z",
+            format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        } else {
+            // Assume this is an ISO 8601 date with a trailing Z to indicate UTC:
+            // plus milliseconds, e.g. "2012-04-23T18:25:43.511Z".
+            format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        }
+        format.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+        Date result;
+        try {
+            result = format.parse(s);
+        } catch (IllegalArgumentException ex) {
+            throw new java.text.ParseException("invalid characters in date" + s, 0);
+        }
+
+        if (result == null) {
+            throw new java.text.ParseException("invalid date" + s, 0);
+        }
+
+        return result;
     }
 }

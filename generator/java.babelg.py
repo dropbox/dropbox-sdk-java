@@ -132,7 +132,7 @@ def mapreader(namespace, data_type):
         # Assume JsonReader defines <foo>Reader for every integer and float type.
         return 'JsonReader.%sReader' % data_type.name
     if is_timestamp_type(data_type):
-        return 'JsonDateReader.Dropbox'
+        return 'JsonDateReader.DropboxV2'
     if is_binary_type(data_type):
         return 'JsonReader.BinaryReader'
     if is_void_type(data_type):
