@@ -107,7 +107,10 @@ def maptype(namespace, data_type):
     if data_type.name in type_map:
         return type_map[data_type.name]
     assert is_composite_type(data_type), data_type
-    return classname(data_type.name)
+    prefix = ""
+    if data_type.namespace != namespace:
+        prefix = classname(data_type.namespace.name) + '.'
+    return prefix + classname(data_type.name)
 
 
 def mapreader(namespace, data_type):
