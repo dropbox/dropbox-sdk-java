@@ -62,16 +62,24 @@ public abstract class DbxEntry extends Dumpable implements Serializable
     public final boolean mightHaveThumbnail;
 
     /**
+     * For files or folders within a shared folder, this specifies the ID of the shared folder
+     */
+    public final /*@Nullable*/String parentSharedFolderId;
+
+
+    /**
      * @param path {@link #path}
      * @param iconName {@link #iconName}
      * @param mightHaveThumbnail {@link #mightHaveThumbnail}
+     * @param parentSharedFolderId {@link #parentSharedFolderId}
      */
-    private DbxEntry(String path, String iconName, boolean mightHaveThumbnail)
+    private DbxEntry(String path, String iconName, boolean mightHaveThumbnail,String parentSharedFolderId)
     {
         this.name = DbxPath.getName(path);
         this.path = path;
         this.iconName = iconName;
         this.mightHaveThumbnail = mightHaveThumbnail;
+        this.parentSharedFolderId = parentSharedFolderId;
     }
 
     protected void dumpFields(DumpWriter w)
@@ -79,6 +87,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
         w.v(path);
         w.f("iconName").v(iconName);
         w.f("mightHaveThumbnail").v(mightHaveThumbnail);
+        w.f("parentSharedFolderId").v(parentSharedFolderId);
     }
 
     /**
@@ -111,6 +120,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
         if (!path.equals(o.path)) return false;
         if (!iconName.equals(o.iconName)) return false;
         if (mightHaveThumbnail != o.mightHaveThumbnail) return false;
+        if (!LangUtil.nullableEquals(parentSharedFolderId, o.parentSharedFolderId)) return false;
         return true;
     }
 
@@ -121,6 +131,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
         h = h*31 + iconName.hashCode();
         h = h*31 + path.hashCode();
         h = h*31 + (mightHaveThumbnail ? 1 : 0);
+        h = h*31 + LangUtil.nullableHashCode(parentSharedFolderId);
         return h;
     }
 
@@ -139,8 +150,20 @@ public abstract class DbxEntry extends Dumpable implements Serializable
          */
         public Folder(String path, String iconName, boolean mightHaveThumbnail)
         {
-            super(path, iconName, mightHaveThumbnail);
+            this(path, iconName, mightHaveThumbnail, null);
         }
+
+        /**
+         * @param path {@link #path}
+         * @param iconName {@link #iconName}
+         * @param mightHaveThumbnail {@link #mightHaveThumbnail}
+         * @param parentSharedFolderId {@link #parentSharedFolderId}
+         */
+        public Folder(String path, String iconName, boolean mightHaveThumbnail, String parentSharedFolderId)
+        {
+            super(path, iconName, mightHaveThumbnail, parentSharedFolderId);
+        }
+
 
         protected String getTypeName() { return "Folder"; }
 
@@ -157,7 +180,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
                 JsonLocation top = parser.getCurrentLocation();
                 DbxEntry e = DbxEntry.read(parser, null).entry;
                 if (!(e instanceof DbxEntry.Folder)) {
-                    throw new JsonReadException("Expecting a file entry, got a folder entry", top);
+                    throw new JsonReadException("Expecting a folder entry, got a file entry", top);
                 }
                 return (DbxEntry.Folder) e;
             }
@@ -250,11 +273,13 @@ public abstract class DbxEntry extends Dumpable implements Serializable
          * @param rev {@link #rev}
          * @param photoInfo {@link #photoInfo}
          * @param videoInfo {@link #videoInfo}
+         * @param parentSharedFolderId {@link #parentSharedFolderId}
          */
         public File(String path, String iconName, boolean mightHaveThumbnail, long numBytes, String humanSize,
-                    Date lastModified, Date clientMtime, String rev, PhotoInfo photoInfo, VideoInfo videoInfo)
+                    Date lastModified, Date clientMtime, String rev, PhotoInfo photoInfo, VideoInfo videoInfo,
+                    String parentSharedFolderId)
         {
-            super(path, iconName, mightHaveThumbnail);
+            super(path, iconName, mightHaveThumbnail, parentSharedFolderId);
             this.numBytes = numBytes;
             this.humanSize = humanSize;
             this.lastModified = lastModified;
@@ -270,7 +295,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
         public File(String path, String iconName, boolean mightHaveThumbnail, long numBytes, String humanSize,
                     Date lastModified, Date clientMtime, String rev)
         {
-            this(path, iconName, mightHaveThumbnail, numBytes, humanSize, lastModified, clientMtime, rev, null, null);
+            this(path, iconName, mightHaveThumbnail, numBytes, humanSize, lastModified, clientMtime, rev, null, null, null);
         }
 
         protected void dumpFields(DumpWriter w)
@@ -852,6 +877,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
         C contents = null;
         File.PhotoInfo photo_info = null;
         File.VideoInfo video_info = null;
+        String parentSharedFolderId = null;
 
         while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
             String fieldName = parser.getCurrentName();
@@ -883,6 +909,9 @@ public abstract class DbxEntry extends Dumpable implements Serializable
                     case FM_video_info:
                         video_info = PendingReader.mk(File.VideoInfo.Reader, File.VideoInfo.PENDING).readField(parser, fieldName, video_info);
                         break;
+                    case FM_parent_shared_folder_id:
+                        parentSharedFolderId = JsonReader.StringReader.readField(parser, fieldName, parentSharedFolderId);
+                        break;
                     default:
                         throw new AssertionError("bad index: " + fi + ", field = \"" + fieldName + "\"");
                 }
@@ -907,7 +936,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
 
         DbxEntry e;
         if (is_dir) {
-            e = new Folder(path, icon, thumb_exists);
+            e = new Folder(path, icon, thumb_exists, parentSharedFolderId);
         }
         else {
             // Normal File
@@ -916,7 +945,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
             if (modified == null) throw new JsonReadException("missing \"modified\" for a file entry", top);
             if (client_mtime == null) throw new JsonReadException("missing \"client_mtime\" for a file entry", top);
             if (rev == null) throw new JsonReadException("missing \"rev\" for a file entry", top);
-            e = new File(path, icon, thumb_exists, bytes, size, modified, client_mtime, rev, photo_info, video_info);
+            e = new File(path, icon, thumb_exists, bytes, size, modified, client_mtime, rev, photo_info, video_info, parentSharedFolderId);
         }
 
         if (is_deleted) {
@@ -974,6 +1003,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
     private static final int FM_contents = 11;
     private static final int FM_photo_info = 12;
     private static final int FM_video_info = 13;
+    private static final int FM_parent_shared_folder_id = 14;
     private static final JsonReader.FieldMapping FM;
 
     static {
@@ -992,6 +1022,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
         b.add("contents", FM_contents);
         b.add("photo_info", FM_photo_info);
         b.add("video_info", FM_video_info);
+        b.add("parent_shared_folder_id", FM_parent_shared_folder_id);
         FM = b.build();
     }
 }

@@ -1,0 +1,15 @@
+{
+  "parent_shared_folder_id": "1234567",
+  "rev": "234bd943e",
+  "thumb_exists": false,
+  "path": "/my_first_shared_folder/subfolder",
+  "is_dir": true,
+  "icon": "folder",
+  "read_only": false,
+  "modifier": null,
+  "bytes": 0,
+  "modified": "Wed, 15 Apr 2015 13:53:51 +0000",
+  "size": "0 bytes",
+  "root": "dropbox",
+  "revision": 2
+}
