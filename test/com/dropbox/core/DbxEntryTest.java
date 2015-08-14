@@ -5,6 +5,7 @@ import com.dropbox.core.json.JsonReader;
 import com.dropbox.core.util.IOUtil;
 import com.dropbox.core.util.LangUtil;
 import com.dropbox.core.util.StringUtil;
+import com.dropbox.core.v1.DbxEntry;
 import org.testng.annotations.Test;
 import static org.testng.Assert.*;
 

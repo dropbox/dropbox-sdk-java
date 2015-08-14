@@ -3,7 +3,12 @@ package com.dropbox.core.examples.web_file_browser;
 import static com.dropbox.core.util.StringUtil.jq;
 import static com.dropbox.core.util.StringUtil.UTF8;
 
-import com.dropbox.core.*;
+import com.dropbox.core.DbxException;
+import com.dropbox.core.DbxRequestUtil;
+import com.dropbox.core.v1.DbxClientV1;
+import com.dropbox.core.v1.DbxEntry;
+import com.dropbox.core.DbxPath;
+import com.dropbox.core.v1.DbxWriteMode;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -28,7 +33,7 @@ public class DropboxBrowse
         this.common = common;
     }
 
-    private DbxClient requireDbxClient(HttpServletRequest request, HttpServletResponse response, User user)
+    private DbxClientV1 requireDbxClient(HttpServletRequest request, HttpServletResponse response, User user)
             throws IOException, ServletException
     {
         if (user.dropboxAccessToken == null) {
@@ -36,7 +41,7 @@ public class DropboxBrowse
             return null;
         }
 
-        return new DbxClient(common.getRequestConfig(request),
+        return new DbxClientV1(common.getRequestConfig(request),
                              user.dropboxAccessToken,
                              common.dbxAppInfo.host);
     }
@@ -57,7 +62,7 @@ public class DropboxBrowse
             return;
         }
 
-        DbxClient dbxClient = requireDbxClient(request, response, user);
+        DbxClientV1 dbxClient = requireDbxClient(request, response, user);
         if (dbxClient == null) return;
 
         // Make sure the path starts with '/'.  There are probably other checks we can perform...
@@ -144,7 +149,7 @@ public class DropboxBrowse
         User user = common.requireLoggedInUser(request, response);
         if (user == null) return;
 
-        DbxClient dbxClient = requireDbxClient(request, response, user);
+        DbxClientV1 dbxClient = requireDbxClient(request, response, user);
         if (dbxClient == null) return;
 
         try {

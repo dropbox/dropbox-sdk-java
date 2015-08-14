@@ -1,4 +1,4 @@
-package com.dropbox.core;
+package com.dropbox.core.v1;
 
 /**
  * Describes how a file should be saved when it is written to Dropbox.  Do not call

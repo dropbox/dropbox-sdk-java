@@ -50,6 +50,6 @@ PYTHONPATH="$babel_dir" python3 -m babelapi.cli \
     "$spec_dir"/*.babel \
     "$gen_dir"\
      --\
-     --package com.dropbox.core
+     --package com.dropbox.core.v2
 
 mv "$gen_dir/stamp.tmp" "$gen_dir/stamp"  # Only move to "stamp" when codegen succeeds.

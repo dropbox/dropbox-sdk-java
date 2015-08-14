@@ -1,4 +1,4 @@
-package com.dropbox.core;
+package com.dropbox.core.v1;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;

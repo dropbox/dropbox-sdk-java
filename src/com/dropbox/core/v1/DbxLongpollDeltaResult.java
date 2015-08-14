@@ -1,4 +1,4 @@
-package com.dropbox.core;
+package com.dropbox.core.v1;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
@@ -14,7 +14,7 @@ import java.io.IOException;
 public class DbxLongpollDeltaResult
 {
     /**
-     * If true, then there might changes and one of the DbxClient "delta" methods can be used to retrieve them.
+     * If true, then there might changes and one of the DbxClientV1 "delta" methods can be used to retrieve them.
      * If false, then the poll finished and you can poll again.
      */
     public boolean mightHaveChanges;

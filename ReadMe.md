@@ -47,9 +47,9 @@ Before your app can access a Dropbox user's files, the user must authorize your 
   * Authorization example for a simple web app: [Web File Browser example](examples/web-file-browser/src/com/dropbox/core/examples/web_file_browser/DropboxAuth.java)
   * Authorization example for a command-line tool: [Command-Line Authorization example](examples/authorize/src/com/dropbox/core/examples/authorize/Main.java)
 
-Once you have an access token, create a [`DbxClient`](http://dropbox.github.io/dropbox-sdk-java/api-docs/v1.8.x/com/dropbox/core/DbxClient.html) and start making API calls.
+Once you have an access token, create a [`DbxClientV2`](https://dropbox.github.io/dropbox-sdk-java/api-docs/v2.0.x/com/dropbox/core/v2/DbxClientV2.html) and start making API calls.
 
-You only need to perform the authorization process once per user.  Once you have an access token for a user, save it somewhere persistent, like in a database.  The next time that user visits your app's, you can skip the authorization process and go straight to creating a `DbxClient` and making API calls.
+You only need to perform the authorization process once per user.  Once you have an access token for a user, save it somewhere persistent, like in a database.  The next time that user visits your app's, you can skip the authorization process and go straight to creating a `DbxClientV2` and making API calls.
 
 ## Running the examples
 

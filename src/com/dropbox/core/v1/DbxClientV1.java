@@ -1,4 +1,4 @@
-package com.dropbox.core;
+package com.dropbox.core.v1;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.dropbox.core.*;
 import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.json.JsonArrayReader;
 import com.dropbox.core.json.JsonDateReader;
@@ -33,7 +34,7 @@ import static com.dropbox.core.util.StringUtil.jq;
  * {@link HttpRequestor} implementation.
  * </p>
  */
-public final class DbxClient
+public final class DbxClientV1
 {
     private final DbxRequestConfig requestConfig;
     private final String accessToken;
@@ -46,17 +47,17 @@ public final class DbxClient
      *     to get one of these is to use {@link DbxWebAuth} to send your user through Dropbox's
      *     OAuth 2 authorization flow.
      */
-    public DbxClient(DbxRequestConfig requestConfig, String accessToken)
+    public DbxClientV1(DbxRequestConfig requestConfig, String accessToken)
     {
         this(requestConfig, accessToken, DbxHost.Default);
     }
 
     /**
-     * The same as {@link #DbxClient(DbxRequestConfig, String)} except you can also set the
+     * The same as {@link #DbxClientV1(DbxRequestConfig, String)} except you can also set the
      * hostnames of the Dropbox API servers.  This is used in testing.  You don't normally need
      * to call this.
      */
-    public DbxClient(DbxRequestConfig requestConfig, String accessToken, DbxHost host)
+    public DbxClientV1(DbxRequestConfig requestConfig, String accessToken, DbxHost host)
     {
         if (requestConfig == null) throw new IllegalArgumentException("'requestConfig' is null");
         if (accessToken == null) throw new IllegalArgumentException("'accessToken' is null");
@@ -89,7 +90,7 @@ public final class DbxClient
      * Get the file or folder metadata for a given path.
      *
      * <pre>
-     * DbxClient dbxClient = ...
+     * DbxClientV1 dbxClient = ...
      * DbxEntry entry = dbxClient.getMetadata("/Photos");
      * if (entry == null) {
      *     System.out.println("No file or folder at that path.");
@@ -148,7 +149,7 @@ public final class DbxClient
      * get all the children's metadata as well.
      *
      * <pre>
-     * DbxClient dbxClient = ...
+     * DbxClientV1 dbxClient = ...
      * DbxEntry entry = dbxClient.getMetadata("/Photos");
      * if (entry == null) {
      *     System.out.println("No file or folder at that path.");
@@ -362,8 +363,8 @@ public final class DbxClient
     // /disable_access_token
 
     /**
-     * Disable the access token that you constructed this {@code DbxClient}
-     * with.  After calling this, API calls made with this {@code DbxClient} will
+     * Disable the access token that you constructed this {@code DbxClientV1}
+     * with.  After calling this, API calls made with this {@code DbxClientV1} will
      * fail.
      */
     public void disableAccessToken()
@@ -389,7 +390,7 @@ public final class DbxClient
      * Retrieves a file's content and writes it to the given {@code OutputStream}.
      *
      * <pre>
-     * DbxClient dbxClient = ...
+     * DbxClientV1 dbxClient = ...
      * DbxEntry.File md;
      * File target = new File("Copy of House.jpeg");
      * OutputStream out = new FileOutputStream(target);
@@ -424,8 +425,8 @@ public final class DbxClient
      * {@code close()} method; use a {@code try}/{@code finally}.
      *
      * <pre>
-     * DbxClient dbxClient = ...
-     * DbxClient.Downloader downloader = dbxClient.startGetFile("/ReadMe.txt")
+     * DbxClientV1 dbxClient = ...
+     * DbxClientV1.Downloader downloader = dbxClient.startGetFile("/ReadMe.txt")
      * try {
      *     printStream(downloader.body)
      * }
@@ -555,7 +556,7 @@ public final class DbxClient
      * be uploaded.
      *
      * <pre>
-     * DbxClient dbxClient = ...
+     * DbxClientV1 dbxClient = ...
      * File f = new File("ReadMe.txt")
      * dbxClient.uploadFile("/ReadMe.txt", {@link DbxWriteMode#add()}, f.length(), new FileInputStream(f))
      * </pre>
@@ -588,7 +589,7 @@ public final class DbxClient
      * Upload file contents to Dropbox, getting contents from the given {@link DbxStreamWriter}.
      *
      * <pre>
-     * DbxClient dbxClient = ...
+     * DbxClientV1 dbxClient = ...
      * <b>// Create a file on Dropbox with 100 3-digit random numbers, one per line.</b>
      * final int numRandoms = 100;
      * int fileSize = numRandoms * 4;  <b>3 digits, plus a newline</b>
@@ -615,7 +616,7 @@ public final class DbxClient
      *     Determines what to do if there's already a file at the given {@code targetPath}.
      *
      * @param numBytes
-     *     The number of bytes you're going to upload via the returned {@link DbxClient.Uploader}.
+     *     The number of bytes you're going to upload via the returned {@link DbxClientV1.Uploader}.
      *     Use {@code -1} if you don't know ahead of time.
      *
      * @param writer
@@ -636,9 +637,9 @@ public final class DbxClient
     private static final int ChunkedUploadChunkSize = 4 * 1024 * 1024;
 
     /**
-     * Start an API request to upload a file to Dropbox.  Returns a {@link DbxClient.Uploader} object
-     * that lets you actually send the file contents via {@link DbxClient.Uploader#getBody()}.  When
-     * you're done copying the file body, call {@link DbxClient.Uploader#finish}.
+     * Start an API request to upload a file to Dropbox.  Returns a {@link DbxClientV1.Uploader} object
+     * that lets you actually send the file contents via {@link DbxClientV1.Uploader#getBody()}.  When
+     * you're done copying the file body, call {@link DbxClientV1.Uploader#finish}.
      *
      * <p>
      * You need to close the {@link Uploader} when you're done with it.
@@ -646,8 +647,8 @@ public final class DbxClient
      * </p>
      *
      * <pre>
-     * DbxClient dbxClient = ...
-     * DbxClient.Uploader uploader = dbxClient.startUploadFile(...)
+     * DbxClientV1 dbxClient = ...
+     * DbxClientV1.Uploader uploader = dbxClient.startUploadFile(...)
      * DbxEntry.File md;
      * try {
      *     writeMyData(uploader.body);
@@ -667,7 +668,7 @@ public final class DbxClient
      *     Determines what to do if there's already a file at the given {@code targetPath}.
      *
      * @param numBytes
-     *     The number of bytes you're going to upload via the returned {@link DbxClient.Uploader}.
+     *     The number of bytes you're going to upload via the returned {@link DbxClientV1.Uploader}.
      *     Use {@code -1} if you don't know ahead of time.
      */
     public Uploader startUploadFile(String targetPath, DbxWriteMode writeMode, long numBytes)
@@ -1922,8 +1923,8 @@ public final class DbxClient
      * different Dropbox accounts without downloading and re-uploading.
      *
      * <p>
-     * For example, create a {@code DbxClient} using the access token from one account and call
-     * {@code createCopyRef}.  Then, create a {@code DbxClient} using the access token for another
+     * For example, create a {@code DbxClientV1} using the access token from one account and call
+     * {@code createCopyRef}.  Then, create a {@code DbxClientV1} using the access token for another
      * account and call {@code copyFromCopyRef} using the copy ref.
      * </p>
      *
@@ -2193,7 +2194,7 @@ public final class DbxClient
      * </p>
      *
      * <pre>
-     * DbxClient.Uploader uploader = ...
+     * DbxClientV1.Uploader uploader = ...
      * try {
      *     uploader.body.write("Hello, world!".getBytes("UTF-8"));
      *     uploader.finish();

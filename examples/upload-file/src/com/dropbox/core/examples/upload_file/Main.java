@@ -3,6 +3,9 @@ package com.dropbox.core.examples.upload_file;
 import com.dropbox.core.*;
 import com.dropbox.core.json.JsonReader;
 import com.dropbox.core.util.IOUtil;
+import com.dropbox.core.v1.DbxClientV1;
+import com.dropbox.core.v1.DbxEntry;
+import com.dropbox.core.v1.DbxWriteMode;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -71,10 +74,10 @@ public class Main
             return 1;
         }
 
-        // Create a DbxClient, which is what you use to make API calls.
+        // Create a DbxClientV1, which is what you use to make API calls.
         String userLocale = Locale.getDefault().toString();
         DbxRequestConfig requestConfig = new DbxRequestConfig("examples-upload-file", userLocale);
-        DbxClient dbxClient = new DbxClient(requestConfig, authInfo.accessToken, authInfo.host);
+        DbxClientV1 dbxClient = new DbxClientV1(requestConfig, authInfo.accessToken, authInfo.host);
 
         // Make the API call to upload the file.
         DbxEntry.File metadata;

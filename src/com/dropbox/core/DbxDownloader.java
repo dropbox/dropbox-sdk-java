@@ -8,7 +8,7 @@ public class DbxDownloader<R> {
     public final R result;
     public final InputStream body;
 
-    DbxDownloader(R result, InputStream body) {
+    public DbxDownloader(R result, InputStream body) {
         this.result = result;
         this.body = body;
     }

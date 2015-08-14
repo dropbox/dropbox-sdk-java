@@ -1,7 +1,7 @@
-package com.dropbox.core;
+package com.dropbox.core.v1;
 
 /**
- * Thumbnail size presets, to be used with {@link DbxClient#getThumbnail}.
+ * Thumbnail size presets, to be used with {@link DbxClientV1#getThumbnail}.
  */
 public class DbxThumbnailSize
 {

@@ -12,6 +12,7 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 
 /*>>> import checkers.nullness.quals.Nullable; */
+/*>>> import com.dropbox.core.v2.DbxClientV2; */
 
 /**
  * When you successfully complete the authorization process, the Dropbox server returns
@@ -23,7 +24,7 @@ public final class DbxAuthFinish implements java.io.Serializable
 
     /**
      * An <em>access token</em> that can be used to make Dropbox API calls.
-     * Pass this in to the {@link DbxClient} constructor.
+     * Pass this in to the {@link com.dropbox.core.v2.DbxClientV2} constructor.
      */
     public final String accessToken;
 

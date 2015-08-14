@@ -1,6 +1,8 @@
 package com.dropbox.core;
 
 import com.dropbox.core.util.StringUtil;
+import com.dropbox.core.v2.DbxClientV2;
+
 import static com.dropbox.core.util.StringUtil.jq;
 
 import java.security.SecureRandom;
@@ -13,7 +15,7 @@ import java.util.Map;
  *
  * <p>
  * Eventually yields an access token, which
- * can be used with {@link DbxClient} to make Dropbox API calls.  You typically only need
+ * can be used with {@link DbxClientV2} to make Dropbox API calls.  You typically only need
  * to do this for a user when they first use your application.  Once you have an access token
  * for that user, it remains valid for years.
  * </p>
@@ -98,7 +100,7 @@ import java.util.Map;
  * ...
  *
  * <b>// Now use the access token to make Dropbox API calls.</b>
- * {@link DbxClient} client = new DbxClient(requestConfig, accessToken);
+ * {@link DbxClientV2} client = new DbxClientV2(requestConfig, accessToken);
  * ...
  * </pre>
  */

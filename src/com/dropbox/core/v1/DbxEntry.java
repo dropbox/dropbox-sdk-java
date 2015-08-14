@@ -1,10 +1,12 @@
-package com.dropbox.core;
+package com.dropbox.core.v1;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import com.dropbox.core.DbxPath;
+import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.json.*;
 import com.dropbox.core.json.JsonArrayReader;
 import com.dropbox.core.json.JsonReader;
@@ -55,7 +57,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
 
     /**
      * Whether this file or folder might have a thumbnail image you can retrieve via
-     * the {@link DbxClient#getThumbnail DbxClient.getThumbnail} call.
+     * the {@link DbxClientV1#getThumbnail DbxClientV1.getThumbnail} call.
      * If this is {@code true}, there might be a thumbnail available.  If this is
      * {@code false}, there is definitely no thumbnail available.
      */
@@ -197,7 +199,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
         /**
          * A human-readable string version of the file size (ex: "13 kb").  This string will
          * be localized based on the {@link java.util.Locale Locale} in {@link DbxRequestConfig#userLocale}
-         * (passed in to the {@link DbxClient} constructor).
+         * (passed in to the {@link DbxClientV1} constructor).
          */
         public final String humanSize;
 
@@ -222,7 +224,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
         public final Date clientMtime;
 
         /**
-         * The revision of the file at this path.  This can be used with {@link DbxClient#uploadFile}
+         * The revision of the file at this path.  This can be used with {@link DbxClientV1#uploadFile}
          * and the {@link DbxWriteMode#update} mode to make sure you're overwriting the revision of
          * the file you think you're overwriting.
          */
@@ -626,8 +628,8 @@ public abstract class DbxEntry extends Dumpable implements Serializable
      * Holds the metadata for a file or folder; if it's a folder, we also store the folder's
      * hash and the metadata of its immediate children.
      *
-     * @see DbxClient#getMetadataWithChildren
-     * @see DbxClient#getMetadataWithChildrenIfChanged
+     * @see DbxClientV1#getMetadataWithChildren
+     * @see DbxClientV1#getMetadataWithChildrenIfChanged
      */
     public static final class WithChildren extends Dumpable implements Serializable
     {
@@ -640,7 +642,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
 
         /**
          * If {@link #entry} is a folder, this will contain a hash that identifies the folder's
-         * contents.  This value can be used with {@link DbxClient#getMetadataWithChildrenIfChanged}
+         * contents.  This value can be used with {@link DbxClientV1#getMetadataWithChildrenIfChanged}
          * to void downloading the folder contents if they havne't changed.
          */
         public final /*@PolyNull*/String hash;
@@ -719,7 +721,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
 
     /**
      * The more general case of {@link WithChildren}.  It's used in the {@code C}-suffixed
-     * variants ({@link DbxClient#getMetadataWithChildrenC} and {@link DbxClient#getMetadataWithChildrenIfChanged}
+     * variants ({@link DbxClientV1#getMetadataWithChildrenC} and {@link DbxClientV1#getMetadataWithChildrenIfChanged}
      * to allow you to process the {@link DbxEntry} values as the come in and aggregate them into
      * your own object (instead of the default {@link List}) using a custom {@link Collector}.
      */
@@ -731,7 +733,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
 
         /**
          * If {@link #entry} is a folder, this will contain a hash that identifies the folder's
-         * contents.  This value can be used with {@link DbxClient#getMetadataWithChildrenIfChanged}
+         * contents.  This value can be used with {@link DbxClientV1#getMetadataWithChildrenIfChanged}
          * to void downloading the folder contents if they havne't changed.
          */
         public final /*@PolyNull*/String hash;

@@ -2,6 +2,8 @@ package com.dropbox.core.examples.account_info;
 
 import com.dropbox.core.*;
 import com.dropbox.core.json.JsonReader;
+import com.dropbox.core.v1.DbxAccountInfo;
+import com.dropbox.core.v1.DbxClientV1;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -49,10 +51,10 @@ public class Main
             System.exit(1); return;
         }
 
-        // Create a DbxClient, which is what you use to make API calls.
+        // Create a DbxClientV1, which is what you use to make API calls.
         String userLocale = Locale.getDefault().toString();
         DbxRequestConfig requestConfig = new DbxRequestConfig("examples-account-info", userLocale);
-        DbxClient dbxClient = new DbxClient(requestConfig, authInfo.accessToken, authInfo.host);
+        DbxClientV1 dbxClient = new DbxClientV1(requestConfig, authInfo.accessToken, authInfo.host);
 
         // Make the /account/info API call.
         DbxAccountInfo dbxAccountInfo;

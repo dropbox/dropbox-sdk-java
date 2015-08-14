@@ -1,8 +1,11 @@
-package com.dropbox.core;
+package com.dropbox.core.v1;
 
+import com.dropbox.core.DbxAuthInfo;
+import com.dropbox.core.DbxException;
+import com.dropbox.core.DbxRequestConfig;
+import com.dropbox.core.DbxStreamWriter;
 import com.dropbox.core.http.OkHttpRequestor;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.util.Dumpable;
 import com.dropbox.core.util.IOUtil;
 import static com.dropbox.core.util.StringUtil.jq;
 
@@ -25,10 +28,10 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class DbxClientTest
+public class DbxClientV1Test
 {
     private String testFolder;
-    private DbxClient client;
+    private DbxClientV1 client;
 
     /**
      * Every test must explicitly invoke this function so the reporting.
@@ -62,7 +65,7 @@ public class DbxClientTest
                     " Expecting \"true\" or \"false\", got " + jq(okHttp) + ".");
         }
 
-        DbxClient client = new DbxClient(requestConfig, authInfo.accessToken, authInfo.host);
+        DbxClientV1 client = new DbxClientV1(requestConfig, authInfo.accessToken, authInfo.host);
 
         String timestamp = new SimpleDateFormat("yyyy-MM-dd HH.mm.ss").format(new Date());
         String basePath = "/Java SDK Tests/" + timestamp;

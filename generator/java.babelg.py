@@ -277,7 +277,7 @@ class JavaCodeGenerator(CodeGenerator):
             out('import com.fasterxml.jackson.core.JsonParser;')
             out('import com.fasterxml.jackson.core.JsonToken;')
             out('import com.dropbox.core.DbxApiError;')
-            out('import com.dropbox.core.DbxClient;')
+            out('import com.dropbox.core.v2.DbxRawClientV2;')
             out('import com.dropbox.core.DbxException;')
             out('import com.dropbox.core.DbxRequestUtil;')
             out('import com.dropbox.core.http.HttpRequestor;')
@@ -304,9 +304,9 @@ class JavaCodeGenerator(CodeGenerator):
             with self.block('public final class %s' % class_name):
                 out('// namespace %s' % namespace.name)
                 out('')
-                out('private final DbxClient client;')
+                out('private final DbxRawClientV2 client;')
                 out('')
-                with self.block('public %s(DbxClient client)' % class_name):
+                with self.block('%s(DbxRawClientV2 client)' % class_name):
                     out('this.client = client;')
                 for data_type in namespace.linearize_data_types():
                     out('')
@@ -412,7 +412,7 @@ class JavaCodeGenerator(CodeGenerator):
                         'arg' if arg_name != 'void' else 'null',
                         arg_name + '._writer' if arg_name != 'void' else 'null',
                         uploader_maker,
-                    ], before='return (%s) DbxRequestUtil.uploadStyle' % uploader, after=';')
+                    ], before='return (%s) DbxRawClientV2.uploadStyle' % uploader, after=';')
                 else:
                     ret = '' if is_void_type(route.response_data_type) else 'return '
                     self.generate_multiline_list([
@@ -424,7 +424,7 @@ class JavaCodeGenerator(CodeGenerator):
                         arg_name + '._writer' if arg_name != 'void' else 'null',
                         '%s' % result_reader,
                         '%s' % error_reader,
-                    ], before='%sDbxRequestUtil.%sStyle' % (ret, style), after=';')
+                    ], before='%sDbxRawClientV2.%sStyle' % (ret, style), after=';')
             if style != 'upload':
                 with self.block('catch (DbxRequestUtil.ErrorWrapper ew)'):
                     if error_name == 'void':

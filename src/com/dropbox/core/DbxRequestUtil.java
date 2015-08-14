@@ -85,7 +85,7 @@ public class DbxRequestUtil
         return buf.toString();
     }
 
-    private static ArrayList<HttpRequestor.Header> addAuthHeader(/*@Nullable*/ArrayList<HttpRequestor.Header> headers,
+    public static ArrayList<HttpRequestor.Header> addAuthHeader(/*@Nullable*/ArrayList<HttpRequestor.Header> headers,
                                                                  String accessToken)
     {
         if (headers == null) headers = new ArrayList<HttpRequestor.Header>();
@@ -222,115 +222,6 @@ public class DbxRequestUtil
     public static abstract class RouteSpecificErrorMaker<T extends Throwable>
     {
         public abstract T makeError(DbxRequestUtil.ErrorWrapper ew);
-    }
-
-    public static <ArgT,ResT,ErrT> ResT rpcStyle(DbxRequestConfig requestConfig, String accessToken,
-                                                 String host, String path, ArgT arg,
-                                                 JsonWriter<ArgT> argWriter,
-                                                 JsonReader<ResT> resReader,
-                                                 JsonReader<ErrT> errReader)
-            throws ErrorWrapper, DbxException
-    {
-        try {
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            if (argWriter != null) {
-                argWriter.writeToStream(arg, out);
-            } else {
-                out.write("null".getBytes("UTF-8"));
-            }
-            byte[] body = out.toByteArray();
-            ArrayList<HttpRequestor.Header> headers = addAuthHeader(null, accessToken);
-            headers.add(new HttpRequestor.Header("Content-Type", "application/json; charset=utf-8"));
-            HttpRequestor.Response response = startPostRaw(requestConfig, host, path, body, headers);
-            if (response.statusCode == 200) {
-                return resReader.readFully(response.body);
-            } else if (response.statusCode == 409) {
-                throw new ErrorWrapper(errReader, response.body);
-            } else {
-                throw unexpectedStatus(response);
-            }
-        }
-        catch (IOException ex) {
-            throw new DbxException.NetworkIO(ex);
-        }
-        catch(JsonReadException ex) {
-            throw new DbxException.BadResponse("Bad JSON: " + ex.getMessage(), ex);
-        }
-    }
-
-    public static <ArgT,ResT,ErrT> DbxDownloader<ResT> downloadStyle(
-            DbxRequestConfig requestConfig, String accessToken,
-            String host, String path, ArgT arg,
-            JsonWriter<ArgT> argWriter,
-            JsonReader<ResT> resReader,
-            JsonReader<ErrT>errReader)
-            throws ErrorWrapper, DbxException
-    {
-        try {
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            argWriter.writeToStream(arg, out, false);
-            String argJson = new String(out.toByteArray(), "UTF-8");
-            ArrayList<HttpRequestor.Header> headers = addAuthHeader(null, accessToken);
-            headers.add(new HttpRequestor.Header("Dropbox-API-Arg", argJson));
-            headers.add(new HttpRequestor.Header("Content-Type", ""));
-            byte[] body = new byte[0];
-            HttpRequestor.Response response = startPostRaw(requestConfig, host, path, body, headers);
-            if (response.statusCode == 200) {
-                List<String> resultHeaders = response.headers.get("dropbox-api-result");
-                if (resultHeaders == null)
-                    throw new DbxException.BadResponse("Missing Dropbox-API-Result header; " + response.headers);
-                if (resultHeaders.size() == 0)
-                    throw new DbxException.BadResponse("No Dropbox-API-Result header; " + response.headers);
-                String resultHeader = resultHeaders.get(0);
-                if (resultHeader == null)
-                    throw new DbxException.BadResponse("Null Dropbox-API-Result header; " + response.headers);
-                ResT result = resReader.readFully(resultHeader);
-                return new DbxDownloader<ResT>(result, response.body);
-            } else if (response.statusCode == 409 || response.statusCode == 404) {
-                throw new ErrorWrapper(errReader, response.body);
-            } else {
-                throw unexpectedStatus(response);
-            }
-        }
-        catch (IOException ex) {
-            throw new DbxException.NetworkIO(ex);
-        }
-        catch(JsonReadException ex) {
-            throw new DbxException.BadResponse("Bad JSON: " + ex.getMessage(), ex);
-        }
-    }
-
-    public static <ArgT,ResT,ErrT,X extends Throwable> DbxUploader<ResT,ErrT,X> uploadStyle(
-            DbxRequestConfig requestConfig, String accessToken,
-            String host, String path, ArgT arg,
-            JsonWriter<ArgT>argWriter,
-            DbxUploader.UploaderMaker<ResT,ErrT,X> uploaderMaker)
-            throws DbxException
-    {
-        String uri = buildUri(host, path);
-        ArrayList<HttpRequestor.Header> headers = addAuthHeader(null, accessToken);
-        headers.add(new HttpRequestor.Header("Content-Type", "application/octet-stream"));
-        headers = addUserAgentHeader(headers, requestConfig);
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        try {
-            if (arg != null) {
-                argWriter.writeToStream(arg, out, false);
-            }
-            else {
-                out.write("null".getBytes("UTF-8"));
-            }
-        } catch (IOException ex) {
-            throw new DbxException.NetworkIO(ex);
-        }
-        String argJson = out.toString();
-        headers.add(new HttpRequestor.Header("Dropbox-API-Arg", argJson));
-        try {
-            HttpRequestor.Uploader httpUploader = requestConfig.httpRequestor.startPost(uri, headers);
-            return uploaderMaker.makeUploader(httpUploader);
-        }
-        catch (IOException ex) {
-            throw new DbxException.NetworkIO(ex);
-        }
     }
 
     public static byte[] loadErrorBody(HttpRequestor.Response response)
