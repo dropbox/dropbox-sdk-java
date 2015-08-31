@@ -16,6 +16,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Arrays;
 
 /*>>> import checkers.nullness.quals.NonNull; */
 /*>>> import checkers.nullness.quals.Nullable; */
@@ -61,6 +62,9 @@ public class DbxRawClientV2 {
         this.host = host;
     }
 
+    // The HTTP status codes returned for errors specific to particular API calls.
+    private final static List<Integer> functionSpecificErrorCodes = Arrays.asList(403, 404, 409);
+
     public static <ArgT,ResT,ErrT> ResT rpcStyle(DbxRequestConfig requestConfig, String accessToken,
                                                  String host, String path, ArgT arg,
                                                  JsonWriter<ArgT> argWriter,
@@ -81,7 +85,7 @@ public class DbxRawClientV2 {
             HttpRequestor.Response response = DbxRequestUtil.startPostRaw(requestConfig, host, path, body, headers);
             if (response.statusCode == 200) {
                 return resReader.readFully(response.body);
-            } else if (response.statusCode == 409) {
+            } else if (functionSpecificErrorCodes.contains(response.statusCode)) {
                 throw new DbxRequestUtil.ErrorWrapper(errReader, response.body);
             } else {
                 throw DbxRequestUtil.unexpectedStatus(response);
@@ -123,7 +127,7 @@ public class DbxRawClientV2 {
                     throw new DbxException.BadResponse("Null Dropbox-API-Result header; " + response.headers);
                 ResT result = resReader.readFully(resultHeader);
                 return new DbxDownloader<ResT>(result, response.body);
-            } else if (response.statusCode == 409 || response.statusCode == 404) {
+            } else if (functionSpecificErrorCodes.contains(response.statusCode)) {
                 throw new DbxRequestUtil.ErrorWrapper(errReader, response.body);
             } else {
                 throw DbxRequestUtil.unexpectedStatus(response);
