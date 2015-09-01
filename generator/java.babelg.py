@@ -236,6 +236,15 @@ def get_ancestors(data_type):
 _cmdline_parser = argparse.ArgumentParser(prog='java-generator')
 _cmdline_parser.add_argument('--package', type=str, help='base package name', required=True)
 
+def field_name(field):
+    return camelcase(field.name)
+
+def field_type(namespace, field):
+    return maptype(namespace, field.data_type)
+
+def type_and_name(namespace, field):
+    return '%s %s' % (field_type(namespace, field), field_name(field))
+
 class JavaCodeGenerator(CodeGenerator):
     cmdline_parser = _cmdline_parser
 
@@ -458,8 +467,7 @@ class JavaCodeGenerator(CodeGenerator):
         else:
             fields = route.request_data_type.all_fields
         self.generate_doc(route.doc)
-        args = ['%s %s' % (maptype(namespace, field.data_type), camelcase(field.name))
-                for field in fields]
+        args = [type_and_name(namespace, field) for field in fields]
         out('public %s %s(%s)' % (rtype, method_name, ', '.join(args)))
         out('      throws %s, DbxException' % exc_name)
         with self.block():
@@ -475,14 +483,14 @@ class JavaCodeGenerator(CodeGenerator):
         with self.block():
             # Generate a field for every argument.
             all_args = [
-                '%s %s' % (maptype(namespace, field.data_type), camelcase(field.name))
+                type_and_name(namespace, field)
                 for field in route.request_data_type.all_fields
             ]
             for field in all_args:
                 out('private %s;' % field)
             # Take every required argument in the constructor.
             req_fields = [
-                '%s %s' % (maptype(namespace, field.data_type), camelcase(field.name))
+                type_and_name(namespace, field)
                 for field in route.request_data_type.all_required_fields
             ]
             # The constructor is private and called by a helper method.
@@ -492,7 +500,7 @@ class JavaCodeGenerator(CodeGenerator):
                     fn = camelcase(field.name)
                     out('this.%s = %s;' % (fn, fn))
             # Create setter methods for each optional argument.
-            optionals = [(maptype(namespace, field.data_type), camelcase(field.name))
+            optionals = [(field_type(namespace, field), field_name(field))
                          for field in route.request_data_type.all_optional_fields]
             for arg_type, arg_name in optionals:
                 setter_name = camelcase(arg_name)
@@ -514,7 +522,7 @@ class JavaCodeGenerator(CodeGenerator):
         builder_fn_name = method_name + 'Builder'
         out('public %s %s(%s)' % (builder_name, builder_fn_name, ', '.join(req_fields)))
         with self.block():
-            args = [camelcase(field.name) for field
+            args = [field_name(field) for field
                     in route.request_data_type.all_required_fields]
             out('return new %s(%s);' % (builder_name, ", ".join(args)))
 
@@ -565,8 +573,7 @@ class JavaCodeGenerator(CodeGenerator):
                 # Generate fields declarations.
                 for field in data_type.fields:
                     self.generate_doc(field.doc)
-                    out('public %s %s;' %
-                        (maptype(namespace, field.data_type), camelcase(field.name)))
+                    out('public %s;' % type_and_name(namespace, field))
                 out('')
 
                 # Generate JSON writer for struct.
