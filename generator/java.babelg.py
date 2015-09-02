@@ -408,8 +408,6 @@ class JavaCodeGenerator(CodeGenerator):
                     (result_name, method_name, arg_name))
             out('        throws %s, DbxException' % exc_name)
         with self.block():
-            if arg_name != 'void':
-                out('%s._reader.validate(arg);' % arg_name)  # Fails if arg isn't a struct or union.
             with self.block('try'):
                 host = route.attrs.get('host', 'api')
                 if style == 'upload':
@@ -448,12 +446,17 @@ class JavaCodeGenerator(CodeGenerator):
 
     # Construct the relevant argument object, set the fields and call
     # the previously generated method.
-    def generate_call_to_packed_method(self, fields, arg_name, method_name, ret):
+    def generate_call_to_packed_method(self, namespace, route, ret, prefix="", required_only=False):
         out = self.emit
-        out('%s arg = new %s();' % (arg_name, arg_name))
-        for field in fields:
-            fn = camelcase(field.name)
-            out('arg.%s = %s;' % (fn, fn))
+        arg_name = maptype(namespace, route.request_data_type)
+        method_name = prefix + camelcase(route.name)
+        args = []
+        for field in route.request_data_type.all_fields:
+            if required_only and field in route.request_data_type.all_optional_fields:
+                args.append('null')
+            else:
+                args.append(field_name(field))
+        out('%s arg = new %s(%s);' % (arg_name, arg_name, ', '.join(args)))
         out('%s%s(arg);' % (ret, method_name))
 
 
@@ -471,7 +474,7 @@ class JavaCodeGenerator(CodeGenerator):
         out('public %s %s(%s)' % (rtype, method_name, ', '.join(args)))
         out('      throws %s, DbxException' % exc_name)
         with self.block():
-            self.generate_call_to_packed_method(fields, arg_name, method_name, ret)
+            self.generate_call_to_packed_method(namespace, route, ret, required_only=required_only)
 
     def generate_builder(self, namespace, route, rtype, ret, outer):
         out = self.emit
@@ -514,9 +517,7 @@ class JavaCodeGenerator(CodeGenerator):
             with self.block():
                 packed_class = maptype(namespace, route.request_data_type)
                 prefix = '%s.this.' % outer
-                self.generate_call_to_packed_method(
-                    route.request_data_type.all_fields,
-                    packed_class, prefix + method_name, ret)
+                self.generate_call_to_packed_method(namespace, route, ret, prefix=prefix)
         # Generate the helper method used to construct the builder
         self.generate_doc(route.doc)
         builder_fn_name = method_name + 'Builder'
@@ -573,8 +574,22 @@ class JavaCodeGenerator(CodeGenerator):
                 # Generate fields declarations.
                 for field in data_type.fields:
                     self.generate_doc(field.doc)
-                    out('public %s;' % type_and_name(namespace, field))
+                    out('public final %s;' % type_and_name(namespace, field))
                 out('')
+
+                # Generate the constructor.
+                params = [type_and_name(namespace, field) for field in data_type.all_fields]
+                with self.block('public %s(%s)' % (class_name, ', '.join(params))):
+                    # Construct parent class.
+                    if data_type.parent_type is not None:
+                        parent_fields = [field_name(f) for f in data_type.parent_type.all_fields]
+                        out('super(%s);' % ', '.join(parent_fields))
+                    for field in data_type.fields:
+                        fn = field_name(field)
+                        out('this.%s = %s;' % (fn, fn))
+                    # Validate the object.
+                    for field in data_type.fields:
+                        self.generate_field_validation(namespace, field, field_name(field))
 
                 # Generate JSON writer for struct.
                 self.generate_json_writer(namespace, class_name, data_type)
@@ -661,18 +676,25 @@ class JavaCodeGenerator(CodeGenerator):
             # Generate a public field holding the tag.
             self.generate_doc('The discriminating tag for this instance.')
             out('public final %s tag;' % tag_name)
-            out('')
-            # Generate a private constructor to set the tag.
-            with self.block('private %s(%s t)' % (class_name, tag_name)):
-                out('tag = t;')
             # Generate stuff for each field:
             # - for simple fields, a public static final instance;
             # - for complex fields, a bunch of methods.
             unique_value_types = {}  # Map type name -> value name
+            constructors_made = {}   # Map type name -> constructor_made
+            for field in data_type.all_fields:
+                if not is_simple_field(field):
+                    type_name = maptype(namespace, field.data_type)
+                    if type_name not in unique_value_types:
+                        value_name = camelcase(field.name + '_value')
+                        unique_value_types[type_name] = value_name
+                        constructors_made[type_name] = False
+
+            has_simple_field = False
             for field in data_type.all_fields:
                 out('')
                 field_name = camelcase(field.name)
                 if is_simple_field(field):
+                    has_simple_field = True
                     self.generate_doc(field.doc)
                     out('public static final %s %s = new %s(%s.%s);' %
                         (class_name, field_name, class_name, tag_name, field_name))
@@ -684,26 +706,26 @@ class JavaCodeGenerator(CodeGenerator):
                     # - a public getter method for the value.
                     # (*) Suppressed (shared) if a previous field uses the same type.
                     type_name = maptype(namespace, field.data_type)
-                    if type_name not in unique_value_types:
-                        value_name = camelcase(field.name + '_value')
-                        unique_value_types[type_name] = value_name
-                        out('private %s %s;' % (type_name, value_name))
+                    value_name = unique_value_types[type_name]
+                    if not constructors_made[type_name]:
+                        constructors_made[type_name] = True
+                        out('private final %s %s;' % (type_name, value_name))
                         with self.block('private %s(%s t, %s v)' %
                                         (class_name, tag_name, type_name)):
                             out('tag = t;')
-                            out('%s = v;' % value_name)
+                            for other_value_name in unique_value_types.values():
+                                if other_value_name == value_name:
+                                    out('%s = v;' % value_name)
+                                else:
+                                    out('%s = null;' % other_value_name)
+                            out('validate();')
                     else:
                         value_name = unique_value_types[type_name]
                         out('// Reusing %s for %s' % (value_name, camelcase(field_name)))
                     self.generate_doc(field.doc)
                     with self.block('public static %s %s(%s v)' %
                                     (class_name, field_name, type_name)):
-                        if not is_nullable_type(field.data_type):
-                            with self.block('if (v == null)'):
-                                out('throw new RuntimeException'
-                                    '("value for \'%s\' must not be null");' %
-                                    field_name)
-                        out('return new %s(%s.%s, v);' % (class_name, tag_name, field_name))
+                       out('return new %s(%s.%s, v);' % (class_name, tag_name, field_name))
                     getter_name = camelcase('get_' + field.name)
                     with self.block('public %s %s()' % (type_name, getter_name)):
                         with self.block('if (tag != %s.%s)' % (tag_name, field_name)):
@@ -712,6 +734,41 @@ class JavaCodeGenerator(CodeGenerator):
                                 (getter_name, field_name))
                         out('return %s;' % value_name)
             out('')
+            # Generate a private constructor to set the tag if we have any simple fields.
+            if has_simple_field:
+                with self.block('private %s(%s t)' % (class_name, tag_name)):
+                    out('tag = t;')
+                    for value_name in unique_value_types.values():
+                        out('%s = null;' % value_name)
+                    out('validate();')
+
+            out('')
+            out('private void validate()')
+            with self.block():
+                with self.block('switch (tag)'):
+                    # A single no-op case for all simple fields.
+                    cases = 0
+                    for field in data_type.all_fields:
+                        if is_simple_field(field):
+                            out('case %s:' % camelcase(field.name))
+                            cases += 1
+                    if cases:
+                        with self.indent():
+                            out('break;')
+                    # A separate case for each complex field.
+                    for field in data_type.all_fields:
+                        if not is_simple_field(field):
+                            tn = maptype(namespace, field.data_type)
+                            vn = 'this.' + unique_value_types[tn]
+                            out('case %s:' % camelcase(field.name))
+                            with self.indent():
+                                # TODO: Union fields may be optional but can't have defaults.
+                                # Also, required union fields are already checked for null-ness
+                                # when they are constructed, but the code here checks again.
+                                # But refactoring all this to still share the hard work
+                                # (doit()) is complicated.
+                                self.generate_field_validation(namespace, field, vn)
+                                out('break;')
 
             # Generate JSON writer.
             out('static final JsonWriter<%s> _writer = new JsonWriter<%s>()' %
@@ -747,7 +804,6 @@ class JavaCodeGenerator(CodeGenerator):
                                         doit(field.data_type)
                                 out('g.writeEndObject();')
                                 out('break;')
-            out('')
 
             # Generate JSON reader.
             out('public static final JsonReader<%s> _reader = new JsonReader<%s>()' %
@@ -829,34 +885,6 @@ class JavaCodeGenerator(CodeGenerator):
                             (class_name, camelcase(data_type.catch_all_field.name)))
                     out('return value;')
                 out('')
-
-                # Generate validate() method.
-                with self.block('public final void validate(%s value)' % class_name):
-                    with self.block('switch (value.tag)'):
-                        # A single no-op case for all simple fields.
-                        cases = 0
-                        for field in data_type.all_fields:
-                            if is_simple_field(field):
-                                out('case %s:' % camelcase(field.name))
-                                cases += 1
-                        if cases:
-                            with self.indent():
-                                out('break;')
-                        # A separate case for each complex field.
-                        for field in data_type.all_fields:
-                            if not is_simple_field(field):
-                                tn = maptype(namespace, field.data_type)
-                                vn = 'value.' + unique_value_types[tn]
-                                out('case %s:' % camelcase(field.name))
-                                with self.indent():
-                                    # TODO: Union fields may be optional but can't have defaults.
-                                    # Also, required union fields are already checked for null-ness
-                                    # when they are constructed, but the code here checks again.
-                                    # But refactoring all this to still share the hard work
-                                    # (doit()) is complicated.
-                                    self.generate_field_validation(namespace, field, vn)
-                                    out('break;')
-            out('')
 
             self.generate_static_values(data_type, tag_name, tag_name + '.')
             out('')
@@ -1027,7 +1055,8 @@ class JavaCodeGenerator(CodeGenerator):
             out('public final %s readFields(JsonParser parser)' % class_name)
             out('    throws IOException, JsonReadException')
             with self.block():
-                out('%s result = new %s();' % (class_name, class_name))
+                for field in data_type.all_fields:
+                    out('%s = null;' % type_and_name(namespace, field))
                 with self.block('while (parser.getCurrentToken() == JsonToken.FIELD_NAME)'):
                     out('String fieldName = parser.getCurrentName();')
                     out('parser.nextToken();')
@@ -1037,17 +1066,10 @@ class JavaCodeGenerator(CodeGenerator):
                                         (pfx, field.name)):
                             pfx = 'else '
                             self.generate_read_field(namespace, field,
-                                                     'result.%s' % camelcase(field.name))
+                                                     '%s' % field_name(field))
                     out('%s{ JsonReader.skipValue(parser); }' % pfx)
-                out('return result;')
-
-            # Generate validate() method.
-            out('')
-            with self.block('public final void validate(%s value)' % class_name):
-                if data_type.parent_type:
-                    out('%s._reader.validate(value);' % maptype(namespace, data_type.parent_type))
-                for field in data_type.fields:
-                    self.generate_field_validation(namespace, field)
+                field_names = [field_name(field) for field in data_type.all_fields]
+                out('return new %s(%s);' % (class_name, ', '.join(field_names)))
 
     def generate_field_validation(self, namespace, field, value_name=None):
         """Generate validation code for one field.
@@ -1085,9 +1107,7 @@ class JavaCodeGenerator(CodeGenerator):
             """
             if dn is None:
                 dn = vn
-            if is_composite_type(ft):
-                out('%s._reader.validate(%s);' % (maptype(namespace, ft), vn))
-            elif is_list_type(ft):
+            if is_list_type(ft):
                 if ft.min_items is not None:
                     with self.block('if (%s.size() < %s)' % (vn, mapvalue(namespace,
                                                                           ft, ft.min_items))):
@@ -1127,7 +1147,8 @@ class JavaCodeGenerator(CodeGenerator):
                                     (ft.pattern.replace('\\', '\\\\'), vn)):
                         out('throw new RuntimeException("String \'%s\' does not match pattern");' %
                             dn)
-            elif is_boolean_type(ft) or is_timestamp_type(ft) or is_binary_type(ft):
+            elif is_composite_type(ft) or is_boolean_type(ft) or \
+                    is_timestamp_type(ft) or is_binary_type(ft):
                 pass  # Nothing to do for these
             else:
                 out('throw new RuntimeException("XXX Don\'t know how to validate %s: type %s");' %
