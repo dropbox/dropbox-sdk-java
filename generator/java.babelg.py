@@ -27,6 +27,7 @@ from babelapi.data_type import (
     is_timestamp_type,
     is_union_type,
     is_void_type,
+    StructField,
     TagRef,
     Union,
     Void,
@@ -80,7 +81,26 @@ def routename(s):
     return camelcase(s)
 
 
-type_map = {
+def is_primitive_type(dt):
+    correct_type = is_boolean_type(dt) or is_numeric_type(dt) or is_void_type(dt)
+    return correct_type and not is_nullable_type(dt)
+
+
+type_map_unboxed = {
+    'UInt64': 'long',
+    'Int64': 'long',
+    'UInt32': 'long',
+    'Int32': 'int',
+    'Float64': 'double',
+    'Float32': 'float',
+    'Boolean': 'boolean',
+    'Binary': 'byte[]',
+    'String': 'String',
+    'Timestamp': 'java.util.Date',
+    'Void': 'void',
+}
+
+type_map_boxed = {
     'UInt64': 'Long',
     'Int64': 'Long',
     'UInt32': 'Long',
@@ -95,15 +115,18 @@ type_map = {
 }
 
 
-def maptype(namespace, data_type):
+def maptype(namespace, data_type, boxed=True):
     """Map a Babel data type to a Java type expression.
 
     There are special cases for primitive types, list (array) types,
     and struct/union types.
     """
-    data_type, _ = get_underlying_type(data_type)
+    data_type, nullable = get_underlying_type(data_type)
+    if nullable:
+        boxed = True
     if is_list_type(data_type):
         return 'java.util.ArrayList<%s>' % maptype(namespace, data_type.data_type)
+    type_map = type_map_boxed if boxed else type_map_unboxed
     if data_type.name in type_map:
         return type_map[data_type.name]
     assert is_composite_type(data_type), data_type
@@ -239,11 +262,11 @@ _cmdline_parser.add_argument('--package', type=str, help='base package name', re
 def field_name(field):
     return camelcase(field.name)
 
-def field_type(namespace, field):
-    return maptype(namespace, field.data_type)
+def field_type(namespace, field, boxed=True):
+    return maptype(namespace, field.data_type, boxed)
 
-def type_and_name(namespace, field):
-    return '%s %s' % (field_type(namespace, field), field_name(field))
+def type_and_name(namespace, field, boxed=True):
+    return '%s %s' % (field_type(namespace, field, boxed), field_name(field))
 
 class JavaCodeGenerator(CodeGenerator):
     cmdline_parser = _cmdline_parser
@@ -462,7 +485,6 @@ class JavaCodeGenerator(CodeGenerator):
 
     def generate_unpacked_method(self, namespace, route, rtype, ret, required_only=False):
         out = self.emit
-        arg_name = maptype(namespace, route.request_data_type)
         method_name = camelcase(route.name)
         exc_name = classname(route.name + '_exception')
         if required_only:
@@ -470,7 +492,7 @@ class JavaCodeGenerator(CodeGenerator):
         else:
             fields = route.request_data_type.all_fields
         self.generate_doc(route.doc)
-        args = [type_and_name(namespace, field) for field in fields]
+        args = [type_and_name(namespace, field, boxed=False) for field in fields]
         out('public %s %s(%s)' % (rtype, method_name, ', '.join(args)))
         out('      throws %s, DbxException' % exc_name)
         with self.block():
@@ -493,7 +515,7 @@ class JavaCodeGenerator(CodeGenerator):
                 out('private %s;' % field)
             # Take every required argument in the constructor.
             req_fields = [
-                type_and_name(namespace, field)
+                type_and_name(namespace, field, boxed=False)
                 for field in route.request_data_type.all_required_fields
             ]
             # The constructor is private and called by a helper method.
@@ -503,9 +525,11 @@ class JavaCodeGenerator(CodeGenerator):
                     fn = camelcase(field.name)
                     out('this.%s = %s;' % (fn, fn))
             # Create setter methods for each optional argument.
-            optionals = [(field_type(namespace, field), field_name(field))
-                         for field in route.request_data_type.all_optional_fields]
-            for arg_type, arg_name in optionals:
+            for field in route.request_data_type.all_optional_fields:
+                # Use underlying type since we don't want to allow nulls here
+                dt, _ = get_underlying_type(field.data_type)
+                arg_type = maptype(namespace, dt, boxed=False)
+                arg_name = field_name(field)
                 setter_name = camelcase(arg_name)
                 out('public %s %s(%s %s)' % (builder_name, setter_name,
                                              arg_type, arg_name))
@@ -553,6 +577,24 @@ class JavaCodeGenerator(CodeGenerator):
             elif n_optional > 1:
                 self.generate_builder(namespace, route, rtype, ret, outer)
 
+    def generate_field_assignment(self, namespace, field):
+        out = self.emit
+        fn = field_name(field)
+        if field.has_default:
+            with self.block('if (%s != null)' % fn):
+                if is_primitive_type(field.data_type):
+                    # Extract the primitive value.
+                    getter = '%sValue()' % field_type(namespace, field, boxed=False)
+                    out('this.%s = %s.%s;' % (fn, fn, getter))
+                else:
+                    out('this.%s = %s;' % (fn, fn))
+            with self.block('else'):
+                # Fill in the default if null.
+                value = mapvalue(namespace, field.data_type, field.default)
+                out('this.%s = %s;' % (fn, value))
+        else:
+            out('this.%s = %s;' % (fn, fn))
+
     def generate_data_type_class(self, namespace, data_type):
         """Generate a class definition for a datatype (a struct or a union)."""
         out = self.emit
@@ -574,21 +616,21 @@ class JavaCodeGenerator(CodeGenerator):
                 # Generate fields declarations.
                 for field in data_type.fields:
                     self.generate_doc(field.doc)
-                    out('public final %s;' % type_and_name(namespace, field))
+                    out('public final %s;' % type_and_name(namespace, field, boxed=False))
                 out('')
 
                 # Generate the constructor.
-                params = [type_and_name(namespace, field) for field in data_type.all_fields]
+                params = []
+                for field in data_type.all_fields:
+                    boxed = not is_primitive_type(field.data_type) or field.has_default
+                    params.append(type_and_name(namespace,field, boxed))
                 with self.block('public %s(%s)' % (class_name, ', '.join(params))):
                     # Construct parent class.
                     if data_type.parent_type is not None:
                         parent_fields = [field_name(f) for f in data_type.parent_type.all_fields]
                         out('super(%s);' % ', '.join(parent_fields))
                     for field in data_type.fields:
-                        fn = field_name(field)
-                        out('this.%s = %s;' % (fn, fn))
-                    # Validate the object.
-                    for field in data_type.fields:
+                        self.generate_field_assignment(namespace, field)
                         self.generate_field_validation(namespace, field, field_name(field))
 
                 # Generate JSON writer for struct.
@@ -960,7 +1002,10 @@ class JavaCodeGenerator(CodeGenerator):
             with self.block():
                 for field in data_type.fields:
                     var_name = 'x.' + camelcase(field.name)
-                    with self.block('if (%s != null)' % var_name):
+                    if is_nullable_type(field.data_type):
+                        with self.block('if (%s != null)' % var_name):
+                            self.generate_write_field(namespace, field, var_name)
+                    else:
                         self.generate_write_field(namespace, field, var_name)
 
     def generate_write_field(self, namespace, field, var_name):
@@ -1068,17 +1113,19 @@ class JavaCodeGenerator(CodeGenerator):
                             self.generate_read_field(namespace, field,
                                                      '%s' % field_name(field))
                     out('%s{ JsonReader.skipValue(parser); }' % pfx)
+                # Validate required fields.
+                for field in data_type.all_required_fields:
+                    with self.block('if (%s == null)' % field_name(field)):
+                        out('throw new JsonReadException('
+                            '\"Required field \\\"%s\\\" is missing.\", '
+                            'parser.getTokenLocation());' % field.name)
                 field_names = [field_name(field) for field in data_type.all_fields]
                 out('return new %s(%s);' % (class_name, ', '.join(field_names)))
 
-    def generate_field_validation(self, namespace, field, value_name=None):
+    def generate_field_validation(self, namespace, field, value_name):
         """Generate validation code for one field.
-
-        The value_name argument must be None for a struct, and the
-        full value name for a union.
         """
         out = self.emit
-        is_struct = (value_name is None)
 
         def todo(ft):
             """Decide whether doit() will emit any code."""
@@ -1154,33 +1201,19 @@ class JavaCodeGenerator(CodeGenerator):
                 out('throw new RuntimeException("XXX Don\'t know how to validate %s: type %s");' %
                     (dn, ft.name))
 
-        ft = field.data_type
-        nullable = is_nullable_type(ft)
-        if nullable:
-            ft = ft.data_type
-        if is_struct:
-            vn = 'value.' + camelcase(field.name)
-        else:
-            vn = value_name
+        ft, nullable = get_underlying_type(field.data_type)
+        vn = value_name
         if nullable:
             if todo(ft):
                 with self.block('if (%s != null)' % vn):
                     doit(ft, vn)
-        elif is_struct and field.has_default:
-            # TODO: There's a slight problem here.  After calling
-            # .validate() the default value is filled in, but this
-            # also means that the value will be serialized.  We may
-            # have to add a flag to validate() indicating whether
-            # defaults should be filled in or not.  The default should
-            # be filled in when validating an incoming value (i.e. the
-            # result of an API call) but it should not be filled in
-            # when validating an outgoing value (i.e. the argument to
-            # an API call).
-            with self.block('if (%s == null)' % vn):
-                out('%s = %s;' % (vn, mapvalue(namespace, ft, field.default)))
-            if todo(ft):
-                with self.block('else'):
-                    doit(ft, vn)
+            else:
+                # No validation required for this nullable field.
+                pass
+        elif is_primitive_type(ft) or (isinstance(field, StructField) and field.has_default):
+            # Don't need to check primitive/default types for null.
+            # The 'this.' means that we refer to the unboxed value.
+            doit(ft, 'this.'+vn)
         else:
             with self.block('if (%s == null)' % vn):
                 out('throw new RuntimeException("Required value for \'%s\' is null");' %
