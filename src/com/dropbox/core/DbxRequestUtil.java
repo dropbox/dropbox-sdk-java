@@ -209,12 +209,15 @@ public class DbxRequestUtil
             while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
                 String fieldName = parser.getCurrentName();
                 parser.nextToken();
-                if (fieldName == "reason") {
+                if (fieldName.equals("error")) {
                     errValue = reader.read(parser);
                 }
                 else {
                     JsonReader.skipValue(parser);
                 }
+            }
+            if (errValue == null) {
+                throw new JsonReadException("Required field \"error\" is missing.", parser.getCurrentLocation());
             }
         }
     }
