@@ -1,6 +1,4 @@
-package com.dropbox.core;
-
-import static com.dropbox.core.util.StringUtil.jq;
+package com.dropbox.core.v2;
 
 /*>>> import checkers.nullness.quals.Nullable; */
 
@@ -15,7 +13,7 @@ import static com.dropbox.core.util.StringUtil.jq;
  * the path is relative to the App Folder.
  * </p>
  */
-public class DbxPath
+public class DbxPathV2
 {
     public static boolean isValid(String path)
     {
@@ -25,9 +23,9 @@ public class DbxPath
 
     public static /*@Nullable*/String findError(String path)
     {
-        if (!path.startsWith("/")) return "must start with \"/\"";
-        if (path.length() == 1) return null;  // Special case for "/"
+        if (path.length() == 0) return null;  // Special case for ""
 
+        if (!path.startsWith("/")) return "expecting first character to be \"/\"";
         if (path.endsWith("/")) return "must not end with \"/\"";
 
         // TODO: More checks.
@@ -38,29 +36,10 @@ public class DbxPath
         return null;
     }
 
-    public static void checkArg(String argName, String value)
-    {
-        if (value == null) {
-            throw new IllegalArgumentException("'" + argName + "' should not be null");
-        }
-        String error = findError(value);
-        if (error != null) {
-            throw new IllegalArgumentException("'" + argName + "': bad path: " + error + ": " + jq(value));
-        }
-    }
-
-    public static void checkArgNonRoot(String argName, String value)
-    {
-        if ("/".equals(value)) {
-            throw new IllegalArgumentException("'" + argName + "' should not be the root path (\"/\")");
-        }
-        checkArg(argName, value);
-    }
-
     /**
      * Returns just the last component of the path.
      * <ul>
-     *     <li>{@code getName("/")} &rarr; {@code "/"}</li>
+     *     <li>{@code getName("")} &rarr; {@code null}</li>
      *     <li>{@code getName("/Photos")} &rarr; {@code "Photos"}</li>
      *     <li>{@code getName("/Photos/Home.jpeg")} &rarr; {@code "Home.jpeg"}</li>
      * </ul>
@@ -68,8 +47,9 @@ public class DbxPath
     public static String getName(String path)
     {
         if (path == null) throw new IllegalArgumentException("'path' can't be null");
+        if (path.length() == 0) return null;
         if (!path.startsWith("/")) throw new IllegalArgumentException("Not a valid path.  Doesn't start with a \"/\": \"" + path + "\"");
-        if (path.length() > 1 && path.endsWith("/")) throw new IllegalArgumentException("Not a valid path.  Ends with a \"/\": \"" + path + "\"");
+        if (path.endsWith("/")) throw new IllegalArgumentException("Not a valid path.  Ends with a \"/\": \"" + path + "\"");
 
         int start = path.length() - 1;
         while (path.charAt(start) != '/') {
@@ -81,10 +61,10 @@ public class DbxPath
     public static String[] split(String path)
     {
         if (path == null) throw new IllegalArgumentException("'path' can't be null");
+        if (path.length() == 0) return new String[0];
         if (!path.startsWith("/")) throw new IllegalArgumentException("Not a valid path.  Doesn't start with a \"/\": \"" + path + "\"");
-        if (path.length() > 1 && path.endsWith("/")) throw new IllegalArgumentException("Not a valid path.  Ends with a \"/\": \"" + path + "\"");
+        if (path.endsWith("/")) throw new IllegalArgumentException("Not a valid path.  Ends with a \"/\": \"" + path + "\"");
 
-        if (path.length() == 1) return new String[0];
         return path.substring(1).split("/");
     }
 
@@ -92,7 +72,7 @@ public class DbxPath
      * Returns the parent path of the given path or {@code null} if the path
      * is {@code "/"}.
      * <ul>
-     *     <li>{@code getParent("/")} &rarr; {@code null}</li>
+     *     <li>{@code getParent("")} &rarr; {@code null}</li>
      *     <li>{@code getParent("/Photos")} &rarr; {@code "/"}</li>
      *     <li>{@code getParent("/Photos/Recent/Home.jpeg")} &rarr; {@code "/Photos/Recent"}</li>
      * </ul>
@@ -100,14 +80,11 @@ public class DbxPath
     public static /*@Nullable*/String getParent(String path)
     {
         if (path == null) throw new IllegalArgumentException("'path' can't be null");
+        if (path.length() == 0) return null;
         if (!path.startsWith("/")) throw new IllegalArgumentException("Not a valid path.  Doesn't start with a \"/\": \"" + path + "\"");
-        if (path.length() > 1 && path.endsWith("/")) throw new IllegalArgumentException("Not a valid path.  Ends with a \"/\": \"" + path + "\"");
+        if (path.endsWith("/")) throw new IllegalArgumentException("Not a valid path.  Ends with a \"/\": \"" + path + "\"");
 
         int lastSlash = path.lastIndexOf("/");
-        if (path.length() == 1) return null;  // "/" has no parent
-
-        if (lastSlash == 0) return "/";
-
         return path.substring(0, lastSlash);
     }
 }

@@ -1,11 +1,14 @@
 package com.dropbox.core.examples.upload_file;
 
-import com.dropbox.core.*;
+import com.dropbox.core.DbxAuthInfo;
+import com.dropbox.core.DbxException;
+import com.dropbox.core.DbxRequestConfig;
+import com.dropbox.core.DbxWebAuth;
 import com.dropbox.core.json.JsonReader;
 import com.dropbox.core.util.IOUtil;
-import com.dropbox.core.v1.DbxClientV1;
-import com.dropbox.core.v1.DbxEntry;
-import com.dropbox.core.v1.DbxWriteMode;
+import com.dropbox.core.v2.DbxClientV2;
+import com.dropbox.core.v2.DbxPathV2;
+import com.dropbox.core.v2.Files;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -68,33 +71,39 @@ public class Main
             return 1;
         }
 
-        String pathError = DbxPath.findError(dropboxPath);
+        String pathError = DbxPathV2.findError(dropboxPath);
         if (pathError != null) {
             System.err.println("Invalid <dropbox-path>: " + pathError);
             return 1;
         }
 
-        // Create a DbxClientV1, which is what you use to make API calls.
+        // Create a DbxClientV2, which is what you use to make API calls.
         String userLocale = Locale.getDefault().toString();
         DbxRequestConfig requestConfig = new DbxRequestConfig("examples-upload-file", userLocale);
-        DbxClientV1 dbxClient = new DbxClientV1(requestConfig, authInfo.accessToken, authInfo.host);
+        DbxClientV2 dbxClient = new DbxClientV2(requestConfig, authInfo.accessToken, authInfo.host);
 
         // Make the API call to upload the file.
-        DbxEntry.File metadata;
+        Files.FileMetadata metadata;
+        InputStream in = new FileInputStream(localPath);
         try {
-            InputStream in = new FileInputStream(localPath);
-            try {
-                metadata = dbxClient.uploadFile(dropboxPath, DbxWriteMode.add(), -1, in);
-            } catch (DbxException ex) {
-                System.out.println("Error uploading to Dropbox: " + ex.getMessage());
-                return 1;
-            } finally {
-                IOUtil.closeInput(in);
-            }
+            Files.UploadUploader uploader = dbxClient.files.upload(dropboxPath);
+            IOUtil.copyStreamToStream(in, uploader.getBody());
+            metadata = uploader.finish();
+        }
+        catch (Files.UploadException ex) {
+            System.out.println("Error uploading to Dropbox: " + ex.getMessage());
+            return 1;
+        }
+        catch (DbxException ex) {
+            System.out.println("Error uploading to Dropbox: " + ex.getMessage());
+            return 1;
         }
         catch (IOException ex) {
             System.out.println("Error reading from file \"" + localPath + "\": " + ex.getMessage());
             return 1;
+        }
+        finally {
+            IOUtil.closeInput(in);
         }
 
         System.out.print(metadata.toStringMultiline());

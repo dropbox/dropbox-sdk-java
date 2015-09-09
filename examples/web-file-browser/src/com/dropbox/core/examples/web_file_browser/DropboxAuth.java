@@ -1,6 +1,10 @@
 package com.dropbox.core.examples.web_file_browser;
 
-import com.dropbox.core.*;
+import com.dropbox.core.DbxAuthFinish;
+import com.dropbox.core.DbxException;
+import com.dropbox.core.DbxSessionStore;
+import com.dropbox.core.DbxStandardSessionStore;
+import com.dropbox.core.DbxWebAuth;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

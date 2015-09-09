@@ -5,7 +5,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import com.dropbox.core.DbxPath;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.json.*;
 import com.dropbox.core.json.JsonArrayReader;
@@ -31,7 +30,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
     /**
      * Just the last part of {@link #path}.  Derived automatically from {@link #path}.
      *
-     * @see DbxPath#getName
+     * @see DbxPathV1#getName
      */
     public final String name;
 
@@ -70,7 +69,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
      */
     private DbxEntry(String path, String iconName, boolean mightHaveThumbnail)
     {
-        this.name = DbxPath.getName(path);
+        this.name = DbxPathV1.getName(path);
         this.path = path;
         this.iconName = iconName;
         this.mightHaveThumbnail = mightHaveThumbnail;

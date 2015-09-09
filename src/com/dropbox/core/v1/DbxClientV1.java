@@ -100,7 +100,7 @@ public final class DbxClientV1
      * </pre>
      *
      * @param path
-     *     The path to the file or folder (see {@link DbxPath}).
+     *     The path to the file or folder (see {@link DbxPathV1}).
      *
      * @param includeMediaInfo
      *     If {@code true}, then if the return value is a {@link DbxEntry.File}, it might have
@@ -113,7 +113,7 @@ public final class DbxClientV1
     public /*@Nullable*/DbxEntry getMetadata(final String path, boolean includeMediaInfo)
         throws DbxException
     {
-        DbxPath.checkArg("path", path);
+        DbxPathV1.checkArg("path", path);
 
         String host = this.host.api;
         String apiPath = "1/metadata/auto" + path;
@@ -159,7 +159,7 @@ public final class DbxClientV1
      * </pre>
      *
      * @param path
-     *     The path (starting with "/") to the file or folder (see {@link DbxPath}).
+     *     The path (starting with "/") to the file or folder (see {@link DbxPathV1}).
      *
      * @param includeMediaInfo
      *     If {@code true}, then if the return value is a {@link DbxEntry.File}, it might have
@@ -218,7 +218,7 @@ public final class DbxClientV1
     private <T> /*@Nullable*/T getMetadataWithChildrenBase(String path, boolean includeMediaInfo, final JsonReader<? extends T> reader)
         throws DbxException
     {
-        DbxPath.checkArg("path", path);
+        DbxPathV1.checkArg("path", path);
 
         String host = this.host.api;
         String apiPath = "1/metadata/auto" + path;
@@ -247,7 +247,7 @@ public final class DbxClientV1
      * of {@link DbxEntry.WithChildren#hash} from the last result).
      *
      * @param path
-     *     The path (starting with "/") to the file or folder (see {@link DbxPath}).
+     *     The path (starting with "/") to the file or folder (see {@link DbxPathV1}).
      *
      * @param previousFolderHash
      *     The value of {@link DbxEntry.WithChildren#hash} from the last time
@@ -313,7 +313,7 @@ public final class DbxClientV1
     {
         if (previousFolderHash == null) throw new IllegalArgumentException("'previousFolderHash' must not be null");
         if (previousFolderHash.length() == 0) throw new IllegalArgumentException("'previousFolderHash' must not be empty");
-        DbxPath.checkArg("path", path);
+        DbxPathV1.checkArg("path", path);
 
         String host = this.host.api;
         String apiPath = "1/metadata/auto" + path;
@@ -441,7 +441,7 @@ public final class DbxClientV1
      *
      * @param path
      *     The path (starting with "/") to the file or folder on Dropbox.
-     *     (see {@link DbxPath}).
+     *     (see {@link DbxPathV1}).
      *
      * @return
      *     An object that can be used to download the file contents, or
@@ -450,7 +450,7 @@ public final class DbxClientV1
     public /*@Nullable*/Downloader startGetFile(final String path, /*@Nullable*/String rev)
             throws DbxException
     {
-        DbxPath.checkArgNonRoot("path", path);
+        DbxPathV1.checkArgNonRoot("path", path);
         String apiPath = "1/files/auto" + path;
         /*@Nullable*/String[] params = {
             "rev", rev
@@ -562,7 +562,7 @@ public final class DbxClientV1
      * </pre>
      *
      * @param targetPath
-     *     The path to the file on Dropbox (see {@link DbxPath}).  If a file at
+     *     The path to the file on Dropbox (see {@link DbxPathV1}).  If a file at
      *     that path already exists on Dropbox, then the {@code writeMode} parameter
      *     will determine what happens.
      *
@@ -608,7 +608,7 @@ public final class DbxClientV1
      * </pre>
      *
      * @param targetPath
-     *     The path to the file on Dropbox (see {@link DbxPath}).  If a file at
+     *     The path to the file on Dropbox (see {@link DbxPathV1}).  If a file at
      *     that path already exists on Dropbox, then the {@code writeMode} parameter
      *     will determine what happens.
      *
@@ -660,7 +660,7 @@ public final class DbxClientV1
      * </pre>
      *
      * @param targetPath
-     *     The path to the file on Dropbox (see {@link DbxPath}).  If a file at
+     *     The path to the file on Dropbox (see {@link DbxPathV1}).  If a file at
      *     that path already exists on Dropbox, then the {@code writeMode} parameter
      *     will determine what happens.
      *
@@ -720,7 +720,7 @@ public final class DbxClientV1
     public Uploader startUploadFileSingle(String targetPath, DbxWriteMode writeMode, long numBytes)
         throws DbxException
     {
-        DbxPath.checkArg("targetPath", targetPath);
+        DbxPathV1.checkArg("targetPath", targetPath);
         if (numBytes < 0) throw new IllegalArgumentException("numBytes must be zero or greater");
 
         String host = this.host.content;
@@ -1148,7 +1148,7 @@ public final class DbxClientV1
      * via {@link #chunkedUploadFirst} and {@link #chunkedUploadAppend}.
      *
      * @param targetPath
-     *     The path to the file on Dropbox (see {@link DbxPath}).  If a file at
+     *     The path to the file on Dropbox (see {@link DbxPathV1}).  If a file at
      *     that path already exists on Dropbox, then the {@code writeMode} parameter
      *     will determine what happens.
      *
@@ -1161,7 +1161,7 @@ public final class DbxClientV1
     public DbxEntry.File chunkedUploadFinish(String targetPath, DbxWriteMode writeMode, String uploadId)
         throws DbxException
     {
-        DbxPath.checkArgNonRoot("targetPath", targetPath);
+        DbxPathV1.checkArgNonRoot("targetPath", targetPath);
 
         String apiPath = "1/commit_chunked_upload/auto" + targetPath;
 
@@ -1193,7 +1193,7 @@ public final class DbxClientV1
      */
     public Uploader startUploadFileChunked(int chunkSize, String targetPath, DbxWriteMode writeMode, long numBytes)
     {
-        DbxPath.checkArg("targetPath", targetPath);
+        DbxPathV1.checkArg("targetPath", targetPath);
         if (writeMode == null) throw new IllegalArgumentException("'writeMode' can't be null");
 
         return new ChunkedUploader(targetPath, writeMode, numBytes, new ChunkedUploadOutputStream(chunkSize));
@@ -1486,7 +1486,7 @@ public final class DbxClientV1
                                                      boolean includeMediaInfo)
         throws DbxException
     {
-        DbxPath.checkArg("path", pathPrefix);
+        DbxPathV1.checkArg("path", pathPrefix);
         return _getDelta(cursor, pathPrefix, includeMediaInfo);
     }
 
@@ -1497,7 +1497,7 @@ public final class DbxClientV1
     public DbxDelta<DbxEntry> getDeltaWithPathPrefix(/*@Nullable*/String cursor, String pathPrefix)
         throws DbxException
     {
-        DbxPath.checkArg("path", pathPrefix);
+        DbxPathV1.checkArg("path", pathPrefix);
         return _getDelta(cursor, pathPrefix, false);
     }
 
@@ -1510,7 +1510,7 @@ public final class DbxClientV1
                                                     boolean includeMediaInfo)
         throws DbxException
     {
-        DbxPath.checkArg("path", pathPrefix);
+        DbxPathV1.checkArg("path", pathPrefix);
         return _getDeltaC(collector, cursor, pathPrefix, includeMediaInfo);
     }
 
@@ -1598,7 +1598,7 @@ public final class DbxClientV1
      */
     public String getDeltaLatestCursorWithPathPrefix(String pathPrefix, boolean includeMediaInfo) throws DbxException
     {
-        DbxPath.checkArg("path", pathPrefix);
+        DbxPathV1.checkArg("path", pathPrefix);
         return _getDeltaLatestCursor(pathPrefix, includeMediaInfo);
     }
 
@@ -1739,7 +1739,7 @@ public final class DbxClientV1
             DbxThumbnailSize sizeBound, DbxThumbnailFormat format, String path, /*@Nullable*/String rev)
         throws DbxException
     {
-        DbxPath.checkArgNonRoot("path", path);
+        DbxPathV1.checkArgNonRoot("path", path);
         if (sizeBound == null) throw new IllegalArgumentException("'size' can't be null");
         if (format == null) throw new IllegalArgumentException("'format' can't be null");
 
@@ -1768,7 +1768,7 @@ public final class DbxClientV1
     public List<DbxEntry.File> getRevisions(String path)
         throws DbxException
     {
-        DbxPath.checkArgNonRoot("path", path);
+        DbxPathV1.checkArgNonRoot("path", path);
 
         String apiPath = "1/revisions/auto" + path;
 
@@ -1802,7 +1802,7 @@ public final class DbxClientV1
     public DbxEntry./*@Nullable*/File restoreFile(String path, String rev)
         throws DbxException
     {
-        DbxPath.checkArgNonRoot("path", path);
+        DbxPathV1.checkArgNonRoot("path", path);
         if (rev == null) throw new IllegalArgumentException("'rev' can't be null");
         if (rev.length() == 0) throw new IllegalArgumentException("'rev' can't be empty");
 
@@ -1836,7 +1836,7 @@ public final class DbxClientV1
     public List<DbxEntry> searchFileAndFolderNames(String basePath, String query)
         throws DbxException
     {
-        DbxPath.checkArg("basePath", basePath);
+        DbxPathV1.checkArg("basePath", basePath);
         if (query == null) throw new IllegalArgumentException("'query' can't be null");
         if (query.length() == 0) throw new IllegalArgumentException("'query' can't be empty");
 
@@ -1870,7 +1870,7 @@ public final class DbxClientV1
     public /*@Nullable*/String createShareableUrl(String path)
         throws DbxException
     {
-        DbxPath.checkArg("path", path);
+        DbxPathV1.checkArg("path", path);
 
         String apiPath = "1/shares/auto" + path;
         String[] params = {"short_url", "false"};
@@ -1902,7 +1902,7 @@ public final class DbxClientV1
     public /*@Nullable*/DbxUrlWithExpiration createTemporaryDirectUrl(String path)
         throws DbxException
     {
-        DbxPath.checkArgNonRoot("path", path);
+        DbxPathV1.checkArgNonRoot("path", path);
 
         String apiPath = "1/media/auto" + path;
 
@@ -1942,7 +1942,7 @@ public final class DbxClientV1
     public /*@Nullable*/String createCopyRef(String path)
         throws DbxException
     {
-        DbxPath.checkArgNonRoot("path", path);
+        DbxPathV1.checkArgNonRoot("path", path);
 
         String apiPath = "1/copy_ref/auto" + path;
 
@@ -2021,8 +2021,8 @@ public final class DbxClientV1
     public /*@Nullable*/DbxEntry copy(String fromPath, String toPath)
         throws DbxException
     {
-        DbxPath.checkArg("fromPath", fromPath);
-        DbxPath.checkArgNonRoot("toPath", toPath);
+        DbxPathV1.checkArg("fromPath", fromPath);
+        DbxPathV1.checkArgNonRoot("toPath", toPath);
 
         String[] params = {
             "root", "auto",
@@ -2053,7 +2053,7 @@ public final class DbxClientV1
     {
         if (copyRef == null) throw new IllegalArgumentException("'copyRef' can't be null");
         if (copyRef.length() == 0) throw new IllegalArgumentException("'copyRef' can't be empty");
-        DbxPath.checkArgNonRoot("toPath", toPath);
+        DbxPathV1.checkArgNonRoot("toPath", toPath);
 
         String[] params = {
             "root", "auto",
@@ -2085,7 +2085,7 @@ public final class DbxClientV1
     public DbxEntry./*@Nullable*/Folder createFolder(String path)
         throws DbxException
     {
-        DbxPath.checkArgNonRoot("path", path);
+        DbxPathV1.checkArgNonRoot("path", path);
 
         String[] params = {
             "root", "auto",
@@ -2110,7 +2110,7 @@ public final class DbxClientV1
     public void delete(String path)
         throws DbxException
     {
-        DbxPath.checkArgNonRoot("path", path);
+        DbxPathV1.checkArgNonRoot("path", path);
 
         String[] params = {
             "root", "auto",
@@ -2138,8 +2138,8 @@ public final class DbxClientV1
     public /*@Nullable*/DbxEntry move(String fromPath, String toPath)
         throws DbxException
     {
-        DbxPath.checkArgNonRoot("fromPath", fromPath);
-        DbxPath.checkArgNonRoot("toPath", toPath);
+        DbxPathV1.checkArgNonRoot("fromPath", fromPath);
+        DbxPathV1.checkArgNonRoot("toPath", toPath);
 
         String[] params = {
             "root", "auto",
