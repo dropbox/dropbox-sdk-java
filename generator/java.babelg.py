@@ -308,7 +308,7 @@ class JavaCodeGenerator(CodeGenerator):
             out('import com.fasterxml.jackson.core.JsonGenerator;')
             out('import com.fasterxml.jackson.core.JsonParser;')
             out('import com.fasterxml.jackson.core.JsonToken;')
-            out('import com.dropbox.core.DbxApiError;')
+            out('import com.dropbox.core.DbxApiException;')
             out('import com.dropbox.core.v2.DbxRawClientV2;')
             out('import com.dropbox.core.DbxException;')
             out('import com.dropbox.core.DbxRequestUtil;')
@@ -356,7 +356,7 @@ class JavaCodeGenerator(CodeGenerator):
         result_reader = mapreader(namespace, route.response_data_type)
         error_reader = mapreader(namespace, route.error_data_type)
         self.generate_doc('Exception thrown by {@link #%s}.' % method_name)
-        with self.block('public static class %s extends DbxApiError' % exc_name):
+        with self.block('public static class %s extends DbxApiException' % exc_name):
             if error_name == 'void':
                 with self.block('public %s()' % exc_name):
                     out('super("Exception in %s");' % route.name)
