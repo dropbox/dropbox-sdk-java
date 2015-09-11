@@ -13,6 +13,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import os
 import argparse
 
+from collections import OrderedDict
+
 from babelapi.generator import CodeGenerator
 from babelapi.data_type import (
     get_underlying_type,
@@ -721,8 +723,8 @@ class JavaCodeGenerator(CodeGenerator):
             # Generate stuff for each field:
             # - for simple fields, a public static final instance;
             # - for complex fields, a bunch of methods.
-            unique_value_types = {}  # Map type name -> value name
-            constructors_made = {}   # Map type name -> constructor_made
+            unique_value_types = OrderedDict()  # Map type name -> value name
+            constructors_made = OrderedDict()   # Map type name -> constructor_made
             for field in data_type.all_fields:
                 if not is_simple_field(field):
                     type_name = maptype(namespace, field.data_type)

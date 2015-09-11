@@ -213,6 +213,7 @@
                 </executions>
             </plugin>
 
+            <!-- BEGIN PRIVATE REPO ONLY -->
             <!-- Generate sources from API specs. -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -247,6 +248,7 @@
                     </execution>
                 </executions>
             </plugin>
+            <!-- END PRIVATE REPO ONLY -->
 
             <!-- Add OSGi metadata to JAR manifest. -->
             <plugin>

@@ -1,0 +1,178 @@
+#! /usr/bin/env python
+from __future__ import absolute_import, division, print_function, unicode_literals
+
+import argparse
+import errno
+import glob
+import os
+import shutil
+import subprocess
+import sys
+
+# The release script will not copy files matching
+# the patterns in this script, in addition to
+# the files excluded by the repo's main .gitignore
+IGNORE_PATTERNS = [
+    '/babel',
+    '/spec',
+    '/.arcconfig',
+    '/run-babel-codegen',
+    '/export-generated',
+    '/generator',
+    '.gitmodules',
+]
+
+cmdline_desc = """\
+Updates a local checkout of the public Java SDK repository on GitHub
+based on the spec in your local copy of the private repository.
+"""
+
+_cmdline_parser = argparse.ArgumentParser(
+    formatter_class=argparse.RawDescriptionHelpFormatter,
+    description=cmdline_desc)
+_cmdline_parser.add_argument(
+    '-v',
+    '--verbose',
+    action='store_true',
+    help='Print debugging statements.',
+)
+_cmdline_parser.add_argument(
+    '--skip-build',
+    action='store_true',
+    help='Skip compiling the SDK after copying files.',
+)
+_cmdline_parser.add_argument(
+    'repo_path',
+    type=str,
+    help='Path to a checkout of the public Java repo.',
+)
+
+def check_repo_is_clean(repo_path):
+    """
+    If repo is not clean then prints an error and exits.
+
+    Args:
+        repo_path (str): Path to a git repository.
+    """
+    status = subprocess.check_output(
+        ['git', 'status', '--porcelain'],
+        cwd=repo_path)
+    if status != "":
+        print('error: The repo (%s) is not clean.' %
+              repo_path, file=sys.stderr)
+        sys.exit(1)
+
+def get_files_in_repo(repo_path, exclude_ignored_files=False):
+    command = ['git', 'ls-files']
+    files = subprocess.check_output(command, cwd=repo_path)
+    files_list = files.split()
+    if exclude_ignored_files:
+        command += ['-i']
+        for to_ignore in IGNORE_PATTERNS:
+            command += ['-x', to_ignore]
+        ignored_files = subprocess.check_output(command, cwd=repo_path).split()
+    else:
+        ignored_files = []
+    return [file for file in files_list if file not in ignored_files]
+
+def modify_pom_file(repo_path):
+    """Delete everything in the pom.xml between the private repo tags"""
+    pom_filename = os.path.join(repo_path, 'pom.xml')
+    lines = []
+
+    with open(pom_filename, 'r+') as pom_file:
+        level = 0
+        modified = False
+        for line in pom_file:
+            if line.strip() == '<!-- BEGIN PRIVATE REPO ONLY -->':
+                level += 1
+                modified = True
+            if level == 0:
+                lines.append(line)
+            if line.strip() == '<!-- END PRIVATE REPO ONLY -->':
+                level -= 1
+                if level < 0:
+                    error('Unmatched \"END PRIVATE REPO ONLY\" tag in pom.xml')
+
+    if level != 0:
+        error('Unmatched \"BEGIN PRIVATE REPO ONLY\" tag in pom.xml')
+    if not modified:
+        print('Warning: pom.xml not modified.', file=sys.stderr)
+
+    with open(pom_filename, 'w+') as pom_file:
+        pom_file.writelines(lines)
+
+def error(msg):
+    print('error: ' + msg, file=sys.stderr)
+    sys.exit(1)
+
+def main():
+    """The entry point for the program."""
+
+    args = _cmdline_parser.parse_args()
+    repo_path = args.repo_path
+    def log(msg):
+        if args.verbose:
+            print(msg)
+
+    # Sanity check repository path.
+    if not os.path.exists(repo_path):
+        error('The repo folder (%s) does not exist.' % repo_path)
+    if not os.path.isdir(repo_path):
+        error('The repo path (%s) must be a folder.' % repo_path)
+
+    # Check that repo path points to the top-level of the target repo.
+    if not os.path.exists(os.path.join(repo_path, '.git')):
+        error('The repo folder (%s) is not the base of a Git repo.'
+              % repo_path)
+
+    # Check that the current repo and the target repo are clean.
+    check_repo_is_clean('.')
+    check_repo_is_clean(repo_path)
+
+    # Remove existing files. This is useful for when we remove files
+    # from the repo.
+    for filename in get_files_in_repo(repo_path):
+        file_path = os.path.join(repo_path, filename)
+        try:
+            log('Removing %s' % filename)
+            os.remove(file_path)
+        except OSError as e:
+            if e.errno != errno.ENOENT:
+                raise
+
+    # Copy files from private repo into public repo
+    for filename in get_files_in_repo('.', exclude_ignored_files=True):
+        target = os.path.join(repo_path, filename)
+        log('Copying %s to %s' % (filename, target))
+        subprocess.check_call(['rsync', '-R', filename, repo_path])
+
+    # Generate source files and copy across to the public repo.
+    log('Regenerating source files')
+    subprocess.check_call(['rm', '-rf', 'target/generated-sources'])
+    subprocess.check_output(['./run-babel-codegen'])
+
+    target_path = os.path.join(repo_path, 'src/com')
+    log('Copying generated sources to ' + target_path)
+    subprocess.check_call(['rsync', '-r',
+                           'target/generated-sources/babel/com/',
+                           target_path])
+
+    # Modify the pom.xml for the public repo
+    log('Modifying pom.xml for the public repo.')
+    modify_pom_file(repo_path)
+
+    if not args.skip_build:
+        # Check that the project compiles
+        example_folder = os.path.join(repo_path, 'examples')
+        log('Compiling the SDK.')
+        subprocess.check_output(['mvn', 'install',], cwd=repo_path)
+        log('Compiling the examples.')
+        subprocess.check_output(['mvn', 'compile'], cwd=example_folder)
+        log('Cleaning up')
+        subprocess.check_output(['mvn', 'clean'], cwd=example_folder)
+        subprocess.check_output(['mvn', 'clean'], cwd=repo_path)
+
+
+if __name__ == '__main__':
+    main()
