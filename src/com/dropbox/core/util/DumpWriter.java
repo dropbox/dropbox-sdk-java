@@ -236,6 +236,7 @@ public abstract class DumpWriter
     public DumpWriter v(boolean v) { return verbatim(Boolean.toString(v)); }
     public DumpWriter v(double v) { return verbatim(Double.toString(v)); }
     public DumpWriter v(/*@Nullable*/Date v) { return verbatim(toStringDate(v)); }
+    public DumpWriter v(/*@Nullable*/Long v) { return verbatim(v == null ? "null" : Long.toString(v)); }
 
     public DumpWriter v(/*@Nullable*/Dumpable v)
     {

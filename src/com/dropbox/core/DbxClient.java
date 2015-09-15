@@ -111,7 +111,7 @@ public final class DbxClient
 
         String host = this.host.api;
         String apiPath = "1/metadata/auto" + path;
-        String[] params = {
+        /*@Nullable*/String[] params = {
             "list", "false",
             "include_media_info", includeMediaInfo ? "true" : null,
         };
@@ -217,7 +217,7 @@ public final class DbxClient
         String host = this.host.api;
         String apiPath = "1/metadata/auto" + path;
 
-        String[] params = {
+        /*@Nullable*/String[] params = {
             "list", "true",
             "file_limit", "25000",
             "include_media_info", includeMediaInfo ? "true" : null,

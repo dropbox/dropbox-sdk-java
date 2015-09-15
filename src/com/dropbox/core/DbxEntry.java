@@ -252,7 +252,8 @@ public abstract class DbxEntry extends Dumpable implements Serializable
          * @param videoInfo {@link #videoInfo}
          */
         public File(String path, String iconName, boolean mightHaveThumbnail, long numBytes, String humanSize,
-                    Date lastModified, Date clientMtime, String rev, PhotoInfo photoInfo, VideoInfo videoInfo)
+                    Date lastModified, Date clientMtime, String rev,
+                    /*@Nullable*/PhotoInfo photoInfo, /*@Nullable*/VideoInfo videoInfo)
         {
             super(path, iconName, mightHaveThumbnail);
             this.numBytes = numBytes;
@@ -281,11 +282,12 @@ public abstract class DbxEntry extends Dumpable implements Serializable
             w.f("lastModified").v(lastModified);
             w.f("clientMtime").v(clientMtime);
             w.f("rev").v(rev);
-            nullablePendingField(w, "photoInfo", photoInfo, PhotoInfo.PENDING);
-            nullablePendingField(w, "videoInfo", videoInfo, VideoInfo.PENDING);
+            File.<PhotoInfo>nullablePendingField(w, "photoInfo", photoInfo, PhotoInfo.PENDING);
+            File.<VideoInfo>nullablePendingField(w, "videoInfo", videoInfo, VideoInfo.PENDING);
         }
 
-        private static <T extends Dumpable> void nullablePendingField(DumpWriter w, String fieldName, T value, T pendingValue)
+        private static <T extends Dumpable> void nullablePendingField(
+            DumpWriter w, String fieldName, /*@Nullable*/T value, T pendingValue)
         {
             if (value == null) return;
 
@@ -422,10 +424,9 @@ public abstract class DbxEntry extends Dumpable implements Serializable
             }
 
             @Override
-            public boolean equals(Object o)
+            public boolean equals(/*@Nullable*/Object o)
             {
-                if (getClass() != o.getClass()) return false;
-                return equals((PhotoInfo)o);
+                return o != null && getClass().equals(o.getClass()) && equals((PhotoInfo) o);
             }
 
             public boolean equals(PhotoInfo o)
@@ -516,10 +517,9 @@ public abstract class DbxEntry extends Dumpable implements Serializable
             }
 
             @Override
-            public boolean equals(Object o)
+            public boolean equals(/*@Nullable*/Object o)
             {
-                if (getClass() != o.getClass()) return false;
-                return equals((VideoInfo)o);
+                return o != null && getClass().equals(o.getClass()) && equals((VideoInfo) o);
             }
 
             public boolean equals(VideoInfo o)
@@ -556,10 +556,10 @@ public abstract class DbxEntry extends Dumpable implements Serializable
                 this.longitude = longitude;
             }
 
-            public static JsonReader<Location> Reader = new JsonReader<Location>()
+            public static JsonReader</*@Nullable*/Location> Reader = new JsonReader</*@Nullable*/Location>()
             {
                 @Override
-                public Location read(JsonParser parser)
+                public /*@Nullable*/Location read(JsonParser parser)
                     throws IOException, JsonReadException
                 {
                     Location location = null;
@@ -585,10 +585,9 @@ public abstract class DbxEntry extends Dumpable implements Serializable
             }
 
             @Override
-            public boolean equals(Object o)
+            public boolean equals(/*@Nullable*/Object o)
             {
-                if (getClass() != o.getClass()) return false;
-                return equals((Location)o);
+                return o != null && getClass().equals(o.getClass()) && equals((Location) o);
             }
 
             public boolean equals(Location o)
