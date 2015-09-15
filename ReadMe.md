@@ -22,7 +22,7 @@ If you're using Maven, then edit your project's "pom.xml" and add this to the `<
 
 If you aren't using Maven, here are the JARs you need:
 - [Dropbox Core SDK 1.7.7](https://oss.sonatype.org/content/repositories/releases/com/dropbox/core/dropbox-core-sdk/1.7.7/dropbox-core-sdk-1.7.7.jar)
-- [Jackson Core 2.2.4](https://oss.sonatype.org/content/repositories/releases/com/fasterxml/jackson/core/jackson-core/2.2.4/jackson-core-2.2.4.jar) (JSON parser)
+- [Jackson Core 2.6.1](https://oss.sonatype.org/content/repositories/releases/com/fasterxml/jackson/core/jackson-core/2.6.1/jackson-core-2.6.1.jar) (JSON parser)
 
 ## Get a Dropbox API key
 
