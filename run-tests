@@ -7,7 +7,7 @@ set -euo pipefail
 if [ $# -eq 0 ]; then
     cat <<END
 
-Usage: $0 <path-to-auth-file> [ <test-selector> ]
+Usage: $0 <path-to-auth-file> [ <test-selector> ] [ --okhttp ]
 
 <path-to-auth-file>: The path to a ".auth" file.  You can generate a
     ".auth" file by running the "authorize" example program (see
@@ -24,14 +24,23 @@ Usage: $0 <path-to-auth-file> [ <test-selector> ]
     For the full specification, see:
       http://maven.apache.org/surefire/maven-surefire-plugin/examples/single-test.html
 
+--okhttp [optional]: When making HTTP requests, use the OkHttp library instead
+    of the Java standard library
+
 END
     exit
 elif [ $# -eq 1 ]; then
     args=("-DdbxAuthInfoFile=$1")
 elif [ $# -eq 2 ]; then
-    args=("-DdbxAuthInfoFile=$1" "-Dtest=$2")
+    if [ "$2" == "--okhttp" ]; then
+        args=("-DdbxAuthInfoFile=$1" "-DokHttp=true")
+    else
+        args=("-DdbxAuthInfoFile=$1" "-Dtest=$2")
+    fi
+elif [ $# -eq 3 ]; then
+    args=("-DdbxAuthInfoFile=$1" "-Dtest=$2" "-DokHttp=true")
 else
-    echo 1>&2 "Expecting at most 2 arguments, got $#."
+    echo 1>&2 "Expecting at most 3 arguments, got $#."
     echo 1>&2 "Run with no arguments for help."
     exit 1
 fi

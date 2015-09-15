@@ -1,0 +1,8 @@
+import checkers.nullness.quals.Nullable;
+
+package com.squareup.okhttp;
+
+class RequestBody
+{
+    @Nullable MediaType contentType();
+}

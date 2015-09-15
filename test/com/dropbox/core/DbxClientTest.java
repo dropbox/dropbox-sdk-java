@@ -1,5 +1,6 @@
 package com.dropbox.core;
 
+import com.dropbox.core.http.OkHttpRequestor;
 import com.dropbox.core.json.JsonReader;
 import com.dropbox.core.util.Dumpable;
 import com.dropbox.core.util.IOUtil;
@@ -50,7 +51,17 @@ public class DbxClientTest
             throw new RuntimeException("Error reading auth info from \"" + authInfoFile + "\": " + ex.getMessage());
         }
 
-        DbxRequestConfig requestConfig = new DbxRequestConfig("sdk-test", null);
+        DbxRequestConfig requestConfig;
+        String okHttp = System.getProperty("okHttp");
+        if (okHttp == null || okHttp.equals("false")) {
+            requestConfig = new DbxRequestConfig("sdk-test", null);
+        } else if (okHttp.equals("true")) {
+            requestConfig = new DbxRequestConfig("sdk-test", null, OkHttpRequestor.Instance);
+        } else {
+            throw new RuntimeException("Invalid value for System property \"okHttp\"." +
+                    " Expecting \"true\" or \"false\", got " + jq(okHttp) + ".");
+        }
+
         DbxClient client = new DbxClient(requestConfig, authInfo.accessToken, authInfo.host);
 
         String timestamp = new SimpleDateFormat("yyyy-MM-dd HH.mm.ss").format(new Date());

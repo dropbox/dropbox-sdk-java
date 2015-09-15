@@ -18,6 +18,11 @@ public abstract class HttpRequestor
     public abstract Uploader startPut(String url, Iterable<Header> headers) throws IOException;
 
     /**
+     * The default socket connect/read/write timeout.
+     */
+    public static final int DefaultTimeoutMillis = 20 * 1000;
+
+    /**
      * A simple structure holding an HTTP header, which is key/value pair.
      * Used with {@link HttpRequestor}.
      */

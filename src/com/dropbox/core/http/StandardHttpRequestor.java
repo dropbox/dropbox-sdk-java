@@ -42,20 +42,6 @@ public class StandardHttpRequestor extends HttpRequestor
     }
 
     /**
-     * We pass this value to {@link HttpsURLConnection#setConnectTimeout}.  You can
-     * change this setting by creating a subclass and overriding
-     * {@link #configureConnection}.
-     */
-    public static final int DefaultConnectTimeoutMillis = 35 * 1000;
-
-    /**
-     * We pass this value to {@link HttpsURLConnection#setReadTimeout}.  You can
-     * change this setting by creating a subclass and overriding
-     * {@link #configureConnection}.
-     */
-    public static final int DefaultReadTimeoutMillis = 35 * 1000;
-
-    /**
      * A thread-safe instance of {@code StandardHttpRequestor} that connects directly
      * (as opposed to using a proxy).
      */
@@ -164,8 +150,8 @@ public class StandardHttpRequestor extends HttpRequestor
         HttpsURLConnection conn = (HttpsURLConnection) urlObject.openConnection(this.proxy);
 
         SSLConfig.apply(conn);
-        conn.setConnectTimeout(DefaultConnectTimeoutMillis);
-        conn.setReadTimeout(DefaultReadTimeoutMillis);
+        conn.setConnectTimeout(DefaultTimeoutMillis);
+        conn.setReadTimeout(DefaultTimeoutMillis);
         conn.setUseCaches(false);
         conn.setAllowUserInteraction(false);
 

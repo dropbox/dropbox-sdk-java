@@ -3,6 +3,7 @@
   '|' separator.
 - Add support for /delta/latest_cursor and /longpoll_delta.
 - Add support for include_media_info=true on /metadata and /delta.
+- Add support for using OkHttp as the underlying HTTP client.
 
 ---------------------------------------------
 1.7.7 (2014-09-02)
