@@ -1,3 +1,6 @@
+---------------------------------------------
+1.8 (2015-19-14)
+
 - Include SDK version in HTTP requests (via the User-Agent header).
 - Fix 'urlState' handling in DbxWebAuth.  Was mistakenly include the
   '|' separator.
