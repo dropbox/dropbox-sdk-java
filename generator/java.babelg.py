@@ -504,9 +504,29 @@ class JavaCodeGenerator(CodeGenerator):
         out = self.emit
         method_name = camelcase(route.name)
         exc_name = classname(route.name + '_exception')
-        self.generate_doc('The builder object for {@link #%s}' % method_name)
         builder_name = classname(method_name + 'Builder')
-        out('public final class %s' % builder_name)
+        style = route.attrs.get('style', 'rpc')
+        if style == 'upload':
+            self.generate_doc(
+                'The {@link com.dropbox.core.v2.DbxUploadStyleBuilder} '
+                'returned by {@link #%s}.' % builder_name)
+            result_name = maptype(namespace, route.response_data_type)
+            error_name = maptype(namespace, route.error_data_type)
+            resname = 'Object' if result_name == 'void' else result_name
+            errname = 'Object' if error_name == 'void' else error_name
+            out('public final class %s extends DbxUploadStyleBuilder<%s,%s,%s>' %
+                (builder_name, resname, errname, exc_name))
+        elif style == 'download':
+            self.generate_doc(
+                'The {@link com.dropbox.core.v2.DbxDownloadStyleBuilder} '
+                'returned by {@link #%s}.' % builder_name)
+            result_name = maptype(namespace, route.response_data_type)
+            resname = 'Object' if result_name == 'void' else result_name
+            out('public final class %s extends DbxDownloadStyleBuilder<%s>' %
+                (builder_name, resname))
+        else:
+            self.generate_doc('The builder object returned by {@link #%s}' % builder_name)
+            out('public final class %s' % builder_name)
         with self.block():
             # Generate a field for every argument.
             all_args = [
@@ -538,8 +558,8 @@ class JavaCodeGenerator(CodeGenerator):
                 with self.block():
                     out('this.%s = %s;' % (arg_name, arg_name))
                     out('return this;')
-            # Create a run() method to use the builder.
-            out('public %s run() throws %s, DbxException' % (rtype, exc_name))
+            # Create a start() method to use the builder.
+            out('public %s start() throws %s, DbxException' % (rtype, exc_name))
             with self.block():
                 packed_class = maptype(namespace, route.request_data_type)
                 prefix = '%s.this.' % outer
@@ -562,22 +582,24 @@ class JavaCodeGenerator(CodeGenerator):
             if style == 'upload':
                 rtype = classname(route.name + '_uploader')
                 ret = 'return '
+                self.generate_builder(namespace, route, rtype, ret, outer)
             elif style == 'download':
                 rtype = 'com.dropbox.core.DbxDownloader<%s>' % result_name
                 ret = 'return '
+                self.generate_builder(namespace, route, rtype, ret, outer)
             else:
                 rtype = result_name
                 ret = '' if rtype == 'void' else 'return '
-            # Generate a shortcut with required args.
-            self.generate_unpacked_method(namespace, route, rtype, ret, required_only=True)
-            # Generate a builder if there are two or more optional args.
-            # If there's only 1 optional argument then we might as well
-            # just offer two overloaded methods.
-            n_optional = len(route.request_data_type.all_optional_fields)
-            if n_optional == 1:
-                self.generate_unpacked_method(namespace, route, rtype, ret)
-            elif n_optional > 1:
-                self.generate_builder(namespace, route, rtype, ret, outer)
+                # Generate a shortcut with required args.
+                self.generate_unpacked_method(namespace, route, rtype, ret, required_only=True)
+                # Generate a builder if there are two or more optional args.
+                # If there's only 1 optional argument then we might as well
+                # just offer two overloaded methods.
+                n_optional = len(route.request_data_type.all_optional_fields)
+                if n_optional == 1:
+                    self.generate_unpacked_method(namespace, route, rtype, ret)
+                elif n_optional > 1:
+                    self.generate_builder(namespace, route, rtype, ret, outer)
 
     def generate_field_assignment(self, namespace, field):
         out = self.emit

@@ -5,7 +5,6 @@ import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.DbxWebAuth;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.util.IOUtil;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.DbxPathV2;
 import com.dropbox.core.v2.Files;
@@ -84,11 +83,13 @@ public class Main
 
         // Make the API call to upload the file.
         Files.FileMetadata metadata;
-        InputStream in = new FileInputStream(localPath);
         try {
-            Files.UploadUploader uploader = dbxClient.files.upload(dropboxPath);
-            IOUtil.copyStreamToStream(in, uploader.getBody());
-            metadata = uploader.finish();
+            InputStream in = new FileInputStream(localPath);
+            try {
+                metadata = dbxClient.files.uploadBuilder(dropboxPath).run(in);
+            } finally {
+                in.close();
+            }
         }
         catch (Files.UploadException ex) {
             System.out.println("Error uploading to Dropbox: " + ex.getMessage());
@@ -101,9 +102,6 @@ public class Main
         catch (IOException ex) {
             System.out.println("Error reading from file \"" + localPath + "\": " + ex.getMessage());
             return 1;
-        }
-        finally {
-            IOUtil.closeInput(in);
         }
 
         System.out.print(metadata.toStringMultiline());
