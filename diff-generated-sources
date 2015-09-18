@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+# Exit immediately on any error.
+set -euo pipefail
+
+# Locate the script file.  Cross symlinks if necessary.
+loc="$0"
+while [ -h "$loc" ]; do
+    ls=`ls -ld "$loc"`
+    link=`expr "$ls" : '.*-> \(.*\)$'`
+    if expr "$link" : '/.*' > /dev/null; then
+        loc="$link"  # Absolute link
+    else
+        loc="`dirname "$loc"`/$link"  # Relative link
+    fi
+done
+
+# Move to the location of the script
+base_dir=`dirname "$loc"`
+cd $base_dir
+
+# Save the current branch name.
+branch=`git rev-parse --abbrev-ref HEAD`
+
+# Checkout master, update the suprepos and generate source files.
+git checkout master
+git submodule sync
+git submodule update --init
+rm -rf target/generated-sources
+./run-babel-codegen
+
+# Save these source files ia temp directory.
+temp_dir="$(mktemp -d -t diff-generated-sources.XXXXXX)"  # Weird usage, but works on Linux and Mac OS
+function finish() {
+    [[ ! -e "$temp_dir" ]] || rm -r "$temp_dir"
+}
+trap finish EXIT
+cp -r target/generated-sources/ $temp_dir
+
+# Switch back to the original branch, update the suprepos and generate source files.
+git checkout $branch
+git submodule sync
+git submodule update --init
+rm -rf target/generated-sources
+./run-babel-codegen
+
+# Create the diff and open the page to submit to Phabricator.
+# The diff command uses its return command to signal whether there was any
+# difference, so we disable exiting on non-zero return codes for this command.
+set +e
+raw_diff=`diff -uNr ${temp_dir}/babel/ target/generated-sources/babel/`
+diff_status=$?
+set -e
+if [ $diff_status -eq 1 ]; then
+	echo "$raw_diff" | grep -v "diff -uNr" | pbcopy
+	echo "Diff copied to the clipboard."
+	open "https://tails.corp.dropbox.com/differential/diff/create/"
+elif [ $diff_status -eq 0 ]; then
+	>&2 echo "No difference found!"
+else
+	exit $diff_status
+fi
