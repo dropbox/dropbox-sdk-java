@@ -1,3 +1,5 @@
+- Fix bug in version validation code that caused crash at startup.
+
 ---------------------------------------------
 1.8 (2015-19-14)
 

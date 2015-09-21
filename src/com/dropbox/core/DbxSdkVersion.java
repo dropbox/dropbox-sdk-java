@@ -56,7 +56,7 @@ public class DbxSdkVersion
         try {
             String version = loadLineFromResource();
 
-            Pattern versionRegex = Pattern.compile("[0-9]+(?:\\.[0-9]+)*(?:-[-_A-Za-z0-9]+)");
+            Pattern versionRegex = Pattern.compile("[0-9]+(?:\\.[0-9]+)*(?:-[-_A-Za-z0-9]+)?");
             if (!versionRegex.matcher(version).matches()) {
                 throw new LoadException("Text doesn't follow expected pattern: " + StringUtil.jq(version));
             }
