@@ -1,6 +1,10 @@
 """Generate Java classes from Babel specs.
 
 See https://github.com/dropbox/babelapi
+
+Authors:
+    Guido van Rossum (guido@dropbox.com)
+    Ian Orton (ianorton@dropbox.com)
 """
 # TODO: Support {".tag": <tag>, ".tag.<tag>" : "<subtag>", ...}.
 # TODO: Don't generate assert statements, throw something.
