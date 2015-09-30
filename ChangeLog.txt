@@ -1,3 +1,6 @@
+- Add support for /account/info fields: email, email_verified,
+  name_details.
+
 ---------------------------------------------
 1.8.1 (2015-09-21)
 
