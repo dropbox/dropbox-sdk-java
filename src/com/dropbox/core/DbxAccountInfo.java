@@ -18,14 +18,22 @@ public class DbxAccountInfo extends Dumpable
     public final String country;
     public final String referralLink;
     public final Quota quota;
+    public final String email;
+    public final NameDetails nameDetails;
+    public final Boolean emailVerified;
 
-    public DbxAccountInfo(long userId, String displayName, String country, String referralLink, Quota quota)
+
+    public DbxAccountInfo(long userId, String displayName, String country, String referralLink, Quota quota, String email,
+                          NameDetails nameDetails, Boolean emailVerified)
     {
         this.userId = userId;
         this.displayName = displayName;
         this.country = country;
         this.referralLink = referralLink;
         this.quota = quota;
+        this.email = email;
+        this.nameDetails = nameDetails;
+        this.emailVerified = emailVerified;
     }
 
     @Override
@@ -36,6 +44,9 @@ public class DbxAccountInfo extends Dumpable
         out.f("country").v(country);
         out.f("referralLink").v(referralLink);
         out.f("quota").v(quota);
+        out.f("nameDetails").v(nameDetails);
+        out.f("email").v(email);
+        out.f("emailVerified").v(emailVerified);
     }
 
     public static final class Quota extends Dumpable
@@ -118,6 +129,86 @@ public class DbxAccountInfo extends Dumpable
 
     }
 
+    public static final class NameDetails extends Dumpable
+    {
+        public final String familiarName;
+        public final String givenName;
+        public final String surname;
+
+        public NameDetails(String familiarName, String givenName, String surname)
+        {
+            this.familiarName = familiarName;
+            this.givenName = givenName;
+            this.surname = surname;
+        }
+
+        @Override
+        protected void dumpFields(DumpWriter out)
+        {
+            out.f("familiarName").v(familiarName);
+            out.f("givenName").v(givenName);
+            out.f("surname").v(surname);
+        }
+
+        // ------------------------------------------------------
+        // JSON parsing
+
+        public static final JsonReader<NameDetails> Reader = new JsonReader<NameDetails>()
+        {
+            public final NameDetails read(JsonParser parser)
+                    throws IOException, JsonReadException
+            {
+                JsonLocation top = JsonReader.expectObjectStart(parser);
+
+                String familiarName = null;
+                String givenName = null;
+                String surname = null;
+
+                while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String fieldName = parser.getCurrentName();
+                    parser.nextToken();
+
+                    int fi = FM.get(fieldName);
+                    try {
+                        switch (fi) {
+                            case -1: JsonReader.skipValue(parser); break;
+                            case FM_familiar_name: familiarName = JsonReader.StringReader.readField(parser, fieldName, familiarName); break;
+                            case FM_given_name: givenName = JsonReader.StringReader.readField(parser, fieldName, givenName); break;
+                            case FM_surname: surname = JsonReader.StringReader.readField(parser, fieldName, surname); break;
+                            default:
+                                throw new AssertionError("bad index: " + fi + ", field = \"" + fieldName + "\"");
+                        }
+                    }
+                    catch (JsonReadException ex) {
+                        throw ex.addFieldContext(fieldName);
+                    }
+                }
+
+                JsonReader.expectObjectEnd(parser);
+
+                if (familiarName == null) throw new JsonReadException("missing field \"familiarName\"", top);
+                if (surname == null) throw new JsonReadException("missing field \"surname\"", top);
+                if (givenName == null) throw new JsonReadException("missing field \"givenName\"", top);
+
+                return new NameDetails(familiarName, givenName, surname);
+            }
+        };
+
+        private static final int FM_familiar_name = 0;
+        private static final int FM_given_name = 1;
+        private static final int FM_surname = 2;
+        private static final JsonReader.FieldMapping FM;
+
+        static {
+            JsonReader.FieldMapping.Builder b = new JsonReader.FieldMapping.Builder();
+            b.add("familiar_name", FM_familiar_name);
+            b.add("given_name", FM_given_name);
+            b.add("surname", FM_surname);
+            FM = b.build();
+        }
+
+    }
+
     // ------------------------------------------------------
     // JSON parsing
 
@@ -133,6 +224,9 @@ public class DbxAccountInfo extends Dumpable
             String country = null;
             String referral_link = null;
             Quota quota_info = null;
+            String email = null;
+            NameDetails nameDetails = null;
+            Boolean emailVerified = null;
 
             while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
                 String fieldName = parser.getCurrentName();
@@ -147,6 +241,9 @@ public class DbxAccountInfo extends Dumpable
                         case FM_country: country = JsonReader.StringReader.readField(parser, fieldName, country); break;
                         case FM_referral_link: referral_link = JsonReader.StringReader.readField(parser, fieldName, referral_link); break;
                         case FM_quota_info: quota_info = Quota.Reader.readField(parser, fieldName, quota_info); break;
+                        case FM_name_details: nameDetails = NameDetails.Reader.readField(parser, fieldName, nameDetails); break;
+                        case FM_email: email = JsonReader.StringReader.readField(parser, fieldName, email); break;
+                        case FM_email_verified: emailVerified = JsonReader.BooleanReader.readField(parser, fieldName, emailVerified); break;
                         default:
                             throw new AssertionError("bad index: " + fi + ", field = \"" + fieldName + "\"");
                     }
@@ -163,8 +260,11 @@ public class DbxAccountInfo extends Dumpable
             if (country == null) throw new JsonReadException("missing field \"country\"", top);
             if (referral_link == null) throw new JsonReadException("missing field \"referral_link\"", top);
             if (quota_info == null) throw new JsonReadException("missing field \"quota_info\"", top);
+            if (email == null) throw new JsonReadException("missing field \"email\"", top);
+            if (nameDetails == null) throw new JsonReadException("missing field \"nameDetails\"", top);
+            if (emailVerified == null) throw new JsonReadException("missing field \"emailVerified\"", top);
 
-            return new DbxAccountInfo(uid, display_name, country, referral_link, quota_info);
+            return new DbxAccountInfo(uid, display_name, country, referral_link, quota_info, email, nameDetails, emailVerified);
         }
     };
 
@@ -173,6 +273,10 @@ public class DbxAccountInfo extends Dumpable
     private static final int FM_country = 2;
     private static final int FM_referral_link = 3;
     private static final int FM_quota_info = 4;
+    private static final int FM_name_details = 5;
+    private static final int FM_email = 6;
+    private static final int FM_email_verified = 7;
+
     private static final JsonReader.FieldMapping FM;
 
     static {
@@ -182,6 +286,10 @@ public class DbxAccountInfo extends Dumpable
         b.add("country", FM_country);
         b.add("referral_link", FM_referral_link);
         b.add("quota_info", FM_quota_info);
+        b.add("name_details", FM_name_details);
+        b.add("email", FM_email);
+        b.add("email_verified", FM_email_verified);
+
         FM = b.build();
     }
 }
