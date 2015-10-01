@@ -20,11 +20,11 @@ public class DbxAccountInfo extends Dumpable
     public final Quota quota;
     public final String email;
     public final NameDetails nameDetails;
-    public final Boolean emailVerified;
+    public final boolean emailVerified;
 
 
     public DbxAccountInfo(long userId, String displayName, String country, String referralLink, Quota quota, String email,
-                          NameDetails nameDetails, Boolean emailVerified)
+                          NameDetails nameDetails, boolean emailVerified)
     {
         this.userId = userId;
         this.displayName = displayName;
