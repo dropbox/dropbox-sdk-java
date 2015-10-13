@@ -1,0 +1,7 @@
+com.dropbox.core
+com.dropbox.core.android
+com.dropbox.core.http
+com.dropbox.core.json
+com.dropbox.core.util
+com.dropbox.core.v1
+com.dropbox.core.v2
