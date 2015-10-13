@@ -309,9 +309,9 @@ class JavaCodeGenerator(CodeGenerator):
                     out('')
                     self.generate_data_type_class(namespace, data_type)
                 for route in namespace.routes:
-                    self.generate_route_stuff(namespace, route)
+                    self.generate_route_stuff(namespace, route, class_name)
 
-    def generate_route_stuff(self, namespace, route):
+    def generate_packed_method(self, namespace, route):
         out = self.emit
         arg_name = maptype(namespace, route.request_data_type)
         result_name = maptype(namespace, route.response_data_type)
@@ -320,7 +320,6 @@ class JavaCodeGenerator(CodeGenerator):
         exc_name = classname(route.name + '_exception')
         result_reader = mapreader(namespace, route.response_data_type)
         error_reader = mapreader(namespace, route.error_data_type)
-        out('')
         self.generate_doc('Exception thrown by {@link #%s}.' % method_name)
         with self.block('public static class %s extends DbxApiError' % exc_name):
             if error_name == 'void':
@@ -376,7 +375,7 @@ class JavaCodeGenerator(CodeGenerator):
             if arg_name == 'void':
                 out('public %s %s()' % (uploader, method_name))
             else:
-                out('public %s %s(%s arg)' % (uploader, method_name, arg_name))
+                out('private %s %s(%s arg)' % (uploader, method_name, arg_name))
             out('        throws DbxException')
         elif style == 'download':
             self.generate_doc(route.doc)
@@ -384,7 +383,7 @@ class JavaCodeGenerator(CodeGenerator):
                 out('public com.dropbox.core.DbxDownloader<%s>'
                     ' %s()' % (result_name, method_name))
             else:
-                out('public com.dropbox.core.DbxDownloader<%s>'
+                out('private com.dropbox.core.DbxDownloader<%s>'
                     ' %s(%s arg)' %
                     (result_name, method_name, arg_name))
             out('        throws %s, DbxException' % exc_name)
@@ -393,7 +392,7 @@ class JavaCodeGenerator(CodeGenerator):
             if arg_name == 'void':
                 out('public %s %s()' % (result_name, method_name))
             else:
-                out('public %s %s(%s arg)' %
+                out('private %s %s(%s arg)' %
                     (result_name, method_name, arg_name))
             out('        throws %s, DbxException' % exc_name)
         with self.block():
@@ -433,11 +432,97 @@ class JavaCodeGenerator(CodeGenerator):
                 # TODO: The right way to do this is not to
                 # emit the try{} wrapper if it's not rpc style.
                 out('catch (DbxException ex) { throw ex; } // Dummy')
+
+
+    # Construct the relevant argument object, set the fields and call
+    # the previously generated method.
+    def generate_call_to_packed_method(self, fields, arg_name, method_name, ret):
+        out = self.emit
+        out('%s arg = new %s();' % (arg_name, arg_name))
+        for field in fields:
+            fn = camelcase(field.name)
+            out('arg.%s = %s;' % (fn, fn))
+        out('%s%s(arg);' % (ret, method_name))
+
+
+    def generate_unpacked_method(self, namespace, route, rtype, ret, required_only=False):
+        out = self.emit
+        arg_name = maptype(namespace, route.request_data_type)
+        method_name = camelcase(route.name)
+        exc_name = classname(route.name + '_exception')
+        if required_only:
+            fields = route.request_data_type.all_required_fields
+        else:
+            fields = route.request_data_type.all_fields
+        self.generate_doc(route.doc)
+        args = ['%s %s' % (maptype(namespace, field.data_type), camelcase(field.name))
+                for field in fields]
+        out('public %s %s(%s)' % (rtype, method_name, ', '.join(args)))
+        out('      throws %s, DbxException' % exc_name)
+        with self.block():
+            self.generate_call_to_packed_method(fields, arg_name, method_name, ret)
+
+    def generate_builder(self, namespace, route, rtype, ret, outer):
+        out = self.emit
+        method_name = camelcase(route.name)
+        exc_name = classname(route.name + '_exception')
+        self.generate_doc('The builder object for {@link #%s}' % method_name)
+        builder_name = classname(method_name + 'Builder')
+        out('public final class %s' % builder_name)
+        with self.block():
+            # Generate a field for every argument.
+            all_args = [
+                '%s %s' % (maptype(namespace, field.data_type), camelcase(field.name))
+                for field in route.request_data_type.all_fields
+            ]
+            for field in all_args:
+                out('private %s;' % field)
+            # Take every required argument in the constructor.
+            req_fields = [
+                '%s %s' % (maptype(namespace, field.data_type), camelcase(field.name))
+                for field in route.request_data_type.all_required_fields
+            ]
+            # The constructor is private and called by a helper method.
+            out('private %s(%s)' % (builder_name, ', '.join(req_fields)))
+            with self.block():
+                for field in route.request_data_type.all_required_fields:
+                    fn = camelcase(field.name)
+                    out('this.%s = %s;' % (fn, fn))
+            # Create setter methods for each optional argument.
+            optionals = [(maptype(namespace, field.data_type), camelcase(field.name))
+                         for field in route.request_data_type.all_optional_fields]
+            for arg_type, arg_name in optionals:
+                setter_name = camelcase(arg_name)
+                out('public %s %s(%s %s)' % (builder_name, setter_name,
+                                             arg_type, arg_name))
+                with self.block():
+                    out('this.%s = %s;' % (arg_name, arg_name))
+                    out('return this;')
+            # Create a run() method to use the builder.
+            out('public %s run() throws %s, DbxException' % (rtype, exc_name))
+            with self.block():
+                packed_class = maptype(namespace, route.request_data_type)
+                prefix = '%s.this.' % outer
+                self.generate_call_to_packed_method(
+                    route.request_data_type.all_fields,
+                    packed_class, prefix + method_name, ret)
+        # Generate the helper method used to construct the builder
+        self.generate_doc(route.doc)
+        builder_fn_name = method_name + 'Builder'
+        out('public %s %s(%s)' % (builder_name, builder_fn_name, ', '.join(req_fields)))
+        with self.block():
+            args = [camelcase(field.name) for field
+                    in route.request_data_type.all_required_fields]
+            out('return new %s(%s);' % (builder_name, ", ".join(args)))
+
+    def generate_route_stuff(self, namespace, route, outer):
+        self.emit('')
+        self.generate_packed_method(namespace, route)
         if is_struct_type(route.request_data_type):
-            # Generate a shortcut with unpacked args.
-            self.generate_doc(route.doc)
+            result_name = maptype(namespace, route.response_data_type)
+            style = route.attrs.get('style', 'rpc')
             if style == 'upload':
-                rtype = uploader
+                rtype = classname(route.name + '_uploader')
                 ret = 'return '
             elif style == 'download':
                 rtype = 'com.dropbox.core.DbxDownloader<%s>' % result_name
@@ -445,16 +530,16 @@ class JavaCodeGenerator(CodeGenerator):
             else:
                 rtype = result_name
                 ret = '' if rtype == 'void' else 'return '
-            args = ['%s %s' % (maptype(namespace, field.data_type), camelcase(field.name))
-                    for field in route.request_data_type.all_fields]
-            out('public %s %s(%s)' % (rtype, method_name, ', '.join(args)))
-            out('      throws %s, DbxException' % exc_name)
-            with self.block():
-                out('%s arg = new %s();' % (arg_name, arg_name))
-                for field in route.request_data_type.all_fields:
-                    fn = camelcase(field.name)
-                    out('arg.%s = %s;' % (fn, fn))
-                out('%s%s(arg);' % (ret, method_name))
+            # Generate a shortcut with required args.
+            self.generate_unpacked_method(namespace, route, rtype, ret, required_only=True)
+            # Generate a builder if there are two or more optional args.
+            # If there's only 1 optional argument then we might as well
+            # just offer two overloaded methods.
+            n_optional = len(route.request_data_type.all_optional_fields)
+            if n_optional == 1:
+                self.generate_unpacked_method(namespace, route, rtype, ret)
+            elif n_optional > 1:
+                self.generate_builder(namespace, route, rtype, ret, outer)
 
     def generate_data_type_class(self, namespace, data_type):
         """Generate a class definition for a datatype (a struct or a union)."""
