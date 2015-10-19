@@ -1,3 +1,6 @@
+---------------------------------------------
+1.8.2 (2015-10-19)
+
 - Fix bug parsing "photo_info" in file metadata.
 - Add support for /account/info fields: email, email_verified,
   name_details.
