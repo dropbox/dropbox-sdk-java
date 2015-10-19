@@ -570,7 +570,7 @@ public class DbxClientTest
                 DbxEntry.File md = client.getThumbnail(size, format, orig, null, out);
                 byte[] data = out.toByteArray();
 
-                assertEquals(origMD, md);
+                assertEquals(removeMediaInfo(origMD), removeMediaInfo(md));
 
                 // We're getting bigger and bigger thumbnails, so they should have more bytes
                 // than the previous ones.
@@ -585,6 +585,12 @@ public class DbxClientTest
                     "expected = " + expectedW + "x" + expectedH + ", got = " + w + "x" + h);
             }
         }
+    }
+
+    private static DbxEntry.File removeMediaInfo(DbxEntry.File e)
+    {
+        return new DbxEntry.File(e.path, e.iconName, e.mightHaveThumbnail, e.numBytes, e.humanSize,
+                                 e.lastModified, e.clientMtime, e.rev);
     }
 
     private static ImageReader getImageReaderForFormat(DbxThumbnailFormat format)
