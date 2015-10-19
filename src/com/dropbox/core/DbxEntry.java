@@ -404,7 +404,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
                         if (fieldName.equals("lat_long")) {
                             location = Location.Reader.read(parser);
                         } else if (fieldName.equals("time_taken")) {
-                            time_taken = JsonDateReader.Dropbox.readOptional(parser); break;
+                            time_taken = JsonDateReader.Dropbox.readOptional(parser);
                         } else {
                             JsonReader.skipValue(parser);
                         }
