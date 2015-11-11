@@ -1,6 +1,6 @@
 # Dropbox Core SDK for Java 6+
 
-A Java library to access [Dropbox's HTTP-based Core API](https://www.dropbox.com/developers/core/docs).
+A Java library to access [Dropbox's HTTP-based Core API v2](https://www.dropbox.com/developers/documentation/http#documentation).  This SDK also supports the older [Core API v1](https://www.dropbox.com/developers-v1/core/docs), but that support will be removed at some point.
 
 License: [MIT](License.txt)
 
