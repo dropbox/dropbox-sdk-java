@@ -8,6 +8,7 @@ import java.nio.CharBuffer;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
+import java.nio.charset.CharsetEncoder;
 
 public class StringUtil
 {
@@ -16,11 +17,19 @@ public class StringUtil
     private static final char[] HexDigits = {'0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f',};
     public static char hexDigit(int i) { return HexDigits[i]; }
 
-    public static String utf8ToString(byte[] utf8data)
+    public static String utf8ToString(byte[] utf8Data)
         throws CharacterCodingException
     {
+        return utf8ToString(utf8Data, 0, utf8Data.length);
+    }
+
+    public static String utf8ToString(byte[] utf8Data, int offset, int length)
+        throws CharacterCodingException
+    {
+        // NOTE: Using the String(..., UTF8) constructor would be wrong.  That method will
+        // ignore UTF-8 errors in the input.
         CharsetDecoder decoder = UTF8.newDecoder();
-        CharBuffer result = decoder.decode(ByteBuffer.wrap(utf8data));
+        CharBuffer result = decoder.decode(ByteBuffer.wrap(utf8Data, offset, length));
         return result.toString();
     }
 

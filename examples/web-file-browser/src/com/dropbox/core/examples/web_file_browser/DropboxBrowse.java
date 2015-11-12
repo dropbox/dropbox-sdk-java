@@ -1,11 +1,11 @@
 package com.dropbox.core.examples.web_file_browser;
 
 import static com.dropbox.core.util.StringUtil.jq;
-import static com.dropbox.core.util.StringUtil.UTF8;
 
 import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestUtil;
 import com.dropbox.core.util.IOUtil;
+import com.dropbox.core.util.StringUtil;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.DbxPathV2;
 import com.dropbox.core.v2.Files;
@@ -108,7 +108,7 @@ public class DropboxBrowse
 
         response.setContentType("text/html");
         response.setCharacterEncoding("utf-8");
-        PrintWriter out = new PrintWriter(new OutputStreamWriter(response.getOutputStream(), UTF8));
+        PrintWriter out = new PrintWriter(IOUtil.utf8Writer(response.getOutputStream()));
 
         out.println("<html>");
         out.println("<head><title>" + escapeHtml4(path) + "- Web File Browser</title></head>");
@@ -145,7 +145,7 @@ public class DropboxBrowse
 
         response.setContentType("text/html");
         response.setCharacterEncoding("utf-8");
-        PrintWriter out = new PrintWriter(new OutputStreamWriter(response.getOutputStream(), UTF8));
+        PrintWriter out = new PrintWriter(IOUtil.utf8Writer(response.getOutputStream()));
 
         out.println("<html>");
         out.println("<head><title>" + escapeHtml4(path) + "- Web File Browser</title></head>");
@@ -312,7 +312,7 @@ public class DropboxBrowse
         byte[] bytes = new byte[maxLength];
         InputStream in = part.getInputStream();
         int bytesRead = in.read(bytes);
-        String s = new String(bytes, 0, bytesRead, UTF8);
+        String s = StringUtil.utf8ToString(bytes, 0, bytesRead);
         if (in.read() != -1) {
             response.sendError(400, "Field " + jq(name) + " is too long (the limit is " + maxLength + " bytes): " + jq(s));
             return null;
