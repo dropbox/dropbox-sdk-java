@@ -6,8 +6,8 @@ import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.DbxWebAuth;
 import com.dropbox.core.json.JsonReader;
 import com.dropbox.core.v2.DbxClientV2;
+import com.dropbox.core.v2.DbxFiles;
 import com.dropbox.core.v2.DbxPathV2;
-import com.dropbox.core.v2.Files;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -82,7 +82,7 @@ public class Main
         DbxClientV2 dbxClient = new DbxClientV2(requestConfig, authInfo.accessToken, authInfo.host);
 
         // Make the API call to upload the file.
-        Files.FileMetadata metadata;
+        DbxFiles.FileMetadata metadata;
         try {
             InputStream in = new FileInputStream(localPath);
             try {
@@ -91,7 +91,7 @@ public class Main
                 in.close();
             }
         }
-        catch (Files.UploadException ex) {
+        catch (DbxFiles.UploadException ex) {
             System.out.println("Error uploading to Dropbox: " + ex.getMessage());
             return 1;
         }

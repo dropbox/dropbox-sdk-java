@@ -1,9 +1,12 @@
 package com.dropbox.core.examples.account_info;
 
-import com.dropbox.core.*;
+import com.dropbox.core.DbxAuthInfo;
+import com.dropbox.core.DbxException;
+import com.dropbox.core.DbxRequestConfig;
+import com.dropbox.core.DbxWebAuth;
 import com.dropbox.core.json.JsonReader;
 import com.dropbox.core.v2.DbxClientV2;
-import com.dropbox.core.v2.Users;
+import com.dropbox.core.v2.DbxUsers;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -57,8 +60,8 @@ public class Main
         DbxClientV2 dbxClient = new DbxClientV2(requestConfig, authInfo.accessToken, authInfo.host);
 
         // Make the /account/info API call.
-        Users.FullAccount dbxAccountInfo;
-        Users.SpaceUsage dbxSpaceUsage;
+        DbxUsers.FullAccount dbxAccountInfo;
+        DbxUsers.SpaceUsage dbxSpaceUsage;
         try {
             dbxAccountInfo = dbxClient.users.getCurrentAccount();
         }

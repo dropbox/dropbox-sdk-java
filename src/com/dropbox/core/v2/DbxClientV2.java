@@ -21,9 +21,9 @@ import java.util.ArrayList;
  */
 public final class DbxClientV2 extends DbxRawClientV2 {
 
-    public final Files files;
-    public final Users users;
-    public final Sharing sharing;
+    public final DbxFiles files;
+    public final DbxUsers users;
+    public final DbxSharing sharing;
 
     /**
      * @param requestConfig
@@ -46,8 +46,8 @@ public final class DbxClientV2 extends DbxRawClientV2 {
      */
     public DbxClientV2(DbxRequestConfig requestConfig, String accessToken, DbxHost host) {
         super(requestConfig, accessToken, host);
-        this.files = new Files(this);
-        this.users = new Users(this);
-        this.sharing = new Sharing(this);
+        this.files = new DbxFiles(this);
+        this.users = new DbxUsers(this);
+        this.sharing = new DbxSharing(this);
     }
 }

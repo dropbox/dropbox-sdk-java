@@ -1,3 +1,5 @@
+- Put "Dbx" prefix on namespace classes (Files -> DbxFiles, etc.)
+
 ---------------------------------------------
 2.0-beta-1 (2015-10-13)
 - Add support for Dropbox API v2.  Moved API v1-specific classes to

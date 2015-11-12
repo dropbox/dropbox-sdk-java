@@ -136,10 +136,17 @@ def maptype(namespace, data_type, boxed=True):
     if data_type.name in type_map:
         return type_map[data_type.name]
     assert is_composite_type(data_type), data_type
-    prefix = ""
-    if data_type.namespace != namespace:
-        prefix = classname(data_type.namespace.name) + '.'
-    return prefix + classname(data_type.name)
+    return type_ref(namespace, data_type)
+
+
+def type_ref(namespace, dt):
+    ref = classname(dt.name)
+    if dt.namespace != namespace:
+        ref = namespace_ref(dt.namespace) + '.' + ref
+    return ref
+
+def namespace_ref(ns):
+    return "Dbx" + classname(ns.name)
 
 
 def mapreader(namespace, data_type):
@@ -301,7 +308,7 @@ class JavaCodeGenerator(CodeGenerator):
 
     def generate_namespace_wrapper(self, namespace, package_relpath, package_name):
         out = self.emit
-        class_name = classname(namespace.name)
+        class_name = namespace_ref(namespace)
         file_name = os.path.join(package_relpath, class_name + '.java')
         with self.output_to_relative_path(file_name):
             out('/* DO NOT EDIT */')
@@ -324,18 +331,6 @@ class JavaCodeGenerator(CodeGenerator):
             out('import com.dropbox.core.json.JsonReader;')
             out('import com.dropbox.core.json.JsonReadException;')
             out('import com.dropbox.core.json.JsonWriter;')
-
-            namespace_data_types = namespace.get_route_io_data_types()
-            if namespace_data_types:
-                to_import = []
-                for data_type in namespace_data_types:
-                    if data_type.namespace != namespace:
-                        to_import.append((data_type.namespace.name, data_type.name))
-                if to_import:
-                    out('')
-                    for ns_name, dt_name in to_import:
-                        out('import %s.%s.%s;' %
-                            (package_name, classname(ns_name), classname(dt_name)))
 
             out('')
             self.generate_doc('Classes and routes in namespace "%s".' % namespace.name)
@@ -626,7 +621,7 @@ class JavaCodeGenerator(CodeGenerator):
     def generate_data_type_class(self, namespace, data_type):
         """Generate a class definition for a datatype (a struct or a union)."""
         out = self.emit
-        class_name = classname(data_type.name)
+        class_name = type_ref(namespace, data_type)
         self.generate_doc(data_type.doc)
         if is_union_type(data_type):
             if has_value_fields(data_type):
@@ -638,7 +633,7 @@ class JavaCodeGenerator(CodeGenerator):
             assert is_struct_type(data_type)
             decl = 'public static class %s' % class_name
             if data_type.parent_type:
-                decl += ' extends %s ' % classname(data_type.parent_type.name)
+                decl += ' extends %s ' % type_ref(namespace, data_type.parent_type)
             with self.block(decl):
                 out('// struct %s' % class_name)
                 # Generate fields declarations.
@@ -863,7 +858,7 @@ class JavaCodeGenerator(CodeGenerator):
                                                 not dt.has_enumerated_subtypes()):
                                             # Collapse struct into union.
                                             out('%s._writer.writeFields(%s, g);' % (
-                                                classname(dt.name), vn))
+                                                type_ref(namespace, dt), vn))
                                         else:
                                             self.generate_write_field(namespace, field, vn)
 
@@ -1022,7 +1017,7 @@ class JavaCodeGenerator(CodeGenerator):
                 if tags:
                     out('g.writeStringField(".tag", "%s");' % '.'.join(tags))
                 for _, dt in ancestors:
-                    out('%s._writer.writeFields(x, g);' % classname(dt.name))
+                    out('%s._writer.writeFields(x, g);' % type_ref(namespace, dt))
                 out('g.writeEndObject();')
 
             out('public final void writeFields(%s x, JsonGenerator g)' % class_name)
@@ -1120,7 +1115,7 @@ class JavaCodeGenerator(CodeGenerator):
                             for field in data_type.get_enumerated_subtypes():
                                 with self.block('if ("%s".equals(tags[%d]))' % (field.name, depth)):
                                     out('return %s._reader.readFromTags(tags, parser);' %
-                                        classname(field.data_type.name))
+                                        type_ref(namespace, field.data_type))
                             out('// If no match, fall back to base class')
                     out('return readFields(parser);')
 
