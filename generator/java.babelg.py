@@ -504,11 +504,12 @@ class JavaCodeGenerator(CodeGenerator):
         method_name = camelcase(route.name)
         exc_name = classname(route.name + '_exception')
         builder_name = classname(method_name + 'Builder')
+        builder_fn_name = method_name + 'Builder'
         style = route.attrs.get('style', 'rpc')
         if style == 'upload':
             self.generate_doc(
                 'The {@link com.dropbox.core.v2.DbxUploadStyleBuilder} '
-                'returned by {@link #%s}.' % builder_name)
+                'returned by {@link #%s}.' % builder_fn_name)
             result_name = maptype(namespace, route.response_data_type)
             error_name = maptype(namespace, route.error_data_type)
             resname = 'Object' if result_name == 'void' else result_name
@@ -518,13 +519,13 @@ class JavaCodeGenerator(CodeGenerator):
         elif style == 'download':
             self.generate_doc(
                 'The {@link com.dropbox.core.v2.DbxDownloadStyleBuilder} '
-                'returned by {@link #%s}.' % builder_name)
+                'returned by {@link #%s}.' % builder_fn_name)
             result_name = maptype(namespace, route.response_data_type)
             resname = 'Object' if result_name == 'void' else result_name
             out('public final class %s extends DbxDownloadStyleBuilder<%s>' %
                 (builder_name, resname))
         else:
-            self.generate_doc('The builder object returned by {@link #%s}' % builder_name)
+            self.generate_doc('The builder object returned by {@link #%s}' % builder_fn_name)
             out('public final class %s' % builder_name)
         with self.block():
             # Generate a field for every argument.
@@ -565,7 +566,6 @@ class JavaCodeGenerator(CodeGenerator):
                 self.generate_call_to_packed_method(namespace, route, ret, prefix=prefix)
         # Generate the helper method used to construct the builder
         self.generate_doc(route.doc)
-        builder_fn_name = method_name + 'Builder'
         out('public %s %s(%s)' % (builder_name, builder_fn_name, ', '.join(req_fields)))
         with self.block():
             args = [field_name(field) for field
