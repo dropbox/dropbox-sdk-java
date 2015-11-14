@@ -1,4 +1,5 @@
 - Put "Dbx" prefix on namespace classes (Files -> DbxFiles, etc.)
+- Updated to latest API specs.
 
 ---------------------------------------------
 2.0-beta-1 (2015-10-13)
