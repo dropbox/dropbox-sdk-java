@@ -1,6 +1,7 @@
 package com.dropbox.core.android;
 
 import java.security.SecureRandom;
+import java.security.SecureRandomSpi;
 import java.util.List;
 import java.util.Locale;
 
@@ -143,7 +144,7 @@ public class AuthActivity extends Activity {
     private static SecurityProvider sSecurityProvider = new SecurityProvider() {
         @Override
         public SecureRandom getSecureRandom() {
-            return new SecureRandom();
+            return FixedSecureRandom.get();
         }
     };
     private static final Object sSecurityProviderLock = new Object();
