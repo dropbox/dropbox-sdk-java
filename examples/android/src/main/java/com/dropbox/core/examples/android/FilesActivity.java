@@ -14,7 +14,7 @@ import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
-import com.dropbox.core.v2.Files;
+import com.dropbox.core.v2.DbxFiles;
 
 import java.io.File;
 import java.util.List;
@@ -58,12 +58,12 @@ public class FilesActivity extends DropboxActivity {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.files_list);
         mFilesAdapter = new FilesAdapter(PicassoClient.getPicasso(), new FilesAdapter.Callback() {
             @Override
-            public void onFolderClicked(Files.FolderMetadata folder) {
+            public void onFolderClicked(DbxFiles.FolderMetadata folder) {
                 startActivity(FilesActivity.getIntent(FilesActivity.this, folder.pathLower));
             }
 
             @Override
-            public void onFileClicked(Files.FileMetadata file) {
+            public void onFileClicked(DbxFiles.FileMetadata file) {
                 downloadFile(file);
 
             }
@@ -102,9 +102,9 @@ public class FilesActivity extends DropboxActivity {
         dialog.setMessage("Loading");
         dialog.show();
 
-        new ListFolderTask(DropboxClient.files(), new ListFolderTask.Callback() {
+        new ListFolderTask(DropboxClient.DbxFiles(), new ListFolderTask.Callback() {
             @Override
-            public void onDataLoaded(Files.ListFolderResult result) {
+            public void onDataLoaded(DbxFiles.ListFolderResult result) {
                 dialog.dismiss();
 
                 mFilesAdapter.setFiles(result.entries);
@@ -122,7 +122,7 @@ public class FilesActivity extends DropboxActivity {
         }).execute(mPath);
     }
 
-    private void downloadFile(Files.FileMetadata file) {
+    private void downloadFile(DbxFiles.FileMetadata file) {
 
         final ProgressDialog dialog = new ProgressDialog(this);
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -130,7 +130,7 @@ public class FilesActivity extends DropboxActivity {
         dialog.setMessage("Downloading");
         dialog.show();
 
-        new DownloadFileTask(FilesActivity.this, DropboxClient.files(), new DownloadFileTask.Callback() {
+        new DownloadFileTask(FilesActivity.this, DropboxClient.DbxFiles(), new DownloadFileTask.Callback() {
             @Override
             public void onDownloadComplete(File result) {
                 dialog.dismiss();
@@ -176,9 +176,9 @@ public class FilesActivity extends DropboxActivity {
         dialog.setMessage("Uploading");
         dialog.show();
 
-        new UploadFileTask(this, DropboxClient.files(), new UploadFileTask.Callback() {
+        new UploadFileTask(this, DropboxClient.DbxFiles(), new UploadFileTask.Callback() {
             @Override
-            public void onUploadComplete(Files.FileMetadata result) {
+            public void onUploadComplete(DbxFiles.FileMetadata result) {
                 dialog.dismiss();
 
                 Toast.makeText(FilesActivity.this,

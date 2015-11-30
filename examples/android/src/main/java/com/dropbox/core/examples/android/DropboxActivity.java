@@ -38,7 +38,7 @@ public abstract class DropboxActivity extends ActionBarActivity {
 
     private void initAndLoadData(String accessToken) {
         DropboxClient.init(accessToken);
-        PicassoClient.init(getApplicationContext(), DropboxClient.files());
+        PicassoClient.init(getApplicationContext(), DropboxClient.DbxFiles());
         loadData();
     }
 

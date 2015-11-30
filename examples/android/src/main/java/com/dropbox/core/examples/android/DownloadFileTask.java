@@ -7,7 +7,7 @@ import android.os.AsyncTask;
 import android.os.Environment;
 
 import com.dropbox.core.DbxException;
-import com.dropbox.core.v2.Files;
+import com.dropbox.core.v2.DbxFiles;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -17,10 +17,10 @@ import java.io.OutputStream;
 /**
  * Task to download a file from Dropbox and put it in the Downloads folder
  */
-class DownloadFileTask extends AsyncTask<Files.FileMetadata, Void, File> {
+class DownloadFileTask extends AsyncTask<DbxFiles.FileMetadata, Void, File> {
 
     private final Context mContext;
-    private final Files mFilesClient;
+    private final DbxFiles mFilesClient;
     private Exception mException;
     private Callback mCallback;
 
@@ -29,7 +29,7 @@ class DownloadFileTask extends AsyncTask<Files.FileMetadata, Void, File> {
         void onError(Exception e);
     }
 
-    DownloadFileTask(Context context, Files filesClient, Callback callback) {
+    DownloadFileTask(Context context, DbxFiles filesClient, Callback callback) {
         mContext = context;
         mFilesClient = filesClient;
         mCallback = callback;
@@ -46,8 +46,8 @@ class DownloadFileTask extends AsyncTask<Files.FileMetadata, Void, File> {
     }
 
     @Override
-    protected File doInBackground(Files.FileMetadata... params) {
-        Files.FileMetadata metadata = params[0];
+    protected File doInBackground(DbxFiles.FileMetadata... params) {
+        DbxFiles.FileMetadata metadata = params[0];
         try {
             File path = Environment.getExternalStoragePublicDirectory(
                     Environment.DIRECTORY_DOWNLOADS);

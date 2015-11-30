@@ -2,7 +2,7 @@ package com.dropbox.core.examples.android;
 
 import android.content.Context;
 
-import com.dropbox.core.v2.Files;
+import com.dropbox.core.v2.DbxFiles;
 import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 
@@ -12,7 +12,7 @@ import com.squareup.picasso.Picasso;
 public class PicassoClient {
     private static Picasso sPicasso;
 
-    public static void init(Context context, Files files) {
+    public static void init(Context context, DbxFiles files) {
 
         // Configure picasso to know about special thumbnail requests
         sPicasso = new Picasso.Builder(context)
