@@ -66,6 +66,14 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- A "soft" dependency on the Android SDK. -->
+        <dependency>
+            <groupId>com.google.android</groupId>
+            <artifactId>android</artifactId>
+            <version>4.1.1.4</version>
+            <scope>provided</scope>
+        </dependency>
+
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
@@ -204,6 +212,7 @@
                     </execution>
                 </executions>
             </plugin>
+
 
             <!-- Add OSGi metadata to JAR manifest. -->
             <plugin>

@@ -39,8 +39,7 @@ public class DbxRequestConfig
 
     /**
      * The locale of the user of your app.  This is used by the Dropbox server to localize
-     * user-visible strings returned by API calls.  For example,
-     * {@link com.dropbox.core.DbxEntry.File#humanSize} is a localized string.
+     * user-visible strings returned by API calls.
      *
      * <p>
      * If the value is {@code null} or some locale that Dropbox doesn't support, the localized

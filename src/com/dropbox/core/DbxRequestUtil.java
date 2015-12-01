@@ -1,5 +1,6 @@
 package com.dropbox.core;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -13,8 +14,13 @@ import java.util.List;
 import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
+import com.dropbox.core.json.JsonWriter;
 import com.dropbox.core.util.IOUtil;
 import com.dropbox.core.util.StringUtil;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
+
 import static com.dropbox.core.util.StringUtil.jq;
 import static com.dropbox.core.util.LangUtil.mkAssert;
 
@@ -79,7 +85,7 @@ public class DbxRequestUtil
         return buf.toString();
     }
 
-    private static ArrayList<HttpRequestor.Header> addAuthHeader(/*@Nullable*/ArrayList<HttpRequestor.Header> headers,
+    public static ArrayList<HttpRequestor.Header> addAuthHeader(/*@Nullable*/ArrayList<HttpRequestor.Header> headers,
                                                                  String accessToken)
     {
         if (headers == null) headers = new ArrayList<HttpRequestor.Header>();
@@ -150,17 +156,32 @@ public class DbxRequestUtil
                                                          /*@Nullable*/ArrayList<HttpRequestor.Header> headers)
         throws DbxException.NetworkIO
     {
-        String uri = buildUri(host, path);
         byte[] encodedParams = StringUtil.stringToUtf8(encodeUrlParams(requestConfig.userLocale, params));
 
-        headers = addUserAgentHeader(headers, requestConfig);
+        if (headers == null) headers = new ArrayList<HttpRequestor.Header>();
         headers.add(new HttpRequestor.Header("Content-Type", "application/x-www-form-urlencoded; charset=utf-8"));
-        headers.add(new HttpRequestor.Header("Content-Length", Integer.toString(encodedParams.length)));
+
+        return startPostRaw(requestConfig, host, path, encodedParams, headers);
+    }
+
+    /**
+     * Convenience function for making HTTP POST requests.  Like startPostNoAuth but takes byte[] instead of params.
+     */
+    public static HttpRequestor.Response startPostRaw(DbxRequestConfig requestConfig, String host,
+                                                      String path,
+                                                      byte[] body,
+                                                      /*@Nullable*/ArrayList<HttpRequestor.Header> headers)
+        throws DbxException.NetworkIO
+    {
+        String uri = buildUri(host, path);
+
+        headers = addUserAgentHeader(headers, requestConfig);
+        headers.add(new HttpRequestor.Header("Content-Length", Integer.toString(body.length)));
 
         try {
             HttpRequestor.Uploader uploader = requestConfig.httpRequestor.startPost(uri, headers);
             try {
-                uploader.body.write(encodedParams);
+                uploader.body.write(body);
                 return uploader.finish();
             }
             finally {
@@ -170,6 +191,40 @@ public class DbxRequestUtil
         catch (IOException ex) {
             throw new DbxException.NetworkIO(ex);
         }
+    }
+
+    // XXX This duplicates JsonReader.jsonFactory. Maybe make that public, or move this code there?
+    static final JsonFactory jsonFactory = new JsonFactory();
+
+    public static class ErrorWrapper extends Throwable {
+        public java.lang.Object errValue;  // Really an ErrT instance, but Throwable does not allow generic subclasses.
+
+        public ErrorWrapper(JsonReader reader, InputStream body)
+                throws IOException, JsonReadException
+        {
+            errValue = null;
+            JsonParser parser = jsonFactory.createParser(body);
+            parser.nextToken();
+            reader.expectObjectStart(parser);
+            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String fieldName = parser.getCurrentName();
+                parser.nextToken();
+                if (fieldName.equals("error")) {
+                    errValue = reader.read(parser);
+                }
+                else {
+                    JsonReader.skipValue(parser);
+                }
+            }
+            if (errValue == null) {
+                throw new JsonReadException("Required field \"error\" is missing.", parser.getCurrentLocation());
+            }
+        }
+    }
+
+    public static abstract class RouteSpecificErrorMaker<T extends Throwable>
+    {
+        public abstract T makeError(DbxRequestUtil.ErrorWrapper ew);
     }
 
     public static byte[] loadErrorBody(HttpRequestor.Response response)

@@ -1,10 +1,32 @@
 package com.dropbox.core.util;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
+import java.io.Writer;
 
 public class IOUtil
 {
     public static final int DefaultCopyBufferSize = 16 * 1024;
+
+    public static Reader utf8Reader(InputStream in)
+    {
+        // NOTE: Just passing StringUtil.UTF8 instead of StringUtil.UTF8.newDecoder() would be wrong.
+        // The former will cause the InputStreamReader to ignore UTF-8 errors in the input.
+        return new InputStreamReader(in, StringUtil.UTF8.newDecoder());
+    }
+
+    public static Writer utf8Writer(OutputStream out)
+    {
+        return new OutputStreamWriter(out, StringUtil.UTF8.newEncoder());
+    }
 
     public static void copyStreamToStream(InputStream in, OutputStream out)
         throws ReadException, WriteException

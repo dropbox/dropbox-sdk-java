@@ -6,7 +6,6 @@ import com.dropbox.core.util.StringUtil;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.regex.Pattern;
 
 /*>>> import checkers.nullness.quals.Nullable; */
@@ -35,7 +34,7 @@ public class DbxSdkVersion
             InputStream in = DbxSdkVersion.class.getResourceAsStream(ResourceName);
             if (in == null) throw new LoadException("Not found.");
             try {
-                BufferedReader bin = new BufferedReader(new InputStreamReader(in, StringUtil.UTF8));
+                BufferedReader bin = new BufferedReader(IOUtil.utf8Reader(in));
                 String version = bin.readLine();
                 if (version == null) throw new LoadException("No lines.");
                 String secondLine = bin.readLine();

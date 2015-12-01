@@ -1,7 +1,12 @@
 package com.dropbox.core.examples.account_info;
 
-import com.dropbox.core.*;
+import com.dropbox.core.DbxAuthInfo;
+import com.dropbox.core.DbxException;
+import com.dropbox.core.DbxRequestConfig;
+import com.dropbox.core.DbxWebAuth;
 import com.dropbox.core.json.JsonReader;
+import com.dropbox.core.v2.DbxClientV2;
+import com.dropbox.core.v2.DbxUsers;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -49,21 +54,22 @@ public class Main
             System.exit(1); return;
         }
 
-        // Create a DbxClient, which is what you use to make API calls.
+        // Create a DbxClientV1, which is what you use to make API calls.
         String userLocale = Locale.getDefault().toString();
         DbxRequestConfig requestConfig = new DbxRequestConfig("examples-account-info", userLocale);
-        DbxClient dbxClient = new DbxClient(requestConfig, authInfo.accessToken, authInfo.host);
+        DbxClientV2 dbxClient = new DbxClientV2(requestConfig, authInfo.accessToken, authInfo.host);
 
         // Make the /account/info API call.
-        DbxAccountInfo dbxAccountInfo;
+        DbxUsers.FullAccount dbxAccountInfo;
+        DbxUsers.SpaceUsage dbxSpaceUsage;
         try {
-            dbxAccountInfo = dbxClient.getAccountInfo();
+            dbxAccountInfo = dbxClient.users.getCurrentAccount();
         }
         catch (DbxException ex) {
-            ex.printStackTrace();
-            System.err.println("Error in getAccountInfo(): " + ex.getMessage());
+            System.err.println("Error making API call: " + ex.getMessage());
             System.exit(1); return;
         }
-        System.out.println("User's account info: " + dbxAccountInfo.toStringMultiline());
+
+        System.out.print(dbxAccountInfo.toStringMultiline());
     }
 }

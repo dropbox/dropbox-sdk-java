@@ -1,12 +1,14 @@
 package com.dropbox.core;
 
+import com.dropbox.core.v2.DbxClientV2;
+
 /**
  * Does the OAuth web-based authorization flow for apps that can't provide a redirect URI (such
  * as the command-line example apps that come with this SDK).  If you're a normal website, use
  * the {@link DbxWebAuth} class instead.
  *
  * <p>
- * Eventually yields an access token that can be used with {@link DbxClient} to make
+ * Eventually yields an access token that can be used with {@link DbxClientV2} to make
  * Dropbox API calls.  You typically only need to do this for a user when they first use your
  * application.  Once you have an access token for that user, it remains valid for years.
  * </p>
@@ -32,7 +34,7 @@ package com.dropbox.core;
  *
  * {@link DbxAuthFinish} authFinish = webAuth.finish(code);
  *
- * {@link DbxClient} client = new DbxClient(requestConfig, authFinish.accessToken);
+ * {@link DbxClientV2} client = new DbxClientV2(requestConfig, authFinish.accessToken);
  * </pre>
  */
 public class DbxWebAuthNoRedirect

@@ -1,4 +1,21 @@
 ---------------------------------------------
+2.0-beta-3 (2015-12-01)
+- Add a workaround for older Android versions' buggy SecureRandom.
+- Fix android example
+
+---------------------------------------------
+2.0-beta-2 (2015-11-13)
+- Put "Dbx" prefix on namespace classes (Files -> DbxFiles, etc.)
+- Updated to latest API specs.
+
+---------------------------------------------
+2.0-beta-1 (2015-10-13)
+- Add support for Dropbox API v2.  Moved API v1-specific classes to
+  'v1' sub-package.
+- Add support for Android.
+- Add support for using OkHttp as the HTTP client library.
+
+---------------------------------------------
 1.8.2 (2015-10-19)
 
 - Fix bug parsing "photo_info" in file metadata.

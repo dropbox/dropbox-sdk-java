@@ -1,9 +1,18 @@
 package com.dropbox.core.examples.authorize;
 
-import com.dropbox.core.*;
+import com.dropbox.core.DbxAppInfo;
+import com.dropbox.core.DbxAuthFinish;
+import com.dropbox.core.DbxAuthInfo;
+import com.dropbox.core.DbxException;
+import com.dropbox.core.DbxRequestConfig;
+import com.dropbox.core.DbxWebAuth;
+import com.dropbox.core.DbxWebAuthNoRedirect;
 import com.dropbox.core.json.JsonReader;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;

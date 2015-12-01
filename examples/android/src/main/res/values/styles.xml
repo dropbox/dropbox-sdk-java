@@ -1,0 +1,13 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <item name="android:windowBackground">@color/dbx_white_opaque_100</item>
+        <item name="colorPrimary">@color/dbx_primary</item>
+        <item name="colorPrimaryDark">@color/dbx_primary_dark</item>
+        <item name="colorControlNormal">@color/dbx_color_control_normal</item>
+        <item name="colorControlActivated">@color/dbx_color_control_activated</item>
+        <item name="colorControlHighlight">@color/dbx_color_control_highlight</item>
+        <item name="colorSwitchThumbNormal">@color/dbx_color_switch_thumbNormal</item>
+        <item name="colorAccent">@color/dbx_primary</item>
+    </style>
+</resources>

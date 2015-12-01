@@ -1,9 +1,14 @@
 package com.dropbox.core.examples.web_file_browser;
 
 import static com.dropbox.core.util.StringUtil.jq;
-import static com.dropbox.core.util.StringUtil.UTF8;
 
-import com.dropbox.core.*;
+import com.dropbox.core.DbxException;
+import com.dropbox.core.DbxRequestUtil;
+import com.dropbox.core.util.IOUtil;
+import com.dropbox.core.util.StringUtil;
+import com.dropbox.core.v2.DbxClientV2;
+import com.dropbox.core.v2.DbxFiles;
+import com.dropbox.core.v2.DbxPathV2;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.util.TreeMap;
 
 import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
 
@@ -28,7 +34,7 @@ public class DropboxBrowse
         this.common = common;
     }
 
-    private DbxClient requireDbxClient(HttpServletRequest request, HttpServletResponse response, User user)
+    private DbxClientV2 requireDbxClient(HttpServletRequest request, HttpServletResponse response, User user)
             throws IOException, ServletException
     {
         if (user.dropboxAccessToken == null) {
@@ -36,9 +42,125 @@ public class DropboxBrowse
             return null;
         }
 
-        return new DbxClient(common.getRequestConfig(request),
-                             user.dropboxAccessToken,
-                             common.dbxAppInfo.host);
+        return new DbxClientV2(common.getRequestConfig(request),
+                               user.dropboxAccessToken,
+                               common.dbxAppInfo.host);
+    }
+
+    private boolean checkPathError(HttpServletResponse response, String path, DbxFiles.LookupError le)
+        throws IOException
+    {
+        switch (le.tag) {
+            case notFound: case notFolder:
+                response.sendError(400, "Path doesn't exist on Dropbox: " + jq(path));
+                return true;
+        }
+        return false;
+    }
+
+    private void renderFolder(HttpServletResponse response, User user, DbxClientV2 dbxClient, String path)
+        throws IOException
+    {
+        // Get the folder listing from Dropbox.
+        TreeMap<String,DbxFiles.Metadata> children = new TreeMap<String,DbxFiles.Metadata>();
+
+        DbxFiles.ListFolderResult result;
+        try {
+            try {
+                result = dbxClient.files.listFolder(path);
+            }
+            catch (DbxFiles.ListFolderException ex) {
+                if (ex.errorValue.tag == DbxFiles.ListFolderError.Tag.path) {
+                    if (checkPathError(response, path, ex.errorValue.getPath())) return;
+                }
+                throw ex;
+            }
+
+            while (true) {
+                for (DbxFiles.Metadata md : result.entries) {
+                    if (md instanceof DbxFiles.DeletedMetadata) {
+                        children.remove(md.pathLower);
+                    } else {
+                        children.put(md.pathLower, md);
+                    }
+                }
+
+                if (!result.hasMore) break;
+
+                try {
+                    result = dbxClient.files.listFolderContinue(result.cursor);
+                }
+                catch (DbxFiles.ListFolderContinueException ex) {
+                    if (ex.errorValue.tag == DbxFiles.ListFolderContinueError.Tag.path) {
+                        if (checkPathError(response, path, ex.errorValue.getPath())) return;
+                    }
+                    throw ex;
+                }
+            }
+        }
+        catch (DbxException ex) {
+            common.handleDbxException(response, user, ex, "listFolder(" + jq(path) + ")");
+            return;
+        }
+
+        FormProtection fp = FormProtection.start(response);
+
+        response.setContentType("text/html");
+        response.setCharacterEncoding("utf-8");
+        PrintWriter out = new PrintWriter(IOUtil.utf8Writer(response.getOutputStream()));
+
+        out.println("<html>");
+        out.println("<head><title>" + escapeHtml4(path) + "- Web File Browser</title></head>");
+        out.println("<body>");
+        fp.insertAntiRedressHtml(out);
+
+        out.println("<h2>Path: " + escapeHtml4(path) + "</h2>");
+
+        // Upload form
+        out.println("<form action='/upload' method='post' enctype='multipart/form-data'>");
+        fp.insertAntiCsrfFormField(out);
+        out.println("<label for='file'>Upload file:</label> <input name='file' type='file'/>");
+        out.println("<input type='submit' value='Upload'/>");
+        out.println("<input name='targetFolder' type='hidden' value='" + escapeHtml4(path) + "'/>");
+        out.println("</form>");
+        // Listing of folder contents.
+        out.println("<ul>");
+        for (DbxFiles.Metadata child : children.values()) {
+            String href = "/browse?path=" + DbxRequestUtil.encodeUrlParam(child.pathLower);
+            out.println("  <li><a href='" + escapeHtml4(href) + "'>" + escapeHtml4(child.name) + "</a></li>");
+        }
+        out.println("</ul>");
+
+        out.println("</body>");
+        out.println("</html>");
+
+        out.flush();
+    }
+
+    private void renderFile(HttpServletResponse response, String path, DbxFiles.FileMetadata f)
+        throws IOException
+    {
+        FormProtection fp = FormProtection.start(response);
+
+        response.setContentType("text/html");
+        response.setCharacterEncoding("utf-8");
+        PrintWriter out = new PrintWriter(IOUtil.utf8Writer(response.getOutputStream()));
+
+        out.println("<html>");
+        out.println("<head><title>" + escapeHtml4(path) + "- Web File Browser</title></head>");
+        out.println("<body>");
+        fp.insertAntiRedressHtml(out);
+
+        out.println("<h2>Path: " + escapeHtml4(path) + "</h2>");
+
+        out.println("<pre>");
+        out.print(escapeHtml4(f.toStringMultiline()));
+        out.println("</pre>");
+
+        out.println("</body>");
+        out.println("</html>");
+
+        out.flush();
     }
 
     // -------------------------------------------------------------------------------------------
@@ -57,80 +179,48 @@ public class DropboxBrowse
             return;
         }
 
-        DbxClient dbxClient = requireDbxClient(request, response, user);
+        DbxClientV2 dbxClient = requireDbxClient(request, response, user);
         if (dbxClient == null) return;
 
-        // Make sure the path starts with '/'.  There are probably other checks we can perform...
         String path = request.getParameter("path");
-        if (path == null) {
-            path = "/";
+        if (path == null || path.length() == 0) {
+            renderFolder(response, user, dbxClient, "");
         } else {
-            String pathError = DbxPath.findError(path);
+            String pathError = DbxPathV2.findError(path);
             if (pathError != null) {
                 response.sendError(400, "Invalid path: " + jq(path) + ": " + pathError);
                 return;
             }
-        }
-
-        // Get the folder listing from Dropbox.
-        DbxEntry.WithChildren listing;
-        try {
-            listing = dbxClient.getMetadataWithChildren(path);
-        }
-        catch (DbxException ex) {
-            common.handleDbxException(response, user, ex, "getMetadataWithChildren(" + jq(path) + ")");
-            return;
-        }
-
-        if (listing == null) {
-            response.sendError(400, "Path doesn't exist on Dropbox: " + jq(path));
-        }
-
-        FormProtection fp = FormProtection.start(response);
-
-        response.setContentType("text/html");
-        response.setCharacterEncoding("utf-8");
-        PrintWriter out = new PrintWriter(new OutputStreamWriter(response.getOutputStream(), UTF8));
-
-        out.println("<html>");
-        out.println("<head><title>" + escapeHtml4(path) + "- Web File Browser</title></head>");
-        out.println("<body>");
-        fp.insertAntiRedressHtml(out);
-
-        out.println("<h2>Path: " + escapeHtml4(path) + "</h2>");
-
-        if (listing == null) {
-            out.println("<p>Nothing here...</p>");
-        }
-        // Folder
-        else if (listing.entry instanceof DbxEntry.Folder) {
-            // Upload form
-            out.println("<form action='/upload' method='post' enctype='multipart/form-data'>");
-            fp.insertAntiCsrfFormField(out);
-            out.println("<label for='file'>Upload file:</label> <input name='file' type='file'/>");
-            out.println("<input type='submit' value='Upload'/>");
-            out.println("<input name='targetFolder' type='hidden' value='" + escapeHtml4(listing.entry.path) + "'/>");
-            out.println("</form>");
-            // Listing of folder contents.
-            out.println("<ul>");
-            for (DbxEntry child : listing.children) {
-                String href = "/browse?path=" + DbxRequestUtil.encodeUrlParam(child.path);
-                out.println("  <li><a href='" + escapeHtml4(href) + "'>" + escapeHtml4(child.name) + "</a></li>");
+            DbxFiles.Metadata metadata;
+            try {
+                metadata = dbxClient.files.getMetadata(path);
             }
-            out.println("</ul>");
-        }
-        // File
-        else {
-            DbxEntry.File f = (DbxEntry.File) listing.entry;
-            out.println("<pre>");
-            out.print(escapeHtml4(f.toStringMultiline()));
-            out.println("</pre>");
-        }
+            catch (DbxFiles.GetMetadataException ex) {
+                switch (ex.errorValue.tag) {
+                    case path:
+                        DbxFiles.LookupError le = ex.errorValue.getPath();
+                        switch (le.tag) {
+                            case notFound:
+                                response.sendError(400, "Path doesn't exist on Dropbox: " + jq(path));
+                                return;
+                        }
+                }
+                common.handleException(response, ex, "getMetadata(" + jq(path) + ")");
+                return;
+            }
+            catch (DbxException ex) {
+                common.handleDbxException(response, user, ex, "getMetadata(" + jq(path) + ")");
+                return;
+            }
 
-        out.println("</body>");
-        out.println("</html>");
-
-        out.flush();
+            path = DbxPathV2.getParent(path) + "/" + metadata.name;
+            if (metadata instanceof DbxFiles.FolderMetadata) {
+                renderFolder(response, user, dbxClient, path);
+            }
+            else {
+                renderFile(response, path, (DbxFiles.FileMetadata) metadata);
+            }
+        }
     }
 
     // -------------------------------------------------------------------------------------------
@@ -144,7 +234,7 @@ public class DropboxBrowse
         User user = common.requireLoggedInUser(request, response);
         if (user == null) return;
 
-        DbxClient dbxClient = requireDbxClient(request, response, user);
+        DbxClientV2 dbxClient = requireDbxClient(request, response, user);
         if (dbxClient == null) return;
 
         try {
@@ -171,12 +261,12 @@ public class DropboxBrowse
 
         // Upload file to Dropbox
         String fullTargetPath = targetFolder + "/" + fileName;
-        DbxEntry.File metadata;
+        DbxFiles.FileMetadata metadata;
         try {
-            metadata = dbxClient.uploadFile(fullTargetPath, DbxWriteMode.add(), filePart.getSize(), filePart.getInputStream());
+            metadata = dbxClient.files.uploadBuilder(fullTargetPath).run(filePart.getInputStream());
         }
         catch (DbxException ex) {
-            common.handleDbxException(response, user, ex, "uploadFile(" + jq(fullTargetPath) + ", ...)");
+            common.handleDbxException(response, user, ex, "upload(" + jq(fullTargetPath) + ", ...)");
             return;
         }
         catch (IOException ex) {
@@ -190,9 +280,9 @@ public class DropboxBrowse
         PrintWriter out = new PrintWriter(new OutputStreamWriter(response.getOutputStream(), "UTF-8"));
 
         out.println("<html>");
-        out.println("<head><title>File uploaded: " + escapeHtml4(metadata.path) + "</title></head>");
+        out.println("<head><title>File uploaded: " + escapeHtml4(metadata.pathLower) + "</title></head>");
         out.println("<body>");
-        out.println("<h2>File uploaded: " + escapeHtml4(metadata.path) + "</h2>");
+        out.println("<h2>File uploaded: " + escapeHtml4(metadata.pathLower) + "</h2>");
         out.println("<pre>");
         out.print(escapeHtml4(metadata.toStringMultiline()));
         out.println("</pre>");
@@ -221,7 +311,7 @@ public class DropboxBrowse
         byte[] bytes = new byte[maxLength];
         InputStream in = part.getInputStream();
         int bytesRead = in.read(bytes);
-        String s = new String(bytes, 0, bytesRead, UTF8);
+        String s = StringUtil.utf8ToString(bytes, 0, bytesRead);
         if (in.read() != -1) {
             response.sendError(400, "Field " + jq(name) + " is too long (the limit is " + maxLength + " bytes): " + jq(s));
             return null;

@@ -15,11 +15,11 @@ Usage: $0 <path-to-auth-file> [ <test-selector> ] [ --okhttp ]
 
 <test-selector> [optional]: If omitted, all the tests are run.  If
     provided, only the specified tests are run.  Example values:
-    - "DbxClientTest"
-    - "DbxClientTest,StringUtilTest"
-    - "DbxClientTest#testMoveFolder"
-    - "DbxClientTest#testMove*"
-    - "DbxClientTest#testMoveFolder+testMoveEmptyFolder"
+    - "DbxClientV1Test"
+    - "DbxClientV1Test,StringUtilTest"
+    - "DbxClientV1Test#testMoveFolder"
+    - "DbxClientV1Test#testMove*"
+    - "DbxClientV1Test#testMoveFolder+testMoveEmptyFolder"
 
     For the full specification, see:
       http://maven.apache.org/surefire/maven-surefire-plugin/examples/single-test.html

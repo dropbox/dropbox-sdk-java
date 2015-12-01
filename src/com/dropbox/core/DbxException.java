@@ -143,11 +143,6 @@ public class DbxException extends Exception
      * Gets thrown when the access token you're using to make API calls is invalid.
      *
      * <p>
-     * One potential cause of the error is a programming error on your end.  Make sure
-     * the access token you are passing in to {@link DbxClient} is valid.
-     * </p>
-     *
-     * <p>
      * A more typical situation is that your access token <em>was</em> valid, but the
      * user has since "unlinked" your application via the Dropbox website
      * (<a href="http://www.dropbox.com/account#applications">http://www.dropbox.com/account#applications</a>).

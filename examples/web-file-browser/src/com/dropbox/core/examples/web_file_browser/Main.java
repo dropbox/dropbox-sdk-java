@@ -1,7 +1,6 @@
 package com.dropbox.core.examples.web_file_browser;
 
-import com.dropbox.core.*;
-
+import com.dropbox.core.DbxAppInfo;
 import com.dropbox.core.json.JsonReader;
 import static com.dropbox.core.util.StringUtil.jq;
 

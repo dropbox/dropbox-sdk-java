@@ -2,7 +2,9 @@ package com.dropbox.core.examples.web_file_browser;
 
 import static com.dropbox.core.util.StringUtil.jq;
 
-import com.dropbox.core.*;
+import com.dropbox.core.DbxAppInfo;
+import com.dropbox.core.DbxException;
+import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.util.LangUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -145,7 +147,7 @@ public class Common
     }
 
     public void handleDbxException(HttpServletResponse response, User user, DbxException ex, String action)
-            throws IOException, ServletException
+            throws IOException
     {
         // The one special error is InvalidAccessToken.  This is probably happening because
         // the user "unlinked" us through Dropbox's website.  Clear their access token in the
@@ -157,7 +159,13 @@ public class Common
             return;
         }
 
-        // For all other errors, the generic "try again later" is a decent response.
+        handleException(response, ex, action);
+    }
+
+    public void handleException(HttpServletResponse response, Exception ex, String action)
+        throws IOException
+    {
+        // The generic "try again later" is a decent response.
         // - If it's a transient error, then a retry will work.
         // - If it's Dropbox's fault, their service will eventually get fixed and the retry will work (sooner or later).
         // - If it's our fault, we might fix our service and the retry will work eventually.

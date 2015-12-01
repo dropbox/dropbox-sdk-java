@@ -1,9 +1,15 @@
 package com.dropbox.core.examples.upgrade_oauth1_token;
 
-import com.dropbox.core.*;
+import com.dropbox.core.DbxAppInfo;
+import com.dropbox.core.DbxAuthInfo;
+import com.dropbox.core.DbxException;
+import com.dropbox.core.DbxOAuth1AccessToken;
+import com.dropbox.core.DbxOAuth1Upgrader;
+import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.json.JsonReader;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.logging.Level;

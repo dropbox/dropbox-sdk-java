@@ -3,6 +3,7 @@ package com.dropbox.core.json;
 import com.dropbox.core.util.IOUtil;
 import static com.dropbox.core.util.LangUtil.mkAssert;
 
+import com.dropbox.core.util.StringUtil;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonLocation;
 import com.fasterxml.jackson.core.JsonParseException;
@@ -21,7 +22,24 @@ import java.util.HashMap;
 public abstract class JsonReader<T>
 {
     public abstract T read(JsonParser parser)
-        throws IOException, JsonReadException;
+            throws IOException, JsonReadException;
+
+    public T readFromTags(String[] tags, JsonParser parser)
+            throws IOException, JsonReadException
+    {
+        return null;  // Must override for struct
+    }
+
+    public T readFields(JsonParser parser)
+            throws IOException, JsonReadException
+    {
+        return null;  // Must override for struct
+    }
+
+    public void validate(T value)
+    {
+        // Base implementation does nothing.
+    }
 
     public final T readField(JsonParser parser, String fieldName, /*@Nullable*/T v)
         throws IOException, JsonReadException
@@ -39,6 +57,30 @@ public abstract class JsonReader<T>
         } else {
             return read(parser);
         }
+    }
+
+    /**
+     * Helper to read and parse the optional ".tag" field. If one is found, positions the parser
+     * at the next field (or the closing brace); otherwise leaves the parser position unchanged.
+     * Returns null if there isn't a ".tag" field; otherwise an array of strings (the tags).
+     * Initially the parser must be positioned right after the opening brace.
+     */
+    public static String[] readTags(JsonParser parser)
+        throws IOException, JsonReadException
+    {
+        if (parser.getCurrentToken() != JsonToken.FIELD_NAME) {
+            return null;
+        }
+        if (!".tag".equals(parser.getCurrentName())) {
+            return null;
+        }
+        parser.nextToken();
+        if (parser.getCurrentToken() != JsonToken.VALUE_STRING) {
+            throw new JsonReadException("expected a string value for .tag field", parser.getTokenLocation());
+        }
+        String tag = parser.getText();
+        parser.nextToken();
+        return tag.split("\\.");
     }
 
     /**
@@ -163,6 +205,74 @@ public abstract class JsonReader<T>
         return JsonReader.readUnsignedLong(parser);
     }
 
+    public static final JsonReader<Long> Int64Reader = new JsonReader<Long>()
+    {
+        public Long read(JsonParser parser)
+                throws IOException, JsonReadException
+        {
+            long v = parser.getLongValue();
+            parser.nextToken();
+            return v;
+        }
+    };
+
+    public static final JsonReader<Integer> Int32Reader = new JsonReader<Integer>()
+    {
+        public Integer read(JsonParser parser)
+                throws IOException, JsonReadException
+        {
+            int v = parser.getIntValue();
+            parser.nextToken();
+            return v;
+        }
+    };
+
+    // NOTE: This can't read values >= 2**63.
+    public static final JsonReader<Long> UInt64Reader = new JsonReader<Long>()
+    {
+        public Long read(JsonParser parser)
+                throws IOException, JsonReadException
+        {
+            return readUnsignedLong(parser);
+        }
+    };
+
+    // NOTE: This stores the value in a Long.
+    public static final JsonReader<Long> UInt32Reader = new JsonReader<Long>()
+    {
+        public Long read(JsonParser parser)
+                throws IOException, JsonReadException
+        {
+            long v = readUnsignedLong(parser);
+            if (v >= 4294967296L) {
+                throw new JsonReadException("expecting a 32-bit unsigned integer, got: " + v, parser.getTokenLocation());
+            }
+            return v;
+        }
+    };
+
+    public static final JsonReader<Double> Float64Reader = new JsonReader<Double>()
+    {
+        public Double read(JsonParser parser)
+                throws IOException, JsonReadException
+        {
+            double v = parser.getDoubleValue();
+            parser.nextToken();
+            return v;
+        }
+    };
+
+    public static final JsonReader<Float> Float32Reader = new JsonReader<Float>()
+    {
+        public Float read(JsonParser parser)
+                throws IOException, JsonReadException
+        {
+            float v = parser.getFloatValue();
+            parser.nextToken();
+            return v;
+        }
+    };
+
     public static final JsonReader<String> StringReader = new JsonReader<String>()
     {
         public String read(JsonParser parser)
@@ -170,6 +280,24 @@ public abstract class JsonReader<T>
         {
             try {
                 String v = parser.getText();
+                parser.nextToken();
+                return v;
+            }
+            catch (JsonParseException ex) {
+                throw JsonReadException.fromJackson(ex);
+            }
+        }
+    };
+
+    public static final JsonReader<byte[]> BinaryReader = new JsonReader<byte[]>()
+    {
+        public byte[] read(JsonParser parser)
+            throws IOException, JsonReadException
+        {
+            try {
+                // TODO: Jackson's base64 parser is more lenient than we want (it allows whitespace
+                // and other junk in some places).  Switch to something more strict.
+                byte[] v = parser.getBinaryValue();
                 parser.nextToken();
                 return v;
             }
@@ -211,6 +339,57 @@ public abstract class JsonReader<T>
         } catch (JsonParseException ex) {
             throw JsonReadException.fromJackson(ex);
         }
+    }
+
+    public static final JsonReader<Object> VoidReader = new JsonReader<Object>()
+    {
+        public Object read(JsonParser parser)
+            throws IOException, JsonReadException
+        {
+            skipValue(parser);
+            return null;
+        }
+    };
+
+    public static <T> T readEnum(JsonParser parser, HashMap<String,T> values, T catch_all)
+        throws IOException, JsonReadException
+    {
+        if (parser.getCurrentToken() == JsonToken.START_OBJECT) {
+            // Allow {".tag": "foo"} or {"foo": <value>} or {".tag": "foo", "foo": <value>}.
+            parser.nextToken();
+            String text;
+            String[] tags = readTags(parser);
+            if (tags != null && parser.getCurrentToken() == JsonToken.END_OBJECT) {
+                assert tags.length == 1 && tags[0] != null;
+                text = tags[0];
+            }
+            else if (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
+                text = parser.getText();
+                assert tags == null || tags[0].equals(text);
+                parser.nextToken();
+                skipValue(parser);
+            }
+            else {
+                throw new JsonReadException("expecting a field name", parser.getTokenLocation());
+            }
+            T value = values.get(text);
+            if (value == null)
+                value = catch_all;
+            if (value == null)
+                throw new JsonReadException("Expected one of " + values + ", got: " + text, parser.getTokenLocation());
+            expectObjectEnd(parser);
+            return value;
+        }
+        if (parser.getCurrentToken() != JsonToken.VALUE_STRING)
+            throw new JsonReadException("Expected a string value", parser.getTokenLocation());
+        String text = parser.getText();
+        T value = values.get(text);
+        if (value == null)
+            value = catch_all;
+        if (value == null)
+            throw new JsonReadException("Expected one of " + values + ", got: " + text, parser.getTokenLocation());
+        parser.nextToken();
+        return value;
     }
 
     /**
@@ -388,6 +567,7 @@ public abstract class JsonReader<T>
             throw new AssertionError("The JSON library should ensure there's no tokens after the main value: "
                                      + parser.getCurrentToken() + "@" + parser.getCurrentLocation());
         }
+        validate(value);
         return value;
     }
 }

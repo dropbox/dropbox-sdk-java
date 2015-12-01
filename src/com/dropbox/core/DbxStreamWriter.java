@@ -7,8 +7,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * A callback for streaming data to an {@link OutputStream}, usually
- * in the context of an API request being made by {@link DbxClient}.
+ * A callback for streaming data to an {@link OutputStream}.
  *
  * @param <E>
  *     The type of exception that your {@link #write} implementation might throw

@@ -1,12 +1,10 @@
 # Dropbox Core SDK for Java 6+
 
-A Java library to access [Dropbox's HTTP-based Core API](https://www.dropbox.com/developers/core/docs).
+A Java library to access [Dropbox's HTTP-based Core API v2](https://www.dropbox.com/developers/documentation/http#documentation).  This SDK also supports the older [Core API v1](https://www.dropbox.com/developers-v1/core/docs), but that support will be removed at some point.
 
 License: [MIT](License.txt)
 
-This is for web applications.  If you want to use Dropbox's API from Android, try the [Dropbox Core SDK for Android](https://www.dropbox.com/developers/core/sdks/android).
-
-[Javadoc.](http://dropbox.github.io/dropbox-sdk-java/api-docs/v1.8.x/)
+[Javadoc.](http://dropbox.github.io/dropbox-sdk-java/api-docs/v2.0.x/)
 
 ## Setup
 
@@ -16,12 +14,12 @@ If you're using Maven, then edit your project's "pom.xml" and add this to the `<
 <dependency>
     <groupId>com.dropbox.core</groupId>
     <artifactId>dropbox-core-sdk</artifactId>
-    <version>[1.8,1.9)</version>
+    <version>2.0-beta-3</version>
 </dependency>
 ```
 
 If you aren't using Maven, here are the JARs you need:
-- [Dropbox Core SDK 1.8.2](https://oss.sonatype.org/content/repositories/releases/com/dropbox/core/dropbox-core-sdk/1.8.2/dropbox-core-sdk-1.8.2.jar)
+- [Dropbox Core SDK 2.0-beta-3](https://oss.sonatype.org/content/repositories/releases/com/dropbox/core/dropbox-core-sdk/2.0-beta-3/dropbox-core-sdk-2.0-beta-3.jar)
 - [Jackson Core 2.6.1](https://oss.sonatype.org/content/repositories/releases/com/fasterxml/jackson/core/jackson-core/2.6.1/jackson-core-2.6.1.jar) (JSON parser)
 
 ## Get a Dropbox API key
@@ -43,13 +41,13 @@ Save the API key to a JSON file called, say, "test.app":
 ## Using the Dropbox API
 
 Before your app can access a Dropbox user's files, the user must authorize your application using OAuth 2.  Successfully completing this authorization flow gives you an _access token_ for the user's Dropbox account, which grants you the ability to make Dropbox API calls to access their files.
+  * Example for a simple web app: [Web File Browser example](examples/web-file-browser/src/com/dropbox/core/examples/web_file_browser/DropboxAuth.java)
+  * Example for an Android app: [Android example](examples/android/src/main/java/com/dropbox/core/examples/android/UserActivity.java)
+  * Example for a command-line tool: [Command-Line Authorization example](examples/authorize/src/com/dropbox/core/examples/authorize/Main.java)
 
-  * Authorization example for a simple web app: [Web File Browser example](examples/web-file-browser/src/com/dropbox/core/examples/web_file_browser/DropboxAuth.java)
-  * Authorization example for a command-line tool: [Command-Line Authorization example](examples/authorize/src/com/dropbox/core/examples/authorize/Main.java)
+Once you have an access token, create a [`DbxClientV2`](https://dropbox.github.io/dropbox-sdk-java/api-docs/v2.0.x/com/dropbox/core/v2/DbxClientV2.html) and start making API calls.
 
-Once you have an access token, create a [`DbxClient`](http://dropbox.github.io/dropbox-sdk-java/api-docs/v1.8.x/com/dropbox/core/DbxClient.html) and start making API calls.
-
-You only need to perform the authorization process once per user.  Once you have an access token for a user, save it somewhere persistent, like in a database.  The next time that user visits your app's, you can skip the authorization process and go straight to creating a `DbxClient` and making API calls.
+You only need to perform the authorization process once per user.  Once you have an access token for a user, save it somewhere persistent, like in a database.  The next time that user visits your app's, you can skip the authorization process and go straight to creating a `DbxClientV2` and making API calls.
 
 ## Running the examples
 
