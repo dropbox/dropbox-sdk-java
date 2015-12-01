@@ -14,12 +14,12 @@ If you're using Maven, then edit your project's "pom.xml" and add this to the `<
 <dependency>
     <groupId>com.dropbox.core</groupId>
     <artifactId>dropbox-core-sdk</artifactId>
-    <version>2.0-beta-2</version>
+    <version>2.0-beta-3</version>
 </dependency>
 ```
 
 If you aren't using Maven, here are the JARs you need:
-- [Dropbox Core SDK 2.0-beta-2](https://oss.sonatype.org/content/repositories/releases/com/dropbox/core/dropbox-core-sdk/2.0-beta-2/dropbox-core-sdk-2.0-beta-2.jar)
+- [Dropbox Core SDK 2.0-beta-3](https://oss.sonatype.org/content/repositories/releases/com/dropbox/core/dropbox-core-sdk/2.0-beta-3/dropbox-core-sdk-2.0-beta-3.jar)
 - [Jackson Core 2.6.1](https://oss.sonatype.org/content/repositories/releases/com/fasterxml/jackson/core/jackson-core/2.6.1/jackson-core-2.6.1.jar) (JSON parser)
 
 ## Get a Dropbox API key
