@@ -26,7 +26,7 @@ public final class DbxClientV2 extends DbxRawClientV2 {
     public final DbxSharing sharing;
 
     /**
-     * @param requestConfig
+     * @param requestConfig Default attributes to use for each request.
      * @param accessToken   The OAuth 2 access token (that you got from Dropbox) that gives your app the ability
      *                      to make Dropbox API calls against some particular user's account.  The standard way
      *                      to get one of these is to use {@link DbxWebAuth} to send your user through Dropbox's
@@ -40,9 +40,11 @@ public final class DbxClientV2 extends DbxRawClientV2 {
      * hostnames of the Dropbox API servers.  This is used in testing.  You don't normally need
      * to call this.
      *
-     * @param requestConfig
-     * @param accessToken
-     * @param host
+     * @param requestConfig Default attributes to use for each request.
+     * @param accessToken   The OAuth 2 access token (that you got from Dropbox) that gives your app the ability
+     *                      to make Dropbox API calls against some particular user's account.  The standard way
+     *                      to get one of these is to use {@link DbxWebAuth} to send your user through Dropbox's
+     * @param host Dropbox hosts to use (used for mocking during tests)
      */
     public DbxClientV2(DbxRequestConfig requestConfig, String accessToken, DbxHost host) {
         super(requestConfig, accessToken, host);

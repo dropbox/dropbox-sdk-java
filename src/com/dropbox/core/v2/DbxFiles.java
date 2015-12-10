@@ -46,8 +46,12 @@ public final class DbxFiles {
          * with a slash.
          */
         public final String pathLower;
+        /**
+         * Set if this file or folder is contained in a shared folder.
+         */
+        public final String parentSharedFolderId;
 
-        public Metadata(String name, String pathLower) {
+        public Metadata(String name, String pathLower, String parentSharedFolderId) {
             this.name = name;
             if (name == null) {
                 throw new RuntimeException("Required value for 'name' is null");
@@ -55,6 +59,12 @@ public final class DbxFiles {
             this.pathLower = pathLower;
             if (pathLower == null) {
                 throw new RuntimeException("Required value for 'pathLower' is null");
+            }
+            this.parentSharedFolderId = parentSharedFolderId;
+            if (parentSharedFolderId != null) {
+                if (!java.util.regex.Pattern.matches("[-_0-9a-zA-Z:]+", parentSharedFolderId)) {
+                    throw new RuntimeException("String 'parentSharedFolderId' does not match pattern");
+                }
             }
         }
         public JsonWriter getWriter() {
@@ -79,6 +89,10 @@ public final class DbxFiles {
             {
                 g.writeStringField("name", x.name);
                 g.writeStringField("path_lower", x.pathLower);
+                if (x.parentSharedFolderId != null) {
+                    g.writeFieldName("parent_shared_folder_id");
+                    g.writeString(x.parentSharedFolderId);
+                }
             }
         };
 
@@ -118,6 +132,7 @@ public final class DbxFiles {
             {
                 String name = null;
                 String pathLower = null;
+                String parentSharedFolderId = null;
                 while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String fieldName = parser.getCurrentName();
                     parser.nextToken();
@@ -129,6 +144,10 @@ public final class DbxFiles {
                         pathLower = JsonReader.StringReader
                             .readField(parser, "path_lower", pathLower);
                     }
+                    else if ("parent_shared_folder_id".equals(fieldName)) {
+                        parentSharedFolderId = JsonReader.StringReader
+                            .readField(parser, "parent_shared_folder_id", parentSharedFolderId);
+                    }
                     else { JsonReader.skipValue(parser); }
                 }
                 if (name == null) {
@@ -137,7 +156,7 @@ public final class DbxFiles {
                 if (pathLower == null) {
                     throw new JsonReadException("Required field \"path_lower\" is missing.", parser.getTokenLocation());
                 }
-                return new Metadata(name, pathLower);
+                return new Metadata(name, pathLower, parentSharedFolderId);
             }
         };
 
@@ -875,8 +894,8 @@ public final class DbxFiles {
          */
         public final MediaInfo mediaInfo;
 
-        public FileMetadata(String name, String pathLower, java.util.Date clientModified, java.util.Date serverModified, String rev, long size, String id, MediaInfo mediaInfo) {
-            super(name, pathLower);
+        public FileMetadata(String name, String pathLower, java.util.Date clientModified, java.util.Date serverModified, String rev, long size, String parentSharedFolderId, String id, MediaInfo mediaInfo) {
+            super(name, pathLower, parentSharedFolderId);
             this.id = id;
             if (id != null) {
                 if (id.length() < 1) {
@@ -898,7 +917,7 @@ public final class DbxFiles {
             if (rev.length() < 9) {
                 throw new RuntimeException("String 'rev' is shorter than 9");
             }
-            if (!java.util.regex.Pattern.matches("\\A[0-9a-f]+\\Z", rev)) {
+            if (!java.util.regex.Pattern.matches("[0-9a-f]+", rev)) {
                 throw new RuntimeException("String 'rev' does not match pattern");
             }
             this.size = size;
@@ -977,6 +996,7 @@ public final class DbxFiles {
                 java.util.Date serverModified = null;
                 String rev = null;
                 Long size = null;
+                String parentSharedFolderId = null;
                 String id = null;
                 MediaInfo mediaInfo = null;
                 while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
@@ -1006,6 +1026,10 @@ public final class DbxFiles {
                         size = JsonReader.UInt64Reader
                             .readField(parser, "size", size);
                     }
+                    else if ("parent_shared_folder_id".equals(fieldName)) {
+                        parentSharedFolderId = JsonReader.StringReader
+                            .readField(parser, "parent_shared_folder_id", parentSharedFolderId);
+                    }
                     else if ("id".equals(fieldName)) {
                         id = JsonReader.StringReader
                             .readField(parser, "id", id);
@@ -1034,7 +1058,7 @@ public final class DbxFiles {
                 if (size == null) {
                     throw new JsonReadException("Required field \"size\" is missing.", parser.getTokenLocation());
                 }
-                return new FileMetadata(name, pathLower, clientModified, serverModified, rev, size, id, mediaInfo);
+                return new FileMetadata(name, pathLower, clientModified, serverModified, rev, size, parentSharedFolderId, id, mediaInfo);
             }
         };
 
@@ -1060,13 +1084,24 @@ public final class DbxFiles {
          * A unique identifier for the folder.
          */
         public final String id;
+        /**
+         * If this folder is a shared folder mount point, the ID of the shared
+         * folder mounted at this location.
+         */
+        public final String sharedFolderId;
 
-        public FolderMetadata(String name, String pathLower, String id) {
-            super(name, pathLower);
+        public FolderMetadata(String name, String pathLower, String parentSharedFolderId, String id, String sharedFolderId) {
+            super(name, pathLower, parentSharedFolderId);
             this.id = id;
             if (id != null) {
                 if (id.length() < 1) {
                     throw new RuntimeException("String 'id' is shorter than 1");
+                }
+            }
+            this.sharedFolderId = sharedFolderId;
+            if (sharedFolderId != null) {
+                if (!java.util.regex.Pattern.matches("[-_0-9a-zA-Z:]+", sharedFolderId)) {
+                    throw new RuntimeException("String 'sharedFolderId' does not match pattern");
                 }
             }
         }
@@ -1095,6 +1130,10 @@ public final class DbxFiles {
                 if (x.id != null) {
                     g.writeFieldName("id");
                     g.writeString(x.id);
+                }
+                if (x.sharedFolderId != null) {
+                    g.writeFieldName("shared_folder_id");
+                    g.writeString(x.sharedFolderId);
                 }
             }
         };
@@ -1127,7 +1166,9 @@ public final class DbxFiles {
             {
                 String name = null;
                 String pathLower = null;
+                String parentSharedFolderId = null;
                 String id = null;
+                String sharedFolderId = null;
                 while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String fieldName = parser.getCurrentName();
                     parser.nextToken();
@@ -1139,9 +1180,17 @@ public final class DbxFiles {
                         pathLower = JsonReader.StringReader
                             .readField(parser, "path_lower", pathLower);
                     }
+                    else if ("parent_shared_folder_id".equals(fieldName)) {
+                        parentSharedFolderId = JsonReader.StringReader
+                            .readField(parser, "parent_shared_folder_id", parentSharedFolderId);
+                    }
                     else if ("id".equals(fieldName)) {
                         id = JsonReader.StringReader
                             .readField(parser, "id", id);
+                    }
+                    else if ("shared_folder_id".equals(fieldName)) {
+                        sharedFolderId = JsonReader.StringReader
+                            .readField(parser, "shared_folder_id", sharedFolderId);
                     }
                     else { JsonReader.skipValue(parser); }
                 }
@@ -1151,7 +1200,7 @@ public final class DbxFiles {
                 if (pathLower == null) {
                     throw new JsonReadException("Required field \"path_lower\" is missing.", parser.getTokenLocation());
                 }
-                return new FolderMetadata(name, pathLower, id);
+                return new FolderMetadata(name, pathLower, parentSharedFolderId, id, sharedFolderId);
             }
         };
 
@@ -1178,8 +1227,8 @@ public final class DbxFiles {
     public static class DeletedMetadata extends Metadata  {
         // struct DeletedMetadata
 
-        public DeletedMetadata(String name, String pathLower) {
-            super(name, pathLower);
+        public DeletedMetadata(String name, String pathLower, String parentSharedFolderId) {
+            super(name, pathLower, parentSharedFolderId);
         }
         public JsonWriter getWriter() {
             return DeletedMetadata._writer;
@@ -1234,6 +1283,7 @@ public final class DbxFiles {
             {
                 String name = null;
                 String pathLower = null;
+                String parentSharedFolderId = null;
                 while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String fieldName = parser.getCurrentName();
                     parser.nextToken();
@@ -1245,6 +1295,10 @@ public final class DbxFiles {
                         pathLower = JsonReader.StringReader
                             .readField(parser, "path_lower", pathLower);
                     }
+                    else if ("parent_shared_folder_id".equals(fieldName)) {
+                        parentSharedFolderId = JsonReader.StringReader
+                            .readField(parser, "parent_shared_folder_id", parentSharedFolderId);
+                    }
                     else { JsonReader.skipValue(parser); }
                 }
                 if (name == null) {
@@ -1253,7 +1307,7 @@ public final class DbxFiles {
                 if (pathLower == null) {
                     throw new JsonReadException("Required field \"path_lower\" is missing.", parser.getTokenLocation());
                 }
-                return new DeletedMetadata(name, pathLower);
+                return new DeletedMetadata(name, pathLower, parentSharedFolderId);
             }
         };
 
@@ -1416,7 +1470,7 @@ public final class DbxFiles {
             if (path == null) {
                 throw new RuntimeException("Required value for 'path' is null");
             }
-            if (!java.util.regex.Pattern.matches("\\A((/|id:).*)|(rev:[0-9a-f]{9,})\\Z", path)) {
+            if (!java.util.regex.Pattern.matches("((/|id:).*)|(rev:[0-9a-f]{9,})", path)) {
                 throw new RuntimeException("String 'path' does not match pattern");
             }
             if (includeMediaInfo != null) {
@@ -1499,8 +1553,8 @@ public final class DbxFiles {
     public static class ListFolderLongpollArg {
         // struct ListFolderLongpollArg
         /**
-         * A cursor as returned by {@link #listFolder} or {@link
-         * #listFolderContinue}
+         * A cursor as returned by {@link DbxFiles#listFolderBuilder} or {@link
+         * DbxFiles#listFolderContinue(String)}
          */
         public final String cursor;
         /**
@@ -1604,12 +1658,12 @@ public final class DbxFiles {
         // struct ListFolderLongpollResult
         /**
          * Indicates whether new changes are available. If true, call {@link
-         * #listFolder} to retrieve the changes.
+         * DbxFiles#listFolderBuilder} to retrieve the changes.
          */
         public final boolean changes;
         /**
          * If present, backoff for at least this many seconds before calling
-         * {@link #listFolderLongpoll} again.
+         * {@link DbxFiles#listFolderLongpoll(String,long)} again.
          */
         public final Long backoff;
 
@@ -1694,7 +1748,7 @@ public final class DbxFiles {
         // union ListFolderLongpollError
         /**
          * Indicates that the cursor has been invalidated. Call {@link
-         * #listFolder} to obtain a new cursor.
+         * DbxFiles#listFolderBuilder} to obtain a new cursor.
          */
         reset,
         other;  // *catch_all
@@ -1761,13 +1815,18 @@ public final class DbxFiles {
          * If true, :field:'FileMetadata.media_info' is set for photo and video.
          */
         public final boolean includeMediaInfo;
+        /**
+         * If true, the results will include entries for files and folders that
+         * used to exist but were deleted.
+         */
+        public final boolean includeDeleted;
 
-        public ListFolderArg(String path, Boolean recursive, Boolean includeMediaInfo) {
+        public ListFolderArg(String path, Boolean recursive, Boolean includeMediaInfo, Boolean includeDeleted) {
             this.path = path;
             if (path == null) {
                 throw new RuntimeException("Required value for 'path' is null");
             }
-            if (!java.util.regex.Pattern.matches("\\A(/.*)?\\Z", path)) {
+            if (!java.util.regex.Pattern.matches("(/.*)?", path)) {
                 throw new RuntimeException("String 'path' does not match pattern");
             }
             if (recursive != null) {
@@ -1781,6 +1840,12 @@ public final class DbxFiles {
             }
             else {
                 this.includeMediaInfo = false;
+            }
+            if (includeDeleted != null) {
+                this.includeDeleted = includeDeleted.booleanValue();
+            }
+            else {
+                this.includeDeleted = false;
             }
         }
         static final JsonWriter<ListFolderArg> _writer = new JsonWriter<ListFolderArg>()
@@ -1798,6 +1863,7 @@ public final class DbxFiles {
                 g.writeStringField("path", x.path);
                 g.writeBooleanField("recursive", x.recursive);
                 g.writeBooleanField("include_media_info", x.includeMediaInfo);
+                g.writeBooleanField("include_deleted", x.includeDeleted);
             }
         };
 
@@ -1819,6 +1885,7 @@ public final class DbxFiles {
                 String path = null;
                 Boolean recursive = null;
                 Boolean includeMediaInfo = null;
+                Boolean includeDeleted = null;
                 while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String fieldName = parser.getCurrentName();
                     parser.nextToken();
@@ -1834,12 +1901,16 @@ public final class DbxFiles {
                         includeMediaInfo = JsonReader.BooleanReader
                             .readField(parser, "include_media_info", includeMediaInfo);
                     }
+                    else if ("include_deleted".equals(fieldName)) {
+                        includeDeleted = JsonReader.BooleanReader
+                            .readField(parser, "include_deleted", includeDeleted);
+                    }
                     else { JsonReader.skipValue(parser); }
                 }
                 if (path == null) {
                     throw new JsonReadException("Required field \"path\" is missing.", parser.getTokenLocation());
                 }
-                return new ListFolderArg(path, recursive, includeMediaInfo);
+                return new ListFolderArg(path, recursive, includeMediaInfo, includeDeleted);
             }
         };
 
@@ -1866,13 +1937,13 @@ public final class DbxFiles {
          */
         public final java.util.ArrayList<Metadata> entries;
         /**
-         * Pass the cursor into {@link #listFolderContinue} to see what's
-         * changed in the folder since your previous query.
+         * Pass the cursor into {@link DbxFiles#listFolderContinue(String)} to
+         * see what's changed in the folder since your previous query.
          */
         public final String cursor;
         /**
          * If true, then there are more entries available. Pass the cursor to
-         * {@link #listFolderContinue} to retrieve the rest.
+         * {@link DbxFiles#listFolderContinue(String)} to retrieve the rest.
          */
         public final boolean hasMore;
 
@@ -2132,8 +2203,9 @@ public final class DbxFiles {
     public static class ListFolderContinueArg {
         // struct ListFolderContinueArg
         /**
-         * The cursor returned by your last call to {@link #listFolder} or
-         * {@link #listFolderContinue}.
+         * The cursor returned by your last call to {@link
+         * DbxFiles#listFolderBuilder} or {@link
+         * DbxFiles#listFolderContinue(String)}.
          */
         public final String cursor;
 
@@ -2243,7 +2315,7 @@ public final class DbxFiles {
 
         /**
          * Indicates that the cursor has been invalidated. Call {@link
-         * #listFolder} to obtain a new cursor.
+         * DbxFiles#listFolderBuilder} to obtain a new cursor.
          */
         public static final ListFolderContinueError reset = new ListFolderContinueError(Tag.reset);
 
@@ -2375,8 +2447,8 @@ public final class DbxFiles {
     public static class ListFolderGetLatestCursorResult {
         // struct ListFolderGetLatestCursorResult
         /**
-         * Pass the cursor into {@link #listFolderContinue} to see what's
-         * changed in the folder since your previous query.
+         * Pass the cursor into {@link DbxFiles#listFolderContinue(String)} to
+         * see what's changed in the folder since your previous query.
          */
         public final String cursor;
 
@@ -2614,7 +2686,7 @@ public final class DbxFiles {
             if (path == null) {
                 throw new RuntimeException("Required value for 'path' is null");
             }
-            if (!java.util.regex.Pattern.matches("\\A((/|id:).*)|(rev:[0-9a-f]{9,})\\Z", path)) {
+            if (!java.util.regex.Pattern.matches("((/|id:).*)|(rev:[0-9a-f]{9,})", path)) {
                 throw new RuntimeException("String 'path' does not match pattern");
             }
             this.rev = rev;
@@ -2622,7 +2694,7 @@ public final class DbxFiles {
                 if (rev.length() < 9) {
                     throw new RuntimeException("String 'rev' is shorter than 9");
                 }
-                if (!java.util.regex.Pattern.matches("\\A[0-9a-f]+\\Z", rev)) {
+                if (!java.util.regex.Pattern.matches("[0-9a-f]+", rev)) {
                     throw new RuntimeException("String 'rev' does not match pattern");
                 }
             }
@@ -3404,7 +3476,8 @@ public final class DbxFiles {
         // struct UploadSessionStartResult
         /**
          * A unique identifier for the upload session. Pass this to {@link
-         * #uploadSessionAppend} and {@link #uploadSessionFinish}.
+         * DbxFiles#uploadSessionAppendBuilder} and {@link
+         * DbxFiles#uploadSessionFinishBuilder}.
          */
         public final String sessionId;
 
@@ -3481,7 +3554,8 @@ public final class DbxFiles {
     public static class UploadSessionCursor {
         // struct UploadSessionCursor
         /**
-         * The upload session ID (returned by {@link #uploadSessionStart}).
+         * The upload session ID (returned by {@link
+         * DbxFiles#uploadSessionStart}).
          */
         public final String sessionId;
         /**
@@ -3654,7 +3728,7 @@ public final class DbxFiles {
                     if (this.updateValue.length() < 9) {
                         throw new RuntimeException("String 'this.updateValue' is shorter than 9");
                     }
-                    if (!java.util.regex.Pattern.matches("\\A[0-9a-f]+\\Z", this.updateValue)) {
+                    if (!java.util.regex.Pattern.matches("[0-9a-f]+", this.updateValue)) {
                         throw new RuntimeException("String 'this.updateValue' does not match pattern");
                     }
                     break;
@@ -3803,7 +3877,7 @@ public final class DbxFiles {
             if (path == null) {
                 throw new RuntimeException("Required value for 'path' is null");
             }
-            if (!java.util.regex.Pattern.matches("\\A/.*\\Z", path)) {
+            if (!java.util.regex.Pattern.matches("/.*", path)) {
                 throw new RuntimeException("String 'path' does not match pattern");
             }
             if (mode != null) {
@@ -4107,7 +4181,8 @@ public final class DbxFiles {
         public final long maxResults;
         /**
          * The search mode (filename, filename_and_content, or
-         * deleted_filename).
+         * deleted_filename). Note that searching file content is only available
+         * for Dropbox Business accounts.
          */
         public final SearchMode mode;
 
@@ -4116,7 +4191,7 @@ public final class DbxFiles {
             if (path == null) {
                 throw new RuntimeException("Required value for 'path' is null");
             }
-            if (!java.util.regex.Pattern.matches("\\A(/.*)?\\Z", path)) {
+            if (!java.util.regex.Pattern.matches("(/.*)?", path)) {
                 throw new RuntimeException("String 'path' does not match pattern");
             }
             this.query = query;
@@ -4416,12 +4491,13 @@ public final class DbxFiles {
         public final java.util.ArrayList<SearchMatch> matches;
         /**
          * Used for paging. If true, indicates there is another page of results
-         * available that can be fetched by calling {@link #search} again.
+         * available that can be fetched by calling {@link
+         * DbxFiles#searchBuilder} again.
          */
         public final boolean more;
         /**
          * Used for paging. Value to set the start argument to when calling
-         * {@link #search} to fetch the next page of results.
+         * {@link DbxFiles#searchBuilder} to fetch the next page of results.
          */
         public final long start;
 
@@ -5248,7 +5324,7 @@ public final class DbxFiles {
             if (path == null) {
                 throw new RuntimeException("Required value for 'path' is null");
             }
-            if (!java.util.regex.Pattern.matches("\\A/.*\\Z", path)) {
+            if (!java.util.regex.Pattern.matches("/.*", path)) {
                 throw new RuntimeException("String 'path' does not match pattern");
             }
         }
@@ -5455,7 +5531,7 @@ public final class DbxFiles {
             if (path == null) {
                 throw new RuntimeException("Required value for 'path' is null");
             }
-            if (!java.util.regex.Pattern.matches("\\A/.*\\Z", path)) {
+            if (!java.util.regex.Pattern.matches("/.*", path)) {
                 throw new RuntimeException("String 'path' does not match pattern");
             }
         }
@@ -5729,14 +5805,14 @@ public final class DbxFiles {
             if (fromPath == null) {
                 throw new RuntimeException("Required value for 'fromPath' is null");
             }
-            if (!java.util.regex.Pattern.matches("\\A/.*\\Z", fromPath)) {
+            if (!java.util.regex.Pattern.matches("/.*", fromPath)) {
                 throw new RuntimeException("String 'fromPath' does not match pattern");
             }
             this.toPath = toPath;
             if (toPath == null) {
                 throw new RuntimeException("Required value for 'toPath' is null");
             }
-            if (!java.util.regex.Pattern.matches("\\A/.*\\Z", toPath)) {
+            if (!java.util.regex.Pattern.matches("/.*", toPath)) {
                 throw new RuntimeException("String 'toPath' does not match pattern");
             }
         }
@@ -6266,7 +6342,7 @@ public final class DbxFiles {
             if (path == null) {
                 throw new RuntimeException("Required value for 'path' is null");
             }
-            if (!java.util.regex.Pattern.matches("\\A((/|id:).*)|(rev:[0-9a-f]{9,})\\Z", path)) {
+            if (!java.util.regex.Pattern.matches("((/|id:).*)|(rev:[0-9a-f]{9,})", path)) {
                 throw new RuntimeException("String 'path' does not match pattern");
             }
             if (format != null) {
@@ -6569,7 +6645,7 @@ public final class DbxFiles {
             if (path == null) {
                 throw new RuntimeException("Required value for 'path' is null");
             }
-            if (!java.util.regex.Pattern.matches("\\A((/|id:).*)|(rev:[0-9a-f]{9,})\\Z", path)) {
+            if (!java.util.regex.Pattern.matches("((/|id:).*)|(rev:[0-9a-f]{9,})", path)) {
                 throw new RuntimeException("String 'path' does not match pattern");
             }
             this.rev = rev;
@@ -6577,7 +6653,7 @@ public final class DbxFiles {
                 if (rev.length() < 9) {
                     throw new RuntimeException("String 'rev' is shorter than 9");
                 }
-                if (!java.util.regex.Pattern.matches("\\A[0-9a-f]+\\Z", rev)) {
+                if (!java.util.regex.Pattern.matches("[0-9a-f]+", rev)) {
                     throw new RuntimeException("String 'rev' does not match pattern");
                 }
             }
@@ -6865,7 +6941,7 @@ public final class DbxFiles {
             if (path == null) {
                 throw new RuntimeException("Required value for 'path' is null");
             }
-            if (!java.util.regex.Pattern.matches("\\A/.*\\Z", path)) {
+            if (!java.util.regex.Pattern.matches("/.*", path)) {
                 throw new RuntimeException("String 'path' does not match pattern");
             }
             if (limit != null) {
@@ -7216,7 +7292,7 @@ public final class DbxFiles {
             if (path == null) {
                 throw new RuntimeException("Required value for 'path' is null");
             }
-            if (!java.util.regex.Pattern.matches("\\A/.*\\Z", path)) {
+            if (!java.util.regex.Pattern.matches("/.*", path)) {
                 throw new RuntimeException("String 'path' does not match pattern");
             }
             this.rev = rev;
@@ -7226,7 +7302,7 @@ public final class DbxFiles {
             if (rev.length() < 9) {
                 throw new RuntimeException("String 'rev' is shorter than 9");
             }
-            if (!java.util.regex.Pattern.matches("\\A[0-9a-f]+\\Z", rev)) {
+            if (!java.util.regex.Pattern.matches("[0-9a-f]+", rev)) {
                 throw new RuntimeException("String 'rev' does not match pattern");
             }
         }
@@ -7519,7 +7595,7 @@ public final class DbxFiles {
     }
 
     /**
-     * Exception thrown by {@link #getMetadata}.
+     * Exception thrown by {@link DbxFiles#getMetadata(String,boolean)}.
      */
     public static class GetMetadataException extends DbxApiException {
         /**
@@ -7572,7 +7648,7 @@ public final class DbxFiles {
     }
 
     /**
-     * Exception thrown by {@link #listFolderLongpoll}.
+     * Exception thrown by {@link DbxFiles#listFolderLongpoll(String,long)}.
      */
     public static class ListFolderLongpollException extends DbxApiException {
         /**
@@ -7587,9 +7663,13 @@ public final class DbxFiles {
     }
     /**
      * A longpoll endpoint to wait for changes on an account. In conjunction
-     * with {@link #listFolder}, this call gives you a low-latency way to
-     * monitor an account for file changes. The connection will block until
-     * there are changes available or a timeout occurs.
+     * with {@link DbxFiles#listFolderBuilder}, this call gives you a
+     * low-latency way to monitor an account for file changes. The connection
+     * will block until there are changes available or a timeout occurs. This
+     * endpoint is useful mostly for client-side apps. If you're looking for
+     * server-side notifications, check out our <a
+     * href="https://www.dropbox.com/developers/reference/webhooks">webhooks
+     * documentation</a>.
      */
     private ListFolderLongpollResult listFolderLongpoll(ListFolderLongpollArg arg)
             throws ListFolderLongpollException, DbxException
@@ -7610,9 +7690,13 @@ public final class DbxFiles {
     }
     /**
      * A longpoll endpoint to wait for changes on an account. In conjunction
-     * with {@link #listFolder}, this call gives you a low-latency way to
-     * monitor an account for file changes. The connection will block until
-     * there are changes available or a timeout occurs.
+     * with {@link DbxFiles#listFolderBuilder}, this call gives you a
+     * low-latency way to monitor an account for file changes. The connection
+     * will block until there are changes available or a timeout occurs. This
+     * endpoint is useful mostly for client-side apps. If you're looking for
+     * server-side notifications, check out our <a
+     * href="https://www.dropbox.com/developers/reference/webhooks">webhooks
+     * documentation</a>.
      */
     public ListFolderLongpollResult listFolderLongpoll(String cursor)
           throws ListFolderLongpollException, DbxException
@@ -7622,9 +7706,13 @@ public final class DbxFiles {
     }
     /**
      * A longpoll endpoint to wait for changes on an account. In conjunction
-     * with {@link #listFolder}, this call gives you a low-latency way to
-     * monitor an account for file changes. The connection will block until
-     * there are changes available or a timeout occurs.
+     * with {@link DbxFiles#listFolderBuilder}, this call gives you a
+     * low-latency way to monitor an account for file changes. The connection
+     * will block until there are changes available or a timeout occurs. This
+     * endpoint is useful mostly for client-side apps. If you're looking for
+     * server-side notifications, check out our <a
+     * href="https://www.dropbox.com/developers/reference/webhooks">webhooks
+     * documentation</a>.
      */
     public ListFolderLongpollResult listFolderLongpoll(String cursor, long timeout)
           throws ListFolderLongpollException, DbxException
@@ -7634,7 +7722,7 @@ public final class DbxFiles {
     }
 
     /**
-     * Exception thrown by {@link #listFolder}.
+     * Exception thrown by {@link DbxFiles#listFolderBuilder}.
      */
     public static class ListFolderException extends DbxApiException {
         /**
@@ -7673,7 +7761,7 @@ public final class DbxFiles {
     public ListFolderResult listFolder(String path)
           throws ListFolderException, DbxException
     {
-        ListFolderArg arg = new ListFolderArg(path, null, null);
+        ListFolderArg arg = new ListFolderArg(path, null, null, null);
         return listFolder(arg);
     }
     /**
@@ -7684,6 +7772,7 @@ public final class DbxFiles {
         private String path;
         private Boolean recursive;
         private Boolean includeMediaInfo;
+        private Boolean includeDeleted;
         private ListFolderBuilder(String path)
         {
             this.path = path;
@@ -7698,9 +7787,14 @@ public final class DbxFiles {
             this.includeMediaInfo = includeMediaInfo;
             return this;
         }
+        public ListFolderBuilder includeDeleted(boolean includeDeleted)
+        {
+            this.includeDeleted = includeDeleted;
+            return this;
+        }
         public ListFolderResult start() throws ListFolderException, DbxException
         {
-            ListFolderArg arg = new ListFolderArg(path, recursive, includeMediaInfo);
+            ListFolderArg arg = new ListFolderArg(path, recursive, includeMediaInfo, includeDeleted);
             return DbxFiles.this.listFolder(arg);
         }
     }
@@ -7713,7 +7807,7 @@ public final class DbxFiles {
     }
 
     /**
-     * Exception thrown by {@link #listFolderContinue}.
+     * Exception thrown by {@link DbxFiles#listFolderContinue(String)}.
      */
     public static class ListFolderContinueException extends DbxApiException {
         /**
@@ -7727,8 +7821,9 @@ public final class DbxFiles {
         }
     }
     /**
-     * Once a cursor has been retrieved from {@link #listFolder}, use this to
-     * paginate through all files and retrieve updates to the folder.
+     * Once a cursor has been retrieved from {@link DbxFiles#listFolderBuilder},
+     * use this to paginate through all files and retrieve updates to the
+     * folder.
      */
     private ListFolderResult listFolderContinue(ListFolderContinueArg arg)
             throws ListFolderContinueException, DbxException
@@ -7748,8 +7843,9 @@ public final class DbxFiles {
         }
     }
     /**
-     * Once a cursor has been retrieved from {@link #listFolder}, use this to
-     * paginate through all files and retrieve updates to the folder.
+     * Once a cursor has been retrieved from {@link DbxFiles#listFolderBuilder},
+     * use this to paginate through all files and retrieve updates to the
+     * folder.
      */
     public ListFolderResult listFolderContinue(String cursor)
           throws ListFolderContinueException, DbxException
@@ -7759,7 +7855,7 @@ public final class DbxFiles {
     }
 
     /**
-     * Exception thrown by {@link #listFolderGetLatestCursor}.
+     * Exception thrown by {@link DbxFiles#listFolderGetLatestCursorBuilder}.
      */
     public static class ListFolderGetLatestCursorException extends DbxApiException {
         /**
@@ -7774,10 +7870,11 @@ public final class DbxFiles {
     }
     /**
      * A way to quickly get a cursor for the folder's state. Unlike {@link
-     * #listFolder}, {@link #listFolderGetLatestCursor} doesn't return any
-     * entries. This endpoint is for app which only needs to know about new
-     * files and modifications and doesn't need to know about files that already
-     * exist in Dropbox.
+     * DbxFiles#listFolderBuilder}, {@link
+     * DbxFiles#listFolderGetLatestCursorBuilder} doesn't return any entries.
+     * This endpoint is for app which only needs to know about new files and
+     * modifications and doesn't need to know about files that already exist in
+     * Dropbox.
      */
     private ListFolderGetLatestCursorResult listFolderGetLatestCursor(ListFolderArg arg)
             throws ListFolderGetLatestCursorException, DbxException
@@ -7798,15 +7895,16 @@ public final class DbxFiles {
     }
     /**
      * A way to quickly get a cursor for the folder's state. Unlike {@link
-     * #listFolder}, {@link #listFolderGetLatestCursor} doesn't return any
-     * entries. This endpoint is for app which only needs to know about new
-     * files and modifications and doesn't need to know about files that already
-     * exist in Dropbox.
+     * DbxFiles#listFolderBuilder}, {@link
+     * DbxFiles#listFolderGetLatestCursorBuilder} doesn't return any entries.
+     * This endpoint is for app which only needs to know about new files and
+     * modifications and doesn't need to know about files that already exist in
+     * Dropbox.
      */
     public ListFolderGetLatestCursorResult listFolderGetLatestCursor(String path)
           throws ListFolderGetLatestCursorException, DbxException
     {
-        ListFolderArg arg = new ListFolderArg(path, null, null);
+        ListFolderArg arg = new ListFolderArg(path, null, null, null);
         return listFolderGetLatestCursor(arg);
     }
     /**
@@ -7817,6 +7915,7 @@ public final class DbxFiles {
         private String path;
         private Boolean recursive;
         private Boolean includeMediaInfo;
+        private Boolean includeDeleted;
         private ListFolderGetLatestCursorBuilder(String path)
         {
             this.path = path;
@@ -7831,18 +7930,24 @@ public final class DbxFiles {
             this.includeMediaInfo = includeMediaInfo;
             return this;
         }
+        public ListFolderGetLatestCursorBuilder includeDeleted(boolean includeDeleted)
+        {
+            this.includeDeleted = includeDeleted;
+            return this;
+        }
         public ListFolderGetLatestCursorResult start() throws ListFolderGetLatestCursorException, DbxException
         {
-            ListFolderArg arg = new ListFolderArg(path, recursive, includeMediaInfo);
+            ListFolderArg arg = new ListFolderArg(path, recursive, includeMediaInfo, includeDeleted);
             return DbxFiles.this.listFolderGetLatestCursor(arg);
         }
     }
     /**
      * A way to quickly get a cursor for the folder's state. Unlike {@link
-     * #listFolder}, {@link #listFolderGetLatestCursor} doesn't return any
-     * entries. This endpoint is for app which only needs to know about new
-     * files and modifications and doesn't need to know about files that already
-     * exist in Dropbox.
+     * DbxFiles#listFolderBuilder}, {@link
+     * DbxFiles#listFolderGetLatestCursorBuilder} doesn't return any entries.
+     * This endpoint is for app which only needs to know about new files and
+     * modifications and doesn't need to know about files that already exist in
+     * Dropbox.
      */
     public ListFolderGetLatestCursorBuilder listFolderGetLatestCursorBuilder(String path)
     {
@@ -7850,7 +7955,7 @@ public final class DbxFiles {
     }
 
     /**
-     * Exception thrown by {@link #download}.
+     * Exception thrown by {@link DbxFiles#downloadBuilder}.
      */
     public static class DownloadException extends DbxApiException {
         /**
@@ -7915,7 +8020,7 @@ public final class DbxFiles {
     }
 
     /**
-     * Exception thrown by {@link #uploadSessionStart}.
+     * Exception thrown by {@link DbxFiles#uploadSessionStart}.
      */
     public static class UploadSessionStartException extends DbxApiException {
         public UploadSessionStartException() {
@@ -7931,7 +8036,7 @@ public final class DbxFiles {
     };
     /**
      * The {@link com.dropbox.core.DbxUploader} returned by {@link
-     * #uploadSessionStart}.
+     * DbxFiles#uploadSessionStart}.
      */
     public static class UploadSessionStartUploader extends com.dropbox.core.DbxUploader<UploadSessionStartResult,Object,UploadSessionStartException> {
         UploadSessionStartUploader(HttpRequestor.Uploader httpUploader, JsonReader<UploadSessionStartResult> resultReader, JsonReader<Object>errorReader, DbxRequestUtil.RouteSpecificErrorMaker<UploadSessionStartException> errorMaker) {
@@ -7948,8 +8053,10 @@ public final class DbxFiles {
     /**
      * Upload sessions allow you to upload a single file using multiple
      * requests. This call starts a new upload session with the given data.  You
-     * can then use {@link #uploadSessionAppend} to add more data and {@link
-     * #uploadSessionFinish} to save all the data to a file in Dropbox.
+     * can then use {@link DbxFiles#uploadSessionAppendBuilder} to add more data
+     * and {@link DbxFiles#uploadSessionFinishBuilder} to save all the data to a
+     * file in Dropbox. A single request should not upload more than 150 MB of
+     * file contents.
      */
     public UploadSessionStartUploader uploadSessionStart()
             throws DbxException
@@ -7967,7 +8074,7 @@ public final class DbxFiles {
     }
 
     /**
-     * Exception thrown by {@link #uploadSessionAppend}.
+     * Exception thrown by {@link DbxFiles#uploadSessionAppendBuilder}.
      */
     public static class UploadSessionAppendException extends DbxApiException {
         /**
@@ -7989,7 +8096,7 @@ public final class DbxFiles {
     };
     /**
      * The {@link com.dropbox.core.DbxUploader} returned by {@link
-     * #uploadSessionAppend}.
+     * DbxFiles#uploadSessionAppendBuilder}.
      */
     public static class UploadSessionAppendUploader extends com.dropbox.core.DbxUploader<Object,UploadSessionLookupError,UploadSessionAppendException> {
         UploadSessionAppendUploader(HttpRequestor.Uploader httpUploader, JsonReader<Object> resultReader, JsonReader<UploadSessionLookupError>errorReader, DbxRequestUtil.RouteSpecificErrorMaker<UploadSessionAppendException> errorMaker) {
@@ -8004,7 +8111,8 @@ public final class DbxFiles {
         }
     };
     /**
-     * Append more data to an upload session.
+     * Append more data to an upload session. A single request should not upload
+     * more than 150 MB of file contents.
      */
     private UploadSessionAppendUploader uploadSessionAppend(UploadSessionCursor arg)
             throws DbxException
@@ -8040,7 +8148,8 @@ public final class DbxFiles {
         }
     }
     /**
-     * Append more data to an upload session.
+     * Append more data to an upload session. A single request should not upload
+     * more than 150 MB of file contents.
      */
     public UploadSessionAppendBuilder uploadSessionAppendBuilder(String sessionId, long offset)
     {
@@ -8048,7 +8157,7 @@ public final class DbxFiles {
     }
 
     /**
-     * Exception thrown by {@link #uploadSessionFinish}.
+     * Exception thrown by {@link DbxFiles#uploadSessionFinishBuilder}.
      */
     public static class UploadSessionFinishException extends DbxApiException {
         /**
@@ -8070,7 +8179,7 @@ public final class DbxFiles {
     };
     /**
      * The {@link com.dropbox.core.DbxUploader} returned by {@link
-     * #uploadSessionFinish}.
+     * DbxFiles#uploadSessionFinishBuilder}.
      */
     public static class UploadSessionFinishUploader extends com.dropbox.core.DbxUploader<FileMetadata,UploadSessionFinishError,UploadSessionFinishException> {
         UploadSessionFinishUploader(HttpRequestor.Uploader httpUploader, JsonReader<FileMetadata> resultReader, JsonReader<UploadSessionFinishError>errorReader, DbxRequestUtil.RouteSpecificErrorMaker<UploadSessionFinishException> errorMaker) {
@@ -8086,7 +8195,8 @@ public final class DbxFiles {
     };
     /**
      * Finish an upload session and save the uploaded data to the given file
-     * path.
+     * path. A single request should not upload more than 150 MB of file
+     * contents.
      */
     private UploadSessionFinishUploader uploadSessionFinish(UploadSessionFinishArg arg)
             throws DbxException
@@ -8123,7 +8233,8 @@ public final class DbxFiles {
     }
     /**
      * Finish an upload session and save the uploaded data to the given file
-     * path.
+     * path. A single request should not upload more than 150 MB of file
+     * contents.
      */
     public UploadSessionFinishBuilder uploadSessionFinishBuilder(UploadSessionCursor cursor, CommitInfo commit)
     {
@@ -8131,7 +8242,7 @@ public final class DbxFiles {
     }
 
     /**
-     * Exception thrown by {@link #upload}.
+     * Exception thrown by {@link DbxFiles#uploadBuilder}.
      */
     public static class UploadException extends DbxApiException {
         /**
@@ -8152,7 +8263,8 @@ public final class DbxFiles {
         }
     };
     /**
-     * The {@link com.dropbox.core.DbxUploader} returned by {@link #upload}.
+     * The {@link com.dropbox.core.DbxUploader} returned by {@link
+     * DbxFiles#uploadBuilder}.
      */
     public static class UploadUploader extends com.dropbox.core.DbxUploader<FileMetadata,UploadError,UploadException> {
         UploadUploader(HttpRequestor.Uploader httpUploader, JsonReader<FileMetadata> resultReader, JsonReader<UploadError>errorReader, DbxRequestUtil.RouteSpecificErrorMaker<UploadException> errorMaker) {
@@ -8167,7 +8279,9 @@ public final class DbxFiles {
         }
     };
     /**
-     * Create a new file with the contents provided in the request.
+     * Create a new file with the contents provided in the request. Do not use
+     * this to upload a file larger than 150 MB. Instead, create an upload
+     * session with {@link DbxFiles#uploadSessionStart}.
      */
     private UploadUploader upload(CommitInfo arg)
             throws DbxException
@@ -8225,7 +8339,9 @@ public final class DbxFiles {
         }
     }
     /**
-     * Create a new file with the contents provided in the request.
+     * Create a new file with the contents provided in the request. Do not use
+     * this to upload a file larger than 150 MB. Instead, create an upload
+     * session with {@link DbxFiles#uploadSessionStart}.
      */
     public UploadBuilder uploadBuilder(String path)
     {
@@ -8233,7 +8349,7 @@ public final class DbxFiles {
     }
 
     /**
-     * Exception thrown by {@link #search}.
+     * Exception thrown by {@link DbxFiles#searchBuilder}.
      */
     public static class SearchException extends DbxApiException {
         /**
@@ -8320,7 +8436,7 @@ public final class DbxFiles {
     }
 
     /**
-     * Exception thrown by {@link #createFolder}.
+     * Exception thrown by {@link DbxFiles#createFolder(String)}.
      */
     public static class CreateFolderException extends DbxApiException {
         /**
@@ -8364,7 +8480,7 @@ public final class DbxFiles {
     }
 
     /**
-     * Exception thrown by {@link #delete}.
+     * Exception thrown by {@link DbxFiles#delete(String)}.
      */
     public static class DeleteException extends DbxApiException {
         /**
@@ -8410,7 +8526,7 @@ public final class DbxFiles {
     }
 
     /**
-     * Exception thrown by {@link #permanentlyDelete}.
+     * Exception thrown by {@link DbxFiles#permanentlyDelete(String)}.
      */
     public static class PermanentlyDeleteException extends DbxApiException {
         /**
@@ -8425,7 +8541,8 @@ public final class DbxFiles {
     }
     /**
      * Permanently delete the file or folder at a given path (see
-     * https://www.dropbox.com/en/help/40).
+     * https://www.dropbox.com/en/help/40). Note: This endpoint is only
+     * available for Dropbox Business apps.
      */
     private void permanentlyDelete(DeleteArg arg)
             throws PermanentlyDeleteException, DbxException
@@ -8446,7 +8563,8 @@ public final class DbxFiles {
     }
     /**
      * Permanently delete the file or folder at a given path (see
-     * https://www.dropbox.com/en/help/40).
+     * https://www.dropbox.com/en/help/40). Note: This endpoint is only
+     * available for Dropbox Business apps.
      */
     public void permanentlyDelete(String path)
           throws PermanentlyDeleteException, DbxException
@@ -8456,7 +8574,7 @@ public final class DbxFiles {
     }
 
     /**
-     * Exception thrown by {@link #copy}.
+     * Exception thrown by {@link DbxFiles#copy(String,String)}.
      */
     public static class CopyException extends DbxApiException {
         /**
@@ -8502,7 +8620,7 @@ public final class DbxFiles {
     }
 
     /**
-     * Exception thrown by {@link #move}.
+     * Exception thrown by {@link DbxFiles#move(String,String)}.
      */
     public static class MoveException extends DbxApiException {
         /**
@@ -8548,7 +8666,7 @@ public final class DbxFiles {
     }
 
     /**
-     * Exception thrown by {@link #getThumbnail}.
+     * Exception thrown by {@link DbxFiles#getThumbnailBuilder}.
      */
     public static class GetThumbnailException extends DbxApiException {
         /**
@@ -8625,7 +8743,7 @@ public final class DbxFiles {
     }
 
     /**
-     * Exception thrown by {@link #getPreview}.
+     * Exception thrown by {@link DbxFiles#getPreviewBuilder}.
      */
     public static class GetPreviewException extends DbxApiException {
         /**
@@ -8694,7 +8812,7 @@ public final class DbxFiles {
     }
 
     /**
-     * Exception thrown by {@link #listRevisions}.
+     * Exception thrown by {@link DbxFiles#listRevisions(String,long)}.
      */
     public static class ListRevisionsException extends DbxApiException {
         /**
@@ -8747,7 +8865,7 @@ public final class DbxFiles {
     }
 
     /**
-     * Exception thrown by {@link #restore}.
+     * Exception thrown by {@link DbxFiles#restore(String,String)}.
      */
     public static class RestoreException extends DbxApiException {
         /**

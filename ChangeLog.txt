@@ -1,7 +1,12 @@
 ---------------------------------------------
+2.0-beta-4 (2015-12-10)
+- Update sharing endpoints to support new paging routes.
+- Fix bug that caused sharing calls to fail due to bad shared folder IDs.
+
+---------------------------------------------
 2.0-beta-3 (2015-12-01)
 - Add a workaround for older Android versions' buggy SecureRandom.
-- Fix android example
+- Fix android example.
 
 ---------------------------------------------
 2.0-beta-2 (2015-11-13)

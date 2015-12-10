@@ -7,7 +7,7 @@ This shows the Dropbox API authorization flow and some API calls to retrieve fil
 Prerequisites: Apache Maven (to build the SDK), [Android Studio](http://developer.android.com/sdk/installing/) (not strictly necessary)
 
 1. Download this repository.
-2. Build the SDK: run `mvn package` in the SDK root directory (two levels up from this folder).
+2. Build the SDK: run `mvn install` in the SDK root directory (two levels up from this folder).
 3. In Android Studio, choose "Import Project" and select this folder.
 4. Edit "src/main/AndroidManifest.xml" and "src/main/res/values/strings.xml" and replace `YOUR_APP_KEY_HERE` with your Dropbox API key ([how to get a Dropbox API key](../../ReadMe.md#get-a-dropbox-api-key)).
 5. Build and run.

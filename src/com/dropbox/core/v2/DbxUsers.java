@@ -183,7 +183,7 @@ public final class DbxUsers {
          */
         pro,
         /**
-         * The Dropbox for Business account type.
+         * The Dropbox Business account type.
          */
         business;
 
@@ -1584,7 +1584,7 @@ public final class DbxUsers {
     }
 
     /**
-     * Exception thrown by {@link #getAccount}.
+     * Exception thrown by {@link DbxUsers#getAccount(String)}.
      */
     public static class GetAccountException extends DbxApiException {
         /**
@@ -1628,7 +1628,7 @@ public final class DbxUsers {
     }
 
     /**
-     * Exception thrown by {@link #getCurrentAccount}.
+     * Exception thrown by {@link DbxUsers#getCurrentAccount}.
      */
     public static class GetCurrentAccountException extends DbxApiException {
         public GetCurrentAccountException() {
@@ -1657,7 +1657,7 @@ public final class DbxUsers {
     }
 
     /**
-     * Exception thrown by {@link #getSpaceUsage}.
+     * Exception thrown by {@link DbxUsers#getSpaceUsage}.
      */
     public static class GetSpaceUsageException extends DbxApiException {
         public GetSpaceUsageException() {
@@ -1686,7 +1686,8 @@ public final class DbxUsers {
     }
 
     /**
-     * Exception thrown by {@link #getAccountBatch}.
+     * Exception thrown by {@link
+     * DbxUsers#getAccountBatch(java.util.ArrayList)}.
      */
     public static class GetAccountBatchException extends DbxApiException {
         /**

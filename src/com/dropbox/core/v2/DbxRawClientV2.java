@@ -11,9 +11,13 @@ import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
 import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.util.LangUtil;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
@@ -108,11 +112,8 @@ public class DbxRawClientV2 {
             throws DbxRequestUtil.ErrorWrapper, DbxException
     {
         try {
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            argWriter.writeToStream(arg, out, false);
-            String argJson = new String(out.toByteArray(), "UTF-8");
             ArrayList<HttpRequestor.Header> headers = DbxRequestUtil.addAuthHeader(null, accessToken);
-            headers.add(new HttpRequestor.Header("Dropbox-API-Arg", argJson));
+            headers.add(new HttpRequestor.Header("Dropbox-API-Arg", headerSafeJson(arg, argWriter)));
             headers.add(new HttpRequestor.Header("Content-Type", ""));
             byte[] body = new byte[0];
             HttpRequestor.Response response = DbxRequestUtil.startPostRaw(requestConfig, host, path, body, headers);
@@ -141,6 +142,29 @@ public class DbxRawClientV2 {
         }
     }
 
+    private static final JsonFactory jsonFactory = new JsonFactory();
+
+    private static <T> String headerSafeJson(T value, JsonWriter<T> writer)
+    {
+        if (writer == null) {
+            assert value == null : value;
+            return "null";
+        }
+        StringWriter out = new StringWriter();
+        try {
+            JsonGenerator g = jsonFactory.createGenerator(out);
+            // Escape 0x7F, because it's not allowed in an HTTP header.
+            // Escape all non-ASCII because the new HTTP spec recommends against non-ASCII in headers.
+            g.setHighestNonEscapedChar(0x7E);
+            writer.write(value, g);
+            g.flush();
+        }
+        catch (IOException ex) {
+            throw LangUtil.mkAssert("Impossible", ex);
+        }
+        return out.toString();
+    }
+
     public static <ArgT,ResT,ErrT,X extends Throwable> DbxUploader<ResT,ErrT,X> uploadStyle(
             DbxRequestConfig requestConfig, String accessToken,
             String host, String path, ArgT arg,
@@ -152,19 +176,7 @@ public class DbxRawClientV2 {
         ArrayList<HttpRequestor.Header> headers = DbxRequestUtil.addAuthHeader(null, accessToken);
         headers.add(new HttpRequestor.Header("Content-Type", "application/octet-stream"));
         headers = DbxRequestUtil.addUserAgentHeader(headers, requestConfig);
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        try {
-            if (arg != null) {
-                argWriter.writeToStream(arg, out, false);
-            }
-            else {
-                out.write("null".getBytes("UTF-8"));
-            }
-        } catch (IOException ex) {
-            throw new DbxException.NetworkIO(ex);
-        }
-        String argJson = out.toString();
-        headers.add(new HttpRequestor.Header("Dropbox-API-Arg", argJson));
+        headers.add(new HttpRequestor.Header("Dropbox-API-Arg", headerSafeJson(arg, argWriter)));
         try {
             HttpRequestor.Uploader httpUploader = requestConfig.httpRequestor.startPost(uri, headers);
             return uploaderMaker.makeUploader(httpUploader);
