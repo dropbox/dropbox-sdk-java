@@ -1,3 +1,6 @@
+---------------------------------------------
+2.0-beta-4 (2015-12-10)
+- Update sharing endpoints to support new paging routes.
 - Fix bug that caused sharing calls to fail due to bad shared folder IDs.
 
 ---------------------------------------------
