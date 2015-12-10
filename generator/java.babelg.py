@@ -1269,7 +1269,8 @@ class JavaCodeGenerator(CodeGenerator):
                             (dn, mapvalue(namespace, ft, ft.max_length)))
                 if ft.pattern is not None:
                     # TODO: Save the pattern as a static variable.
-                    with self.block('if (!java.util.regex.Pattern.matches("\\\\A%s\\\\Z", %s))' %
+                    # NOTE: pattern should match against entire input sequence
+                    with self.block('if (!java.util.regex.Pattern.matches("%s", %s))' %
                                     (ft.pattern.replace('\\', '\\\\'), vn)):
                         out('throw new RuntimeException("String \'%s\' does not match pattern");' %
                             dn)
