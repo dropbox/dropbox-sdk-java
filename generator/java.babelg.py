@@ -18,6 +18,7 @@ import os
 import argparse
 
 from collections import OrderedDict
+from functools import partial
 
 from babelapi.generator import CodeGenerator
 from babelapi.data_type import (
@@ -86,6 +87,51 @@ def classname(s):
 def routename(s):
     return camelcase(s)
 
+def builder_class_name(api_route):
+    return classname(builder_method_name(api_route))
+
+def builder_method_name(api_route):
+    return camelcase(api_route.name) + 'Builder'
+
+def parse_route_ref(ref, namespace=None):
+    if '.' in ref:
+        ref_namespace, route = ref.split('.', 1)
+    else:
+        ref_namespace = namespace.name
+        route = ref
+    return ref_namespace, route
+
+def uses_builder_pattern(api_route):
+    if is_struct_type(api_route.request_data_type):
+        style = api_route.attrs.get('style', 'rpc')
+        if style in ('upload', 'download'):
+            return True
+
+        n_optional = len(api_route.request_data_type.all_optional_fields)
+        return n_optional > 1
+    else:
+        return False
+
+def format_route_ref(api, namespace, route):
+    assert namespace is not None
+    api_namespace = api.namespaces[namespace]
+    api_route = api_namespace.route_by_name[route]
+    return format_route(namespace, api_route)
+
+def format_route(namespace, api_route):
+    if uses_builder_pattern(api_route):
+        return 'Dbx%s#%s' % (classname(namespace), builder_method_name(api_route))
+    elif is_void_type(api_route.request_data_type):
+        return 'Dbx%s#%s' % (classname(namespace), routename(api_route.name))
+    else:
+        # by default, all doc refs should point to the method that
+        # accepts the most arguments
+        unpacked_types = (
+            field_type(namespace, field, boxed=False, generics=False)
+            for field in api_route.request_data_type.all_fields
+        )
+        args = ",".join(unpacked_types)
+        return 'Dbx%s#%s(%s)' % (classname(namespace), routename(api_route.name), args)
 
 def is_primitive_type(dt):
     correct_type = is_boolean_type(dt) or is_numeric_type(dt) or is_void_type(dt)
@@ -121,7 +167,7 @@ type_map_boxed = {
 }
 
 
-def maptype(namespace, data_type, boxed=True):
+def maptype(namespace, data_type, boxed=True, generics=True):
     """Map a Babel data type to a Java type expression.
 
     There are special cases for primitive types, list (array) types,
@@ -131,7 +177,10 @@ def maptype(namespace, data_type, boxed=True):
     if nullable:
         boxed = True
     if is_list_type(data_type):
-        return 'java.util.ArrayList<%s>' % maptype(namespace, data_type.data_type)
+        if generics:
+            return 'java.util.ArrayList<%s>' % maptype(namespace, data_type.data_type)
+        else:
+            return 'java.util.ArrayList'
     type_map = type_map_boxed if boxed else type_map_unboxed
     if data_type.name in type_map:
         return type_map[data_type.name]
@@ -197,11 +246,11 @@ def mapvalue(namespace, data_type, value):
 # Matcher for Babel doc references.
 docref = ':(?P<tag>[A-z]*):`(?P<val>.*?)`'
 
-
-def doc_ref_handler(tag, val, route_formatter):
+def doc_ref_handler(tag, val, api, namespace):
     """Substitute references in Babel docstrings with the proper Javadoc format."""
     if tag == 'route':
-        return '{@link #%s}' % route_formatter(val)
+        ref_namespace, route = parse_route_ref(val, namespace)
+        return '{@link %s}' % format_route_ref(api, ref_namespace, route)
     elif tag == 'type':
         return '{@link %s}' % classname(val)
     elif tag == 'field':
@@ -275,8 +324,8 @@ _cmdline_parser.add_argument('--package', type=str, help='base package name', re
 def field_name(field):
     return camelcase(field.name)
 
-def field_type(namespace, field, boxed=True):
-    return maptype(namespace, field.data_type, boxed)
+def field_type(namespace, field, boxed=True, generics=True):
+    return maptype(namespace, field.data_type, boxed, generics)
 
 def type_and_name(namespace, field, boxed=True):
     return '%s %s' % (field_type(namespace, field, boxed), field_name(field))
@@ -303,10 +352,11 @@ class JavaCodeGenerator(CodeGenerator):
                 self.logger.info('Creating directory %s', package_fullpath)
                 os.makedirs(package_fullpath)
 
+            doc_out = partial(self.generate_doc, api, namespace)
             # Create a <Namespace>.java file containing nested classes.
-            self.generate_namespace_wrapper(namespace, package_relpath, package_name)
+            self.generate_namespace_wrapper(namespace, package_relpath, package_name, doc_out)
 
-    def generate_namespace_wrapper(self, namespace, package_relpath, package_name):
+    def generate_namespace_wrapper(self, namespace, package_relpath, package_name, doc_out):
         out = self.emit
         class_name = namespace_ref(namespace)
         file_name = os.path.join(package_relpath, class_name + '.java')
@@ -333,7 +383,7 @@ class JavaCodeGenerator(CodeGenerator):
             out('import com.dropbox.core.json.JsonWriter;')
 
             out('')
-            self.generate_doc('Classes and routes in namespace "%s".' % namespace.name)
+            doc_out('Classes and routes in namespace "%s".' % namespace.name)
             with self.block('public final class %s' % class_name):
                 out('// namespace %s' % namespace.name)
                 out('')
@@ -343,26 +393,27 @@ class JavaCodeGenerator(CodeGenerator):
                     out('this.client = client;')
                 for data_type in namespace.linearize_data_types():
                     out('')
-                    self.generate_data_type_class(namespace, data_type)
+                    self.generate_data_type_class(namespace, data_type, doc_out)
                 for route in namespace.routes:
-                    self.generate_route_stuff(namespace, route, class_name)
+                    self.generate_route_stuff(namespace, route, class_name, doc_out)
 
-    def generate_packed_method(self, namespace, route):
+    def generate_packed_method(self, namespace, route, doc_out):
         out = self.emit
         arg_name = maptype(namespace, route.request_data_type)
         result_name = maptype(namespace, route.response_data_type)
         error_name = maptype(namespace, route.error_data_type)
         method_name = camelcase(route.name)
+        method_javadoc_name = format_route(namespace.name, route)
         exc_name = classname(route.name + '_exception')
         result_reader = mapreader(namespace, route.response_data_type)
         error_reader = mapreader(namespace, route.error_data_type)
-        self.generate_doc('Exception thrown by {@link #%s}.' % method_name)
+        doc_out('Exception thrown by {@link %s}.' % method_javadoc_name)
         with self.block('public static class %s extends DbxApiException' % exc_name):
             if error_name == 'void':
                 with self.block('public %s()' % exc_name):
                     out('super("Exception in %s");' % route.name)
             else:
-                self.generate_doc('The error reported by %s.' % method_name)
+                doc_out('The error reported by %s.' % method_name)
                 out('public final %s errorValue;' % error_name)
                 out('')
                 with self.block('public %s(%s errorValue)' % (exc_name, error_name)):
@@ -384,8 +435,8 @@ class JavaCodeGenerator(CodeGenerator):
                         out('return new %s((%s) (ew.errValue));' % (exc_name, error_name))
             resname = 'Object' if result_name == 'void' else result_name
             errname = 'Object' if error_name == 'void' else error_name
-            self.generate_doc(
-                'The {@link com.dropbox.core.DbxUploader} returned by {@link #%s}.' % method_name)
+            doc_out('The {@link com.dropbox.core.DbxUploader} returned by '
+                    '{@link %s}.' % method_javadoc_name)
             uploader = classname(route.name + '_uploader')
             with self.block('public static class %s '
                             'extends com.dropbox.core.DbxUploader<%s,%s,%s>' %
@@ -407,14 +458,14 @@ class JavaCodeGenerator(CodeGenerator):
                     out('return new %s'
                         '(httpUploader, %s, %s, %s);' %
                         (uploader, result_reader, error_reader, error_maker))
-            self.generate_doc(route.doc)
+            doc_out(route.doc)
             if arg_name == 'void':
                 out('public %s %s()' % (uploader, method_name))
             else:
                 out('private %s %s(%s arg)' % (uploader, method_name, arg_name))
             out('        throws DbxException')
         elif style == 'download':
-            self.generate_doc(route.doc)
+            doc_out(route.doc)
             if arg_name == 'void':
                 out('public com.dropbox.core.DbxDownloader<%s>'
                     ' %s()' % (result_name, method_name))
@@ -424,7 +475,7 @@ class JavaCodeGenerator(CodeGenerator):
                     (result_name, method_name, arg_name))
             out('        throws %s, DbxException' % exc_name)
         else:
-            self.generate_doc(route.doc)
+            doc_out(route.doc)
             if arg_name == 'void':
                 out('public %s %s()' % (result_name, method_name))
             else:
@@ -484,7 +535,9 @@ class JavaCodeGenerator(CodeGenerator):
         out('%s%s(arg);' % (ret, method_name))
 
 
-    def generate_unpacked_method(self, namespace, route, rtype, ret, required_only=False):
+    def generate_unpacked_method(self, namespace, route, rtype, ret, doc_out, required_only=False):
+        assert required_only or not uses_builder_pattern(route)
+
         out = self.emit
         method_name = camelcase(route.name)
         exc_name = classname(route.name + '_exception')
@@ -492,24 +545,26 @@ class JavaCodeGenerator(CodeGenerator):
             fields = route.request_data_type.all_required_fields
         else:
             fields = route.request_data_type.all_fields
-        self.generate_doc(route.doc)
+        doc_out(route.doc)
         args = [type_and_name(namespace, field, boxed=False) for field in fields]
         out('public %s %s(%s)' % (rtype, method_name, ', '.join(args)))
         out('      throws %s, DbxException' % exc_name)
         with self.block():
             self.generate_call_to_packed_method(namespace, route, ret, required_only=required_only)
 
-    def generate_builder(self, namespace, route, rtype, ret, outer):
+    def generate_builder(self, namespace, route, rtype, ret, outer, doc_out):
+        assert uses_builder_pattern(route)
+
         out = self.emit
-        method_name = camelcase(route.name)
         exc_name = classname(route.name + '_exception')
-        builder_name = classname(method_name + 'Builder')
-        builder_fn_name = method_name + 'Builder'
+        builder_name = builder_class_name(route)
+        builder_fn_name = builder_method_name(route)
         style = route.attrs.get('style', 'rpc')
         if style == 'upload':
-            self.generate_doc(
+            doc_out(
                 'The {@link com.dropbox.core.v2.DbxUploadStyleBuilder} '
-                'returned by {@link #%s}.' % builder_fn_name)
+                'returned by {@link #%s}.' % builder_fn_name
+            )
             result_name = maptype(namespace, route.response_data_type)
             error_name = maptype(namespace, route.error_data_type)
             resname = 'Object' if result_name == 'void' else result_name
@@ -517,15 +572,16 @@ class JavaCodeGenerator(CodeGenerator):
             out('public final class %s extends DbxUploadStyleBuilder<%s,%s,%s>' %
                 (builder_name, resname, errname, exc_name))
         elif style == 'download':
-            self.generate_doc(
+            doc_out(
                 'The {@link com.dropbox.core.v2.DbxDownloadStyleBuilder} '
-                'returned by {@link #%s}.' % builder_fn_name)
+                'returned by {@link #%s}.' % builder_fn_name
+            )
             result_name = maptype(namespace, route.response_data_type)
             resname = 'Object' if result_name == 'void' else result_name
             out('public final class %s extends DbxDownloadStyleBuilder<%s>' %
                 (builder_name, resname))
         else:
-            self.generate_doc('The builder object returned by {@link #%s}' % builder_fn_name)
+            doc_out('The builder object returned by {@link #%s}' % builder_fn_name)
             out('public final class %s' % builder_name)
         with self.block():
             # Generate a field for every argument.
@@ -565,40 +621,40 @@ class JavaCodeGenerator(CodeGenerator):
                 prefix = '%s.this.' % outer
                 self.generate_call_to_packed_method(namespace, route, ret, prefix=prefix)
         # Generate the helper method used to construct the builder
-        self.generate_doc(route.doc)
+        doc_out(route.doc)
         out('public %s %s(%s)' % (builder_name, builder_fn_name, ', '.join(req_fields)))
         with self.block():
             args = [field_name(field) for field
                     in route.request_data_type.all_required_fields]
             out('return new %s(%s);' % (builder_name, ", ".join(args)))
 
-    def generate_route_stuff(self, namespace, route, outer):
+    def generate_route_stuff(self, namespace, route, outer, doc_out):
         self.emit('')
-        self.generate_packed_method(namespace, route)
+        self.generate_packed_method(namespace, route, doc_out)
         if is_struct_type(route.request_data_type):
             result_name = maptype(namespace, route.response_data_type)
             style = route.attrs.get('style', 'rpc')
             if style == 'upload':
                 rtype = classname(route.name + '_uploader')
                 ret = 'return '
-                self.generate_builder(namespace, route, rtype, ret, outer)
+                self.generate_builder(namespace, route, rtype, ret, outer, doc_out)
             elif style == 'download':
                 rtype = 'com.dropbox.core.DbxDownloader<%s>' % result_name
                 ret = 'return '
-                self.generate_builder(namespace, route, rtype, ret, outer)
+                self.generate_builder(namespace, route, rtype, ret, outer, doc_out)
             else:
                 rtype = result_name
                 ret = '' if rtype == 'void' else 'return '
                 # Generate a shortcut with required args.
-                self.generate_unpacked_method(namespace, route, rtype, ret, required_only=True)
+                self.generate_unpacked_method(namespace, route, rtype, ret, doc_out, required_only=True)
+                n_optional = len(route.request_data_type.all_optional_fields)
                 # Generate a builder if there are two or more optional args.
                 # If there's only 1 optional argument then we might as well
                 # just offer two overloaded methods.
-                n_optional = len(route.request_data_type.all_optional_fields)
                 if n_optional == 1:
-                    self.generate_unpacked_method(namespace, route, rtype, ret)
+                    self.generate_unpacked_method(namespace, route, rtype, ret, doc_out)
                 elif n_optional > 1:
-                    self.generate_builder(namespace, route, rtype, ret, outer)
+                    self.generate_builder(namespace, route, rtype, ret, outer, doc_out)
 
     def generate_field_assignment(self, namespace, field):
         out = self.emit
@@ -618,16 +674,16 @@ class JavaCodeGenerator(CodeGenerator):
         else:
             out('this.%s = %s;' % (fn, fn))
 
-    def generate_data_type_class(self, namespace, data_type):
+    def generate_data_type_class(self, namespace, data_type, doc_out):
         """Generate a class definition for a datatype (a struct or a union)."""
         out = self.emit
         class_name = type_ref(namespace, data_type)
-        self.generate_doc(data_type.doc)
+        doc_out(data_type.doc)
         if is_union_type(data_type):
             if has_value_fields(data_type):
-                self.generate_union_complex(namespace, data_type, class_name)
+                self.generate_union_complex(namespace, data_type, class_name, doc_out)
             else:
-                self.generate_union_simple(namespace, data_type, class_name)
+                self.generate_union_simple(namespace, data_type, class_name, doc_out)
         else:
             # Struct.
             assert is_struct_type(data_type)
@@ -638,7 +694,7 @@ class JavaCodeGenerator(CodeGenerator):
                 out('// struct %s' % class_name)
                 # Generate fields declarations.
                 for field in data_type.fields:
-                    self.generate_doc(field.doc)
+                    doc_out(field.doc)
                     out('public final %s;' % type_and_name(namespace, field, boxed=False))
                 out('')
 
@@ -676,12 +732,12 @@ class JavaCodeGenerator(CodeGenerator):
                 with self.block():
                     out('return _reader.readFully(s);')
 
-    def generate_union_simple(self, namespace, data_type, class_name):
+    def generate_union_simple(self, namespace, data_type, class_name, doc_out):
         """Generate code for a simple union (one that has only Void values)."""
         out = self.emit
         with self.block('public enum %s' % class_name):
             out('// union %s' % class_name)
-            self.generate_enum_values(data_type, do_doc=True)
+            self.generate_enum_values(data_type, doc_out, do_doc=True)
             out('')
 
             # Generate JSON writer.
@@ -725,7 +781,7 @@ class JavaCodeGenerator(CodeGenerator):
             with self.block():
                 out('return _reader.readFully(s);')
 
-    def generate_union_complex(self, namespace, data_type, class_name):
+    def generate_union_complex(self, namespace, data_type, class_name, doc_out):
         """Generate code for a complex union (one that has at least one non-Void value)."""
         out = self.emit
         out('')
@@ -733,13 +789,13 @@ class JavaCodeGenerator(CodeGenerator):
             out('// union %s' % class_name)
             out('')
             # Generate a public enum named Tag.
-            self.generate_doc('The discriminating tag type for {@link %s}.' % class_name)
+            doc_out('The discriminating tag type for {@link %s}.' % class_name)
             tag_name = 'Tag'
             with self.block('public enum %s' % tag_name):
-                self.generate_enum_values(data_type, last_sep='')
+                self.generate_enum_values(data_type, doc_out, last_sep='')
             out('')
             # Generate a public field holding the tag.
-            self.generate_doc('The discriminating tag for this instance.')
+            doc_out('The discriminating tag for this instance.')
             out('public final %s tag;' % tag_name)
             # Generate stuff for each field:
             # - for simple fields, a public static final instance;
@@ -760,7 +816,7 @@ class JavaCodeGenerator(CodeGenerator):
                 field_name = camelcase(field.name)
                 if is_simple_field(field):
                     has_simple_field = True
-                    self.generate_doc(field.doc)
+                    doc_out(field.doc)
                     out('public static final %s %s = new %s(%s.%s);' %
                         (class_name, field_name, class_name, tag_name, field_name))
                 else:
@@ -787,7 +843,7 @@ class JavaCodeGenerator(CodeGenerator):
                     else:
                         value_name = unique_value_types[type_name]
                         out('// Reusing %s for %s' % (value_name, camelcase(field_name)))
-                    self.generate_doc(field.doc)
+                    doc_out(field.doc)
                     with self.block('public static %s %s(%s v)' %
                                     (class_name, field_name, type_name)):
                        out('return new %s(%s.%s, v);' % (class_name, tag_name, field_name))
@@ -975,13 +1031,13 @@ class JavaCodeGenerator(CodeGenerator):
             for field in data_type.fields:
                 out('_values.put("%s", %s%s);' % (field.name, value_prefix, camelcase(field.name)))
 
-    def generate_enum_values(self, data_type, do_doc=False, last_sep=';'):
+    def generate_enum_values(self, data_type, doc_out, do_doc=False, last_sep=';'):
         """Generate enum values."""
         out = self.emit
         count = len(data_type.all_fields)
         for i, field in enumerate(data_type.all_fields):
             if do_doc:
-                self.generate_doc(field.doc)
+                doc_out(field.doc)
             if i + 1 == count:
                 sep = last_sep
             else:
@@ -1251,13 +1307,11 @@ class JavaCodeGenerator(CodeGenerator):
         with self.indent():
             out('.readField(parser, "%s", %s);' % (field.name, var_name))
 
-    def generate_doc(self, doc, route_formatter=None):
+    def generate_doc(self, api, namespace, doc):
         """Generate a Javadoc comment."""
         out = self.emit
         if doc:
-            if route_formatter is None:
-                route_formatter = lambda v: routename(v)
-            handler = lambda tag, val: doc_ref_handler(tag, val, route_formatter)
+            handler = lambda tag, val: doc_ref_handler(tag, val, api, namespace)
             doc = self.process_doc(doc, handler)
             out('/**')
             self.emit_wrapped_text(doc, initial_prefix=' * ', subsequent_prefix=' * ')
