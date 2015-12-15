@@ -4,7 +4,7 @@ A Java library to access [Dropbox's HTTP-based Core API v2](https://www.dropbox.
 
 License: [MIT](License.txt)
 
-[Javadoc.](http://dropbox.github.io/dropbox-sdk-java/api-docs/v2.0.x/)
+[Javadoc.](https://dropbox.github.io/dropbox-sdk-java/api-docs/v2.0.x/)
 
 ## Setup
 
@@ -156,4 +156,4 @@ mvn package -Dosgi.bnd.noee=true
 
 (This is equivalent to passing the "-noee" option to the OSGi "bnd" tool.)
 
-Another workaround is to tell your OSGi container to provide that requirement: [StackOverflow answer](http://stackoverflow.com/a/24673359/163832).
+Another workaround is to tell your OSGi container to provide that requirement: [StackOverflow answer](https://stackoverflow.com/a/24673359/163832).
