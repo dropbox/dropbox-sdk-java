@@ -68,6 +68,26 @@ def camelcase(s):
     return _fixreserved(_camelcase(s))
 
 
+def collapse_whitespace(s):
+    return "\n".join(
+        line.strip() for line in s.strip().splitlines()
+    )
+
+def split_paragraphs(s):
+    paragraph = []
+    for line in s.splitlines():
+        line = line.strip()
+        if line == '':
+            if paragraph:
+                yield "\n".join(paragraph)
+                del paragraph[:]
+        else:
+            paragraph.append(line)
+
+    if paragraph:
+        yield "\n".join(paragraph)
+
+
 def is_simple_field(field):
     return isinstance(field.data_type, Void)
 
@@ -87,11 +107,14 @@ def classname(s):
 def routename(s):
     return camelcase(s)
 
+
 def builder_class_name(api_route):
     return classname(builder_method_name(api_route))
 
+
 def builder_method_name(api_route):
     return camelcase(api_route.name) + 'Builder'
+
 
 def parse_route_ref(ref, namespace=None):
     if '.' in ref:
@@ -100,6 +123,16 @@ def parse_route_ref(ref, namespace=None):
         ref_namespace = namespace.name
         route = ref
     return ref_namespace, route
+
+
+def parse_field_ref(ref):
+    if '.' in ref:
+        data_type, field = ref.split('.', 1)
+    else:
+        data_type = None
+        field = ref
+    return data_type, field
+
 
 def uses_builder_pattern(api_route):
     if is_struct_type(api_route.request_data_type):
@@ -112,26 +145,40 @@ def uses_builder_pattern(api_route):
     else:
         return False
 
+
 def format_route_ref(api, namespace, route):
     assert namespace is not None
     api_namespace = api.namespaces[namespace]
     api_route = api_namespace.route_by_name[route]
-    return format_route(namespace, api_route)
+    return format_route(api_namespace, api_route)
 
-def format_route(namespace, api_route):
+
+def format_route(api_namespace, api_route):
     if uses_builder_pattern(api_route):
-        return 'Dbx%s#%s' % (classname(namespace), builder_method_name(api_route))
+        return '%s#%s' % (namespace_ref(api_namespace), builder_method_name(api_route))
     elif is_void_type(api_route.request_data_type):
-        return 'Dbx%s#%s' % (classname(namespace), routename(api_route.name))
+        return '%s#%s' % (namespace_ref(api_namespace), routename(api_route.name))
     else:
         # by default, all doc refs should point to the method that
         # accepts the most arguments
         unpacked_types = (
-            field_type(namespace, field, boxed=False, generics=False)
+            field_type(api_namespace.name, field, boxed=False, generics=False)
             for field in api_route.request_data_type.all_fields
         )
         args = ",".join(unpacked_types)
-        return 'Dbx%s#%s(%s)' % (classname(namespace), routename(api_route.name), args)
+        return '%s#%s(%s)' % (namespace_ref(api_namespace), routename(api_route.name), args)
+
+
+def format_data_type_ref(data_type):
+    return classname(data_type)
+
+
+def format_field_ref(data_type, field):
+    if data_type:
+        return '%s#%s' % (format_data_type_ref(data_type), camelcase(field))
+    else:
+        return '#' + camelcase(field)
+
 
 def is_primitive_type(dt):
     correct_type = is_boolean_type(dt) or is_numeric_type(dt) or is_void_type(dt)
@@ -252,9 +299,15 @@ def doc_ref_handler(tag, val, api, namespace):
         ref_namespace, route = parse_route_ref(val, namespace)
         return '{@link %s}' % format_route_ref(api, ref_namespace, route)
     elif tag == 'type':
-        return '{@link %s}' % classname(val)
+        return '{@link %s}' % format_data_type_ref(val)
     elif tag == 'field':
-        return '{@code %s}' % camelcase(val)
+        data_type, field = parse_field_ref(val)
+        # we get Javadoc warnings because sometimes the field is not in scope if we do {@link #val}.
+        # So use {@code val} instead for local fields.
+        if data_type:
+            return '{@link %s}' % format_field_ref(data_type, field)
+        else:
+            return '{@code %s}' % format_field_ref(data_type, field).lstrip('#')
     elif tag == 'link':
         anchor, link = val.rsplit(' ', 1)
         return '<a href="%s">%s</a>' % (link, anchor)
@@ -324,11 +377,18 @@ _cmdline_parser.add_argument('--package', type=str, help='base package name', re
 def field_name(field):
     return camelcase(field.name)
 
+
+def field_doc(field):
+    return getattr(field, "doc", "")
+
+
 def field_type(namespace, field, boxed=True, generics=True):
     return maptype(namespace, field.data_type, boxed, generics)
 
+
 def type_and_name(namespace, field, boxed=True):
     return '%s %s' % (field_type(namespace, field, boxed), field_name(field))
+
 
 class JavaCodeGenerator(CodeGenerator):
     cmdline_parser = _cmdline_parser
@@ -404,7 +464,7 @@ class JavaCodeGenerator(CodeGenerator):
         result_name = maptype(namespace, route.response_data_type)
         error_name = maptype(namespace, route.error_data_type)
         method_name = camelcase(route.name)
-        method_javadoc_name = format_route(namespace.name, route)
+        method_javadoc_name = format_route(namespace, route)
         exc_name = classname(route.name + '_exception')
         result_reader = mapreader(namespace, route.response_data_type)
         error_reader = mapreader(namespace, route.error_data_type)
@@ -546,7 +606,7 @@ class JavaCodeGenerator(CodeGenerator):
             fields = route.request_data_type.all_required_fields
         else:
             fields = route.request_data_type.all_fields
-        doc_out(route.doc)
+        doc_out(route.doc, fields=fields)
         args = [type_and_name(namespace, field, boxed=False) for field in fields]
         out('public %s %s(%s)' % (rtype, method_name, ', '.join(args)))
         out('      throws %s, DbxException' % exc_name)
@@ -598,6 +658,7 @@ class JavaCodeGenerator(CodeGenerator):
                 for field in route.request_data_type.all_required_fields
             ]
             # The constructor is private and called by a helper method.
+            out('')
             out('private %s(%s)' % (builder_name, ', '.join(req_fields)))
             with self.block():
                 for field in route.request_data_type.all_required_fields:
@@ -610,19 +671,27 @@ class JavaCodeGenerator(CodeGenerator):
                 arg_type = maptype(namespace, dt, boxed=False)
                 arg_name = field_name(field)
                 setter_name = camelcase(arg_name)
+                out('')
+                doc_out("Set value for optional request field {@code %s}." % arg_name,
+                        fields=(field,))
                 out('public %s %s(%s %s)' % (builder_name, setter_name,
                                              arg_type, arg_name))
                 with self.block():
                     out('this.%s = %s;' % (arg_name, arg_name))
                     out('return this;')
+
             # Create a start() method to use the builder.
+            out('')
+            doc_out('Issues the request.')
             out('public %s start() throws %s, DbxException' % (rtype, exc_name))
             with self.block():
                 packed_class = maptype(namespace, route.request_data_type)
                 prefix = '%s.this.' % outer
                 self.generate_call_to_packed_method(namespace, route, ret, prefix=prefix)
+
         # Generate the helper method used to construct the builder
-        doc_out(route.doc)
+        out('')
+        doc_out(route.doc, fields=route.request_data_type.all_required_fields)
         out('public %s %s(%s)' % (builder_name, builder_fn_name, ', '.join(req_fields)))
         with self.block():
             args = [field_name(field) for field
@@ -679,6 +748,7 @@ class JavaCodeGenerator(CodeGenerator):
         """Generate a class definition for a datatype (a struct or a union)."""
         out = self.emit
         class_name = type_ref(namespace, data_type)
+        out('')
         doc_out(data_type.doc)
         if is_union_type(data_type):
             if has_value_fields(data_type):
@@ -704,6 +774,8 @@ class JavaCodeGenerator(CodeGenerator):
                 for field in data_type.all_fields:
                     boxed = not is_primitive_type(field.data_type) or field.has_default
                     params.append(type_and_name(namespace,field, boxed))
+                # repeat the class doc here
+                doc_out(data_type.doc, fields=data_type.all_fields)
                 with self.block('public %s(%s)' % (class_name, ', '.join(params))):
                     # Construct parent class.
                     if data_type.parent_type is not None:
@@ -724,10 +796,13 @@ class JavaCodeGenerator(CodeGenerator):
                 # Generate toString(), toStringMultiline(), toJson(), fromJson() methods.
                 with self.block('public String toString()'):
                     out('return "%s." + _writer.writeToString(this, false);' % class_name)
+                out('')
                 with self.block('public String toStringMultiline()'):
                     out('return "%s." + _writer.writeToString(this, true);' % class_name)
+                out('')
                 with self.block('public String toJson(Boolean longForm)'):
                     out('return _writer.writeToString(this, longForm);')
+                out('')
                 out('public static %s fromJson(String s)' % class_name)
                 out('    throws JsonReadException')
                 with self.block():
@@ -785,7 +860,6 @@ class JavaCodeGenerator(CodeGenerator):
     def generate_union_complex(self, namespace, data_type, class_name, doc_out):
         """Generate code for a complex union (one that has at least one non-Void value)."""
         out = self.emit
-        out('')
         with self.block('public static final class %s' % class_name):
             out('// union %s' % class_name)
             out('')
@@ -844,11 +918,13 @@ class JavaCodeGenerator(CodeGenerator):
                     else:
                         value_name = unique_value_types[type_name]
                         out('// Reusing %s for %s' % (value_name, camelcase(field_name)))
+                    out('')
                     doc_out(field.doc)
                     with self.block('public static %s %s(%s v)' %
                                     (class_name, field_name, type_name)):
                        out('return new %s(%s.%s, v);' % (class_name, tag_name, field_name))
                     getter_name = camelcase('get_' + field.name)
+                    out('')
                     with self.block('public %s %s()' % (type_name, getter_name)):
                         with self.block('if (tag != %s.%s)' % (tag_name, field_name)):
                             out('throw new RuntimeException'
@@ -893,6 +969,7 @@ class JavaCodeGenerator(CodeGenerator):
                                 out('break;')
 
             # Generate JSON writer.
+            out('')
             out('static final JsonWriter<%s> _writer = new JsonWriter<%s>()' %
                 (class_name, class_name))
             with self.bsemi():
@@ -1057,6 +1134,7 @@ class JavaCodeGenerator(CodeGenerator):
             # Accessor for the writer (bridge for strunion writing).
             with self.block('public JsonWriter getWriter()'):
                 out('return %s._writer;' % class_name)
+        out('')
         out('static final JsonWriter<%s> _writer = new JsonWriter<%s>()' %
             (class_name, class_name))
         with self.bsemi():
@@ -1309,12 +1387,76 @@ class JavaCodeGenerator(CodeGenerator):
         with self.indent():
             out('.readField(parser, "%s", %s);' % (field.name, var_name))
 
-    def generate_doc(self, api, namespace, doc):
-        """Generate a Javadoc comment."""
+    def generate_javadoc(self, doc, params=None, returns=None, throws=None):
         out = self.emit
+        prefix = ' * '
+        attr_doc_prefix = prefix + (' ' * 4)
+
+        if not any((doc, params, returns, throws)):
+            return
+
+        out('/**')
+
+        if doc:
+            first_paragraph = True
+            for paragraph in split_paragraphs(doc.strip()):
+                if not first_paragraph:
+                    out(prefix.rstrip())
+                    if paragraph:
+                        paragraph = ''.join(('<p> ', paragraph, ' </p>'))
+                else:
+                    first_paragraph = False
+                self.emit_wrapped_text(paragraph, initial_prefix=prefix, subsequent_prefix=prefix)
+
+        def emit_attrs(tag, attrs):
+            if attrs:
+                out(prefix.rstrip())
+                attr_prefix = ''.join((prefix, tag, ' '))
+
+                for attr_name, attr_doc in attrs.items():
+                    # Javadoc complains about tags that are missing documentation
+                    if not attr_doc:
+                        continue
+
+                    if attr_name:
+                        doc_text = '  '.join((attr_name, attr_doc))
+                    else:
+                        doc_text = attr_doc
+                    self.emit_wrapped_text(
+                        collapse_whitespace(doc_text),
+                        initial_prefix=attr_prefix,
+                        subsequent_prefix=attr_doc_prefix
+                    )
+
+        emit_attrs('@param', params)
+        emit_attrs('@returns', { "": returns } if returns else None)
+        emit_attrs('@throws', throws)
+
+        out(' */')
+
+    def translate_babel_doc(self, api, namespace, doc):
         if doc:
             handler = lambda tag, val: doc_ref_handler(tag, val, api, namespace)
-            doc = self.process_doc(doc, handler)
-            out('/**')
-            self.emit_wrapped_text(doc, initial_prefix=' * ', subsequent_prefix=' * ')
-            out(' */')
+            return self.process_doc(doc, handler)
+        else:
+            return doc
+
+    def get_javadoc_params_for_fields(self, api, namespace, fields):
+        if not fields:
+            return None
+
+        params = {}
+        for field in fields:
+            param_name = field_name(field)
+            param_babel_doc = field_doc(field) or ''
+            params[param_name] = self.translate_babel_doc(api, namespace, param_babel_doc)
+
+        return params
+
+    def generate_doc(self, api, namespace, doc, fields=()):
+        """Generate a Javadoc comment from Babel doc string."""
+        out = self.emit
+        if doc or fields:
+            doc = self.translate_babel_doc(api, namespace, doc)
+            params = self.get_javadoc_params_for_fields(api, namespace, fields)
+            self.generate_javadoc(doc, params=params)
