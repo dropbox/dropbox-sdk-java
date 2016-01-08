@@ -76,6 +76,7 @@ public class DbxRawClientV2 {
                                                  JsonReader<ErrT> errReader)
             throws DbxRequestUtil.ErrorWrapper, DbxException
     {
+        HttpRequestor.Response response;
         try {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             if (argWriter != null) {
@@ -86,20 +87,23 @@ public class DbxRawClientV2 {
             byte[] body = out.toByteArray();
             ArrayList<HttpRequestor.Header> headers = DbxRequestUtil.addAuthHeader(null, accessToken);
             headers.add(new HttpRequestor.Header("Content-Type", "application/json; charset=utf-8"));
-            HttpRequestor.Response response = DbxRequestUtil.startPostRaw(requestConfig, host, path, body, headers);
-            if (response.statusCode == 200) {
-                return resReader.readFully(response.body);
-            } else if (functionSpecificErrorCodes.contains(response.statusCode)) {
-                throw new DbxRequestUtil.ErrorWrapper(errReader, response.body);
-            } else {
-                throw DbxRequestUtil.unexpectedStatus(response);
+            response = DbxRequestUtil.startPostRaw(requestConfig, host, path, body, headers);
+            try {
+                if (response.statusCode == 200) {
+                    return resReader.readFully(response.body);
+                } else if (functionSpecificErrorCodes.contains(response.statusCode)) {
+                    throw DbxRequestUtil.ErrorWrapper.fromResponse(errReader, response);
+                } else {
+                    throw DbxRequestUtil.unexpectedStatus(response);
+                }
+            }
+            catch(JsonReadException ex) {
+                String requestId = DbxRequestUtil.getRequestId(response);
+                throw new DbxException.BadResponse(requestId, "Bad JSON: " + ex.getMessage(), ex);
             }
         }
         catch (IOException ex) {
             throw new DbxException.NetworkIO(ex);
-        }
-        catch(JsonReadException ex) {
-            throw new DbxException.BadResponse("Bad JSON: " + ex.getMessage(), ex);
         }
     }
 
@@ -111,34 +115,43 @@ public class DbxRawClientV2 {
             JsonReader<ErrT>errReader)
             throws DbxRequestUtil.ErrorWrapper, DbxException
     {
+        HttpRequestor.Response response;
         try {
             ArrayList<HttpRequestor.Header> headers = DbxRequestUtil.addAuthHeader(null, accessToken);
             headers.add(new HttpRequestor.Header("Dropbox-API-Arg", headerSafeJson(arg, argWriter)));
             headers.add(new HttpRequestor.Header("Content-Type", ""));
             byte[] body = new byte[0];
-            HttpRequestor.Response response = DbxRequestUtil.startPostRaw(requestConfig, host, path, body, headers);
-            if (response.statusCode == 200) {
-                List<String> resultHeaders = response.headers.get("dropbox-api-result");
-                if (resultHeaders == null)
-                    throw new DbxException.BadResponse("Missing Dropbox-API-Result header; " + response.headers);
-                if (resultHeaders.size() == 0)
-                    throw new DbxException.BadResponse("No Dropbox-API-Result header; " + response.headers);
-                String resultHeader = resultHeaders.get(0);
-                if (resultHeader == null)
-                    throw new DbxException.BadResponse("Null Dropbox-API-Result header; " + response.headers);
-                ResT result = resReader.readFully(resultHeader);
-                return new DbxDownloader<ResT>(result, response.body);
-            } else if (functionSpecificErrorCodes.contains(response.statusCode)) {
-                throw new DbxRequestUtil.ErrorWrapper(errReader, response.body);
-            } else {
-                throw DbxRequestUtil.unexpectedStatus(response);
+            response = DbxRequestUtil.startPostRaw(requestConfig, host, path, body, headers);
+            String requestId = DbxRequestUtil.getRequestId(response);
+
+            try {
+                if (response.statusCode == 200) {
+                    List<String> resultHeaders = response.headers.get("dropbox-api-result");
+                    if (resultHeaders == null) {
+                        throw new DbxException.BadResponse(requestId, "Missing Dropbox-API-Result header; " + response.headers);
+                    }
+                    if (resultHeaders.size() == 0) {
+                        throw new DbxException.BadResponse(requestId, "No Dropbox-API-Result header; " + response.headers);
+                    }
+                    String resultHeader = resultHeaders.get(0);
+                    if (resultHeader == null) {
+                        throw new DbxException.BadResponse(requestId, "Null Dropbox-API-Result header; " + response.headers);
+                    }
+
+                    ResT result = resReader.readFully(resultHeader);
+                    return new DbxDownloader<ResT>(result, response.body);
+                } else if (functionSpecificErrorCodes.contains(response.statusCode)) {
+                    throw DbxRequestUtil.ErrorWrapper.fromResponse(errReader, response);
+                } else {
+                    throw DbxRequestUtil.unexpectedStatus(response);
+                }
+            }
+            catch(JsonReadException ex) {
+                throw new DbxException.BadResponse(requestId, "Bad JSON: " + ex.getMessage(), ex);
             }
         }
         catch (IOException ex) {
             throw new DbxException.NetworkIO(ex);
-        }
-        catch(JsonReadException ex) {
-            throw new DbxException.BadResponse("Bad JSON: " + ex.getMessage(), ex);
         }
     }
 

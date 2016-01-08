@@ -375,6 +375,7 @@ class JavaCodeGenerator(CodeGenerator):
             out('import com.dropbox.core.v2.DbxRawClientV2;')
             out('import com.dropbox.core.DbxException;')
             out('import com.dropbox.core.DbxRequestUtil;')
+            out('import com.dropbox.core.LocalizedText;')
             out('import com.dropbox.core.http.HttpRequestor;')
             out('import com.dropbox.core.json.JsonArrayReader;')
             out('import com.dropbox.core.json.JsonDateReader;')
@@ -410,14 +411,14 @@ class JavaCodeGenerator(CodeGenerator):
         doc_out('Exception thrown by {@link %s}.' % method_javadoc_name)
         with self.block('public static class %s extends DbxApiException' % exc_name):
             if error_name == 'void':
-                with self.block('public %s()' % exc_name):
-                    out('super("Exception in %s");' % route.name)
+                with self.block('public %s(String requestId, LocalizedText userMessage)' % exc_name):
+                    out('super(requestId, userMessage, buildMessage("%s", userMessage));' % route.name)
             else:
                 doc_out('The error reported by %s.' % method_name)
                 out('public final %s errorValue;' % error_name)
                 out('')
-                with self.block('public %s(%s errorValue)' % (exc_name, error_name)):
-                    out('super("Exception in %s: " + errorValue);' % route.name)
+                with self.block('public %s(String requestId, LocalizedText userMessage, %s errorValue)' % (exc_name, error_name)):
+                    out('super(requestId, userMessage, buildMessage("%s", userMessage, errorValue));' % route.name)
                     out('this.errorValue = errorValue;')
         style = route.attrs.get('style', 'rpc')
         if style == 'upload':
@@ -430,9 +431,9 @@ class JavaCodeGenerator(CodeGenerator):
                 out('@Override')
                 with self.block('public %s makeError(DbxRequestUtil.ErrorWrapper ew)' % exc_name):
                     if error_name == 'void':
-                        out('return new %s();' % exc_name)
+                        out('return new %s(ew.requestId, ew.userMessage);' % exc_name)
                     else:
-                        out('return new %s((%s) (ew.errValue));' % (exc_name, error_name))
+                        out('return new %s(ew.requestId, ew.userMessage, (%s) (ew.errValue));' % (exc_name, error_name))
             resname = 'Object' if result_name == 'void' else result_name
             errname = 'Object' if error_name == 'void' else error_name
             doc_out('The {@link com.dropbox.core.DbxUploader} returned by '
@@ -510,9 +511,9 @@ class JavaCodeGenerator(CodeGenerator):
             if style != 'upload':
                 with self.block('catch (DbxRequestUtil.ErrorWrapper ew)'):
                     if error_name == 'void':
-                        out('throw new %s();' % exc_name)
+                        out('throw new %s(ew.requestId, ew.userMessage);' % exc_name)
                     else:
-                        out('throw new %s((%s) (ew.errValue));' % (exc_name, error_name))
+                        out('throw new %s(ew.requestId, ew.userMessage, (%s) (ew.errValue));' % (exc_name, error_name))
             else:
                 # TODO: The right way to do this is not to
                 # emit the try{} wrapper if it's not rpc style.

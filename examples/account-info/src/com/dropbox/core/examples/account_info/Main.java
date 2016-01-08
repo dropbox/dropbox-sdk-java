@@ -61,7 +61,6 @@ public class Main
 
         // Make the /account/info API call.
         DbxUsers.FullAccount dbxAccountInfo;
-        DbxUsers.SpaceUsage dbxSpaceUsage;
         try {
             dbxAccountInfo = dbxClient.users.getCurrentAccount();
         }

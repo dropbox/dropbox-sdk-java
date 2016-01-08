@@ -196,14 +196,24 @@ public class DbxRequestUtil
     // XXX This duplicates JsonReader.jsonFactory. Maybe make that public, or move this code there?
     static final JsonFactory jsonFactory = new JsonFactory();
 
-    public static class ErrorWrapper extends Throwable {
-        public java.lang.Object errValue;  // Really an ErrT instance, but Throwable does not allow generic subclasses.
+    public static class ErrorWrapper extends Exception {
+        public final Object errValue;  // Really an ErrT instance, but Throwable does not allow generic subclasses.
+        public final String requestId;
+        public final LocalizedText userMessage;
 
-        public ErrorWrapper(JsonReader reader, InputStream body)
-                throws IOException, JsonReadException
-        {
-            errValue = null;
-            JsonParser parser = jsonFactory.createParser(body);
+        public ErrorWrapper(Object errValue, String requestId, LocalizedText userMessage) {
+            this.errValue = errValue;
+            this.requestId = requestId;
+            this.userMessage = userMessage;
+        }
+
+        public static ErrorWrapper fromResponse(JsonReader reader, HttpRequestor.Response response)
+            throws IOException, JsonReadException {
+            Object errValue = null;
+            String requestId = getRequestId(response);
+            LocalizedText userMessage = null;
+
+            JsonParser parser = jsonFactory.createParser(response.body);
             parser.nextToken();
             reader.expectObjectStart(parser);
             while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
@@ -211,15 +221,51 @@ public class DbxRequestUtil
                 parser.nextToken();
                 if (fieldName.equals("error")) {
                     errValue = reader.read(parser);
-                }
-                else {
+                } else if (fieldName.equals("user_message")) {
+                    userMessage = USER_MESSAGE_READER.readField(parser, "user_message", userMessage);
+                } else {
                     JsonReader.skipValue(parser);
                 }
             }
             if (errValue == null) {
                 throw new JsonReadException("Required field \"error\" is missing.", parser.getCurrentLocation());
             }
+
+            return new ErrorWrapper(errValue, requestId, userMessage);
         }
+
+        private static final JsonReader<LocalizedText> USER_MESSAGE_READER = new JsonReader<LocalizedText>() {
+            @Override
+            public final LocalizedText read(JsonParser parser)
+                throws IOException, JsonReadException
+            {
+                LocalizedText userMessage;
+                JsonReader.expectObjectStart(parser);
+
+                String text = null;
+                String locale = null;
+
+                while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String fieldName = parser.getCurrentName();
+                    parser.nextToken();
+                    if ("locale".equals(fieldName)) {
+                        locale = JsonReader.StringReader.readField(parser, "locale", locale);
+                    }
+                    else if ("text".equals(fieldName)) {
+                        text = JsonReader.StringReader.readField(parser, "text", text);
+                    }
+                    else {
+                        JsonReader.skipValue(parser);
+                    }
+                }
+
+                if (text == null) {
+                    throw new JsonReadException("Required field \"text\" is missing.", parser.getTokenLocation());
+                }
+
+                return new LocalizedText(text, locale);
+            }
+        };
     }
 
     public static abstract class RouteSpecificErrorMaker<T extends Throwable>
@@ -240,7 +286,7 @@ public class DbxRequestUtil
 
     }
 
-    public static String parseErrorBody(int statusCode, byte[] body)
+    public static String parseErrorBody(String requestId, int statusCode, byte[] body)
         throws DbxException.BadResponse
     {
         // Read the error message from the body.
@@ -249,32 +295,36 @@ public class DbxRequestUtil
         try {
             return StringUtil.utf8ToString(body);
         } catch (CharacterCodingException e) {
-            throw new DbxException.BadResponse("Got non-UTF8 response body: " + statusCode + ": " + e.getMessage());
+            throw new DbxException.BadResponse(requestId, "Got non-UTF8 response body: " + statusCode + ": " + e.getMessage());
         }
     }
 
     public static DbxException unexpectedStatus(HttpRequestor.Response response)
         throws DbxException.NetworkIO, DbxException.BadResponse
     {
+        String requestId = getRequestId(response);
         byte[] body = loadErrorBody(response);
-        String message = parseErrorBody(response.statusCode, body);
+        String message = parseErrorBody(requestId, response.statusCode, body);
 
-        if (response.statusCode == 400) return new DbxException.BadRequest(message);
-        if (response.statusCode == 401) return new DbxException.InvalidAccessToken(message);
-        if (response.statusCode == 500) return new DbxException.ServerError(message);
-        if (response.statusCode == 503) return new DbxException.RetryLater(message);
+        if (response.statusCode == 400) return new DbxException.BadRequest(requestId, message);
+        if (response.statusCode == 401) return new DbxException.InvalidAccessToken(requestId, message);
+        if (response.statusCode == 500) return new DbxException.ServerError(requestId, message);
+        if (response.statusCode == 503) return new DbxException.RetryLater(requestId, message);
 
-        return new DbxException.BadResponseCode("unexpected HTTP status code: " + response.statusCode + ": " + message, response.statusCode);
+        return new DbxException.BadResponseCode(requestId,
+                                                "unexpected HTTP status code: " + response.statusCode + ": " + message,
+                                                response.statusCode);
     }
 
-    public static <T> T readJsonFromResponse(JsonReader<T> reader, InputStream body)
+    public static <T> T readJsonFromResponse(JsonReader<T> reader, HttpRequestor.Response response)
         throws DbxException.BadResponse, DbxException.NetworkIO
     {
         try {
-            return reader.readFully(body);
+            return reader.readFully(response.body);
         }
         catch (JsonReadException ex) {
-            throw new DbxException.BadResponse("error in response JSON: " + ex.getMessage(), ex);
+            String requestId = getRequestId(response);
+            throw new DbxException.BadResponse(requestId, "error in response JSON: " + ex.getMessage(), ex);
         }
         catch (IOException ex) {
             throw new DbxException.NetworkIO(ex);
@@ -343,19 +393,23 @@ public class DbxRequestUtil
     {
         List<String> values = response.headers.get(name);
         if (values == null) {
-            throw new DbxException.BadResponse("missing HTTP header \"" + name + "\"");
+            throw new DbxException.BadResponse(getRequestId(response), "missing HTTP header \"" + name + "\"");
         }
         assert !values.isEmpty();
         return values.get(0);
     }
 
     public static /*@Nullable*/String getFirstHeaderMaybe(HttpRequestor.Response response, String name)
-        throws DbxException
     {
         List<String> values = response.headers.get(name);
         if (values == null) return null;
         assert !values.isEmpty();
         return values.get(0);
+    }
+
+    public static /*@Nullable*/ String getRequestId(HttpRequestor.Response response)
+    {
+        return DbxRequestUtil.getFirstHeaderMaybe(response, "X-Dropbox-Request-Id");
     }
 
     public static abstract class RequestMaker<T, E extends Throwable>

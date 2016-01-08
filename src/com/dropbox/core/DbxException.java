@@ -10,8 +10,26 @@ import java.io.IOException;
  */
 public class DbxException extends Exception
 {
-    public DbxException(String message) { super(message); }
-    public DbxException(String message, Throwable cause) { super(message, cause); }
+    public final String requestId;
+
+    public DbxException(String message) {
+        this(null, message);
+    }
+
+    public DbxException(String requestId, String message) {
+        super(message);
+        this.requestId = requestId;
+    }
+
+    public DbxException(String message, Throwable cause) {
+        this(null, message, cause);
+    }
+
+    public DbxException(String requestId, String message, Throwable cause) {
+        super(message, cause);
+        this.requestId = requestId;
+    }
+
     public static final long serialVersionUID = 0;
 
     /**
@@ -39,7 +57,7 @@ public class DbxException extends Exception
      */
     public static final class ServerError extends DbxException
     {
-        public ServerError(String message) { super(message); }
+        public ServerError(String requestId, String message) { super(requestId, message); }
         public static final long serialVersionUID = 0;
     }
 
@@ -49,9 +67,9 @@ public class DbxException extends Exception
     public static final class RetryLater extends DbxException
     {
         // TODO: Maybe parse out the server's recommended delay
-        public RetryLater(String message)
+        public RetryLater(String requestId, String message)
         {
-            super(message);
+            super(requestId, message);
         }
         public static final long serialVersionUID = 0;
     }
@@ -70,8 +88,8 @@ public class DbxException extends Exception
      */
     public static abstract class ProtocolError extends DbxException
     {
-        public ProtocolError(String message) { super(message); }
-        public ProtocolError(String message, Throwable cause) { super(message, cause); }
+        public ProtocolError(String requestId, String message) { super(requestId, message); }
+        public ProtocolError(String requestId, String message, Throwable cause) { super(requestId, message, cause); }
         public static final long serialVersionUID = 0;
     }
 
@@ -81,7 +99,7 @@ public class DbxException extends Exception
      */
     public static final class BadRequest extends ProtocolError
     {
-        public BadRequest(String message) { super(message); }
+        public BadRequest(String requestId, String message) { super(requestId, message); }
         public static final long serialVersionUID = 0;
     }
 
@@ -91,8 +109,8 @@ public class DbxException extends Exception
      */
     public static class BadResponse extends ProtocolError
     {
-        public BadResponse(String message) { super(message); }
-        public BadResponse(String message, Throwable cause) { super(message, cause); }
+        public BadResponse(String requestId, String message) { super(requestId, message); }
+        public BadResponse(String requestId, String message, Throwable cause) { super(requestId, message, cause); }
         public static final long serialVersionUID = 0;
     }
 
@@ -103,15 +121,15 @@ public class DbxException extends Exception
     {
         public final int statusCode;
 
-        public BadResponseCode(String message, int statusCode)
+        public BadResponseCode(String requestId, String message, int statusCode)
         {
-            super(message);
+            super(requestId, message);
             this.statusCode = statusCode;
         }
 
-        public BadResponseCode(String message, int statusCode, Throwable cause)
+        public BadResponseCode(String requestId, String message, int statusCode, Throwable cause)
         {
-            super(message, cause);
+            super(requestId, message, cause);
             this.statusCode = statusCode;
         }
 
@@ -152,7 +170,7 @@ public class DbxException extends Exception
      */
     public static final class InvalidAccessToken extends DbxException
     {
-        public InvalidAccessToken(String message) { super(message); }
+        public InvalidAccessToken(String requestId, String message) { super(requestId, message); }
         public static final long serialVersionUID = 0;
     }
 }
