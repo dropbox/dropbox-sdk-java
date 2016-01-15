@@ -19,8 +19,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /*>>> import checkers.nullness.quals.NonNull; */
 /*>>> import checkers.nullness.quals.Nullable; */
@@ -66,14 +67,24 @@ public class DbxRawClientV2 {
         this.host = host;
     }
 
+    // package-private
+    DbxRawClientV2(DbxRawClientV2 copy) {
+        this.requestConfig = copy.requestConfig;
+        this.accessToken = copy.accessToken;
+        this.host = copy.host;
+    }
+
     // The HTTP status codes returned for errors specific to particular API calls.
     private final static List<Integer> functionSpecificErrorCodes = Arrays.asList(403, 404, 409);
 
-    public static <ArgT,ResT,ErrT> ResT rpcStyle(DbxRequestConfig requestConfig, String accessToken,
-                                                 String host, String path, ArgT arg,
-                                                 JsonWriter<ArgT> argWriter,
-                                                 JsonReader<ResT> resReader,
-                                                 JsonReader<ErrT> errReader)
+    protected void addAuthHeaders(List<HttpRequestor.Header> headers) {
+        DbxRequestUtil.addAuthHeader(headers, accessToken);
+    }
+
+    public <ArgT,ResT,ErrT> ResT rpcStyle(String host, String path, ArgT arg,
+                                          JsonWriter<ArgT> argWriter,
+                                          JsonReader<ResT> resReader,
+                                          JsonReader<ErrT> errReader)
             throws DbxRequestUtil.ErrorWrapper, DbxException
     {
         HttpRequestor.Response response;
@@ -85,7 +96,8 @@ public class DbxRawClientV2 {
                 out.write("null".getBytes("UTF-8"));
             }
             byte[] body = out.toByteArray();
-            ArrayList<HttpRequestor.Header> headers = DbxRequestUtil.addAuthHeader(null, accessToken);
+            List<HttpRequestor.Header> headers = new ArrayList<HttpRequestor.Header>();
+            addAuthHeaders(headers);
             headers.add(new HttpRequestor.Header("Content-Type", "application/json; charset=utf-8"));
             response = DbxRequestUtil.startPostRaw(requestConfig, host, path, body, headers);
             try {
@@ -107,8 +119,7 @@ public class DbxRawClientV2 {
         }
     }
 
-    public static <ArgT,ResT,ErrT> DbxDownloader<ResT> downloadStyle(
-            DbxRequestConfig requestConfig, String accessToken,
+    public <ArgT,ResT,ErrT> DbxDownloader<ResT> downloadStyle(
             String host, String path, ArgT arg,
             JsonWriter<ArgT> argWriter,
             JsonReader<ResT> resReader,
@@ -117,7 +128,8 @@ public class DbxRawClientV2 {
     {
         HttpRequestor.Response response;
         try {
-            ArrayList<HttpRequestor.Header> headers = DbxRequestUtil.addAuthHeader(null, accessToken);
+            List<HttpRequestor.Header> headers = new ArrayList<HttpRequestor.Header>();
+            addAuthHeaders(headers);
             headers.add(new HttpRequestor.Header("Dropbox-API-Arg", headerSafeJson(arg, argWriter)));
             headers.add(new HttpRequestor.Header("Content-Type", ""));
             byte[] body = new byte[0];
@@ -178,15 +190,15 @@ public class DbxRawClientV2 {
         return out.toString();
     }
 
-    public static <ArgT,ResT,ErrT,X extends Throwable> DbxUploader<ResT,ErrT,X> uploadStyle(
-            DbxRequestConfig requestConfig, String accessToken,
+    public <ArgT,ResT,ErrT,X extends Throwable> DbxUploader<ResT,ErrT,X> uploadStyle(
             String host, String path, ArgT arg,
             JsonWriter<ArgT>argWriter,
             DbxUploader.UploaderMaker<ResT,ErrT,X> uploaderMaker)
             throws DbxException
     {
         String uri = DbxRequestUtil.buildUri(host, path);
-        ArrayList<HttpRequestor.Header> headers = DbxRequestUtil.addAuthHeader(null, accessToken);
+        List<HttpRequestor.Header> headers = new ArrayList<HttpRequestor.Header>();
+        addAuthHeaders(headers);
         headers.add(new HttpRequestor.Header("Content-Type", "application/octet-stream"));
         headers = DbxRequestUtil.addUserAgentHeader(headers, requestConfig);
         headers.add(new HttpRequestor.Header("Dropbox-API-Arg", headerSafeJson(arg, argWriter)));
@@ -201,6 +213,8 @@ public class DbxRawClientV2 {
 
     /**
      * Returns the {@code DbxRequestConfig} that was passed in to the constructor.
+     *
+     * @return configuration to use for issuing requests.
      */
     public DbxRequestConfig getRequestConfig() {
         return requestConfig;
@@ -208,6 +222,8 @@ public class DbxRawClientV2 {
 
     /**
      * Returns the {@code DbxAccessToken} that was passed in to the constructor.
+     *
+     * @return OAuth2 access token used for request authorization.
      */
     public String getAccessToken() {
         return accessToken;
@@ -215,10 +231,10 @@ public class DbxRawClientV2 {
 
     /**
      * Returns the {@code DbxHost} that was passed in to the constructor.
+     *
+     * @return Dropbox hosts to use for requests.
      */
     public DbxHost getHost() {
         return host;
     }
-
-
 }

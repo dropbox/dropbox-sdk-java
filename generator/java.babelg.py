@@ -18,6 +18,7 @@ import os
 import argparse
 
 from collections import OrderedDict
+from contextlib import contextmanager
 from functools import partial
 
 from babelapi.generator import CodeGenerator
@@ -390,6 +391,27 @@ def type_and_name(namespace, field, boxed=True):
     return '%s %s' % (field_type(namespace, field, boxed), field_name(field))
 
 
+def get_auth_types_set(namespace):
+    routes = namespace.routes
+    if not routes:
+        return set()
+
+    return {
+        route.attrs.get('auth', 'user')
+        for route in routes
+    }
+
+
+def get_namespaces_by_auth_types(api, auth_types):
+    auth_types_set = set(auth_types)
+    return [
+        ns for ns, ns_auth_types in
+        ((ns, get_auth_types_set(ns)) for ns in api.namespaces.values())
+        # filter out empty or non-matching auth types
+        if ns_auth_types and ns_auth_types.issubset(auth_types)
+    ]
+
+
 class JavaCodeGenerator(CodeGenerator):
     cmdline_parser = _cmdline_parser
 
@@ -402,19 +424,176 @@ class JavaCodeGenerator(CodeGenerator):
 
         This is called by babelapi.cli.
         """
+        package_name = self.args.package
+        package_relpath = self.create_package_path(package_name)
+
+        self.generate_dbx_clients(api, package_relpath, package_name)
+
         # Create a package for each namespace containing datatypes and routes.
         for namespace in api.namespaces.values():
-            package_name = self.args.package
-            package_components = package_name.split('.')
-            package_relpath = os.path.join(*package_components)
-            package_fullpath = os.path.join(self.target_folder_path, package_relpath)
-            if not os.path.isdir(package_fullpath):
-                self.logger.info('Creating directory %s', package_fullpath)
-                os.makedirs(package_fullpath)
-
             doc_out = partial(self.generate_doc, api, namespace)
             # Create a <Namespace>.java file containing nested classes.
             self.generate_namespace_wrapper(namespace, package_relpath, package_name, doc_out)
+
+    def create_package_path(self, package_name):
+        package_components = package_name.split('.')
+        package_relpath = os.path.join(*package_components)
+        package_fullpath = os.path.join(self.target_folder_path, package_relpath)
+        if not os.path.isdir(package_fullpath):
+            self.logger.info('Creating directory %s', package_fullpath)
+            os.makedirs(package_fullpath)
+        return package_relpath
+
+    def generate_dbx_clients(self, api, package_relpath, package_name):
+        out = self.emit
+
+        user_client_class_name = 'DbxClientV2'
+        with self.dbx_client(
+                api, package_relpath, package_name, user_client_class_name, ('user', 'noauth'),
+                """
+                Use this class to make remote calls to the Dropbox API user endpoints.  User endpoints
+                expose actions you can perform as a Dropbox user.  You'll need an access token first,
+                normally acquired by directing a Dropbox user through the auth flow using {@link
+                com.dropbox.core.DbxWebAuth}.
+                """
+        ):
+            pass
+
+        with self.dbx_client(
+                api, package_relpath, package_name, 'DbxTeamClientV2', ('team',),
+                """
+                Use this class to make remote calls to the Dropbox API team endpoints.  Team endpoints
+                expose actions you can perform on or for a Dropbox team.  You'll need a team access
+                token first, normally acquired by directing a Dropbox Business team administrator
+                through the auth flow using {@link com.dropbox.core.DbxWebAuth}.
+
+                Team clients can access user endpoints by using the {@link #asMember} method.  This
+                allows team clients to perform actions as a particular team member.
+                """
+        ):
+            self.generate_javadoc(
+                """
+                Returns a {@link %s} that performs requests against Dropbox API user endpoints as the
+                given team member.
+
+                This method performs no validation of the team member ID.
+                """ % (user_client_class_name,),
+                params={"memberId": "Team member ID of member in this client's team, never {@code null}."},
+                returns="Dropbox client that issues requests to user endpoints as the given team member",
+                throws={"IllegalArgumentException": "If {@code memberId} is {@code null}"}
+            )
+
+            out('')
+            with self.block('public %s asMember(String memberId)' % (user_client_class_name,)):
+                out('if (memberId == null) throw new IllegalArgumentException("\'memberId\' should not be null");')
+                out('return new %s(new DbxTeamRawClientV2(rawClient, memberId));' % (user_client_class_name,))
+
+            self.generate_javadoc(
+                """
+                {@link DbxRawClientV2} raw client that adds select-user header to all requests.
+                Used to perform requests as a particular team member.
+                """
+            )
+            with self.block('private static final class DbxTeamRawClientV2 extends DbxRawClientV2'):
+                out('private final String memberId;')
+                out('')
+                with self.block('private DbxTeamRawClientV2(DbxRawClientV2 underlying, String memberId)'):
+                    out('super(underlying);')
+                    out('this.memberId = memberId;')
+                out('')
+                out('@Override')
+                with self.block('protected void addAuthHeaders(java.util.List<HttpRequestor.Header> headers)'):
+                    out('super.addAuthHeaders(headers);')
+                    out('com.dropbox.core.DbxRequestUtil.addSelectUserHeader(headers, memberId);')
+
+
+    @contextmanager
+    def dbx_client(self, api, package_relpath, package_name, class_name, auth_types, class_doc):
+        assert class_doc
+
+        out = self.emit
+
+        namespaces = get_namespaces_by_auth_types(api, auth_types)
+
+        file_name = os.path.join(package_relpath, class_name + '.java')
+        with self.output_to_relative_path(file_name):
+            out('/* DO NOT EDIT */')
+            out('/* This file was generated by Babel */')
+            out('')
+            out('package %s;' % package_name)
+            out('')
+            out('import com.dropbox.core.DbxHost;')
+            out('import com.dropbox.core.DbxRequestConfig;')
+            out('import com.dropbox.core.http.HttpRequestor;')
+            out('')
+            self.generate_javadoc(
+                """
+                %s
+
+                This class has no mutable state, so it's thread safe as long as you pass in a thread
+                safe {@link HttpRequestor} implementation.
+                """ % class_doc
+            )
+            with self.block('public final class %s' % class_name):
+                out('private final DbxRawClientV2 rawClient;')
+                get_field_name = lambda ns: camelcase(namespace.name)
+                for namespace in namespaces:
+                    out('public final %s %s;' % (namespace_ref(namespace), get_field_name(namespace)))
+                out('')
+
+                param_docs = OrderedDict((
+                    ('requestConfig', 'Default attributes to use for each request'),
+                    ('accessToken', 'OAuth 2 access token (that you got from Dropbox) '
+                     'that gives your app the ability to make Dropbox API calls. Typically '
+                     'acquired through {@link com.dropbox.core.DbxWebAuth}'),
+                    ('host', 'Dropbox hosts to send requests to (used for mocking and testing)'),
+                ))
+
+                self.generate_javadoc(
+                    """
+                    Creates a client that uses the given OAuth 2 access token as authorization when
+                    performing requests against the default Dropbox hosts.
+                    """,
+                    params=OrderedDict(
+                        (k, v) for k, v in param_docs.items()
+                        if k in ('requestConfig', 'accessToken')
+                    )
+                )
+                with self.block('public %s(DbxRequestConfig requestConfig, String accessToken)' % class_name):
+                    out('this(requestConfig, accessToken, DbxHost.Default);')
+
+                out('')
+
+
+                self.generate_javadoc(
+                    """
+                    Same as {@link #%s(DbxRequestConfig, String)} except you can also set the
+                    hostnames of the Dropbox API servers. This is used in testing. You don't
+                    normally need to call this.
+                    """ % (class_name,),
+                    params=param_docs
+                )
+                with self.block('public %s(DbxRequestConfig requestConfig, String accessToken, DbxHost host)' % class_name):
+                    out('this(new DbxRawClientV2(requestConfig, accessToken, host));')
+
+                out('')
+                self.generate_javadoc(
+                    """
+                    For internal use only.
+                    """,
+                    params=param_docs
+                )
+                # package-private
+                with self.block(('%s(DbxRawClientV2 rawClient)') % class_name):
+                    out('this.rawClient = rawClient;')
+                    for namespace in namespaces:
+                        out('this.%s = new %s(rawClient);' % (
+                            get_field_name(namespace), namespace_ref(namespace)
+                        ))
+
+                out('')
+                # allow caller to add custom methods to the client
+                yield
 
     def generate_namespace_wrapper(self, namespace, package_relpath, package_name, doc_out):
         out = self.emit
@@ -548,26 +727,22 @@ class JavaCodeGenerator(CodeGenerator):
                 host = route.attrs.get('host', 'api')
                 if style == 'upload':
                     self.generate_multiline_list([
-                        'client.getRequestConfig()',
-                        'client.getAccessToken()',
                         'client.getHost().%s' % host,
                         '"2-beta-2/%s/%s"' % (namespace.name, route.name),
                         'arg' if arg_name != 'void' else 'null',
                         arg_name + '._writer' if arg_name != 'void' else 'null',
                         uploader_maker,
-                    ], before='return (%s) DbxRawClientV2.uploadStyle' % uploader, after=';')
+                    ], before='return (%s) client.uploadStyle' % uploader, after=';')
                 else:
                     ret = '' if is_void_type(route.response_data_type) else 'return '
                     self.generate_multiline_list([
-                        'client.getRequestConfig()',
-                        'client.getAccessToken()',
                         'client.getHost().%s' % host,
                         '"2-beta-2/%s/%s"' % (namespace.name, route.name),
                         'arg' if arg_name != 'void' else 'null',
                         arg_name + '._writer' if arg_name != 'void' else 'null',
                         '%s' % result_reader,
                         '%s' % error_reader,
-                    ], before='%sDbxRawClientV2.%sStyle' % (ret, style), after=';')
+                    ], before='%sclient.%sStyle' % (ret, style), after=';')
             if style != 'upload':
                 with self.block('catch (DbxRequestUtil.ErrorWrapper ew)'):
                     if error_name == 'void':
@@ -1429,7 +1604,7 @@ class JavaCodeGenerator(CodeGenerator):
                     )
 
         emit_attrs('@param', params)
-        emit_attrs('@returns', { "": returns } if returns else None)
+        emit_attrs('@return', { "": returns } if returns else None)
         emit_attrs('@throws', throws)
 
         out(' */')
@@ -1445,7 +1620,7 @@ class JavaCodeGenerator(CodeGenerator):
         if not fields:
             return None
 
-        params = {}
+        params = OrderedDict()
         for field in fields:
             param_name = field_name(field)
             param_babel_doc = field_doc(field) or ''

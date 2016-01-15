@@ -1,3 +1,4 @@
+- Add support for Dropbox API team endpoints.
 - Expose localized user messages and request IDs in exceptions.
 
 ---------------------------------------------
