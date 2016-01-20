@@ -61,12 +61,20 @@ def _camelcase(s):
     return s[:1].lower() + s[1:]
 
 
+def _allcaps(s):
+    return s.replace('/', '_').upper()
+
+
 def capwords(s):
     return _fixreserved(_capwords(s))
 
 
 def camelcase(s):
     return _fixreserved(_camelcase(s))
+
+
+def allcaps(s):
+    return _fixreserved(_allcaps(s))
 
 
 def collapse_whitespace(s):
@@ -126,13 +134,14 @@ def parse_route_ref(ref, namespace=None):
     return ref_namespace, route
 
 
-def parse_field_ref(ref):
+def parse_field_ref(ref, api_namespace, api_data_type):
     if '.' in ref:
-        data_type, field = ref.split('.', 1)
+        data_type_name, field = ref.split('.', 1)
+        data_type = api_namespace.data_type_by_name.get(data_type_name) or api_data_type
     else:
-        data_type = None
+        data_type = api_data_type
         field = ref
-    return data_type, field
+    return data_type, field, data_type == api_data_type
 
 
 def uses_builder_pattern(api_route):
@@ -174,17 +183,32 @@ def format_data_type_ref(data_type):
     return classname(data_type)
 
 
-def format_field_ref(data_type, field):
-    if data_type:
-        return '%s#%s' % (format_data_type_ref(data_type), camelcase(field))
+def format_field_ref(api_data_type, field, use_link=True):
+    field_name = camelcase(field)
+
+    # simple fields in unions use 'static final' or enum values, which are formatted with ALL_CAPS
+    if is_union_type(api_data_type):
+        union_field = get_field(api_data_type, field)
+        if union_field and is_simple_field(union_field):
+            field_name = allcaps(field)
+
+    if api_data_type and use_link:
+        return '{@link %s#%s}' % (format_data_type_ref(api_data_type.name), field_name)
     else:
-        return '#' + camelcase(field)
+        # don't use {@link} if we have no idea what it is (safest)
+        return '{@code %s}' % (field_name,)
 
 
 def is_primitive_type(dt):
     correct_type = is_boolean_type(dt) or is_numeric_type(dt) or is_void_type(dt)
     return correct_type and not is_nullable_type(dt)
 
+
+def get_field(api_data_type, field_name):
+    for field in api_data_type.all_fields:
+        if field.name == field_name:
+            return field
+    return None
 
 type_map_unboxed = {
     'UInt64': 'long',
@@ -287,14 +311,14 @@ def mapvalue(namespace, data_type, value):
     if isinstance(data_type, Union):
         assert isinstance(value, TagRef), (data_type, value)
         assert data_type is value.union_data_type, (data_type, value)
-        return '%s.%s' % (maptype(namespace, data_type), value.tag_name)
+        return '%s.%s' % (maptype(namespace, data_type), allcaps(value.tag_name))
     return str(value)
 
 
 # Matcher for Babel doc references.
 docref = ':(?P<tag>[A-z]*):`(?P<val>.*?)`'
 
-def doc_ref_handler(tag, val, api, namespace):
+def doc_ref_handler(tag, val, api, namespace, data_type=None, link_local_fields=True):
     """Substitute references in Babel docstrings with the proper Javadoc format."""
     if tag == 'route':
         ref_namespace, route = parse_route_ref(val, namespace)
@@ -302,19 +326,15 @@ def doc_ref_handler(tag, val, api, namespace):
     elif tag == 'type':
         return '{@link %s}' % format_data_type_ref(val)
     elif tag == 'field':
-        data_type, field = parse_field_ref(val)
-        # we get Javadoc warnings because sometimes the field is not in scope if we do {@link #val}.
-        # So use {@code val} instead for local fields.
-        if data_type:
-            return '{@link %s}' % format_field_ref(data_type, field)
-        else:
-            return '{@code %s}' % format_field_ref(data_type, field).lstrip('#')
+        api_data_type, field, is_local = parse_field_ref(val, namespace, data_type)
+        use_link = (not is_local) or link_local_fields
+        return format_field_ref(api_data_type, field, use_link=use_link)
     elif tag == 'link':
         anchor, link = val.rsplit(' ', 1)
         return '<a href="%s">%s</a>' % (link, anchor)
     elif tag == 'val':
         # Note that all valid Babel literals happen to be valid Java literals.
-        return '{@literal %s}' % val
+        return '{@code %s}' % val
     else:
         assert False, 'Unsupported tag (:%s:`%s`)' % (tag, val)
 
@@ -633,7 +653,8 @@ class JavaCodeGenerator(CodeGenerator):
                     out('this.client = client;')
                 for data_type in namespace.linearize_data_types():
                     out('')
-                    self.generate_data_type_class(namespace, data_type, doc_out)
+                    data_type_doc_out = partial(doc_out, data_type=data_type)
+                    self.generate_data_type_class(namespace, data_type, data_type_doc_out)
                 for route in namespace.routes:
                     self.generate_route_stuff(namespace, route, class_name, doc_out)
 
@@ -1000,7 +1021,7 @@ class JavaCodeGenerator(CodeGenerator):
                 with self.block():
                     with self.block('switch (x)'):
                         for field in data_type.all_fields:
-                            out('case %s:' % camelcase(field.name))
+                            out('case %s:' % allcaps(field.name))
                             with self.indent():
                                 out('g.writeStartObject();')
                                 out('g.writeFieldName(".tag");')
@@ -1018,7 +1039,7 @@ class JavaCodeGenerator(CodeGenerator):
                 with self.block():
                     catch_all = 'null'
                     if data_type.catch_all_field is not None:
-                        catch_all = camelcase(data_type.catch_all_field.name)
+                        catch_all = allcaps(data_type.catch_all_field.name)
                     out('return JsonReader.readEnum(parser, _values, %s);' % catch_all)
 
             self.generate_static_values(data_type, class_name)
@@ -1063,13 +1084,14 @@ class JavaCodeGenerator(CodeGenerator):
             has_simple_field = False
             for field in data_type.all_fields:
                 out('')
-                field_name = camelcase(field.name)
                 if is_simple_field(field):
+                    field_name = allcaps(field.name)
                     has_simple_field = True
                     doc_out(field.doc)
                     out('public static final %s %s = new %s(%s.%s);' %
                         (class_name, field_name, class_name, tag_name, field_name))
                 else:
+                    field_name = camelcase(field.name)
                     # For fields with values, define:
                     # - a private member to hold the value(*);
                     # - a private constructor(*);
@@ -1097,14 +1119,14 @@ class JavaCodeGenerator(CodeGenerator):
                     doc_out(field.doc)
                     with self.block('public static %s %s(%s v)' %
                                     (class_name, field_name, type_name)):
-                       out('return new %s(%s.%s, v);' % (class_name, tag_name, field_name))
+                       out('return new %s(%s.%s, v);' % (class_name, tag_name, allcaps(field.name)))
                     getter_name = camelcase('get_' + field.name)
                     out('')
                     with self.block('public %s %s()' % (type_name, getter_name)):
-                        with self.block('if (tag != %s.%s)' % (tag_name, field_name)):
+                        with self.block('if (tag != %s.%s)' % (tag_name, allcaps(field.name))):
                             out('throw new RuntimeException'
                                 '("%s() requires tag==%s, actual tag=="+tag);' %
-                                (getter_name, field_name))
+                                (getter_name, allcaps(field.name)))
                         out('return %s;' % value_name)
             out('')
             # Generate a private constructor to set the tag if we have any simple fields.
@@ -1123,7 +1145,7 @@ class JavaCodeGenerator(CodeGenerator):
                     cases = 0
                     for field in data_type.all_fields:
                         if is_simple_field(field):
-                            out('case %s:' % camelcase(field.name))
+                            out('case %s:' % allcaps(field.name))
                             cases += 1
                     if cases:
                         with self.indent():
@@ -1133,7 +1155,7 @@ class JavaCodeGenerator(CodeGenerator):
                         if not is_simple_field(field):
                             tn = maptype(namespace, field.data_type)
                             vn = 'this.' + unique_value_types[tn]
-                            out('case %s:' % camelcase(field.name))
+                            out('case %s:' % allcaps(field.name))
                             with self.indent():
                                 # TODO: Union fields may be optional but can't have defaults.
                                 # Also, required union fields are already checked for null-ness
@@ -1153,7 +1175,7 @@ class JavaCodeGenerator(CodeGenerator):
                 with self.block():
                     with self.block('switch (x.tag)'):
                         for field in data_type.all_fields:
-                            out('case %s:' % camelcase(field.name))
+                            out('case %s:' % allcaps(field.name))
                             with self.indent():
                                 tn = maptype(namespace, field.data_type)
                                 out('g.writeStartObject();')
@@ -1192,7 +1214,7 @@ class JavaCodeGenerator(CodeGenerator):
                         out('%s tag = _values.get(text);' % tag_name)
                         if data_type.catch_all_field is not None:
                             out('if (tag == null) { return %s.%s; }' %
-                                (class_name, camelcase(data_type.catch_all_field.name)))
+                                (class_name, allcaps(data_type.catch_all_field.name)))
                         else:
                             with self.block('if (tag == null)'):
                                 out('throw new JsonReadException'
@@ -1202,10 +1224,10 @@ class JavaCodeGenerator(CodeGenerator):
                             for field in data_type.all_fields:
                                 if is_simple_field(field):
                                     out('case %s: return %s.%s;' %
-                                        (camelcase(field.name), class_name, camelcase(field.name)))
+                                        (allcaps(field.name), class_name, allcaps(field.name)))
                                 elif is_nullable_type(field.data_type):
                                     out('case %s: return %s.%s(null);' %
-                                        (camelcase(field.name), class_name, camelcase(field.name)))
+                                        (allcaps(field.name), class_name, camelcase(field.name)))
                         out('throw new JsonReadException("Tag " + tag + " requires a value", '
                             'parser.getTokenLocation());')
                     # Else expect either {".tag": <tag>} or {".tag": <tag>, <tag>: <value>}.
@@ -1218,12 +1240,13 @@ class JavaCodeGenerator(CodeGenerator):
                     with self.block('if (tag != null)'):
                         with self.block('switch (tag)'):
                             for field in data_type.all_fields:
-                                fn = camelcase(field.name)
-                                with self.block('case %s:' % fn):
+                                with self.block('case %s:' % allcaps(field.name)):
                                     if is_simple_field(field):
+                                        fn = allcaps(field.name)
                                         out('value = %s.%s;' % (class_name, fn))
                                         # Expect nothing more.
                                     else:
+                                        fn = camelcase(field.name)
                                         dt = field.data_type
                                         if is_nullable_type(dt):
                                             with self.block('if (parser.getCurrentToken() == '
@@ -1256,7 +1279,7 @@ class JavaCodeGenerator(CodeGenerator):
                     out('JsonReader.expectObjectEnd(parser);')
                     if data_type.catch_all_field is not None:
                         out('if (value == null) { return %s.%s; }' %
-                            (class_name, camelcase(data_type.catch_all_field.name)))
+                            (class_name, allcaps(data_type.catch_all_field.name)))
                     out('return value;')
                 out('')
 
@@ -1282,7 +1305,7 @@ class JavaCodeGenerator(CodeGenerator):
         with self.block('static'):
             out('_values = new java.util.HashMap<String,%s>();' % class_name)
             for field in data_type.fields:
-                out('_values.put("%s", %s%s);' % (field.name, value_prefix, camelcase(field.name)))
+                out('_values.put("%s", %s%s);' % (field.name, value_prefix, allcaps(field.name)))
 
     def generate_enum_values(self, data_type, doc_out, do_doc=False, last_sep=';'):
         """Generate enum values."""
@@ -1300,7 +1323,7 @@ class JavaCodeGenerator(CodeGenerator):
                 sep += '  // *catch_all'
             elif not isinstance(field.data_type, Void):
                 sep += '  // %s' % field.data_type.name
-            out(camelcase(field.name) + sep)
+            out(allcaps(field.name) + sep)
 
     def generate_json_writer(self, namespace, class_name, data_type):
         """Generate the JsonWriter for a struct class."""
@@ -1609,14 +1632,14 @@ class JavaCodeGenerator(CodeGenerator):
 
         out(' */')
 
-    def translate_babel_doc(self, api, namespace, doc):
+    def translate_babel_doc(self, api, namespace, doc, data_type=None, link_local_fields=True):
         if doc:
-            handler = lambda tag, val: doc_ref_handler(tag, val, api, namespace)
+            handler = lambda tag, val: doc_ref_handler(tag, val, api, namespace, data_type, link_local_fields=link_local_fields)
             return self.process_doc(doc, handler)
         else:
             return doc
 
-    def get_javadoc_params_for_fields(self, api, namespace, fields):
+    def get_javadoc_params_for_fields(self, api, namespace, fields, data_type=None):
         if not fields:
             return None
 
@@ -1624,14 +1647,15 @@ class JavaCodeGenerator(CodeGenerator):
         for field in fields:
             param_name = field_name(field)
             param_babel_doc = field_doc(field) or ''
-            params[param_name] = self.translate_babel_doc(api, namespace, param_babel_doc)
+            # @param documentation should not create awkward links to class fields in constructors or route methods.
+            params[param_name] = self.translate_babel_doc(api, namespace, param_babel_doc, data_type=data_type, link_local_fields=False)
 
         return params
 
-    def generate_doc(self, api, namespace, doc, fields=()):
+    def generate_doc(self, api, namespace, doc, data_type=None, fields=()):
         """Generate a Javadoc comment from Babel doc string."""
         out = self.emit
         if doc or fields:
-            doc = self.translate_babel_doc(api, namespace, doc)
-            params = self.get_javadoc_params_for_fields(api, namespace, fields)
+            doc = self.translate_babel_doc(api, namespace, doc, data_type=data_type)
+            params = self.get_javadoc_params_for_fields(api, namespace, fields, data_type=data_type)
             self.generate_javadoc(doc, params=params)
