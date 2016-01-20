@@ -394,15 +394,20 @@ public class DbxClientV1Test
         String path = p("share-me.txt");
         client.uploadFile(path, DbxWriteMode.add(), contents.length, new ByteArrayInputStream(contents));
 
-        String previewUrl = client.createShareableUrl(path);
+        URL previewUrl = new URL(client.createShareableUrl(path));
 
         // Preview page should be larger than the original content.
-        byte[] previewPage = downloadUrl(previewUrl);
-        assertTrue(previewPage.length > (contents.length + 1000));
+        byte[] previewPage = downloadUrl(previewUrl.toString());
+        assertTrue(previewPage.length > contents.length);
 
         // Direct download should match exactly.
-        String directUrl = previewUrl.replace("://www.", "://dl.");
-        byte[] directContents = downloadUrl(directUrl);
+        URL directUrl = new URL(
+            previewUrl.getProtocol(),
+            client.getHost().content,
+            previewUrl.getPort(),
+            previewUrl.getFile()
+        );
+        byte[] directContents = downloadUrl(directUrl.toString());
         assertEquals(directContents, contents);
     }
 
