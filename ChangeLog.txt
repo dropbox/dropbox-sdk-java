@@ -1,3 +1,4 @@
+- Accept List instead of ArrayList for requests.
 - Fix BadRequest exception for DbxFiles.listFolderLongpoll(String).
 - Uppercase enum and static fields.
 - Add support for Dropbox API team endpoints.

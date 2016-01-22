@@ -250,9 +250,9 @@ def maptype(namespace, data_type, boxed=True, generics=True):
         boxed = True
     if is_list_type(data_type):
         if generics:
-            return 'java.util.ArrayList<%s>' % maptype(namespace, data_type.data_type)
+            return 'java.util.List<%s>' % maptype(namespace, data_type.data_type)
         else:
-            return 'java.util.ArrayList'
+            return 'java.util.List'
     type_map = type_map_boxed if boxed else type_map_unboxed
     if data_type.name in type_map:
         return type_map[data_type.name]
