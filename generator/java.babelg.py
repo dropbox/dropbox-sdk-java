@@ -97,6 +97,10 @@ def split_paragraphs(s):
         yield "\n".join(paragraph)
 
 
+def sanitize_pattern(pattern):
+    return pattern.replace('\\', '\\\\').replace('"', '\\"')
+
+
 def oxford_comma_list(values, conjunction='and'):
     if not values:
         return None
@@ -1584,7 +1588,7 @@ class JavaCodeGenerator(CodeGenerator):
                 with self.block('for (%s %s : %s)' % (maptype(namespace, ft.data_type), xn, vn)):
                     with self.block('if (%s == null)' % xn):
                         out('throw new IllegalArgumentException("An item in list%s is null");' % dn)
-                    doit(ft.data_type, xn, 'an item in list%s' % dn, level+1)
+                    doit(ft.data_type, xn, 'an item in list%s' % dn, level=level+1)
             elif is_numeric_type(ft):
                 if ft.min_value is not None:
                     with self.block('if (%s < %s)' % (vn, mapvalue(namespace, ft, ft.min_value))):
@@ -1606,8 +1610,9 @@ class JavaCodeGenerator(CodeGenerator):
                 if ft.pattern is not None:
                     # TODO: Save the pattern as a static variable.
                     # NOTE: pattern should match against entire input sequence
-                    with self.block('if (!java.util.regex.Pattern.matches("%s", %s))' %
-                                    (ft.pattern.replace('\\', '\\\\'), vn)):
+                    with self.block('if (!java.util.regex.Pattern.matches("%s", %s))' % (
+                            sanitize_pattern(ft.pattern), vn,
+                    )):
                         out('throw new IllegalArgumentException("String%s does not match pattern");' %
                             dn)
             elif is_composite_type(ft) or is_boolean_type(ft) or \
@@ -1730,7 +1735,7 @@ class JavaCodeGenerator(CodeGenerator):
             add_req("not contain a {@code null} item",
                     "contains a {@code null} item")
         elif is_string_type(ft) and ft.pattern is not None:
-            pattern = ft.pattern.replace('\\', '\\\\')
+            pattern = sanitize_pattern(ft.pattern)
             add_req('match pattern "{@code %s}"' % pattern,
                     'does not match pattern "{@code %s}"' % pattern)
 
