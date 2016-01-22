@@ -1,3 +1,7 @@
+- Change format of tagged union classes.
+  - Change getter method format from getAbc() to getAbcValue().
+  - Add new isAbc() convenience methods.
+  - Add new getTag() method for tag discrimination.
 - Accept List instead of ArrayList for requests.
 - Fix BadRequest exception for DbxFiles.listFolderLongpoll(String).
 - Uppercase enum and static fields.

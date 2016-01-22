@@ -97,6 +97,17 @@ def split_paragraphs(s):
         yield "\n".join(paragraph)
 
 
+def oxford_comma_list(values, conjunction='and'):
+    if not values:
+        return None
+    elif len(values) == 1:
+        return values[0]
+    elif len(values) == 2:
+        return '%s %s %s' % (values[0], conjunction, values[1])
+    else:
+        return '%s, %s %s' % (', '.join(values[:-1]), conjunction, values[-1])
+
+
 def is_simple_field(field):
     return isinstance(field.data_type, Void)
 
@@ -185,12 +196,6 @@ def format_data_type_ref(data_type):
 
 def format_field_ref(api_data_type, field, use_link=True):
     field_name = camelcase(field)
-
-    # simple fields in unions use 'static final' or enum values, which are formatted with ALL_CAPS
-    if is_union_type(api_data_type):
-        union_field = get_field(api_data_type, field)
-        if union_field and is_simple_field(union_field):
-            field_name = allcaps(field)
 
     if api_data_type and use_link:
         return '{@link %s#%s}' % (format_data_type_ref(api_data_type.name), field_name)
@@ -311,7 +316,10 @@ def mapvalue(namespace, data_type, value):
     if isinstance(data_type, Union):
         assert isinstance(value, TagRef), (data_type, value)
         assert data_type is value.union_data_type, (data_type, value)
-        return '%s.%s' % (maptype(namespace, data_type), allcaps(value.tag_name))
+        return '%s.%s()' % (
+            maptype(namespace, data_type),
+            camelcase(value.tag_name),
+        )
     return str(value)
 
 
@@ -862,6 +870,7 @@ class JavaCodeGenerator(CodeGenerator):
             with self.block():
                 for field in route.request_data_type.all_required_fields:
                     fn = camelcase(field.name)
+                    self.generate_field_validation(namespace, field, fn)
                     out('this.%s = %s;' % (fn, fn))
             # Create setter methods for each optional argument.
             for field in route.request_data_type.all_optional_fields:
@@ -876,6 +885,7 @@ class JavaCodeGenerator(CodeGenerator):
                 out('public %s %s(%s %s)' % (builder_name, setter_name,
                                              arg_type, arg_name))
                 with self.block():
+                    self.generate_field_validation(namespace, field, arg_name, omit_arg_name=True)
                     out('this.%s = %s;' % (arg_name, arg_name))
                     out('return this;')
 
@@ -890,7 +900,10 @@ class JavaCodeGenerator(CodeGenerator):
 
         # Generate the helper method used to construct the builder
         out('')
-        doc_out(route.doc, fields=route.request_data_type.all_required_fields)
+        doc_out(
+            route.doc,
+            fields=route.request_data_type.all_required_fields,
+        )
         out('public %s %s(%s)' % (builder_name, builder_fn_name, ', '.join(req_fields)))
         with self.block():
             args = [field_name(field) for field
@@ -950,10 +963,7 @@ class JavaCodeGenerator(CodeGenerator):
         out('')
         doc_out(data_type.doc)
         if is_union_type(data_type):
-            if has_value_fields(data_type):
-                self.generate_union_complex(namespace, data_type, class_name, doc_out)
-            else:
-                self.generate_union_simple(namespace, data_type, class_name, doc_out)
+            self.generate_union(namespace, data_type, class_name, doc_out)
         else:
             # Struct.
             assert is_struct_type(data_type)
@@ -1007,57 +1017,18 @@ class JavaCodeGenerator(CodeGenerator):
                 with self.block():
                     out('return _reader.readFully(s);')
 
-    def generate_union_simple(self, namespace, data_type, class_name, doc_out):
-        """Generate code for a simple union (one that has only Void values)."""
-        out = self.emit
-        with self.block('public enum %s' % class_name):
-            out('// union %s' % class_name)
-            self.generate_enum_values(data_type, doc_out, do_doc=True)
-            out('')
+    def generate_union(self, namespace, data_type, class_name, doc_out):
+        """
+        Generate code for a union.
 
-            # Generate JSON writer.
-            out('static final JsonWriter<%s> _writer = new JsonWriter<%s>()' %
-                (class_name, class_name))
-            with self.bsemi():
-                out('public void write(%s x, JsonGenerator g)' % class_name)
-                out(' throws IOException')
-                with self.block():
-                    with self.block('switch (x)'):
-                        for field in data_type.all_fields:
-                            out('case %s:' % allcaps(field.name))
-                            with self.indent():
-                                out('g.writeStartObject();')
-                                out('g.writeFieldName(".tag");')
-                                out('g.writeString("%s");' % field.name)
-                                out('g.writeEndObject();')
-                                out('break;')
-            out('')
+        We treat both "simple" and "complex" unions the same (i.e. unions with no value tags and
+        unions with at least one value tag).  This provides the following benefits:
 
-            # Generate JSON reader.
-            out('public static final JsonReader<%s> _reader = '
-                'new JsonReader<%s>()' % (class_name, class_name))
-            with self.bsemi():
-                out('public final %s read(JsonParser parser)' % class_name)
-                out('    throws IOException, JsonReadException')
-                with self.block():
-                    catch_all = 'null'
-                    if data_type.catch_all_field is not None:
-                        catch_all = allcaps(data_type.catch_all_field.name)
-                    out('return JsonReader.readEnum(parser, _values, %s);' % catch_all)
-
-            self.generate_static_values(data_type, class_name)
-            out('')
-
-            # Generate toJson() and fromJson() methods.
-            with self.block('public String toJson(Boolean longForm)'):
-                out('return _writer.writeToString(this, longForm);')
-            out('public static %s fromJson(String s)' % class_name)
-            out('    throws JsonReadException')
-            with self.block():
-                out('return _reader.readFully(s);')
-
-    def generate_union_complex(self, namespace, data_type, class_name, doc_out):
-        """Generate code for a complex union (one that has at least one non-Void value)."""
+            - Simpler generator code and Javadoc reference handling
+            - Fewer breaking changes to 3rd party developers
+            - Consistent mapping of union types to Java types (handle them all the same in 3rd party
+              code)
+        """
         out = self.emit
         with self.block('public static final class %s' % class_name):
             out('// union %s' % class_name)
@@ -1066,14 +1037,33 @@ class JavaCodeGenerator(CodeGenerator):
             doc_out('The discriminating tag type for {@link %s}.' % class_name)
             tag_name = 'Tag'
             with self.block('public enum %s' % tag_name):
-                self.generate_enum_values(data_type, doc_out, last_sep='')
+                self.generate_enum_values(data_type, doc_out, do_doc=True, last_sep='')
             out('')
             # Generate a public field holding the tag.
             doc_out('The discriminating tag for this instance.')
             out('public final %s tag;' % tag_name)
-            # Generate stuff for each field:
-            # - for simple fields, a public static final instance;
-            # - for complex fields, a bunch of methods.
+            out('')
+            doc_out(
+                """
+                Returns the tag for this instance.
+
+                This class is a tagged union.  Tagged unions instances are always associated to a
+                specific tag.  Callers are recommended to use the tag value in a {@code switch}
+                statement to determine how to properly handle this {@code %s}.
+                """ % (class_name,),
+                returns="the tag for this instance."
+            )
+            with self.block('public %s getTag()' % (tag_name,)):
+                out('return this.tag;')
+
+            # Generate values for each field.  All fields will be represented by
+            # a set of functions:
+            #
+            #   creation: public static <class_name> fieldName(<optional field_data_type>)
+            #   retrieval: public <field_data_type> asFieldName()
+            #   verification: public boolean isFieldName()
+            #
+            # Simple fields will use singleton pattern for their values.
             unique_value_types = OrderedDict()  # Map type name -> value name
             constructors_made = OrderedDict()   # Map type name -> constructor_made
             for field in data_type.all_fields:
@@ -1087,50 +1077,112 @@ class JavaCodeGenerator(CodeGenerator):
             has_simple_field = False
             for field in data_type.all_fields:
                 out('')
+
+                field_name = camelcase(field.name)
+                tag_field_name = allcaps(field.name)
+                getter_name = camelcase('get_' + field.name + '_value')
+                new_instance_name = field_name
+                is_type_name = camelcase('is_' + field.name)
+
                 if is_simple_field(field):
-                    field_name = allcaps(field.name)
+                    value_name = allcaps(field.name + '_instance')
                     has_simple_field = True
                     doc_out(field.doc)
-                    out('public static final %s %s = new %s(%s.%s);' %
-                        (class_name, field_name, class_name, tag_name, field_name))
+                    out('private static final %s %s = new %s(%s.%s);' %
+                        (class_name, value_name, class_name, tag_name, tag_field_name))
                 else:
-                    field_name = camelcase(field.name)
                     # For fields with values, define:
                     # - a private member to hold the value(*);
                     # - a private constructor(*);
-                    # - a public factory method;
-                    # - a public getter method for the value.
                     # (*) Suppressed (shared) if a previous field uses the same type.
                     type_name = maptype(namespace, field.data_type)
+                    javadoc_type_name = maptype(namespace, field.data_type, generics=False)
                     value_name = unique_value_types[type_name]
                     if not constructors_made[type_name]:
                         constructors_made[type_name] = True
                         out('private final %s %s;' % (type_name, value_name))
-                        with self.block('private %s(%s t, %s v)' %
+                        out('')
+                        with self.block('private %s(%s tag, %s value)' %
                                         (class_name, tag_name, type_name)):
-                            out('tag = t;')
+                            out('this.tag = tag;')
                             for other_value_name in unique_value_types.values():
                                 if other_value_name == value_name:
-                                    out('%s = v;' % value_name)
+                                    out('this.%s = value;' % value_name)
                                 else:
-                                    out('%s = null;' % other_value_name)
+                                    out('this.%s = null;' % other_value_name)
                             out('validate();')
                     else:
                         value_name = unique_value_types[type_name]
-                        out('// Reusing %s for %s' % (value_name, camelcase(field_name)))
+                        out('// Reusing %s for %s' % (value_name, field_name))
+
+                    # retrieval
                     out('')
-                    doc_out(field.doc)
-                    with self.block('public static %s %s(%s v)' %
-                                    (class_name, field_name, type_name)):
-                       out('return new %s(%s.%s, v);' % (class_name, tag_name, allcaps(field.name)))
-                    getter_name = camelcase('get_' + field.name)
-                    out('')
+                    doc_out(
+                        """
+                        %s
+
+                        This instance must be tagged as {@link %s#%s}.
+                        """ % (field.doc, tag_name, tag_field_name),
+                        returns="""
+                        The {@link %s} value associated with this instance if {@link #%s} is
+                        {@code true}.
+                        """ % (javadoc_type_name, is_type_name),
+                        throws={
+                            "IllegalStateException": "If {@link #%s} is {@code false}." % (is_type_name,)
+                        }
+                    )
                     with self.block('public %s %s()' % (type_name, getter_name)):
-                        with self.block('if (tag != %s.%s)' % (tag_name, allcaps(field.name))):
-                            out('throw new RuntimeException'
-                                '("%s() requires tag==%s, actual tag=="+tag);' %
-                                (getter_name, allcaps(field.name)))
+                        with self.block('if (this.tag != %s.%s)' % (tag_name, tag_field_name)):
+                            out('throw new IllegalStateException'
+                                '("%s() requires tag==%s, actual tag==" + tag);' %
+                                (getter_name, tag_field_name))
                         out('return %s;' % value_name)
+
+
+                # new instance
+                out('')
+                doc_out(
+                    """
+                    Returns an instance of {@code %s} that has its tag set to {@link %s#%s}.
+
+                    %s
+                    """ % (class_name, tag_name, tag_field_name, field.doc),
+                    params={
+                        "value": "{@link %s} value to assign to this instance." % (javadoc_type_name,)
+                    } if not is_simple_field(field) else {},
+                    returns="""
+                    Instance of {@code %s} with its tag set to {@link %s#%s}.
+                    """ % (class_name, tag_name, tag_field_name),
+                    throws=self.get_javadoc_throws_for_field_validation(field, "value")
+                )
+                if is_simple_field(field):
+                    with self.block('public static %s %s()' % (class_name, new_instance_name)):
+                        out('return %s.%s;' % (class_name, value_name))
+                else:
+                    with self.block('public static %s %s(%s value)' % (
+                            class_name, new_instance_name, type_name
+                    )):
+                        out('return new %s(%s.%s, value);' % (
+                            class_name, tag_name, tag_field_name
+                        ))
+
+                # is type
+                out('')
+                doc_out(
+                    """
+                    Returns {@code true} if this instance has the tag {@link %s#%s}, {@code false}
+                    otherwise.
+                    """ % (tag_name, tag_field_name),
+                    returns=(
+                        """
+                        {@code true} if this instance is tagged as {@link %s#%s},
+                        {@code false} otherwise.
+                        """
+                    ) % (tag_name, tag_field_name)
+                )
+                with self.block('public boolean %s()' % (is_type_name,)):
+                    out('return this.tag == %s.%s;' % (tag_name, tag_field_name))
+
             out('')
             # Generate a private constructor to set the tag if we have any simple fields.
             if has_simple_field:
@@ -1141,9 +1193,8 @@ class JavaCodeGenerator(CodeGenerator):
                     out('validate();')
 
             out('')
-            out('private void validate()')
-            with self.block():
-                with self.block('switch (tag)'):
+            with self.block('private final void validate()'):
+                with self.block('switch (this.tag)'):
                     # A single no-op case for all simple fields.
                     cases = 0
                     for field in data_type.all_fields:
@@ -1156,8 +1207,8 @@ class JavaCodeGenerator(CodeGenerator):
                     # A separate case for each complex field.
                     for field in data_type.all_fields:
                         if not is_simple_field(field):
-                            tn = maptype(namespace, field.data_type)
-                            vn = 'this.' + unique_value_types[tn]
+                            type_name = maptype(namespace, field.data_type)
+                            value_name = 'this.' + unique_value_types[type_name]
                             out('case %s:' % allcaps(field.name))
                             with self.indent():
                                 # TODO: Union fields may be optional but can't have defaults.
@@ -1165,7 +1216,7 @@ class JavaCodeGenerator(CodeGenerator):
                                 # when they are constructed, but the code here checks again.
                                 # But refactoring all this to still share the hard work
                                 # (doit()) is complicated.
-                                self.generate_field_validation(namespace, field, vn)
+                                self.generate_field_validation(namespace, field, value_name, omit_arg_name=True)
                                 out('break;')
 
             # Generate JSON writer.
@@ -1216,8 +1267,8 @@ class JavaCodeGenerator(CodeGenerator):
                         out('parser.nextToken();')
                         out('%s tag = _values.get(text);' % tag_name)
                         if data_type.catch_all_field is not None:
-                            out('if (tag == null) { return %s.%s; }' %
-                                (class_name, allcaps(data_type.catch_all_field.name)))
+                            new_instance_name = camelcase(data_type.catch_all_field.name)
+                            out('if (tag == null) { return %s.%s(); }' % (class_name, new_instance_name))
                         else:
                             with self.block('if (tag == null)'):
                                 out('throw new JsonReadException'
@@ -1225,12 +1276,13 @@ class JavaCodeGenerator(CodeGenerator):
                                     'parser.getTokenLocation());')
                         with self.block('switch (tag)'):
                             for field in data_type.all_fields:
+                                new_instance_name = camelcase(field.name)
                                 if is_simple_field(field):
-                                    out('case %s: return %s.%s;' %
-                                        (allcaps(field.name), class_name, allcaps(field.name)))
+                                    out('case %s: return %s.%s();' %
+                                        (allcaps(field.name), class_name, new_instance_name))
                                 elif is_nullable_type(field.data_type):
                                     out('case %s: return %s.%s(null);' %
-                                        (allcaps(field.name), class_name, camelcase(field.name)))
+                                        (allcaps(field.name), class_name, new_instance_name))
                         out('throw new JsonReadException("Tag " + tag + " requires a value", '
                             'parser.getTokenLocation());')
                     # Else expect either {".tag": <tag>} or {".tag": <tag>, <tag>: <value>}.
@@ -1244,12 +1296,11 @@ class JavaCodeGenerator(CodeGenerator):
                         with self.block('switch (tag)'):
                             for field in data_type.all_fields:
                                 with self.block('case %s:' % allcaps(field.name)):
+                                    new_instance_name = camelcase(field.name)
                                     if is_simple_field(field):
-                                        fn = allcaps(field.name)
-                                        out('value = %s.%s;' % (class_name, fn))
+                                        out('value = %s.%s();' % (class_name, new_instance_name))
                                         # Expect nothing more.
                                     else:
-                                        fn = camelcase(field.name)
                                         dt = field.data_type
                                         if is_nullable_type(dt):
                                             with self.block('if (parser.getCurrentToken() == '
@@ -1273,7 +1324,7 @@ class JavaCodeGenerator(CodeGenerator):
                                             # that code is useless.  Need to refactor
                                             # generate_read_field() more.
                                             self.generate_read_field(namespace, field, 'v')
-                                        out('value = %s.%s(v);' % (class_name, fn))
+                                        out('value = %s.%s(v);' % (class_name, new_instance_name))
                                     out('break;')
                     if data_type.catch_all_field is None:
                         with self.block('if (value == null)'):
@@ -1281,8 +1332,8 @@ class JavaCodeGenerator(CodeGenerator):
                                 '("Unanticipated tag " + text, parser.getTokenLocation());')
                     out('JsonReader.expectObjectEnd(parser);')
                     if data_type.catch_all_field is not None:
-                        out('if (value == null) { return %s.%s; }' %
-                            (class_name, allcaps(data_type.catch_all_field.name)))
+                        new_instance_name = camelcase(data_type.catch_all_field.name)
+                        out('if (value == null) { return %s.%s(); }' % (class_name, new_instance_name))
                     out('return value;')
                 out('')
 
@@ -1481,7 +1532,7 @@ class JavaCodeGenerator(CodeGenerator):
                 field_names = [field_name(field) for field in data_type.all_fields]
                 out('return new %s(%s);' % (class_name, ', '.join(field_names)))
 
-    def generate_field_validation(self, namespace, field, value_name):
+    def generate_field_validation(self, namespace, field, value_name, omit_arg_name=False):
         """Generate validation code for one field.
         """
         out = self.emit
@@ -1489,7 +1540,7 @@ class JavaCodeGenerator(CodeGenerator):
         def todo(ft):
             """Decide whether doit() will emit any code."""
             if is_composite_type(ft):
-                return True
+                return False
             if is_list_type(ft):
                 return True
             if is_numeric_type(ft):
@@ -1501,7 +1552,7 @@ class JavaCodeGenerator(CodeGenerator):
                 return False
             return True
 
-        def doit(ft, vn, dn=None, level=0):
+        def doit(ft, vn, dn=None, omit_arg_name=False, level=0):
             """Actually emit the validation code for the field.
 
             ft: field type
@@ -1513,46 +1564,51 @@ class JavaCodeGenerator(CodeGenerator):
             """
             if dn is None:
                 dn = vn
+            if omit_arg_name:
+                dn = ""
+            else:
+                dn = " '%s'" % (dn,)
+
             if is_list_type(ft):
                 if ft.min_items is not None:
                     with self.block('if (%s.size() < %s)' % (vn, mapvalue(namespace,
                                                                           ft, ft.min_items))):
-                        out('throw new RuntimeException("List \'%s\' has fewer than %s items");' %
+                        out('throw new IllegalArgumentException("List%s has fewer than %s items");' %
                             (dn, mapvalue(namespace, ft, ft.min_items)))
                 if ft.max_items is not None:
                     with self.block('if (%s.size() > %s)' % (vn, mapvalue(namespace,
                                                                           ft, ft.max_items))):
-                        out('throw new RuntimeException("List \'%s\' has more than %s items");' %
+                        out('throw new IllegalArgumentException("List%s has more than %s items");' %
                             (dn, mapvalue(namespace, ft, ft.max_items)))
                 xn = 'x' if level == 0 else 'x%d' % level
                 with self.block('for (%s %s : %s)' % (maptype(namespace, ft.data_type), xn, vn)):
                     with self.block('if (%s == null)' % xn):
-                        out('throw new RuntimeException("An item in list \'%s\' is null");' % dn)
-                    doit(ft.data_type, xn, 'an item in list field %s' % dn, level+1)
+                        out('throw new IllegalArgumentException("An item in list%s is null");' % dn)
+                    doit(ft.data_type, xn, 'an item in list%s' % dn, level+1)
             elif is_numeric_type(ft):
                 if ft.min_value is not None:
                     with self.block('if (%s < %s)' % (vn, mapvalue(namespace, ft, ft.min_value))):
-                        out('throw new RuntimeException("Number \'%s\' is smaller than %s");' %
+                        out('throw new IllegalArgumentException("Number%s is smaller than %s");' %
                             (dn, mapvalue(namespace, ft, ft.min_value)))
                 if ft.max_value is not None:
                     with self.block('if (%s > %s)' % (vn, mapvalue(namespace, ft, ft.max_value))):
-                        out('throw new RuntimeException("Number \'%s\' is larger than %s");' %
+                        out('throw new IllegalArgumentException("Number%s is larger than %s");' %
                             (dn, mapvalue(namespace, ft, ft.max_value)))
             elif is_string_type(ft):
                 if ft.min_length is not None:
                     with self.block('if (%s.length() < %d)' % (vn, ft.min_length)):
-                        out('throw new RuntimeException("String \'%s\' is shorter than %s");' %
+                        out('throw new IllegalArgumentException("String%s is shorter than %s");' %
                             (dn, mapvalue(namespace, ft, ft.min_length)))
                 if ft.max_length is not None:
                     with self.block('if (%s.length() > %d)' % (vn, ft.max_length)):
-                        out('throw new RuntimeException("String \'%s\' is longer than %s");' %
+                        out('throw new IllegalArgumentException("String%s is longer than %s");' %
                             (dn, mapvalue(namespace, ft, ft.max_length)))
                 if ft.pattern is not None:
                     # TODO: Save the pattern as a static variable.
                     # NOTE: pattern should match against entire input sequence
                     with self.block('if (!java.util.regex.Pattern.matches("%s", %s))' %
                                     (ft.pattern.replace('\\', '\\\\'), vn)):
-                        out('throw new RuntimeException("String \'%s\' does not match pattern");' %
+                        out('throw new IllegalArgumentException("String%s does not match pattern");' %
                             dn)
             elif is_composite_type(ft) or is_boolean_type(ft) or \
                     is_timestamp_type(ft) or is_binary_type(ft):
@@ -1566,19 +1622,22 @@ class JavaCodeGenerator(CodeGenerator):
         if nullable:
             if todo(ft):
                 with self.block('if (%s != null)' % vn):
-                    doit(ft, vn)
+                    doit(ft, vn, omit_arg_name=omit_arg_name)
             else:
                 # No validation required for this nullable field.
                 pass
         elif is_primitive_type(ft) or (isinstance(field, StructField) and field.has_default):
             # Don't need to check primitive/default types for null.
             # The 'this.' means that we refer to the unboxed value.
-            doit(ft, 'this.'+vn)
+            doit(ft, 'this.'+vn, omit_arg_name=omit_arg_name)
         else:
             with self.block('if (%s == null)' % vn):
-                out('throw new RuntimeException("Required value for \'%s\' is null");' %
-                    camelcase(field.name))
-            doit(ft, vn)
+                if omit_arg_name:
+                    out('throw new IllegalArgumentException("Value is null");')
+                else:
+                    out('throw new IllegalArgumentException("Required value for \'%s\' is null");' %
+                        camelcase(field.name))
+            doit(ft, vn, omit_arg_name=omit_arg_name)
 
     def generate_read_field(self, namespace, field, var_name):
         """Generate the code to read one field."""
@@ -1642,23 +1701,95 @@ class JavaCodeGenerator(CodeGenerator):
         else:
             return doc
 
+    def get_field_validation_requirements(self, field, as_failure_reasons=False):
+        if is_simple_field(field):
+            return None
+
+        ft, nullable = get_underlying_type(field.data_type)
+        requirements = []
+        def add_req(precondition, failure_reason):
+            if as_failure_reasons:
+                requirements.append(failure_reason)
+            else:
+                requirements.append(precondition)
+
+        for condition, (precondition, failure_reason) in (
+                ("min_items", ("contain at least %s items", "has fewer than %s items")),
+                ("max_items", ("contain at most %s items", "has more than %s items")),
+                ("min_value", ("be greater than or equal to %s", "is less than %s")),
+                ("max_value", ("be less than or equal to %s", "is greater than %s")),
+                ("min_length", ("have length of at least %s", "is shorter than %s")),
+                ("max_length", ("have length of at most %s", "is longer than %s"))
+        ):
+            if hasattr(ft, condition):
+                val = getattr(ft, condition)
+                if val is not None:
+                    add_req(precondition % val, failure_reason % val)
+
+        if is_list_type(ft):
+            add_req("not contain a {@code null} item",
+                    "contains a {@code null} item")
+        elif is_string_type(ft) and ft.pattern is not None:
+            pattern = ft.pattern.replace('\\', '\\\\')
+            add_req('match pattern "{@code %s}"' % pattern,
+                    'does not match pattern "{@code %s}"' % pattern)
+
+        has_default = isinstance(field, StructField) and field.has_default
+        if not (nullable or is_primitive_type(ft) or has_default):
+            add_req("not be {@code null}",
+                    "is {@code null}")
+
+        return requirements
+
+    def get_javadoc_throws_for_field_validation(self, field, value_name):
+        reasons = self.get_field_validation_requirements(field, as_failure_reasons=True)
+        if not reasons:
+            return {}
+
+        reasons_list = oxford_comma_list(reasons, conjunction='or')
+        return {
+            "IllegalArgumentException": "if {@code %s} %s." % (value_name, reasons_list)
+        }
+
     def get_javadoc_params_for_fields(self, api, namespace, fields, data_type=None):
         if not fields:
-            return None
+            return {}
 
         params = OrderedDict()
         for field in fields:
             param_name = field_name(field)
             param_babel_doc = field_doc(field) or ''
             # @param documentation should not create awkward links to class fields in constructors or route methods.
-            params[param_name] = self.translate_babel_doc(api, namespace, param_babel_doc, data_type=data_type, link_local_fields=False)
+            param_doc = self.translate_babel_doc(
+                api, namespace, param_babel_doc, data_type=data_type, link_local_fields=False
+            )
+            if not param_doc.endswith('.'):
+                param_doc += '.'
+            preconditions = self.get_field_validation_requirements(field)
+            if preconditions:
+                preconditions_list = oxford_comma_list(preconditions, conjunction='and')
+                param_doc += " {@code %s} must %s." % (param_name, preconditions_list)
+
+            params[param_name] = param_doc
 
         return params
 
-    def generate_doc(self, api, namespace, doc, data_type=None, fields=()):
+    def generate_doc(self, api, namespace, doc, data_type=None, fields=(), params=None, returns=None, throws=None):
         """Generate a Javadoc comment from Babel doc string."""
         out = self.emit
         if doc or fields:
             doc = self.translate_babel_doc(api, namespace, doc, data_type=data_type)
-            params = self.get_javadoc_params_for_fields(api, namespace, fields, data_type=data_type)
-            self.generate_javadoc(doc, params=params)
+            params_doc = {
+                k: self.translate_babel_doc(api, namespace, v, data_type=data_type)
+                for k, v in (params or {}).items()
+            }
+            params_doc.update(self.get_javadoc_params_for_fields(api, namespace, fields, data_type=data_type))
+            returns_doc = self.translate_babel_doc(api, namespace, returns, data_type=data_type)
+            throws_doc = {
+                k: self.translate_babel_doc(api, namespace, v, data_type=data_type)
+                for k, v in (throws or {}).items()
+            }
+            requires_validation = any(self.get_field_validation_requirements(f) for f in fields)
+            if requires_validation and "IllegalArgumentException" not in throws_doc:
+                throws_doc["IllegalArgumentException"] = "if any argument does not meet its preconditions."
+            self.generate_javadoc(doc, params=params_doc, returns=returns_doc, throws=throws_doc)

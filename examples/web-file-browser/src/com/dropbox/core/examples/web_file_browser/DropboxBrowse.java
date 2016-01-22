@@ -50,8 +50,9 @@ public class DropboxBrowse
     private boolean checkPathError(HttpServletResponse response, String path, DbxFiles.LookupError le)
         throws IOException
     {
-        switch (le.tag) {
-            case notFound: case notFolder:
+        switch (le.getTag()) {
+            case NOT_FOUND:
+            case NOT_FOLDER:
                 response.sendError(400, "Path doesn't exist on Dropbox: " + jq(path));
                 return true;
         }
@@ -70,8 +71,8 @@ public class DropboxBrowse
                 result = dbxClient.files.listFolder(path);
             }
             catch (DbxFiles.ListFolderException ex) {
-                if (ex.errorValue.tag == DbxFiles.ListFolderError.Tag.path) {
-                    if (checkPathError(response, path, ex.errorValue.getPath())) return;
+                if (ex.errorValue.isPath()) {
+                    if (checkPathError(response, path, ex.errorValue.getPathValue())) return;
                 }
                 throw ex;
             }
@@ -91,8 +92,8 @@ public class DropboxBrowse
                     result = dbxClient.files.listFolderContinue(result.cursor);
                 }
                 catch (DbxFiles.ListFolderContinueException ex) {
-                    if (ex.errorValue.tag == DbxFiles.ListFolderContinueError.Tag.path) {
-                        if (checkPathError(response, path, ex.errorValue.getPath())) return;
+                    if (ex.errorValue.isPath()) {
+                        if (checkPathError(response, path, ex.errorValue.getPathValue())) return;
                     }
                     throw ex;
                 }
@@ -196,14 +197,12 @@ public class DropboxBrowse
                 metadata = dbxClient.files.getMetadata(path);
             }
             catch (DbxFiles.GetMetadataException ex) {
-                switch (ex.errorValue.tag) {
-                    case path:
-                        DbxFiles.LookupError le = ex.errorValue.getPath();
-                        switch (le.tag) {
-                            case notFound:
-                                response.sendError(400, "Path doesn't exist on Dropbox: " + jq(path));
-                                return;
-                        }
+                if (ex.errorValue.isPath()) {
+                    DbxFiles.LookupError le = ex.errorValue.getPathValue();
+                    if (le.isNotFound()) {
+                        response.sendError(400, "Path doesn't exist on Dropbox: " + jq(path));
+                        return;
+                    }
                 }
                 common.handleException(response, ex, "getMetadata(" + jq(path) + ")");
                 return;
