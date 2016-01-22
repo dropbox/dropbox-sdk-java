@@ -1,3 +1,4 @@
+- Fix BadRequest exception for DbxFiles.listFolderLongpoll(String).
 - Uppercase enum and static fields.
 - Add support for Dropbox API team endpoints.
 - Expose localized user messages and request IDs in exceptions.

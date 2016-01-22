@@ -746,11 +746,13 @@ class JavaCodeGenerator(CodeGenerator):
         with self.block():
             with self.block('try'):
                 host = route.attrs.get('host', 'api')
+                is_noauth = route.attrs.get('auth', 'user') == 'noauth'
                 if style == 'upload':
                     self.generate_multiline_list([
                         'client.getHost().%s' % host,
-                        '"2-beta-2/%s/%s"' % (namespace.name, route.name),
+                        '"2/%s/%s"' % (namespace.name, route.name),
                         'arg' if arg_name != 'void' else 'null',
+                        'true' if is_noauth else 'false',
                         arg_name + '._writer' if arg_name != 'void' else 'null',
                         uploader_maker,
                     ], before='return (%s) client.uploadStyle' % uploader, after=';')
@@ -758,8 +760,9 @@ class JavaCodeGenerator(CodeGenerator):
                     ret = '' if is_void_type(route.response_data_type) else 'return '
                     self.generate_multiline_list([
                         'client.getHost().%s' % host,
-                        '"2-beta-2/%s/%s"' % (namespace.name, route.name),
+                        '"2/%s/%s"' % (namespace.name, route.name),
                         'arg' if arg_name != 'void' else 'null',
+                        'true' if is_noauth else 'false',
                         arg_name + '._writer' if arg_name != 'void' else 'null',
                         '%s' % result_reader,
                         '%s' % error_reader,
