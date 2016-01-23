@@ -181,7 +181,7 @@ def format_route_ref(api, namespace, route):
 def format_route(api_namespace, api_route):
     if uses_builder_pattern(api_route):
         return '%s#%s' % (namespace_ref(api_namespace), builder_method_name(api_route))
-    elif is_void_type(api_route.request_data_type):
+    elif is_void_type(api_route.request_data_type) or is_union_type(api_route.request_data_type):
         return '%s#%s' % (namespace_ref(api_namespace), routename(api_route.name))
     else:
         # by default, all doc refs should point to the method that
@@ -1663,6 +1663,13 @@ class JavaCodeGenerator(CodeGenerator):
         out('/**')
 
         if doc:
+            # sanitize &, <, > characters
+            for char, code in (('&', '&amp;'),
+                               ('<', '&lt;'),
+                               ('>', '&gt;')):
+                doc = doc.replace(char, code)
+
+
             first_paragraph = True
             for paragraph in split_paragraphs(doc.strip()):
                 if not first_paragraph:

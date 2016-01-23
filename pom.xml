@@ -41,6 +41,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <skipTests>true</skipTests>
         <osgi.bnd.noee>false</osgi.bnd.noee>
+        <!-- BEGIN PRIVATE REPO ONLY -->
+        <specDir>${project.basedir}/spec</specDir>
+        <!-- END PRIVATE REPO ONLY -->
     </properties>
 
     <dependencies>
@@ -229,6 +232,9 @@
                         <configuration>
                             <executable>run-babel-codegen</executable>
                             <sourceRoot>${project.build.directory}/generated-sources/babel</sourceRoot>
+                            <arguments>
+                                <argument>${specDir}</argument>
+                            </arguments>
                         </configuration>
                     </execution>
                 </executions>

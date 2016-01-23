@@ -1,3 +1,7 @@
+
+---------------------------------------------
+2.0-beta-5 (2016-01-22)
+- Updated to latest API specs.
 - Change format of tagged union classes.
   - Change getter method format from getAbc() to getAbcValue().
   - Add new isAbc() convenience methods.

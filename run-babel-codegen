@@ -15,17 +15,41 @@ while [ -h "$loc" ]; do
     fi
 done
 
-if [[ $# -ne 0 ]]; then
-    echo "$0: Not expecting any command-line arguments, got $#." 1>&2
-    exit 1
-fi
-
 base_dir=`dirname "$loc"`
 
 babel_dir="$base_dir/babel"
-spec_dir="$base_dir/spec"
 gen_dir="$base_dir/$mvn_target_dir/generated-sources/babel"
 generator="$base_dir/generator/java.babelg.py"
+
+usage() {
+    echo "usage: $0 [SPEC_DIR]"
+    echo ""
+    echo "positional arguments:"
+    echo "  SPEC_DIR     Top-level directory containing Babel spec files."
+    echo ""
+    echo "optional arguments:"
+    echo "  -h/--help    Display this message and exit."
+}
+
+if [[ $# -gt 0 ]]; then
+    case "$1" in
+        "-h"|"--help")
+            usage
+            exit 0
+            ;;
+        *)
+            spec_dir="$1"
+            shift
+    esac
+else
+    spec_dir="$base_dir/spec"
+fi
+
+if [[ $# -ne 0 ]]; then
+    echo "$0: Too many arguments" 1>&2
+    usage
+    exit 1
+fi
 
 up_to_date() {
     local target="$1"; shift
