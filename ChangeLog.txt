@@ -1,3 +1,17 @@
+
+---------------------------------------------
+2.0-beta-5 (2016-01-22)
+- Updated to latest API specs.
+- Change format of tagged union classes.
+  - Change getter method format from getAbc() to getAbcValue().
+  - Add new isAbc() convenience methods.
+  - Add new getTag() method for tag discrimination.
+- Accept List instead of ArrayList for requests.
+- Fix BadRequest exception for DbxFiles.listFolderLongpoll(String).
+- Uppercase enum and static fields.
+- Add support for Dropbox API team endpoints.
+- Expose localized user messages and request IDs in exceptions.
+
 ---------------------------------------------
 2.0-beta-4 (2015-12-10)
 - Update sharing endpoints to support new paging routes.

@@ -3,8 +3,10 @@ package com.dropbox.core.http;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * An interface that the Dropbox client library uses to make HTTP requests.
@@ -50,16 +52,39 @@ public abstract class HttpRequestor
 
     public static final class Response
     {
+        /**
+         * HTTP status response code.
+         */
         public final int statusCode;
+        /**
+         * HTTP response body. Must be fully read before closing.
+         */
         public final InputStream body;
-        public final Map<String,? extends List<String>> headers;
+        /**
+         * Case-insensitive, unmodifiable mapping of header fields to their values.
+         */
+        public final Map<String, List<String>> headers;
 
         public Response(int statusCode, InputStream body, Map<String, ? extends List<String>> headers)
         {
             this.statusCode = statusCode;
             this.body = body;
-            this.headers = headers;
+            this.headers = asUnmodifiableCaseInsensitiveMap(headers);
+        }
+
+        private static final Map<String, List<String>> asUnmodifiableCaseInsensitiveMap(Map<String, ? extends List<String>> original) {
+            Map<String, List<String>> insensitive = new TreeMap<String, List<String>>(String.CASE_INSENSITIVE_ORDER);
+            for (Map.Entry<String, ? extends List<String>> entry : original.entrySet()) {
+                // Java HttpURLConnection puts status line as the 'null' key, e.g.:
+                //
+                //    HTTP/1.1 409 bad_member/invalid_dropbox_id/...
+                //
+                if (entry.getKey() == null || entry.getKey().trim().length() == 0) {
+                    continue;
+                }
+                insensitive.put(entry.getKey(), Collections.unmodifiableList(entry.getValue()));
+            }
+            return Collections.unmodifiableMap(insensitive);
         }
     }
-
 }

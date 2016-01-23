@@ -36,21 +36,25 @@ public class DbxUploader<R,E,X extends Throwable> {
         HttpRequestor.Response response;
         try {
             response = httpUploader.finish();
-            if (response.statusCode == 200) {
-                return resultReader.readFully(response.body);
+
+            try {
+                if (response.statusCode == 200) {
+                    return resultReader.readFully(response.body);
+                }
+                else if (response.statusCode == 409) {
+                    throw errorMaker.makeError(DbxRequestUtil.ErrorWrapper.fromResponse(errorReader, response));
+                }
+                else {
+                    throw DbxRequestUtil.unexpectedStatus(response);
+                }
             }
-            else if (response.statusCode == 409) {
-                throw errorMaker.makeError(new DbxRequestUtil.ErrorWrapper(errorReader, response.body));
-            }
-            else {
-                throw DbxRequestUtil.unexpectedStatus(response);
+            catch (JsonReadException ex) {
+                String requestId = DbxRequestUtil.getRequestId(response);
+                throw new DbxException.BadResponse(requestId, "Bad JSON in response " + ex, ex);
             }
         }
         catch (IOException ex) {
             throw new DbxException.NetworkIO(ex);
-        }
-        catch (JsonReadException ex) {
-            throw new DbxException.BadResponse("Bad JSON in response " + ex, ex);
         }
     }
 }

@@ -129,7 +129,7 @@ public final class DbxClientV1
                 if (response.statusCode == 404) return null;
                 if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
                 // Will return 'null' for "is_deleted=true" entries.
-                return DbxRequestUtil.readJsonFromResponse(DbxEntry.ReaderMaybeDeleted, response.body);
+                return DbxRequestUtil.readJsonFromResponse(DbxEntry.ReaderMaybeDeleted, response);
             }
         });
     }
@@ -236,7 +236,7 @@ public final class DbxClientV1
                 if (response.statusCode == 404) return null;
                 if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
                 // Will return 'null' for "is_deleted=true" entries.
-                return DbxRequestUtil.readJsonFromResponse(reader, response.body);
+                return DbxRequestUtil.readJsonFromResponse(reader, response);
             }
         });
     }
@@ -332,7 +332,8 @@ public final class DbxClientV1
                 if (response.statusCode == 404) return Maybe.</*@Nullable*/T>Just(null);
                 if (response.statusCode == 304) return Maybe.</*@Nullable*/T>Nothing();
                 if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
-                return Maybe.</*@Nullable*/T>Just(DbxRequestUtil.readJsonFromResponse(reader, response.body));
+
+                return Maybe.</*@Nullable*/T>Just(DbxRequestUtil.readJsonFromResponse(reader, response));
             }
         });
     }
@@ -353,8 +354,11 @@ public final class DbxClientV1
             @Override
             public DbxAccountInfo handle(HttpRequestor.Response response) throws DbxException
             {
-                if (response.statusCode != 200) throw new DbxException.BadResponse("unexpected response code: " + response.statusCode);
-                return DbxRequestUtil.readJsonFromResponse(DbxAccountInfo.Reader, response.body);
+                if (response.statusCode != 200) {
+                    String requestId = DbxRequestUtil.getRequestId(response);
+                    throw new DbxException.BadResponse(requestId, "unexpected response code: " + response.statusCode);
+                }
+                return DbxRequestUtil.readJsonFromResponse(DbxAccountInfo.Reader, response);
             }
         });
     }
@@ -377,7 +381,10 @@ public final class DbxClientV1
             @Override
             public /*@Nullable*/Void handle(HttpRequestor.Response response) throws DbxException
             {
-                if (response.statusCode != 200) throw new DbxException.BadResponse("unexpected response code: " + response.statusCode);
+                if (response.statusCode != 200) {
+                    String requestId = DbxRequestUtil.getRequestId(response);
+                    throw new DbxException.BadResponse(requestId, "unexpected response code: " + response.statusCode);
+                }
                 return null;
             }
         });
@@ -478,7 +485,8 @@ public final class DbxClientV1
                 metadata = DbxEntry.File.Reader.readFully(metadataString);
             }
             catch (JsonReadException ex) {
-                throw new DbxException.BadResponse("Bad JSON in X-Dropbox-Metadata header: " + ex.getMessage(), ex);
+                String requestId = DbxRequestUtil.getRequestId(response);
+                throw new DbxException.BadResponse(requestId, "Bad JSON in X-Dropbox-Metadata header: " + ex.getMessage(), ex);
             }
 
             // Package up the metadata with the response body's InputStream.
@@ -834,10 +842,11 @@ public final class DbxClientV1
                 public DbxEntry.File handle(HttpRequestor.Response response) throws DbxException
                 {
                     if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
-                    DbxEntry.File f = DbxRequestUtil.readJsonFromResponse(DbxEntry.File.Reader, response.body);
+                    DbxEntry.File f = DbxRequestUtil.readJsonFromResponse(DbxEntry.File.Reader, response);
                     // Make sure the server agrees with us on how many bytes are in the file.
                     if (f.numBytes != bytesWritten) {
-                        throw new DbxException.BadResponse("we uploaded " + bytesWritten + ", but server returned metadata entry with file size " + f.numBytes);
+                        String requestId = DbxRequestUtil.getRequestId(response);
+                        throw new DbxException.BadResponse(requestId, "we uploaded " + bytesWritten + ", but server returned metadata entry with file size " + f.numBytes);
                     }
                     return f;
                 }
@@ -954,7 +963,8 @@ public final class DbxClientV1
         }
         catch (JsonReadException ex) {
             // Couldn't parse out an offset correction message.  Treat it like a regular HTTP 400 then.
-            throw new DbxException.BadRequest(DbxRequestUtil.parseErrorBody(400, data));
+            String requestId = DbxRequestUtil.getRequestId(response);
+            throw new DbxException.BadRequest(requestId, DbxRequestUtil.parseErrorBody(requestId, 400, data));
         }
     }
 
@@ -962,7 +972,7 @@ public final class DbxClientV1
         throws DbxException.BadResponse, DbxException.NetworkIO
     {
         assert response.statusCode == 200 : response.statusCode;
-        return DbxRequestUtil.readJsonFromResponse(ChunkedUploadState.Reader, response.body);
+        return DbxRequestUtil.readJsonFromResponse(ChunkedUploadState.Reader, response);
     }
 
     /**
@@ -1014,18 +1024,21 @@ public final class DbxClientV1
         try {
             ChunkedUploadState correctedState = chunkedUploadCheckForOffsetCorrection(response);
             if (correctedState != null) {
-                throw new DbxException.BadResponse("Got offset correction response on first chunk.");
+                String requestId = DbxRequestUtil.getRequestId(response);
+                throw new DbxException.BadResponse(requestId, "Got offset correction response on first chunk.");
             }
 
             if (response.statusCode == 404) {
-                throw new DbxException.BadResponse("Got a 404, but we didn't send an upload_id");
+                String requestId = DbxRequestUtil.getRequestId(response);
+                throw new DbxException.BadResponse(requestId, "Got a 404, but we didn't send an upload_id");
             }
 
             if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
             ChunkedUploadState returnedState = chunkedUploadParse200(response);
 
             if (returnedState.offset != chunkSize) {
-                throw new DbxException.BadResponse("Sent " + chunkSize + " bytes, but returned offset is " + returnedState.offset);
+                String requestId = DbxRequestUtil.getRequestId(response);
+                throw new DbxException.BadResponse(requestId, "Sent " + chunkSize + " bytes, but returned offset is " + returnedState.offset);
             }
 
             return returnedState.uploadId;
@@ -1113,17 +1126,33 @@ public final class DbxClientV1
             "offset", Long.toString(uploadOffset),
         };
         HttpRequestor.Response response = chunkedUploadCommon(params, chunkSize, writer);
+        String requestId = DbxRequestUtil.getRequestId(response);
         try {
             ChunkedUploadState correctedState = chunkedUploadCheckForOffsetCorrection(response);
+            long expectedOffset = uploadOffset + chunkSize;
+
             if (correctedState != null) {
                 if (!correctedState.uploadId.equals(uploadId)) {
-                    throw new DbxException.BadResponse("uploadId mismatch: us=" + jq(uploadId)
+                    throw new DbxException.BadResponse(requestId, "uploadId mismatch: us=" + jq(uploadId)
                                                        + ", server=" + jq(correctedState.uploadId));
                 }
 
                 if (correctedState.offset == uploadOffset) {
-                    throw new DbxException.BadResponse("Corrected offset is same as given: " + uploadOffset);
+                    throw new DbxException.BadResponse(requestId, "Corrected offset is same as given: " + uploadOffset);
                 }
+
+                if (correctedState.offset < uploadOffset) {
+                    // Somehow the server lost track of the previous data we sent it.
+                    throw new DbxException.BadResponse(requestId, "we were at offset " + uploadOffset + ", server said " + correctedState.offset);
+                }
+
+                if (correctedState.offset > expectedOffset) {
+                    // Somehow the server has more data than we gave it!
+                    throw new DbxException.BadResponse(requestId, "we were at offset " + uploadOffset + ", server said " + correctedState.offset);
+                }
+
+                // Make sure the returned offset is within what we expect.
+                assert correctedState.offset != expectedOffset;
 
                 return correctedState.offset;
             }
@@ -1131,9 +1160,9 @@ public final class DbxClientV1
             if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
             ChunkedUploadState returnedState = chunkedUploadParse200(response);
 
-            long expectedOffset = uploadOffset + chunkSize;
             if (returnedState.offset != expectedOffset) {
-                throw new DbxException.BadResponse("Expected offset " + expectedOffset + " bytes, but returned offset is " + returnedState.offset);
+                throw new DbxException.BadResponse(requestId,
+                                                   "Expected offset " + expectedOffset + " bytes, but returned offset is " + returnedState.offset);
             }
 
             return -1;
@@ -1175,7 +1204,7 @@ public final class DbxClientV1
             public DbxEntry.File handle(HttpRequestor.Response response) throws DbxException
             {
                 if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
-                return DbxRequestUtil.readJsonFromResponse(DbxEntry.File.Reader, response.body);
+                return DbxRequestUtil.readJsonFromResponse(DbxEntry.File.Reader, response);
             }
         });
     }
@@ -1345,16 +1374,6 @@ public final class DbxClientV1
                         uploadOffset = expectedOffset;
                         break;
                     } else {
-                        // Make sure the returned offset is within what we expect.
-                        assert correctedOffset != expectedOffset;
-                        if (correctedOffset < uploadOffset) {
-                            // Somehow the server lost track of the previous data we sent it.
-                            throw new DbxException.BadResponse("we were at offset " + uploadOffset + ", server said " + correctedOffset);
-                        }
-                        else if (correctedOffset > expectedOffset) {
-                            // Somehow the server has more data than we gave it!
-                            throw new DbxException.BadResponse("we were at offset " + uploadOffset + ", server said " + correctedOffset);
-                        }
                         // Server needs us to resend partial data.
                         int adjustAmount = (int) (correctedOffset - uploadOffset);
                         arrayOffset += adjustAmount;
@@ -1541,8 +1560,7 @@ public final class DbxClientV1
             @Override
             public DbxDelta<DbxEntry> handle(HttpRequestor.Response response) throws DbxException {
                 if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
-                return DbxRequestUtil.readJsonFromResponse(
-                        new DbxDelta.Reader<DbxEntry>(DbxEntry.Reader), response.body);
+                return DbxRequestUtil.readJsonFromResponse(new DbxDelta.Reader<DbxEntry>(DbxEntry.Reader), response);
             }
         });
     }
@@ -1565,8 +1583,7 @@ public final class DbxClientV1
             @Override
             public DbxDeltaC<C> handle(HttpRequestor.Response response) throws DbxException {
                 if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
-                return DbxRequestUtil.readJsonFromResponse(
-                        new DbxDeltaC.Reader<C, DbxEntry>(DbxEntry.Reader, collector), response.body);
+                return DbxRequestUtil.readJsonFromResponse(new DbxDeltaC.Reader<C, DbxEntry>(DbxEntry.Reader, collector), response);
             }
         });
     }
@@ -1625,7 +1642,7 @@ public final class DbxClientV1
             @Override
             public String handle(HttpRequestor.Response response) throws DbxException {
                 if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
-                return DbxRequestUtil.readJsonFromResponse(LatestCursorReader, response.body);
+                return DbxRequestUtil.readJsonFromResponse(LatestCursorReader, response);
             }
         });
     }
@@ -1688,7 +1705,7 @@ public final class DbxClientV1
                     throws DbxException
                 {
                     if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
-                    return DbxRequestUtil.readJsonFromResponse(DbxLongpollDeltaResult.Reader, response.body);
+                    return DbxRequestUtil.readJsonFromResponse(DbxLongpollDeltaResult.Reader, response);
                 }
             });
     }
@@ -1779,7 +1796,7 @@ public final class DbxClientV1
                 if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
                 Collector<DbxEntry./*@Nullable*/File,ArrayList<DbxEntry.File>> collector =
                     Collector.NullSkipper.<DbxEntry.File,ArrayList<DbxEntry.File>>mk(new Collector.ArrayListCollector<DbxEntry.File>());
-                return DbxRequestUtil.readJsonFromResponse(JsonArrayReader.mk(DbxEntry.File.ReaderMaybeDeleted, collector), response.body);
+                return DbxRequestUtil.readJsonFromResponse(JsonArrayReader.mk(DbxEntry.File.ReaderMaybeDeleted, collector), response);
             }
         });
     }
@@ -1817,7 +1834,7 @@ public final class DbxClientV1
             {
                 if (response.statusCode == 404) return null;
                 if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
-                return DbxRequestUtil.readJsonFromResponse(DbxEntry.File.Reader, response.body);
+                return DbxRequestUtil.readJsonFromResponse(DbxEntry.File.Reader, response);
             }
         });
     }
@@ -1850,7 +1867,7 @@ public final class DbxClientV1
                 throws DbxException
             {
                 if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
-                return DbxRequestUtil.readJsonFromResponse(JsonArrayReader.mk(DbxEntry.Reader), response.body);
+                return DbxRequestUtil.readJsonFromResponse(JsonArrayReader.mk(DbxEntry.Reader), response);
             }
         });
     }
@@ -1882,7 +1899,7 @@ public final class DbxClientV1
             {
                 if (response.statusCode == 404) return null;
                 if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
-                DbxUrlWithExpiration uwe = DbxRequestUtil.readJsonFromResponse(DbxUrlWithExpiration.Reader, response.body);
+                DbxUrlWithExpiration uwe = DbxRequestUtil.readJsonFromResponse(DbxUrlWithExpiration.Reader, response);
                 return uwe.url;
             }
         });
@@ -1913,7 +1930,7 @@ public final class DbxClientV1
             {
                 if (response.statusCode == 404) return null;
                 if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
-                return DbxRequestUtil.readJsonFromResponse(DbxUrlWithExpiration.Reader, response.body);
+                return DbxRequestUtil.readJsonFromResponse(DbxUrlWithExpiration.Reader, response);
             }
         });
     }
@@ -1954,7 +1971,7 @@ public final class DbxClientV1
             {
                 if (response.statusCode == 404) return null;
                 if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
-                CopyRef copyRef = DbxRequestUtil.readJsonFromResponse(CopyRef.Reader, response.body);
+                CopyRef copyRef = DbxRequestUtil.readJsonFromResponse(CopyRef.Reader, response);
                 return copyRef.id;
             }
         });
@@ -2037,7 +2054,7 @@ public final class DbxClientV1
             {
                 if (response.statusCode == 403) return null;
                 if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
-                DbxEntry.WithChildren dwc = DbxRequestUtil.readJsonFromResponse(DbxEntry.WithChildren.Reader, response.body);
+                DbxEntry.WithChildren dwc = DbxRequestUtil.readJsonFromResponse(DbxEntry.WithChildren.Reader, response);
                 if (dwc == null) return null;  // TODO: When can this happen?
                 return dwc.entry;
             }
@@ -2068,7 +2085,7 @@ public final class DbxClientV1
                 throws DbxException
             {
                 if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
-                DbxEntry.WithChildren dwc = DbxRequestUtil.readJsonFromResponse(DbxEntry.WithChildren.Reader, response.body);
+                DbxEntry.WithChildren dwc = DbxRequestUtil.readJsonFromResponse(DbxEntry.WithChildren.Reader, response);
                 if (dwc == null) return null;  // TODO: When can this happen?
                 return dwc.entry;
             }
@@ -2099,7 +2116,7 @@ public final class DbxClientV1
             {
                 if (response.statusCode == 403) return null;
                 if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
-                return DbxRequestUtil.readJsonFromResponse(DbxEntry.Folder.Reader, response.body);
+                return DbxRequestUtil.readJsonFromResponse(DbxEntry.Folder.Reader, response);
             }
         });
     }
@@ -2155,7 +2172,7 @@ public final class DbxClientV1
             {
                 if (response.statusCode == 403) return null;
                 if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
-                DbxEntry.WithChildren dwc = DbxRequestUtil.readJsonFromResponse(DbxEntry.WithChildren.Reader, response.body);
+                DbxEntry.WithChildren dwc = DbxRequestUtil.readJsonFromResponse(DbxEntry.WithChildren.Reader, response);
                 if (dwc == null) return null;  // TODO: In what situations can this happen?
                 return dwc.entry;
             }

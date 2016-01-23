@@ -76,7 +76,7 @@ public final class DbxAuthInfo
             g.writeStartObject();
             g.writeStringField("access_token", authInfo.accessToken);
             if (!authInfo.host.equals(DbxHost.Default)) {
-                g.writeObjectFieldStart("host");
+                g.writeFieldName("host");
                 DbxHost.Writer.write(authInfo.host, g);
             }
             g.writeEndObject();

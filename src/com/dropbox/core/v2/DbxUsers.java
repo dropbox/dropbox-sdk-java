@@ -12,6 +12,7 @@ import com.dropbox.core.DbxApiException;
 import com.dropbox.core.v2.DbxRawClientV2;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestUtil;
+import com.dropbox.core.LocalizedText;
 import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.json.JsonArrayReader;
 import com.dropbox.core.json.JsonDateReader;
@@ -31,6 +32,7 @@ public final class DbxUsers {
         this.client = client;
     }
 
+
     public static class GetAccountArg {
         // struct GetAccountArg
         /**
@@ -38,18 +40,28 @@ public final class DbxUsers {
          */
         public final String accountId;
 
+        /**
+         *
+         * @param accountId  A user's account identifier. {@code accountId} must
+         *     have length of at least 40, have length of at most 40, and not be
+         *     {@code null}.
+         *
+         * @throws IllegalArgumentException  if any argument does not meet its
+         *     preconditions.
+         */
         public GetAccountArg(String accountId) {
             this.accountId = accountId;
             if (accountId == null) {
-                throw new RuntimeException("Required value for 'accountId' is null");
+                throw new IllegalArgumentException("Required value for 'accountId' is null");
             }
             if (accountId.length() < 40) {
-                throw new RuntimeException("String 'accountId' is shorter than 40");
+                throw new IllegalArgumentException("String 'accountId' is shorter than 40");
             }
             if (accountId.length() > 40) {
-                throw new RuntimeException("String 'accountId' is longer than 40");
+                throw new IllegalArgumentException("String 'accountId' is longer than 40");
             }
         }
+
         static final JsonWriter<GetAccountArg> _writer = new JsonWriter<GetAccountArg>()
         {
             public final void write(GetAccountArg x, JsonGenerator g)
@@ -101,12 +113,15 @@ public final class DbxUsers {
         public String toString() {
             return "GetAccountArg." + _writer.writeToString(this, false);
         }
+
         public String toStringMultiline() {
             return "GetAccountArg." + _writer.writeToString(this, true);
         }
+
         public String toJson(Boolean longForm) {
             return _writer.writeToString(this, longForm);
         }
+
         public static GetAccountArg fromJson(String s)
             throws JsonReadException
         {
@@ -114,27 +129,122 @@ public final class DbxUsers {
         }
     }
 
-    public enum GetAccountError {
+
+    public static final class GetAccountError {
         // union GetAccountError
+
         /**
-         * The specified {@code getAccountArg.accountId} does not exist.
+         * The discriminating tag type for {@link GetAccountError}.
          */
-        noAccount,
-        unknown;  // *catch_all
+        public enum Tag {
+            /**
+             * The specified {@link GetAccountArg#accountId} does not exist.
+             */
+            NO_ACCOUNT,
+            UNKNOWN  // *catch_all
+        }
+
+        /**
+         * The discriminating tag for this instance.
+         */
+        public final Tag tag;
+
+        /**
+         * Returns the tag for this instance.
+         *
+         * <p> This class is a tagged union.  Tagged unions instances are always
+         * associated to a specific tag.  Callers are recommended to use the tag
+         * value in a {@code switch} statement to determine how to properly
+         * handle this {@code GetAccountError}. </p>
+         *
+         * @return the tag for this instance.
+         */
+        public Tag getTag() {
+            return this.tag;
+        }
+
+        /**
+         * The specified {@link GetAccountArg#accountId} does not exist.
+         */
+        private static final GetAccountError NO_ACCOUNT_INSTANCE = new GetAccountError(Tag.NO_ACCOUNT);
+
+        /**
+         * Returns an instance of {@code GetAccountError} that has its tag set
+         * to {@link Tag#NO_ACCOUNT}.
+         *
+         * <p> The specified {@link GetAccountArg#accountId} does not exist.
+         * </p>
+         *
+         * @return Instance of {@code GetAccountError} with its tag set to
+         *     {@link Tag#NO_ACCOUNT}.
+         */
+        public static GetAccountError noAccount() {
+            return GetAccountError.NO_ACCOUNT_INSTANCE;
+        }
+
+        /**
+         * Returns {@code true} if this instance has the tag {@link
+         * Tag#NO_ACCOUNT}, {@code false} otherwise.
+         *
+         * @return {@code true} if this instance is tagged as {@link
+         *     Tag#NO_ACCOUNT}, {@code false} otherwise.
+         */
+        public boolean isNoAccount() {
+            return this.tag == Tag.NO_ACCOUNT;
+        }
+
+        private static final GetAccountError UNKNOWN_INSTANCE = new GetAccountError(Tag.UNKNOWN);
+
+        /**
+         * Returns an instance of {@code GetAccountError} that has its tag set
+         * to {@link Tag#UNKNOWN}.
+         *
+         * <p> None </p>
+         *
+         * @return Instance of {@code GetAccountError} with its tag set to
+         *     {@link Tag#UNKNOWN}.
+         */
+        public static GetAccountError unknown() {
+            return GetAccountError.UNKNOWN_INSTANCE;
+        }
+
+        /**
+         * Returns {@code true} if this instance has the tag {@link
+         * Tag#UNKNOWN}, {@code false} otherwise.
+         *
+         * @return {@code true} if this instance is tagged as {@link
+         *     Tag#UNKNOWN}, {@code false} otherwise.
+         */
+        public boolean isUnknown() {
+            return this.tag == Tag.UNKNOWN;
+        }
+
+        private GetAccountError(Tag t) {
+            tag = t;
+            validate();
+        }
+
+        private final void validate() {
+            switch (this.tag) {
+                case NO_ACCOUNT:
+                case UNKNOWN:
+                    break;
+            }
+        }
 
         static final JsonWriter<GetAccountError> _writer = new JsonWriter<GetAccountError>()
         {
-            public void write(GetAccountError x, JsonGenerator g)
-             throws IOException
+            public final void write(GetAccountError x, JsonGenerator g)
+              throws IOException
             {
-                switch (x) {
-                    case noAccount:
+                switch (x.tag) {
+                    case NO_ACCOUNT:
                         g.writeStartObject();
                         g.writeFieldName(".tag");
                         g.writeString("no_account");
                         g.writeEndObject();
                         break;
-                    case unknown:
+                    case UNKNOWN:
                         g.writeStartObject();
                         g.writeFieldName(".tag");
                         g.writeString("unknown");
@@ -143,22 +253,59 @@ public final class DbxUsers {
                 }
             }
         };
-
         public static final JsonReader<GetAccountError> _reader = new JsonReader<GetAccountError>()
         {
             public final GetAccountError read(JsonParser parser)
-                throws IOException, JsonReadException
+              throws IOException, JsonReadException
             {
-                return JsonReader.readEnum(parser, _values, unknown);
+                if (parser.getCurrentToken() == JsonToken.VALUE_STRING) {
+                    String text = parser.getText();
+                    parser.nextToken();
+                    Tag tag = _values.get(text);
+                    if (tag == null) { return GetAccountError.unknown(); }
+                    switch (tag) {
+                        case NO_ACCOUNT: return GetAccountError.noAccount();
+                        case UNKNOWN: return GetAccountError.unknown();
+                    }
+                    throw new JsonReadException("Tag " + tag + " requires a value", parser.getTokenLocation());
+                }
+                JsonReader.expectObjectStart(parser);
+                String[] tags = readTags(parser);
+                assert tags != null && tags.length == 1;
+                String text = tags[0];
+                Tag tag = _values.get(text);
+                GetAccountError value = null;
+                if (tag != null) {
+                    switch (tag) {
+                        case NO_ACCOUNT: {
+                            value = GetAccountError.noAccount();
+                            break;
+                        }
+                        case UNKNOWN: {
+                            value = GetAccountError.unknown();
+                            break;
+                        }
+                    }
+                }
+                JsonReader.expectObjectEnd(parser);
+                if (value == null) { return GetAccountError.unknown(); }
+                return value;
             }
+
         };
-        private static final java.util.HashMap<String,GetAccountError> _values;
+        private static final java.util.HashMap<String,Tag> _values;
         static {
-            _values = new java.util.HashMap<String,GetAccountError>();
-            _values.put("no_account", noAccount);
-            _values.put("unknown", unknown);
+            _values = new java.util.HashMap<String,Tag>();
+            _values.put("no_account", Tag.NO_ACCOUNT);
+            _values.put("unknown", Tag.UNKNOWN);
         }
 
+        public String toString() {
+            return "GetAccountError." + _writer.writeToString(this, false);
+        }
+        public String toStringMultiline() {
+            return "GetAccountError." +  _writer.writeToString(this, true);
+        }
         public String toJson(Boolean longForm) {
             return _writer.writeToString(this, longForm);
         }
@@ -169,43 +316,170 @@ public final class DbxUsers {
         }
     }
 
+
     /**
      * What type of account this user has.
      */
-    public enum AccountType {
+    public static final class AccountType {
         // union AccountType
+
+        /**
+         * The discriminating tag type for {@link AccountType}.
+         */
+        public enum Tag {
+            /**
+             * The basic account type.
+             */
+            BASIC,
+            /**
+             * The Dropbox Pro account type.
+             */
+            PRO,
+            /**
+             * The Dropbox Business account type.
+             */
+            BUSINESS
+        }
+
+        /**
+         * The discriminating tag for this instance.
+         */
+        public final Tag tag;
+
+        /**
+         * Returns the tag for this instance.
+         *
+         * <p> This class is a tagged union.  Tagged unions instances are always
+         * associated to a specific tag.  Callers are recommended to use the tag
+         * value in a {@code switch} statement to determine how to properly
+         * handle this {@code AccountType}. </p>
+         *
+         * @return the tag for this instance.
+         */
+        public Tag getTag() {
+            return this.tag;
+        }
+
         /**
          * The basic account type.
          */
-        basic,
+        private static final AccountType BASIC_INSTANCE = new AccountType(Tag.BASIC);
+
+        /**
+         * Returns an instance of {@code AccountType} that has its tag set to
+         * {@link Tag#BASIC}.
+         *
+         * <p> The basic account type. </p>
+         *
+         * @return Instance of {@code AccountType} with its tag set to {@link
+         *     Tag#BASIC}.
+         */
+        public static AccountType basic() {
+            return AccountType.BASIC_INSTANCE;
+        }
+
+        /**
+         * Returns {@code true} if this instance has the tag {@link Tag#BASIC},
+         * {@code false} otherwise.
+         *
+         * @return {@code true} if this instance is tagged as {@link Tag#BASIC},
+         *     {@code false} otherwise.
+         */
+        public boolean isBasic() {
+            return this.tag == Tag.BASIC;
+        }
+
         /**
          * The Dropbox Pro account type.
          */
-        pro,
+        private static final AccountType PRO_INSTANCE = new AccountType(Tag.PRO);
+
+        /**
+         * Returns an instance of {@code AccountType} that has its tag set to
+         * {@link Tag#PRO}.
+         *
+         * <p> The Dropbox Pro account type. </p>
+         *
+         * @return Instance of {@code AccountType} with its tag set to {@link
+         *     Tag#PRO}.
+         */
+        public static AccountType pro() {
+            return AccountType.PRO_INSTANCE;
+        }
+
+        /**
+         * Returns {@code true} if this instance has the tag {@link Tag#PRO},
+         * {@code false} otherwise.
+         *
+         * @return {@code true} if this instance is tagged as {@link Tag#PRO},
+         *     {@code false} otherwise.
+         */
+        public boolean isPro() {
+            return this.tag == Tag.PRO;
+        }
+
         /**
          * The Dropbox Business account type.
          */
-        business;
+        private static final AccountType BUSINESS_INSTANCE = new AccountType(Tag.BUSINESS);
+
+        /**
+         * Returns an instance of {@code AccountType} that has its tag set to
+         * {@link Tag#BUSINESS}.
+         *
+         * <p> The Dropbox Business account type. </p>
+         *
+         * @return Instance of {@code AccountType} with its tag set to {@link
+         *     Tag#BUSINESS}.
+         */
+        public static AccountType business() {
+            return AccountType.BUSINESS_INSTANCE;
+        }
+
+        /**
+         * Returns {@code true} if this instance has the tag {@link
+         * Tag#BUSINESS}, {@code false} otherwise.
+         *
+         * @return {@code true} if this instance is tagged as {@link
+         *     Tag#BUSINESS}, {@code false} otherwise.
+         */
+        public boolean isBusiness() {
+            return this.tag == Tag.BUSINESS;
+        }
+
+        private AccountType(Tag t) {
+            tag = t;
+            validate();
+        }
+
+        private final void validate() {
+            switch (this.tag) {
+                case BASIC:
+                case PRO:
+                case BUSINESS:
+                    break;
+            }
+        }
 
         static final JsonWriter<AccountType> _writer = new JsonWriter<AccountType>()
         {
-            public void write(AccountType x, JsonGenerator g)
-             throws IOException
+            public final void write(AccountType x, JsonGenerator g)
+              throws IOException
             {
-                switch (x) {
-                    case basic:
+                switch (x.tag) {
+                    case BASIC:
                         g.writeStartObject();
                         g.writeFieldName(".tag");
                         g.writeString("basic");
                         g.writeEndObject();
                         break;
-                    case pro:
+                    case PRO:
                         g.writeStartObject();
                         g.writeFieldName(".tag");
                         g.writeString("pro");
                         g.writeEndObject();
                         break;
-                    case business:
+                    case BUSINESS:
                         g.writeStartObject();
                         g.writeFieldName(".tag");
                         g.writeString("business");
@@ -214,23 +488,69 @@ public final class DbxUsers {
                 }
             }
         };
-
         public static final JsonReader<AccountType> _reader = new JsonReader<AccountType>()
         {
             public final AccountType read(JsonParser parser)
-                throws IOException, JsonReadException
+              throws IOException, JsonReadException
             {
-                return JsonReader.readEnum(parser, _values, null);
+                if (parser.getCurrentToken() == JsonToken.VALUE_STRING) {
+                    String text = parser.getText();
+                    parser.nextToken();
+                    Tag tag = _values.get(text);
+                    if (tag == null) {
+                        throw new JsonReadException("Unanticipated tag " + text + " without catch-all", parser.getTokenLocation());
+                    }
+                    switch (tag) {
+                        case BASIC: return AccountType.basic();
+                        case PRO: return AccountType.pro();
+                        case BUSINESS: return AccountType.business();
+                    }
+                    throw new JsonReadException("Tag " + tag + " requires a value", parser.getTokenLocation());
+                }
+                JsonReader.expectObjectStart(parser);
+                String[] tags = readTags(parser);
+                assert tags != null && tags.length == 1;
+                String text = tags[0];
+                Tag tag = _values.get(text);
+                AccountType value = null;
+                if (tag != null) {
+                    switch (tag) {
+                        case BASIC: {
+                            value = AccountType.basic();
+                            break;
+                        }
+                        case PRO: {
+                            value = AccountType.pro();
+                            break;
+                        }
+                        case BUSINESS: {
+                            value = AccountType.business();
+                            break;
+                        }
+                    }
+                }
+                if (value == null) {
+                    throw new JsonReadException("Unanticipated tag " + text, parser.getTokenLocation());
+                }
+                JsonReader.expectObjectEnd(parser);
+                return value;
             }
+
         };
-        private static final java.util.HashMap<String,AccountType> _values;
+        private static final java.util.HashMap<String,Tag> _values;
         static {
-            _values = new java.util.HashMap<String,AccountType>();
-            _values.put("basic", basic);
-            _values.put("pro", pro);
-            _values.put("business", business);
+            _values = new java.util.HashMap<String,Tag>();
+            _values.put("basic", Tag.BASIC);
+            _values.put("pro", Tag.PRO);
+            _values.put("business", Tag.BUSINESS);
         }
 
+        public String toString() {
+            return "AccountType." + _writer.writeToString(this, false);
+        }
+        public String toStringMultiline() {
+            return "AccountType." +  _writer.writeToString(this, true);
+        }
         public String toJson(Boolean longForm) {
             return _writer.writeToString(this, longForm);
         }
@@ -240,6 +560,7 @@ public final class DbxUsers {
             return _reader.readFully(s);
         }
     }
+
 
     /**
      * The amount of detail revealed about an account depends on the user being
@@ -256,22 +577,36 @@ public final class DbxUsers {
          */
         public final Name name;
 
+        /**
+         * The amount of detail revealed about an account depends on the user
+         * being queried and the user making the query.
+         *
+         * @param accountId  The user's unique Dropbox ID. {@code accountId}
+         *     must have length of at least 40, have length of at most 40, and
+         *     not be {@code null}.
+         * @param name  Details of a user's name. {@code name} must not be
+         *     {@code null}.
+         *
+         * @throws IllegalArgumentException  if any argument does not meet its
+         *     preconditions.
+         */
         public Account(String accountId, Name name) {
             this.accountId = accountId;
             if (accountId == null) {
-                throw new RuntimeException("Required value for 'accountId' is null");
+                throw new IllegalArgumentException("Required value for 'accountId' is null");
             }
             if (accountId.length() < 40) {
-                throw new RuntimeException("String 'accountId' is shorter than 40");
+                throw new IllegalArgumentException("String 'accountId' is shorter than 40");
             }
             if (accountId.length() > 40) {
-                throw new RuntimeException("String 'accountId' is longer than 40");
+                throw new IllegalArgumentException("String 'accountId' is longer than 40");
             }
             this.name = name;
             if (name == null) {
-                throw new RuntimeException("Required value for 'name' is null");
+                throw new IllegalArgumentException("Required value for 'name' is null");
             }
         }
+
         static final JsonWriter<Account> _writer = new JsonWriter<Account>()
         {
             public final void write(Account x, JsonGenerator g)
@@ -333,18 +668,22 @@ public final class DbxUsers {
         public String toString() {
             return "Account." + _writer.writeToString(this, false);
         }
+
         public String toStringMultiline() {
             return "Account." + _writer.writeToString(this, true);
         }
+
         public String toJson(Boolean longForm) {
             return _writer.writeToString(this, longForm);
         }
+
         public static Account fromJson(String s)
             throws JsonReadException
         {
             return _reader.readFully(s);
         }
     }
+
 
     /**
      * Basic information about any account.
@@ -353,14 +692,30 @@ public final class DbxUsers {
         // struct BasicAccount
         /**
          * Whether this user is a teammate of the current user. If this account
-         * is the current user's account, then this will be {@literal true}.
+         * is the current user's account, then this will be {@code true}.
          */
         public final boolean isTeammate;
 
+        /**
+         * Basic information about any account.
+         *
+         * @param accountId  The user's unique Dropbox ID. {@code accountId}
+         *     must have length of at least 40, have length of at most 40, and
+         *     not be {@code null}.
+         * @param name  Details of a user's name. {@code name} must not be
+         *     {@code null}.
+         * @param isTeammate  Whether this user is a teammate of the current
+         *     user. If this account is the current user's account, then this
+         *     will be {@code true}.
+         *
+         * @throws IllegalArgumentException  if any argument does not meet its
+         *     preconditions.
+         */
         public BasicAccount(String accountId, Name name, boolean isTeammate) {
             super(accountId, name);
             this.isTeammate = isTeammate;
         }
+
         static final JsonWriter<BasicAccount> _writer = new JsonWriter<BasicAccount>()
         {
             public final void write(BasicAccount x, JsonGenerator g)
@@ -429,12 +784,15 @@ public final class DbxUsers {
         public String toString() {
             return "BasicAccount." + _writer.writeToString(this, false);
         }
+
         public String toStringMultiline() {
             return "BasicAccount." + _writer.writeToString(this, true);
         }
+
         public String toJson(Boolean longForm) {
             return _writer.writeToString(this, longForm);
         }
+
         public static BasicAccount fromJson(String s)
             throws JsonReadException
         {
@@ -442,30 +800,37 @@ public final class DbxUsers {
         }
     }
 
+
     /**
      * Detailed information about the current user's account.
      */
     public static class FullAccount extends Account  {
         // struct FullAccount
         /**
-         * The user's e-mail address.
+         * The user's e-mail address. Do not rely on this without checking the
+         * {@link FullAccount#emailVerified} field. Even then, it's possible
+         * that the user has since lost access to their e-mail.
          */
         public final String email;
         /**
+         * Whether the user has verified their e-mail address.
+         */
+        public final boolean emailVerified;
+        /**
          * The user's two-letter country code, if available. Country codes are
-         * based on <a href="http://en.wikipedia.org/wiki/ISO_3166-1">ISO
-         * 3166-1</a>.
+         * based on &lt;a href="http://en.wikipedia.org/wiki/ISO_3166-1"&gt;ISO
+         * 3166-1&lt;/a&gt;.
          */
         public final String country;
         /**
-         * The language that the user specified. Locale tags will be <a
-         * href="http://en.wikipedia.org/wiki/IETF_language_tag">IETF language
-         * tags</a>.
+         * The language that the user specified. Locale tags will be &lt;a
+         * href="http://en.wikipedia.org/wiki/IETF_language_tag"&gt;IETF
+         * language tags&lt;/a&gt;.
          */
         public final String locale;
         /**
-         * The user's <a href="https://www.dropbox.com/referrals">referral
-         * link</a>.
+         * The user's &lt;a href="https://www.dropbox.com/referrals"&gt;referral
+         * link&lt;/a&gt;.
          */
         public final String referralLink;
         /**
@@ -474,9 +839,9 @@ public final class DbxUsers {
         public final Team team;
         /**
          * Whether the user has a personal and work account. If the current
-         * account is personal, then {@code team} will always be {@literal
-         * null}, but {@code isPaired} will indicate if a work account is
-         * linked.
+         * account is personal, then {@link FullAccount#team} will always be
+         * {@code null}, but {@link FullAccount#isPaired} will indicate if a
+         * work account is linked.
          */
         public final boolean isPaired;
         /**
@@ -484,41 +849,79 @@ public final class DbxUsers {
          */
         public final AccountType accountType;
 
-        public FullAccount(String accountId, Name name, String email, String locale, String referralLink, boolean isPaired, AccountType accountType, String country, Team team) {
+        /**
+         * Detailed information about the current user's account.
+         *
+         * @param country  The user's two-letter country code, if available.
+         *     Country codes are based on <a
+         *     href="http://en.wikipedia.org/wiki/ISO_3166-1">ISO 3166-1</a>.
+         *     {@code country} must have length of at least 2 and have length of
+         *     at most 2.
+         * @param team  If this account is a member of a team, information about
+         *     that team.
+         * @param name  Details of a user's name. {@code name} must not be
+         *     {@code null}.
+         * @param locale  The language that the user specified. Locale tags will
+         *     be <a href="http://en.wikipedia.org/wiki/IETF_language_tag">IETF
+         *     language tags</a>. {@code locale} must have length of at least 2
+         *     and not be {@code null}.
+         * @param isPaired  Whether the user has a personal and work account. If
+         *     the current account is personal, then {@code team} will always be
+         *     {@code null}, but {@code isPaired} will indicate if a work
+         *     account is linked.
+         * @param emailVerified  Whether the user has verified their e-mail
+         *     address.
+         * @param accountType  What type of account this user has. {@code
+         *     accountType} must not be {@code null}.
+         * @param accountId  The user's unique Dropbox ID. {@code accountId}
+         *     must have length of at least 40, have length of at most 40, and
+         *     not be {@code null}.
+         * @param referralLink  The user's <a
+         *     href="https://www.dropbox.com/referrals">referral link</a>.
+         *     {@code referralLink} must not be {@code null}.
+         * @param email  The user's e-mail address. Do not rely on this without
+         *     checking the {@code emailVerified} field. Even then, it's
+         *     possible that the user has since lost access to their e-mail.
+         *     {@code email} must not be {@code null}.
+         *
+         * @throws IllegalArgumentException  if any argument does not meet its
+         *     preconditions.
+         */
+        public FullAccount(String accountId, Name name, String email, boolean emailVerified, String locale, String referralLink, boolean isPaired, AccountType accountType, String country, Team team) {
             super(accountId, name);
             this.email = email;
             if (email == null) {
-                throw new RuntimeException("Required value for 'email' is null");
+                throw new IllegalArgumentException("Required value for 'email' is null");
             }
+            this.emailVerified = emailVerified;
             this.country = country;
             if (country != null) {
                 if (country.length() < 2) {
-                    throw new RuntimeException("String 'country' is shorter than 2");
+                    throw new IllegalArgumentException("String 'country' is shorter than 2");
                 }
                 if (country.length() > 2) {
-                    throw new RuntimeException("String 'country' is longer than 2");
+                    throw new IllegalArgumentException("String 'country' is longer than 2");
                 }
             }
             this.locale = locale;
             if (locale == null) {
-                throw new RuntimeException("Required value for 'locale' is null");
+                throw new IllegalArgumentException("Required value for 'locale' is null");
             }
             if (locale.length() < 2) {
-                throw new RuntimeException("String 'locale' is shorter than 2");
+                throw new IllegalArgumentException("String 'locale' is shorter than 2");
             }
             this.referralLink = referralLink;
             if (referralLink == null) {
-                throw new RuntimeException("Required value for 'referralLink' is null");
+                throw new IllegalArgumentException("Required value for 'referralLink' is null");
             }
             this.team = team;
-            if (team != null) {
-            }
             this.isPaired = isPaired;
             this.accountType = accountType;
             if (accountType == null) {
-                throw new RuntimeException("Required value for 'accountType' is null");
+                throw new IllegalArgumentException("Required value for 'accountType' is null");
             }
         }
+
         static final JsonWriter<FullAccount> _writer = new JsonWriter<FullAccount>()
         {
             public final void write(FullAccount x, JsonGenerator g)
@@ -533,6 +936,7 @@ public final class DbxUsers {
              throws IOException
             {
                 g.writeStringField("email", x.email);
+                g.writeBooleanField("email_verified", x.emailVerified);
                 if (x.country != null) {
                     g.writeFieldName("country");
                     g.writeString(x.country);
@@ -567,6 +971,7 @@ public final class DbxUsers {
                 String accountId = null;
                 Name name = null;
                 String email = null;
+                Boolean emailVerified = null;
                 String locale = null;
                 String referralLink = null;
                 Boolean isPaired = null;
@@ -587,6 +992,10 @@ public final class DbxUsers {
                     else if ("email".equals(fieldName)) {
                         email = JsonReader.StringReader
                             .readField(parser, "email", email);
+                    }
+                    else if ("email_verified".equals(fieldName)) {
+                        emailVerified = JsonReader.BooleanReader
+                            .readField(parser, "email_verified", emailVerified);
                     }
                     else if ("locale".equals(fieldName)) {
                         locale = JsonReader.StringReader
@@ -623,6 +1032,9 @@ public final class DbxUsers {
                 if (email == null) {
                     throw new JsonReadException("Required field \"email\" is missing.", parser.getTokenLocation());
                 }
+                if (emailVerified == null) {
+                    throw new JsonReadException("Required field \"email_verified\" is missing.", parser.getTokenLocation());
+                }
                 if (locale == null) {
                     throw new JsonReadException("Required field \"locale\" is missing.", parser.getTokenLocation());
                 }
@@ -635,25 +1047,29 @@ public final class DbxUsers {
                 if (accountType == null) {
                     throw new JsonReadException("Required field \"account_type\" is missing.", parser.getTokenLocation());
                 }
-                return new FullAccount(accountId, name, email, locale, referralLink, isPaired, accountType, country, team);
+                return new FullAccount(accountId, name, email, emailVerified, locale, referralLink, isPaired, accountType, country, team);
             }
         };
 
         public String toString() {
             return "FullAccount." + _writer.writeToString(this, false);
         }
+
         public String toStringMultiline() {
             return "FullAccount." + _writer.writeToString(this, true);
         }
+
         public String toJson(Boolean longForm) {
             return _writer.writeToString(this, longForm);
         }
+
         public static FullAccount fromJson(String s)
             throws JsonReadException
         {
             return _reader.readFully(s);
         }
     }
+
 
     /**
      * Information about a team.
@@ -669,16 +1085,27 @@ public final class DbxUsers {
          */
         public final String name;
 
+        /**
+         * Information about a team.
+         *
+         * @param name  The name of the team. {@code name} must not be {@code
+         *     null}.
+         * @param id  The team's unique ID. {@code id} must not be {@code null}.
+         *
+         * @throws IllegalArgumentException  if any argument does not meet its
+         *     preconditions.
+         */
         public Team(String id, String name) {
             this.id = id;
             if (id == null) {
-                throw new RuntimeException("Required value for 'id' is null");
+                throw new IllegalArgumentException("Required value for 'id' is null");
             }
             this.name = name;
             if (name == null) {
-                throw new RuntimeException("Required value for 'name' is null");
+                throw new IllegalArgumentException("Required value for 'name' is null");
             }
         }
+
         static final JsonWriter<Team> _writer = new JsonWriter<Team>()
         {
             public final void write(Team x, JsonGenerator g)
@@ -739,18 +1166,22 @@ public final class DbxUsers {
         public String toString() {
             return "Team." + _writer.writeToString(this, false);
         }
+
         public String toStringMultiline() {
             return "Team." + _writer.writeToString(this, true);
         }
+
         public String toJson(Boolean longForm) {
             return _writer.writeToString(this, longForm);
         }
+
         public static Team fromJson(String s)
             throws JsonReadException
         {
             return _reader.readFully(s);
         }
     }
+
 
     /**
      * Representations for a person's name to assist with internationalization.
@@ -767,8 +1198,8 @@ public final class DbxUsers {
         public final String surname;
         /**
          * Locale-dependent name. In the US, a person's familiar name is their
-         * {@code givenName}, but elsewhere, it could be any combination of a
-         * person's {@code givenName} and {@code surname}.
+         * {@link Name#givenName}, but elsewhere, it could be any combination of
+         * a person's {@link Name#givenName} and {@link Name#surname}.
          */
         public final String familiarName;
         /**
@@ -777,24 +1208,44 @@ public final class DbxUsers {
          */
         public final String displayName;
 
+        /**
+         * Representations for a person's name to assist with
+         * internationalization.
+         *
+         * @param givenName  Also known as a first name. {@code givenName} must
+         *     not be {@code null}.
+         * @param surname  Also known as a last name or family name. {@code
+         *     surname} must not be {@code null}.
+         * @param familiarName  Locale-dependent name. In the US, a person's
+         *     familiar name is their {@code givenName}, but elsewhere, it could
+         *     be any combination of a person's {@code givenName} and {@code
+         *     surname}. {@code familiarName} must not be {@code null}.
+         * @param displayName  A name that can be used directly to represent the
+         *     name of a user's Dropbox account. {@code displayName} must not be
+         *     {@code null}.
+         *
+         * @throws IllegalArgumentException  if any argument does not meet its
+         *     preconditions.
+         */
         public Name(String givenName, String surname, String familiarName, String displayName) {
             this.givenName = givenName;
             if (givenName == null) {
-                throw new RuntimeException("Required value for 'givenName' is null");
+                throw new IllegalArgumentException("Required value for 'givenName' is null");
             }
             this.surname = surname;
             if (surname == null) {
-                throw new RuntimeException("Required value for 'surname' is null");
+                throw new IllegalArgumentException("Required value for 'surname' is null");
             }
             this.familiarName = familiarName;
             if (familiarName == null) {
-                throw new RuntimeException("Required value for 'familiarName' is null");
+                throw new IllegalArgumentException("Required value for 'familiarName' is null");
             }
             this.displayName = displayName;
             if (displayName == null) {
-                throw new RuntimeException("Required value for 'displayName' is null");
+                throw new IllegalArgumentException("Required value for 'displayName' is null");
             }
         }
+
         static final JsonWriter<Name> _writer = new JsonWriter<Name>()
         {
             public final void write(Name x, JsonGenerator g)
@@ -873,18 +1324,22 @@ public final class DbxUsers {
         public String toString() {
             return "Name." + _writer.writeToString(this, false);
         }
+
         public String toStringMultiline() {
             return "Name." + _writer.writeToString(this, true);
         }
+
         public String toJson(Boolean longForm) {
             return _writer.writeToString(this, longForm);
         }
+
         public static Name fromJson(String s)
             throws JsonReadException
         {
             return _reader.readFully(s);
         }
     }
+
 
     /**
      * Information about a user's space usage and quota.
@@ -900,13 +1355,24 @@ public final class DbxUsers {
          */
         public final SpaceAllocation allocation;
 
+        /**
+         * Information about a user's space usage and quota.
+         *
+         * @param used  The user's total space usage (bytes).
+         * @param allocation  The user's space allocation. {@code allocation}
+         *     must not be {@code null}.
+         *
+         * @throws IllegalArgumentException  if any argument does not meet its
+         *     preconditions.
+         */
         public SpaceUsage(long used, SpaceAllocation allocation) {
             this.used = used;
             this.allocation = allocation;
             if (allocation == null) {
-                throw new RuntimeException("Required value for 'allocation' is null");
+                throw new IllegalArgumentException("Required value for 'allocation' is null");
             }
         }
+
         static final JsonWriter<SpaceUsage> _writer = new JsonWriter<SpaceUsage>()
         {
             public final void write(SpaceUsage x, JsonGenerator g)
@@ -968,12 +1434,15 @@ public final class DbxUsers {
         public String toString() {
             return "SpaceUsage." + _writer.writeToString(this, false);
         }
+
         public String toStringMultiline() {
             return "SpaceUsage." + _writer.writeToString(this, true);
         }
+
         public String toJson(Boolean longForm) {
             return _writer.writeToString(this, longForm);
         }
+
         public static SpaceUsage fromJson(String s)
             throws JsonReadException
         {
@@ -981,10 +1450,10 @@ public final class DbxUsers {
         }
     }
 
+
     /**
      * Space is allocated differently based on the type of account.
      */
-
     public static final class SpaceAllocation {
         // union SpaceAllocation
 
@@ -992,9 +1461,16 @@ public final class DbxUsers {
          * The discriminating tag type for {@link SpaceAllocation}.
          */
         public enum Tag {
-            individual,  // IndividualSpaceAllocation
-            team,  // TeamSpaceAllocation
-            other  // *catch_all
+            /**
+             * The user's space allocation applies only to their individual
+             * account.
+             */
+            INDIVIDUAL,  // IndividualSpaceAllocation
+            /**
+             * The user shares space with other members of their team.
+             */
+            TEAM,  // TeamSpaceAllocation
+            OTHER  // *catch_all
         }
 
         /**
@@ -1002,47 +1478,157 @@ public final class DbxUsers {
          */
         public final Tag tag;
 
+        /**
+         * Returns the tag for this instance.
+         *
+         * <p> This class is a tagged union.  Tagged unions instances are always
+         * associated to a specific tag.  Callers are recommended to use the tag
+         * value in a {@code switch} statement to determine how to properly
+         * handle this {@code SpaceAllocation}. </p>
+         *
+         * @return the tag for this instance.
+         */
+        public Tag getTag() {
+            return this.tag;
+        }
+
         private final IndividualSpaceAllocation individualValue;
-        private SpaceAllocation(Tag t, IndividualSpaceAllocation v) {
-            tag = t;
-            individualValue = v;
-            teamValue = null;
+
+        private SpaceAllocation(Tag tag, IndividualSpaceAllocation value) {
+            this.tag = tag;
+            this.individualValue = value;
+            this.teamValue = null;
             validate();
         }
+
         /**
          * The user's space allocation applies only to their individual account.
+         *
+         * <p> This instance must be tagged as {@link Tag#INDIVIDUAL}. </p>
+         *
+         * @return The {@link IndividualSpaceAllocation} value associated with
+         *     this instance if {@link #isIndividual} is {@code true}.
+         *
+         * @throws IllegalStateException  If {@link #isIndividual} is {@code
+         *     false}.
          */
-        public static SpaceAllocation individual(IndividualSpaceAllocation v) {
-            return new SpaceAllocation(Tag.individual, v);
-        }
-        public IndividualSpaceAllocation getIndividual() {
-            if (tag != Tag.individual) {
-                throw new RuntimeException("getIndividual() requires tag==individual, actual tag=="+tag);
+        public IndividualSpaceAllocation getIndividualValue() {
+            if (this.tag != Tag.INDIVIDUAL) {
+                throw new IllegalStateException("getIndividualValue() requires tag==INDIVIDUAL, actual tag==" + tag);
             }
             return individualValue;
         }
 
+        /**
+         * Returns an instance of {@code SpaceAllocation} that has its tag set
+         * to {@link Tag#INDIVIDUAL}.
+         *
+         * <p> The user's space allocation applies only to their individual
+         * account. </p>
+         *
+         * @param value  {@link IndividualSpaceAllocation} value to assign to
+         *     this instance.
+         *
+         * @return Instance of {@code SpaceAllocation} with its tag set to
+         *     {@link Tag#INDIVIDUAL}.
+         *
+         * @throws IllegalArgumentException  if {@code value} is {@code null}.
+         */
+        public static SpaceAllocation individual(IndividualSpaceAllocation value) {
+            return new SpaceAllocation(Tag.INDIVIDUAL, value);
+        }
+
+        /**
+         * Returns {@code true} if this instance has the tag {@link
+         * Tag#INDIVIDUAL}, {@code false} otherwise.
+         *
+         * @return {@code true} if this instance is tagged as {@link
+         *     Tag#INDIVIDUAL}, {@code false} otherwise.
+         */
+        public boolean isIndividual() {
+            return this.tag == Tag.INDIVIDUAL;
+        }
+
         private final TeamSpaceAllocation teamValue;
-        private SpaceAllocation(Tag t, TeamSpaceAllocation v) {
-            tag = t;
-            individualValue = null;
-            teamValue = v;
+
+        private SpaceAllocation(Tag tag, TeamSpaceAllocation value) {
+            this.tag = tag;
+            this.individualValue = null;
+            this.teamValue = value;
             validate();
         }
+
         /**
          * The user shares space with other members of their team.
+         *
+         * <p> This instance must be tagged as {@link Tag#TEAM}. </p>
+         *
+         * @return The {@link TeamSpaceAllocation} value associated with this
+         *     instance if {@link #isTeam} is {@code true}.
+         *
+         * @throws IllegalStateException  If {@link #isTeam} is {@code false}.
          */
-        public static SpaceAllocation team(TeamSpaceAllocation v) {
-            return new SpaceAllocation(Tag.team, v);
-        }
-        public TeamSpaceAllocation getTeam() {
-            if (tag != Tag.team) {
-                throw new RuntimeException("getTeam() requires tag==team, actual tag=="+tag);
+        public TeamSpaceAllocation getTeamValue() {
+            if (this.tag != Tag.TEAM) {
+                throw new IllegalStateException("getTeamValue() requires tag==TEAM, actual tag==" + tag);
             }
             return teamValue;
         }
 
-        public static final SpaceAllocation other = new SpaceAllocation(Tag.other);
+        /**
+         * Returns an instance of {@code SpaceAllocation} that has its tag set
+         * to {@link Tag#TEAM}.
+         *
+         * <p> The user shares space with other members of their team. </p>
+         *
+         * @param value  {@link TeamSpaceAllocation} value to assign to this
+         *     instance.
+         *
+         * @return Instance of {@code SpaceAllocation} with its tag set to
+         *     {@link Tag#TEAM}.
+         *
+         * @throws IllegalArgumentException  if {@code value} is {@code null}.
+         */
+        public static SpaceAllocation team(TeamSpaceAllocation value) {
+            return new SpaceAllocation(Tag.TEAM, value);
+        }
+
+        /**
+         * Returns {@code true} if this instance has the tag {@link Tag#TEAM},
+         * {@code false} otherwise.
+         *
+         * @return {@code true} if this instance is tagged as {@link Tag#TEAM},
+         *     {@code false} otherwise.
+         */
+        public boolean isTeam() {
+            return this.tag == Tag.TEAM;
+        }
+
+        private static final SpaceAllocation OTHER_INSTANCE = new SpaceAllocation(Tag.OTHER);
+
+        /**
+         * Returns an instance of {@code SpaceAllocation} that has its tag set
+         * to {@link Tag#OTHER}.
+         *
+         * <p> None </p>
+         *
+         * @return Instance of {@code SpaceAllocation} with its tag set to
+         *     {@link Tag#OTHER}.
+         */
+        public static SpaceAllocation other() {
+            return SpaceAllocation.OTHER_INSTANCE;
+        }
+
+        /**
+         * Returns {@code true} if this instance has the tag {@link Tag#OTHER},
+         * {@code false} otherwise.
+         *
+         * @return {@code true} if this instance is tagged as {@link Tag#OTHER},
+         *     {@code false} otherwise.
+         */
+        public boolean isOther() {
+            return this.tag == Tag.OTHER;
+        }
 
         private SpaceAllocation(Tag t) {
             tag = t;
@@ -1051,44 +1637,44 @@ public final class DbxUsers {
             validate();
         }
 
-        private void validate()
-        {
-            switch (tag) {
-                case other:
+        private final void validate() {
+            switch (this.tag) {
+                case OTHER:
                     break;
-                case individual:
+                case INDIVIDUAL:
                     if (this.individualValue == null) {
-                        throw new RuntimeException("Required value for 'individual' is null");
+                        throw new IllegalArgumentException("Value is null");
                     }
                     break;
-                case team:
+                case TEAM:
                     if (this.teamValue == null) {
-                        throw new RuntimeException("Required value for 'team' is null");
+                        throw new IllegalArgumentException("Value is null");
                     }
                     break;
             }
         }
+
         static final JsonWriter<SpaceAllocation> _writer = new JsonWriter<SpaceAllocation>()
         {
             public final void write(SpaceAllocation x, JsonGenerator g)
               throws IOException
             {
                 switch (x.tag) {
-                    case individual:
+                    case INDIVIDUAL:
                         g.writeStartObject();
                         g.writeFieldName(".tag");
                         g.writeString("individual");
                         IndividualSpaceAllocation._writer.writeFields(x.individualValue, g);
                         g.writeEndObject();
                         break;
-                    case team:
+                    case TEAM:
                         g.writeStartObject();
                         g.writeFieldName(".tag");
                         g.writeString("team");
                         TeamSpaceAllocation._writer.writeFields(x.teamValue, g);
                         g.writeEndObject();
                         break;
-                    case other:
+                    case OTHER:
                         g.writeStartObject();
                         g.writeFieldName(".tag");
                         g.writeString("other");
@@ -1106,9 +1692,9 @@ public final class DbxUsers {
                     String text = parser.getText();
                     parser.nextToken();
                     Tag tag = _values.get(text);
-                    if (tag == null) { return SpaceAllocation.other; }
+                    if (tag == null) { return SpaceAllocation.other(); }
                     switch (tag) {
-                        case other: return SpaceAllocation.other;
+                        case OTHER: return SpaceAllocation.other();
                     }
                     throw new JsonReadException("Tag " + tag + " requires a value", parser.getTokenLocation());
                 }
@@ -1120,26 +1706,26 @@ public final class DbxUsers {
                 SpaceAllocation value = null;
                 if (tag != null) {
                     switch (tag) {
-                        case individual: {
+                        case INDIVIDUAL: {
                             IndividualSpaceAllocation v = null;
                             v = IndividualSpaceAllocation._reader.readFields(parser);
                             value = SpaceAllocation.individual(v);
                             break;
                         }
-                        case team: {
+                        case TEAM: {
                             TeamSpaceAllocation v = null;
                             v = TeamSpaceAllocation._reader.readFields(parser);
                             value = SpaceAllocation.team(v);
                             break;
                         }
-                        case other: {
-                            value = SpaceAllocation.other;
+                        case OTHER: {
+                            value = SpaceAllocation.other();
                             break;
                         }
                     }
                 }
                 JsonReader.expectObjectEnd(parser);
-                if (value == null) { return SpaceAllocation.other; }
+                if (value == null) { return SpaceAllocation.other(); }
                 return value;
             }
 
@@ -1147,9 +1733,9 @@ public final class DbxUsers {
         private static final java.util.HashMap<String,Tag> _values;
         static {
             _values = new java.util.HashMap<String,Tag>();
-            _values.put("individual", Tag.individual);
-            _values.put("team", Tag.team);
-            _values.put("other", Tag.other);
+            _values.put("individual", Tag.INDIVIDUAL);
+            _values.put("team", Tag.TEAM);
+            _values.put("other", Tag.OTHER);
         }
 
         public String toString() {
@@ -1168,6 +1754,7 @@ public final class DbxUsers {
         }
     }
 
+
     public static class IndividualSpaceAllocation {
         // struct IndividualSpaceAllocation
         /**
@@ -1175,9 +1762,15 @@ public final class DbxUsers {
          */
         public final long allocated;
 
+        /**
+         *
+         * @param allocated  The total space allocated to the user's account
+         *     (bytes).
+         */
         public IndividualSpaceAllocation(long allocated) {
             this.allocated = allocated;
         }
+
         static final JsonWriter<IndividualSpaceAllocation> _writer = new JsonWriter<IndividualSpaceAllocation>()
         {
             public final void write(IndividualSpaceAllocation x, JsonGenerator g)
@@ -1229,18 +1822,22 @@ public final class DbxUsers {
         public String toString() {
             return "IndividualSpaceAllocation." + _writer.writeToString(this, false);
         }
+
         public String toStringMultiline() {
             return "IndividualSpaceAllocation." + _writer.writeToString(this, true);
         }
+
         public String toJson(Boolean longForm) {
             return _writer.writeToString(this, longForm);
         }
+
         public static IndividualSpaceAllocation fromJson(String s)
             throws JsonReadException
         {
             return _reader.readFully(s);
         }
     }
+
 
     public static class TeamSpaceAllocation {
         // struct TeamSpaceAllocation
@@ -1253,10 +1850,18 @@ public final class DbxUsers {
          */
         public final long allocated;
 
+        /**
+         *
+         * @param allocated  The total space allocated to the user's team
+         *     (bytes).
+         * @param used  The total space currently used by the user's team
+         *     (bytes).
+         */
         public TeamSpaceAllocation(long used, long allocated) {
             this.used = used;
             this.allocated = allocated;
         }
+
         static final JsonWriter<TeamSpaceAllocation> _writer = new JsonWriter<TeamSpaceAllocation>()
         {
             public final void write(TeamSpaceAllocation x, JsonGenerator g)
@@ -1317,12 +1922,15 @@ public final class DbxUsers {
         public String toString() {
             return "TeamSpaceAllocation." + _writer.writeToString(this, false);
         }
+
         public String toStringMultiline() {
             return "TeamSpaceAllocation." + _writer.writeToString(this, true);
         }
+
         public String toJson(Boolean longForm) {
             return _writer.writeToString(this, longForm);
         }
+
         public static TeamSpaceAllocation fromJson(String s)
             throws JsonReadException
         {
@@ -1330,34 +1938,46 @@ public final class DbxUsers {
         }
     }
 
+
     public static class GetAccountBatchArg {
         // struct GetAccountBatchArg
         /**
          * List of user account identifiers.  Should not contain any duplicate
          * account IDs.
          */
-        public final java.util.ArrayList<String> accountIds;
+        public final java.util.List<String> accountIds;
 
-        public GetAccountBatchArg(java.util.ArrayList<String> accountIds) {
+        /**
+         *
+         * @param accountIds  List of user account identifiers.  Should not
+         *     contain any duplicate account IDs. {@code accountIds} must
+         *     contain at least 1 items, not contain a {@code null} item, and
+         *     not be {@code null}.
+         *
+         * @throws IllegalArgumentException  if any argument does not meet its
+         *     preconditions.
+         */
+        public GetAccountBatchArg(java.util.List<String> accountIds) {
             this.accountIds = accountIds;
             if (accountIds == null) {
-                throw new RuntimeException("Required value for 'accountIds' is null");
+                throw new IllegalArgumentException("Required value for 'accountIds' is null");
             }
             if (accountIds.size() < 1) {
-                throw new RuntimeException("List 'accountIds' has fewer than 1 items");
+                throw new IllegalArgumentException("List 'accountIds' has fewer than 1 items");
             }
             for (String x : accountIds) {
                 if (x == null) {
-                    throw new RuntimeException("An item in list 'accountIds' is null");
+                    throw new IllegalArgumentException("An item in list 'accountIds' is null");
                 }
                 if (x.length() < 40) {
-                    throw new RuntimeException("String 'an item in list field accountIds' is shorter than 40");
+                    throw new IllegalArgumentException("String 'an item in list 'accountIds'' is shorter than 40");
                 }
                 if (x.length() > 40) {
-                    throw new RuntimeException("String 'an item in list field accountIds' is longer than 40");
+                    throw new IllegalArgumentException("String 'an item in list 'accountIds'' is longer than 40");
                 }
             }
         }
+
         static final JsonWriter<GetAccountBatchArg> _writer = new JsonWriter<GetAccountBatchArg>()
         {
             public final void write(GetAccountBatchArg x, JsonGenerator g)
@@ -1396,7 +2016,7 @@ public final class DbxUsers {
             public final GetAccountBatchArg readFields(JsonParser parser)
                 throws IOException, JsonReadException
             {
-                java.util.ArrayList<String> accountIds = null;
+                java.util.List<String> accountIds = null;
                 while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String fieldName = parser.getCurrentName();
                     parser.nextToken();
@@ -1416,12 +2036,15 @@ public final class DbxUsers {
         public String toString() {
             return "GetAccountBatchArg." + _writer.writeToString(this, false);
         }
+
         public String toStringMultiline() {
             return "GetAccountBatchArg." + _writer.writeToString(this, true);
         }
+
         public String toJson(Boolean longForm) {
             return _writer.writeToString(this, longForm);
         }
+
         public static GetAccountBatchArg fromJson(String s)
             throws JsonReadException
         {
@@ -1437,8 +2060,12 @@ public final class DbxUsers {
          * The discriminating tag type for {@link GetAccountBatchError}.
          */
         public enum Tag {
-            noAccount,  // String
-            other  // *catch_all
+            /**
+             * The value is an account ID specified in {@link
+             * GetAccountBatchArg#accountIds} that does not exist.
+             */
+            NO_ACCOUNT,  // String
+            OTHER  // *catch_all
         }
 
         /**
@@ -1446,27 +2073,102 @@ public final class DbxUsers {
          */
         public final Tag tag;
 
+        /**
+         * Returns the tag for this instance.
+         *
+         * <p> This class is a tagged union.  Tagged unions instances are always
+         * associated to a specific tag.  Callers are recommended to use the tag
+         * value in a {@code switch} statement to determine how to properly
+         * handle this {@code GetAccountBatchError}. </p>
+         *
+         * @return the tag for this instance.
+         */
+        public Tag getTag() {
+            return this.tag;
+        }
+
         private final String noAccountValue;
-        private GetAccountBatchError(Tag t, String v) {
-            tag = t;
-            noAccountValue = v;
+
+        private GetAccountBatchError(Tag tag, String value) {
+            this.tag = tag;
+            this.noAccountValue = value;
             validate();
         }
+
         /**
-         * The value is an account ID specified in {@code
-         * getAccountBatchArg.accountIds} that does not exist.
+         * The value is an account ID specified in {@link
+         * GetAccountBatchArg#accountIds} that does not exist.
+         *
+         * <p> This instance must be tagged as {@link Tag#NO_ACCOUNT}. </p>
+         *
+         * @return The {@link String} value associated with this instance if
+         *     {@link #isNoAccount} is {@code true}.
+         *
+         * @throws IllegalStateException  If {@link #isNoAccount} is {@code
+         *     false}.
          */
-        public static GetAccountBatchError noAccount(String v) {
-            return new GetAccountBatchError(Tag.noAccount, v);
-        }
-        public String getNoAccount() {
-            if (tag != Tag.noAccount) {
-                throw new RuntimeException("getNoAccount() requires tag==noAccount, actual tag=="+tag);
+        public String getNoAccountValue() {
+            if (this.tag != Tag.NO_ACCOUNT) {
+                throw new IllegalStateException("getNoAccountValue() requires tag==NO_ACCOUNT, actual tag==" + tag);
             }
             return noAccountValue;
         }
 
-        public static final GetAccountBatchError other = new GetAccountBatchError(Tag.other);
+        /**
+         * Returns an instance of {@code GetAccountBatchError} that has its tag
+         * set to {@link Tag#NO_ACCOUNT}.
+         *
+         * <p> The value is an account ID specified in {@link
+         * GetAccountBatchArg#accountIds} that does not exist. </p>
+         *
+         * @param value  {@link String} value to assign to this instance.
+         *
+         * @return Instance of {@code GetAccountBatchError} with its tag set to
+         *     {@link Tag#NO_ACCOUNT}.
+         *
+         * @throws IllegalArgumentException  if {@code value} is shorter than
+         *     40, is longer than 40, or is {@code null}.
+         */
+        public static GetAccountBatchError noAccount(String value) {
+            return new GetAccountBatchError(Tag.NO_ACCOUNT, value);
+        }
+
+        /**
+         * Returns {@code true} if this instance has the tag {@link
+         * Tag#NO_ACCOUNT}, {@code false} otherwise.
+         *
+         * @return {@code true} if this instance is tagged as {@link
+         *     Tag#NO_ACCOUNT}, {@code false} otherwise.
+         */
+        public boolean isNoAccount() {
+            return this.tag == Tag.NO_ACCOUNT;
+        }
+
+        private static final GetAccountBatchError OTHER_INSTANCE = new GetAccountBatchError(Tag.OTHER);
+
+        /**
+         * Returns an instance of {@code GetAccountBatchError} that has its tag
+         * set to {@link Tag#OTHER}.
+         *
+         * <p> None </p>
+         *
+         * @return Instance of {@code GetAccountBatchError} with its tag set to
+         *     {@link Tag#OTHER}.
+         */
+        public static GetAccountBatchError other() {
+            return GetAccountBatchError.OTHER_INSTANCE;
+        }
+
+        /**
+         * Returns {@code true} if this instance has the tag {@link Tag#OTHER},
+         * {@code false} otherwise.
+         *
+         * @return {@code true} if this instance is tagged as {@link Tag#OTHER},
+         *     {@code false} otherwise.
+         */
+        public boolean isOther() {
+            return this.tag == Tag.OTHER;
+        }
 
         private GetAccountBatchError(Tag t) {
             tag = t;
@@ -1474,38 +2176,38 @@ public final class DbxUsers {
             validate();
         }
 
-        private void validate()
-        {
-            switch (tag) {
-                case other:
+        private final void validate() {
+            switch (this.tag) {
+                case OTHER:
                     break;
-                case noAccount:
+                case NO_ACCOUNT:
                     if (this.noAccountValue == null) {
-                        throw new RuntimeException("Required value for 'noAccount' is null");
+                        throw new IllegalArgumentException("Value is null");
                     }
                     if (this.noAccountValue.length() < 40) {
-                        throw new RuntimeException("String 'this.noAccountValue' is shorter than 40");
+                        throw new IllegalArgumentException("String is shorter than 40");
                     }
                     if (this.noAccountValue.length() > 40) {
-                        throw new RuntimeException("String 'this.noAccountValue' is longer than 40");
+                        throw new IllegalArgumentException("String is longer than 40");
                     }
                     break;
             }
         }
+
         static final JsonWriter<GetAccountBatchError> _writer = new JsonWriter<GetAccountBatchError>()
         {
             public final void write(GetAccountBatchError x, JsonGenerator g)
               throws IOException
             {
                 switch (x.tag) {
-                    case noAccount:
+                    case NO_ACCOUNT:
                         g.writeStartObject();
                         g.writeFieldName(".tag");
                         g.writeString("no_account");
                         g.writeStringField("no_account", x.noAccountValue);
                         g.writeEndObject();
                         break;
-                    case other:
+                    case OTHER:
                         g.writeStartObject();
                         g.writeFieldName(".tag");
                         g.writeString("other");
@@ -1523,9 +2225,9 @@ public final class DbxUsers {
                     String text = parser.getText();
                     parser.nextToken();
                     Tag tag = _values.get(text);
-                    if (tag == null) { return GetAccountBatchError.other; }
+                    if (tag == null) { return GetAccountBatchError.other(); }
                     switch (tag) {
-                        case other: return GetAccountBatchError.other;
+                        case OTHER: return GetAccountBatchError.other();
                     }
                     throw new JsonReadException("Tag " + tag + " requires a value", parser.getTokenLocation());
                 }
@@ -1537,7 +2239,7 @@ public final class DbxUsers {
                 GetAccountBatchError value = null;
                 if (tag != null) {
                     switch (tag) {
-                        case noAccount: {
+                        case NO_ACCOUNT: {
                             String v = null;
                             assert parser.getCurrentToken() == JsonToken.FIELD_NAME;
                             text = parser.getText();
@@ -1548,14 +2250,14 @@ public final class DbxUsers {
                             value = GetAccountBatchError.noAccount(v);
                             break;
                         }
-                        case other: {
-                            value = GetAccountBatchError.other;
+                        case OTHER: {
+                            value = GetAccountBatchError.other();
                             break;
                         }
                     }
                 }
                 JsonReader.expectObjectEnd(parser);
-                if (value == null) { return GetAccountBatchError.other; }
+                if (value == null) { return GetAccountBatchError.other(); }
                 return value;
             }
 
@@ -1563,8 +2265,8 @@ public final class DbxUsers {
         private static final java.util.HashMap<String,Tag> _values;
         static {
             _values = new java.util.HashMap<String,Tag>();
-            _values.put("no_account", Tag.noAccount);
-            _values.put("other", Tag.other);
+            _values.put("no_account", Tag.NO_ACCOUNT);
+            _values.put("other", Tag.OTHER);
         }
 
         public String toString() {
@@ -1592,8 +2294,8 @@ public final class DbxUsers {
          */
         public final GetAccountError errorValue;
 
-        public GetAccountException(GetAccountError errorValue) {
-            super("Exception in get_account: " + errorValue);
+        public GetAccountException(String requestId, LocalizedText userMessage, GetAccountError errorValue) {
+            super(requestId, userMessage, buildMessage("get_account", userMessage, errorValue));
             this.errorValue = errorValue;
         }
     }
@@ -1604,21 +2306,27 @@ public final class DbxUsers {
             throws GetAccountException, DbxException
     {
         try {
-            return DbxRawClientV2.rpcStyle(client.getRequestConfig(),
-                                           client.getAccessToken(),
-                                           client.getHost().api,
-                                           "2-beta-2/users/get_account",
-                                           arg,
-                                           GetAccountArg._writer,
-                                           BasicAccount._reader,
-                                           GetAccountError._reader);
+            return client.rpcStyle(client.getHost().api,
+                                   "2/users/get_account",
+                                   arg,
+                                   false,
+                                   GetAccountArg._writer,
+                                   BasicAccount._reader,
+                                   GetAccountError._reader);
         }
         catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new GetAccountException((GetAccountError) (ew.errValue));
+            throw new GetAccountException(ew.requestId, ew.userMessage, (GetAccountError) (ew.errValue));
         }
     }
     /**
      * Get information about a user's account.
+     *
+     * @param accountId  A user's account identifier. {@code accountId} must
+     *     have length of at least 40, have length of at most 40, and not be
+     *     {@code null}.
+     *
+     * @throws IllegalArgumentException  if any argument does not meet its
+     *     preconditions.
      */
     public BasicAccount getAccount(String accountId)
           throws GetAccountException, DbxException
@@ -1631,8 +2339,8 @@ public final class DbxUsers {
      * Exception thrown by {@link DbxUsers#getCurrentAccount}.
      */
     public static class GetCurrentAccountException extends DbxApiException {
-        public GetCurrentAccountException() {
-            super("Exception in get_current_account");
+        public GetCurrentAccountException(String requestId, LocalizedText userMessage) {
+            super(requestId, userMessage, buildMessage("get_current_account", userMessage));
         }
     }
     /**
@@ -1642,17 +2350,16 @@ public final class DbxUsers {
             throws GetCurrentAccountException, DbxException
     {
         try {
-            return DbxRawClientV2.rpcStyle(client.getRequestConfig(),
-                                           client.getAccessToken(),
-                                           client.getHost().api,
-                                           "2-beta-2/users/get_current_account",
-                                           null,
-                                           null,
-                                           FullAccount._reader,
-                                           JsonReader.VoidReader);
+            return client.rpcStyle(client.getHost().api,
+                                   "2/users/get_current_account",
+                                   null,
+                                   false,
+                                   null,
+                                   FullAccount._reader,
+                                   JsonReader.VoidReader);
         }
         catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new GetCurrentAccountException();
+            throw new GetCurrentAccountException(ew.requestId, ew.userMessage);
         }
     }
 
@@ -1660,8 +2367,8 @@ public final class DbxUsers {
      * Exception thrown by {@link DbxUsers#getSpaceUsage}.
      */
     public static class GetSpaceUsageException extends DbxApiException {
-        public GetSpaceUsageException() {
-            super("Exception in get_space_usage");
+        public GetSpaceUsageException(String requestId, LocalizedText userMessage) {
+            super(requestId, userMessage, buildMessage("get_space_usage", userMessage));
         }
     }
     /**
@@ -1671,23 +2378,21 @@ public final class DbxUsers {
             throws GetSpaceUsageException, DbxException
     {
         try {
-            return DbxRawClientV2.rpcStyle(client.getRequestConfig(),
-                                           client.getAccessToken(),
-                                           client.getHost().api,
-                                           "2-beta-2/users/get_space_usage",
-                                           null,
-                                           null,
-                                           SpaceUsage._reader,
-                                           JsonReader.VoidReader);
+            return client.rpcStyle(client.getHost().api,
+                                   "2/users/get_space_usage",
+                                   null,
+                                   false,
+                                   null,
+                                   SpaceUsage._reader,
+                                   JsonReader.VoidReader);
         }
         catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new GetSpaceUsageException();
+            throw new GetSpaceUsageException(ew.requestId, ew.userMessage);
         }
     }
 
     /**
-     * Exception thrown by {@link
-     * DbxUsers#getAccountBatch(java.util.ArrayList)}.
+     * Exception thrown by {@link DbxUsers#getAccountBatch(java.util.List)}.
      */
     public static class GetAccountBatchException extends DbxApiException {
         /**
@@ -1695,8 +2400,8 @@ public final class DbxUsers {
          */
         public final GetAccountBatchError errorValue;
 
-        public GetAccountBatchException(GetAccountBatchError errorValue) {
-            super("Exception in get_account_batch: " + errorValue);
+        public GetAccountBatchException(String requestId, LocalizedText userMessage, GetAccountBatchError errorValue) {
+            super(requestId, userMessage, buildMessage("get_account_batch", userMessage, errorValue));
             this.errorValue = errorValue;
         }
     }
@@ -1704,28 +2409,34 @@ public final class DbxUsers {
      * Get information about multiple user accounts.  At most 300 accounts may
      * be queried per request.
      */
-    private java.util.ArrayList<BasicAccount> getAccountBatch(GetAccountBatchArg arg)
+    private java.util.List<BasicAccount> getAccountBatch(GetAccountBatchArg arg)
             throws GetAccountBatchException, DbxException
     {
         try {
-            return DbxRawClientV2.rpcStyle(client.getRequestConfig(),
-                                           client.getAccessToken(),
-                                           client.getHost().api,
-                                           "2-beta-2/users/get_account_batch",
-                                           arg,
-                                           GetAccountBatchArg._writer,
-                                           JsonArrayReader.mk(BasicAccount._reader),
-                                           GetAccountBatchError._reader);
+            return client.rpcStyle(client.getHost().api,
+                                   "2/users/get_account_batch",
+                                   arg,
+                                   false,
+                                   GetAccountBatchArg._writer,
+                                   JsonArrayReader.mk(BasicAccount._reader),
+                                   GetAccountBatchError._reader);
         }
         catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new GetAccountBatchException((GetAccountBatchError) (ew.errValue));
+            throw new GetAccountBatchException(ew.requestId, ew.userMessage, (GetAccountBatchError) (ew.errValue));
         }
     }
     /**
      * Get information about multiple user accounts.  At most 300 accounts may
      * be queried per request.
+     *
+     * @param accountIds  List of user account identifiers.  Should not contain
+     *     any duplicate account IDs. {@code accountIds} must contain at least 1
+     *     items, not contain a {@code null} item, and not be {@code null}.
+     *
+     * @throws IllegalArgumentException  if any argument does not meet its
+     *     preconditions.
      */
-    public java.util.ArrayList<BasicAccount> getAccountBatch(java.util.ArrayList<String> accountIds)
+    public java.util.List<BasicAccount> getAccountBatch(java.util.List<String> accountIds)
           throws GetAccountBatchException, DbxException
     {
         GetAccountBatchArg arg = new GetAccountBatchArg(accountIds);

@@ -4,7 +4,7 @@ import com.dropbox.core.util.Collector;
 import com.fasterxml.jackson.core.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
 public class JsonArrayReader<T,L> extends JsonReader<L>
 {
@@ -17,9 +17,9 @@ public class JsonArrayReader<T,L> extends JsonReader<L>
         this.collector = collector;
     }
 
-    public static <T> JsonArrayReader<T,ArrayList<T>> mk(JsonReader<? extends T> elementReader)
+    public static <T> JsonArrayReader<T,List<T>> mk(JsonReader<? extends T> elementReader)
     {
-        return new JsonArrayReader<T,ArrayList<T>>(elementReader, new Collector.ArrayListCollector<T>());
+        return new JsonArrayReader<T,List<T>>(elementReader, new Collector.ArrayListCollector<T>());
     }
 
     public static <T,L> JsonArrayReader<T,L> mk(JsonReader<? extends T> elementReader, Collector<T,? extends L> collector)

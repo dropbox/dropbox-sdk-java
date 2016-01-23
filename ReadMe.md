@@ -4,7 +4,7 @@ A Java library to access [Dropbox's HTTP-based Core API v2](https://www.dropbox.
 
 License: [MIT](License.txt)
 
-[Javadoc.](http://dropbox.github.io/dropbox-sdk-java/api-docs/v2.0.x/)
+[Javadoc.](https://dropbox.github.io/dropbox-sdk-java/api-docs/v2.0.x/)
 
 ## Setup
 
@@ -14,12 +14,12 @@ If you're using Maven, then edit your project's "pom.xml" and add this to the `<
 <dependency>
     <groupId>com.dropbox.core</groupId>
     <artifactId>dropbox-core-sdk</artifactId>
-    <version>2.0-beta-4</version>
+    <version>2.0-beta-5</version>
 </dependency>
 ```
 
 If you aren't using Maven, here are the JARs you need:
-- [Dropbox Core SDK 2.0-beta-4](https://oss.sonatype.org/content/repositories/releases/com/dropbox/core/dropbox-core-sdk/2.0-beta-4/dropbox-core-sdk-2.0-beta-4.jar)
+- [Dropbox Core SDK 2.0-beta-5](https://oss.sonatype.org/content/repositories/releases/com/dropbox/core/dropbox-core-sdk/2.0-beta-5/dropbox-core-sdk-2.0-beta-5.jar)
 - [Jackson Core 2.6.1](https://oss.sonatype.org/content/repositories/releases/com/fasterxml/jackson/core/jackson-core/2.6.1/jackson-core-2.6.1.jar) (JSON parser)
 
 ## Get a Dropbox API key
@@ -156,4 +156,4 @@ mvn package -Dosgi.bnd.noee=true
 
 (This is equivalent to passing the "-noee" option to the OSGi "bnd" tool.)
 
-Another workaround is to tell your OSGi container to provide that requirement: [StackOverflow answer](http://stackoverflow.com/a/24673359/163832).
+Another workaround is to tell your OSGi container to provide that requirement: [StackOverflow answer](https://stackoverflow.com/a/24673359/163832).

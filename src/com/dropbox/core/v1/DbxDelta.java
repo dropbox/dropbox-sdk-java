@@ -12,7 +12,6 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /*>>> import checkers.nullness.quals.Nullable; */
@@ -109,7 +108,7 @@ public final class DbxDelta<MD extends Dumpable> extends Dumpable
             JsonLocation top = JsonReader.expectObjectStart(parser);
 
             Boolean reset = null;
-            ArrayList<Entry<MD>> entries = null;
+            List<Entry<MD>> entries = null;
             String cursor = null;
             Boolean has_more = null;
 

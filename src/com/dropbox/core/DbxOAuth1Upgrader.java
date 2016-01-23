@@ -50,7 +50,7 @@ public final class DbxOAuth1Upgrader
                 null, getHeaders(token), new DbxRequestUtil.ResponseHandler<String>() {
             public String handle(HttpRequestor.Response response) throws DbxException {
                 if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
-                return DbxRequestUtil.readJsonFromResponse(ResponseReader, response.body);
+                return DbxRequestUtil.readJsonFromResponse(ResponseReader, response);
             }
         });
     }
