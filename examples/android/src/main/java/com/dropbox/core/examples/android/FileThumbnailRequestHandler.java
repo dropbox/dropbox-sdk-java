@@ -47,8 +47,8 @@ public class FileThumbnailRequestHandler extends RequestHandler {
         try {
             DbxDownloader<DbxFiles.FileMetadata> downloader =
                     mFilesClient.getThumbnailBuilder(request.uri.getPath())
-                            .format(DbxFiles.ThumbnailFormat.jpeg)
-                            .size(DbxFiles.ThumbnailSize.w1024h768)
+                            .format(DbxFiles.ThumbnailFormat.jpeg())
+                            .size(DbxFiles.ThumbnailSize.w1024h768())
                             .start();
 
             return new Result(downloader.body, Picasso.LoadedFrom.NETWORK);
