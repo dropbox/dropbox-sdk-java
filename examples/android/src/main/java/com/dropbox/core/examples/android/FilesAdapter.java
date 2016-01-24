@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.dropbox.core.v2.DbxFiles;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,7 +22,7 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.MetadataView
     private final Picasso mPicasso;
     private final Callback mCallback;
 
-    public void setFiles(ArrayList<DbxFiles.Metadata> files) {
+    public void setFiles(List<DbxFiles.Metadata> files) {
         mFiles = files;
         notifyDataSetChanged();
     }
