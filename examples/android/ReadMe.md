@@ -2,6 +2,10 @@
 
 This shows the Dropbox API authorization flow and some API calls to retrieve files.
 
+## Requirements
+
+This example is backwards compatible with Android 4.4 (KitKat). Ensure your build environment supports at least Android SDK version 19.
+
 ## Running the example
 
 Prerequisites: Apache Maven (to build the SDK), [Android Studio](http://developer.android.com/sdk/installing/) (not strictly necessary)

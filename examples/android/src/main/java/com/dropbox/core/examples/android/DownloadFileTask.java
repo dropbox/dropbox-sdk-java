@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Environment;
 
 import com.dropbox.core.DbxException;
+import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.DbxFiles;
 
 import java.io.File;
@@ -20,18 +21,18 @@ import java.io.OutputStream;
 class DownloadFileTask extends AsyncTask<DbxFiles.FileMetadata, Void, File> {
 
     private final Context mContext;
-    private final DbxFiles mFilesClient;
+    private final DbxClientV2 mDbxClient;
+    private final Callback mCallback;
     private Exception mException;
-    private Callback mCallback;
 
     public interface Callback {
         void onDownloadComplete(File result);
         void onError(Exception e);
     }
 
-    DownloadFileTask(Context context, DbxFiles filesClient, Callback callback) {
+    DownloadFileTask(Context context, DbxClientV2 dbxClient, Callback callback) {
         mContext = context;
-        mFilesClient = filesClient;
+        mDbxClient = dbxClient;
         mCallback = callback;
     }
 
@@ -54,15 +55,19 @@ class DownloadFileTask extends AsyncTask<DbxFiles.FileMetadata, Void, File> {
             File file = new File(path, metadata.name);
 
             // Make sure the Downloads directory exists.
-            path.mkdirs();
+            if (!path.exists()) {
+                if (!path.mkdirs()) {
+                    mException = new RuntimeException("Unable to create directory: " + path);
+                }
+            } else if (!path.isDirectory()) {
+                mException = new IllegalStateException("Download path is not a directory: " + path);
+                return null;
+            }
 
             // Upload the file.
-            OutputStream outputStream = new FileOutputStream(file);
-            try {
-                mFilesClient.downloadBuilder(metadata.pathLower).
+            try (OutputStream outputStream = new FileOutputStream(file)) {
+                mDbxClient.files.downloadBuilder(metadata.pathLower).
                         rev(metadata.rev).run(outputStream);
-            } finally {
-                outputStream.close();
             }
 
             // Tell android about the file
@@ -72,7 +77,6 @@ class DownloadFileTask extends AsyncTask<DbxFiles.FileMetadata, Void, File> {
 
             return file;
         } catch (DbxException | IOException e) {
-            e.printStackTrace();
             mException = e;
         }
 

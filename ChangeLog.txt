@@ -1,3 +1,9 @@
+- Fix android example bugs and linter warnings
+  - Fix compilation error
+  - Fix upload failure bug
+  - Fix download failure bug
+  - Update build dependencies
+  - Stop using deprecated interfaces
 
 ---------------------------------------------
 2.0-beta-5 (2016-01-22)
