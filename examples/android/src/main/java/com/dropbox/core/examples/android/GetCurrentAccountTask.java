@@ -3,6 +3,7 @@ package com.dropbox.core.examples.android;
 import android.os.AsyncTask;
 
 import com.dropbox.core.DbxException;
+import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.DbxUsers;
 
 /**
@@ -10,7 +11,7 @@ import com.dropbox.core.v2.DbxUsers;
  */
 class GetCurrentAccountTask extends AsyncTask<Void, Void, DbxUsers.FullAccount> {
 
-    private final DbxUsers mDbxUsersClient;
+    private final DbxClientV2 mDbxClient;
     private final Callback mCallback;
     private Exception mException;
 
@@ -19,8 +20,8 @@ class GetCurrentAccountTask extends AsyncTask<Void, Void, DbxUsers.FullAccount> 
         void onError(Exception e);
     }
 
-    GetCurrentAccountTask(DbxUsers DbxUsersClient, Callback callback) {
-        mDbxUsersClient = DbxUsersClient;
+    GetCurrentAccountTask(DbxClientV2 dbxClient, Callback callback) {
+        mDbxClient = dbxClient;
         mCallback = callback;
     }
 
@@ -38,11 +39,10 @@ class GetCurrentAccountTask extends AsyncTask<Void, Void, DbxUsers.FullAccount> 
     protected DbxUsers.FullAccount doInBackground(Void... params) {
 
         try {
-            return mDbxUsersClient.getCurrentAccount();
+            return mDbxClient.users.getCurrentAccount();
 
         } catch (DbxException e) {
             mException = e;
-            e.printStackTrace();
         }
 
         return null;

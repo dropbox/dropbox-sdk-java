@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Toast;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import com.dropbox.core.v2.DbxFiles;
 
 import java.io.File;
+import java.text.DateFormat;
 import java.util.List;
 
 
@@ -102,7 +104,7 @@ public class FilesActivity extends DropboxActivity {
         dialog.setMessage("Loading");
         dialog.show();
 
-        new ListFolderTask(DropboxClient.DbxFiles(), new ListFolderTask.Callback() {
+        new ListFolderTask(DropboxClientFactory.getClient(), new ListFolderTask.Callback() {
             @Override
             public void onDataLoaded(DbxFiles.ListFolderResult result) {
                 dialog.dismiss();
@@ -114,6 +116,7 @@ public class FilesActivity extends DropboxActivity {
             public void onError(Exception e) {
                 dialog.dismiss();
 
+                Log.e(getClass().getName(), "Failed to list folder.", e);
                 Toast.makeText(FilesActivity.this,
                         "An error has occurred",
                         Toast.LENGTH_SHORT)
@@ -130,7 +133,7 @@ public class FilesActivity extends DropboxActivity {
         dialog.setMessage("Downloading");
         dialog.show();
 
-        new DownloadFileTask(FilesActivity.this, DropboxClient.DbxFiles(), new DownloadFileTask.Callback() {
+        new DownloadFileTask(FilesActivity.this, DropboxClientFactory.getClient(), new DownloadFileTask.Callback() {
             @Override
             public void onDownloadComplete(File result) {
                 dialog.dismiss();
@@ -144,6 +147,7 @@ public class FilesActivity extends DropboxActivity {
             public void onError(Exception e) {
                 dialog.dismiss();
 
+                Log.e(getClass().getName(), "Failed to download file.", e);
                 Toast.makeText(FilesActivity.this,
                         "An error has occurred",
                         Toast.LENGTH_SHORT)
@@ -176,14 +180,14 @@ public class FilesActivity extends DropboxActivity {
         dialog.setMessage("Uploading");
         dialog.show();
 
-        new UploadFileTask(this, DropboxClient.DbxFiles(), new UploadFileTask.Callback() {
+        new UploadFileTask(this, DropboxClientFactory.getClient(), new UploadFileTask.Callback() {
             @Override
             public void onUploadComplete(DbxFiles.FileMetadata result) {
                 dialog.dismiss();
 
-                Toast.makeText(FilesActivity.this,
-                        result.name + " size " + result.size + " modified " + result.clientModified.toGMTString(),
-                        Toast.LENGTH_SHORT)
+                String message = result.name + " size " + result.size + " modified " +
+                        DateFormat.getDateTimeInstance().format(result.clientModified);
+                Toast.makeText(FilesActivity.this, message, Toast.LENGTH_SHORT)
                         .show();
 
                 // Reload the folder
@@ -194,6 +198,7 @@ public class FilesActivity extends DropboxActivity {
             public void onError(Exception e) {
                 dialog.dismiss();
 
+                Log.e(getClass().getName(), "Failed to upload file.", e);
                 Toast.makeText(FilesActivity.this,
                         "An error has occurred",
                         Toast.LENGTH_SHORT)

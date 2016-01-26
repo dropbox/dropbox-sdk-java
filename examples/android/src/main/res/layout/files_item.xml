@@ -16,7 +16,6 @@
     <TextView
         android:id="@+id/text"
         android:maxLines="1"
-        android:textSize="@dimen/abc_text_size_body_1_material"
         android:layout_marginStart="@dimen/global_padding"
         android:layout_gravity="center_vertical"
         android:layout_width="match_parent"

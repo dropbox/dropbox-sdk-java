@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 
 import com.dropbox.core.DbxException;
+import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.DbxFiles;
 
 import java.io.File;
@@ -18,18 +19,18 @@ import java.io.InputStream;
 class UploadFileTask extends AsyncTask<String, Void, DbxFiles.FileMetadata> {
 
     private final Context mContext;
-    private final DbxFiles mFilesClient;
+    private final DbxClientV2 mDbxClient;
+    private final Callback mCallback;
     private Exception mException;
-    private Callback mCallback;
 
     public interface Callback {
         void onUploadComplete(DbxFiles.FileMetadata result);
         void onError(Exception e);
     }
 
-    UploadFileTask(Context context, DbxFiles filesClient, Callback callback) {
+    UploadFileTask(Context context, DbxClientV2 dbxClient, Callback callback) {
         mContext = context;
-        mFilesClient = filesClient;
+        mDbxClient = dbxClient;
         mCallback = callback;
     }
 
@@ -56,17 +57,11 @@ class UploadFileTask extends AsyncTask<String, Void, DbxFiles.FileMetadata> {
             // Note - this is not ensuring the name is a valid dropbox file name
             String remoteFileName = localFile.getName();
 
-            try {
-                InputStream inputStream = new FileInputStream(localFile);
-                try {
-                    mFilesClient.uploadBuilder(remoteFolderPath + "/" + remoteFileName)
-                            .mode(DbxFiles.WriteMode.overwrite)
-                            .run(inputStream);
-                } finally {
-                    inputStream.close();
-                }
+            try (InputStream inputStream = new FileInputStream(localFile)) {
+                return mDbxClient.files.uploadBuilder(remoteFolderPath + "/" + remoteFileName)
+                        .mode(DbxFiles.WriteMode.overwrite())
+                        .run(inputStream);
             } catch (DbxException | IOException e) {
-                e.printStackTrace();
                 mException = e;
             }
         }

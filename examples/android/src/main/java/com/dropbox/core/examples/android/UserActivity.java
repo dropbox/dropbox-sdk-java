@@ -1,6 +1,7 @@
 package com.dropbox.core.examples.android;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -52,17 +53,17 @@ public class UserActivity extends DropboxActivity {
 
     @Override
     protected void loadData() {
-        new GetCurrentAccountTask(DropboxClient.DbxUsers(), new GetCurrentAccountTask.Callback() {
+        new GetCurrentAccountTask(DropboxClientFactory.getClient(), new GetCurrentAccountTask.Callback() {
             @Override
             public void onComplete(DbxUsers.FullAccount result) {
                 ((TextView) findViewById(R.id.email_text)).setText(result.email);
                 ((TextView) findViewById(R.id.name_text)).setText(result.name.displayName);
-                ((TextView) findViewById(R.id.type_text)).setText(result.accountType.toString());
+                ((TextView) findViewById(R.id.type_text)).setText(result.accountType.getTag().name());
             }
 
             @Override
             public void onError(Exception e) {
-
+                Log.e(getClass().getName(), "Failed to get account details.", e);
             }
         }).execute();
     }

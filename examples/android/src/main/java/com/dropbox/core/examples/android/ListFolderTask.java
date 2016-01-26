@@ -3,6 +3,7 @@ package com.dropbox.core.examples.android;
 import android.os.AsyncTask;
 
 import com.dropbox.core.DbxException;
+import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.DbxFiles;
 
 /**
@@ -10,9 +11,9 @@ import com.dropbox.core.v2.DbxFiles;
  */
 class ListFolderTask extends AsyncTask<String, Void, DbxFiles.ListFolderResult> {
 
-    private final DbxFiles mDbxFilesClient;
+    private final DbxClientV2 mDbxClient;
+    private final Callback mCallback;
     private Exception mException;
-    private Callback mCallback;
 
     public interface Callback {
         void onDataLoaded(DbxFiles.ListFolderResult result);
@@ -20,8 +21,8 @@ class ListFolderTask extends AsyncTask<String, Void, DbxFiles.ListFolderResult> 
         void onError(Exception e);
     }
 
-    public ListFolderTask(DbxFiles DbxFilesClient, Callback callback) {
-        mDbxFilesClient = DbxFilesClient;
+    public ListFolderTask(DbxClientV2 dbxClient, Callback callback) {
+        mDbxClient = dbxClient;
         mCallback = callback;
     }
 
@@ -39,10 +40,9 @@ class ListFolderTask extends AsyncTask<String, Void, DbxFiles.ListFolderResult> 
     @Override
     protected DbxFiles.ListFolderResult doInBackground(String... params) {
         try {
-            return mDbxFilesClient.listFolder(params[0]);
+            return mDbxClient.files.listFolder(params[0]);
         } catch (DbxException e) {
             mException = e;
-            e.printStackTrace();
         }
 
         return null;

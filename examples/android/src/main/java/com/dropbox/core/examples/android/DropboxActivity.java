@@ -1,8 +1,7 @@
 package com.dropbox.core.examples.android;
 
 import android.content.SharedPreferences;
-import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import com.dropbox.core.android.Auth;
 
@@ -11,13 +10,7 @@ import com.dropbox.core.android.Auth;
  * Base class for Activities that require auth tokens
  * Will redirect to auth flow if needed
  */
-public abstract class DropboxActivity extends ActionBarActivity {
-
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+public abstract class DropboxActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
@@ -37,8 +30,8 @@ public abstract class DropboxActivity extends ActionBarActivity {
     }
 
     private void initAndLoadData(String accessToken) {
-        DropboxClient.init(accessToken);
-        PicassoClient.init(getApplicationContext(), DropboxClient.DbxFiles());
+        DropboxClientFactory.init(accessToken);
+        PicassoClient.init(getApplicationContext(), DropboxClientFactory.getClient());
         loadData();
     }
 
