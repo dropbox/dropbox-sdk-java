@@ -1789,13 +1789,14 @@ class JavaCodeGenerator(CodeGenerator):
     def generate_doc(self, api, namespace, doc, data_type=None, fields=(), params=None, returns=None, throws=None):
         """Generate a Javadoc comment from Babel doc string."""
         out = self.emit
-        if doc or fields:
+        if any((doc, fields, params, returns, throws)):
             doc = self.translate_babel_doc(api, namespace, doc, data_type=data_type)
-            params_doc = {
-                k: self.translate_babel_doc(api, namespace, v, data_type=data_type)
+            params_doc = self.get_javadoc_params_for_fields(api, namespace, fields, data_type=data_type)
+            params_doc.update(
+                (k, self.translate_babel_doc(api, namespace, v, data_type=data_type))
                 for k, v in (params or {}).items()
-            }
-            params_doc.update(self.get_javadoc_params_for_fields(api, namespace, fields, data_type=data_type))
+            )
+            params_doc.update()
             returns_doc = self.translate_babel_doc(api, namespace, returns, data_type=data_type)
             throws_doc = {
                 k: self.translate_babel_doc(api, namespace, v, data_type=data_type)
