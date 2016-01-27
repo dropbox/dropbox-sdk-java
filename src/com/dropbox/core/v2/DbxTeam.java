@@ -317,19 +317,19 @@ public final class DbxTeam {
         /**
          * Basic member profile.
          *
+         * @param teamMemberId  ID of user as a member of a team. {@code
+         *     teamMemberId} must not be {@code null}.
+         * @param email  Email address of user. {@code email} must not be {@code
+         *     null}.
+         * @param emailVerified  Is true if the user's email is verified to be
+         *     owned by the user.
+         * @param status  The user's status as a member of a specific team.
+         *     {@code status} must not be {@code null}.
          * @param name  Representations for a person's name. {@code name} must
          *     not be {@code null}.
          * @param externalId  External ID that a team can attach to the user. An
          *     application using the API may find it easier to use their own IDs
          *     instead of Dropbox IDs like account_id or team_member_id.
-         * @param email  Email address of user. {@code email} must not be {@code
-         *     null}.
-         * @param teamMemberId  ID of user as a member of a team. {@code
-         *     teamMemberId} must not be {@code null}.
-         * @param status  The user's status as a member of a specific team.
-         *     {@code status} must not be {@code null}.
-         * @param emailVerified  Is true if the user's email is verified to be
-         *     owned by the user.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -1633,13 +1633,13 @@ public final class DbxTeam {
          *
          * @param name  The name of the team. {@code name} must not be {@code
          *     null}.
+         * @param teamId  The ID of the team. {@code teamId} must not be {@code
+         *     null}.
          * @param numLicensedUsers  The number of licenses available to the
          *     team.
          * @param numProvisionedUsers  The number of accounts that have been
          *     invited or are already active members of the team.
          * @param policies  . {@code policies} must not be {@code null}.
-         * @param teamId  The ID of the team. {@code teamId} must not be {@code
-         *     null}.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -1908,11 +1908,11 @@ public final class DbxTeam {
         /**
          * Policies governing sharing within and outside of the team.
          *
-         * @param sharedFolderJoinPolicy  Which shared folders team members can
-         *     join. {@code sharedFolderJoinPolicy} must not be {@code null}.
          * @param sharedFolderMemberPolicy  Who can join folders shared by team
          *     members. {@code sharedFolderMemberPolicy} must not be {@code
          *     null}.
+         * @param sharedFolderJoinPolicy  Which shared folders team members can
+         *     join. {@code sharedFolderJoinPolicy} must not be {@code null}.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -2502,11 +2502,11 @@ public final class DbxTeam {
         /**
          * Information about a group.
          *
-         * @param memberCount  The number of members in the group.
+         * @param groupName  . {@code groupName} must not be {@code null}.
          * @param groupId  . {@code groupId} must not be {@code null}.
+         * @param memberCount  The number of members in the group.
          * @param groupExternalId  External ID of group. This is an arbitrary ID
          *     that an admin can attach to a group.
-         * @param groupName  . {@code groupName} must not be {@code null}.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -2644,10 +2644,10 @@ public final class DbxTeam {
          *     not be {@code null}.
          * @param includeWebSessions  Whether to list web sessions of the team's
          *     member.
-         * @param includeMobileClients  Whether to list linked mobile devices of
-         *     the team's member.
          * @param includeDesktopClients  Whether to list linked desktop devices
          *     of the team's member.
+         * @param includeMobileClients  Whether to list linked mobile devices of
+         *     the team's member.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -2788,14 +2788,14 @@ public final class DbxTeam {
 
         /**
          *
-         * @param created  The time this session was created.
-         * @param ipAddress  The IP address of the last activity from this
-         *     session.
-         * @param updated  The time of the last activity from this session.
-         * @param country  The country from which the last activity from this
-         *     session was made.
          * @param sessionId  The session id. {@code sessionId} must not be
          *     {@code null}.
+         * @param ipAddress  The IP address of the last activity from this
+         *     session.
+         * @param country  The country from which the last activity from this
+         *     session was made.
+         * @param created  The time this session was created.
+         * @param updated  The time of the last activity from this session.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -2936,19 +2936,19 @@ public final class DbxTeam {
         /**
          * Information on active web sessions
          *
-         * @param created  The time this session was created.
-         * @param userAgent  Information on the hosting device. {@code
-         *     userAgent} must not be {@code null}.
-         * @param browser  Information on the browser used for this web session.
-         *     {@code browser} must not be {@code null}.
-         * @param os  Information on the hosting operating system. {@code os}
-         *     must not be {@code null}.
          * @param sessionId  The session id. {@code sessionId} must not be
          *     {@code null}.
+         * @param userAgent  Information on the hosting device. {@code
+         *     userAgent} must not be {@code null}.
+         * @param os  Information on the hosting operating system. {@code os}
+         *     must not be {@code null}.
+         * @param browser  Information on the browser used for this web session.
+         *     {@code browser} must not be {@code null}.
          * @param ipAddress  The IP address of the last activity from this
          *     session.
          * @param country  The country from which the last activity from this
          *     session was made.
+         * @param created  The time this session was created.
          * @param updated  The time of the last activity from this session.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
@@ -3399,24 +3399,24 @@ public final class DbxTeam {
         /**
          * Information about linked Dropbox desktop client sessions
          *
-         * @param created  The time this session was created.
-         * @param clientVersion  The Dropbox client version. {@code
-         *     clientVersion} must not be {@code null}.
-         * @param clientType  The Dropbox desktop client type. {@code
-         *     clientType} must not be {@code null}.
-         * @param isDeleteOnUnlinkSupported  Whether it's possible to delete all
-         *     of the account files upon unlinking.
-         * @param platform  Information on the hosting platform. {@code
-         *     platform} must not be {@code null}.
-         * @param updated  The time of the last activity from this session.
+         * @param sessionId  The session id. {@code sessionId} must not be
+         *     {@code null}.
          * @param hostName  Name of the hosting desktop. {@code hostName} must
          *     not be {@code null}.
+         * @param clientType  The Dropbox desktop client type. {@code
+         *     clientType} must not be {@code null}.
+         * @param clientVersion  The Dropbox client version. {@code
+         *     clientVersion} must not be {@code null}.
+         * @param platform  Information on the hosting platform. {@code
+         *     platform} must not be {@code null}.
+         * @param isDeleteOnUnlinkSupported  Whether it's possible to delete all
+         *     of the account files upon unlinking.
          * @param ipAddress  The IP address of the last activity from this
          *     session.
          * @param country  The country from which the last activity from this
          *     session was made.
-         * @param sessionId  The session id. {@code sessionId} must not be
-         *     {@code null}.
+         * @param created  The time this session was created.
+         * @param updated  The time of the last activity from this session.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -3981,21 +3981,21 @@ public final class DbxTeam {
         /**
          * Information about linked Dropbox mobile client sessions
          *
-         * @param created  The time this session was created.
-         * @param clientVersion  The dropbox client version.
-         * @param clientType  The mobile application type. {@code clientType}
-         *     must not be {@code null}.
-         * @param lastCarrier  last carrier used by the device.
          * @param sessionId  The session id. {@code sessionId} must not be
          *     {@code null}.
-         * @param osVersion  The hosting OS version.
+         * @param deviceName  The device name. {@code deviceName} must not be
+         *     {@code null}.
+         * @param clientType  The mobile application type. {@code clientType}
+         *     must not be {@code null}.
          * @param ipAddress  The IP address of the last activity from this
          *     session.
          * @param country  The country from which the last activity from this
          *     session was made.
-         * @param deviceName  The device name. {@code deviceName} must not be
-         *     {@code null}.
+         * @param created  The time this session was created.
          * @param updated  The time of the last activity from this session.
+         * @param clientVersion  The dropbox client version.
+         * @param osVersion  The hosting OS version.
+         * @param lastCarrier  last carrier used by the device.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -4166,15 +4166,15 @@ public final class DbxTeam {
 
         /**
          *
-         * @param mobileClientSessions  List of mobile client used by this team
-         *     member. {@code mobileClientSessions} must not contain a {@code
-         *     null} item.
          * @param activeWebSessions  List of web sessions made by this team
          *     member. {@code activeWebSessions} must not contain a {@code null}
          *     item.
          * @param desktopClientSessions  List of desktop clients used by this
          *     team member. {@code desktopClientSessions} must not contain a
          *     {@code null} item.
+         * @param mobileClientSessions  List of mobile client used by this team
+         *     member. {@code mobileClientSessions} must not contain a {@code
+         *     null} item.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -4527,16 +4527,16 @@ public final class DbxTeam {
 
         /**
          *
-         * @param includeWebSessions  Whether to list web sessions of the team
-         *     members.
-         * @param includeMobileClients  Whether to list mobile clients of the
-         *     team members.
          * @param cursor  At the first call to the {@link
          *     DbxTeam#devicesListTeamDevicesBuilder} the cursor shouldn't be
          *     passed. Then, if the result of the call includes a cursor, the
          *     following requests should include the received cursors in order
          *     to receive the next sub list of team devices.
+         * @param includeWebSessions  Whether to list web sessions of the team
+         *     members.
          * @param includeDesktopClients  Whether to list desktop clients of the
+         *     team members.
+         * @param includeMobileClients  Whether to list mobile clients of the
          *     team members.
          */
         public ListTeamDevicesArg(String cursor, Boolean includeWebSessions, Boolean includeDesktopClients, Boolean includeMobileClients) {
@@ -4674,12 +4674,12 @@ public final class DbxTeam {
          *
          * @param teamMemberId  The member unique Id. {@code teamMemberId} must
          *     not be {@code null}.
+         * @param webSessions  List of web sessions made by this team member.
+         *     {@code webSessions} must not contain a {@code null} item.
          * @param desktopClients  List of desktop clients by this team member.
          *     {@code desktopClients} must not contain a {@code null} item.
          * @param mobileClients  List of mobile clients by this team member.
          *     {@code mobileClients} must not contain a {@code null} item.
-         * @param webSessions  List of web sessions made by this team member.
-         *     {@code webSessions} must not contain a {@code null} item.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -4847,15 +4847,15 @@ public final class DbxTeam {
 
         /**
          *
+         * @param devices  The devices of each member of the team. {@code
+         *     devices} must not contain a {@code null} item and not be {@code
+         *     null}.
          * @param hasMore  If true, then there are more devices available. Pass
          *     the cursor to {@link DbxTeam#devicesListTeamDevicesBuilder} to
          *     retrieve the rest.
          * @param cursor  Pass the cursor into {@link
          *     DbxTeam#devicesListTeamDevicesBuilder} to receive the next sub
          *     list of team's devices.
-         * @param devices  The devices of each member of the team. {@code
-         *     devices} must not contain a {@code null} item and not be {@code
-         *     null}.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -5178,10 +5178,10 @@ public final class DbxTeam {
 
         /**
          *
-         * @param teamMemberId  The unique id of the member owning the device.
-         *     {@code teamMemberId} must not be {@code null}.
          * @param sessionId  The session id. {@code sessionId} must not be
          *     {@code null}.
+         * @param teamMemberId  The unique id of the member owning the device.
+         *     {@code teamMemberId} must not be {@code null}.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -5285,10 +5285,10 @@ public final class DbxTeam {
 
         /**
          *
-         * @param teamMemberId  The unique id of the member owning the device.
-         *     {@code teamMemberId} must not be {@code null}.
          * @param sessionId  The session id. {@code sessionId} must not be
          *     {@code null}.
+         * @param teamMemberId  The unique id of the member owning the device.
+         *     {@code teamMemberId} must not be {@code null}.
          * @param deleteOnUnlink  Whether to delete all files of the account
          *     (this is possible only if supported by the desktop client and
          *     will be made the next time the client access the account).
@@ -8184,15 +8184,15 @@ public final class DbxTeam {
         /**
          * Full description of a group.
          *
+         * @param groupName  . {@code groupName} must not be {@code null}.
          * @param groupId  . {@code groupId} must not be {@code null}.
          * @param memberCount  The number of members in the group.
-         * @param groupName  . {@code groupName} must not be {@code null}.
+         * @param members  List of group members. {@code members} must not
+         *     contain a {@code null} item and not be {@code null}.
          * @param created  The group creation time as a UTC timestamp in
          *     milliseconds since the Unix epoch.
          * @param groupExternalId  External ID of group. This is an arbitrary ID
          *     that an admin can attach to a group.
-         * @param members  List of group members. {@code members} must not
-         *     contain a {@code null} item and not be {@code null}.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -8440,12 +8440,12 @@ public final class DbxTeam {
          *
          * @param groups  . {@code groups} must not contain a {@code null} item
          *     and not be {@code null}.
-         * @param hasMore  Is true if there are additional team members that
-         *     have not been returned yet. An additional call to {@link
-         *     DbxTeam#membersListContinue(String)} can retrieve them.
          * @param cursor  Pass the cursor into {@link
          *     DbxTeam#membersListContinue(String)} to obtain the additional
          *     members. {@code cursor} must not be {@code null}.
+         * @param hasMore  Is true if there are additional team members that
+         *     have not been returned yet. An additional call to {@link
+         *     DbxTeam#membersListContinue(String)} can retrieve them.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -9311,10 +9311,10 @@ public final class DbxTeam {
 
         /**
          *
-         * @param groupExternalId  Optional argument. The creator of a team can
-         *     associate an arbitrary external ID to the group.
          * @param groupName  Group name. {@code groupName} must not be {@code
          *     null}.
+         * @param groupExternalId  Optional argument. The creator of a team can
+         *     associate an arbitrary external ID to the group.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -9938,12 +9938,12 @@ public final class DbxTeam {
          *
          * @param group  Specify a group. {@code group} must not be {@code
          *     null}.
+         * @param newGroupName  Optional argument. Set group name to this if
+         *     provided.
          * @param newGroupExternalId  Optional argument. New group external ID.
          *     If the argument is None, the group's external_id won't be
          *     updated. If the argument is empty string, the group's external id
          *     will be cleared.
-         * @param newGroupName  Optional argument. Set group name to this if
-         *     provided.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -12103,15 +12103,15 @@ public final class DbxTeam {
         /**
          * Information on linked third party applications
          *
-         * @param isAppFolder  Whether the linked application uses a dedicated
-         *     folder.
-         * @param publisherUrl  The publisher's URL.
          * @param appId  The application unique id. {@code appId} must not be
          *     {@code null}.
-         * @param linked  The time this application was linked.
-         * @param publisher  The application publisher name.
          * @param appName  The application name. {@code appName} must not be
          *     {@code null}.
+         * @param isAppFolder  Whether the linked application uses a dedicated
+         *     folder.
+         * @param publisher  The application publisher name.
+         * @param publisherUrl  The publisher's URL.
+         * @param linked  The time this application was linked.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -12791,15 +12791,15 @@ public final class DbxTeam {
          * Information returned by {@link
          * DbxTeam#linkedAppsListTeamLinkedApps(String)}.
          *
+         * @param apps  The linked applications of each member of the team.
+         *     {@code apps} must not contain a {@code null} item and not be
+         *     {@code null}.
          * @param hasMore  If true, then there are more apps available. Pass the
          *     cursor to {@link DbxTeam#linkedAppsListTeamLinkedApps(String)} to
          *     retrieve the rest.
          * @param cursor  Pass the cursor into {@link
          *     DbxTeam#linkedAppsListTeamLinkedApps(String)} to receive the next
          *     sub list of team's applications.
-         * @param apps  The linked applications of each member of the team.
-         *     {@code apps} must not contain a {@code null} item and not be
-         *     {@code null}.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -13130,12 +13130,12 @@ public final class DbxTeam {
 
         /**
          *
+         * @param appId  The application's unique id. {@code appId} must not be
+         *     {@code null}.
          * @param teamMemberId  The unique id of the member owning the device.
          *     {@code teamMemberId} must not be {@code null}.
          * @param keepAppFolder  Whether to keep the application dedicated
          *     folder (in case the application uses  one).
-         * @param appId  The application's unique id. {@code appId} must not be
-         *     {@code null}.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -14236,22 +14236,22 @@ public final class DbxTeam {
         /**
          * Profile of a user as a member of a team.
          *
-         * @param name  Representations for a person's name. {@code name} must
-         *     not be {@code null}.
-         * @param externalId  External ID that a team can attach to the user. An
-         *     application using the API may find it easier to use their own IDs
-         *     instead of Dropbox IDs like account_id or team_member_id.
-         * @param email  Email address of user. {@code email} must not be {@code
-         *     null}.
          * @param teamMemberId  ID of user as a member of a team. {@code
          *     teamMemberId} must not be {@code null}.
+         * @param email  Email address of user. {@code email} must not be {@code
+         *     null}.
+         * @param emailVerified  Is true if the user's email is verified to be
+         *     owned by the user.
+         * @param status  The user's status as a member of a specific team.
+         *     {@code status} must not be {@code null}.
+         * @param name  Representations for a person's name. {@code name} must
+         *     not be {@code null}.
          * @param groups  List of group IDs of groups that the user belongs to.
          *     {@code groups} must not contain a {@code null} item and not be
          *     {@code null}.
-         * @param status  The user's status as a member of a specific team.
-         *     {@code status} must not be {@code null}.
-         * @param emailVerified  Is true if the user's email is verified to be
-         *     owned by the user.
+         * @param externalId  External ID that a team can attach to the user. An
+         *     application using the API may find it easier to use their own IDs
+         *     instead of Dropbox IDs like account_id or team_member_id.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -14819,14 +14819,14 @@ public final class DbxTeam {
 
         /**
          *
-         * @param hasMore  Is true if there are additional team members that
-         *     have not been returned yet. An additional call to {@link
-         *     DbxTeam#membersListContinue(String)} can retrieve them.
          * @param members  List of team members. {@code members} must not
          *     contain a {@code null} item and not be {@code null}.
          * @param cursor  Pass the cursor into {@link
          *     DbxTeam#membersListContinue(String)} to obtain the additional
          *     members. {@code cursor} must not be {@code null}.
+         * @param hasMore  Is true if there are additional team members that
+         *     have not been returned yet. An additional call to {@link
+         *     DbxTeam#membersListContinue(String)} can retrieve them.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -15917,22 +15917,22 @@ public final class DbxTeam {
 
         /**
          *
-         * @param memberGivenName  Member's first name. {@code memberGivenName}
-         *     must have length of at least 1, match pattern "{@code
-         *     [^/:?*<>\"|]*}", and not be {@code null}.
          * @param memberEmail  . {@code memberEmail} must match pattern "{@code
          *     ^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$}"
          *     and not be {@code null}.
+         * @param memberGivenName  Member's first name. {@code memberGivenName}
+         *     must have length of at least 1, match pattern "{@code
+         *     [^/:?*<>\"|]*}", and not be {@code null}.
          * @param memberSurname  Member's last name. {@code memberSurname} must
          *     have length of at least 1, match pattern "{@code [^/:?*<>\"|]*}",
          *     and not be {@code null}.
+         * @param memberExternalId  External ID for member. {@code
+         *     memberExternalId} must have length of at most 64.
          * @param sendWelcomeEmail  Whether to send a welcome email to the
          *     member. If send_welcome_email is false, no email invitation will
          *     be sent to the user. This may be useful for apps using single
          *     sign-on (SSO) flows for onboarding that want to handle
          *     announcements themselves.
-         * @param memberExternalId  External ID for member. {@code
-         *     memberExternalId} must have length of at most 64.
          * @param role  .
          *
          * @throws IllegalArgumentException  if any argument does not meet its
@@ -16107,10 +16107,10 @@ public final class DbxTeam {
 
         /**
          *
-         * @param forceAsync  Whether to force the add to happen asynchronously.
          * @param newMembers  Details of new members to be added to the team.
          *     {@code newMembers} must not contain a {@code null} item and not
          *     be {@code null}.
+         * @param forceAsync  Whether to force the add to happen asynchronously.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -17746,12 +17746,12 @@ public final class DbxTeam {
          * to identify the user account. At least one of new_email,
          * new_external_id, new_given_name, and/or new_surname must be provided.
          *
-         * @param newSurname  New surname for member.
-         * @param newGivenName  New given name for member.
-         * @param newEmail  New email for member.
-         * @param newExternalId  New external ID for member.
          * @param user  Identity of user whose profile will be set. {@code user}
          *     must not be {@code null}.
+         * @param newEmail  New email for member.
+         * @param newExternalId  New external ID for member.
+         * @param newGivenName  New given name for member.
+         * @param newSurname  New surname for member.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -19211,10 +19211,10 @@ public final class DbxTeam {
          * Exactly one of team_member_id, email, or external_id must be provided
          * to identify the user account.
          *
-         * @param wipeData  If provided, controls if the user's data will be
-         *     deleted on their linked devices.
          * @param user  Identity of user to remove/suspend. {@code user} must
          *     not be {@code null}.
+         * @param wipeData  If provided, controls if the user's data will be
+         *     deleted on their linked devices.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -19323,16 +19323,16 @@ public final class DbxTeam {
 
         /**
          *
-         * @param transferAdminId  If provided, errors during the transfer
-         *     process will be sent via email to this user. If the
-         *     transfer_dest_id argument was provided, then this argument must
-         *     be provided as well.
+         * @param user  Identity of user to remove/suspend. {@code user} must
+         *     not be {@code null}.
          * @param wipeData  If provided, controls if the user's data will be
          *     deleted on their linked devices.
          * @param transferDestId  If provided, files from the deleted member
          *     account will be transferred to this user.
-         * @param user  Identity of user to remove/suspend. {@code user} must
-         *     not be {@code null}.
+         * @param transferAdminId  If provided, errors during the transfer
+         *     process will be sent via email to this user. If the
+         *     transfer_dest_id argument was provided, then this argument must
+         *     be provided as well.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -21332,11 +21332,11 @@ public final class DbxTeam {
         /**
          * Describes the number of users in a specific storage bucket.
          *
-         * @param users  The number of people whose storage is in the range of
-         *     this storage bucket.
          * @param bucket  The name of the storage bucket. For example, '1G' is a
          *     bucket of users with storage size up to 1 Giga. {@code bucket}
          *     must not be {@code null}.
+         * @param users  The number of people whose storage is in the range of
+         *     this storage bucket.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -21561,9 +21561,20 @@ public final class DbxTeam {
          * array of values, one value per day. If there is no data for a day,
          * then the value will be None.
          *
+         * @param startDate  First date present in the results as 'YYYY-MM-DD'
+         *     or None. {@code startDate} must not be {@code null}.
+         * @param totalUsage  Sum of the shared, unshared, and datastore usages,
+         *     for each day. {@code totalUsage} must not contain a {@code null}
+         *     item and not be {@code null}.
+         * @param sharedUsage  Array of the combined size (bytes) of team
+         *     members' shared folders, for each day. {@code sharedUsage} must
+         *     not contain a {@code null} item and not be {@code null}.
          * @param unsharedUsage  Array of the combined size (bytes) of team
          *     members' root namespaces, for each day. {@code unsharedUsage}
          *     must not contain a {@code null} item and not be {@code null}.
+         * @param sharedFolders  Array of the number of shared folders owned by
+         *     team members, for each day. {@code sharedFolders} must not
+         *     contain a {@code null} item and not be {@code null}.
          * @param memberStorageMap  Array of storage summaries of team members'
          *     account sizes. Each storage summary is an array of key, value
          *     pairs, where each pair describes a storage bucket. The key
@@ -21572,17 +21583,6 @@ public final class DbxTeam {
          *     day. If there is no data for a day, the storage summary will be
          *     empty. {@code memberStorageMap} must not contain a {@code null}
          *     item and not be {@code null}.
-         * @param sharedUsage  Array of the combined size (bytes) of team
-         *     members' shared folders, for each day. {@code sharedUsage} must
-         *     not contain a {@code null} item and not be {@code null}.
-         * @param startDate  First date present in the results as 'YYYY-MM-DD'
-         *     or None. {@code startDate} must not be {@code null}.
-         * @param totalUsage  Sum of the shared, unshared, and datastore usages,
-         *     for each day. {@code totalUsage} must not contain a {@code null}
-         *     item and not be {@code null}.
-         * @param sharedFolders  Array of the number of shared folders owned by
-         *     team members, for each day. {@code sharedFolders} must not
-         *     contain a {@code null} item and not be {@code null}.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -21877,57 +21877,57 @@ public final class DbxTeam {
          * array of values, one value per day. If there is no data for a day,
          * then the value will be None.
          *
-         * @param activeUsers28Day  Array of the number of users who have been
-         *     active in the last 28 days. {@code activeUsers28Day} must not
-         *     contain a {@code null} item and not be {@code null}.
-         * @param deletes  Array of total number of deletes by team members.
-         *     {@code deletes} must not contain a {@code null} item and not be
-         *     {@code null}.
-         * @param activeSharedFolders28Day  Array of the number of shared
-         *     folders with some activity in the last 28 days. {@code
-         *     activeSharedFolders28Day} must not contain a {@code null} item
-         *     and not be {@code null}.
+         * @param startDate  First date present in the results as 'YYYY-MM-DD'
+         *     or None. {@code startDate} must not be {@code null}.
+         * @param adds  Array of total number of adds by team members. {@code
+         *     adds} must not contain a {@code null} item and not be {@code
+         *     null}.
          * @param edits  Array of number of edits by team members. If the same
          *     user edits the same file multiple times this is counted as a
          *     single edit. {@code edits} must not contain a {@code null} item
          *     and not be {@code null}.
-         * @param activeSharedFolders7Day  Array of the number of shared folders
-         *     with some activity in the last week. {@code
-         *     activeSharedFolders7Day} must not contain a {@code null} item and
-         *     not be {@code null}.
-         * @param sharedLinksViewedByTeam  Array of the number of views by team
-         *     users to shared links created by the team. {@code
-         *     sharedLinksViewedByTeam} must not contain a {@code null} item and
-         *     not be {@code null}.
-         * @param sharedLinksViewedTotal  Array of the total number of views to
-         *     shared links created by the team. {@code sharedLinksViewedTotal}
-         *     must not contain a {@code null} item and not be {@code null}.
+         * @param deletes  Array of total number of deletes by team members.
+         *     {@code deletes} must not contain a {@code null} item and not be
+         *     {@code null}.
+         * @param activeUsers28Day  Array of the number of users who have been
+         *     active in the last 28 days. {@code activeUsers28Day} must not
+         *     contain a {@code null} item and not be {@code null}.
          * @param activeUsers7Day  Array of the number of users who have been
          *     active in the last week. {@code activeUsers7Day} must not contain
          *     a {@code null} item and not be {@code null}.
          * @param activeUsers1Day  Array of the number of users who have been
          *     active in the last day. {@code activeUsers1Day} must not contain
          *     a {@code null} item and not be {@code null}.
-         * @param sharedLinksCreated  Array of the number of shared links
-         *     created. {@code sharedLinksCreated} must not contain a {@code
-         *     null} item and not be {@code null}.
-         * @param sharedLinksViewedByOutsideUser  Array of the number of views
-         *     by users outside of the team to shared links created by the team.
-         *     {@code sharedLinksViewedByOutsideUser} must not contain a {@code
-         *     null} item and not be {@code null}.
+         * @param activeSharedFolders28Day  Array of the number of shared
+         *     folders with some activity in the last 28 days. {@code
+         *     activeSharedFolders28Day} must not contain a {@code null} item
+         *     and not be {@code null}.
+         * @param activeSharedFolders7Day  Array of the number of shared folders
+         *     with some activity in the last week. {@code
+         *     activeSharedFolders7Day} must not contain a {@code null} item and
+         *     not be {@code null}.
          * @param activeSharedFolders1Day  Array of the number of shared folders
          *     with some activity in the last day. {@code
          *     activeSharedFolders1Day} must not contain a {@code null} item and
          *     not be {@code null}.
+         * @param sharedLinksCreated  Array of the number of shared links
+         *     created. {@code sharedLinksCreated} must not contain a {@code
+         *     null} item and not be {@code null}.
+         * @param sharedLinksViewedByTeam  Array of the number of views by team
+         *     users to shared links created by the team. {@code
+         *     sharedLinksViewedByTeam} must not contain a {@code null} item and
+         *     not be {@code null}.
+         * @param sharedLinksViewedByOutsideUser  Array of the number of views
+         *     by users outside of the team to shared links created by the team.
+         *     {@code sharedLinksViewedByOutsideUser} must not contain a {@code
+         *     null} item and not be {@code null}.
          * @param sharedLinksViewedByNotLoggedIn  Array of the number of views
          *     by non-logged-in users to shared links created by the team.
          *     {@code sharedLinksViewedByNotLoggedIn} must not contain a {@code
          *     null} item and not be {@code null}.
-         * @param adds  Array of total number of adds by team members. {@code
-         *     adds} must not contain a {@code null} item and not be {@code
-         *     null}.
-         * @param startDate  First date present in the results as 'YYYY-MM-DD'
-         *     or None. {@code startDate} must not be {@code null}.
+         * @param sharedLinksViewedTotal  Array of the total number of views to
+         *     shared links created by the team. {@code sharedLinksViewedTotal}
+         *     must not contain a {@code null} item and not be {@code null}.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -22401,8 +22401,15 @@ public final class DbxTeam {
          * an array of values, one value per day. If there is no data for a day,
          * then the value will be None.
          *
+         * @param startDate  First date present in the results as 'YYYY-MM-DD'
+         *     or None. {@code startDate} must not be {@code null}.
+         * @param teamSize  Team size, for each day. {@code teamSize} must not
+         *     contain a {@code null} item and not be {@code null}.
          * @param pendingInvites  The number of pending invites to the team, for
          *     each day. {@code pendingInvites} must not contain a {@code null}
+         *     item and not be {@code null}.
+         * @param membersJoined  The number of members that joined the team, for
+         *     each day. {@code membersJoined} must not contain a {@code null}
          *     item and not be {@code null}.
          * @param suspendedMembers  The number of members that joined the team,
          *     for each day. {@code suspendedMembers} must not contain a {@code
@@ -22410,13 +22417,6 @@ public final class DbxTeam {
          * @param licenses  The total number of licenses the team has, for each
          *     day. {@code licenses} must not contain a {@code null} item and
          *     not be {@code null}.
-         * @param startDate  First date present in the results as 'YYYY-MM-DD'
-         *     or None. {@code startDate} must not be {@code null}.
-         * @param membersJoined  The number of members that joined the team, for
-         *     each day. {@code membersJoined} must not contain a {@code null}
-         *     item and not be {@code null}.
-         * @param teamSize  Team size, for each day. {@code teamSize} must not
-         *     contain a {@code null} item and not be {@code null}.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -22665,24 +22665,24 @@ public final class DbxTeam {
          * is the number of devices active within a time window, ending with
          * that day. If there is no data for a day, then the value will be None.
          *
-         * @param macos  Array of number of linked mac (desktop) clients with
-         *     activity. {@code macos} must not contain a {@code null} item and
-         *     not be {@code null}.
-         * @param other  Array of number of other linked devices (blackberry,
-         *     windows phone, etc)  with activity. {@code other} must not
-         *     contain a {@code null} item and not be {@code null}.
          * @param windows  Array of number of linked windows (desktop) clients
          *     with activity. {@code windows} must not contain a {@code null}
          *     item and not be {@code null}.
-         * @param android  Array of number of linked android devices with
-         *     activity. {@code android} must not contain a {@code null} item
-         *     and not be {@code null}.
+         * @param macos  Array of number of linked mac (desktop) clients with
+         *     activity. {@code macos} must not contain a {@code null} item and
+         *     not be {@code null}.
          * @param linux  Array of number of linked linus (desktop) clients with
          *     activity. {@code linux} must not contain a {@code null} item and
          *     not be {@code null}.
          * @param ios  Array of number of linked ios devices with activity.
          *     {@code ios} must not contain a {@code null} item and not be
          *     {@code null}.
+         * @param android  Array of number of linked android devices with
+         *     activity. {@code android} must not contain a {@code null} item
+         *     and not be {@code null}.
+         * @param other  Array of number of other linked devices (blackberry,
+         *     windows phone, etc)  with activity. {@code other} must not
+         *     contain a {@code null} item and not be {@code null}.
          * @param total  Array of total number of linked clients with activity.
          *     {@code total} must not contain a {@code null} item and not be
          *     {@code null}.
@@ -22961,12 +22961,12 @@ public final class DbxTeam {
          * report is an array of values, one value per day. If there is no data
          * for a day, then the value will be None.
          *
-         * @param active7Day  Report of the number of devices active in the last
-         *     7 days. {@code active7Day} must not be {@code null}.
          * @param startDate  First date present in the results as 'YYYY-MM-DD'
          *     or None. {@code startDate} must not be {@code null}.
          * @param active1Day  Report of the number of devices active in the last
          *     day. {@code active1Day} must not be {@code null}.
+         * @param active7Day  Report of the number of devices active in the last
+         *     7 days. {@code active7Day} must not be {@code null}.
          * @param active28Day  Report of the number of devices active in the
          *     last 28 days. {@code active28Day} must not be {@code null}.
          *
@@ -23640,9 +23640,9 @@ public final class DbxTeam {
      * Creates a new, empty group, with a requested name. Permission : Team
      * member management
      *
+     * @param groupName  Group name. {@code groupName} must not be {@code null}.
      * @param groupExternalId  Optional argument. The creator of a team can
      *     associate an arbitrary external ID to the group.
-     * @param groupName  Group name. {@code groupName} must not be {@code null}.
      *
      * @throws IllegalArgumentException  if any argument does not meet its
      *     preconditions.
@@ -24187,10 +24187,10 @@ public final class DbxTeam {
     /**
      * Revoke a linked application of the team member
      *
-     * @param teamMemberId  The unique id of the member owning the device.
-     *     {@code teamMemberId} must not be {@code null}.
      * @param appId  The application's unique id. {@code appId} must not be
      *     {@code null}.
+     * @param teamMemberId  The unique id of the member owning the device.
+     *     {@code teamMemberId} must not be {@code null}.
      *
      * @throws IllegalArgumentException  if any argument does not meet its
      *     preconditions.
@@ -24204,12 +24204,12 @@ public final class DbxTeam {
     /**
      * Revoke a linked application of the team member
      *
+     * @param appId  The application's unique id. {@code appId} must not be
+     *     {@code null}.
      * @param teamMemberId  The unique id of the member owning the device.
      *     {@code teamMemberId} must not be {@code null}.
      * @param keepAppFolder  Whether to keep the application dedicated folder
      *     (in case the application uses  one).
-     * @param appId  The application's unique id. {@code appId} must not be
-     *     {@code null}.
      *
      * @throws IllegalArgumentException  if any argument does not meet its
      *     preconditions.
@@ -24511,10 +24511,10 @@ public final class DbxTeam {
      * a user to use in the team invitation and for 'Perform as team member'
      * actions taken on the user before they become 'active'.
      *
-     * @param forceAsync  Whether to force the add to happen asynchronously.
      * @param newMembers  Details of new members to be added to the team. {@code
      *     newMembers} must not contain a {@code null} item and not be {@code
      *     null}.
+     * @param forceAsync  Whether to force the add to happen asynchronously.
      *
      * @throws IllegalArgumentException  if any argument does not meet its
      *     preconditions.
@@ -25074,10 +25074,10 @@ public final class DbxTeam {
      * one of team_member_id, email, or external_id must be provided to identify
      * the user account.
      *
-     * @param wipeData  If provided, controls if the user's data will be deleted
-     *     on their linked devices.
      * @param user  Identity of user to remove/suspend. {@code user} must not be
      *     {@code null}.
+     * @param wipeData  If provided, controls if the user's data will be deleted
+     *     on their linked devices.
      *
      * @throws IllegalArgumentException  if any argument does not meet its
      *     preconditions.

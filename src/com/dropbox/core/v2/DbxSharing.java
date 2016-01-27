@@ -52,12 +52,12 @@ public final class DbxSharing {
 
         /**
          *
+         * @param url  URL of the shared link. {@code url} must not be {@code
+         *     null}.
          * @param path  If the shared link is to a folder, this parameter can be
          *     used to retrieve the metadata for a specific file or sub-folder
          *     in this folder. A relative path should be used. {@code path} must
          *     match pattern "{@code /.*}".
-         * @param url  URL of the shared link. {@code url} must not be {@code
-         *     null}.
          * @param linkPassword  If the shared link has a password, this
          *     parameter can be used.
          *
@@ -1220,6 +1220,12 @@ public final class DbxSharing {
         /**
          *
          * @param canRevoke  Whether the caller can revoke the shared link.
+         * @param resolvedVisibility  The current visibility of the link after
+         *     considering the shared links policies of the the team (in case
+         *     the link's owner is part of a team) and the shared folder (in
+         *     case the linked file is part of a shared folder). This field is
+         *     shown only if the caller has access to this info (the link's
+         *     owner always has access to this data).
          * @param requestedVisibility  The shared link's requested visibility.
          *     This can be overridden by the team and shared folder policies.
          *     The final visibility, after considering these policies, can be
@@ -1228,12 +1234,6 @@ public final class DbxSharing {
          * @param revokeFailureReason  The failure reason for revoking the link.
          *     This field will only be present if the {@code canRevoke} is
          *     {@code false}.
-         * @param resolvedVisibility  The current visibility of the link after
-         *     considering the shared links policies of the the team (in case
-         *     the link's owner is part of a team) and the shared folder (in
-         *     case the linked file is part of a shared folder). This field is
-         *     shown only if the caller has access to this info (the link's
-         *     owner always has access to this data).
          */
         public LinkPermissions(boolean canRevoke, ResolvedVisibility resolvedVisibility, RequestedVisibility requestedVisibility, SharedLinkAccessFailureReason revokeFailureReason) {
             this.resolvedVisibility = resolvedVisibility;
@@ -1359,10 +1359,10 @@ public final class DbxSharing {
         /**
          * Information about a team member.
          *
-         * @param displayName  The display name of the user. {@code displayName}
-         *     must not be {@code null}.
          * @param teamInfo  Information about the member's team. {@code
          *     teamInfo} must not be {@code null}.
+         * @param displayName  The display name of the user. {@code displayName}
+         *     must not be {@code null}.
          * @param memberId  ID of user as a member of a team. This field will
          *     only be present if the member is in the same team as current
          *     user.
@@ -1516,26 +1516,26 @@ public final class DbxSharing {
         /**
          * The metadata of a shared link
          *
+         * @param url  URL of the shared link. {@code url} must not be {@code
+         *     null}.
          * @param name  The linked file name (including extension). This never
          *     contains a slash. {@code name} must not be {@code null}.
+         * @param linkPermissions  The link's access permissions. {@code
+         *     linkPermissions} must not be {@code null}.
+         * @param id  A unique identifier for the linked file. {@code id} must
+         *     have length of at least 1.
          * @param expires  Expiration time, if set. By default the link won't
          *     expire.
+         * @param pathLower  The lowercased full path in the user's Dropbox.
+         *     This always starts with a slash. This field will only be present
+         *     only if the linked file is in the authenticated user's  dropbox.
+         * @param teamMemberInfo  The team membership information of the link's
+         *     owner.  This field will only be present  if the link's owner is a
+         *     team member.
          * @param contentOwnerTeamInfo  The team information of the content's
          *     owner. This field will only be present if the content's owner is
          *     a team member and the content's owner team is different from the
          *     link's owner team.
-         * @param linkPermissions  The link's access permissions. {@code
-         *     linkPermissions} must not be {@code null}.
-         * @param teamMemberInfo  The team membership information of the link's
-         *     owner.  This field will only be present  if the link's owner is a
-         *     team member.
-         * @param url  URL of the shared link. {@code url} must not be {@code
-         *     null}.
-         * @param id  A unique identifier for the linked file. {@code id} must
-         *     have length of at least 1.
-         * @param pathLower  The lowercased full path in the user's Dropbox.
-         *     This always starts with a slash. This field will only be present
-         *     only if the linked file is in the authenticated user's  dropbox.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -1752,40 +1752,40 @@ public final class DbxSharing {
         /**
          * The metadata of a file shared link
          *
+         * @param url  URL of the shared link. {@code url} must not be {@code
+         *     null}.
          * @param name  The linked file name (including extension). This never
          *     contains a slash. {@code name} must not be {@code null}.
-         * @param rev  A unique identifier for the current revision of a file.
-         *     This field is the same rev as elsewhere in the API and can be
-         *     used to detect changes and avoid conflicts. {@code rev} must have
-         *     length of at least 9, match pattern "{@code [0-9a-f]+}", and not
-         *     be {@code null}.
-         * @param contentOwnerTeamInfo  The team information of the content's
-         *     owner. This field will only be present if the content's owner is
-         *     a team member and the content's owner team is different from the
-         *     link's owner team.
          * @param linkPermissions  The link's access permissions. {@code
          *     linkPermissions} must not be {@code null}.
-         * @param teamMemberInfo  The team membership information of the link's
-         *     owner.  This field will only be present  if the link's owner is a
-         *     team member.
          * @param clientModified  The modification time set by the desktop
          *     client when the file was added to Dropbox. Since this time is not
          *     verified (the Dropbox server stores whatever the desktop client
          *     sends up), this should only be used for display purposes (such as
          *     sorting) and not, for example, to determine if a file has changed
          *     or not. {@code clientModified} must not be {@code null}.
-         * @param expires  Expiration time, if set. By default the link won't
-         *     expire.
-         * @param url  URL of the shared link. {@code url} must not be {@code
-         *     null}.
          * @param serverModified  The last time the file was modified on
          *     Dropbox. {@code serverModified} must not be {@code null}.
+         * @param rev  A unique identifier for the current revision of a file.
+         *     This field is the same rev as elsewhere in the API and can be
+         *     used to detect changes and avoid conflicts. {@code rev} must have
+         *     length of at least 9, match pattern "{@code [0-9a-f]+}", and not
+         *     be {@code null}.
+         * @param size  The file size in bytes.
          * @param id  A unique identifier for the linked file. {@code id} must
          *     have length of at least 1.
-         * @param size  The file size in bytes.
+         * @param expires  Expiration time, if set. By default the link won't
+         *     expire.
          * @param pathLower  The lowercased full path in the user's Dropbox.
          *     This always starts with a slash. This field will only be present
          *     only if the linked file is in the authenticated user's  dropbox.
+         * @param teamMemberInfo  The team membership information of the link's
+         *     owner.  This field will only be present  if the link's owner is a
+         *     team member.
+         * @param contentOwnerTeamInfo  The team information of the content's
+         *     owner. This field will only be present if the content's owner is
+         *     a team member and the content's owner team is different from the
+         *     link's owner team.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -1989,26 +1989,26 @@ public final class DbxSharing {
         /**
          * The metadata of a folder shared link
          *
+         * @param url  URL of the shared link. {@code url} must not be {@code
+         *     null}.
          * @param name  The linked file name (including extension). This never
          *     contains a slash. {@code name} must not be {@code null}.
+         * @param linkPermissions  The link's access permissions. {@code
+         *     linkPermissions} must not be {@code null}.
+         * @param id  A unique identifier for the linked file. {@code id} must
+         *     have length of at least 1.
          * @param expires  Expiration time, if set. By default the link won't
          *     expire.
+         * @param pathLower  The lowercased full path in the user's Dropbox.
+         *     This always starts with a slash. This field will only be present
+         *     only if the linked file is in the authenticated user's  dropbox.
+         * @param teamMemberInfo  The team membership information of the link's
+         *     owner.  This field will only be present  if the link's owner is a
+         *     team member.
          * @param contentOwnerTeamInfo  The team information of the content's
          *     owner. This field will only be present if the content's owner is
          *     a team member and the content's owner team is different from the
          *     link's owner team.
-         * @param linkPermissions  The link's access permissions. {@code
-         *     linkPermissions} must not be {@code null}.
-         * @param teamMemberInfo  The team membership information of the link's
-         *     owner.  This field will only be present  if the link's owner is a
-         *     team member.
-         * @param url  URL of the shared link. {@code url} must not be {@code
-         *     null}.
-         * @param id  A unique identifier for the linked file. {@code id} must
-         *     have length of at least 1.
-         * @param pathLower  The lowercased full path in the user's Dropbox.
-         *     This always starts with a slash. This field will only be present
-         *     only if the linked file is in the authenticated user's  dropbox.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -2515,6 +2515,9 @@ public final class DbxSharing {
 
         /**
          *
+         * @param links  Shared links applicable to the path argument. {@code
+         *     links} must not contain a {@code null} item and not be {@code
+         *     null}.
          * @param hasMore  Is true if there are additional shared links that
          *     have not been returned yet. Pass the cursor into {@link
          *     DbxSharing#listSharedLinksBuilder} to retrieve them.
@@ -2522,9 +2525,6 @@ public final class DbxSharing {
          *     DbxSharing#listSharedLinksBuilder} to obtain the additional
          *     links. Cursor is returned only if no path is given or the path is
          *     empty.
-         * @param links  Shared links applicable to the path argument. {@code
-         *     links} must not contain a {@code null} item and not be {@code
-         *     null}.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -2927,11 +2927,11 @@ public final class DbxSharing {
          *
          * @param requestedVisibility  The requested access for this shared
          *     link.
-         * @param expires  Expiration time of the shared link. By default the
-         *     link won't expire.
          * @param linkPassword  If {@code requestedVisibility} is {@link
          *     RequestedVisibility#password} this is needed to specify the
          *     password to access the link.
+         * @param expires  Expiration time of the shared link. By default the
+         *     link won't expire.
          */
         public SharedLinkSettings(RequestedVisibility requestedVisibility, String linkPassword, java.util.Date expires) {
             this.requestedVisibility = requestedVisibility;
@@ -3038,10 +3038,10 @@ public final class DbxSharing {
 
         /**
          *
-         * @param settings  Set of settings for the shared link. {@code
-         *     settings} must not be {@code null}.
          * @param url  URL of the shared link to change its settings. {@code
          *     url} must not be {@code null}.
+         * @param settings  Set of settings for the shared link. {@code
+         *     settings} must not be {@code null}.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -5321,12 +5321,12 @@ public final class DbxSharing {
          * Metadata for a shared link. This can be either a {@link
          * PathLinkMetadata} or {@link CollectionLinkMetadata}.
          *
+         * @param url  URL of the shared link. {@code url} must not be {@code
+         *     null}.
          * @param visibility  Who can access the link. {@code visibility} must
          *     not be {@code null}.
          * @param expires  Expiration time, if set. By default the link won't
          *     expire.
-         * @param url  URL of the shared link. {@code url} must not be {@code
-         *     null}.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -5467,14 +5467,14 @@ public final class DbxSharing {
         /**
          * Metadata for a path-based shared link.
          *
-         * @param path  Path in user's Dropbox. {@code path} must not be {@code
+         * @param url  URL of the shared link. {@code url} must not be {@code
          *     null}.
          * @param visibility  Who can access the link. {@code visibility} must
          *     not be {@code null}.
+         * @param path  Path in user's Dropbox. {@code path} must not be {@code
+         *     null}.
          * @param expires  Expiration time, if set. By default the link won't
          *     expire.
-         * @param url  URL of the shared link. {@code url} must not be {@code
-         *     null}.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -5606,12 +5606,12 @@ public final class DbxSharing {
         /**
          * Metadata for a collection-based shared link.
          *
+         * @param url  URL of the shared link. {@code url} must not be {@code
+         *     null}.
          * @param visibility  Who can access the link. {@code visibility} must
          *     not be {@code null}.
          * @param expires  Expiration time, if set. By default the link won't
          *     expire.
-         * @param url  URL of the shared link. {@code url} must not be {@code
-         *     null}.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -6351,11 +6351,11 @@ public final class DbxSharing {
          *
          * @param path  The path to share. {@code path} must not be {@code
          *     null}.
+         * @param shortUrl  Whether to return a shortened URL.
          * @param pendingUpload  If it's okay to share a path that does not yet
          *     exist, set this to either {@link PendingUploadMode#file} or
          *     {@link PendingUploadMode#folder} to indicate whether to assume
          *     it's a file or folder.
-         * @param shortUrl  Whether to return a shortened URL.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -7938,12 +7938,12 @@ public final class DbxSharing {
          * DbxUsers#getAccountBatch(java.util.List)}` to obtain more detailed
          * information.
          *
-         * @param teamMemberId  The team member ID of the shared folder member.
-         *     Only present if {@code sameTeam} is true.
-         * @param sameTeam  If the user is in the same team as current user.
          * @param accountId  The account ID of the user. {@code accountId} must
          *     have length of at least 40, have length of at most 40, and not be
          *     {@code null}.
+         * @param sameTeam  If the user is in the same team as current user.
+         * @param teamMemberId  The team member ID of the shared folder member.
+         *     Only present if {@code sameTeam} is true.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -8402,10 +8402,10 @@ public final class DbxSharing {
          * The information about a user invited to become a member of a shared
          * folder.
          *
-         * @param invitee  The information for the invited user. {@code invitee}
-         *     must not be {@code null}.
          * @param accessType  The access type for this member. {@code
          *     accessType} must not be {@code null}.
+         * @param invitee  The information for the invited user. {@code invitee}
+         *     must not be {@code null}.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -8511,12 +8511,12 @@ public final class DbxSharing {
          * The information about a group. Groups is a way to manage a list of
          * users  who need same access permission to the shared folder.
          *
-         * @param memberCount  The number of members in the group.
+         * @param groupName  . {@code groupName} must not be {@code null}.
          * @param groupId  . {@code groupId} must not be {@code null}.
+         * @param memberCount  The number of members in the group.
          * @param sameTeam  If the group is owned by the current user's team.
          * @param groupExternalId  External ID of group. This is an arbitrary ID
          *     that an admin can attach to a group.
-         * @param groupName  . {@code groupName} must not be {@code null}.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -8637,10 +8637,10 @@ public final class DbxSharing {
         /**
          * The information about a group member of the shared folder.
          *
-         * @param group  The information about the membership group. {@code
-         *     group} must not be {@code null}.
          * @param accessType  The access type for this member. {@code
          *     accessType} must not be {@code null}.
+         * @param group  The information about the membership group. {@code
+         *     group} must not be {@code null}.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -8767,17 +8767,17 @@ public final class DbxSharing {
          * The metadata which includes basic information about the shared
          * folder.
          *
+         * @param name  The name of the this shared folder. {@code name} must
+         *     not be {@code null}.
          * @param sharedFolderId  The ID of the shared folder. {@code
          *     sharedFolderId} must match pattern "{@code [-_0-9a-zA-Z:]+}" and
          *     not be {@code null}.
-         * @param name  The name of the this shared folder. {@code name} must
-         *     not be {@code null}.
+         * @param accessType  The current user's access level for this shared
+         *     folder. {@code accessType} must not be {@code null}.
          * @param isTeamFolder  Whether this folder is a <a
          *     href="https://www.dropbox.com/en/help/986">team folder</a>.
          * @param policy  Policies governing this shared folder. {@code policy}
          *     must not be {@code null}.
-         * @param accessType  The current user's access level for this shared
-         *     folder. {@code accessType} must not be {@code null}.
          * @param pathLower  The lower-cased full path of this shared folder.
          *     Absent for unmounted folders.
          *
@@ -9371,13 +9371,13 @@ public final class DbxSharing {
          * can be identified by the absence of {@link
          * SharedFolderMetadata#pathLower}.
          *
+         * @param entries  List of all shared folders the authenticated user has
+         *     access to. {@code entries} must not contain a {@code null} item
+         *     and not be {@code null}.
          * @param cursor  Present if there are additional shared folders that
          *     have not been returned yet. Pass the cursor into {@link
          *     DbxSharing#listFoldersContinue(String)} to list additional
          *     folders.
-         * @param entries  List of all shared folders the authenticated user has
-         *     access to. {@code entries} must not contain a {@code null} item
-         *     and not be {@code null}.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -9977,11 +9977,11 @@ public final class DbxSharing {
         /**
          * Shared folder user and group membership.
          *
-         * @param groups  The list of group members of the shared folder. {@code
-         *     groups} must not contain a {@code null} item and not be {@code
-         *     null}.
          * @param users  The list of user members of the shared folder. {@code
          *     users} must not contain a {@code null} item and not be {@code
+         *     null}.
+         * @param groups  The list of group members of the shared folder. {@code
+         *     groups} must not contain a {@code null} item and not be {@code
          *     null}.
          * @param invitees  The list of invited members of the shared folder.
          *     This list will not include invitees that have already accepted or
@@ -10535,9 +10535,9 @@ public final class DbxSharing {
          * @param path  The path to the folder to share. If it does not exist,
          *     then a new one is created. {@code path} must match pattern
          *     "{@code /.*}" and not be {@code null}.
+         * @param memberPolicy  Who can be a member of this shared folder.
          * @param aclUpdatePolicy  Who can add and remove members of this shared
          *     folder.
-         * @param memberPolicy  Who can be a member of this shared folder.
          * @param sharedLinkPolicy  The policy to apply to shared links created
          *     for content inside this shared folder.
          * @param forceAsync  Whether to force the share to happen
@@ -13895,10 +13895,10 @@ public final class DbxSharing {
          * @param sharedFolderId  The ID for the shared folder. {@code
          *     sharedFolderId} must match pattern "{@code [-_0-9a-zA-Z:]+}" and
          *     not be {@code null}.
-         * @param aclUpdatePolicy  Who can add and remove members of this shared
-         *     folder.
          * @param memberPolicy  Who can be a member of this shared folder. Only
          *     set this if the current user is on a team.
+         * @param aclUpdatePolicy  Who can add and remove members of this shared
+         *     folder.
          * @param sharedLinkPolicy  The policy to apply to shared links created
          *     for content inside this shared folder.
          *
@@ -14409,11 +14409,11 @@ public final class DbxSharing {
          * @param sharedFolderId  The ID for the shared folder. {@code
          *     sharedFolderId} must match pattern "{@code [-_0-9a-zA-Z:]+}" and
          *     not be {@code null}.
-         * @param quiet  Whether added members should be notified via email and
-         *     device notifications of their invite.
          * @param members  The intended list of members to add.  Added members
          *     will receive invites to join the shared folder. {@code members}
          *     must not contain a {@code null} item and not be {@code null}.
+         * @param quiet  Whether added members should be notified via email and
+         *     device notifications of their invite.
          * @param customMessage  Optional message to display to added members in
          *     their invitation. {@code customMessage} must have length of at
          *     least 1.
@@ -18748,9 +18748,9 @@ public final class DbxSharing {
      * and the {@link LinkPermissions#requestedVisibility} will reflect the
      * requested visibility.
      *
-     * @param settings  Set of settings for the shared link. {@code settings}
-     *     must not be {@code null}.
      * @param url  URL of the shared link to change its settings. {@code url}
+     *     must not be {@code null}.
+     * @param settings  Set of settings for the shared link. {@code settings}
      *     must not be {@code null}.
      *
      * @throws IllegalArgumentException  if any argument does not meet its

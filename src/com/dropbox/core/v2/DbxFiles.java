@@ -61,14 +61,14 @@ public final class DbxFiles {
          * @param name  The last component of the path (including extension).
          *     This never contains a slash. {@code name} must not be {@code
          *     null}.
+         * @param pathLower  The lowercased full path in the user's Dropbox.
+         *     This always starts with a slash. {@code pathLower} must not be
+         *     {@code null}.
          * @param parentSharedFolderId  Deprecated. Please use
          *     :field:'FileSharingInfo.parent_shared_folder_id' or
          *     :field:'FolderSharingInfo.parent_shared_folder_id' instead.
          *     {@code parentSharedFolderId} must match pattern "{@code
          *     [-_0-9a-zA-Z:]+}".
-         * @param pathLower  The lowercased full path in the user's Dropbox.
-         *     This always starts with a slash. {@code pathLower} must not be
-         *     {@code null}.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -448,14 +448,14 @@ public final class DbxFiles {
          * Sharing info for a folder which is contained in a shared folder or is
          * a shared folder mount point.
          *
-         * @param sharedFolderId  If this folder is a shared folder mount point,
-         *     the ID of the shared folder mounted at this location. {@code
-         *     sharedFolderId} must match pattern "{@code [-_0-9a-zA-Z:]+}".
          * @param readOnly  True if the file or folder is inside a read-only
          *     shared folder.
          * @param parentSharedFolderId  Set if the folder is contained by a
          *     shared folder. {@code parentSharedFolderId} must match pattern
          *     "{@code [-_0-9a-zA-Z:]+}".
+         * @param sharedFolderId  If this folder is a shared folder mount point,
+         *     the ID of the shared folder mounted at this location. {@code
+         *     sharedFolderId} must match pattern "{@code [-_0-9a-zA-Z:]+}".
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -579,8 +579,8 @@ public final class DbxFiles {
         /**
          * Dimensions for a photo or video.
          *
-         * @param width  Width of the photo/video.
          * @param height  Height of the photo/video.
+         * @param width  Width of the photo/video.
          */
         public Dimensions(long height, long width) {
             this.height = height;
@@ -681,8 +681,8 @@ public final class DbxFiles {
         /**
          * GPS coordinates for a photo or video.
          *
-         * @param longitude  Longitude of the GPS coordinates.
          * @param latitude  Latitude of the GPS coordinates.
+         * @param longitude  Longitude of the GPS coordinates.
          */
         public GpsCoordinates(double latitude, double longitude) {
             this.latitude = latitude;
@@ -788,8 +788,8 @@ public final class DbxFiles {
          * Metadata for a photo or video.
          *
          * @param dimensions  Dimension of the photo/video.
-         * @param timeTaken  The timestamp when the photo/video is taken.
          * @param location  The GPS coordinate of the photo/video.
+         * @param timeTaken  The timestamp when the photo/video is taken.
          */
         public MediaMetadata(Dimensions dimensions, GpsCoordinates location, java.util.Date timeTaken) {
             this.dimensions = dimensions;
@@ -917,8 +917,8 @@ public final class DbxFiles {
          * Metadata for a photo.
          *
          * @param dimensions  Dimension of the photo/video.
-         * @param timeTaken  The timestamp when the photo/video is taken.
          * @param location  The GPS coordinate of the photo/video.
+         * @param timeTaken  The timestamp when the photo/video is taken.
          */
         public PhotoMetadata(Dimensions dimensions, GpsCoordinates location, java.util.Date timeTaken) {
             super(dimensions, location, timeTaken);
@@ -1033,9 +1033,9 @@ public final class DbxFiles {
          * Metadata for a video.
          *
          * @param dimensions  Dimension of the photo/video.
-         * @param duration  The duration of the video in milliseconds.
-         * @param timeTaken  The timestamp when the photo/video is taken.
          * @param location  The GPS coordinate of the photo/video.
+         * @param timeTaken  The timestamp when the photo/video is taken.
+         * @param duration  The duration of the video in milliseconds.
          */
         public VideoMetadata(Dimensions dimensions, GpsCoordinates location, java.util.Date timeTaken, Long duration) {
             super(dimensions, location, timeTaken);
@@ -1425,19 +1425,9 @@ public final class DbxFiles {
          * @param name  The last component of the path (including extension).
          *     This never contains a slash. {@code name} must not be {@code
          *     null}.
-         * @param parentSharedFolderId  Deprecated. Please use
-         *     :field:'FileSharingInfo.parent_shared_folder_id' or
-         *     :field:'FolderSharingInfo.parent_shared_folder_id' instead.
-         *     {@code parentSharedFolderId} must match pattern "{@code
-         *     [-_0-9a-zA-Z:]+}".
-         * @param rev  A unique identifier for the current revision of a file.
-         *     This field is the same rev as elsewhere in the API and can be
-         *     used to detect changes and avoid conflicts. {@code rev} must have
-         *     length of at least 9, match pattern "{@code [0-9a-f]+}", and not
-         *     be {@code null}.
-         * @param sharingInfo  Set if this file is contained in a shared folder.
-         * @param mediaInfo  Additional information if the file is a photo or
-         *     video.
+         * @param pathLower  The lowercased full path in the user's Dropbox.
+         *     This always starts with a slash. {@code pathLower} must not be
+         *     {@code null}.
          * @param clientModified  For files, this is the modification time set
          *     by the desktop client when the file was added to Dropbox. Since
          *     this time is not verified (the Dropbox server stores whatever the
@@ -1447,12 +1437,22 @@ public final class DbxFiles {
          *     {@code null}.
          * @param serverModified  The last time the file was modified on
          *     Dropbox. {@code serverModified} must not be {@code null}.
+         * @param rev  A unique identifier for the current revision of a file.
+         *     This field is the same rev as elsewhere in the API and can be
+         *     used to detect changes and avoid conflicts. {@code rev} must have
+         *     length of at least 9, match pattern "{@code [0-9a-f]+}", and not
+         *     be {@code null}.
+         * @param size  The file size in bytes.
+         * @param parentSharedFolderId  Deprecated. Please use
+         *     :field:'FileSharingInfo.parent_shared_folder_id' or
+         *     :field:'FolderSharingInfo.parent_shared_folder_id' instead.
+         *     {@code parentSharedFolderId} must match pattern "{@code
+         *     [-_0-9a-zA-Z:]+}".
          * @param id  A unique identifier for the file. {@code id} must have
          *     length of at least 1.
-         * @param size  The file size in bytes.
-         * @param pathLower  The lowercased full path in the user's Dropbox.
-         *     This always starts with a slash. {@code pathLower} must not be
-         *     {@code null}.
+         * @param mediaInfo  Additional information if the file is a photo or
+         *     video.
+         * @param sharingInfo  Set if this file is contained in a shared folder.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -1672,24 +1672,24 @@ public final class DbxFiles {
 
         /**
          *
-         * @param sharedFolderId  Deprecated. Please use :field:'sharing_info'
-         *     instead. {@code sharedFolderId} must match pattern "{@code
-         *     [-_0-9a-zA-Z:]+}".
          * @param name  The last component of the path (including extension).
          *     This never contains a slash. {@code name} must not be {@code
          *     null}.
+         * @param pathLower  The lowercased full path in the user's Dropbox.
+         *     This always starts with a slash. {@code pathLower} must not be
+         *     {@code null}.
          * @param parentSharedFolderId  Deprecated. Please use
          *     :field:'FileSharingInfo.parent_shared_folder_id' or
          *     :field:'FolderSharingInfo.parent_shared_folder_id' instead.
          *     {@code parentSharedFolderId} must match pattern "{@code
          *     [-_0-9a-zA-Z:]+}".
-         * @param sharingInfo  Set if the folder is contained in a shared folder
-         *     or is a shared folder mount point.
          * @param id  A unique identifier for the folder. {@code id} must have
          *     length of at least 1.
-         * @param pathLower  The lowercased full path in the user's Dropbox.
-         *     This always starts with a slash. {@code pathLower} must not be
-         *     {@code null}.
+         * @param sharedFolderId  Deprecated. Please use :field:'sharing_info'
+         *     instead. {@code sharedFolderId} must match pattern "{@code
+         *     [-_0-9a-zA-Z:]+}".
+         * @param sharingInfo  Set if the folder is contained in a shared folder
+         *     or is a shared folder mount point.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -1853,14 +1853,14 @@ public final class DbxFiles {
          * @param name  The last component of the path (including extension).
          *     This never contains a slash. {@code name} must not be {@code
          *     null}.
+         * @param pathLower  The lowercased full path in the user's Dropbox.
+         *     This always starts with a slash. {@code pathLower} must not be
+         *     {@code null}.
          * @param parentSharedFolderId  Deprecated. Please use
          *     :field:'FileSharingInfo.parent_shared_folder_id' or
          *     :field:'FolderSharingInfo.parent_shared_folder_id' instead.
          *     {@code parentSharedFolderId} must match pattern "{@code
          *     [-_0-9a-zA-Z:]+}".
-         * @param pathLower  The lowercased full path in the user's Dropbox.
-         *     This always starts with a slash. {@code pathLower} must not be
-         *     {@code null}.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -2278,16 +2278,16 @@ public final class DbxFiles {
 
         /**
          *
+         * @param cursor  A cursor as returned by {@link
+         *     DbxFiles#listFolderBuilder} or {@link
+         *     DbxFiles#listFolderContinue(String)}. {@code cursor} must have
+         *     length of at least 1 and not be {@code null}.
          * @param timeout  A timeout in seconds. The request will block for at
          *     most this length of time, plus up to 90 seconds of random jitter
          *     added to avoid the thundering herd problem. Care should be taken
          *     when using this parameter, as some network infrastructure does
          *     not support long timeouts. {@code timeout} must be greater than
          *     or equal to 30 and be less than or equal to 480.
-         * @param cursor  A cursor as returned by {@link
-         *     DbxFiles#listFolderBuilder} or {@link
-         *     DbxFiles#listFolderContinue(String)}. {@code cursor} must have
-         *     length of at least 1 and not be {@code null}.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -2850,16 +2850,16 @@ public final class DbxFiles {
 
         /**
          *
-         * @param hasMore  If true, then there are more entries available. Pass
-         *     the cursor to {@link DbxFiles#listFolderContinue(String)} to
-         *     retrieve the rest.
+         * @param entries  The files and (direct) subfolders in the folder.
+         *     {@code entries} must not contain a {@code null} item and not be
+         *     {@code null}.
          * @param cursor  Pass the cursor into {@link
          *     DbxFiles#listFolderContinue(String)} to see what's changed in the
          *     folder since your previous query. {@code cursor} must have length
          *     of at least 1 and not be {@code null}.
-         * @param entries  The files and (direct) subfolders in the folder.
-         *     {@code entries} must not contain a {@code null} item and not be
-         *     {@code null}.
+         * @param hasMore  If true, then there are more entries available. Pass
+         *     the cursor to {@link DbxFiles#listFolderContinue(String)} to
+         *     retrieve the rest.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -4023,11 +4023,11 @@ public final class DbxFiles {
 
         /**
          *
+         * @param reason  The reason why the file couldn't be saved. {@code
+         *     reason} must not be {@code null}.
          * @param uploadSessionId  The upload session ID; this may be used to
          *     retry the commit. {@code uploadSessionId} must not be {@code
          *     null}.
-         * @param reason  The reason why the file couldn't be saved. {@code
-         *     reason} must not be {@code null}.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -5788,10 +5788,10 @@ public final class DbxFiles {
 
         /**
          *
-         * @param commit  Contains the path and other optional modifiers for the
-         *     commit. {@code commit} must not be {@code null}.
          * @param cursor  Contains the upload session ID and the offset. {@code
          *     cursor} must not be {@code null}.
+         * @param commit  Contains the path and other optional modifiers for the
+         *     commit. {@code commit} must not be {@code null}.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -6162,12 +6162,6 @@ public final class DbxFiles {
          * @param path  The path in the user's Dropbox to search. Should
          *     probably be a folder. {@code path} must match pattern "{@code
          *     (/.*)?}" and not be {@code null}.
-         * @param maxResults  The maximum number of search results to return.
-         *     {@code maxResults} must be greater than or equal to 1 and be less
-         *     than or equal to 1000.
-         * @param mode  The search mode (filename, filename_and_content, or
-         *     deleted_filename). Note that searching file content is only
-         *     available for Dropbox Business accounts.
          * @param query  The string to search for. The search string is split on
          *     spaces into multiple tokens. For file name searching, the last
          *     token is used for prefix matching (i.e. "bat c" matches "bat
@@ -6175,6 +6169,12 @@ public final class DbxFiles {
          *     null}.
          * @param start  The starting index within the search results (used for
          *     paging).
+         * @param maxResults  The maximum number of search results to return.
+         *     {@code maxResults} must be greater than or equal to 1 and be less
+         *     than or equal to 1000.
+         * @param mode  The search mode (filename, filename_and_content, or
+         *     deleted_filename). Note that searching file content is only
+         *     available for Dropbox Business accounts.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -6691,12 +6691,12 @@ public final class DbxFiles {
 
         /**
          *
-         * @param more  Used for paging. If true, indicates there is another
-         *     page of results available that can be fetched by calling {@link
-         *     DbxFiles#searchBuilder} again.
          * @param matches  A list (possibly empty) of matches for the query.
          *     {@code matches} must not contain a {@code null} item and not be
          *     {@code null}.
+         * @param more  Used for paging. If true, indicates there is another
+         *     page of results available that can be fetched by calling {@link
+         *     DbxFiles#searchBuilder} again.
          * @param start  Used for paging. Value to set the start argument to
          *     when calling {@link DbxFiles#searchBuilder} to fetch the next
          *     page of results.
@@ -8873,12 +8873,12 @@ public final class DbxFiles {
 
         /**
          *
-         * @param toPath  Path in the user's Dropbox that is the destination.
-         *     {@code toPath} must match pattern "{@code /.*}" and not be {@code
-         *     null}.
          * @param fromPath  Path in the user's Dropbox to be copied or moved.
          *     {@code fromPath} must match pattern "{@code /.*}" and not be
          *     {@code null}.
+         * @param toPath  Path in the user's Dropbox that is the destination.
+         *     {@code toPath} must match pattern "{@code /.*}" and not be {@code
+         *     null}.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -12046,15 +12046,15 @@ public final class DbxFiles {
      * href="https://www.dropbox.com/developers/reference/webhooks"&gt;webhooks
      * documentation&lt;/a&gt;.
      *
+     * @param cursor  A cursor as returned by {@link DbxFiles#listFolderBuilder}
+     *     or {@link DbxFiles#listFolderContinue(String)}. {@code cursor} must
+     *     have length of at least 1 and not be {@code null}.
      * @param timeout  A timeout in seconds. The request will block for at most
      *     this length of time, plus up to 90 seconds of random jitter added to
      *     avoid the thundering herd problem. Care should be taken when using
      *     this parameter, as some network infrastructure does not support long
      *     timeouts. {@code timeout} must be greater than or equal to 30 and be
      *     less than or equal to 480.
-     * @param cursor  A cursor as returned by {@link DbxFiles#listFolderBuilder}
-     *     or {@link DbxFiles#listFolderContinue(String)}. {@code cursor} must
-     *     have length of at least 1 and not be {@code null}.
      *
      * @throws IllegalArgumentException  if any argument does not meet its
      *     preconditions.
@@ -12747,10 +12747,10 @@ public final class DbxFiles {
      * path. A single request should not upload more than 150 MB of file
      * contents.
      *
-     * @param commit  Contains the path and other optional modifiers for the
-     *     commit. {@code commit} must not be {@code null}.
      * @param cursor  Contains the upload session ID and the offset. {@code
      *     cursor} must not be {@code null}.
+     * @param commit  Contains the path and other optional modifiers for the
+     *     commit. {@code commit} must not be {@code null}.
      *
      * @throws IllegalArgumentException  if any argument does not meet its
      *     preconditions.
@@ -13264,10 +13264,10 @@ public final class DbxFiles {
      * Copy a file or folder to a different location in the user's Dropbox. If
      * the source path is a folder all its contents will be copied.
      *
-     * @param toPath  Path in the user's Dropbox that is the destination. {@code
-     *     toPath} must match pattern "{@code /.*}" and not be {@code null}.
      * @param fromPath  Path in the user's Dropbox to be copied or moved. {@code
      *     fromPath} must match pattern "{@code /.*}" and not be {@code null}.
+     * @param toPath  Path in the user's Dropbox that is the destination. {@code
+     *     toPath} must match pattern "{@code /.*}" and not be {@code null}.
      *
      * @throws IllegalArgumentException  if any argument does not meet its
      *     preconditions.
@@ -13317,10 +13317,10 @@ public final class DbxFiles {
      * Move a file or folder to a different location in the user's Dropbox. If
      * the source path is a folder all its contents will be moved.
      *
-     * @param toPath  Path in the user's Dropbox that is the destination. {@code
-     *     toPath} must match pattern "{@code /.*}" and not be {@code null}.
      * @param fromPath  Path in the user's Dropbox to be copied or moved. {@code
      *     fromPath} must match pattern "{@code /.*}" and not be {@code null}.
+     * @param toPath  Path in the user's Dropbox that is the destination. {@code
+     *     toPath} must match pattern "{@code /.*}" and not be {@code null}.
      *
      * @throws IllegalArgumentException  if any argument does not meet its
      *     preconditions.

@@ -1,15 +1,22 @@
 package com.dropbox.core.examples.android;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
@@ -27,12 +34,14 @@ import java.util.List;
  * and upload/download files
  */
 public class FilesActivity extends DropboxActivity {
+    private static final String TAG = FilesActivity.class.getName();
 
     public final static String EXTRA_PATH = "FilesActivity_Path";
     private static final int PICKFILE_REQUEST_CODE = 1;
 
     private String mPath;
     private FilesAdapter mFilesAdapter;
+    private DbxFiles.FileMetadata mSelectedFile;
 
     public static Intent getIntent(Context context, String path) {
         Intent filesIntent = new Intent(context, FilesActivity.class);
@@ -49,11 +58,14 @@ public class FilesActivity extends DropboxActivity {
 
         setContentView(R.layout.activity_files);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
+        setSupportActionBar(toolbar);
+
         FloatingActionButton fab = (FloatingActionButton)findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                launchFilePicker();
+                performWithPermissions(FileAction.UPLOAD);
             }
         });
 
@@ -65,13 +77,15 @@ public class FilesActivity extends DropboxActivity {
             }
 
             @Override
-            public void onFileClicked(DbxFiles.FileMetadata file) {
-                downloadFile(file);
-
+            public void onFileClicked(final DbxFiles.FileMetadata file) {
+                mSelectedFile = file;
+                performWithPermissions(FileAction.DOWNLOAD);
             }
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(mFilesAdapter);
+
+        mSelectedFile = null;
     }
 
     private void launchFilePicker() {
@@ -83,7 +97,7 @@ public class FilesActivity extends DropboxActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == PICKFILE_REQUEST_CODE) {
@@ -92,6 +106,59 @@ public class FilesActivity extends DropboxActivity {
                 // This is the result of a call to launchFilePicker
                 uploadFile(data.getData().toString());
             }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int actionCode, @NonNull String [] permissions, @NonNull int [] grantResults) {
+        FileAction action = FileAction.fromCode(actionCode);
+
+        boolean granted = true;
+        for (int i = 0; i < grantResults.length; ++i) {
+            if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
+                Log.w(TAG, "User denied " + permissions[i] +
+                        " permission to perform file action: " + action);
+                granted = false;
+                break;
+            }
+        }
+
+        if (granted) {
+            performAction(action);
+        } else {
+            switch (action) {
+                case UPLOAD:
+                    Toast.makeText(this,
+                            "Can't upload file: read access denied. " +
+                                    "Please grant storage permissions to use this functionality.",
+                            Toast.LENGTH_LONG)
+                        .show();
+                    break;
+                case DOWNLOAD:
+                    Toast.makeText(this,
+                            "Can't download file: write access denied. " +
+                                    "Please grant storage permissions to use this functionality.",
+                            Toast.LENGTH_LONG)
+                        .show();
+                    break;
+            }
+        }
+    }
+
+    private void performAction(FileAction action) {
+        switch(action) {
+            case UPLOAD:
+                launchFilePicker();
+                break;
+            case DOWNLOAD:
+                if (mSelectedFile != null) {
+                    downloadFile(mSelectedFile);
+                } else {
+                    Log.e(TAG, "No file selected to download.");
+                }
+                break;
+            default:
+                Log.e(TAG, "Can't perform unhandled file action: " + action);
         }
     }
 
@@ -116,7 +183,7 @@ public class FilesActivity extends DropboxActivity {
             public void onError(Exception e) {
                 dialog.dismiss();
 
-                Log.e(getClass().getName(), "Failed to list folder.", e);
+                Log.e(TAG, "Failed to list folder.", e);
                 Toast.makeText(FilesActivity.this,
                         "An error has occurred",
                         Toast.LENGTH_SHORT)
@@ -126,7 +193,6 @@ public class FilesActivity extends DropboxActivity {
     }
 
     private void downloadFile(DbxFiles.FileMetadata file) {
-
         final ProgressDialog dialog = new ProgressDialog(this);
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         dialog.setCancelable(false);
@@ -147,7 +213,7 @@ public class FilesActivity extends DropboxActivity {
             public void onError(Exception e) {
                 dialog.dismiss();
 
-                Log.e(getClass().getName(), "Failed to download file.", e);
+                Log.e(TAG, "Failed to download file.", e);
                 Toast.makeText(FilesActivity.this,
                         "An error has occurred",
                         Toast.LENGTH_SHORT)
@@ -198,12 +264,90 @@ public class FilesActivity extends DropboxActivity {
             public void onError(Exception e) {
                 dialog.dismiss();
 
-                Log.e(getClass().getName(), "Failed to upload file.", e);
+                Log.e(TAG, "Failed to upload file.", e);
                 Toast.makeText(FilesActivity.this,
                         "An error has occurred",
                         Toast.LENGTH_SHORT)
                         .show();
             }
         }).execute(fileUri, mPath);
+    }
+
+    private void performWithPermissions(final FileAction action) {
+        if (hasPermissionsForAction(action)) {
+            performAction(action);
+            return;
+        }
+
+        if (shouldDisplayRationaleForAction(action)) {
+            new AlertDialog.Builder(this)
+                    .setMessage("This app requires storage access to download and upload files.")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            requestPermissionsForAction(action);
+                        }
+                    })
+                    .setNegativeButton("Cancel", null)
+                    .create()
+                    .show();
+        } else {
+            requestPermissionsForAction(action);
+        }
+    }
+
+    private boolean hasPermissionsForAction(FileAction action) {
+        for (String permission : action.getPermissions()) {
+            int result = ContextCompat.checkSelfPermission(this, permission);
+            if (result == PackageManager.PERMISSION_DENIED) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean shouldDisplayRationaleForAction(FileAction action) {
+        for (String permission : action.getPermissions()) {
+            if (!ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void requestPermissionsForAction(FileAction action) {
+        ActivityCompat.requestPermissions(
+                this,
+                action.getPermissions(),
+                action.getCode()
+        );
+    }
+
+    private enum FileAction {
+        DOWNLOAD(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+        UPLOAD(Manifest.permission.READ_EXTERNAL_STORAGE);
+
+        private static final FileAction [] values = values();
+
+        private final String [] permissions;
+
+        FileAction(String ... permissions) {
+            this.permissions = permissions;
+        }
+
+        public int getCode() {
+            return ordinal();
+        }
+
+        public String [] getPermissions() {
+            return permissions;
+        }
+
+        public static FileAction fromCode(int code) {
+            if (code < 0 || code >= values.length) {
+                throw new IllegalArgumentException("Invalid FileAction code: " + code);
+            }
+            return values[code];
+        }
     }
 }

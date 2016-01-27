@@ -581,11 +581,11 @@ public final class DbxUsers {
          * The amount of detail revealed about an account depends on the user
          * being queried and the user making the query.
          *
-         * @param name  Details of a user's name. {@code name} must not be
-         *     {@code null}.
          * @param accountId  The user's unique Dropbox ID. {@code accountId}
          *     must have length of at least 40, have length of at most 40, and
          *     not be {@code null}.
+         * @param name  Details of a user's name. {@code name} must not be
+         *     {@code null}.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -699,14 +699,14 @@ public final class DbxUsers {
         /**
          * Basic information about any account.
          *
+         * @param accountId  The user's unique Dropbox ID. {@code accountId}
+         *     must have length of at least 40, have length of at most 40, and
+         *     not be {@code null}.
          * @param name  Details of a user's name. {@code name} must not be
          *     {@code null}.
          * @param isTeammate  Whether this user is a teammate of the current
          *     user. If this account is the current user's account, then this
          *     will be {@code true}.
-         * @param accountId  The user's unique Dropbox ID. {@code accountId}
-         *     must have length of at least 40, have length of at most 40, and
-         *     not be {@code null}.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -852,37 +852,37 @@ public final class DbxUsers {
         /**
          * Detailed information about the current user's account.
          *
-         * @param name  Details of a user's name. {@code name} must not be
-         *     {@code null}.
-         * @param referralLink  The user's <a
-         *     href="https://www.dropbox.com/referrals">referral link</a>.
-         *     {@code referralLink} must not be {@code null}.
          * @param accountId  The user's unique Dropbox ID. {@code accountId}
          *     must have length of at least 40, have length of at most 40, and
          *     not be {@code null}.
+         * @param name  Details of a user's name. {@code name} must not be
+         *     {@code null}.
          * @param email  The user's e-mail address. Do not rely on this without
          *     checking the {@code emailVerified} field. Even then, it's
          *     possible that the user has since lost access to their e-mail.
          *     {@code email} must not be {@code null}.
-         * @param team  If this account is a member of a team, information about
-         *     that team.
-         * @param accountType  What type of account this user has. {@code
-         *     accountType} must not be {@code null}.
-         * @param isPaired  Whether the user has a personal and work account. If
-         *     the current account is personal, then {@code team} will always be
-         *     {@code null}, but {@code isPaired} will indicate if a work
-         *     account is linked.
+         * @param emailVerified  Whether the user has verified their e-mail
+         *     address.
          * @param locale  The language that the user specified. Locale tags will
          *     be <a href="http://en.wikipedia.org/wiki/IETF_language_tag">IETF
          *     language tags</a>. {@code locale} must have length of at least 2
          *     and not be {@code null}.
+         * @param referralLink  The user's <a
+         *     href="https://www.dropbox.com/referrals">referral link</a>.
+         *     {@code referralLink} must not be {@code null}.
+         * @param isPaired  Whether the user has a personal and work account. If
+         *     the current account is personal, then {@code team} will always be
+         *     {@code null}, but {@code isPaired} will indicate if a work
+         *     account is linked.
+         * @param accountType  What type of account this user has. {@code
+         *     accountType} must not be {@code null}.
          * @param country  The user's two-letter country code, if available.
          *     Country codes are based on <a
          *     href="http://en.wikipedia.org/wiki/ISO_3166-1">ISO 3166-1</a>.
          *     {@code country} must have length of at least 2 and have length of
          *     at most 2.
-         * @param emailVerified  Whether the user has verified their e-mail
-         *     address.
+         * @param team  If this account is a member of a team, information about
+         *     that team.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -1088,9 +1088,9 @@ public final class DbxUsers {
         /**
          * Information about a team.
          *
+         * @param id  The team's unique ID. {@code id} must not be {@code null}.
          * @param name  The name of the team. {@code name} must not be {@code
          *     null}.
-         * @param id  The team's unique ID. {@code id} must not be {@code null}.
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -1214,12 +1214,12 @@ public final class DbxUsers {
          *
          * @param givenName  Also known as a first name. {@code givenName} must
          *     not be {@code null}.
+         * @param surname  Also known as a last name or family name. {@code
+         *     surname} must not be {@code null}.
          * @param familiarName  Locale-dependent name. In the US, a person's
          *     familiar name is their {@code givenName}, but elsewhere, it could
          *     be any combination of a person's {@code givenName} and {@code
          *     surname}. {@code familiarName} must not be {@code null}.
-         * @param surname  Also known as a last name or family name. {@code
-         *     surname} must not be {@code null}.
          * @param displayName  A name that can be used directly to represent the
          *     name of a user's Dropbox account. {@code displayName} must not be
          *     {@code null}.
@@ -1358,9 +1358,9 @@ public final class DbxUsers {
         /**
          * Information about a user's space usage and quota.
          *
+         * @param used  The user's total space usage (bytes).
          * @param allocation  The user's space allocation. {@code allocation}
          *     must not be {@code null}.
-         * @param used  The user's total space usage (bytes).
          *
          * @throws IllegalArgumentException  if any argument does not meet its
          *     preconditions.
@@ -1852,9 +1852,9 @@ public final class DbxUsers {
 
         /**
          *
-         * @param allocated  The total space allocated to the user's team
-         *     (bytes).
          * @param used  The total space currently used by the user's team
+         *     (bytes).
+         * @param allocated  The total space allocated to the user's team
          *     (bytes).
          */
         public TeamSpaceAllocation(long used, long allocated) {
