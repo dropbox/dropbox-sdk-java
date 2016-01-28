@@ -1,9 +1,12 @@
 package com.dropbox.core.util;
 
 import java.io.ByteArrayOutputStream;
+import java.io.BufferedInputStream;
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -14,7 +17,7 @@ import java.io.Writer;
 
 public class IOUtil
 {
-    public static final int DefaultCopyBufferSize = 16 * 1024;
+    public static final int DEFAULT_COPY_BUFFER_SIZE = 16 << 10; // 16 KiB
 
     public static Reader utf8Reader(InputStream in)
     {
@@ -31,7 +34,7 @@ public class IOUtil
     public static void copyStreamToStream(InputStream in, OutputStream out)
         throws ReadException, WriteException
     {
-        copyStreamToStream(in, out, DefaultCopyBufferSize);
+        copyStreamToStream(in, out, DEFAULT_COPY_BUFFER_SIZE);
     }
 
     public static void copyStreamToStream(InputStream in, OutputStream out, byte[] copyBuffer)
@@ -66,7 +69,7 @@ public class IOUtil
     public static byte[] slurp(InputStream in, int byteLimit)
             throws IOException
     {
-        return slurp(in, byteLimit, new byte[DefaultCopyBufferSize]);
+        return slurp(in, byteLimit, new byte[DEFAULT_COPY_BUFFER_SIZE]);
     }
 
     public static byte[] slurp(InputStream in, int byteLimit, byte[] slurpBuffer)
@@ -82,7 +85,7 @@ public class IOUtil
     public void copyFileToStream(File fin, OutputStream out)
         throws ReadException, WriteException
     {
-        copyFileToStream(fin, out, DefaultCopyBufferSize);
+        copyFileToStream(fin, out, DEFAULT_COPY_BUFFER_SIZE);
     }
 
     public void copyFileToStream(File fin, OutputStream out, int copyBufferSize)
@@ -107,7 +110,7 @@ public class IOUtil
     public void copyStreamToFile(InputStream in, File fout)
         throws ReadException, WriteException
     {
-        copyStreamToFile(in, fout, DefaultCopyBufferSize);
+        copyStreamToFile(in, fout, DEFAULT_COPY_BUFFER_SIZE);
     }
 
     public void copyStreamToFile(InputStream in, File fout, int copyBufferSize)
@@ -156,6 +159,22 @@ public class IOUtil
         catch (IOException ex) {
             // Ignore.  We're done reading from it so we don't care if there are input errors.
         }
+    }
+
+    public static void closeQuietly(Closeable obj)
+    {
+        if (obj != null) {
+            try {
+                obj.close();
+            } catch (IOException ex) {
+                // Ignore
+            }
+        }
+    }
+
+    public static InputStream limit(InputStream in, long limit)
+    {
+        return new LimitInputStream(in, limit);
     }
 
     public static abstract class WrappedException extends IOException
@@ -234,4 +253,85 @@ public class IOUtil
         public void write(byte[] data) {}
         public void write(byte[] data, int off, int len) {}
     };
+
+    /**
+     * {@link InputStream} that limits the amount of bytes read from its underlying {@code
+     * InputStream}.
+     */
+    private static final class LimitInputStream extends FilterInputStream
+    {
+        private long left;
+
+        public LimitInputStream(InputStream in, long limit) {
+            super(in);
+
+            if (in == null) {
+                throw new NullPointerException("in");
+            }
+
+            if (limit < 0) {
+                throw new IllegalArgumentException("limit must be non-negative");
+            }
+
+            this.left = limit;
+        }
+
+        @Override
+        public int available() throws IOException
+        {
+            return (int) Math.min(in.available(), left);
+        }
+
+        @Override
+        public synchronized void reset() throws IOException
+        {
+            throw new IOException("mark not supported");
+        }
+
+        @Override
+        public boolean markSupported() {
+            return false;
+        }
+
+        @Override
+        public int read() throws IOException
+        {
+            if (left == 0) {
+                return -1;
+            }
+
+            int read = in.read();
+            if (read != -1) {
+                --left;
+            }
+
+            return read;
+        }
+
+        @Override
+        public int read(byte [] b, int off, int len) throws IOException
+        {
+            if (left == 0) {
+                return -1;
+            }
+
+            len = (int) Math.min(len, left);
+            int read = in.read(b, off, len);
+
+            if (read != -1) {
+                left -= read;
+            }
+
+            return read;
+        }
+
+        @Override
+        public long skip(long n) throws IOException
+        {
+            n = Math.min(n, left);
+            long skipped = in.skip(n);
+            left -= skipped;
+            return skipped;
+        }
+    }
 }

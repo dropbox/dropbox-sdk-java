@@ -8,6 +8,8 @@ import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import com.dropbox.core.util.IOUtil;
+
 /*>>> import checkers.nullness.quals.Nullable; */
 
 /**
@@ -57,7 +59,7 @@ public class StandardHttpRequestor extends HttpRequestor
         } else {
             bodyStream = conn.getInputStream();
         }
-        return new Response(conn.getResponseCode(), bodyStream, conn.getHeaderFields());
+        return new Response(responseCode, bodyStream, conn.getHeaderFields());
     }
 
     @Override
@@ -117,30 +119,45 @@ public class StandardHttpRequestor extends HttpRequestor
         @Override
         public void abort()
         {
-            HttpsURLConnection conn = this.conn;
             if (conn == null) {
                 throw new IllegalStateException("Can't abort().  Uploader already closed.");
             }
+            // disconnecting is "harsh" in that it can close the underlying streams and socket. This
+            // prevents connection re-use.
             conn.disconnect();
+            conn = null;
         }
 
         @Override
         public void close()
         {
-            HttpsURLConnection conn = this.conn;
             if (conn == null) return;
-            conn.disconnect();
+
+            // close input and output streams to allow for connection re-use.
+            if (conn.getDoOutput()) {
+                try {
+                    IOUtil.closeQuietly(conn.getOutputStream());
+                } catch (IOException ex) {
+                    // ignore
+                }
+            }
+
+            // should not need to disconnect after closing the relevant streams
+            conn = null;
         }
 
         @Override
         public Response finish() throws IOException
         {
-            HttpsURLConnection conn = this.conn;
             if (conn == null) {
                 throw new IllegalStateException("Can't finish().  Uploader already closed.");
             }
-            this.conn = null;
-            return toResponse(conn);
+
+            try {
+                return toResponse(conn);
+            } finally {
+                conn = null;
+            }
         }
     }
 

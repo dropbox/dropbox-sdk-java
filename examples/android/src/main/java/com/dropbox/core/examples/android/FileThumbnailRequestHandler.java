@@ -52,7 +52,7 @@ public class FileThumbnailRequestHandler extends RequestHandler {
                             .size(DbxFiles.ThumbnailSize.w1024h768())
                             .start();
 
-            return new Result(downloader.body, Picasso.LoadedFrom.NETWORK);
+            return new Result(downloader.getInputStream(), Picasso.LoadedFrom.NETWORK);
         } catch (DbxException e) {
             throw new IOException(e);
         }

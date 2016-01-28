@@ -262,7 +262,8 @@ public class DropboxBrowse
         String fullTargetPath = targetFolder + "/" + fileName;
         DbxFiles.FileMetadata metadata;
         try {
-            metadata = dbxClient.files.uploadBuilder(fullTargetPath).run(filePart.getInputStream());
+            metadata = dbxClient.files.upload(fullTargetPath)
+                .uploadAndFinish(filePart.getInputStream());
         }
         catch (DbxException ex) {
             common.handleDbxException(response, user, ex, "upload(" + jq(fullTargetPath) + ", ...)");

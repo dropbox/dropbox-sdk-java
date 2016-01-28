@@ -161,10 +161,6 @@ def parse_field_ref(ref, api_namespace, api_data_type):
 
 def uses_builder_pattern(api_route):
     if is_struct_type(api_route.request_data_type):
-        style = api_route.attrs.get('style', 'rpc')
-        if style in ('upload', 'download'):
-            return True
-
         n_optional = len(api_route.request_data_type.all_optional_fields)
         return n_optional > 1
     else:
@@ -178,20 +174,26 @@ def format_route_ref(api, namespace, route):
     return format_route(api_namespace, api_route)
 
 
-def format_route(api_namespace, api_route):
+def format_route(api_namespace, api_route, allow_builder=True):
+    required_fields_only = False
     if uses_builder_pattern(api_route):
-        return '%s#%s' % (namespace_ref(api_namespace), builder_method_name(api_route))
-    elif is_void_type(api_route.request_data_type) or is_union_type(api_route.request_data_type):
+        if allow_builder:
+            return '%s#%s' % (namespace_ref(api_namespace), builder_method_name(api_route))
+        else:
+            required_fields_only = True
+
+    if is_void_type(api_route.request_data_type) or is_union_type(api_route.request_data_type):
         return '%s#%s' % (namespace_ref(api_namespace), routename(api_route.name))
-    else:
-        # by default, all doc refs should point to the method that
-        # accepts the most arguments
-        unpacked_types = (
-            field_type(api_namespace.name, field, boxed=False, generics=False)
-            for field in api_route.request_data_type.all_fields
-        )
-        args = ",".join(unpacked_types)
-        return '%s#%s(%s)' % (namespace_ref(api_namespace), routename(api_route.name), args)
+
+    # by default, all doc refs should point to the method that
+    # accepts the most arguments
+    fields = api_route.request_data_type.all_required_fields if required_fields_only else api_route.request_data_type.all_fields
+    unpacked_types = (
+        field_type(api_namespace.name, field, boxed=False, generics=False)
+        for field in fields
+    )
+    args = ",".join(unpacked_types)
+    return '%s#%s(%s)' % (namespace_ref(api_namespace), routename(api_route.name), args)
 
 
 def format_data_type_ref(data_type):
@@ -709,7 +711,7 @@ class JavaCodeGenerator(CodeGenerator):
             resname = 'Object' if result_name == 'void' else result_name
             errname = 'Object' if error_name == 'void' else error_name
             doc_out('The {@link com.dropbox.core.DbxUploader} returned by '
-                    '{@link %s}.' % method_javadoc_name)
+                    '{@link %s}.' % format_route(namespace, route, allow_builder=False))
             uploader = classname(route.name + '_uploader')
             with self.block('public static class %s '
                             'extends com.dropbox.core.DbxUploader<%s,%s,%s>' %
@@ -895,7 +897,11 @@ class JavaCodeGenerator(CodeGenerator):
 
             # Create a start() method to use the builder.
             out('')
-            doc_out('Issues the request.')
+            if style in ('upload', 'download'):
+                out('@Override')
+                # inherit doc from parent
+            else:
+                doc_out('Issues the request.')
             out('public %s start() throws %s, DbxException' % (rtype, exc_name))
             with self.block():
                 packed_class = maptype(namespace, route.request_data_type)
@@ -923,24 +929,23 @@ class JavaCodeGenerator(CodeGenerator):
             if style == 'upload':
                 rtype = classname(route.name + '_uploader')
                 ret = 'return '
-                self.generate_builder(namespace, route, rtype, ret, outer, doc_out)
             elif style == 'download':
                 rtype = 'com.dropbox.core.DbxDownloader<%s>' % result_name
                 ret = 'return '
-                self.generate_builder(namespace, route, rtype, ret, outer, doc_out)
             else:
                 rtype = result_name
                 ret = '' if rtype == 'void' else 'return '
-                # Generate a shortcut with required args.
-                self.generate_unpacked_method(namespace, route, rtype, ret, doc_out, required_only=True)
-                n_optional = len(route.request_data_type.all_optional_fields)
-                # Generate a builder if there are two or more optional args.
-                # If there's only 1 optional argument then we might as well
-                # just offer two overloaded methods.
-                if n_optional == 1:
-                    self.generate_unpacked_method(namespace, route, rtype, ret, doc_out)
-                elif n_optional > 1:
-                    self.generate_builder(namespace, route, rtype, ret, outer, doc_out)
+
+            # Generate a shortcut with required args.
+            self.generate_unpacked_method(namespace, route, rtype, ret, doc_out, required_only=True)
+            n_optional = len(route.request_data_type.all_optional_fields)
+            # Generate a builder if there are two or more optional args.
+            # If there's only 1 optional argument then we might as well
+            # just offer two overloaded methods.
+            if n_optional == 1:
+                self.generate_unpacked_method(namespace, route, rtype, ret, doc_out)
+            elif n_optional > 1:
+                self.generate_builder(namespace, route, rtype, ret, outer, doc_out)
 
     def generate_field_assignment(self, namespace, field):
         out = self.emit

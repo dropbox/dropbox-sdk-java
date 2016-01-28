@@ -64,10 +64,10 @@ class DownloadFileTask extends AsyncTask<DbxFiles.FileMetadata, Void, File> {
                 return null;
             }
 
-            // Upload the file.
+            // Download the file.
             try (OutputStream outputStream = new FileOutputStream(file)) {
-                mDbxClient.files.downloadBuilder(metadata.pathLower).
-                        rev(metadata.rev).run(outputStream);
+                mDbxClient.files.download(metadata.pathLower, metadata.rev)
+                    .download(outputStream);
             }
 
             // Tell android about the file

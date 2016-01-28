@@ -9,9 +9,11 @@ import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.DbxFiles;
 import com.dropbox.core.v2.DbxPathV2;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -82,11 +84,15 @@ public class Main
         DbxClientV2 dbxClient = new DbxClientV2(requestConfig, authInfo.accessToken, authInfo.host);
 
         // Make the API call to upload the file.
+        File localFile = new File(localPath);
         DbxFiles.FileMetadata metadata;
         try {
-            InputStream in = new FileInputStream(localPath);
+            InputStream in = new FileInputStream(localFile);
             try {
-                metadata = dbxClient.files.uploadBuilder(dropboxPath).run(in);
+                metadata = dbxClient.files.uploadBuilder(dropboxPath)
+                    .mode(DbxFiles.WriteMode.add())
+                    .clientModified(new Date(localFile.lastModified()))
+                    .uploadAndFinish(in);
             } finally {
                 in.close();
             }
