@@ -2,6 +2,7 @@ package com.dropbox.core;
 
 import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.util.StringUtil;
+import com.dropbox.core.v1.DbxClientV1;
 
 import java.util.ArrayList;
 
@@ -10,8 +11,10 @@ import java.util.ArrayList;
 
 abstract class DbxWebAuthHelper
 {
-    public static String getAuthorizeUrl(DbxAppInfo appInfo, /*@Nullable*/String userLocale,
-                                         /*@Nullable*/String redirectUri, /*@Nullable*/String state)
+    public static String getAuthorizeUrl(DbxAppInfo appInfo,
+                                         /*@Nullable*/String userLocale,
+                                         /*@Nullable*/String redirectUri,
+                                         /*@Nullable*/String state)
     {
         return DbxRequestUtil.buildUrlWithParams(userLocale,
             appInfo.host.web, "1/oauth2/authorize", new String[] {
@@ -22,9 +25,11 @@ abstract class DbxWebAuthHelper
             });
     }
 
-    public static DbxAuthFinish finish(DbxAppInfo appInfo, DbxRequestConfig requestConfig,
-                                       String code, /*@Nullable*/String originalRedirectUri)
-            throws DbxException
+    public static DbxAuthFinish finish(DbxAppInfo appInfo,
+                                       DbxRequestConfig requestConfig,
+                                       String code,
+                                       /*@Nullable*/String originalRedirectUri)
+        throws DbxException
     {
         if (code == null) throw new IllegalArgumentException("'code' can't be null");
 
@@ -40,15 +45,21 @@ abstract class DbxWebAuthHelper
         String base64Credentials = StringUtil.base64Encode(StringUtil.stringToUtf8(credentials));
         headers.add(new HttpRequestor.Header("Authorization", "Basic " + base64Credentials));
 
-        return DbxRequestUtil.doPostNoAuth(requestConfig, appInfo.host.api, "1/oauth2/token",
-                                           params, headers, new DbxRequestUtil.ResponseHandler<DbxAuthFinish>()
-        {
-            @Override
-            public DbxAuthFinish handle(HttpRequestor.Response response) throws DbxException
-            {
-                if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
-                return DbxRequestUtil.readJsonFromResponse(DbxAuthFinish.Reader, response);
+        return DbxRequestUtil.doPostNoAuth(
+            requestConfig,
+            DbxClientV1.USER_AGENT_ID,
+            appInfo.host.api,
+            "1/oauth2/token",
+            params,
+            headers,
+            new DbxRequestUtil.ResponseHandler<DbxAuthFinish>() {
+                @Override
+                public DbxAuthFinish handle(HttpRequestor.Response response) throws DbxException
+                {
+                    if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+                    return DbxRequestUtil.readJsonFromResponse(DbxAuthFinish.Reader, response);
+                }
             }
-        });
+        );
     }
 }

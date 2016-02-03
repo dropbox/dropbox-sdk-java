@@ -3,6 +3,7 @@ package com.dropbox.core;
 import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
+import com.dropbox.core.v1.DbxClientV1;
 import static com.dropbox.core.util.LangUtil.mkAssert;
 
 import com.fasterxml.jackson.core.JsonLocation;
@@ -46,13 +47,20 @@ public final class DbxOAuth1Upgrader
     {
         if (token == null) throw new IllegalArgumentException("'token' can't be null");
         return DbxRequestUtil.doPostNoAuth(
-                requestConfig, appInfo.host.api, "1/oauth2/token_from_oauth1",
-                null, getHeaders(token), new DbxRequestUtil.ResponseHandler<String>() {
-            public String handle(HttpRequestor.Response response) throws DbxException {
-                if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
-                return DbxRequestUtil.readJsonFromResponse(ResponseReader, response);
+            requestConfig,
+            DbxClientV1.USER_AGENT_ID,
+            appInfo.host.api,
+            "1/oauth2/token_from_oauth1",
+            null,
+            getHeaders(token),
+            new DbxRequestUtil.ResponseHandler<String>() {
+                @Override
+                public String handle(HttpRequestor.Response response) throws DbxException {
+                    if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+                    return DbxRequestUtil.readJsonFromResponse(ResponseReader, response);
+                }
             }
-        });
+        );
     }
 
     /**
@@ -63,13 +71,20 @@ public final class DbxOAuth1Upgrader
     {
         if (token == null) throw new IllegalArgumentException("'token' can't be null");
         DbxRequestUtil.doPostNoAuth(
-                requestConfig, appInfo.host.api, "1/disable_access_token",
-                null, getHeaders(token), new DbxRequestUtil.ResponseHandler<Void>() {
-            public Void handle(HttpRequestor.Response response) throws DbxException {
-                if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
-                return null;
+            requestConfig,
+            DbxClientV1.USER_AGENT_ID,
+            appInfo.host.api,
+            "1/disable_access_token",
+            null,
+            getHeaders(token),
+            new DbxRequestUtil.ResponseHandler<Void>() {
+                @Override
+                public Void handle(HttpRequestor.Response response) throws DbxException {
+                    if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+                    return null;
+                }
             }
-        });
+        );
     }
 
     private ArrayList<HttpRequestor.Header> getHeaders(DbxOAuth1AccessToken token)

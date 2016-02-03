@@ -38,6 +38,8 @@ import java.util.List;
  * </p>
  */
 public class DbxRawClientV2 {
+    private static final String USER_AGENT_ID = "OfficialDropboxJavaSDKv2";
+
     private final DbxRequestConfig requestConfig;
     private final String accessToken;
     private final DbxHost host;
@@ -101,7 +103,7 @@ public class DbxRawClientV2 {
                 addAuthHeaders(headers);
             }
             headers.add(new HttpRequestor.Header("Content-Type", "application/json; charset=utf-8"));
-            response = DbxRequestUtil.startPostRaw(requestConfig, host, path, body, headers);
+            response = DbxRequestUtil.startPostRaw(requestConfig, USER_AGENT_ID, host, path, body, headers);
             try {
                 if (response.statusCode == 200) {
                     return resReader.readFully(response.body);
@@ -137,7 +139,7 @@ public class DbxRawClientV2 {
             headers.add(new HttpRequestor.Header("Dropbox-API-Arg", headerSafeJson(arg, argWriter)));
             headers.add(new HttpRequestor.Header("Content-Type", ""));
             byte[] body = new byte[0];
-            response = DbxRequestUtil.startPostRaw(requestConfig, host, path, body, headers);
+            response = DbxRequestUtil.startPostRaw(requestConfig, USER_AGENT_ID, host, path, body, headers);
             String requestId = DbxRequestUtil.getRequestId(response);
 
             try {
@@ -206,7 +208,7 @@ public class DbxRawClientV2 {
             addAuthHeaders(headers);
         }
         headers.add(new HttpRequestor.Header("Content-Type", "application/octet-stream"));
-        headers = DbxRequestUtil.addUserAgentHeader(headers, requestConfig);
+        headers = DbxRequestUtil.addUserAgentHeader(headers, requestConfig, USER_AGENT_ID);
         headers.add(new HttpRequestor.Header("Dropbox-API-Arg", headerSafeJson(arg, argWriter)));
         try {
             HttpRequestor.Uploader httpUploader = requestConfig.httpRequestor.startPost(uri, headers);

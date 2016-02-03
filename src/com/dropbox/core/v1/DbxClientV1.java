@@ -36,6 +36,8 @@ import static com.dropbox.core.util.StringUtil.jq;
  */
 public final class DbxClientV1
 {
+    public static final String USER_AGENT_ID = "Dropbox-Java-SDK";
+
     private final DbxRequestConfig requestConfig;
     private final String accessToken;
     private final DbxHost host;
@@ -474,7 +476,7 @@ public final class DbxClientV1
         String host = this.host.content;
 
         boolean passedOwnershipOfStream = false;
-        HttpRequestor.Response response = DbxRequestUtil.startGet(requestConfig, accessToken, host, apiPath, params, null);
+        HttpRequestor.Response response = DbxRequestUtil.startGet(requestConfig, accessToken, USER_AGENT_ID, host, apiPath, params, null);
         try {
             if (response.statusCode == 404) return null;
             if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
@@ -738,7 +740,7 @@ public final class DbxClientV1
         headers.add(new HttpRequestor.Header("Content-Type", "application/octet-stream"));
         headers.add(new HttpRequestor.Header("Content-Length", Long.toString(numBytes)));
 
-        HttpRequestor.Uploader uploader = DbxRequestUtil.startPut(requestConfig, accessToken, host, apiPath, writeMode.params, headers);
+        HttpRequestor.Uploader uploader = DbxRequestUtil.startPut(requestConfig, accessToken, USER_AGENT_ID, host, apiPath, writeMode.params, headers);
 
         return new SingleUploader(uploader, numBytes);
     }
@@ -928,7 +930,7 @@ public final class DbxClientV1
         headers.add(new HttpRequestor.Header("Content-Type", "application/octet-stream"));
         headers.add(new HttpRequestor.Header("Content-Length", Long.toString(chunkSize)));
 
-        HttpRequestor.Uploader uploader = DbxRequestUtil.startPut(requestConfig, accessToken, host.content, apiPath, params, headers);
+        HttpRequestor.Uploader uploader = DbxRequestUtil.startPut(requestConfig, accessToken, USER_AGENT_ID, host.content, apiPath, params, headers);
         try {
             try {
                 NoThrowOutputStream nt = new NoThrowOutputStream(uploader.body);
@@ -1696,10 +1698,15 @@ public final class DbxClientV1
                 "timeout", Integer.toString(timeout),
         };
 
-        return DbxRequestUtil.doGet(getRequestConfig(), getAccessToken(), host.notify,
-            "1/longpoll_delta", params, null,
-            new DbxRequestUtil.ResponseHandler<DbxLongpollDeltaResult>()
-            {
+        return DbxRequestUtil.doGet(
+            getRequestConfig(),
+            getAccessToken(),
+            USER_AGENT_ID,
+            host.notify,
+            "1/longpoll_delta",
+            params,
+            null,
+            new DbxRequestUtil.ResponseHandler<DbxLongpollDeltaResult>() {
                 @Override
                 public DbxLongpollDeltaResult handle(HttpRequestor.Response response)
                     throws DbxException
@@ -1707,7 +1714,8 @@ public final class DbxClientV1
                     if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
                     return DbxRequestUtil.readJsonFromResponse(DbxLongpollDeltaResult.Reader, response);
                 }
-            });
+            }
+        );
     }
 
     // -----------------------------------------------------------------
@@ -2187,7 +2195,7 @@ public final class DbxClientV1
                         DbxRequestUtil.ResponseHandler<T> handler)
         throws DbxException
     {
-        return DbxRequestUtil.doGet(requestConfig, accessToken, host, path, params, headers, handler);
+        return DbxRequestUtil.doGet(requestConfig, accessToken, USER_AGENT_ID, host, path, params, headers, handler);
     }
 
     // Convenience function that calls RequestUtil.doPost with the first two parameters filled in.
@@ -2197,7 +2205,7 @@ public final class DbxClientV1
                         DbxRequestUtil.ResponseHandler<T> handler)
         throws DbxException
     {
-        return DbxRequestUtil.doPost(requestConfig, accessToken, host, path, params, headers, handler);
+        return DbxRequestUtil.doPost(requestConfig, accessToken, USER_AGENT_ID, host, path, params, headers, handler);
     }
 
     /**
