@@ -51,7 +51,7 @@ public class DbxRequestConfig
     /**
      * The {@link HttpRequestor} implementation to use when making
      * HTTP requests to the Dropbox API servers.  If you don't specify one, this defaults to
-     * {@link StandardHttpRequestor#Instance}.
+     * {@link StandardHttpRequestor#INSTANCE}.
      */
     public final HttpRequestor httpRequestor;
 
@@ -76,6 +76,6 @@ public class DbxRequestConfig
      */
     public DbxRequestConfig(String clientIdentifier, String userLocale)
     {
-        this(clientIdentifier, userLocale, StandardHttpRequestor.Instance);
+        this(clientIdentifier, userLocale, StandardHttpRequestor.INSTANCE);
     }
 }

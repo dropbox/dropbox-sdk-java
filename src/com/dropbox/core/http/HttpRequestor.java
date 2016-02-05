@@ -8,21 +8,31 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * An interface that the Dropbox client library uses to make HTTP requests.
  * If you're fine with the standard Java {@link java.net.HttpURLConnection}
- * implementation, then just use {@link StandardHttpRequestor#Instance}.
+ * implementation, then just use {@link StandardHttpRequestor#INSTANCE}.
  */
 public abstract class HttpRequestor
 {
+    /**
+     * Default timeout, in milliseconds, for opening a connection to a network resource.
+     *
+     * A value of 0 indicates the timeout should be disabled.
+     */
+    public static final long DEFAULT_CONNECT_TIMEOUT_MILLIS = TimeUnit.SECONDS.toMillis(20);
+    /**
+     * Default timeout, in milliseconds, for receiving a response from a network resource.
+     *
+     * A value of 0 indicates the timeout should be disabled.
+     */
+    public static final long DEFAULT_READ_TIMEOUT_MILLIS = TimeUnit.SECONDS.toMillis(20);
+
     public abstract Response doGet(String url, Iterable<Header> headers) throws IOException;
     public abstract Uploader startPost(String url, Iterable<Header> headers) throws IOException;
     public abstract Uploader startPut(String url, Iterable<Header> headers) throws IOException;
-
-    /**
-     * The default socket connect/read/write timeout.
-     */
-    public static final int DefaultTimeoutMillis = 20 * 1000;
 
     /**
      * A simple structure holding an HTTP header, which is key/value pair.

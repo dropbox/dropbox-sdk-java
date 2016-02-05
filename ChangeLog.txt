@@ -1,3 +1,5 @@
+- Make read timeouts more easily configurable for StandardHttpRequestor.
+- Add longpoll example.
 - Fix android example bugs and linter warnings
   - Fix compilation error
   - Fix upload failure bug

@@ -24,27 +24,27 @@ import okio.BufferedSink;
  * You can only use this if your project includes the OkHttp library.
  *
  * <p>
- * To use this, pass {@link #Instance} to the {@link com.dropbox.core.DbxRequestConfig} constructor.
+ * To use this, pass {@link #INSTANCE} to the {@link com.dropbox.core.DbxRequestConfig} constructor.
  * </p>
  */
 public class OkHttpRequestor extends HttpRequestor
 {
+    /**
+     * A thread-safe instance of {@code OkHttpRequestor} that connects directly
+     * (as opposed to using a proxy).
+     */
+    public static final OkHttpRequestor INSTANCE = new OkHttpRequestor(defaultOkHttpClient());
+
     private final OkHttpClient client;
 
     private static OkHttpClient defaultOkHttpClient()
     {
         OkHttpClient client = new OkHttpClient();
-        client.setConnectTimeout(DefaultTimeoutMillis, TimeUnit.MILLISECONDS);
-        client.setReadTimeout(DefaultTimeoutMillis, TimeUnit.MILLISECONDS);
-        client.setWriteTimeout(DefaultTimeoutMillis, TimeUnit.MILLISECONDS);
+        client.setConnectTimeout(DEFAULT_CONNECT_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
+        client.setReadTimeout(DEFAULT_READ_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
+        client.setWriteTimeout(DEFAULT_READ_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
         return client;
     }
-
-    /**
-     * A thread-safe instance of {@code OkHttpRequestor} that connects directly
-     * (as opposed to using a proxy).
-     */
-    public static final OkHttpRequestor Instance = new OkHttpRequestor(defaultOkHttpClient());
 
     public OkHttpRequestor(OkHttpClient client)
     {
