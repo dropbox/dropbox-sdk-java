@@ -1277,7 +1277,8 @@ class JavaCodeGenerator(CodeGenerator):
                         out('%s tag = _values.get(text);' % tag_name)
                         if data_type.catch_all_field is not None:
                             new_instance_name = camelcase(data_type.catch_all_field.name)
-                            out('if (tag == null) { return %s.%s(); }' % (class_name, new_instance_name))
+                            with self.block('if (tag == null)'):
+                                out('return %s.%s();' % (class_name, new_instance_name))
                         else:
                             with self.block('if (tag == null)'):
                                 out('throw new JsonReadException'
@@ -1311,12 +1312,13 @@ class JavaCodeGenerator(CodeGenerator):
                                         # Expect nothing more.
                                     else:
                                         dt = field.data_type
+                                        out('%s v = null;' % maptype(namespace, dt))
                                         if is_nullable_type(dt):
                                             with self.block('if (parser.getCurrentToken() == '
                                                             'JsonToken.END_OBJECT)'):
+                                                out('value = %s.%s(v);' % (class_name, new_instance_name))
                                                 out('break;')  # Null value is OK.
                                             dt = dt.data_type
-                                        out('%s v = null;' % maptype(namespace, dt))
                                         if is_struct_type(dt) and not dt.has_enumerated_subtypes():
                                             # Collapse struct into union.
                                             out('v = %s._reader.readFields(parser);' %
@@ -1342,7 +1344,8 @@ class JavaCodeGenerator(CodeGenerator):
                     out('JsonReader.expectObjectEnd(parser);')
                     if data_type.catch_all_field is not None:
                         new_instance_name = camelcase(data_type.catch_all_field.name)
-                        out('if (value == null) { return %s.%s(); }' % (class_name, new_instance_name))
+                        with self.block('if (value == null)'):
+                            out('return %s.%s();' % (class_name, new_instance_name))
                     out('return value;')
                 out('')
 

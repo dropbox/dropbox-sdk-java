@@ -1,3 +1,4 @@
+- Fix deserialization bug with Union containing tags with optional values.
 - Make read timeouts more easily configurable for StandardHttpRequestor.
 - Add longpoll example.
 - Fix android example bugs and linter warnings
