@@ -104,16 +104,16 @@ public class DbxRequestUtil
 
     public static List<HttpRequestor.Header> addUserAgentHeader(/*@Nullable*/List<HttpRequestor.Header> headers,
                                                                 DbxRequestConfig requestConfig,
-                                                                String clientUserAgentIdentifier)
+                                                                String sdkUserAgentIdentifier)
     {
         if (headers == null) headers = new ArrayList<HttpRequestor.Header>();
-        headers.add(buildUserAgentHeader(requestConfig, clientUserAgentIdentifier));
+        headers.add(buildUserAgentHeader(requestConfig, sdkUserAgentIdentifier));
         return headers;
     }
 
-    public static HttpRequestor.Header buildUserAgentHeader(DbxRequestConfig requestConfig, String clientUserAgentIdentifier)
+    public static HttpRequestor.Header buildUserAgentHeader(DbxRequestConfig requestConfig, String sdkUserAgentIdentifier)
     {
-        return new HttpRequestor.Header("User-Agent",  requestConfig.clientIdentifier + " " + clientUserAgentIdentifier + "/" + DbxSdkVersion.Version);
+        return new HttpRequestor.Header("User-Agent",  requestConfig.clientIdentifier + " " + sdkUserAgentIdentifier + "/" + DbxSdkVersion.Version);
     }
 
     /**
@@ -121,14 +121,14 @@ public class DbxRequestUtil
      */
     public static HttpRequestor.Response startGet(DbxRequestConfig requestConfig,
                                                   String accessToken,
-                                                  String clientUserAgentIdentifier,
+                                                  String sdkUserAgentIdentifier,
                                                   String host,
                                                   String path,
                                                   /*@Nullable*/String/*@Nullable*/[] params,
                                                   /*@Nullable*/List<HttpRequestor.Header> headers)
         throws DbxException.NetworkIO
     {
-        headers = addUserAgentHeader(headers, requestConfig, clientUserAgentIdentifier);
+        headers = addUserAgentHeader(headers, requestConfig, sdkUserAgentIdentifier);
         headers = addAuthHeader(headers, accessToken);
 
         String url = buildUrlWithParams(requestConfig.userLocale, host, path, params);
@@ -145,13 +145,13 @@ public class DbxRequestUtil
      */
     public static HttpRequestor.Uploader startPut(DbxRequestConfig requestConfig,
                                                   String accessToken,
-                                                  String clientUserAgentIdentifier,
+                                                  String sdkUserAgentIdentifier,
                                                   String host, String path,
                                                   /*@Nullable*/String/*@Nullable*/[] params,
                                                   /*@Nullable*/List<HttpRequestor.Header> headers)
         throws DbxException.NetworkIO
     {
-        headers = addUserAgentHeader(headers, requestConfig, clientUserAgentIdentifier);
+        headers = addUserAgentHeader(headers, requestConfig, sdkUserAgentIdentifier);
         headers = addAuthHeader(headers, accessToken);
 
         String url = buildUrlWithParams(requestConfig.userLocale, host, path, params);
@@ -167,7 +167,7 @@ public class DbxRequestUtil
      * Convenience function for making HTTP POST requests.
      */
     public static HttpRequestor.Response startPostNoAuth(DbxRequestConfig requestConfig,
-                                                         String clientUserAgentIdentifier,
+                                                         String sdkUserAgentIdentifier,
                                                          String host,
                                                          String path,
                                                          /*@Nullable*/String/*@Nullable*/[] params,
@@ -179,7 +179,7 @@ public class DbxRequestUtil
         if (headers == null) headers = new ArrayList<HttpRequestor.Header>();
         headers.add(new HttpRequestor.Header("Content-Type", "application/x-www-form-urlencoded; charset=utf-8"));
 
-        return startPostRaw(requestConfig, clientUserAgentIdentifier, host, path, encodedParams, headers);
+        return startPostRaw(requestConfig, sdkUserAgentIdentifier, host, path, encodedParams, headers);
     }
 
 
@@ -187,7 +187,7 @@ public class DbxRequestUtil
      * Convenience function for making HTTP POST requests.  Like startPostNoAuth but takes byte[] instead of params.
      */
     public static HttpRequestor.Response startPostRaw(DbxRequestConfig requestConfig,
-                                                      String clientUserAgentIdentifier,
+                                                      String sdkUserAgentIdentifier,
                                                       String host,
                                                       String path,
                                                       byte[] body,
@@ -196,7 +196,7 @@ public class DbxRequestUtil
     {
         String uri = buildUri(host, path);
 
-        headers = addUserAgentHeader(headers, requestConfig, clientUserAgentIdentifier);
+        headers = addUserAgentHeader(headers, requestConfig, sdkUserAgentIdentifier);
         headers.add(new HttpRequestor.Header("Content-Length", Integer.toString(body.length)));
 
         try {
@@ -359,7 +359,7 @@ public class DbxRequestUtil
 
     public static <T> T doGet(DbxRequestConfig requestConfig,
                               String accessToken,
-                              String clientUserAgentIdentifier,
+                              String sdkUserAgentIdentifier,
                               String host,
                               String path,
                              /*@Nullable*/String/*@Nullable*/[] params,
@@ -367,7 +367,7 @@ public class DbxRequestUtil
                              ResponseHandler<T> handler)
         throws DbxException
     {
-        HttpRequestor.Response response = startGet(requestConfig, accessToken, clientUserAgentIdentifier, host, path, params, headers);
+        HttpRequestor.Response response = startGet(requestConfig, accessToken, sdkUserAgentIdentifier, host, path, params, headers);
         try {
             return handler.handle(response);
         }
@@ -384,7 +384,7 @@ public class DbxRequestUtil
 
     public static <T> T doPost(DbxRequestConfig requestConfig,
                                String accessToken,
-                               String clientUserAgentIdentifier,
+                               String sdkUserAgentIdentifier,
                                String host,
                                String path,
                                /*@Nullable*/String/*@Nullable*/[] params,
@@ -393,11 +393,11 @@ public class DbxRequestUtil
             throws DbxException
     {
         headers = addAuthHeader(headers, accessToken);
-        return doPostNoAuth(requestConfig, clientUserAgentIdentifier, host, path, params, headers, handler);
+        return doPostNoAuth(requestConfig, sdkUserAgentIdentifier, host, path, params, headers, handler);
     }
 
     public static <T> T doPostNoAuth(DbxRequestConfig requestConfig,
-                                     String clientUserAgentIdentifier,
+                                     String sdkUserAgentIdentifier,
                                      String host,
                                      String path,
                                      /*@Nullable*/String/*@Nullable*/[] params,
@@ -405,7 +405,7 @@ public class DbxRequestUtil
                                      ResponseHandler<T> handler)
         throws DbxException
     {
-        HttpRequestor.Response response = startPostNoAuth(requestConfig, clientUserAgentIdentifier, host, path, params, headers);
+        HttpRequestor.Response response = startPostNoAuth(requestConfig, sdkUserAgentIdentifier, host, path, params, headers);
         return finishResponse(response, handler);
     }
 

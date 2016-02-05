@@ -20,7 +20,7 @@ public class DropboxClientFactory {
             DbxRequestConfig requestConfig = new DbxRequestConfig(
                     "examples-v2-demo",
                     userLocale,
-                    OkHttpRequestor.Instance);
+                    OkHttpRequestor.INSTANCE);
 
             sDbxClient = new DbxClientV2(requestConfig, accessToken, DbxHost.Default);
         }

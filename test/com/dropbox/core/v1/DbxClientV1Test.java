@@ -59,7 +59,7 @@ public class DbxClientV1Test
         if (okHttp == null || okHttp.equals("false")) {
             requestConfig = new DbxRequestConfig("sdk-test", null);
         } else if (okHttp.equals("true")) {
-            requestConfig = new DbxRequestConfig("sdk-test", null, OkHttpRequestor.Instance);
+            requestConfig = new DbxRequestConfig("sdk-test", null, OkHttpRequestor.INSTANCE);
         } else {
             throw new RuntimeException("Invalid value for System property \"okHttp\"." +
                     " Expecting \"true\" or \"false\", got " + jq(okHttp) + ".");
