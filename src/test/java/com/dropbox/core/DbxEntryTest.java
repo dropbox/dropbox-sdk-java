@@ -38,7 +38,7 @@ public class DbxEntryTest
     @Test
     public void parseFile() throws Exception
     {
-        DbxEntry.File f = loadJsonResource(DbxEntry.Reader, "file.json").asFile();
+        DbxEntry.File f = loadJsonResource(DbxEntry.Reader, "/file.json").asFile();
         assertEquals(f.path, "/Photos/Sample Album/Boston City Flow.jpg");
         assertEquals(f.numBytes, 339773);
         assertEquals(f.mightHaveThumbnail, true);
@@ -53,7 +53,7 @@ public class DbxEntryTest
     @Test
     public void parseFileWithPhotoInfo() throws Exception
     {
-        DbxEntry.File f = loadJsonResource(DbxEntry.Reader, "file-with-photo-info.json").asFile();
+        DbxEntry.File f = loadJsonResource(DbxEntry.Reader, "/file-with-photo-info.json").asFile();
         assertNotNull(f.photoInfo, "Expected entry to have a photo info");
         assertNotNull(f.photoInfo.timeTaken, "Expected entry to have a time taken");
         assertNotNull(f.photoInfo.location, "Expected entry to have a location");
@@ -62,7 +62,7 @@ public class DbxEntryTest
     @Test
     public void parseFileWithVideoInfo() throws Exception
     {
-        DbxEntry.File f = loadJsonResource(DbxEntry.Reader, "file-with-video-info.json").asFile();
+        DbxEntry.File f = loadJsonResource(DbxEntry.Reader, "/file-with-video-info.json").asFile();
         assertNotNull(f.videoInfo, "Expected entry to have a video info");
         assertNotNull(f.videoInfo.timeTaken, "Expected entry to have a time taken");
         assertNotNull(f.videoInfo.location, "Expected entry to have a location");
@@ -72,7 +72,7 @@ public class DbxEntryTest
     @Test
     public void parseFileWithVideoInfoNullFields() throws Exception
     {
-        DbxEntry.File f = loadJsonResource(DbxEntry.Reader, "file-with-video-info-null-fields.json").asFile();
+        DbxEntry.File f = loadJsonResource(DbxEntry.Reader, "/file-with-video-info-null-fields.json").asFile();
         assertNull(f.videoInfo.duration);
         assertNull(f.videoInfo.location);
         assertNull(f.videoInfo.timeTaken);
@@ -81,7 +81,7 @@ public class DbxEntryTest
     @Test
     public void parseWithMediaInfoPending() throws Exception
     {
-        DbxEntry.File f = loadJsonResource(DbxEntry.Reader, "file-with-media-info-pending.json").asFile();
+        DbxEntry.File f = loadJsonResource(DbxEntry.Reader, "/file-with-media-info-pending.json").asFile();
         assertTrue(f.videoInfo == DbxEntry.File.VideoInfo.PENDING);
         assertTrue(f.photoInfo == DbxEntry.File.PhotoInfo.PENDING);
     }

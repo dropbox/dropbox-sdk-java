@@ -92,12 +92,11 @@
     </dependencies>
 
     <build>
-        <sourceDirectory>src</sourceDirectory>
         <resources>
             <resource>
-                <directory>${project.build.sourceDirectory}</directory>
+                <directory>src/main/resources</directory>
                 <includes>
-                    <include>com/dropbox/core/sdk-version.txt</include>
+                    <include>sdk-version.txt</include>
                 </includes>
                 <filtering>true</filtering>
             </resource>
@@ -105,12 +104,6 @@
                 <directory>${project.build.directory}/generated-resources/certs</directory>
             </resource>
         </resources>
-        <testSourceDirectory>test</testSourceDirectory>
-        <testResources>
-            <testResource>
-                <directory>test</directory>
-            </testResource>
-        </testResources>
 
         <plugins>
             <plugin>
@@ -206,7 +199,7 @@
                 <executions>
                     <execution>
                         <configuration>
-                            <input>src/com/dropbox/core/http/trusted-certs.crt</input>
+                            <input>src/main/resources/trusted-certs.crt</input>
                             <output>${project.build.directory}/generated-resources/certs/com/dropbox/core/http/trusted-certs.raw</output>
                         </configuration>
                         <goals>

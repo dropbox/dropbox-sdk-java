@@ -499,7 +499,7 @@ public class DbxClientV1Test
         final String orig = folder + "/test-imag"+E_ACCENT+".jpeg";
 
         // Upload an image.
-        InputStream in = this.getClass().getResourceAsStream("test-image.jpeg");
+        InputStream in = this.getClass().getResourceAsStream("/test-image.jpeg");
         if (in == null) {
             throw new AssertionError("couldn't load test image \"test-image.jpeg\"");
         }
@@ -543,7 +543,7 @@ public class DbxClientV1Test
         String orig = p("test-imag" + E_ACCENT + ".jpeg");
 
         // Upload an image.
-        InputStream in = this.getClass().getResourceAsStream("test-image.jpeg");
+        InputStream in = this.getClass().getResourceAsStream("/test-image.jpeg");
         if (in == null) {
             throw new AssertionError("couldn't load test image \"test-image.jpeg\"");
         }
@@ -555,7 +555,7 @@ public class DbxClientV1Test
             IOUtil.closeInput(in);
         }
 
-        BufferedImage origImage = ImageIO.read(getClass().getResource("test-image.jpeg"));
+        BufferedImage origImage = ImageIO.read(getClass().getResource("/test-image.jpeg"));
         int origW = origImage.getWidth();
         int origH = origImage.getHeight();
 
