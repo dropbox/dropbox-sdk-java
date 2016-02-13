@@ -8,7 +8,13 @@ import com.dropbox.core.DbxWebAuth;
 import com.dropbox.core.json.JsonReader;
 import com.dropbox.core.http.StandardHttpRequestor;
 import com.dropbox.core.v2.DbxClientV2;
-import com.dropbox.core.v2.DbxFiles;
+import com.dropbox.core.v2.files.DeletedMetadata;
+import com.dropbox.core.v2.files.FileMetadata;
+import com.dropbox.core.v2.files.FolderMetadata;
+import com.dropbox.core.v2.files.ListFolderGetLatestCursorResult;
+import com.dropbox.core.v2.files.ListFolderLongpollResult;
+import com.dropbox.core.v2.files.ListFolderResult;
+import com.dropbox.core.v2.files.Metadata;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -50,19 +56,20 @@ public class Main {
             System.out.println("Longpolling for changes... press CTRL-C to exit.");
             while (true) {
                 // will block for longpollTimeoutSecs or until a change is made in the folder
-                DbxFiles.ListFolderLongpollResult result = dbxLongpollClient.files.listFolderLongpoll(cursor, longpollTimeoutSecs);
+                ListFolderLongpollResult result = dbxLongpollClient.files.listFolderLongpoll(cursor, longpollTimeoutSecs);
 
                 // we have changes, list them
-                if (result.changes) {
+                if (result.getChanges()) {
                     cursor = printChanges(dbxClient, cursor);
                 }
 
                 // we were asked to back off from our polling, wait the requested amount of seconds
                 // before issuing another longpoll request.
-                if (result.backoff != null) {
-                    System.out.printf("\n\nBacking off for %d seconds\n\n", result.backoff);
+                Long backoff = result.getBackoff();
+                if (backoff != null) {
+                    System.out.printf("\n\nBacking off for %d seconds\n\n", backoff);
                     try {
-                        Thread.sleep(TimeUnit.SECONDS.toMillis(result.backoff));
+                        Thread.sleep(TimeUnit.SECONDS.toMillis(backoff));
                     } catch (InterruptedException ex) {
                         System.exit(0);
                     }
@@ -110,12 +117,12 @@ public class Main {
      */
     private static String getLatestCursor(DbxClientV2 dbxClient, String path)
         throws DbxApiException, DbxException {
-        DbxFiles.ListFolderGetLatestCursorResult result = dbxClient.files.listFolderGetLatestCursorBuilder(path)
-            .includeDeleted(true)
-            .includeMediaInfo(false)
-            .recursive(true)
+        ListFolderGetLatestCursorResult result = dbxClient.files.listFolderGetLatestCursorBuilder(path)
+            .withIncludeDeleted(true)
+            .withIncludeMediaInfo(false)
+            .withRecursive(true)
             .start();
-        return result.cursor;
+        return result.getCursor();
     }
 
     /**
@@ -131,31 +138,31 @@ public class Main {
         throws DbxApiException, DbxException {
 
         while (true) {
-            DbxFiles.ListFolderResult result = client.files.listFolderContinue(cursor);
-            for (DbxFiles.Metadata metadata : result.entries) {
+            ListFolderResult result = client.files.listFolderContinue(cursor);
+            for (Metadata metadata : result.getEntries()) {
                 String type;
                 String details;
-                if (metadata instanceof DbxFiles.FileMetadata) {
-                    DbxFiles.FileMetadata fileMetadata = (DbxFiles.FileMetadata) metadata;
+                if (metadata instanceof FileMetadata) {
+                    FileMetadata fileMetadata = (FileMetadata) metadata;
                     type = "file";
-                    details = "(rev=" + fileMetadata.rev + ")";
-                } else if (metadata instanceof DbxFiles.FolderMetadata) {
-                    DbxFiles.FolderMetadata folderMetadata = (DbxFiles.FolderMetadata) metadata;
+                    details = "(rev=" + fileMetadata.getRev() + ")";
+                } else if (metadata instanceof FolderMetadata) {
+                    FolderMetadata folderMetadata = (FolderMetadata) metadata;
                     type = "folder";
-                    details = folderMetadata.sharingInfo != null ? "(shared)" : "";
-                } else if (metadata instanceof DbxFiles.DeletedMetadata) {
+                    details = folderMetadata.getSharingInfo() != null ? "(shared)" : "";
+                } else if (metadata instanceof DeletedMetadata) {
                     type = "deleted";
                     details = "";
                 } else {
                     throw new IllegalStateException("Unrecognized metadata type: " + metadata.getClass());
                 }
 
-                System.out.printf("\t%10s %24s \"%s\"\n", type, details, metadata.pathLower);
+                System.out.printf("\t%10s %24s \"%s\"\n", type, details, metadata.getPathLower());
             }
             // update cursor to fetch remaining results
-            cursor = result.cursor;
+            cursor = result.getCursor();
 
-            if (!result.hasMore) {
+            if (!result.getHasMore()) {
                 break;
             }
         }

@@ -5,8 +5,8 @@ import java.io.InputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import com.dropbox.core.DbxApiException;
 import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
 import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.util.IOUtil;
 
@@ -37,31 +37,48 @@ import com.dropbox.core.util.IOUtil;
  *        uploader.close();
  *    }
  *</code></pre>
+ *
+ * @param <R> response type returned by server on request success
+ * @param <X> exception type returned by server on request failure
  */
-public class DbxUploader<R,E,X extends Throwable> implements Closeable {
+public abstract class DbxUploader<R, X extends DbxApiException> implements Closeable {
     private final HttpRequestor.Uploader httpUploader;
-    private final JsonReader<R> resultReader;
-    private final JsonReader<E> errorReader;
-    private final DbxRequestUtil.RouteSpecificErrorMaker<X> errorMaker;
 
     private boolean closed;
     private boolean finished;
 
-    protected DbxUploader(HttpRequestor.Uploader httpUploader,
-                          JsonReader<R> resultReader, JsonReader<E> errorReader,
-                          DbxRequestUtil.RouteSpecificErrorMaker<X> errorMaker) {
+    protected DbxUploader(HttpRequestor.Uploader httpUploader) {
         this.httpUploader = httpUploader;
-        this.resultReader = resultReader;
-        this.errorReader = errorReader;
-        this.errorMaker = errorMaker;
 
         this.closed = false;
         this.finished = false;
     }
 
-    public static abstract class UploaderMaker<R,E,X extends Throwable> {
-        public abstract DbxUploader<R,E,X> makeUploader(HttpRequestor.Uploader httpUploader);
-    }
+    /**
+     * Parse and return the server response as the appropriate Java object.
+     *
+     * @param response Successful response from the server
+     *
+     * @return server response object
+     *
+     * @throws JsonReadException if unable to parse the response
+     * @throws IOException if an error occurs reading the response
+     */
+    protected abstract R parseResponse(HttpRequestor.Response response) throws JsonReadException, IOException;
+
+    /**
+     * Parse and return the server error response as the appropriate Java object.
+     *
+     * Implementations should throw the appropriate {@link DbxApiException} for their route.
+     *
+     * @param response error response from the server
+     *
+     * @return specific exception thrown by route
+     *
+     * @throws JsonReadException if unable to parse the response
+     * @throws IOException if an error occurs reading the response
+     */
+    protected abstract X parseError(HttpRequestor.Response response) throws JsonReadException, IOException;
 
     /**
      * Uploads all bytes read from the given {@link InputStream} and returns the response.
@@ -86,11 +103,12 @@ public class DbxUploader<R,E,X extends Throwable> implements Closeable {
      *
      * @return Response from server
      *
+     * @throws X if the server sent an error response for the request
      * @throws DbxException if an error occurs uploading the data or reading the response
      * @throws IOException if an error occurs reading the input stream.
      * @throws IllegalStateException if this uploader has already been closed (see {@link #close}) or finished (see {@link #finish})
      */
-    public R uploadAndFinish(InputStream in) throws DbxException, IOException, X {
+    public R uploadAndFinish(InputStream in) throws X, DbxException, IOException {
         try {
             try {
                 IOUtil.copyStreamToStream(in, getOutputStream());
@@ -137,11 +155,12 @@ public class DbxUploader<R,E,X extends Throwable> implements Closeable {
      *
      * @return Response from server
      *
+     * @throws X if the server sent an error response for the request
      * @throws DbxException if an error occurs uploading the data or reading the response
      * @throws IOException if an error occurs reading the input stream.
      * @throws IllegalStateException if this uploader has already been closed (see {@link #close}) or finished (see {@link #finish})
      */
-    public R uploadAndFinish(InputStream in, long limit) throws DbxException, IOException, X {
+    public R uploadAndFinish(InputStream in, long limit) throws X, DbxException, IOException {
         return uploadAndFinish(IOUtil.limit(in, limit));
     }
 
@@ -203,10 +222,11 @@ public class DbxUploader<R,E,X extends Throwable> implements Closeable {
      *
      * @return Response from server
      *
+     * @throws X if the server sent an error response for the request
      * @throws DbxException if an error occurs sending the upload or reading the response
      * @throws IllegalStateException if this uploader has already been closed (see {@link #close}) or finished (see {@link #finish})
      */
-    public R finish() throws DbxException, X {
+    public R finish() throws X, DbxException {
         assertOpenAndUnfinished();
 
         HttpRequestor.Response response = null;
@@ -215,10 +235,10 @@ public class DbxUploader<R,E,X extends Throwable> implements Closeable {
 
             try {
                 if (response.statusCode == 200) {
-                    return resultReader.readFully(response.body);
+                    return parseResponse(response);
                 }
                 else if (response.statusCode == 409) {
-                    throw errorMaker.makeError(DbxRequestUtil.ErrorWrapper.fromResponse(errorReader, response));
+                    throw parseError(response);
                 }
                 else {
                     throw DbxRequestUtil.unexpectedStatus(response);

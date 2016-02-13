@@ -183,7 +183,7 @@ public class StandardHttpRequestor extends HttpRequestor
      * others. Create multiple {@link StandardHttpRequestor} objects
      * with different configurations to handle these requests. For
      * example, calls to {@link
-     * com.dropbox.core.v2.DbxFiles#listFolderLongpoll(String,long)} should
+     * com.dropbox.core.v2.files.DbxFiles#listFolderLongpoll(String,long)} should
      * use a {@code StandardHttpRequestor} with its read timeout (see
      * {@link Builder#withReadTimeout}) set longer than the longpoll
      * timeout.

@@ -1,3 +1,14 @@
+- Fix bug that hid certain routes containing union request arguments.
+- Use getter methods instead of public final fields.
+- Add Java packages that map to endpoint namespaces.
+- Break out nested classes into their own files in the appropriate packages.
+- Change format of builder methods.
+  - Prepend 'with' to method names
+- Change format of tagged union classes.
+  - getTag() renamed to tag() to avoid naming conflicts
+  - Tags without values now referenced as public final singletons
+  - Unions composed of only tags without values generated as enums
+- Add builders for request and response classes.
 - Fix deserialization bug with Union containing tags with optional values.
 - Make read timeouts more easily configurable for StandardHttpRequestor.
 - Add longpoll example.

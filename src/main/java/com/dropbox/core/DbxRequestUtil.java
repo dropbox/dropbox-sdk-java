@@ -228,9 +228,9 @@ public class DbxRequestUtil
             this.userMessage = userMessage;
         }
 
-        public static ErrorWrapper fromResponse(JsonReader reader, HttpRequestor.Response response)
+        public static <T> ErrorWrapper fromResponse(JsonReader<T> reader, HttpRequestor.Response response)
             throws IOException, JsonReadException {
-            Object errValue = null;
+            T errValue = null;
             String requestId = getRequestId(response);
             LocalizedText userMessage = null;
 
@@ -287,11 +287,6 @@ public class DbxRequestUtil
                 return new LocalizedText(text, locale);
             }
         };
-    }
-
-    public static abstract class RouteSpecificErrorMaker<T extends Throwable>
-    {
-        public abstract T makeError(DbxRequestUtil.ErrorWrapper ew);
     }
 
     public static byte[] loadErrorBody(HttpRequestor.Response response)

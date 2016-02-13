@@ -127,7 +127,7 @@ public class DbxRawClientV2 {
             String host, String path, ArgT arg, boolean noAuth,
             JsonWriter<ArgT> argWriter,
             JsonReader<ResT> resReader,
-            JsonReader<ErrT>errReader)
+            JsonReader<ErrT> errReader)
             throws DbxRequestUtil.ErrorWrapper, DbxException
     {
         HttpRequestor.Response response;
@@ -196,10 +196,9 @@ public class DbxRawClientV2 {
         return out.toString();
     }
 
-    public <ArgT,ResT,ErrT,X extends Throwable> DbxUploader<ResT,ErrT,X> uploadStyle(
+    public <ArgT> HttpRequestor.Uploader uploadStyle(
             String host, String path, ArgT arg, boolean noAuth,
-            JsonWriter<ArgT>argWriter,
-            DbxUploader.UploaderMaker<ResT,ErrT,X> uploaderMaker)
+            JsonWriter<ArgT> argWriter)
             throws DbxException
     {
         String uri = DbxRequestUtil.buildUri(host, path);
@@ -211,8 +210,7 @@ public class DbxRawClientV2 {
         headers = DbxRequestUtil.addUserAgentHeader(headers, requestConfig, USER_AGENT_ID);
         headers.add(new HttpRequestor.Header("Dropbox-API-Arg", headerSafeJson(arg, argWriter)));
         try {
-            HttpRequestor.Uploader httpUploader = requestConfig.httpRequestor.startPost(uri, headers);
-            return uploaderMaker.makeUploader(httpUploader);
+            return requestConfig.httpRequestor.startPost(uri, headers);
         }
         catch (IOException ex) {
             throw new DbxException.NetworkIO(ex);

@@ -50,11 +50,10 @@ import java.io.InputStream;
  *    }
  *</code></pre>
  *
- * @param <R> The return type of the {@link DbxUploader}
- * @param <E> The error type of the {@link DbxUploader}
- * @param <X> The exception type of the {@link DbxUploader}
+ * @param <R> response type returned by server on request success
+ * @param <X> exception type returned by server on request failure
  */
-public abstract class DbxUploadStyleBuilder<R,E,X extends Throwable> {
+public abstract class DbxUploadStyleBuilder<R,X extends DbxApiException> {
 
     /**
      * Begins the upload request using this builder's request parameters and returns a {@link
@@ -70,7 +69,7 @@ public abstract class DbxUploadStyleBuilder<R,E,X extends Throwable> {
      *
      * @throws DbxException if an error occursing initializing the request
      */
-    public abstract DbxUploader<R,E,X> start() throws DbxException;
+    public abstract DbxUploader<R, X> start() throws DbxException;
 
     /**
      * Convenience method for {@link DbxUploader#uploadAndFinish(InputStream)}:
@@ -83,10 +82,11 @@ public abstract class DbxUploadStyleBuilder<R,E,X extends Throwable> {
      *
      * @return Response from server
      *
+     * @throws X if the server sent an error response for the request
      * @throws DbxException if an error occurs uploading the data or reading the response
      * @throws IOException if an error occurs reading the input stream.
      */
-    public R uploadAndFinish(InputStream in) throws DbxException, IOException, X
+    public R uploadAndFinish(InputStream in) throws X, DbxException, IOException
     {
         return start().uploadAndFinish(in);
     }
@@ -103,10 +103,11 @@ public abstract class DbxUploadStyleBuilder<R,E,X extends Throwable> {
      *
      * @return Response from server
      *
+     * @throws X if the server sent an error response for the request
      * @throws DbxException if an error occurs uploading the data or reading the response
      * @throws IOException if an error occurs reading the input stream.
      */
-    public R uploadAndFinish(InputStream in, long limit) throws DbxException, IOException, X
+    public R uploadAndFinish(InputStream in, long limit) throws X, DbxException, IOException
     {
         return start().uploadAndFinish(in, limit);
     }

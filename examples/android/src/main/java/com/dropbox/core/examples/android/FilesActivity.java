@@ -22,7 +22,9 @@ import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
-import com.dropbox.core.v2.DbxFiles;
+import com.dropbox.core.v2.files.FileMetadata;
+import com.dropbox.core.v2.files.FolderMetadata;
+import com.dropbox.core.v2.files.ListFolderResult;
 
 import java.io.File;
 import java.text.DateFormat;
@@ -41,7 +43,7 @@ public class FilesActivity extends DropboxActivity {
 
     private String mPath;
     private FilesAdapter mFilesAdapter;
-    private DbxFiles.FileMetadata mSelectedFile;
+    private FileMetadata mSelectedFile;
 
     public static Intent getIntent(Context context, String path) {
         Intent filesIntent = new Intent(context, FilesActivity.class);
@@ -72,12 +74,12 @@ public class FilesActivity extends DropboxActivity {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.files_list);
         mFilesAdapter = new FilesAdapter(PicassoClient.getPicasso(), new FilesAdapter.Callback() {
             @Override
-            public void onFolderClicked(DbxFiles.FolderMetadata folder) {
-                startActivity(FilesActivity.getIntent(FilesActivity.this, folder.pathLower));
+            public void onFolderClicked(FolderMetadata folder) {
+                startActivity(FilesActivity.getIntent(FilesActivity.this, folder.getPathLower()));
             }
 
             @Override
-            public void onFileClicked(final DbxFiles.FileMetadata file) {
+            public void onFileClicked(final FileMetadata file) {
                 mSelectedFile = file;
                 performWithPermissions(FileAction.DOWNLOAD);
             }
@@ -173,10 +175,10 @@ public class FilesActivity extends DropboxActivity {
 
         new ListFolderTask(DropboxClientFactory.getClient(), new ListFolderTask.Callback() {
             @Override
-            public void onDataLoaded(DbxFiles.ListFolderResult result) {
+            public void onDataLoaded(ListFolderResult result) {
                 dialog.dismiss();
 
-                mFilesAdapter.setFiles(result.entries);
+                mFilesAdapter.setFiles(result.getEntries());
             }
 
             @Override
@@ -192,7 +194,7 @@ public class FilesActivity extends DropboxActivity {
         }).execute(mPath);
     }
 
-    private void downloadFile(DbxFiles.FileMetadata file) {
+    private void downloadFile(FileMetadata file) {
         final ProgressDialog dialog = new ProgressDialog(this);
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         dialog.setCancelable(false);
@@ -248,11 +250,11 @@ public class FilesActivity extends DropboxActivity {
 
         new UploadFileTask(this, DropboxClientFactory.getClient(), new UploadFileTask.Callback() {
             @Override
-            public void onUploadComplete(DbxFiles.FileMetadata result) {
+            public void onUploadComplete(FileMetadata result) {
                 dialog.dismiss();
 
-                String message = result.name + " size " + result.size + " modified " +
-                        DateFormat.getDateTimeInstance().format(result.clientModified);
+                String message = result.getName() + " size " + result.getSize() + " modified " +
+                        DateFormat.getDateTimeInstance().format(result.getClientModified());
                 Toast.makeText(FilesActivity.this, message, Toast.LENGTH_SHORT)
                         .show();
 
