@@ -42,7 +42,8 @@ public class Main {
         //
         StandardHttpRequestor.Config config = StandardHttpRequestor.Config.DEFAULT_INSTANCE;
         StandardHttpRequestor.Config longpollConfig = config.copy()
-            .withReadTimeout(longpollTimeoutSecs + 1, TimeUnit.SECONDS)
+            // read timeout should be well above longpoll timeout to allow for flucuations in response times.
+            .withReadTimeout(5, TimeUnit.MINUTES)
             .build();
 
         DbxClientV2 dbxClient = createClient(auth, config);
@@ -67,7 +68,6 @@ public class Main {
                 // before issuing another longpoll request.
                 Long backoff = result.getBackoff();
                 if (backoff != null) {
-                    System.out.printf("\n\nBacking off for %d seconds\n\n", backoff);
                     try {
                         Thread.sleep(TimeUnit.SECONDS.toMillis(backoff));
                     } catch (InterruptedException ex) {

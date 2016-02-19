@@ -10,7 +10,7 @@ public class JsonDateReaderBench
      * Compare our specialized date parser to Java's more generic
      * SimpleDateFormat parser.
      */
-    public static final class ParseDropboxDate extends Benchmark
+    public static final class ParseDropboxDate
     {
         private static final String[] dates = {
             "Sun, 01 Jan 1971 00:02:03 +0000",
@@ -35,6 +35,7 @@ public class JsonDateReaderBench
             }
         }
 
+        @Benchmark
         public void timeSpecialized(int reps)
         {
             for (int i = 0; i < reps; i++) {
@@ -49,6 +50,7 @@ public class JsonDateReaderBench
             }
         }
 
+        @Benchmark
         public void timeStandard(int reps)
         {
             SimpleDateFormat f = dateFormatHolder.get();
@@ -64,6 +66,7 @@ public class JsonDateReaderBench
             }
         }
 
+        @Benchmark
         public void timeStandardThreadLocal(int reps)
         {
             for (int i = 0; i < reps; i++) {

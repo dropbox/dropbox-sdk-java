@@ -37,6 +37,10 @@
         </developer>
     </developers>
 
+    <prerequisites>
+        <maven>3.0.5</maven>
+    </prerequisites>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <skipTests>true</skipTests>
@@ -50,14 +54,14 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
-            <version>[2.2,2.7)</version>
+            <version>2.7.1</version>
         </dependency>
 
         <!-- A "soft" dependency on the Servlet API. -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
-            <version>2.2</version>
+            <version>2.5</version>
             <scope>provided</scope>
         </dependency>
 
@@ -65,7 +69,7 @@
         <dependency>
             <groupId>com.squareup.okhttp</groupId>
             <artifactId>okhttp</artifactId>
-            <version>2.5.0</version>
+            <version>2.7.4</version>
             <scope>provided</scope>
         </dependency>
 
@@ -80,13 +84,13 @@
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
-            <version>[6,7)</version>
+            <version>6.9.10</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.google.caliper</groupId>
             <artifactId>caliper</artifactId>
-            <version>1.0-beta-1</version>
+            <version>1.0-beta-2</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -109,7 +113,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
+                <version>3.5.1</version>
                 <configuration>
                     <source>6</source>
                     <target>6</target>
@@ -118,7 +122,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>animal-sniffer-maven-plugin</artifactId>
-                <version>1.11</version>
+                <version>1.14</version>
                 <configuration>
                     <signature>
                         <groupId>org.codehaus.mojo.signature</groupId>
@@ -139,7 +143,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>2.2.1</version>
+                <version>3.0.0</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -168,7 +172,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
-                <version>1.7</version>
+                <version>1.8</version>
                 <executions>
                     <execution>
                         <id>copy</id>
@@ -187,7 +191,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.15</version>
+                <version>2.19.1</version>
                 <configuration>
                     <skipTests>${skipTests}</skipTests>
                 </configuration>
@@ -237,7 +241,7 @@
             <!-- Add OSGi metadata to JAR manifest. -->
             <plugin>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>2.5</version>
+                <version>2.6</version>
                 <configuration>
                     <archive>
                         <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
@@ -247,7 +251,7 @@
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
-                <version>2.5.0</version>
+                <version>3.0.1</version>
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
@@ -290,7 +294,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>findbugs-maven-plugin</artifactId>
-                <version>2.5.3</version>
+                <version>3.0.3</version>
                 <configuration>
                     <effort>max</effort>
                     <threshold>low</threshold>
@@ -335,6 +339,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>2.10.3</version>
                         <configuration>
                             <!--
                                 TODO: We want to pass a single arg: "-Xdoclint:all,-missing", but
