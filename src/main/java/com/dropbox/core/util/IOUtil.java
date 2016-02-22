@@ -14,6 +14,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
+import java.nio.charset.CharacterCodingException;
 
 public class IOUtil
 {
@@ -29,6 +30,18 @@ public class IOUtil
     public static Writer utf8Writer(OutputStream out)
     {
         return new OutputStreamWriter(out, StringUtil.UTF8.newEncoder());
+    }
+
+    public static String toUtf8String(InputStream in)
+        throws ReadException, CharacterCodingException
+    {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        try {
+            copyStreamToStream(in, out);
+        } catch (WriteException ex) {
+            throw new RuntimeException("impossible", ex);
+        }
+        return StringUtil.utf8ToString(out.toByteArray());
     }
 
     public static void copyStreamToStream(InputStream in, OutputStream out)

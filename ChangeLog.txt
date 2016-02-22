@@ -1,5 +1,9 @@
-- Fix bug that hid certain routes containing union request arguments.
 - Use getter methods instead of public final fields.
+- Rename exception classes to be consistent with Java practices (e.g. end in "Exception").
+- Move DbxException inner classes out into their own files.
+- Expose Retry-After backoff for rate limiting exceptions.
+- Add configuration setting for automatically retrying failed requests.
+- Fix bug that hid certain routes containing union request arguments.
 - Add Java packages that map to endpoint namespaces.
 - Break out nested classes into their own files in the appropriate packages.
 - Change format of builder methods.
@@ -12,6 +16,7 @@
 - Fix deserialization bug with Union containing tags with optional values.
 - Make read timeouts more easily configurable for StandardHttpRequestor.
 - Add longpoll example.
+- Separate integration tests from unit tests and enable unit tests by default.
 - Fix android example bugs and linter warnings
   - Fix compilation error
   - Fix upload failure bug

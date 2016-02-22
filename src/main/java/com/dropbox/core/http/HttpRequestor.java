@@ -52,9 +52,11 @@ public abstract class HttpRequestor
 
     public static abstract class Uploader
     {
-        public final OutputStream body;
+        private final OutputStream body;
+
         protected Uploader(OutputStream body) { this.body = body; }
 
+        public OutputStream getBody() { return body; }
         public abstract void close();
         public abstract void abort();
         public abstract Response finish() throws IOException;

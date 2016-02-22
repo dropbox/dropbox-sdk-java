@@ -67,7 +67,7 @@ public class DbxWebAuthNoRedirect
      */
     public String start()
     {
-        return DbxWebAuthHelper.getAuthorizeUrl(this.appInfo, this.requestConfig.userLocale, null, null);
+        return DbxWebAuthHelper.getAuthorizeUrl(this.appInfo, this.requestConfig.getUserLocale(), null, null);
     }
 
     /**

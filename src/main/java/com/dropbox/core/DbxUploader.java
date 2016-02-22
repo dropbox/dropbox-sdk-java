@@ -117,7 +117,7 @@ public abstract class DbxUploader<R, X extends DbxApiException> implements Close
                 throw ex.getCause();
             } catch (IOException ex) {
                 // write exceptions and everything else is a Network I/O problem
-                throw new DbxException.NetworkIO(ex);
+                throw new NetworkIOException(ex);
             }
 
             return finish();
@@ -211,7 +211,7 @@ public abstract class DbxUploader<R, X extends DbxApiException> implements Close
      */
     public OutputStream getOutputStream() {
         assertOpenAndUnfinished();
-        return this.httpUploader.body;
+        return this.httpUploader.getBody();
     }
 
     /**
@@ -245,10 +245,10 @@ public abstract class DbxUploader<R, X extends DbxApiException> implements Close
                 }
             } catch (JsonReadException ex) {
                 String requestId = DbxRequestUtil.getRequestId(response);
-                throw new DbxException.BadResponse(requestId, "Bad JSON in response " + ex, ex);
+                throw new BadResponseException(requestId, "Bad JSON in response " + ex, ex);
             }
         } catch (IOException ex) {
-            throw new DbxException.NetworkIO(ex);
+            throw new NetworkIOException(ex);
         } finally {
             // Make sure input stream is closed
             if (response != null) {

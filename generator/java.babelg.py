@@ -2996,8 +2996,8 @@ class JavaCodeGenerationInstance(object):
                     out('super(%s);' % parent_args)
 
                 for field in data_type.fields:
-                    self.generate_field_assignment(field, allow_default=False)
                     self.generate_field_validation(field, allow_default=False)
+                    self.generate_field_assignment(field, allow_default=False)
 
             # required-only constructor
             if data_type.has_optional_fields:
@@ -3361,6 +3361,14 @@ class JavaCodeGenerationInstance(object):
 
         lhs = lhs or ('this.%s' % field.java_name)
         rhs = rhs or field.java_name
+
+        # our timestamp format only allows for second-level granularity (no millis).
+        # enforce this.
+        #
+        # TODO: gotta be a better way than this...
+        if is_timestamp_type(field.data_type.as_babel) and rhs != 'null':
+            rhs = 'new %s(%s.getTime() - (%s.getTime() %% 1000))' % (
+                JavaClass(self.ctx, "java.util.Date"), rhs, rhs)
 
         if allow_default and field.has_default:
             if rhs == 'null':

@@ -152,7 +152,7 @@ public class DbxWebAuth
 
         this.csrfTokenStore.set(csrfAscii);
 
-        return DbxWebAuthHelper.getAuthorizeUrl(this.appInfo, this.requestConfig.userLocale, redirectUri, state);
+        return DbxWebAuthHelper.getAuthorizeUrl(this.appInfo, this.requestConfig.getUserLocale(), redirectUri, state);
     }
 
     /**

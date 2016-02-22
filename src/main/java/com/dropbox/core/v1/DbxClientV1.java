@@ -356,10 +356,8 @@ public final class DbxClientV1
             @Override
             public DbxAccountInfo handle(HttpRequestor.Response response) throws DbxException
             {
-                if (response.statusCode != 200) {
-                    String requestId = DbxRequestUtil.getRequestId(response);
-                    throw new DbxException.BadResponse(requestId, "unexpected response code: " + response.statusCode);
-                }
+                if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+
                 return DbxRequestUtil.readJsonFromResponse(DbxAccountInfo.Reader, response);
             }
         });
@@ -385,7 +383,7 @@ public final class DbxClientV1
             {
                 if (response.statusCode != 200) {
                     String requestId = DbxRequestUtil.getRequestId(response);
-                    throw new DbxException.BadResponse(requestId, "unexpected response code: " + response.statusCode);
+                    throw new BadResponseException(requestId, "unexpected response code: " + response.statusCode);
                 }
                 return null;
             }
@@ -470,45 +468,55 @@ public final class DbxClientV1
     /**
      * Generic function that downloads either files or thumbnails.
      */
-    private /*@Nullable*/Downloader startGetSomething(final String apiPath, /*@Nullable*/String[] params)
+    private /*@Nullable*/Downloader startGetSomething(final String apiPath,
+                                                      final /*@Nullable*/String[] params)
         throws DbxException
     {
-        String host = this.host.content;
+        final String host = this.host.content;
 
-        boolean passedOwnershipOfStream = false;
-        HttpRequestor.Response response = DbxRequestUtil.startGet(requestConfig, accessToken, USER_AGENT_ID, host, apiPath, params, null);
-        try {
-            if (response.statusCode == 404) return null;
-            if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+        // we don't use doGet() here because doGet() will close our input stream before we can
+        // download the contents.
+        return DbxRequestUtil.runAndRetry(requestConfig.getMaxRetries(),
+                                          new DbxRequestUtil.RequestMaker<Downloader, DbxException>() {
+            @Override
+            public Downloader run() throws DbxException {
+                HttpRequestor.Response response = DbxRequestUtil.startGet(requestConfig, accessToken, USER_AGENT_ID, host, apiPath, params, null);
 
-            String metadataString = DbxRequestUtil.getFirstHeader(response, "x-dropbox-metadata");
-            DbxEntry.File metadata;
-            try {
-                metadata = DbxEntry.File.Reader.readFully(metadataString);
-            }
-            catch (JsonReadException ex) {
-                String requestId = DbxRequestUtil.getRequestId(response);
-                throw new DbxException.BadResponse(requestId, "Bad JSON in X-Dropbox-Metadata header: " + ex.getMessage(), ex);
-            }
-
-            // Package up the metadata with the response body's InputStream.
-            Downloader result = new Downloader(metadata, response.body);
-
-            passedOwnershipOfStream = true;
-            return result;
-        }
-        finally {
-            // If we haven't passed ownership the stream to the caller, then close it.
-            if (!passedOwnershipOfStream) {
+                boolean passedOwnershipOfStream = false;
                 try {
-                    response.body.close();
+                    if (response.statusCode == 404) return null;
+                    if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+
+                    String metadataString = DbxRequestUtil.getFirstHeader(response, "x-dropbox-metadata");
+                    DbxEntry.File metadata;
+                    try {
+                        metadata = DbxEntry.File.Reader.readFully(metadataString);
+                    }
+                    catch (JsonReadException ex) {
+                        String requestId = DbxRequestUtil.getRequestId(response);
+                        throw new BadResponseException(requestId, "Bad JSON in X-Dropbox-Metadata header: " + ex.getMessage(), ex);
+                    }
+
+                    // Package up the metadata with the response body's InputStream.
+                    Downloader result = new Downloader(metadata, response.body);
+
+                    passedOwnershipOfStream = true;
+                    return result;
                 }
-                catch (IOException ex) {
-                    // Ignore, since we don't actually care about the data in this method.
-                    // We only care about IOExceptions when actually reading from the stream.
+                finally {
+                    // If we haven't passed ownership the stream to the caller, then close it.
+                    if (!passedOwnershipOfStream) {
+                        try {
+                            response.body.close();
+                        }
+                        catch (IOException ex) {
+                            // Ignore, since we don't actually care about the data in this method.
+                            // We only care about IOExceptions when actually reading from the stream.
+                        }
+                    }
                 }
             }
-        }
+        });
     }
 
     /**
@@ -538,7 +546,7 @@ public final class DbxClientV1
             }
             catch (IOUtil.ReadException ex) {
                 // Error reading from the network.  Convert it to a DbxException.
-                throw new DbxException.NetworkIO(ex.underlying);
+                throw new NetworkIOException(ex.underlying);
             }
             catch (IOUtil.WriteException ex) {
                 // Error writing to 'target'.  Relay the underlying IOException.
@@ -711,9 +719,9 @@ public final class DbxClientV1
         }
         catch (NoThrowOutputStream.HiddenException ex) {
             // We hid our OutputStream's IOException from their writer.write() function so that
-            // we could properly raise a NetworkIO exception if something went wrong with the
+            // we could properly raise a NetworkIOException if something went wrong with the
             // network stream.
-            throw new DbxException.NetworkIO(ex.underlying);
+            throw new NetworkIOException(ex.underlying);
         }
         finally {
             uploader.close();
@@ -766,7 +774,7 @@ public final class DbxClientV1
 
             this.httpUploader = httpUploader;
             this.claimedBytes = claimedBytes;
-            this.body = new CountingOutputStream(httpUploader.body);
+            this.body = new CountingOutputStream(httpUploader.getBody());
         }
 
         public OutputStream getBody()
@@ -830,7 +838,7 @@ public final class DbxClientV1
                 response = u.finish();
             }
             catch (IOException ex) {
-                throw new DbxException.NetworkIO(ex);
+                throw new NetworkIOException(ex);
             }
             finally {
                 u.close();
@@ -848,7 +856,7 @@ public final class DbxClientV1
                     // Make sure the server agrees with us on how many bytes are in the file.
                     if (f.numBytes != bytesWritten) {
                         String requestId = DbxRequestUtil.getRequestId(response);
-                        throw new DbxException.BadResponse(requestId, "we uploaded " + bytesWritten + ", but server returned metadata entry with file size " + f.numBytes);
+                        throw new BadResponseException(requestId, "we uploaded " + bytesWritten + ", but server returned metadata entry with file size " + f.numBytes);
                     }
                     return f;
                 }
@@ -933,7 +941,7 @@ public final class DbxClientV1
         HttpRequestor.Uploader uploader = DbxRequestUtil.startPut(requestConfig, accessToken, USER_AGENT_ID, host.content, apiPath, params, headers);
         try {
             try {
-                NoThrowOutputStream nt = new NoThrowOutputStream(uploader.body);
+                NoThrowOutputStream nt = new NoThrowOutputStream(uploader.getBody());
                 writer.write(nt);
                 long bytesWritten = nt.getBytesWritten();
                 if (bytesWritten != chunkSize) {
@@ -942,10 +950,10 @@ public final class DbxClientV1
                 return uploader.finish();
             }
             catch (IOException ex) {
-                throw new DbxException.NetworkIO(ex);
+                throw new NetworkIOException(ex);
             }
             catch (NoThrowOutputStream.HiddenException ex) {
-                throw new DbxException.NetworkIO(ex.underlying);
+                throw new NetworkIOException(ex.underlying);
             }
         }
         finally {
@@ -966,12 +974,12 @@ public final class DbxClientV1
         catch (JsonReadException ex) {
             // Couldn't parse out an offset correction message.  Treat it like a regular HTTP 400 then.
             String requestId = DbxRequestUtil.getRequestId(response);
-            throw new DbxException.BadRequest(requestId, DbxRequestUtil.parseErrorBody(requestId, 400, data));
+            throw new BadRequestException(requestId, DbxRequestUtil.parseErrorBody(requestId, 400, data));
         }
     }
 
     private ChunkedUploadState chunkedUploadParse200(HttpRequestor.Response response)
-        throws DbxException.BadResponse, DbxException.NetworkIO
+        throws BadResponseException, NetworkIOException
     {
         assert response.statusCode == 200 : response.statusCode;
         return DbxRequestUtil.readJsonFromResponse(ChunkedUploadState.Reader, response);
@@ -1027,12 +1035,12 @@ public final class DbxClientV1
             ChunkedUploadState correctedState = chunkedUploadCheckForOffsetCorrection(response);
             if (correctedState != null) {
                 String requestId = DbxRequestUtil.getRequestId(response);
-                throw new DbxException.BadResponse(requestId, "Got offset correction response on first chunk.");
+                throw new BadResponseException(requestId, "Got offset correction response on first chunk.");
             }
 
             if (response.statusCode == 404) {
                 String requestId = DbxRequestUtil.getRequestId(response);
-                throw new DbxException.BadResponse(requestId, "Got a 404, but we didn't send an upload_id");
+                throw new BadResponseException(requestId, "Got a 404, but we didn't send an upload_id");
             }
 
             if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
@@ -1040,7 +1048,7 @@ public final class DbxClientV1
 
             if (returnedState.offset != chunkSize) {
                 String requestId = DbxRequestUtil.getRequestId(response);
-                throw new DbxException.BadResponse(requestId, "Sent " + chunkSize + " bytes, but returned offset is " + returnedState.offset);
+                throw new BadResponseException(requestId, "Sent " + chunkSize + " bytes, but returned offset is " + returnedState.offset);
             }
 
             return returnedState.uploadId;
@@ -1135,22 +1143,22 @@ public final class DbxClientV1
 
             if (correctedState != null) {
                 if (!correctedState.uploadId.equals(uploadId)) {
-                    throw new DbxException.BadResponse(requestId, "uploadId mismatch: us=" + jq(uploadId)
+                    throw new BadResponseException(requestId, "uploadId mismatch: us=" + jq(uploadId)
                                                        + ", server=" + jq(correctedState.uploadId));
                 }
 
                 if (correctedState.offset == uploadOffset) {
-                    throw new DbxException.BadResponse(requestId, "Corrected offset is same as given: " + uploadOffset);
+                    throw new BadResponseException(requestId, "Corrected offset is same as given: " + uploadOffset);
                 }
 
                 if (correctedState.offset < uploadOffset) {
                     // Somehow the server lost track of the previous data we sent it.
-                    throw new DbxException.BadResponse(requestId, "we were at offset " + uploadOffset + ", server said " + correctedState.offset);
+                    throw new BadResponseException(requestId, "we were at offset " + uploadOffset + ", server said " + correctedState.offset);
                 }
 
                 if (correctedState.offset > expectedOffset) {
                     // Somehow the server has more data than we gave it!
-                    throw new DbxException.BadResponse(requestId, "we were at offset " + uploadOffset + ", server said " + correctedState.offset);
+                    throw new BadResponseException(requestId, "we were at offset " + uploadOffset + ", server said " + correctedState.offset);
                 }
 
                 // Make sure the returned offset is within what we expect.
@@ -1163,8 +1171,7 @@ public final class DbxClientV1
             ChunkedUploadState returnedState = chunkedUploadParse200(response);
 
             if (returnedState.offset != expectedOffset) {
-                throw new DbxException.BadResponse(requestId,
-                                                   "Expected offset " + expectedOffset + " bytes, but returned offset is " + returnedState.offset);
+                throw new BadResponseException(requestId, "Expected offset " + expectedOffset + " bytes, but returned offset is " + returnedState.offset);
             }
 
             return -1;
@@ -1298,6 +1305,9 @@ public final class DbxClientV1
                         throw new IllegalStateException("'numBytes' is " + numBytes + " but you wrote " + body.uploadOffset + " bytes");
                     }
                 }
+                // don't use requestConfig.getMaxRetries() here because (1) auto-retry doesn't apply
+                // to uploads, according to documentation, and (2) auto-retry is off by default,
+                // which would break backwards compatibility here.
                 return DbxRequestUtil.runAndRetry(3, new DbxRequestUtil.RequestMaker<DbxEntry.File, RuntimeException>() {
                     public DbxEntry.File run() throws DbxException {
                         return chunkedUploadFinish(targetPath, writeMode, uploadId);
@@ -1354,6 +1364,9 @@ public final class DbxClientV1
             if (chunkPos == 0) return;
 
             if (uploadId == null) {
+                // don't use requestConfig.getMaxRetries() here because (1) auto-retry doesn't apply
+                // to uploads, according to documentation, and (2) auto-retry is off by default,
+                // which would break backwards compatibility here.
                 uploadId = DbxRequestUtil.runAndRetry(3, new DbxRequestUtil.RequestMaker<String, RuntimeException>() {
                     public String run() throws DbxException {
                         return chunkedUploadFirst(chunk, 0, chunkPos);
@@ -1365,6 +1378,7 @@ public final class DbxClientV1
                 int arrayOffset = 0;
                 while (true) {
                     final int arrayOffsetFinal = arrayOffset;
+                    // don't use requestConfig.getMaxRetries() (see comment above)
                     long correctedOffset = DbxRequestUtil.runAndRetry(3, new DbxRequestUtil.RequestMaker<Long, RuntimeException>() {
                         public Long run() throws DbxException {
                             return chunkedUploadAppend(uploadId, uploadOffset, chunk, arrayOffsetFinal, chunkPos-arrayOffsetFinal);

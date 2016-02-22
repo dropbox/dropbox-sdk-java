@@ -37,7 +37,7 @@ abstract class DbxWebAuthHelper
             "grant_type", "authorization_code",
             "code", code,
             "redirect_uri", originalRedirectUri,
-            "locale", requestConfig.userLocale,
+            "locale", requestConfig.getUserLocale(),
         };
 
         ArrayList<HttpRequestor.Header> headers = new ArrayList<HttpRequestor.Header>();

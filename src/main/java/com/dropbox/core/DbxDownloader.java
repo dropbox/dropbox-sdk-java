@@ -112,7 +112,7 @@ public class DbxDownloader<R> implements Closeable {
             throw ex.getCause();
         } catch (IOException ex) {
             // everything else is a Network I/O problem
-            throw new DbxException.NetworkIO(ex);
+            throw new NetworkIOException(ex);
         } finally {
             close();
         }

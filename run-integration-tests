@@ -45,4 +45,4 @@ else
     exit 1
 fi
 
-exec mvn test -DskipTests=false "${args[@]}"
+exec mvn integration-test "${args[@]}"

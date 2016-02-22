@@ -9,10 +9,33 @@ import com.dropbox.core.http.StandardHttpRequestor;
  * A grouping of a few configuration parameters for how we should make requests to the
  * Dropbox servers.
  */
-public class DbxRequestConfig
-{
+public class DbxRequestConfig {
+    private final String clientIdentifier;
+    private final /*@Nullable*/String userLocale;
+    private final HttpRequestor httpRequestor;
+    private final int maxRetries;
+
+    private DbxRequestConfig(String clientIdentifier, /*@Nullable*/String userLocale, HttpRequestor httpRequestor, int maxRetries) {
+        if (clientIdentifier == null) throw new NullPointerException("clientIdentifier");
+        if (httpRequestor == null) throw new NullPointerException("httpRequestor");
+        if (maxRetries < 0) throw new IllegalArgumentException("maxRetries");
+
+        this.clientIdentifier = clientIdentifier;
+        this.userLocale = userLocale;
+        this.httpRequestor = httpRequestor;
+        this.maxRetries = maxRetries;
+    }
+
+    public DbxRequestConfig(String clientIdentifier, String userLocale) {
+        this(clientIdentifier, userLocale, StandardHttpRequestor.INSTANCE);
+    }
+
+    public DbxRequestConfig(String clientIdentifier, /*@Nullable*/String userLocale, HttpRequestor httpRequestor) {
+        this(clientIdentifier, userLocale, httpRequestor, 0);
+    }
+
     /**
-     * An identifier for the API client, typically of the form "Name/Version".
+     * Returns an identifier for the API client, typically of the form "Name/Version".
      * This is used to set the HTTP {@code User-Agent} header when making API requests.
      * Example: {@code "PhotoEditServer/1.3"}
      *
@@ -34,48 +57,229 @@ public class DbxRequestConfig
      * append other things to the {@code User-Agent}, such as the name of the library being used to
      * actually make the HTTP request, or the version of the Java VM.
      * </p>
+     *
+     * @return HTTP User-Agent identifier for the API client
      */
-    public final String clientIdentifier;
+    public String getClientIdentifier() {
+        return clientIdentifier;
+    }
 
     /**
-     * The locale of the user of your app.  This is used by the Dropbox server to localize
+     * Returns the locale of the user of your app.  This is used by the Dropbox server to localize
      * user-visible strings returned by API calls.
      *
      * <p>
      * If the value is {@code null} or some locale that Dropbox doesn't support, the localized
      * strings will be in English.
      * </p>
+     *
+     * <p> Defaults to {@code null}.
+     *
+     * @return locale of app user, or {@code null} if not localized.
      */
-    public final /*@Nullable*/String userLocale;
-
-    /**
-     * The {@link HttpRequestor} implementation to use when making
-     * HTTP requests to the Dropbox API servers.  If you don't specify one, this defaults to
-     * {@link StandardHttpRequestor#INSTANCE}.
-     */
-    public final HttpRequestor httpRequestor;
-
-    /**
-     * @param clientIdentifier {@link #clientIdentifier}
-     * @param userLocale {@link #userLocale}
-     * @param httpRequestor {@link #httpRequestor}
-     */
-    public DbxRequestConfig(String clientIdentifier, /*@Nullable*/String userLocale, HttpRequestor httpRequestor)
-    {
-        if (clientIdentifier == null) throw new IllegalArgumentException("'clientIdentifier' should not be null");
-        if (httpRequestor == null) throw new IllegalArgumentException("'httpRequestor' should not be null");
-
-        this.clientIdentifier = clientIdentifier;
-        this.userLocale = userLocale;
-        this.httpRequestor = httpRequestor;
+    public String getUserLocale() {
+        return userLocale;
     }
 
     /**
-     * @param clientIdentifier {@link #clientIdentifier}
-     * @param userLocale {@link #userLocale}
+     * The {@link HttpRequestor} implementation to use when making HTTP requests to the Dropbox API
+     * servers.
+     *
+     * <p> Defaults to {@link StandardHttpRequestor#INSTANCE}.
+     *
+     * @return HTTP requestor to use for issuing HTTP requests.
      */
-    public DbxRequestConfig(String clientIdentifier, String userLocale)
-    {
-        this(clientIdentifier, userLocale, StandardHttpRequestor.INSTANCE);
+    public HttpRequestor getHttpRequestor() {
+        return httpRequestor;
+    }
+
+    /**
+     * Returns whether or not the client should automatically retry RPC and download requests after
+     * recieving a {@link RetryException}.
+     *
+     * <p> If enabled, the client will retry the request a max number of times (specified by {@link
+     * #getMaxRetries}) before propagating the {@link RetryException}.</p>
+     *
+     * <p> Defaults to {@code false} (the client will not automatically retry any requests).
+     *
+     * @return whether this client will automatically retry requests that fail with a {@link
+     * RetryException}
+     */
+    public boolean isAutoRetryEnabled() {
+        return maxRetries > 0;
+    }
+
+    /**
+     * Returns the maximum number of times the client should automatically retry RPC and download
+     * requests that fail with a {@link RetryException}.
+     *
+     * <p> This value does not count the initial request attempt. For example, if maximum retries is
+     * 3, the client may issue a request a total of 4 times: once for the initial call, then 3
+     * additional times for the 3 retries.</p>
+     *
+     * <p> This value is ignored unless {@link #isAutoRetryEnabled} is {@code true}.
+     *
+     * <p> The value returned by this method is always positive if retries are enabled, otherwise it
+     * is {@code 0}.
+     *
+     * <p> Defaults to {@code 3} when retries are enabled.
+     *
+     * @return maximum number of times the client will retry a request that throws a {@link
+     * RetryException}.
+     */
+    public int getMaxRetries() {
+        return maxRetries;
+    }
+
+    /**
+     * Returns a builder for building a copy of this configuration. Useful for modifying an existing
+     * configuration.
+     *
+     * @return builder configured to build a copy of this instance
+     */
+    public Builder copy() {
+        return new Builder(clientIdentifier, userLocale, httpRequestor, maxRetries);
+    }
+
+
+    /**
+     * Returns a new builder for creating a {@link DbxRequestConfig} instance.
+     *
+     * Identifiers are typically of the form "Name/Version" (e.g. {@code
+     * "PhotoEditServer/1.3"}). See {@link #getClientIdentifier} for more details.
+     *
+     * @param clientIdentifier HTTP User-Agent identifier for the API app (see {@link
+     * #getClientIdentifier}), never {@code null}
+     */
+    public static Builder newBuilder(String clientIdentifier) {
+        if (clientIdentifier == null) throw new NullPointerException("clientIdentifier");
+        return new Builder(clientIdentifier);
+    }
+
+    /**
+     * Builder for {@link DbxRequestConfig}.
+     */
+    public static final class Builder {
+        private final String clientIdentifier;
+
+        private /*@Nullable*/ String userLocale;
+        private HttpRequestor httpRequestor;
+        private int maxRetries;
+
+        private Builder(String clientIdentifier,
+                        /*@Nullable*/ String userLocale,
+                        HttpRequestor httpRequestor,
+                        int maxRetries) {
+            this.clientIdentifier = clientIdentifier;
+            this.userLocale = userLocale;
+            this.httpRequestor = httpRequestor;
+            this.maxRetries = maxRetries;
+        }
+
+        private Builder(String clientIdentifier) {
+            this.clientIdentifier = clientIdentifier;
+
+            this.userLocale = null;
+            this.httpRequestor = StandardHttpRequestor.INSTANCE;
+            this.maxRetries = 0;
+        }
+
+        /**
+         * Set the locale of the app user. User-visible messages returned by the Dropbox servers
+         * will be localized to this locale.
+         *
+         * <p> Defaults to {@code null}, which disables localization (messages will be in English).
+         *
+         * @param userLocale Locale of app user, or {@code null} to disable localization
+         * @return this builder
+         */
+        public Builder withUserLocale(/*@Nullable*/ String userLocale) {
+            this.userLocale = userLocale;
+            return this;
+        }
+
+        /**
+         * Set the HTTP requestor to use for issuing network requests to the Dropbox servers.
+         *
+         * <p> Defaults to {@link StandardHttpRequestor#INSTANCE}.
+         *
+         * @param httpRequestor HTTP requestor to use for network requests, never {@code null}
+         *
+         * @return this builder
+         */
+        public Builder withHttpRequestor(HttpRequestor httpRequestor) {
+            if (httpRequestor == null) throw new NullPointerException("httpRequestor");
+            this.httpRequestor = httpRequestor;
+            return this;
+        }
+
+        /**
+         * Enables automatic retry of RPC and download requests that fail with a {@link
+         * RetryException}.
+         *
+         * <p> The default number of {@code 3} retries will be used in addition to the initial
+         * request. To specify the maximum number of retries, see {@link
+         * #withAutoRetryEnabled(int)}.
+         *
+         * <p> By default, the client will not automatically retry any requests.
+         *
+         * @return this builder
+         */
+        public Builder withAutoRetryEnabled() {
+            return withAutoRetryEnabled(3);
+        }
+
+        /**
+         * Disables automatic retry of RPC and download requests that fail with a {@link
+         * RetryException}.
+         *
+         * <p> By default, the client will not automatically retry any requests.
+         *
+         * @return this builder
+         *
+         * @see #withAutoRetryEnabled
+         */
+        public Builder withAutoRetryDisabled() {
+            this.maxRetries = 0;
+            return this;
+        }
+
+        /**
+         * Enables automatic retry of RPC and download requests that fail with a {@link
+         * RetryException}.
+         *
+         * <p> The client will retry failed requests a maximum of {@code maxRetries} times before
+         * propogating the exception.  Note that {@code maxRetries} does not count the initial
+         * request attempt. For example, if {@code maxRetries} is 3, the client may issue a request
+         * a total of 4 times: once for the initial call, then 3 additional times for the 3
+         * retries. </p>
+         *
+         * <p> By default, the client will not automatically retry any requests.
+         *
+         * <p> To enable automatic retries with the default maximum number of attempts, use {@link
+         * #withAutoRetryEnabled()}.
+         *
+         * @param maxRetries maximum number of times to retry a retriable failed request. Must be
+         * positive.
+         *
+         * @return this builder
+         *
+         * @throws IllegalArgumentException if {@code maxRetries} is not positive.
+         */
+        public Builder withAutoRetryEnabled(int maxRetries) {
+            if (maxRetries <= 0) throw new IllegalArgumentException("maxRetries must be positive");
+            this.maxRetries = maxRetries;
+            return this;
+        }
+
+        /**
+         * Builds an instance of {@link DbxRequestConfig} with this builder's configured parameters
+         * or defaults.
+         *
+         * @return new {@code DbxRequestConfig} instance.
+         */
+        public DbxRequestConfig build() {
+            return new DbxRequestConfig(clientIdentifier, userLocale, httpRequestor, maxRetries);
+        }
     }
 }

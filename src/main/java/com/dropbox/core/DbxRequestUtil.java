@@ -8,6 +8,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.nio.charset.CharacterCodingException;
+import java.util.concurrent.TimeUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,10 +27,10 @@ import static com.dropbox.core.util.LangUtil.mkAssert;
 
 /*>>> import checkers.nullness.quals.Nullable; */
 
-public class DbxRequestUtil
-{
-    public static String encodeUrlParam(String s)
-    {
+public final class DbxRequestUtil {
+    public static final JsonFactory JSON_FACTORY = new JsonFactory();
+
+    public static String encodeUrlParam(String s) {
         try {
             return URLEncoder.encode(s, "UTF-8");
         }
@@ -38,14 +39,14 @@ public class DbxRequestUtil
         }
     }
 
-    public static String buildUrlWithParams(/*@Nullable*/String userLocale, String host, String path,
-                                            /*@Nullable*/String/*@Nullable*/[] params)
-    {
+    public static String buildUrlWithParams(/*@Nullable*/String userLocale,
+                                            String host,
+                                            String path,
+                                            /*@Nullable*/String/*@Nullable*/[] params) {
         return buildUri(host, path) + "?" + encodeUrlParams(userLocale, params);
     }
 
-    public static String buildUri(String host, String path)
-    {
+    public static String buildUri(String host, String path) {
         try {
             return new URI("https", host, "/" + path, null).toASCIIString();
         }
@@ -55,8 +56,7 @@ public class DbxRequestUtil
     }
 
     private static String encodeUrlParams(/*@Nullable*/String userLocale,
-                                          /*@Nullable*/String/*@Nullable*/[] params)
-    {
+                                          /*@Nullable*/String/*@Nullable*/[] params) {
         StringBuilder buf = new StringBuilder();
         String sep = "";
         if (userLocale != null) {
@@ -85,35 +85,31 @@ public class DbxRequestUtil
         return buf.toString();
     }
 
-    public static List<HttpRequestor.Header> addAuthHeader(/*@Nullable*/List<HttpRequestor.Header> headers,
-                                                           String accessToken)
-    {
+    public static List<HttpRequestor.Header> addAuthHeader(/*@Nullable*/List<HttpRequestor.Header> headers, String accessToken) {
         if (headers == null) headers = new ArrayList<HttpRequestor.Header>();
         headers.add(new HttpRequestor.Header("Authorization", "Bearer " + accessToken));
         return headers;
     }
 
-    public static List<HttpRequestor.Header> addSelectUserHeader(/*@Nullable*/List<HttpRequestor.Header> headers,
-                                                                 String memberId)
-    {
+    public static List<HttpRequestor.Header> addSelectUserHeader(/*@Nullable*/List<HttpRequestor.Header> headers, String memberId) {
         if (memberId == null) throw new IllegalArgumentException("'memberId' is null");
         if (headers == null) headers = new ArrayList<HttpRequestor.Header>();
         headers.add(new HttpRequestor.Header("Dropbox-API-Select-User", memberId));
         return headers;
     }
 
-    public static List<HttpRequestor.Header> addUserAgentHeader(/*@Nullable*/List<HttpRequestor.Header> headers,
-                                                                DbxRequestConfig requestConfig,
-                                                                String sdkUserAgentIdentifier)
-    {
+    public static List<HttpRequestor.Header> addUserAgentHeader(
+        /*@Nullable*/List<HttpRequestor.Header> headers,
+        DbxRequestConfig requestConfig,
+        String sdkUserAgentIdentifier
+    ) {
         if (headers == null) headers = new ArrayList<HttpRequestor.Header>();
         headers.add(buildUserAgentHeader(requestConfig, sdkUserAgentIdentifier));
         return headers;
     }
 
-    public static HttpRequestor.Header buildUserAgentHeader(DbxRequestConfig requestConfig, String sdkUserAgentIdentifier)
-    {
-        return new HttpRequestor.Header("User-Agent",  requestConfig.clientIdentifier + " " + sdkUserAgentIdentifier + "/" + DbxSdkVersion.Version);
+    public static HttpRequestor.Header buildUserAgentHeader(DbxRequestConfig requestConfig, String sdkUserAgentIdentifier) {
+        return new HttpRequestor.Header("User-Agent",  requestConfig.getClientIdentifier() + " " + sdkUserAgentIdentifier + "/" + DbxSdkVersion.Version);
     }
 
     /**
@@ -126,17 +122,17 @@ public class DbxRequestUtil
                                                   String path,
                                                   /*@Nullable*/String/*@Nullable*/[] params,
                                                   /*@Nullable*/List<HttpRequestor.Header> headers)
-        throws DbxException.NetworkIO
-    {
+        throws NetworkIOException {
+        headers = copyHeaders(headers);
         headers = addUserAgentHeader(headers, requestConfig, sdkUserAgentIdentifier);
         headers = addAuthHeader(headers, accessToken);
 
-        String url = buildUrlWithParams(requestConfig.userLocale, host, path, params);
+        String url = buildUrlWithParams(requestConfig.getUserLocale(), host, path, params);
         try {
-            return requestConfig.httpRequestor.doGet(url, headers);
+            return requestConfig.getHttpRequestor().doGet(url, headers);
         }
         catch (IOException ex) {
-            throw new DbxException.NetworkIO(ex);
+            throw new NetworkIOException(ex);
         }
     }
 
@@ -149,17 +145,17 @@ public class DbxRequestUtil
                                                   String host, String path,
                                                   /*@Nullable*/String/*@Nullable*/[] params,
                                                   /*@Nullable*/List<HttpRequestor.Header> headers)
-        throws DbxException.NetworkIO
-    {
+        throws NetworkIOException {
+        headers = copyHeaders(headers);
         headers = addUserAgentHeader(headers, requestConfig, sdkUserAgentIdentifier);
         headers = addAuthHeader(headers, accessToken);
 
-        String url = buildUrlWithParams(requestConfig.userLocale, host, path, params);
+        String url = buildUrlWithParams(requestConfig.getUserLocale(), host, path, params);
         try {
-            return requestConfig.httpRequestor.startPut(url, headers);
+            return requestConfig.getHttpRequestor().startPut(url, headers);
         }
         catch (IOException ex) {
-            throw new DbxException.NetworkIO(ex);
+            throw new NetworkIOException(ex);
         }
     }
 
@@ -172,11 +168,10 @@ public class DbxRequestUtil
                                                          String path,
                                                          /*@Nullable*/String/*@Nullable*/[] params,
                                                          /*@Nullable*/List<HttpRequestor.Header> headers)
-        throws DbxException.NetworkIO
-    {
-        byte[] encodedParams = StringUtil.stringToUtf8(encodeUrlParams(requestConfig.userLocale, params));
+        throws NetworkIOException {
+        byte[] encodedParams = StringUtil.stringToUtf8(encodeUrlParams(requestConfig.getUserLocale(), params));
 
-        if (headers == null) headers = new ArrayList<HttpRequestor.Header>();
+        headers = copyHeaders(headers);
         headers.add(new HttpRequestor.Header("Content-Type", "application/x-www-form-urlencoded; charset=utf-8"));
 
         return startPostRaw(requestConfig, sdkUserAgentIdentifier, host, path, encodedParams, headers);
@@ -192,30 +187,33 @@ public class DbxRequestUtil
                                                       String path,
                                                       byte[] body,
                                                       /*@Nullable*/List<HttpRequestor.Header> headers)
-        throws DbxException.NetworkIO
-    {
+        throws NetworkIOException {
         String uri = buildUri(host, path);
 
+        headers = copyHeaders(headers);
         headers = addUserAgentHeader(headers, requestConfig, sdkUserAgentIdentifier);
         headers.add(new HttpRequestor.Header("Content-Length", Integer.toString(body.length)));
 
         try {
-            HttpRequestor.Uploader uploader = requestConfig.httpRequestor.startPost(uri, headers);
+            HttpRequestor.Uploader uploader = requestConfig.getHttpRequestor().startPost(uri, headers);
             try {
-                uploader.body.write(body);
+                uploader.getBody().write(body);
                 return uploader.finish();
-            }
-            finally {
+            } finally {
                 uploader.close();
             }
-        }
-        catch (IOException ex) {
-            throw new DbxException.NetworkIO(ex);
+        } catch (IOException ex) {
+            throw new NetworkIOException(ex);
         }
     }
 
-    // XXX This duplicates JsonReader.jsonFactory. Maybe make that public, or move this code there?
-    static final JsonFactory jsonFactory = new JsonFactory();
+    private static List<HttpRequestor.Header> copyHeaders(List<HttpRequestor.Header> headers) {
+        if (headers == null) {
+            return new ArrayList<HttpRequestor.Header>();
+        } else {
+            return new ArrayList<HttpRequestor.Header>(headers);
+        }
+    }
 
     public static class ErrorWrapper extends Exception {
         public final Object errValue;  // Really an ErrT instance, but Throwable does not allow generic subclasses.
@@ -234,7 +232,7 @@ public class DbxRequestUtil
             String requestId = getRequestId(response);
             LocalizedText userMessage = null;
 
-            JsonParser parser = jsonFactory.createParser(response.body);
+            JsonParser parser = JSON_FACTORY.createParser(response.body);
             parser.nextToken();
             reader.expectObjectStart(parser);
             while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
@@ -290,91 +288,100 @@ public class DbxRequestUtil
     }
 
     public static byte[] loadErrorBody(HttpRequestor.Response response)
-        throws DbxException.NetworkIO
-    {
+        throws NetworkIOException {
         // Slurp the body into memory (up to 4k; anything past that is probably not useful).
         try {
             return IOUtil.slurp(response.body, 4096);
-        }
-        catch (IOException ex) {
-            throw new DbxException.NetworkIO(ex);
+        } catch (IOException ex) {
+            throw new NetworkIOException(ex);
         }
 
     }
 
     public static String parseErrorBody(String requestId, int statusCode, byte[] body)
-        throws DbxException.BadResponse
-    {
+        throws BadResponseException {
         // Read the error message from the body.
         // TODO: Get charset from the HTTP Content-Type header.  It's wrong to just assume UTF-8.
         // TODO: Maybe try parsing the message as JSON and do something more structured?
         try {
             return StringUtil.utf8ToString(body);
         } catch (CharacterCodingException e) {
-            throw new DbxException.BadResponse(requestId, "Got non-UTF8 response body: " + statusCode + ": " + e.getMessage());
+            throw new BadResponseException(requestId, "Got non-UTF8 response body: " + statusCode + ": " + e.getMessage());
         }
     }
 
     public static DbxException unexpectedStatus(HttpRequestor.Response response)
-        throws DbxException.NetworkIO, DbxException.BadResponse
-    {
+        throws NetworkIOException, BadResponseException {
         String requestId = getRequestId(response);
         byte[] body = loadErrorBody(response);
         String message = parseErrorBody(requestId, response.statusCode, body);
 
-        if (response.statusCode == 400) return new DbxException.BadRequest(requestId, message);
-        if (response.statusCode == 401) return new DbxException.InvalidAccessToken(requestId, message);
-        if (response.statusCode == 500) return new DbxException.ServerError(requestId, message);
-        if (response.statusCode == 503) return new DbxException.RetryLater(requestId, message);
-
-        return new DbxException.BadResponseCode(requestId,
-                                                "unexpected HTTP status code: " + response.statusCode + ": " + message,
-                                                response.statusCode);
+        switch (response.statusCode) {
+            case 400:
+                return new BadRequestException(requestId, message);
+            case 401:
+                return new InvalidAccessTokenException(requestId, message);
+            case 429:
+                try {
+                    int backoffSecs = Integer.parseInt(getFirstHeader(response, "Retry-After"));
+                    return new RateLimitException(requestId, message, backoffSecs, TimeUnit.SECONDS);
+                } catch (NumberFormatException ex) {
+                    return new BadResponseException(requestId, "Invalid value for HTTP header: \"Retry-After\"");
+                }
+            case 500:
+                return new ServerException(requestId, message);
+            case 503:
+                return new RetryException(requestId, message);
+            default:
+                return new BadResponseCodeException(
+                    requestId,
+                    "unexpected HTTP status code: " + response.statusCode + ": " + message,
+                    response.statusCode
+                );
+        }
     }
 
     public static <T> T readJsonFromResponse(JsonReader<T> reader, HttpRequestor.Response response)
-        throws DbxException.BadResponse, DbxException.NetworkIO
-    {
+        throws BadResponseException, NetworkIOException {
         try {
             return reader.readFully(response.body);
-        }
-        catch (JsonReadException ex) {
+        } catch (JsonReadException ex) {
             String requestId = getRequestId(response);
-            throw new DbxException.BadResponse(requestId, "error in response JSON: " + ex.getMessage(), ex);
-        }
-        catch (IOException ex) {
-            throw new DbxException.NetworkIO(ex);
+            throw new BadResponseException(requestId, "error in response JSON: " + ex.getMessage(), ex);
+        } catch (IOException ex) {
+            throw new NetworkIOException(ex);
         }
     }
 
-    public static abstract class ResponseHandler<T>
-    {
+    public static abstract class ResponseHandler<T> {
         public abstract T handle(HttpRequestor.Response response) throws DbxException;
     }
 
-    public static <T> T doGet(DbxRequestConfig requestConfig,
-                              String accessToken,
-                              String sdkUserAgentIdentifier,
-                              String host,
-                              String path,
-                             /*@Nullable*/String/*@Nullable*/[] params,
-                             /*@Nullable*/List<HttpRequestor.Header> headers,
-                             ResponseHandler<T> handler)
-        throws DbxException
-    {
-        HttpRequestor.Response response = startGet(requestConfig, accessToken, sdkUserAgentIdentifier, host, path, params, headers);
-        try {
-            return handler.handle(response);
-        }
-        finally {
-            try {
-                response.body.close();
+    public static <T> T doGet(final DbxRequestConfig requestConfig,
+                              final String accessToken,
+                              final String sdkUserAgentIdentifier,
+                              final String host,
+                              final String path,
+                              final /*@Nullable*/String/*@Nullable*/[] params,
+                              final /*@Nullable*/List<HttpRequestor.Header> headers,
+                              final ResponseHandler<T> handler)
+        throws DbxException {
+        return runAndRetry(requestConfig.getMaxRetries(), new RequestMaker<T, DbxException>() {
+            @Override
+            public T run() throws DbxException {
+                HttpRequestor.Response response = startGet(requestConfig, accessToken, sdkUserAgentIdentifier, host, path, params, headers);
+                try {
+                    return handler.handle(response);
+                } finally {
+                    try {
+                        response.body.close();
+                    } catch (IOException ex) {
+                        //noinspection ThrowFromFinallyBlock
+                        throw new NetworkIOException(ex);
+                    }
+                }
             }
-            catch (IOException ex) {
-                //noinspection ThrowFromFinallyBlock
-                throw new DbxException.NetworkIO(ex);
-            }
-        }
+        });
     }
 
     public static <T> T doPost(DbxRequestConfig requestConfig,
@@ -385,84 +392,91 @@ public class DbxRequestUtil
                                /*@Nullable*/String/*@Nullable*/[] params,
                                /*@Nullable*/List<HttpRequestor.Header> headers,
                                ResponseHandler<T> handler)
-            throws DbxException
-    {
+        throws DbxException {
+        headers = copyHeaders(headers);
         headers = addAuthHeader(headers, accessToken);
         return doPostNoAuth(requestConfig, sdkUserAgentIdentifier, host, path, params, headers, handler);
     }
 
-    public static <T> T doPostNoAuth(DbxRequestConfig requestConfig,
-                                     String sdkUserAgentIdentifier,
-                                     String host,
-                                     String path,
-                                     /*@Nullable*/String/*@Nullable*/[] params,
-                                     /*@Nullable*/List<HttpRequestor.Header> headers,
-                                     ResponseHandler<T> handler)
-        throws DbxException
-    {
-        HttpRequestor.Response response = startPostNoAuth(requestConfig, sdkUserAgentIdentifier, host, path, params, headers);
-        return finishResponse(response, handler);
+    public static <T> T doPostNoAuth(final DbxRequestConfig requestConfig,
+                                     final String sdkUserAgentIdentifier,
+                                     final String host,
+                                     final String path,
+                                     final /*@Nullable*/String/*@Nullable*/[] params,
+                                     final /*@Nullable*/List<HttpRequestor.Header> headers,
+                                     final ResponseHandler<T> handler)
+        throws DbxException {
+        return runAndRetry(requestConfig.getMaxRetries(), new RequestMaker<T, DbxException>() {
+            @Override
+            public T run() throws DbxException {
+                HttpRequestor.Response response = startPostNoAuth(requestConfig, sdkUserAgentIdentifier, host, path, params, headers);
+                return finishResponse(response, handler);
+            }
+        });
     }
 
-    public static <T> T finishResponse(HttpRequestor.Response response, ResponseHandler<T> handler)
-        throws DbxException
-    {
+    public static <T> T finishResponse(HttpRequestor.Response response, ResponseHandler<T> handler) throws DbxException {
         try {
             return handler.handle(response);
-        }
-        finally {
+        } finally {
             IOUtil.closeInput(response.body);
         }
     }
 
-    public static String getFirstHeader(HttpRequestor.Response response, String name)
-        throws DbxException
-    {
+    public static String getFirstHeader(HttpRequestor.Response response, String name) throws BadResponseException {
         List<String> values = response.headers.get(name);
-        if (values == null) {
-            throw new DbxException.BadResponse(getRequestId(response), "missing HTTP header \"" + name + "\"");
+        if (values == null || values.isEmpty()) {
+            throw new BadResponseException(getRequestId(response), "missing HTTP header \"" + name + "\"");
         }
-        assert !values.isEmpty();
         return values.get(0);
     }
 
-    public static /*@Nullable*/String getFirstHeaderMaybe(HttpRequestor.Response response, String name)
-    {
+    public static /*@Nullable*/String getFirstHeaderMaybe(HttpRequestor.Response response, String name) {
         List<String> values = response.headers.get(name);
-        if (values == null) return null;
-        assert !values.isEmpty();
+        if (values == null || values.isEmpty()) {
+            return null;
+        }
         return values.get(0);
     }
 
-    public static /*@Nullable*/ String getRequestId(HttpRequestor.Response response)
-    {
+    public static /*@Nullable*/ String getRequestId(HttpRequestor.Response response) {
         return DbxRequestUtil.getFirstHeaderMaybe(response, "X-Dropbox-Request-Id");
     }
 
-    public static abstract class RequestMaker<T, E extends Throwable>
-    {
+    public static abstract class RequestMaker<T, E extends Throwable> {
         public abstract T run() throws DbxException, E;
     }
 
-    public static <T, E extends Throwable> T runAndRetry(int maxTries, RequestMaker<T,E> requestMaker)
-        throws DbxException, E
-    {
-        int numTries = 0;
+    public static <T, E extends Throwable> T runAndRetry(int maxRetries, RequestMaker<T,E> requestMaker)
+        throws DbxException, E {
+        int numRetries = 0;
         while (true) {
+            long backoff;
+            DbxException thrown = null;
             try {
-                numTries++;
                 return requestMaker.run();
+            } catch (RetryException ex) {
+                backoff = ex.getBackoffMillis();
+                thrown = ex;
+            } catch (ServerException ex) {
+                backoff = 0L;
+                thrown = ex;
             }
-            catch (DbxException ex) {
-                // If we can't retry, just let this exception through.
-                if (!isRetriableException(ex) || numTries >= maxTries) throw ex;
-                // Otherwise, run through the loop again.
-            }
-        }
-    }
 
-    private static boolean isRetriableException(DbxException ex)
-    {
-        return ex instanceof DbxException.RetryLater || ex instanceof DbxException.ServerError;
+            if (numRetries >= maxRetries) {
+                throw thrown;
+            }
+
+            if (backoff > 0L) {
+                try {
+                    Thread.sleep(backoff);
+                } catch (InterruptedException ex) {
+                    // preserve interrupt
+                    Thread.currentThread().interrupt();
+                }
+            }
+
+            ++numRetries;
+        }
     }
 }
