@@ -49,14 +49,14 @@ public final class DbxOAuth1Upgrader
         return DbxRequestUtil.doPostNoAuth(
             requestConfig,
             DbxClientV1.USER_AGENT_ID,
-            appInfo.host.api,
+            appInfo.getHost().getApi(),
             "1/oauth2/token_from_oauth1",
             null,
             getHeaders(token),
             new DbxRequestUtil.ResponseHandler<String>() {
                 @Override
                 public String handle(HttpRequestor.Response response) throws DbxException {
-                    if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+                    if (response.getStatusCode() != 200) throw DbxRequestUtil.unexpectedStatus(response);
                     return DbxRequestUtil.readJsonFromResponse(ResponseReader, response);
                 }
             }
@@ -73,14 +73,14 @@ public final class DbxOAuth1Upgrader
         DbxRequestUtil.doPostNoAuth(
             requestConfig,
             DbxClientV1.USER_AGENT_ID,
-            appInfo.host.api,
+            appInfo.getHost().getApi(),
             "1/disable_access_token",
             null,
             getHeaders(token),
             new DbxRequestUtil.ResponseHandler<Void>() {
                 @Override
                 public Void handle(HttpRequestor.Response response) throws DbxException {
-                    if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+                    if (response.getStatusCode() != 200) throw DbxRequestUtil.unexpectedStatus(response);
                     return null;
                 }
             }
@@ -98,9 +98,9 @@ public final class DbxOAuth1Upgrader
     {
         StringBuilder buf = new StringBuilder();
         buf.append("OAuth oauth_version=\"1.0\", oauth_signature_method=\"PLAINTEXT\"");
-        buf.append(", oauth_consumer_key=\"").append(encode(this.appInfo.key)).append("\"");
-        buf.append(", oauth_token=\"").append(encode(token.key)).append("\"");
-        buf.append(", oauth_signature=\"").append(encode(this.appInfo.secret)).append("&").append(encode(token.secret)).append("\"");
+        buf.append(", oauth_consumer_key=\"").append(encode(this.appInfo.getKey())).append("\"");
+        buf.append(", oauth_token=\"").append(encode(token.getKey())).append("\"");
+        buf.append(", oauth_signature=\"").append(encode(this.appInfo.getSecret())).append("&").append(encode(token.getSecret())).append("\"");
         return buf.toString();
     }
 

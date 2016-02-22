@@ -234,10 +234,10 @@ public abstract class DbxUploader<R, X extends DbxApiException> implements Close
             response = httpUploader.finish();
 
             try {
-                if (response.statusCode == 200) {
+                if (response.getStatusCode() == 200) {
                     return parseResponse(response);
                 }
-                else if (response.statusCode == 409) {
+                else if (response.getStatusCode() == 409) {
                     throw parseError(response);
                 }
                 else {
@@ -252,7 +252,7 @@ public abstract class DbxUploader<R, X extends DbxApiException> implements Close
         } finally {
             // Make sure input stream is closed
             if (response != null) {
-                IOUtil.closeQuietly(response.body);
+                IOUtil.closeQuietly(response.getBody());
             }
             finished = true;
         }

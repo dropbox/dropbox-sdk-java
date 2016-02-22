@@ -78,7 +78,7 @@ public class DbxClientV1IT
         }
 
         DbxRequestConfig requestConfig = createRequestConfig().build();
-        DbxClientV1 client = new DbxClientV1(requestConfig, authInfo.accessToken, authInfo.host);
+        DbxClientV1 client = new DbxClientV1(requestConfig, authInfo.getAccessToken(), authInfo.getHost());
 
         String timestamp = new SimpleDateFormat("yyyy-MM-dd HH.mm.ss").format(new Date());
         String basePath = "/Java SDK Tests/" + timestamp;
@@ -416,7 +416,7 @@ public class DbxClientV1IT
         // Direct download should match exactly.
         URL directUrl = new URL(
             previewUrl.getProtocol(),
-            client.getHost().content,
+            client.getHost().getContent(),
             previewUrl.getPort(),
             previewUrl.getFile()
         );

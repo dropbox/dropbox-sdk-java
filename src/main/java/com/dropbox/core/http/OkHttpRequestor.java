@@ -88,7 +88,7 @@ public class OkHttpRequestor extends HttpRequestor
     private static void toOkHttpHeaders(Iterable<Header> headers, Request.Builder builder)
     {
         for (Header header : headers) {
-            builder.addHeader(header.key, header.value);
+            builder.addHeader(header.getKey(), header.getValue());
         }
     }
 

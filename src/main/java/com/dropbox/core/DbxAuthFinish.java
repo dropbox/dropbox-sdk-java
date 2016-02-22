@@ -18,47 +18,59 @@ import java.io.IOException;
  * When you successfully complete the authorization process, the Dropbox server returns
  * this information to you.
  */
-public final class DbxAuthFinish implements java.io.Serializable
-{
-    public static final long serialVersionUID = 0;
+public final class DbxAuthFinish {
+    private final String accessToken;
+    private final String userId;
+    private final /*@Nullable*/String urlState;
 
     /**
-     * An <em>access token</em> that can be used to make Dropbox API calls.
-     * Pass this in to the {@link com.dropbox.core.v2.DbxClientV2} constructor.
+     * @param accessToken OAuth access token
+     * @param userId Dropbox user ID of user that approved access to this app
+     * @param urlState State data passed in to {@link DbxWebAuth#start} or {@code null} if no state
+     * was passed
      */
-    public final String accessToken;
-
-    /**
-     * The Dropbox user ID of the user who just approved your app for access to
-     * their Dropbox account.
-     */
-    public final String userId;
-
-    /**
-     * The state data you passed in to {@link DbxWebAuth#start}.  If you didn't pass anything
-     * in, or you used {@link DbxWebAuthNoRedirect}, this will be {@code null}.
-     */
-    public final /*@Nullable*/String urlState;
-
-    /**
-     * @param accessToken {@link #accessToken}
-     * @param userId {@link #userId}
-     * @param urlState {@link #urlState}
-     */
-    public DbxAuthFinish(String accessToken, String userId, /*@Nullable*/String urlState)
-    {
+    public DbxAuthFinish(String accessToken, String userId, /*@Nullable*/String urlState) {
         this.accessToken = accessToken;
         this.userId = userId;
         this.urlState = urlState;
     }
 
     /**
+     * Returns an <em>access token</em> that can be used to make Dropbox API calls.  Pass this in to
+     * the {@link com.dropbox.core.v2.DbxClientV2} constructor.
+     *
+     * @return OAuth access token used for authorization with Dropbox servers
+     */
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    /**
+     * Returns the Dropbox user ID of the user who just approved your app for access to their
+     * Dropbox account.
+     *
+     * @return Dropbox user ID of user that approved your app for access to their account
+     */
+    public String getUserId() {
+        return userId;
+    }
+
+    /**
+     * Returns the state data you passed in to {@link DbxWebAuth#start}.  If you didn't pass
+     * anything in, or you used {@link DbxWebAuthNoRedirect}, this will be {@code null}.
+     *
+     * @return state data passed into {@link DbxWebAuth#start}, or {@code null} if no state was
+     * passed
+     */
+    public /*@Nullable*/ String getUrlState() {
+        return urlState;
+    }
+
+    /**
      * For JSON parsing.
      */
-    public static final JsonReader<DbxAuthFinish> Reader = new JsonReader<DbxAuthFinish>()
-    {
-        public DbxAuthFinish read(JsonParser parser) throws IOException, JsonReadException
-        {
+    public static final JsonReader<DbxAuthFinish> Reader = new JsonReader<DbxAuthFinish>() {
+        public DbxAuthFinish read(JsonParser parser) throws IOException, JsonReadException {
             JsonLocation top = JsonReader.expectObjectStart(parser);
 
             String accessToken = null;
@@ -99,11 +111,9 @@ public final class DbxAuthFinish implements java.io.Serializable
         }
     };
 
-    public static final JsonReader<String> BearerTokenTypeReader = new JsonReader<String>()
-    {
+    public static final JsonReader<String> BearerTokenTypeReader = new JsonReader<String>() {
         @Override
-        public String read(JsonParser parser) throws IOException, JsonReadException
-        {
+        public String read(JsonParser parser) throws IOException, JsonReadException {
             try {
                 String v = parser.getText();
                 if (!v.equals("Bearer") && !v.equals("bearer")) {
@@ -111,19 +121,16 @@ public final class DbxAuthFinish implements java.io.Serializable
                 }
                 parser.nextToken();
                 return v;
-            }
-            catch (JsonParseException ex) {
+            } catch (JsonParseException ex) {
                 throw JsonReadException.fromJackson(ex);
             }
         }
 
     };
 
-    public static final JsonReader<String> AccessTokenReader = new JsonReader<String>()
-    {
+    public static final JsonReader<String> AccessTokenReader = new JsonReader<String>() {
         @Override
-        public String read(JsonParser parser) throws IOException, JsonReadException
-        {
+        public String read(JsonParser parser) throws IOException, JsonReadException {
             try {
                 String v = parser.getText();
                 String error = DbxAppInfo.getTokenPartError(v);
@@ -132,8 +139,7 @@ public final class DbxAuthFinish implements java.io.Serializable
                 }
                 parser.nextToken();
                 return v;
-            }
-            catch (JsonParseException ex) {
+            } catch (JsonParseException ex) {
                 throw JsonReadException.fromJackson(ex);
             }
         }

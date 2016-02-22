@@ -77,7 +77,7 @@ public class Main {
             }
         } catch (DbxApiException ex) {
             // if a user message is available, try using that instead
-            String message = ex.userMessage != null ? ex.userMessage.toString() : ex.getMessage();
+            String message = ex.getUserMessage() != null ? ex.getUserMessage().getText() : ex.getMessage();
             System.err.println("Error making API call: " + message);
             System.exit(1);
             return;
@@ -103,7 +103,7 @@ public class Main {
         StandardHttpRequestor requestor = new StandardHttpRequestor(config);
         DbxRequestConfig requestConfig = new DbxRequestConfig(clientUserAgentId, userLocale, requestor);
 
-        return new DbxClientV2(requestConfig, auth.accessToken, auth.host);
+        return new DbxClientV2(requestConfig, auth.getAccessToken(), auth.getHost());
     }
 
     /**

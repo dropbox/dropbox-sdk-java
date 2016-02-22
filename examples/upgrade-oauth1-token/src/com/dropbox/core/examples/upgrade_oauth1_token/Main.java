@@ -61,7 +61,7 @@ public class Main
         }
 
         System.out.println("OAuth 2 access token obtained.");
-        DbxAuthInfo authInfo = new DbxAuthInfo(oauth2AccessToken, appInfo.host);
+        DbxAuthInfo authInfo = new DbxAuthInfo(oauth2AccessToken, appInfo.getHost());
         DbxAuthInfo.Writer.writeToStream(authInfo, System.out);
         System.out.println();
 

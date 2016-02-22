@@ -9,93 +9,117 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 /*>>> import checkers.nullness.quals.Nullable; */
 
 /**
  * This is for mocking things out during testing.  Most of the time you won't have to deal with
- * this class; just use the default value: {@link DbxHost#Default}.
+ * this class; just use the default value: {@link DbxHost#DEFAULT}.
  */
-public final class DbxHost implements java.io.Serializable
-{
-    public static final long serialVersionUID = 0;
-
+public final class DbxHost {
     /**
      * The standard Dropbox hosts: "api.dropbox.com", "api-content.dropbox.com",
      * and "www.dropbox.com"
      */
-    public static final DbxHost Default = new DbxHost("api.dropbox.com", "api-content.dropbox.com", "www.dropbox.com", "api-notify.dropbox.com");
+    public static final DbxHost DEFAULT = new DbxHost(
+        "api.dropbox.com",
+        "api-content.dropbox.com",
+        "www.dropbox.com",
+        "api-notify.dropbox.com"
+    );
+
+    private final String api;
+    private final String content;
+    private final String web;
+    private final String notify;
 
     /**
-     * The host name of the main Dropbox API server.
-     * The default is "api.dropbox.com".
+     * @param api main Dropbox API server host name
+     * @param content Dropbox API content server host name
+     * @param web Dropbox web server host name
+     * @param notify Dropbox notification server host name
      */
-    public final String api;
-
-    /**
-     * The host name of the Dropbox API content server.
-     * The default is "api-content.dropbox.com".
-     */
-    public final String content;
-
-    /**
-     * The host name of the Dropbox web server.  Used during user authorization.
-     * The default is "www.dropbox.com".
-     */
-    public final String web;
-
-    /**
-     * The host name of the Dropbox notification server.  Used by the /longpoll_delta API.
-     * The default is "api-notify.dropbox.com".
-     */
-    public final String notify;
-
-    /**
-     * @param api {@link #api}
-     * @param content {@link #content}
-     * @param web {@link #web}
-     * @param notify {@link #notify}
-     */
-    public DbxHost(String api, String content, String web, String notify)
-    {
+    public DbxHost(String api, String content, String web, String notify) {
         this.api = api;
         this.content = content;
         this.web = web;
         this.notify = notify;
     }
 
-    public boolean equals(/*@Nullable*/Object o)
-    {
-        return o != null && getClass().equals(o.getClass()) && equals((DbxHost)o);
+    /**
+     * Returns the host name of the main Dropbox API server.
+     * The default is {@code "api.dropbox.com"}.
+     *
+     * @return host name of main Dropbox API server
+     */
+    public String getApi() {
+        return api;
     }
 
-    public boolean equals(DbxHost o)
-    {
-        return api.equals(o.api) && content.equals(o.content) && web.equals(o.web);
+    /**
+     * Returns the host name of the Dropbox API content server.
+     * The default is {@code "api-content.dropbox.com"}.
+     *
+     * @return host name of Dropbox API content server
+     */
+    public String getContent() {
+        return content;
     }
 
-    public int hashCode()
-    {
-        return api.hashCode() + content.hashCode() + web.hashCode();
+    /**
+     * Returns the host name of the Dropbox web server.  Used during user authorization.
+     * The default is {@code "www.dropbox.com"}.
+     *
+     * @return host name of Dropbox API web server used during user authorization
+     */
+    public String getWeb() {
+        return web;
     }
 
-    private static DbxHost fromBaseHost(String s)
-    {
+    /**
+     * Returns the host name of the Dropbox notification server.  Used by longpoll endpoints.
+     * The default is {@code "api-notify.dropbox.com"}.
+     *
+     * @return host name of Dropbox notification server used for longpolling
+     */
+    public String getNotify() {
+        return notify;
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(new String [] {api, content, web, notify});
+    }
+
+    @Override
+    public boolean equals(/*@Nullable*/Object obj) {
+        if (obj == this) {
+            return true;
+        } else if(obj instanceof DbxHost) {
+            DbxHost other = (DbxHost) obj;
+            return other.api.equals(this.api)
+                && other.content.equals(this.content)
+                && other.web.equals(this.web)
+                && other.notify.equals(this.notify);
+        } else {
+            return false;
+        }
+    }
+
+    private static DbxHost fromBaseHost(String s) {
         return new DbxHost("api-" + s, "api-content-" + s, "meta-" + s, "api-notify-" + s);
     }
 
-    public static final JsonReader<DbxHost> Reader = new JsonReader<DbxHost>()
-    {
+    public static final JsonReader<DbxHost> Reader = new JsonReader<DbxHost>() {
         @Override
-        public DbxHost read(JsonParser parser) throws IOException, JsonReadException
-        {
+        public DbxHost read(JsonParser parser) throws IOException, JsonReadException {
             JsonToken t = parser.getCurrentToken();
             if (t == JsonToken.VALUE_STRING) {
                 String s = parser.getText();
                 JsonReader.nextToken(parser);
                 return DbxHost.fromBaseHost(s);
-            }
-            else if (t == JsonToken.START_OBJECT) {
+            } else if (t == JsonToken.START_OBJECT) {
                 JsonLocation top = parser.getTokenLocation();
                 nextToken(parser);
 
@@ -138,15 +162,13 @@ public final class DbxHost implements java.io.Serializable
                 if (notify == null) throw new JsonReadException("missing field \"notify\"", top);
 
                 return new DbxHost(api, content, web, notify);
-            }
-            else {
+            } else {
                 throw new JsonReadException("expecting a string or an object", parser.getTokenLocation());
             }
         }
     };
 
-    private /*@Nullable*/String inferBaseHost()
-    {
+    private /*@Nullable*/String inferBaseHost() {
         if (web.startsWith("meta-") && api.startsWith("api-") && content.startsWith("api-content-") && notify.startsWith("api-notify-")) {
             String webBase = web.substring("meta-".length());
             String apiBase = api.substring("api-".length());
@@ -159,16 +181,13 @@ public final class DbxHost implements java.io.Serializable
         return null;
     }
 
-    public static final JsonWriter<DbxHost> Writer = new JsonWriter<DbxHost>()
-    {
+    public static final JsonWriter<DbxHost> Writer = new JsonWriter<DbxHost>() {
         @Override
-        public void write(DbxHost host, JsonGenerator g) throws IOException
-        {
+        public void write(DbxHost host, JsonGenerator g) throws IOException {
             String base = host.inferBaseHost();
             if (base != null) {
                 g.writeString(base);
-            }
-            else {
+            } else {
                 g.writeStartObject();
                 g.writeStringField("api", host.api);
                 g.writeStringField("content", host.content);

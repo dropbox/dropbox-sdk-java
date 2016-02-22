@@ -2258,7 +2258,7 @@ class JavaCodeGenerationInstance(object):
                     )
                 )
                 with self.g.block('public %s(DbxRequestConfig requestConfig, String accessToken)' % class_name):
-                    out('this(requestConfig, accessToken, DbxHost.Default);')
+                    out('this(requestConfig, accessToken, DbxHost.DEFAULT);')
 
                 out('')
 
@@ -2512,7 +2512,7 @@ class JavaCodeGenerationInstance(object):
 
     def translate_error_wrapper(self, route, error_wrapper_var):
         if route.has_error:
-            return 'new %(exc)s(%(ew)s.requestId, %(ew)s.userMessage, (%(err)s) %(ew)s.errValue);' % dict(
+            return 'new %(exc)s(%(ew)s.getRequestId(), %(ew)s.getUserMessage(), (%(err)s) %(ew)s.getErrorValue());' % dict(
                 exc=route.java_exception_class,
                 err=route.error.java_type(),
                 ew=error_wrapper_var,
@@ -2522,7 +2522,7 @@ class JavaCodeGenerationInstance(object):
                 route=route.babel_name,
                 ew=error_wrapper_var,
             )
-            return 'new DbxApiException(%(ew)s.requestId, %(ew)s.userMessage, "%(msg)s");' % dict(
+            return 'new DbxApiException(%(ew)s.getRequestId(), %(ew)s.getUserMessage(), "%(msg)s");' % dict(
                 msg=message,
                 ew=error_wrapper_var,
             )
@@ -2533,7 +2533,7 @@ class JavaCodeGenerationInstance(object):
         with self.g.block('try'):
             self.g.generate_multiline_list(
                 (
-                    'client.getHost().%s' % route.host,
+                    'client.getHost().%s()' % camelcase('get_' + route.host),
                     '"%s"' % route.url_path,
                     arg_var if route.has_request else 'null',
                     'true' if route.auth_style == 'noauth' else 'false',
@@ -2568,7 +2568,7 @@ class JavaCodeGenerationInstance(object):
 
         self.g.generate_multiline_list(
             (
-                'client.getHost().%s' % route.host,
+                'client.getHost().%s()' % camelcase('get_' + route.host),
                 '"%s"' % route.url_path,
                 arg_var if route.has_request else 'null',
                 'true' if route.auth_style == 'noauth' else 'false',
@@ -3259,9 +3259,9 @@ class JavaCodeGenerationInstance(object):
                 with self.g.block('protected %s parseResponse(HttpRequestor.Response response) throws JsonReadException, IOException' % response_type):
                     reader = route.response_reader
                     if route.has_response:
-                        out('return %s.readFully(response.body);' % reader)
+                        out('return %s.readFully(response.getBody());' % reader)
                     else:
-                        out('%s.readFully(response.body);' % reader)
+                        out('%s.readFully(response.getBody());' % reader)
                         out('return null;')
 
                 out('')

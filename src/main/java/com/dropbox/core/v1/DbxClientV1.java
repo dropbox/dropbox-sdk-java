@@ -51,7 +51,7 @@ public final class DbxClientV1
      */
     public DbxClientV1(DbxRequestConfig requestConfig, String accessToken)
     {
-        this(requestConfig, accessToken, DbxHost.Default);
+        this(requestConfig, accessToken, DbxHost.DEFAULT);
     }
 
     /**
@@ -117,7 +117,7 @@ public final class DbxClientV1
     {
         DbxPathV1.checkArg("path", path);
 
-        String host = this.host.api;
+        String host = this.host.getApi();
         String apiPath = "1/metadata/auto" + path;
         /*@Nullable*/String[] params = {
             "list", "false",
@@ -128,8 +128,8 @@ public final class DbxClientV1
             @Override
             public /*@Nullable*/DbxEntry handle(HttpRequestor.Response response) throws DbxException
             {
-                if (response.statusCode == 404) return null;
-                if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+                if (response.getStatusCode() == 404) return null;
+                if (response.getStatusCode() != 200) throw DbxRequestUtil.unexpectedStatus(response);
                 // Will return 'null' for "is_deleted=true" entries.
                 return DbxRequestUtil.readJsonFromResponse(DbxEntry.ReaderMaybeDeleted, response);
             }
@@ -222,7 +222,7 @@ public final class DbxClientV1
     {
         DbxPathV1.checkArg("path", path);
 
-        String host = this.host.api;
+        String host = this.host.getApi();
         String apiPath = "1/metadata/auto" + path;
 
         /*@Nullable*/String[] params = {
@@ -235,8 +235,8 @@ public final class DbxClientV1
             @Override
             public /*@Nullable*/T handle(HttpRequestor.Response response) throws DbxException
             {
-                if (response.statusCode == 404) return null;
-                if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+                if (response.getStatusCode() == 404) return null;
+                if (response.getStatusCode() != 200) throw DbxRequestUtil.unexpectedStatus(response);
                 // Will return 'null' for "is_deleted=true" entries.
                 return DbxRequestUtil.readJsonFromResponse(reader, response);
             }
@@ -317,7 +317,7 @@ public final class DbxClientV1
         if (previousFolderHash.length() == 0) throw new IllegalArgumentException("'previousFolderHash' must not be empty");
         DbxPathV1.checkArg("path", path);
 
-        String host = this.host.api;
+        String host = this.host.getApi();
         String apiPath = "1/metadata/auto" + path;
 
         /*@Nullable*/String[] params = {
@@ -331,9 +331,9 @@ public final class DbxClientV1
             @Override
             public Maybe</*@Nullable*/T> handle(HttpRequestor.Response response) throws DbxException
             {
-                if (response.statusCode == 404) return Maybe.</*@Nullable*/T>Just(null);
-                if (response.statusCode == 304) return Maybe.</*@Nullable*/T>Nothing();
-                if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+                if (response.getStatusCode() == 404) return Maybe.</*@Nullable*/T>Just(null);
+                if (response.getStatusCode() == 304) return Maybe.</*@Nullable*/T>Nothing();
+                if (response.getStatusCode() != 200) throw DbxRequestUtil.unexpectedStatus(response);
 
                 return Maybe.</*@Nullable*/T>Just(DbxRequestUtil.readJsonFromResponse(reader, response));
             }
@@ -349,14 +349,14 @@ public final class DbxClientV1
     public DbxAccountInfo getAccountInfo()
         throws DbxException
     {
-        String host = this.host.api;
+        String host = this.host.getApi();
         String apiPath = "1/account/info";
 
         return doGet(host, apiPath, null, null, new DbxRequestUtil.ResponseHandler<DbxAccountInfo>() {
             @Override
             public DbxAccountInfo handle(HttpRequestor.Response response) throws DbxException
             {
-                if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+                if (response.getStatusCode() != 200) throw DbxRequestUtil.unexpectedStatus(response);
 
                 return DbxRequestUtil.readJsonFromResponse(DbxAccountInfo.Reader, response);
             }
@@ -374,16 +374,16 @@ public final class DbxClientV1
     public void disableAccessToken()
         throws DbxException
     {
-        String host = this.host.api;
+        String host = this.host.getApi();
         String apiPath = "1/disable_access_token";
 
         doPost(host, apiPath, null, null, new DbxRequestUtil.ResponseHandler</*@Nullable*/Void>() {
             @Override
             public /*@Nullable*/Void handle(HttpRequestor.Response response) throws DbxException
             {
-                if (response.statusCode != 200) {
+                if (response.getStatusCode() != 200) {
                     String requestId = DbxRequestUtil.getRequestId(response);
-                    throw new BadResponseException(requestId, "unexpected response code: " + response.statusCode);
+                    throw new BadResponseException(requestId, "unexpected response code: " + response.getStatusCode());
                 }
                 return null;
             }
@@ -472,7 +472,7 @@ public final class DbxClientV1
                                                       final /*@Nullable*/String[] params)
         throws DbxException
     {
-        final String host = this.host.content;
+        final String host = this.host.getContent();
 
         // we don't use doGet() here because doGet() will close our input stream before we can
         // download the contents.
@@ -484,8 +484,8 @@ public final class DbxClientV1
 
                 boolean passedOwnershipOfStream = false;
                 try {
-                    if (response.statusCode == 404) return null;
-                    if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+                    if (response.getStatusCode() == 404) return null;
+                    if (response.getStatusCode() != 200) throw DbxRequestUtil.unexpectedStatus(response);
 
                     String metadataString = DbxRequestUtil.getFirstHeader(response, "x-dropbox-metadata");
                     DbxEntry.File metadata;
@@ -498,7 +498,7 @@ public final class DbxClientV1
                     }
 
                     // Package up the metadata with the response body's InputStream.
-                    Downloader result = new Downloader(metadata, response.body);
+                    Downloader result = new Downloader(metadata, response.getBody());
 
                     passedOwnershipOfStream = true;
                     return result;
@@ -507,7 +507,7 @@ public final class DbxClientV1
                     // If we haven't passed ownership the stream to the caller, then close it.
                     if (!passedOwnershipOfStream) {
                         try {
-                            response.body.close();
+                            response.getBody().close();
                         }
                         catch (IOException ex) {
                             // Ignore, since we don't actually care about the data in this method.
@@ -546,11 +546,11 @@ public final class DbxClientV1
             }
             catch (IOUtil.ReadException ex) {
                 // Error reading from the network.  Convert it to a DbxException.
-                throw new NetworkIOException(ex.underlying);
+                throw new NetworkIOException(ex.getCause());
             }
             catch (IOUtil.WriteException ex) {
                 // Error writing to 'target'.  Relay the underlying IOException.
-                throw ex.underlying;
+                throw ex.getCause();
             }
             finally {
                 this.close();
@@ -741,7 +741,7 @@ public final class DbxClientV1
         DbxPathV1.checkArg("targetPath", targetPath);
         if (numBytes < 0) throw new IllegalArgumentException("numBytes must be zero or greater");
 
-        String host = this.host.content;
+        String host = this.host.getContent();
         String apiPath = "1/files_put/auto" + targetPath;
 
         ArrayList<HttpRequestor.Header> headers = new ArrayList<HttpRequestor.Header>();
@@ -851,7 +851,7 @@ public final class DbxClientV1
                 @Override
                 public DbxEntry.File handle(HttpRequestor.Response response) throws DbxException
                 {
-                    if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+                    if (response.getStatusCode() != 200) throw DbxRequestUtil.unexpectedStatus(response);
                     DbxEntry.File f = DbxRequestUtil.readJsonFromResponse(DbxEntry.File.Reader, response);
                     // Make sure the server agrees with us on how many bytes are in the file.
                     if (f.numBytes != bytesWritten) {
@@ -938,7 +938,7 @@ public final class DbxClientV1
         headers.add(new HttpRequestor.Header("Content-Type", "application/octet-stream"));
         headers.add(new HttpRequestor.Header("Content-Length", Long.toString(chunkSize)));
 
-        HttpRequestor.Uploader uploader = DbxRequestUtil.startPut(requestConfig, accessToken, USER_AGENT_ID, host.content, apiPath, params, headers);
+        HttpRequestor.Uploader uploader = DbxRequestUtil.startPut(requestConfig, accessToken, USER_AGENT_ID, host.getContent(), apiPath, params, headers);
         try {
             try {
                 NoThrowOutputStream nt = new NoThrowOutputStream(uploader.getBody());
@@ -964,7 +964,7 @@ public final class DbxClientV1
     private /*@Nullable*/ChunkedUploadState chunkedUploadCheckForOffsetCorrection(HttpRequestor.Response response)
         throws DbxException
     {
-        if (response.statusCode != 400) return null;
+        if (response.getStatusCode() != 400) return null;
 
         byte[] data = DbxRequestUtil.loadErrorBody(response);
 
@@ -981,7 +981,7 @@ public final class DbxClientV1
     private ChunkedUploadState chunkedUploadParse200(HttpRequestor.Response response)
         throws BadResponseException, NetworkIOException
     {
-        assert response.statusCode == 200 : response.statusCode;
+        assert response.getStatusCode() == 200 : response.getStatusCode();
         return DbxRequestUtil.readJsonFromResponse(ChunkedUploadState.Reader, response);
     }
 
@@ -1038,12 +1038,12 @@ public final class DbxClientV1
                 throw new BadResponseException(requestId, "Got offset correction response on first chunk.");
             }
 
-            if (response.statusCode == 404) {
+            if (response.getStatusCode() == 404) {
                 String requestId = DbxRequestUtil.getRequestId(response);
                 throw new BadResponseException(requestId, "Got a 404, but we didn't send an upload_id");
             }
 
-            if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+            if (response.getStatusCode() != 200) throw DbxRequestUtil.unexpectedStatus(response);
             ChunkedUploadState returnedState = chunkedUploadParse200(response);
 
             if (returnedState.offset != chunkSize) {
@@ -1054,7 +1054,7 @@ public final class DbxClientV1
             return returnedState.uploadId;
         }
         finally {
-            IOUtil.closeInput(response.body);
+            IOUtil.closeInput(response.getBody());
         }
     }
 
@@ -1167,7 +1167,7 @@ public final class DbxClientV1
                 return correctedState.offset;
             }
 
-            if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+            if (response.getStatusCode() != 200) throw DbxRequestUtil.unexpectedStatus(response);
             ChunkedUploadState returnedState = chunkedUploadParse200(response);
 
             if (returnedState.offset != expectedOffset) {
@@ -1177,7 +1177,7 @@ public final class DbxClientV1
             return -1;
         }
         finally {
-            IOUtil.closeInput(response.body);
+            IOUtil.closeInput(response.getBody());
         }
     }
 
@@ -1208,11 +1208,11 @@ public final class DbxClientV1
         };
         params = LangUtil.arrayConcat(params, writeMode.params);
 
-        return doPost(host.content, apiPath, params, null, new DbxRequestUtil.ResponseHandler<DbxEntry.File>() {
+        return doPost(host.getContent(), apiPath, params, null, new DbxRequestUtil.ResponseHandler<DbxEntry.File>() {
             @Override
             public DbxEntry.File handle(HttpRequestor.Response response) throws DbxException
             {
-                if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+                if (response.getStatusCode() != 200) throw DbxRequestUtil.unexpectedStatus(response);
                 return DbxRequestUtil.readJsonFromResponse(DbxEntry.File.Reader, response);
             }
         });
@@ -1563,7 +1563,7 @@ public final class DbxClientV1
     private DbxDelta<DbxEntry> _getDelta(/*@Nullable*/String cursor, /*@Nullable*/String pathPrefix, boolean includeMediaInfo)
         throws DbxException
     {
-        String host = this.host.api;
+        String host = this.host.getApi();
         String apiPath = "1/delta";
 
         /*@Nullable*/String[] params = {
@@ -1575,7 +1575,7 @@ public final class DbxClientV1
         return doPost(host, apiPath, params, null, new DbxRequestUtil.ResponseHandler<DbxDelta<DbxEntry>>() {
             @Override
             public DbxDelta<DbxEntry> handle(HttpRequestor.Response response) throws DbxException {
-                if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+                if (response.getStatusCode() != 200) throw DbxRequestUtil.unexpectedStatus(response);
                 return DbxRequestUtil.readJsonFromResponse(new DbxDelta.Reader<DbxEntry>(DbxEntry.Reader), response);
             }
         });
@@ -1586,7 +1586,7 @@ public final class DbxClientV1
                                         boolean includeMediaInfo)
         throws DbxException
     {
-        String host = this.host.api;
+        String host = this.host.getApi();
         String apiPath = "1/delta";
 
         /*@Nullable*/String[] params = {
@@ -1598,7 +1598,7 @@ public final class DbxClientV1
         return doPost(host, apiPath, params, null, new DbxRequestUtil.ResponseHandler<DbxDeltaC<C>>() {
             @Override
             public DbxDeltaC<C> handle(HttpRequestor.Response response) throws DbxException {
-                if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+                if (response.getStatusCode() != 200) throw DbxRequestUtil.unexpectedStatus(response);
                 return DbxRequestUtil.readJsonFromResponse(new DbxDeltaC.Reader<C, DbxEntry>(DbxEntry.Reader, collector), response);
             }
         });
@@ -1646,7 +1646,7 @@ public final class DbxClientV1
 
     private String _getDeltaLatestCursor(/*@Nullable*/String pathPrefix, boolean includeMediaInfo) throws DbxException
     {
-        String host = this.host.api;
+        String host = this.host.getApi();
         String apiPath = "1/delta/latest_cursor";
 
         /*@Nullable*/String[] params = {
@@ -1657,7 +1657,7 @@ public final class DbxClientV1
         return doPost(host, apiPath, params, null, new DbxRequestUtil.ResponseHandler<String>() {
             @Override
             public String handle(HttpRequestor.Response response) throws DbxException {
-                if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+                if (response.getStatusCode() != 200) throw DbxRequestUtil.unexpectedStatus(response);
                 return DbxRequestUtil.readJsonFromResponse(LatestCursorReader, response);
             }
         });
@@ -1716,7 +1716,7 @@ public final class DbxClientV1
             getRequestConfig(),
             getAccessToken(),
             USER_AGENT_ID,
-            host.notify,
+            host.getNotify(),
             "1/longpoll_delta",
             params,
             null,
@@ -1725,7 +1725,7 @@ public final class DbxClientV1
                 public DbxLongpollDeltaResult handle(HttpRequestor.Response response)
                     throws DbxException
                 {
-                    if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+                    if (response.getStatusCode() != 200) throw DbxRequestUtil.unexpectedStatus(response);
                     return DbxRequestUtil.readJsonFromResponse(DbxLongpollDeltaResult.Reader, response);
                 }
             }
@@ -1811,11 +1811,11 @@ public final class DbxClientV1
 
         String apiPath = "1/revisions/auto" + path;
 
-        return doGet(host.api, apiPath, null, null, new DbxRequestUtil.ResponseHandler<List<DbxEntry.File>>() {
+        return doGet(host.getApi(), apiPath, null, null, new DbxRequestUtil.ResponseHandler<List<DbxEntry.File>>() {
             public List<DbxEntry.File> handle(HttpRequestor.Response response)
                 throws DbxException
             {
-                if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+                if (response.getStatusCode() != 200) throw DbxRequestUtil.unexpectedStatus(response);
                 Collector<DbxEntry./*@Nullable*/File,ArrayList<DbxEntry.File>> collector =
                     Collector.NullSkipper.<DbxEntry.File,ArrayList<DbxEntry.File>>mk(new Collector.ArrayListCollector<DbxEntry.File>());
                 return DbxRequestUtil.readJsonFromResponse(JsonArrayReader.mk(DbxEntry.File.ReaderMaybeDeleted, collector), response);
@@ -1850,12 +1850,12 @@ public final class DbxClientV1
             "rev", rev,
         };
 
-        return doGet(host.api, apiPath, params, null, new DbxRequestUtil.ResponseHandler<DbxEntry./*@Nullable*/File>() {
+        return doGet(host.getApi(), apiPath, params, null, new DbxRequestUtil.ResponseHandler<DbxEntry./*@Nullable*/File>() {
             public DbxEntry./*@Nullable*/File handle(HttpRequestor.Response response)
                 throws DbxException
             {
-                if (response.statusCode == 404) return null;
-                if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+                if (response.getStatusCode() == 404) return null;
+                if (response.getStatusCode() != 200) throw DbxRequestUtil.unexpectedStatus(response);
                 return DbxRequestUtil.readJsonFromResponse(DbxEntry.File.Reader, response);
             }
         });
@@ -1882,13 +1882,13 @@ public final class DbxClientV1
         String apiPath = "1/search/auto" + basePath;
         String[] params = {"query", query};
 
-        return doPost(host.api, apiPath, params, null, new DbxRequestUtil.ResponseHandler<List<DbxEntry>>()
+        return doPost(host.getApi(), apiPath, params, null, new DbxRequestUtil.ResponseHandler<List<DbxEntry>>()
         {
             @Override
             public List<DbxEntry> handle(HttpRequestor.Response response)
                 throws DbxException
             {
-                if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+                if (response.getStatusCode() != 200) throw DbxRequestUtil.unexpectedStatus(response);
                 return DbxRequestUtil.readJsonFromResponse(JsonArrayReader.mk(DbxEntry.Reader), response);
             }
         });
@@ -1914,13 +1914,13 @@ public final class DbxClientV1
         String apiPath = "1/shares/auto" + path;
         String[] params = {"short_url", "false"};
 
-        return doPost(host.api, apiPath, params, null, new DbxRequestUtil.ResponseHandler</*@Nullable*/String>() {
+        return doPost(host.getApi(), apiPath, params, null, new DbxRequestUtil.ResponseHandler</*@Nullable*/String>() {
             @Override
             public /*@Nullable*/String handle(HttpRequestor.Response response)
                 throws DbxException
             {
-                if (response.statusCode == 404) return null;
-                if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+                if (response.getStatusCode() == 404) return null;
+                if (response.getStatusCode() != 200) throw DbxRequestUtil.unexpectedStatus(response);
                 DbxUrlWithExpiration uwe = DbxRequestUtil.readJsonFromResponse(DbxUrlWithExpiration.Reader, response);
                 return uwe.url;
             }
@@ -1945,13 +1945,13 @@ public final class DbxClientV1
 
         String apiPath = "1/media/auto" + path;
 
-        return doPost(host.api, apiPath, null, null, new DbxRequestUtil.ResponseHandler</*@Nullable*/DbxUrlWithExpiration>() {
+        return doPost(host.getApi(), apiPath, null, null, new DbxRequestUtil.ResponseHandler</*@Nullable*/DbxUrlWithExpiration>() {
             @Override
             public /*@Nullable*/DbxUrlWithExpiration handle(HttpRequestor.Response response)
                 throws DbxException
             {
-                if (response.statusCode == 404) return null;
-                if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+                if (response.getStatusCode() == 404) return null;
+                if (response.getStatusCode() != 200) throw DbxRequestUtil.unexpectedStatus(response);
                 return DbxRequestUtil.readJsonFromResponse(DbxUrlWithExpiration.Reader, response);
             }
         });
@@ -1985,14 +1985,14 @@ public final class DbxClientV1
 
         String apiPath = "1/copy_ref/auto" + path;
 
-        return doPost(host.api, apiPath, null, null, new DbxRequestUtil.ResponseHandler</*@Nullable*/String>()
+        return doPost(host.getApi(), apiPath, null, null, new DbxRequestUtil.ResponseHandler</*@Nullable*/String>()
         {
             @Override
             public /*@Nullable*/String handle(HttpRequestor.Response response)
                 throws DbxException
             {
-                if (response.statusCode == 404) return null;
-                if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+                if (response.getStatusCode() == 404) return null;
+                if (response.getStatusCode() != 200) throw DbxRequestUtil.unexpectedStatus(response);
                 CopyRef copyRef = DbxRequestUtil.readJsonFromResponse(CopyRef.Reader, response);
                 return copyRef.id;
             }
@@ -2069,13 +2069,13 @@ public final class DbxClientV1
             "to_path", toPath,
         };
 
-        return doPost(host.api, "1/fileops/copy", params, null, new DbxRequestUtil.ResponseHandler</*@Nullable*/DbxEntry>() {
+        return doPost(host.getApi(), "1/fileops/copy", params, null, new DbxRequestUtil.ResponseHandler</*@Nullable*/DbxEntry>() {
             @Override
             public /*@Nullable*/DbxEntry handle(HttpRequestor.Response response)
                 throws DbxException
             {
-                if (response.statusCode == 403) return null;
-                if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+                if (response.getStatusCode() == 403) return null;
+                if (response.getStatusCode() != 200) throw DbxRequestUtil.unexpectedStatus(response);
                 DbxEntry.WithChildren dwc = DbxRequestUtil.readJsonFromResponse(DbxEntry.WithChildren.Reader, response);
                 if (dwc == null) return null;  // TODO: When can this happen?
                 return dwc.entry;
@@ -2100,13 +2100,13 @@ public final class DbxClientV1
             "to_path", toPath,
         };
 
-        return doPost(host.api, "1/fileops/copy", params, null, new DbxRequestUtil.ResponseHandler</*@Nullable*/DbxEntry>()
+        return doPost(host.getApi(), "1/fileops/copy", params, null, new DbxRequestUtil.ResponseHandler</*@Nullable*/DbxEntry>()
         {
             @Override
             public /*@Nullable*/DbxEntry handle(HttpRequestor.Response response)
                 throws DbxException
             {
-                if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+                if (response.getStatusCode() != 200) throw DbxRequestUtil.unexpectedStatus(response);
                 DbxEntry.WithChildren dwc = DbxRequestUtil.readJsonFromResponse(DbxEntry.WithChildren.Reader, response);
                 if (dwc == null) return null;  // TODO: When can this happen?
                 return dwc.entry;
@@ -2131,13 +2131,13 @@ public final class DbxClientV1
             "path", path,
         };
 
-        return doPost(host.api, "1/fileops/create_folder", params, null, new DbxRequestUtil.ResponseHandler<DbxEntry./*@Nullable*/Folder>() {
+        return doPost(host.getApi(), "1/fileops/create_folder", params, null, new DbxRequestUtil.ResponseHandler<DbxEntry./*@Nullable*/Folder>() {
             @Override
             public DbxEntry./*@Nullable*/Folder handle(HttpRequestor.Response response)
                 throws DbxException
             {
-                if (response.statusCode == 403) return null;
-                if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+                if (response.getStatusCode() == 403) return null;
+                if (response.getStatusCode() != 200) throw DbxRequestUtil.unexpectedStatus(response);
                 return DbxRequestUtil.readJsonFromResponse(DbxEntry.Folder.Reader, response);
             }
         });
@@ -2156,12 +2156,12 @@ public final class DbxClientV1
             "path", path,
         };
 
-        doPost(host.api, "1/fileops/delete", params, null, new DbxRequestUtil.ResponseHandler<Void>() {
+        doPost(host.getApi(), "1/fileops/delete", params, null, new DbxRequestUtil.ResponseHandler<Void>() {
             @Override
             public Void handle(HttpRequestor.Response response)
                 throws DbxException
             {
-                if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+                if (response.getStatusCode() != 200) throw DbxRequestUtil.unexpectedStatus(response);
                 return null;
             }
         });
@@ -2186,14 +2186,14 @@ public final class DbxClientV1
             "to_path", toPath,
         };
 
-        return doPost(host.api, "1/fileops/move", params, null, new DbxRequestUtil.ResponseHandler</*@Nullable*/DbxEntry>()
+        return doPost(host.getApi(), "1/fileops/move", params, null, new DbxRequestUtil.ResponseHandler</*@Nullable*/DbxEntry>()
         {
             @Override
             public /*@Nullable*/DbxEntry handle(HttpRequestor.Response response)
                 throws DbxException
             {
-                if (response.statusCode == 403) return null;
-                if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+                if (response.getStatusCode() == 403) return null;
+                if (response.getStatusCode() != 200) throw DbxRequestUtil.unexpectedStatus(response);
                 DbxEntry.WithChildren dwc = DbxRequestUtil.readJsonFromResponse(DbxEntry.WithChildren.Reader, response);
                 if (dwc == null) return null;  // TODO: In what situations can this happen?
                 return dwc.entry;

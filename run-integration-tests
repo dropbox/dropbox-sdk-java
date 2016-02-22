@@ -45,4 +45,4 @@ else
     exit 1
 fi
 
-exec mvn integration-test "${args[@]}"
+exec mvn test-compile failsafe:integration-test failsafe:verify "${args[@]}"

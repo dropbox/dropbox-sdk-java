@@ -243,7 +243,7 @@ public class DbxWebAuth
         assert code != null : "@AssumeAssertion(nullness)";
 
         DbxAuthFinish finish = DbxWebAuthHelper.finish(this.appInfo, this.requestConfig, code, this.redirectUri);
-        return new DbxAuthFinish(finish.accessToken, finish.userId, givenUrlState);
+        return new DbxAuthFinish(finish.getAccessToken(), finish.getUserId(), givenUrlState);
     }
 
     private static /*@Nullable*/String getParam(Map<String,String[]> params, String name)

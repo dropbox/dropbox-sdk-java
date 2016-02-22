@@ -20,37 +20,31 @@ import java.io.OutputStream;
  * but you're not supposed to call that method.
  * </p>
  */
-public final class NoThrowInputStream extends InputStream
-{
+public final class NoThrowInputStream extends InputStream {
     private final InputStream underlying;
     private long bytesRead = 0;
 
-    public NoThrowInputStream(InputStream underlying)
-    {
+    public NoThrowInputStream(InputStream underlying) {
         this.underlying = underlying;
     }
 
     @Override
-    public void close()
-    {
+    public void close() {
         throw new UnsupportedOperationException("don't call close()");
     }
 
     @Override
-    public int read()
-    {
+    public int read() {
         try {
             bytesRead += 1;
             return underlying.read();
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             throw new HiddenException(ex);
         }
     }
 
     @Override
-    public int read(byte[] b, int off, int len)
-    {
+    public int read(byte[] b, int off, int len) {
         try {
             int bytesReadNow = underlying.read(b, off, len);
             this.bytesRead += bytesReadNow;
@@ -62,33 +56,29 @@ public final class NoThrowInputStream extends InputStream
     }
 
     @Override
-    public int read(byte[] b)
-    {
+    public int read(byte[] b) {
         try {
             int bytesReadNow = underlying.read(b);
             this.bytesRead += bytesReadNow;
             return bytesReadNow;
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             throw new HiddenException(ex);
         }
     }
 
-    public static final class HiddenException extends RuntimeException
-    {
-        public final IOException underlying;
+    public static final class HiddenException extends RuntimeException {
 
-        public HiddenException(IOException underlying)
-        {
+        public HiddenException(IOException underlying) {
             super(underlying);
-            this.underlying = underlying;
         }
 
-        public static final long serialVersionUID = 0;
+        @Override
+        public IOException getCause() {
+            return (IOException) super.getCause();
+        }
     }
 
-    public long getBytesRead()
-    {
+    public long getBytesRead() {
         return bytesRead;
     }
 }

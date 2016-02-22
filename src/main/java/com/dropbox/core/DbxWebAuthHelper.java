@@ -17,8 +17,8 @@ abstract class DbxWebAuthHelper
                                          /*@Nullable*/String state)
     {
         return DbxRequestUtil.buildUrlWithParams(userLocale,
-            appInfo.host.web, "1/oauth2/authorize", new String[] {
-                "client_id", appInfo.key,
+            appInfo.getHost().getWeb(), "1/oauth2/authorize", new String[] {
+                "client_id", appInfo.getKey(),
                 "response_type", "code",
                 "redirect_uri", redirectUri,
                 "state", state,
@@ -41,14 +41,14 @@ abstract class DbxWebAuthHelper
         };
 
         ArrayList<HttpRequestor.Header> headers = new ArrayList<HttpRequestor.Header>();
-        String credentials = appInfo.key + ":" + appInfo.secret;
+        String credentials = appInfo.getKey() + ":" + appInfo.getSecret();
         String base64Credentials = StringUtil.base64Encode(StringUtil.stringToUtf8(credentials));
         headers.add(new HttpRequestor.Header("Authorization", "Basic " + base64Credentials));
 
         return DbxRequestUtil.doPostNoAuth(
             requestConfig,
             DbxClientV1.USER_AGENT_ID,
-            appInfo.host.api,
+            appInfo.getHost().getApi(),
             "1/oauth2/token",
             params,
             headers,
@@ -56,7 +56,7 @@ abstract class DbxWebAuthHelper
                 @Override
                 public DbxAuthFinish handle(HttpRequestor.Response response) throws DbxException
                 {
-                    if (response.statusCode != 200) throw DbxRequestUtil.unexpectedStatus(response);
+                    if (response.getStatusCode() != 200) throw DbxRequestUtil.unexpectedStatus(response);
                     return DbxRequestUtil.readJsonFromResponse(DbxAuthFinish.Reader, response);
                 }
             }

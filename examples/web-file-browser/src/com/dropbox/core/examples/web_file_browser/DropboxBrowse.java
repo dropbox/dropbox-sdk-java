@@ -53,7 +53,7 @@ public class DropboxBrowse
 
         return new DbxClientV2(common.getRequestConfig(request),
                                user.dropboxAccessToken,
-                               common.dbxAppInfo.host);
+                               common.dbxAppInfo.getHost());
     }
 
     private boolean checkPathError(HttpServletResponse response, String path, LookupError le)

@@ -167,7 +167,7 @@ public class StandardHttpRequestor extends HttpRequestor
         configureConnection(conn);
 
         for (Header header : headers) {
-            conn.addRequestProperty(header.key, header.value);
+            conn.addRequestProperty(header.getKey(), header.getValue());
         }
 
         return conn;

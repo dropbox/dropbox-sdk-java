@@ -38,20 +38,35 @@ public abstract class HttpRequestor
      * A simple structure holding an HTTP header, which is key/value pair.
      * Used with {@link HttpRequestor}.
      */
-    public static final class Header
-    {
-        public final String key;
-        public final String value;
+    public static final class Header {
+        private final String key;
+        private final String value;
 
-        public Header(String key, String value)
-        {
+        public Header(String key, String value) {
             this.key = key;
             this.value = value;
         }
+
+        /**
+         * Returns header name.
+         *
+         * @return header name
+         */
+        public String getKey() {
+            return key;
+        }
+
+        /**
+         * Returns header value.
+         *
+         * @return header value
+         */
+        public String getValue() {
+            return value;
+        }
     }
 
-    public static abstract class Uploader
-    {
+    public static abstract class Uploader {
         private final OutputStream body;
 
         protected Uploader(OutputStream body) { this.body = body; }
@@ -62,26 +77,44 @@ public abstract class HttpRequestor
         public abstract Response finish() throws IOException;
     }
 
-    public static final class Response
-    {
-        /**
-         * HTTP status response code.
-         */
-        public final int statusCode;
-        /**
-         * HTTP response body. Must be fully read before closing.
-         */
-        public final InputStream body;
-        /**
-         * Case-insensitive, unmodifiable mapping of header fields to their values.
-         */
-        public final Map<String, List<String>> headers;
+    public static final class Response {
+        private final int statusCode;
+        private final InputStream body;
+        private final Map<String, List<String>> headers;
 
-        public Response(int statusCode, InputStream body, Map<String, ? extends List<String>> headers)
-        {
+        public Response(int statusCode, InputStream body, Map<String, ? extends List<String>> headers) {
             this.statusCode = statusCode;
             this.body = body;
             this.headers = asUnmodifiableCaseInsensitiveMap(headers);
+        }
+
+        /**
+         * Returns HTTP status response code.
+         *
+         * @return HTTP status code
+         */
+        public int getStatusCode() {
+            return statusCode;
+        }
+
+        /**
+         * Returns an {@link InputStream} for reading the HTTP response body.
+         *
+         * <p> The returned stream <b>must</b> be fully read before closing.
+         *
+         * @return HTTP response body
+         */
+        public InputStream getBody() {
+            return body;
+        }
+
+        /**
+         * Returns a case-insensitive, unmodifiable mapping of header fields to their values.
+         *
+         * @return case-insensitive, unmodifiable headers
+         */
+        public Map<String, List<String>> getHeaders() {
+            return headers;
         }
 
         private static final Map<String, List<String>> asUnmodifiableCaseInsensitiveMap(Map<String, ? extends List<String>> original) {

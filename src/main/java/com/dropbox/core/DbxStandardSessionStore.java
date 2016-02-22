@@ -19,34 +19,37 @@ import javax.servlet.http.HttpSession;
  * }
  * </pre>
  */
-public final class DbxStandardSessionStore implements DbxSessionStore
-{
-    public final HttpSession session;
-    public final String key;
+public final class DbxStandardSessionStore implements DbxSessionStore {
+    private final HttpSession session;
+    private final String key;
 
-    public DbxStandardSessionStore(HttpSession session, String key)
-    {
+    public DbxStandardSessionStore(HttpSession session, String key) {
         this.session = session;
         this.key = key;
     }
 
+    public HttpSession getSession() {
+        return session;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
     @Override
-    public /*@Nullable*/String get()
-    {
+    public /*@Nullable*/String get() {
         Object v = session.getAttribute(key);
         if (v instanceof String) return (String) v;
         return null;
     }
 
     @Override
-    public void set(String value)
-    {
+    public void set(String value) {
         session.setAttribute(key, value);
     }
 
     @Override
-    public void clear()
-    {
+    public void clear() {
         session.removeAttribute(key);
     }
 }

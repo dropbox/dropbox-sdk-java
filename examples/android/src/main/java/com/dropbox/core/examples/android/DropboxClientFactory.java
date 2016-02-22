@@ -22,7 +22,7 @@ public class DropboxClientFactory {
                     userLocale,
                     OkHttpRequestor.INSTANCE);
 
-            sDbxClient = new DbxClientV2(requestConfig, accessToken, DbxHost.Default);
+            sDbxClient = new DbxClientV2(requestConfig, accessToken);
         }
     }
 

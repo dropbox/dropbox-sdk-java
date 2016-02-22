@@ -13,18 +13,40 @@ import java.io.IOException;
 /**
  * Used by the example code to remember auth information.
  */
-public final class DbxAuthInfo
-{
-    public final String accessToken;
-    public final DbxHost host;
+public final class DbxAuthInfo {
+    private final String accessToken;
+    private final DbxHost host;
 
-    public DbxAuthInfo(String accessToken, DbxHost host)
-    {
+    /**
+     * Creates a new instance with the given parameters.
+     *
+     * @param accessToken OAuth access token for authorization with Dropbox servers
+     * @param host Dropbox host configuration used to select Dropbox servers
+     */
+    public DbxAuthInfo(String accessToken, DbxHost host) {
         if (accessToken == null) throw new IllegalArgumentException("'accessToken' can't be null");
         if (host == null) throw new IllegalArgumentException("'host' can't be null");
 
         this.accessToken = accessToken;
         this.host = host;
+    }
+
+    /**
+     * Returns the OAuth access token to use for authorization with Dropbox servers.
+     *
+     * @return OAuth access token
+     */
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    /**
+     * Returns Dropbox host configuration used to map requests to the appropriate Dropbox servers.
+     *
+     * @return Dropbox host configuration
+     */
+    public DbxHost getHost() {
+        return host;
     }
 
     public static final JsonReader<DbxAuthInfo> Reader = new JsonReader<DbxAuthInfo>()
@@ -62,7 +84,7 @@ public final class DbxAuthInfo
             JsonReader.expectObjectEnd(parser);
 
             if (accessToken == null) throw new JsonReadException("missing field \"access_token\"", top);
-            if (host == null) host = DbxHost.Default;
+            if (host == null) host = DbxHost.DEFAULT;
 
             return new DbxAuthInfo(accessToken, host);
         }
@@ -75,7 +97,7 @@ public final class DbxAuthInfo
         {
             g.writeStartObject();
             g.writeStringField("access_token", authInfo.accessToken);
-            if (!authInfo.host.equals(DbxHost.Default)) {
+            if (!authInfo.host.equals(DbxHost.DEFAULT)) {
                 g.writeFieldName("host");
                 DbxHost.Writer.write(authInfo.host, g);
             }

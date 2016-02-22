@@ -18,55 +18,30 @@ import com.fasterxml.jackson.core.JsonToken;
 /**
  * Identifying information about your application.
  */
-public class DbxAppInfo extends Dumpable implements java.io.Serializable
-{
-    public static final long serialVersionUID = 0;
+public class DbxAppInfo extends Dumpable {
+    private final String key;
+    private final String secret;
+    private final DbxHost host;
 
     /**
-     * Your Dropbox <em>app key</em> (OAuth calls this the <em>consumer key</em>).  You can
-     * create an app key and secret on the <a href="http://dropbox.com/developers/apps">Dropbox developer website</a>.
+     * @param key Dropbox app key (see {@link #getKey})
+     * @param secret Dropbox app secret (see {@link #getSecret})
      */
-    public final String key;
-
-    /**
-     * Your Dropbox <em>app secret</em> (OAuth calls this the <em>consumer secret</em>).  You can
-     * create an app key and secret on the <a href="http://dropbox.com/developers/apps">Dropbox developer website</a>.
-     *
-     * <p>
-     * Make sure that this is kept a secret.  Someone with your app secret can impesonate your
-     * application.  People sometimes ask for help on the Dropbox API forums and
-     * copy/paste their code, which sometimes includes their app secret.  Do not do that.
-     * </p>
-     */
-    public final String secret;
-
-    /**
-     * This is almost always {@link DbxHost#Default}.  This is only set differently for testing
-     * purposes.
-     */
-    public final DbxHost host;
-
-    /**
-     * @param key {@link #key}
-     * @param secret {@link #secret}
-     */
-    public DbxAppInfo(String key, String secret)
-    {
+    public DbxAppInfo(String key, String secret) {
         checkKeyArg(key);
         checkSecretArg(secret);
 
         this.key = key;
         this.secret = secret;
-        this.host = DbxHost.Default;
+        this.host = DbxHost.DEFAULT;
     }
 
     /**
-     * @param key {@link #key}
-     * @param secret {@link #secret}
-     * @param host {@link #host}
+     * @param key Dropbox app key (see {@link #getKey})
+     * @param secret Dropbox app secret (see {@link #getSecret})
+     * @param host Dropbox host configuration (see {@link #getHost})
      */
-    public DbxAppInfo(String key, String secret, DbxHost host)
-    {
+    public DbxAppInfo(String key, String secret, DbxHost host) {
         checkKeyArg(key);
         checkSecretArg(secret);
 
@@ -75,9 +50,46 @@ public class DbxAppInfo extends Dumpable implements java.io.Serializable
         this.host = host;
     }
 
+    /**
+     * Returns the Dropbox <em>app key</em> (OAuth calls this the <em>consumer key</em>).  You can
+     * create an app key and secret on the <a href="http://dropbox.com/developers/apps">Dropbox
+     * developer website</a>.
+     *
+     * @return Dropbox app key
+     */
+    public String getKey() {
+        return key;
+    }
+
+    /**
+     * Returns the Dropbox <em>app secret</em> (OAuth calls this the <em>consumer secret</em>).  You
+     * can create an app key and secret on the <a href="http://dropbox.com/developers/apps">Dropbox
+     * developer website</a>.
+     *
+     * <p> Make sure that this is kept a secret.  Someone with your app secret can impesonate your
+     * application.  People sometimes ask for help on the Dropbox API forums and copy/paste their
+     * code, which sometimes includes their app secret.  Do not do that.  </p>
+     *
+     * @return Dropbox app secret
+     */
+    public String getSecret() {
+        return secret;
+    }
+
+    /**
+     * Returns the Dropbox host configuration.
+     *
+     * <p> This is almost always {@link DbxHost#DEFAULT}.  Typically this value will only be
+     * different for testing purposes.
+     *
+     * @return Dropbox host configuration
+     */
+    public DbxHost getHost() {
+        return host;
+    }
+
     @Override
-    protected void dumpFields(DumpWriter out)
-    {
+    protected void dumpFields(DumpWriter out) {
         out.f("key").v(key);
         out.f("secret").v(secret);
     }
@@ -92,7 +104,9 @@ public class DbxAppInfo extends Dumpable implements java.io.Serializable
      * that what you passed in is an actual valid Dropbox API app key.
      * </p>
      */
-    public static /*@Nullable*/String getKeyFormatError(String key) { return getTokenPartError(key); }
+    public static /*@Nullable*/String getKeyFormatError(String key) {
+        return getTokenPartError(key);
+    }
 
     /**
      * If they secret's format looks correct, return {@code null}.  Otherwise return
@@ -104,7 +118,9 @@ public class DbxAppInfo extends Dumpable implements java.io.Serializable
      * you passed in is an actual valid Dropbox API app key.
      * </p>
      */
-    public static /*@Nullable*/String getSecretFormatError(String key) { return getTokenPartError(key); }
+    public static /*@Nullable*/String getSecretFormatError(String key) {
+        return getTokenPartError(key);
+    }
 
     // ------------------------------------------------------
     // JSON parsing
@@ -149,7 +165,7 @@ public class DbxAppInfo extends Dumpable implements java.io.Serializable
 
             if (key == null) throw new JsonReadException("missing field \"key\"", top);
             if (secret == null) throw new JsonReadException("missing field \"secret\"", top);
-            if (host == null) host = DbxHost.Default;
+            if (host == null) host = DbxHost.DEFAULT;
 
             return new DbxAppInfo(key, secret, host);
         }

@@ -216,9 +216,9 @@ public final class DbxRequestUtil {
     }
 
     public static class ErrorWrapper extends Exception {
-        public final Object errValue;  // Really an ErrT instance, but Throwable does not allow generic subclasses.
-        public final String requestId;
-        public final LocalizedText userMessage;
+        private final Object errValue;  // Really an ErrT instance, but Throwable does not allow generic subclasses.
+        private final String requestId;
+        private final LocalizedText userMessage;
 
         public ErrorWrapper(Object errValue, String requestId, LocalizedText userMessage) {
             this.errValue = errValue;
@@ -226,13 +226,25 @@ public final class DbxRequestUtil {
             this.userMessage = userMessage;
         }
 
+        public Object getErrorValue() {
+            return errValue;
+        }
+
+        public String getRequestId() {
+            return requestId;
+        }
+
+        public LocalizedText getUserMessage() {
+            return userMessage;
+        }
+
         public static <T> ErrorWrapper fromResponse(JsonReader<T> reader, HttpRequestor.Response response)
             throws IOException, JsonReadException {
             T errValue = null;
-            String requestId = getRequestId(response);
+            String requestId = DbxRequestUtil.getRequestId(response);
             LocalizedText userMessage = null;
 
-            JsonParser parser = JSON_FACTORY.createParser(response.body);
+            JsonParser parser = JSON_FACTORY.createParser(response.getBody());
             parser.nextToken();
             reader.expectObjectStart(parser);
             while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
@@ -291,7 +303,7 @@ public final class DbxRequestUtil {
         throws NetworkIOException {
         // Slurp the body into memory (up to 4k; anything past that is probably not useful).
         try {
-            return IOUtil.slurp(response.body, 4096);
+            return IOUtil.slurp(response.getBody(), 4096);
         } catch (IOException ex) {
             throw new NetworkIOException(ex);
         }
@@ -314,9 +326,9 @@ public final class DbxRequestUtil {
         throws NetworkIOException, BadResponseException {
         String requestId = getRequestId(response);
         byte[] body = loadErrorBody(response);
-        String message = parseErrorBody(requestId, response.statusCode, body);
+        String message = parseErrorBody(requestId, response.getStatusCode(), body);
 
-        switch (response.statusCode) {
+        switch (response.getStatusCode()) {
             case 400:
                 return new BadRequestException(requestId, message);
             case 401:
@@ -335,8 +347,8 @@ public final class DbxRequestUtil {
             default:
                 return new BadResponseCodeException(
                     requestId,
-                    "unexpected HTTP status code: " + response.statusCode + ": " + message,
-                    response.statusCode
+                    "unexpected HTTP status code: " + response.getStatusCode() + ": " + message,
+                    response.getStatusCode()
                 );
         }
     }
@@ -344,7 +356,7 @@ public final class DbxRequestUtil {
     public static <T> T readJsonFromResponse(JsonReader<T> reader, HttpRequestor.Response response)
         throws BadResponseException, NetworkIOException {
         try {
-            return reader.readFully(response.body);
+            return reader.readFully(response.getBody());
         } catch (JsonReadException ex) {
             String requestId = getRequestId(response);
             throw new BadResponseException(requestId, "error in response JSON: " + ex.getMessage(), ex);
@@ -374,7 +386,7 @@ public final class DbxRequestUtil {
                     return handler.handle(response);
                 } finally {
                     try {
-                        response.body.close();
+                        response.getBody().close();
                     } catch (IOException ex) {
                         //noinspection ThrowFromFinallyBlock
                         throw new NetworkIOException(ex);
@@ -419,12 +431,12 @@ public final class DbxRequestUtil {
         try {
             return handler.handle(response);
         } finally {
-            IOUtil.closeInput(response.body);
+            IOUtil.closeInput(response.getBody());
         }
     }
 
     public static String getFirstHeader(HttpRequestor.Response response, String name) throws BadResponseException {
-        List<String> values = response.headers.get(name);
+        List<String> values = response.getHeaders().get(name);
         if (values == null || values.isEmpty()) {
             throw new BadResponseException(getRequestId(response), "missing HTTP header \"" + name + "\"");
         }
@@ -432,7 +444,7 @@ public final class DbxRequestUtil {
     }
 
     public static /*@Nullable*/String getFirstHeaderMaybe(HttpRequestor.Response response, String name) {
-        List<String> values = response.headers.get(name);
+        List<String> values = response.getHeaders().get(name);
         if (values == null || values.isEmpty()) {
             return null;
         }

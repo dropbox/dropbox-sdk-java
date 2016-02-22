@@ -72,7 +72,7 @@ public class DbxRawClientV2 {
      *                    OAuth 2 authorization flow.
      */
     public DbxRawClientV2(DbxRequestConfig requestConfig, String accessToken) {
-        this(requestConfig, accessToken, DbxHost.Default);
+        this(requestConfig, accessToken, DbxHost.DEFAULT);
     }
 
     // package-private
@@ -107,9 +107,9 @@ public class DbxRawClientV2 {
             public ResT execute() throws DbxRequestUtil.ErrorWrapper, DbxException {
                 HttpRequestor.Response response = DbxRequestUtil.startPostRaw(requestConfig, USER_AGENT_ID, host, path, body, headers);
                 try {
-                    if (response.statusCode == 200) {
-                        return resReader.readFully(response.body);
-                    } else if (FUNCTION_SPECIFIC_ERROR_CODES.contains(response.statusCode)) {
+                    if (response.getStatusCode() == 200) {
+                        return resReader.readFully(response.getBody());
+                    } else if (FUNCTION_SPECIFIC_ERROR_CODES.contains(response.getStatusCode())) {
                         throw DbxRequestUtil.ErrorWrapper.fromResponse(errReader, response);
                     } else {
                         throw DbxRequestUtil.unexpectedStatus(response);
@@ -149,22 +149,22 @@ public class DbxRawClientV2 {
                 String requestId = DbxRequestUtil.getRequestId(response);
 
                 try {
-                    if (response.statusCode == 200) {
-                        List<String> resultHeaders = response.headers.get("dropbox-api-result");
+                    if (response.getStatusCode() == 200) {
+                        List<String> resultHeaders = response.getHeaders().get("dropbox-api-result");
                         if (resultHeaders == null) {
-                            throw new BadResponseException(requestId, "Missing Dropbox-API-Result header; " + response.headers);
+                            throw new BadResponseException(requestId, "Missing Dropbox-API-Result header; " + response.getHeaders());
                         }
                         if (resultHeaders.size() == 0) {
-                            throw new BadResponseException(requestId, "No Dropbox-API-Result header; " + response.headers);
+                            throw new BadResponseException(requestId, "No Dropbox-API-Result header; " + response.getHeaders());
                         }
                         String resultHeader = resultHeaders.get(0);
                         if (resultHeader == null) {
-                            throw new BadResponseException(requestId, "Null Dropbox-API-Result header; " + response.headers);
+                            throw new BadResponseException(requestId, "Null Dropbox-API-Result header; " + response.getHeaders());
                         }
 
                         ResT result = resReader.readFully(resultHeader);
-                        return new DbxDownloader<ResT>(result, response.body);
-                    } else if (FUNCTION_SPECIFIC_ERROR_CODES.contains(response.statusCode)) {
+                        return new DbxDownloader<ResT>(result, response.getBody());
+                    } else if (FUNCTION_SPECIFIC_ERROR_CODES.contains(response.getStatusCode())) {
                         throw DbxRequestUtil.ErrorWrapper.fromResponse(errReader, response);
                     } else {
                         throw DbxRequestUtil.unexpectedStatus(response);

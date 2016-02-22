@@ -10,7 +10,7 @@
   - Prepend 'with' to method names
 - Change format of tagged union classes.
   - getTag() renamed to tag() to avoid naming conflicts
-  - Tags without values now referenced as public final singletons
+  - Tags without values now referenced as public static final singletons
   - Unions composed of only tags without values generated as enums
 - Add builders for request and response classes.
 - Fix deserialization bug with Union containing tags with optional values.

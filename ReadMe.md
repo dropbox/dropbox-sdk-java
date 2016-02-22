@@ -103,12 +103,12 @@ cd examples
 ./run web-file-browser 5000 test.app web-file-browser.db
 ```
 
-## Running the tests
+## Running the integration tests
 
 1. Run through the `authorize` example above to get a "test.auth" file.
-2. `./run-tests <path-to-test.auth>`
+2. `./run-integration-tests <path-to-test.auth>`
 
-Run `./run-tests` with no arguments to see how to run individual tests.
+Run `./run-integration-tests` with no arguments to see how to run individual tests.
 
 ## Running the benchmarks
 

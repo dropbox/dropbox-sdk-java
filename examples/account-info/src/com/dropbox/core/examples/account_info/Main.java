@@ -57,7 +57,7 @@ public class Main
         // Create a DbxClientV1, which is what you use to make API calls.
         String userLocale = Locale.getDefault().toString();
         DbxRequestConfig requestConfig = new DbxRequestConfig("examples-account-info", userLocale);
-        DbxClientV2 dbxClient = new DbxClientV2(requestConfig, authInfo.accessToken, authInfo.host);
+        DbxClientV2 dbxClient = new DbxClientV2(requestConfig, authInfo.getAccessToken(), authInfo.getHost());
 
         // Make the /account/info API call.
         FullAccount dbxAccountInfo;

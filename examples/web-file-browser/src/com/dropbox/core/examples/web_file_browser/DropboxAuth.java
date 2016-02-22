@@ -101,7 +101,7 @@ public class DropboxAuth
 
         // We have an Dropbox API access token now.  This is what will let us make Dropbox API
         // calls.  Save it in the database entry for the current user.
-        user.dropboxAccessToken = authFinish.accessToken;
+        user.dropboxAccessToken = authFinish.getAccessToken();
         common.saveUserDb();
 
         response.sendRedirect("/");
