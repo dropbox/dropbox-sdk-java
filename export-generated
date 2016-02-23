@@ -153,7 +153,7 @@ def main():
     subprocess.check_call(['rm', '-rf', 'target/generated-sources'])
     subprocess.check_output(['./run-babel-codegen'])
 
-    target_path = os.path.join(repo_path, 'src/com')
+    target_path = os.path.join(repo_path, 'src/main/java/com/')
     log('Copying generated sources to ' + target_path)
     subprocess.check_call(['rsync', '-r',
                            'target/generated-sources/babel/com/',
