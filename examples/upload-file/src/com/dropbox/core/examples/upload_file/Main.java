@@ -6,12 +6,17 @@ import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.DbxWebAuth;
 import com.dropbox.core.json.JsonReader;
 import com.dropbox.core.v2.DbxClientV2;
-import com.dropbox.core.v2.DbxFiles;
 import com.dropbox.core.v2.DbxPathV2;
+import com.dropbox.core.v2.files.DbxFiles;
+import com.dropbox.core.v2.files.FileMetadata;
+import com.dropbox.core.v2.files.UploadErrorException;
+import com.dropbox.core.v2.files.WriteMode;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -79,19 +84,23 @@ public class Main
         // Create a DbxClientV2, which is what you use to make API calls.
         String userLocale = Locale.getDefault().toString();
         DbxRequestConfig requestConfig = new DbxRequestConfig("examples-upload-file", userLocale);
-        DbxClientV2 dbxClient = new DbxClientV2(requestConfig, authInfo.accessToken, authInfo.host);
+        DbxClientV2 dbxClient = new DbxClientV2(requestConfig, authInfo.getAccessToken(), authInfo.getHost());
 
         // Make the API call to upload the file.
-        DbxFiles.FileMetadata metadata;
+        File localFile = new File(localPath);
+        FileMetadata metadata;
         try {
-            InputStream in = new FileInputStream(localPath);
+            InputStream in = new FileInputStream(localFile);
             try {
-                metadata = dbxClient.files.uploadBuilder(dropboxPath).run(in);
+                metadata = dbxClient.files.uploadBuilder(dropboxPath)
+                    .withMode(WriteMode.ADD)
+                    .withClientModified(new Date(localFile.lastModified()))
+                    .uploadAndFinish(in);
             } finally {
                 in.close();
             }
         }
-        catch (DbxFiles.UploadException ex) {
+        catch (UploadErrorException ex) {
             System.out.println("Error uploading to Dropbox: " + ex.getMessage());
             return 1;
         }

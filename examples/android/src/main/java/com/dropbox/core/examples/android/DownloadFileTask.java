@@ -8,7 +8,7 @@ import android.os.Environment;
 
 import com.dropbox.core.DbxException;
 import com.dropbox.core.v2.DbxClientV2;
-import com.dropbox.core.v2.DbxFiles;
+import com.dropbox.core.v2.files.FileMetadata;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -18,7 +18,7 @@ import java.io.OutputStream;
 /**
  * Task to download a file from Dropbox and put it in the Downloads folder
  */
-class DownloadFileTask extends AsyncTask<DbxFiles.FileMetadata, Void, File> {
+class DownloadFileTask extends AsyncTask<FileMetadata, Void, File> {
 
     private final Context mContext;
     private final DbxClientV2 mDbxClient;
@@ -47,12 +47,12 @@ class DownloadFileTask extends AsyncTask<DbxFiles.FileMetadata, Void, File> {
     }
 
     @Override
-    protected File doInBackground(DbxFiles.FileMetadata... params) {
-        DbxFiles.FileMetadata metadata = params[0];
+    protected File doInBackground(FileMetadata... params) {
+        FileMetadata metadata = params[0];
         try {
             File path = Environment.getExternalStoragePublicDirectory(
                     Environment.DIRECTORY_DOWNLOADS);
-            File file = new File(path, metadata.name);
+            File file = new File(path, metadata.getName());
 
             // Make sure the Downloads directory exists.
             if (!path.exists()) {
@@ -64,10 +64,10 @@ class DownloadFileTask extends AsyncTask<DbxFiles.FileMetadata, Void, File> {
                 return null;
             }
 
-            // Upload the file.
+            // Download the file.
             try (OutputStream outputStream = new FileOutputStream(file)) {
-                mDbxClient.files.downloadBuilder(metadata.pathLower).
-                        rev(metadata.rev).run(outputStream);
+                mDbxClient.files.download(metadata.getPathLower(), metadata.getRev())
+                    .download(outputStream);
             }
 
             // Tell android about the file

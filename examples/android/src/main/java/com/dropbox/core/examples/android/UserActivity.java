@@ -8,7 +8,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.dropbox.core.android.Auth;
-import com.dropbox.core.v2.DbxUsers;
+import com.dropbox.core.v2.users.FullAccount;
 
 
 /**
@@ -66,10 +66,10 @@ public class UserActivity extends DropboxActivity {
     protected void loadData() {
         new GetCurrentAccountTask(DropboxClientFactory.getClient(), new GetCurrentAccountTask.Callback() {
             @Override
-            public void onComplete(DbxUsers.FullAccount result) {
-                ((TextView) findViewById(R.id.email_text)).setText(result.email);
-                ((TextView) findViewById(R.id.name_text)).setText(result.name.displayName);
-                ((TextView) findViewById(R.id.type_text)).setText(result.accountType.getTag().name());
+            public void onComplete(FullAccount result) {
+                ((TextView) findViewById(R.id.email_text)).setText(result.getEmail());
+                ((TextView) findViewById(R.id.name_text)).setText(result.getName().getDisplayName());
+                ((TextView) findViewById(R.id.type_text)).setText(result.getAccountType().name());
             }
 
             @Override

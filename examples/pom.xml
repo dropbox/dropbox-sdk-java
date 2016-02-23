@@ -14,6 +14,7 @@
     <modules>
         <module>authorize</module>
         <module>account-info</module>
+        <module>longpoll</module>
         <module>upload-file</module>
         <module>web-file-browser</module>
         <module>upgrade-oauth1-token</module>

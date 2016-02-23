@@ -79,11 +79,11 @@ public class Main
         }
 
         System.out.println("Authorization complete.");
-        System.out.println("- User ID: " + authFinish.userId);
-        System.out.println("- Access Token: " + authFinish.accessToken);
+        System.out.println("- User ID: " + authFinish.getUserId());
+        System.out.println("- Access Token: " + authFinish.getAccessToken());
 
         // Save auth information to output file.
-        DbxAuthInfo authInfo = new DbxAuthInfo(authFinish.accessToken, appInfo.host);
+        DbxAuthInfo authInfo = new DbxAuthInfo(authFinish.getAccessToken(), appInfo.getHost());
         try {
             DbxAuthInfo.Writer.writeToFile(authInfo, argAuthFileOutput);
             System.out.println("Saved authorization information to \"" + argAuthFileOutput + "\".");

@@ -1,0 +1,48 @@
+#! /usr/bin/env bash
+# ------------------------------------------------------------------------------
+# A wrapper script for "mvn test".  Primarily just for the help message.
+# ------------------------------------------------------------------------------
+set -euo pipefail
+
+if [ $# -eq 0 ]; then
+    cat <<END
+
+Usage: $0 <path-to-auth-file> [ <test-selector> ] [ --okhttp ]
+
+<path-to-auth-file>: The path to a ".auth" file.  You can generate a
+    ".auth" file by running the "authorize" example program (see
+    ReadMe.md for instructions on how to do that).
+
+<test-selector> [optional]: If omitted, all the tests are run.  If
+    provided, only the specified tests are run.  Example values:
+    - "DbxClientV1Test"
+    - "DbxClientV1Test,StringUtilTest"
+    - "DbxClientV1Test#testMoveFolder"
+    - "DbxClientV1Test#testMove*"
+    - "DbxClientV1Test#testMoveFolder+testMoveEmptyFolder"
+
+    For the full specification, see:
+      http://maven.apache.org/surefire/maven-surefire-plugin/examples/single-test.html
+
+--okhttp [optional]: When making HTTP requests, use the OkHttp library instead
+    of the Java standard library
+
+END
+    exit
+elif [ $# -eq 1 ]; then
+    args=("-DdbxAuthInfoFile=$1")
+elif [ $# -eq 2 ]; then
+    if [ "$2" == "--okhttp" ]; then
+        args=("-DdbxAuthInfoFile=$1" "-DokHttp=true")
+    else
+        args=("-DdbxAuthInfoFile=$1" "-Dtest=$2")
+    fi
+elif [ $# -eq 3 ]; then
+    args=("-DdbxAuthInfoFile=$1" "-Dtest=$2" "-DokHttp=true")
+else
+    echo 1>&2 "Expecting at most 3 arguments, got $#."
+    echo 1>&2 "Run with no arguments for help."
+    exit 1
+fi
+
+exec mvn test-compile failsafe:integration-test failsafe:verify "${args[@]}"

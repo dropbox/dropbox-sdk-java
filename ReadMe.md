@@ -14,12 +14,12 @@ If you're using Maven, then edit your project's "pom.xml" and add this to the `<
 <dependency>
     <groupId>com.dropbox.core</groupId>
     <artifactId>dropbox-core-sdk</artifactId>
-    <version>2.0-beta-5</version>
+    <version>2.0-beta-6</version>
 </dependency>
 ```
 
 If you aren't using Maven, here are the JARs you need:
-- [Dropbox Core SDK 2.0-beta-5](https://oss.sonatype.org/content/repositories/releases/com/dropbox/core/dropbox-core-sdk/2.0-beta-5/dropbox-core-sdk-2.0-beta-5.jar)
+- [Dropbox Core SDK 2.0-beta-6](https://oss.sonatype.org/content/repositories/releases/com/dropbox/core/dropbox-core-sdk/2.0-beta-6/dropbox-core-sdk-2.0-beta-6.jar)
 - [Jackson Core 2.6.1](https://oss.sonatype.org/content/repositories/releases/com/fasterxml/jackson/core/jackson-core/2.6.1/jackson-core-2.6.1.jar) (JSON parser)
 
 ## Get a Dropbox API key
@@ -103,12 +103,12 @@ cd examples
 ./run web-file-browser 5000 test.app web-file-browser.db
 ```
 
-## Running the tests
+## Running the integration tests
 
 1. Run through the `authorize` example above to get a "test.auth" file.
-2. `./run-tests <path-to-test.auth>`
+2. `./run-integration-tests <path-to-test.auth>`
 
-Run `./run-tests` with no arguments to see how to run individual tests.
+Run `./run-integration-tests` with no arguments to see how to run individual tests.
 
 ## Running the benchmarks
 

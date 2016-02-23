@@ -5,6 +5,7 @@ import static com.dropbox.core.util.StringUtil.jq;
 import com.dropbox.core.DbxAppInfo;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
+import com.dropbox.core.InvalidAccessTokenException;
 import com.dropbox.core.util.LangUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -152,7 +153,7 @@ public class Common
         // The one special error is InvalidAccessToken.  This is probably happening because
         // the user "unlinked" us through Dropbox's website.  Clear their access token in the
         // database (since it's invalid anyway).
-        if (ex instanceof DbxException.InvalidAccessToken) {
+        if (ex instanceof InvalidAccessTokenException) {
             page(response, 400, "Cannot access Dropbox account", "It looks like your web-file-browser account is no longer linked to your Dropbox account.");
             user.dropboxAccessToken = null;
             saveUserDb();

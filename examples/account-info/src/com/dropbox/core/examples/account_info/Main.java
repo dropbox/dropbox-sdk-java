@@ -6,7 +6,7 @@ import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.DbxWebAuth;
 import com.dropbox.core.json.JsonReader;
 import com.dropbox.core.v2.DbxClientV2;
-import com.dropbox.core.v2.DbxUsers;
+import com.dropbox.core.v2.users.FullAccount;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -57,10 +57,10 @@ public class Main
         // Create a DbxClientV1, which is what you use to make API calls.
         String userLocale = Locale.getDefault().toString();
         DbxRequestConfig requestConfig = new DbxRequestConfig("examples-account-info", userLocale);
-        DbxClientV2 dbxClient = new DbxClientV2(requestConfig, authInfo.accessToken, authInfo.host);
+        DbxClientV2 dbxClient = new DbxClientV2(requestConfig, authInfo.getAccessToken(), authInfo.getHost());
 
         // Make the /account/info API call.
-        DbxUsers.FullAccount dbxAccountInfo;
+        FullAccount dbxAccountInfo;
         try {
             dbxAccountInfo = dbxClient.users.getCurrentAccount();
         }

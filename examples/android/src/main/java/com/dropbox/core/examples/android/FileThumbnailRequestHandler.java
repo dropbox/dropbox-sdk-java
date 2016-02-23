@@ -5,7 +5,9 @@ import android.net.Uri;
 import com.dropbox.core.DbxDownloader;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.v2.DbxClientV2;
-import com.dropbox.core.v2.DbxFiles;
+import com.dropbox.core.v2.files.FileMetadata;
+import com.dropbox.core.v2.files.ThumbnailFormat;
+import com.dropbox.core.v2.files.ThumbnailSize;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Request;
 import com.squareup.picasso.RequestHandler;
@@ -30,11 +32,11 @@ public class FileThumbnailRequestHandler extends RequestHandler {
     /**
      * Builds a {@link Uri} for a Dropbox file thumbnail suitable for handling by this handler
      */
-    public static Uri buildPicassoUri(DbxFiles.FileMetadata file) {
+    public static Uri buildPicassoUri(FileMetadata file) {
         return new Uri.Builder()
                 .scheme(SCHEME)
                 .authority(HOST)
-                .path(file.pathLower).build();
+                .path(file.getPathLower()).build();
     }
 
     @Override
@@ -46,13 +48,13 @@ public class FileThumbnailRequestHandler extends RequestHandler {
     public Result load(Request request, int networkPolicy) throws IOException {
 
         try {
-            DbxDownloader<DbxFiles.FileMetadata> downloader =
+            DbxDownloader<FileMetadata> downloader =
                     mDbxClient.files.getThumbnailBuilder(request.uri.getPath())
-                            .format(DbxFiles.ThumbnailFormat.jpeg())
-                            .size(DbxFiles.ThumbnailSize.w1024h768())
+                            .withFormat(ThumbnailFormat.JPEG)
+                            .withSize(ThumbnailSize.W1024H768)
                             .start();
 
-            return new Result(downloader.body, Picasso.LoadedFrom.NETWORK);
+            return new Result(downloader.getInputStream(), Picasso.LoadedFrom.NETWORK);
         } catch (DbxException e) {
             throw new IOException(e);
         }

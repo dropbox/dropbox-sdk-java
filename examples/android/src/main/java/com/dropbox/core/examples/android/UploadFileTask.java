@@ -6,7 +6,8 @@ import android.os.AsyncTask;
 
 import com.dropbox.core.DbxException;
 import com.dropbox.core.v2.DbxClientV2;
-import com.dropbox.core.v2.DbxFiles;
+import com.dropbox.core.v2.files.FileMetadata;
+import com.dropbox.core.v2.files.WriteMode;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,7 +17,7 @@ import java.io.InputStream;
 /**
  * Async task to upload a file to a directory
  */
-class UploadFileTask extends AsyncTask<String, Void, DbxFiles.FileMetadata> {
+class UploadFileTask extends AsyncTask<String, Void, FileMetadata> {
 
     private final Context mContext;
     private final DbxClientV2 mDbxClient;
@@ -24,7 +25,7 @@ class UploadFileTask extends AsyncTask<String, Void, DbxFiles.FileMetadata> {
     private Exception mException;
 
     public interface Callback {
-        void onUploadComplete(DbxFiles.FileMetadata result);
+        void onUploadComplete(FileMetadata result);
         void onError(Exception e);
     }
 
@@ -35,7 +36,7 @@ class UploadFileTask extends AsyncTask<String, Void, DbxFiles.FileMetadata> {
     }
 
     @Override
-    protected void onPostExecute(DbxFiles.FileMetadata result) {
+    protected void onPostExecute(FileMetadata result) {
         super.onPostExecute(result);
         if (mException != null) {
             mCallback.onError(mException);
@@ -47,7 +48,7 @@ class UploadFileTask extends AsyncTask<String, Void, DbxFiles.FileMetadata> {
     }
 
     @Override
-    protected DbxFiles.FileMetadata doInBackground(String... params) {
+    protected FileMetadata doInBackground(String... params) {
         String localUri = params[0];
         File localFile = UriHelpers.getFileForUri(mContext, Uri.parse(localUri));
 
@@ -59,8 +60,8 @@ class UploadFileTask extends AsyncTask<String, Void, DbxFiles.FileMetadata> {
 
             try (InputStream inputStream = new FileInputStream(localFile)) {
                 return mDbxClient.files.uploadBuilder(remoteFolderPath + "/" + remoteFileName)
-                        .mode(DbxFiles.WriteMode.overwrite())
-                        .run(inputStream);
+                        .withMode(WriteMode.OVERWRITE)
+                        .uploadAndFinish(inputStream);
             } catch (DbxException | IOException e) {
                 mException = e;
             }
