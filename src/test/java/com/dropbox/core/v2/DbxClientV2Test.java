@@ -72,6 +72,8 @@ public class DbxClientV2Test {
         FileMetadata expected = new FileMetadata(
             "bar.txt",
             "/foo/bar.txt",
+            "/foo/bar.txt",
+            "id:1HkLjqifwMAAAAAAAAAAAQ",
             new Date(1456169040985L),
             new Date(1456169040985L),
             "2e0c38735597",
@@ -161,6 +163,8 @@ public class DbxClientV2Test {
         FileMetadata expectedMetadata = new FileMetadata(
             "download_me.txt",
             "/download_me.txt",
+            "/download_me.txt",
+            "id:KLavC4viCDAAAAAAAAAAAQ",
             new Date(1456169692501L),
             new Date(1456169692501L),
             "341438735597",
@@ -201,6 +205,8 @@ public class DbxClientV2Test {
         FileMetadata expected = new FileMetadata(
             "banana.png",
             "/banana.png",
+            "/banana.png",
+            "id:eRsVsAya9YAAAAAAAAAAAQ",
             new Date(1456173312172L),
             new Date(1456173312172L),
             "89df885732c38",

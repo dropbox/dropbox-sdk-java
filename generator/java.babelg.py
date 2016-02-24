@@ -864,7 +864,10 @@ class RouteWrapper(BabelWrapper):
         class_name = self.java_builder_class
         request_style = self.request_style
         response_type = self.response.java_type()
-        exc_type = self.error.java_exception_class
+        if self.has_error:
+            exc_type = self.error.java_exception_class
+        else:
+            exc_type = JavaClass(self._ctx, 'com.dropbox.core.DbxException')
 
         if request_style == 'upload':
             return '%s extends %s<%s,%s>' % (
@@ -1272,7 +1275,7 @@ class DataTypeWrapper(BabelWrapper):
 
     @property
     def java_exception_class(self):
-        assert not self.is_primitive, "primitive data types cannot have exception classes"
+        assert not self.is_primitive, "primitive data types cannot have exception classes: %r" % self
         return self._as_java_class(classname(self.babel_name + '_exception'))
 
     def java_type(self, boxed=True, generics=True):
@@ -1924,6 +1927,8 @@ class JavaImportGenerator(object):
             self.add_imports_for_field(field)
         if route.has_error:
             self._ctx.add_imports(route.error.java_exception_class)
+        else:
+            self._ctx.add_imports('com.dropbox.core.DbxApiException')
 
     def add_imports_for_route_uploader(self, route):
         self._ctx.add_imports(
