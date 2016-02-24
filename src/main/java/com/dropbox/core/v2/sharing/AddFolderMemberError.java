@@ -25,7 +25,7 @@ public final class AddFolderMemberError {
          */
         ACCESS_ERROR, // SharedFolderAccessError
         /**
-         * The current account's e-mail address is unverified.
+         * The current user's e-mail address is unverified.
          */
         EMAIL_UNVERIFIED,
         /**
@@ -33,10 +33,6 @@ public final class AddFolderMemberError {
          * recipient.
          */
         BAD_MEMBER, // AddMemberSelectorError
-        /**
-         * The current account does not have permission to perform this action.
-         */
-        NO_PERMISSION,
         /**
          * Your team policy does not allow sharing outside of the team.
          */
@@ -59,6 +55,14 @@ public final class AddFolderMemberError {
          * performed by users that have upgraded to a Pro or Business plan.
          */
         INSUFFICIENT_PLAN,
+        /**
+         * This action cannot be performed on a team shared folder.
+         */
+        TEAM_FOLDER,
+        /**
+         * The current user does not have permission to perform this action.
+         */
+        NO_PERMISSION,
         OTHER; // *catch_all
     }
 
@@ -68,20 +72,22 @@ public final class AddFolderMemberError {
         VALUES_.put("access_error", Tag.ACCESS_ERROR);
         VALUES_.put("email_unverified", Tag.EMAIL_UNVERIFIED);
         VALUES_.put("bad_member", Tag.BAD_MEMBER);
-        VALUES_.put("no_permission", Tag.NO_PERMISSION);
         VALUES_.put("cant_share_outside_team", Tag.CANT_SHARE_OUTSIDE_TEAM);
         VALUES_.put("too_many_members", Tag.TOO_MANY_MEMBERS);
         VALUES_.put("too_many_pending_invites", Tag.TOO_MANY_PENDING_INVITES);
         VALUES_.put("rate_limit", Tag.RATE_LIMIT);
         VALUES_.put("insufficient_plan", Tag.INSUFFICIENT_PLAN);
+        VALUES_.put("team_folder", Tag.TEAM_FOLDER);
+        VALUES_.put("no_permission", Tag.NO_PERMISSION);
         VALUES_.put("other", Tag.OTHER);
     }
 
     public static final AddFolderMemberError EMAIL_UNVERIFIED = new AddFolderMemberError(Tag.EMAIL_UNVERIFIED, null, null, null, null);
-    public static final AddFolderMemberError NO_PERMISSION = new AddFolderMemberError(Tag.NO_PERMISSION, null, null, null, null);
     public static final AddFolderMemberError CANT_SHARE_OUTSIDE_TEAM = new AddFolderMemberError(Tag.CANT_SHARE_OUTSIDE_TEAM, null, null, null, null);
     public static final AddFolderMemberError RATE_LIMIT = new AddFolderMemberError(Tag.RATE_LIMIT, null, null, null, null);
     public static final AddFolderMemberError INSUFFICIENT_PLAN = new AddFolderMemberError(Tag.INSUFFICIENT_PLAN, null, null, null, null);
+    public static final AddFolderMemberError TEAM_FOLDER = new AddFolderMemberError(Tag.TEAM_FOLDER, null, null, null, null);
+    public static final AddFolderMemberError NO_PERMISSION = new AddFolderMemberError(Tag.NO_PERMISSION, null, null, null, null);
     public static final AddFolderMemberError OTHER = new AddFolderMemberError(Tag.OTHER, null, null, null, null);
 
     private final Tag tag;
@@ -230,17 +236,6 @@ public final class AddFolderMemberError {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
-     * Tag#NO_PERMISSION}, {@code false} otherwise.
-     *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
-     *     Tag#NO_PERMISSION}, {@code false} otherwise.
-     */
-    public boolean isNoPermission() {
-        return this.tag == Tag.NO_PERMISSION;
-    }
-
-    /**
-     * Returns {@code true} if this instance has the tag {@link
      * Tag#CANT_SHARE_OUTSIDE_TEAM}, {@code false} otherwise.
      *
      * @return {@code true} if this insta5Bnce is tagged as {@link
@@ -365,6 +360,28 @@ public final class AddFolderMemberError {
     }
 
     /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#TEAM_FOLDER}, {@code false} otherwise.
+     *
+     * @return {@code true} if this insta5Bnce is tagged as {@link
+     *     Tag#TEAM_FOLDER}, {@code false} otherwise.
+     */
+    public boolean isTeamFolder() {
+        return this.tag == Tag.TEAM_FOLDER;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#NO_PERMISSION}, {@code false} otherwise.
+     *
+     * @return {@code true} if this insta5Bnce is tagged as {@link
+     *     Tag#NO_PERMISSION}, {@code false} otherwise.
+     */
+    public boolean isNoPermission() {
+        return this.tag == Tag.NO_PERMISSION;
+    }
+
+    /**
      * Returns {@code true} if this instance has the tag {@link Tag#OTHER},
      * {@code false} otherwise.
      *
@@ -404,8 +421,6 @@ public final class AddFolderMemberError {
                     return true;
                 case BAD_MEMBER:
                     return (this.badMemberValue == other.badMemberValue) || (this.badMemberValue.equals(other.badMemberValue));
-                case NO_PERMISSION:
-                    return true;
                 case CANT_SHARE_OUTSIDE_TEAM:
                     return true;
                 case TOO_MANY_MEMBERS:
@@ -415,6 +430,10 @@ public final class AddFolderMemberError {
                 case RATE_LIMIT:
                     return true;
                 case INSUFFICIENT_PLAN:
+                    return true;
+                case TEAM_FOLDER:
+                    return true;
+                case NO_PERMISSION:
                     return true;
                 case OTHER:
                     return true;
@@ -469,12 +488,6 @@ public final class AddFolderMemberError {
                     AddMemberSelectorError._JSON_WRITER.write(x.getBadMemberValue(), g);
                     g.writeEndObject();
                     break;
-                case NO_PERMISSION:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("no_permission");
-                    g.writeEndObject();
-                    break;
                 case CANT_SHARE_OUTSIDE_TEAM:
                     g.writeStartObject();
                     g.writeFieldName(".tag");
@@ -509,6 +522,18 @@ public final class AddFolderMemberError {
                     g.writeString("insufficient_plan");
                     g.writeEndObject();
                     break;
+                case TEAM_FOLDER:
+                    g.writeStartObject();
+                    g.writeFieldName(".tag");
+                    g.writeString("team_folder");
+                    g.writeEndObject();
+                    break;
+                case NO_PERMISSION:
+                    g.writeStartObject();
+                    g.writeFieldName(".tag");
+                    g.writeString("no_permission");
+                    g.writeEndObject();
+                    break;
                 case OTHER:
                     g.writeStartObject();
                     g.writeFieldName(".tag");
@@ -531,10 +556,11 @@ public final class AddFolderMemberError {
                 }
                 switch (tag) {
                     case EMAIL_UNVERIFIED: return AddFolderMemberError.EMAIL_UNVERIFIED;
-                    case NO_PERMISSION: return AddFolderMemberError.NO_PERMISSION;
                     case CANT_SHARE_OUTSIDE_TEAM: return AddFolderMemberError.CANT_SHARE_OUTSIDE_TEAM;
                     case RATE_LIMIT: return AddFolderMemberError.RATE_LIMIT;
                     case INSUFFICIENT_PLAN: return AddFolderMemberError.INSUFFICIENT_PLAN;
+                    case TEAM_FOLDER: return AddFolderMemberError.TEAM_FOLDER;
+                    case NO_PERMISSION: return AddFolderMemberError.NO_PERMISSION;
                     case OTHER: return AddFolderMemberError.OTHER;
                 }
                 throw new JsonReadException("Tag " + tag + " requires a value", parser.getTokenLocation());
@@ -573,10 +599,6 @@ public final class AddFolderMemberError {
                         value = AddFolderMemberError.badMember(v);
                         break;
                     }
-                    case NO_PERMISSION: {
-                        value = AddFolderMemberError.NO_PERMISSION;
-                        break;
-                    }
                     case CANT_SHARE_OUTSIDE_TEAM: {
                         value = AddFolderMemberError.CANT_SHARE_OUTSIDE_TEAM;
                         break;
@@ -609,6 +631,14 @@ public final class AddFolderMemberError {
                     }
                     case INSUFFICIENT_PLAN: {
                         value = AddFolderMemberError.INSUFFICIENT_PLAN;
+                        break;
+                    }
+                    case TEAM_FOLDER: {
+                        value = AddFolderMemberError.TEAM_FOLDER;
+                        break;
+                    }
+                    case NO_PERMISSION: {
+                        value = AddFolderMemberError.NO_PERMISSION;
                         break;
                     }
                     case OTHER: {

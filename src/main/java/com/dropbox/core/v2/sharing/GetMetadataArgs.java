@@ -25,8 +25,8 @@ public class GetMetadataArgs {
      *
      * @param sharedFolderId  The ID for the shared folder. Must match pattern
      *     "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
-     * @param actions  Folder actions to query. Must not contain a {@code null}
-     *     item.
+     * @param actions  Folder actions to query. This field is optional. Must not
+     *     contain a {@code null} item.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -72,7 +72,7 @@ public class GetMetadataArgs {
     }
 
     /**
-     * Folder actions to query.
+     * Folder actions to query. This field is optional.
      *
      * @return value for this field, or {@code null} if not present.
      */

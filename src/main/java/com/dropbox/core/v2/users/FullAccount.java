@@ -19,12 +19,11 @@ import java.io.IOException;
 public class FullAccount extends Account {
     // struct FullAccount
 
-    private final String email;
-    private final boolean emailVerified;
     private final String country;
     private final String locale;
     private final String referralLink;
     private final Team team;
+    private final String teamMemberId;
     private final boolean isPaired;
     private final AccountType accountType;
 
@@ -38,9 +37,9 @@ public class FullAccount extends Account {
      *     least 40, have length of at most 40, and not be {@code null}.
      * @param name  Details of a user's name. Must not be {@code null}.
      * @param email  The user's e-mail address. Do not rely on this without
-     *     checking the {@link FullAccount#getEmailVerified} field. Even then,
-     *     it's possible that the user has since lost access to their e-mail.
-     *     Must not be {@code null}.
+     *     checking the {@link Account#getEmailVerified} field. Even then, it's
+     *     possible that the user has since lost access to their e-mail. Must
+     *     not be {@code null}.
      * @param emailVerified  Whether the user has verified their e-mail address.
      * @param locale  The language that the user specified. Locale tags will be
      *     <a href="http://en.wikipedia.org/wiki/IETF_language_tag">IETF
@@ -55,23 +54,22 @@ public class FullAccount extends Account {
      *     indicate if a work account is linked.
      * @param accountType  What type of account this user has. Must not be
      *     {@code null}.
+     * @param profilePhotoUrl  URL for the photo representing the user, if one
+     *     is set.
      * @param country  The user's two-letter country code, if available. Country
      *     codes are based on <a
      *     href="http://en.wikipedia.org/wiki/ISO_3166-1">ISO 3166-1</a>. Must
      *     have length of at least 2 and have length of at most 2.
      * @param team  If this account is a member of a team, information about
      *     that team.
+     * @param teamMemberId  This account's unique team member id. This field
+     *     will only be present if {@link FullAccount#getTeam} is present.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FullAccount(String accountId, Name name, String email, boolean emailVerified, String locale, String referralLink, boolean isPaired, AccountType accountType, String country, Team team) {
-        super(accountId, name);
-        if (email == null) {
-            throw new IllegalArgumentException("Required value for 'email' is null");
-        }
-        this.email = email;
-        this.emailVerified = emailVerified;
+    public FullAccount(String accountId, Name name, String email, boolean emailVerified, String locale, String referralLink, boolean isPaired, AccountType accountType, String profilePhotoUrl, String country, Team team, String teamMemberId) {
+        super(accountId, name, email, emailVerified, profilePhotoUrl);
         if (country != null) {
             if (country.length() < 2) {
                 throw new IllegalArgumentException("String 'country' is shorter than 2");
@@ -93,6 +91,7 @@ public class FullAccount extends Account {
         }
         this.referralLink = referralLink;
         this.team = team;
+        this.teamMemberId = teamMemberId;
         this.isPaired = isPaired;
         if (accountType == null) {
             throw new IllegalArgumentException("Required value for 'accountType' is null");
@@ -109,9 +108,9 @@ public class FullAccount extends Account {
      *     least 40, have length of at most 40, and not be {@code null}.
      * @param name  Details of a user's name. Must not be {@code null}.
      * @param email  The user's e-mail address. Do not rely on this without
-     *     checking the {@link FullAccount#getEmailVerified} field. Even then,
-     *     it's possible that the user has since lost access to their e-mail.
-     *     Must not be {@code null}.
+     *     checking the {@link Account#getEmailVerified} field. Even then, it's
+     *     possible that the user has since lost access to their e-mail. Must
+     *     not be {@code null}.
      * @param emailVerified  Whether the user has verified their e-mail address.
      * @param locale  The language that the user specified. Locale tags will be
      *     <a href="http://en.wikipedia.org/wiki/IETF_language_tag">IETF
@@ -131,27 +130,7 @@ public class FullAccount extends Account {
      *     preconditions.
      */
     public FullAccount(String accountId, Name name, String email, boolean emailVerified, String locale, String referralLink, boolean isPaired, AccountType accountType) {
-        this(accountId, name, email, emailVerified, locale, referralLink, isPaired, accountType, null, null);
-    }
-
-    /**
-     * The user's e-mail address. Do not rely on this without checking the
-     * {@link FullAccount#getEmailVerified} field. Even then, it's possible that
-     * the user has since lost access to their e-mail.
-     *
-     * @return value for this field, never {@code null}.
-     */
-    public String getEmail() {
-        return email;
-    }
-
-    /**
-     * Whether the user has verified their e-mail address.
-     *
-     * @return value for this field.
-     */
-    public boolean getEmailVerified() {
-        return emailVerified;
+        this(accountId, name, email, emailVerified, locale, referralLink, isPaired, accountType, null, null, null, null);
     }
 
     /**
@@ -196,6 +175,16 @@ public class FullAccount extends Account {
     }
 
     /**
+     * This account's unique team member id. This field will only be present if
+     * {@link FullAccount#getTeam} is present.
+     *
+     * @return value for this field, or {@code null} if not present.
+     */
+    public String getTeamMemberId() {
+        return teamMemberId;
+    }
+
+    /**
      * Whether the user has a personal and work account. If the current account
      * is personal, then {@link FullAccount#getTeam} will always be {@code
      * null}, but {@link FullAccount#getIsPaired} will indicate if a work
@@ -223,9 +212,9 @@ public class FullAccount extends Account {
      *     least 40, have length of at most 40, and not be {@code null}.
      * @param name  Details of a user's name. Must not be {@code null}.
      * @param email  The user's e-mail address. Do not rely on this without
-     *     checking the {@link FullAccount#getEmailVerified} field. Even then,
-     *     it's possible that the user has since lost access to their e-mail.
-     *     Must not be {@code null}.
+     *     checking the {@link Account#getEmailVerified} field. Even then, it's
+     *     possible that the user has since lost access to their e-mail. Must
+     *     not be {@code null}.
      * @param emailVerified  Whether the user has verified their e-mail address.
      * @param locale  The language that the user specified. Locale tags will be
      *     <a href="http://en.wikipedia.org/wiki/IETF_language_tag">IETF
@@ -263,8 +252,10 @@ public class FullAccount extends Account {
         protected final boolean isPaired;
         protected final AccountType accountType;
 
+        protected String profilePhotoUrl;
         protected String country;
         protected Team team;
+        protected String teamMemberId;
 
         protected Builder(String accountId, Name name, String email, boolean emailVerified, String locale, String referralLink, boolean isPaired, AccountType accountType) {
             if (accountId == null) {
@@ -302,8 +293,23 @@ public class FullAccount extends Account {
                 throw new IllegalArgumentException("Required value for 'accountType' is null");
             }
             this.accountType = accountType;
+            this.profilePhotoUrl = null;
             this.country = null;
             this.team = null;
+            this.teamMemberId = null;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param profilePhotoUrl  URL for the photo representing the user, if
+         *     one is set.
+         *
+         * @return this builder
+         */
+        public Builder withProfilePhotoUrl(String profilePhotoUrl) {
+            this.profilePhotoUrl = profilePhotoUrl;
+            return this;
         }
 
         /**
@@ -346,25 +352,37 @@ public class FullAccount extends Account {
         }
 
         /**
+         * Set value for optional field.
+         *
+         * @param teamMemberId  This account's unique team member id. This field
+         *     will only be present if {@link FullAccount#getTeam} is present.
+         *
+         * @return this builder
+         */
+        public Builder withTeamMemberId(String teamMemberId) {
+            this.teamMemberId = teamMemberId;
+            return this;
+        }
+
+        /**
          * Builds an instance of {@link FullAccount} configured with this
          * builder's values
          *
          * @return new instance of {@link FullAccount}
          */
         public FullAccount build() {
-            return new FullAccount(accountId, name, email, emailVerified, locale, referralLink, isPaired, accountType, country, team);
+            return new FullAccount(accountId, name, email, emailVerified, locale, referralLink, isPaired, accountType, profilePhotoUrl, country, team, teamMemberId);
         }
     }
 
     @Override
     public int hashCode() {
         int hash = java.util.Arrays.hashCode(new Object [] {
-            email,
-            emailVerified,
             country,
             locale,
             referralLink,
             team,
+            teamMemberId,
             isPaired,
             accountType
         });
@@ -380,16 +398,18 @@ public class FullAccount extends Account {
         // be careful with inheritance
         else if (obj.getClass().equals(this.getClass())) {
             FullAccount other = (FullAccount) obj;
-            return ((this.email == other.email) || (this.email.equals(other.email)))
-                && (this.emailVerified == other.emailVerified)
-                && ((this.country == other.country) || (this.country != null && this.country.equals(other.country)))
+            return ((this.country == other.country) || (this.country != null && this.country.equals(other.country)))
                 && ((this.locale == other.locale) || (this.locale.equals(other.locale)))
                 && ((this.referralLink == other.referralLink) || (this.referralLink.equals(other.referralLink)))
                 && ((this.team == other.team) || (this.team != null && this.team.equals(other.team)))
+                && ((this.teamMemberId == other.teamMemberId) || (this.teamMemberId != null && this.teamMemberId.equals(other.teamMemberId)))
                 && (this.isPaired == other.isPaired)
                 && ((this.accountType == other.accountType) || (this.accountType.equals(other.accountType)))
                 && ((this.getAccountId() == other.getAccountId()) || (this.getAccountId().equals(other.getAccountId())))
                 && ((this.getName() == other.getName()) || (this.getName().equals(other.getName())))
+                && ((this.getEmail() == other.getEmail()) || (this.getEmail().equals(other.getEmail())))
+                && (this.getEmailVerified() == other.getEmailVerified())
+                && ((this.getProfilePhotoUrl() == other.getProfilePhotoUrl()) || (this.getProfilePhotoUrl() != null && this.getProfilePhotoUrl().equals(other.getProfilePhotoUrl())))
                 ;
         }
         else {
@@ -422,10 +442,6 @@ public class FullAccount extends Account {
             g.writeEndObject();
         }
         public final void writeFields(FullAccount x, JsonGenerator g) throws IOException {
-            g.writeFieldName("email");
-            g.writeString(x.email);
-            g.writeFieldName("email_verified");
-            g.writeBoolean(x.emailVerified);
             if (x.country != null) {
                 g.writeFieldName("country");
                 g.writeString(x.country);
@@ -437,6 +453,10 @@ public class FullAccount extends Account {
             if (x.team != null) {
                 g.writeFieldName("team");
                 Team._JSON_WRITER.write(x.team, g);
+            }
+            if (x.teamMemberId != null) {
+                g.writeFieldName("team_member_id");
+                g.writeString(x.teamMemberId);
             }
             g.writeFieldName("is_paired");
             g.writeBoolean(x.isPaired);
@@ -463,8 +483,10 @@ public class FullAccount extends Account {
             String referralLink = null;
             Boolean isPaired = null;
             AccountType accountType = null;
+            String profilePhotoUrl = null;
             String country = null;
             Team team = null;
+            String teamMemberId = null;
             while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
                 String fieldName = parser.getCurrentName();
                 parser.nextToken();
@@ -500,6 +522,10 @@ public class FullAccount extends Account {
                     accountType = AccountType._JSON_READER
                         .readField(parser, "account_type", accountType);
                 }
+                else if ("profile_photo_url".equals(fieldName)) {
+                    profilePhotoUrl = JsonReader.StringReader
+                        .readField(parser, "profile_photo_url", profilePhotoUrl);
+                }
                 else if ("country".equals(fieldName)) {
                     country = JsonReader.StringReader
                         .readField(parser, "country", country);
@@ -507,6 +533,10 @@ public class FullAccount extends Account {
                 else if ("team".equals(fieldName)) {
                     team = Team._JSON_READER
                         .readField(parser, "team", team);
+                }
+                else if ("team_member_id".equals(fieldName)) {
+                    teamMemberId = JsonReader.StringReader
+                        .readField(parser, "team_member_id", teamMemberId);
                 }
                 else {
                     JsonReader.skipValue(parser);
@@ -536,7 +566,7 @@ public class FullAccount extends Account {
             if (accountType == null) {
                 throw new JsonReadException("Required field \"account_type\" is missing.", parser.getTokenLocation());
             }
-            return new FullAccount(accountId, name, email, emailVerified, locale, referralLink, isPaired, accountType, country, team);
+            return new FullAccount(accountId, name, email, emailVerified, locale, referralLink, isPaired, accountType, profilePhotoUrl, country, team, teamMemberId);
         }
     };
 }

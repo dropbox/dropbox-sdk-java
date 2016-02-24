@@ -22,6 +22,9 @@ public class Account {
 
     private final String accountId;
     private final Name name;
+    private final String email;
+    private final boolean emailVerified;
+    private final String profilePhotoUrl;
 
     /**
      * The amount of detail revealed about an account depends on the user being
@@ -30,11 +33,18 @@ public class Account {
      * @param accountId  The user's unique Dropbox ID. Must have length of at
      *     least 40, have length of at most 40, and not be {@code null}.
      * @param name  Details of a user's name. Must not be {@code null}.
+     * @param email  The user's e-mail address. Do not rely on this without
+     *     checking the {@link Account#getEmailVerified} field. Even then, it's
+     *     possible that the user has since lost access to their e-mail. Must
+     *     not be {@code null}.
+     * @param emailVerified  Whether the user has verified their e-mail address.
+     * @param profilePhotoUrl  URL for the photo representing the user, if one
+     *     is set.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public Account(String accountId, Name name) {
+    public Account(String accountId, Name name, String email, boolean emailVerified, String profilePhotoUrl) {
         if (accountId == null) {
             throw new IllegalArgumentException("Required value for 'accountId' is null");
         }
@@ -49,6 +59,34 @@ public class Account {
             throw new IllegalArgumentException("Required value for 'name' is null");
         }
         this.name = name;
+        if (email == null) {
+            throw new IllegalArgumentException("Required value for 'email' is null");
+        }
+        this.email = email;
+        this.emailVerified = emailVerified;
+        this.profilePhotoUrl = profilePhotoUrl;
+    }
+
+    /**
+     * The amount of detail revealed about an account depends on the user being
+     * queried and the user making the query.
+     *
+     * <p> The default values for unset fields will be used. </p>
+     *
+     * @param accountId  The user's unique Dropbox ID. Must have length of at
+     *     least 40, have length of at most 40, and not be {@code null}.
+     * @param name  Details of a user's name. Must not be {@code null}.
+     * @param email  The user's e-mail address. Do not rely on this without
+     *     checking the {@link Account#getEmailVerified} field. Even then, it's
+     *     possible that the user has since lost access to their e-mail. Must
+     *     not be {@code null}.
+     * @param emailVerified  Whether the user has verified their e-mail address.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public Account(String accountId, Name name, String email, boolean emailVerified) {
+        this(accountId, name, email, emailVerified, null);
     }
 
     /**
@@ -69,11 +107,43 @@ public class Account {
         return name;
     }
 
+    /**
+     * The user's e-mail address. Do not rely on this without checking the
+     * {@link Account#getEmailVerified} field. Even then, it's possible that the
+     * user has since lost access to their e-mail.
+     *
+     * @return value for this field, never {@code null}.
+     */
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     * Whether the user has verified their e-mail address.
+     *
+     * @return value for this field.
+     */
+    public boolean getEmailVerified() {
+        return emailVerified;
+    }
+
+    /**
+     * URL for the photo representing the user, if one is set.
+     *
+     * @return value for this field, or {@code null} if not present.
+     */
+    public String getProfilePhotoUrl() {
+        return profilePhotoUrl;
+    }
+
     @Override
     public int hashCode() {
         int hash = java.util.Arrays.hashCode(new Object [] {
             accountId,
-            name
+            name,
+            email,
+            emailVerified,
+            profilePhotoUrl
         });
         return hash;
     }
@@ -88,6 +158,9 @@ public class Account {
             Account other = (Account) obj;
             return ((this.accountId == other.accountId) || (this.accountId.equals(other.accountId)))
                 && ((this.name == other.name) || (this.name.equals(other.name)))
+                && ((this.email == other.email) || (this.email.equals(other.email)))
+                && (this.emailVerified == other.emailVerified)
+                && ((this.profilePhotoUrl == other.profilePhotoUrl) || (this.profilePhotoUrl != null && this.profilePhotoUrl.equals(other.profilePhotoUrl)))
                 ;
         }
         else {
@@ -123,6 +196,14 @@ public class Account {
             g.writeString(x.accountId);
             g.writeFieldName("name");
             Name._JSON_WRITER.write(x.name, g);
+            g.writeFieldName("email");
+            g.writeString(x.email);
+            g.writeFieldName("email_verified");
+            g.writeBoolean(x.emailVerified);
+            if (x.profilePhotoUrl != null) {
+                g.writeFieldName("profile_photo_url");
+                g.writeString(x.profilePhotoUrl);
+            }
         }
     };
 
@@ -138,6 +219,9 @@ public class Account {
         public final Account readFields(JsonParser parser) throws IOException, JsonReadException {
             String accountId = null;
             Name name = null;
+            String email = null;
+            Boolean emailVerified = null;
+            String profilePhotoUrl = null;
             while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
                 String fieldName = parser.getCurrentName();
                 parser.nextToken();
@@ -149,6 +233,18 @@ public class Account {
                     name = Name._JSON_READER
                         .readField(parser, "name", name);
                 }
+                else if ("email".equals(fieldName)) {
+                    email = JsonReader.StringReader
+                        .readField(parser, "email", email);
+                }
+                else if ("email_verified".equals(fieldName)) {
+                    emailVerified = JsonReader.BooleanReader
+                        .readField(parser, "email_verified", emailVerified);
+                }
+                else if ("profile_photo_url".equals(fieldName)) {
+                    profilePhotoUrl = JsonReader.StringReader
+                        .readField(parser, "profile_photo_url", profilePhotoUrl);
+                }
                 else {
                     JsonReader.skipValue(parser);
                 }
@@ -159,7 +255,13 @@ public class Account {
             if (name == null) {
                 throw new JsonReadException("Required field \"name\" is missing.", parser.getTokenLocation());
             }
-            return new Account(accountId, name);
+            if (email == null) {
+                throw new JsonReadException("Required field \"email\" is missing.", parser.getTokenLocation());
+            }
+            if (emailVerified == null) {
+                throw new JsonReadException("Required field \"email_verified\" is missing.", parser.getTokenLocation());
+            }
+            return new Account(accountId, name, email, emailVerified, profilePhotoUrl);
         }
     };
 }

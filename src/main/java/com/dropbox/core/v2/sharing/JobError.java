@@ -13,6 +13,11 @@ import com.fasterxml.jackson.core.JsonToken;
 
 import java.io.IOException;
 
+/**
+ * Error occurred while performing an asynchronous job from {@link
+ * DbxSharing#unshareFolder(String,boolean)} or {@link
+ * DbxSharing#removeFolderMember(String,MemberSelector,boolean)}.
+ */
 public final class JobError {
     // union JobError
 
@@ -20,33 +25,44 @@ public final class JobError {
      * Discriminating tag type for {@link JobError}.
      */
     public enum Tag {
-        ACCESS_ERROR, // SharedFolderAccessError
-        MEMBER_ERROR, // SharedFolderMemberError
+        /**
+         * Error occurred while performing {@link
+         * DbxSharing#unshareFolder(String,boolean)} action.
+         */
+        UNSHARE_FOLDER_ERROR, // UnshareFolderError
+        /**
+         * Error occurred while performing {@link
+         * DbxSharing#removeFolderMember(String,MemberSelector,boolean)} action.
+         */
+        REMOVE_FOLDER_MEMBER_ERROR, // RemoveFolderMemberError
         OTHER; // *catch_all
     }
 
     private static final java.util.HashMap<String, Tag> VALUES_;
     static {
         VALUES_ = new java.util.HashMap<String, Tag>();
-        VALUES_.put("access_error", Tag.ACCESS_ERROR);
-        VALUES_.put("member_error", Tag.MEMBER_ERROR);
+        VALUES_.put("unshare_folder_error", Tag.UNSHARE_FOLDER_ERROR);
+        VALUES_.put("remove_folder_member_error", Tag.REMOVE_FOLDER_MEMBER_ERROR);
         VALUES_.put("other", Tag.OTHER);
     }
 
     public static final JobError OTHER = new JobError(Tag.OTHER, null, null);
 
     private final Tag tag;
-    private final SharedFolderAccessError accessErrorValue;
-    private final SharedFolderMemberError memberErrorValue;
+    private final UnshareFolderError unshareFolderErrorValue;
+    private final RemoveFolderMemberError removeFolderMemberErrorValue;
 
     /**
+     * Error occurred while performing an asynchronous job from {@link
+     * DbxSharing#unshareFolder(String,boolean)} or {@link
+     * DbxSharing#removeFolderMember(String,MemberSelector,boolean)}.
      *
      * @param tag  Discriminating tag for this instance.
      */
-    private JobError(Tag tag, SharedFolderAccessError accessErrorValue, SharedFolderMemberError memberErrorValue) {
+    private JobError(Tag tag, UnshareFolderError unshareFolderErrorValue, RemoveFolderMemberError removeFolderMemberErrorValue) {
         this.tag = tag;
-        this.accessErrorValue = accessErrorValue;
-        this.memberErrorValue = memberErrorValue;
+        this.unshareFolderErrorValue = unshareFolderErrorValue;
+        this.removeFolderMemberErrorValue = removeFolderMemberErrorValue;
     }
 
     /**
@@ -65,94 +81,110 @@ public final class JobError {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
-     * Tag#ACCESS_ERROR}, {@code false} otherwise.
+     * Tag#UNSHARE_FOLDER_ERROR}, {@code false} otherwise.
      *
      * @return {@code true} if this insta5Bnce is tagged as {@link
-     *     Tag#ACCESS_ERROR}, {@code false} otherwise.
+     *     Tag#UNSHARE_FOLDER_ERROR}, {@code false} otherwise.
      */
-    public boolean isAccessError() {
-        return this.tag == Tag.ACCESS_ERROR;
+    public boolean isUnshareFolderError() {
+        return this.tag == Tag.UNSHARE_FOLDER_ERROR;
     }
 
     /**
      * Returns an instance of {@code JobError} that has its tag set to {@link
-     * Tag#ACCESS_ERROR}.
+     * Tag#UNSHARE_FOLDER_ERROR}.
      *
-     * @param value  {@link JobError#accessError} value to assign to this
+     * <p> Error occurred while performing {@link
+     * DbxSharing#unshareFolder(String,boolean)} action. </p>
+     *
+     * @param value  {@link JobError#unshareFolderError} value to assign to this
      *     instance.
      *
      * @return Instance of {@code JobError} with its tag set to {@link
-     *     Tag#ACCESS_ERROR}.
+     *     Tag#UNSHARE_FOLDER_ERROR}.
      *
      * @throws IllegalArgumentException  if {@code value} is {@code null}.
      */
-    public static JobError accessError(SharedFolderAccessError value) {
+    public static JobError unshareFolderError(UnshareFolderError value) {
         if (value == null) {
             throw new IllegalArgumentException("Value is null");
         }
-        return new JobError(Tag.ACCESS_ERROR, value, null);
+        return new JobError(Tag.UNSHARE_FOLDER_ERROR, value, null);
     }
 
     /**
-     * This instance must be tagged as {@link Tag#ACCESS_ERROR}.
+     * Error occurred while performing {@link
+     * DbxSharing#unshareFolder(String,boolean)} action.
      *
-     * @return The {@link JobError#accessError} value associated with this
-     *     instance if {@link #isAccessError} is {@code true}.
+     * <p> This instance must be tagged as {@link Tag#UNSHARE_FOLDER_ERROR}.
+     * </p>
      *
-     * @throws IllegalStateException  If {@link #isAccessError} is {@code
+     * @return The {@link JobError#unshareFolderError} value associated with
+     *     this instance if {@link #isUnshareFolderError} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isUnshareFolderError} is {@code
      *     false}.
      */
-    public SharedFolderAccessError getAccessErrorValue() {
-        if (this.tag != Tag.ACCESS_ERROR) {
-            throw new IllegalStateException("Invalid tag: required Tag.ACCESS_ERROR, but was Tag." + tag.name());
+    public UnshareFolderError getUnshareFolderErrorValue() {
+        if (this.tag != Tag.UNSHARE_FOLDER_ERROR) {
+            throw new IllegalStateException("Invalid tag: required Tag.UNSHARE_FOLDER_ERROR, but was Tag." + tag.name());
         }
-        return accessErrorValue;
+        return unshareFolderErrorValue;
     }
 
     /**
      * Returns {@code true} if this instance has the tag {@link
-     * Tag#MEMBER_ERROR}, {@code false} otherwise.
+     * Tag#REMOVE_FOLDER_MEMBER_ERROR}, {@code false} otherwise.
      *
      * @return {@code true} if this insta5Bnce is tagged as {@link
-     *     Tag#MEMBER_ERROR}, {@code false} otherwise.
+     *     Tag#REMOVE_FOLDER_MEMBER_ERROR}, {@code false} otherwise.
      */
-    public boolean isMemberError() {
-        return this.tag == Tag.MEMBER_ERROR;
+    public boolean isRemoveFolderMemberError() {
+        return this.tag == Tag.REMOVE_FOLDER_MEMBER_ERROR;
     }
 
     /**
      * Returns an instance of {@code JobError} that has its tag set to {@link
-     * Tag#MEMBER_ERROR}.
+     * Tag#REMOVE_FOLDER_MEMBER_ERROR}.
      *
-     * @param value  {@link JobError#memberError} value to assign to this
-     *     instance.
+     * <p> Error occurred while performing {@link
+     * DbxSharing#removeFolderMember(String,MemberSelector,boolean)} action.
+     * </p>
+     *
+     * @param value  {@link JobError#removeFolderMemberError} value to assign to
+     *     this instance.
      *
      * @return Instance of {@code JobError} with its tag set to {@link
-     *     Tag#MEMBER_ERROR}.
+     *     Tag#REMOVE_FOLDER_MEMBER_ERROR}.
      *
      * @throws IllegalArgumentException  if {@code value} is {@code null}.
      */
-    public static JobError memberError(SharedFolderMemberError value) {
+    public static JobError removeFolderMemberError(RemoveFolderMemberError value) {
         if (value == null) {
             throw new IllegalArgumentException("Value is null");
         }
-        return new JobError(Tag.MEMBER_ERROR, null, value);
+        return new JobError(Tag.REMOVE_FOLDER_MEMBER_ERROR, null, value);
     }
 
     /**
-     * This instance must be tagged as {@link Tag#MEMBER_ERROR}.
+     * Error occurred while performing {@link
+     * DbxSharing#removeFolderMember(String,MemberSelector,boolean)} action.
      *
-     * @return The {@link JobError#memberError} value associated with this
-     *     instance if {@link #isMemberError} is {@code true}.
+     * <p> This instance must be tagged as {@link
+     * Tag#REMOVE_FOLDER_MEMBER_ERROR}. </p>
      *
-     * @throws IllegalStateException  If {@link #isMemberError} is {@code
-     *     false}.
+     * @return The {@link JobError#removeFolderMemberError} value associated
+     *     with this instance if {@link #isRemoveFolderMemberError} is {@code
+     *     true}.
+     *
+     * @throws IllegalStateException  If {@link #isRemoveFolderMemberError} is
+     *     {@code false}.
      */
-    public SharedFolderMemberError getMemberErrorValue() {
-        if (this.tag != Tag.MEMBER_ERROR) {
-            throw new IllegalStateException("Invalid tag: required Tag.MEMBER_ERROR, but was Tag." + tag.name());
+    public RemoveFolderMemberError getRemoveFolderMemberErrorValue() {
+        if (this.tag != Tag.REMOVE_FOLDER_MEMBER_ERROR) {
+            throw new IllegalStateException("Invalid tag: required Tag.REMOVE_FOLDER_MEMBER_ERROR, but was Tag." + tag.name());
         }
-        return memberErrorValue;
+        return removeFolderMemberErrorValue;
     }
 
     /**
@@ -170,8 +202,8 @@ public final class JobError {
     public int hashCode() {
         int hash = java.util.Arrays.hashCode(new Object [] {
             tag,
-            accessErrorValue,
-            memberErrorValue
+            unshareFolderErrorValue,
+            removeFolderMemberErrorValue
         });
         return hash;
     }
@@ -187,10 +219,10 @@ public final class JobError {
                 return false;
             }
             switch (tag) {
-                case ACCESS_ERROR:
-                    return (this.accessErrorValue == other.accessErrorValue) || (this.accessErrorValue.equals(other.accessErrorValue));
-                case MEMBER_ERROR:
-                    return (this.memberErrorValue == other.memberErrorValue) || (this.memberErrorValue.equals(other.memberErrorValue));
+                case UNSHARE_FOLDER_ERROR:
+                    return (this.unshareFolderErrorValue == other.unshareFolderErrorValue) || (this.unshareFolderErrorValue.equals(other.unshareFolderErrorValue));
+                case REMOVE_FOLDER_MEMBER_ERROR:
+                    return (this.removeFolderMemberErrorValue == other.removeFolderMemberErrorValue) || (this.removeFolderMemberErrorValue.equals(other.removeFolderMemberErrorValue));
                 case OTHER:
                     return true;
                 default:
@@ -222,20 +254,20 @@ public final class JobError {
     public static final JsonWriter<JobError> _JSON_WRITER = new JsonWriter<JobError>() {
         public final void write(JobError x, JsonGenerator g) throws IOException {
             switch (x.tag) {
-                case ACCESS_ERROR:
+                case UNSHARE_FOLDER_ERROR:
                     g.writeStartObject();
                     g.writeFieldName(".tag");
-                    g.writeString("access_error");
-                    g.writeFieldName("access_error");
-                    SharedFolderAccessError._JSON_WRITER.write(x.getAccessErrorValue(), g);
+                    g.writeString("unshare_folder_error");
+                    g.writeFieldName("unshare_folder_error");
+                    UnshareFolderError._JSON_WRITER.write(x.getUnshareFolderErrorValue(), g);
                     g.writeEndObject();
                     break;
-                case MEMBER_ERROR:
+                case REMOVE_FOLDER_MEMBER_ERROR:
                     g.writeStartObject();
                     g.writeFieldName(".tag");
-                    g.writeString("member_error");
-                    g.writeFieldName("member_error");
-                    SharedFolderMemberError._JSON_WRITER.write(x.getMemberErrorValue(), g);
+                    g.writeString("remove_folder_member_error");
+                    g.writeFieldName("remove_folder_member_error");
+                    RemoveFolderMemberError._JSON_WRITER.write(x.getRemoveFolderMemberErrorValue(), g);
                     g.writeEndObject();
                     break;
                 case OTHER:
@@ -271,26 +303,26 @@ public final class JobError {
             JobError value = null;
             if (tag != null) {
                 switch (tag) {
-                    case ACCESS_ERROR: {
-                        SharedFolderAccessError v = null;
+                    case UNSHARE_FOLDER_ERROR: {
+                        UnshareFolderError v = null;
                         assert parser.getCurrentToken() == JsonToken.FIELD_NAME;
                         text = parser.getText();
                         assert tags[0].equals(text);
                         parser.nextToken();
-                        v = SharedFolderAccessError._JSON_READER
-                            .readField(parser, "access_error", v);
-                        value = JobError.accessError(v);
+                        v = UnshareFolderError._JSON_READER
+                            .readField(parser, "unshare_folder_error", v);
+                        value = JobError.unshareFolderError(v);
                         break;
                     }
-                    case MEMBER_ERROR: {
-                        SharedFolderMemberError v = null;
+                    case REMOVE_FOLDER_MEMBER_ERROR: {
+                        RemoveFolderMemberError v = null;
                         assert parser.getCurrentToken() == JsonToken.FIELD_NAME;
                         text = parser.getText();
                         assert tags[0].equals(text);
                         parser.nextToken();
-                        v = SharedFolderMemberError._JSON_READER
-                            .readField(parser, "member_error", v);
-                        value = JobError.memberError(v);
+                        v = RemoveFolderMemberError._JSON_READER
+                            .readField(parser, "remove_folder_member_error", v);
+                        value = JobError.removeFolderMemberError(v);
                         break;
                     }
                     case OTHER: {

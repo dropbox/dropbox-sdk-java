@@ -40,7 +40,7 @@ public final class AddMemberSelectorError {
          */
         GROUP_DELETED,
         /**
-         * Sharing to a group that is not on the current account's team.
+         * Sharing to a group that is not on the current user's team.
          */
         GROUP_NOT_ON_TEAM,
         OTHER; // *catch_all
@@ -169,14 +169,17 @@ public final class AddMemberSelectorError {
      * @return Instance of {@code AddMemberSelectorError} with its tag set to
      *     {@link Tag#INVALID_EMAIL}.
      *
-     * @throws IllegalArgumentException  if {@code value} does not match pattern
-     *     "{@code
-     *     ^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$}" or
+     * @throws IllegalArgumentException  if {@code value} is longer than 255,
+     *     does not match pattern "{@code
+     *     ^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$}", or
      *     is {@code null}.
      */
     public static AddMemberSelectorError invalidEmail(String value) {
         if (value == null) {
             throw new IllegalArgumentException("Value is null");
+        }
+        if (value.length() > 255) {
+            throw new IllegalArgumentException("String is longer than 255");
         }
         if (!java.util.regex.Pattern.matches("^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$", value)) {
             throw new IllegalArgumentException("String does not match pattern");

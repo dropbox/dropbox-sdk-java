@@ -26,6 +26,9 @@ public class GroupMembershipInfo extends MembershipInfo {
     /**
      * The information about a group member of the shared folder.
      *
+     * <p> Use {@link newBuilder} to create instances of this class without
+     * specifying values for all optional fields. </p>
+     *
      * @param accessType  The access type for this member. Must not be {@code
      *     null}.
      * @param group  The information about the membership group. Must not be
@@ -33,12 +36,15 @@ public class GroupMembershipInfo extends MembershipInfo {
      * @param permissions  The permissions that requesting user has on this
      *     member. The set of permissions corresponds to the MemberActions in
      *     the request. Must not contain a {@code null} item.
+     * @param initials  Suggested name initials for a member.
+     * @param isInherited  True if the member's access to the file is inherited
+     *     from a parent folder.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupMembershipInfo(AccessLevel accessType, GroupInfo group, List<MemberPermission> permissions) {
-        super(accessType, permissions);
+    public GroupMembershipInfo(AccessLevel accessType, GroupInfo group, List<MemberPermission> permissions, String initials, boolean isInherited) {
+        super(accessType, permissions, initials, isInherited);
         if (group == null) {
             throw new IllegalArgumentException("Required value for 'group' is null");
         }
@@ -59,7 +65,7 @@ public class GroupMembershipInfo extends MembershipInfo {
      *     preconditions.
      */
     public GroupMembershipInfo(AccessLevel accessType, GroupInfo group) {
-        this(accessType, group, null);
+        this(accessType, group, null, null, false);
     }
 
     /**
@@ -69,6 +75,48 @@ public class GroupMembershipInfo extends MembershipInfo {
      */
     public GroupInfo getGroup() {
         return group;
+    }
+
+    /**
+     * Returns a new builder for creating an instance of this class.
+     *
+     * @param accessType  The access type for this member. Must not be {@code
+     *     null}.
+     * @param group  The information about the membership group. Must not be
+     *     {@code null}.
+     *
+     * @return builder for this class.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public static Builder newBuilder(AccessLevel accessType, GroupInfo group) {
+        return new Builder(accessType, group);
+    }
+
+    /**
+     * Builder for {@link GroupMembershipInfo}.
+     */
+    public static class Builder extends MembershipInfo.Builder {
+        protected final GroupInfo group;
+
+        protected Builder(AccessLevel accessType, GroupInfo group) {
+            super(accessType);
+            if (group == null) {
+                throw new IllegalArgumentException("Required value for 'group' is null");
+            }
+            this.group = group;
+        }
+
+        /**
+         * Builds an instance of {@link GroupMembershipInfo} configured with
+         * this builder's values
+         *
+         * @return new instance of {@link GroupMembershipInfo}
+         */
+        public GroupMembershipInfo build() {
+            return new GroupMembershipInfo(accessType, group, permissions, initials, isInherited);
+        }
     }
 
     @Override
@@ -91,6 +139,8 @@ public class GroupMembershipInfo extends MembershipInfo {
             return ((this.group == other.group) || (this.group.equals(other.group)))
                 && ((this.getAccessType() == other.getAccessType()) || (this.getAccessType().equals(other.getAccessType())))
                 && ((this.getPermissions() == other.getPermissions()) || (this.getPermissions() != null && this.getPermissions().equals(other.getPermissions())))
+                && ((this.getInitials() == other.getInitials()) || (this.getInitials() != null && this.getInitials().equals(other.getInitials())))
+                && (this.getIsInherited() == other.getIsInherited())
                 ;
         }
         else {
@@ -141,6 +191,8 @@ public class GroupMembershipInfo extends MembershipInfo {
             AccessLevel accessType = null;
             GroupInfo group = null;
             List<MemberPermission> permissions = null;
+            String initials = null;
+            Boolean isInherited = null;
             while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
                 String fieldName = parser.getCurrentName();
                 parser.nextToken();
@@ -156,6 +208,14 @@ public class GroupMembershipInfo extends MembershipInfo {
                     permissions = JsonArrayReader.mk(MemberPermission._JSON_READER)
                         .readField(parser, "permissions", permissions);
                 }
+                else if ("initials".equals(fieldName)) {
+                    initials = JsonReader.StringReader
+                        .readField(parser, "initials", initials);
+                }
+                else if ("is_inherited".equals(fieldName)) {
+                    isInherited = JsonReader.BooleanReader
+                        .readField(parser, "is_inherited", isInherited);
+                }
                 else {
                     JsonReader.skipValue(parser);
                 }
@@ -166,7 +226,7 @@ public class GroupMembershipInfo extends MembershipInfo {
             if (group == null) {
                 throw new JsonReadException("Required field \"group\" is missing.", parser.getTokenLocation());
             }
-            return new GroupMembershipInfo(accessType, group, permissions);
+            return new GroupMembershipInfo(accessType, group, permissions, initials, isInherited);
         }
     };
 }

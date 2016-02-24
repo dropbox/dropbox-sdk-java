@@ -18,6 +18,7 @@ public class ListSharedLinksArg {
 
     private final String path;
     private final String cursor;
+    private final Boolean directOnly;
 
     /**
      * Use {@link newBuilder} to create instances of this class without
@@ -27,11 +28,12 @@ public class ListSharedLinksArg {
      *     match pattern "{@code ((/|id:).*)|(rev:[0-9a-f]{9,})}".
      * @param cursor  The cursor returned by your last call to {@link
      *     DbxSharing#listSharedLinks()}.
+     * @param directOnly  See {@link DbxSharing#listSharedLinks()} description.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListSharedLinksArg(String path, String cursor) {
+    public ListSharedLinksArg(String path, String cursor, Boolean directOnly) {
         if (path != null) {
             if (!java.util.regex.Pattern.matches("((/|id:).*)|(rev:[0-9a-f]{9,})", path)) {
                 throw new IllegalArgumentException("String 'path' does not match pattern");
@@ -39,13 +41,14 @@ public class ListSharedLinksArg {
         }
         this.path = path;
         this.cursor = cursor;
+        this.directOnly = directOnly;
     }
 
     /**
      * The default values for unset fields will be used.
      */
     public ListSharedLinksArg() {
-        this(null, null);
+        this(null, null, null);
     }
 
     /**
@@ -68,6 +71,15 @@ public class ListSharedLinksArg {
     }
 
     /**
+     * See {@link DbxSharing#listSharedLinks()} description.
+     *
+     * @return value for this field, or {@code null} if not present.
+     */
+    public Boolean getDirectOnly() {
+        return directOnly;
+    }
+
+    /**
      * Returns a new builder for creating an instance of this class.
      *
      * @return builder for this class.
@@ -83,10 +95,12 @@ public class ListSharedLinksArg {
 
         protected String path;
         protected String cursor;
+        protected Boolean directOnly;
 
         protected Builder() {
             this.path = null;
             this.cursor = null;
+            this.directOnly = null;
         }
 
         /**
@@ -124,13 +138,26 @@ public class ListSharedLinksArg {
         }
 
         /**
+         * Set value for optional field.
+         *
+         * @param directOnly  See {@link DbxSharing#listSharedLinks()}
+         *     description.
+         *
+         * @return this builder
+         */
+        public Builder withDirectOnly(Boolean directOnly) {
+            this.directOnly = directOnly;
+            return this;
+        }
+
+        /**
          * Builds an instance of {@link ListSharedLinksArg} configured with this
          * builder's values
          *
          * @return new instance of {@link ListSharedLinksArg}
          */
         public ListSharedLinksArg build() {
-            return new ListSharedLinksArg(path, cursor);
+            return new ListSharedLinksArg(path, cursor, directOnly);
         }
     }
 
@@ -138,7 +165,8 @@ public class ListSharedLinksArg {
     public int hashCode() {
         int hash = java.util.Arrays.hashCode(new Object [] {
             path,
-            cursor
+            cursor,
+            directOnly
         });
         return hash;
     }
@@ -153,6 +181,7 @@ public class ListSharedLinksArg {
             ListSharedLinksArg other = (ListSharedLinksArg) obj;
             return ((this.path == other.path) || (this.path != null && this.path.equals(other.path)))
                 && ((this.cursor == other.cursor) || (this.cursor != null && this.cursor.equals(other.cursor)))
+                && ((this.directOnly == other.directOnly) || (this.directOnly != null && this.directOnly.equals(other.directOnly)))
                 ;
         }
         else {
@@ -192,6 +221,10 @@ public class ListSharedLinksArg {
                 g.writeFieldName("cursor");
                 g.writeString(x.cursor);
             }
+            if (x.directOnly != null) {
+                g.writeFieldName("direct_only");
+                g.writeBoolean(x.directOnly);
+            }
         }
     };
 
@@ -207,6 +240,7 @@ public class ListSharedLinksArg {
         public final ListSharedLinksArg readFields(JsonParser parser) throws IOException, JsonReadException {
             String path = null;
             String cursor = null;
+            Boolean directOnly = null;
             while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
                 String fieldName = parser.getCurrentName();
                 parser.nextToken();
@@ -218,11 +252,15 @@ public class ListSharedLinksArg {
                     cursor = JsonReader.StringReader
                         .readField(parser, "cursor", cursor);
                 }
+                else if ("direct_only".equals(fieldName)) {
+                    directOnly = JsonReader.BooleanReader
+                        .readField(parser, "direct_only", directOnly);
+                }
                 else {
                     JsonReader.skipValue(parser);
                 }
             }
-            return new ListSharedLinksArg(path, cursor);
+            return new ListSharedLinksArg(path, cursor, directOnly);
         }
     };
 }

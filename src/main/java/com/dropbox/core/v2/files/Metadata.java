@@ -21,6 +21,7 @@ public class Metadata {
 
     private final String name;
     private final String pathLower;
+    private final String pathDisplay;
     private final String parentSharedFolderId;
 
     /**
@@ -30,15 +31,21 @@ public class Metadata {
      *     never contains a slash. Must not be {@code null}.
      * @param pathLower  The lowercased full path in the user's Dropbox. This
      *     always starts with a slash. Must not be {@code null}.
-     * @param parentSharedFolderId  Deprecated. Please use
-     *     :field:'FileSharingInfo.parent_shared_folder_id' or
-     *     :field:'FolderSharingInfo.parent_shared_folder_id' instead. Must
-     *     match pattern "{@code [-_0-9a-zA-Z:]+}".
+     * @param pathDisplay  The cased path to be used for display purposes only.
+     *     In rare instances the casing will not correctly match the user's
+     *     filesystem, but this behavior will match the path provided in the
+     *     Core API v1. Changes to the casing of paths won't be returned by
+     *     {@link DbxFiles#listFolderContinue(String)}. Must not be {@code
+     *     null}.
+     * @param parentSharedFolderId  Deprecated. Please use {@link
+     *     FileSharingInfo#getParentSharedFolderId} or {@link
+     *     FolderSharingInfo#getParentSharedFolderId} instead. Must match
+     *     pattern "{@code [-_0-9a-zA-Z:]+}".
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public Metadata(String name, String pathLower, String parentSharedFolderId) {
+    public Metadata(String name, String pathLower, String pathDisplay, String parentSharedFolderId) {
         if (name == null) {
             throw new IllegalArgumentException("Required value for 'name' is null");
         }
@@ -47,6 +54,10 @@ public class Metadata {
             throw new IllegalArgumentException("Required value for 'pathLower' is null");
         }
         this.pathLower = pathLower;
+        if (pathDisplay == null) {
+            throw new IllegalArgumentException("Required value for 'pathDisplay' is null");
+        }
+        this.pathDisplay = pathDisplay;
         if (parentSharedFolderId != null) {
             if (!java.util.regex.Pattern.matches("[-_0-9a-zA-Z:]+", parentSharedFolderId)) {
                 throw new IllegalArgumentException("String 'parentSharedFolderId' does not match pattern");
@@ -64,12 +75,18 @@ public class Metadata {
      *     never contains a slash. Must not be {@code null}.
      * @param pathLower  The lowercased full path in the user's Dropbox. This
      *     always starts with a slash. Must not be {@code null}.
+     * @param pathDisplay  The cased path to be used for display purposes only.
+     *     In rare instances the casing will not correctly match the user's
+     *     filesystem, but this behavior will match the path provided in the
+     *     Core API v1. Changes to the casing of paths won't be returned by
+     *     {@link DbxFiles#listFolderContinue(String)}. Must not be {@code
+     *     null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public Metadata(String name, String pathLower) {
-        this(name, pathLower, null);
+    public Metadata(String name, String pathLower, String pathDisplay) {
+        this(name, pathLower, pathDisplay, null);
     }
 
     /**
@@ -93,8 +110,21 @@ public class Metadata {
     }
 
     /**
-     * Deprecated. Please use :field:'FileSharingInfo.parent_shared_folder_id'
-     * or :field:'FolderSharingInfo.parent_shared_folder_id' instead.
+     * The cased path to be used for display purposes only. In rare instances
+     * the casing will not correctly match the user's filesystem, but this
+     * behavior will match the path provided in the Core API v1. Changes to the
+     * casing of paths won't be returned by {@link
+     * DbxFiles#listFolderContinue(String)}
+     *
+     * @return value for this field, never {@code null}.
+     */
+    public String getPathDisplay() {
+        return pathDisplay;
+    }
+
+    /**
+     * Deprecated. Please use {@link FileSharingInfo#getParentSharedFolderId} or
+     * {@link FolderSharingInfo#getParentSharedFolderId} instead.
      *
      * @return value for this field, or {@code null} if not present.
      */
@@ -107,6 +137,7 @@ public class Metadata {
         int hash = java.util.Arrays.hashCode(new Object [] {
             name,
             pathLower,
+            pathDisplay,
             parentSharedFolderId
         });
         return hash;
@@ -122,6 +153,7 @@ public class Metadata {
             Metadata other = (Metadata) obj;
             return ((this.name == other.name) || (this.name.equals(other.name)))
                 && ((this.pathLower == other.pathLower) || (this.pathLower.equals(other.pathLower)))
+                && ((this.pathDisplay == other.pathDisplay) || (this.pathDisplay.equals(other.pathDisplay)))
                 && ((this.parentSharedFolderId == other.parentSharedFolderId) || (this.parentSharedFolderId != null && this.parentSharedFolderId.equals(other.parentSharedFolderId)))
                 ;
         }
@@ -171,6 +203,8 @@ public class Metadata {
             g.writeString(x.name);
             g.writeFieldName("path_lower");
             g.writeString(x.pathLower);
+            g.writeFieldName("path_display");
+            g.writeString(x.pathDisplay);
             if (x.parentSharedFolderId != null) {
                 g.writeFieldName("parent_shared_folder_id");
                 g.writeString(x.parentSharedFolderId);
@@ -207,6 +241,7 @@ public class Metadata {
         public final Metadata readFields(JsonParser parser) throws IOException, JsonReadException {
             String name = null;
             String pathLower = null;
+            String pathDisplay = null;
             String parentSharedFolderId = null;
             while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
                 String fieldName = parser.getCurrentName();
@@ -218,6 +253,10 @@ public class Metadata {
                 else if ("path_lower".equals(fieldName)) {
                     pathLower = JsonReader.StringReader
                         .readField(parser, "path_lower", pathLower);
+                }
+                else if ("path_display".equals(fieldName)) {
+                    pathDisplay = JsonReader.StringReader
+                        .readField(parser, "path_display", pathDisplay);
                 }
                 else if ("parent_shared_folder_id".equals(fieldName)) {
                     parentSharedFolderId = JsonReader.StringReader
@@ -233,7 +272,10 @@ public class Metadata {
             if (pathLower == null) {
                 throw new JsonReadException("Required field \"path_lower\" is missing.", parser.getTokenLocation());
             }
-            return new Metadata(name, pathLower, parentSharedFolderId);
+            if (pathDisplay == null) {
+                throw new JsonReadException("Required field \"path_display\" is missing.", parser.getTokenLocation());
+            }
+            return new Metadata(name, pathLower, pathDisplay, parentSharedFolderId);
         }
     };
 }

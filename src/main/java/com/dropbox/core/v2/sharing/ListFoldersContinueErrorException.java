@@ -13,12 +13,13 @@ import com.dropbox.core.LocalizedText;
 public class ListFoldersContinueErrorException extends DbxApiException {
 
     /**
-     * The error reported by {@link DbxSharing#listFoldersContinue(String)}.
+     * The error reported by {@link
+     * DbxSharing#listMountableFoldersContinue(String)}.
      */
     public final ListFoldersContinueError errorValue;
 
     public ListFoldersContinueErrorException(String requestId, LocalizedText userMessage, ListFoldersContinueError errorValue) {
-        super(requestId, userMessage, buildMessage("list_folders/continue", userMessage, errorValue));
+        super(requestId, userMessage, buildMessage("list_mountable_folders/continue", userMessage, errorValue));
         if (errorValue == null) {
             throw new NullPointerException("errorValue");
         }

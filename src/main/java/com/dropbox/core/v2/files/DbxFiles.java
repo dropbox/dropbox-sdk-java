@@ -31,7 +31,8 @@ public final class DbxFiles {
     //
 
     /**
-     * Returns the metadata for a file or folder.
+     * Returns the metadata for a file or folder. Note: Metadata for the root
+     * folder is unsupported.
      *
      *
      * @return Metadata for a file or folder.
@@ -52,7 +53,8 @@ public final class DbxFiles {
     }
 
     /**
-     * Returns the metadata for a file or folder.
+     * Returns the metadata for a file or folder. Note: Metadata for the root
+     * folder is unsupported.
      *
      * <p> The default values for the remaining request parameters will be used.
      * See {@link GetMetadataArg} for more details. </p>
@@ -71,12 +73,13 @@ public final class DbxFiles {
     }
 
     /**
-     * Returns the metadata for a file or folder.
+     * Returns the metadata for a file or folder. Note: Metadata for the root
+     * folder is unsupported.
      *
      * @param path  The path of a file or folder on Dropbox. Must match pattern
      *     "{@code ((/|id:).*)|(rev:[0-9a-f]{9,})}" and not be {@code null}.
-     * @param includeMediaInfo  If true, :field:'FileMetadata.media_info' is set
-     *     for photo and video.
+     * @param includeMediaInfo  If true, {@link FileMetadata#getMediaInfo} is
+     *     set for photo and video.
      *
      * @return Metadata for a file or folder.
      *
@@ -405,8 +408,9 @@ public final class DbxFiles {
      *
      * @param path  The path of the file to download. Must match pattern "{@code
      *     ((/|id:).*)|(rev:[0-9a-f]{9,})}" and not be {@code null}.
-     * @param rev  Deprecated. Please specify revision in :field:'path' instead.
-     *     Must have length of at least 9 and match pattern "{@code [0-9a-f]+}".
+     * @param rev  Deprecated. Please specify revision in {@link
+     *     DownloadArg#getPath} instead. Must have length of at least 9 and
+     *     match pattern "{@code [0-9a-f]+}".
      *
      * @return Downloader used to download the response body and view the server
      *     response.
@@ -1023,8 +1027,9 @@ public final class DbxFiles {
      *
      * @param path  The path of the file to preview. Must match pattern "{@code
      *     ((/|id:).*)|(rev:[0-9a-f]{9,})}" and not be {@code null}.
-     * @param rev  Deprecated. Please specify revision in :field:'path' instead.
-     *     Must have length of at least 9 and match pattern "{@code [0-9a-f]+}".
+     * @param rev  Deprecated. Please specify revision in {@link
+     *     PreviewArg#getPath} instead. Must have length of at least 9 and match
+     *     pattern "{@code [0-9a-f]+}".
      *
      * @return Downloader used to download the response body and view the server
      *     response.

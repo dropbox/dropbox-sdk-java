@@ -29,16 +29,22 @@ public class DeletedMetadata extends Metadata {
      *     never contains a slash. Must not be {@code null}.
      * @param pathLower  The lowercased full path in the user's Dropbox. This
      *     always starts with a slash. Must not be {@code null}.
-     * @param parentSharedFolderId  Deprecated. Please use
-     *     :field:'FileSharingInfo.parent_shared_folder_id' or
-     *     :field:'FolderSharingInfo.parent_shared_folder_id' instead. Must
-     *     match pattern "{@code [-_0-9a-zA-Z:]+}".
+     * @param pathDisplay  The cased path to be used for display purposes only.
+     *     In rare instances the casing will not correctly match the user's
+     *     filesystem, but this behavior will match the path provided in the
+     *     Core API v1. Changes to the casing of paths won't be returned by
+     *     {@link DbxFiles#listFolderContinue(String)}. Must not be {@code
+     *     null}.
+     * @param parentSharedFolderId  Deprecated. Please use {@link
+     *     FileSharingInfo#getParentSharedFolderId} or {@link
+     *     FolderSharingInfo#getParentSharedFolderId} instead. Must match
+     *     pattern "{@code [-_0-9a-zA-Z:]+}".
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeletedMetadata(String name, String pathLower, String parentSharedFolderId) {
-        super(name, pathLower, parentSharedFolderId);
+    public DeletedMetadata(String name, String pathLower, String pathDisplay, String parentSharedFolderId) {
+        super(name, pathLower, pathDisplay, parentSharedFolderId);
     }
 
     /**
@@ -51,12 +57,18 @@ public class DeletedMetadata extends Metadata {
      *     never contains a slash. Must not be {@code null}.
      * @param pathLower  The lowercased full path in the user's Dropbox. This
      *     always starts with a slash. Must not be {@code null}.
+     * @param pathDisplay  The cased path to be used for display purposes only.
+     *     In rare instances the casing will not correctly match the user's
+     *     filesystem, but this behavior will match the path provided in the
+     *     Core API v1. Changes to the casing of paths won't be returned by
+     *     {@link DbxFiles#listFolderContinue(String)}. Must not be {@code
+     *     null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeletedMetadata(String name, String pathLower) {
-        this(name, pathLower, null);
+    public DeletedMetadata(String name, String pathLower, String pathDisplay) {
+        this(name, pathLower, pathDisplay, null);
     }
 
     @Override
@@ -75,6 +87,7 @@ public class DeletedMetadata extends Metadata {
             DeletedMetadata other = (DeletedMetadata) obj;
             return ((this.getName() == other.getName()) || (this.getName().equals(other.getName())))
                 && ((this.getPathLower() == other.getPathLower()) || (this.getPathLower().equals(other.getPathLower())))
+                && ((this.getPathDisplay() == other.getPathDisplay()) || (this.getPathDisplay().equals(other.getPathDisplay())))
                 && ((this.getParentSharedFolderId() == other.getParentSharedFolderId()) || (this.getParentSharedFolderId() != null && this.getParentSharedFolderId().equals(other.getParentSharedFolderId())))
                 ;
         }
@@ -133,6 +146,7 @@ public class DeletedMetadata extends Metadata {
         public final DeletedMetadata readFields(JsonParser parser) throws IOException, JsonReadException {
             String name = null;
             String pathLower = null;
+            String pathDisplay = null;
             String parentSharedFolderId = null;
             while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
                 String fieldName = parser.getCurrentName();
@@ -144,6 +158,10 @@ public class DeletedMetadata extends Metadata {
                 else if ("path_lower".equals(fieldName)) {
                     pathLower = JsonReader.StringReader
                         .readField(parser, "path_lower", pathLower);
+                }
+                else if ("path_display".equals(fieldName)) {
+                    pathDisplay = JsonReader.StringReader
+                        .readField(parser, "path_display", pathDisplay);
                 }
                 else if ("parent_shared_folder_id".equals(fieldName)) {
                     parentSharedFolderId = JsonReader.StringReader
@@ -159,7 +177,10 @@ public class DeletedMetadata extends Metadata {
             if (pathLower == null) {
                 throw new JsonReadException("Required field \"path_lower\" is missing.", parser.getTokenLocation());
             }
-            return new DeletedMetadata(name, pathLower, parentSharedFolderId);
+            if (pathDisplay == null) {
+                throw new JsonReadException("Required field \"path_display\" is missing.", parser.getTokenLocation());
+            }
+            return new DeletedMetadata(name, pathLower, pathDisplay, parentSharedFolderId);
         }
     };
 }

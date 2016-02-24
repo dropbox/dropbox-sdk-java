@@ -46,7 +46,7 @@ public enum MembersSetProfileError {
      */
     SET_PROFILE_DISALLOWED,
     /**
-     * New  new_email, new_given_name or new_surname value cannot be empty.
+     * Parameter new_email cannot be empty.
      */
     PARAM_CANNOT_BE_EMPTY,
     /**

@@ -201,14 +201,17 @@ public final class MemberAddResult {
      * @return Instance of {@code MemberAddResult} with its tag set to {@link
      *     Tag#TEAM_LICENSE_LIMIT}.
      *
-     * @throws IllegalArgumentException  if {@code value} does not match pattern
-     *     "{@code
-     *     ^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$}" or
+     * @throws IllegalArgumentException  if {@code value} is longer than 255,
+     *     does not match pattern "{@code
+     *     ^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$}", or
      *     is {@code null}.
      */
     public static MemberAddResult teamLicenseLimit(String value) {
         if (value == null) {
             throw new IllegalArgumentException("Value is null");
+        }
+        if (value.length() > 255) {
+            throw new IllegalArgumentException("String is longer than 255");
         }
         if (!java.util.regex.Pattern.matches("^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$", value)) {
             throw new IllegalArgumentException("String does not match pattern");
@@ -258,14 +261,17 @@ public final class MemberAddResult {
      * @return Instance of {@code MemberAddResult} with its tag set to {@link
      *     Tag#FREE_TEAM_MEMBER_LIMIT_REACHED}.
      *
-     * @throws IllegalArgumentException  if {@code value} does not match pattern
-     *     "{@code
-     *     ^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$}" or
+     * @throws IllegalArgumentException  if {@code value} is longer than 255,
+     *     does not match pattern "{@code
+     *     ^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$}", or
      *     is {@code null}.
      */
     public static MemberAddResult freeTeamMemberLimitReached(String value) {
         if (value == null) {
             throw new IllegalArgumentException("Value is null");
+        }
+        if (value.length() > 255) {
+            throw new IllegalArgumentException("String is longer than 255");
         }
         if (!java.util.regex.Pattern.matches("^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$", value)) {
             throw new IllegalArgumentException("String does not match pattern");
@@ -318,14 +324,17 @@ public final class MemberAddResult {
      * @return Instance of {@code MemberAddResult} with its tag set to {@link
      *     Tag#USER_ALREADY_ON_TEAM}.
      *
-     * @throws IllegalArgumentException  if {@code value} does not match pattern
-     *     "{@code
-     *     ^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$}" or
+     * @throws IllegalArgumentException  if {@code value} is longer than 255,
+     *     does not match pattern "{@code
+     *     ^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$}", or
      *     is {@code null}.
      */
     public static MemberAddResult userAlreadyOnTeam(String value) {
         if (value == null) {
             throw new IllegalArgumentException("Value is null");
+        }
+        if (value.length() > 255) {
+            throw new IllegalArgumentException("String is longer than 255");
         }
         if (!java.util.regex.Pattern.matches("^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$", value)) {
             throw new IllegalArgumentException("String does not match pattern");
@@ -378,14 +387,17 @@ public final class MemberAddResult {
      * @return Instance of {@code MemberAddResult} with its tag set to {@link
      *     Tag#USER_ON_ANOTHER_TEAM}.
      *
-     * @throws IllegalArgumentException  if {@code value} does not match pattern
-     *     "{@code
-     *     ^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$}" or
+     * @throws IllegalArgumentException  if {@code value} is longer than 255,
+     *     does not match pattern "{@code
+     *     ^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$}", or
      *     is {@code null}.
      */
     public static MemberAddResult userOnAnotherTeam(String value) {
         if (value == null) {
             throw new IllegalArgumentException("Value is null");
+        }
+        if (value.length() > 255) {
+            throw new IllegalArgumentException("String is longer than 255");
         }
         if (!java.util.regex.Pattern.matches("^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$", value)) {
             throw new IllegalArgumentException("String does not match pattern");
@@ -436,14 +448,17 @@ public final class MemberAddResult {
      * @return Instance of {@code MemberAddResult} with its tag set to {@link
      *     Tag#USER_ALREADY_PAIRED}.
      *
-     * @throws IllegalArgumentException  if {@code value} does not match pattern
-     *     "{@code
-     *     ^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$}" or
+     * @throws IllegalArgumentException  if {@code value} is longer than 255,
+     *     does not match pattern "{@code
+     *     ^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$}", or
      *     is {@code null}.
      */
     public static MemberAddResult userAlreadyPaired(String value) {
         if (value == null) {
             throw new IllegalArgumentException("Value is null");
+        }
+        if (value.length() > 255) {
+            throw new IllegalArgumentException("String is longer than 255");
         }
         if (!java.util.regex.Pattern.matches("^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$", value)) {
             throw new IllegalArgumentException("String does not match pattern");
@@ -492,14 +507,17 @@ public final class MemberAddResult {
      * @return Instance of {@code MemberAddResult} with its tag set to {@link
      *     Tag#USER_MIGRATION_FAILED}.
      *
-     * @throws IllegalArgumentException  if {@code value} does not match pattern
-     *     "{@code
-     *     ^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$}" or
+     * @throws IllegalArgumentException  if {@code value} is longer than 255,
+     *     does not match pattern "{@code
+     *     ^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$}", or
      *     is {@code null}.
      */
     public static MemberAddResult userMigrationFailed(String value) {
         if (value == null) {
             throw new IllegalArgumentException("Value is null");
+        }
+        if (value.length() > 255) {
+            throw new IllegalArgumentException("String is longer than 255");
         }
         if (!java.util.regex.Pattern.matches("^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$", value)) {
             throw new IllegalArgumentException("String does not match pattern");
@@ -550,14 +568,17 @@ public final class MemberAddResult {
      * @return Instance of {@code MemberAddResult} with its tag set to {@link
      *     Tag#DUPLICATE_EXTERNAL_MEMBER_ID}.
      *
-     * @throws IllegalArgumentException  if {@code value} does not match pattern
-     *     "{@code
-     *     ^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$}" or
+     * @throws IllegalArgumentException  if {@code value} is longer than 255,
+     *     does not match pattern "{@code
+     *     ^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$}", or
      *     is {@code null}.
      */
     public static MemberAddResult duplicateExternalMemberId(String value) {
         if (value == null) {
             throw new IllegalArgumentException("Value is null");
+        }
+        if (value.length() > 255) {
+            throw new IllegalArgumentException("String is longer than 255");
         }
         if (!java.util.regex.Pattern.matches("^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$", value)) {
             throw new IllegalArgumentException("String does not match pattern");
@@ -608,14 +629,17 @@ public final class MemberAddResult {
      * @return Instance of {@code MemberAddResult} with its tag set to {@link
      *     Tag#USER_CREATION_FAILED}.
      *
-     * @throws IllegalArgumentException  if {@code value} does not match pattern
-     *     "{@code
-     *     ^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$}" or
+     * @throws IllegalArgumentException  if {@code value} is longer than 255,
+     *     does not match pattern "{@code
+     *     ^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$}", or
      *     is {@code null}.
      */
     public static MemberAddResult userCreationFailed(String value) {
         if (value == null) {
             throw new IllegalArgumentException("Value is null");
+        }
+        if (value.length() > 255) {
+            throw new IllegalArgumentException("String is longer than 255");
         }
         if (!java.util.regex.Pattern.matches("^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$", value)) {
             throw new IllegalArgumentException("String does not match pattern");

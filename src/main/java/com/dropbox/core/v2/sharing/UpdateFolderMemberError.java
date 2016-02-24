@@ -29,6 +29,10 @@ public final class UpdateFolderMemberError {
          * Business plan.
          */
         INSUFFICIENT_PLAN,
+        /**
+         * The current user does not have permission to perform this action.
+         */
+        NO_PERMISSION,
         OTHER; // *catch_all
     }
 
@@ -38,10 +42,12 @@ public final class UpdateFolderMemberError {
         VALUES_.put("access_error", Tag.ACCESS_ERROR);
         VALUES_.put("member_error", Tag.MEMBER_ERROR);
         VALUES_.put("insufficient_plan", Tag.INSUFFICIENT_PLAN);
+        VALUES_.put("no_permission", Tag.NO_PERMISSION);
         VALUES_.put("other", Tag.OTHER);
     }
 
     public static final UpdateFolderMemberError INSUFFICIENT_PLAN = new UpdateFolderMemberError(Tag.INSUFFICIENT_PLAN, null, null);
+    public static final UpdateFolderMemberError NO_PERMISSION = new UpdateFolderMemberError(Tag.NO_PERMISSION, null, null);
     public static final UpdateFolderMemberError OTHER = new UpdateFolderMemberError(Tag.OTHER, null, null);
 
     private final Tag tag;
@@ -176,6 +182,17 @@ public final class UpdateFolderMemberError {
     }
 
     /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#NO_PERMISSION}, {@code false} otherwise.
+     *
+     * @return {@code true} if this insta5Bnce is tagged as {@link
+     *     Tag#NO_PERMISSION}, {@code false} otherwise.
+     */
+    public boolean isNoPermission() {
+        return this.tag == Tag.NO_PERMISSION;
+    }
+
+    /**
      * Returns {@code true} if this instance has the tag {@link Tag#OTHER},
      * {@code false} otherwise.
      *
@@ -212,6 +229,8 @@ public final class UpdateFolderMemberError {
                 case MEMBER_ERROR:
                     return (this.memberErrorValue == other.memberErrorValue) || (this.memberErrorValue.equals(other.memberErrorValue));
                 case INSUFFICIENT_PLAN:
+                    return true;
+                case NO_PERMISSION:
                     return true;
                 case OTHER:
                     return true;
@@ -266,6 +285,12 @@ public final class UpdateFolderMemberError {
                     g.writeString("insufficient_plan");
                     g.writeEndObject();
                     break;
+                case NO_PERMISSION:
+                    g.writeStartObject();
+                    g.writeFieldName(".tag");
+                    g.writeString("no_permission");
+                    g.writeEndObject();
+                    break;
                 case OTHER:
                     g.writeStartObject();
                     g.writeFieldName(".tag");
@@ -288,6 +313,7 @@ public final class UpdateFolderMemberError {
                 }
                 switch (tag) {
                     case INSUFFICIENT_PLAN: return UpdateFolderMemberError.INSUFFICIENT_PLAN;
+                    case NO_PERMISSION: return UpdateFolderMemberError.NO_PERMISSION;
                     case OTHER: return UpdateFolderMemberError.OTHER;
                 }
                 throw new JsonReadException("Tag " + tag + " requires a value", parser.getTokenLocation());
@@ -324,6 +350,10 @@ public final class UpdateFolderMemberError {
                     }
                     case INSUFFICIENT_PLAN: {
                         value = UpdateFolderMemberError.INSUFFICIENT_PLAN;
+                        break;
+                    }
+                    case NO_PERMISSION: {
+                        value = UpdateFolderMemberError.NO_PERMISSION;
                         break;
                     }
                     case OTHER: {

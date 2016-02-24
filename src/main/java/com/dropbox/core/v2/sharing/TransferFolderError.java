@@ -22,10 +22,6 @@ public final class TransferFolderError {
     public enum Tag {
         ACCESS_ERROR, // SharedFolderAccessError
         /**
-         * The current account does not have permission to perform this action.
-         */
-        NO_PERMISSION,
-        /**
          * {@link TransferFolderArg#getToDropboxId} is invalid.
          */
         INVALID_DROPBOX_ID,
@@ -35,13 +31,21 @@ public final class TransferFolderError {
          */
         NEW_OWNER_NOT_A_MEMBER,
         /**
-         * The new desginated owner does not have the shared folder mounted.
+         * The new designated owner does not have the shared folder mounted.
          */
         NEW_OWNER_UNMOUNTED,
         /**
          * The new designated owner's e-mail address is unverified.
          */
         NEW_OWNER_EMAIL_UNVERIFIED,
+        /**
+         * This action cannot be performed on a team shared folder.
+         */
+        TEAM_FOLDER,
+        /**
+         * The current user does not have permission to perform this action.
+         */
+        NO_PERMISSION,
         OTHER; // *catch_all
     }
 
@@ -49,19 +53,21 @@ public final class TransferFolderError {
     static {
         VALUES_ = new java.util.HashMap<String, Tag>();
         VALUES_.put("access_error", Tag.ACCESS_ERROR);
-        VALUES_.put("no_permission", Tag.NO_PERMISSION);
         VALUES_.put("invalid_dropbox_id", Tag.INVALID_DROPBOX_ID);
         VALUES_.put("new_owner_not_a_member", Tag.NEW_OWNER_NOT_A_MEMBER);
         VALUES_.put("new_owner_unmounted", Tag.NEW_OWNER_UNMOUNTED);
         VALUES_.put("new_owner_email_unverified", Tag.NEW_OWNER_EMAIL_UNVERIFIED);
+        VALUES_.put("team_folder", Tag.TEAM_FOLDER);
+        VALUES_.put("no_permission", Tag.NO_PERMISSION);
         VALUES_.put("other", Tag.OTHER);
     }
 
-    public static final TransferFolderError NO_PERMISSION = new TransferFolderError(Tag.NO_PERMISSION, null);
     public static final TransferFolderError INVALID_DROPBOX_ID = new TransferFolderError(Tag.INVALID_DROPBOX_ID, null);
     public static final TransferFolderError NEW_OWNER_NOT_A_MEMBER = new TransferFolderError(Tag.NEW_OWNER_NOT_A_MEMBER, null);
     public static final TransferFolderError NEW_OWNER_UNMOUNTED = new TransferFolderError(Tag.NEW_OWNER_UNMOUNTED, null);
     public static final TransferFolderError NEW_OWNER_EMAIL_UNVERIFIED = new TransferFolderError(Tag.NEW_OWNER_EMAIL_UNVERIFIED, null);
+    public static final TransferFolderError TEAM_FOLDER = new TransferFolderError(Tag.TEAM_FOLDER, null);
+    public static final TransferFolderError NO_PERMISSION = new TransferFolderError(Tag.NO_PERMISSION, null);
     public static final TransferFolderError OTHER = new TransferFolderError(Tag.OTHER, null);
 
     private final Tag tag;
@@ -138,17 +144,6 @@ public final class TransferFolderError {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
-     * Tag#NO_PERMISSION}, {@code false} otherwise.
-     *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
-     *     Tag#NO_PERMISSION}, {@code false} otherwise.
-     */
-    public boolean isNoPermission() {
-        return this.tag == Tag.NO_PERMISSION;
-    }
-
-    /**
-     * Returns {@code true} if this instance has the tag {@link
      * Tag#INVALID_DROPBOX_ID}, {@code false} otherwise.
      *
      * @return {@code true} if this insta5Bnce is tagged as {@link
@@ -192,6 +187,28 @@ public final class TransferFolderError {
     }
 
     /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#TEAM_FOLDER}, {@code false} otherwise.
+     *
+     * @return {@code true} if this insta5Bnce is tagged as {@link
+     *     Tag#TEAM_FOLDER}, {@code false} otherwise.
+     */
+    public boolean isTeamFolder() {
+        return this.tag == Tag.TEAM_FOLDER;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#NO_PERMISSION}, {@code false} otherwise.
+     *
+     * @return {@code true} if this insta5Bnce is tagged as {@link
+     *     Tag#NO_PERMISSION}, {@code false} otherwise.
+     */
+    public boolean isNoPermission() {
+        return this.tag == Tag.NO_PERMISSION;
+    }
+
+    /**
      * Returns {@code true} if this instance has the tag {@link Tag#OTHER},
      * {@code false} otherwise.
      *
@@ -224,8 +241,6 @@ public final class TransferFolderError {
             switch (tag) {
                 case ACCESS_ERROR:
                     return (this.accessErrorValue == other.accessErrorValue) || (this.accessErrorValue.equals(other.accessErrorValue));
-                case NO_PERMISSION:
-                    return true;
                 case INVALID_DROPBOX_ID:
                     return true;
                 case NEW_OWNER_NOT_A_MEMBER:
@@ -233,6 +248,10 @@ public final class TransferFolderError {
                 case NEW_OWNER_UNMOUNTED:
                     return true;
                 case NEW_OWNER_EMAIL_UNVERIFIED:
+                    return true;
+                case TEAM_FOLDER:
+                    return true;
+                case NO_PERMISSION:
                     return true;
                 case OTHER:
                     return true;
@@ -273,12 +292,6 @@ public final class TransferFolderError {
                     SharedFolderAccessError._JSON_WRITER.write(x.getAccessErrorValue(), g);
                     g.writeEndObject();
                     break;
-                case NO_PERMISSION:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("no_permission");
-                    g.writeEndObject();
-                    break;
                 case INVALID_DROPBOX_ID:
                     g.writeStartObject();
                     g.writeFieldName(".tag");
@@ -303,6 +316,18 @@ public final class TransferFolderError {
                     g.writeString("new_owner_email_unverified");
                     g.writeEndObject();
                     break;
+                case TEAM_FOLDER:
+                    g.writeStartObject();
+                    g.writeFieldName(".tag");
+                    g.writeString("team_folder");
+                    g.writeEndObject();
+                    break;
+                case NO_PERMISSION:
+                    g.writeStartObject();
+                    g.writeFieldName(".tag");
+                    g.writeString("no_permission");
+                    g.writeEndObject();
+                    break;
                 case OTHER:
                     g.writeStartObject();
                     g.writeFieldName(".tag");
@@ -324,11 +349,12 @@ public final class TransferFolderError {
                     return TransferFolderError.OTHER;
                 }
                 switch (tag) {
-                    case NO_PERMISSION: return TransferFolderError.NO_PERMISSION;
                     case INVALID_DROPBOX_ID: return TransferFolderError.INVALID_DROPBOX_ID;
                     case NEW_OWNER_NOT_A_MEMBER: return TransferFolderError.NEW_OWNER_NOT_A_MEMBER;
                     case NEW_OWNER_UNMOUNTED: return TransferFolderError.NEW_OWNER_UNMOUNTED;
                     case NEW_OWNER_EMAIL_UNVERIFIED: return TransferFolderError.NEW_OWNER_EMAIL_UNVERIFIED;
+                    case TEAM_FOLDER: return TransferFolderError.TEAM_FOLDER;
+                    case NO_PERMISSION: return TransferFolderError.NO_PERMISSION;
                     case OTHER: return TransferFolderError.OTHER;
                 }
                 throw new JsonReadException("Tag " + tag + " requires a value", parser.getTokenLocation());
@@ -352,10 +378,6 @@ public final class TransferFolderError {
                         value = TransferFolderError.accessError(v);
                         break;
                     }
-                    case NO_PERMISSION: {
-                        value = TransferFolderError.NO_PERMISSION;
-                        break;
-                    }
                     case INVALID_DROPBOX_ID: {
                         value = TransferFolderError.INVALID_DROPBOX_ID;
                         break;
@@ -370,6 +392,14 @@ public final class TransferFolderError {
                     }
                     case NEW_OWNER_EMAIL_UNVERIFIED: {
                         value = TransferFolderError.NEW_OWNER_EMAIL_UNVERIFIED;
+                        break;
+                    }
+                    case TEAM_FOLDER: {
+                        value = TransferFolderError.TEAM_FOLDER;
+                        break;
+                    }
+                    case NO_PERMISSION: {
+                        value = TransferFolderError.NO_PERMISSION;
                         break;
                     }
                     case OTHER: {

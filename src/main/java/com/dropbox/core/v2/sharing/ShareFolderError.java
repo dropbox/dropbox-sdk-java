@@ -21,7 +21,7 @@ public final class ShareFolderError {
      */
     public enum Tag {
         /**
-         * The current account's e-mail address is unverified.
+         * The current user's e-mail address is unverified.
          */
         EMAIL_UNVERIFIED,
         /**
@@ -34,12 +34,12 @@ public final class ShareFolderError {
          */
         TEAM_POLICY_DISALLOWS_MEMBER_POLICY,
         /**
-         * The current account is not allowed to select the specified {@link
-         * ShareFolderArg#getSharedLinkPolicy}.
+         * The current user's account is not allowed to select the specified
+         * {@link ShareFolderArg#getSharedLinkPolicy}.
          */
         DISALLOWED_SHARED_LINK_POLICY,
         /**
-         * The current account does not have permission to perform this action.
+         * The current user does not have permission to perform this action.
          */
         NO_PERMISSION,
         OTHER; // *catch_all

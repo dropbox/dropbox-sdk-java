@@ -24,7 +24,7 @@ public final class RelinquishFolderMembershipError {
         /**
          * The current user is the owner of the shared folder. Owners cannot
          * relinquish membership to their own folders. Try unsharing or
-         * transfering ownership first.
+         * transferring ownership first.
          */
         FOLDER_OWNER,
         /**
@@ -37,6 +37,14 @@ public final class RelinquishFolderMembershipError {
          * can't relinquish membership to folders shared via groups.
          */
         GROUP_ACCESS,
+        /**
+         * This action cannot be performed on a team shared folder.
+         */
+        TEAM_FOLDER,
+        /**
+         * The current user does not have permission to perform this action.
+         */
+        NO_PERMISSION,
         OTHER; // *catch_all
     }
 
@@ -47,12 +55,16 @@ public final class RelinquishFolderMembershipError {
         VALUES_.put("folder_owner", Tag.FOLDER_OWNER);
         VALUES_.put("mounted", Tag.MOUNTED);
         VALUES_.put("group_access", Tag.GROUP_ACCESS);
+        VALUES_.put("team_folder", Tag.TEAM_FOLDER);
+        VALUES_.put("no_permission", Tag.NO_PERMISSION);
         VALUES_.put("other", Tag.OTHER);
     }
 
     public static final RelinquishFolderMembershipError FOLDER_OWNER = new RelinquishFolderMembershipError(Tag.FOLDER_OWNER, null);
     public static final RelinquishFolderMembershipError MOUNTED = new RelinquishFolderMembershipError(Tag.MOUNTED, null);
     public static final RelinquishFolderMembershipError GROUP_ACCESS = new RelinquishFolderMembershipError(Tag.GROUP_ACCESS, null);
+    public static final RelinquishFolderMembershipError TEAM_FOLDER = new RelinquishFolderMembershipError(Tag.TEAM_FOLDER, null);
+    public static final RelinquishFolderMembershipError NO_PERMISSION = new RelinquishFolderMembershipError(Tag.NO_PERMISSION, null);
     public static final RelinquishFolderMembershipError OTHER = new RelinquishFolderMembershipError(Tag.OTHER, null);
 
     private final Tag tag;
@@ -162,6 +174,28 @@ public final class RelinquishFolderMembershipError {
     }
 
     /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#TEAM_FOLDER}, {@code false} otherwise.
+     *
+     * @return {@code true} if this insta5Bnce is tagged as {@link
+     *     Tag#TEAM_FOLDER}, {@code false} otherwise.
+     */
+    public boolean isTeamFolder() {
+        return this.tag == Tag.TEAM_FOLDER;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#NO_PERMISSION}, {@code false} otherwise.
+     *
+     * @return {@code true} if this insta5Bnce is tagged as {@link
+     *     Tag#NO_PERMISSION}, {@code false} otherwise.
+     */
+    public boolean isNoPermission() {
+        return this.tag == Tag.NO_PERMISSION;
+    }
+
+    /**
      * Returns {@code true} if this instance has the tag {@link Tag#OTHER},
      * {@code false} otherwise.
      *
@@ -199,6 +233,10 @@ public final class RelinquishFolderMembershipError {
                 case MOUNTED:
                     return true;
                 case GROUP_ACCESS:
+                    return true;
+                case TEAM_FOLDER:
+                    return true;
+                case NO_PERMISSION:
                     return true;
                 case OTHER:
                     return true;
@@ -257,6 +295,18 @@ public final class RelinquishFolderMembershipError {
                     g.writeString("group_access");
                     g.writeEndObject();
                     break;
+                case TEAM_FOLDER:
+                    g.writeStartObject();
+                    g.writeFieldName(".tag");
+                    g.writeString("team_folder");
+                    g.writeEndObject();
+                    break;
+                case NO_PERMISSION:
+                    g.writeStartObject();
+                    g.writeFieldName(".tag");
+                    g.writeString("no_permission");
+                    g.writeEndObject();
+                    break;
                 case OTHER:
                     g.writeStartObject();
                     g.writeFieldName(".tag");
@@ -281,6 +331,8 @@ public final class RelinquishFolderMembershipError {
                     case FOLDER_OWNER: return RelinquishFolderMembershipError.FOLDER_OWNER;
                     case MOUNTED: return RelinquishFolderMembershipError.MOUNTED;
                     case GROUP_ACCESS: return RelinquishFolderMembershipError.GROUP_ACCESS;
+                    case TEAM_FOLDER: return RelinquishFolderMembershipError.TEAM_FOLDER;
+                    case NO_PERMISSION: return RelinquishFolderMembershipError.NO_PERMISSION;
                     case OTHER: return RelinquishFolderMembershipError.OTHER;
                 }
                 throw new JsonReadException("Tag " + tag + " requires a value", parser.getTokenLocation());
@@ -314,6 +366,14 @@ public final class RelinquishFolderMembershipError {
                     }
                     case GROUP_ACCESS: {
                         value = RelinquishFolderMembershipError.GROUP_ACCESS;
+                        break;
+                    }
+                    case TEAM_FOLDER: {
+                        value = RelinquishFolderMembershipError.TEAM_FOLDER;
+                        break;
+                    }
+                    case NO_PERMISSION: {
+                        value = RelinquishFolderMembershipError.NO_PERMISSION;
                         break;
                     }
                     case OTHER: {

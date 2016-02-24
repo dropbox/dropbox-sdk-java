@@ -63,9 +63,14 @@ public class MembersSetProfileBuilder {
     /**
      * Set value for optional field.
      *
-     * @param newGivenName  New given name for member.
+     * @param newGivenName  New given name for member. Must have length of at
+     *     least 1, have length of at most 100, and match pattern "{@code
+     *     [^/:?*<>\"|]*}".
      *
      * @return this builder
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
      */
     public MembersSetProfileBuilder withNewGivenName(String newGivenName) {
         this.membersSetProfileArgBuilder.withNewGivenName(newGivenName);
@@ -75,9 +80,14 @@ public class MembersSetProfileBuilder {
     /**
      * Set value for optional field.
      *
-     * @param newSurname  New surname for member.
+     * @param newSurname  New surname for member. Must have length of at least
+     *     1, have length of at most 100, and match pattern "{@code
+     *     [^/:?*<>\"|]*}".
      *
      * @return this builder
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
      */
     public MembersSetProfileBuilder withNewSurname(String newSurname) {
         this.membersSetProfileArgBuilder.withNewSurname(newSurname);

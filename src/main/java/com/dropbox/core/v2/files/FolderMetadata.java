@@ -28,26 +28,34 @@ public class FolderMetadata extends Metadata {
      *     never contains a slash. Must not be {@code null}.
      * @param pathLower  The lowercased full path in the user's Dropbox. This
      *     always starts with a slash. Must not be {@code null}.
-     * @param parentSharedFolderId  Deprecated. Please use
-     *     :field:'FileSharingInfo.parent_shared_folder_id' or
-     *     :field:'FolderSharingInfo.parent_shared_folder_id' instead. Must
-     *     match pattern "{@code [-_0-9a-zA-Z:]+}".
+     * @param pathDisplay  The cased path to be used for display purposes only.
+     *     In rare instances the casing will not correctly match the user's
+     *     filesystem, but this behavior will match the path provided in the
+     *     Core API v1. Changes to the casing of paths won't be returned by
+     *     {@link DbxFiles#listFolderContinue(String)}. Must not be {@code
+     *     null}.
      * @param id  A unique identifier for the folder. Must have length of at
-     *     least 1.
-     * @param sharedFolderId  Deprecated. Please use :field:'sharing_info'
-     *     instead. Must match pattern "{@code [-_0-9a-zA-Z:]+}".
+     *     least 1 and not be {@code null}.
+     * @param parentSharedFolderId  Deprecated. Please use {@link
+     *     FileSharingInfo#getParentSharedFolderId} or {@link
+     *     FolderSharingInfo#getParentSharedFolderId} instead. Must match
+     *     pattern "{@code [-_0-9a-zA-Z:]+}".
+     * @param sharedFolderId  Deprecated. Please use {@link
+     *     FolderMetadata#getSharingInfo} instead. Must match pattern "{@code
+     *     [-_0-9a-zA-Z:]+}".
      * @param sharingInfo  Set if the folder is contained in a shared folder or
      *     is a shared folder mount point.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FolderMetadata(String name, String pathLower, String parentSharedFolderId, String id, String sharedFolderId, FolderSharingInfo sharingInfo) {
-        super(name, pathLower, parentSharedFolderId);
-        if (id != null) {
-            if (id.length() < 1) {
-                throw new IllegalArgumentException("String 'id' is shorter than 1");
-            }
+    public FolderMetadata(String name, String pathLower, String pathDisplay, String id, String parentSharedFolderId, String sharedFolderId, FolderSharingInfo sharingInfo) {
+        super(name, pathLower, pathDisplay, parentSharedFolderId);
+        if (id == null) {
+            throw new IllegalArgumentException("Required value for 'id' is null");
+        }
+        if (id.length() < 1) {
+            throw new IllegalArgumentException("String 'id' is shorter than 1");
         }
         this.id = id;
         if (sharedFolderId != null) {
@@ -66,25 +74,33 @@ public class FolderMetadata extends Metadata {
      *     never contains a slash. Must not be {@code null}.
      * @param pathLower  The lowercased full path in the user's Dropbox. This
      *     always starts with a slash. Must not be {@code null}.
+     * @param pathDisplay  The cased path to be used for display purposes only.
+     *     In rare instances the casing will not correctly match the user's
+     *     filesystem, but this behavior will match the path provided in the
+     *     Core API v1. Changes to the casing of paths won't be returned by
+     *     {@link DbxFiles#listFolderContinue(String)}. Must not be {@code
+     *     null}.
+     * @param id  A unique identifier for the folder. Must have length of at
+     *     least 1 and not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FolderMetadata(String name, String pathLower) {
-        this(name, pathLower, null, null, null, null);
+    public FolderMetadata(String name, String pathLower, String pathDisplay, String id) {
+        this(name, pathLower, pathDisplay, id, null, null, null);
     }
 
     /**
      * A unique identifier for the folder.
      *
-     * @return value for this field, or {@code null} if not present.
+     * @return value for this field, never {@code null}.
      */
     public String getId() {
         return id;
     }
 
     /**
-     * Deprecated. Please use :field:'sharing_info' instead.
+     * Deprecated. Please use {@link FolderMetadata#getSharingInfo} instead.
      *
      * @return value for this field, or {@code null} if not present.
      */
@@ -109,14 +125,22 @@ public class FolderMetadata extends Metadata {
      *     never contains a slash. Must not be {@code null}.
      * @param pathLower  The lowercased full path in the user's Dropbox. This
      *     always starts with a slash. Must not be {@code null}.
+     * @param pathDisplay  The cased path to be used for display purposes only.
+     *     In rare instances the casing will not correctly match the user's
+     *     filesystem, but this behavior will match the path provided in the
+     *     Core API v1. Changes to the casing of paths won't be returned by
+     *     {@link DbxFiles#listFolderContinue(String)}. Must not be {@code
+     *     null}.
+     * @param id  A unique identifier for the folder. Must have length of at
+     *     least 1 and not be {@code null}.
      *
      * @return builder for this class.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public static Builder newBuilder(String name, String pathLower) {
-        return new Builder(name, pathLower);
+    public static Builder newBuilder(String name, String pathLower, String pathDisplay, String id) {
+        return new Builder(name, pathLower, pathDisplay, id);
     }
 
     /**
@@ -125,13 +149,14 @@ public class FolderMetadata extends Metadata {
     public static class Builder {
         protected final String name;
         protected final String pathLower;
+        protected final String pathDisplay;
+        protected final String id;
 
         protected String parentSharedFolderId;
-        protected String id;
         protected String sharedFolderId;
         protected FolderSharingInfo sharingInfo;
 
-        protected Builder(String name, String pathLower) {
+        protected Builder(String name, String pathLower, String pathDisplay, String id) {
             if (name == null) {
                 throw new IllegalArgumentException("Required value for 'name' is null");
             }
@@ -140,8 +165,18 @@ public class FolderMetadata extends Metadata {
                 throw new IllegalArgumentException("Required value for 'pathLower' is null");
             }
             this.pathLower = pathLower;
+            if (pathDisplay == null) {
+                throw new IllegalArgumentException("Required value for 'pathDisplay' is null");
+            }
+            this.pathDisplay = pathDisplay;
+            if (id == null) {
+                throw new IllegalArgumentException("Required value for 'id' is null");
+            }
+            if (id.length() < 1) {
+                throw new IllegalArgumentException("String 'id' is shorter than 1");
+            }
+            this.id = id;
             this.parentSharedFolderId = null;
-            this.id = null;
             this.sharedFolderId = null;
             this.sharingInfo = null;
         }
@@ -149,10 +184,10 @@ public class FolderMetadata extends Metadata {
         /**
          * Set value for optional field.
          *
-         * @param parentSharedFolderId  Deprecated. Please use
-         *     :field:'FileSharingInfo.parent_shared_folder_id' or
-         *     :field:'FolderSharingInfo.parent_shared_folder_id' instead. Must
-         *     match pattern "{@code [-_0-9a-zA-Z:]+}".
+         * @param parentSharedFolderId  Deprecated. Please use {@link
+         *     FileSharingInfo#getParentSharedFolderId} or {@link
+         *     FolderSharingInfo#getParentSharedFolderId} instead. Must match
+         *     pattern "{@code [-_0-9a-zA-Z:]+}".
          *
          * @return this builder
          *
@@ -172,29 +207,9 @@ public class FolderMetadata extends Metadata {
         /**
          * Set value for optional field.
          *
-         * @param id  A unique identifier for the folder. Must have length of at
-         *     least 1.
-         *
-         * @return this builder
-         *
-         * @throws IllegalArgumentException  If any argument does not meet its
-         *     preconditions.
-         */
-        public Builder withId(String id) {
-            if (id != null) {
-                if (id.length() < 1) {
-                    throw new IllegalArgumentException("String 'id' is shorter than 1");
-                }
-            }
-            this.id = id;
-            return this;
-        }
-
-        /**
-         * Set value for optional field.
-         *
-         * @param sharedFolderId  Deprecated. Please use :field:'sharing_info'
-         *     instead. Must match pattern "{@code [-_0-9a-zA-Z:]+}".
+         * @param sharedFolderId  Deprecated. Please use {@link
+         *     FolderMetadata#getSharingInfo} instead. Must match pattern
+         *     "{@code [-_0-9a-zA-Z:]+}".
          *
          * @return this builder
          *
@@ -231,7 +246,7 @@ public class FolderMetadata extends Metadata {
          * @return new instance of {@link FolderMetadata}
          */
         public FolderMetadata build() {
-            return new FolderMetadata(name, pathLower, parentSharedFolderId, id, sharedFolderId, sharingInfo);
+            return new FolderMetadata(name, pathLower, pathDisplay, id, parentSharedFolderId, sharedFolderId, sharingInfo);
         }
     }
 
@@ -254,11 +269,12 @@ public class FolderMetadata extends Metadata {
         // be careful with inheritance
         else if (obj.getClass().equals(this.getClass())) {
             FolderMetadata other = (FolderMetadata) obj;
-            return ((this.id == other.id) || (this.id != null && this.id.equals(other.id)))
+            return ((this.id == other.id) || (this.id.equals(other.id)))
                 && ((this.sharedFolderId == other.sharedFolderId) || (this.sharedFolderId != null && this.sharedFolderId.equals(other.sharedFolderId)))
                 && ((this.sharingInfo == other.sharingInfo) || (this.sharingInfo != null && this.sharingInfo.equals(other.sharingInfo)))
                 && ((this.getName() == other.getName()) || (this.getName().equals(other.getName())))
                 && ((this.getPathLower() == other.getPathLower()) || (this.getPathLower().equals(other.getPathLower())))
+                && ((this.getPathDisplay() == other.getPathDisplay()) || (this.getPathDisplay().equals(other.getPathDisplay())))
                 && ((this.getParentSharedFolderId() == other.getParentSharedFolderId()) || (this.getParentSharedFolderId() != null && this.getParentSharedFolderId().equals(other.getParentSharedFolderId())))
                 ;
         }
@@ -293,10 +309,8 @@ public class FolderMetadata extends Metadata {
             g.writeEndObject();
         }
         public final void writeFields(FolderMetadata x, JsonGenerator g) throws IOException {
-            if (x.id != null) {
-                g.writeFieldName("id");
-                g.writeString(x.id);
-            }
+            g.writeFieldName("id");
+            g.writeString(x.id);
             if (x.sharedFolderId != null) {
                 g.writeFieldName("shared_folder_id");
                 g.writeString(x.sharedFolderId);
@@ -329,8 +343,9 @@ public class FolderMetadata extends Metadata {
         public final FolderMetadata readFields(JsonParser parser) throws IOException, JsonReadException {
             String name = null;
             String pathLower = null;
-            String parentSharedFolderId = null;
+            String pathDisplay = null;
             String id = null;
+            String parentSharedFolderId = null;
             String sharedFolderId = null;
             FolderSharingInfo sharingInfo = null;
             while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
@@ -344,13 +359,17 @@ public class FolderMetadata extends Metadata {
                     pathLower = JsonReader.StringReader
                         .readField(parser, "path_lower", pathLower);
                 }
-                else if ("parent_shared_folder_id".equals(fieldName)) {
-                    parentSharedFolderId = JsonReader.StringReader
-                        .readField(parser, "parent_shared_folder_id", parentSharedFolderId);
+                else if ("path_display".equals(fieldName)) {
+                    pathDisplay = JsonReader.StringReader
+                        .readField(parser, "path_display", pathDisplay);
                 }
                 else if ("id".equals(fieldName)) {
                     id = JsonReader.StringReader
                         .readField(parser, "id", id);
+                }
+                else if ("parent_shared_folder_id".equals(fieldName)) {
+                    parentSharedFolderId = JsonReader.StringReader
+                        .readField(parser, "parent_shared_folder_id", parentSharedFolderId);
                 }
                 else if ("shared_folder_id".equals(fieldName)) {
                     sharedFolderId = JsonReader.StringReader
@@ -370,7 +389,13 @@ public class FolderMetadata extends Metadata {
             if (pathLower == null) {
                 throw new JsonReadException("Required field \"path_lower\" is missing.", parser.getTokenLocation());
             }
-            return new FolderMetadata(name, pathLower, parentSharedFolderId, id, sharedFolderId, sharingInfo);
+            if (pathDisplay == null) {
+                throw new JsonReadException("Required field \"path_display\" is missing.", parser.getTokenLocation());
+            }
+            if (id == null) {
+                throw new JsonReadException("Required field \"id\" is missing.", parser.getTokenLocation());
+            }
+            return new FolderMetadata(name, pathLower, pathDisplay, id, parentSharedFolderId, sharedFolderId, sharingInfo);
         }
     };
 }

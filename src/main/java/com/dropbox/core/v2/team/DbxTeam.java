@@ -1330,11 +1330,9 @@ public final class DbxTeam {
      * re-activated again. Calling {@link DbxTeam#membersAdd(List)} with the
      * removed user's email address will create a new account with a new
      * team_member_id that will not have access to any content that was shared
-     * with the initial account. This endpoint can also be used to cancel a
-     * pending invite to join the team. This endpoint may initiate an
-     * asynchronous job. To obtain the final result of the job, the client
-     * should periodically poll {@link
-     * DbxTeam#membersRemoveJobStatusGet(String)}.
+     * with the initial account. This endpoint may initiate an asynchronous job.
+     * To obtain the final result of the job, the client should periodically
+     * poll {@link DbxTeam#membersRemoveJobStatusGet(String)}.
      *
      *
      * @return Result returned by methods that may either launch an asynchronous
@@ -1363,11 +1361,9 @@ public final class DbxTeam {
      * re-activated again. Calling {@link DbxTeam#membersAdd(List)} with the
      * removed user's email address will create a new account with a new
      * team_member_id that will not have access to any content that was shared
-     * with the initial account. This endpoint can also be used to cancel a
-     * pending invite to join the team. This endpoint may initiate an
-     * asynchronous job. To obtain the final result of the job, the client
-     * should periodically poll {@link
-     * DbxTeam#membersRemoveJobStatusGet(String)}.
+     * with the initial account. This endpoint may initiate an asynchronous job.
+     * To obtain the final result of the job, the client should periodically
+     * poll {@link DbxTeam#membersRemoveJobStatusGet(String)}.
      *
      * <p> The default values for the remaining request parameters will be used.
      * See {@link MembersRemoveArg} for more details. </p>
@@ -1394,11 +1390,9 @@ public final class DbxTeam {
      * re-activated again. Calling {@link DbxTeam#membersAdd(List)} with the
      * removed user's email address will create a new account with a new
      * team_member_id that will not have access to any content that was shared
-     * with the initial account. This endpoint can also be used to cancel a
-     * pending invite to join the team. This endpoint may initiate an
-     * asynchronous job. To obtain the final result of the job, the client
-     * should periodically poll {@link
-     * DbxTeam#membersRemoveJobStatusGet(String)}.
+     * with the initial account. This endpoint may initiate an asynchronous job.
+     * To obtain the final result of the job, the client should periodically
+     * poll {@link DbxTeam#membersRemoveJobStatusGet(String)}.
      *
      * @param user  Identity of user to remove/suspend. Must not be {@code
      *     null}.

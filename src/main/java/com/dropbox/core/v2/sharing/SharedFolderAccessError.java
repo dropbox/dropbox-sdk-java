@@ -27,18 +27,9 @@ public enum SharedFolderAccessError {
      */
     NOT_A_MEMBER,
     /**
-     * The current user does not have sufficient privileges to perform the
-     * desired action.
-     */
-    NO_PERMISSION,
-    /**
-     * The current account's e-mail address is unverified.
+     * The current user's e-mail address is unverified.
      */
     EMAIL_UNVERIFIED,
-    /**
-     * The current user cannot perform this action on a team shared folder.
-     */
-    TEAM_FOLDER,
     /**
      * The shared folder is unmounted.
      */
@@ -50,9 +41,7 @@ public enum SharedFolderAccessError {
         VALUES_ = new java.util.HashMap<String, SharedFolderAccessError>();
         VALUES_.put("invalid_id", INVALID_ID);
         VALUES_.put("not_a_member", NOT_A_MEMBER);
-        VALUES_.put("no_permission", NO_PERMISSION);
         VALUES_.put("email_unverified", EMAIL_UNVERIFIED);
-        VALUES_.put("team_folder", TEAM_FOLDER);
         VALUES_.put("unmounted", UNMOUNTED);
         VALUES_.put("other", OTHER);
     }
@@ -80,22 +69,10 @@ public enum SharedFolderAccessError {
                     g.writeString("not_a_member");
                     g.writeEndObject();
                     break;
-                case NO_PERMISSION:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("no_permission");
-                    g.writeEndObject();
-                    break;
                 case EMAIL_UNVERIFIED:
                     g.writeStartObject();
                     g.writeFieldName(".tag");
                     g.writeString("email_unverified");
-                    g.writeEndObject();
-                    break;
-                case TEAM_FOLDER:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("team_folder");
                     g.writeEndObject();
                     break;
                 case UNMOUNTED:

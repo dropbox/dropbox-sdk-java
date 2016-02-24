@@ -1,5 +1,9 @@
 
 ---------------------------------------------
+2.0-beta-7 (2016-02-24)
+- Updated to latest API specs.
+
+---------------------------------------------
 2.0-beta-6 (2016-02-22)
 - Updated to latest API specs.
 - Use getter methods instead of public final fields.

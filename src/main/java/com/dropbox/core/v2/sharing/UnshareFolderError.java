@@ -21,6 +21,14 @@ public final class UnshareFolderError {
      */
     public enum Tag {
         ACCESS_ERROR, // SharedFolderAccessError
+        /**
+         * This action cannot be performed on a team shared folder.
+         */
+        TEAM_FOLDER,
+        /**
+         * The current user does not have permission to perform this action.
+         */
+        NO_PERMISSION,
         OTHER; // *catch_all
     }
 
@@ -28,9 +36,13 @@ public final class UnshareFolderError {
     static {
         VALUES_ = new java.util.HashMap<String, Tag>();
         VALUES_.put("access_error", Tag.ACCESS_ERROR);
+        VALUES_.put("team_folder", Tag.TEAM_FOLDER);
+        VALUES_.put("no_permission", Tag.NO_PERMISSION);
         VALUES_.put("other", Tag.OTHER);
     }
 
+    public static final UnshareFolderError TEAM_FOLDER = new UnshareFolderError(Tag.TEAM_FOLDER, null);
+    public static final UnshareFolderError NO_PERMISSION = new UnshareFolderError(Tag.NO_PERMISSION, null);
     public static final UnshareFolderError OTHER = new UnshareFolderError(Tag.OTHER, null);
 
     private final Tag tag;
@@ -106,6 +118,28 @@ public final class UnshareFolderError {
     }
 
     /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#TEAM_FOLDER}, {@code false} otherwise.
+     *
+     * @return {@code true} if this insta5Bnce is tagged as {@link
+     *     Tag#TEAM_FOLDER}, {@code false} otherwise.
+     */
+    public boolean isTeamFolder() {
+        return this.tag == Tag.TEAM_FOLDER;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#NO_PERMISSION}, {@code false} otherwise.
+     *
+     * @return {@code true} if this insta5Bnce is tagged as {@link
+     *     Tag#NO_PERMISSION}, {@code false} otherwise.
+     */
+    public boolean isNoPermission() {
+        return this.tag == Tag.NO_PERMISSION;
+    }
+
+    /**
      * Returns {@code true} if this instance has the tag {@link Tag#OTHER},
      * {@code false} otherwise.
      *
@@ -138,6 +172,10 @@ public final class UnshareFolderError {
             switch (tag) {
                 case ACCESS_ERROR:
                     return (this.accessErrorValue == other.accessErrorValue) || (this.accessErrorValue.equals(other.accessErrorValue));
+                case TEAM_FOLDER:
+                    return true;
+                case NO_PERMISSION:
+                    return true;
                 case OTHER:
                     return true;
                 default:
@@ -177,6 +215,18 @@ public final class UnshareFolderError {
                     SharedFolderAccessError._JSON_WRITER.write(x.getAccessErrorValue(), g);
                     g.writeEndObject();
                     break;
+                case TEAM_FOLDER:
+                    g.writeStartObject();
+                    g.writeFieldName(".tag");
+                    g.writeString("team_folder");
+                    g.writeEndObject();
+                    break;
+                case NO_PERMISSION:
+                    g.writeStartObject();
+                    g.writeFieldName(".tag");
+                    g.writeString("no_permission");
+                    g.writeEndObject();
+                    break;
                 case OTHER:
                     g.writeStartObject();
                     g.writeFieldName(".tag");
@@ -198,6 +248,8 @@ public final class UnshareFolderError {
                     return UnshareFolderError.OTHER;
                 }
                 switch (tag) {
+                    case TEAM_FOLDER: return UnshareFolderError.TEAM_FOLDER;
+                    case NO_PERMISSION: return UnshareFolderError.NO_PERMISSION;
                     case OTHER: return UnshareFolderError.OTHER;
                 }
                 throw new JsonReadException("Tag " + tag + " requires a value", parser.getTokenLocation());
@@ -219,6 +271,14 @@ public final class UnshareFolderError {
                         v = SharedFolderAccessError._JSON_READER
                             .readField(parser, "access_error", v);
                         value = UnshareFolderError.accessError(v);
+                        break;
+                    }
+                    case TEAM_FOLDER: {
+                        value = UnshareFolderError.TEAM_FOLDER;
+                        break;
+                    }
+                    case NO_PERMISSION: {
+                        value = UnshareFolderError.NO_PERMISSION;
                         break;
                     }
                     case OTHER: {

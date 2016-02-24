@@ -65,6 +65,18 @@ public class ListSharedLinksBuilder {
     }
 
     /**
+     * Set value for optional field.
+     *
+     * @param directOnly  See {@link DbxSharing#listSharedLinks()} description.
+     *
+     * @return this builder
+     */
+    public ListSharedLinksBuilder withDirectOnly(Boolean directOnly) {
+        this.listSharedLinksArgBuilder.withDirectOnly(directOnly);
+        return this;
+    }
+
+    /**
      * Issues the request.
      */
     public ListSharedLinksResult start() throws ListSharedLinksErrorException, DbxException {

@@ -21,6 +21,10 @@ public final class UnmountFolderError {
      */
     public enum Tag {
         ACCESS_ERROR, // SharedFolderAccessError
+        /**
+         * The current user does not have permission to perform this action.
+         */
+        NO_PERMISSION,
         OTHER; // *catch_all
     }
 
@@ -28,9 +32,11 @@ public final class UnmountFolderError {
     static {
         VALUES_ = new java.util.HashMap<String, Tag>();
         VALUES_.put("access_error", Tag.ACCESS_ERROR);
+        VALUES_.put("no_permission", Tag.NO_PERMISSION);
         VALUES_.put("other", Tag.OTHER);
     }
 
+    public static final UnmountFolderError NO_PERMISSION = new UnmountFolderError(Tag.NO_PERMISSION, null);
     public static final UnmountFolderError OTHER = new UnmountFolderError(Tag.OTHER, null);
 
     private final Tag tag;
@@ -106,6 +112,17 @@ public final class UnmountFolderError {
     }
 
     /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#NO_PERMISSION}, {@code false} otherwise.
+     *
+     * @return {@code true} if this insta5Bnce is tagged as {@link
+     *     Tag#NO_PERMISSION}, {@code false} otherwise.
+     */
+    public boolean isNoPermission() {
+        return this.tag == Tag.NO_PERMISSION;
+    }
+
+    /**
      * Returns {@code true} if this instance has the tag {@link Tag#OTHER},
      * {@code false} otherwise.
      *
@@ -138,6 +155,8 @@ public final class UnmountFolderError {
             switch (tag) {
                 case ACCESS_ERROR:
                     return (this.accessErrorValue == other.accessErrorValue) || (this.accessErrorValue.equals(other.accessErrorValue));
+                case NO_PERMISSION:
+                    return true;
                 case OTHER:
                     return true;
                 default:
@@ -177,6 +196,12 @@ public final class UnmountFolderError {
                     SharedFolderAccessError._JSON_WRITER.write(x.getAccessErrorValue(), g);
                     g.writeEndObject();
                     break;
+                case NO_PERMISSION:
+                    g.writeStartObject();
+                    g.writeFieldName(".tag");
+                    g.writeString("no_permission");
+                    g.writeEndObject();
+                    break;
                 case OTHER:
                     g.writeStartObject();
                     g.writeFieldName(".tag");
@@ -198,6 +223,7 @@ public final class UnmountFolderError {
                     return UnmountFolderError.OTHER;
                 }
                 switch (tag) {
+                    case NO_PERMISSION: return UnmountFolderError.NO_PERMISSION;
                     case OTHER: return UnmountFolderError.OTHER;
                 }
                 throw new JsonReadException("Tag " + tag + " requires a value", parser.getTokenLocation());
@@ -219,6 +245,10 @@ public final class UnmountFolderError {
                         v = SharedFolderAccessError._JSON_READER
                             .readField(parser, "access_error", v);
                         value = UnmountFolderError.accessError(v);
+                        break;
+                    }
+                    case NO_PERMISSION: {
+                        value = UnmountFolderError.NO_PERMISSION;
                         break;
                     }
                     case OTHER: {

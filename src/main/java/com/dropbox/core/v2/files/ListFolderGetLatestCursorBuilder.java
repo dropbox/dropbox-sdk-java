@@ -58,8 +58,8 @@ public class ListFolderGetLatestCursorBuilder {
      *
      * <p> If left unset or set to {@code null}, defaults to {@code false}. </p>
      *
-     * @param includeMediaInfo  If true, :field:'FileMetadata.media_info' is set
-     *     for photo and video. Defaults to {@code false} when set to {@code
+     * @param includeMediaInfo  If true, {@link FileMetadata#getMediaInfo} is
+     *     set for photo and video. Defaults to {@code false} when set to {@code
      *     null}.
      *
      * @return this builder

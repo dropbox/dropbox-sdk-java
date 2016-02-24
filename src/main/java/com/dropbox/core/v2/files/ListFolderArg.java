@@ -30,8 +30,8 @@ public class ListFolderArg {
      * @param recursive  If true, the list folder operation will be applied
      *     recursively to all subfolders and the response will contain contents
      *     of all subfolders.
-     * @param includeMediaInfo  If true, :field:'FileMetadata.media_info' is set
-     *     for photo and video.
+     * @param includeMediaInfo  If true, {@link FileMetadata#getMediaInfo} is
+     *     set for photo and video.
      * @param includeDeleted  If true, the results will include entries for
      *     files and folders that used to exist but were deleted.
      *
@@ -85,7 +85,7 @@ public class ListFolderArg {
     }
 
     /**
-     * If true, :field:'FileMetadata.media_info' is set for photo and video.
+     * If true, {@link FileMetadata#getMediaInfo} is set for photo and video.
      *
      * @return value for this field, or {@code null} if not present. Defaults to
      *     false.
@@ -172,8 +172,8 @@ public class ListFolderArg {
          * <p> If left unset or set to {@code null}, defaults to {@code false}.
          * </p>
          *
-         * @param includeMediaInfo  If true, :field:'FileMetadata.media_info' is
-         *     set for photo and video. Defaults to {@code false} when set to
+         * @param includeMediaInfo  If true, {@link FileMetadata#getMediaInfo}
+         *     is set for photo and video. Defaults to {@code false} when set to
          *     {@code null}.
          *
          * @return this builder

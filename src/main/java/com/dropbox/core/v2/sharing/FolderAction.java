@@ -27,6 +27,18 @@ public enum FolderAction {
      */
     EDIT_CONTENTS,
     /**
+     * Invite a user or group to join the folder with read and write permission.
+     */
+    INVITE_EDITOR,
+    /**
+     * Invite a user or group to join the folder with read permission.
+     */
+    INVITE_VIEWER,
+    /**
+     * Relinquish one's own membership in the folder.
+     */
+    RELINQUISH_MEMBERSHIP,
+    /**
      * Unmount the folder.
      */
     UNMOUNT,
@@ -41,6 +53,9 @@ public enum FolderAction {
         VALUES_ = new java.util.HashMap<String, FolderAction>();
         VALUES_.put("change_options", CHANGE_OPTIONS);
         VALUES_.put("edit_contents", EDIT_CONTENTS);
+        VALUES_.put("invite_editor", INVITE_EDITOR);
+        VALUES_.put("invite_viewer", INVITE_VIEWER);
+        VALUES_.put("relinquish_membership", RELINQUISH_MEMBERSHIP);
         VALUES_.put("unmount", UNMOUNT);
         VALUES_.put("unshare", UNSHARE);
         VALUES_.put("other", OTHER);
@@ -67,6 +82,24 @@ public enum FolderAction {
                     g.writeStartObject();
                     g.writeFieldName(".tag");
                     g.writeString("edit_contents");
+                    g.writeEndObject();
+                    break;
+                case INVITE_EDITOR:
+                    g.writeStartObject();
+                    g.writeFieldName(".tag");
+                    g.writeString("invite_editor");
+                    g.writeEndObject();
+                    break;
+                case INVITE_VIEWER:
+                    g.writeStartObject();
+                    g.writeFieldName(".tag");
+                    g.writeString("invite_viewer");
+                    g.writeEndObject();
+                    break;
+                case RELINQUISH_MEMBERSHIP:
+                    g.writeStartObject();
+                    g.writeFieldName(".tag");
+                    g.writeString("relinquish_membership");
                     g.writeEndObject();
                     break;
                 case UNMOUNT:

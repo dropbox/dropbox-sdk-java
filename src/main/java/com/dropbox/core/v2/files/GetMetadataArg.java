@@ -23,8 +23,8 @@ public class GetMetadataArg {
      *
      * @param path  The path of a file or folder on Dropbox. Must match pattern
      *     "{@code ((/|id:).*)|(rev:[0-9a-f]{9,})}" and not be {@code null}.
-     * @param includeMediaInfo  If true, :field:'FileMetadata.media_info' is set
-     *     for photo and video.
+     * @param includeMediaInfo  If true, {@link FileMetadata#getMediaInfo} is
+     *     set for photo and video.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -54,7 +54,7 @@ public class GetMetadataArg {
     }
 
     /**
-     * The path of a file or folder on Dropbox
+     * The path of a file or folder on Dropbox.
      *
      * @return value for this field, never {@code null}.
      */
@@ -63,7 +63,7 @@ public class GetMetadataArg {
     }
 
     /**
-     * If true, :field:'FileMetadata.media_info' is set for photo and video.
+     * If true, {@link FileMetadata#getMediaInfo} is set for photo and video.
      *
      * @return value for this field, or {@code null} if not present. Defaults to
      *     false.

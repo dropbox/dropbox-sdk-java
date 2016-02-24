@@ -16,8 +16,8 @@ import java.io.IOException;
 /**
  * Basic information about a user. Use {@link
  * com.dropbox.core.v2.users.DbxUsers#getAccount(String)} and {@link
- * com.dropbox.core.v2.users.DbxUsers#getAccountBatch(java.util.List)}` to
- * obtain more detailed information.
+ * com.dropbox.core.v2.users.DbxUsers#getAccountBatch(java.util.List)} to obtain
+ * more detailed information.
  */
 public class UserInfo {
     // struct UserInfo
@@ -29,7 +29,7 @@ public class UserInfo {
     /**
      * Basic information about a user. Use {@link
      * com.dropbox.core.v2.users.DbxUsers#getAccount(String)} and {@link
-     * com.dropbox.core.v2.users.DbxUsers#getAccountBatch(java.util.List)}` to
+     * com.dropbox.core.v2.users.DbxUsers#getAccountBatch(java.util.List)} to
      * obtain more detailed information.
      *
      * @param accountId  The account ID of the user. Must have length of at
@@ -59,7 +59,7 @@ public class UserInfo {
     /**
      * Basic information about a user. Use {@link
      * com.dropbox.core.v2.users.DbxUsers#getAccount(String)} and {@link
-     * com.dropbox.core.v2.users.DbxUsers#getAccountBatch(java.util.List)}` to
+     * com.dropbox.core.v2.users.DbxUsers#getAccountBatch(java.util.List)} to
      * obtain more detailed information.
      *
      * <p> The default values for unset fields will be used. </p>

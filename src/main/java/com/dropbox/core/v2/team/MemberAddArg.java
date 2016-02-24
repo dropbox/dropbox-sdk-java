@@ -27,13 +27,16 @@ public class MemberAddArg {
      * Use {@link newBuilder} to create instances of this class without
      * specifying values for all optional fields.
      *
-     * @param memberEmail  Must match pattern "{@code
-     *     ^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$}" and
-     *     not be {@code null}.
+     * @param memberEmail  Must have length of at most 255, match pattern
+     *     "{@code
+     *     ^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$}",
+     *     and not be {@code null}.
      * @param memberGivenName  Member's first name. Must have length of at least
-     *     1, match pattern "{@code [^/:?*<>\"|]*}", and not be {@code null}.
+     *     1, have length of at most 100, match pattern "{@code [^/:?*<>\"|]*}",
+     *     and not be {@code null}.
      * @param memberSurname  Member's last name. Must have length of at least 1,
-     *     match pattern "{@code [^/:?*<>\"|]*}", and not be {@code null}.
+     *     have length of at most 100, match pattern "{@code [^/:?*<>\"|]*}",
+     *     and not be {@code null}.
      * @param memberExternalId  External ID for member. Must have length of at
      *     most 64.
      * @param sendWelcomeEmail  Whether to send a welcome email to the member.
@@ -48,6 +51,9 @@ public class MemberAddArg {
         if (memberEmail == null) {
             throw new IllegalArgumentException("Required value for 'memberEmail' is null");
         }
+        if (memberEmail.length() > 255) {
+            throw new IllegalArgumentException("String 'memberEmail' is longer than 255");
+        }
         if (!java.util.regex.Pattern.matches("^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$", memberEmail)) {
             throw new IllegalArgumentException("String 'memberEmail' does not match pattern");
         }
@@ -58,6 +64,9 @@ public class MemberAddArg {
         if (memberGivenName.length() < 1) {
             throw new IllegalArgumentException("String 'memberGivenName' is shorter than 1");
         }
+        if (memberGivenName.length() > 100) {
+            throw new IllegalArgumentException("String 'memberGivenName' is longer than 100");
+        }
         if (!java.util.regex.Pattern.matches("[^/:?*<>\"|]*", memberGivenName)) {
             throw new IllegalArgumentException("String 'memberGivenName' does not match pattern");
         }
@@ -67,6 +76,9 @@ public class MemberAddArg {
         }
         if (memberSurname.length() < 1) {
             throw new IllegalArgumentException("String 'memberSurname' is shorter than 1");
+        }
+        if (memberSurname.length() > 100) {
+            throw new IllegalArgumentException("String 'memberSurname' is longer than 100");
         }
         if (!java.util.regex.Pattern.matches("[^/:?*<>\"|]*", memberSurname)) {
             throw new IllegalArgumentException("String 'memberSurname' does not match pattern");
@@ -88,13 +100,16 @@ public class MemberAddArg {
     /**
      * The default values for unset fields will be used.
      *
-     * @param memberEmail  Must match pattern "{@code
-     *     ^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$}" and
-     *     not be {@code null}.
+     * @param memberEmail  Must have length of at most 255, match pattern
+     *     "{@code
+     *     ^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$}",
+     *     and not be {@code null}.
      * @param memberGivenName  Member's first name. Must have length of at least
-     *     1, match pattern "{@code [^/:?*<>\"|]*}", and not be {@code null}.
+     *     1, have length of at most 100, match pattern "{@code [^/:?*<>\"|]*}",
+     *     and not be {@code null}.
      * @param memberSurname  Member's last name. Must have length of at least 1,
-     *     match pattern "{@code [^/:?*<>\"|]*}", and not be {@code null}.
+     *     have length of at most 100, match pattern "{@code [^/:?*<>\"|]*}",
+     *     and not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -163,13 +178,16 @@ public class MemberAddArg {
     /**
      * Returns a new builder for creating an instance of this class.
      *
-     * @param memberEmail  Must match pattern "{@code
-     *     ^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$}" and
-     *     not be {@code null}.
+     * @param memberEmail  Must have length of at most 255, match pattern
+     *     "{@code
+     *     ^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$}",
+     *     and not be {@code null}.
      * @param memberGivenName  Member's first name. Must have length of at least
-     *     1, match pattern "{@code [^/:?*<>\"|]*}", and not be {@code null}.
+     *     1, have length of at most 100, match pattern "{@code [^/:?*<>\"|]*}",
+     *     and not be {@code null}.
      * @param memberSurname  Member's last name. Must have length of at least 1,
-     *     match pattern "{@code [^/:?*<>\"|]*}", and not be {@code null}.
+     *     have length of at most 100, match pattern "{@code [^/:?*<>\"|]*}",
+     *     and not be {@code null}.
      *
      * @return builder for this class.
      *
@@ -196,6 +214,9 @@ public class MemberAddArg {
             if (memberEmail == null) {
                 throw new IllegalArgumentException("Required value for 'memberEmail' is null");
             }
+            if (memberEmail.length() > 255) {
+                throw new IllegalArgumentException("String 'memberEmail' is longer than 255");
+            }
             if (!java.util.regex.Pattern.matches("^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$", memberEmail)) {
                 throw new IllegalArgumentException("String 'memberEmail' does not match pattern");
             }
@@ -206,6 +227,9 @@ public class MemberAddArg {
             if (memberGivenName.length() < 1) {
                 throw new IllegalArgumentException("String 'memberGivenName' is shorter than 1");
             }
+            if (memberGivenName.length() > 100) {
+                throw new IllegalArgumentException("String 'memberGivenName' is longer than 100");
+            }
             if (!java.util.regex.Pattern.matches("[^/:?*<>\"|]*", memberGivenName)) {
                 throw new IllegalArgumentException("String 'memberGivenName' does not match pattern");
             }
@@ -215,6 +239,9 @@ public class MemberAddArg {
             }
             if (memberSurname.length() < 1) {
                 throw new IllegalArgumentException("String 'memberSurname' is shorter than 1");
+            }
+            if (memberSurname.length() > 100) {
+                throw new IllegalArgumentException("String 'memberSurname' is longer than 100");
             }
             if (!java.util.regex.Pattern.matches("[^/:?*<>\"|]*", memberSurname)) {
                 throw new IllegalArgumentException("String 'memberSurname' does not match pattern");

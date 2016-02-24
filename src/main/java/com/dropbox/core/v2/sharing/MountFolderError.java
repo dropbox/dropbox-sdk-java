@@ -35,6 +35,10 @@ public final class MountFolderError {
          * The shared folder is already mounted.
          */
         ALREADY_MOUNTED,
+        /**
+         * The current user does not have permission to perform this action.
+         */
+        NO_PERMISSION,
         OTHER; // *catch_all
     }
 
@@ -45,12 +49,14 @@ public final class MountFolderError {
         VALUES_.put("inside_shared_folder", Tag.INSIDE_SHARED_FOLDER);
         VALUES_.put("insufficient_quota", Tag.INSUFFICIENT_QUOTA);
         VALUES_.put("already_mounted", Tag.ALREADY_MOUNTED);
+        VALUES_.put("no_permission", Tag.NO_PERMISSION);
         VALUES_.put("other", Tag.OTHER);
     }
 
     public static final MountFolderError INSIDE_SHARED_FOLDER = new MountFolderError(Tag.INSIDE_SHARED_FOLDER, null);
     public static final MountFolderError INSUFFICIENT_QUOTA = new MountFolderError(Tag.INSUFFICIENT_QUOTA, null);
     public static final MountFolderError ALREADY_MOUNTED = new MountFolderError(Tag.ALREADY_MOUNTED, null);
+    public static final MountFolderError NO_PERMISSION = new MountFolderError(Tag.NO_PERMISSION, null);
     public static final MountFolderError OTHER = new MountFolderError(Tag.OTHER, null);
 
     private final Tag tag;
@@ -159,6 +165,17 @@ public final class MountFolderError {
     }
 
     /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#NO_PERMISSION}, {@code false} otherwise.
+     *
+     * @return {@code true} if this insta5Bnce is tagged as {@link
+     *     Tag#NO_PERMISSION}, {@code false} otherwise.
+     */
+    public boolean isNoPermission() {
+        return this.tag == Tag.NO_PERMISSION;
+    }
+
+    /**
      * Returns {@code true} if this instance has the tag {@link Tag#OTHER},
      * {@code false} otherwise.
      *
@@ -196,6 +213,8 @@ public final class MountFolderError {
                 case INSUFFICIENT_QUOTA:
                     return true;
                 case ALREADY_MOUNTED:
+                    return true;
+                case NO_PERMISSION:
                     return true;
                 case OTHER:
                     return true;
@@ -254,6 +273,12 @@ public final class MountFolderError {
                     g.writeString("already_mounted");
                     g.writeEndObject();
                     break;
+                case NO_PERMISSION:
+                    g.writeStartObject();
+                    g.writeFieldName(".tag");
+                    g.writeString("no_permission");
+                    g.writeEndObject();
+                    break;
                 case OTHER:
                     g.writeStartObject();
                     g.writeFieldName(".tag");
@@ -278,6 +303,7 @@ public final class MountFolderError {
                     case INSIDE_SHARED_FOLDER: return MountFolderError.INSIDE_SHARED_FOLDER;
                     case INSUFFICIENT_QUOTA: return MountFolderError.INSUFFICIENT_QUOTA;
                     case ALREADY_MOUNTED: return MountFolderError.ALREADY_MOUNTED;
+                    case NO_PERMISSION: return MountFolderError.NO_PERMISSION;
                     case OTHER: return MountFolderError.OTHER;
                 }
                 throw new JsonReadException("Tag " + tag + " requires a value", parser.getTokenLocation());
@@ -311,6 +337,10 @@ public final class MountFolderError {
                     }
                     case ALREADY_MOUNTED: {
                         value = MountFolderError.ALREADY_MOUNTED;
+                        break;
+                    }
+                    case NO_PERMISSION: {
+                        value = MountFolderError.NO_PERMISSION;
                         break;
                     }
                     case OTHER: {

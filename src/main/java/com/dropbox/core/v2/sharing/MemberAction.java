@@ -19,9 +19,17 @@ import java.io.IOException;
 public enum MemberAction {
     // union MemberAction
     /**
+     * Make the member an editor of the folder.
+     */
+    MAKE_EDITOR,
+    /**
      * Make the member an owner of the folder.
      */
     MAKE_OWNER,
+    /**
+     * Make the member a viewer of the folder.
+     */
+    MAKE_VIEWER,
     /**
      * Remove the member from the folder.
      */
@@ -31,7 +39,9 @@ public enum MemberAction {
     private static final java.util.HashMap<String, MemberAction> VALUES_;
     static {
         VALUES_ = new java.util.HashMap<String, MemberAction>();
+        VALUES_.put("make_editor", MAKE_EDITOR);
         VALUES_.put("make_owner", MAKE_OWNER);
+        VALUES_.put("make_viewer", MAKE_VIEWER);
         VALUES_.put("remove", REMOVE);
         VALUES_.put("other", OTHER);
     }
@@ -47,10 +57,22 @@ public enum MemberAction {
     public static final JsonWriter<MemberAction> _JSON_WRITER = new JsonWriter<MemberAction>() {
         public void write(MemberAction x, JsonGenerator g) throws IOException {
             switch (x) {
+                case MAKE_EDITOR:
+                    g.writeStartObject();
+                    g.writeFieldName(".tag");
+                    g.writeString("make_editor");
+                    g.writeEndObject();
+                    break;
                 case MAKE_OWNER:
                     g.writeStartObject();
                     g.writeFieldName(".tag");
                     g.writeString("make_owner");
+                    g.writeEndObject();
+                    break;
+                case MAKE_VIEWER:
+                    g.writeStartObject();
+                    g.writeFieldName(".tag");
+                    g.writeString("make_viewer");
                     g.writeEndObject();
                     break;
                 case REMOVE:

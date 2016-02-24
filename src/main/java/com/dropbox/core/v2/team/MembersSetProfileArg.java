@@ -39,8 +39,12 @@ public class MembersSetProfileArg {
      *     {@code null}.
      * @param newEmail  New email for member.
      * @param newExternalId  New external ID for member.
-     * @param newGivenName  New given name for member.
-     * @param newSurname  New surname for member.
+     * @param newGivenName  New given name for member. Must have length of at
+     *     least 1, have length of at most 100, and match pattern "{@code
+     *     [^/:?*<>\"|]*}".
+     * @param newSurname  New surname for member. Must have length of at least
+     *     1, have length of at most 100, and match pattern "{@code
+     *     [^/:?*<>\"|]*}".
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -52,7 +56,29 @@ public class MembersSetProfileArg {
         this.user = user;
         this.newEmail = newEmail;
         this.newExternalId = newExternalId;
+        if (newGivenName != null) {
+            if (newGivenName.length() < 1) {
+                throw new IllegalArgumentException("String 'newGivenName' is shorter than 1");
+            }
+            if (newGivenName.length() > 100) {
+                throw new IllegalArgumentException("String 'newGivenName' is longer than 100");
+            }
+            if (!java.util.regex.Pattern.matches("[^/:?*<>\"|]*", newGivenName)) {
+                throw new IllegalArgumentException("String 'newGivenName' does not match pattern");
+            }
+        }
         this.newGivenName = newGivenName;
+        if (newSurname != null) {
+            if (newSurname.length() < 1) {
+                throw new IllegalArgumentException("String 'newSurname' is shorter than 1");
+            }
+            if (newSurname.length() > 100) {
+                throw new IllegalArgumentException("String 'newSurname' is longer than 100");
+            }
+            if (!java.util.regex.Pattern.matches("[^/:?*<>\"|]*", newSurname)) {
+                throw new IllegalArgumentException("String 'newSurname' does not match pattern");
+            }
+        }
         this.newSurname = newSurname;
     }
 
@@ -182,11 +208,27 @@ public class MembersSetProfileArg {
         /**
          * Set value for optional field.
          *
-         * @param newGivenName  New given name for member.
+         * @param newGivenName  New given name for member. Must have length of
+         *     at least 1, have length of at most 100, and match pattern "{@code
+         *     [^/:?*<>\"|]*}".
          *
          * @return this builder
+         *
+         * @throws IllegalArgumentException  If any argument does not meet its
+         *     preconditions.
          */
         public Builder withNewGivenName(String newGivenName) {
+            if (newGivenName != null) {
+                if (newGivenName.length() < 1) {
+                    throw new IllegalArgumentException("String 'newGivenName' is shorter than 1");
+                }
+                if (newGivenName.length() > 100) {
+                    throw new IllegalArgumentException("String 'newGivenName' is longer than 100");
+                }
+                if (!java.util.regex.Pattern.matches("[^/:?*<>\"|]*", newGivenName)) {
+                    throw new IllegalArgumentException("String 'newGivenName' does not match pattern");
+                }
+            }
             this.newGivenName = newGivenName;
             return this;
         }
@@ -194,11 +236,27 @@ public class MembersSetProfileArg {
         /**
          * Set value for optional field.
          *
-         * @param newSurname  New surname for member.
+         * @param newSurname  New surname for member. Must have length of at
+         *     least 1, have length of at most 100, and match pattern "{@code
+         *     [^/:?*<>\"|]*}".
          *
          * @return this builder
+         *
+         * @throws IllegalArgumentException  If any argument does not meet its
+         *     preconditions.
          */
         public Builder withNewSurname(String newSurname) {
+            if (newSurname != null) {
+                if (newSurname.length() < 1) {
+                    throw new IllegalArgumentException("String 'newSurname' is shorter than 1");
+                }
+                if (newSurname.length() > 100) {
+                    throw new IllegalArgumentException("String 'newSurname' is longer than 100");
+                }
+                if (!java.util.regex.Pattern.matches("[^/:?*<>\"|]*", newSurname)) {
+                    throw new IllegalArgumentException("String 'newSurname' does not match pattern");
+                }
+            }
             this.newSurname = newSurname;
             return this;
         }

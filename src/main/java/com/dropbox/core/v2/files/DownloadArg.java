@@ -23,8 +23,9 @@ public class DownloadArg {
      *
      * @param path  The path of the file to download. Must match pattern "{@code
      *     ((/|id:).*)|(rev:[0-9a-f]{9,})}" and not be {@code null}.
-     * @param rev  Deprecated. Please specify revision in :field:'path' instead.
-     *     Must have length of at least 9 and match pattern "{@code [0-9a-f]+}".
+     * @param rev  Deprecated. Please specify revision in {@link
+     *     DownloadArg#getPath} instead. Must have length of at least 9 and
+     *     match pattern "{@code [0-9a-f]+}".
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -71,7 +72,8 @@ public class DownloadArg {
     }
 
     /**
-     * Deprecated. Please specify revision in :field:'path' instead
+     * Deprecated. Please specify revision in {@link DownloadArg#getPath}
+     * instead
      *
      * @return value for this field, or {@code null} if not present.
      */

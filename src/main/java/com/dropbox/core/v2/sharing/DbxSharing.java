@@ -95,7 +95,8 @@ public final class DbxSharing {
      * returns a list of all shared links for the current user. If a non-empty
      * path is given, returns a list of all shared links that allow access to
      * the given path - direct links to the given path and links to parent
-     * folders of the given path.
+     * folders of the given path. Links to parent folders can be suppressed by
+     * setting direct_only to true.
      *
      */
      ListSharedLinksResult listSharedLinks(ListSharedLinksArg listSharedLinksArg) throws ListSharedLinksErrorException, DbxException {
@@ -118,7 +119,8 @@ public final class DbxSharing {
      * returns a list of all shared links for the current user. If a non-empty
      * path is given, returns a list of all shared links that allow access to
      * the given path - direct links to the given path and links to parent
-     * folders of the given path.
+     * folders of the given path. Links to parent folders can be suppressed by
+     * setting direct_only to true.
      *
      * <p> The default values for the remaining request parameters will be used.
      * See {@link ListSharedLinksArg} for more details. </p>
@@ -133,7 +135,8 @@ public final class DbxSharing {
      * returns a list of all shared links for the current user. If a non-empty
      * path is given, returns a list of all shared links that allow access to
      * the given path - direct links to the given path and links to parent
-     * folders of the given path.
+     * folders of the given path. Links to parent folders can be suppressed by
+     * setting direct_only to true.
      *
      * @return Request builder for configuring request parameters and completing
      *     the request.
@@ -535,23 +538,56 @@ public final class DbxSharing {
      * endpoint is in beta and is subject to minor but possibly
      * backwards-incompatible changes.
      *
+     *
      * @return Result for {@link DbxSharing#listFolders()}. Unmounted shared
      *     folders can be identified by the absence of {@link
      *     SharedFolderMetadata#getPathLower}.
      */
-    public ListFoldersResult listFolders() throws DbxException {
+     ListFoldersResult listFolders(ListFoldersArgs listFoldersArgs) throws DbxException {
         try {
             return client.rpcStyle(client.getHost().getApi(),
                                    "2/sharing/list_folders",
-                                   null,
+                                   listFoldersArgs,
                                    false,
-                                   null,
+                                   ListFoldersArgs._JSON_WRITER,
                                    ListFoldersResult._JSON_READER,
                                    JsonReader.VoidReader);
         }
         catch (DbxRequestUtil.ErrorWrapper ew) {
             throw new DbxApiException(ew.getRequestId(), ew.getUserMessage(), "Unexpected error response for \"list_folders\": ew.errValue");
         }
+    }
+
+    /**
+     * Return the list of all shared folders the current user has access to.
+     * Apps must have full Dropbox access to use this endpoint. Warning: This
+     * endpoint is in beta and is subject to minor but possibly
+     * backwards-incompatible changes.
+     *
+     * <p> The default values for the remaining request parameters will be used.
+     * See {@link ListFoldersArgs} for more details. </p>
+     *
+     * @return Result for {@link DbxSharing#listFolders()}. Unmounted shared
+     *     folders can be identified by the absence of {@link
+     *     SharedFolderMetadata#getPathLower}.
+     */
+    public ListFoldersResult listFolders() throws DbxException {
+        ListFoldersArgs arg = new ListFoldersArgs();
+        return listFolders(arg);
+    }
+
+    /**
+     * Return the list of all shared folders the current user has access to.
+     * Apps must have full Dropbox access to use this endpoint. Warning: This
+     * endpoint is in beta and is subject to minor but possibly
+     * backwards-incompatible changes.
+     *
+     * @return Request builder for configuring request parameters and completing
+     *     the request.
+     */
+    public ListFoldersBuilder listFoldersBuilder() {
+        ListFoldersArgs.Builder argBuilder = ListFoldersArgs.newBuilder();
+        return new ListFoldersBuilder(this, argBuilder);
     }
 
     //
@@ -607,6 +643,117 @@ public final class DbxSharing {
     public ListFoldersResult listFoldersContinue(String cursor) throws ListFoldersContinueErrorException, DbxException {
         ListFoldersContinueArg arg = new ListFoldersContinueArg(cursor);
         return listFoldersContinue(arg);
+    }
+
+    //
+    // route sharing/list_mountable_folders
+    //
+
+    /**
+     * Return the list of all shared folders the current user can mount or
+     * unmount. Apps must have full Dropbox access to use this endpoint.
+     *
+     *
+     * @return Result for {@link DbxSharing#listFolders()}. Unmounted shared
+     *     folders can be identified by the absence of {@link
+     *     SharedFolderMetadata#getPathLower}.
+     */
+     ListFoldersResult listMountableFolders(ListFoldersArgs listFoldersArgs) throws DbxException {
+        try {
+            return client.rpcStyle(client.getHost().getApi(),
+                                   "2/sharing/list_mountable_folders",
+                                   listFoldersArgs,
+                                   false,
+                                   ListFoldersArgs._JSON_WRITER,
+                                   ListFoldersResult._JSON_READER,
+                                   JsonReader.VoidReader);
+        }
+        catch (DbxRequestUtil.ErrorWrapper ew) {
+            throw new DbxApiException(ew.getRequestId(), ew.getUserMessage(), "Unexpected error response for \"list_mountable_folders\": ew.errValue");
+        }
+    }
+
+    /**
+     * Return the list of all shared folders the current user can mount or
+     * unmount. Apps must have full Dropbox access to use this endpoint.
+     *
+     * <p> The default values for the remaining request parameters will be used.
+     * See {@link ListFoldersArgs} for more details. </p>
+     *
+     * @return Result for {@link DbxSharing#listFolders()}. Unmounted shared
+     *     folders can be identified by the absence of {@link
+     *     SharedFolderMetadata#getPathLower}.
+     */
+    public ListFoldersResult listMountableFolders() throws DbxException {
+        ListFoldersArgs arg = new ListFoldersArgs();
+        return listMountableFolders(arg);
+    }
+
+    /**
+     * Return the list of all shared folders the current user can mount or
+     * unmount. Apps must have full Dropbox access to use this endpoint.
+     *
+     * @return Request builder for configuring request parameters and completing
+     *     the request.
+     */
+    public ListMountableFoldersBuilder listMountableFoldersBuilder() {
+        ListFoldersArgs.Builder argBuilder = ListFoldersArgs.newBuilder();
+        return new ListMountableFoldersBuilder(this, argBuilder);
+    }
+
+    //
+    // route sharing/list_mountable_folders/continue
+    //
+
+    /**
+     * Once a cursor has been retrieved from {@link
+     * DbxSharing#listMountableFolders()}, use this to paginate through all
+     * mountable shared folders. Apps must have full Dropbox access to use this
+     * endpoint.
+     *
+     *
+     * @return Result for {@link DbxSharing#listFolders()}. Unmounted shared
+     *     folders can be identified by the absence of {@link
+     *     SharedFolderMetadata#getPathLower}.
+     */
+     ListFoldersResult listMountableFoldersContinue(ListFoldersContinueArg listFoldersContinueArg) throws ListFoldersContinueErrorException, DbxException {
+        try {
+            return client.rpcStyle(client.getHost().getApi(),
+                                   "2/sharing/list_mountable_folders/continue",
+                                   listFoldersContinueArg,
+                                   false,
+                                   ListFoldersContinueArg._JSON_WRITER,
+                                   ListFoldersResult._JSON_READER,
+                                   ListFoldersContinueError._JSON_READER);
+        }
+        catch (DbxRequestUtil.ErrorWrapper ew) {
+            throw new ListFoldersContinueErrorException(ew.getRequestId(), ew.getUserMessage(), (ListFoldersContinueError) ew.getErrorValue());
+        }
+    }
+
+    /**
+     * Once a cursor has been retrieved from {@link
+     * DbxSharing#listMountableFolders()}, use this to paginate through all
+     * mountable shared folders. Apps must have full Dropbox access to use this
+     * endpoint.
+     *
+     * <p> The default values for the remaining request parameters will be used.
+     * See {@link ListFoldersContinueArg} for more details. </p>
+     *
+     * @param cursor  The cursor returned by your last call to {@link
+     *     DbxSharing#listFolders()} or {@link
+     *     DbxSharing#listFoldersContinue(String)}. Must not be {@code null}.
+     *
+     * @return Result for {@link DbxSharing#listFolders()}. Unmounted shared
+     *     folders can be identified by the absence of {@link
+     *     SharedFolderMetadata#getPathLower}.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public ListFoldersResult listMountableFoldersContinue(String cursor) throws ListFoldersContinueErrorException, DbxException {
+        ListFoldersContinueArg arg = new ListFoldersContinueArg(cursor);
+        return listMountableFoldersContinue(arg);
     }
 
     //
@@ -666,8 +813,8 @@ public final class DbxSharing {
      *
      * @param sharedFolderId  The ID for the shared folder. Must match pattern
      *     "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
-     * @param actions  Folder actions to query. Must not contain a {@code null}
-     *     item.
+     * @param actions  Folder actions to query. This field is optional. Must not
+     *     contain a {@code null} item.
      *
      * @return The metadata which includes basic information about the shared
      *     folder.
@@ -742,24 +889,16 @@ public final class DbxSharing {
      *
      * @param sharedFolderId  The ID for the shared folder. Must match pattern
      *     "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
-     * @param actions  Member actions to query. Must not contain a {@code null}
-     *     item.
      *
-     * @return Shared folder user and group membership.
+     * @return Request builder for configuring request parameters and completing
+     *     the request.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedFolderMembers listFolderMembers(String sharedFolderId, java.util.List<MemberAction> actions) throws SharedFolderAccessErrorException, DbxException {
-        if (actions != null) {
-            for (MemberAction x : actions) {
-                if (x == null) {
-                    throw new IllegalArgumentException("An item in list 'actions' is null");
-                }
-            }
-        }
-        ListFolderMembersArgs arg = new ListFolderMembersArgs(sharedFolderId, actions);
-        return listFolderMembers(arg);
+    public ListFolderMembersBuilder listFolderMembersBuilder(String sharedFolderId) {
+        ListFolderMembersArgs.Builder argBuilder = ListFolderMembersArgs.newBuilder(sharedFolderId);
+        return new ListFolderMembersBuilder(this, argBuilder);
     }
 
     //
