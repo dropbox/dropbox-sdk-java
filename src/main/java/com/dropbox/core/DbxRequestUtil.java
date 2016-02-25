@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
@@ -15,12 +16,18 @@ import java.util.List;
 import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
 import com.dropbox.core.util.IOUtil;
 import com.dropbox.core.util.StringUtil;
-import com.fasterxml.jackson.core.JsonFactory;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static com.dropbox.core.util.StringUtil.jq;
 import static com.dropbox.core.util.LangUtil.mkAssert;
@@ -28,7 +35,7 @@ import static com.dropbox.core.util.LangUtil.mkAssert;
 /*>>> import checkers.nullness.quals.Nullable; */
 
 public final class DbxRequestUtil {
-    public static final JsonFactory JSON_FACTORY = new JsonFactory();
+    private static final ObjectMapper JSON = JsonUtil.getMapper();
 
     public static String encodeUrlParam(String s) {
         try {
@@ -216,6 +223,8 @@ public final class DbxRequestUtil {
     }
 
     public static class ErrorWrapper extends Exception {
+        private static final long serialVersionUID = 0L;
+
         private final Object errValue;  // Really an ErrT instance, but Throwable does not allow generic subclasses.
         private final String requestId;
         private final LocalizedText userMessage;
@@ -238,65 +247,45 @@ public final class DbxRequestUtil {
             return userMessage;
         }
 
-        public static <T> ErrorWrapper fromResponse(JsonReader<T> reader, HttpRequestor.Response response)
-            throws IOException, JsonReadException {
-            T errValue = null;
+        public static ErrorWrapper fromResponse(Type errType, HttpRequestor.Response response)
+            throws IOException, JsonParseException {
             String requestId = DbxRequestUtil.getRequestId(response);
-            LocalizedText userMessage = null;
 
-            JsonParser parser = JSON_FACTORY.createParser(response.getBody());
-            parser.nextToken();
-            reader.expectObjectStart(parser);
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if (fieldName.equals("error")) {
-                    errValue = reader.read(parser);
-                } else if (fieldName.equals("user_message")) {
-                    userMessage = USER_MESSAGE_READER.readField(parser, "user_message", userMessage);
-                } else {
-                    JsonReader.skipValue(parser);
-                }
-            }
-            if (errValue == null) {
-                throw new JsonReadException("Required field \"error\" is missing.", parser.getCurrentLocation());
-            }
+            JavaType type = JSON.getTypeFactory()
+                .constructParametricType(
+                    ApiErrorResponse.class,
+                    JSON.getTypeFactory().constructType(errType)
+                );
+            ApiErrorResponse<?> apiResponse = JSON.readValue(response.getBody(), type);
 
-            return new ErrorWrapper(errValue, requestId, userMessage);
+            return new ErrorWrapper(apiResponse.getError(), requestId, apiResponse.getUserMessage());
         }
 
-        private static final JsonReader<LocalizedText> USER_MESSAGE_READER = new JsonReader<LocalizedText>() {
-            @Override
-            public final LocalizedText read(JsonParser parser)
-                throws IOException, JsonReadException
-            {
-                LocalizedText userMessage;
-                JsonReader.expectObjectStart(parser);
+        @JsonIgnoreProperties(ignoreUnknown=true)
+        private static final class ApiErrorResponse<T> {
+            private final T error;
+            private LocalizedText userMessage;
 
-                String text = null;
-                String locale = null;
-
-                while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                    String fieldName = parser.getCurrentName();
-                    parser.nextToken();
-                    if ("locale".equals(fieldName)) {
-                        locale = JsonReader.StringReader.readField(parser, "locale", locale);
-                    }
-                    else if ("text".equals(fieldName)) {
-                        text = JsonReader.StringReader.readField(parser, "text", text);
-                    }
-                    else {
-                        JsonReader.skipValue(parser);
-                    }
+            @JsonCreator
+            public ApiErrorResponse(
+                @JsonProperty(value="error", required=true) T error,
+                @JsonProperty("user_message") LocalizedText userMessage
+            ) {
+                if (error == null) {
+                    throw new NullPointerException("error");
                 }
-
-                if (text == null) {
-                    throw new JsonReadException("Required field \"text\" is missing.", parser.getTokenLocation());
-                }
-
-                return new LocalizedText(text, locale);
+                this.error = error;
+                this.userMessage = userMessage;
             }
-        };
+
+            public T getError() {
+                return error;
+            }
+
+            public LocalizedText getUserMessage() {
+                return userMessage;
+            }
+        }
     }
 
     public static byte[] loadErrorBody(HttpRequestor.Response response)

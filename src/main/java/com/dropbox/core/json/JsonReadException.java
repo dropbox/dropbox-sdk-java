@@ -22,6 +22,14 @@ public final class JsonReadException extends java.lang.Exception
         this.path = null;
     }
 
+    public JsonReadException(String error, JsonLocation location, Throwable cause)
+    {
+        super(cause);
+        this.error = error;
+        this.location = location;
+        this.path = null;
+    }
+
     public JsonReadException addFieldContext(String fieldName)
     {
         this.path = new PathPart('"' + fieldName + '"', this.path);

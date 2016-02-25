@@ -265,8 +265,8 @@ public class DbxWebAuth
      * The base class for authorization redirect errors.  You should catch each subclass
      * individually.
      */
-    public static abstract class Exception extends java.lang.Exception
-    {
+    public static abstract class Exception extends java.lang.Exception {
+        private static final long serialVersionUID = 0L;
         public Exception(String message) { super(message); }
     }
 
@@ -281,8 +281,8 @@ public class DbxWebAuth
      * The recommended action is to show an HTTP 400 error page.
      * </p>
      */
-    public static final class BadRequestException extends Exception
-    {
+    public static final class BadRequestException extends Exception {
+        private static final long serialVersionUID = 0L;
         public BadRequestException(String message) { super(message); }
     }
 
@@ -299,8 +299,8 @@ public class DbxWebAuth
      * The recommended action is to redirect the user's browser to try the approval process again.
      * </p>
      */
-    public static final class BadStateException extends Exception
-    {
+    public static final class BadStateException extends Exception {
+        private static final long serialVersionUID = 0L;
         public BadStateException() { super("Not expecting Dropbox auth redirect (session doesn't have CSRF token)"); }
     }
 
@@ -316,8 +316,8 @@ public class DbxWebAuth
      * The recommended action is to show an HTTP 403 error page.
      * </p>
      */
-    public static final class CsrfException extends Exception
-    {
+    public static final class CsrfException extends Exception {
+        private static final long serialVersionUID = 0L;
         public CsrfException(String message) { super(message); }
     }
 
@@ -329,8 +329,8 @@ public class DbxWebAuth
      * IMPORTANT: The exception's message must not be shown the the user, but may be logged.
      * </p>
      */
-    public static final class NotApprovedException extends Exception
-    {
+    public static final class NotApprovedException extends Exception {
+        private static final long serialVersionUID = 0L;
         public NotApprovedException(String message) { super(message); }
     }
 
@@ -341,8 +341,8 @@ public class DbxWebAuth
      * IMPORTANT: The exception's message should not be shown the the user, but should be logged.
      * </p>
      */
-    public static final class ProviderException extends Exception
-    {
+    public static final class ProviderException extends Exception {
+        private static final long serialVersionUID = 0L;
         public ProviderException(String message) { super(message); }
     }
 }

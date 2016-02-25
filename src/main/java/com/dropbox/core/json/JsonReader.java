@@ -528,15 +528,17 @@ public abstract class JsonReader<T>
         }
     }
 
-    public static abstract class FileLoadException extends Exception
-    {
+    public static abstract class FileLoadException extends Exception {
+        private static final long serialVersionUID = 0L;
+
         protected FileLoadException(String message)
         {
             super(message);
         }
 
-        public static final class IOError extends FileLoadException
-        {
+        public static final class IOError extends FileLoadException {
+            private static final long serialVersionUID = 0L;
+
             public final IOException reason;
 
             public IOError(File file, IOException reason)
@@ -546,8 +548,9 @@ public abstract class JsonReader<T>
             }
         }
 
-        public static final class JsonError extends FileLoadException
-        {
+        public static final class JsonError extends FileLoadException {
+            private static final long serialVersionUID = 0L;
+
             public final JsonReadException reason;
 
             public JsonError(File file, JsonReadException reason)

@@ -15,6 +15,7 @@ import com.dropbox.core.util.IOUtil;
 
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+import org.mockito.Matchers;
 import org.testng.annotations.Test;
 
 import java.io.ByteArrayInputStream;
@@ -49,14 +50,14 @@ public class DbxClientV2Test {
         HttpRequestor.Uploader mockUploader = mockUploader();
         when(mockUploader.finish())
             .thenReturn(createEmptyResponse(503));
-        when(mockRequestor.startPost(anyString(), any(Iterable.class)))
+        when(mockRequestor.startPost(anyString(), anyHeaders()))
             .thenReturn(mockUploader);
 
         try {
             client.users.getCurrentAccount();
         } finally {
             // should only have been called once since we disabled retry
-            verify(mockRequestor, times(1)).startPost(anyString(), any(Iterable.class));
+            verify(mockRequestor, times(1)).startPost(anyString(), anyHeaders());
         }
     }
 
@@ -87,13 +88,13 @@ public class DbxClientV2Test {
             .thenReturn(createEmptyResponse(503))
             .thenReturn(createSuccessResponse(expected.toJson(false)));
 
-        when(mockRequestor.startPost(anyString(), any(Iterable.class)))
+        when(mockRequestor.startPost(anyString(), anyHeaders()))
             .thenReturn(mockUploader);
 
         Metadata actual = client.files.getMetadata(expected.getPathLower());
 
         // should have only been called 3 times: initial call + 2 retries
-        verify(mockRequestor, times(3)).startPost(anyString(), any(Iterable.class));
+        verify(mockRequestor, times(3)).startPost(anyString(), anyHeaders());
 
         assertEquals(actual.getPathLower(), expected.getPathLower());
         assertTrue(actual instanceof FileMetadata, actual.getClass().toString());
@@ -113,14 +114,14 @@ public class DbxClientV2Test {
         HttpRequestor.Uploader mockUploader = mockUploader();
         when(mockUploader.finish())
             .thenReturn(createEmptyResponse(503));
-        when(mockRequestor.startPost(anyString(), any(Iterable.class)))
+        when(mockRequestor.startPost(anyString(), anyHeaders()))
             .thenReturn(mockUploader);
 
         try {
             client.users.getCurrentAccount();
         } finally {
             // should only have been called 4 times: initial call plus our maximum retry limit
-            verify(mockRequestor, times(1 + 3)).startPost(anyString(), any(Iterable.class));
+            verify(mockRequestor, times(1 + 3)).startPost(anyString(), anyHeaders());
         }
     }
 
@@ -139,14 +140,14 @@ public class DbxClientV2Test {
         when(mockUploader.finish())
             .thenReturn(createEmptyResponse(503))
             .thenReturn(createEmptyResponse(400));
-        when(mockRequestor.startPost(anyString(), any(Iterable.class)))
+        when(mockRequestor.startPost(anyString(), anyHeaders()))
             .thenReturn(mockUploader);
 
         try {
             client.users.getCurrentAccount();
         } finally {
             // should only have been called 2 times: initial call + retry
-            verify(mockRequestor, times(2)).startPost(anyString(), any(Iterable.class));
+            verify(mockRequestor, times(2)).startPost(anyString(), anyHeaders());
         }
     }
 
@@ -177,13 +178,13 @@ public class DbxClientV2Test {
         when(mockUploader.finish())
             .thenReturn(createEmptyResponse(503))
             .thenReturn(createDownloaderResponse(expectedBytes, expectedMetadata.toJson(false)));
-        when(mockRequestor.startPost(anyString(), any(Iterable.class)))
+        when(mockRequestor.startPost(anyString(), anyHeaders()))
             .thenReturn(mockUploader);
 
         DbxDownloader<FileMetadata> downloader = client.files.download(expectedMetadata.getPathLower());
 
         // should have been attempted twice
-        verify(mockRequestor, times(2)).startPost(anyString(), any(Iterable.class));
+        verify(mockRequestor, times(2)).startPost(anyString(), anyHeaders());
 
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
         FileMetadata actualMetadata = downloader.download(bout);
@@ -221,7 +222,7 @@ public class DbxClientV2Test {
             .thenReturn(createRateLimitResponse(2)) // backoff 2 sec
             .thenReturn(createSuccessResponse(expected.toJson(false)));
 
-        when(mockRequestor.startPost(anyString(), any(Iterable.class)))
+        when(mockRequestor.startPost(anyString(), anyHeaders()))
             .thenReturn(mockUploader);
 
         long start = System.currentTimeMillis();
@@ -233,7 +234,7 @@ public class DbxClientV2Test {
         assertTrue((end - start) >= 3000L, "duration: " + (end - start) + " millis");
 
         // should have been called 4 times: initial call + 3 retries
-        verify(mockRequestor, times(4)).startPost(anyString(), any(Iterable.class));
+        verify(mockRequestor, times(4)).startPost(anyString(), anyHeaders());
 
         assertEquals(actual.getPathLower(), expected.getPathLower());
         assertTrue(actual instanceof FileMetadata, actual.getClass().toString());
@@ -305,5 +306,9 @@ public class DbxClientV2Test {
         }
 
         return headers;
+    }
+
+    private static Iterable<HttpRequestor.Header> anyHeaders() {
+        return Matchers.<Iterable<HttpRequestor.Header>>any();
     }
 }

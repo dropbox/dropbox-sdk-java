@@ -15,6 +15,15 @@ import com.dropbox.core.json.JsonDateReader;
 
 public abstract class JsonWriter<T>
 {
+    private static final TimeZone UTC = TimeZone.getTimeZone("UTC");
+    private static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+
+    public static String formatDate(Date date) {
+        DateFormat df = new SimpleDateFormat(DATE_FORMAT);
+        df.setTimeZone(UTC);
+        return df.format(date);
+    }
+
     public abstract void write(T value, JsonGenerator g)
         throws IOException;
 
@@ -112,12 +121,7 @@ public abstract class JsonWriter<T>
     public final void writeDateIso(java.util.Date date, JsonGenerator g)
             throws IOException
     {
-        // TODO: Make df static (but then need this method to be synchronized)
-        TimeZone tz = TimeZone.getTimeZone("UTC");
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        df.setTimeZone(tz);
-        String dateFormatted = df.format(date);
-        g.writeString(dateFormatted);
+        g.writeString(formatDate(date));
     }
 
     static private final String weekdays[] = {null, "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};

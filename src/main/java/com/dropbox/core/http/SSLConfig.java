@@ -323,7 +323,11 @@ public class SSLConfig {
     public static final int MaxCertLength = 10 * 1024;
 
     public static final class LoadException extends Exception {
-        public LoadException(String message) { super(message); }
+        private static final long serialVersionUID = 0L;
+
+        public LoadException(String message) {
+            super(message);
+        }
     }
 
     private static void loadKeyStore(KeyStore keyStore, InputStream in)

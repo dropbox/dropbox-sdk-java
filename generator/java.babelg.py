@@ -117,43 +117,6 @@ def classname(s):
     return capwords(s)
 
 
-def get_json_reader(data_type):
-    """Map a Babel data type to a Java expression giving a Reader instance.
-
-    This is not quite the same as maptype(...) + '._reader' since
-    there are exceptions for various types.
-
-    The generated code assumes all classes from com.dropbox.core.json
-    have been imported.
-    """
-    assert isinstance(data_type, DataTypeWrapper), repr(data_type)
-
-    # expand nullables out
-    if data_type.is_nullable:
-        data_type = data_type.nullable_data_type
-
-    babel_data_type = data_type.as_babel
-
-    if is_list_type(babel_data_type):
-        return 'JsonArrayReader.mk(%s)' % get_json_reader(data_type.list_data_type)
-    if is_composite_type(babel_data_type):
-        return '%s._JSON_READER' % data_type.java_class
-    if is_string_type(babel_data_type):
-        return 'JsonReader.StringReader'
-    if is_boolean_type(babel_data_type):
-        return 'JsonReader.BooleanReader'
-    if is_numeric_type(babel_data_type):
-        # Assume JsonReader defines <foo>Reader for every integer and float type.
-        return 'JsonReader.%sReader' % data_type.babel_name
-    if is_timestamp_type(babel_data_type):
-        return 'JsonDateReader.DropboxV2'
-    if is_binary_type(babel_data_type):
-        return 'JsonReader.BinaryReader'
-    if is_void_type(babel_data_type):
-        return 'JsonReader.VoidReader'
-    assert False, data_type  # Unsupported primitive type
-
-
 def get_auth_types_set(namespace):
     routes = namespace.routes
     if not routes:
@@ -864,16 +827,18 @@ class RouteWrapper(BabelWrapper):
         class_name = self.java_builder_class
         request_style = self.request_style
         response_type = self.response.java_type()
+        error_type = self.error.java_type()
         if self.has_error:
             exc_type = self.error.java_exception_class
         else:
             exc_type = JavaClass(self._ctx, 'com.dropbox.core.DbxException')
 
         if request_style == 'upload':
-            return '%s extends %s<%s,%s>' % (
+            return '%s extends %s<%s,%s,%s>' % (
                 class_name,
                 self._as_java_class('com.dropbox.core.v2.DbxUploadStyleBuilder'),
                 response_type,
+                error_type,
                 exc_type,
             )
         elif request_style == 'download':
@@ -995,38 +960,6 @@ class RouteWrapper(BabelWrapper):
         """
         assert self.supports_builder, "Route doesn't support builder-style requests"
         return str(self.java_builder_class)
-
-    @property
-    def request_writer(self):
-        """
-        Java reference to the request type JSON writer, if this route has a request type, otherwise
-        ``null``.
-
-        :rtype: str
-
-        """
-        if self.has_request:
-            return '%s._JSON_WRITER' % self.request.java_class
-        else:
-            return 'null'
-
-    @property
-    def response_reader(self):
-        """
-        Java reference to the response type JSON reader.
-
-        :rtype: str
-        """
-        return get_json_reader(self.response)
-
-    @property
-    def error_reader(self):
-        """
-        Java reference to the error type JSON reader.
-
-        :rtype: str
-        """
-        return get_json_reader(self.error)
 
     @property
     def java_throws(self):
@@ -1223,6 +1156,13 @@ class DataTypeWrapper(BabelWrapper):
         )
 
     @property
+    def is_collapsible(self):
+        if self.is_nullable:
+            return self.nullable_data_type.is_collapsible
+        else:
+            return self.is_struct and not self.is_enumerated_subtype
+
+    @property
     def requires_validation(self):
         babel_dt = self.as_babel
         if is_list_type(babel_dt):
@@ -1376,6 +1316,10 @@ class FieldWrapper(BabelWrapper):
     @property
     def has_value(self):
         return not self.data_type.is_void
+
+    @property
+    def is_collapsible(self):
+        return self.containing_data_type.is_union and self.data_type.is_collapsible
 
     @property
     def default_value(self):
@@ -1891,7 +1835,12 @@ class JavaImportGenerator(object):
             'com.dropbox.core.DbxException',
             'com.dropbox.core.DbxRequestUtil',
             'com.dropbox.core.http.HttpRequestor',
+            'com.dropbox.core.json.JsonUtil',
             'com.dropbox.core.v2.DbxRawClientV2',
+            'com.fasterxml.jackson.core.type.TypeReference',
+            'com.fasterxml.jackson.databind.JavaType',
+            'java.util.HashMap',
+            'java.util.Map',
         )
         for route in namespace.routes:
             self.add_imports_for_route(route)
@@ -1899,9 +1848,6 @@ class JavaImportGenerator(object):
     def add_imports_for_route(self, route):
         self._add_imports_for_data_type(route.request)
         self._add_imports_for_data_type(route.response)
-
-        self._add_imports_for_json_reader(route.response)
-        self._add_imports_for_json_reader(route.error)
 
         if route.has_error:
             self._ctx.add_imports(route.error.java_exception_class)
@@ -1935,7 +1881,9 @@ class JavaImportGenerator(object):
             'com.dropbox.core.DbxRequestUtil',
             'com.dropbox.core.DbxUploader',
             'com.dropbox.core.http.HttpRequestor',
-            'com.dropbox.core.json.JsonReadException',
+            'com.dropbox.core.json.JsonUtil',
+            'com.fasterxml.jackson.core.type.TypeReference',
+            'com.fasterxml.jackson.databind.JavaType',
             'java.io.IOException',
         )
         if route.has_response:
@@ -1947,9 +1895,6 @@ class JavaImportGenerator(object):
             )
         else:
             self._ctx.add_imports('com.dropbox.core.DbxApiException')
-
-        self._add_imports_for_json_reader(route.response)
-        self._add_imports_for_json_reader(route.error)
 
     def add_imports_for_data_type(self, data_type, include_serialization=True):
         assert isinstance(data_type, DataTypeWrapper), repr(data_type)
@@ -1994,34 +1939,35 @@ class JavaImportGenerator(object):
 
     def _add_imports_for_data_type_serializers(self, data_type):
         self._ctx.add_imports(
+            'com.fasterxml.jackson.core.JsonGenerationException',
             'com.fasterxml.jackson.core.JsonGenerator',
+            'com.fasterxml.jackson.core.JsonParseException',
             'com.fasterxml.jackson.core.JsonParser',
+            'com.fasterxml.jackson.core.JsonProcessingException',
             'com.fasterxml.jackson.core.JsonToken',
+            'com.fasterxml.jackson.databind.annotation.JsonDeserialize',
+            'com.fasterxml.jackson.databind.annotation.JsonSerialize',
+            'com.fasterxml.jackson.databind.DeserializationContext',
+            'com.fasterxml.jackson.databind.ObjectMapper',
+            'com.fasterxml.jackson.databind.SerializerProvider',
             'com.dropbox.core.json.JsonReader',
             'com.dropbox.core.json.JsonReadException',
-            'com.dropbox.core.json.JsonWriter',
+            'com.dropbox.core.json.JsonUtil',
             'java.io.IOException',
         )
 
-        for field in data_type.all_fields:
-            self._add_imports_for_json_reader(field.data_type)
-
-    def _add_imports_for_json_reader(self, data_type):
-        if data_type.is_nullable:
-            data_type = data_type.nullable_data_type
-
-        if data_type.is_list:
-            self._add_imports_for_json_reader(data_type.list_data_type)
-            self._ctx.add_imports('com.dropbox.core.json.JsonArrayReader')
-
-        elif is_timestamp_type(data_type.as_babel):
-            self._ctx.add_imports('com.dropbox.core.json.JsonDateReader')
-
-        elif data_type.is_void:
-            self._ctx.add_imports('com.dropbox.core.json.JsonReader.VoidReader')
-
-        else:
-            pass
+        if data_type.is_struct:
+            self._ctx.add_imports(
+                'com.fasterxml.jackson.databind.JsonSerializer',
+                'com.fasterxml.jackson.databind.JsonDeserializer',
+                'com.dropbox.core.json.StructJsonSerializer',
+                'com.dropbox.core.json.StructJsonDeserializer',
+            )
+        elif data_type.is_union:
+            self._ctx.add_imports(
+                'com.dropbox.core.json.UnionJsonSerializer',
+                'com.dropbox.core.json.UnionJsonDeserializer',
+            )
 
     def __repr__(self):
         return '%s(imports=%s)' % (self.__class__.__name__, self._ctx.current_imports)
@@ -2330,9 +2276,11 @@ class JavaCodeGenerationInstance(object):
                 out('// namespace %s' % namespace.babel_name)
                 out('')
                 out('private final DbxRawClientV2 client;')
+
                 out('')
                 with self.g.block('public %s(DbxRawClientV2 client)' % namespace.java_class):
                     out('this.client = client;')
+
                 for route in namespace.routes:
                     out('')
                     out('//')
@@ -2535,6 +2483,12 @@ class JavaCodeGenerationInstance(object):
     def generate_route_simple_call(self, route, arg_var, before):
         out = self.g.emit
 
+        def as_jackson_type(data_type):
+            if data_type.is_list:
+                return 'JsonUtil.createType(new TypeReference<%s>() {})' % data_type.java_type()
+            else:
+                return 'JsonUtil.createType(%s.class)' % data_type.java_type(generics=False)
+
         with self.g.block('try'):
             self.g.generate_multiline_list(
                 (
@@ -2542,9 +2496,8 @@ class JavaCodeGenerationInstance(object):
                     '"%s"' % route.url_path,
                     arg_var if route.has_request else 'null',
                     'true' if route.auth_style == 'noauth' else 'false',
-                    route.request_writer,
-                    route.response_reader,
-                    route.error_reader,
+                    as_jackson_type(route.response),
+                    as_jackson_type(route.error),
                 ),
                 before=before,
                 after=';',
@@ -2577,7 +2530,6 @@ class JavaCodeGenerationInstance(object):
                 '"%s"' % route.url_path,
                 arg_var if route.has_request else 'null',
                 'true' if route.auth_style == 'noauth' else 'false',
-                route.request_writer,
             ),
             before='HttpRequestor.Uploader uploader = client.uploadStyle',
             after=';',
@@ -2605,6 +2557,8 @@ class JavaCodeGenerationInstance(object):
 
         out('')
         javadoc(data_type.babel_doc, context=data_type)
+        out('@JsonSerialize(using=%s.Serializer.class)' % data_type.java_class.name)
+        out('@JsonDeserialize(using=%s.Deserializer.class)' % data_type.java_class.name)
         with self.g.block('public enum %s' % data_type.java_class):
             out('// union %s' % data_type.babel_name)
             self.generate_enum_values(data_type)
@@ -2626,34 +2580,197 @@ class JavaCodeGenerationInstance(object):
             self.generate_enum_json_writer(data_type)
             self.generate_enum_json_reader(data_type)
 
-    def generate_enum_json_writer(self, data_type):
+    @contextmanager
+    def generate_union_json_writer_base(self, data_type):
+        assert data_type.is_union, repr(data_type)
+
+        out = self.g.emit
+
+        collapsible_fields = tuple(f for f in data_type.all_fields if f.is_collapsible)
+
+        out('')
+        with self.g.block('static final class Serializer extends UnionJsonSerializer<%s>' % data_type.java_class):
+            out('private static final long serialVersionUID = 0L;')
+
+            #
+            # Constructor
+            #
+
+            out('')
+            with self.g.block('public Serializer()'):
+                args = chain(
+                    ('%s.class' % data_type.java_class,),
+                    ('%s.class' % f.java_type() for f in collapsible_fields),
+                )
+                out('super(%s);' % ', '.join(args))
+
+            #
+            # serialize
+            #
+
+            out('')
+            out('@Override')
+            with self.g.block('public void serialize(%s value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException' % data_type.java_class):
+                yield
+
+    @contextmanager
+    def generate_struct_json_writer_base(self, data_type):
+        assert data_type.is_struct, repr(data_type)
+
         out = self.g.emit
 
         out('')
-        with self.g.block('public static final JsonWriter<%(cn)s> _JSON_WRITER = new JsonWriter<%(cn)s>()' % dict(cn=data_type.java_class), after=';'):
-            with self.g.block('public void write(%s x, JsonGenerator g) throws IOException' % data_type.java_class):
-                with self.g.block('switch (x)'):
-                    for field in data_type.all_fields:
-                        out('case %s:' % field.java_name)
-                        with self.g.indent():
-                            out('g.writeStartObject();')
-                            out('g.writeFieldName(".tag");')
+        with self.g.block('static final class Serializer extends StructJsonSerializer<%s>' % data_type.java_class):
+            out('private static final long serialVersionUID = 0L;')
+
+            #
+            # Constructor
+            #
+
+            out('')
+            with self.g.block('public Serializer()'):
+                out('super(%s.class);' % data_type.java_class)
+
+            out('')
+            with self.g.block('public Serializer(boolean unwrapping)'):
+                out('super(%s.class, unwrapping);' % data_type.java_class)
+
+
+            #
+            # unwrapping Factory method
+            #
+
+            # allow struct to collapse into parent object
+            if data_type.is_collapsible:
+                out('')
+                out('@Override')
+                with self.g.block('protected JsonSerializer<%s> asUnwrapping()' % data_type.java_class):
+                    out('return new Serializer(true);')
+
+            #
+            # serialize fields
+            #
+
+            out('')
+            out('@Override')
+            with self.g.block('protected void serializeFields(%s value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException' % data_type.java_class):
+                yield
+
+    @contextmanager
+    def generate_union_json_reader_base(self, data_type):
+        assert data_type.is_union, repr(data_type)
+
+        out = self.g.emit
+
+        collapsible_fields = tuple(f for f in data_type.all_fields if f.is_collapsible)
+        tag_class = data_type.java_class if data_type.is_enum else 'Tag'
+
+        out('')
+        with self.g.block('static final class Deserializer extends UnionJsonDeserializer<%s, %s>' % (data_type.java_class, tag_class)):
+            out('private static final long serialVersionUID = 0L;')
+
+            #
+            # Constructor
+            #
+
+            out('')
+            with self.g.block('public Deserializer()'):
+                if data_type.catch_all_field is not None:
+                    catch_all = '%s.%s' % (tag_class, data_type.catch_all_field.tag_name)
+                else:
+                    catch_all = 'null'
+
+                args = chain(
+                    ('%s.class' % data_type.java_class, 'VALUES_', catch_all),
+                    ('%s.class' % f.java_type() for f in collapsible_fields),
+                )
+                out('super(%s);' % ', '.join(args))
+
+            #
+            # deserialize
+            #
+
+            out('')
+            out('@Override')
+            with self.g.block('public %s deserialize(%s _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException' % (data_type.java_class, tag_class)):
+                yield
+
+    @contextmanager
+    def generate_struct_json_reader_base(self, data_type):
+        assert data_type.is_struct, repr(data_type)
+
+        out = self.g.emit
+
+        subtypes = data_type.enumerated_subtypes if data_type.has_enumerated_subtypes else ()
+
+        out('')
+        with self.g.block('static final class Deserializer extends StructJsonDeserializer<%s>' % data_type.java_class):
+            out('private static final long serialVersionUID = 0L;')
+
+            #
+            # Constructor
+            #
+
+            out('')
+            with self.g.block('public Deserializer()'):
+                args = ', '.join(chain(
+                    ('%s.class' % data_type.java_class,),
+                    ('%s.class' % f.data_type.java_class for f in subtypes),
+                ))
+                out('super(%s);' % args)
+
+            out('')
+            with self.g.block('public Deserializer(boolean unwrapping)'):
+                args = ', '.join(chain(
+                    ('%s.class' % data_type.java_class,),
+                    ('unwrapping',),
+                    ('%s.class' % f.data_type.java_class for f in subtypes),
+                ))
+                out('super(%s);' % args)
+
+
+            #
+            # unwrapping Factory method
+            #
+
+            # allow struct to collapse into parent object
+            if data_type.is_collapsible or data_type.is_enumerated_subtype:
+                out('')
+                out('@Override')
+                with self.g.block('protected JsonDeserializer<%s> asUnwrapping()' % data_type.java_class):
+                    out('return new Deserializer(true);')
+
+            #
+            # deserialize
+            #
+
+            out('')
+            out('@Override')
+            with self.g.block('public %s deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException' % data_type.java_class):
+                yield
+
+    def generate_enum_json_writer(self, data_type):
+        out = self.g.emit
+
+        with self.generate_union_json_writer_base(data_type):
+            with self.g.block('switch (value)'):
+                for field in data_type.all_fields:
+                    out('case %s:' % field.java_name)
+                    with self.g.indent():
+                        if not field.has_value:
+                            # can ommit ".tag" for simple fields, e.g. "no_permission"
                             out('g.writeString("%s");' % field.babel_name)
+                        else:
+                            out('g.writeStartObject();')
+                            out('g.writeStringField(".tag", "%s");' % field.babel_name)
                             out('g.writeEndObject();')
-                            out('break;')
+                        out('break;')
 
     def generate_enum_json_reader(self, data_type):
         out = self.g.emit
 
-        out('')
-        with self.g.block('public static final JsonReader<%(cn)s> _JSON_READER = new JsonReader<%(cn)s>()' % dict(cn=data_type.java_class), after=';'):
-            with self.g.block('public final %s read(JsonParser parser) throws IOException, JsonReadException' % data_type.java_class):
-                if data_type.catch_all_field is not None:
-                    catch_all_field = data_type.catch_all_field.java_name
-                else:
-                    catch_all_field = 'null'
-                out('return JsonReader.readEnum(parser, VALUES_, %s);' % catch_all_field)
-
+        with self.generate_union_json_reader_base(data_type):
+            out('return _tag;')
 
     def generate_enum_values(self, data_type):
         """Generate enum values for simple unions or tags."""
@@ -2679,6 +2796,8 @@ class JavaCodeGenerationInstance(object):
 
         out('')
         javadoc(data_type.babel_doc, context=data_type)
+        out('@JsonSerialize(using=%s.Serializer.class)' % data_type.java_class.name)
+        out('@JsonDeserialize(using=%s.Deserializer.class)' % data_type.java_class.name)
         with self.g.block('public final class %s' % data_type.java_class):
             out('// union %s' % data_type.java_class)
 
@@ -2781,95 +2900,82 @@ class JavaCodeGenerationInstance(object):
     def generate_union_json_writer(self, data_type):
         out = self.g.emit
 
-        out('')
-        with self.g.block('public static final JsonWriter<%(cn)s> _JSON_WRITER = new JsonWriter<%(cn)s>()' % dict(cn=data_type.java_class), after=';'):
-            with self.g.block('public final void write(%s x, JsonGenerator g) throws IOException' % data_type.java_class):
-                with self.g.block('switch (x.tag)'):
-                    for field in data_type.all_fields:
-                        out('case %s:' % field.tag_name)
-                        with self.g.indent():
-                            out('g.writeStartObject();')
-                            out('g.writeFieldName(".tag");')
+        with self.generate_union_json_writer_base(data_type):
+            with self.g.block('switch (value.tag)'):
+                for field in data_type.all_fields:
+                    out('case %s:' % field.tag_name)
+                    with self.g.indent():
+                        if not field.has_value:
+                            # can ommit ".tag" for simple fields, e.g. "no_permission"
                             out('g.writeString("%s");' % field.babel_name)
-                            if field.has_value:
-                                self.generate_write_field(field, 'x.%s()' % field.java_getter)
+                        else:
+                            # standard format: Nest the tag value in its own object
+                            #
+                            #    {".tag": "path", "path": {".tag": "malformed", "malformed": "/A^%"}}
+                            #
+                            # collapsed format: Embed tag value fields into current object. Used
+                            #                   only if tag value is a simple struct (no enumerated
+                            #                   subtypes)
+                            #
+                            #    {".tag": "conflict", "path_lower": "/a/b/c", "rev": "abc1234567"}
+                            #
+                            field_dt = field.data_type
+                            out('g.writeStartObject();')
+                            out('g.writeStringField(".tag", "%s");' % field.babel_name)
+
+                            if field.is_collapsible:
+                                out('getUnwrappingSerializer(%s.class).serialize(value.%s, g, provider);' % (field.java_type(), field.java_name))
+                            else:
+                                self.generate_write_field(field, 'value.%s' % field.java_name)
 
                             out('g.writeEndObject();')
-                            out('break;')
+                        out('break;')
 
     def generate_union_json_reader(self, data_type):
         out = self.g.emit
 
-        out('')
-        with self.g.block('public static final JsonReader<%(cn)s> _JSON_READER = new JsonReader<%(cn)s>()' % dict(cn=data_type.java_class), after=';'):
-            out('')
-            with self.g.block('public final %s read(JsonParser parser) throws IOException, JsonReadException' % data_type.java_class):
-                with self.g.block('if (parser.getCurrentToken() == JsonToken.VALUE_STRING)'):
-                    out('String text = parser.getText();')
-                    out('parser.nextToken();')
-                    out('Tag tag = VALUES_.get(text);')
-                    catch_all_field = data_type.catch_all_field
-                    with self.g.block('if (tag == null)'):
-                        if catch_all_field is not None:
-                            out('return %s.%s;' % (data_type.java_class, catch_all_field.java_singleton))
+        tag_fields = data_type.all_fields
+        if data_type.catch_all_field:
+            tag_fields + (data_type.catch_all_field,)
+
+        with self.generate_union_json_reader_base(data_type):
+            with self.g.block('switch (_tag)'):
+
+                for field in tag_fields:
+                    field_dt = field.data_type
+
+                    with self.g.block('case %s:' % field.tag_name):
+                        #
+                        # Simple fields + CATCH ALL
+                        #
+                        if not field.has_value:
+                            out('return %s.%s;' % (data_type.java_class, field.java_singleton))
+                            continue
+
+                        #
+                        # Nullable fields
+                        #
+                        if field_dt.is_nullable:
+                            field_dt = field_dt.nullable_data_type
+                            with self.g.block('if (isObjectEnd(_p))'):
+                                out('return %s.%s();' % (data_type.java_class, field.java_factory_method))
+
+                        #
+                        # Value fields
+                        #
+                        out('%s value = null;' % field_dt.java_type())
+                        if field.is_collapsible:
+                            # struct has been collapsed (e.g. unwrapped) into our union
+                            # object. This means there is no nested object for the tag value.
+                            # Read the fields directly.
+                            out('value = readCollapsedStructValue(%s.class, _p, _ctx);' % field_dt.java_class)
                         else:
-                            out('throw new JsonReadException("Unanticipated tag " + text + " without catch-all", parser.getTokenLocation());')
-                    with self.g.block('switch (tag)'):
-                        for field in data_type.all_fields:
-                            if not field.has_value:
-                                out('case %s: return %s.%s;' % (
-                                    field.tag_name, data_type.java_class, field.java_singleton))
-                            elif field.data_type.is_nullable:
-                                out('case %s: return %s.%s();' % (
-                                    field.tag_name, data_type.java_class, field.java_factory_method))
-                    out('throw new JsonReadException("Tag " + tag + " requires a value", parser.getTokenLocation());')
-                # Else expect either {".tag": <tag>} or {".tag": <tag>, <tag>: <value>}.
-                out('JsonReader.expectObjectStart(parser);')
-                out('String[] tags = readTags(parser);')
-                out('assert tags != null && tags.length == 1;')
-                out('String text = tags[0];')
-                out('Tag tag = VALUES_.get(text);')
-                out('%s value = null;' % data_type.java_class)
-                with self.g.block('if (tag != null)'):
-                    with self.g.block('switch (tag)'):
-                        for field in data_type.all_fields:
-                            with self.g.block('case %s:' % field.tag_name):
-                                if not field.has_value:
-                                    out('value = %s.%s;' % (data_type.java_class, field.java_singleton))
-                                else:
-                                    field_dt = field.data_type
+                            self.generate_read_field(field, 'value')
 
-                                    if field_dt.is_nullable:
-                                        field_dt = field_dt.nullable_data_type
-                                        with self.g.block('if (parser.getCurrentToken() == JsonToken.END_OBJECT)'):
-                                            out('value = %s.%s();' % (data_type.java_class, field.java_factory_method))
-                                            out('break;')  # Null value is OK.
+                        out('return %s.%s(value);' % (data_type.java_class, field.java_factory_method))
 
-                                    out('%s v = null;' % field_dt.java_type())
-                                    if field_dt.is_struct and not field_dt.has_enumerated_subtypes:
-                                        # Collapse struct into union.
-                                        out('v = %s._JSON_READER.readFields(parser);' % field_dt.java_class)
-                                    else:
-                                        out('assert parser.getCurrentToken() == JsonToken.FIELD_NAME;')
-                                        out('text = parser.getText();')
-                                        out('assert tags[0].equals(text);')
-                                        out('parser.nextToken();')
-                                        # TODO: generate_read_field() writes code using readField()
-                                        # methods, which check for duplicate fields. We can't have
-                                        # duplicate fields here, so that code is useless.  Need to
-                                        # refactor generate_read_field() more.
-                                        self.generate_read_field(field, 'v')
-                                    out('value = %s.%s(v);' % (data_type.java_class, field.java_factory_method))
-                                out('break;')
-                if catch_all_field is None:
-                    with self.g.block('if (value == null)'):
-                        out('throw new JsonReadException("Unanticipated tag " + text, parser.getTokenLocation());')
-                out('JsonReader.expectObjectEnd(parser);')
-                if catch_all_field is not None:
-                    with self.g.block('if (value == null)'):
-                        out('return %s.%s;' % (data_type.java_class, catch_all_field.java_singleton))
-                out('return value;')
-            out('')
+            out('// should be impossible to get here')
+            out('throw new IllegalStateException("Unparsed tag: \\"" + _tag + "\\"");')
 
     def generate_data_type_union_field_methods(self, data_type):
         out = self.g.emit
@@ -2967,6 +3073,8 @@ class JavaCodeGenerationInstance(object):
 
         out('')
         javadoc(data_type.babel_doc, context=data_type)
+        out('@JsonSerialize(using=%s.Serializer.class)' % data_type.java_class.name)
+        out('@JsonDeserialize(using=%s.Deserializer.class)' % data_type.java_class.name)
         with self.g.block('public class %s' % data_type.java_class_with_inheritance):
             out('// struct %s' % data_type.babel_name)
             #
@@ -3070,8 +3178,8 @@ class JavaCodeGenerationInstance(object):
             # JSON (de)serialization
             #
             self.generate_json_serialization_methods(data_type)
-            self.generate_json_writer(data_type)
-            self.generate_json_reader(data_type)
+            self.generate_struct_json_writer(data_type)
+            self.generate_struct_json_reader(data_type)
 
     def generate_struct_builder(self, data_type):
         out = self.g.emit
@@ -3206,6 +3314,7 @@ class JavaCodeGenerationInstance(object):
             out('')
             javadoc('Exception thrown when the server responds with a %s error.' % self.doc.javadoc_ref(data_type))
             with self.g.block('public class %s extends DbxApiException' % class_name):
+                out('private static final long serialVersionUID = 0L;')
                 out('')
                 javadoc('The error reported by %s.' % self.doc.javadoc_ref(route))
                 out('public final %s errorValue;' % error_type)
@@ -3230,12 +3339,11 @@ class JavaCodeGenerationInstance(object):
             self.importer.generate_imports()
 
             response_type = route.response.java_type()
+            error_type = route.error.java_type()
             if route.has_error:
                 exception_type = route.java_exception_class
-                error_type = route.error.java_type()
             else:
                 exception_type = 'DbxApiException'
-                error_type = None
 
             out('')
             javadoc(
@@ -3249,7 +3357,10 @@ class JavaCodeGenerationInstance(object):
                 DbxUploader} for examples).
                 """ % self.doc.javadoc_ref(route)
             )
-            with self.g.block('public class %s extends DbxUploader<%s, %s>' % (class_name, response_type, exception_type)):
+            with self.g.block('public class %s extends DbxUploader<%s, %s, %s>' % (class_name, response_type, error_type, exception_type)):
+                out('private static final JavaType _RESPONSE_TYPE = JsonUtil.createType(new TypeReference<%s>() {});' % response_type)
+                out('private static final JavaType _ERROR_TYPE = JsonUtil.createType(new TypeReference<%s>() {});' % error_type)
+
                 out('')
                 javadoc(
                     'Creates a new instance of this uploader.',
@@ -3257,23 +3368,10 @@ class JavaCodeGenerationInstance(object):
                     throws=(('NullPointerException', 'if {@code httpUploader} is {@code null}'),)
                 )
                 with self.g.block('public %s(HttpRequestor.Uploader httpUploader)' % class_name):
-                    out('super(httpUploader);')
+                    out('super(httpUploader, _RESPONSE_TYPE, _ERROR_TYPE);')
 
-                out('')
-                out('@Override')
-                with self.g.block('protected %s parseResponse(HttpRequestor.Response response) throws JsonReadException, IOException' % response_type):
-                    reader = route.response_reader
-                    if route.has_response:
-                        out('return %s.readFully(response.getBody());' % reader)
-                    else:
-                        out('%s.readFully(response.getBody());' % reader)
-                        out('return null;')
-
-                out('')
-                out('@Override')
-                with self.g.block('protected %s parseError(HttpRequestor.Response response) throws JsonReadException, IOException' % exception_type):
-                    out('DbxRequestUtil.ErrorWrapper wrapper = DbxRequestUtil.ErrorWrapper.fromResponse(%s, response);' % route.error_reader)
-                    out('return %s' % self.translate_error_wrapper(route, 'wrapper'))
+                with self.g.block('protected %s newException(DbxRequestUtil.ErrorWrapper error)' % exception_type):
+                    out('return %s' % self.translate_error_wrapper(route, 'error'))
 
     def generate_builder_type(self, route):
         if not route.supports_builder:
@@ -3525,37 +3623,20 @@ class JavaCodeGenerationInstance(object):
 
             out('this.%s.add(x_);' % value_name)
 
-    def generate_json_writer(self, data_type):
+    def generate_struct_json_writer(self, data_type):
         out = self.g.emit
         ancestors = get_ancestors(data_type.as_babel)
-
-        out('')
-        with self.g.block('public static final JsonWriter<%s> _JSON_WRITER = new JsonWriter<%s>()' % (
-                data_type.java_class, data_type.java_class), after=';'):
-            with self.g.block('public final void write(%s x, JsonGenerator g) throws IOException' % data_type.java_class):
-                if data_type.has_enumerated_subtypes:
-                    for subtype_field in data_type.enumerated_subtypes:
-                        subtype_dt = subtype_field.data_type
-                        subtype_class = subtype_dt.java_class
-                        with self.g.block('if (x instanceof %s)' % subtype_class):
-                            out('%s._JSON_WRITER.write((%s) x, g);' % (subtype_class, subtype_class))
-                            out('return;')
-                    out('')
-
-                out('g.writeStartObject();')
-                tags = [tag for tag, __ in ancestors if tag]
-                if tags:
-                    out('g.writeStringField(".tag", "%s");' % '.'.join(tags))
-                for __, ancestor_babel_data_type in ancestors:
-                    ancestor_namespace = NamespaceWrapper(self.ctx, ancestor_babel_data_type.namespace)
-                    ancestor_data_type = DataTypeWrapper(self.ctx, ancestor_babel_data_type)
-                    out('%s._JSON_WRITER.writeFields(x, g);' % ancestor_data_type.java_class)
-                out('g.writeEndObject();')
-
-            with self.g.block('public final void writeFields(%s x, JsonGenerator g) throws IOException' % data_type.java_class):
-                for field in data_type.fields:
-                    var_name = 'x.%s' % field.java_name
-                    self.generate_write_field(field, var_name)
+        with self.generate_struct_json_writer_base(data_type):
+            tags = [tag for tag, __ in ancestors if tag]
+            if tags:
+                out('g.writeStringField(".tag", "%s");' % '.'.join(tags))
+            for field in data_type.all_fields:
+                # because of inheritance, we can't access all our private fields
+                if field.containing_data_type == data_type:
+                    field_value = 'value.%s' % field.java_name
+                else:
+                    field_value = 'value.%s()' % field.java_getter
+                self.generate_write_field(field, field_value)
 
     def generate_write_field(self, field, var_name):
         out = self.g.emit
@@ -3567,122 +3648,130 @@ class JavaCodeGenerationInstance(object):
             field_dt = field.data_type
             nullable = False
 
-        with self.conditional_block('if (%s != null)' % var_name, nullable):
-            if is_struct_type(field.as_babel) and field_dt.has_enumerated_subtypes:
-                # Collapse into union
-                out('%s._JSON_WRITER.writeFields(%s, g);' % (
-                    field_dt.java_class, var_name))
-            # For strings, numbers, and booleans use a shorthand method.
-            elif is_string_type(field.as_babel):
-                out('g.writeStringField("%s", %s);' % (field.babel_name, var_name))
-            elif is_numeric_type(field.as_babel):
-                out('g.writeNumberField("%s", %s);' % (field.babel_name, var_name))
-            elif is_boolean_type(field.as_babel):
-                out('g.writeBooleanField("%s", %s);' % (field.babel_name, var_name))
-            else:
-                # General case.
-                out('g.writeFieldName("%s");' % field.babel_name)
-                self.generate_write_value(field.data_type, var_name)
+        babel_dt = field_dt.as_babel
 
-    def generate_write_value(self, data_type, var_name, level=0):
+        with self.conditional_block('if (%s != null)' % var_name, nullable):
+            # TODO(krieb): support collapsing structs into unions
+            out('g.writeObjectField("%s", %s);' % (field.babel_name, var_name))
+
+    def generate_struct_json_reader(self, data_type):
+        out = self.g.emit
+
+        ancestors = get_ancestors(data_type.as_babel)
+
+        with self.generate_struct_json_reader_base(data_type):
+            #
+            # Enumerated subtypes
+            #
+            if data_type.is_enumerated_subtype:
+                args = ', '.join(chain(
+                    ('_p',),
+                    ('"%s"' % tag for tag, __ in ancestors[1:]),
+                ))
+                out('String _subtype_tag = readEnumeratedSubtypeTag(%s);' % args)
+
+                # delegate parsing to subtypes if we have any
+                if data_type.has_enumerated_subtypes:
+                    for field in data_type.enumerated_subtypes:
+                        with self.g.block('if ("%s".equals(_subtype_tag))' % field.babel_name):
+                            out('return readCollapsedStructValue(%s.class, _p, _ctx);' % field.data_type.java_class)
+
+            #
+            # Parse fields
+            #
+            out('')
+            for field in data_type.all_fields:
+                out('%s %s = null;' % (field.data_type.java_type(boxed=True), field.java_name))
+
+            out('')
+            with self.g.block('while (_p.getCurrentToken() == JsonToken.FIELD_NAME)'):
+                out('String _field = _p.getCurrentName();')
+                out('_p.nextToken();')
+
+                condition = 'if'
+                for field in data_type.all_fields:
+                    with self.g.block('%s ("%s".equals(_field))' % (condition, field.babel_name)):
+                        self.generate_read_data_type(field.data_type, field.java_name)
+                    condition = 'else if'
+                with self.g.block('else'):
+                    out('skipValue(_p);')
+
+            #
+            # Validate required fields present
+            #
+            out('')
+            for field in data_type.all_required_fields:
+                with self.g.block('if (%s == null)' % field.java_name):
+                    out('throw new JsonParseException(_p, "Required field \\"%s\\" is missing.");' % field.babel_name)
+
+            contructor_args = ', '.join(f.java_name for f in data_type.all_fields)
+            out('')
+            out('return new %s(%s);' % (data_type.java_class, contructor_args))
+
+    def generate_read_field(self, field, var_name=None):
+        out = self.g.emit
+
+        out('expectField(_p, "%s");' % field.babel_name)
+        self.generate_read_data_type(field.data_type, var_name)
+
+    def generate_read_data_type(self, data_type, var_name=None, level=0):
         out = self.g.emit
 
         if data_type.is_nullable:
             data_type = data_type.nullable_data_type
 
         babel_data_type = data_type.as_babel
-        if is_string_type(babel_data_type):
-            out('g.writeString(%s);' % var_name)
-        elif is_numeric_type(babel_data_type):
-            out('g.writeNumber(%s);' % var_name)
+
+        # special handling of list type
+        if is_list_type(babel_data_type):
+            list_data_type = data_type.list_data_type;
+            out('expectArrayStart(_p);')
+            out('%s = new java.util.ArrayList<%s>();' % (var_name, list_data_type.java_type()))
+            with self.g.block('while (!isArrayEnd(_p))'):
+                var_item = ('_x%s' % level) if level else '_x'
+                out('%s %s = null;' % (list_data_type.java_type(), var_item))
+                self.generate_read_data_type(list_data_type, var_item, level=(level+1))
+                out('%s.add(%s);' % (var_name, var_item))
+            out('expectArrayEnd(_p);')
+            out('_p.nextToken();')
+            return
+
+        if is_composite_type(babel_data_type):
+            out('%s = _p.readValueAs(%s.class);' % (var_name, data_type.java_class))
+        elif is_string_type(babel_data_type):
+            out('%s = getStringValue(_p);' % var_name)
         elif is_boolean_type(babel_data_type):
-            out('g.writeBoolean(%s);' % var_name)
-        elif is_composite_type(babel_data_type):
-            out('%s._JSON_WRITER.write(%s, g);' % (data_type.java_class, var_name))
+            out('%s = _p.getValueAsBoolean();' % var_name)
+        elif is_numeric_type(babel_data_type):
+            java_type = data_type.java_type(boxed=False).name
+            unsigned = data_type.babel_name.startswith('U')
+
+            if java_type == 'long':
+                out('%s = _p.getLongValue();' % var_name)
+            elif java_type == 'int':
+                out('%s = _p.getIntValue();' % var_name)
+            elif java_type == 'float':
+                out('%s = _p.getFloatValue();' % var_name)
+            elif java_type == 'double':
+                out('%s = _p.getDoubleValue();' % var_name)
+            else:
+                raise AssertionError("unsupported numeric babel type: %r" % babel_data_type)
+
+            if unsigned:
+                out('assertUnsigned(_p, %s);' % var_name)
+                if data_type.babel_name == 'UInt32':
+                    with self.g.block('if (%s > Integer.MAX_VALUE)' % var_name):
+                        out('throw new JsonParseException(_p, "expecting a 32-bit unsigned integer, got: " + %s);' % var_name)
         elif is_timestamp_type(babel_data_type):
-            out('writeDateIso(%s, g);' % var_name)
+            out('%s = _ctx.parseDate(getStringValue(_p));' % var_name)
         elif is_binary_type(babel_data_type):
-            out('g.writeString(com.dropbox.core.util.StringUtil.base64Encode(%s));' % var_name)
-        elif is_list_type(babel_data_type):
-            item_name = 'item' if level == 0 else 'item%d' % level
-            out('g.writeStartArray();')
-            with self.g.block('for (%s %s: %s)' % (data_type.list_data_type.java_type(), item_name, var_name)):
-                with self.g.block('if (%s != null)' % item_name):
-                    self.generate_write_value(data_type.list_data_type, item_name, level+1)
-            out('g.writeEndArray();')
+            out('%s = _p.getBinaryValue();' % var_name)
+        elif is_void_type(babel_data_type):
+            out('_p.skipChildren();')
         else:
-            out('throw new IOException("XXX Don\'t know how to write a %s");' % data_type.java_type())
+            raise AssertionError("unsupported babel type: %r" % babel_data_type)
 
-
-    def generate_json_reader(self, data_type):
-        out = self.g.emit
-
-        out('')
-        with self.g.block('public static final JsonReader<%s> _JSON_READER = new JsonReader<%s>()' % (
-                data_type.java_class, data_type.java_class), after=';'):
-            with self.g.block('public final %s read(JsonParser parser) throws IOException, JsonReadException' % data_type.java_class):
-                out('%s result;' % data_type.java_class)
-                out('JsonReader.expectObjectStart(parser);')
-                if data_type.is_enumerated_subtype:
-                    # We need the .tag field first
-                    out('String [] tags = readTags(parser);')
-                    out('result = readFromTags(tags, parser);')
-                else:
-                    out('result = readFields(parser);')
-                out('JsonReader.expectObjectEnd(parser);')
-                out('return result;')
-
-            if data_type.is_enumerated_subtype:
-                out('')
-                with self.g.block('public final %s readFromTags(String [] tags, JsonParser parser) throws IOException, JsonReadException' % data_type.java_class):
-                    ancestors = get_ancestors(data_type.as_babel)
-                    depth = len(ancestors) - 1
-                    if depth >= 1:
-                        with self.g.block('if (tags != null)'):
-                            out('assert tags.length >= %d;' % depth)
-                            for i, (tag, __) in enumerate(ancestors[1:]):
-                                out('assert "%s".equals(tags[%d]);' % (tag, i))
-
-                    if data_type.has_enumerated_subtypes:
-                        with self.g.block('if (tags != null && tags.length > %d)' % depth):
-                            for field in data_type.enumerated_subtypes:
-                                with self.g.block('if ("%s".equals(tags[%d]))' % (field.babel_name, depth)):
-                                    out('return %s._JSON_READER.readFromTags(tags, parser);' % field.data_type.java_class)
-                            out('// If no match, fall back to base class')
-                    out('return readFields(parser);')
-
-            out('')
-            with self.g.block('public final %s readFields(JsonParser parser) throws IOException, JsonReadException' % data_type.java_class):
-                for field in data_type.all_fields:
-                    out('%s %s = null;' % (field.data_type.java_type(boxed=True), field.java_name))
-                with self.g.block('while (parser.getCurrentToken() == JsonToken.FIELD_NAME)'):
-                    out('String fieldName = parser.getCurrentName();')
-                    out('parser.nextToken();')
-                    condition = 'if'
-                    for field in data_type.all_fields:
-                        with self.g.block('%s ("%s".equals(fieldName))' % (condition, field.babel_name)):
-                            self.generate_read_field(field, field.java_name)
-                        condition = 'else if'
-                    with self.g.block('else'):
-                        out('JsonReader.skipValue(parser);')
-
-                # Validate required fields
-                for field in data_type.all_fields:
-                    if not field.is_required:
-                        continue
-
-                    with self.g.block('if (%s == null)' % field.java_name):
-                        out('throw new JsonReadException("Required field \\"%s\\" is missing.", parser.getTokenLocation());' % field.babel_name)
-
-                contructor_args = ', '.join(f.java_name for f in data_type.all_fields)
-                out('return new %s(%s);' % (data_type.java_class, contructor_args))
-
-    def generate_read_field(self, field, var_name=None):
-        out = self.g.emit
-
-        out('%s = %s' % (var_name, get_json_reader(field.data_type)))
-        with self.g.indent():
-            out('.readField(parser, "%s", %s);' % (field.babel_name, var_name))
+        out('_p.nextToken();')
 
     def generate_to_string(self):
         out = self.g.emit
@@ -3690,21 +3779,29 @@ class JavaCodeGenerationInstance(object):
         out('')
         out('@Override')
         with self.g.block('public String toString()'):
-            out('return _JSON_WRITER.writeToString(this, false);')
+            out('return toJson(false);')
 
         out('')
         with self.g.block('public String toStringMultiline()'):
-            out('return _JSON_WRITER.writeToString(this, true);')
+            out('return toJson(true);')
 
     def generate_json_serialization_methods(self, data_type):
         out = self.g.emit
 
         out('')
-        with self.g.block('public String toJson(Boolean longForm)'):
-            out('return _JSON_WRITER.writeToString(this, longForm);')
+        with self.g.block('public String toJson(boolean longForm)'):
+            with self.g.block('try'):
+                out('return JsonUtil.getMapper(longForm).writeValueAsString(this);')
+            with self.g.block('catch (JsonProcessingException ex)'):
+                out('throw new RuntimeException("Failed to serialize object", ex);')
+
         out('')
         with self.g.block('public static %s fromJson(String s) throws JsonReadException' % data_type.java_class):
-            out('return _JSON_READER.readFully(s);')
+            with self.g.block('try'):
+                out('return JsonUtil.getMapper().readValue(s, %s.class);' % data_type.java_class)
+            with self.g.block('catch (IOException ex)'):
+                out('// should not happen since we are reading from a String')
+                out('throw new RuntimeException(ex);')
 
     def generate_hash_code(self, data_type):
         out = self.g.emit
