@@ -5,6 +5,7 @@ import com.dropbox.core.DbxAuthInfo;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.DbxWebAuth;
+import com.dropbox.core.NetworkIOException;
 import com.dropbox.core.json.JsonReader;
 import com.dropbox.core.http.StandardHttpRequestor;
 import com.dropbox.core.v2.DbxClientV2;
@@ -17,6 +18,7 @@ import com.dropbox.core.v2.files.ListFolderResult;
 import com.dropbox.core.v2.files.Metadata;
 
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -33,7 +35,8 @@ public class Main {
      * periodic polling the endpoint.
      */
     public static void longpoll(DbxAuthInfo auth, String path) throws IOException {
-        long longpollTimeoutSecs = TimeUnit.MINUTES.toSeconds(2);
+        // Keep timeout low to avoid issue with reset/dropped connections
+        long longpollTimeoutSecs = 30;
 
         // need 2 Dropbox clients for making calls:
         //
@@ -70,6 +73,7 @@ public class Main {
                 Long backoff = result.getBackoff();
                 if (backoff != null) {
                     try {
+                        System.out.printf("backing off for %d secs...\n", backoff.longValue());
                         Thread.sleep(TimeUnit.SECONDS.toMillis(backoff));
                     } catch (InterruptedException ex) {
                         System.exit(0);
@@ -82,6 +86,12 @@ public class Main {
             System.err.println("Error making API call: " + message);
             System.exit(1);
             return;
+        } catch (NetworkIOException ex) {
+            System.err.println("Error making API call: " + ex.getMessage());
+            if (ex.getCause() instanceof SocketTimeoutException) {
+                System.err.println("Consider increasing socket read timeout and decreasing longpoll timeout");
+            }
+            System.exit(1);
         } catch (DbxException ex) {
             System.err.println("Error making API call: " + ex.getMessage());
             System.exit(1);
