@@ -57,7 +57,8 @@ public class Main {
             System.out.println("Longpolling for changes... press CTRL-C to exit.");
             while (true) {
                 // will block for longpollTimeoutSecs or until a change is made in the folder
-                ListFolderLongpollResult result = dbxLongpollClient.files.listFolderLongpoll(cursor, longpollTimeoutSecs);
+                ListFolderLongpollResult result = dbxLongpollClient.files()
+                    .listFolderLongpoll(cursor, longpollTimeoutSecs);
 
                 // we have changes, list them
                 if (result.getChanges()) {
@@ -117,7 +118,8 @@ public class Main {
      */
     private static String getLatestCursor(DbxClientV2 dbxClient, String path)
         throws DbxApiException, DbxException {
-        ListFolderGetLatestCursorResult result = dbxClient.files.listFolderGetLatestCursorBuilder(path)
+        ListFolderGetLatestCursorResult result = dbxClient.files()
+            .listFolderGetLatestCursorBuilder(path)
             .withIncludeDeleted(true)
             .withIncludeMediaInfo(false)
             .withRecursive(true)
@@ -138,7 +140,8 @@ public class Main {
         throws DbxApiException, DbxException {
 
         while (true) {
-            ListFolderResult result = client.files.listFolderContinue(cursor);
+            ListFolderResult result = client.files()
+                .listFolderContinue(cursor);
             for (Metadata metadata : result.getEntries()) {
                 String type;
                 String details;

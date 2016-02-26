@@ -703,8 +703,11 @@ class NamespaceWrapper(BabelWrapper):
 
     @property
     def java_class(self):
-        return self._as_java_class("Dbx" + classname(self.babel_name))
+        return self._as_java_class(classname('dbx_' + self.babel_name))
 
+    @property
+    def java_getter(self):
+        return camelcase(self.babel_name)
 
 class RouteWrapper(BabelWrapper):
     """
@@ -2130,7 +2133,7 @@ class JavaCodeGenerationInstance(object):
             out('')
             with self.g.block('public %s asMember(String memberId)' % (user_client_class_name,)):
                 out('if (memberId == null) throw new IllegalArgumentException("\'memberId\' should not be null");')
-                out('return new %s(new DbxTeamRawClientV2(rawClient, memberId));' % (user_client_class_name,))
+                out('return new %s(new DbxTeamRawClientV2(_client, memberId));' % (user_client_class_name,))
 
             self.doc.generate_javadoc(
                 """
@@ -2185,9 +2188,9 @@ class JavaCodeGenerationInstance(object):
                 """ % class_doc
             )
             with self.g.block('public final class %s' % class_name):
-                out('private final DbxRawClientV2 rawClient;')
+                out('private final DbxRawClientV2 _client;')
                 for namespace in namespaces:
-                    out('public final %s %s;' % (namespace.java_class, namespace.java_field))
+                    out('private final %s %s;' % (namespace.java_class, namespace.java_field))
                 out('')
 
                 param_docs = OrderedDict((
@@ -2233,12 +2236,23 @@ class JavaCodeGenerationInstance(object):
                     params=param_docs
                 )
                 # package-private
-                with self.g.block(('%s(DbxRawClientV2 rawClient)') % class_name):
-                    out('this.rawClient = rawClient;')
+                with self.g.block('%s(DbxRawClientV2 _client)' % class_name):
+                    out('this._client = _client;')
                     for namespace in namespaces:
-                        out('this.%s = new %s(rawClient);' % (
+                        out('this.%s = new %s(_client);' % (
                             namespace.java_field, namespace.java_class
                         ))
+
+                for namespace in namespaces:
+                    out('')
+                    self.doc.generate_javadoc(
+                        """
+                        Returns client for issuing requests in the {@code "%s"} namespace.
+                        """ % namespace.babel_name,
+                        returns="Dropbox %s client" % namespace.babel_name
+                    )
+                    with self.g.block("public %s %s()" % (namespace.java_class, namespace.java_getter)):
+                        out('return %s;' % namespace.java_field)
 
                 out('')
                 # allow caller to add custom methods to the client

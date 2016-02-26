@@ -59,7 +59,7 @@ class UploadFileTask extends AsyncTask<String, Void, FileMetadata> {
             String remoteFileName = localFile.getName();
 
             try (InputStream inputStream = new FileInputStream(localFile)) {
-                return mDbxClient.files.uploadBuilder(remoteFolderPath + "/" + remoteFileName)
+                return mDbxClient.files().uploadBuilder(remoteFolderPath + "/" + remoteFileName)
                         .withMode(WriteMode.OVERWRITE)
                         .uploadAndFinish(inputStream);
             } catch (DbxException | IOException e) {

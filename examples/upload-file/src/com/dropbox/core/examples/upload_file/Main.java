@@ -7,7 +7,6 @@ import com.dropbox.core.DbxWebAuth;
 import com.dropbox.core.json.JsonReader;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.DbxPathV2;
-import com.dropbox.core.v2.files.DbxFiles;
 import com.dropbox.core.v2.files.FileMetadata;
 import com.dropbox.core.v2.files.UploadErrorException;
 import com.dropbox.core.v2.files.WriteMode;
@@ -25,18 +24,13 @@ import java.util.logging.Logger;
  * An example command-line application that runs through the web-based OAuth
  * flow (using {@link DbxWebAuth}).
  */
-public class Main
-{
-    public static void main(String[] args)
-        throws IOException
-    {
+public class Main {
+    public static void main(String[] args) throws IOException {
         int code = _main(args);
         System.exit(code);
     }
 
-    private static int _main(String[] args)
-        throws IOException
-    {
+    private static int _main(String[] args) throws IOException {
         // Only display important log messages.
         Logger.getLogger("").setLevel(Level.WARNING);
 
@@ -69,8 +63,7 @@ public class Main
         DbxAuthInfo authInfo;
         try {
             authInfo = DbxAuthInfo.Reader.readFromFile(argAuthFile);
-        }
-        catch (JsonReader.FileLoadException ex) {
+        } catch (JsonReader.FileLoadException ex) {
             System.err.println("Error loading <auth-file>: " + ex.getMessage());
             return 1;
         }
@@ -92,23 +85,21 @@ public class Main
         try {
             InputStream in = new FileInputStream(localFile);
             try {
-                metadata = dbxClient.files.uploadBuilder(dropboxPath)
+                metadata = dbxClient.files()
+                    .uploadBuilder(dropboxPath)
                     .withMode(WriteMode.ADD)
                     .withClientModified(new Date(localFile.lastModified()))
                     .uploadAndFinish(in);
             } finally {
                 in.close();
             }
-        }
-        catch (UploadErrorException ex) {
+        } catch (UploadErrorException ex) {
             System.out.println("Error uploading to Dropbox: " + ex.getMessage());
             return 1;
-        }
-        catch (DbxException ex) {
+        } catch (DbxException ex) {
             System.out.println("Error uploading to Dropbox: " + ex.getMessage());
             return 1;
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             System.out.println("Error reading from file \"" + localPath + "\": " + ex.getMessage());
             return 1;
         }

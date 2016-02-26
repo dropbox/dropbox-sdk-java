@@ -54,7 +54,7 @@ public class DbxClientV2Test {
             .thenReturn(mockUploader);
 
         try {
-            client.users.getCurrentAccount();
+            client.users().getCurrentAccount();
         } finally {
             // should only have been called once since we disabled retry
             verify(mockRequestor, times(1)).startPost(anyString(), anyHeaders());
@@ -91,7 +91,7 @@ public class DbxClientV2Test {
         when(mockRequestor.startPost(anyString(), anyHeaders()))
             .thenReturn(mockUploader);
 
-        Metadata actual = client.files.getMetadata(expected.getPathLower());
+        Metadata actual = client.files().getMetadata(expected.getPathLower());
 
         // should have only been called 3 times: initial call + 2 retries
         verify(mockRequestor, times(3)).startPost(anyString(), anyHeaders());
@@ -118,7 +118,7 @@ public class DbxClientV2Test {
             .thenReturn(mockUploader);
 
         try {
-            client.users.getCurrentAccount();
+            client.users().getCurrentAccount();
         } finally {
             // should only have been called 4 times: initial call plus our maximum retry limit
             verify(mockRequestor, times(1 + 3)).startPost(anyString(), anyHeaders());
@@ -144,7 +144,7 @@ public class DbxClientV2Test {
             .thenReturn(mockUploader);
 
         try {
-            client.users.getCurrentAccount();
+            client.users().getCurrentAccount();
         } finally {
             // should only have been called 2 times: initial call + retry
             verify(mockRequestor, times(2)).startPost(anyString(), anyHeaders());
@@ -181,7 +181,7 @@ public class DbxClientV2Test {
         when(mockRequestor.startPost(anyString(), anyHeaders()))
             .thenReturn(mockUploader);
 
-        DbxDownloader<FileMetadata> downloader = client.files.download(expectedMetadata.getPathLower());
+        DbxDownloader<FileMetadata> downloader = client.files().download(expectedMetadata.getPathLower());
 
         // should have been attempted twice
         verify(mockRequestor, times(2)).startPost(anyString(), anyHeaders());
@@ -226,7 +226,7 @@ public class DbxClientV2Test {
             .thenReturn(mockUploader);
 
         long start = System.currentTimeMillis();
-        Metadata actual = client.files.getMetadata(expected.getPathLower());
+        Metadata actual = client.files().getMetadata(expected.getPathLower());
         long end = System.currentTimeMillis();
 
         // no way easy way to properly test this, but request should

@@ -1,3 +1,4 @@
+- Replace public final references in DbxClientV2 and DbxTeamClientV2 with accessor methods.
 
 ---------------------------------------------
 2.0-beta-7 (2016-02-24)
