@@ -35,8 +35,7 @@ public class Main {
      * periodic polling the endpoint.
      */
     public static void longpoll(DbxAuthInfo auth, String path) throws IOException {
-        // Keep timeout low to avoid issue with reset/dropped connections
-        long longpollTimeoutSecs = 30;
+        long longpollTimeoutSecs = TimeUnit.MINUTES.toSeconds(2);
 
         // need 2 Dropbox clients for making calls:
         //
@@ -45,7 +44,10 @@ public class Main {
         //
         StandardHttpRequestor.Config config = StandardHttpRequestor.Config.DEFAULT_INSTANCE;
         StandardHttpRequestor.Config longpollConfig = config.copy()
-            // read timeout should be well above longpoll timeout to allow for flucuations in response times.
+            // read timeout should be greater than our longpoll timeout and include enough buffer
+            // for the jitter introduced by the server. The server will add a random amount of delay
+            // to our longpoll timeout to avoid the stampeding herd problem. See
+            // DbxFiles.listFolderLongpoll(String, long) documentation for details.
             .withReadTimeout(5, TimeUnit.MINUTES)
             .build();
 
@@ -85,17 +87,15 @@ public class Main {
             String message = ex.getUserMessage() != null ? ex.getUserMessage().getText() : ex.getMessage();
             System.err.println("Error making API call: " + message);
             System.exit(1);
-            return;
         } catch (NetworkIOException ex) {
             System.err.println("Error making API call: " + ex.getMessage());
             if (ex.getCause() instanceof SocketTimeoutException) {
-                System.err.println("Consider increasing socket read timeout and decreasing longpoll timeout");
+                System.err.println("Consider increasing socket read timeout or decreasing longpoll timeout.");
             }
             System.exit(1);
         } catch (DbxException ex) {
             System.err.println("Error making API call: " + ex.getMessage());
             System.exit(1);
-            return;
         }
     }
 
