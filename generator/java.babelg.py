@@ -832,6 +832,28 @@ class RouteWrapper(BabelWrapper):
         return self.arg.has_optional_fields
 
     @property
+    def is_deprecated(self):
+        return self.as_babel.deprecrated is not None
+
+    @property
+    def deprecated_by(self):
+        info = self.as_babel.deprecated
+        if info is None:
+            return None
+
+        babel_route = info.by
+        if babel_route is None:
+            return None
+
+        # must find namespace for this route
+        for babel_namespace in self._ctx.api.namespaces.values():
+            namespace_route = babel_namespace.route_by_name.get(babel_route.name, None)
+            if namespace_route == babel_route:
+                return RouteWrapper(self._ctx, babel_namespace, babel_route)
+
+        assert False, "Failed to find namespace for route: %r" % babel_route
+
+    @property
     def java_method(self):
         """
         Name of Java method that maps to this route.
@@ -1368,6 +1390,10 @@ class FieldWrapper(BabelWrapper):
         return False
 
     @property
+    def is_deprecated(self):
+        return getattr(self.as_babel, "deprecated", False)
+
+    @property
     def has_default(self):
         return self.containing_data_type.is_struct and self.as_babel.has_default
 
@@ -1542,18 +1568,20 @@ class JavadocGenerator(object):
         else:
             return doc
 
-    def generate_javadoc(self, doc, context=None, fields=(), params=(), returns=None, throws=(), allow_defaults=True):
+    def generate_javadoc(self, doc, context=None, fields=(), params=(), returns=None, throws=(), deprecated=None, allow_defaults=True):
         assert isinstance(doc, str), repr(doc)
         assert isinstance(context, BabelWrapper) or context is None, repr(context)
         assert isinstance(fields, (Sequence, types.GeneratorType)), repr(fields)
         assert isinstance(params, (Sequence, types.GeneratorType, OrderedDict)), repr(params)
         assert isinstance(returns, str) or returns is None, repr(returns)
         assert isinstance(throws, (Sequence, types.GeneratorType, OrderedDict)), repr(throws)
+        assert isinstance(deprecated, (RouteWrapper, bool)) or deprecated is None, repr(deprecated)
 
         params_doc = self.javadoc_params(fields, allow_defaults=allow_defaults)
         params_doc.update(self._translate_ordered_collection(params, context))
         returns_doc = self.translate_babel_doc(returns, context)
         throws_doc = self._translate_ordered_collection(throws, context)
+        deprecated_doc = self.javadoc_deprecated(deprecated)
 
         requires_validation = any(self._field_validation_requirements(f) for f in fields)
         if requires_validation:
@@ -1568,10 +1596,12 @@ class JavadocGenerator(object):
             params=params_doc,
             returns=returns_doc,
             throws=throws_doc,
+            deprecated=deprecated_doc,
         )
 
-    def generate_javadoc_raw(self, doc, params=None, returns=None, throws=None):
-        if not any((doc, params, returns, throws)):
+    def generate_javadoc_raw(self, doc, params=None, returns=None, throws=None, deprecated=None):
+        # deprecated can be an empty str, which means no doc
+        if not any((doc, params, returns, throws, deprecated is not None)):
             return
 
         out = self._ctx.g.emit
@@ -1584,8 +1614,14 @@ class JavadocGenerator(object):
                 attr_prefix = ''.join((prefix, tag, ' '))
 
                 for attr_name, attr_doc in attrs.items():
-                    # Javadoc complains about tags that are missing documentation
-                    if not attr_doc:
+                    # Javadoc complains about tags that are missing documentation, except for
+                    # @deprecated
+                    if not attr_doc.strip():
+                        if tag == '@deprecated':
+                            self._ctx.g.emit_wrapped_text(
+                                tag,
+                                initial_prefix=prefix,
+                                subsequent_prefix=attr_doc_prefix)
                         continue
 
                     if attr_name:
@@ -1615,8 +1651,14 @@ class JavadocGenerator(object):
         emit_attrs('@param', params)
         emit_attrs('@return', { "": returns } if returns else None)
         emit_attrs('@throws', throws)
+        # deprecated can be empty string, which still means we should emit
+        emit_attrs('@deprecated', { "": deprecated } if deprecated is not None else None)
 
         out(' */')
+        # compiler requires a separate annotation outside the javadoc to display warnings about
+        # using obsolete APIs.
+        if deprecated is not None:
+            out('@Deprecated')
 
     def javadoc_params(self, fields, allow_defaults=True):
         assert isinstance(fields, (Sequence, types.GeneratorType)), repr(fields)
@@ -1658,6 +1700,16 @@ class JavadocGenerator(object):
             throws["IllegalArgumentException"] = "if {@code %s} %s." % (value_name, reasons_list)
 
         return throws
+
+    def javadoc_deprecated(self, deprecated):
+        assert isinstance(deprecated, (RouteWrapper, bool)) or deprecated is None, repr(deprecated)
+
+        if isinstance(deprecated, RouteWrapper):
+            return 'use %s instead.' % self.javadoc_ref(deprecated)
+        elif deprecated is True:
+            return ''
+        else:
+            return None
 
     def _translate_ordered_collection(self, collection, context):
         assert isinstance(collection, (Sequence, types.GeneratorType, OrderedDict)), repr(collection)
@@ -2423,7 +2475,12 @@ class JavaCodeGenerationInstance(object):
         if route.has_arg:
             method_arg_type = arg_type.java_type()
             method_arg_name = arg_type.java_name
-            visibility = 'public' if arg_type.is_union else '' # package private
+            if arg_type.is_union:
+                deprecated = route.deprecated_by
+                visibility = 'public'
+            else:
+                deprecated = None # Don't mark private methods deprecated since we don't care
+                visibility = ''   # package private
             signature = '%s %s %s(%s %s) throws %s' % (
                 visibility,
                 return_type,
@@ -2434,13 +2491,13 @@ class JavaCodeGenerationInstance(object):
             )
         else:
             method_arg_name = None
+            deprecated = route.deprecated_by
             signature = 'public %s %s() throws %s' % (return_type, route.java_method, throws)
 
         out('')
-        javadoc(route.babel_doc, context=route, returns=returns, params=OrderedDict((
-            (method_arg_name, arg_type.babel_doc),
-        )) if not route.arg.is_void else ())
-        with self.g.block(signature):
+        javadoc(route.babel_doc, context=route, returns=returns, deprecated=deprecated,
+                params=((method_arg_name, arg_type.babel_doc),) if not route.arg.is_void else ())
+        with self.g.block(signature.strip()):
             if route.request_style == 'rpc':
                 self.generate_route_rpc_call(route, method_arg_name)
             elif route.request_style == 'upload':
@@ -2509,7 +2566,7 @@ class JavaCodeGenerationInstance(object):
                 )
 
         out('')
-        javadoc(doc, fields=fields, returns=returns, context=route, allow_defaults=False)
+        javadoc(doc, fields=fields, returns=returns, context=route, deprecated=route.deprecated_by, allow_defaults=False)
         with self.g.block('public %s %s(%s) throws %s' % (return_type, route.java_method, args, throws)):
             arg_class = arg_type.java_type()
             required_args = ', '.join(f.java_name for f in arg_type.all_required_fields)
@@ -2560,7 +2617,7 @@ class JavaCodeGenerationInstance(object):
         args = ', '.join(f.java_type_and_name() for f in required_fields)
 
         out('')
-        javadoc(route.babel_doc, fields=required_fields, returns=returns, context=route)
+        javadoc(route.babel_doc, fields=required_fields, returns=returns, context=route, deprecated=route.deprecated_by)
         with self.g.block('public %s %s(%s)' % (return_type, route.java_builder_method, args)):
             builder_args = ', '.join(f.java_name for f in required_fields)
             out('%s argBuilder = %s.newBuilder(%s);' % (
@@ -2886,7 +2943,7 @@ class JavaCodeGenerationInstance(object):
 
         all_fields = data_type.all_fields
         for i, field in enumerate(all_fields):
-            javadoc(field.babel_doc, context=field)
+            javadoc(field.babel_doc, context=field, deprecated=field.is_deprecated)
             comment = ''
             if field.is_catch_all:
                 assert field.data_type.is_void, field.data_type
@@ -2949,7 +3006,7 @@ class JavaCodeGenerationInstance(object):
             for field in data_type.all_fields:
                 if not field.has_value:
                     singleton_args = ', '.join(chain(("Tag.%s" % field.tag_name,), nulls))
-                    javadoc(field.babel_doc, context=field)
+                    javadoc(field.babel_doc, context=field, deprecated=field.is_deprecated)
                     out('public static final %s %s = new %s(%s);' % (
                         data_type.java_class,
                         field.java_singleton, data_type.java_class,
@@ -3148,7 +3205,8 @@ class JavaCodeGenerationInstance(object):
                     context=field,
                     params=OrderedDict(value="value to assign to this instance.") if field.has_value else (),
                     returns=returns,
-                    throws=self.doc.javadoc_throws(field, "value")
+                    throws=self.doc.javadoc_throws(field, "value"),
+                    deprecated=field.is_deprecated,
                 )
                 if field.has_value:
                     with self.g.block('public static %s %s(%s value)' % (
@@ -3165,7 +3223,7 @@ class JavaCodeGenerationInstance(object):
 
                     if field.data_type.is_nullable:
                         out('')
-                        javadoc(doc, context=field, returns=returns)
+                        javadoc(doc, context=field, returns=returns, deprecated=field.is_deprecated)
                         with self.g.block('public static %s %s()' % (data_type.java_class, field.java_factory_method)):
                             out('return %s(null);' % field.java_factory_method)
 
@@ -3186,7 +3244,8 @@ class JavaCodeGenerationInstance(object):
                     """ % (self.doc.javadoc_ref(field), field.java_is_union_type_method),
                     throws=OrderedDict(
                         IllegalStateException="If {@link #%s} is {@code false}." % field.java_is_union_type_method,
-                    )
+                    ),
+                    deprecated=field.is_deprecated,
                 )
                 with self.g.block('public %s %s()' % (field.java_type(), field.java_getter)):
                     with self.g.block('if (this.tag != Tag.%s)' % field.tag_name):
@@ -3224,7 +3283,8 @@ class JavaCodeGenerationInstance(object):
             #
             out('')
             for field in data_type.fields:
-                out('private final %s;' % field.java_type_and_name())
+                # fields marked as protected since structs allow inheritance
+                out('protected final %s;' % field.java_type_and_name())
 
             #
             # constructor.
@@ -3298,7 +3358,7 @@ class JavaCodeGenerationInstance(object):
                 if field.has_default:
                     returns += ' Defaults to %s.' % field.default_value
 
-                javadoc(field.babel_doc, context=field, returns=returns)
+                javadoc(field.babel_doc, context=field, returns=returns, deprecated=field.is_deprecated)
                 with self.g.block('public %s %s()' % (field.java_type(), field.java_getter)):
                     out('return %s;' % field.java_name)
 
@@ -3424,7 +3484,7 @@ class JavaCodeGenerationInstance(object):
             # withFieldName(FieldType fieldValue);
             #
             out('')
-            javadoc(doc, context=field, fields=(field,), returns='this builder')
+            javadoc(doc, context=field, fields=(field,), returns='this builder', deprecated=field.is_deprecated)
             with self.g.block('public %s %s(%s %s)' % (
                     builder_class,
                     field.java_builder_setter,
@@ -3773,11 +3833,7 @@ class JavaCodeGenerationInstance(object):
             if tags:
                 out('g.writeStringField(".tag", "%s");' % '.'.join(tags))
             for field in data_type.all_fields:
-                # because of inheritance, we can't access all our private fields
-                if field.containing_data_type == data_type:
-                    field_value = 'value.%s' % field.java_name
-                else:
-                    field_value = 'value.%s()' % field.java_getter
+                field_value = 'value.%s' % field.java_name
                 self.generate_write_field(field, field_value)
 
     def generate_write_field(self, field, var_name):
@@ -4032,10 +4088,7 @@ class JavaCodeGenerationInstance(object):
         assert data_type.is_struct, repr(data_type)
 
         parent_fields = data_type.parent.fields if data_type.parent else ()
-        field_tuples = tuple(chain(
-            ((f, f.java_name) for f in data_type.fields),
-            ((f, f.java_getter + '()') for f in parent_fields),
-        ))
+        field_tuples = tuple((f, f.java_name) for f in data_type.all_fields)
 
         out('')
         out('@Override')
