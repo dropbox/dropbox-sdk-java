@@ -18,8 +18,8 @@ from babelapi.generator import CodeGenerator
 from babelapi.data_type import (
     DataType,
     Field,
-    is_binary_type,
     is_boolean_type,
+    is_bytes_type,
     is_composite_type,
     is_numeric_type,
     is_nullable_type,
@@ -199,7 +199,7 @@ def get_routes_with_arg_type(data_type, allow_lists=True):
     routes = []
     for babel_namespace in ctx.api.namespaces.values():
         for babel_route in babel_namespace.routes:
-            arg_type = babel_route.request_data_type
+            arg_type = babel_route.arg_data_type
             if allow_lists and is_list_type(arg_type):
                 arg_type = arg_type.data_type
             elif is_nullable_type(arg_type):
@@ -769,22 +769,22 @@ class RouteWrapper(BabelWrapper):
         return self.namespace.java_class
 
     @property
-    def request(self):
+    def arg(self):
         """
-        Request data type.
+        Arg data type.
 
         :rtype: :class:`DataTypeWrapper`
         """
-        return DataTypeWrapper(self._ctx, self.as_babel.request_data_type)
+        return DataTypeWrapper(self._ctx, self.as_babel.arg_data_type)
 
     @property
-    def response(self):
+    def result(self):
         """
-        Response data type.
+        Result data type.
 
         :rtype: :class:`DataTypeWrapper`
         """
-        return DataTypeWrapper(self._ctx, self.as_babel.response_data_type)
+        return DataTypeWrapper(self._ctx, self.as_babel.result_data_type)
 
     @property
     def error(self):
@@ -796,22 +796,22 @@ class RouteWrapper(BabelWrapper):
         return DataTypeWrapper(self._ctx, self.as_babel.error_data_type)
 
     @property
-    def has_request(self):
+    def has_arg(self):
         """
-        Whether this route has a request type.
+        Whether this route has a arg type.
 
         :rtype: bool
         """
-        return not self.request.is_void
+        return not self.arg.is_void
 
     @property
-    def has_response(self):
+    def has_result(self):
         """
-        Whether this route has a response type.
+        Whether this route has a result type.
 
         :rtype: bool
         """
-        return not self.response.is_void
+        return not self.result.is_void
 
     @property
     def has_error(self):
@@ -823,13 +823,13 @@ class RouteWrapper(BabelWrapper):
         return not self.error.is_void
 
     @property
-    def has_optional_request_fields(self):
+    def has_optional_arg_fields(self):
         """
-        Whether this route has a request type containing optional fields.
+        Whether this route has a arg type containing optional fields.
 
         :rtype: bool
         """
-        return self.request.has_optional_fields
+        return self.arg.has_optional_fields
 
     @property
     def java_method(self):
@@ -847,7 +847,7 @@ class RouteWrapper(BabelWrapper):
 
         :rtype: bool
         """
-        return self.request.supports_builder
+        return self.arg.supports_builder
 
     @property
     def java_builder_class(self):
@@ -871,7 +871,7 @@ class RouteWrapper(BabelWrapper):
         """
         class_name = self.java_builder_class
         request_style = self.request_style
-        response_type = self.response.java_type()
+        result_type = self.result.java_type()
         error_type = self.error.java_type()
         if self.has_error:
             exc_type = self.error.java_exception_class
@@ -882,7 +882,7 @@ class RouteWrapper(BabelWrapper):
             return '%s extends %s<%s,%s,%s>' % (
                 class_name,
                 self._as_java_class('com.dropbox.core.v2.DbxUploadStyleBuilder'),
-                response_type,
+                result_type,
                 error_type,
                 exc_type,
             )
@@ -890,7 +890,7 @@ class RouteWrapper(BabelWrapper):
             return '%s extends %s<%s>' % (
                 class_name,
                 self._as_java_class('com.dropbox.core.v2.DbxDownloadStyleBuilder'),
-                response_type,
+                result_type,
             )
         else:
             return class_name
@@ -985,10 +985,10 @@ class RouteWrapper(BabelWrapper):
         if style == 'upload':
             return str(self.java_uploader_class)
         elif style == 'download':
-            return '%s<%s>' % (self.java_downloader_class, self.response.java_type())
+            return '%s<%s>' % (self.java_downloader_class, self.result.java_type())
         else:
-            if self.has_response:
-                return str(self.response.java_type())
+            if self.has_result:
+                return str(self.result.java_type())
             else:
                 return 'void'
 
@@ -1796,17 +1796,17 @@ class JavadocGenerator(object):
 
         class_name = route.java_class
         method_name = route.java_method
-        request_data_type = route.request
+        arg_data_type = route.arg
 
-        if not route.has_request:
+        if not route.has_arg:
             args = ''
-        elif request_data_type.is_struct:
+        elif arg_data_type.is_struct:
             if builder and route.supports_builder:
                 method_name = route.java_builder_method
-            types = (str(f.java_type(generics=False)) for f in request_data_type.all_required_fields)
+            types = (str(f.java_type(generics=False)) for f in arg_data_type.all_required_fields)
             args = ','.join(types)
         else:
-            args = request_data_type.java_type(generics=False)
+            args = arg_data_type.java_type(generics=False)
         return '{@link %s#%s(%s)}' % (class_name, method_name, args)
 
     def _javadoc_data_type_ref(self, data_type, builder=False):
@@ -1930,8 +1930,8 @@ class JavaImportGenerator(object):
             self.add_imports_for_route(route)
 
     def add_imports_for_route(self, route):
-        self._add_imports_for_data_type(route.request)
-        self._add_imports_for_data_type(route.response)
+        self._add_imports_for_data_type(route.arg)
+        self._add_imports_for_data_type(route.result)
 
         if route.has_error:
             self._ctx.add_imports(route.error.java_exception_class)
@@ -1950,10 +1950,10 @@ class JavaImportGenerator(object):
     def add_imports_for_route_builder(self, route):
         self._ctx.add_imports(
             route.namespace.java_class,
-            route.request.java_builder_class,
+            route.arg.java_builder_class,
             'com.dropbox.core.DbxException',
         )
-        for field in route.request.all_optional_fields:
+        for field in route.arg.all_optional_fields:
             self.add_imports_for_field(field)
         if route.has_error:
             self._ctx.add_imports(route.error.java_exception_class)
@@ -1970,8 +1970,8 @@ class JavaImportGenerator(object):
             'com.fasterxml.jackson.databind.JavaType',
             'java.io.IOException',
         )
-        if route.has_response:
-            self._ctx.add_imports(route.response.java_class)
+        if route.has_result:
+            self._ctx.add_imports(route.result.java_class)
         if route.has_error:
             self._ctx.add_imports(
                 route.error.java_class,
@@ -2385,7 +2385,7 @@ class JavaCodeGenerationInstance(object):
                     self.generate_route(route, required_only=True)
                     # we don't use builders if we have too few optional fields. Instead we just
                     # create another method call.
-                    if route.has_optional_request_fields and not route.supports_builder:
+                    if route.has_optional_arg_fields and not route.supports_builder:
                         self.generate_route(route, required_only=False)
                     self.generate_route_builder(route)
 
@@ -2405,67 +2405,67 @@ class JavaCodeGenerationInstance(object):
         out = self.g.emit
         javadoc = self.doc.generate_javadoc
 
-        request_type = route.request
-        response_type = route.response
+        arg_type = route.arg
+        result_type = route.result
         error_type = route.error
 
         if route.request_style == 'upload':
             returns="Uploader used to upload the request body and finish request."
         elif route.request_style == 'download':
             returns="Downloader used to download the response body and view the server response."
-        elif route.has_response and (response_type.is_struct or response_type.is_union):
-            returns=response_type.babel_doc
+        elif route.has_result and (result_type.is_struct or result_type.is_union):
+            returns=result_type.babel_doc
         else:
             returns=None
 
         return_type = route.java_return_type
         throws = ', '.join(map(str, route.java_throws))
-        if route.has_request:
-            arg_type = request_type.java_type()
-            arg_name = request_type.java_name
-            visibility = 'public' if request_type.is_union else '' # package private
+        if route.has_arg:
+            method_arg_type = arg_type.java_type()
+            method_arg_name = arg_type.java_name
+            visibility = 'public' if arg_type.is_union else '' # package private
             signature = '%s %s %s(%s %s) throws %s' % (
                 visibility,
                 return_type,
                 route.java_method,
-                arg_type,
-                arg_name,
+                method_arg_type,
+                method_arg_name,
                 throws,
             )
         else:
-            arg_name = None
+            method_arg_name = None
             signature = 'public %s %s() throws %s' % (return_type, route.java_method, throws)
 
         out('')
         javadoc(route.babel_doc, context=route, returns=returns, params=OrderedDict((
-            (arg_name, request_type.babel_doc),
-        )) if not route.request.is_void else ())
+            (method_arg_name, arg_type.babel_doc),
+        )) if not route.arg.is_void else ())
         with self.g.block(signature):
             if route.request_style == 'rpc':
-                self.generate_route_rpc_call(route, arg_name)
+                self.generate_route_rpc_call(route, method_arg_name)
             elif route.request_style == 'upload':
-                self.generate_route_upload_call(route, arg_name)
+                self.generate_route_upload_call(route, method_arg_name)
             elif route.request_style == 'download':
-                self.generate_route_download_call(route, arg_name)
+                self.generate_route_download_call(route, method_arg_name)
             else:
                 assert False, "unrecognized route request style: %s" % route.request_style
 
     def generate_route(self, route, required_only=True):
-        if not route.has_request or route.request.is_union:
+        if not route.has_arg or route.arg.is_union:
             return
 
         out = self.g.emit
         javadoc = self.doc.generate_javadoc
 
-        request_type = route.request
-        response_type = route.response
+        arg_type = route.arg
+        result_type = route.result
         return_type = route.java_return_type
         throws = ', '.join(map(str, route.java_throws))
 
-        assert request_type.is_struct, "Primitive request types not supported: %s" % request_type
+        assert arg_type.is_struct, "Primitive arg types not supported: %s" % arg_type
         if not required_only:
             assert not route.supports_builder, "Route has builder, so unpacked method unnecessary."
-            n_optional = len(request_type.all_optional_fields)
+            n_optional = len(arg_type.all_optional_fields)
             # we disable boxing for this method, which can be dangerous if we have more than one
             # optional argument. It will essentially prevent users from being able to use
             # default values for part of their request arguments. Consider updating code if
@@ -2477,18 +2477,18 @@ class JavaCodeGenerationInstance(object):
             returns="Uploader used to upload the request body and finish request."
         elif route.request_style == 'download':
             returns="Downloader used to download the response body and view the server response."
-        elif route.has_response and (response_type.is_struct or response_type.is_union):
-            returns=response_type.babel_doc
+        elif route.has_result and (result_type.is_struct or result_type.is_union):
+            returns=result_type.babel_doc
         else:
             returns=None
 
         if required_only:
-            fields = request_type.all_required_fields
+            fields = arg_type.all_required_fields
         else:
-            fields = request_type.all_fields
+            fields = arg_type.all_fields
         args = ', '.join(f.java_type_and_name() for f in fields)
 
-        default_fields = tuple(f for f in request_type.all_optional_fields if f.has_default)
+        default_fields = tuple(f for f in arg_type.all_optional_fields if f.has_default)
         doc = route.babel_doc
         if required_only and default_fields:
             if route.supports_builder:
@@ -2505,35 +2505,35 @@ class JavaCodeGenerationInstance(object):
                     default_field.java_name,
                     default_field.default_value,
                     route.java_method,
-                    ','.join(str(f.data_type.java_type(boxed=False, generics=False)) for f in request_type.all_fields),
+                    ','.join(str(f.data_type.java_type(boxed=False, generics=False)) for f in arg_type.all_fields),
                 )
 
         out('')
         javadoc(doc, fields=fields, returns=returns, context=route, allow_defaults=False)
         with self.g.block('public %s %s(%s) throws %s' % (return_type, route.java_method, args, throws)):
-            request_arg_class = request_type.java_type()
-            required_args = ', '.join(f.java_name for f in request_type.all_required_fields)
+            arg_class = arg_type.java_type()
+            required_args = ', '.join(f.java_name for f in arg_type.all_required_fields)
             if required_only:
-                out('%(cls)s arg = new %(cls)s(%(args)s);' % dict(cls=request_arg_class, args=required_args))
+                out('%(cls)s arg = new %(cls)s(%(args)s);' % dict(cls=arg_class, args=required_args))
             else:
-                optional_fields = request_type.all_optional_fields
+                optional_fields = arg_type.all_optional_fields
                 for field in optional_fields:
                     # disable translation of nulls to default
                     self.generate_field_validation(field, allow_default=False)
 
-                if request_type.supports_builder:
+                if arg_type.supports_builder:
                     # use builder to build with optional fields
-                    out('%(cls)s arg = %(cls)s.newBuilder(%(args)s)' % dict(cls=request_arg_class, args=required_args))
+                    out('%(cls)s arg = %(cls)s.newBuilder(%(args)s)' % dict(cls=arg_class, args=required_args))
                     with self.g.indent():
                         for field in optional_fields:
                             out('.%s(%s)' % (field.java_builder_setter, field.java_name))
                         out('.build();')
                 else:
                     # use full constructor
-                    all_args = ', '.join(f.java_name for f in request_type.all_fields)
-                    out('%(cls)s arg = new %(cls)s(%(args)s);' % dict(cls=request_arg_class, args=all_args))
+                    all_args = ', '.join(f.java_name for f in arg_type.all_fields)
+                    out('%(cls)s arg = new %(cls)s(%(args)s);' % dict(cls=arg_class, args=all_args))
 
-            if route.has_response or route.request_style in ('upload', 'download'):
+            if route.has_result or route.request_style in ('upload', 'download'):
                 out('return %s(arg);' % route.java_method)
             else:
                 out('%s(arg);' % route.java_method)
@@ -2545,8 +2545,8 @@ class JavaCodeGenerationInstance(object):
         out = self.g.emit
         javadoc = self.doc.generate_javadoc
 
-        request_type = route.request
-        response_type = route.response
+        arg_type = route.arg
+        result_type = route.result
         return_type = route.java_builder_return_type
 
         if route.request_style == 'upload':
@@ -2556,7 +2556,7 @@ class JavaCodeGenerationInstance(object):
         else:
             returns="Request builder for configuring request parameters and completing the request."
 
-        required_fields = request_type.all_required_fields
+        required_fields = arg_type.all_required_fields
         args = ', '.join(f.java_type_and_name() for f in required_fields)
 
         out('')
@@ -2564,8 +2564,8 @@ class JavaCodeGenerationInstance(object):
         with self.g.block('public %s %s(%s)' % (return_type, route.java_builder_method, args)):
             builder_args = ', '.join(f.java_name for f in required_fields)
             out('%s argBuilder = %s.newBuilder(%s);' % (
-                request_type.java_builder_class,
-                request_type.java_class,
+                arg_type.java_builder_class,
+                arg_type.java_class,
                 builder_args,
             ))
             out('return new %s(this, argBuilder);' % return_type)
@@ -2601,9 +2601,9 @@ class JavaCodeGenerationInstance(object):
                 (
                     'client.getHost().%s()' % camelcase('get_' + route.host),
                     '"%s"' % route.url_path,
-                    arg_var if route.has_request else 'null',
+                    arg_var if route.has_arg else 'null',
                     'true' if route.auth_style == 'noauth' else 'false',
-                    as_jackson_type(route.response),
+                    as_jackson_type(route.result),
                     as_jackson_type(route.error),
                 ),
                 before=before,
@@ -2617,7 +2617,7 @@ class JavaCodeGenerationInstance(object):
             route,
             arg_var,
             # return value is optional
-            before=('return ' if route.has_response else '') + 'client.rpcStyle',
+            before=('return ' if route.has_result else '') + 'client.rpcStyle',
         )
 
     def generate_route_download_call(self, route, arg_var):
@@ -2635,7 +2635,7 @@ class JavaCodeGenerationInstance(object):
             (
                 'client.getHost().%s()' % camelcase('get_' + route.host),
                 '"%s"' % route.url_path,
-                arg_var if route.has_request else 'null',
+                arg_var if route.has_arg else 'null',
                 'true' if route.auth_style == 'noauth' else 'false',
             ),
             before='HttpRequestor.Uploader uploader = client.uploadStyle',
@@ -3210,7 +3210,7 @@ class JavaCodeGenerationInstance(object):
         if route_refs and all(r.namespace == data_type.namespace for r in route_refs):
             field_refs = get_fields_with_data_type(data_type)
             if not field_refs:
-                # package private since this struct only gets used privately as a route request arg.
+                # package private since this struct only gets used privately as a route arg.
                 visibility = ''
 
         out('')
@@ -3480,7 +3480,7 @@ class JavaCodeGenerationInstance(object):
             self.importer.add_imports_for_route_uploader(route)
             self.importer.generate_imports()
 
-            response_type = route.response.java_type()
+            result_type = route.result.java_type()
             error_type = route.error.java_type()
             if route.has_error:
                 exception_type = route.java_exception_class
@@ -3499,8 +3499,8 @@ class JavaCodeGenerationInstance(object):
                 DbxUploader} for examples).
                 """ % self.doc.javadoc_ref(route)
             )
-            with self.g.block('public class %s extends DbxUploader<%s, %s, %s>' % (class_name, response_type, error_type, exception_type)):
-                out('private static final JavaType _RESPONSE_TYPE = JsonUtil.createType(new TypeReference<%s>() {});' % response_type)
+            with self.g.block('public class %s extends DbxUploader<%s, %s, %s>' % (class_name, result_type, error_type, exception_type)):
+                out('private static final JavaType _RESULT_TYPE = JsonUtil.createType(new TypeReference<%s>() {});' % result_type)
                 out('private static final JavaType _ERROR_TYPE = JsonUtil.createType(new TypeReference<%s>() {});' % error_type)
 
                 out('')
@@ -3510,7 +3510,7 @@ class JavaCodeGenerationInstance(object):
                     throws=(('NullPointerException', 'if {@code httpUploader} is {@code null}'),)
                 )
                 with self.g.block('public %s(HttpRequestor.Uploader httpUploader)' % class_name):
-                    out('super(httpUploader, _RESPONSE_TYPE, _ERROR_TYPE);')
+                    out('super(httpUploader, _RESULT_TYPE, _ERROR_TYPE);')
 
                 with self.g.block('protected %s newException(DbxRequestUtil.ErrorWrapper error)' % exception_type):
                     out('return %s' % self.translate_error_wrapper(route, 'error'))
@@ -3522,20 +3522,20 @@ class JavaCodeGenerationInstance(object):
         out = self.g.emit
         javadoc = self.doc.generate_javadoc
 
-        assert route.request.is_struct, "Can only create builders for struct request types."
+        assert route.arg.is_struct, "Can only create builders for struct arg types."
 
         class_name = route.java_builder_class.name
         with self.new_file(route, class_name):
             self.importer.add_imports_for_route_builder(route)
             self.importer.generate_imports()
 
-            request_type = route.request
+            arg_type = route.arg
             if route.has_error:
                 exception_class = route.java_exception_class
             else:
                 exception_class = 'DbxApiException'
-            builder_arg_class = request_type.java_builder_class
-            builder_arg_name = request_type.java_builder_field
+            builder_arg_class = arg_type.java_builder_class
+            builder_arg_name = arg_type.java_builder_field
             client_name = route.namespace.java_field
 
             out('')
@@ -3582,7 +3582,7 @@ class JavaCodeGenerationInstance(object):
                 # SETTERS/ADDERs for optional/list fields
                 #
 
-                self.generate_builder_methods(class_name, request_type.all_fields, wrapped_builder_name=builder_arg_name)
+                self.generate_builder_methods(class_name, arg_type.all_fields, wrapped_builder_name=builder_arg_name)
 
                 #
                 # BUILD method to start request
@@ -3595,8 +3595,8 @@ class JavaCodeGenerationInstance(object):
                 else:
                     javadoc('Issues the request.')
                 with self.g.block('public %s start() throws %s, DbxException' % (route.java_return_type, exception_class)):
-                    out('%s arg = this.%s.build();' % (request_type.java_type(), builder_arg_name))
-                    if route.has_response:
+                    out('%s arg = this.%s.build();' % (arg_type.java_type(), builder_arg_name))
+                    if route.has_result:
                         out('return %s.%s(arg);' % (client_name, route.java_method))
                     else:
                         out('%s.%s(arg);' % (client_name, route.java_method))
@@ -3704,7 +3704,7 @@ class JavaCodeGenerationInstance(object):
                 is_composite_type(babel_dt),
                 is_boolean_type(babel_dt),
                 is_timestamp_type(babel_dt),
-                is_binary_type(babel_dt),
+                is_bytes_type(babel_dt),
         )):
             pass  # Nothing to do for these
 
@@ -3906,7 +3906,7 @@ class JavaCodeGenerationInstance(object):
                         out('throw new JsonParseException(_p, "expecting a 32-bit unsigned integer, got: " + %s);' % var_name)
         elif is_timestamp_type(babel_data_type):
             out('%s = _ctx.parseDate(getStringValue(_p));' % var_name)
-        elif is_binary_type(babel_data_type):
+        elif is_bytes_type(babel_data_type):
             out('%s = _p.getBinaryValue();' % var_name)
         elif is_void_type(babel_data_type):
             out('_p.skipChildren();')
@@ -4134,7 +4134,7 @@ _TYPE_MAP_UNBOXED = {
     'Float64': 'double',
     'Float32': 'float',
     'Boolean': 'boolean',
-    'Binary': 'byte[]',
+    'Bytes': 'byte[]',
     'String': 'String',
     'Timestamp': 'java.util.Date',
     'Void': 'void',
@@ -4149,7 +4149,7 @@ _TYPE_MAP_BOXED = {
     'Float64': 'Double',
     'Float32': 'Float',
     'Boolean': 'Boolean',
-    'Binary': 'byte[]',
+    'Bytes': 'byte[]',
     'String': 'String',
     'Timestamp': 'java.util.Date',
     'Void': 'Void',

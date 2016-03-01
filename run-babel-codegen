@@ -71,8 +71,8 @@ touch "$gen_dir/stamp.tmp"  # Create here to get the timestamp from before codeg
 echo "Generating..."
 PYTHONPATH="$babel_dir" python3 -m babelapi.cli \
     "$generator" \
-    "$spec_dir"/*.babel \
     "$gen_dir"\
+    "${spec_dir}"/*.babel \
      --\
      --package com.dropbox.core.v2
 
