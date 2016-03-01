@@ -191,6 +191,48 @@ def get_ancestors(data_type):
     return ancestors
 
 
+def get_routes_with_arg_type(data_type, allow_lists=True):
+    assert isinstance(data_type, DataTypeWrapper), repr(data_type)
+
+    ctx = data_type._ctx
+
+    routes = []
+    for babel_namespace in ctx.api.namespaces.values():
+        for babel_route in babel_namespace.routes:
+            arg_type = babel_route.request_data_type
+            if allow_lists and is_list_type(arg_type):
+                arg_type = arg_type.data_type
+            elif is_nullable_type(arg_type):
+                arg_type = arg_type.data_type
+
+            if arg_type == data_type.as_babel:
+                routes.append(RouteWrapper(ctx, babel_namespace, babel_route))
+
+    return routes
+
+
+def get_fields_with_data_type(data_type):
+    assert isinstance(data_type, DataTypeWrapper), repr(data_type)
+
+    ctx = data_type._ctx
+
+    fields = []
+    for babel_namespace in ctx.api.namespaces.values():
+        for babel_data_type in babel_namespace.data_types:
+            if is_composite_type(babel_data_type):
+                for babel_field in babel_data_type.all_fields:
+                    field_type = babel_field.data_type
+                    if is_list_type(field_type):
+                        field_type = field_type.data_type
+                    elif is_nullable_type(field_type):
+                        field_type = field_type.data_type
+
+                    if field_type == data_type.as_babel:
+                        fields.append(FieldWrapper(ctx, babel_data_type, babel_field))
+
+    return fields
+
+
 class GeneratorContext(object):
     """
     Context for a single execution of the JavaCodeGenerator.
@@ -1284,6 +1326,19 @@ class FieldWrapper(BabelWrapper):
         self._containing_babel_data_type = containing_data_type
 
     @property
+    def babel_doc(self):
+        doc = super(FieldWrapper, self).babel_doc
+        if self.is_catch_all and not doc:
+            return """
+            Catch-all used for unknown tag values returned by the Dropbox servers.
+
+            Receiving a catch-all value typically indicates this SDK version is not up to
+            date. Consider updating your SDK version to handle the new tags.
+            """
+
+        return doc
+
+    @property
     def containing_data_type(self):
         return DataTypeWrapper(self._ctx, self._containing_babel_data_type)
 
@@ -1436,11 +1491,11 @@ class JavadocGenerator(object):
         assert isinstance(element, BabelWrapper), repr(element)
 
         if isinstance(element, RouteWrapper):
-            ref = '{@link %s}' % self._javadoc_route_ref(element, builder=builder)
+            ref = self._javadoc_route_ref(element, builder=builder)
         elif isinstance(element, DataTypeWrapper):
-            ref = '{@link %s}' % self._javadoc_data_type_ref(element, builder=builder)
+            ref = self._javadoc_data_type_ref(element, builder=builder)
         elif isinstance(element, FieldWrapper):
-            ref = '{@link %s}' % self._javadoc_field_ref(element)
+            ref = self._javadoc_field_ref(element)
         else:
             assert False, "Unsupported element type: %s" % repr(element)
 
@@ -1452,19 +1507,19 @@ class JavadocGenerator(object):
         # use {@code ...} tag for unresolved references so we don't have broken links in our Javadoc
         if tag == 'route':
             if element:
-                ref = '{@link %s}' % self._javadoc_route_ref(element)
+                ref = self._javadoc_route_ref(element)
             else:
                 self._ctx.g.logger.warn('Unable to resolve Babel reference (:%s:`%s`) [ctx=%s]' % (tag, val, context))
                 ref = '{@code %s}' % camelcase(val)
         elif tag == 'type':
             if element:
-                ref = '{@link %s}' % self._javadoc_data_type_ref(element)
+                ref = self._javadoc_data_type_ref(element)
             else:
                 self._ctx.g.logger.warn('Unable to resolve Babel reference (:%s:`%s`) [ctx=%s]' % (tag, val, context))
                 ref = '{@code %s}' % classname(val)
         elif tag == 'field':
             if element:
-                ref = '{@link %s}' % self._javadoc_field_ref(element)
+                ref = self._javadoc_field_ref(element)
             else:
                 self._ctx.g.logger.warn('Unable to resolve Babel reference (:%s:`%s`) [ctx=%s]' % (tag, val, context))
                 ref = '{@code %s}' % camelcase(val)
@@ -1752,19 +1807,45 @@ class JavadocGenerator(object):
             args = ','.join(types)
         else:
             args = request_data_type.java_type(generics=False)
-        return '%s#%s(%s)' % (class_name, method_name, args)
+        return '{@link %s#%s(%s)}' % (class_name, method_name, args)
 
     def _javadoc_data_type_ref(self, data_type, builder=False):
         assert isinstance(data_type, DataTypeWrapper), repr(data_type)
-        if builder and data_type.supports_builder:
-            return data_type.java_builder_class
+        if data_type.is_primitive:
+            return '{@code %s}' % data_type.java_type(boxed=False, generics=False)
+        elif builder and data_type.supports_builder:
+            return '{@link %s}' % data_type.java_builder_class
         else:
-            return data_type.java_class
+            return '{@link %s}' % data_type.java_class
 
     def _javadoc_field_ref(self, field):
         assert isinstance(field, FieldWrapper), repr(field)
 
-        data_type_ref = self._javadoc_data_type_ref(field.containing_data_type)
+        # Address issue T76930:
+        #
+        # We want to avoid referencing to `RouteArg` struct classes that are never used in our
+        # public route methods. When we generate routes with struct args, we generally do it like
+        # so:
+        #
+        #   private RouteResult routeName(RouteArg);
+        #   public RouteResult routeName(field1, field2, field3);
+        #   public RouteResultBuilder routeNameBuilder(field1, field2, field3);
+        #
+        # So if the field's containing data type is a struct, try to find out if that struct is
+        # uniqued used as a route argument and make the Javadoc reference point to the route method
+        # instead of the struct class.
+        containing_data_type = field.containing_data_type
+        if containing_data_type.is_struct:
+            routes = get_routes_with_arg_type(containing_data_type)
+            # we only handle cases where the struct appears as the argument to a single route
+            if len(routes) == 1:
+                fields = get_fields_with_data_type(containing_data_type)
+
+                # the struct should not appear anywhere else besides as a route argument
+                if not fields:
+                    return 'the {@code %s} argument to %s' % (field.java_name, self._javadoc_route_ref(routes[0]))
+
+        # fallback to standard ref
         if field.containing_data_type.is_enum:
             field_name = field.java_enum
         elif field.containing_data_type.is_union:
@@ -1775,7 +1856,7 @@ class JavadocGenerator(object):
         else:
             field_name = field.java_getter
 
-        return '%s#%s' % (data_type_ref, field_name)
+        return '{@link %s#%s}' % (field.containing_data_type.java_class, field_name)
 
 
 class JavaImportGenerator(object):
@@ -2407,13 +2488,25 @@ class JavaCodeGenerationInstance(object):
             fields = request_type.all_fields
         args = ', '.join(f.java_type_and_name() for f in fields)
 
+        default_fields = tuple(f for f in request_type.all_optional_fields if f.has_default)
         doc = route.babel_doc
-        if required_only:
-            doc += """
+        if required_only and default_fields:
+            if route.supports_builder:
+                doc += """
 
-            The default values for the remaining request parameters will be used. See %s for more
-            details.
-            """ % self.doc.javadoc_ref(request_type)
+                The default values for the optional request parameters will be used. See {@link %s}
+                for more details.""" % route.java_builder_class
+            else:
+                assert len(default_fields) == 1, default_fields
+                default_field = default_fields[0]
+                doc += """
+
+                The {@code %s} request parameter will default to {@code %s} (see {@link #%s(%s)}).""" % (
+                    default_field.java_name,
+                    default_field.default_value,
+                    route.java_method,
+                    ','.join(str(f.data_type.java_type(boxed=False, generics=False)) for f in request_type.all_fields),
+                )
 
         out('')
         javadoc(doc, fields=fields, returns=returns, context=route, allow_defaults=False)
@@ -2808,8 +2901,22 @@ class JavaCodeGenerationInstance(object):
         out = self.g.emit
         javadoc = self.doc.generate_javadoc
 
+        class_doc = """%s
+
+            This class is %s union.  Tagged unions instances are always associated to a
+            specific tag.  This means only one of the {@code isAbc()} methods will return {@code
+            true}. You can use {@link #tag()} to determine the tag associated with this instance.
+            """ % (data_type.babel_doc, 'an open tagged' if data_type.catch_all_field else 'a tagged')
+        if data_type.catch_all_field:
+                class_doc += """
+
+                Open unions may be extended in the future with additional tags. If a new tag is
+                introduced that this SDK does not recognized, the {@link #%s} value will be used.
+                """ % data_type.catch_all_field.java_singleton
+
+
         out('')
-        javadoc(data_type.babel_doc, context=data_type)
+        javadoc(class_doc, context=data_type)
         out('@JsonSerialize(using=%s.Serializer.class)' % data_type.java_class.name)
         out('@JsonDeserialize(using=%s.Deserializer.class)' % data_type.java_class.name)
         with self.g.block('public final class %s' % data_type.java_class):
@@ -2842,6 +2949,7 @@ class JavaCodeGenerationInstance(object):
             for field in data_type.all_fields:
                 if not field.has_value:
                     singleton_args = ', '.join(chain(("Tag.%s" % field.tag_name,), nulls))
+                    javadoc(field.babel_doc, context=field)
                     out('public static final %s %s = new %s(%s);' % (
                         data_type.java_class,
                         field.java_singleton, data_type.java_class,
@@ -2882,14 +2990,21 @@ class JavaCodeGenerationInstance(object):
             # Field getters/constructors
             #
             out('')
+            if data_type.catch_all_field:
+                catch_all_doc = "If a tag returned by the server is unrecognized by this SDK, the {@link Tag#%s} value will be used." % (
+                    data_type.catch_all_field.tag_name)
+            else:
+                catch_all_doc = ""
             javadoc(
                 """
                 Returns the tag for this instance.
 
                 This class is a tagged union.  Tagged unions instances are always associated to a
-                specific tag.  Callers are recommended to use the tag value in a {@code switch}
-                statement to determine how to properly handle this {@code %s}.
-                """ % data_type.java_class,
+                specific tag.  This means only one of the {@code isXyz()} methods will return {@code
+                true}. Callers are recommended to use the tag value in a {@code switch} statement to
+                properly handle the different values for this {@code %s}.
+
+                %s""" % (data_type.java_class, catch_all_doc),
                 context=data_type,
                 returns="the tag for this instance."
             )
@@ -3007,7 +3122,7 @@ class JavaCodeGenerationInstance(object):
                 """ % field.tag_name,
                 returns=(
                     """
-                    {@code true} if this insta5Bnce is tagged as {@link Tag#%s},
+                    {@code true} if this instance is tagged as {@link Tag#%s},
                     {@code false} otherwise.
                     """
                 ) % field.tag_name
@@ -3031,9 +3146,7 @@ class JavaCodeGenerationInstance(object):
                 javadoc(
                     doc,
                     context=field,
-                    params=OrderedDict(
-                        value="%s value to assign to this instance." % self.doc.javadoc_ref(field)
-                    ) if field.has_value else (),
+                    params=OrderedDict(value="value to assign to this instance.") if field.has_value else (),
                     returns=returns,
                     throws=self.doc.javadoc_throws(field, "value")
                 )
@@ -3085,11 +3198,26 @@ class JavaCodeGenerationInstance(object):
         out = self.g.emit
         javadoc = self.doc.generate_javadoc
 
+        # we want to hide classes that aren't usable by developers. This include helper classes we
+        # use internally for building the request. If a struct is only ever used as the argument to
+        # a route request, then developers will never have to create an instance themselves. Mark
+        # the class as package-private.
+        #
+        # The exception to this rule are struct classes located in namespaces outside the route
+        # namespace. To be able to import these classes, they will have to remain public.
+        visibility = 'public'
+        route_refs = get_routes_with_arg_type(data_type, allow_lists=False)
+        if route_refs and all(r.namespace == data_type.namespace for r in route_refs):
+            field_refs = get_fields_with_data_type(data_type)
+            if not field_refs:
+                # package private since this struct only gets used privately as a route request arg.
+                visibility = ''
+
         out('')
         javadoc(data_type.babel_doc, context=data_type)
         out('@JsonSerialize(using=%s.Serializer.class)' % data_type.java_class.name)
         out('@JsonDeserialize(using=%s.Deserializer.class)' % data_type.java_class.name)
-        with self.g.block('public class %s' % data_type.java_class_with_inheritance):
+        with self.g.block(('%s class %s' % (visibility, data_type.java_class_with_inheritance)).strip()):
             out('// struct %s' % data_type.babel_name)
             #
             # instance fields
