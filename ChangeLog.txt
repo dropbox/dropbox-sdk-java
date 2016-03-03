@@ -1,3 +1,8 @@
+- Rename v2 request classes to support future auth styles:
+    - DbxFiles -> DbxUserFilesRequests
+    - DbxSharing -> DbxUserSharingRequests
+    - DbxUsers -> DbxUserUsersRequests
+    - DbxTeam -> DbxTeamTeamRequests
 - Replace public final references in DbxClientV2 and DbxTeamClientV2 with accessor methods.
 - Update longpoll example with better documentation on setting timeout values.
 

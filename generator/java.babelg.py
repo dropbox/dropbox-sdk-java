@@ -117,13 +117,23 @@ def classname(s):
     return capwords(s)
 
 
-def get_auth_types_set(namespace):
+def get_auth_types_set(namespace, noauth_as_user=False):
+    if isinstance(namespace, NamespaceWrapper):
+        namespace = namespace.as_babel
+
     routes = namespace.routes
     if not routes:
         return set()
 
+    def auth_replace_noauth(route):
+        auth_type = route.attrs.get('auth', 'user')
+        if noauth_as_user and auth_type == 'noauth':
+            return 'user'
+        else:
+            return auth_type
+
     return {
-        route.attrs.get('auth', 'user')
+        auth_replace_noauth(route)
         for route in routes
     }
 
@@ -743,9 +753,8 @@ class NamespaceWrapper(BabelWrapper):
             for route in self.as_babel.routes
         )
 
-    @property
-    def java_class(self):
-        return self._as_java_class(classname('dbx_' + self.babel_name))
+    def java_class(self, auth):
+        return self._as_java_class(classname('dbx_' + auth + '_' + self.babel_name + '_requests'))
 
     @property
     def java_getter(self):
@@ -766,7 +775,8 @@ class RouteWrapper(BabelWrapper):
 
     @property
     def java_class(self):
-        return self.namespace.java_class
+        auth = self.auth_style if self.auth_style != 'noauth' else 'user'
+        return self.namespace.java_class(auth)
 
     @property
     def arg(self):
@@ -1637,7 +1647,6 @@ class JavadocGenerator(object):
         out('/**')
 
         if doc:
-            doc = sanitize_javadoc(doc)
             first_paragraph = True
             for paragraph in split_paragraphs(doc.strip()):
                 if not first_paragraph:
@@ -1706,7 +1715,7 @@ class JavadocGenerator(object):
 
         if isinstance(deprecated, RouteWrapper):
             return 'use %s instead.' % self.javadoc_ref(deprecated)
-        elif deprecated is True:
+        elif isinstance(deprecated, bool) and deprecated:
             return ''
         else:
             return None
@@ -1964,7 +1973,7 @@ class JavaImportGenerator(object):
                 for import_ in sorted(imports):
                     out('import %s;' % import_)
 
-    def add_imports_for_namespace(self, namespace):
+    def add_imports_for_namespace(self, namespace, auth):
         assert isinstance(namespace, NamespaceWrapper), repr(namespace)
 
         self._ctx.add_imports(
@@ -1979,7 +1988,9 @@ class JavaImportGenerator(object):
             'java.util.Map',
         )
         for route in namespace.routes:
-            self.add_imports_for_route(route)
+            route_auth = route.auth_style if route.auth_style != 'noauth' else 'user'
+            if route_auth == auth:
+                self.add_imports_for_route(route)
 
     def add_imports_for_route(self, route):
         self._add_imports_for_data_type(route.arg)
@@ -2000,8 +2011,9 @@ class JavaImportGenerator(object):
                 self._ctx.add_imports('com.dropbox.core.v2.DbxDownloadStyleBuilder')
 
     def add_imports_for_route_builder(self, route):
+        route_auth = route.auth_style if route.auth_style != 'noauth' else 'user'
         self._ctx.add_imports(
-            route.namespace.java_class,
+            route.namespace.java_class(route_auth),
             route.arg.java_builder_class,
             'com.dropbox.core.DbxException',
         )
@@ -2228,7 +2240,7 @@ class JavaCodeGenerationInstance(object):
 
         user_client_class_name = 'DbxClientV2'
         with self.dbx_client(
-                self.ctx.base_package, user_client_class_name, ('user', 'noauth'),
+                self.ctx.base_package, user_client_class_name, 'user',
 
         """
                 Use this class to make remote calls to the Dropbox API user endpoints.  User endpoints
@@ -2240,7 +2252,7 @@ class JavaCodeGenerationInstance(object):
             pass
 
         with self.dbx_client(
-                self.ctx.base_package, 'DbxTeamClientV2', ('team',),
+                self.ctx.base_package, 'DbxTeamClientV2', 'team',
                 """
                 Use this class to make remote calls to the Dropbox API team endpoints.  Team endpoints
                 expose actions you can perform on or for a Dropbox team.  You'll need a team access
@@ -2288,14 +2300,19 @@ class JavaCodeGenerationInstance(object):
 
 
     @contextmanager
-    def dbx_client(self, package_name, class_name, auth_types, class_doc):
+    def dbx_client(self, package_name, class_name, auth, class_doc):
         assert class_doc
 
         out = self.g.emit
 
+        if auth == 'user':
+            auth_types_filter = (auth, 'noauth')
+        else:
+            auth_types_filter = (auth,)
+
         namespaces = [
             NamespaceWrapper(self.ctx, ns)
-            for ns in get_namespaces_by_auth_types(self.ctx.api, auth_types)
+            for ns in get_namespaces_by_auth_types(self.ctx.api, auth_types_filter)
         ]
 
         package_relpath = self.create_package_path(package_name)
@@ -2309,7 +2326,7 @@ class JavaCodeGenerationInstance(object):
             out('import com.dropbox.core.http.HttpRequestor;')
 
             for namespace in namespaces:
-                out('import %s;' % namespace.java_class)
+                out('import %s;' % namespace.java_class(auth))
 
             out('')
             self.doc.generate_javadoc(
@@ -2323,7 +2340,7 @@ class JavaCodeGenerationInstance(object):
             with self.g.block('public final class %s' % class_name):
                 out('private final DbxRawClientV2 _client;')
                 for namespace in namespaces:
-                    out('private final %s %s;' % (namespace.java_class, namespace.java_field))
+                    out('private final %s %s;' % (namespace.java_class(auth), namespace.java_field))
                 out('')
 
                 param_docs = OrderedDict((
@@ -2373,7 +2390,7 @@ class JavaCodeGenerationInstance(object):
                     out('this._client = _client;')
                     for namespace in namespaces:
                         out('this.%s = new %s(_client);' % (
-                            namespace.java_field, namespace.java_class
+                            namespace.java_field, namespace.java_class(auth)
                         ))
 
                 for namespace in namespaces:
@@ -2384,7 +2401,7 @@ class JavaCodeGenerationInstance(object):
                         """ % namespace.babel_name,
                         returns="Dropbox %s client" % namespace.babel_name
                     )
-                    with self.g.block("public %s %s()" % (namespace.java_class, namespace.java_getter)):
+                    with self.g.block("public %s %s()" % (namespace.java_class(auth), namespace.java_getter)):
                         out('return %s;' % namespace.java_field)
 
                 out('')
@@ -2393,9 +2410,6 @@ class JavaCodeGenerationInstance(object):
 
 
     def generate_namespace(self, namespace):
-        out = self.g.emit
-        javadoc = self.doc.generate_javadoc
-
         # create class files for all namespace data types in this package
         for data_type in namespace.data_types:
             self.generate_data_type(data_type)
@@ -2413,22 +2427,33 @@ class JavaCodeGenerationInstance(object):
         # add documentation to our packages
         self.generate_package_javadoc(namespace)
 
-        with self.new_file(namespace):
-            self.importer.add_imports_for_namespace(namespace)
+        for auth in get_auth_types_set(namespace, noauth_as_user=True):
+            self.generate_namespace_for_auth(namespace, auth)
+
+    def generate_namespace_for_auth(self, namespace, auth):
+        out = self.g.emit
+        javadoc = self.doc.generate_javadoc
+
+        with self.new_file(namespace, class_name=namespace.java_class(auth).fq):
+            self.importer.add_imports_for_namespace(namespace, auth)
             self.importer.generate_imports()
 
             out('')
-            javadoc('Routes in namespace "%s".' % namespace.babel_name)
-            with self.g.block('public final class %s' % namespace.java_class):
+            javadoc('Routes in namespace "%s" that support %s auth.' % (namespace.babel_name, auth))
+            with self.g.block('public final class %s' % namespace.java_class(auth)):
                 out('// namespace %s' % namespace.babel_name)
                 out('')
                 out('private final DbxRawClientV2 client;')
 
                 out('')
-                with self.g.block('public %s(DbxRawClientV2 client)' % namespace.java_class):
+                with self.g.block('public %s(DbxRawClientV2 client)' % namespace.java_class(auth)):
                     out('this.client = client;')
 
                 for route in namespace.routes:
+                    route_auth = route.auth_style if route.auth_style != 'noauth' else 'user'
+                    if route_auth != auth:
+                        continue
+
                     out('')
                     out('//')
                     out('// route %s/%s' % (route.namespace.babel_name, route.babel_name))
@@ -2442,12 +2467,16 @@ class JavaCodeGenerationInstance(object):
                     self.generate_route_builder(route)
 
     def generate_package_javadoc(self, namespace):
+        classes = oxford_comma_list(tuple(
+            "{@link %s}" % namespace.java_class(auth)
+            for auth in get_auth_types_set(namespace, noauth_as_user=True)
+        ), conjunction='and')
         package_doc = (
             """
             %s
 
-            See {@link %s} for a list of possible requests for this namespace.
-            """ % (namespace.babel_doc, namespace.java_class)
+            See %s for a list of possible requests for this namespace.
+            """ % (namespace.babel_doc, classes)
         )
 
         with self.new_file(namespace, 'package-info', package_doc=package_doc):
@@ -3597,6 +3626,7 @@ class JavaCodeGenerationInstance(object):
             builder_arg_class = arg_type.java_builder_class
             builder_arg_name = arg_type.java_builder_field
             client_name = route.namespace.java_field
+            route_auth = route.auth_style if route.auth_style != 'noauth' else 'user'
 
             out('')
             javadoc(
@@ -3607,7 +3637,7 @@ class JavaCodeGenerationInstance(object):
                 """ % self.doc.javadoc_ref(route, builder=True)
             )
             with self.g.block('public class %s' % route.java_builder_class_with_inheritance):
-                out('private final %s %s;' % (route.namespace.java_class, client_name))
+                out('private final %s %s;' % (route.namespace.java_class(route_auth), client_name))
                 out('private final %s %s;' % (builder_arg_class, builder_arg_name))
 
                 #
@@ -3615,7 +3645,7 @@ class JavaCodeGenerationInstance(object):
                 #
 
                 args = ', '.join('%s %s' % pair for pair in (
-                    (route.namespace.java_class, client_name),
+                    (route.namespace.java_class(route_auth), client_name),
                     (builder_arg_class, builder_arg_name),
                 ))
 
