@@ -18,9 +18,14 @@ If you're using Maven, then edit your project's "pom.xml" and add this to the `<
 </dependency>
 ```
 
-If you aren't using Maven, here are the JARs you need:
-- [Dropbox Core SDK 2.0.0](https://oss.sonatype.org/content/repositories/releases/com/dropbox/core/dropbox-core-sdk/2.0.0/dropbox-core-sdk-2.0.0.jar)
-- [Jackson Core 2.6.1](https://oss.sonatype.org/content/repositories/releases/com/fasterxml/jackson/core/jackson-core/2.6.1/jackson-core-2.6.1.jar) (JSON parser)
+If you are using Gradle, then edit your project's "build.gradle" and add this to the `dependencies` section:
+
+```groovy
+dependencies {
+    // ...
+    compile 'com.dropbox.core:dropbox-core-sdk:2.0.0'
+}
+```
 
 ## Get a Dropbox API key
 
