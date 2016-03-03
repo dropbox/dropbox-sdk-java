@@ -2115,6 +2115,9 @@ class JavaImportGenerator(object):
             self._ctx.add_imports(
                 'com.dropbox.core.json.UnionJsonSerializer',
                 'com.dropbox.core.json.UnionJsonDeserializer',
+                'java.util.Collections',
+                'java.util.HashMap',
+                'java.util.Map',
             )
 
     def __repr__(self):
@@ -2756,15 +2759,7 @@ class JavaCodeGenerationInstance(object):
             out('// union %s' % data_type.babel_name)
             self.generate_enum_values(data_type)
 
-            #
-            # VALUES lookup table
-            #
-            out('')
-            out('private static final java.util.HashMap<String, %s> VALUES_;' % data_type.java_class)
-            with self.g.block('static'):
-                out('VALUES_ = new java.util.HashMap<String, %s>();' % data_type.java_class)
-                for field in data_type.fields:
-                    out('VALUES_.put("%s", %s);' % (field.babel_name, field.java_enum))
+            self.generate_proguard_workaround()
 
             #
             # JSON (de)serialization
@@ -2873,8 +2868,11 @@ class JavaCodeGenerationInstance(object):
                 else:
                     catch_all = 'null'
 
+                # workaround for ProGuard not being able to properly inline our tag mapping if we
+                # make it a private static final constant. By leaving the tag mapping as a method
+                # call, then ProGuard will replace it will ``null``
                 args = chain(
-                    ('%s.class' % data_type.java_class, 'VALUES_', catch_all),
+                    ('%s.class' % data_type.java_class, 'getTagMapping()', catch_all),
                     ('%s.class' % f.java_type() for f in collapsible_fields),
                 )
                 out('super(%s);' % ', '.join(args))
@@ -2887,6 +2885,23 @@ class JavaCodeGenerationInstance(object):
             out('@Override')
             with self.g.block('public %s deserialize(%s _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException' % (data_type.java_class, tag_class)):
                 yield
+
+            #
+            # Tag mapping
+            #
+
+            tag_class = str(data_type.java_class) if data_type.is_enum else ('%s.Tag' % data_type.java_class)
+
+            out('')
+            with self.g.block('private static Map<String, %s> getTagMapping()' % tag_class):
+                out('Map<String, %s> values = new HashMap<String, %s>();' % (tag_class, tag_class))
+                for field in data_type.fields:
+                    if data_type.is_enum:
+                        tag_value = '%s.%s' % (data_type.java_class, field.java_enum)
+                    else:
+                        tag_value = '%s.Tag.%s' % (data_type.java_class, field.tag_name)
+                    out('values.put("%s", %s);' % (field.babel_name, tag_value))
+                out('return Collections.unmodifiableMap(values);')
 
     @contextmanager
     def generate_struct_json_reader_base(self, data_type):
@@ -3008,6 +3023,8 @@ class JavaCodeGenerationInstance(object):
         with self.g.block('public final class %s' % data_type.java_class):
             out('// union %s' % data_type.java_class)
 
+            self.generate_proguard_workaround()
+
             #
             # Tag
             #
@@ -3015,16 +3032,6 @@ class JavaCodeGenerationInstance(object):
             javadoc('Discriminating tag type for {@link %s}.' % data_type.java_class)
             with self.g.block('public enum Tag'):
                 self.generate_enum_values(data_type)
-
-            #
-            # VALUES lookup table
-            #
-            out('')
-            out('private static final java.util.HashMap<String, Tag> VALUES_;')
-            with self.g.block('static'):
-                out('VALUES_ = new java.util.HashMap<String, Tag>();')
-                for field in data_type.fields:
-                    out('VALUES_.put("%s", Tag.%s);' % (field.babel_name, field.tag_name))
 
             #
             # Simple field singletons
@@ -3307,6 +3314,9 @@ class JavaCodeGenerationInstance(object):
         out('@JsonDeserialize(using=%s.Deserializer.class)' % data_type.java_class.name)
         with self.g.block(('%s class %s' % (visibility, data_type.java_class_with_inheritance)).strip()):
             out('// struct %s' % data_type.babel_name)
+
+            self.generate_proguard_workaround()
+
             #
             # instance fields
             #
@@ -4141,6 +4151,14 @@ class JavaCodeGenerationInstance(object):
                         out(';')
             with self.g.block('else'):
                 out('return false;')
+
+    def generate_proguard_workaround(self):
+        out = self.g.emit
+
+        out('')
+        out('// ProGuard work-around since we declare serializers in annotation')
+        out('static final Serializer SERIALIZER = new Serializer();')
+        out('static final Deserializer DESERIALIZER = new Deserializer();')
 
     @contextmanager
     def conditional_block(self, text, predicate):

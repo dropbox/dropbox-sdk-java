@@ -20,5 +20,11 @@ If you don't have Android Studio, you can use the command-line:
 
 1. Make sure you have the standalone [Android SDK Tools](http://developer.android.com/sdk/installing/).
 2. Make sure your `ANDROID_SDK` environment variable is set to the path where the standalone Android SDK Tools are installed.
-3. To build: run `./gradlew assemble`.  
+3. To build: run `./gradlew assemble`.
 4. The example app's ".apk" files should now be in "build/outputs/apk".  You can use "adb install" to install them to the emulator or to a real device.
+
+## ProGuard
+
+The Dropbox Java SDK supports ProGuard class file shrinking optimizations. The only requirements to
+your ProGuard configuration are to ensure [Jackson Databind](https://github.com/FasterXML/jackson-databind)
+classes are handled correctly and annotations are kept. See [proguard-rules.pro](proguard-rules.pro) for an example.
