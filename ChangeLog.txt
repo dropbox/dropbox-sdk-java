@@ -1,3 +1,4 @@
+- Parse Retry-After header for 503 retry exceptions in API v1.
 - Add example from online tutorial.
 
 ---------------------------------------------

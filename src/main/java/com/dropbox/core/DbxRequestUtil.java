@@ -332,7 +332,18 @@ public final class DbxRequestUtil {
             case 500:
                 return new ServerException(requestId, message);
             case 503:
-                return new RetryException(requestId, message);
+                // API v1 may include Retry-After in 503 responses, v2 does not
+                String retryAfter = getFirstHeaderMaybe(response, "Retry-After");
+                try {
+                    if (retryAfter != null && !retryAfter.trim().isEmpty()) {
+                        int backoffSecs = Integer.parseInt(retryAfter);
+                        return new RetryException(requestId, message, backoffSecs, TimeUnit.SECONDS);
+                    } else {
+                        return new RetryException(requestId, message);
+                    }
+                } catch (NumberFormatException ex) {
+                    return new BadResponseException(requestId, "Invalid value for HTTP header: \"Retry-After\"");
+                }
             default:
                 return new BadResponseCodeException(
                     requestId,
