@@ -2764,7 +2764,6 @@ class JavaCodeGenerationInstance(object):
             #
             # JSON (de)serialization
             #
-            self.generate_json_serialization_methods(data_type)
             self.generate_enum_json_writer(data_type)
             self.generate_enum_json_reader(data_type)
 
@@ -3115,7 +3114,6 @@ class JavaCodeGenerationInstance(object):
             #
             # JSON (de)serialization
             #
-            self.generate_json_serialization_methods(data_type)
             self.generate_union_json_writer(data_type)
             self.generate_union_json_reader(data_type)
 
@@ -3418,7 +3416,6 @@ class JavaCodeGenerationInstance(object):
             #
             # JSON (de)serialization
             #
-            self.generate_json_serialization_methods(data_type)
             self.generate_struct_json_writer(data_type)
             self.generate_struct_json_reader(data_type)
 
@@ -4013,36 +4010,35 @@ class JavaCodeGenerationInstance(object):
 
     def generate_to_string(self):
         out = self.g.emit
+        javadoc = self.doc.generate_javadoc
 
         out('')
         out('@Override')
         with self.g.block('public String toString()'):
-            out('return toJson(false);')
+            out('return serialize(false);')
 
         out('')
+        javadoc(
+            """
+            Returns a String representation of this object formatted for easier readability.
+
+            The returned String may contain newlines.
+            """,
+            returns="Formatted, multiline String representation of this object"
+        )
         with self.g.block('public String toStringMultiline()'):
-            out('return toJson(true);')
-
-    def generate_json_serialization_methods(self, data_type):
-        out = self.g.emit
+            out('return serialize(true);')
 
         out('')
-        with self.g.block('public String toJson(boolean longForm)'):
+        with self.g.block('private String serialize(boolean longForm)'):
             with self.g.block('try'):
                 out('return JsonUtil.getMapper(longForm).writeValueAsString(this);')
             with self.g.block('catch (JsonProcessingException ex)'):
                 out('throw new RuntimeException("Failed to serialize object", ex);')
 
-        out('')
-        with self.g.block('public static %s fromJson(String s) throws JsonReadException' % data_type.java_class):
-            with self.g.block('try'):
-                out('return JsonUtil.getMapper().readValue(s, %s.class);' % data_type.java_class)
-            with self.g.block('catch (IOException ex)'):
-                out('// should not happen since we are reading from a String')
-                out('throw new RuntimeException(ex);')
-
     def generate_hash_code(self, data_type):
         out = self.g.emit
+        javadoc = self.doc.generate_javadoc
 
         assert isinstance(data_type, DataTypeWrapper), repr(data_type)
         assert data_type.is_struct or data_type.is_union, repr(data_type)
@@ -4053,20 +4049,12 @@ class JavaCodeGenerationInstance(object):
         else:
             fields = ['tag'] + [f.java_name for f in data_type.all_fields if f.has_value]
 
-        has_list_field = any(f.data_type.is_list for f in data_type.all_fields)
-
         out('')
         out('@Override')
         with self.g.block('public int hashCode()'):
             if not fields:
                 out('// attempt to deal with inheritance')
                 out('return getClass().toString().hashCode();')
-            elif has_list_field:
-                # objects containing mutable lists are by definition, not hashable. Return object hash code.
-                out('// objects containing lists are not hash-able. This is used as a safeguard')
-                out('// against adding this object to a HashSet or HashMap. Since list fields are')
-                out('// mutable, it is not safe to compute a hashCode here.')
-                out('return System.identityHashCode(this);')
             else:
                 with self.g.block('int hash = java.util.Arrays.hashCode(new Object []', after=');'):
                     self.g.generate_multiline_list(fields, delim=('', ''))

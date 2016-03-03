@@ -4,14 +4,17 @@ import static org.mockito.Mockito.*;
 import static org.testng.Assert.*;
 
 import com.dropbox.core.http.HttpRequestor;
+import com.dropbox.core.json.JsonUtil;
 import com.dropbox.core.v2.files.FileMetadata;
 import com.dropbox.core.v2.files.Metadata;
+import com.dropbox.core.util.IOUtil;
 import com.dropbox.core.BadRequestException;
 import com.dropbox.core.DbxDownloader;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.RetryException;
-import com.dropbox.core.util.IOUtil;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -31,6 +34,8 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class DbxClientV2Test {
+    private static final ObjectMapper JSON = JsonUtil.getMapper();
+
     // default config
     private static DbxRequestConfig.Builder createRequestConfig() {
         return DbxRequestConfig.newBuilder("sdk-test");
@@ -86,7 +91,7 @@ public class DbxClientV2Test {
         when(mockUploader.finish())
             .thenReturn(createEmptyResponse(503))
             .thenReturn(createEmptyResponse(503))
-            .thenReturn(createSuccessResponse(expected.toJson(false)));
+            .thenReturn(createSuccessResponse(serialize(expected)));
 
         when(mockRequestor.startPost(anyString(), anyHeaders()))
             .thenReturn(mockUploader);
@@ -177,7 +182,7 @@ public class DbxClientV2Test {
         HttpRequestor.Uploader mockUploader = mockUploader();
         when(mockUploader.finish())
             .thenReturn(createEmptyResponse(503))
-            .thenReturn(createDownloaderResponse(expectedBytes, expectedMetadata.toJson(false)));
+            .thenReturn(createDownloaderResponse(expectedBytes, serialize(expectedMetadata)));
         when(mockRequestor.startPost(anyString(), anyHeaders()))
             .thenReturn(mockUploader);
 
@@ -220,7 +225,7 @@ public class DbxClientV2Test {
             .thenReturn(createEmptyResponse(503))   // no backoff
             .thenReturn(createRateLimitResponse(1)) // backoff 1 sec
             .thenReturn(createRateLimitResponse(2)) // backoff 2 sec
-            .thenReturn(createSuccessResponse(expected.toJson(false)));
+            .thenReturn(createSuccessResponse(serialize(expected)));
 
         when(mockRequestor.startPost(anyString(), anyHeaders()))
             .thenReturn(mockUploader);
@@ -258,16 +263,21 @@ public class DbxClientV2Test {
         );
     }
 
-    private static HttpRequestor.Response createDownloaderResponse(byte [] body, String jsonResponse) {
-        return new HttpRequestor.Response(
-            200,
-            new ByteArrayInputStream(body),
-            headers("Dropbox-Api-Result", jsonResponse)
-        );
+    private static HttpRequestor.Response createDownloaderResponse(byte [] body, byte [] jsonResponse) {
+        try {
+            return new HttpRequestor.Response(
+                200,
+                new ByteArrayInputStream(body),
+                headers("Dropbox-Api-Result", new String(jsonResponse, "UTF-8"))
+            );
+        } catch (IOException ex) {
+            // character encoding exception is impossible for UTF-8
+            fail("UTF-8 missing (impossible)", ex);
+            return null;
+        }
     }
 
-    private static HttpRequestor.Response createSuccessResponse(String json) throws IOException {
-        byte [] body = json.getBytes("UTF-8");
+    private static HttpRequestor.Response createSuccessResponse(byte [] body) throws IOException {
         return new HttpRequestor.Response(
             200,
             new ByteArrayInputStream(body),
@@ -310,5 +320,16 @@ public class DbxClientV2Test {
 
     private static Iterable<HttpRequestor.Header> anyHeaders() {
         return Matchers.<Iterable<HttpRequestor.Header>>any();
+    }
+
+    private static byte [] serialize(Object obj) {
+        assertNotNull(obj);
+
+        try {
+            return JSON.writeValueAsBytes(obj);
+        } catch (Exception ex) {
+            fail("unserializable type: " + obj.getClass(), ex);
+            return null;
+        }
     }
 }

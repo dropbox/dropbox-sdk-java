@@ -1,3 +1,4 @@
+- Remove toJson(..) and fromJson(..) methods from data types.
 - Support ProGuard shrinking for Android development and provide example.
 - Rename v2 request classes to support future auth styles:
     - DbxFiles -> DbxUserFilesRequests
