@@ -5,14 +5,29 @@ package com.dropbox.core.v2.team;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.UnionJsonDeserializer;
+import com.dropbox.core.json.UnionJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
+@JsonSerialize(using=MobileClientPlatform.Serializer.class)
+@JsonDeserialize(using=MobileClientPlatform.Deserializer.class)
 public enum MobileClientPlatform {
     // union MobileClientPlatform
     /**
@@ -40,71 +55,63 @@ public enum MobileClientPlatform {
      */
     OTHER; // *catch_all
 
-    private static final java.util.HashMap<String, MobileClientPlatform> VALUES_;
-    static {
-        VALUES_ = new java.util.HashMap<String, MobileClientPlatform>();
-        VALUES_.put("iphone", IPHONE);
-        VALUES_.put("ipad", IPAD);
-        VALUES_.put("android", ANDROID);
-        VALUES_.put("windows_phone", WINDOWS_PHONE);
-        VALUES_.put("blackberry", BLACKBERRY);
-        VALUES_.put("other", OTHER);
-    }
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
-    }
+    static final class Serializer extends UnionJsonSerializer<MobileClientPlatform> {
+        private static final long serialVersionUID = 0L;
 
-    public static MobileClientPlatform fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
+        public Serializer() {
+            super(MobileClientPlatform.class);
+        }
 
-    public static final JsonWriter<MobileClientPlatform> _JSON_WRITER = new JsonWriter<MobileClientPlatform>() {
-        public void write(MobileClientPlatform x, JsonGenerator g) throws IOException {
-            switch (x) {
+        @Override
+        public void serialize(MobileClientPlatform value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            switch (value) {
                 case IPHONE:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("iphone");
-                    g.writeEndObject();
                     break;
                 case IPAD:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("ipad");
-                    g.writeEndObject();
                     break;
                 case ANDROID:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("android");
-                    g.writeEndObject();
                     break;
                 case WINDOWS_PHONE:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("windows_phone");
-                    g.writeEndObject();
                     break;
                 case BLACKBERRY:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("blackberry");
-                    g.writeEndObject();
                     break;
                 case OTHER:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("other");
-                    g.writeEndObject();
                     break;
             }
         }
-    };
+    }
 
-    public static final JsonReader<MobileClientPlatform> _JSON_READER = new JsonReader<MobileClientPlatform>() {
-        public final MobileClientPlatform read(JsonParser parser) throws IOException, JsonReadException {
-            return JsonReader.readEnum(parser, VALUES_, OTHER);
+    static final class Deserializer extends UnionJsonDeserializer<MobileClientPlatform, MobileClientPlatform> {
+        private static final long serialVersionUID = 0L;
+
+        public Deserializer() {
+            super(MobileClientPlatform.class, getTagMapping(), MobileClientPlatform.OTHER);
         }
-    };
+
+        @Override
+        public MobileClientPlatform deserialize(MobileClientPlatform _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+            return _tag;
+        }
+
+        private static Map<String, MobileClientPlatform> getTagMapping() {
+            Map<String, MobileClientPlatform> values = new HashMap<String, MobileClientPlatform>();
+            values.put("iphone", MobileClientPlatform.IPHONE);
+            values.put("ipad", MobileClientPlatform.IPAD);
+            values.put("android", MobileClientPlatform.ANDROID);
+            values.put("windows_phone", MobileClientPlatform.WINDOWS_PHONE);
+            values.put("blackberry", MobileClientPlatform.BLACKBERRY);
+            values.put("other", MobileClientPlatform.OTHER);
+            return Collections.unmodifiableMap(values);
+        }
+    }
 }

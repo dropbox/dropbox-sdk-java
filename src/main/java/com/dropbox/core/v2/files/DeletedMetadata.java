@@ -5,11 +5,23 @@ package com.dropbox.core.v2.files;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
@@ -17,8 +29,14 @@ import java.io.IOException;
  * Indicates that there used to be a file or folder at this path, but it no
  * longer exists.
  */
+@JsonSerialize(using=DeletedMetadata.Serializer.class)
+@JsonDeserialize(using=DeletedMetadata.Deserializer.class)
 public class DeletedMetadata extends Metadata {
     // struct DeletedMetadata
+
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
 
 
     /**
@@ -33,8 +51,8 @@ public class DeletedMetadata extends Metadata {
      *     In rare instances the casing will not correctly match the user's
      *     filesystem, but this behavior will match the path provided in the
      *     Core API v1. Changes to the casing of paths won't be returned by
-     *     {@link DbxFiles#listFolderContinue(String)}. Must not be {@code
-     *     null}.
+     *     {@link DbxUserFilesRequests#listFolderContinue(String)}. Must not be
+     *     {@code null}.
      * @param parentSharedFolderId  Deprecated. Please use {@link
      *     FileSharingInfo#getParentSharedFolderId} or {@link
      *     FolderSharingInfo#getParentSharedFolderId} instead. Must match
@@ -61,8 +79,8 @@ public class DeletedMetadata extends Metadata {
      *     In rare instances the casing will not correctly match the user's
      *     filesystem, but this behavior will match the path provided in the
      *     Core API v1. Changes to the casing of paths won't be returned by
-     *     {@link DbxFiles#listFolderContinue(String)}. Must not be {@code
-     *     null}.
+     *     {@link DbxUserFilesRequests#listFolderContinue(String)}. Must not be
+     *     {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -85,10 +103,10 @@ public class DeletedMetadata extends Metadata {
         // be careful with inheritance
         else if (obj.getClass().equals(this.getClass())) {
             DeletedMetadata other = (DeletedMetadata) obj;
-            return ((this.getName() == other.getName()) || (this.getName().equals(other.getName())))
-                && ((this.getPathLower() == other.getPathLower()) || (this.getPathLower().equals(other.getPathLower())))
-                && ((this.getPathDisplay() == other.getPathDisplay()) || (this.getPathDisplay().equals(other.getPathDisplay())))
-                && ((this.getParentSharedFolderId() == other.getParentSharedFolderId()) || (this.getParentSharedFolderId() != null && this.getParentSharedFolderId().equals(other.getParentSharedFolderId())))
+            return ((this.name == other.name) || (this.name.equals(other.name)))
+                && ((this.pathLower == other.pathLower) || (this.pathLower.equals(other.pathLower)))
+                && ((this.pathDisplay == other.pathDisplay) || (this.pathDisplay.equals(other.pathDisplay)))
+                && ((this.parentSharedFolderId == other.parentSharedFolderId) || (this.parentSharedFolderId != null && this.parentSharedFolderId.equals(other.parentSharedFolderId)))
                 ;
         }
         else {
@@ -98,89 +116,113 @@ public class DeletedMetadata extends Metadata {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static DeletedMetadata fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
+    static final class Serializer extends StructJsonSerializer<DeletedMetadata> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonWriter<DeletedMetadata> _JSON_WRITER = new JsonWriter<DeletedMetadata>() {
-        public final void write(DeletedMetadata x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
+        public Serializer() {
+            super(DeletedMetadata.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(DeletedMetadata.class, unwrapping);
+        }
+
+        @Override
+        protected void serializeFields(DeletedMetadata value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
             g.writeStringField(".tag", "deleted");
-            Metadata._JSON_WRITER.writeFields(x, g);
-            DeletedMetadata._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
-        }
-        public final void writeFields(DeletedMetadata x, JsonGenerator g) throws IOException {
-        }
-    };
-
-    public static final JsonReader<DeletedMetadata> _JSON_READER = new JsonReader<DeletedMetadata>() {
-        public final DeletedMetadata read(JsonParser parser) throws IOException, JsonReadException {
-            DeletedMetadata result;
-            JsonReader.expectObjectStart(parser);
-            String [] tags = readTags(parser);
-            result = readFromTags(tags, parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
-        }
-
-        public final DeletedMetadata readFromTags(String [] tags, JsonParser parser) throws IOException, JsonReadException {
-            if (tags != null) {
-                assert tags.length >= 1;
-                assert "deleted".equals(tags[0]);
+            g.writeObjectField("name", value.name);
+            g.writeObjectField("path_lower", value.pathLower);
+            g.writeObjectField("path_display", value.pathDisplay);
+            if (value.parentSharedFolderId != null) {
+                g.writeObjectField("parent_shared_folder_id", value.parentSharedFolderId);
             }
-            return readFields(parser);
+        }
+    }
+
+    static final class Deserializer extends StructJsonDeserializer<DeletedMetadata> {
+        private static final long serialVersionUID = 0L;
+
+        public Deserializer() {
+            super(DeletedMetadata.class);
         }
 
-        public final DeletedMetadata readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(DeletedMetadata.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<DeletedMetadata> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public DeletedMetadata deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+            String _subtype_tag = readEnumeratedSubtypeTag(_p, "deleted");
+
             String name = null;
             String pathLower = null;
             String pathDisplay = null;
             String parentSharedFolderId = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("name".equals(fieldName)) {
-                    name = JsonReader.StringReader
-                        .readField(parser, "name", name);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("name".equals(_field)) {
+                    name = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("path_lower".equals(fieldName)) {
-                    pathLower = JsonReader.StringReader
-                        .readField(parser, "path_lower", pathLower);
+                else if ("path_lower".equals(_field)) {
+                    pathLower = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("path_display".equals(fieldName)) {
-                    pathDisplay = JsonReader.StringReader
-                        .readField(parser, "path_display", pathDisplay);
+                else if ("path_display".equals(_field)) {
+                    pathDisplay = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("parent_shared_folder_id".equals(fieldName)) {
-                    parentSharedFolderId = JsonReader.StringReader
-                        .readField(parser, "parent_shared_folder_id", parentSharedFolderId);
+                else if ("parent_shared_folder_id".equals(_field)) {
+                    parentSharedFolderId = getStringValue(_p);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (name == null) {
-                throw new JsonReadException("Required field \"name\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"name\" is missing.");
             }
             if (pathLower == null) {
-                throw new JsonReadException("Required field \"path_lower\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"path_lower\" is missing.");
             }
             if (pathDisplay == null) {
-                throw new JsonReadException("Required field \"path_display\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"path_display\" is missing.");
             }
+
             return new DeletedMetadata(name, pathLower, pathDisplay, parentSharedFolderId);
         }
-    };
+    }
 }

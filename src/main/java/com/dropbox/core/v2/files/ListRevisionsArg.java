@@ -5,19 +5,37 @@ package com.dropbox.core.v2.files;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
-public class ListRevisionsArg {
+@JsonSerialize(using=ListRevisionsArg.Serializer.class)
+@JsonDeserialize(using=ListRevisionsArg.Deserializer.class)
+class ListRevisionsArg {
     // struct ListRevisionsArg
 
-    private final String path;
-    private final long limit;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final String path;
+    protected final long limit;
 
     /**
      *
@@ -106,66 +124,97 @@ public class ListRevisionsArg {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static ListRevisionsArg fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
+    static final class Serializer extends StructJsonSerializer<ListRevisionsArg> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(ListRevisionsArg.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(ListRevisionsArg.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<ListRevisionsArg> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(ListRevisionsArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("path", value.path);
+            g.writeObjectField("limit", value.limit);
+        }
     }
 
-    public static final JsonWriter<ListRevisionsArg> _JSON_WRITER = new JsonWriter<ListRevisionsArg>() {
-        public final void write(ListRevisionsArg x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            ListRevisionsArg._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
-        }
-        public final void writeFields(ListRevisionsArg x, JsonGenerator g) throws IOException {
-            g.writeFieldName("path");
-            g.writeString(x.path);
-            g.writeFieldName("limit");
-            g.writeNumber(x.limit);
-        }
-    };
+    static final class Deserializer extends StructJsonDeserializer<ListRevisionsArg> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonReader<ListRevisionsArg> _JSON_READER = new JsonReader<ListRevisionsArg>() {
-        public final ListRevisionsArg read(JsonParser parser) throws IOException, JsonReadException {
-            ListRevisionsArg result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+        public Deserializer() {
+            super(ListRevisionsArg.class);
         }
 
-        public final ListRevisionsArg readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(ListRevisionsArg.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<ListRevisionsArg> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public ListRevisionsArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             String path = null;
             Long limit = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("path".equals(fieldName)) {
-                    path = JsonReader.StringReader
-                        .readField(parser, "path", path);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("path".equals(_field)) {
+                    path = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("limit".equals(fieldName)) {
-                    limit = JsonReader.UInt64Reader
-                        .readField(parser, "limit", limit);
+                else if ("limit".equals(_field)) {
+                    limit = _p.getLongValue();
+                    assertUnsigned(_p, limit);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (path == null) {
-                throw new JsonReadException("Required field \"path\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"path\" is missing.");
             }
+
             return new ListRevisionsArg(path, limit);
         }
-    };
+    }
 }

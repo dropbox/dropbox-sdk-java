@@ -5,17 +5,32 @@ package com.dropbox.core.v2.team;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.UnionJsonDeserializer;
+import com.dropbox.core.json.UnionJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Role of a user in group.
  */
+@JsonSerialize(using=GroupAccessType.Serializer.class)
+@JsonDeserialize(using=GroupAccessType.Deserializer.class)
 public enum GroupAccessType {
     // union GroupAccessType
     /**
@@ -27,43 +42,47 @@ public enum GroupAccessType {
      */
     OWNER;
 
-    private static final java.util.HashMap<String, GroupAccessType> VALUES_;
-    static {
-        VALUES_ = new java.util.HashMap<String, GroupAccessType>();
-        VALUES_.put("member", MEMBER);
-        VALUES_.put("owner", OWNER);
-    }
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
-    }
+    static final class Serializer extends UnionJsonSerializer<GroupAccessType> {
+        private static final long serialVersionUID = 0L;
 
-    public static GroupAccessType fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
+        public Serializer() {
+            super(GroupAccessType.class);
+        }
 
-    public static final JsonWriter<GroupAccessType> _JSON_WRITER = new JsonWriter<GroupAccessType>() {
-        public void write(GroupAccessType x, JsonGenerator g) throws IOException {
-            switch (x) {
+        @Override
+        public void serialize(GroupAccessType value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            switch (value) {
                 case MEMBER:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("member");
-                    g.writeEndObject();
                     break;
                 case OWNER:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("owner");
-                    g.writeEndObject();
                     break;
             }
         }
-    };
+    }
 
-    public static final JsonReader<GroupAccessType> _JSON_READER = new JsonReader<GroupAccessType>() {
-        public final GroupAccessType read(JsonParser parser) throws IOException, JsonReadException {
-            return JsonReader.readEnum(parser, VALUES_, null);
+    static final class Deserializer extends UnionJsonDeserializer<GroupAccessType, GroupAccessType> {
+        private static final long serialVersionUID = 0L;
+
+        public Deserializer() {
+            super(GroupAccessType.class, getTagMapping(), null);
         }
-    };
+
+        @Override
+        public GroupAccessType deserialize(GroupAccessType _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+            return _tag;
+        }
+
+        private static Map<String, GroupAccessType> getTagMapping() {
+            Map<String, GroupAccessType> values = new HashMap<String, GroupAccessType>();
+            values.put("member", GroupAccessType.MEMBER);
+            values.put("owner", GroupAccessType.OWNER);
+            return Collections.unmodifiableMap(values);
+        }
+    }
 }

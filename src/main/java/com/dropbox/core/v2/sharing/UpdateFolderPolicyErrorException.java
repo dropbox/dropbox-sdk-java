@@ -11,9 +11,11 @@ import com.dropbox.core.LocalizedText;
  * UpdateFolderPolicyError} error.
  */
 public class UpdateFolderPolicyErrorException extends DbxApiException {
+    private static final long serialVersionUID = 0L;
 
     /**
-     * The error reported by {@link DbxSharing#updateFolderPolicy(String)}.
+     * The error reported by {@link
+     * DbxUserSharingRequests#updateFolderPolicy(String)}.
      */
     public final UpdateFolderPolicyError errorValue;
 

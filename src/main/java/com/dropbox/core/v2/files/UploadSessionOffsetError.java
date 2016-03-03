@@ -5,18 +5,36 @@ package com.dropbox.core.v2.files;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
+@JsonSerialize(using=UploadSessionOffsetError.Serializer.class)
+@JsonDeserialize(using=UploadSessionOffsetError.Deserializer.class)
 public class UploadSessionOffsetError {
     // struct UploadSessionOffsetError
 
-    private final long correctOffset;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final long correctOffset;
 
     /**
      *
@@ -60,59 +78,91 @@ public class UploadSessionOffsetError {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static UploadSessionOffsetError fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
+    static final class Serializer extends StructJsonSerializer<UploadSessionOffsetError> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(UploadSessionOffsetError.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(UploadSessionOffsetError.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<UploadSessionOffsetError> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(UploadSessionOffsetError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("correct_offset", value.correctOffset);
+        }
     }
 
-    public static final JsonWriter<UploadSessionOffsetError> _JSON_WRITER = new JsonWriter<UploadSessionOffsetError>() {
-        public final void write(UploadSessionOffsetError x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            UploadSessionOffsetError._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
-        }
-        public final void writeFields(UploadSessionOffsetError x, JsonGenerator g) throws IOException {
-            g.writeFieldName("correct_offset");
-            g.writeNumber(x.correctOffset);
-        }
-    };
+    static final class Deserializer extends StructJsonDeserializer<UploadSessionOffsetError> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonReader<UploadSessionOffsetError> _JSON_READER = new JsonReader<UploadSessionOffsetError>() {
-        public final UploadSessionOffsetError read(JsonParser parser) throws IOException, JsonReadException {
-            UploadSessionOffsetError result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+        public Deserializer() {
+            super(UploadSessionOffsetError.class);
         }
 
-        public final UploadSessionOffsetError readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(UploadSessionOffsetError.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<UploadSessionOffsetError> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public UploadSessionOffsetError deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             Long correctOffset = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("correct_offset".equals(fieldName)) {
-                    correctOffset = JsonReader.UInt64Reader
-                        .readField(parser, "correct_offset", correctOffset);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("correct_offset".equals(_field)) {
+                    correctOffset = _p.getLongValue();
+                    assertUnsigned(_p, correctOffset);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (correctOffset == null) {
-                throw new JsonReadException("Required field \"correct_offset\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"correct_offset\" is missing.");
             }
+
             return new UploadSessionOffsetError(correctOffset);
         }
-    };
+    }
 }

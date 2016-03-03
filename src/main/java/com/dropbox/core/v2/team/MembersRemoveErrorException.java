@@ -11,9 +11,11 @@ import com.dropbox.core.LocalizedText;
  * error.
  */
 public class MembersRemoveErrorException extends DbxApiException {
+    private static final long serialVersionUID = 0L;
 
     /**
-     * The error reported by {@link DbxTeam#membersRemove(UserSelectorArg)}.
+     * The error reported by {@link
+     * DbxTeamTeamRequests#membersRemove(UserSelectorArg)}.
      */
     public final MembersRemoveError errorValue;
 

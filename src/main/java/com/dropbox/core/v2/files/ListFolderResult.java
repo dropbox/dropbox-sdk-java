@@ -3,36 +3,53 @@
 
 package com.dropbox.core.v2.files;
 
-import com.dropbox.core.json.JsonArrayReader;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.List;
 
+@JsonSerialize(using=ListFolderResult.Serializer.class)
+@JsonDeserialize(using=ListFolderResult.Deserializer.class)
 public class ListFolderResult {
     // struct ListFolderResult
 
-    private final List<Metadata> entries;
-    private final String cursor;
-    private final boolean hasMore;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final List<Metadata> entries;
+    protected final String cursor;
+    protected final boolean hasMore;
 
     /**
      *
      * @param entries  The files and (direct) subfolders in the folder. Must not
      *     contain a {@code null} item and not be {@code null}.
      * @param cursor  Pass the cursor into {@link
-     *     DbxFiles#listFolderContinue(String)} to see what's changed in the
-     *     folder since your previous query. Must have length of at least 1 and
-     *     not be {@code null}.
+     *     DbxUserFilesRequests#listFolderContinue(String)} to see what's
+     *     changed in the folder since your previous query. Must have length of
+     *     at least 1 and not be {@code null}.
      * @param hasMore  If true, then there are more entries available. Pass the
-     *     cursor to {@link DbxFiles#listFolderContinue(String)} to retrieve the
-     *     rest.
+     *     cursor to {@link DbxUserFilesRequests#listFolderContinue(String)} to
+     *     retrieve the rest.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -67,8 +84,9 @@ public class ListFolderResult {
     }
 
     /**
-     * Pass the cursor into {@link DbxFiles#listFolderContinue(String)} to see
-     * what's changed in the folder since your previous query.
+     * Pass the cursor into {@link
+     * DbxUserFilesRequests#listFolderContinue(String)} to see what's changed in
+     * the folder since your previous query.
      *
      * @return value for this field, never {@code null}.
      */
@@ -78,7 +96,7 @@ public class ListFolderResult {
 
     /**
      * If true, then there are more entries available. Pass the cursor to {@link
-     * DbxFiles#listFolderContinue(String)} to retrieve the rest.
+     * DbxUserFilesRequests#listFolderContinue(String)} to retrieve the rest.
      *
      * @return value for this field.
      */
@@ -88,10 +106,12 @@ public class ListFolderResult {
 
     @Override
     public int hashCode() {
-        // objects containing lists are not hash-able. This is used as a safeguard
-        // against adding this object to a HashSet or HashMap. Since list fields are
-        // mutable, it is not safe to compute a hashCode here.
-        return System.identityHashCode(this);
+        int hash = java.util.Arrays.hashCode(new Object [] {
+            entries,
+            cursor,
+            hasMore
+        });
+        return hash;
     }
 
     @Override
@@ -114,85 +134,116 @@ public class ListFolderResult {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static ListFolderResult fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
+    static final class Serializer extends StructJsonSerializer<ListFolderResult> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(ListFolderResult.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(ListFolderResult.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<ListFolderResult> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(ListFolderResult value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("entries", value.entries);
+            g.writeObjectField("cursor", value.cursor);
+            g.writeObjectField("has_more", value.hasMore);
+        }
     }
 
-    public static final JsonWriter<ListFolderResult> _JSON_WRITER = new JsonWriter<ListFolderResult>() {
-        public final void write(ListFolderResult x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            ListFolderResult._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
-        }
-        public final void writeFields(ListFolderResult x, JsonGenerator g) throws IOException {
-            g.writeFieldName("entries");
-            g.writeStartArray();
-            for (Metadata item: x.entries) {
-                if (item != null) {
-                    Metadata._JSON_WRITER.write(item, g);
-                }
-            }
-            g.writeEndArray();
-            g.writeFieldName("cursor");
-            g.writeString(x.cursor);
-            g.writeFieldName("has_more");
-            g.writeBoolean(x.hasMore);
-        }
-    };
+    static final class Deserializer extends StructJsonDeserializer<ListFolderResult> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonReader<ListFolderResult> _JSON_READER = new JsonReader<ListFolderResult>() {
-        public final ListFolderResult read(JsonParser parser) throws IOException, JsonReadException {
-            ListFolderResult result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+        public Deserializer() {
+            super(ListFolderResult.class);
         }
 
-        public final ListFolderResult readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(ListFolderResult.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<ListFolderResult> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public ListFolderResult deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             List<Metadata> entries = null;
             String cursor = null;
             Boolean hasMore = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("entries".equals(fieldName)) {
-                    entries = JsonArrayReader.mk(Metadata._JSON_READER)
-                        .readField(parser, "entries", entries);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("entries".equals(_field)) {
+                    expectArrayStart(_p);
+                    entries = new java.util.ArrayList<Metadata>();
+                    while (!isArrayEnd(_p)) {
+                        Metadata _x = null;
+                        _x = _p.readValueAs(Metadata.class);
+                        _p.nextToken();
+                        entries.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
                 }
-                else if ("cursor".equals(fieldName)) {
-                    cursor = JsonReader.StringReader
-                        .readField(parser, "cursor", cursor);
+                else if ("cursor".equals(_field)) {
+                    cursor = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("has_more".equals(fieldName)) {
-                    hasMore = JsonReader.BooleanReader
-                        .readField(parser, "has_more", hasMore);
+                else if ("has_more".equals(_field)) {
+                    hasMore = _p.getValueAsBoolean();
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (entries == null) {
-                throw new JsonReadException("Required field \"entries\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"entries\" is missing.");
             }
             if (cursor == null) {
-                throw new JsonReadException("Required field \"cursor\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"cursor\" is missing.");
             }
             if (hasMore == null) {
-                throw new JsonReadException("Required field \"has_more\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"has_more\" is missing.");
             }
+
             return new ListFolderResult(entries, cursor, hasMore);
         }
-    };
+    }
 }

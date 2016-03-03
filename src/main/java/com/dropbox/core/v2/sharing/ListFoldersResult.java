@@ -3,31 +3,49 @@
 
 package com.dropbox.core.v2.sharing;
 
-import com.dropbox.core.json.JsonArrayReader;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.List;
 
 /**
- * Result for {@link DbxSharing#listFolders()}. Unmounted shared folders can be
- * identified by the absence of {@link SharedFolderMetadata#getPathLower}.
+ * Result for {@link DbxUserSharingRequests#listFolders()}. Unmounted shared
+ * folders can be identified by the absence of {@link
+ * SharedFolderMetadata#getPathLower}.
  */
+@JsonSerialize(using=ListFoldersResult.Serializer.class)
+@JsonDeserialize(using=ListFoldersResult.Deserializer.class)
 public class ListFoldersResult {
     // struct ListFoldersResult
 
-    private final List<SharedFolderMetadata> entries;
-    private final String cursor;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final List<SharedFolderMetadata> entries;
+    protected final String cursor;
 
     /**
-     * Result for {@link DbxSharing#listFolders()}. Unmounted shared folders can
-     * be identified by the absence of {@link
+     * Result for {@link DbxUserSharingRequests#listFolders()}. Unmounted shared
+     * folders can be identified by the absence of {@link
      * SharedFolderMetadata#getPathLower}.
      *
      * @param entries  List of all shared folders the authenticated user has
@@ -35,7 +53,8 @@ public class ListFoldersResult {
      *     null}.
      * @param cursor  Present if there are additional shared folders that have
      *     not been returned yet. Pass the cursor into {@link
-     *     DbxSharing#listFoldersContinue(String)} to list additional folders.
+     *     DbxUserSharingRequests#listFoldersContinue(String)} to list
+     *     additional folders.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -54,8 +73,8 @@ public class ListFoldersResult {
     }
 
     /**
-     * Result for {@link DbxSharing#listFolders()}. Unmounted shared folders can
-     * be identified by the absence of {@link
+     * Result for {@link DbxUserSharingRequests#listFolders()}. Unmounted shared
+     * folders can be identified by the absence of {@link
      * SharedFolderMetadata#getPathLower}.
      *
      * <p> The default values for unset fields will be used. </p>
@@ -83,7 +102,8 @@ public class ListFoldersResult {
     /**
      * Present if there are additional shared folders that have not been
      * returned yet. Pass the cursor into {@link
-     * DbxSharing#listFoldersContinue(String)} to list additional folders.
+     * DbxUserSharingRequests#listFoldersContinue(String)} to list additional
+     * folders.
      *
      * @return value for this field, or {@code null} if not present.
      */
@@ -93,10 +113,11 @@ public class ListFoldersResult {
 
     @Override
     public int hashCode() {
-        // objects containing lists are not hash-able. This is used as a safeguard
-        // against adding this object to a HashSet or HashMap. Since list fields are
-        // mutable, it is not safe to compute a hashCode here.
-        return System.identityHashCode(this);
+        int hash = java.util.Arrays.hashCode(new Object [] {
+            entries,
+            cursor
+        });
+        return hash;
     }
 
     @Override
@@ -118,74 +139,106 @@ public class ListFoldersResult {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
-    }
-
-    public static ListFoldersResult fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
-
-    public static final JsonWriter<ListFoldersResult> _JSON_WRITER = new JsonWriter<ListFoldersResult>() {
-        public final void write(ListFoldersResult x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            ListFoldersResult._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
         }
-        public final void writeFields(ListFoldersResult x, JsonGenerator g) throws IOException {
-            g.writeFieldName("entries");
-            g.writeStartArray();
-            for (SharedFolderMetadata item: x.entries) {
-                if (item != null) {
-                    SharedFolderMetadata._JSON_WRITER.write(item, g);
-                }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
+    }
+
+    static final class Serializer extends StructJsonSerializer<ListFoldersResult> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(ListFoldersResult.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(ListFoldersResult.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<ListFoldersResult> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(ListFoldersResult value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("entries", value.entries);
+            if (value.cursor != null) {
+                g.writeObjectField("cursor", value.cursor);
             }
-            g.writeEndArray();
-            if (x.cursor != null) {
-                g.writeFieldName("cursor");
-                g.writeString(x.cursor);
-            }
         }
-    };
+    }
 
-    public static final JsonReader<ListFoldersResult> _JSON_READER = new JsonReader<ListFoldersResult>() {
-        public final ListFoldersResult read(JsonParser parser) throws IOException, JsonReadException {
-            ListFoldersResult result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+    static final class Deserializer extends StructJsonDeserializer<ListFoldersResult> {
+        private static final long serialVersionUID = 0L;
+
+        public Deserializer() {
+            super(ListFoldersResult.class);
         }
 
-        public final ListFoldersResult readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(ListFoldersResult.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<ListFoldersResult> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public ListFoldersResult deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             List<SharedFolderMetadata> entries = null;
             String cursor = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("entries".equals(fieldName)) {
-                    entries = JsonArrayReader.mk(SharedFolderMetadata._JSON_READER)
-                        .readField(parser, "entries", entries);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("entries".equals(_field)) {
+                    expectArrayStart(_p);
+                    entries = new java.util.ArrayList<SharedFolderMetadata>();
+                    while (!isArrayEnd(_p)) {
+                        SharedFolderMetadata _x = null;
+                        _x = _p.readValueAs(SharedFolderMetadata.class);
+                        _p.nextToken();
+                        entries.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
                 }
-                else if ("cursor".equals(fieldName)) {
-                    cursor = JsonReader.StringReader
-                        .readField(parser, "cursor", cursor);
+                else if ("cursor".equals(_field)) {
+                    cursor = getStringValue(_p);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (entries == null) {
-                throw new JsonReadException("Required field \"entries\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"entries\" is missing.");
             }
+
             return new ListFoldersResult(entries, cursor);
         }
-    };
+    }
 }

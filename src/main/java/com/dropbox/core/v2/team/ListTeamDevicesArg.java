@@ -5,31 +5,49 @@ package com.dropbox.core.v2.team;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
-public class ListTeamDevicesArg {
+@JsonSerialize(using=ListTeamDevicesArg.Serializer.class)
+@JsonDeserialize(using=ListTeamDevicesArg.Deserializer.class)
+class ListTeamDevicesArg {
     // struct ListTeamDevicesArg
 
-    private final String cursor;
-    private final boolean includeWebSessions;
-    private final boolean includeDesktopClients;
-    private final boolean includeMobileClients;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final String cursor;
+    protected final boolean includeWebSessions;
+    protected final boolean includeDesktopClients;
+    protected final boolean includeMobileClients;
 
     /**
      * Use {@link newBuilder} to create instances of this class without
      * specifying values for all optional fields.
      *
      * @param cursor  At the first call to the {@link
-     *     DbxTeam#devicesListTeamDevices()} the cursor shouldn't be passed.
-     *     Then, if the result of the call includes a cursor, the following
-     *     requests should include the received cursors in order to receive the
-     *     next sub list of team devices.
+     *     DbxTeamTeamRequests#devicesListTeamDevices()} the cursor shouldn't be
+     *     passed. Then, if the result of the call includes a cursor, the
+     *     following requests should include the received cursors in order to
+     *     receive the next sub list of team devices.
      * @param includeWebSessions  Whether to list web sessions of the team
      *     members.
      * @param includeDesktopClients  Whether to list desktop clients of the team
@@ -52,10 +70,11 @@ public class ListTeamDevicesArg {
     }
 
     /**
-     * At the first call to the {@link DbxTeam#devicesListTeamDevices()} the
-     * cursor shouldn't be passed. Then, if the result of the call includes a
-     * cursor, the following requests should include the received cursors in
-     * order to receive the next sub list of team devices
+     * At the first call to the {@link
+     * DbxTeamTeamRequests#devicesListTeamDevices()} the cursor shouldn't be
+     * passed. Then, if the result of the call includes a cursor, the following
+     * requests should include the received cursors in order to receive the next
+     * sub list of team devices
      *
      * @return value for this field, or {@code null} if not present.
      */
@@ -123,10 +142,10 @@ public class ListTeamDevicesArg {
          * Set value for optional field.
          *
          * @param cursor  At the first call to the {@link
-         *     DbxTeam#devicesListTeamDevices()} the cursor shouldn't be passed.
-         *     Then, if the result of the call includes a cursor, the following
-         *     requests should include the received cursors in order to receive
-         *     the next sub list of team devices.
+         *     DbxTeamTeamRequests#devicesListTeamDevices()} the cursor
+         *     shouldn't be passed. Then, if the result of the call includes a
+         *     cursor, the following requests should include the received
+         *     cursors in order to receive the next sub list of team devices.
          *
          * @return this builder
          */
@@ -241,79 +260,107 @@ public class ListTeamDevicesArg {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
-    }
-
-    public static ListTeamDevicesArg fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
-
-    public static final JsonWriter<ListTeamDevicesArg> _JSON_WRITER = new JsonWriter<ListTeamDevicesArg>() {
-        public final void write(ListTeamDevicesArg x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            ListTeamDevicesArg._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
         }
-        public final void writeFields(ListTeamDevicesArg x, JsonGenerator g) throws IOException {
-            if (x.cursor != null) {
-                g.writeFieldName("cursor");
-                g.writeString(x.cursor);
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
+    }
+
+    static final class Serializer extends StructJsonSerializer<ListTeamDevicesArg> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(ListTeamDevicesArg.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(ListTeamDevicesArg.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<ListTeamDevicesArg> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(ListTeamDevicesArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            if (value.cursor != null) {
+                g.writeObjectField("cursor", value.cursor);
             }
-            g.writeFieldName("include_web_sessions");
-            g.writeBoolean(x.includeWebSessions);
-            g.writeFieldName("include_desktop_clients");
-            g.writeBoolean(x.includeDesktopClients);
-            g.writeFieldName("include_mobile_clients");
-            g.writeBoolean(x.includeMobileClients);
+            g.writeObjectField("include_web_sessions", value.includeWebSessions);
+            g.writeObjectField("include_desktop_clients", value.includeDesktopClients);
+            g.writeObjectField("include_mobile_clients", value.includeMobileClients);
         }
-    };
+    }
 
-    public static final JsonReader<ListTeamDevicesArg> _JSON_READER = new JsonReader<ListTeamDevicesArg>() {
-        public final ListTeamDevicesArg read(JsonParser parser) throws IOException, JsonReadException {
-            ListTeamDevicesArg result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+    static final class Deserializer extends StructJsonDeserializer<ListTeamDevicesArg> {
+        private static final long serialVersionUID = 0L;
+
+        public Deserializer() {
+            super(ListTeamDevicesArg.class);
         }
 
-        public final ListTeamDevicesArg readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(ListTeamDevicesArg.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<ListTeamDevicesArg> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public ListTeamDevicesArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             String cursor = null;
             Boolean includeWebSessions = null;
             Boolean includeDesktopClients = null;
             Boolean includeMobileClients = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("cursor".equals(fieldName)) {
-                    cursor = JsonReader.StringReader
-                        .readField(parser, "cursor", cursor);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("cursor".equals(_field)) {
+                    cursor = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("include_web_sessions".equals(fieldName)) {
-                    includeWebSessions = JsonReader.BooleanReader
-                        .readField(parser, "include_web_sessions", includeWebSessions);
+                else if ("include_web_sessions".equals(_field)) {
+                    includeWebSessions = _p.getValueAsBoolean();
+                    _p.nextToken();
                 }
-                else if ("include_desktop_clients".equals(fieldName)) {
-                    includeDesktopClients = JsonReader.BooleanReader
-                        .readField(parser, "include_desktop_clients", includeDesktopClients);
+                else if ("include_desktop_clients".equals(_field)) {
+                    includeDesktopClients = _p.getValueAsBoolean();
+                    _p.nextToken();
                 }
-                else if ("include_mobile_clients".equals(fieldName)) {
-                    includeMobileClients = JsonReader.BooleanReader
-                        .readField(parser, "include_mobile_clients", includeMobileClients);
+                else if ("include_mobile_clients".equals(_field)) {
+                    includeMobileClients = _p.getValueAsBoolean();
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
+
             return new ListTeamDevicesArg(cursor, includeWebSessions, includeDesktopClients, includeMobileClients);
         }
-    };
+    }
 }

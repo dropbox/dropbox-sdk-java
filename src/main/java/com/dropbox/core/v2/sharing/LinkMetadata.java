@@ -3,14 +3,25 @@
 
 package com.dropbox.core.v2.sharing;
 
-import com.dropbox.core.json.JsonDateReader;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.Date;
@@ -19,12 +30,18 @@ import java.util.Date;
  * Metadata for a shared link. This can be either a {@link PathLinkMetadata} or
  * {@link CollectionLinkMetadata}.
  */
+@JsonSerialize(using=LinkMetadata.Serializer.class)
+@JsonDeserialize(using=LinkMetadata.Deserializer.class)
 public class LinkMetadata {
     // struct LinkMetadata
 
-    private final String url;
-    private final Visibility visibility;
-    private final Date expires;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final String url;
+    protected final Visibility visibility;
+    protected final Date expires;
 
     /**
      * Metadata for a shared link. This can be either a {@link PathLinkMetadata}
@@ -123,101 +140,109 @@ public class LinkMetadata {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static LinkMetadata fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
+    static final class Serializer extends StructJsonSerializer<LinkMetadata> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(LinkMetadata.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(LinkMetadata.class, unwrapping);
+        }
+
+        @Override
+        protected void serializeFields(LinkMetadata value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("url", value.url);
+            g.writeObjectField("visibility", value.visibility);
+            if (value.expires != null) {
+                g.writeObjectField("expires", value.expires);
+            }
+        }
     }
 
-    public static final JsonWriter<LinkMetadata> _JSON_WRITER = new JsonWriter<LinkMetadata>() {
-        public final void write(LinkMetadata x, JsonGenerator g) throws IOException {
-            if (x instanceof PathLinkMetadata) {
-                PathLinkMetadata._JSON_WRITER.write((PathLinkMetadata) x, g);
-                return;
-            }
-            if (x instanceof CollectionLinkMetadata) {
-                CollectionLinkMetadata._JSON_WRITER.write((CollectionLinkMetadata) x, g);
-                return;
-            }
+    static final class Deserializer extends StructJsonDeserializer<LinkMetadata> {
+        private static final long serialVersionUID = 0L;
 
-            g.writeStartObject();
-            LinkMetadata._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
-        }
-        public final void writeFields(LinkMetadata x, JsonGenerator g) throws IOException {
-            g.writeFieldName("url");
-            g.writeString(x.url);
-            g.writeFieldName("visibility");
-            Visibility._JSON_WRITER.write(x.visibility, g);
-            if (x.expires != null) {
-                g.writeFieldName("expires");
-                writeDateIso(x.expires, g);
-            }
-        }
-    };
-
-    public static final JsonReader<LinkMetadata> _JSON_READER = new JsonReader<LinkMetadata>() {
-        public final LinkMetadata read(JsonParser parser) throws IOException, JsonReadException {
-            LinkMetadata result;
-            JsonReader.expectObjectStart(parser);
-            String [] tags = readTags(parser);
-            result = readFromTags(tags, parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+        public Deserializer() {
+            super(LinkMetadata.class, PathLinkMetadata.class, CollectionLinkMetadata.class);
         }
 
-        public final LinkMetadata readFromTags(String [] tags, JsonParser parser) throws IOException, JsonReadException {
-            if (tags != null && tags.length > 0) {
-                if ("path".equals(tags[0])) {
-                    return PathLinkMetadata._JSON_READER.readFromTags(tags, parser);
-                }
-                if ("collection".equals(tags[0])) {
-                    return CollectionLinkMetadata._JSON_READER.readFromTags(tags, parser);
-                }
-                // If no match, fall back to base class
-            }
-            return readFields(parser);
+        public Deserializer(boolean unwrapping) {
+            super(LinkMetadata.class, unwrapping, PathLinkMetadata.class, CollectionLinkMetadata.class);
         }
 
-        public final LinkMetadata readFields(JsonParser parser) throws IOException, JsonReadException {
+        @Override
+        protected JsonDeserializer<LinkMetadata> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public LinkMetadata deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+            String _subtype_tag = readEnumeratedSubtypeTag(_p);
+            if ("path".equals(_subtype_tag)) {
+                return readCollapsedStructValue(PathLinkMetadata.class, _p, _ctx);
+            }
+            if ("collection".equals(_subtype_tag)) {
+                return readCollapsedStructValue(CollectionLinkMetadata.class, _p, _ctx);
+            }
+
             String url = null;
             Visibility visibility = null;
             Date expires = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("url".equals(fieldName)) {
-                    url = JsonReader.StringReader
-                        .readField(parser, "url", url);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("url".equals(_field)) {
+                    url = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("visibility".equals(fieldName)) {
-                    visibility = Visibility._JSON_READER
-                        .readField(parser, "visibility", visibility);
+                else if ("visibility".equals(_field)) {
+                    visibility = _p.readValueAs(Visibility.class);
+                    _p.nextToken();
                 }
-                else if ("expires".equals(fieldName)) {
-                    expires = JsonDateReader.DropboxV2
-                        .readField(parser, "expires", expires);
+                else if ("expires".equals(_field)) {
+                    expires = _ctx.parseDate(getStringValue(_p));
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (url == null) {
-                throw new JsonReadException("Required field \"url\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"url\" is missing.");
             }
             if (visibility == null) {
-                throw new JsonReadException("Required field \"visibility\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"visibility\" is missing.");
             }
+
             return new LinkMetadata(url, visibility, expires);
         }
-    };
+    }
 }

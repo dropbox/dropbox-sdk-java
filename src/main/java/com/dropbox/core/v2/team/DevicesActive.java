@@ -3,14 +3,25 @@
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonArrayReader;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.List;
@@ -20,16 +31,22 @@ import java.util.List;
  * number of devices active within a time window, ending with that day. If there
  * is no data for a day, then the value will be None.
  */
+@JsonSerialize(using=DevicesActive.Serializer.class)
+@JsonDeserialize(using=DevicesActive.Deserializer.class)
 public class DevicesActive {
     // struct DevicesActive
 
-    private final List<Long> windows;
-    private final List<Long> macos;
-    private final List<Long> linux;
-    private final List<Long> ios;
-    private final List<Long> android;
-    private final List<Long> other;
-    private final List<Long> total;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final List<Long> windows;
+    protected final List<Long> macos;
+    protected final List<Long> linux;
+    protected final List<Long> ios;
+    protected final List<Long> android;
+    protected final List<Long> other;
+    protected final List<Long> total;
 
     /**
      * Each of the items is an array of values, one value per day. The value is
@@ -197,10 +214,16 @@ public class DevicesActive {
 
     @Override
     public int hashCode() {
-        // objects containing lists are not hash-able. This is used as a safeguard
-        // against adding this object to a HashSet or HashMap. Since list fields are
-        // mutable, it is not safe to compute a hashCode here.
-        return System.identityHashCode(this);
+        int hash = java.util.Arrays.hashCode(new Object [] {
+            windows,
+            macos,
+            linux,
+            ios,
+            android,
+            other,
+            total
+        });
+        return hash;
     }
 
     @Override
@@ -227,97 +250,77 @@ public class DevicesActive {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static DevicesActive fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
+    static final class Serializer extends StructJsonSerializer<DevicesActive> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(DevicesActive.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(DevicesActive.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<DevicesActive> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(DevicesActive value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("windows", value.windows);
+            g.writeObjectField("macos", value.macos);
+            g.writeObjectField("linux", value.linux);
+            g.writeObjectField("ios", value.ios);
+            g.writeObjectField("android", value.android);
+            g.writeObjectField("other", value.other);
+            g.writeObjectField("total", value.total);
+        }
     }
 
-    public static final JsonWriter<DevicesActive> _JSON_WRITER = new JsonWriter<DevicesActive>() {
-        public final void write(DevicesActive x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            DevicesActive._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
-        }
-        public final void writeFields(DevicesActive x, JsonGenerator g) throws IOException {
-            g.writeFieldName("windows");
-            g.writeStartArray();
-            for (Long item: x.windows) {
-                if (item != null) {
-                    g.writeNumber(item);
-                }
-            }
-            g.writeEndArray();
-            g.writeFieldName("macos");
-            g.writeStartArray();
-            for (Long item: x.macos) {
-                if (item != null) {
-                    g.writeNumber(item);
-                }
-            }
-            g.writeEndArray();
-            g.writeFieldName("linux");
-            g.writeStartArray();
-            for (Long item: x.linux) {
-                if (item != null) {
-                    g.writeNumber(item);
-                }
-            }
-            g.writeEndArray();
-            g.writeFieldName("ios");
-            g.writeStartArray();
-            for (Long item: x.ios) {
-                if (item != null) {
-                    g.writeNumber(item);
-                }
-            }
-            g.writeEndArray();
-            g.writeFieldName("android");
-            g.writeStartArray();
-            for (Long item: x.android) {
-                if (item != null) {
-                    g.writeNumber(item);
-                }
-            }
-            g.writeEndArray();
-            g.writeFieldName("other");
-            g.writeStartArray();
-            for (Long item: x.other) {
-                if (item != null) {
-                    g.writeNumber(item);
-                }
-            }
-            g.writeEndArray();
-            g.writeFieldName("total");
-            g.writeStartArray();
-            for (Long item: x.total) {
-                if (item != null) {
-                    g.writeNumber(item);
-                }
-            }
-            g.writeEndArray();
-        }
-    };
+    static final class Deserializer extends StructJsonDeserializer<DevicesActive> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonReader<DevicesActive> _JSON_READER = new JsonReader<DevicesActive>() {
-        public final DevicesActive read(JsonParser parser) throws IOException, JsonReadException {
-            DevicesActive result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+        public Deserializer() {
+            super(DevicesActive.class);
         }
 
-        public final DevicesActive readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(DevicesActive.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<DevicesActive> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public DevicesActive deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             List<Long> windows = null;
             List<Long> macos = null;
             List<Long> linux = null;
@@ -325,63 +328,129 @@ public class DevicesActive {
             List<Long> android = null;
             List<Long> other = null;
             List<Long> total = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("windows".equals(fieldName)) {
-                    windows = JsonArrayReader.mk(JsonReader.UInt64Reader)
-                        .readField(parser, "windows", windows);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("windows".equals(_field)) {
+                    expectArrayStart(_p);
+                    windows = new java.util.ArrayList<Long>();
+                    while (!isArrayEnd(_p)) {
+                        Long _x = null;
+                        _x = _p.getLongValue();
+                        assertUnsigned(_p, _x);
+                        _p.nextToken();
+                        windows.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
                 }
-                else if ("macos".equals(fieldName)) {
-                    macos = JsonArrayReader.mk(JsonReader.UInt64Reader)
-                        .readField(parser, "macos", macos);
+                else if ("macos".equals(_field)) {
+                    expectArrayStart(_p);
+                    macos = new java.util.ArrayList<Long>();
+                    while (!isArrayEnd(_p)) {
+                        Long _x = null;
+                        _x = _p.getLongValue();
+                        assertUnsigned(_p, _x);
+                        _p.nextToken();
+                        macos.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
                 }
-                else if ("linux".equals(fieldName)) {
-                    linux = JsonArrayReader.mk(JsonReader.UInt64Reader)
-                        .readField(parser, "linux", linux);
+                else if ("linux".equals(_field)) {
+                    expectArrayStart(_p);
+                    linux = new java.util.ArrayList<Long>();
+                    while (!isArrayEnd(_p)) {
+                        Long _x = null;
+                        _x = _p.getLongValue();
+                        assertUnsigned(_p, _x);
+                        _p.nextToken();
+                        linux.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
                 }
-                else if ("ios".equals(fieldName)) {
-                    ios = JsonArrayReader.mk(JsonReader.UInt64Reader)
-                        .readField(parser, "ios", ios);
+                else if ("ios".equals(_field)) {
+                    expectArrayStart(_p);
+                    ios = new java.util.ArrayList<Long>();
+                    while (!isArrayEnd(_p)) {
+                        Long _x = null;
+                        _x = _p.getLongValue();
+                        assertUnsigned(_p, _x);
+                        _p.nextToken();
+                        ios.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
                 }
-                else if ("android".equals(fieldName)) {
-                    android = JsonArrayReader.mk(JsonReader.UInt64Reader)
-                        .readField(parser, "android", android);
+                else if ("android".equals(_field)) {
+                    expectArrayStart(_p);
+                    android = new java.util.ArrayList<Long>();
+                    while (!isArrayEnd(_p)) {
+                        Long _x = null;
+                        _x = _p.getLongValue();
+                        assertUnsigned(_p, _x);
+                        _p.nextToken();
+                        android.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
                 }
-                else if ("other".equals(fieldName)) {
-                    other = JsonArrayReader.mk(JsonReader.UInt64Reader)
-                        .readField(parser, "other", other);
+                else if ("other".equals(_field)) {
+                    expectArrayStart(_p);
+                    other = new java.util.ArrayList<Long>();
+                    while (!isArrayEnd(_p)) {
+                        Long _x = null;
+                        _x = _p.getLongValue();
+                        assertUnsigned(_p, _x);
+                        _p.nextToken();
+                        other.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
                 }
-                else if ("total".equals(fieldName)) {
-                    total = JsonArrayReader.mk(JsonReader.UInt64Reader)
-                        .readField(parser, "total", total);
+                else if ("total".equals(_field)) {
+                    expectArrayStart(_p);
+                    total = new java.util.ArrayList<Long>();
+                    while (!isArrayEnd(_p)) {
+                        Long _x = null;
+                        _x = _p.getLongValue();
+                        assertUnsigned(_p, _x);
+                        _p.nextToken();
+                        total.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (windows == null) {
-                throw new JsonReadException("Required field \"windows\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"windows\" is missing.");
             }
             if (macos == null) {
-                throw new JsonReadException("Required field \"macos\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"macos\" is missing.");
             }
             if (linux == null) {
-                throw new JsonReadException("Required field \"linux\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"linux\" is missing.");
             }
             if (ios == null) {
-                throw new JsonReadException("Required field \"ios\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"ios\" is missing.");
             }
             if (android == null) {
-                throw new JsonReadException("Required field \"android\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"android\" is missing.");
             }
             if (other == null) {
-                throw new JsonReadException("Required field \"other\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"other\" is missing.");
             }
             if (total == null) {
-                throw new JsonReadException("Required field \"total\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"total\" is missing.");
             }
+
             return new DevicesActive(windows, macos, linux, ios, android, other, total);
         }
-    };
+    }
 }

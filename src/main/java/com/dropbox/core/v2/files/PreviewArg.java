@@ -5,27 +5,45 @@ package com.dropbox.core.v2.files;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
-public class PreviewArg {
+@JsonSerialize(using=PreviewArg.Serializer.class)
+@JsonDeserialize(using=PreviewArg.Deserializer.class)
+class PreviewArg {
     // struct PreviewArg
 
-    private final String path;
-    private final String rev;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final String path;
+    protected final String rev;
 
     /**
      *
      * @param path  The path of the file to preview. Must match pattern "{@code
      *     ((/|id:).*)|(rev:[0-9a-f]{9,})}" and not be {@code null}.
-     * @param rev  Deprecated. Please specify revision in {@link
-     *     PreviewArg#getPath} instead. Must have length of at least 9 and match
-     *     pattern "{@code [0-9a-f]+}".
+     * @param rev  Deprecated. Please specify revision in the {@code path}
+     *     argument to {@link DbxUserFilesRequests#getPreview(String)} instead.
+     *     Must have length of at least 9 and match pattern "{@code [0-9a-f]+}".
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -72,7 +90,8 @@ public class PreviewArg {
     }
 
     /**
-     * Deprecated. Please specify revision in {@link PreviewArg#getPath} instead
+     * Deprecated. Please specify revision in the {@code path} argument to
+     * {@link DbxUserFilesRequests#getPreview(String)} instead
      *
      * @return value for this field, or {@code null} if not present.
      */
@@ -108,68 +127,98 @@ public class PreviewArg {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
-    }
-
-    public static PreviewArg fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
-
-    public static final JsonWriter<PreviewArg> _JSON_WRITER = new JsonWriter<PreviewArg>() {
-        public final void write(PreviewArg x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            PreviewArg._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
         }
-        public final void writeFields(PreviewArg x, JsonGenerator g) throws IOException {
-            g.writeFieldName("path");
-            g.writeString(x.path);
-            if (x.rev != null) {
-                g.writeFieldName("rev");
-                g.writeString(x.rev);
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
+    }
+
+    static final class Serializer extends StructJsonSerializer<PreviewArg> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(PreviewArg.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(PreviewArg.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<PreviewArg> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(PreviewArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("path", value.path);
+            if (value.rev != null) {
+                g.writeObjectField("rev", value.rev);
             }
         }
-    };
+    }
 
-    public static final JsonReader<PreviewArg> _JSON_READER = new JsonReader<PreviewArg>() {
-        public final PreviewArg read(JsonParser parser) throws IOException, JsonReadException {
-            PreviewArg result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+    static final class Deserializer extends StructJsonDeserializer<PreviewArg> {
+        private static final long serialVersionUID = 0L;
+
+        public Deserializer() {
+            super(PreviewArg.class);
         }
 
-        public final PreviewArg readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(PreviewArg.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<PreviewArg> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public PreviewArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             String path = null;
             String rev = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("path".equals(fieldName)) {
-                    path = JsonReader.StringReader
-                        .readField(parser, "path", path);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("path".equals(_field)) {
+                    path = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("rev".equals(fieldName)) {
-                    rev = JsonReader.StringReader
-                        .readField(parser, "rev", rev);
+                else if ("rev".equals(_field)) {
+                    rev = getStringValue(_p);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (path == null) {
-                throw new JsonReadException("Required field \"path\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"path\" is missing.");
             }
+
             return new PreviewArg(path, rev);
         }
-    };
+    }
 }

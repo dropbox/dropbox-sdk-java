@@ -11,9 +11,11 @@ import com.dropbox.core.LocalizedText;
  * RevokeSharedLinkError} error.
  */
 public class RevokeSharedLinkErrorException extends DbxApiException {
+    private static final long serialVersionUID = 0L;
 
     /**
-     * The error reported by {@link DbxSharing#revokeSharedLink(String)}.
+     * The error reported by {@link
+     * DbxUserSharingRequests#revokeSharedLink(String)}.
      */
     public final RevokeSharedLinkError errorValue;
 

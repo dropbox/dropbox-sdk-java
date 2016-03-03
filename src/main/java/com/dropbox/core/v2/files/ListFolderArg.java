@@ -5,21 +5,39 @@ package com.dropbox.core.v2.files;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
-public class ListFolderArg {
+@JsonSerialize(using=ListFolderArg.Serializer.class)
+@JsonDeserialize(using=ListFolderArg.Deserializer.class)
+class ListFolderArg {
     // struct ListFolderArg
 
-    private final String path;
-    private final boolean recursive;
-    private final boolean includeMediaInfo;
-    private final boolean includeDeleted;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final String path;
+    protected final boolean recursive;
+    protected final boolean includeMediaInfo;
+    protected final boolean includeDeleted;
 
     /**
      * Use {@link newBuilder} to create instances of this class without
@@ -253,80 +271,108 @@ public class ListFolderArg {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static ListFolderArg fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
+    static final class Serializer extends StructJsonSerializer<ListFolderArg> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(ListFolderArg.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(ListFolderArg.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<ListFolderArg> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(ListFolderArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("path", value.path);
+            g.writeObjectField("recursive", value.recursive);
+            g.writeObjectField("include_media_info", value.includeMediaInfo);
+            g.writeObjectField("include_deleted", value.includeDeleted);
+        }
     }
 
-    public static final JsonWriter<ListFolderArg> _JSON_WRITER = new JsonWriter<ListFolderArg>() {
-        public final void write(ListFolderArg x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            ListFolderArg._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
-        }
-        public final void writeFields(ListFolderArg x, JsonGenerator g) throws IOException {
-            g.writeFieldName("path");
-            g.writeString(x.path);
-            g.writeFieldName("recursive");
-            g.writeBoolean(x.recursive);
-            g.writeFieldName("include_media_info");
-            g.writeBoolean(x.includeMediaInfo);
-            g.writeFieldName("include_deleted");
-            g.writeBoolean(x.includeDeleted);
-        }
-    };
+    static final class Deserializer extends StructJsonDeserializer<ListFolderArg> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonReader<ListFolderArg> _JSON_READER = new JsonReader<ListFolderArg>() {
-        public final ListFolderArg read(JsonParser parser) throws IOException, JsonReadException {
-            ListFolderArg result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+        public Deserializer() {
+            super(ListFolderArg.class);
         }
 
-        public final ListFolderArg readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(ListFolderArg.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<ListFolderArg> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public ListFolderArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             String path = null;
             Boolean recursive = null;
             Boolean includeMediaInfo = null;
             Boolean includeDeleted = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("path".equals(fieldName)) {
-                    path = JsonReader.StringReader
-                        .readField(parser, "path", path);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("path".equals(_field)) {
+                    path = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("recursive".equals(fieldName)) {
-                    recursive = JsonReader.BooleanReader
-                        .readField(parser, "recursive", recursive);
+                else if ("recursive".equals(_field)) {
+                    recursive = _p.getValueAsBoolean();
+                    _p.nextToken();
                 }
-                else if ("include_media_info".equals(fieldName)) {
-                    includeMediaInfo = JsonReader.BooleanReader
-                        .readField(parser, "include_media_info", includeMediaInfo);
+                else if ("include_media_info".equals(_field)) {
+                    includeMediaInfo = _p.getValueAsBoolean();
+                    _p.nextToken();
                 }
-                else if ("include_deleted".equals(fieldName)) {
-                    includeDeleted = JsonReader.BooleanReader
-                        .readField(parser, "include_deleted", includeDeleted);
+                else if ("include_deleted".equals(_field)) {
+                    includeDeleted = _p.getValueAsBoolean();
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (path == null) {
-                throw new JsonReadException("Required field \"path\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"path\" is missing.");
             }
+
             return new ListFolderArg(path, recursive, includeMediaInfo, includeDeleted);
         }
-    };
+    }
 }

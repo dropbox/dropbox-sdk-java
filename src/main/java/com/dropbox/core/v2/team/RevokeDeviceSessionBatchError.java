@@ -5,14 +5,29 @@ package com.dropbox.core.v2.team;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.UnionJsonDeserializer;
+import com.dropbox.core.json.UnionJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
+@JsonSerialize(using=RevokeDeviceSessionBatchError.Serializer.class)
+@JsonDeserialize(using=RevokeDeviceSessionBatchError.Deserializer.class)
 public enum RevokeDeviceSessionBatchError {
     // union RevokeDeviceSessionBatchError
     /**
@@ -20,36 +35,43 @@ public enum RevokeDeviceSessionBatchError {
      */
     UNSPECIFIED; // *catch_all
 
-    private static final java.util.HashMap<String, RevokeDeviceSessionBatchError> VALUES_;
-    static {
-        VALUES_ = new java.util.HashMap<String, RevokeDeviceSessionBatchError>();
-        VALUES_.put("unspecified", UNSPECIFIED);
-    }
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
-    }
+    static final class Serializer extends UnionJsonSerializer<RevokeDeviceSessionBatchError> {
+        private static final long serialVersionUID = 0L;
 
-    public static RevokeDeviceSessionBatchError fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
+        public Serializer() {
+            super(RevokeDeviceSessionBatchError.class);
+        }
 
-    public static final JsonWriter<RevokeDeviceSessionBatchError> _JSON_WRITER = new JsonWriter<RevokeDeviceSessionBatchError>() {
-        public void write(RevokeDeviceSessionBatchError x, JsonGenerator g) throws IOException {
-            switch (x) {
+        @Override
+        public void serialize(RevokeDeviceSessionBatchError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            switch (value) {
                 case UNSPECIFIED:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("unspecified");
-                    g.writeEndObject();
                     break;
             }
         }
-    };
+    }
 
-    public static final JsonReader<RevokeDeviceSessionBatchError> _JSON_READER = new JsonReader<RevokeDeviceSessionBatchError>() {
-        public final RevokeDeviceSessionBatchError read(JsonParser parser) throws IOException, JsonReadException {
-            return JsonReader.readEnum(parser, VALUES_, UNSPECIFIED);
+    static final class Deserializer extends UnionJsonDeserializer<RevokeDeviceSessionBatchError, RevokeDeviceSessionBatchError> {
+        private static final long serialVersionUID = 0L;
+
+        public Deserializer() {
+            super(RevokeDeviceSessionBatchError.class, getTagMapping(), RevokeDeviceSessionBatchError.UNSPECIFIED);
         }
-    };
+
+        @Override
+        public RevokeDeviceSessionBatchError deserialize(RevokeDeviceSessionBatchError _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+            return _tag;
+        }
+
+        private static Map<String, RevokeDeviceSessionBatchError> getTagMapping() {
+            Map<String, RevokeDeviceSessionBatchError> values = new HashMap<String, RevokeDeviceSessionBatchError>();
+            values.put("unspecified", RevokeDeviceSessionBatchError.UNSPECIFIED);
+            return Collections.unmodifiableMap(values);
+        }
+    }
 }

@@ -3,14 +3,25 @@
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonArrayReader;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.List;
@@ -20,23 +31,29 @@ import java.util.List;
  * of values, one value per day. If there is no data for a day, then the value
  * will be None.
  */
+@JsonSerialize(using=GetActivityReport.Serializer.class)
+@JsonDeserialize(using=GetActivityReport.Deserializer.class)
 public class GetActivityReport extends BaseDfbReport {
     // struct GetActivityReport
 
-    private final List<Long> adds;
-    private final List<Long> edits;
-    private final List<Long> deletes;
-    private final List<Long> activeUsers28Day;
-    private final List<Long> activeUsers7Day;
-    private final List<Long> activeUsers1Day;
-    private final List<Long> activeSharedFolders28Day;
-    private final List<Long> activeSharedFolders7Day;
-    private final List<Long> activeSharedFolders1Day;
-    private final List<Long> sharedLinksCreated;
-    private final List<Long> sharedLinksViewedByTeam;
-    private final List<Long> sharedLinksViewedByOutsideUser;
-    private final List<Long> sharedLinksViewedByNotLoggedIn;
-    private final List<Long> sharedLinksViewedTotal;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final List<Long> adds;
+    protected final List<Long> edits;
+    protected final List<Long> deletes;
+    protected final List<Long> activeUsers28Day;
+    protected final List<Long> activeUsers7Day;
+    protected final List<Long> activeUsers1Day;
+    protected final List<Long> activeSharedFolders28Day;
+    protected final List<Long> activeSharedFolders7Day;
+    protected final List<Long> activeSharedFolders1Day;
+    protected final List<Long> sharedLinksCreated;
+    protected final List<Long> sharedLinksViewedByTeam;
+    protected final List<Long> sharedLinksViewedByOutsideUser;
+    protected final List<Long> sharedLinksViewedByNotLoggedIn;
+    protected final List<Long> sharedLinksViewedTotal;
 
     /**
      * Activity Report Result. Each of the items in the storage report is an
@@ -366,10 +383,24 @@ public class GetActivityReport extends BaseDfbReport {
 
     @Override
     public int hashCode() {
-        // objects containing lists are not hash-able. This is used as a safeguard
-        // against adding this object to a HashSet or HashMap. Since list fields are
-        // mutable, it is not safe to compute a hashCode here.
-        return System.identityHashCode(this);
+        int hash = java.util.Arrays.hashCode(new Object [] {
+            adds,
+            edits,
+            deletes,
+            activeUsers28Day,
+            activeUsers7Day,
+            activeUsers1Day,
+            activeSharedFolders28Day,
+            activeSharedFolders7Day,
+            activeSharedFolders1Day,
+            sharedLinksCreated,
+            sharedLinksViewedByTeam,
+            sharedLinksViewedByOutsideUser,
+            sharedLinksViewedByNotLoggedIn,
+            sharedLinksViewedTotal
+        });
+        hash = (31 * super.hashCode()) + hash;
+        return hash;
     }
 
     @Override
@@ -380,7 +411,8 @@ public class GetActivityReport extends BaseDfbReport {
         // be careful with inheritance
         else if (obj.getClass().equals(this.getClass())) {
             GetActivityReport other = (GetActivityReport) obj;
-            return ((this.adds == other.adds) || (this.adds.equals(other.adds)))
+            return ((this.startDate == other.startDate) || (this.startDate.equals(other.startDate)))
+                && ((this.adds == other.adds) || (this.adds.equals(other.adds)))
                 && ((this.edits == other.edits) || (this.edits.equals(other.edits)))
                 && ((this.deletes == other.deletes) || (this.deletes.equals(other.deletes)))
                 && ((this.activeUsers28Day == other.activeUsers28Day) || (this.activeUsers28Day.equals(other.activeUsers28Day)))
@@ -394,7 +426,6 @@ public class GetActivityReport extends BaseDfbReport {
                 && ((this.sharedLinksViewedByOutsideUser == other.sharedLinksViewedByOutsideUser) || (this.sharedLinksViewedByOutsideUser.equals(other.sharedLinksViewedByOutsideUser)))
                 && ((this.sharedLinksViewedByNotLoggedIn == other.sharedLinksViewedByNotLoggedIn) || (this.sharedLinksViewedByNotLoggedIn.equals(other.sharedLinksViewedByNotLoggedIn)))
                 && ((this.sharedLinksViewedTotal == other.sharedLinksViewedTotal) || (this.sharedLinksViewedTotal.equals(other.sharedLinksViewedTotal)))
-                && ((this.getStartDate() == other.getStartDate()) || (this.getStartDate().equals(other.getStartDate())))
                 ;
         }
         else {
@@ -404,154 +435,85 @@ public class GetActivityReport extends BaseDfbReport {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static GetActivityReport fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
+    static final class Serializer extends StructJsonSerializer<GetActivityReport> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(GetActivityReport.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(GetActivityReport.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<GetActivityReport> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(GetActivityReport value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("start_date", value.startDate);
+            g.writeObjectField("adds", value.adds);
+            g.writeObjectField("edits", value.edits);
+            g.writeObjectField("deletes", value.deletes);
+            g.writeObjectField("active_users_28_day", value.activeUsers28Day);
+            g.writeObjectField("active_users_7_day", value.activeUsers7Day);
+            g.writeObjectField("active_users_1_day", value.activeUsers1Day);
+            g.writeObjectField("active_shared_folders_28_day", value.activeSharedFolders28Day);
+            g.writeObjectField("active_shared_folders_7_day", value.activeSharedFolders7Day);
+            g.writeObjectField("active_shared_folders_1_day", value.activeSharedFolders1Day);
+            g.writeObjectField("shared_links_created", value.sharedLinksCreated);
+            g.writeObjectField("shared_links_viewed_by_team", value.sharedLinksViewedByTeam);
+            g.writeObjectField("shared_links_viewed_by_outside_user", value.sharedLinksViewedByOutsideUser);
+            g.writeObjectField("shared_links_viewed_by_not_logged_in", value.sharedLinksViewedByNotLoggedIn);
+            g.writeObjectField("shared_links_viewed_total", value.sharedLinksViewedTotal);
+        }
     }
 
-    public static final JsonWriter<GetActivityReport> _JSON_WRITER = new JsonWriter<GetActivityReport>() {
-        public final void write(GetActivityReport x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            BaseDfbReport._JSON_WRITER.writeFields(x, g);
-            GetActivityReport._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
-        }
-        public final void writeFields(GetActivityReport x, JsonGenerator g) throws IOException {
-            g.writeFieldName("adds");
-            g.writeStartArray();
-            for (Long item: x.adds) {
-                if (item != null) {
-                    g.writeNumber(item);
-                }
-            }
-            g.writeEndArray();
-            g.writeFieldName("edits");
-            g.writeStartArray();
-            for (Long item: x.edits) {
-                if (item != null) {
-                    g.writeNumber(item);
-                }
-            }
-            g.writeEndArray();
-            g.writeFieldName("deletes");
-            g.writeStartArray();
-            for (Long item: x.deletes) {
-                if (item != null) {
-                    g.writeNumber(item);
-                }
-            }
-            g.writeEndArray();
-            g.writeFieldName("active_users_28_day");
-            g.writeStartArray();
-            for (Long item: x.activeUsers28Day) {
-                if (item != null) {
-                    g.writeNumber(item);
-                }
-            }
-            g.writeEndArray();
-            g.writeFieldName("active_users_7_day");
-            g.writeStartArray();
-            for (Long item: x.activeUsers7Day) {
-                if (item != null) {
-                    g.writeNumber(item);
-                }
-            }
-            g.writeEndArray();
-            g.writeFieldName("active_users_1_day");
-            g.writeStartArray();
-            for (Long item: x.activeUsers1Day) {
-                if (item != null) {
-                    g.writeNumber(item);
-                }
-            }
-            g.writeEndArray();
-            g.writeFieldName("active_shared_folders_28_day");
-            g.writeStartArray();
-            for (Long item: x.activeSharedFolders28Day) {
-                if (item != null) {
-                    g.writeNumber(item);
-                }
-            }
-            g.writeEndArray();
-            g.writeFieldName("active_shared_folders_7_day");
-            g.writeStartArray();
-            for (Long item: x.activeSharedFolders7Day) {
-                if (item != null) {
-                    g.writeNumber(item);
-                }
-            }
-            g.writeEndArray();
-            g.writeFieldName("active_shared_folders_1_day");
-            g.writeStartArray();
-            for (Long item: x.activeSharedFolders1Day) {
-                if (item != null) {
-                    g.writeNumber(item);
-                }
-            }
-            g.writeEndArray();
-            g.writeFieldName("shared_links_created");
-            g.writeStartArray();
-            for (Long item: x.sharedLinksCreated) {
-                if (item != null) {
-                    g.writeNumber(item);
-                }
-            }
-            g.writeEndArray();
-            g.writeFieldName("shared_links_viewed_by_team");
-            g.writeStartArray();
-            for (Long item: x.sharedLinksViewedByTeam) {
-                if (item != null) {
-                    g.writeNumber(item);
-                }
-            }
-            g.writeEndArray();
-            g.writeFieldName("shared_links_viewed_by_outside_user");
-            g.writeStartArray();
-            for (Long item: x.sharedLinksViewedByOutsideUser) {
-                if (item != null) {
-                    g.writeNumber(item);
-                }
-            }
-            g.writeEndArray();
-            g.writeFieldName("shared_links_viewed_by_not_logged_in");
-            g.writeStartArray();
-            for (Long item: x.sharedLinksViewedByNotLoggedIn) {
-                if (item != null) {
-                    g.writeNumber(item);
-                }
-            }
-            g.writeEndArray();
-            g.writeFieldName("shared_links_viewed_total");
-            g.writeStartArray();
-            for (Long item: x.sharedLinksViewedTotal) {
-                if (item != null) {
-                    g.writeNumber(item);
-                }
-            }
-            g.writeEndArray();
-        }
-    };
+    static final class Deserializer extends StructJsonDeserializer<GetActivityReport> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonReader<GetActivityReport> _JSON_READER = new JsonReader<GetActivityReport>() {
-        public final GetActivityReport read(JsonParser parser) throws IOException, JsonReadException {
-            GetActivityReport result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+        public Deserializer() {
+            super(GetActivityReport.class);
         }
 
-        public final GetActivityReport readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(GetActivityReport.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<GetActivityReport> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public GetActivityReport deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             String startDate = null;
             List<Long> adds = null;
             List<Long> edits = null;
@@ -567,119 +529,248 @@ public class GetActivityReport extends BaseDfbReport {
             List<Long> sharedLinksViewedByOutsideUser = null;
             List<Long> sharedLinksViewedByNotLoggedIn = null;
             List<Long> sharedLinksViewedTotal = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("start_date".equals(fieldName)) {
-                    startDate = JsonReader.StringReader
-                        .readField(parser, "start_date", startDate);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("start_date".equals(_field)) {
+                    startDate = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("adds".equals(fieldName)) {
-                    adds = JsonArrayReader.mk(JsonReader.UInt64Reader)
-                        .readField(parser, "adds", adds);
+                else if ("adds".equals(_field)) {
+                    expectArrayStart(_p);
+                    adds = new java.util.ArrayList<Long>();
+                    while (!isArrayEnd(_p)) {
+                        Long _x = null;
+                        _x = _p.getLongValue();
+                        assertUnsigned(_p, _x);
+                        _p.nextToken();
+                        adds.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
                 }
-                else if ("edits".equals(fieldName)) {
-                    edits = JsonArrayReader.mk(JsonReader.UInt64Reader)
-                        .readField(parser, "edits", edits);
+                else if ("edits".equals(_field)) {
+                    expectArrayStart(_p);
+                    edits = new java.util.ArrayList<Long>();
+                    while (!isArrayEnd(_p)) {
+                        Long _x = null;
+                        _x = _p.getLongValue();
+                        assertUnsigned(_p, _x);
+                        _p.nextToken();
+                        edits.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
                 }
-                else if ("deletes".equals(fieldName)) {
-                    deletes = JsonArrayReader.mk(JsonReader.UInt64Reader)
-                        .readField(parser, "deletes", deletes);
+                else if ("deletes".equals(_field)) {
+                    expectArrayStart(_p);
+                    deletes = new java.util.ArrayList<Long>();
+                    while (!isArrayEnd(_p)) {
+                        Long _x = null;
+                        _x = _p.getLongValue();
+                        assertUnsigned(_p, _x);
+                        _p.nextToken();
+                        deletes.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
                 }
-                else if ("active_users_28_day".equals(fieldName)) {
-                    activeUsers28Day = JsonArrayReader.mk(JsonReader.UInt64Reader)
-                        .readField(parser, "active_users_28_day", activeUsers28Day);
+                else if ("active_users_28_day".equals(_field)) {
+                    expectArrayStart(_p);
+                    activeUsers28Day = new java.util.ArrayList<Long>();
+                    while (!isArrayEnd(_p)) {
+                        Long _x = null;
+                        _x = _p.getLongValue();
+                        assertUnsigned(_p, _x);
+                        _p.nextToken();
+                        activeUsers28Day.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
                 }
-                else if ("active_users_7_day".equals(fieldName)) {
-                    activeUsers7Day = JsonArrayReader.mk(JsonReader.UInt64Reader)
-                        .readField(parser, "active_users_7_day", activeUsers7Day);
+                else if ("active_users_7_day".equals(_field)) {
+                    expectArrayStart(_p);
+                    activeUsers7Day = new java.util.ArrayList<Long>();
+                    while (!isArrayEnd(_p)) {
+                        Long _x = null;
+                        _x = _p.getLongValue();
+                        assertUnsigned(_p, _x);
+                        _p.nextToken();
+                        activeUsers7Day.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
                 }
-                else if ("active_users_1_day".equals(fieldName)) {
-                    activeUsers1Day = JsonArrayReader.mk(JsonReader.UInt64Reader)
-                        .readField(parser, "active_users_1_day", activeUsers1Day);
+                else if ("active_users_1_day".equals(_field)) {
+                    expectArrayStart(_p);
+                    activeUsers1Day = new java.util.ArrayList<Long>();
+                    while (!isArrayEnd(_p)) {
+                        Long _x = null;
+                        _x = _p.getLongValue();
+                        assertUnsigned(_p, _x);
+                        _p.nextToken();
+                        activeUsers1Day.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
                 }
-                else if ("active_shared_folders_28_day".equals(fieldName)) {
-                    activeSharedFolders28Day = JsonArrayReader.mk(JsonReader.UInt64Reader)
-                        .readField(parser, "active_shared_folders_28_day", activeSharedFolders28Day);
+                else if ("active_shared_folders_28_day".equals(_field)) {
+                    expectArrayStart(_p);
+                    activeSharedFolders28Day = new java.util.ArrayList<Long>();
+                    while (!isArrayEnd(_p)) {
+                        Long _x = null;
+                        _x = _p.getLongValue();
+                        assertUnsigned(_p, _x);
+                        _p.nextToken();
+                        activeSharedFolders28Day.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
                 }
-                else if ("active_shared_folders_7_day".equals(fieldName)) {
-                    activeSharedFolders7Day = JsonArrayReader.mk(JsonReader.UInt64Reader)
-                        .readField(parser, "active_shared_folders_7_day", activeSharedFolders7Day);
+                else if ("active_shared_folders_7_day".equals(_field)) {
+                    expectArrayStart(_p);
+                    activeSharedFolders7Day = new java.util.ArrayList<Long>();
+                    while (!isArrayEnd(_p)) {
+                        Long _x = null;
+                        _x = _p.getLongValue();
+                        assertUnsigned(_p, _x);
+                        _p.nextToken();
+                        activeSharedFolders7Day.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
                 }
-                else if ("active_shared_folders_1_day".equals(fieldName)) {
-                    activeSharedFolders1Day = JsonArrayReader.mk(JsonReader.UInt64Reader)
-                        .readField(parser, "active_shared_folders_1_day", activeSharedFolders1Day);
+                else if ("active_shared_folders_1_day".equals(_field)) {
+                    expectArrayStart(_p);
+                    activeSharedFolders1Day = new java.util.ArrayList<Long>();
+                    while (!isArrayEnd(_p)) {
+                        Long _x = null;
+                        _x = _p.getLongValue();
+                        assertUnsigned(_p, _x);
+                        _p.nextToken();
+                        activeSharedFolders1Day.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
                 }
-                else if ("shared_links_created".equals(fieldName)) {
-                    sharedLinksCreated = JsonArrayReader.mk(JsonReader.UInt64Reader)
-                        .readField(parser, "shared_links_created", sharedLinksCreated);
+                else if ("shared_links_created".equals(_field)) {
+                    expectArrayStart(_p);
+                    sharedLinksCreated = new java.util.ArrayList<Long>();
+                    while (!isArrayEnd(_p)) {
+                        Long _x = null;
+                        _x = _p.getLongValue();
+                        assertUnsigned(_p, _x);
+                        _p.nextToken();
+                        sharedLinksCreated.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
                 }
-                else if ("shared_links_viewed_by_team".equals(fieldName)) {
-                    sharedLinksViewedByTeam = JsonArrayReader.mk(JsonReader.UInt64Reader)
-                        .readField(parser, "shared_links_viewed_by_team", sharedLinksViewedByTeam);
+                else if ("shared_links_viewed_by_team".equals(_field)) {
+                    expectArrayStart(_p);
+                    sharedLinksViewedByTeam = new java.util.ArrayList<Long>();
+                    while (!isArrayEnd(_p)) {
+                        Long _x = null;
+                        _x = _p.getLongValue();
+                        assertUnsigned(_p, _x);
+                        _p.nextToken();
+                        sharedLinksViewedByTeam.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
                 }
-                else if ("shared_links_viewed_by_outside_user".equals(fieldName)) {
-                    sharedLinksViewedByOutsideUser = JsonArrayReader.mk(JsonReader.UInt64Reader)
-                        .readField(parser, "shared_links_viewed_by_outside_user", sharedLinksViewedByOutsideUser);
+                else if ("shared_links_viewed_by_outside_user".equals(_field)) {
+                    expectArrayStart(_p);
+                    sharedLinksViewedByOutsideUser = new java.util.ArrayList<Long>();
+                    while (!isArrayEnd(_p)) {
+                        Long _x = null;
+                        _x = _p.getLongValue();
+                        assertUnsigned(_p, _x);
+                        _p.nextToken();
+                        sharedLinksViewedByOutsideUser.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
                 }
-                else if ("shared_links_viewed_by_not_logged_in".equals(fieldName)) {
-                    sharedLinksViewedByNotLoggedIn = JsonArrayReader.mk(JsonReader.UInt64Reader)
-                        .readField(parser, "shared_links_viewed_by_not_logged_in", sharedLinksViewedByNotLoggedIn);
+                else if ("shared_links_viewed_by_not_logged_in".equals(_field)) {
+                    expectArrayStart(_p);
+                    sharedLinksViewedByNotLoggedIn = new java.util.ArrayList<Long>();
+                    while (!isArrayEnd(_p)) {
+                        Long _x = null;
+                        _x = _p.getLongValue();
+                        assertUnsigned(_p, _x);
+                        _p.nextToken();
+                        sharedLinksViewedByNotLoggedIn.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
                 }
-                else if ("shared_links_viewed_total".equals(fieldName)) {
-                    sharedLinksViewedTotal = JsonArrayReader.mk(JsonReader.UInt64Reader)
-                        .readField(parser, "shared_links_viewed_total", sharedLinksViewedTotal);
+                else if ("shared_links_viewed_total".equals(_field)) {
+                    expectArrayStart(_p);
+                    sharedLinksViewedTotal = new java.util.ArrayList<Long>();
+                    while (!isArrayEnd(_p)) {
+                        Long _x = null;
+                        _x = _p.getLongValue();
+                        assertUnsigned(_p, _x);
+                        _p.nextToken();
+                        sharedLinksViewedTotal.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (startDate == null) {
-                throw new JsonReadException("Required field \"start_date\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"start_date\" is missing.");
             }
             if (adds == null) {
-                throw new JsonReadException("Required field \"adds\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"adds\" is missing.");
             }
             if (edits == null) {
-                throw new JsonReadException("Required field \"edits\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"edits\" is missing.");
             }
             if (deletes == null) {
-                throw new JsonReadException("Required field \"deletes\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"deletes\" is missing.");
             }
             if (activeUsers28Day == null) {
-                throw new JsonReadException("Required field \"active_users_28_day\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"active_users_28_day\" is missing.");
             }
             if (activeUsers7Day == null) {
-                throw new JsonReadException("Required field \"active_users_7_day\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"active_users_7_day\" is missing.");
             }
             if (activeUsers1Day == null) {
-                throw new JsonReadException("Required field \"active_users_1_day\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"active_users_1_day\" is missing.");
             }
             if (activeSharedFolders28Day == null) {
-                throw new JsonReadException("Required field \"active_shared_folders_28_day\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"active_shared_folders_28_day\" is missing.");
             }
             if (activeSharedFolders7Day == null) {
-                throw new JsonReadException("Required field \"active_shared_folders_7_day\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"active_shared_folders_7_day\" is missing.");
             }
             if (activeSharedFolders1Day == null) {
-                throw new JsonReadException("Required field \"active_shared_folders_1_day\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"active_shared_folders_1_day\" is missing.");
             }
             if (sharedLinksCreated == null) {
-                throw new JsonReadException("Required field \"shared_links_created\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"shared_links_created\" is missing.");
             }
             if (sharedLinksViewedByTeam == null) {
-                throw new JsonReadException("Required field \"shared_links_viewed_by_team\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"shared_links_viewed_by_team\" is missing.");
             }
             if (sharedLinksViewedByOutsideUser == null) {
-                throw new JsonReadException("Required field \"shared_links_viewed_by_outside_user\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"shared_links_viewed_by_outside_user\" is missing.");
             }
             if (sharedLinksViewedByNotLoggedIn == null) {
-                throw new JsonReadException("Required field \"shared_links_viewed_by_not_logged_in\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"shared_links_viewed_by_not_logged_in\" is missing.");
             }
             if (sharedLinksViewedTotal == null) {
-                throw new JsonReadException("Required field \"shared_links_viewed_total\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"shared_links_viewed_total\" is missing.");
             }
+
             return new GetActivityReport(startDate, adds, edits, deletes, activeUsers28Day, activeUsers7Day, activeUsers1Day, activeSharedFolders28Day, activeSharedFolders7Day, activeSharedFolders1Day, sharedLinksCreated, sharedLinksViewedByTeam, sharedLinksViewedByOutsideUser, sharedLinksViewedByNotLoggedIn, sharedLinksViewedTotal);
         }
-    };
+    }
 }

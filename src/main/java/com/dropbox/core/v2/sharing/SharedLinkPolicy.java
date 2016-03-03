@@ -5,17 +5,32 @@ package com.dropbox.core.v2.sharing;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.UnionJsonDeserializer;
+import com.dropbox.core.json.UnionJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Policy governing who can view shared links.
  */
+@JsonSerialize(using=SharedLinkPolicy.Serializer.class)
+@JsonDeserialize(using=SharedLinkPolicy.Deserializer.class)
 public enum SharedLinkPolicy {
     // union SharedLinkPolicy
     /**
@@ -31,50 +46,51 @@ public enum SharedLinkPolicy {
      */
     OTHER; // *catch_all
 
-    private static final java.util.HashMap<String, SharedLinkPolicy> VALUES_;
-    static {
-        VALUES_ = new java.util.HashMap<String, SharedLinkPolicy>();
-        VALUES_.put("anyone", ANYONE);
-        VALUES_.put("members", MEMBERS);
-        VALUES_.put("other", OTHER);
-    }
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
-    }
+    static final class Serializer extends UnionJsonSerializer<SharedLinkPolicy> {
+        private static final long serialVersionUID = 0L;
 
-    public static SharedLinkPolicy fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
+        public Serializer() {
+            super(SharedLinkPolicy.class);
+        }
 
-    public static final JsonWriter<SharedLinkPolicy> _JSON_WRITER = new JsonWriter<SharedLinkPolicy>() {
-        public void write(SharedLinkPolicy x, JsonGenerator g) throws IOException {
-            switch (x) {
+        @Override
+        public void serialize(SharedLinkPolicy value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            switch (value) {
                 case ANYONE:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("anyone");
-                    g.writeEndObject();
                     break;
                 case MEMBERS:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("members");
-                    g.writeEndObject();
                     break;
                 case OTHER:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("other");
-                    g.writeEndObject();
                     break;
             }
         }
-    };
+    }
 
-    public static final JsonReader<SharedLinkPolicy> _JSON_READER = new JsonReader<SharedLinkPolicy>() {
-        public final SharedLinkPolicy read(JsonParser parser) throws IOException, JsonReadException {
-            return JsonReader.readEnum(parser, VALUES_, OTHER);
+    static final class Deserializer extends UnionJsonDeserializer<SharedLinkPolicy, SharedLinkPolicy> {
+        private static final long serialVersionUID = 0L;
+
+        public Deserializer() {
+            super(SharedLinkPolicy.class, getTagMapping(), SharedLinkPolicy.OTHER);
         }
-    };
+
+        @Override
+        public SharedLinkPolicy deserialize(SharedLinkPolicy _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+            return _tag;
+        }
+
+        private static Map<String, SharedLinkPolicy> getTagMapping() {
+            Map<String, SharedLinkPolicy> values = new HashMap<String, SharedLinkPolicy>();
+            values.put("anyone", SharedLinkPolicy.ANYONE);
+            values.put("members", SharedLinkPolicy.MEMBERS);
+            values.put("other", SharedLinkPolicy.OTHER);
+            return Collections.unmodifiableMap(values);
+        }
+    }
 }

@@ -11,9 +11,11 @@ import com.dropbox.core.LocalizedText;
  * error.
  */
 public class ListFolderErrorException extends DbxApiException {
+    private static final long serialVersionUID = 0L;
 
     /**
-     * The error reported by {@link DbxFiles#listFolderGetLatestCursor(String)}.
+     * The error reported by {@link
+     * DbxUserFilesRequests#listFolderGetLatestCursor(String)}.
      */
     public final ListFolderError errorValue;
 

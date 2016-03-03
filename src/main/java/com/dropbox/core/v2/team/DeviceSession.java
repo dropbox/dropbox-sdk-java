@@ -3,26 +3,43 @@
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonDateReader;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.Date;
 
+@JsonSerialize(using=DeviceSession.Serializer.class)
+@JsonDeserialize(using=DeviceSession.Deserializer.class)
 public class DeviceSession {
     // struct DeviceSession
 
-    private final String sessionId;
-    private final String ipAddress;
-    private final String country;
-    private final Date created;
-    private final Date updated;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final String sessionId;
+    protected final String ipAddress;
+    protected final String country;
+    protected final Date created;
+    protected final Date updated;
 
     /**
      * Use {@link newBuilder} to create instances of this class without
@@ -237,95 +254,122 @@ public class DeviceSession {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static DeviceSession fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
+    static final class Serializer extends StructJsonSerializer<DeviceSession> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(DeviceSession.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(DeviceSession.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<DeviceSession> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(DeviceSession value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("session_id", value.sessionId);
+            if (value.ipAddress != null) {
+                g.writeObjectField("ip_address", value.ipAddress);
+            }
+            if (value.country != null) {
+                g.writeObjectField("country", value.country);
+            }
+            if (value.created != null) {
+                g.writeObjectField("created", value.created);
+            }
+            if (value.updated != null) {
+                g.writeObjectField("updated", value.updated);
+            }
+        }
     }
 
-    public static final JsonWriter<DeviceSession> _JSON_WRITER = new JsonWriter<DeviceSession>() {
-        public final void write(DeviceSession x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            DeviceSession._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
-        }
-        public final void writeFields(DeviceSession x, JsonGenerator g) throws IOException {
-            g.writeFieldName("session_id");
-            g.writeString(x.sessionId);
-            if (x.ipAddress != null) {
-                g.writeFieldName("ip_address");
-                g.writeString(x.ipAddress);
-            }
-            if (x.country != null) {
-                g.writeFieldName("country");
-                g.writeString(x.country);
-            }
-            if (x.created != null) {
-                g.writeFieldName("created");
-                writeDateIso(x.created, g);
-            }
-            if (x.updated != null) {
-                g.writeFieldName("updated");
-                writeDateIso(x.updated, g);
-            }
-        }
-    };
+    static final class Deserializer extends StructJsonDeserializer<DeviceSession> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonReader<DeviceSession> _JSON_READER = new JsonReader<DeviceSession>() {
-        public final DeviceSession read(JsonParser parser) throws IOException, JsonReadException {
-            DeviceSession result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+        public Deserializer() {
+            super(DeviceSession.class);
         }
 
-        public final DeviceSession readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(DeviceSession.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<DeviceSession> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public DeviceSession deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             String sessionId = null;
             String ipAddress = null;
             String country = null;
             Date created = null;
             Date updated = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("session_id".equals(fieldName)) {
-                    sessionId = JsonReader.StringReader
-                        .readField(parser, "session_id", sessionId);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("session_id".equals(_field)) {
+                    sessionId = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("ip_address".equals(fieldName)) {
-                    ipAddress = JsonReader.StringReader
-                        .readField(parser, "ip_address", ipAddress);
+                else if ("ip_address".equals(_field)) {
+                    ipAddress = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("country".equals(fieldName)) {
-                    country = JsonReader.StringReader
-                        .readField(parser, "country", country);
+                else if ("country".equals(_field)) {
+                    country = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("created".equals(fieldName)) {
-                    created = JsonDateReader.DropboxV2
-                        .readField(parser, "created", created);
+                else if ("created".equals(_field)) {
+                    created = _ctx.parseDate(getStringValue(_p));
+                    _p.nextToken();
                 }
-                else if ("updated".equals(fieldName)) {
-                    updated = JsonDateReader.DropboxV2
-                        .readField(parser, "updated", updated);
+                else if ("updated".equals(_field)) {
+                    updated = _ctx.parseDate(getStringValue(_p));
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (sessionId == null) {
-                throw new JsonReadException("Required field \"session_id\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"session_id\" is missing.");
             }
+
             return new DeviceSession(sessionId, ipAddress, country, created, updated);
         }
-    };
+    }
 }

@@ -5,16 +5,45 @@ package com.dropbox.core.v2.sharing;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.UnionJsonDeserializer;
+import com.dropbox.core.json.UnionJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
+/**
+ * This class is an open tagged union.  Tagged unions instances are always
+ * associated to a specific tag.  This means only one of the {@code isAbc()}
+ * methods will return {@code true}. You can use {@link #tag()} to determine the
+ * tag associated with this instance.
+ *
+ * <p> Open unions may be extended in the future with additional tags. If a new
+ * tag is introduced that this SDK does not recognized, the {@link #OTHER} value
+ * will be used. </p>
+ */
+@JsonSerialize(using=UpdateFolderMemberError.Serializer.class)
+@JsonDeserialize(using=UpdateFolderMemberError.Deserializer.class)
 public final class UpdateFolderMemberError {
     // union UpdateFolderMemberError
+
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link UpdateFolderMemberError}.
@@ -33,21 +62,34 @@ public final class UpdateFolderMemberError {
          * The current user does not have permission to perform this action.
          */
         NO_PERMISSION,
+        /**
+         * Catch-all used for unknown tag values returned by the Dropbox
+         * servers.
+         *
+         * <p> Receiving a catch-all value typically indicates this SDK version
+         * is not up to date. Consider updating your SDK version to handle the
+         * new tags. </p>
+         */
         OTHER; // *catch_all
     }
 
-    private static final java.util.HashMap<String, Tag> VALUES_;
-    static {
-        VALUES_ = new java.util.HashMap<String, Tag>();
-        VALUES_.put("access_error", Tag.ACCESS_ERROR);
-        VALUES_.put("member_error", Tag.MEMBER_ERROR);
-        VALUES_.put("insufficient_plan", Tag.INSUFFICIENT_PLAN);
-        VALUES_.put("no_permission", Tag.NO_PERMISSION);
-        VALUES_.put("other", Tag.OTHER);
-    }
-
+    /**
+     * The current user's account doesn't support this action. An example of
+     * this is when downgrading a member from editor to viewer. This action can
+     * only be performed by users that have upgraded to a Pro or Business plan.
+     */
     public static final UpdateFolderMemberError INSUFFICIENT_PLAN = new UpdateFolderMemberError(Tag.INSUFFICIENT_PLAN, null, null);
+    /**
+     * The current user does not have permission to perform this action.
+     */
     public static final UpdateFolderMemberError NO_PERMISSION = new UpdateFolderMemberError(Tag.NO_PERMISSION, null, null);
+    /**
+     * Catch-all used for unknown tag values returned by the Dropbox servers.
+     *
+     * <p> Receiving a catch-all value typically indicates this SDK version is
+     * not up to date. Consider updating your SDK version to handle the new
+     * tags. </p>
+     */
     public static final UpdateFolderMemberError OTHER = new UpdateFolderMemberError(Tag.OTHER, null, null);
 
     private final Tag tag;
@@ -68,9 +110,13 @@ public final class UpdateFolderMemberError {
      * Returns the tag for this instance.
      *
      * <p> This class is a tagged union.  Tagged unions instances are always
-     * associated to a specific tag.  Callers are recommended to use the tag
-     * value in a {@code switch} statement to determine how to properly handle
-     * this {@code UpdateFolderMemberError}. </p>
+     * associated to a specific tag.  This means only one of the {@code isXyz()}
+     * methods will return {@code true}. Callers are recommended to use the tag
+     * value in a {@code switch} statement to properly handle the different
+     * values for this {@code UpdateFolderMemberError}. </p>
+     *
+     * <p> If a tag returned by the server is unrecognized by this SDK, the
+     * {@link Tag#OTHER} value will be used. </p>
      *
      * @return the tag for this instance.
      */
@@ -82,7 +128,7 @@ public final class UpdateFolderMemberError {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#ACCESS_ERROR}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#ACCESS_ERROR}, {@code false} otherwise.
      */
     public boolean isAccessError() {
@@ -93,8 +139,7 @@ public final class UpdateFolderMemberError {
      * Returns an instance of {@code UpdateFolderMemberError} that has its tag
      * set to {@link Tag#ACCESS_ERROR}.
      *
-     * @param value  {@link UpdateFolderMemberError#accessError} value to assign
-     *     to this instance.
+     * @param value  value to assign to this instance.
      *
      * @return Instance of {@code UpdateFolderMemberError} with its tag set to
      *     {@link Tag#ACCESS_ERROR}.
@@ -128,7 +173,7 @@ public final class UpdateFolderMemberError {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#MEMBER_ERROR}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#MEMBER_ERROR}, {@code false} otherwise.
      */
     public boolean isMemberError() {
@@ -139,8 +184,7 @@ public final class UpdateFolderMemberError {
      * Returns an instance of {@code UpdateFolderMemberError} that has its tag
      * set to {@link Tag#MEMBER_ERROR}.
      *
-     * @param value  {@link UpdateFolderMemberError#memberError} value to assign
-     *     to this instance.
+     * @param value  value to assign to this instance.
      *
      * @return Instance of {@code UpdateFolderMemberError} with its tag set to
      *     {@link Tag#MEMBER_ERROR}.
@@ -174,7 +218,7 @@ public final class UpdateFolderMemberError {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#INSUFFICIENT_PLAN}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#INSUFFICIENT_PLAN}, {@code false} otherwise.
      */
     public boolean isInsufficientPlan() {
@@ -185,7 +229,7 @@ public final class UpdateFolderMemberError {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#NO_PERMISSION}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#NO_PERMISSION}, {@code false} otherwise.
      */
     public boolean isNoPermission() {
@@ -196,7 +240,7 @@ public final class UpdateFolderMemberError {
      * Returns {@code true} if this instance has the tag {@link Tag#OTHER},
      * {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link Tag#OTHER},
+     * @return {@code true} if this instance is tagged as {@link Tag#OTHER},
      *     {@code false} otherwise.
      */
     public boolean isOther() {
@@ -245,129 +289,111 @@ public final class UpdateFolderMemberError {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static UpdateFolderMemberError fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
+    static final class Serializer extends UnionJsonSerializer<UpdateFolderMemberError> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonWriter<UpdateFolderMemberError> _JSON_WRITER = new JsonWriter<UpdateFolderMemberError>() {
-        public final void write(UpdateFolderMemberError x, JsonGenerator g) throws IOException {
-            switch (x.tag) {
+        public Serializer() {
+            super(UpdateFolderMemberError.class);
+        }
+
+        @Override
+        public void serialize(UpdateFolderMemberError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            switch (value.tag) {
                 case ACCESS_ERROR:
                     g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("access_error");
-                    g.writeFieldName("access_error");
-                    SharedFolderAccessError._JSON_WRITER.write(x.getAccessErrorValue(), g);
+                    g.writeStringField(".tag", "access_error");
+                    g.writeObjectField("access_error", value.accessErrorValue);
                     g.writeEndObject();
                     break;
                 case MEMBER_ERROR:
                     g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("member_error");
-                    g.writeFieldName("member_error");
-                    SharedFolderMemberError._JSON_WRITER.write(x.getMemberErrorValue(), g);
+                    g.writeStringField(".tag", "member_error");
+                    g.writeObjectField("member_error", value.memberErrorValue);
                     g.writeEndObject();
                     break;
                 case INSUFFICIENT_PLAN:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("insufficient_plan");
-                    g.writeEndObject();
                     break;
                 case NO_PERMISSION:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("no_permission");
-                    g.writeEndObject();
                     break;
                 case OTHER:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("other");
-                    g.writeEndObject();
                     break;
             }
         }
-    };
+    }
 
-    public static final JsonReader<UpdateFolderMemberError> _JSON_READER = new JsonReader<UpdateFolderMemberError>() {
+    static final class Deserializer extends UnionJsonDeserializer<UpdateFolderMemberError, Tag> {
+        private static final long serialVersionUID = 0L;
 
-        public final UpdateFolderMemberError read(JsonParser parser) throws IOException, JsonReadException {
-            if (parser.getCurrentToken() == JsonToken.VALUE_STRING) {
-                String text = parser.getText();
-                parser.nextToken();
-                Tag tag = VALUES_.get(text);
-                if (tag == null) {
-                    return UpdateFolderMemberError.OTHER;
-                }
-                switch (tag) {
-                    case INSUFFICIENT_PLAN: return UpdateFolderMemberError.INSUFFICIENT_PLAN;
-                    case NO_PERMISSION: return UpdateFolderMemberError.NO_PERMISSION;
-                    case OTHER: return UpdateFolderMemberError.OTHER;
-                }
-                throw new JsonReadException("Tag " + tag + " requires a value", parser.getTokenLocation());
-            }
-            JsonReader.expectObjectStart(parser);
-            String[] tags = readTags(parser);
-            assert tags != null && tags.length == 1;
-            String text = tags[0];
-            Tag tag = VALUES_.get(text);
-            UpdateFolderMemberError value = null;
-            if (tag != null) {
-                switch (tag) {
-                    case ACCESS_ERROR: {
-                        SharedFolderAccessError v = null;
-                        assert parser.getCurrentToken() == JsonToken.FIELD_NAME;
-                        text = parser.getText();
-                        assert tags[0].equals(text);
-                        parser.nextToken();
-                        v = SharedFolderAccessError._JSON_READER
-                            .readField(parser, "access_error", v);
-                        value = UpdateFolderMemberError.accessError(v);
-                        break;
-                    }
-                    case MEMBER_ERROR: {
-                        SharedFolderMemberError v = null;
-                        assert parser.getCurrentToken() == JsonToken.FIELD_NAME;
-                        text = parser.getText();
-                        assert tags[0].equals(text);
-                        parser.nextToken();
-                        v = SharedFolderMemberError._JSON_READER
-                            .readField(parser, "member_error", v);
-                        value = UpdateFolderMemberError.memberError(v);
-                        break;
-                    }
-                    case INSUFFICIENT_PLAN: {
-                        value = UpdateFolderMemberError.INSUFFICIENT_PLAN;
-                        break;
-                    }
-                    case NO_PERMISSION: {
-                        value = UpdateFolderMemberError.NO_PERMISSION;
-                        break;
-                    }
-                    case OTHER: {
-                        value = UpdateFolderMemberError.OTHER;
-                        break;
-                    }
-                }
-            }
-            JsonReader.expectObjectEnd(parser);
-            if (value == null) {
-                return UpdateFolderMemberError.OTHER;
-            }
-            return value;
+        public Deserializer() {
+            super(UpdateFolderMemberError.class, getTagMapping(), Tag.OTHER);
         }
 
-    };
+        @Override
+        public UpdateFolderMemberError deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+            switch (_tag) {
+                case ACCESS_ERROR: {
+                    SharedFolderAccessError value = null;
+                    expectField(_p, "access_error");
+                    value = _p.readValueAs(SharedFolderAccessError.class);
+                    _p.nextToken();
+                    return UpdateFolderMemberError.accessError(value);
+                }
+                case MEMBER_ERROR: {
+                    SharedFolderMemberError value = null;
+                    expectField(_p, "member_error");
+                    value = _p.readValueAs(SharedFolderMemberError.class);
+                    _p.nextToken();
+                    return UpdateFolderMemberError.memberError(value);
+                }
+                case INSUFFICIENT_PLAN: {
+                    return UpdateFolderMemberError.INSUFFICIENT_PLAN;
+                }
+                case NO_PERMISSION: {
+                    return UpdateFolderMemberError.NO_PERMISSION;
+                }
+                case OTHER: {
+                    return UpdateFolderMemberError.OTHER;
+                }
+            }
+            // should be impossible to get here
+            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
+        }
+
+        private static Map<String, UpdateFolderMemberError.Tag> getTagMapping() {
+            Map<String, UpdateFolderMemberError.Tag> values = new HashMap<String, UpdateFolderMemberError.Tag>();
+            values.put("access_error", UpdateFolderMemberError.Tag.ACCESS_ERROR);
+            values.put("member_error", UpdateFolderMemberError.Tag.MEMBER_ERROR);
+            values.put("insufficient_plan", UpdateFolderMemberError.Tag.INSUFFICIENT_PLAN);
+            values.put("no_permission", UpdateFolderMemberError.Tag.NO_PERMISSION);
+            values.put("other", UpdateFolderMemberError.Tag.OTHER);
+            return Collections.unmodifiableMap(values);
+        }
+    }
 }

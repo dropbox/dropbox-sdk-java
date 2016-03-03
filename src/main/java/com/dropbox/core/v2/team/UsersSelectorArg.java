@@ -3,24 +3,47 @@
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonArrayReader;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.UnionJsonDeserializer;
+import com.dropbox.core.json.UnionJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Argument for selecting a list of users, either by team_member_ids,
  * external_ids or emails.
+ *
+ * <p> This class is a tagged union.  Tagged unions instances are always
+ * associated to a specific tag.  This means only one of the {@code isAbc()}
+ * methods will return {@code true}. You can use {@link #tag()} to determine the
+ * tag associated with this instance. </p>
  */
+@JsonSerialize(using=UsersSelectorArg.Serializer.class)
+@JsonDeserialize(using=UsersSelectorArg.Deserializer.class)
 public final class UsersSelectorArg {
     // union UsersSelectorArg
+
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link UsersSelectorArg}.
@@ -38,14 +61,6 @@ public final class UsersSelectorArg {
          * List of email addresses.
          */
         EMAILS; // List<String>
-    }
-
-    private static final java.util.HashMap<String, Tag> VALUES_;
-    static {
-        VALUES_ = new java.util.HashMap<String, Tag>();
-        VALUES_.put("team_member_ids", Tag.TEAM_MEMBER_IDS);
-        VALUES_.put("external_ids", Tag.EXTERNAL_IDS);
-        VALUES_.put("emails", Tag.EMAILS);
     }
 
     private final Tag tag;
@@ -70,9 +85,10 @@ public final class UsersSelectorArg {
      * Returns the tag for this instance.
      *
      * <p> This class is a tagged union.  Tagged unions instances are always
-     * associated to a specific tag.  Callers are recommended to use the tag
-     * value in a {@code switch} statement to determine how to properly handle
-     * this {@code UsersSelectorArg}. </p>
+     * associated to a specific tag.  This means only one of the {@code isXyz()}
+     * methods will return {@code true}. Callers are recommended to use the tag
+     * value in a {@code switch} statement to properly handle the different
+     * values for this {@code UsersSelectorArg}. </p>
      *
      * @return the tag for this instance.
      */
@@ -84,7 +100,7 @@ public final class UsersSelectorArg {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#TEAM_MEMBER_IDS}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#TEAM_MEMBER_IDS}, {@code false} otherwise.
      */
     public boolean isTeamMemberIds() {
@@ -97,8 +113,7 @@ public final class UsersSelectorArg {
      *
      * <p> List of member IDs. </p>
      *
-     * @param value  {@link UsersSelectorArg#teamMemberIds} value to assign to
-     *     this instance.
+     * @param value  value to assign to this instance.
      *
      * @return Instance of {@code UsersSelectorArg} with its tag set to {@link
      *     Tag#TEAM_MEMBER_IDS}.
@@ -140,7 +155,7 @@ public final class UsersSelectorArg {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#EXTERNAL_IDS}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#EXTERNAL_IDS}, {@code false} otherwise.
      */
     public boolean isExternalIds() {
@@ -153,8 +168,7 @@ public final class UsersSelectorArg {
      *
      * <p> List of external user IDs. </p>
      *
-     * @param value  {@link UsersSelectorArg#externalIds} value to assign to
-     *     this instance.
+     * @param value  value to assign to this instance.
      *
      * @return Instance of {@code UsersSelectorArg} with its tag set to {@link
      *     Tag#EXTERNAL_IDS}.
@@ -196,7 +210,7 @@ public final class UsersSelectorArg {
      * Returns {@code true} if this instance has the tag {@link Tag#EMAILS},
      * {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link Tag#EMAILS},
+     * @return {@code true} if this instance is tagged as {@link Tag#EMAILS},
      *     {@code false} otherwise.
      */
     public boolean isEmails() {
@@ -209,8 +223,7 @@ public final class UsersSelectorArg {
      *
      * <p> List of email addresses. </p>
      *
-     * @param value  {@link UsersSelectorArg#emails} value to assign to this
-     *     instance.
+     * @param value  value to assign to this instance.
      *
      * @return Instance of {@code UsersSelectorArg} with its tag set to {@link
      *     Tag#EMAILS}.
@@ -249,10 +262,13 @@ public final class UsersSelectorArg {
 
     @Override
     public int hashCode() {
-        // objects containing lists are not hash-able. This is used as a safeguard
-        // against adding this object to a HashSet or HashMap. Since list fields are
-        // mutable, it is not safe to compute a hashCode here.
-        return System.identityHashCode(this);
+        int hash = java.util.Arrays.hashCode(new Object [] {
+            tag,
+            teamMemberIdsValue,
+            externalIdsValue,
+            emailsValue
+        });
+        return hash;
     }
 
     @Override
@@ -283,133 +299,128 @@ public final class UsersSelectorArg {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static UsersSelectorArg fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
+    static final class Serializer extends UnionJsonSerializer<UsersSelectorArg> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonWriter<UsersSelectorArg> _JSON_WRITER = new JsonWriter<UsersSelectorArg>() {
-        public final void write(UsersSelectorArg x, JsonGenerator g) throws IOException {
-            switch (x.tag) {
+        public Serializer() {
+            super(UsersSelectorArg.class);
+        }
+
+        @Override
+        public void serialize(UsersSelectorArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            switch (value.tag) {
                 case TEAM_MEMBER_IDS:
                     g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("team_member_ids");
-                    g.writeFieldName("team_member_ids");
-                    g.writeStartArray();
-                    for (String item: x.getTeamMemberIdsValue()) {
-                        if (item != null) {
-                            g.writeString(item);
-                        }
-                    }
-                    g.writeEndArray();
+                    g.writeStringField(".tag", "team_member_ids");
+                    g.writeObjectField("team_member_ids", value.teamMemberIdsValue);
                     g.writeEndObject();
                     break;
                 case EXTERNAL_IDS:
                     g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("external_ids");
-                    g.writeFieldName("external_ids");
-                    g.writeStartArray();
-                    for (String item: x.getExternalIdsValue()) {
-                        if (item != null) {
-                            g.writeString(item);
-                        }
-                    }
-                    g.writeEndArray();
+                    g.writeStringField(".tag", "external_ids");
+                    g.writeObjectField("external_ids", value.externalIdsValue);
                     g.writeEndObject();
                     break;
                 case EMAILS:
                     g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("emails");
-                    g.writeFieldName("emails");
-                    g.writeStartArray();
-                    for (String item: x.getEmailsValue()) {
-                        if (item != null) {
-                            g.writeString(item);
-                        }
-                    }
-                    g.writeEndArray();
+                    g.writeStringField(".tag", "emails");
+                    g.writeObjectField("emails", value.emailsValue);
                     g.writeEndObject();
                     break;
             }
         }
-    };
+    }
 
-    public static final JsonReader<UsersSelectorArg> _JSON_READER = new JsonReader<UsersSelectorArg>() {
+    static final class Deserializer extends UnionJsonDeserializer<UsersSelectorArg, Tag> {
+        private static final long serialVersionUID = 0L;
 
-        public final UsersSelectorArg read(JsonParser parser) throws IOException, JsonReadException {
-            if (parser.getCurrentToken() == JsonToken.VALUE_STRING) {
-                String text = parser.getText();
-                parser.nextToken();
-                Tag tag = VALUES_.get(text);
-                if (tag == null) {
-                    throw new JsonReadException("Unanticipated tag " + text + " without catch-all", parser.getTokenLocation());
-                }
-                switch (tag) {
-                }
-                throw new JsonReadException("Tag " + tag + " requires a value", parser.getTokenLocation());
-            }
-            JsonReader.expectObjectStart(parser);
-            String[] tags = readTags(parser);
-            assert tags != null && tags.length == 1;
-            String text = tags[0];
-            Tag tag = VALUES_.get(text);
-            UsersSelectorArg value = null;
-            if (tag != null) {
-                switch (tag) {
-                    case TEAM_MEMBER_IDS: {
-                        List<String> v = null;
-                        assert parser.getCurrentToken() == JsonToken.FIELD_NAME;
-                        text = parser.getText();
-                        assert tags[0].equals(text);
-                        parser.nextToken();
-                        v = JsonArrayReader.mk(JsonReader.StringReader)
-                            .readField(parser, "team_member_ids", v);
-                        value = UsersSelectorArg.teamMemberIds(v);
-                        break;
-                    }
-                    case EXTERNAL_IDS: {
-                        List<String> v = null;
-                        assert parser.getCurrentToken() == JsonToken.FIELD_NAME;
-                        text = parser.getText();
-                        assert tags[0].equals(text);
-                        parser.nextToken();
-                        v = JsonArrayReader.mk(JsonReader.StringReader)
-                            .readField(parser, "external_ids", v);
-                        value = UsersSelectorArg.externalIds(v);
-                        break;
-                    }
-                    case EMAILS: {
-                        List<String> v = null;
-                        assert parser.getCurrentToken() == JsonToken.FIELD_NAME;
-                        text = parser.getText();
-                        assert tags[0].equals(text);
-                        parser.nextToken();
-                        v = JsonArrayReader.mk(JsonReader.StringReader)
-                            .readField(parser, "emails", v);
-                        value = UsersSelectorArg.emails(v);
-                        break;
-                    }
-                }
-            }
-            if (value == null) {
-                throw new JsonReadException("Unanticipated tag " + text, parser.getTokenLocation());
-            }
-            JsonReader.expectObjectEnd(parser);
-            return value;
+        public Deserializer() {
+            super(UsersSelectorArg.class, getTagMapping(), null);
         }
 
-    };
+        @Override
+        public UsersSelectorArg deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+            switch (_tag) {
+                case TEAM_MEMBER_IDS: {
+                    List<String> value = null;
+                    expectField(_p, "team_member_ids");
+                    expectArrayStart(_p);
+                    value = new java.util.ArrayList<String>();
+                    while (!isArrayEnd(_p)) {
+                        String _x = null;
+                        _x = getStringValue(_p);
+                        _p.nextToken();
+                        value.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
+                    return UsersSelectorArg.teamMemberIds(value);
+                }
+                case EXTERNAL_IDS: {
+                    List<String> value = null;
+                    expectField(_p, "external_ids");
+                    expectArrayStart(_p);
+                    value = new java.util.ArrayList<String>();
+                    while (!isArrayEnd(_p)) {
+                        String _x = null;
+                        _x = getStringValue(_p);
+                        _p.nextToken();
+                        value.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
+                    return UsersSelectorArg.externalIds(value);
+                }
+                case EMAILS: {
+                    List<String> value = null;
+                    expectField(_p, "emails");
+                    expectArrayStart(_p);
+                    value = new java.util.ArrayList<String>();
+                    while (!isArrayEnd(_p)) {
+                        String _x = null;
+                        _x = getStringValue(_p);
+                        _p.nextToken();
+                        value.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
+                    return UsersSelectorArg.emails(value);
+                }
+            }
+            // should be impossible to get here
+            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
+        }
+
+        private static Map<String, UsersSelectorArg.Tag> getTagMapping() {
+            Map<String, UsersSelectorArg.Tag> values = new HashMap<String, UsersSelectorArg.Tag>();
+            values.put("team_member_ids", UsersSelectorArg.Tag.TEAM_MEMBER_IDS);
+            values.put("external_ids", UsersSelectorArg.Tag.EXTERNAL_IDS);
+            values.put("emails", UsersSelectorArg.Tag.EMAILS);
+            return Collections.unmodifiableMap(values);
+        }
+    }
 }

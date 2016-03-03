@@ -11,9 +11,11 @@ import com.dropbox.core.LocalizedText;
  * error.
  */
 public class GroupUpdateErrorException extends DbxApiException {
+    private static final long serialVersionUID = 0L;
 
     /**
-     * The error reported by {@link DbxTeam#groupsUpdate(GroupSelector)}.
+     * The error reported by {@link
+     * DbxTeamTeamRequests#groupsUpdate(GroupSelector)}.
      */
     public final GroupUpdateError errorValue;
 

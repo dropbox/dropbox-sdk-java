@@ -6,9 +6,9 @@ package com.dropbox.core.v2;
 import com.dropbox.core.DbxHost;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.http.HttpRequestor;
-import com.dropbox.core.v2.files.DbxFiles;
-import com.dropbox.core.v2.sharing.DbxSharing;
-import com.dropbox.core.v2.users.DbxUsers;
+import com.dropbox.core.v2.files.DbxUserFilesRequests;
+import com.dropbox.core.v2.sharing.DbxUserSharingRequests;
+import com.dropbox.core.v2.users.DbxUserUsersRequests;
 
 /**
  * Use this class to make remote calls to the Dropbox API user endpoints.  User
@@ -20,10 +20,10 @@ import com.dropbox.core.v2.users.DbxUsers;
  * in a thread safe {@link HttpRequestor} implementation. </p>
  */
 public final class DbxClientV2 {
-    private final DbxRawClientV2 rawClient;
-    public final com.dropbox.core.v2.files.DbxFiles files;
-    public final com.dropbox.core.v2.sharing.DbxSharing sharing;
-    public final com.dropbox.core.v2.users.DbxUsers users;
+    private final DbxRawClientV2 _client;
+    private final com.dropbox.core.v2.files.DbxUserFilesRequests files;
+    private final com.dropbox.core.v2.sharing.DbxUserSharingRequests sharing;
+    private final com.dropbox.core.v2.users.DbxUserUsersRequests users;
 
     /**
      * Creates a client that uses the given OAuth 2 access token as
@@ -64,11 +64,38 @@ public final class DbxClientV2 {
      * @param host  Dropbox hosts to send requests to (used for mocking and
      *     testing)
      */
-    DbxClientV2(DbxRawClientV2 rawClient) {
-        this.rawClient = rawClient;
-        this.files = new com.dropbox.core.v2.files.DbxFiles(rawClient);
-        this.sharing = new com.dropbox.core.v2.sharing.DbxSharing(rawClient);
-        this.users = new com.dropbox.core.v2.users.DbxUsers(rawClient);
+    DbxClientV2(DbxRawClientV2 _client) {
+        this._client = _client;
+        this.files = new com.dropbox.core.v2.files.DbxUserFilesRequests(_client);
+        this.sharing = new com.dropbox.core.v2.sharing.DbxUserSharingRequests(_client);
+        this.users = new com.dropbox.core.v2.users.DbxUserUsersRequests(_client);
+    }
+
+    /**
+     * Returns client for issuing requests in the {@code "files"} namespace.
+     *
+     * @return Dropbox files client
+     */
+    public com.dropbox.core.v2.files.DbxUserFilesRequests files() {
+        return files;
+    }
+
+    /**
+     * Returns client for issuing requests in the {@code "sharing"} namespace.
+     *
+     * @return Dropbox sharing client
+     */
+    public com.dropbox.core.v2.sharing.DbxUserSharingRequests sharing() {
+        return sharing;
+    }
+
+    /**
+     * Returns client for issuing requests in the {@code "users"} namespace.
+     *
+     * @return Dropbox users client
+     */
+    public com.dropbox.core.v2.users.DbxUserUsersRequests users() {
+        return users;
     }
 
 }

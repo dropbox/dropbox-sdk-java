@@ -5,17 +5,32 @@ package com.dropbox.core.v2.users;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.UnionJsonDeserializer;
+import com.dropbox.core.json.UnionJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * What type of account this user has.
  */
+@JsonSerialize(using=AccountType.Serializer.class)
+@JsonDeserialize(using=AccountType.Deserializer.class)
 public enum AccountType {
     // union AccountType
     /**
@@ -31,50 +46,51 @@ public enum AccountType {
      */
     BUSINESS;
 
-    private static final java.util.HashMap<String, AccountType> VALUES_;
-    static {
-        VALUES_ = new java.util.HashMap<String, AccountType>();
-        VALUES_.put("basic", BASIC);
-        VALUES_.put("pro", PRO);
-        VALUES_.put("business", BUSINESS);
-    }
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
-    }
+    static final class Serializer extends UnionJsonSerializer<AccountType> {
+        private static final long serialVersionUID = 0L;
 
-    public static AccountType fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
+        public Serializer() {
+            super(AccountType.class);
+        }
 
-    public static final JsonWriter<AccountType> _JSON_WRITER = new JsonWriter<AccountType>() {
-        public void write(AccountType x, JsonGenerator g) throws IOException {
-            switch (x) {
+        @Override
+        public void serialize(AccountType value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            switch (value) {
                 case BASIC:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("basic");
-                    g.writeEndObject();
                     break;
                 case PRO:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("pro");
-                    g.writeEndObject();
                     break;
                 case BUSINESS:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("business");
-                    g.writeEndObject();
                     break;
             }
         }
-    };
+    }
 
-    public static final JsonReader<AccountType> _JSON_READER = new JsonReader<AccountType>() {
-        public final AccountType read(JsonParser parser) throws IOException, JsonReadException {
-            return JsonReader.readEnum(parser, VALUES_, null);
+    static final class Deserializer extends UnionJsonDeserializer<AccountType, AccountType> {
+        private static final long serialVersionUID = 0L;
+
+        public Deserializer() {
+            super(AccountType.class, getTagMapping(), null);
         }
-    };
+
+        @Override
+        public AccountType deserialize(AccountType _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+            return _tag;
+        }
+
+        private static Map<String, AccountType> getTagMapping() {
+            Map<String, AccountType> values = new HashMap<String, AccountType>();
+            values.put("basic", AccountType.BASIC);
+            values.put("pro", AccountType.PRO);
+            values.put("business", AccountType.BUSINESS);
+            return Collections.unmodifiableMap(values);
+        }
+    }
 }

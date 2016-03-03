@@ -11,10 +11,11 @@ import com.dropbox.core.LocalizedText;
  * ModifySharedLinkSettingsError} error.
  */
 public class ModifySharedLinkSettingsErrorException extends DbxApiException {
+    private static final long serialVersionUID = 0L;
 
     /**
      * The error reported by {@link
-     * DbxSharing#modifySharedLinkSettings(String,SharedLinkSettings)}.
+     * DbxUserSharingRequests#modifySharedLinkSettings(String,SharedLinkSettings)}.
      */
     public final ModifySharedLinkSettingsError errorValue;
 

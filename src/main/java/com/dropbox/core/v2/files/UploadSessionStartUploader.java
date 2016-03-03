@@ -7,13 +7,16 @@ import com.dropbox.core.DbxApiException;
 import com.dropbox.core.DbxRequestUtil;
 import com.dropbox.core.DbxUploader;
 import com.dropbox.core.http.HttpRequestor;
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
+import com.dropbox.core.json.JsonUtil;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JavaType;
 
 import java.io.IOException;
 
 /**
- * The {@link DbxUploader} returned by {@link DbxFiles#uploadSessionStart()}.
+ * The {@link DbxUploader} returned by {@link
+ * DbxUserFilesRequests#uploadSessionStart()}.
  *
  * <p> Use this class to upload data to the server and complete the request.
  * </p>
@@ -22,7 +25,9 @@ import java.io.IOException;
  * and allow network connection reuse. Always call {@link #close} when complete
  * (see {@link DbxUploader} for examples). </p>
  */
-public class UploadSessionStartUploader extends DbxUploader<UploadSessionStartResult, DbxApiException> {
+public class UploadSessionStartUploader extends DbxUploader<UploadSessionStartResult, Void, DbxApiException> {
+    private static final JavaType _RESULT_TYPE = JsonUtil.createType(new TypeReference<UploadSessionStartResult>() {});
+    private static final JavaType _ERROR_TYPE = JsonUtil.createType(new TypeReference<Void>() {});
 
     /**
      * Creates a new instance of this uploader.
@@ -32,17 +37,9 @@ public class UploadSessionStartUploader extends DbxUploader<UploadSessionStartRe
      * @throws NullPointerException  if {@code httpUploader} is {@code null}
      */
     public UploadSessionStartUploader(HttpRequestor.Uploader httpUploader) {
-        super(httpUploader);
+        super(httpUploader, _RESULT_TYPE, _ERROR_TYPE);
     }
-
-    @Override
-    protected UploadSessionStartResult parseResponse(HttpRequestor.Response response) throws JsonReadException, IOException {
-        return UploadSessionStartResult._JSON_READER.readFully(response.getBody());
-    }
-
-    @Override
-    protected DbxApiException parseError(HttpRequestor.Response response) throws JsonReadException, IOException {
-        DbxRequestUtil.ErrorWrapper wrapper = DbxRequestUtil.ErrorWrapper.fromResponse(JsonReader.VoidReader, response);
-        return new DbxApiException(wrapper.getRequestId(), wrapper.getUserMessage(), "Unexpected error response for \"upload_session/start\": wrapper.errValue");
+    protected DbxApiException newException(DbxRequestUtil.ErrorWrapper error) {
+        return new DbxApiException(error.getRequestId(), error.getUserMessage(), "Unexpected error response for \"upload_session/start\": error.errValue");
     }
 }

@@ -5,20 +5,38 @@ package com.dropbox.core.v2.sharing;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
-public class CreateSharedLinkArg {
+@JsonSerialize(using=CreateSharedLinkArg.Serializer.class)
+@JsonDeserialize(using=CreateSharedLinkArg.Deserializer.class)
+class CreateSharedLinkArg {
     // struct CreateSharedLinkArg
 
-    private final String path;
-    private final boolean shortUrl;
-    private final PendingUploadMode pendingUpload;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final String path;
+    protected final boolean shortUrl;
+    protected final PendingUploadMode pendingUpload;
 
     /**
      * Use {@link newBuilder} to create instances of this class without
@@ -194,75 +212,104 @@ public class CreateSharedLinkArg {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
-    }
-
-    public static CreateSharedLinkArg fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
-
-    public static final JsonWriter<CreateSharedLinkArg> _JSON_WRITER = new JsonWriter<CreateSharedLinkArg>() {
-        public final void write(CreateSharedLinkArg x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            CreateSharedLinkArg._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
         }
-        public final void writeFields(CreateSharedLinkArg x, JsonGenerator g) throws IOException {
-            g.writeFieldName("path");
-            g.writeString(x.path);
-            g.writeFieldName("short_url");
-            g.writeBoolean(x.shortUrl);
-            if (x.pendingUpload != null) {
-                g.writeFieldName("pending_upload");
-                PendingUploadMode._JSON_WRITER.write(x.pendingUpload, g);
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
+    }
+
+    static final class Serializer extends StructJsonSerializer<CreateSharedLinkArg> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(CreateSharedLinkArg.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(CreateSharedLinkArg.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<CreateSharedLinkArg> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(CreateSharedLinkArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("path", value.path);
+            g.writeObjectField("short_url", value.shortUrl);
+            if (value.pendingUpload != null) {
+                g.writeObjectField("pending_upload", value.pendingUpload);
             }
         }
-    };
+    }
 
-    public static final JsonReader<CreateSharedLinkArg> _JSON_READER = new JsonReader<CreateSharedLinkArg>() {
-        public final CreateSharedLinkArg read(JsonParser parser) throws IOException, JsonReadException {
-            CreateSharedLinkArg result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+    static final class Deserializer extends StructJsonDeserializer<CreateSharedLinkArg> {
+        private static final long serialVersionUID = 0L;
+
+        public Deserializer() {
+            super(CreateSharedLinkArg.class);
         }
 
-        public final CreateSharedLinkArg readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(CreateSharedLinkArg.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<CreateSharedLinkArg> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public CreateSharedLinkArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             String path = null;
             Boolean shortUrl = null;
             PendingUploadMode pendingUpload = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("path".equals(fieldName)) {
-                    path = JsonReader.StringReader
-                        .readField(parser, "path", path);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("path".equals(_field)) {
+                    path = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("short_url".equals(fieldName)) {
-                    shortUrl = JsonReader.BooleanReader
-                        .readField(parser, "short_url", shortUrl);
+                else if ("short_url".equals(_field)) {
+                    shortUrl = _p.getValueAsBoolean();
+                    _p.nextToken();
                 }
-                else if ("pending_upload".equals(fieldName)) {
-                    pendingUpload = PendingUploadMode._JSON_READER
-                        .readField(parser, "pending_upload", pendingUpload);
+                else if ("pending_upload".equals(_field)) {
+                    pendingUpload = _p.readValueAs(PendingUploadMode.class);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (path == null) {
-                throw new JsonReadException("Required field \"path\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"path\" is missing.");
             }
+
             return new CreateSharedLinkArg(path, shortUrl, pendingUpload);
         }
-    };
+    }
 }

@@ -11,9 +11,10 @@ import com.dropbox.core.LocalizedText;
  * error.
  */
 public class GroupCreateErrorException extends DbxApiException {
+    private static final long serialVersionUID = 0L;
 
     /**
-     * The error reported by {@link DbxTeam#groupsCreate(String)}.
+     * The error reported by {@link DbxTeamTeamRequests#groupsCreate(String)}.
      */
     public final GroupCreateError errorValue;
 

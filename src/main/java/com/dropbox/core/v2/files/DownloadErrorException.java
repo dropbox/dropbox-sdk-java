@@ -10,9 +10,10 @@ import com.dropbox.core.LocalizedText;
  * Exception thrown when the server responds with a {@link DownloadError} error.
  */
 public class DownloadErrorException extends DbxApiException {
+    private static final long serialVersionUID = 0L;
 
     /**
-     * The error reported by {@link DbxFiles#download(String)}.
+     * The error reported by {@link DbxUserFilesRequests#download(String)}.
      */
     public final DownloadError errorValue;
 

@@ -5,18 +5,36 @@ package com.dropbox.core.v2.team;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
-public class MembersListArg {
+@JsonSerialize(using=MembersListArg.Serializer.class)
+@JsonDeserialize(using=MembersListArg.Deserializer.class)
+class MembersListArg {
     // struct MembersListArg
 
-    private final long limit;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final long limit;
 
     /**
      *
@@ -78,56 +96,91 @@ public class MembersListArg {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static MembersListArg fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
+    static final class Serializer extends StructJsonSerializer<MembersListArg> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(MembersListArg.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(MembersListArg.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<MembersListArg> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(MembersListArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("limit", value.limit);
+        }
     }
 
-    public static final JsonWriter<MembersListArg> _JSON_WRITER = new JsonWriter<MembersListArg>() {
-        public final void write(MembersListArg x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            MembersListArg._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
-        }
-        public final void writeFields(MembersListArg x, JsonGenerator g) throws IOException {
-            g.writeFieldName("limit");
-            g.writeNumber(x.limit);
-        }
-    };
+    static final class Deserializer extends StructJsonDeserializer<MembersListArg> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonReader<MembersListArg> _JSON_READER = new JsonReader<MembersListArg>() {
-        public final MembersListArg read(JsonParser parser) throws IOException, JsonReadException {
-            MembersListArg result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+        public Deserializer() {
+            super(MembersListArg.class);
         }
 
-        public final MembersListArg readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(MembersListArg.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<MembersListArg> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public MembersListArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             Long limit = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("limit".equals(fieldName)) {
-                    limit = JsonReader.UInt32Reader
-                        .readField(parser, "limit", limit);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("limit".equals(_field)) {
+                    limit = _p.getLongValue();
+                    assertUnsigned(_p, limit);
+                    if (limit > Integer.MAX_VALUE) {
+                        throw new JsonParseException(_p, "expecting a 32-bit unsigned integer, got: " + limit);
+                    }
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
+
             return new MembersListArg(limit);
         }
-    };
+    }
 }

@@ -3,14 +3,25 @@
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonArrayReader;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.List;
@@ -20,14 +31,20 @@ import java.util.List;
  * values, one value per day. If there is no data for a day, then the value will
  * be None.
  */
+@JsonSerialize(using=GetStorageReport.Serializer.class)
+@JsonDeserialize(using=GetStorageReport.Deserializer.class)
 public class GetStorageReport extends BaseDfbReport {
     // struct GetStorageReport
 
-    private final List<Long> totalUsage;
-    private final List<Long> sharedUsage;
-    private final List<Long> unsharedUsage;
-    private final List<Long> sharedFolders;
-    private final List<List<StorageBucket>> memberStorageMap;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final List<Long> totalUsage;
+    protected final List<Long> sharedUsage;
+    protected final List<Long> unsharedUsage;
+    protected final List<Long> sharedFolders;
+    protected final List<List<StorageBucket>> memberStorageMap;
 
     /**
      * Storage Report Result. Each of the items in the storage report is an
@@ -172,10 +189,15 @@ public class GetStorageReport extends BaseDfbReport {
 
     @Override
     public int hashCode() {
-        // objects containing lists are not hash-able. This is used as a safeguard
-        // against adding this object to a HashSet or HashMap. Since list fields are
-        // mutable, it is not safe to compute a hashCode here.
-        return System.identityHashCode(this);
+        int hash = java.util.Arrays.hashCode(new Object [] {
+            totalUsage,
+            sharedUsage,
+            unsharedUsage,
+            sharedFolders,
+            memberStorageMap
+        });
+        hash = (31 * super.hashCode()) + hash;
+        return hash;
     }
 
     @Override
@@ -186,12 +208,12 @@ public class GetStorageReport extends BaseDfbReport {
         // be careful with inheritance
         else if (obj.getClass().equals(this.getClass())) {
             GetStorageReport other = (GetStorageReport) obj;
-            return ((this.totalUsage == other.totalUsage) || (this.totalUsage.equals(other.totalUsage)))
+            return ((this.startDate == other.startDate) || (this.startDate.equals(other.startDate)))
+                && ((this.totalUsage == other.totalUsage) || (this.totalUsage.equals(other.totalUsage)))
                 && ((this.sharedUsage == other.sharedUsage) || (this.sharedUsage.equals(other.sharedUsage)))
                 && ((this.unsharedUsage == other.unsharedUsage) || (this.unsharedUsage.equals(other.unsharedUsage)))
                 && ((this.sharedFolders == other.sharedFolders) || (this.sharedFolders.equals(other.sharedFolders)))
                 && ((this.memberStorageMap == other.memberStorageMap) || (this.memberStorageMap.equals(other.memberStorageMap)))
-                && ((this.getStartDate() == other.getStartDate()) || (this.getStartDate().equals(other.getStartDate())))
                 ;
         }
         else {
@@ -201,144 +223,187 @@ public class GetStorageReport extends BaseDfbReport {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static GetStorageReport fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
+    static final class Serializer extends StructJsonSerializer<GetStorageReport> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(GetStorageReport.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(GetStorageReport.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<GetStorageReport> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(GetStorageReport value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("start_date", value.startDate);
+            g.writeObjectField("total_usage", value.totalUsage);
+            g.writeObjectField("shared_usage", value.sharedUsage);
+            g.writeObjectField("unshared_usage", value.unsharedUsage);
+            g.writeObjectField("shared_folders", value.sharedFolders);
+            g.writeObjectField("member_storage_map", value.memberStorageMap);
+        }
     }
 
-    public static final JsonWriter<GetStorageReport> _JSON_WRITER = new JsonWriter<GetStorageReport>() {
-        public final void write(GetStorageReport x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            BaseDfbReport._JSON_WRITER.writeFields(x, g);
-            GetStorageReport._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
-        }
-        public final void writeFields(GetStorageReport x, JsonGenerator g) throws IOException {
-            g.writeFieldName("total_usage");
-            g.writeStartArray();
-            for (Long item: x.totalUsage) {
-                if (item != null) {
-                    g.writeNumber(item);
-                }
-            }
-            g.writeEndArray();
-            g.writeFieldName("shared_usage");
-            g.writeStartArray();
-            for (Long item: x.sharedUsage) {
-                if (item != null) {
-                    g.writeNumber(item);
-                }
-            }
-            g.writeEndArray();
-            g.writeFieldName("unshared_usage");
-            g.writeStartArray();
-            for (Long item: x.unsharedUsage) {
-                if (item != null) {
-                    g.writeNumber(item);
-                }
-            }
-            g.writeEndArray();
-            g.writeFieldName("shared_folders");
-            g.writeStartArray();
-            for (Long item: x.sharedFolders) {
-                if (item != null) {
-                    g.writeNumber(item);
-                }
-            }
-            g.writeEndArray();
-            g.writeFieldName("member_storage_map");
-            g.writeStartArray();
-            for (List<StorageBucket> item: x.memberStorageMap) {
-                if (item != null) {
-                    g.writeStartArray();
-                    for (StorageBucket item1: item) {
-                        if (item1 != null) {
-                            StorageBucket._JSON_WRITER.write(item1, g);
-                        }
-                    }
-                    g.writeEndArray();
-                }
-            }
-            g.writeEndArray();
-        }
-    };
+    static final class Deserializer extends StructJsonDeserializer<GetStorageReport> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonReader<GetStorageReport> _JSON_READER = new JsonReader<GetStorageReport>() {
-        public final GetStorageReport read(JsonParser parser) throws IOException, JsonReadException {
-            GetStorageReport result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+        public Deserializer() {
+            super(GetStorageReport.class);
         }
 
-        public final GetStorageReport readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(GetStorageReport.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<GetStorageReport> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public GetStorageReport deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             String startDate = null;
             List<Long> totalUsage = null;
             List<Long> sharedUsage = null;
             List<Long> unsharedUsage = null;
             List<Long> sharedFolders = null;
             List<List<StorageBucket>> memberStorageMap = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("start_date".equals(fieldName)) {
-                    startDate = JsonReader.StringReader
-                        .readField(parser, "start_date", startDate);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("start_date".equals(_field)) {
+                    startDate = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("total_usage".equals(fieldName)) {
-                    totalUsage = JsonArrayReader.mk(JsonReader.UInt64Reader)
-                        .readField(parser, "total_usage", totalUsage);
+                else if ("total_usage".equals(_field)) {
+                    expectArrayStart(_p);
+                    totalUsage = new java.util.ArrayList<Long>();
+                    while (!isArrayEnd(_p)) {
+                        Long _x = null;
+                        _x = _p.getLongValue();
+                        assertUnsigned(_p, _x);
+                        _p.nextToken();
+                        totalUsage.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
                 }
-                else if ("shared_usage".equals(fieldName)) {
-                    sharedUsage = JsonArrayReader.mk(JsonReader.UInt64Reader)
-                        .readField(parser, "shared_usage", sharedUsage);
+                else if ("shared_usage".equals(_field)) {
+                    expectArrayStart(_p);
+                    sharedUsage = new java.util.ArrayList<Long>();
+                    while (!isArrayEnd(_p)) {
+                        Long _x = null;
+                        _x = _p.getLongValue();
+                        assertUnsigned(_p, _x);
+                        _p.nextToken();
+                        sharedUsage.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
                 }
-                else if ("unshared_usage".equals(fieldName)) {
-                    unsharedUsage = JsonArrayReader.mk(JsonReader.UInt64Reader)
-                        .readField(parser, "unshared_usage", unsharedUsage);
+                else if ("unshared_usage".equals(_field)) {
+                    expectArrayStart(_p);
+                    unsharedUsage = new java.util.ArrayList<Long>();
+                    while (!isArrayEnd(_p)) {
+                        Long _x = null;
+                        _x = _p.getLongValue();
+                        assertUnsigned(_p, _x);
+                        _p.nextToken();
+                        unsharedUsage.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
                 }
-                else if ("shared_folders".equals(fieldName)) {
-                    sharedFolders = JsonArrayReader.mk(JsonReader.UInt64Reader)
-                        .readField(parser, "shared_folders", sharedFolders);
+                else if ("shared_folders".equals(_field)) {
+                    expectArrayStart(_p);
+                    sharedFolders = new java.util.ArrayList<Long>();
+                    while (!isArrayEnd(_p)) {
+                        Long _x = null;
+                        _x = _p.getLongValue();
+                        assertUnsigned(_p, _x);
+                        _p.nextToken();
+                        sharedFolders.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
                 }
-                else if ("member_storage_map".equals(fieldName)) {
-                    memberStorageMap = JsonArrayReader.mk(JsonArrayReader.mk(StorageBucket._JSON_READER))
-                        .readField(parser, "member_storage_map", memberStorageMap);
+                else if ("member_storage_map".equals(_field)) {
+                    expectArrayStart(_p);
+                    memberStorageMap = new java.util.ArrayList<List<StorageBucket>>();
+                    while (!isArrayEnd(_p)) {
+                        List<StorageBucket> _x = null;
+                        expectArrayStart(_p);
+                        _x = new java.util.ArrayList<StorageBucket>();
+                        while (!isArrayEnd(_p)) {
+                            StorageBucket _x1 = null;
+                            _x1 = _p.readValueAs(StorageBucket.class);
+                            _p.nextToken();
+                            _x.add(_x1);
+                        }
+                        expectArrayEnd(_p);
+                        _p.nextToken();
+                        memberStorageMap.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (startDate == null) {
-                throw new JsonReadException("Required field \"start_date\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"start_date\" is missing.");
             }
             if (totalUsage == null) {
-                throw new JsonReadException("Required field \"total_usage\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"total_usage\" is missing.");
             }
             if (sharedUsage == null) {
-                throw new JsonReadException("Required field \"shared_usage\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"shared_usage\" is missing.");
             }
             if (unsharedUsage == null) {
-                throw new JsonReadException("Required field \"unshared_usage\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"unshared_usage\" is missing.");
             }
             if (sharedFolders == null) {
-                throw new JsonReadException("Required field \"shared_folders\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"shared_folders\" is missing.");
             }
             if (memberStorageMap == null) {
-                throw new JsonReadException("Required field \"member_storage_map\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"member_storage_map\" is missing.");
             }
+
             return new GetStorageReport(startDate, totalUsage, sharedUsage, unsharedUsage, sharedFolders, memberStorageMap);
         }
-    };
+    }
 }

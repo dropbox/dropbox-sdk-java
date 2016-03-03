@@ -586,8 +586,18 @@ public abstract class DbxEntry extends Dumpable implements Serializable
             }
 
             @Override
-            public boolean equals(/*@Nullable*/Object o)
-            {
+            public int hashCode() {
+                long latitudeBits = Double.doubleToLongBits(latitude);
+                long longitudeBits = Double.doubleToLongBits(longitude);
+
+                int hash = 17;
+                hash = (31 * hash) + (int)(latitudeBits ^ (latitudeBits >>> 32));
+                hash = (31 * hash) + (int)(longitudeBits ^ (longitudeBits >>> 32));
+                return hash;
+            }
+
+            @Override
+            public boolean equals(/*@Nullable*/Object o) {
                 return o != null && getClass().equals(o.getClass()) && equals((Location) o);
             }
 
@@ -785,7 +795,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
             return o != null && getClass().equals(o.getClass()) && equals((WithChildrenC) o);
         }
 
-        public boolean equals(WithChildrenC o)
+        public boolean equals(WithChildrenC<?> o)
         {
             if (children != null ? !children.equals(o.children) : o.children != null)
                 return false;

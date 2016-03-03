@@ -5,17 +5,32 @@ package com.dropbox.core.v2.sharing;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.UnionJsonDeserializer;
+import com.dropbox.core.json.UnionJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Actions that may be taken on shared folders.
  */
+@JsonSerialize(using=FolderAction.Serializer.class)
+@JsonDeserialize(using=FolderAction.Deserializer.class)
 public enum FolderAction {
     // union FolderAction
     /**
@@ -46,87 +61,80 @@ public enum FolderAction {
      * Stop sharing this folder.
      */
     UNSHARE,
+    /**
+     * Catch-all used for unknown tag values returned by the Dropbox servers.
+     *
+     * <p> Receiving a catch-all value typically indicates this SDK version is
+     * not up to date. Consider updating your SDK version to handle the new
+     * tags. </p>
+     */
     OTHER; // *catch_all
 
-    private static final java.util.HashMap<String, FolderAction> VALUES_;
-    static {
-        VALUES_ = new java.util.HashMap<String, FolderAction>();
-        VALUES_.put("change_options", CHANGE_OPTIONS);
-        VALUES_.put("edit_contents", EDIT_CONTENTS);
-        VALUES_.put("invite_editor", INVITE_EDITOR);
-        VALUES_.put("invite_viewer", INVITE_VIEWER);
-        VALUES_.put("relinquish_membership", RELINQUISH_MEMBERSHIP);
-        VALUES_.put("unmount", UNMOUNT);
-        VALUES_.put("unshare", UNSHARE);
-        VALUES_.put("other", OTHER);
-    }
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
-    }
+    static final class Serializer extends UnionJsonSerializer<FolderAction> {
+        private static final long serialVersionUID = 0L;
 
-    public static FolderAction fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
+        public Serializer() {
+            super(FolderAction.class);
+        }
 
-    public static final JsonWriter<FolderAction> _JSON_WRITER = new JsonWriter<FolderAction>() {
-        public void write(FolderAction x, JsonGenerator g) throws IOException {
-            switch (x) {
+        @Override
+        public void serialize(FolderAction value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            switch (value) {
                 case CHANGE_OPTIONS:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("change_options");
-                    g.writeEndObject();
                     break;
                 case EDIT_CONTENTS:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("edit_contents");
-                    g.writeEndObject();
                     break;
                 case INVITE_EDITOR:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("invite_editor");
-                    g.writeEndObject();
                     break;
                 case INVITE_VIEWER:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("invite_viewer");
-                    g.writeEndObject();
                     break;
                 case RELINQUISH_MEMBERSHIP:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("relinquish_membership");
-                    g.writeEndObject();
                     break;
                 case UNMOUNT:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("unmount");
-                    g.writeEndObject();
                     break;
                 case UNSHARE:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("unshare");
-                    g.writeEndObject();
                     break;
                 case OTHER:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("other");
-                    g.writeEndObject();
                     break;
             }
         }
-    };
+    }
 
-    public static final JsonReader<FolderAction> _JSON_READER = new JsonReader<FolderAction>() {
-        public final FolderAction read(JsonParser parser) throws IOException, JsonReadException {
-            return JsonReader.readEnum(parser, VALUES_, OTHER);
+    static final class Deserializer extends UnionJsonDeserializer<FolderAction, FolderAction> {
+        private static final long serialVersionUID = 0L;
+
+        public Deserializer() {
+            super(FolderAction.class, getTagMapping(), FolderAction.OTHER);
         }
-    };
+
+        @Override
+        public FolderAction deserialize(FolderAction _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+            return _tag;
+        }
+
+        private static Map<String, FolderAction> getTagMapping() {
+            Map<String, FolderAction> values = new HashMap<String, FolderAction>();
+            values.put("change_options", FolderAction.CHANGE_OPTIONS);
+            values.put("edit_contents", FolderAction.EDIT_CONTENTS);
+            values.put("invite_editor", FolderAction.INVITE_EDITOR);
+            values.put("invite_viewer", FolderAction.INVITE_VIEWER);
+            values.put("relinquish_membership", FolderAction.RELINQUISH_MEMBERSHIP);
+            values.put("unmount", FolderAction.UNMOUNT);
+            values.put("unshare", FolderAction.UNSHARE);
+            values.put("other", FolderAction.OTHER);
+            return Collections.unmodifiableMap(values);
+        }
+    }
 }

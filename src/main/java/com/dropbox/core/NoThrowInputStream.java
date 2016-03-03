@@ -67,6 +67,7 @@ public final class NoThrowInputStream extends InputStream {
     }
 
     public static final class HiddenException extends RuntimeException {
+        private static final long serialVersionUID = 0L;
 
         public HiddenException(IOException underlying) {
             super(underlying);

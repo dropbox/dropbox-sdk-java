@@ -8,13 +8,14 @@ import com.dropbox.core.DbxException;
 import java.util.Date;
 
 /**
- * The request builder returned by {@link DbxTeam#reportsGetDevicesBuilder()}.
+ * The request builder returned by {@link
+ * DbxTeamTeamRequests#reportsGetDevicesBuilder()}.
  *
  * <p> Use this class to set optional request parameters and complete the
  * request. </p>
  */
 public class ReportsGetDevicesBuilder {
-    private final DbxTeam team;
+    private final DbxTeamTeamRequests team;
     private final DateRange.Builder dateRangeBuilder;
 
     /**
@@ -26,7 +27,7 @@ public class ReportsGetDevicesBuilder {
      *
      * @return instsance of this builder
      */
-    ReportsGetDevicesBuilder(DbxTeam team, DateRange.Builder dateRangeBuilder) {
+    ReportsGetDevicesBuilder(DbxTeamTeamRequests team, DateRange.Builder dateRangeBuilder) {
         if (team == null) {
             throw new NullPointerException("team");
         }

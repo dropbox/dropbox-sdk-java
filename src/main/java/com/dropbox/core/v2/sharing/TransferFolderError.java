@@ -5,16 +5,45 @@ package com.dropbox.core.v2.sharing;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.UnionJsonDeserializer;
+import com.dropbox.core.json.UnionJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
+/**
+ * This class is an open tagged union.  Tagged unions instances are always
+ * associated to a specific tag.  This means only one of the {@code isAbc()}
+ * methods will return {@code true}. You can use {@link #tag()} to determine the
+ * tag associated with this instance.
+ *
+ * <p> Open unions may be extended in the future with additional tags. If a new
+ * tag is introduced that this SDK does not recognized, the {@link #OTHER} value
+ * will be used. </p>
+ */
+@JsonSerialize(using=TransferFolderError.Serializer.class)
+@JsonDeserialize(using=TransferFolderError.Deserializer.class)
 public final class TransferFolderError {
     // union TransferFolderError
+
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link TransferFolderError}.
@@ -22,7 +51,8 @@ public final class TransferFolderError {
     public enum Tag {
         ACCESS_ERROR, // SharedFolderAccessError
         /**
-         * {@link TransferFolderArg#getToDropboxId} is invalid.
+         * the {@code toDropboxId} argument to {@link
+         * DbxUserSharingRequests#transferFolder(String,String)} is invalid.
          */
         INVALID_DROPBOX_ID,
         /**
@@ -46,28 +76,49 @@ public final class TransferFolderError {
          * The current user does not have permission to perform this action.
          */
         NO_PERMISSION,
+        /**
+         * Catch-all used for unknown tag values returned by the Dropbox
+         * servers.
+         *
+         * <p> Receiving a catch-all value typically indicates this SDK version
+         * is not up to date. Consider updating your SDK version to handle the
+         * new tags. </p>
+         */
         OTHER; // *catch_all
     }
 
-    private static final java.util.HashMap<String, Tag> VALUES_;
-    static {
-        VALUES_ = new java.util.HashMap<String, Tag>();
-        VALUES_.put("access_error", Tag.ACCESS_ERROR);
-        VALUES_.put("invalid_dropbox_id", Tag.INVALID_DROPBOX_ID);
-        VALUES_.put("new_owner_not_a_member", Tag.NEW_OWNER_NOT_A_MEMBER);
-        VALUES_.put("new_owner_unmounted", Tag.NEW_OWNER_UNMOUNTED);
-        VALUES_.put("new_owner_email_unverified", Tag.NEW_OWNER_EMAIL_UNVERIFIED);
-        VALUES_.put("team_folder", Tag.TEAM_FOLDER);
-        VALUES_.put("no_permission", Tag.NO_PERMISSION);
-        VALUES_.put("other", Tag.OTHER);
-    }
-
+    /**
+     * the {@code toDropboxId} argument to {@link
+     * DbxUserSharingRequests#transferFolder(String,String)} is invalid.
+     */
     public static final TransferFolderError INVALID_DROPBOX_ID = new TransferFolderError(Tag.INVALID_DROPBOX_ID, null);
+    /**
+     * The new designated owner is not currently a member of the shared folder.
+     */
     public static final TransferFolderError NEW_OWNER_NOT_A_MEMBER = new TransferFolderError(Tag.NEW_OWNER_NOT_A_MEMBER, null);
+    /**
+     * The new designated owner does not have the shared folder mounted.
+     */
     public static final TransferFolderError NEW_OWNER_UNMOUNTED = new TransferFolderError(Tag.NEW_OWNER_UNMOUNTED, null);
+    /**
+     * The new designated owner's e-mail address is unverified.
+     */
     public static final TransferFolderError NEW_OWNER_EMAIL_UNVERIFIED = new TransferFolderError(Tag.NEW_OWNER_EMAIL_UNVERIFIED, null);
+    /**
+     * This action cannot be performed on a team shared folder.
+     */
     public static final TransferFolderError TEAM_FOLDER = new TransferFolderError(Tag.TEAM_FOLDER, null);
+    /**
+     * The current user does not have permission to perform this action.
+     */
     public static final TransferFolderError NO_PERMISSION = new TransferFolderError(Tag.NO_PERMISSION, null);
+    /**
+     * Catch-all used for unknown tag values returned by the Dropbox servers.
+     *
+     * <p> Receiving a catch-all value typically indicates this SDK version is
+     * not up to date. Consider updating your SDK version to handle the new
+     * tags. </p>
+     */
     public static final TransferFolderError OTHER = new TransferFolderError(Tag.OTHER, null);
 
     private final Tag tag;
@@ -86,9 +137,13 @@ public final class TransferFolderError {
      * Returns the tag for this instance.
      *
      * <p> This class is a tagged union.  Tagged unions instances are always
-     * associated to a specific tag.  Callers are recommended to use the tag
-     * value in a {@code switch} statement to determine how to properly handle
-     * this {@code TransferFolderError}. </p>
+     * associated to a specific tag.  This means only one of the {@code isXyz()}
+     * methods will return {@code true}. Callers are recommended to use the tag
+     * value in a {@code switch} statement to properly handle the different
+     * values for this {@code TransferFolderError}. </p>
+     *
+     * <p> If a tag returned by the server is unrecognized by this SDK, the
+     * {@link Tag#OTHER} value will be used. </p>
      *
      * @return the tag for this instance.
      */
@@ -100,7 +155,7 @@ public final class TransferFolderError {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#ACCESS_ERROR}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#ACCESS_ERROR}, {@code false} otherwise.
      */
     public boolean isAccessError() {
@@ -111,8 +166,7 @@ public final class TransferFolderError {
      * Returns an instance of {@code TransferFolderError} that has its tag set
      * to {@link Tag#ACCESS_ERROR}.
      *
-     * @param value  {@link TransferFolderError#accessError} value to assign to
-     *     this instance.
+     * @param value  value to assign to this instance.
      *
      * @return Instance of {@code TransferFolderError} with its tag set to
      *     {@link Tag#ACCESS_ERROR}.
@@ -146,7 +200,7 @@ public final class TransferFolderError {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#INVALID_DROPBOX_ID}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#INVALID_DROPBOX_ID}, {@code false} otherwise.
      */
     public boolean isInvalidDropboxId() {
@@ -157,7 +211,7 @@ public final class TransferFolderError {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#NEW_OWNER_NOT_A_MEMBER}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#NEW_OWNER_NOT_A_MEMBER}, {@code false} otherwise.
      */
     public boolean isNewOwnerNotAMember() {
@@ -168,7 +222,7 @@ public final class TransferFolderError {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#NEW_OWNER_UNMOUNTED}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#NEW_OWNER_UNMOUNTED}, {@code false} otherwise.
      */
     public boolean isNewOwnerUnmounted() {
@@ -179,7 +233,7 @@ public final class TransferFolderError {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#NEW_OWNER_EMAIL_UNVERIFIED}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#NEW_OWNER_EMAIL_UNVERIFIED}, {@code false} otherwise.
      */
     public boolean isNewOwnerEmailUnverified() {
@@ -190,7 +244,7 @@ public final class TransferFolderError {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#TEAM_FOLDER}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#TEAM_FOLDER}, {@code false} otherwise.
      */
     public boolean isTeamFolder() {
@@ -201,7 +255,7 @@ public final class TransferFolderError {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#NO_PERMISSION}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#NO_PERMISSION}, {@code false} otherwise.
      */
     public boolean isNoPermission() {
@@ -212,7 +266,7 @@ public final class TransferFolderError {
      * Returns {@code true} if this instance has the tag {@link Tag#OTHER},
      * {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link Tag#OTHER},
+     * @return {@code true} if this instance is tagged as {@link Tag#OTHER},
      *     {@code false} otherwise.
      */
     public boolean isOther() {
@@ -266,154 +320,125 @@ public final class TransferFolderError {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static TransferFolderError fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
+    static final class Serializer extends UnionJsonSerializer<TransferFolderError> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonWriter<TransferFolderError> _JSON_WRITER = new JsonWriter<TransferFolderError>() {
-        public final void write(TransferFolderError x, JsonGenerator g) throws IOException {
-            switch (x.tag) {
+        public Serializer() {
+            super(TransferFolderError.class);
+        }
+
+        @Override
+        public void serialize(TransferFolderError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            switch (value.tag) {
                 case ACCESS_ERROR:
                     g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("access_error");
-                    g.writeFieldName("access_error");
-                    SharedFolderAccessError._JSON_WRITER.write(x.getAccessErrorValue(), g);
+                    g.writeStringField(".tag", "access_error");
+                    g.writeObjectField("access_error", value.accessErrorValue);
                     g.writeEndObject();
                     break;
                 case INVALID_DROPBOX_ID:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("invalid_dropbox_id");
-                    g.writeEndObject();
                     break;
                 case NEW_OWNER_NOT_A_MEMBER:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("new_owner_not_a_member");
-                    g.writeEndObject();
                     break;
                 case NEW_OWNER_UNMOUNTED:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("new_owner_unmounted");
-                    g.writeEndObject();
                     break;
                 case NEW_OWNER_EMAIL_UNVERIFIED:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("new_owner_email_unverified");
-                    g.writeEndObject();
                     break;
                 case TEAM_FOLDER:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("team_folder");
-                    g.writeEndObject();
                     break;
                 case NO_PERMISSION:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("no_permission");
-                    g.writeEndObject();
                     break;
                 case OTHER:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("other");
-                    g.writeEndObject();
                     break;
             }
         }
-    };
+    }
 
-    public static final JsonReader<TransferFolderError> _JSON_READER = new JsonReader<TransferFolderError>() {
+    static final class Deserializer extends UnionJsonDeserializer<TransferFolderError, Tag> {
+        private static final long serialVersionUID = 0L;
 
-        public final TransferFolderError read(JsonParser parser) throws IOException, JsonReadException {
-            if (parser.getCurrentToken() == JsonToken.VALUE_STRING) {
-                String text = parser.getText();
-                parser.nextToken();
-                Tag tag = VALUES_.get(text);
-                if (tag == null) {
-                    return TransferFolderError.OTHER;
-                }
-                switch (tag) {
-                    case INVALID_DROPBOX_ID: return TransferFolderError.INVALID_DROPBOX_ID;
-                    case NEW_OWNER_NOT_A_MEMBER: return TransferFolderError.NEW_OWNER_NOT_A_MEMBER;
-                    case NEW_OWNER_UNMOUNTED: return TransferFolderError.NEW_OWNER_UNMOUNTED;
-                    case NEW_OWNER_EMAIL_UNVERIFIED: return TransferFolderError.NEW_OWNER_EMAIL_UNVERIFIED;
-                    case TEAM_FOLDER: return TransferFolderError.TEAM_FOLDER;
-                    case NO_PERMISSION: return TransferFolderError.NO_PERMISSION;
-                    case OTHER: return TransferFolderError.OTHER;
-                }
-                throw new JsonReadException("Tag " + tag + " requires a value", parser.getTokenLocation());
-            }
-            JsonReader.expectObjectStart(parser);
-            String[] tags = readTags(parser);
-            assert tags != null && tags.length == 1;
-            String text = tags[0];
-            Tag tag = VALUES_.get(text);
-            TransferFolderError value = null;
-            if (tag != null) {
-                switch (tag) {
-                    case ACCESS_ERROR: {
-                        SharedFolderAccessError v = null;
-                        assert parser.getCurrentToken() == JsonToken.FIELD_NAME;
-                        text = parser.getText();
-                        assert tags[0].equals(text);
-                        parser.nextToken();
-                        v = SharedFolderAccessError._JSON_READER
-                            .readField(parser, "access_error", v);
-                        value = TransferFolderError.accessError(v);
-                        break;
-                    }
-                    case INVALID_DROPBOX_ID: {
-                        value = TransferFolderError.INVALID_DROPBOX_ID;
-                        break;
-                    }
-                    case NEW_OWNER_NOT_A_MEMBER: {
-                        value = TransferFolderError.NEW_OWNER_NOT_A_MEMBER;
-                        break;
-                    }
-                    case NEW_OWNER_UNMOUNTED: {
-                        value = TransferFolderError.NEW_OWNER_UNMOUNTED;
-                        break;
-                    }
-                    case NEW_OWNER_EMAIL_UNVERIFIED: {
-                        value = TransferFolderError.NEW_OWNER_EMAIL_UNVERIFIED;
-                        break;
-                    }
-                    case TEAM_FOLDER: {
-                        value = TransferFolderError.TEAM_FOLDER;
-                        break;
-                    }
-                    case NO_PERMISSION: {
-                        value = TransferFolderError.NO_PERMISSION;
-                        break;
-                    }
-                    case OTHER: {
-                        value = TransferFolderError.OTHER;
-                        break;
-                    }
-                }
-            }
-            JsonReader.expectObjectEnd(parser);
-            if (value == null) {
-                return TransferFolderError.OTHER;
-            }
-            return value;
+        public Deserializer() {
+            super(TransferFolderError.class, getTagMapping(), Tag.OTHER);
         }
 
-    };
+        @Override
+        public TransferFolderError deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+            switch (_tag) {
+                case ACCESS_ERROR: {
+                    SharedFolderAccessError value = null;
+                    expectField(_p, "access_error");
+                    value = _p.readValueAs(SharedFolderAccessError.class);
+                    _p.nextToken();
+                    return TransferFolderError.accessError(value);
+                }
+                case INVALID_DROPBOX_ID: {
+                    return TransferFolderError.INVALID_DROPBOX_ID;
+                }
+                case NEW_OWNER_NOT_A_MEMBER: {
+                    return TransferFolderError.NEW_OWNER_NOT_A_MEMBER;
+                }
+                case NEW_OWNER_UNMOUNTED: {
+                    return TransferFolderError.NEW_OWNER_UNMOUNTED;
+                }
+                case NEW_OWNER_EMAIL_UNVERIFIED: {
+                    return TransferFolderError.NEW_OWNER_EMAIL_UNVERIFIED;
+                }
+                case TEAM_FOLDER: {
+                    return TransferFolderError.TEAM_FOLDER;
+                }
+                case NO_PERMISSION: {
+                    return TransferFolderError.NO_PERMISSION;
+                }
+                case OTHER: {
+                    return TransferFolderError.OTHER;
+                }
+            }
+            // should be impossible to get here
+            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
+        }
+
+        private static Map<String, TransferFolderError.Tag> getTagMapping() {
+            Map<String, TransferFolderError.Tag> values = new HashMap<String, TransferFolderError.Tag>();
+            values.put("access_error", TransferFolderError.Tag.ACCESS_ERROR);
+            values.put("invalid_dropbox_id", TransferFolderError.Tag.INVALID_DROPBOX_ID);
+            values.put("new_owner_not_a_member", TransferFolderError.Tag.NEW_OWNER_NOT_A_MEMBER);
+            values.put("new_owner_unmounted", TransferFolderError.Tag.NEW_OWNER_UNMOUNTED);
+            values.put("new_owner_email_unverified", TransferFolderError.Tag.NEW_OWNER_EMAIL_UNVERIFIED);
+            values.put("team_folder", TransferFolderError.Tag.TEAM_FOLDER);
+            values.put("no_permission", TransferFolderError.Tag.NO_PERMISSION);
+            values.put("other", TransferFolderError.Tag.OTHER);
+            return Collections.unmodifiableMap(values);
+        }
+    }
 }

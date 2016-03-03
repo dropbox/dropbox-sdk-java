@@ -8,13 +8,14 @@ import com.dropbox.core.DbxException;
 import java.util.Date;
 
 /**
- * The request builder returned by {@link DbxFiles#uploadBuilder(String)}.
+ * The request builder returned by {@link
+ * DbxUserFilesRequests#uploadBuilder(String)}.
  *
  * <p> Use this class to set optional request parameters and complete the
  * request. </p>
  */
-public class UploadBuilder extends com.dropbox.core.v2.DbxUploadStyleBuilder<FileMetadata,UploadErrorException> {
-    private final DbxFiles files;
+public class UploadBuilder extends com.dropbox.core.v2.DbxUploadStyleBuilder<FileMetadata,UploadError,UploadErrorException> {
+    private final DbxUserFilesRequests files;
     private final CommitInfo.Builder commitInfoBuilder;
 
     /**
@@ -26,7 +27,7 @@ public class UploadBuilder extends com.dropbox.core.v2.DbxUploadStyleBuilder<Fil
      *
      * @return instsance of this builder
      */
-    UploadBuilder(DbxFiles files, CommitInfo.Builder commitInfoBuilder) {
+    UploadBuilder(DbxUserFilesRequests files, CommitInfo.Builder commitInfoBuilder) {
         if (files == null) {
             throw new NullPointerException("files");
         }

@@ -3,24 +3,41 @@
 
 package com.dropbox.core.v2.files;
 
-import com.dropbox.core.json.JsonArrayReader;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.List;
 
+@JsonSerialize(using=SearchResult.Serializer.class)
+@JsonDeserialize(using=SearchResult.Deserializer.class)
 public class SearchResult {
     // struct SearchResult
 
-    private final List<SearchMatch> matches;
-    private final boolean more;
-    private final long start;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final List<SearchMatch> matches;
+    protected final boolean more;
+    protected final long start;
 
     /**
      *
@@ -28,10 +45,10 @@ public class SearchResult {
      *     not contain a {@code null} item and not be {@code null}.
      * @param more  Used for paging. If true, indicates there is another page of
      *     results available that can be fetched by calling {@link
-     *     DbxFiles#search(String,String)} again.
+     *     DbxUserFilesRequests#search(String,String)} again.
      * @param start  Used for paging. Value to set the start argument to when
-     *     calling {@link DbxFiles#search(String,String)} to fetch the next page
-     *     of results.
+     *     calling {@link DbxUserFilesRequests#search(String,String)} to fetch
+     *     the next page of results.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -62,7 +79,7 @@ public class SearchResult {
     /**
      * Used for paging. If true, indicates there is another page of results
      * available that can be fetched by calling {@link
-     * DbxFiles#search(String,String)} again.
+     * DbxUserFilesRequests#search(String,String)} again.
      *
      * @return value for this field.
      */
@@ -72,7 +89,8 @@ public class SearchResult {
 
     /**
      * Used for paging. Value to set the start argument to when calling {@link
-     * DbxFiles#search(String,String)} to fetch the next page of results.
+     * DbxUserFilesRequests#search(String,String)} to fetch the next page of
+     * results.
      *
      * @return value for this field.
      */
@@ -82,10 +100,12 @@ public class SearchResult {
 
     @Override
     public int hashCode() {
-        // objects containing lists are not hash-able. This is used as a safeguard
-        // against adding this object to a HashSet or HashMap. Since list fields are
-        // mutable, it is not safe to compute a hashCode here.
-        return System.identityHashCode(this);
+        int hash = java.util.Arrays.hashCode(new Object [] {
+            matches,
+            more,
+            start
+        });
+        return hash;
     }
 
     @Override
@@ -108,85 +128,117 @@ public class SearchResult {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static SearchResult fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
+    static final class Serializer extends StructJsonSerializer<SearchResult> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(SearchResult.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(SearchResult.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<SearchResult> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(SearchResult value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("matches", value.matches);
+            g.writeObjectField("more", value.more);
+            g.writeObjectField("start", value.start);
+        }
     }
 
-    public static final JsonWriter<SearchResult> _JSON_WRITER = new JsonWriter<SearchResult>() {
-        public final void write(SearchResult x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            SearchResult._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
-        }
-        public final void writeFields(SearchResult x, JsonGenerator g) throws IOException {
-            g.writeFieldName("matches");
-            g.writeStartArray();
-            for (SearchMatch item: x.matches) {
-                if (item != null) {
-                    SearchMatch._JSON_WRITER.write(item, g);
-                }
-            }
-            g.writeEndArray();
-            g.writeFieldName("more");
-            g.writeBoolean(x.more);
-            g.writeFieldName("start");
-            g.writeNumber(x.start);
-        }
-    };
+    static final class Deserializer extends StructJsonDeserializer<SearchResult> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonReader<SearchResult> _JSON_READER = new JsonReader<SearchResult>() {
-        public final SearchResult read(JsonParser parser) throws IOException, JsonReadException {
-            SearchResult result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+        public Deserializer() {
+            super(SearchResult.class);
         }
 
-        public final SearchResult readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(SearchResult.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<SearchResult> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public SearchResult deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             List<SearchMatch> matches = null;
             Boolean more = null;
             Long start = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("matches".equals(fieldName)) {
-                    matches = JsonArrayReader.mk(SearchMatch._JSON_READER)
-                        .readField(parser, "matches", matches);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("matches".equals(_field)) {
+                    expectArrayStart(_p);
+                    matches = new java.util.ArrayList<SearchMatch>();
+                    while (!isArrayEnd(_p)) {
+                        SearchMatch _x = null;
+                        _x = _p.readValueAs(SearchMatch.class);
+                        _p.nextToken();
+                        matches.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
                 }
-                else if ("more".equals(fieldName)) {
-                    more = JsonReader.BooleanReader
-                        .readField(parser, "more", more);
+                else if ("more".equals(_field)) {
+                    more = _p.getValueAsBoolean();
+                    _p.nextToken();
                 }
-                else if ("start".equals(fieldName)) {
-                    start = JsonReader.UInt64Reader
-                        .readField(parser, "start", start);
+                else if ("start".equals(_field)) {
+                    start = _p.getLongValue();
+                    assertUnsigned(_p, start);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (matches == null) {
-                throw new JsonReadException("Required field \"matches\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"matches\" is missing.");
             }
             if (more == null) {
-                throw new JsonReadException("Required field \"more\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"more\" is missing.");
             }
             if (start == null) {
-                throw new JsonReadException("Required field \"start\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"start\" is missing.");
             }
+
             return new SearchResult(matches, more, start);
         }
-    };
+    }
 }

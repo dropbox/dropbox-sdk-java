@@ -6,13 +6,14 @@ package com.dropbox.core.v2.files;
 import com.dropbox.core.DbxException;
 
 /**
- * The request builder returned by {@link DbxFiles#listFolderBuilder(String)}.
+ * The request builder returned by {@link
+ * DbxUserFilesRequests#listFolderBuilder(String)}.
  *
  * <p> Use this class to set optional request parameters and complete the
  * request. </p>
  */
 public class ListFolderBuilder {
-    private final DbxFiles files;
+    private final DbxUserFilesRequests files;
     private final ListFolderArg.Builder listFolderArgBuilder;
 
     /**
@@ -24,7 +25,7 @@ public class ListFolderBuilder {
      *
      * @return instsance of this builder
      */
-    ListFolderBuilder(DbxFiles files, ListFolderArg.Builder listFolderArgBuilder) {
+    ListFolderBuilder(DbxUserFilesRequests files, ListFolderArg.Builder listFolderArgBuilder) {
         if (files == null) {
             throw new NullPointerException("files");
         }

@@ -5,60 +5,86 @@ package com.dropbox.core.v2.files;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.UnionJsonDeserializer;
+import com.dropbox.core.json.UnionJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
+@JsonSerialize(using=ListFolderLongpollError.Serializer.class)
+@JsonDeserialize(using=ListFolderLongpollError.Deserializer.class)
 public enum ListFolderLongpollError {
     // union ListFolderLongpollError
     /**
      * Indicates that the cursor has been invalidated. Call {@link
-     * DbxFiles#listFolder(String)} to obtain a new cursor.
+     * DbxUserFilesRequests#listFolder(String)} to obtain a new cursor.
      */
     RESET,
+    /**
+     * Catch-all used for unknown tag values returned by the Dropbox servers.
+     *
+     * <p> Receiving a catch-all value typically indicates this SDK version is
+     * not up to date. Consider updating your SDK version to handle the new
+     * tags. </p>
+     */
     OTHER; // *catch_all
 
-    private static final java.util.HashMap<String, ListFolderLongpollError> VALUES_;
-    static {
-        VALUES_ = new java.util.HashMap<String, ListFolderLongpollError>();
-        VALUES_.put("reset", RESET);
-        VALUES_.put("other", OTHER);
-    }
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
-    }
+    static final class Serializer extends UnionJsonSerializer<ListFolderLongpollError> {
+        private static final long serialVersionUID = 0L;
 
-    public static ListFolderLongpollError fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
+        public Serializer() {
+            super(ListFolderLongpollError.class);
+        }
 
-    public static final JsonWriter<ListFolderLongpollError> _JSON_WRITER = new JsonWriter<ListFolderLongpollError>() {
-        public void write(ListFolderLongpollError x, JsonGenerator g) throws IOException {
-            switch (x) {
+        @Override
+        public void serialize(ListFolderLongpollError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            switch (value) {
                 case RESET:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("reset");
-                    g.writeEndObject();
                     break;
                 case OTHER:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("other");
-                    g.writeEndObject();
                     break;
             }
         }
-    };
+    }
 
-    public static final JsonReader<ListFolderLongpollError> _JSON_READER = new JsonReader<ListFolderLongpollError>() {
-        public final ListFolderLongpollError read(JsonParser parser) throws IOException, JsonReadException {
-            return JsonReader.readEnum(parser, VALUES_, OTHER);
+    static final class Deserializer extends UnionJsonDeserializer<ListFolderLongpollError, ListFolderLongpollError> {
+        private static final long serialVersionUID = 0L;
+
+        public Deserializer() {
+            super(ListFolderLongpollError.class, getTagMapping(), ListFolderLongpollError.OTHER);
         }
-    };
+
+        @Override
+        public ListFolderLongpollError deserialize(ListFolderLongpollError _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+            return _tag;
+        }
+
+        private static Map<String, ListFolderLongpollError> getTagMapping() {
+            Map<String, ListFolderLongpollError> values = new HashMap<String, ListFolderLongpollError>();
+            values.put("reset", ListFolderLongpollError.RESET);
+            values.put("other", ListFolderLongpollError.OTHER);
+            return Collections.unmodifiableMap(values);
+        }
+    }
 }

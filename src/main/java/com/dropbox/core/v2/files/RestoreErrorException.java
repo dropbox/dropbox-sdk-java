@@ -10,9 +10,11 @@ import com.dropbox.core.LocalizedText;
  * Exception thrown when the server responds with a {@link RestoreError} error.
  */
 public class RestoreErrorException extends DbxApiException {
+    private static final long serialVersionUID = 0L;
 
     /**
-     * The error reported by {@link DbxFiles#restore(String,String)}.
+     * The error reported by {@link
+     * DbxUserFilesRequests#restore(String,String)}.
      */
     public final RestoreError errorValue;
 

@@ -3,20 +3,44 @@
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonArrayReader;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.UnionJsonDeserializer;
+import com.dropbox.core.json.UnionJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+/**
+ * This class is a tagged union.  Tagged unions instances are always associated
+ * to a specific tag.  This means only one of the {@code isAbc()} methods will
+ * return {@code true}. You can use {@link #tag()} to determine the tag
+ * associated with this instance.
+ */
+@JsonSerialize(using=GroupMembersAddError.Serializer.class)
+@JsonDeserialize(using=GroupMembersAddError.Deserializer.class)
 public final class GroupMembersAddError {
     // union GroupMembersAddError
+
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link GroupMembersAddError}.
@@ -41,7 +65,8 @@ public final class GroupMembersAddError {
          * These members are not part of your team. Currently, you cannot add
          * members to a group if they are not part of your team, though this may
          * change in a subsequent version. To add new members to your Dropbox
-         * Business team, use the {@link DbxTeam#membersAdd(List)} endpoint.
+         * Business team, use the {@link DbxTeamTeamRequests#membersAdd(List)}
+         * endpoint.
          */
         MEMBERS_NOT_IN_TEAM, // List<String>
         /**
@@ -54,20 +79,24 @@ public final class GroupMembersAddError {
         USER_MUST_BE_ACTIVE_TO_BE_OWNER;
     }
 
-    private static final java.util.HashMap<String, Tag> VALUES_;
-    static {
-        VALUES_ = new java.util.HashMap<String, Tag>();
-        VALUES_.put("duplicate_user", Tag.DUPLICATE_USER);
-        VALUES_.put("group_not_in_team", Tag.GROUP_NOT_IN_TEAM);
-        VALUES_.put("members_not_in_team", Tag.MEMBERS_NOT_IN_TEAM);
-        VALUES_.put("users_not_found", Tag.USERS_NOT_FOUND);
-        VALUES_.put("user_must_be_active_to_be_owner", Tag.USER_MUST_BE_ACTIVE_TO_BE_OWNER);
-    }
-
+    /**
+     * No matching group found. No groups match the specified group ID.
+     */
     public static final GroupMembersAddError GROUP_NOT_FOUND = new GroupMembersAddError(Tag.GROUP_NOT_FOUND, null, null);
     public static final GroupMembersAddError OTHER = new GroupMembersAddError(Tag.OTHER, null, null);
+    /**
+     * You cannot add duplicate users. One or more of the members you are trying
+     * to add is already a member of the group.
+     */
     public static final GroupMembersAddError DUPLICATE_USER = new GroupMembersAddError(Tag.DUPLICATE_USER, null, null);
+    /**
+     * Group is not in this team. You cannot add members to a group that is
+     * outside of your team.
+     */
     public static final GroupMembersAddError GROUP_NOT_IN_TEAM = new GroupMembersAddError(Tag.GROUP_NOT_IN_TEAM, null, null);
+    /**
+     * A suspended user cannot be added to a group as owner.
+     */
     public static final GroupMembersAddError USER_MUST_BE_ACTIVE_TO_BE_OWNER = new GroupMembersAddError(Tag.USER_MUST_BE_ACTIVE_TO_BE_OWNER, null, null);
 
     private final Tag tag;
@@ -88,9 +117,10 @@ public final class GroupMembersAddError {
      * Returns the tag for this instance.
      *
      * <p> This class is a tagged union.  Tagged unions instances are always
-     * associated to a specific tag.  Callers are recommended to use the tag
-     * value in a {@code switch} statement to determine how to properly handle
-     * this {@code GroupMembersAddError}. </p>
+     * associated to a specific tag.  This means only one of the {@code isXyz()}
+     * methods will return {@code true}. Callers are recommended to use the tag
+     * value in a {@code switch} statement to properly handle the different
+     * values for this {@code GroupMembersAddError}. </p>
      *
      * @return the tag for this instance.
      */
@@ -102,7 +132,7 @@ public final class GroupMembersAddError {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#GROUP_NOT_FOUND}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#GROUP_NOT_FOUND}, {@code false} otherwise.
      */
     public boolean isGroupNotFound() {
@@ -113,7 +143,7 @@ public final class GroupMembersAddError {
      * Returns {@code true} if this instance has the tag {@link Tag#OTHER},
      * {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link Tag#OTHER},
+     * @return {@code true} if this instance is tagged as {@link Tag#OTHER},
      *     {@code false} otherwise.
      */
     public boolean isOther() {
@@ -124,7 +154,7 @@ public final class GroupMembersAddError {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#DUPLICATE_USER}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#DUPLICATE_USER}, {@code false} otherwise.
      */
     public boolean isDuplicateUser() {
@@ -135,7 +165,7 @@ public final class GroupMembersAddError {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#GROUP_NOT_IN_TEAM}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#GROUP_NOT_IN_TEAM}, {@code false} otherwise.
      */
     public boolean isGroupNotInTeam() {
@@ -146,7 +176,7 @@ public final class GroupMembersAddError {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#MEMBERS_NOT_IN_TEAM}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#MEMBERS_NOT_IN_TEAM}, {@code false} otherwise.
      */
     public boolean isMembersNotInTeam() {
@@ -160,10 +190,10 @@ public final class GroupMembersAddError {
      * <p> These members are not part of your team. Currently, you cannot add
      * members to a group if they are not part of your team, though this may
      * change in a subsequent version. To add new members to your Dropbox
-     * Business team, use the {@link DbxTeam#membersAdd(List)} endpoint. </p>
+     * Business team, use the {@link DbxTeamTeamRequests#membersAdd(List)}
+     * endpoint. </p>
      *
-     * @param value  {@link GroupMembersAddError#membersNotInTeam} value to
-     *     assign to this instance.
+     * @param value  value to assign to this instance.
      *
      * @return Instance of {@code GroupMembersAddError} with its tag set to
      *     {@link Tag#MEMBERS_NOT_IN_TEAM}.
@@ -187,7 +217,8 @@ public final class GroupMembersAddError {
      * These members are not part of your team. Currently, you cannot add
      * members to a group if they are not part of your team, though this may
      * change in a subsequent version. To add new members to your Dropbox
-     * Business team, use the {@link DbxTeam#membersAdd(List)} endpoint.
+     * Business team, use the {@link DbxTeamTeamRequests#membersAdd(List)}
+     * endpoint.
      *
      * <p> This instance must be tagged as {@link Tag#MEMBERS_NOT_IN_TEAM}. </p>
      *
@@ -209,7 +240,7 @@ public final class GroupMembersAddError {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#USERS_NOT_FOUND}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#USERS_NOT_FOUND}, {@code false} otherwise.
      */
     public boolean isUsersNotFound() {
@@ -222,8 +253,7 @@ public final class GroupMembersAddError {
      *
      * <p> These users were not found in Dropbox. </p>
      *
-     * @param value  {@link GroupMembersAddError#usersNotFound} value to assign
-     *     to this instance.
+     * @param value  value to assign to this instance.
      *
      * @return Instance of {@code GroupMembersAddError} with its tag set to
      *     {@link Tag#USERS_NOT_FOUND}.
@@ -265,7 +295,7 @@ public final class GroupMembersAddError {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#USER_MUST_BE_ACTIVE_TO_BE_OWNER}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#USER_MUST_BE_ACTIVE_TO_BE_OWNER}, {@code false} otherwise.
      */
     public boolean isUserMustBeActiveToBeOwner() {
@@ -274,10 +304,13 @@ public final class GroupMembersAddError {
 
     @Override
     public int hashCode() {
-        // objects containing lists are not hash-able. This is used as a safeguard
-        // against adding this object to a HashSet or HashMap. Since list fields are
-        // mutable, it is not safe to compute a hashCode here.
-        return System.identityHashCode(this);
+        int hash = java.util.Arrays.hashCode(new Object [] {
+            tag,
+            membersNotInTeamValue,
+            usersNotFoundValue
+        });
+        hash = (31 * super.hashCode()) + hash;
+        return hash;
     }
 
     @Override
@@ -316,163 +349,139 @@ public final class GroupMembersAddError {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static GroupMembersAddError fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
+    static final class Serializer extends UnionJsonSerializer<GroupMembersAddError> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonWriter<GroupMembersAddError> _JSON_WRITER = new JsonWriter<GroupMembersAddError>() {
-        public final void write(GroupMembersAddError x, JsonGenerator g) throws IOException {
-            switch (x.tag) {
+        public Serializer() {
+            super(GroupMembersAddError.class);
+        }
+
+        @Override
+        public void serialize(GroupMembersAddError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            switch (value.tag) {
                 case GROUP_NOT_FOUND:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("group_not_found");
-                    g.writeEndObject();
                     break;
                 case OTHER:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("other");
-                    g.writeEndObject();
                     break;
                 case DUPLICATE_USER:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("duplicate_user");
-                    g.writeEndObject();
                     break;
                 case GROUP_NOT_IN_TEAM:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("group_not_in_team");
-                    g.writeEndObject();
                     break;
                 case MEMBERS_NOT_IN_TEAM:
                     g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("members_not_in_team");
-                    g.writeFieldName("members_not_in_team");
-                    g.writeStartArray();
-                    for (String item: x.getMembersNotInTeamValue()) {
-                        if (item != null) {
-                            g.writeString(item);
-                        }
-                    }
-                    g.writeEndArray();
+                    g.writeStringField(".tag", "members_not_in_team");
+                    g.writeObjectField("members_not_in_team", value.membersNotInTeamValue);
                     g.writeEndObject();
                     break;
                 case USERS_NOT_FOUND:
                     g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("users_not_found");
-                    g.writeFieldName("users_not_found");
-                    g.writeStartArray();
-                    for (String item: x.getUsersNotFoundValue()) {
-                        if (item != null) {
-                            g.writeString(item);
-                        }
-                    }
-                    g.writeEndArray();
+                    g.writeStringField(".tag", "users_not_found");
+                    g.writeObjectField("users_not_found", value.usersNotFoundValue);
                     g.writeEndObject();
                     break;
                 case USER_MUST_BE_ACTIVE_TO_BE_OWNER:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("user_must_be_active_to_be_owner");
-                    g.writeEndObject();
                     break;
             }
         }
-    };
+    }
 
-    public static final JsonReader<GroupMembersAddError> _JSON_READER = new JsonReader<GroupMembersAddError>() {
+    static final class Deserializer extends UnionJsonDeserializer<GroupMembersAddError, Tag> {
+        private static final long serialVersionUID = 0L;
 
-        public final GroupMembersAddError read(JsonParser parser) throws IOException, JsonReadException {
-            if (parser.getCurrentToken() == JsonToken.VALUE_STRING) {
-                String text = parser.getText();
-                parser.nextToken();
-                Tag tag = VALUES_.get(text);
-                if (tag == null) {
-                    throw new JsonReadException("Unanticipated tag " + text + " without catch-all", parser.getTokenLocation());
-                }
-                switch (tag) {
-                    case GROUP_NOT_FOUND: return GroupMembersAddError.GROUP_NOT_FOUND;
-                    case OTHER: return GroupMembersAddError.OTHER;
-                    case DUPLICATE_USER: return GroupMembersAddError.DUPLICATE_USER;
-                    case GROUP_NOT_IN_TEAM: return GroupMembersAddError.GROUP_NOT_IN_TEAM;
-                    case USER_MUST_BE_ACTIVE_TO_BE_OWNER: return GroupMembersAddError.USER_MUST_BE_ACTIVE_TO_BE_OWNER;
-                }
-                throw new JsonReadException("Tag " + tag + " requires a value", parser.getTokenLocation());
-            }
-            JsonReader.expectObjectStart(parser);
-            String[] tags = readTags(parser);
-            assert tags != null && tags.length == 1;
-            String text = tags[0];
-            Tag tag = VALUES_.get(text);
-            GroupMembersAddError value = null;
-            if (tag != null) {
-                switch (tag) {
-                    case GROUP_NOT_FOUND: {
-                        value = GroupMembersAddError.GROUP_NOT_FOUND;
-                        break;
-                    }
-                    case OTHER: {
-                        value = GroupMembersAddError.OTHER;
-                        break;
-                    }
-                    case DUPLICATE_USER: {
-                        value = GroupMembersAddError.DUPLICATE_USER;
-                        break;
-                    }
-                    case GROUP_NOT_IN_TEAM: {
-                        value = GroupMembersAddError.GROUP_NOT_IN_TEAM;
-                        break;
-                    }
-                    case MEMBERS_NOT_IN_TEAM: {
-                        List<String> v = null;
-                        assert parser.getCurrentToken() == JsonToken.FIELD_NAME;
-                        text = parser.getText();
-                        assert tags[0].equals(text);
-                        parser.nextToken();
-                        v = JsonArrayReader.mk(JsonReader.StringReader)
-                            .readField(parser, "members_not_in_team", v);
-                        value = GroupMembersAddError.membersNotInTeam(v);
-                        break;
-                    }
-                    case USERS_NOT_FOUND: {
-                        List<String> v = null;
-                        assert parser.getCurrentToken() == JsonToken.FIELD_NAME;
-                        text = parser.getText();
-                        assert tags[0].equals(text);
-                        parser.nextToken();
-                        v = JsonArrayReader.mk(JsonReader.StringReader)
-                            .readField(parser, "users_not_found", v);
-                        value = GroupMembersAddError.usersNotFound(v);
-                        break;
-                    }
-                    case USER_MUST_BE_ACTIVE_TO_BE_OWNER: {
-                        value = GroupMembersAddError.USER_MUST_BE_ACTIVE_TO_BE_OWNER;
-                        break;
-                    }
-                }
-            }
-            if (value == null) {
-                throw new JsonReadException("Unanticipated tag " + text, parser.getTokenLocation());
-            }
-            JsonReader.expectObjectEnd(parser);
-            return value;
+        public Deserializer() {
+            super(GroupMembersAddError.class, getTagMapping(), null);
         }
 
-    };
+        @Override
+        public GroupMembersAddError deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+            switch (_tag) {
+                case GROUP_NOT_FOUND: {
+                    return GroupMembersAddError.GROUP_NOT_FOUND;
+                }
+                case OTHER: {
+                    return GroupMembersAddError.OTHER;
+                }
+                case DUPLICATE_USER: {
+                    return GroupMembersAddError.DUPLICATE_USER;
+                }
+                case GROUP_NOT_IN_TEAM: {
+                    return GroupMembersAddError.GROUP_NOT_IN_TEAM;
+                }
+                case MEMBERS_NOT_IN_TEAM: {
+                    List<String> value = null;
+                    expectField(_p, "members_not_in_team");
+                    expectArrayStart(_p);
+                    value = new java.util.ArrayList<String>();
+                    while (!isArrayEnd(_p)) {
+                        String _x = null;
+                        _x = getStringValue(_p);
+                        _p.nextToken();
+                        value.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
+                    return GroupMembersAddError.membersNotInTeam(value);
+                }
+                case USERS_NOT_FOUND: {
+                    List<String> value = null;
+                    expectField(_p, "users_not_found");
+                    expectArrayStart(_p);
+                    value = new java.util.ArrayList<String>();
+                    while (!isArrayEnd(_p)) {
+                        String _x = null;
+                        _x = getStringValue(_p);
+                        _p.nextToken();
+                        value.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
+                    return GroupMembersAddError.usersNotFound(value);
+                }
+                case USER_MUST_BE_ACTIVE_TO_BE_OWNER: {
+                    return GroupMembersAddError.USER_MUST_BE_ACTIVE_TO_BE_OWNER;
+                }
+            }
+            // should be impossible to get here
+            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
+        }
+
+        private static Map<String, GroupMembersAddError.Tag> getTagMapping() {
+            Map<String, GroupMembersAddError.Tag> values = new HashMap<String, GroupMembersAddError.Tag>();
+            values.put("duplicate_user", GroupMembersAddError.Tag.DUPLICATE_USER);
+            values.put("group_not_in_team", GroupMembersAddError.Tag.GROUP_NOT_IN_TEAM);
+            values.put("members_not_in_team", GroupMembersAddError.Tag.MEMBERS_NOT_IN_TEAM);
+            values.put("users_not_found", GroupMembersAddError.Tag.USERS_NOT_FOUND);
+            values.put("user_must_be_active_to_be_owner", GroupMembersAddError.Tag.USER_MUST_BE_ACTIVE_TO_BE_OWNER);
+            return Collections.unmodifiableMap(values);
+        }
+    }
 }

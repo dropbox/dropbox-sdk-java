@@ -3,26 +3,43 @@
 
 package com.dropbox.core.v2.files;
 
-import com.dropbox.core.json.JsonDateReader;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.Date;
 
+@JsonSerialize(using=CommitInfo.Serializer.class)
+@JsonDeserialize(using=CommitInfo.Deserializer.class)
 public class CommitInfo {
     // struct CommitInfo
 
-    private final String path;
-    private final WriteMode mode;
-    private final boolean autorename;
-    private final Date clientModified;
-    private final boolean mute;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final String path;
+    protected final WriteMode mode;
+    protected final boolean autorename;
+    protected final Date clientModified;
+    protected final boolean mute;
 
     /**
      * Use {@link newBuilder} to create instances of this class without
@@ -304,89 +321,116 @@ public class CommitInfo {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
-    }
-
-    public static CommitInfo fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
-
-    public static final JsonWriter<CommitInfo> _JSON_WRITER = new JsonWriter<CommitInfo>() {
-        public final void write(CommitInfo x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            CommitInfo._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
         }
-        public final void writeFields(CommitInfo x, JsonGenerator g) throws IOException {
-            g.writeFieldName("path");
-            g.writeString(x.path);
-            g.writeFieldName("mode");
-            WriteMode._JSON_WRITER.write(x.mode, g);
-            g.writeFieldName("autorename");
-            g.writeBoolean(x.autorename);
-            if (x.clientModified != null) {
-                g.writeFieldName("client_modified");
-                writeDateIso(x.clientModified, g);
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
+    }
+
+    static final class Serializer extends StructJsonSerializer<CommitInfo> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(CommitInfo.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(CommitInfo.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<CommitInfo> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(CommitInfo value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("path", value.path);
+            g.writeObjectField("mode", value.mode);
+            g.writeObjectField("autorename", value.autorename);
+            if (value.clientModified != null) {
+                g.writeObjectField("client_modified", value.clientModified);
             }
-            g.writeFieldName("mute");
-            g.writeBoolean(x.mute);
+            g.writeObjectField("mute", value.mute);
         }
-    };
+    }
 
-    public static final JsonReader<CommitInfo> _JSON_READER = new JsonReader<CommitInfo>() {
-        public final CommitInfo read(JsonParser parser) throws IOException, JsonReadException {
-            CommitInfo result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+    static final class Deserializer extends StructJsonDeserializer<CommitInfo> {
+        private static final long serialVersionUID = 0L;
+
+        public Deserializer() {
+            super(CommitInfo.class);
         }
 
-        public final CommitInfo readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(CommitInfo.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<CommitInfo> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public CommitInfo deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             String path = null;
             WriteMode mode = null;
             Boolean autorename = null;
             Date clientModified = null;
             Boolean mute = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("path".equals(fieldName)) {
-                    path = JsonReader.StringReader
-                        .readField(parser, "path", path);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("path".equals(_field)) {
+                    path = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("mode".equals(fieldName)) {
-                    mode = WriteMode._JSON_READER
-                        .readField(parser, "mode", mode);
+                else if ("mode".equals(_field)) {
+                    mode = _p.readValueAs(WriteMode.class);
+                    _p.nextToken();
                 }
-                else if ("autorename".equals(fieldName)) {
-                    autorename = JsonReader.BooleanReader
-                        .readField(parser, "autorename", autorename);
+                else if ("autorename".equals(_field)) {
+                    autorename = _p.getValueAsBoolean();
+                    _p.nextToken();
                 }
-                else if ("client_modified".equals(fieldName)) {
-                    clientModified = JsonDateReader.DropboxV2
-                        .readField(parser, "client_modified", clientModified);
+                else if ("client_modified".equals(_field)) {
+                    clientModified = _ctx.parseDate(getStringValue(_p));
+                    _p.nextToken();
                 }
-                else if ("mute".equals(fieldName)) {
-                    mute = JsonReader.BooleanReader
-                        .readField(parser, "mute", mute);
+                else if ("mute".equals(_field)) {
+                    mute = _p.getValueAsBoolean();
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (path == null) {
-                throw new JsonReadException("Required field \"path\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"path\" is missing.");
             }
+
             return new CommitInfo(path, mode, autorename, clientModified, mute);
         }
-    };
+    }
 }

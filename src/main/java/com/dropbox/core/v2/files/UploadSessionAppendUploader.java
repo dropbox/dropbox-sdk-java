@@ -6,14 +6,16 @@ package com.dropbox.core.v2.files;
 import com.dropbox.core.DbxRequestUtil;
 import com.dropbox.core.DbxUploader;
 import com.dropbox.core.http.HttpRequestor;
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
+import com.dropbox.core.json.JsonUtil;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JavaType;
 
 import java.io.IOException;
 
 /**
  * The {@link DbxUploader} returned by {@link
- * DbxFiles#uploadSessionAppend(String,long)}.
+ * DbxUserFilesRequests#uploadSessionAppend(String,long)}.
  *
  * <p> Use this class to upload data to the server and complete the request.
  * </p>
@@ -22,7 +24,9 @@ import java.io.IOException;
  * and allow network connection reuse. Always call {@link #close} when complete
  * (see {@link DbxUploader} for examples). </p>
  */
-public class UploadSessionAppendUploader extends DbxUploader<Void, UploadSessionLookupErrorException> {
+public class UploadSessionAppendUploader extends DbxUploader<Void, UploadSessionLookupError, UploadSessionLookupErrorException> {
+    private static final JavaType _RESULT_TYPE = JsonUtil.createType(new TypeReference<Void>() {});
+    private static final JavaType _ERROR_TYPE = JsonUtil.createType(new TypeReference<UploadSessionLookupError>() {});
 
     /**
      * Creates a new instance of this uploader.
@@ -32,18 +36,9 @@ public class UploadSessionAppendUploader extends DbxUploader<Void, UploadSession
      * @throws NullPointerException  if {@code httpUploader} is {@code null}
      */
     public UploadSessionAppendUploader(HttpRequestor.Uploader httpUploader) {
-        super(httpUploader);
+        super(httpUploader, _RESULT_TYPE, _ERROR_TYPE);
     }
-
-    @Override
-    protected Void parseResponse(HttpRequestor.Response response) throws JsonReadException, IOException {
-        JsonReader.VoidReader.readFully(response.getBody());
-        return null;
-    }
-
-    @Override
-    protected UploadSessionLookupErrorException parseError(HttpRequestor.Response response) throws JsonReadException, IOException {
-        DbxRequestUtil.ErrorWrapper wrapper = DbxRequestUtil.ErrorWrapper.fromResponse(UploadSessionLookupError._JSON_READER, response);
-        return new UploadSessionLookupErrorException(wrapper.getRequestId(), wrapper.getUserMessage(), (UploadSessionLookupError) wrapper.getErrorValue());
+    protected UploadSessionLookupErrorException newException(DbxRequestUtil.ErrorWrapper error) {
+        return new UploadSessionLookupErrorException(error.getRequestId(), error.getUserMessage(), (UploadSessionLookupError) error.getErrorValue());
     }
 }

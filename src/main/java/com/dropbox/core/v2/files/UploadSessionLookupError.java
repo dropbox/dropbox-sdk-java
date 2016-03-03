@@ -5,16 +5,45 @@ package com.dropbox.core.v2.files;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.UnionJsonDeserializer;
+import com.dropbox.core.json.UnionJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
+/**
+ * This class is an open tagged union.  Tagged unions instances are always
+ * associated to a specific tag.  This means only one of the {@code isAbc()}
+ * methods will return {@code true}. You can use {@link #tag()} to determine the
+ * tag associated with this instance.
+ *
+ * <p> Open unions may be extended in the future with additional tags. If a new
+ * tag is introduced that this SDK does not recognized, the {@link #OTHER} value
+ * will be used. </p>
+ */
+@JsonSerialize(using=UploadSessionLookupError.Serializer.class)
+@JsonDeserialize(using=UploadSessionLookupError.Deserializer.class)
 public final class UploadSessionLookupError {
     // union UploadSessionLookupError
+
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link UploadSessionLookupError}.
@@ -42,17 +71,18 @@ public final class UploadSessionLookupError {
         OTHER; // *catch_all
     }
 
-    private static final java.util.HashMap<String, Tag> VALUES_;
-    static {
-        VALUES_ = new java.util.HashMap<String, Tag>();
-        VALUES_.put("not_found", Tag.NOT_FOUND);
-        VALUES_.put("incorrect_offset", Tag.INCORRECT_OFFSET);
-        VALUES_.put("closed", Tag.CLOSED);
-        VALUES_.put("other", Tag.OTHER);
-    }
-
+    /**
+     * The upload session id was not found.
+     */
     public static final UploadSessionLookupError NOT_FOUND = new UploadSessionLookupError(Tag.NOT_FOUND, null);
+    /**
+     * You are attempting to append data to an upload session that has alread
+     * been closed (i.e. committed).
+     */
     public static final UploadSessionLookupError CLOSED = new UploadSessionLookupError(Tag.CLOSED, null);
+    /**
+     * An unspecified error.
+     */
     public static final UploadSessionLookupError OTHER = new UploadSessionLookupError(Tag.OTHER, null);
 
     private final Tag tag;
@@ -71,9 +101,13 @@ public final class UploadSessionLookupError {
      * Returns the tag for this instance.
      *
      * <p> This class is a tagged union.  Tagged unions instances are always
-     * associated to a specific tag.  Callers are recommended to use the tag
-     * value in a {@code switch} statement to determine how to properly handle
-     * this {@code UploadSessionLookupError}. </p>
+     * associated to a specific tag.  This means only one of the {@code isXyz()}
+     * methods will return {@code true}. Callers are recommended to use the tag
+     * value in a {@code switch} statement to properly handle the different
+     * values for this {@code UploadSessionLookupError}. </p>
+     *
+     * <p> If a tag returned by the server is unrecognized by this SDK, the
+     * {@link Tag#OTHER} value will be used. </p>
      *
      * @return the tag for this instance.
      */
@@ -85,8 +119,8 @@ public final class UploadSessionLookupError {
      * Returns {@code true} if this instance has the tag {@link Tag#NOT_FOUND},
      * {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
-     *     Tag#NOT_FOUND}, {@code false} otherwise.
+     * @return {@code true} if this instance is tagged as {@link Tag#NOT_FOUND},
+     *     {@code false} otherwise.
      */
     public boolean isNotFound() {
         return this.tag == Tag.NOT_FOUND;
@@ -96,7 +130,7 @@ public final class UploadSessionLookupError {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#INCORRECT_OFFSET}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#INCORRECT_OFFSET}, {@code false} otherwise.
      */
     public boolean isIncorrectOffset() {
@@ -112,8 +146,7 @@ public final class UploadSessionLookupError {
      * processed successfully but the client did not receive the response, e.g.
      * due to a network error.) </p>
      *
-     * @param value  {@link UploadSessionLookupError#incorrectOffset} value to
-     *     assign to this instance.
+     * @param value  value to assign to this instance.
      *
      * @return Instance of {@code UploadSessionLookupError} with its tag set to
      *     {@link Tag#INCORRECT_OFFSET}.
@@ -153,7 +186,7 @@ public final class UploadSessionLookupError {
      * Returns {@code true} if this instance has the tag {@link Tag#CLOSED},
      * {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link Tag#CLOSED},
+     * @return {@code true} if this instance is tagged as {@link Tag#CLOSED},
      *     {@code false} otherwise.
      */
     public boolean isClosed() {
@@ -164,7 +197,7 @@ public final class UploadSessionLookupError {
      * Returns {@code true} if this instance has the tag {@link Tag#OTHER},
      * {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link Tag#OTHER},
+     * @return {@code true} if this instance is tagged as {@link Tag#OTHER},
      *     {@code false} otherwise.
      */
     public boolean isOther() {
@@ -210,105 +243,95 @@ public final class UploadSessionLookupError {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static UploadSessionLookupError fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
+    static final class Serializer extends UnionJsonSerializer<UploadSessionLookupError> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonWriter<UploadSessionLookupError> _JSON_WRITER = new JsonWriter<UploadSessionLookupError>() {
-        public final void write(UploadSessionLookupError x, JsonGenerator g) throws IOException {
-            switch (x.tag) {
+        public Serializer() {
+            super(UploadSessionLookupError.class, UploadSessionOffsetError.class);
+        }
+
+        @Override
+        public void serialize(UploadSessionLookupError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            switch (value.tag) {
                 case NOT_FOUND:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("not_found");
-                    g.writeEndObject();
                     break;
                 case INCORRECT_OFFSET:
                     g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("incorrect_offset");
-                    g.writeFieldName("incorrect_offset");
-                    UploadSessionOffsetError._JSON_WRITER.write(x.getIncorrectOffsetValue(), g);
+                    g.writeStringField(".tag", "incorrect_offset");
+                    getUnwrappingSerializer(UploadSessionOffsetError.class).serialize(value.incorrectOffsetValue, g, provider);
                     g.writeEndObject();
                     break;
                 case CLOSED:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("closed");
-                    g.writeEndObject();
                     break;
                 case OTHER:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("other");
-                    g.writeEndObject();
                     break;
             }
         }
-    };
+    }
 
-    public static final JsonReader<UploadSessionLookupError> _JSON_READER = new JsonReader<UploadSessionLookupError>() {
+    static final class Deserializer extends UnionJsonDeserializer<UploadSessionLookupError, Tag> {
+        private static final long serialVersionUID = 0L;
 
-        public final UploadSessionLookupError read(JsonParser parser) throws IOException, JsonReadException {
-            if (parser.getCurrentToken() == JsonToken.VALUE_STRING) {
-                String text = parser.getText();
-                parser.nextToken();
-                Tag tag = VALUES_.get(text);
-                if (tag == null) {
-                    return UploadSessionLookupError.OTHER;
-                }
-                switch (tag) {
-                    case NOT_FOUND: return UploadSessionLookupError.NOT_FOUND;
-                    case CLOSED: return UploadSessionLookupError.CLOSED;
-                    case OTHER: return UploadSessionLookupError.OTHER;
-                }
-                throw new JsonReadException("Tag " + tag + " requires a value", parser.getTokenLocation());
-            }
-            JsonReader.expectObjectStart(parser);
-            String[] tags = readTags(parser);
-            assert tags != null && tags.length == 1;
-            String text = tags[0];
-            Tag tag = VALUES_.get(text);
-            UploadSessionLookupError value = null;
-            if (tag != null) {
-                switch (tag) {
-                    case NOT_FOUND: {
-                        value = UploadSessionLookupError.NOT_FOUND;
-                        break;
-                    }
-                    case INCORRECT_OFFSET: {
-                        UploadSessionOffsetError v = null;
-                        v = UploadSessionOffsetError._JSON_READER.readFields(parser);
-                        value = UploadSessionLookupError.incorrectOffset(v);
-                        break;
-                    }
-                    case CLOSED: {
-                        value = UploadSessionLookupError.CLOSED;
-                        break;
-                    }
-                    case OTHER: {
-                        value = UploadSessionLookupError.OTHER;
-                        break;
-                    }
-                }
-            }
-            JsonReader.expectObjectEnd(parser);
-            if (value == null) {
-                return UploadSessionLookupError.OTHER;
-            }
-            return value;
+        public Deserializer() {
+            super(UploadSessionLookupError.class, getTagMapping(), Tag.OTHER, UploadSessionOffsetError.class);
         }
 
-    };
+        @Override
+        public UploadSessionLookupError deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+            switch (_tag) {
+                case NOT_FOUND: {
+                    return UploadSessionLookupError.NOT_FOUND;
+                }
+                case INCORRECT_OFFSET: {
+                    UploadSessionOffsetError value = null;
+                    value = readCollapsedStructValue(UploadSessionOffsetError.class, _p, _ctx);
+                    return UploadSessionLookupError.incorrectOffset(value);
+                }
+                case CLOSED: {
+                    return UploadSessionLookupError.CLOSED;
+                }
+                case OTHER: {
+                    return UploadSessionLookupError.OTHER;
+                }
+            }
+            // should be impossible to get here
+            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
+        }
+
+        private static Map<String, UploadSessionLookupError.Tag> getTagMapping() {
+            Map<String, UploadSessionLookupError.Tag> values = new HashMap<String, UploadSessionLookupError.Tag>();
+            values.put("not_found", UploadSessionLookupError.Tag.NOT_FOUND);
+            values.put("incorrect_offset", UploadSessionLookupError.Tag.INCORRECT_OFFSET);
+            values.put("closed", UploadSessionLookupError.Tag.CLOSED);
+            values.put("other", UploadSessionLookupError.Tag.OTHER);
+            return Collections.unmodifiableMap(values);
+        }
+    }
 }

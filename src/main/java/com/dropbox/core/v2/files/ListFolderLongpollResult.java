@@ -5,26 +5,46 @@ package com.dropbox.core.v2.files;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
+@JsonSerialize(using=ListFolderLongpollResult.Serializer.class)
+@JsonDeserialize(using=ListFolderLongpollResult.Deserializer.class)
 public class ListFolderLongpollResult {
     // struct ListFolderLongpollResult
 
-    private final boolean changes;
-    private final Long backoff;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final boolean changes;
+    protected final Long backoff;
 
     /**
      *
      * @param changes  Indicates whether new changes are available. If true,
-     *     call {@link DbxFiles#listFolder(String)} to retrieve the changes.
+     *     call {@link DbxUserFilesRequests#listFolder(String)} to retrieve the
+     *     changes.
      * @param backoff  If present, backoff for at least this many seconds before
-     *     calling {@link DbxFiles#listFolderLongpoll(String)} again.
+     *     calling {@link DbxUserFilesRequests#listFolderLongpoll(String)}
+     *     again.
      */
     public ListFolderLongpollResult(boolean changes, Long backoff) {
         this.changes = changes;
@@ -35,7 +55,8 @@ public class ListFolderLongpollResult {
      * The default values for unset fields will be used.
      *
      * @param changes  Indicates whether new changes are available. If true,
-     *     call {@link DbxFiles#listFolder(String)} to retrieve the changes.
+     *     call {@link DbxUserFilesRequests#listFolder(String)} to retrieve the
+     *     changes.
      */
     public ListFolderLongpollResult(boolean changes) {
         this(changes, null);
@@ -43,7 +64,7 @@ public class ListFolderLongpollResult {
 
     /**
      * Indicates whether new changes are available. If true, call {@link
-     * DbxFiles#listFolder(String)} to retrieve the changes.
+     * DbxUserFilesRequests#listFolder(String)} to retrieve the changes.
      *
      * @return value for this field.
      */
@@ -53,7 +74,7 @@ public class ListFolderLongpollResult {
 
     /**
      * If present, backoff for at least this many seconds before calling {@link
-     * DbxFiles#listFolderLongpoll(String)} again.
+     * DbxUserFilesRequests#listFolderLongpoll(String)} again.
      *
      * @return value for this field, or {@code null} if not present.
      */
@@ -89,68 +110,99 @@ public class ListFolderLongpollResult {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
-    }
-
-    public static ListFolderLongpollResult fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
-
-    public static final JsonWriter<ListFolderLongpollResult> _JSON_WRITER = new JsonWriter<ListFolderLongpollResult>() {
-        public final void write(ListFolderLongpollResult x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            ListFolderLongpollResult._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
         }
-        public final void writeFields(ListFolderLongpollResult x, JsonGenerator g) throws IOException {
-            g.writeFieldName("changes");
-            g.writeBoolean(x.changes);
-            if (x.backoff != null) {
-                g.writeFieldName("backoff");
-                g.writeNumber(x.backoff);
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
+    }
+
+    static final class Serializer extends StructJsonSerializer<ListFolderLongpollResult> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(ListFolderLongpollResult.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(ListFolderLongpollResult.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<ListFolderLongpollResult> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(ListFolderLongpollResult value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("changes", value.changes);
+            if (value.backoff != null) {
+                g.writeObjectField("backoff", value.backoff);
             }
         }
-    };
+    }
 
-    public static final JsonReader<ListFolderLongpollResult> _JSON_READER = new JsonReader<ListFolderLongpollResult>() {
-        public final ListFolderLongpollResult read(JsonParser parser) throws IOException, JsonReadException {
-            ListFolderLongpollResult result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+    static final class Deserializer extends StructJsonDeserializer<ListFolderLongpollResult> {
+        private static final long serialVersionUID = 0L;
+
+        public Deserializer() {
+            super(ListFolderLongpollResult.class);
         }
 
-        public final ListFolderLongpollResult readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(ListFolderLongpollResult.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<ListFolderLongpollResult> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public ListFolderLongpollResult deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             Boolean changes = null;
             Long backoff = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("changes".equals(fieldName)) {
-                    changes = JsonReader.BooleanReader
-                        .readField(parser, "changes", changes);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("changes".equals(_field)) {
+                    changes = _p.getValueAsBoolean();
+                    _p.nextToken();
                 }
-                else if ("backoff".equals(fieldName)) {
-                    backoff = JsonReader.UInt64Reader
-                        .readField(parser, "backoff", backoff);
+                else if ("backoff".equals(_field)) {
+                    backoff = _p.getLongValue();
+                    assertUnsigned(_p, backoff);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (changes == null) {
-                throw new JsonReadException("Required field \"changes\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"changes\" is missing.");
             }
+
             return new ListFolderLongpollResult(changes, backoff);
         }
-    };
+    }
 }

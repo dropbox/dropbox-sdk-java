@@ -19,10 +19,10 @@ public class DbxSdkVersion
 
     private static final String ResourceName = "/sdk-version.txt";
 
-    private static final class LoadException extends Exception
-    {
-        public LoadException(/*@Nullable*/String message)
-        {
+    private static final class LoadException extends Exception {
+        private static final long serialVersionUID = 0L;
+
+        public LoadException(/*@Nullable*/String message) {
             super(message);
         }
     }

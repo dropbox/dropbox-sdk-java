@@ -5,16 +5,41 @@ package com.dropbox.core.v2.sharing;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.UnionJsonDeserializer;
+import com.dropbox.core.json.UnionJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
+/**
+ * This class is a tagged union.  Tagged unions instances are always associated
+ * to a specific tag.  This means only one of the {@code isAbc()} methods will
+ * return {@code true}. You can use {@link #tag()} to determine the tag
+ * associated with this instance.
+ */
+@JsonSerialize(using=ShareFolderLaunch.Serializer.class)
+@JsonDeserialize(using=ShareFolderLaunch.Deserializer.class)
 public final class ShareFolderLaunch {
     // union ShareFolderLaunch
+
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link ShareFolderLaunch}.
@@ -27,12 +52,6 @@ public final class ShareFolderLaunch {
          */
         ASYNC_JOB_ID, // String
         COMPLETE; // SharedFolderMetadata
-    }
-
-    private static final java.util.HashMap<String, Tag> VALUES_;
-    static {
-        VALUES_ = new java.util.HashMap<String, Tag>();
-        VALUES_.put("complete", Tag.COMPLETE);
     }
 
     private final Tag tag;
@@ -53,9 +72,10 @@ public final class ShareFolderLaunch {
      * Returns the tag for this instance.
      *
      * <p> This class is a tagged union.  Tagged unions instances are always
-     * associated to a specific tag.  Callers are recommended to use the tag
-     * value in a {@code switch} statement to determine how to properly handle
-     * this {@code ShareFolderLaunch}. </p>
+     * associated to a specific tag.  This means only one of the {@code isXyz()}
+     * methods will return {@code true}. Callers are recommended to use the tag
+     * value in a {@code switch} statement to properly handle the different
+     * values for this {@code ShareFolderLaunch}. </p>
      *
      * @return the tag for this instance.
      */
@@ -67,7 +87,7 @@ public final class ShareFolderLaunch {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#ASYNC_JOB_ID}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#ASYNC_JOB_ID}, {@code false} otherwise.
      */
     public boolean isAsyncJobId() {
@@ -82,8 +102,7 @@ public final class ShareFolderLaunch {
      * string is an id that can be used to obtain the status of the asynchronous
      * job. </p>
      *
-     * @param value  {@link ShareFolderLaunch#asyncJobId} value to assign to
-     *     this instance.
+     * @param value  value to assign to this instance.
      *
      * @return Instance of {@code ShareFolderLaunch} with its tag set to {@link
      *     Tag#ASYNC_JOB_ID}.
@@ -123,8 +142,8 @@ public final class ShareFolderLaunch {
      * Returns {@code true} if this instance has the tag {@link Tag#COMPLETE},
      * {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
-     *     Tag#COMPLETE}, {@code false} otherwise.
+     * @return {@code true} if this instance is tagged as {@link Tag#COMPLETE},
+     *     {@code false} otherwise.
      */
     public boolean isComplete() {
         return this.tag == Tag.COMPLETE;
@@ -134,8 +153,7 @@ public final class ShareFolderLaunch {
      * Returns an instance of {@code ShareFolderLaunch} that has its tag set to
      * {@link Tag#COMPLETE}.
      *
-     * @param value  {@link ShareFolderLaunch#complete} value to assign to this
-     *     instance.
+     * @param value  value to assign to this instance.
      *
      * @return Instance of {@code ShareFolderLaunch} with its tag set to {@link
      *     Tag#COMPLETE}.
@@ -201,91 +219,87 @@ public final class ShareFolderLaunch {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static ShareFolderLaunch fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
+    static final class Serializer extends UnionJsonSerializer<ShareFolderLaunch> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonWriter<ShareFolderLaunch> _JSON_WRITER = new JsonWriter<ShareFolderLaunch>() {
-        public final void write(ShareFolderLaunch x, JsonGenerator g) throws IOException {
-            switch (x.tag) {
+        public Serializer() {
+            super(ShareFolderLaunch.class, SharedFolderMetadata.class);
+        }
+
+        @Override
+        public void serialize(ShareFolderLaunch value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            switch (value.tag) {
                 case ASYNC_JOB_ID:
                     g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("async_job_id");
-                    g.writeFieldName("async_job_id");
-                    g.writeString(x.getAsyncJobIdValue());
+                    g.writeStringField(".tag", "async_job_id");
+                    g.writeObjectField("async_job_id", value.asyncJobIdValue);
                     g.writeEndObject();
                     break;
                 case COMPLETE:
                     g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("complete");
-                    g.writeFieldName("complete");
-                    SharedFolderMetadata._JSON_WRITER.write(x.getCompleteValue(), g);
+                    g.writeStringField(".tag", "complete");
+                    getUnwrappingSerializer(SharedFolderMetadata.class).serialize(value.completeValue, g, provider);
                     g.writeEndObject();
                     break;
             }
         }
-    };
+    }
 
-    public static final JsonReader<ShareFolderLaunch> _JSON_READER = new JsonReader<ShareFolderLaunch>() {
+    static final class Deserializer extends UnionJsonDeserializer<ShareFolderLaunch, Tag> {
+        private static final long serialVersionUID = 0L;
 
-        public final ShareFolderLaunch read(JsonParser parser) throws IOException, JsonReadException {
-            if (parser.getCurrentToken() == JsonToken.VALUE_STRING) {
-                String text = parser.getText();
-                parser.nextToken();
-                Tag tag = VALUES_.get(text);
-                if (tag == null) {
-                    throw new JsonReadException("Unanticipated tag " + text + " without catch-all", parser.getTokenLocation());
-                }
-                switch (tag) {
-                }
-                throw new JsonReadException("Tag " + tag + " requires a value", parser.getTokenLocation());
-            }
-            JsonReader.expectObjectStart(parser);
-            String[] tags = readTags(parser);
-            assert tags != null && tags.length == 1;
-            String text = tags[0];
-            Tag tag = VALUES_.get(text);
-            ShareFolderLaunch value = null;
-            if (tag != null) {
-                switch (tag) {
-                    case ASYNC_JOB_ID: {
-                        String v = null;
-                        assert parser.getCurrentToken() == JsonToken.FIELD_NAME;
-                        text = parser.getText();
-                        assert tags[0].equals(text);
-                        parser.nextToken();
-                        v = JsonReader.StringReader
-                            .readField(parser, "async_job_id", v);
-                        value = ShareFolderLaunch.asyncJobId(v);
-                        break;
-                    }
-                    case COMPLETE: {
-                        SharedFolderMetadata v = null;
-                        v = SharedFolderMetadata._JSON_READER.readFields(parser);
-                        value = ShareFolderLaunch.complete(v);
-                        break;
-                    }
-                }
-            }
-            if (value == null) {
-                throw new JsonReadException("Unanticipated tag " + text, parser.getTokenLocation());
-            }
-            JsonReader.expectObjectEnd(parser);
-            return value;
+        public Deserializer() {
+            super(ShareFolderLaunch.class, getTagMapping(), null, SharedFolderMetadata.class);
         }
 
-    };
+        @Override
+        public ShareFolderLaunch deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+            switch (_tag) {
+                case ASYNC_JOB_ID: {
+                    String value = null;
+                    expectField(_p, "async_job_id");
+                    value = getStringValue(_p);
+                    _p.nextToken();
+                    return ShareFolderLaunch.asyncJobId(value);
+                }
+                case COMPLETE: {
+                    SharedFolderMetadata value = null;
+                    value = readCollapsedStructValue(SharedFolderMetadata.class, _p, _ctx);
+                    return ShareFolderLaunch.complete(value);
+                }
+            }
+            // should be impossible to get here
+            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
+        }
+
+        private static Map<String, ShareFolderLaunch.Tag> getTagMapping() {
+            Map<String, ShareFolderLaunch.Tag> values = new HashMap<String, ShareFolderLaunch.Tag>();
+            values.put("complete", ShareFolderLaunch.Tag.COMPLETE);
+            return Collections.unmodifiableMap(values);
+        }
+    }
 }

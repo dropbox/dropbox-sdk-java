@@ -3,14 +3,25 @@
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonArrayReader;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.List;
@@ -18,13 +29,19 @@ import java.util.List;
 /**
  * Information on devices of a team's member.
  */
+@JsonSerialize(using=MemberDevices.Serializer.class)
+@JsonDeserialize(using=MemberDevices.Deserializer.class)
 public class MemberDevices {
     // struct MemberDevices
 
-    private final String teamMemberId;
-    private final List<ActiveWebSession> webSessions;
-    private final List<DesktopClientSession> desktopClients;
-    private final List<MobileClientSession> mobileClients;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final String teamMemberId;
+    protected final List<ActiveWebSession> webSessions;
+    protected final List<DesktopClientSession> desktopClients;
+    protected final List<MobileClientSession> mobileClients;
 
     /**
      * Information on devices of a team's member.
@@ -270,104 +287,138 @@ public class MemberDevices {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static MemberDevices fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
+    static final class Serializer extends StructJsonSerializer<MemberDevices> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(MemberDevices.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(MemberDevices.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<MemberDevices> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(MemberDevices value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("team_member_id", value.teamMemberId);
+            if (value.webSessions != null) {
+                g.writeObjectField("web_sessions", value.webSessions);
+            }
+            if (value.desktopClients != null) {
+                g.writeObjectField("desktop_clients", value.desktopClients);
+            }
+            if (value.mobileClients != null) {
+                g.writeObjectField("mobile_clients", value.mobileClients);
+            }
+        }
     }
 
-    public static final JsonWriter<MemberDevices> _JSON_WRITER = new JsonWriter<MemberDevices>() {
-        public final void write(MemberDevices x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            MemberDevices._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
-        }
-        public final void writeFields(MemberDevices x, JsonGenerator g) throws IOException {
-            g.writeFieldName("team_member_id");
-            g.writeString(x.teamMemberId);
-            if (x.webSessions != null) {
-                g.writeFieldName("web_sessions");
-                g.writeStartArray();
-                for (ActiveWebSession item: x.webSessions) {
-                    if (item != null) {
-                        ActiveWebSession._JSON_WRITER.write(item, g);
-                    }
-                }
-                g.writeEndArray();
-            }
-            if (x.desktopClients != null) {
-                g.writeFieldName("desktop_clients");
-                g.writeStartArray();
-                for (DesktopClientSession item: x.desktopClients) {
-                    if (item != null) {
-                        DesktopClientSession._JSON_WRITER.write(item, g);
-                    }
-                }
-                g.writeEndArray();
-            }
-            if (x.mobileClients != null) {
-                g.writeFieldName("mobile_clients");
-                g.writeStartArray();
-                for (MobileClientSession item: x.mobileClients) {
-                    if (item != null) {
-                        MobileClientSession._JSON_WRITER.write(item, g);
-                    }
-                }
-                g.writeEndArray();
-            }
-        }
-    };
+    static final class Deserializer extends StructJsonDeserializer<MemberDevices> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonReader<MemberDevices> _JSON_READER = new JsonReader<MemberDevices>() {
-        public final MemberDevices read(JsonParser parser) throws IOException, JsonReadException {
-            MemberDevices result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+        public Deserializer() {
+            super(MemberDevices.class);
         }
 
-        public final MemberDevices readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(MemberDevices.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<MemberDevices> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public MemberDevices deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             String teamMemberId = null;
             List<ActiveWebSession> webSessions = null;
             List<DesktopClientSession> desktopClients = null;
             List<MobileClientSession> mobileClients = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("team_member_id".equals(fieldName)) {
-                    teamMemberId = JsonReader.StringReader
-                        .readField(parser, "team_member_id", teamMemberId);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("team_member_id".equals(_field)) {
+                    teamMemberId = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("web_sessions".equals(fieldName)) {
-                    webSessions = JsonArrayReader.mk(ActiveWebSession._JSON_READER)
-                        .readField(parser, "web_sessions", webSessions);
+                else if ("web_sessions".equals(_field)) {
+                    expectArrayStart(_p);
+                    webSessions = new java.util.ArrayList<ActiveWebSession>();
+                    while (!isArrayEnd(_p)) {
+                        ActiveWebSession _x = null;
+                        _x = _p.readValueAs(ActiveWebSession.class);
+                        _p.nextToken();
+                        webSessions.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
                 }
-                else if ("desktop_clients".equals(fieldName)) {
-                    desktopClients = JsonArrayReader.mk(DesktopClientSession._JSON_READER)
-                        .readField(parser, "desktop_clients", desktopClients);
+                else if ("desktop_clients".equals(_field)) {
+                    expectArrayStart(_p);
+                    desktopClients = new java.util.ArrayList<DesktopClientSession>();
+                    while (!isArrayEnd(_p)) {
+                        DesktopClientSession _x = null;
+                        _x = _p.readValueAs(DesktopClientSession.class);
+                        _p.nextToken();
+                        desktopClients.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
                 }
-                else if ("mobile_clients".equals(fieldName)) {
-                    mobileClients = JsonArrayReader.mk(MobileClientSession._JSON_READER)
-                        .readField(parser, "mobile_clients", mobileClients);
+                else if ("mobile_clients".equals(_field)) {
+                    expectArrayStart(_p);
+                    mobileClients = new java.util.ArrayList<MobileClientSession>();
+                    while (!isArrayEnd(_p)) {
+                        MobileClientSession _x = null;
+                        _x = _p.readValueAs(MobileClientSession.class);
+                        _p.nextToken();
+                        mobileClients.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (teamMemberId == null) {
-                throw new JsonReadException("Required field \"team_member_id\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"team_member_id\" is missing.");
             }
+
             return new MemberDevices(teamMemberId, webSessions, desktopClients, mobileClients);
         }
-    };
+    }
 }

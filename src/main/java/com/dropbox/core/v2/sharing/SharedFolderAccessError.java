@@ -5,17 +5,32 @@ package com.dropbox.core.v2.sharing;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.UnionJsonDeserializer;
+import com.dropbox.core.json.UnionJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * There is an error accessing the shared folder.
  */
+@JsonSerialize(using=SharedFolderAccessError.Serializer.class)
+@JsonDeserialize(using=SharedFolderAccessError.Deserializer.class)
 public enum SharedFolderAccessError {
     // union SharedFolderAccessError
     /**
@@ -34,66 +49,68 @@ public enum SharedFolderAccessError {
      * The shared folder is unmounted.
      */
     UNMOUNTED,
+    /**
+     * Catch-all used for unknown tag values returned by the Dropbox servers.
+     *
+     * <p> Receiving a catch-all value typically indicates this SDK version is
+     * not up to date. Consider updating your SDK version to handle the new
+     * tags. </p>
+     */
     OTHER; // *catch_all
 
-    private static final java.util.HashMap<String, SharedFolderAccessError> VALUES_;
-    static {
-        VALUES_ = new java.util.HashMap<String, SharedFolderAccessError>();
-        VALUES_.put("invalid_id", INVALID_ID);
-        VALUES_.put("not_a_member", NOT_A_MEMBER);
-        VALUES_.put("email_unverified", EMAIL_UNVERIFIED);
-        VALUES_.put("unmounted", UNMOUNTED);
-        VALUES_.put("other", OTHER);
-    }
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
-    }
+    static final class Serializer extends UnionJsonSerializer<SharedFolderAccessError> {
+        private static final long serialVersionUID = 0L;
 
-    public static SharedFolderAccessError fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
+        public Serializer() {
+            super(SharedFolderAccessError.class);
+        }
 
-    public static final JsonWriter<SharedFolderAccessError> _JSON_WRITER = new JsonWriter<SharedFolderAccessError>() {
-        public void write(SharedFolderAccessError x, JsonGenerator g) throws IOException {
-            switch (x) {
+        @Override
+        public void serialize(SharedFolderAccessError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            switch (value) {
                 case INVALID_ID:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("invalid_id");
-                    g.writeEndObject();
                     break;
                 case NOT_A_MEMBER:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("not_a_member");
-                    g.writeEndObject();
                     break;
                 case EMAIL_UNVERIFIED:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("email_unverified");
-                    g.writeEndObject();
                     break;
                 case UNMOUNTED:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("unmounted");
-                    g.writeEndObject();
                     break;
                 case OTHER:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("other");
-                    g.writeEndObject();
                     break;
             }
         }
-    };
+    }
 
-    public static final JsonReader<SharedFolderAccessError> _JSON_READER = new JsonReader<SharedFolderAccessError>() {
-        public final SharedFolderAccessError read(JsonParser parser) throws IOException, JsonReadException {
-            return JsonReader.readEnum(parser, VALUES_, OTHER);
+    static final class Deserializer extends UnionJsonDeserializer<SharedFolderAccessError, SharedFolderAccessError> {
+        private static final long serialVersionUID = 0L;
+
+        public Deserializer() {
+            super(SharedFolderAccessError.class, getTagMapping(), SharedFolderAccessError.OTHER);
         }
-    };
+
+        @Override
+        public SharedFolderAccessError deserialize(SharedFolderAccessError _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+            return _tag;
+        }
+
+        private static Map<String, SharedFolderAccessError> getTagMapping() {
+            Map<String, SharedFolderAccessError> values = new HashMap<String, SharedFolderAccessError>();
+            values.put("invalid_id", SharedFolderAccessError.INVALID_ID);
+            values.put("not_a_member", SharedFolderAccessError.NOT_A_MEMBER);
+            values.put("email_unverified", SharedFolderAccessError.EMAIL_UNVERIFIED);
+            values.put("unmounted", SharedFolderAccessError.UNMOUNTED);
+            values.put("other", SharedFolderAccessError.OTHER);
+            return Collections.unmodifiableMap(values);
+        }
+    }
 }

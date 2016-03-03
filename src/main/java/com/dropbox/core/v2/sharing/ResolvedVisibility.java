@@ -5,13 +5,26 @@ package com.dropbox.core.v2.sharing;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.UnionJsonDeserializer;
+import com.dropbox.core.json.UnionJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The actual access permissions values of shared links after taking into
@@ -19,6 +32,8 @@ import java.io.IOException;
  * {@link RequestedVisibility} for more info on the possible visibility values
  * that can be set by the shared link's owner.
  */
+@JsonSerialize(using=ResolvedVisibility.Serializer.class)
+@JsonDeserialize(using=ResolvedVisibility.Deserializer.class)
 public enum ResolvedVisibility {
     // union ResolvedVisibility
     /**
@@ -49,68 +64,60 @@ public enum ResolvedVisibility {
      */
     OTHER; // *catch_all
 
-    private static final java.util.HashMap<String, ResolvedVisibility> VALUES_;
-    static {
-        VALUES_ = new java.util.HashMap<String, ResolvedVisibility>();
-        VALUES_.put("team_and_password", TEAM_AND_PASSWORD);
-        VALUES_.put("shared_folder_only", SHARED_FOLDER_ONLY);
-        VALUES_.put("other", OTHER);
-    }
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
-    }
+    static final class Serializer extends UnionJsonSerializer<ResolvedVisibility> {
+        private static final long serialVersionUID = 0L;
 
-    public static ResolvedVisibility fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
+        public Serializer() {
+            super(ResolvedVisibility.class);
+        }
 
-    public static final JsonWriter<ResolvedVisibility> _JSON_WRITER = new JsonWriter<ResolvedVisibility>() {
-        public void write(ResolvedVisibility x, JsonGenerator g) throws IOException {
-            switch (x) {
+        @Override
+        public void serialize(ResolvedVisibility value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            switch (value) {
                 case PUBLIC:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("public");
-                    g.writeEndObject();
                     break;
                 case TEAM_ONLY:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("team_only");
-                    g.writeEndObject();
                     break;
                 case PASSWORD:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("password");
-                    g.writeEndObject();
                     break;
                 case TEAM_AND_PASSWORD:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("team_and_password");
-                    g.writeEndObject();
                     break;
                 case SHARED_FOLDER_ONLY:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("shared_folder_only");
-                    g.writeEndObject();
                     break;
                 case OTHER:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("other");
-                    g.writeEndObject();
                     break;
             }
         }
-    };
+    }
 
-    public static final JsonReader<ResolvedVisibility> _JSON_READER = new JsonReader<ResolvedVisibility>() {
-        public final ResolvedVisibility read(JsonParser parser) throws IOException, JsonReadException {
-            return JsonReader.readEnum(parser, VALUES_, OTHER);
+    static final class Deserializer extends UnionJsonDeserializer<ResolvedVisibility, ResolvedVisibility> {
+        private static final long serialVersionUID = 0L;
+
+        public Deserializer() {
+            super(ResolvedVisibility.class, getTagMapping(), ResolvedVisibility.OTHER);
         }
-    };
+
+        @Override
+        public ResolvedVisibility deserialize(ResolvedVisibility _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+            return _tag;
+        }
+
+        private static Map<String, ResolvedVisibility> getTagMapping() {
+            Map<String, ResolvedVisibility> values = new HashMap<String, ResolvedVisibility>();
+            values.put("team_and_password", ResolvedVisibility.TEAM_AND_PASSWORD);
+            values.put("shared_folder_only", ResolvedVisibility.SHARED_FOLDER_ONLY);
+            values.put("other", ResolvedVisibility.OTHER);
+            return Collections.unmodifiableMap(values);
+        }
+    }
 }

@@ -11,10 +11,11 @@ import com.dropbox.core.LocalizedText;
  * MembersSetPermissionsError} error.
  */
 public class MembersSetPermissionsErrorException extends DbxApiException {
+    private static final long serialVersionUID = 0L;
 
     /**
      * The error reported by {@link
-     * DbxTeam#membersSetAdminPermissions(UserSelectorArg,AdminTier)}.
+     * DbxTeamTeamRequests#membersSetAdminPermissions(UserSelectorArg,AdminTier)}.
      */
     public final MembersSetPermissionsError errorValue;
 

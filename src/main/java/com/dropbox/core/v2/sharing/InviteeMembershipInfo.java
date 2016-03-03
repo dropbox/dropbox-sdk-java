@@ -3,14 +3,25 @@
 
 package com.dropbox.core.v2.sharing;
 
-import com.dropbox.core.json.JsonArrayReader;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.List;
@@ -18,10 +29,16 @@ import java.util.List;
 /**
  * The information about a user invited to become a member of a shared folder.
  */
+@JsonSerialize(using=InviteeMembershipInfo.Serializer.class)
+@JsonDeserialize(using=InviteeMembershipInfo.Deserializer.class)
 public class InviteeMembershipInfo extends MembershipInfo {
     // struct InviteeMembershipInfo
 
-    private final InviteeInfo invitee;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final InviteeInfo invitee;
 
     /**
      * The information about a user invited to become a member of a shared
@@ -138,11 +155,11 @@ public class InviteeMembershipInfo extends MembershipInfo {
         // be careful with inheritance
         else if (obj.getClass().equals(this.getClass())) {
             InviteeMembershipInfo other = (InviteeMembershipInfo) obj;
-            return ((this.invitee == other.invitee) || (this.invitee.equals(other.invitee)))
-                && ((this.getAccessType() == other.getAccessType()) || (this.getAccessType().equals(other.getAccessType())))
-                && ((this.getPermissions() == other.getPermissions()) || (this.getPermissions() != null && this.getPermissions().equals(other.getPermissions())))
-                && ((this.getInitials() == other.getInitials()) || (this.getInitials() != null && this.getInitials().equals(other.getInitials())))
-                && (this.getIsInherited() == other.getIsInherited())
+            return ((this.accessType == other.accessType) || (this.accessType.equals(other.accessType)))
+                && ((this.invitee == other.invitee) || (this.invitee.equals(other.invitee)))
+                && ((this.permissions == other.permissions) || (this.permissions != null && this.permissions.equals(other.permissions)))
+                && ((this.initials == other.initials) || (this.initials != null && this.initials.equals(other.initials)))
+                && (this.isInherited == other.isInherited)
                 ;
         }
         else {
@@ -152,83 +169,129 @@ public class InviteeMembershipInfo extends MembershipInfo {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static InviteeMembershipInfo fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
+    static final class Serializer extends StructJsonSerializer<InviteeMembershipInfo> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(InviteeMembershipInfo.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(InviteeMembershipInfo.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<InviteeMembershipInfo> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(InviteeMembershipInfo value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("access_type", value.accessType);
+            g.writeObjectField("invitee", value.invitee);
+            if (value.permissions != null) {
+                g.writeObjectField("permissions", value.permissions);
+            }
+            if (value.initials != null) {
+                g.writeObjectField("initials", value.initials);
+            }
+            g.writeObjectField("is_inherited", value.isInherited);
+        }
     }
 
-    public static final JsonWriter<InviteeMembershipInfo> _JSON_WRITER = new JsonWriter<InviteeMembershipInfo>() {
-        public final void write(InviteeMembershipInfo x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            MembershipInfo._JSON_WRITER.writeFields(x, g);
-            InviteeMembershipInfo._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
-        }
-        public final void writeFields(InviteeMembershipInfo x, JsonGenerator g) throws IOException {
-            g.writeFieldName("invitee");
-            InviteeInfo._JSON_WRITER.write(x.invitee, g);
-        }
-    };
+    static final class Deserializer extends StructJsonDeserializer<InviteeMembershipInfo> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonReader<InviteeMembershipInfo> _JSON_READER = new JsonReader<InviteeMembershipInfo>() {
-        public final InviteeMembershipInfo read(JsonParser parser) throws IOException, JsonReadException {
-            InviteeMembershipInfo result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+        public Deserializer() {
+            super(InviteeMembershipInfo.class);
         }
 
-        public final InviteeMembershipInfo readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(InviteeMembershipInfo.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<InviteeMembershipInfo> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public InviteeMembershipInfo deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             AccessLevel accessType = null;
             InviteeInfo invitee = null;
             List<MemberPermission> permissions = null;
             String initials = null;
             Boolean isInherited = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("access_type".equals(fieldName)) {
-                    accessType = AccessLevel._JSON_READER
-                        .readField(parser, "access_type", accessType);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("access_type".equals(_field)) {
+                    accessType = _p.readValueAs(AccessLevel.class);
+                    _p.nextToken();
                 }
-                else if ("invitee".equals(fieldName)) {
-                    invitee = InviteeInfo._JSON_READER
-                        .readField(parser, "invitee", invitee);
+                else if ("invitee".equals(_field)) {
+                    invitee = _p.readValueAs(InviteeInfo.class);
+                    _p.nextToken();
                 }
-                else if ("permissions".equals(fieldName)) {
-                    permissions = JsonArrayReader.mk(MemberPermission._JSON_READER)
-                        .readField(parser, "permissions", permissions);
+                else if ("permissions".equals(_field)) {
+                    expectArrayStart(_p);
+                    permissions = new java.util.ArrayList<MemberPermission>();
+                    while (!isArrayEnd(_p)) {
+                        MemberPermission _x = null;
+                        _x = _p.readValueAs(MemberPermission.class);
+                        _p.nextToken();
+                        permissions.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
                 }
-                else if ("initials".equals(fieldName)) {
-                    initials = JsonReader.StringReader
-                        .readField(parser, "initials", initials);
+                else if ("initials".equals(_field)) {
+                    initials = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("is_inherited".equals(fieldName)) {
-                    isInherited = JsonReader.BooleanReader
-                        .readField(parser, "is_inherited", isInherited);
+                else if ("is_inherited".equals(_field)) {
+                    isInherited = _p.getValueAsBoolean();
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (accessType == null) {
-                throw new JsonReadException("Required field \"access_type\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"access_type\" is missing.");
             }
             if (invitee == null) {
-                throw new JsonReadException("Required field \"invitee\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"invitee\" is missing.");
             }
+
             return new InviteeMembershipInfo(accessType, invitee, permissions, initials, isInherited);
         }
-    };
+    }
 }

@@ -5,25 +5,43 @@ package com.dropbox.core.v2.files;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
-public class ListFolderContinueArg {
+@JsonSerialize(using=ListFolderContinueArg.Serializer.class)
+@JsonDeserialize(using=ListFolderContinueArg.Deserializer.class)
+class ListFolderContinueArg {
     // struct ListFolderContinueArg
 
-    private final String cursor;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final String cursor;
 
     /**
      *
      * @param cursor  The cursor returned by your last call to {@link
-     *     DbxFiles#listFolder(String)} or {@link
-     *     DbxFiles#listFolderContinue(String)}. Must have length of at least 1
-     *     and not be {@code null}.
+     *     DbxUserFilesRequests#listFolder(String)} or {@link
+     *     DbxUserFilesRequests#listFolderContinue(String)}. Must have length of
+     *     at least 1 and not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -40,8 +58,8 @@ public class ListFolderContinueArg {
 
     /**
      * The cursor returned by your last call to {@link
-     * DbxFiles#listFolder(String)} or {@link
-     * DbxFiles#listFolderContinue(String)}.
+     * DbxUserFilesRequests#listFolder(String)} or {@link
+     * DbxUserFilesRequests#listFolderContinue(String)}.
      *
      * @return value for this field, never {@code null}.
      */
@@ -74,59 +92,90 @@ public class ListFolderContinueArg {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static ListFolderContinueArg fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
+    static final class Serializer extends StructJsonSerializer<ListFolderContinueArg> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(ListFolderContinueArg.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(ListFolderContinueArg.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<ListFolderContinueArg> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(ListFolderContinueArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("cursor", value.cursor);
+        }
     }
 
-    public static final JsonWriter<ListFolderContinueArg> _JSON_WRITER = new JsonWriter<ListFolderContinueArg>() {
-        public final void write(ListFolderContinueArg x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            ListFolderContinueArg._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
-        }
-        public final void writeFields(ListFolderContinueArg x, JsonGenerator g) throws IOException {
-            g.writeFieldName("cursor");
-            g.writeString(x.cursor);
-        }
-    };
+    static final class Deserializer extends StructJsonDeserializer<ListFolderContinueArg> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonReader<ListFolderContinueArg> _JSON_READER = new JsonReader<ListFolderContinueArg>() {
-        public final ListFolderContinueArg read(JsonParser parser) throws IOException, JsonReadException {
-            ListFolderContinueArg result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+        public Deserializer() {
+            super(ListFolderContinueArg.class);
         }
 
-        public final ListFolderContinueArg readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(ListFolderContinueArg.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<ListFolderContinueArg> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public ListFolderContinueArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             String cursor = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("cursor".equals(fieldName)) {
-                    cursor = JsonReader.StringReader
-                        .readField(parser, "cursor", cursor);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("cursor".equals(_field)) {
+                    cursor = getStringValue(_p);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (cursor == null) {
-                throw new JsonReadException("Required field \"cursor\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"cursor\" is missing.");
             }
+
             return new ListFolderContinueArg(cursor);
         }
-    };
+    }
 }

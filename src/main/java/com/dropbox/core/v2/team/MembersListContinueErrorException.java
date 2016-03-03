@@ -11,9 +11,11 @@ import com.dropbox.core.LocalizedText;
  * MembersListContinueError} error.
  */
 public class MembersListContinueErrorException extends DbxApiException {
+    private static final long serialVersionUID = 0L;
 
     /**
-     * The error reported by {@link DbxTeam#membersListContinue(String)}.
+     * The error reported by {@link
+     * DbxTeamTeamRequests#membersListContinue(String)}.
      */
     public final MembersListContinueError errorValue;
 

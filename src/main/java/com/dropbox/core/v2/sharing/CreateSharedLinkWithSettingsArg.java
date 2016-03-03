@@ -5,19 +5,37 @@ package com.dropbox.core.v2.sharing;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
-public class CreateSharedLinkWithSettingsArg {
+@JsonSerialize(using=CreateSharedLinkWithSettingsArg.Serializer.class)
+@JsonDeserialize(using=CreateSharedLinkWithSettingsArg.Deserializer.class)
+class CreateSharedLinkWithSettingsArg {
     // struct CreateSharedLinkWithSettingsArg
 
-    private final String path;
-    private final SharedLinkSettings settings;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final String path;
+    protected final SharedLinkSettings settings;
 
     /**
      *
@@ -99,68 +117,98 @@ public class CreateSharedLinkWithSettingsArg {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
-    }
-
-    public static CreateSharedLinkWithSettingsArg fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
-
-    public static final JsonWriter<CreateSharedLinkWithSettingsArg> _JSON_WRITER = new JsonWriter<CreateSharedLinkWithSettingsArg>() {
-        public final void write(CreateSharedLinkWithSettingsArg x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            CreateSharedLinkWithSettingsArg._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
         }
-        public final void writeFields(CreateSharedLinkWithSettingsArg x, JsonGenerator g) throws IOException {
-            g.writeFieldName("path");
-            g.writeString(x.path);
-            if (x.settings != null) {
-                g.writeFieldName("settings");
-                SharedLinkSettings._JSON_WRITER.write(x.settings, g);
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
+    }
+
+    static final class Serializer extends StructJsonSerializer<CreateSharedLinkWithSettingsArg> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(CreateSharedLinkWithSettingsArg.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(CreateSharedLinkWithSettingsArg.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<CreateSharedLinkWithSettingsArg> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(CreateSharedLinkWithSettingsArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("path", value.path);
+            if (value.settings != null) {
+                g.writeObjectField("settings", value.settings);
             }
         }
-    };
+    }
 
-    public static final JsonReader<CreateSharedLinkWithSettingsArg> _JSON_READER = new JsonReader<CreateSharedLinkWithSettingsArg>() {
-        public final CreateSharedLinkWithSettingsArg read(JsonParser parser) throws IOException, JsonReadException {
-            CreateSharedLinkWithSettingsArg result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+    static final class Deserializer extends StructJsonDeserializer<CreateSharedLinkWithSettingsArg> {
+        private static final long serialVersionUID = 0L;
+
+        public Deserializer() {
+            super(CreateSharedLinkWithSettingsArg.class);
         }
 
-        public final CreateSharedLinkWithSettingsArg readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(CreateSharedLinkWithSettingsArg.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<CreateSharedLinkWithSettingsArg> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public CreateSharedLinkWithSettingsArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             String path = null;
             SharedLinkSettings settings = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("path".equals(fieldName)) {
-                    path = JsonReader.StringReader
-                        .readField(parser, "path", path);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("path".equals(_field)) {
+                    path = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("settings".equals(fieldName)) {
-                    settings = SharedLinkSettings._JSON_READER
-                        .readField(parser, "settings", settings);
+                else if ("settings".equals(_field)) {
+                    settings = _p.readValueAs(SharedLinkSettings.class);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (path == null) {
-                throw new JsonReadException("Required field \"path\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"path\" is missing.");
             }
+
             return new CreateSharedLinkWithSettingsArg(path, settings);
         }
-    };
+    }
 }

@@ -2,7 +2,6 @@
 /* This file was generated from auth.babel */
 
 /**
- * See {@link com.dropbox.core.v2.auth.DbxAuth} for a list of possible requests
- * for this namespace.
+ * See None for a list of possible requests for this namespace.
  */
 package com.dropbox.core.v2.auth;

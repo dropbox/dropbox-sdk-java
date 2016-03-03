@@ -5,18 +5,33 @@ package com.dropbox.core.v2.sharing;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.UnionJsonDeserializer;
+import com.dropbox.core.json.UnionJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Policy governing who can be a member of a shared folder. Only applicable to
  * folders owned by a user on a team.
  */
+@JsonSerialize(using=MemberPolicy.Serializer.class)
+@JsonDeserialize(using=MemberPolicy.Deserializer.class)
 public enum MemberPolicy {
     // union MemberPolicy
     /**
@@ -27,52 +42,60 @@ public enum MemberPolicy {
      * Anyone can become a member.
      */
     ANYONE,
+    /**
+     * Catch-all used for unknown tag values returned by the Dropbox servers.
+     *
+     * <p> Receiving a catch-all value typically indicates this SDK version is
+     * not up to date. Consider updating your SDK version to handle the new
+     * tags. </p>
+     */
     OTHER; // *catch_all
 
-    private static final java.util.HashMap<String, MemberPolicy> VALUES_;
-    static {
-        VALUES_ = new java.util.HashMap<String, MemberPolicy>();
-        VALUES_.put("team", TEAM);
-        VALUES_.put("anyone", ANYONE);
-        VALUES_.put("other", OTHER);
-    }
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
-    }
+    static final class Serializer extends UnionJsonSerializer<MemberPolicy> {
+        private static final long serialVersionUID = 0L;
 
-    public static MemberPolicy fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
+        public Serializer() {
+            super(MemberPolicy.class);
+        }
 
-    public static final JsonWriter<MemberPolicy> _JSON_WRITER = new JsonWriter<MemberPolicy>() {
-        public void write(MemberPolicy x, JsonGenerator g) throws IOException {
-            switch (x) {
+        @Override
+        public void serialize(MemberPolicy value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            switch (value) {
                 case TEAM:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("team");
-                    g.writeEndObject();
                     break;
                 case ANYONE:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("anyone");
-                    g.writeEndObject();
                     break;
                 case OTHER:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("other");
-                    g.writeEndObject();
                     break;
             }
         }
-    };
+    }
 
-    public static final JsonReader<MemberPolicy> _JSON_READER = new JsonReader<MemberPolicy>() {
-        public final MemberPolicy read(JsonParser parser) throws IOException, JsonReadException {
-            return JsonReader.readEnum(parser, VALUES_, OTHER);
+    static final class Deserializer extends UnionJsonDeserializer<MemberPolicy, MemberPolicy> {
+        private static final long serialVersionUID = 0L;
+
+        public Deserializer() {
+            super(MemberPolicy.class, getTagMapping(), MemberPolicy.OTHER);
         }
-    };
+
+        @Override
+        public MemberPolicy deserialize(MemberPolicy _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+            return _tag;
+        }
+
+        private static Map<String, MemberPolicy> getTagMapping() {
+            Map<String, MemberPolicy> values = new HashMap<String, MemberPolicy>();
+            values.put("team", MemberPolicy.TEAM);
+            values.put("anyone", MemberPolicy.ANYONE);
+            values.put("other", MemberPolicy.OTHER);
+            return Collections.unmodifiableMap(values);
+        }
+    }
 }

@@ -62,7 +62,8 @@ public class Main
         // Make the /account/info API call.
         FullAccount dbxAccountInfo;
         try {
-            dbxAccountInfo = dbxClient.users.getCurrentAccount();
+            dbxAccountInfo = dbxClient.users()
+                .getCurrentAccount();
         }
         catch (DbxException ex) {
             System.err.println("Error making API call: " + ex.getMessage());

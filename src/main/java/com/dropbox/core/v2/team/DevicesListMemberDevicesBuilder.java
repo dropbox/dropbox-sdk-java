@@ -7,13 +7,13 @@ import com.dropbox.core.DbxException;
 
 /**
  * The request builder returned by {@link
- * DbxTeam#devicesListMemberDevicesBuilder(String)}.
+ * DbxTeamTeamRequests#devicesListMemberDevicesBuilder(String)}.
  *
  * <p> Use this class to set optional request parameters and complete the
  * request. </p>
  */
 public class DevicesListMemberDevicesBuilder {
-    private final DbxTeam team;
+    private final DbxTeamTeamRequests team;
     private final ListMemberDevicesArg.Builder listMemberDevicesArgBuilder;
 
     /**
@@ -25,7 +25,7 @@ public class DevicesListMemberDevicesBuilder {
      *
      * @return instsance of this builder
      */
-    DevicesListMemberDevicesBuilder(DbxTeam team, ListMemberDevicesArg.Builder listMemberDevicesArgBuilder) {
+    DevicesListMemberDevicesBuilder(DbxTeamTeamRequests team, ListMemberDevicesArg.Builder listMemberDevicesArgBuilder) {
         if (team == null) {
             throw new NullPointerException("team");
         }

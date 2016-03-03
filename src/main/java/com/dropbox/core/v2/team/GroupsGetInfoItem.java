@@ -5,16 +5,41 @@ package com.dropbox.core.v2.team;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.UnionJsonDeserializer;
+import com.dropbox.core.json.UnionJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
+/**
+ * This class is a tagged union.  Tagged unions instances are always associated
+ * to a specific tag.  This means only one of the {@code isAbc()} methods will
+ * return {@code true}. You can use {@link #tag()} to determine the tag
+ * associated with this instance.
+ */
+@JsonSerialize(using=GroupsGetInfoItem.Serializer.class)
+@JsonDeserialize(using=GroupsGetInfoItem.Deserializer.class)
 public final class GroupsGetInfoItem {
     // union GroupsGetInfoItem
+
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link GroupsGetInfoItem}.
@@ -22,8 +47,8 @@ public final class GroupsGetInfoItem {
     public enum Tag {
         /**
          * An ID that was provided as a parameter to {@link
-         * DbxTeam#groupsGetInfo(GroupsSelector)}, and did not match a
-         * corresponding group. The ID can be a group ID, or an external ID,
+         * DbxTeamTeamRequests#groupsGetInfo(GroupsSelector)}, and did not match
+         * a corresponding group. The ID can be a group ID, or an external ID,
          * depending on how the method was called.
          */
         ID_NOT_FOUND, // String
@@ -31,13 +56,6 @@ public final class GroupsGetInfoItem {
          * Info about a group.
          */
         GROUP_INFO; // GroupFullInfo
-    }
-
-    private static final java.util.HashMap<String, Tag> VALUES_;
-    static {
-        VALUES_ = new java.util.HashMap<String, Tag>();
-        VALUES_.put("id_not_found", Tag.ID_NOT_FOUND);
-        VALUES_.put("group_info", Tag.GROUP_INFO);
     }
 
     private final Tag tag;
@@ -58,9 +76,10 @@ public final class GroupsGetInfoItem {
      * Returns the tag for this instance.
      *
      * <p> This class is a tagged union.  Tagged unions instances are always
-     * associated to a specific tag.  Callers are recommended to use the tag
-     * value in a {@code switch} statement to determine how to properly handle
-     * this {@code GroupsGetInfoItem}. </p>
+     * associated to a specific tag.  This means only one of the {@code isXyz()}
+     * methods will return {@code true}. Callers are recommended to use the tag
+     * value in a {@code switch} statement to properly handle the different
+     * values for this {@code GroupsGetInfoItem}. </p>
      *
      * @return the tag for this instance.
      */
@@ -72,7 +91,7 @@ public final class GroupsGetInfoItem {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#ID_NOT_FOUND}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#ID_NOT_FOUND}, {@code false} otherwise.
      */
     public boolean isIdNotFound() {
@@ -84,12 +103,11 @@ public final class GroupsGetInfoItem {
      * {@link Tag#ID_NOT_FOUND}.
      *
      * <p> An ID that was provided as a parameter to {@link
-     * DbxTeam#groupsGetInfo(GroupsSelector)}, and did not match a corresponding
-     * group. The ID can be a group ID, or an external ID, depending on how the
-     * method was called. </p>
+     * DbxTeamTeamRequests#groupsGetInfo(GroupsSelector)}, and did not match a
+     * corresponding group. The ID can be a group ID, or an external ID,
+     * depending on how the method was called. </p>
      *
-     * @param value  {@link GroupsGetInfoItem#idNotFound} value to assign to
-     *     this instance.
+     * @param value  value to assign to this instance.
      *
      * @return Instance of {@code GroupsGetInfoItem} with its tag set to {@link
      *     Tag#ID_NOT_FOUND}.
@@ -105,9 +123,9 @@ public final class GroupsGetInfoItem {
 
     /**
      * An ID that was provided as a parameter to {@link
-     * DbxTeam#groupsGetInfo(GroupsSelector)}, and did not match a corresponding
-     * group. The ID can be a group ID, or an external ID, depending on how the
-     * method was called.
+     * DbxTeamTeamRequests#groupsGetInfo(GroupsSelector)}, and did not match a
+     * corresponding group. The ID can be a group ID, or an external ID,
+     * depending on how the method was called.
      *
      * <p> This instance must be tagged as {@link Tag#ID_NOT_FOUND}. </p>
      *
@@ -127,7 +145,7 @@ public final class GroupsGetInfoItem {
      * Returns {@code true} if this instance has the tag {@link Tag#GROUP_INFO},
      * {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#GROUP_INFO}, {@code false} otherwise.
      */
     public boolean isGroupInfo() {
@@ -140,8 +158,7 @@ public final class GroupsGetInfoItem {
      *
      * <p> Info about a group. </p>
      *
-     * @param value  {@link GroupsGetInfoItem#groupInfo} value to assign to this
-     *     instance.
+     * @param value  value to assign to this instance.
      *
      * @return Instance of {@code GroupsGetInfoItem} with its tag set to {@link
      *     Tag#GROUP_INFO}.
@@ -208,91 +225,88 @@ public final class GroupsGetInfoItem {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static GroupsGetInfoItem fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
+    static final class Serializer extends UnionJsonSerializer<GroupsGetInfoItem> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonWriter<GroupsGetInfoItem> _JSON_WRITER = new JsonWriter<GroupsGetInfoItem>() {
-        public final void write(GroupsGetInfoItem x, JsonGenerator g) throws IOException {
-            switch (x.tag) {
+        public Serializer() {
+            super(GroupsGetInfoItem.class, GroupFullInfo.class);
+        }
+
+        @Override
+        public void serialize(GroupsGetInfoItem value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            switch (value.tag) {
                 case ID_NOT_FOUND:
                     g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("id_not_found");
-                    g.writeFieldName("id_not_found");
-                    g.writeString(x.getIdNotFoundValue());
+                    g.writeStringField(".tag", "id_not_found");
+                    g.writeObjectField("id_not_found", value.idNotFoundValue);
                     g.writeEndObject();
                     break;
                 case GROUP_INFO:
                     g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("group_info");
-                    g.writeFieldName("group_info");
-                    GroupFullInfo._JSON_WRITER.write(x.getGroupInfoValue(), g);
+                    g.writeStringField(".tag", "group_info");
+                    getUnwrappingSerializer(GroupFullInfo.class).serialize(value.groupInfoValue, g, provider);
                     g.writeEndObject();
                     break;
             }
         }
-    };
+    }
 
-    public static final JsonReader<GroupsGetInfoItem> _JSON_READER = new JsonReader<GroupsGetInfoItem>() {
+    static final class Deserializer extends UnionJsonDeserializer<GroupsGetInfoItem, Tag> {
+        private static final long serialVersionUID = 0L;
 
-        public final GroupsGetInfoItem read(JsonParser parser) throws IOException, JsonReadException {
-            if (parser.getCurrentToken() == JsonToken.VALUE_STRING) {
-                String text = parser.getText();
-                parser.nextToken();
-                Tag tag = VALUES_.get(text);
-                if (tag == null) {
-                    throw new JsonReadException("Unanticipated tag " + text + " without catch-all", parser.getTokenLocation());
-                }
-                switch (tag) {
-                }
-                throw new JsonReadException("Tag " + tag + " requires a value", parser.getTokenLocation());
-            }
-            JsonReader.expectObjectStart(parser);
-            String[] tags = readTags(parser);
-            assert tags != null && tags.length == 1;
-            String text = tags[0];
-            Tag tag = VALUES_.get(text);
-            GroupsGetInfoItem value = null;
-            if (tag != null) {
-                switch (tag) {
-                    case ID_NOT_FOUND: {
-                        String v = null;
-                        assert parser.getCurrentToken() == JsonToken.FIELD_NAME;
-                        text = parser.getText();
-                        assert tags[0].equals(text);
-                        parser.nextToken();
-                        v = JsonReader.StringReader
-                            .readField(parser, "id_not_found", v);
-                        value = GroupsGetInfoItem.idNotFound(v);
-                        break;
-                    }
-                    case GROUP_INFO: {
-                        GroupFullInfo v = null;
-                        v = GroupFullInfo._JSON_READER.readFields(parser);
-                        value = GroupsGetInfoItem.groupInfo(v);
-                        break;
-                    }
-                }
-            }
-            if (value == null) {
-                throw new JsonReadException("Unanticipated tag " + text, parser.getTokenLocation());
-            }
-            JsonReader.expectObjectEnd(parser);
-            return value;
+        public Deserializer() {
+            super(GroupsGetInfoItem.class, getTagMapping(), null, GroupFullInfo.class);
         }
 
-    };
+        @Override
+        public GroupsGetInfoItem deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+            switch (_tag) {
+                case ID_NOT_FOUND: {
+                    String value = null;
+                    expectField(_p, "id_not_found");
+                    value = getStringValue(_p);
+                    _p.nextToken();
+                    return GroupsGetInfoItem.idNotFound(value);
+                }
+                case GROUP_INFO: {
+                    GroupFullInfo value = null;
+                    value = readCollapsedStructValue(GroupFullInfo.class, _p, _ctx);
+                    return GroupsGetInfoItem.groupInfo(value);
+                }
+            }
+            // should be impossible to get here
+            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
+        }
+
+        private static Map<String, GroupsGetInfoItem.Tag> getTagMapping() {
+            Map<String, GroupsGetInfoItem.Tag> values = new HashMap<String, GroupsGetInfoItem.Tag>();
+            values.put("id_not_found", GroupsGetInfoItem.Tag.ID_NOT_FOUND);
+            values.put("group_info", GroupsGetInfoItem.Tag.GROUP_INFO);
+            return Collections.unmodifiableMap(values);
+        }
+    }
 }

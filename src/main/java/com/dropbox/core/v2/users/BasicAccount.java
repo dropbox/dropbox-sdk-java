@@ -5,22 +5,40 @@ package com.dropbox.core.v2.users;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
 /**
  * Basic information about any account.
  */
+@JsonSerialize(using=BasicAccount.Serializer.class)
+@JsonDeserialize(using=BasicAccount.Deserializer.class)
 public class BasicAccount extends Account {
     // struct BasicAccount
 
-    private final boolean isTeammate;
-    private final String teamMemberId;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final boolean isTeammate;
+    protected final String teamMemberId;
 
     /**
      * Basic information about any account.
@@ -217,13 +235,13 @@ public class BasicAccount extends Account {
         // be careful with inheritance
         else if (obj.getClass().equals(this.getClass())) {
             BasicAccount other = (BasicAccount) obj;
-            return (this.isTeammate == other.isTeammate)
+            return ((this.accountId == other.accountId) || (this.accountId.equals(other.accountId)))
+                && ((this.name == other.name) || (this.name.equals(other.name)))
+                && ((this.email == other.email) || (this.email.equals(other.email)))
+                && (this.emailVerified == other.emailVerified)
+                && (this.isTeammate == other.isTeammate)
+                && ((this.profilePhotoUrl == other.profilePhotoUrl) || (this.profilePhotoUrl != null && this.profilePhotoUrl.equals(other.profilePhotoUrl)))
                 && ((this.teamMemberId == other.teamMemberId) || (this.teamMemberId != null && this.teamMemberId.equals(other.teamMemberId)))
-                && ((this.getAccountId() == other.getAccountId()) || (this.getAccountId().equals(other.getAccountId())))
-                && ((this.getName() == other.getName()) || (this.getName().equals(other.getName())))
-                && ((this.getEmail() == other.getEmail()) || (this.getEmail().equals(other.getEmail())))
-                && (this.getEmailVerified() == other.getEmailVerified())
-                && ((this.getProfilePhotoUrl() == other.getProfilePhotoUrl()) || (this.getProfilePhotoUrl() != null && this.getProfilePhotoUrl().equals(other.getProfilePhotoUrl())))
                 ;
         }
         else {
@@ -233,48 +251,81 @@ public class BasicAccount extends Account {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
-    }
-
-    public static BasicAccount fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
-
-    public static final JsonWriter<BasicAccount> _JSON_WRITER = new JsonWriter<BasicAccount>() {
-        public final void write(BasicAccount x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            Account._JSON_WRITER.writeFields(x, g);
-            BasicAccount._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
         }
-        public final void writeFields(BasicAccount x, JsonGenerator g) throws IOException {
-            g.writeFieldName("is_teammate");
-            g.writeBoolean(x.isTeammate);
-            if (x.teamMemberId != null) {
-                g.writeFieldName("team_member_id");
-                g.writeString(x.teamMemberId);
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
+    }
+
+    static final class Serializer extends StructJsonSerializer<BasicAccount> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(BasicAccount.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(BasicAccount.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<BasicAccount> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(BasicAccount value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("account_id", value.accountId);
+            g.writeObjectField("name", value.name);
+            g.writeObjectField("email", value.email);
+            g.writeObjectField("email_verified", value.emailVerified);
+            g.writeObjectField("is_teammate", value.isTeammate);
+            if (value.profilePhotoUrl != null) {
+                g.writeObjectField("profile_photo_url", value.profilePhotoUrl);
+            }
+            if (value.teamMemberId != null) {
+                g.writeObjectField("team_member_id", value.teamMemberId);
             }
         }
-    };
+    }
 
-    public static final JsonReader<BasicAccount> _JSON_READER = new JsonReader<BasicAccount>() {
-        public final BasicAccount read(JsonParser parser) throws IOException, JsonReadException {
-            BasicAccount result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+    static final class Deserializer extends StructJsonDeserializer<BasicAccount> {
+        private static final long serialVersionUID = 0L;
+
+        public Deserializer() {
+            super(BasicAccount.class);
         }
 
-        public final BasicAccount readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(BasicAccount.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<BasicAccount> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public BasicAccount deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             String accountId = null;
             Name name = null;
             String email = null;
@@ -282,57 +333,60 @@ public class BasicAccount extends Account {
             Boolean isTeammate = null;
             String profilePhotoUrl = null;
             String teamMemberId = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("account_id".equals(fieldName)) {
-                    accountId = JsonReader.StringReader
-                        .readField(parser, "account_id", accountId);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("account_id".equals(_field)) {
+                    accountId = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("name".equals(fieldName)) {
-                    name = Name._JSON_READER
-                        .readField(parser, "name", name);
+                else if ("name".equals(_field)) {
+                    name = _p.readValueAs(Name.class);
+                    _p.nextToken();
                 }
-                else if ("email".equals(fieldName)) {
-                    email = JsonReader.StringReader
-                        .readField(parser, "email", email);
+                else if ("email".equals(_field)) {
+                    email = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("email_verified".equals(fieldName)) {
-                    emailVerified = JsonReader.BooleanReader
-                        .readField(parser, "email_verified", emailVerified);
+                else if ("email_verified".equals(_field)) {
+                    emailVerified = _p.getValueAsBoolean();
+                    _p.nextToken();
                 }
-                else if ("is_teammate".equals(fieldName)) {
-                    isTeammate = JsonReader.BooleanReader
-                        .readField(parser, "is_teammate", isTeammate);
+                else if ("is_teammate".equals(_field)) {
+                    isTeammate = _p.getValueAsBoolean();
+                    _p.nextToken();
                 }
-                else if ("profile_photo_url".equals(fieldName)) {
-                    profilePhotoUrl = JsonReader.StringReader
-                        .readField(parser, "profile_photo_url", profilePhotoUrl);
+                else if ("profile_photo_url".equals(_field)) {
+                    profilePhotoUrl = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("team_member_id".equals(fieldName)) {
-                    teamMemberId = JsonReader.StringReader
-                        .readField(parser, "team_member_id", teamMemberId);
+                else if ("team_member_id".equals(_field)) {
+                    teamMemberId = getStringValue(_p);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (accountId == null) {
-                throw new JsonReadException("Required field \"account_id\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"account_id\" is missing.");
             }
             if (name == null) {
-                throw new JsonReadException("Required field \"name\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"name\" is missing.");
             }
             if (email == null) {
-                throw new JsonReadException("Required field \"email\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"email\" is missing.");
             }
             if (emailVerified == null) {
-                throw new JsonReadException("Required field \"email_verified\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"email_verified\" is missing.");
             }
             if (isTeammate == null) {
-                throw new JsonReadException("Required field \"is_teammate\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"is_teammate\" is missing.");
             }
+
             return new BasicAccount(accountId, name, email, emailVerified, isTeammate, profilePhotoUrl, teamMemberId);
         }
-    };
+    }
 }

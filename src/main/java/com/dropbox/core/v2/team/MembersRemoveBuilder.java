@@ -7,13 +7,13 @@ import com.dropbox.core.DbxException;
 
 /**
  * The request builder returned by {@link
- * DbxTeam#membersRemoveBuilder(UserSelectorArg)}.
+ * DbxTeamTeamRequests#membersRemoveBuilder(UserSelectorArg)}.
  *
  * <p> Use this class to set optional request parameters and complete the
  * request. </p>
  */
 public class MembersRemoveBuilder {
-    private final DbxTeam team;
+    private final DbxTeamTeamRequests team;
     private final MembersRemoveArg.Builder membersRemoveArgBuilder;
 
     /**
@@ -25,7 +25,7 @@ public class MembersRemoveBuilder {
      *
      * @return instsance of this builder
      */
-    MembersRemoveBuilder(DbxTeam team, MembersRemoveArg.Builder membersRemoveArgBuilder) {
+    MembersRemoveBuilder(DbxTeamTeamRequests team, MembersRemoveArg.Builder membersRemoveArgBuilder) {
         if (team == null) {
             throw new NullPointerException("team");
         }

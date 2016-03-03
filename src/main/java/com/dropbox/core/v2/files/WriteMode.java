@@ -5,13 +5,26 @@ package com.dropbox.core.v2.files;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.UnionJsonDeserializer;
+import com.dropbox.core.json.UnionJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Your intent when writing a file to some path. This is used to determine what
@@ -22,9 +35,20 @@ import java.io.IOException;
  * contains a file with identical contents, nothing gets written; no conflict.
  * The conflict checking differs in the case where there's a file at the target
  * path with contents different from the contents you're trying to write.
+ *
+ * <p> This class is a tagged union.  Tagged unions instances are always
+ * associated to a specific tag.  This means only one of the {@code isAbc()}
+ * methods will return {@code true}. You can use {@link #tag()} to determine the
+ * tag associated with this instance. </p>
  */
+@JsonSerialize(using=WriteMode.Serializer.class)
+@JsonDeserialize(using=WriteMode.Deserializer.class)
 public final class WriteMode {
     // union WriteMode
+
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link WriteMode}.
@@ -50,15 +74,16 @@ public final class WriteMode {
         UPDATE; // String
     }
 
-    private static final java.util.HashMap<String, Tag> VALUES_;
-    static {
-        VALUES_ = new java.util.HashMap<String, Tag>();
-        VALUES_.put("add", Tag.ADD);
-        VALUES_.put("overwrite", Tag.OVERWRITE);
-        VALUES_.put("update", Tag.UPDATE);
-    }
-
+    /**
+     * Never overwrite the existing file. The autorename strategy is to append a
+     * number to the file name. For example, "document.txt" might become
+     * "document (2).txt".
+     */
     public static final WriteMode ADD = new WriteMode(Tag.ADD, null);
+    /**
+     * Always overwrite the existing file. The autorename strategy is the same
+     * as it is for {@link WriteMode#ADD}.
+     */
     public static final WriteMode OVERWRITE = new WriteMode(Tag.OVERWRITE, null);
 
     private final Tag tag;
@@ -86,9 +111,10 @@ public final class WriteMode {
      * Returns the tag for this instance.
      *
      * <p> This class is a tagged union.  Tagged unions instances are always
-     * associated to a specific tag.  Callers are recommended to use the tag
-     * value in a {@code switch} statement to determine how to properly handle
-     * this {@code WriteMode}. </p>
+     * associated to a specific tag.  This means only one of the {@code isXyz()}
+     * methods will return {@code true}. Callers are recommended to use the tag
+     * value in a {@code switch} statement to properly handle the different
+     * values for this {@code WriteMode}. </p>
      *
      * @return the tag for this instance.
      */
@@ -100,7 +126,7 @@ public final class WriteMode {
      * Returns {@code true} if this instance has the tag {@link Tag#ADD}, {@code
      * false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link Tag#ADD},
+     * @return {@code true} if this instance is tagged as {@link Tag#ADD},
      *     {@code false} otherwise.
      */
     public boolean isAdd() {
@@ -111,8 +137,8 @@ public final class WriteMode {
      * Returns {@code true} if this instance has the tag {@link Tag#OVERWRITE},
      * {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
-     *     Tag#OVERWRITE}, {@code false} otherwise.
+     * @return {@code true} if this instance is tagged as {@link Tag#OVERWRITE},
+     *     {@code false} otherwise.
      */
     public boolean isOverwrite() {
         return this.tag == Tag.OVERWRITE;
@@ -122,7 +148,7 @@ public final class WriteMode {
      * Returns {@code true} if this instance has the tag {@link Tag#UPDATE},
      * {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link Tag#UPDATE},
+     * @return {@code true} if this instance is tagged as {@link Tag#UPDATE},
      *     {@code false} otherwise.
      */
     public boolean isUpdate() {
@@ -138,7 +164,7 @@ public final class WriteMode {
      * name. For example, "document.txt" might become "document (conflicted
      * copy).txt" or "document (Panda's conflicted copy).txt". </p>
      *
-     * @param value  {@link WriteMode#update} value to assign to this instance.
+     * @param value  value to assign to this instance.
      *
      * @return Instance of {@code WriteMode} with its tag set to {@link
      *     Tag#UPDATE}.
@@ -216,99 +242,90 @@ public final class WriteMode {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static WriteMode fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
+    static final class Serializer extends UnionJsonSerializer<WriteMode> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonWriter<WriteMode> _JSON_WRITER = new JsonWriter<WriteMode>() {
-        public final void write(WriteMode x, JsonGenerator g) throws IOException {
-            switch (x.tag) {
+        public Serializer() {
+            super(WriteMode.class);
+        }
+
+        @Override
+        public void serialize(WriteMode value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            switch (value.tag) {
                 case ADD:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("add");
-                    g.writeEndObject();
                     break;
                 case OVERWRITE:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("overwrite");
-                    g.writeEndObject();
                     break;
                 case UPDATE:
                     g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("update");
-                    g.writeFieldName("update");
-                    g.writeString(x.getUpdateValue());
+                    g.writeStringField(".tag", "update");
+                    g.writeObjectField("update", value.updateValue);
                     g.writeEndObject();
                     break;
             }
         }
-    };
+    }
 
-    public static final JsonReader<WriteMode> _JSON_READER = new JsonReader<WriteMode>() {
+    static final class Deserializer extends UnionJsonDeserializer<WriteMode, Tag> {
+        private static final long serialVersionUID = 0L;
 
-        public final WriteMode read(JsonParser parser) throws IOException, JsonReadException {
-            if (parser.getCurrentToken() == JsonToken.VALUE_STRING) {
-                String text = parser.getText();
-                parser.nextToken();
-                Tag tag = VALUES_.get(text);
-                if (tag == null) {
-                    throw new JsonReadException("Unanticipated tag " + text + " without catch-all", parser.getTokenLocation());
-                }
-                switch (tag) {
-                    case ADD: return WriteMode.ADD;
-                    case OVERWRITE: return WriteMode.OVERWRITE;
-                }
-                throw new JsonReadException("Tag " + tag + " requires a value", parser.getTokenLocation());
-            }
-            JsonReader.expectObjectStart(parser);
-            String[] tags = readTags(parser);
-            assert tags != null && tags.length == 1;
-            String text = tags[0];
-            Tag tag = VALUES_.get(text);
-            WriteMode value = null;
-            if (tag != null) {
-                switch (tag) {
-                    case ADD: {
-                        value = WriteMode.ADD;
-                        break;
-                    }
-                    case OVERWRITE: {
-                        value = WriteMode.OVERWRITE;
-                        break;
-                    }
-                    case UPDATE: {
-                        String v = null;
-                        assert parser.getCurrentToken() == JsonToken.FIELD_NAME;
-                        text = parser.getText();
-                        assert tags[0].equals(text);
-                        parser.nextToken();
-                        v = JsonReader.StringReader
-                            .readField(parser, "update", v);
-                        value = WriteMode.update(v);
-                        break;
-                    }
-                }
-            }
-            if (value == null) {
-                throw new JsonReadException("Unanticipated tag " + text, parser.getTokenLocation());
-            }
-            JsonReader.expectObjectEnd(parser);
-            return value;
+        public Deserializer() {
+            super(WriteMode.class, getTagMapping(), null);
         }
 
-    };
+        @Override
+        public WriteMode deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+            switch (_tag) {
+                case ADD: {
+                    return WriteMode.ADD;
+                }
+                case OVERWRITE: {
+                    return WriteMode.OVERWRITE;
+                }
+                case UPDATE: {
+                    String value = null;
+                    expectField(_p, "update");
+                    value = getStringValue(_p);
+                    _p.nextToken();
+                    return WriteMode.update(value);
+                }
+            }
+            // should be impossible to get here
+            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
+        }
+
+        private static Map<String, WriteMode.Tag> getTagMapping() {
+            Map<String, WriteMode.Tag> values = new HashMap<String, WriteMode.Tag>();
+            values.put("add", WriteMode.Tag.ADD);
+            values.put("overwrite", WriteMode.Tag.OVERWRITE);
+            values.put("update", WriteMode.Tag.UPDATE);
+            return Collections.unmodifiableMap(values);
+        }
+    }
 }

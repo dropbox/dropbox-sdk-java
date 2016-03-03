@@ -5,16 +5,41 @@ package com.dropbox.core.v2.team;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.UnionJsonDeserializer;
+import com.dropbox.core.json.UnionJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
+/**
+ * This class is a tagged union.  Tagged unions instances are always associated
+ * to a specific tag.  This means only one of the {@code isAbc()} methods will
+ * return {@code true}. You can use {@link #tag()} to determine the tag
+ * associated with this instance.
+ */
+@JsonSerialize(using=RevokeDeviceSessionArg.Serializer.class)
+@JsonDeserialize(using=RevokeDeviceSessionArg.Deserializer.class)
 public final class RevokeDeviceSessionArg {
     // union RevokeDeviceSessionArg
+
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link RevokeDeviceSessionArg}.
@@ -32,14 +57,6 @@ public final class RevokeDeviceSessionArg {
          * Unlink a linked mobile device
          */
         MOBILE_CLIENT; // DeviceSessionArg
-    }
-
-    private static final java.util.HashMap<String, Tag> VALUES_;
-    static {
-        VALUES_ = new java.util.HashMap<String, Tag>();
-        VALUES_.put("web_session", Tag.WEB_SESSION);
-        VALUES_.put("desktop_client", Tag.DESKTOP_CLIENT);
-        VALUES_.put("mobile_client", Tag.MOBILE_CLIENT);
     }
 
     private final Tag tag;
@@ -62,9 +79,10 @@ public final class RevokeDeviceSessionArg {
      * Returns the tag for this instance.
      *
      * <p> This class is a tagged union.  Tagged unions instances are always
-     * associated to a specific tag.  Callers are recommended to use the tag
-     * value in a {@code switch} statement to determine how to properly handle
-     * this {@code RevokeDeviceSessionArg}. </p>
+     * associated to a specific tag.  This means only one of the {@code isXyz()}
+     * methods will return {@code true}. Callers are recommended to use the tag
+     * value in a {@code switch} statement to properly handle the different
+     * values for this {@code RevokeDeviceSessionArg}. </p>
      *
      * @return the tag for this instance.
      */
@@ -76,7 +94,7 @@ public final class RevokeDeviceSessionArg {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#WEB_SESSION}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#WEB_SESSION}, {@code false} otherwise.
      */
     public boolean isWebSession() {
@@ -89,8 +107,7 @@ public final class RevokeDeviceSessionArg {
      *
      * <p> End an active session </p>
      *
-     * @param value  {@link RevokeDeviceSessionArg#webSession} value to assign
-     *     to this instance.
+     * @param value  value to assign to this instance.
      *
      * @return Instance of {@code RevokeDeviceSessionArg} with its tag set to
      *     {@link Tag#WEB_SESSION}.
@@ -125,7 +142,7 @@ public final class RevokeDeviceSessionArg {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#DESKTOP_CLIENT}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#DESKTOP_CLIENT}, {@code false} otherwise.
      */
     public boolean isDesktopClient() {
@@ -138,8 +155,7 @@ public final class RevokeDeviceSessionArg {
      *
      * <p> Unlink a linked desktop device </p>
      *
-     * @param value  {@link RevokeDeviceSessionArg#desktopClient} value to
-     *     assign to this instance.
+     * @param value  value to assign to this instance.
      *
      * @return Instance of {@code RevokeDeviceSessionArg} with its tag set to
      *     {@link Tag#DESKTOP_CLIENT}.
@@ -175,7 +191,7 @@ public final class RevokeDeviceSessionArg {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#MOBILE_CLIENT}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#MOBILE_CLIENT}, {@code false} otherwise.
      */
     public boolean isMobileClient() {
@@ -188,8 +204,7 @@ public final class RevokeDeviceSessionArg {
      *
      * <p> Unlink a linked mobile device </p>
      *
-     * @param value  {@link RevokeDeviceSessionArg#mobileClient} value to assign
-     *     to this instance.
+     * @param value  value to assign to this instance.
      *
      * @return Instance of {@code RevokeDeviceSessionArg} with its tag set to
      *     {@link Tag#MOBILE_CLIENT}.
@@ -260,100 +275,98 @@ public final class RevokeDeviceSessionArg {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static RevokeDeviceSessionArg fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
+    static final class Serializer extends UnionJsonSerializer<RevokeDeviceSessionArg> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonWriter<RevokeDeviceSessionArg> _JSON_WRITER = new JsonWriter<RevokeDeviceSessionArg>() {
-        public final void write(RevokeDeviceSessionArg x, JsonGenerator g) throws IOException {
-            switch (x.tag) {
+        public Serializer() {
+            super(RevokeDeviceSessionArg.class, DeviceSessionArg.class, RevokeDesktopClientArg.class, DeviceSessionArg.class);
+        }
+
+        @Override
+        public void serialize(RevokeDeviceSessionArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            switch (value.tag) {
                 case WEB_SESSION:
                     g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("web_session");
-                    g.writeFieldName("web_session");
-                    DeviceSessionArg._JSON_WRITER.write(x.getWebSessionValue(), g);
+                    g.writeStringField(".tag", "web_session");
+                    getUnwrappingSerializer(DeviceSessionArg.class).serialize(value.webSessionValue, g, provider);
                     g.writeEndObject();
                     break;
                 case DESKTOP_CLIENT:
                     g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("desktop_client");
-                    g.writeFieldName("desktop_client");
-                    RevokeDesktopClientArg._JSON_WRITER.write(x.getDesktopClientValue(), g);
+                    g.writeStringField(".tag", "desktop_client");
+                    getUnwrappingSerializer(RevokeDesktopClientArg.class).serialize(value.desktopClientValue, g, provider);
                     g.writeEndObject();
                     break;
                 case MOBILE_CLIENT:
                     g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("mobile_client");
-                    g.writeFieldName("mobile_client");
-                    DeviceSessionArg._JSON_WRITER.write(x.getMobileClientValue(), g);
+                    g.writeStringField(".tag", "mobile_client");
+                    getUnwrappingSerializer(DeviceSessionArg.class).serialize(value.mobileClientValue, g, provider);
                     g.writeEndObject();
                     break;
             }
         }
-    };
+    }
 
-    public static final JsonReader<RevokeDeviceSessionArg> _JSON_READER = new JsonReader<RevokeDeviceSessionArg>() {
+    static final class Deserializer extends UnionJsonDeserializer<RevokeDeviceSessionArg, Tag> {
+        private static final long serialVersionUID = 0L;
 
-        public final RevokeDeviceSessionArg read(JsonParser parser) throws IOException, JsonReadException {
-            if (parser.getCurrentToken() == JsonToken.VALUE_STRING) {
-                String text = parser.getText();
-                parser.nextToken();
-                Tag tag = VALUES_.get(text);
-                if (tag == null) {
-                    throw new JsonReadException("Unanticipated tag " + text + " without catch-all", parser.getTokenLocation());
-                }
-                switch (tag) {
-                }
-                throw new JsonReadException("Tag " + tag + " requires a value", parser.getTokenLocation());
-            }
-            JsonReader.expectObjectStart(parser);
-            String[] tags = readTags(parser);
-            assert tags != null && tags.length == 1;
-            String text = tags[0];
-            Tag tag = VALUES_.get(text);
-            RevokeDeviceSessionArg value = null;
-            if (tag != null) {
-                switch (tag) {
-                    case WEB_SESSION: {
-                        DeviceSessionArg v = null;
-                        v = DeviceSessionArg._JSON_READER.readFields(parser);
-                        value = RevokeDeviceSessionArg.webSession(v);
-                        break;
-                    }
-                    case DESKTOP_CLIENT: {
-                        RevokeDesktopClientArg v = null;
-                        v = RevokeDesktopClientArg._JSON_READER.readFields(parser);
-                        value = RevokeDeviceSessionArg.desktopClient(v);
-                        break;
-                    }
-                    case MOBILE_CLIENT: {
-                        DeviceSessionArg v = null;
-                        v = DeviceSessionArg._JSON_READER.readFields(parser);
-                        value = RevokeDeviceSessionArg.mobileClient(v);
-                        break;
-                    }
-                }
-            }
-            if (value == null) {
-                throw new JsonReadException("Unanticipated tag " + text, parser.getTokenLocation());
-            }
-            JsonReader.expectObjectEnd(parser);
-            return value;
+        public Deserializer() {
+            super(RevokeDeviceSessionArg.class, getTagMapping(), null, DeviceSessionArg.class, RevokeDesktopClientArg.class, DeviceSessionArg.class);
         }
 
-    };
+        @Override
+        public RevokeDeviceSessionArg deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+            switch (_tag) {
+                case WEB_SESSION: {
+                    DeviceSessionArg value = null;
+                    value = readCollapsedStructValue(DeviceSessionArg.class, _p, _ctx);
+                    return RevokeDeviceSessionArg.webSession(value);
+                }
+                case DESKTOP_CLIENT: {
+                    RevokeDesktopClientArg value = null;
+                    value = readCollapsedStructValue(RevokeDesktopClientArg.class, _p, _ctx);
+                    return RevokeDeviceSessionArg.desktopClient(value);
+                }
+                case MOBILE_CLIENT: {
+                    DeviceSessionArg value = null;
+                    value = readCollapsedStructValue(DeviceSessionArg.class, _p, _ctx);
+                    return RevokeDeviceSessionArg.mobileClient(value);
+                }
+            }
+            // should be impossible to get here
+            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
+        }
+
+        private static Map<String, RevokeDeviceSessionArg.Tag> getTagMapping() {
+            Map<String, RevokeDeviceSessionArg.Tag> values = new HashMap<String, RevokeDeviceSessionArg.Tag>();
+            values.put("web_session", RevokeDeviceSessionArg.Tag.WEB_SESSION);
+            values.put("desktop_client", RevokeDeviceSessionArg.Tag.DESKTOP_CLIENT);
+            values.put("mobile_client", RevokeDeviceSessionArg.Tag.MOBILE_CLIENT);
+            return Collections.unmodifiableMap(values);
+        }
+    }
 }

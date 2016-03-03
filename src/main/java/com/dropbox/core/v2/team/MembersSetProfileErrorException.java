@@ -11,9 +11,11 @@ import com.dropbox.core.LocalizedText;
  * MembersSetProfileError} error.
  */
 public class MembersSetProfileErrorException extends DbxApiException {
+    private static final long serialVersionUID = 0L;
 
     /**
-     * The error reported by {@link DbxTeam#membersSetProfile(UserSelectorArg)}.
+     * The error reported by {@link
+     * DbxTeamTeamRequests#membersSetProfile(UserSelectorArg)}.
      */
     public final MembersSetProfileError errorValue;
 

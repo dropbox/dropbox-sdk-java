@@ -11,9 +11,10 @@ import com.dropbox.core.LocalizedText;
  * error.
  */
 public class CreateFolderErrorException extends DbxApiException {
+    private static final long serialVersionUID = 0L;
 
     /**
-     * The error reported by {@link DbxFiles#createFolder(String)}.
+     * The error reported by {@link DbxUserFilesRequests#createFolder(String)}.
      */
     public final CreateFolderError errorValue;
 

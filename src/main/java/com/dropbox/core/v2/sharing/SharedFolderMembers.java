@@ -3,14 +3,25 @@
 
 package com.dropbox.core.v2.sharing;
 
-import com.dropbox.core.json.JsonArrayReader;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.List;
@@ -18,13 +29,19 @@ import java.util.List;
 /**
  * Shared folder user and group membership.
  */
+@JsonSerialize(using=SharedFolderMembers.Serializer.class)
+@JsonDeserialize(using=SharedFolderMembers.Deserializer.class)
 public class SharedFolderMembers {
     // struct SharedFolderMembers
 
-    private final List<UserMembershipInfo> users;
-    private final List<GroupMembershipInfo> groups;
-    private final List<InviteeMembershipInfo> invitees;
-    private final String cursor;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final List<UserMembershipInfo> users;
+    protected final List<GroupMembershipInfo> groups;
+    protected final List<InviteeMembershipInfo> invitees;
+    protected final String cursor;
 
     /**
      * Shared folder user and group membership.
@@ -39,8 +56,8 @@ public class SharedFolderMembers {
      *     not be {@code null}.
      * @param cursor  Present if there are additional shared folder members that
      *     have not been returned yet. Pass the cursor into {@link
-     *     DbxSharing#listFolderMembersContinue(String)} to list additional
-     *     members.
+     *     DbxUserSharingRequests#listFolderMembersContinue(String)} to list
+     *     additional members.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -129,7 +146,8 @@ public class SharedFolderMembers {
     /**
      * Present if there are additional shared folder members that have not been
      * returned yet. Pass the cursor into {@link
-     * DbxSharing#listFolderMembersContinue(String)} to list additional members.
+     * DbxUserSharingRequests#listFolderMembersContinue(String)} to list
+     * additional members.
      *
      * @return value for this field, or {@code null} if not present.
      */
@@ -139,10 +157,13 @@ public class SharedFolderMembers {
 
     @Override
     public int hashCode() {
-        // objects containing lists are not hash-able. This is used as a safeguard
-        // against adding this object to a HashSet or HashMap. Since list fields are
-        // mutable, it is not safe to compute a hashCode here.
-        return System.identityHashCode(this);
+        int hash = java.util.Arrays.hashCode(new Object [] {
+            users,
+            groups,
+            invitees,
+            cursor
+        });
+        return hash;
     }
 
     @Override
@@ -166,106 +187,140 @@ public class SharedFolderMembers {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static SharedFolderMembers fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
+    static final class Serializer extends StructJsonSerializer<SharedFolderMembers> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(SharedFolderMembers.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(SharedFolderMembers.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<SharedFolderMembers> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(SharedFolderMembers value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("users", value.users);
+            g.writeObjectField("groups", value.groups);
+            g.writeObjectField("invitees", value.invitees);
+            if (value.cursor != null) {
+                g.writeObjectField("cursor", value.cursor);
+            }
+        }
     }
 
-    public static final JsonWriter<SharedFolderMembers> _JSON_WRITER = new JsonWriter<SharedFolderMembers>() {
-        public final void write(SharedFolderMembers x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            SharedFolderMembers._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
-        }
-        public final void writeFields(SharedFolderMembers x, JsonGenerator g) throws IOException {
-            g.writeFieldName("users");
-            g.writeStartArray();
-            for (UserMembershipInfo item: x.users) {
-                if (item != null) {
-                    UserMembershipInfo._JSON_WRITER.write(item, g);
-                }
-            }
-            g.writeEndArray();
-            g.writeFieldName("groups");
-            g.writeStartArray();
-            for (GroupMembershipInfo item: x.groups) {
-                if (item != null) {
-                    GroupMembershipInfo._JSON_WRITER.write(item, g);
-                }
-            }
-            g.writeEndArray();
-            g.writeFieldName("invitees");
-            g.writeStartArray();
-            for (InviteeMembershipInfo item: x.invitees) {
-                if (item != null) {
-                    InviteeMembershipInfo._JSON_WRITER.write(item, g);
-                }
-            }
-            g.writeEndArray();
-            if (x.cursor != null) {
-                g.writeFieldName("cursor");
-                g.writeString(x.cursor);
-            }
-        }
-    };
+    static final class Deserializer extends StructJsonDeserializer<SharedFolderMembers> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonReader<SharedFolderMembers> _JSON_READER = new JsonReader<SharedFolderMembers>() {
-        public final SharedFolderMembers read(JsonParser parser) throws IOException, JsonReadException {
-            SharedFolderMembers result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+        public Deserializer() {
+            super(SharedFolderMembers.class);
         }
 
-        public final SharedFolderMembers readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(SharedFolderMembers.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<SharedFolderMembers> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public SharedFolderMembers deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             List<UserMembershipInfo> users = null;
             List<GroupMembershipInfo> groups = null;
             List<InviteeMembershipInfo> invitees = null;
             String cursor = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("users".equals(fieldName)) {
-                    users = JsonArrayReader.mk(UserMembershipInfo._JSON_READER)
-                        .readField(parser, "users", users);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("users".equals(_field)) {
+                    expectArrayStart(_p);
+                    users = new java.util.ArrayList<UserMembershipInfo>();
+                    while (!isArrayEnd(_p)) {
+                        UserMembershipInfo _x = null;
+                        _x = _p.readValueAs(UserMembershipInfo.class);
+                        _p.nextToken();
+                        users.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
                 }
-                else if ("groups".equals(fieldName)) {
-                    groups = JsonArrayReader.mk(GroupMembershipInfo._JSON_READER)
-                        .readField(parser, "groups", groups);
+                else if ("groups".equals(_field)) {
+                    expectArrayStart(_p);
+                    groups = new java.util.ArrayList<GroupMembershipInfo>();
+                    while (!isArrayEnd(_p)) {
+                        GroupMembershipInfo _x = null;
+                        _x = _p.readValueAs(GroupMembershipInfo.class);
+                        _p.nextToken();
+                        groups.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
                 }
-                else if ("invitees".equals(fieldName)) {
-                    invitees = JsonArrayReader.mk(InviteeMembershipInfo._JSON_READER)
-                        .readField(parser, "invitees", invitees);
+                else if ("invitees".equals(_field)) {
+                    expectArrayStart(_p);
+                    invitees = new java.util.ArrayList<InviteeMembershipInfo>();
+                    while (!isArrayEnd(_p)) {
+                        InviteeMembershipInfo _x = null;
+                        _x = _p.readValueAs(InviteeMembershipInfo.class);
+                        _p.nextToken();
+                        invitees.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
                 }
-                else if ("cursor".equals(fieldName)) {
-                    cursor = JsonReader.StringReader
-                        .readField(parser, "cursor", cursor);
+                else if ("cursor".equals(_field)) {
+                    cursor = getStringValue(_p);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (users == null) {
-                throw new JsonReadException("Required field \"users\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"users\" is missing.");
             }
             if (groups == null) {
-                throw new JsonReadException("Required field \"groups\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"groups\" is missing.");
             }
             if (invitees == null) {
-                throw new JsonReadException("Required field \"invitees\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"invitees\" is missing.");
             }
+
             return new SharedFolderMembers(users, groups, invitees, cursor);
         }
-    };
+    }
 }

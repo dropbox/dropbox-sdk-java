@@ -5,16 +5,41 @@ package com.dropbox.core.v2.files;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.UnionJsonDeserializer;
+import com.dropbox.core.json.UnionJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
+/**
+ * This class is a tagged union.  Tagged unions instances are always associated
+ * to a specific tag.  This means only one of the {@code isAbc()} methods will
+ * return {@code true}. You can use {@link #tag()} to determine the tag
+ * associated with this instance.
+ */
+@JsonSerialize(using=PreviewError.Serializer.class)
+@JsonDeserialize(using=PreviewError.Deserializer.class)
 public final class PreviewError {
     // union PreviewError
+
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link PreviewError}.
@@ -39,17 +64,18 @@ public final class PreviewError {
         UNSUPPORTED_CONTENT;
     }
 
-    private static final java.util.HashMap<String, Tag> VALUES_;
-    static {
-        VALUES_ = new java.util.HashMap<String, Tag>();
-        VALUES_.put("path", Tag.PATH);
-        VALUES_.put("in_progress", Tag.IN_PROGRESS);
-        VALUES_.put("unsupported_extension", Tag.UNSUPPORTED_EXTENSION);
-        VALUES_.put("unsupported_content", Tag.UNSUPPORTED_CONTENT);
-    }
-
+    /**
+     * This preview generation is still in progress and the file is not ready
+     * for preview yet.
+     */
     public static final PreviewError IN_PROGRESS = new PreviewError(Tag.IN_PROGRESS, null);
+    /**
+     * The file extension is not supported preview generation.
+     */
     public static final PreviewError UNSUPPORTED_EXTENSION = new PreviewError(Tag.UNSUPPORTED_EXTENSION, null);
+    /**
+     * The file content is not supported for preview generation.
+     */
     public static final PreviewError UNSUPPORTED_CONTENT = new PreviewError(Tag.UNSUPPORTED_CONTENT, null);
 
     private final Tag tag;
@@ -68,9 +94,10 @@ public final class PreviewError {
      * Returns the tag for this instance.
      *
      * <p> This class is a tagged union.  Tagged unions instances are always
-     * associated to a specific tag.  Callers are recommended to use the tag
-     * value in a {@code switch} statement to determine how to properly handle
-     * this {@code PreviewError}. </p>
+     * associated to a specific tag.  This means only one of the {@code isXyz()}
+     * methods will return {@code true}. Callers are recommended to use the tag
+     * value in a {@code switch} statement to properly handle the different
+     * values for this {@code PreviewError}. </p>
      *
      * @return the tag for this instance.
      */
@@ -82,7 +109,7 @@ public final class PreviewError {
      * Returns {@code true} if this instance has the tag {@link Tag#PATH},
      * {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link Tag#PATH},
+     * @return {@code true} if this instance is tagged as {@link Tag#PATH},
      *     {@code false} otherwise.
      */
     public boolean isPath() {
@@ -95,7 +122,7 @@ public final class PreviewError {
      *
      * <p> An error occurs when downloading metadata for the file. </p>
      *
-     * @param value  {@link PreviewError#path} value to assign to this instance.
+     * @param value  value to assign to this instance.
      *
      * @return Instance of {@code PreviewError} with its tag set to {@link
      *     Tag#PATH}.
@@ -130,7 +157,7 @@ public final class PreviewError {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#IN_PROGRESS}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#IN_PROGRESS}, {@code false} otherwise.
      */
     public boolean isInProgress() {
@@ -141,7 +168,7 @@ public final class PreviewError {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#UNSUPPORTED_EXTENSION}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#UNSUPPORTED_EXTENSION}, {@code false} otherwise.
      */
     public boolean isUnsupportedExtension() {
@@ -152,7 +179,7 @@ public final class PreviewError {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#UNSUPPORTED_CONTENT}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#UNSUPPORTED_CONTENT}, {@code false} otherwise.
      */
     public boolean isUnsupportedContent() {
@@ -198,110 +225,97 @@ public final class PreviewError {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static PreviewError fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
+    static final class Serializer extends UnionJsonSerializer<PreviewError> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonWriter<PreviewError> _JSON_WRITER = new JsonWriter<PreviewError>() {
-        public final void write(PreviewError x, JsonGenerator g) throws IOException {
-            switch (x.tag) {
+        public Serializer() {
+            super(PreviewError.class);
+        }
+
+        @Override
+        public void serialize(PreviewError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            switch (value.tag) {
                 case PATH:
                     g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("path");
-                    g.writeFieldName("path");
-                    LookupError._JSON_WRITER.write(x.getPathValue(), g);
+                    g.writeStringField(".tag", "path");
+                    g.writeObjectField("path", value.pathValue);
                     g.writeEndObject();
                     break;
                 case IN_PROGRESS:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("in_progress");
-                    g.writeEndObject();
                     break;
                 case UNSUPPORTED_EXTENSION:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("unsupported_extension");
-                    g.writeEndObject();
                     break;
                 case UNSUPPORTED_CONTENT:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("unsupported_content");
-                    g.writeEndObject();
                     break;
             }
         }
-    };
+    }
 
-    public static final JsonReader<PreviewError> _JSON_READER = new JsonReader<PreviewError>() {
+    static final class Deserializer extends UnionJsonDeserializer<PreviewError, Tag> {
+        private static final long serialVersionUID = 0L;
 
-        public final PreviewError read(JsonParser parser) throws IOException, JsonReadException {
-            if (parser.getCurrentToken() == JsonToken.VALUE_STRING) {
-                String text = parser.getText();
-                parser.nextToken();
-                Tag tag = VALUES_.get(text);
-                if (tag == null) {
-                    throw new JsonReadException("Unanticipated tag " + text + " without catch-all", parser.getTokenLocation());
-                }
-                switch (tag) {
-                    case IN_PROGRESS: return PreviewError.IN_PROGRESS;
-                    case UNSUPPORTED_EXTENSION: return PreviewError.UNSUPPORTED_EXTENSION;
-                    case UNSUPPORTED_CONTENT: return PreviewError.UNSUPPORTED_CONTENT;
-                }
-                throw new JsonReadException("Tag " + tag + " requires a value", parser.getTokenLocation());
-            }
-            JsonReader.expectObjectStart(parser);
-            String[] tags = readTags(parser);
-            assert tags != null && tags.length == 1;
-            String text = tags[0];
-            Tag tag = VALUES_.get(text);
-            PreviewError value = null;
-            if (tag != null) {
-                switch (tag) {
-                    case PATH: {
-                        LookupError v = null;
-                        assert parser.getCurrentToken() == JsonToken.FIELD_NAME;
-                        text = parser.getText();
-                        assert tags[0].equals(text);
-                        parser.nextToken();
-                        v = LookupError._JSON_READER
-                            .readField(parser, "path", v);
-                        value = PreviewError.path(v);
-                        break;
-                    }
-                    case IN_PROGRESS: {
-                        value = PreviewError.IN_PROGRESS;
-                        break;
-                    }
-                    case UNSUPPORTED_EXTENSION: {
-                        value = PreviewError.UNSUPPORTED_EXTENSION;
-                        break;
-                    }
-                    case UNSUPPORTED_CONTENT: {
-                        value = PreviewError.UNSUPPORTED_CONTENT;
-                        break;
-                    }
-                }
-            }
-            if (value == null) {
-                throw new JsonReadException("Unanticipated tag " + text, parser.getTokenLocation());
-            }
-            JsonReader.expectObjectEnd(parser);
-            return value;
+        public Deserializer() {
+            super(PreviewError.class, getTagMapping(), null);
         }
 
-    };
+        @Override
+        public PreviewError deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+            switch (_tag) {
+                case PATH: {
+                    LookupError value = null;
+                    expectField(_p, "path");
+                    value = _p.readValueAs(LookupError.class);
+                    _p.nextToken();
+                    return PreviewError.path(value);
+                }
+                case IN_PROGRESS: {
+                    return PreviewError.IN_PROGRESS;
+                }
+                case UNSUPPORTED_EXTENSION: {
+                    return PreviewError.UNSUPPORTED_EXTENSION;
+                }
+                case UNSUPPORTED_CONTENT: {
+                    return PreviewError.UNSUPPORTED_CONTENT;
+                }
+            }
+            // should be impossible to get here
+            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
+        }
+
+        private static Map<String, PreviewError.Tag> getTagMapping() {
+            Map<String, PreviewError.Tag> values = new HashMap<String, PreviewError.Tag>();
+            values.put("path", PreviewError.Tag.PATH);
+            values.put("in_progress", PreviewError.Tag.IN_PROGRESS);
+            values.put("unsupported_extension", PreviewError.Tag.UNSUPPORTED_EXTENSION);
+            values.put("unsupported_content", PreviewError.Tag.UNSUPPORTED_CONTENT);
+            return Collections.unmodifiableMap(values);
+        }
+    }
 }

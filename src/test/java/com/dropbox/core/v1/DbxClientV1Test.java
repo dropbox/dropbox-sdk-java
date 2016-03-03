@@ -13,6 +13,7 @@ import com.dropbox.core.util.IOUtil;
 
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+import org.mockito.Matchers;
 import org.testng.annotations.Test;
 
 import java.io.ByteArrayInputStream;
@@ -42,14 +43,14 @@ public class DbxClientV1Test {
         DbxClientV1 client = new DbxClientV1(config, "fakeAccessToken");
 
         // 503 every time
-        when(mockRequestor.doGet(anyString(), any(Iterable.class)))
+        when(mockRequestor.doGet(anyString(), anyHeaders()))
             .thenReturn(createEmptyResponse(503));
 
         try {
             client.getAccountInfo();
         } finally {
             // should only have been called once since we disabled retry
-            verify(mockRequestor, times(1)).doGet(anyString(), any(Iterable.class));
+            verify(mockRequestor, times(1)).doGet(anyString(), anyHeaders());
         }
     }
 
@@ -71,13 +72,13 @@ public class DbxClientV1Test {
             .thenReturn(createEmptyResponse(503))
             .thenReturn(createSuccessResponse(json));
 
-        when(mockRequestor.startPost(anyString(), any(Iterable.class)))
+        when(mockRequestor.startPost(anyString(), anyHeaders()))
             .thenReturn(mockUploader);
 
         DbxDelta<DbxEntry> actual = client.getDelta(null);
 
         // should have only been called 3 times: initial call + 2 retries
-        verify(mockRequestor, times(3)).startPost(anyString(), any(Iterable.class));
+        verify(mockRequestor, times(3)).startPost(anyString(), anyHeaders());
 
         assertEquals(actual.reset, true);
         assertEquals(actual.cursor, "fakeCursor");
@@ -94,14 +95,14 @@ public class DbxClientV1Test {
         DbxClientV1 client = new DbxClientV1(config, "fakeAccessToken");
 
         // 503 always and forever
-        when(mockRequestor.doGet(anyString(), any(Iterable.class)))
+        when(mockRequestor.doGet(anyString(), anyHeaders()))
             .thenReturn(createEmptyResponse(503));
 
         try {
             client.getAccountInfo();
         } finally {
             // should only have been called 4: initial call + max number of retries (3)
-            verify(mockRequestor, times(4)).doGet(anyString(), any(Iterable.class));
+            verify(mockRequestor, times(4)).doGet(anyString(), anyHeaders());
         }
     }
 
@@ -116,7 +117,7 @@ public class DbxClientV1Test {
         DbxClientV1 client = new DbxClientV1(config, "fakeAccessToken");
 
         // 503 once, then return 400
-        when(mockRequestor.doGet(anyString(), any(Iterable.class)))
+        when(mockRequestor.doGet(anyString(), anyHeaders()))
             .thenReturn(createEmptyResponse(503))
             .thenReturn(createEmptyResponse(400));
 
@@ -124,7 +125,7 @@ public class DbxClientV1Test {
             client.getAccountInfo();
         } finally {
             // should only have been called 2 times: initial call + one retry
-            verify(mockRequestor, times(2)).doGet(anyString(), any(Iterable.class));
+            verify(mockRequestor, times(2)).doGet(anyString(), anyHeaders());
         }
     }
 
@@ -146,7 +147,7 @@ public class DbxClientV1Test {
         byte [] expected = new byte [] { 1, 2, 3, 4 };
 
         // 503 once, then return 200
-        when(mockRequestor.doGet(anyString(), any(Iterable.class)))
+        when(mockRequestor.doGet(anyString(), anyHeaders()))
             .thenReturn(createEmptyResponse(503))
             .thenReturn(createDownloaderResponse(expected, "X-Dropbox-Metadata", metadataJson));
 
@@ -158,7 +159,7 @@ public class DbxClientV1Test {
         );
 
         // should have been attempted twice
-        verify(mockRequestor, times(2)).doGet(anyString(), any(Iterable.class));
+        verify(mockRequestor, times(2)).doGet(anyString(), anyHeaders());
 
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
         IOUtil.copyStreamToStream(downloader.body, bout);
@@ -207,5 +208,9 @@ public class DbxClientV1Test {
                 }
             });
         return uploader;
+    }
+
+    private static Iterable<HttpRequestor.Header> anyHeaders() {
+        return Matchers.<Iterable<HttpRequestor.Header>>any();
     }
 }

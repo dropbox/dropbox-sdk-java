@@ -1,5 +1,8 @@
 package com.dropbox.core;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Human-readable text localized to a specific locale.
  */
@@ -14,7 +17,11 @@ public final class LocalizedText {
      * @param text    Localized, human-readable text. Must not be {@code null}
      * @param locale  IETF BCP 47 language tag of text locale. Must not be {@code null}
      */
-    public LocalizedText(String text, String locale) {
+    @JsonCreator
+    public LocalizedText(
+        @JsonProperty("text") String text,
+        @JsonProperty("locale") String locale
+    ) {
         if (text == null) {
             throw new NullPointerException("text");
         }

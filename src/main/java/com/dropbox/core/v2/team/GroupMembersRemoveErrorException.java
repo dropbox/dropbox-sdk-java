@@ -11,10 +11,11 @@ import com.dropbox.core.LocalizedText;
  * GroupMembersRemoveError} error.
  */
 public class GroupMembersRemoveErrorException extends DbxApiException {
+    private static final long serialVersionUID = 0L;
 
     /**
      * The error reported by {@link
-     * DbxTeam#groupsMembersRemove(GroupSelector,java.util.List)}.
+     * DbxTeamTeamRequests#groupsMembersRemove(GroupSelector,java.util.List)}.
      */
     public final GroupMembersRemoveError errorValue;
 

@@ -11,10 +11,11 @@ import com.dropbox.core.LocalizedText;
  * error.
  */
 public class ListMemberAppsErrorException extends DbxApiException {
+    private static final long serialVersionUID = 0L;
 
     /**
      * The error reported by {@link
-     * DbxTeam#linkedAppsListMemberLinkedApps(String)}.
+     * DbxTeamTeamRequests#linkedAppsListMemberLinkedApps(String)}.
      */
     public final ListMemberAppsError errorValue;
 

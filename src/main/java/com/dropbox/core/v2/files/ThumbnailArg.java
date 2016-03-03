@@ -5,20 +5,38 @@ package com.dropbox.core.v2.files;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
-public class ThumbnailArg {
+@JsonSerialize(using=ThumbnailArg.Serializer.class)
+@JsonDeserialize(using=ThumbnailArg.Deserializer.class)
+class ThumbnailArg {
     // struct ThumbnailArg
 
-    private final String path;
-    private final ThumbnailFormat format;
-    private final ThumbnailSize size;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final String path;
+    protected final ThumbnailFormat format;
+    protected final ThumbnailSize size;
 
     /**
      * Use {@link newBuilder} to create instances of this class without
@@ -220,73 +238,102 @@ public class ThumbnailArg {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static ThumbnailArg fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
+    static final class Serializer extends StructJsonSerializer<ThumbnailArg> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(ThumbnailArg.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(ThumbnailArg.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<ThumbnailArg> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(ThumbnailArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("path", value.path);
+            g.writeObjectField("format", value.format);
+            g.writeObjectField("size", value.size);
+        }
     }
 
-    public static final JsonWriter<ThumbnailArg> _JSON_WRITER = new JsonWriter<ThumbnailArg>() {
-        public final void write(ThumbnailArg x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            ThumbnailArg._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
-        }
-        public final void writeFields(ThumbnailArg x, JsonGenerator g) throws IOException {
-            g.writeFieldName("path");
-            g.writeString(x.path);
-            g.writeFieldName("format");
-            ThumbnailFormat._JSON_WRITER.write(x.format, g);
-            g.writeFieldName("size");
-            ThumbnailSize._JSON_WRITER.write(x.size, g);
-        }
-    };
+    static final class Deserializer extends StructJsonDeserializer<ThumbnailArg> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonReader<ThumbnailArg> _JSON_READER = new JsonReader<ThumbnailArg>() {
-        public final ThumbnailArg read(JsonParser parser) throws IOException, JsonReadException {
-            ThumbnailArg result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+        public Deserializer() {
+            super(ThumbnailArg.class);
         }
 
-        public final ThumbnailArg readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(ThumbnailArg.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<ThumbnailArg> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public ThumbnailArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             String path = null;
             ThumbnailFormat format = null;
             ThumbnailSize size = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("path".equals(fieldName)) {
-                    path = JsonReader.StringReader
-                        .readField(parser, "path", path);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("path".equals(_field)) {
+                    path = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("format".equals(fieldName)) {
-                    format = ThumbnailFormat._JSON_READER
-                        .readField(parser, "format", format);
+                else if ("format".equals(_field)) {
+                    format = _p.readValueAs(ThumbnailFormat.class);
+                    _p.nextToken();
                 }
-                else if ("size".equals(fieldName)) {
-                    size = ThumbnailSize._JSON_READER
-                        .readField(parser, "size", size);
+                else if ("size".equals(_field)) {
+                    size = _p.readValueAs(ThumbnailSize.class);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (path == null) {
-                throw new JsonReadException("Required field \"path\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"path\" is missing.");
             }
+
             return new ThumbnailArg(path, format, size);
         }
-    };
+    }
 }

@@ -11,9 +11,11 @@ import com.dropbox.core.LocalizedText;
  * ListFolderLongpollError} error.
  */
 public class ListFolderLongpollErrorException extends DbxApiException {
+    private static final long serialVersionUID = 0L;
 
     /**
-     * The error reported by {@link DbxFiles#listFolderLongpoll(String)}.
+     * The error reported by {@link
+     * DbxUserFilesRequests#listFolderLongpoll(String)}.
      */
     public final ListFolderLongpollError errorValue;
 

@@ -3,15 +3,26 @@
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonArrayReader;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 import com.dropbox.core.v2.users.Name;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.List;
@@ -19,10 +30,16 @@ import java.util.List;
 /**
  * Profile of a user as a member of a team.
  */
+@JsonSerialize(using=TeamMemberProfile.Serializer.class)
+@JsonDeserialize(using=TeamMemberProfile.Deserializer.class)
 public class TeamMemberProfile extends MemberProfile {
     // struct TeamMemberProfile
 
-    private final List<String> groups;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final List<String> groups;
 
     /**
      * Profile of a user as a member of a team.
@@ -93,10 +110,11 @@ public class TeamMemberProfile extends MemberProfile {
 
     @Override
     public int hashCode() {
-        // objects containing lists are not hash-able. This is used as a safeguard
-        // against adding this object to a HashSet or HashMap. Since list fields are
-        // mutable, it is not safe to compute a hashCode here.
-        return System.identityHashCode(this);
+        int hash = java.util.Arrays.hashCode(new Object [] {
+            groups
+        });
+        hash = (31 * super.hashCode()) + hash;
+        return hash;
     }
 
     @Override
@@ -107,13 +125,13 @@ public class TeamMemberProfile extends MemberProfile {
         // be careful with inheritance
         else if (obj.getClass().equals(this.getClass())) {
             TeamMemberProfile other = (TeamMemberProfile) obj;
-            return ((this.groups == other.groups) || (this.groups.equals(other.groups)))
-                && ((this.getTeamMemberId() == other.getTeamMemberId()) || (this.getTeamMemberId().equals(other.getTeamMemberId())))
-                && ((this.getExternalId() == other.getExternalId()) || (this.getExternalId() != null && this.getExternalId().equals(other.getExternalId())))
-                && ((this.getEmail() == other.getEmail()) || (this.getEmail().equals(other.getEmail())))
-                && (this.getEmailVerified() == other.getEmailVerified())
-                && ((this.getStatus() == other.getStatus()) || (this.getStatus().equals(other.getStatus())))
-                && ((this.getName() == other.getName()) || (this.getName().equals(other.getName())))
+            return ((this.teamMemberId == other.teamMemberId) || (this.teamMemberId.equals(other.teamMemberId)))
+                && ((this.email == other.email) || (this.email.equals(other.email)))
+                && (this.emailVerified == other.emailVerified)
+                && ((this.status == other.status) || (this.status.equals(other.status)))
+                && ((this.name == other.name) || (this.name.equals(other.name)))
+                && ((this.groups == other.groups) || (this.groups.equals(other.groups)))
+                && ((this.externalId == other.externalId) || (this.externalId != null && this.externalId.equals(other.externalId)))
                 ;
         }
         else {
@@ -123,50 +141,79 @@ public class TeamMemberProfile extends MemberProfile {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
-    }
-
-    public static TeamMemberProfile fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
-
-    public static final JsonWriter<TeamMemberProfile> _JSON_WRITER = new JsonWriter<TeamMemberProfile>() {
-        public final void write(TeamMemberProfile x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            MemberProfile._JSON_WRITER.writeFields(x, g);
-            TeamMemberProfile._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
         }
-        public final void writeFields(TeamMemberProfile x, JsonGenerator g) throws IOException {
-            g.writeFieldName("groups");
-            g.writeStartArray();
-            for (String item: x.groups) {
-                if (item != null) {
-                    g.writeString(item);
-                }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
+    }
+
+    static final class Serializer extends StructJsonSerializer<TeamMemberProfile> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(TeamMemberProfile.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(TeamMemberProfile.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<TeamMemberProfile> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(TeamMemberProfile value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("team_member_id", value.teamMemberId);
+            g.writeObjectField("email", value.email);
+            g.writeObjectField("email_verified", value.emailVerified);
+            g.writeObjectField("status", value.status);
+            g.writeObjectField("name", value.name);
+            g.writeObjectField("groups", value.groups);
+            if (value.externalId != null) {
+                g.writeObjectField("external_id", value.externalId);
             }
-            g.writeEndArray();
         }
-    };
+    }
 
-    public static final JsonReader<TeamMemberProfile> _JSON_READER = new JsonReader<TeamMemberProfile>() {
-        public final TeamMemberProfile read(JsonParser parser) throws IOException, JsonReadException {
-            TeamMemberProfile result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+    static final class Deserializer extends StructJsonDeserializer<TeamMemberProfile> {
+        private static final long serialVersionUID = 0L;
+
+        public Deserializer() {
+            super(TeamMemberProfile.class);
         }
 
-        public final TeamMemberProfile readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(TeamMemberProfile.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<TeamMemberProfile> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public TeamMemberProfile deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             String teamMemberId = null;
             String email = null;
             Boolean emailVerified = null;
@@ -174,60 +221,71 @@ public class TeamMemberProfile extends MemberProfile {
             Name name = null;
             List<String> groups = null;
             String externalId = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("team_member_id".equals(fieldName)) {
-                    teamMemberId = JsonReader.StringReader
-                        .readField(parser, "team_member_id", teamMemberId);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("team_member_id".equals(_field)) {
+                    teamMemberId = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("email".equals(fieldName)) {
-                    email = JsonReader.StringReader
-                        .readField(parser, "email", email);
+                else if ("email".equals(_field)) {
+                    email = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("email_verified".equals(fieldName)) {
-                    emailVerified = JsonReader.BooleanReader
-                        .readField(parser, "email_verified", emailVerified);
+                else if ("email_verified".equals(_field)) {
+                    emailVerified = _p.getValueAsBoolean();
+                    _p.nextToken();
                 }
-                else if ("status".equals(fieldName)) {
-                    status = TeamMemberStatus._JSON_READER
-                        .readField(parser, "status", status);
+                else if ("status".equals(_field)) {
+                    status = _p.readValueAs(TeamMemberStatus.class);
+                    _p.nextToken();
                 }
-                else if ("name".equals(fieldName)) {
-                    name = Name._JSON_READER
-                        .readField(parser, "name", name);
+                else if ("name".equals(_field)) {
+                    name = _p.readValueAs(Name.class);
+                    _p.nextToken();
                 }
-                else if ("groups".equals(fieldName)) {
-                    groups = JsonArrayReader.mk(JsonReader.StringReader)
-                        .readField(parser, "groups", groups);
+                else if ("groups".equals(_field)) {
+                    expectArrayStart(_p);
+                    groups = new java.util.ArrayList<String>();
+                    while (!isArrayEnd(_p)) {
+                        String _x = null;
+                        _x = getStringValue(_p);
+                        _p.nextToken();
+                        groups.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
                 }
-                else if ("external_id".equals(fieldName)) {
-                    externalId = JsonReader.StringReader
-                        .readField(parser, "external_id", externalId);
+                else if ("external_id".equals(_field)) {
+                    externalId = getStringValue(_p);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (teamMemberId == null) {
-                throw new JsonReadException("Required field \"team_member_id\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"team_member_id\" is missing.");
             }
             if (email == null) {
-                throw new JsonReadException("Required field \"email\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"email\" is missing.");
             }
             if (emailVerified == null) {
-                throw new JsonReadException("Required field \"email_verified\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"email_verified\" is missing.");
             }
             if (status == null) {
-                throw new JsonReadException("Required field \"status\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"status\" is missing.");
             }
             if (name == null) {
-                throw new JsonReadException("Required field \"name\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"name\" is missing.");
             }
             if (groups == null) {
-                throw new JsonReadException("Required field \"groups\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"groups\" is missing.");
             }
+
             return new TeamMemberProfile(teamMemberId, email, emailVerified, status, name, groups, externalId);
         }
-    };
+    }
 }

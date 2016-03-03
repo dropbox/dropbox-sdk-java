@@ -10,9 +10,10 @@ import com.dropbox.core.LocalizedText;
  * Exception thrown when the server responds with a {@link PreviewError} error.
  */
 public class PreviewErrorException extends DbxApiException {
+    private static final long serialVersionUID = 0L;
 
     /**
-     * The error reported by {@link DbxFiles#getPreview(String)}.
+     * The error reported by {@link DbxUserFilesRequests#getPreview(String)}.
      */
     public final PreviewError errorValue;
 

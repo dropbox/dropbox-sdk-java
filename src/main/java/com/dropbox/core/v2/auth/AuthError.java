@@ -5,17 +5,32 @@ package com.dropbox.core.v2.auth;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.UnionJsonDeserializer;
+import com.dropbox.core.json.UnionJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Errors occurred during authentication.
  */
+@JsonSerialize(using=AuthError.Serializer.class)
+@JsonDeserialize(using=AuthError.Deserializer.class)
 public enum AuthError {
     // union AuthError
     /**
@@ -31,50 +46,51 @@ public enum AuthError {
      */
     OTHER; // *catch_all
 
-    private static final java.util.HashMap<String, AuthError> VALUES_;
-    static {
-        VALUES_ = new java.util.HashMap<String, AuthError>();
-        VALUES_.put("invalid_access_token", INVALID_ACCESS_TOKEN);
-        VALUES_.put("invalid_select_user", INVALID_SELECT_USER);
-        VALUES_.put("other", OTHER);
-    }
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
-    }
+    static final class Serializer extends UnionJsonSerializer<AuthError> {
+        private static final long serialVersionUID = 0L;
 
-    public static AuthError fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
+        public Serializer() {
+            super(AuthError.class);
+        }
 
-    public static final JsonWriter<AuthError> _JSON_WRITER = new JsonWriter<AuthError>() {
-        public void write(AuthError x, JsonGenerator g) throws IOException {
-            switch (x) {
+        @Override
+        public void serialize(AuthError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            switch (value) {
                 case INVALID_ACCESS_TOKEN:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("invalid_access_token");
-                    g.writeEndObject();
                     break;
                 case INVALID_SELECT_USER:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("invalid_select_user");
-                    g.writeEndObject();
                     break;
                 case OTHER:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("other");
-                    g.writeEndObject();
                     break;
             }
         }
-    };
+    }
 
-    public static final JsonReader<AuthError> _JSON_READER = new JsonReader<AuthError>() {
-        public final AuthError read(JsonParser parser) throws IOException, JsonReadException {
-            return JsonReader.readEnum(parser, VALUES_, OTHER);
+    static final class Deserializer extends UnionJsonDeserializer<AuthError, AuthError> {
+        private static final long serialVersionUID = 0L;
+
+        public Deserializer() {
+            super(AuthError.class, getTagMapping(), AuthError.OTHER);
         }
-    };
+
+        @Override
+        public AuthError deserialize(AuthError _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+            return _tag;
+        }
+
+        private static Map<String, AuthError> getTagMapping() {
+            Map<String, AuthError> values = new HashMap<String, AuthError>();
+            values.put("invalid_access_token", AuthError.INVALID_ACCESS_TOKEN);
+            values.put("invalid_select_user", AuthError.INVALID_SELECT_USER);
+            values.put("other", AuthError.OTHER);
+            return Collections.unmodifiableMap(values);
+        }
+    }
 }

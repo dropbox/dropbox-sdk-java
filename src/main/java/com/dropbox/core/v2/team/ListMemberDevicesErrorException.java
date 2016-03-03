@@ -11,9 +11,11 @@ import com.dropbox.core.LocalizedText;
  * ListMemberDevicesError} error.
  */
 public class ListMemberDevicesErrorException extends DbxApiException {
+    private static final long serialVersionUID = 0L;
 
     /**
-     * The error reported by {@link DbxTeam#devicesListMemberDevices(String)}.
+     * The error reported by {@link
+     * DbxTeamTeamRequests#devicesListMemberDevices(String)}.
      */
     public final ListMemberDevicesError errorValue;
 

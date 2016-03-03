@@ -7,13 +7,13 @@ import com.dropbox.core.DbxException;
 
 /**
  * The request builder returned by {@link
- * DbxTeam#membersSetProfileBuilder(UserSelectorArg)}.
+ * DbxTeamTeamRequests#membersSetProfileBuilder(UserSelectorArg)}.
  *
  * <p> Use this class to set optional request parameters and complete the
  * request. </p>
  */
 public class MembersSetProfileBuilder {
-    private final DbxTeam team;
+    private final DbxTeamTeamRequests team;
     private final MembersSetProfileArg.Builder membersSetProfileArgBuilder;
 
     /**
@@ -25,7 +25,7 @@ public class MembersSetProfileBuilder {
      *
      * @return instsance of this builder
      */
-    MembersSetProfileBuilder(DbxTeam team, MembersSetProfileArg.Builder membersSetProfileArgBuilder) {
+    MembersSetProfileBuilder(DbxTeamTeamRequests team, MembersSetProfileArg.Builder membersSetProfileArgBuilder) {
         if (team == null) {
             throw new NullPointerException("team");
         }

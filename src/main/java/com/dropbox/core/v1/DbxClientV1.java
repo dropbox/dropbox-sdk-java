@@ -1433,8 +1433,9 @@ public final class DbxClientV1
      * present an interface (such as OutputStream.write) that is only declared to throw
      * {@code IOException}, but we need to throw {@code DbxException}.
      */
-    public static final class IODbxException extends IOException
-    {
+    public static final class IODbxException extends IOException {
+        private static final long serialVersionUID = 0L;
+
         public final DbxException underlying;
 
         public IODbxException(DbxException underlying)

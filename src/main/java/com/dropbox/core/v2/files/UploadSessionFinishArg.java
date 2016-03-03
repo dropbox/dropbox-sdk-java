@@ -5,19 +5,37 @@ package com.dropbox.core.v2.files;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
-public class UploadSessionFinishArg {
+@JsonSerialize(using=UploadSessionFinishArg.Serializer.class)
+@JsonDeserialize(using=UploadSessionFinishArg.Deserializer.class)
+class UploadSessionFinishArg {
     // struct UploadSessionFinishArg
 
-    private final UploadSessionCursor cursor;
-    private final CommitInfo commit;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final UploadSessionCursor cursor;
+    protected final CommitInfo commit;
 
     /**
      *
@@ -86,69 +104,99 @@ public class UploadSessionFinishArg {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static UploadSessionFinishArg fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
+    static final class Serializer extends StructJsonSerializer<UploadSessionFinishArg> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(UploadSessionFinishArg.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(UploadSessionFinishArg.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<UploadSessionFinishArg> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(UploadSessionFinishArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("cursor", value.cursor);
+            g.writeObjectField("commit", value.commit);
+        }
     }
 
-    public static final JsonWriter<UploadSessionFinishArg> _JSON_WRITER = new JsonWriter<UploadSessionFinishArg>() {
-        public final void write(UploadSessionFinishArg x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            UploadSessionFinishArg._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
-        }
-        public final void writeFields(UploadSessionFinishArg x, JsonGenerator g) throws IOException {
-            g.writeFieldName("cursor");
-            UploadSessionCursor._JSON_WRITER.write(x.cursor, g);
-            g.writeFieldName("commit");
-            CommitInfo._JSON_WRITER.write(x.commit, g);
-        }
-    };
+    static final class Deserializer extends StructJsonDeserializer<UploadSessionFinishArg> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonReader<UploadSessionFinishArg> _JSON_READER = new JsonReader<UploadSessionFinishArg>() {
-        public final UploadSessionFinishArg read(JsonParser parser) throws IOException, JsonReadException {
-            UploadSessionFinishArg result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+        public Deserializer() {
+            super(UploadSessionFinishArg.class);
         }
 
-        public final UploadSessionFinishArg readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(UploadSessionFinishArg.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<UploadSessionFinishArg> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public UploadSessionFinishArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             UploadSessionCursor cursor = null;
             CommitInfo commit = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("cursor".equals(fieldName)) {
-                    cursor = UploadSessionCursor._JSON_READER
-                        .readField(parser, "cursor", cursor);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("cursor".equals(_field)) {
+                    cursor = _p.readValueAs(UploadSessionCursor.class);
+                    _p.nextToken();
                 }
-                else if ("commit".equals(fieldName)) {
-                    commit = CommitInfo._JSON_READER
-                        .readField(parser, "commit", commit);
+                else if ("commit".equals(_field)) {
+                    commit = _p.readValueAs(CommitInfo.class);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (cursor == null) {
-                throw new JsonReadException("Required field \"cursor\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"cursor\" is missing.");
             }
             if (commit == null) {
-                throw new JsonReadException("Required field \"commit\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"commit\" is missing.");
             }
+
             return new UploadSessionFinishArg(cursor, commit);
         }
-    };
+    }
 }

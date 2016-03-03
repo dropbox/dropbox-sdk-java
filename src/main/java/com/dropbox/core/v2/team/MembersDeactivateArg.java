@@ -5,11 +5,23 @@ package com.dropbox.core.v2.team;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
@@ -17,11 +29,17 @@ import java.io.IOException;
  * Exactly one of team_member_id, email, or external_id must be provided to
  * identify the user account.
  */
-public class MembersDeactivateArg {
+@JsonSerialize(using=MembersDeactivateArg.Serializer.class)
+@JsonDeserialize(using=MembersDeactivateArg.Deserializer.class)
+class MembersDeactivateArg {
     // struct MembersDeactivateArg
 
-    private final UserSelectorArg user;
-    private final boolean wipeData;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final UserSelectorArg user;
+    protected final boolean wipeData;
 
     /**
      * Exactly one of team_member_id, email, or external_id must be provided to
@@ -107,66 +125,96 @@ public class MembersDeactivateArg {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static MembersDeactivateArg fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
+    static final class Serializer extends StructJsonSerializer<MembersDeactivateArg> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(MembersDeactivateArg.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(MembersDeactivateArg.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<MembersDeactivateArg> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(MembersDeactivateArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("user", value.user);
+            g.writeObjectField("wipe_data", value.wipeData);
+        }
     }
 
-    public static final JsonWriter<MembersDeactivateArg> _JSON_WRITER = new JsonWriter<MembersDeactivateArg>() {
-        public final void write(MembersDeactivateArg x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            MembersDeactivateArg._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
-        }
-        public final void writeFields(MembersDeactivateArg x, JsonGenerator g) throws IOException {
-            g.writeFieldName("user");
-            UserSelectorArg._JSON_WRITER.write(x.user, g);
-            g.writeFieldName("wipe_data");
-            g.writeBoolean(x.wipeData);
-        }
-    };
+    static final class Deserializer extends StructJsonDeserializer<MembersDeactivateArg> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonReader<MembersDeactivateArg> _JSON_READER = new JsonReader<MembersDeactivateArg>() {
-        public final MembersDeactivateArg read(JsonParser parser) throws IOException, JsonReadException {
-            MembersDeactivateArg result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+        public Deserializer() {
+            super(MembersDeactivateArg.class);
         }
 
-        public final MembersDeactivateArg readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(MembersDeactivateArg.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<MembersDeactivateArg> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public MembersDeactivateArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             UserSelectorArg user = null;
             Boolean wipeData = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("user".equals(fieldName)) {
-                    user = UserSelectorArg._JSON_READER
-                        .readField(parser, "user", user);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("user".equals(_field)) {
+                    user = _p.readValueAs(UserSelectorArg.class);
+                    _p.nextToken();
                 }
-                else if ("wipe_data".equals(fieldName)) {
-                    wipeData = JsonReader.BooleanReader
-                        .readField(parser, "wipe_data", wipeData);
+                else if ("wipe_data".equals(_field)) {
+                    wipeData = _p.getValueAsBoolean();
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (user == null) {
-                throw new JsonReadException("Required field \"user\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"user\" is missing.");
             }
+
             return new MembersDeactivateArg(user, wipeData);
         }
-    };
+    }
 }

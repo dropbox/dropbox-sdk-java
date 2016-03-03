@@ -5,36 +5,75 @@ package com.dropbox.core.v2.users;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.UnionJsonDeserializer;
+import com.dropbox.core.json.UnionJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
+/**
+ * This class is an open tagged union.  Tagged unions instances are always
+ * associated to a specific tag.  This means only one of the {@code isAbc()}
+ * methods will return {@code true}. You can use {@link #tag()} to determine the
+ * tag associated with this instance.
+ *
+ * <p> Open unions may be extended in the future with additional tags. If a new
+ * tag is introduced that this SDK does not recognized, the {@link #OTHER} value
+ * will be used. </p>
+ */
+@JsonSerialize(using=GetAccountBatchError.Serializer.class)
+@JsonDeserialize(using=GetAccountBatchError.Deserializer.class)
 public final class GetAccountBatchError {
     // union GetAccountBatchError
+
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link GetAccountBatchError}.
      */
     public enum Tag {
         /**
-         * The value is an account ID specified in {@link
-         * GetAccountBatchArg#getAccountIds} that does not exist.
+         * The value is an account ID specified in the {@code accountIds}
+         * argument to {@link
+         * DbxUserUsersRequests#getAccountBatch(java.util.List)} that does not
+         * exist.
          */
         NO_ACCOUNT, // String
+        /**
+         * Catch-all used for unknown tag values returned by the Dropbox
+         * servers.
+         *
+         * <p> Receiving a catch-all value typically indicates this SDK version
+         * is not up to date. Consider updating your SDK version to handle the
+         * new tags. </p>
+         */
         OTHER; // *catch_all
     }
 
-    private static final java.util.HashMap<String, Tag> VALUES_;
-    static {
-        VALUES_ = new java.util.HashMap<String, Tag>();
-        VALUES_.put("no_account", Tag.NO_ACCOUNT);
-        VALUES_.put("other", Tag.OTHER);
-    }
-
+    /**
+     * Catch-all used for unknown tag values returned by the Dropbox servers.
+     *
+     * <p> Receiving a catch-all value typically indicates this SDK version is
+     * not up to date. Consider updating your SDK version to handle the new
+     * tags. </p>
+     */
     public static final GetAccountBatchError OTHER = new GetAccountBatchError(Tag.OTHER, null);
 
     private final Tag tag;
@@ -53,9 +92,13 @@ public final class GetAccountBatchError {
      * Returns the tag for this instance.
      *
      * <p> This class is a tagged union.  Tagged unions instances are always
-     * associated to a specific tag.  Callers are recommended to use the tag
-     * value in a {@code switch} statement to determine how to properly handle
-     * this {@code GetAccountBatchError}. </p>
+     * associated to a specific tag.  This means only one of the {@code isXyz()}
+     * methods will return {@code true}. Callers are recommended to use the tag
+     * value in a {@code switch} statement to properly handle the different
+     * values for this {@code GetAccountBatchError}. </p>
+     *
+     * <p> If a tag returned by the server is unrecognized by this SDK, the
+     * {@link Tag#OTHER} value will be used. </p>
      *
      * @return the tag for this instance.
      */
@@ -67,7 +110,7 @@ public final class GetAccountBatchError {
      * Returns {@code true} if this instance has the tag {@link Tag#NO_ACCOUNT},
      * {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#NO_ACCOUNT}, {@code false} otherwise.
      */
     public boolean isNoAccount() {
@@ -78,11 +121,11 @@ public final class GetAccountBatchError {
      * Returns an instance of {@code GetAccountBatchError} that has its tag set
      * to {@link Tag#NO_ACCOUNT}.
      *
-     * <p> The value is an account ID specified in {@link
-     * GetAccountBatchArg#getAccountIds} that does not exist. </p>
+     * <p> The value is an account ID specified in the {@code accountIds}
+     * argument to {@link DbxUserUsersRequests#getAccountBatch(java.util.List)}
+     * that does not exist. </p>
      *
-     * @param value  {@link GetAccountBatchError#noAccount} value to assign to
-     *     this instance.
+     * @param value  value to assign to this instance.
      *
      * @return Instance of {@code GetAccountBatchError} with its tag set to
      *     {@link Tag#NO_ACCOUNT}.
@@ -104,8 +147,9 @@ public final class GetAccountBatchError {
     }
 
     /**
-     * The value is an account ID specified in {@link
-     * GetAccountBatchArg#getAccountIds} that does not exist.
+     * The value is an account ID specified in the {@code accountIds} argument
+     * to {@link DbxUserUsersRequests#getAccountBatch(java.util.List)} that does
+     * not exist.
      *
      * <p> This instance must be tagged as {@link Tag#NO_ACCOUNT}. </p>
      *
@@ -125,7 +169,7 @@ public final class GetAccountBatchError {
      * Returns {@code true} if this instance has the tag {@link Tag#OTHER},
      * {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link Tag#OTHER},
+     * @return {@code true} if this instance is tagged as {@link Tag#OTHER},
      *     {@code false} otherwise.
      */
     public boolean isOther() {
@@ -167,88 +211,83 @@ public final class GetAccountBatchError {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static GetAccountBatchError fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
+    static final class Serializer extends UnionJsonSerializer<GetAccountBatchError> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonWriter<GetAccountBatchError> _JSON_WRITER = new JsonWriter<GetAccountBatchError>() {
-        public final void write(GetAccountBatchError x, JsonGenerator g) throws IOException {
-            switch (x.tag) {
+        public Serializer() {
+            super(GetAccountBatchError.class);
+        }
+
+        @Override
+        public void serialize(GetAccountBatchError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            switch (value.tag) {
                 case NO_ACCOUNT:
                     g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("no_account");
-                    g.writeFieldName("no_account");
-                    g.writeString(x.getNoAccountValue());
+                    g.writeStringField(".tag", "no_account");
+                    g.writeObjectField("no_account", value.noAccountValue);
                     g.writeEndObject();
                     break;
                 case OTHER:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("other");
-                    g.writeEndObject();
                     break;
             }
         }
-    };
+    }
 
-    public static final JsonReader<GetAccountBatchError> _JSON_READER = new JsonReader<GetAccountBatchError>() {
+    static final class Deserializer extends UnionJsonDeserializer<GetAccountBatchError, Tag> {
+        private static final long serialVersionUID = 0L;
 
-        public final GetAccountBatchError read(JsonParser parser) throws IOException, JsonReadException {
-            if (parser.getCurrentToken() == JsonToken.VALUE_STRING) {
-                String text = parser.getText();
-                parser.nextToken();
-                Tag tag = VALUES_.get(text);
-                if (tag == null) {
-                    return GetAccountBatchError.OTHER;
-                }
-                switch (tag) {
-                    case OTHER: return GetAccountBatchError.OTHER;
-                }
-                throw new JsonReadException("Tag " + tag + " requires a value", parser.getTokenLocation());
-            }
-            JsonReader.expectObjectStart(parser);
-            String[] tags = readTags(parser);
-            assert tags != null && tags.length == 1;
-            String text = tags[0];
-            Tag tag = VALUES_.get(text);
-            GetAccountBatchError value = null;
-            if (tag != null) {
-                switch (tag) {
-                    case NO_ACCOUNT: {
-                        String v = null;
-                        assert parser.getCurrentToken() == JsonToken.FIELD_NAME;
-                        text = parser.getText();
-                        assert tags[0].equals(text);
-                        parser.nextToken();
-                        v = JsonReader.StringReader
-                            .readField(parser, "no_account", v);
-                        value = GetAccountBatchError.noAccount(v);
-                        break;
-                    }
-                    case OTHER: {
-                        value = GetAccountBatchError.OTHER;
-                        break;
-                    }
-                }
-            }
-            JsonReader.expectObjectEnd(parser);
-            if (value == null) {
-                return GetAccountBatchError.OTHER;
-            }
-            return value;
+        public Deserializer() {
+            super(GetAccountBatchError.class, getTagMapping(), Tag.OTHER);
         }
 
-    };
+        @Override
+        public GetAccountBatchError deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+            switch (_tag) {
+                case NO_ACCOUNT: {
+                    String value = null;
+                    expectField(_p, "no_account");
+                    value = getStringValue(_p);
+                    _p.nextToken();
+                    return GetAccountBatchError.noAccount(value);
+                }
+                case OTHER: {
+                    return GetAccountBatchError.OTHER;
+                }
+            }
+            // should be impossible to get here
+            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
+        }
+
+        private static Map<String, GetAccountBatchError.Tag> getTagMapping() {
+            Map<String, GetAccountBatchError.Tag> values = new HashMap<String, GetAccountBatchError.Tag>();
+            values.put("no_account", GetAccountBatchError.Tag.NO_ACCOUNT);
+            values.put("other", GetAccountBatchError.Tag.OTHER);
+            return Collections.unmodifiableMap(values);
+        }
+    }
 }

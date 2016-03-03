@@ -5,14 +5,29 @@ package com.dropbox.core.v2.team;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.UnionJsonDeserializer;
+import com.dropbox.core.json.UnionJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
+@JsonSerialize(using=MembersUnsuspendError.Serializer.class)
+@JsonDeserialize(using=MembersUnsuspendError.Deserializer.class)
 public enum MembersUnsuspendError {
     // union MembersUnsuspendError
     /**
@@ -33,54 +48,52 @@ public enum MembersUnsuspendError {
      */
     UNSUSPEND_NON_SUSPENDED_MEMBER;
 
-    private static final java.util.HashMap<String, MembersUnsuspendError> VALUES_;
-    static {
-        VALUES_ = new java.util.HashMap<String, MembersUnsuspendError>();
-        VALUES_.put("unsuspend_non_suspended_member", UNSUSPEND_NON_SUSPENDED_MEMBER);
-    }
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
-    }
+    static final class Serializer extends UnionJsonSerializer<MembersUnsuspendError> {
+        private static final long serialVersionUID = 0L;
 
-    public static MembersUnsuspendError fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
+        public Serializer() {
+            super(MembersUnsuspendError.class);
+        }
 
-    public static final JsonWriter<MembersUnsuspendError> _JSON_WRITER = new JsonWriter<MembersUnsuspendError>() {
-        public void write(MembersUnsuspendError x, JsonGenerator g) throws IOException {
-            switch (x) {
+        @Override
+        public void serialize(MembersUnsuspendError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            switch (value) {
                 case USER_NOT_FOUND:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("user_not_found");
-                    g.writeEndObject();
                     break;
                 case USER_NOT_IN_TEAM:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("user_not_in_team");
-                    g.writeEndObject();
                     break;
                 case OTHER:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("other");
-                    g.writeEndObject();
                     break;
                 case UNSUSPEND_NON_SUSPENDED_MEMBER:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("unsuspend_non_suspended_member");
-                    g.writeEndObject();
                     break;
             }
         }
-    };
+    }
 
-    public static final JsonReader<MembersUnsuspendError> _JSON_READER = new JsonReader<MembersUnsuspendError>() {
-        public final MembersUnsuspendError read(JsonParser parser) throws IOException, JsonReadException {
-            return JsonReader.readEnum(parser, VALUES_, null);
+    static final class Deserializer extends UnionJsonDeserializer<MembersUnsuspendError, MembersUnsuspendError> {
+        private static final long serialVersionUID = 0L;
+
+        public Deserializer() {
+            super(MembersUnsuspendError.class, getTagMapping(), null);
         }
-    };
+
+        @Override
+        public MembersUnsuspendError deserialize(MembersUnsuspendError _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+            return _tag;
+        }
+
+        private static Map<String, MembersUnsuspendError> getTagMapping() {
+            Map<String, MembersUnsuspendError> values = new HashMap<String, MembersUnsuspendError>();
+            values.put("unsuspend_non_suspended_member", MembersUnsuspendError.UNSUSPEND_NON_SUSPENDED_MEMBER);
+            return Collections.unmodifiableMap(values);
+        }
+    }
 }

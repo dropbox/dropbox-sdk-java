@@ -5,20 +5,44 @@ package com.dropbox.core.v2.team;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.UnionJsonDeserializer;
+import com.dropbox.core.json.UnionJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Describes a result obtained for a single user whose id was specified in the
- * parameter of {@link DbxTeam#membersGetInfo(java.util.List)}.
+ * parameter of {@link DbxTeamTeamRequests#membersGetInfo(java.util.List)}.
+ *
+ * <p> This class is a tagged union.  Tagged unions instances are always
+ * associated to a specific tag.  This means only one of the {@code isAbc()}
+ * methods will return {@code true}. You can use {@link #tag()} to determine the
+ * tag associated with this instance. </p>
  */
+@JsonSerialize(using=MembersGetInfoItem.Serializer.class)
+@JsonDeserialize(using=MembersGetInfoItem.Deserializer.class)
 public final class MembersGetInfoItem {
     // union MembersGetInfoItem
+
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link MembersGetInfoItem}.
@@ -26,9 +50,9 @@ public final class MembersGetInfoItem {
     public enum Tag {
         /**
          * An ID that was provided as a parameter to {@link
-         * DbxTeam#membersGetInfo(java.util.List)}, and did not match a
-         * corresponding user. This might be a team_member_id, an email, or an
-         * external ID, depending on how the method was called.
+         * DbxTeamTeamRequests#membersGetInfo(java.util.List)}, and did not
+         * match a corresponding user. This might be a team_member_id, an email,
+         * or an external ID, depending on how the method was called.
          */
         ID_NOT_FOUND, // String
         /**
@@ -37,20 +61,14 @@ public final class MembersGetInfoItem {
         MEMBER_INFO; // TeamMemberInfo
     }
 
-    private static final java.util.HashMap<String, Tag> VALUES_;
-    static {
-        VALUES_ = new java.util.HashMap<String, Tag>();
-        VALUES_.put("id_not_found", Tag.ID_NOT_FOUND);
-        VALUES_.put("member_info", Tag.MEMBER_INFO);
-    }
-
     private final Tag tag;
     private final String idNotFoundValue;
     private final TeamMemberInfo memberInfoValue;
 
     /**
      * Describes a result obtained for a single user whose id was specified in
-     * the parameter of {@link DbxTeam#membersGetInfo(java.util.List)}.
+     * the parameter of {@link
+     * DbxTeamTeamRequests#membersGetInfo(java.util.List)}.
      *
      * @param tag  Discriminating tag for this instance.
      */
@@ -64,9 +82,10 @@ public final class MembersGetInfoItem {
      * Returns the tag for this instance.
      *
      * <p> This class is a tagged union.  Tagged unions instances are always
-     * associated to a specific tag.  Callers are recommended to use the tag
-     * value in a {@code switch} statement to determine how to properly handle
-     * this {@code MembersGetInfoItem}. </p>
+     * associated to a specific tag.  This means only one of the {@code isXyz()}
+     * methods will return {@code true}. Callers are recommended to use the tag
+     * value in a {@code switch} statement to properly handle the different
+     * values for this {@code MembersGetInfoItem}. </p>
      *
      * @return the tag for this instance.
      */
@@ -78,7 +97,7 @@ public final class MembersGetInfoItem {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#ID_NOT_FOUND}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#ID_NOT_FOUND}, {@code false} otherwise.
      */
     public boolean isIdNotFound() {
@@ -90,12 +109,11 @@ public final class MembersGetInfoItem {
      * {@link Tag#ID_NOT_FOUND}.
      *
      * <p> An ID that was provided as a parameter to {@link
-     * DbxTeam#membersGetInfo(java.util.List)}, and did not match a
+     * DbxTeamTeamRequests#membersGetInfo(java.util.List)}, and did not match a
      * corresponding user. This might be a team_member_id, an email, or an
      * external ID, depending on how the method was called. </p>
      *
-     * @param value  {@link MembersGetInfoItem#idNotFound} value to assign to
-     *     this instance.
+     * @param value  value to assign to this instance.
      *
      * @return Instance of {@code MembersGetInfoItem} with its tag set to {@link
      *     Tag#ID_NOT_FOUND}.
@@ -111,7 +129,7 @@ public final class MembersGetInfoItem {
 
     /**
      * An ID that was provided as a parameter to {@link
-     * DbxTeam#membersGetInfo(java.util.List)}, and did not match a
+     * DbxTeamTeamRequests#membersGetInfo(java.util.List)}, and did not match a
      * corresponding user. This might be a team_member_id, an email, or an
      * external ID, depending on how the method was called.
      *
@@ -133,7 +151,7 @@ public final class MembersGetInfoItem {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#MEMBER_INFO}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#MEMBER_INFO}, {@code false} otherwise.
      */
     public boolean isMemberInfo() {
@@ -146,8 +164,7 @@ public final class MembersGetInfoItem {
      *
      * <p> Info about a team member. </p>
      *
-     * @param value  {@link MembersGetInfoItem#memberInfo} value to assign to
-     *     this instance.
+     * @param value  value to assign to this instance.
      *
      * @return Instance of {@code MembersGetInfoItem} with its tag set to {@link
      *     Tag#MEMBER_INFO}.
@@ -214,91 +231,88 @@ public final class MembersGetInfoItem {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static MembersGetInfoItem fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
+    static final class Serializer extends UnionJsonSerializer<MembersGetInfoItem> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonWriter<MembersGetInfoItem> _JSON_WRITER = new JsonWriter<MembersGetInfoItem>() {
-        public final void write(MembersGetInfoItem x, JsonGenerator g) throws IOException {
-            switch (x.tag) {
+        public Serializer() {
+            super(MembersGetInfoItem.class, TeamMemberInfo.class);
+        }
+
+        @Override
+        public void serialize(MembersGetInfoItem value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            switch (value.tag) {
                 case ID_NOT_FOUND:
                     g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("id_not_found");
-                    g.writeFieldName("id_not_found");
-                    g.writeString(x.getIdNotFoundValue());
+                    g.writeStringField(".tag", "id_not_found");
+                    g.writeObjectField("id_not_found", value.idNotFoundValue);
                     g.writeEndObject();
                     break;
                 case MEMBER_INFO:
                     g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("member_info");
-                    g.writeFieldName("member_info");
-                    TeamMemberInfo._JSON_WRITER.write(x.getMemberInfoValue(), g);
+                    g.writeStringField(".tag", "member_info");
+                    getUnwrappingSerializer(TeamMemberInfo.class).serialize(value.memberInfoValue, g, provider);
                     g.writeEndObject();
                     break;
             }
         }
-    };
+    }
 
-    public static final JsonReader<MembersGetInfoItem> _JSON_READER = new JsonReader<MembersGetInfoItem>() {
+    static final class Deserializer extends UnionJsonDeserializer<MembersGetInfoItem, Tag> {
+        private static final long serialVersionUID = 0L;
 
-        public final MembersGetInfoItem read(JsonParser parser) throws IOException, JsonReadException {
-            if (parser.getCurrentToken() == JsonToken.VALUE_STRING) {
-                String text = parser.getText();
-                parser.nextToken();
-                Tag tag = VALUES_.get(text);
-                if (tag == null) {
-                    throw new JsonReadException("Unanticipated tag " + text + " without catch-all", parser.getTokenLocation());
-                }
-                switch (tag) {
-                }
-                throw new JsonReadException("Tag " + tag + " requires a value", parser.getTokenLocation());
-            }
-            JsonReader.expectObjectStart(parser);
-            String[] tags = readTags(parser);
-            assert tags != null && tags.length == 1;
-            String text = tags[0];
-            Tag tag = VALUES_.get(text);
-            MembersGetInfoItem value = null;
-            if (tag != null) {
-                switch (tag) {
-                    case ID_NOT_FOUND: {
-                        String v = null;
-                        assert parser.getCurrentToken() == JsonToken.FIELD_NAME;
-                        text = parser.getText();
-                        assert tags[0].equals(text);
-                        parser.nextToken();
-                        v = JsonReader.StringReader
-                            .readField(parser, "id_not_found", v);
-                        value = MembersGetInfoItem.idNotFound(v);
-                        break;
-                    }
-                    case MEMBER_INFO: {
-                        TeamMemberInfo v = null;
-                        v = TeamMemberInfo._JSON_READER.readFields(parser);
-                        value = MembersGetInfoItem.memberInfo(v);
-                        break;
-                    }
-                }
-            }
-            if (value == null) {
-                throw new JsonReadException("Unanticipated tag " + text, parser.getTokenLocation());
-            }
-            JsonReader.expectObjectEnd(parser);
-            return value;
+        public Deserializer() {
+            super(MembersGetInfoItem.class, getTagMapping(), null, TeamMemberInfo.class);
         }
 
-    };
+        @Override
+        public MembersGetInfoItem deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+            switch (_tag) {
+                case ID_NOT_FOUND: {
+                    String value = null;
+                    expectField(_p, "id_not_found");
+                    value = getStringValue(_p);
+                    _p.nextToken();
+                    return MembersGetInfoItem.idNotFound(value);
+                }
+                case MEMBER_INFO: {
+                    TeamMemberInfo value = null;
+                    value = readCollapsedStructValue(TeamMemberInfo.class, _p, _ctx);
+                    return MembersGetInfoItem.memberInfo(value);
+                }
+            }
+            // should be impossible to get here
+            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
+        }
+
+        private static Map<String, MembersGetInfoItem.Tag> getTagMapping() {
+            Map<String, MembersGetInfoItem.Tag> values = new HashMap<String, MembersGetInfoItem.Tag>();
+            values.put("id_not_found", MembersGetInfoItem.Tag.ID_NOT_FOUND);
+            values.put("member_info", MembersGetInfoItem.Tag.MEMBER_INFO);
+            return Collections.unmodifiableMap(values);
+        }
+    }
 }

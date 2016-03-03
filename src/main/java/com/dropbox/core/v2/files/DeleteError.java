@@ -5,16 +5,45 @@ package com.dropbox.core.v2.files;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.UnionJsonDeserializer;
+import com.dropbox.core.json.UnionJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
+/**
+ * This class is an open tagged union.  Tagged unions instances are always
+ * associated to a specific tag.  This means only one of the {@code isAbc()}
+ * methods will return {@code true}. You can use {@link #tag()} to determine the
+ * tag associated with this instance.
+ *
+ * <p> Open unions may be extended in the future with additional tags. If a new
+ * tag is introduced that this SDK does not recognized, the {@link #OTHER} value
+ * will be used. </p>
+ */
+@JsonSerialize(using=DeleteError.Serializer.class)
+@JsonDeserialize(using=DeleteError.Deserializer.class)
 public final class DeleteError {
     // union DeleteError
+
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link DeleteError}.
@@ -22,17 +51,24 @@ public final class DeleteError {
     public enum Tag {
         PATH_LOOKUP, // LookupError
         PATH_WRITE, // WriteError
+        /**
+         * Catch-all used for unknown tag values returned by the Dropbox
+         * servers.
+         *
+         * <p> Receiving a catch-all value typically indicates this SDK version
+         * is not up to date. Consider updating your SDK version to handle the
+         * new tags. </p>
+         */
         OTHER; // *catch_all
     }
 
-    private static final java.util.HashMap<String, Tag> VALUES_;
-    static {
-        VALUES_ = new java.util.HashMap<String, Tag>();
-        VALUES_.put("path_lookup", Tag.PATH_LOOKUP);
-        VALUES_.put("path_write", Tag.PATH_WRITE);
-        VALUES_.put("other", Tag.OTHER);
-    }
-
+    /**
+     * Catch-all used for unknown tag values returned by the Dropbox servers.
+     *
+     * <p> Receiving a catch-all value typically indicates this SDK version is
+     * not up to date. Consider updating your SDK version to handle the new
+     * tags. </p>
+     */
     public static final DeleteError OTHER = new DeleteError(Tag.OTHER, null, null);
 
     private final Tag tag;
@@ -53,9 +89,13 @@ public final class DeleteError {
      * Returns the tag for this instance.
      *
      * <p> This class is a tagged union.  Tagged unions instances are always
-     * associated to a specific tag.  Callers are recommended to use the tag
-     * value in a {@code switch} statement to determine how to properly handle
-     * this {@code DeleteError}. </p>
+     * associated to a specific tag.  This means only one of the {@code isXyz()}
+     * methods will return {@code true}. Callers are recommended to use the tag
+     * value in a {@code switch} statement to properly handle the different
+     * values for this {@code DeleteError}. </p>
+     *
+     * <p> If a tag returned by the server is unrecognized by this SDK, the
+     * {@link Tag#OTHER} value will be used. </p>
      *
      * @return the tag for this instance.
      */
@@ -67,7 +107,7 @@ public final class DeleteError {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#PATH_LOOKUP}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#PATH_LOOKUP}, {@code false} otherwise.
      */
     public boolean isPathLookup() {
@@ -78,8 +118,7 @@ public final class DeleteError {
      * Returns an instance of {@code DeleteError} that has its tag set to {@link
      * Tag#PATH_LOOKUP}.
      *
-     * @param value  {@link DeleteError#pathLookup} value to assign to this
-     *     instance.
+     * @param value  value to assign to this instance.
      *
      * @return Instance of {@code DeleteError} with its tag set to {@link
      *     Tag#PATH_LOOKUP}.
@@ -112,7 +151,7 @@ public final class DeleteError {
      * Returns {@code true} if this instance has the tag {@link Tag#PATH_WRITE},
      * {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#PATH_WRITE}, {@code false} otherwise.
      */
     public boolean isPathWrite() {
@@ -123,8 +162,7 @@ public final class DeleteError {
      * Returns an instance of {@code DeleteError} that has its tag set to {@link
      * Tag#PATH_WRITE}.
      *
-     * @param value  {@link DeleteError#pathWrite} value to assign to this
-     *     instance.
+     * @param value  value to assign to this instance.
      *
      * @return Instance of {@code DeleteError} with its tag set to {@link
      *     Tag#PATH_WRITE}.
@@ -157,7 +195,7 @@ public final class DeleteError {
      * Returns {@code true} if this instance has the tag {@link Tag#OTHER},
      * {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link Tag#OTHER},
+     * @return {@code true} if this instance is tagged as {@link Tag#OTHER},
      *     {@code false} otherwise.
      */
     public boolean isOther() {
@@ -202,107 +240,97 @@ public final class DeleteError {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static DeleteError fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
+    static final class Serializer extends UnionJsonSerializer<DeleteError> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonWriter<DeleteError> _JSON_WRITER = new JsonWriter<DeleteError>() {
-        public final void write(DeleteError x, JsonGenerator g) throws IOException {
-            switch (x.tag) {
+        public Serializer() {
+            super(DeleteError.class);
+        }
+
+        @Override
+        public void serialize(DeleteError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            switch (value.tag) {
                 case PATH_LOOKUP:
                     g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("path_lookup");
-                    g.writeFieldName("path_lookup");
-                    LookupError._JSON_WRITER.write(x.getPathLookupValue(), g);
+                    g.writeStringField(".tag", "path_lookup");
+                    g.writeObjectField("path_lookup", value.pathLookupValue);
                     g.writeEndObject();
                     break;
                 case PATH_WRITE:
                     g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("path_write");
-                    g.writeFieldName("path_write");
-                    WriteError._JSON_WRITER.write(x.getPathWriteValue(), g);
+                    g.writeStringField(".tag", "path_write");
+                    g.writeObjectField("path_write", value.pathWriteValue);
                     g.writeEndObject();
                     break;
                 case OTHER:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("other");
-                    g.writeEndObject();
                     break;
             }
         }
-    };
+    }
 
-    public static final JsonReader<DeleteError> _JSON_READER = new JsonReader<DeleteError>() {
+    static final class Deserializer extends UnionJsonDeserializer<DeleteError, Tag> {
+        private static final long serialVersionUID = 0L;
 
-        public final DeleteError read(JsonParser parser) throws IOException, JsonReadException {
-            if (parser.getCurrentToken() == JsonToken.VALUE_STRING) {
-                String text = parser.getText();
-                parser.nextToken();
-                Tag tag = VALUES_.get(text);
-                if (tag == null) {
-                    return DeleteError.OTHER;
-                }
-                switch (tag) {
-                    case OTHER: return DeleteError.OTHER;
-                }
-                throw new JsonReadException("Tag " + tag + " requires a value", parser.getTokenLocation());
-            }
-            JsonReader.expectObjectStart(parser);
-            String[] tags = readTags(parser);
-            assert tags != null && tags.length == 1;
-            String text = tags[0];
-            Tag tag = VALUES_.get(text);
-            DeleteError value = null;
-            if (tag != null) {
-                switch (tag) {
-                    case PATH_LOOKUP: {
-                        LookupError v = null;
-                        assert parser.getCurrentToken() == JsonToken.FIELD_NAME;
-                        text = parser.getText();
-                        assert tags[0].equals(text);
-                        parser.nextToken();
-                        v = LookupError._JSON_READER
-                            .readField(parser, "path_lookup", v);
-                        value = DeleteError.pathLookup(v);
-                        break;
-                    }
-                    case PATH_WRITE: {
-                        WriteError v = null;
-                        assert parser.getCurrentToken() == JsonToken.FIELD_NAME;
-                        text = parser.getText();
-                        assert tags[0].equals(text);
-                        parser.nextToken();
-                        v = WriteError._JSON_READER
-                            .readField(parser, "path_write", v);
-                        value = DeleteError.pathWrite(v);
-                        break;
-                    }
-                    case OTHER: {
-                        value = DeleteError.OTHER;
-                        break;
-                    }
-                }
-            }
-            JsonReader.expectObjectEnd(parser);
-            if (value == null) {
-                return DeleteError.OTHER;
-            }
-            return value;
+        public Deserializer() {
+            super(DeleteError.class, getTagMapping(), Tag.OTHER);
         }
 
-    };
+        @Override
+        public DeleteError deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+            switch (_tag) {
+                case PATH_LOOKUP: {
+                    LookupError value = null;
+                    expectField(_p, "path_lookup");
+                    value = _p.readValueAs(LookupError.class);
+                    _p.nextToken();
+                    return DeleteError.pathLookup(value);
+                }
+                case PATH_WRITE: {
+                    WriteError value = null;
+                    expectField(_p, "path_write");
+                    value = _p.readValueAs(WriteError.class);
+                    _p.nextToken();
+                    return DeleteError.pathWrite(value);
+                }
+                case OTHER: {
+                    return DeleteError.OTHER;
+                }
+            }
+            // should be impossible to get here
+            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
+        }
+
+        private static Map<String, DeleteError.Tag> getTagMapping() {
+            Map<String, DeleteError.Tag> values = new HashMap<String, DeleteError.Tag>();
+            values.put("path_lookup", DeleteError.Tag.PATH_LOOKUP);
+            values.put("path_write", DeleteError.Tag.PATH_WRITE);
+            values.put("other", DeleteError.Tag.OTHER);
+            return Collections.unmodifiableMap(values);
+        }
+    }
 }

@@ -7,13 +7,13 @@ import com.dropbox.core.DbxException;
 
 /**
  * The request builder returned by {@link
- * DbxFiles#searchBuilder(String,String)}.
+ * DbxUserFilesRequests#searchBuilder(String,String)}.
  *
  * <p> Use this class to set optional request parameters and complete the
  * request. </p>
  */
 public class SearchBuilder {
-    private final DbxFiles files;
+    private final DbxUserFilesRequests files;
     private final SearchArg.Builder searchArgBuilder;
 
     /**
@@ -25,7 +25,7 @@ public class SearchBuilder {
      *
      * @return instsance of this builder
      */
-    SearchBuilder(DbxFiles files, SearchArg.Builder searchArgBuilder) {
+    SearchBuilder(DbxUserFilesRequests files, SearchArg.Builder searchArgBuilder) {
         if (files == null) {
             throw new NullPointerException("files");
         }

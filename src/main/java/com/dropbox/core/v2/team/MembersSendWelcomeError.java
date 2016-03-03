@@ -5,14 +5,29 @@ package com.dropbox.core.v2.team;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.UnionJsonDeserializer;
+import com.dropbox.core.json.UnionJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
+@JsonSerialize(using=MembersSendWelcomeError.Serializer.class)
+@JsonDeserialize(using=MembersSendWelcomeError.Deserializer.class)
 public enum MembersSendWelcomeError {
     // union MembersSendWelcomeError
     /**
@@ -29,48 +44,49 @@ public enum MembersSendWelcomeError {
      */
     OTHER; // *catch_all
 
-    private static final java.util.HashMap<String, MembersSendWelcomeError> VALUES_;
-    static {
-        VALUES_ = new java.util.HashMap<String, MembersSendWelcomeError>();
-        VALUES_.put("other", OTHER);
-    }
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
-    }
+    static final class Serializer extends UnionJsonSerializer<MembersSendWelcomeError> {
+        private static final long serialVersionUID = 0L;
 
-    public static MembersSendWelcomeError fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
+        public Serializer() {
+            super(MembersSendWelcomeError.class);
+        }
 
-    public static final JsonWriter<MembersSendWelcomeError> _JSON_WRITER = new JsonWriter<MembersSendWelcomeError>() {
-        public void write(MembersSendWelcomeError x, JsonGenerator g) throws IOException {
-            switch (x) {
+        @Override
+        public void serialize(MembersSendWelcomeError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            switch (value) {
                 case USER_NOT_FOUND:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("user_not_found");
-                    g.writeEndObject();
                     break;
                 case USER_NOT_IN_TEAM:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("user_not_in_team");
-                    g.writeEndObject();
                     break;
                 case OTHER:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("other");
-                    g.writeEndObject();
                     break;
             }
         }
-    };
+    }
 
-    public static final JsonReader<MembersSendWelcomeError> _JSON_READER = new JsonReader<MembersSendWelcomeError>() {
-        public final MembersSendWelcomeError read(JsonParser parser) throws IOException, JsonReadException {
-            return JsonReader.readEnum(parser, VALUES_, OTHER);
+    static final class Deserializer extends UnionJsonDeserializer<MembersSendWelcomeError, MembersSendWelcomeError> {
+        private static final long serialVersionUID = 0L;
+
+        public Deserializer() {
+            super(MembersSendWelcomeError.class, getTagMapping(), MembersSendWelcomeError.OTHER);
         }
-    };
+
+        @Override
+        public MembersSendWelcomeError deserialize(MembersSendWelcomeError _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+            return _tag;
+        }
+
+        private static Map<String, MembersSendWelcomeError> getTagMapping() {
+            Map<String, MembersSendWelcomeError> values = new HashMap<String, MembersSendWelcomeError>();
+            values.put("other", MembersSendWelcomeError.OTHER);
+            return Collections.unmodifiableMap(values);
+        }
+    }
 }

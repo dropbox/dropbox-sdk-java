@@ -11,10 +11,11 @@ import com.dropbox.core.LocalizedText;
  * error.
  */
 public class GroupMembersAddErrorException extends DbxApiException {
+    private static final long serialVersionUID = 0L;
 
     /**
      * The error reported by {@link
-     * DbxTeam#groupsMembersAdd(GroupSelector,java.util.List)}.
+     * DbxTeamTeamRequests#groupsMembersAdd(GroupSelector,java.util.List)}.
      */
     public final GroupMembersAddError errorValue;
 

@@ -5,21 +5,39 @@ package com.dropbox.core.v2.files;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
 /**
  * Sharing info for a file or folder.
  */
+@JsonSerialize(using=SharingInfo.Serializer.class)
+@JsonDeserialize(using=SharingInfo.Deserializer.class)
 public class SharingInfo {
     // struct SharingInfo
 
-    private final boolean readOnly;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final boolean readOnly;
 
     /**
      * Sharing info for a file or folder.
@@ -65,59 +83,90 @@ public class SharingInfo {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static SharingInfo fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
+    static final class Serializer extends StructJsonSerializer<SharingInfo> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(SharingInfo.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(SharingInfo.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<SharingInfo> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(SharingInfo value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("read_only", value.readOnly);
+        }
     }
 
-    public static final JsonWriter<SharingInfo> _JSON_WRITER = new JsonWriter<SharingInfo>() {
-        public final void write(SharingInfo x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            SharingInfo._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
-        }
-        public final void writeFields(SharingInfo x, JsonGenerator g) throws IOException {
-            g.writeFieldName("read_only");
-            g.writeBoolean(x.readOnly);
-        }
-    };
+    static final class Deserializer extends StructJsonDeserializer<SharingInfo> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonReader<SharingInfo> _JSON_READER = new JsonReader<SharingInfo>() {
-        public final SharingInfo read(JsonParser parser) throws IOException, JsonReadException {
-            SharingInfo result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+        public Deserializer() {
+            super(SharingInfo.class);
         }
 
-        public final SharingInfo readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(SharingInfo.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<SharingInfo> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public SharingInfo deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             Boolean readOnly = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("read_only".equals(fieldName)) {
-                    readOnly = JsonReader.BooleanReader
-                        .readField(parser, "read_only", readOnly);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("read_only".equals(_field)) {
+                    readOnly = _p.getValueAsBoolean();
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (readOnly == null) {
-                throw new JsonReadException("Required field \"read_only\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"read_only\" is missing.");
             }
+
             return new SharingInfo(readOnly);
         }
-    };
+    }
 }

@@ -5,22 +5,40 @@ package com.dropbox.core.v2.files;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
 /**
  * Sharing info for a file which is contained by a shared folder.
  */
+@JsonSerialize(using=FileSharingInfo.Serializer.class)
+@JsonDeserialize(using=FileSharingInfo.Deserializer.class)
 public class FileSharingInfo extends SharingInfo {
     // struct FileSharingInfo
 
-    private final String parentSharedFolderId;
-    private final String modifiedBy;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final String parentSharedFolderId;
+    protected final String modifiedBy;
 
     /**
      * Sharing info for a file which is contained by a shared folder.
@@ -110,9 +128,9 @@ public class FileSharingInfo extends SharingInfo {
         // be careful with inheritance
         else if (obj.getClass().equals(this.getClass())) {
             FileSharingInfo other = (FileSharingInfo) obj;
-            return ((this.parentSharedFolderId == other.parentSharedFolderId) || (this.parentSharedFolderId.equals(other.parentSharedFolderId)))
+            return (this.readOnly == other.readOnly)
+                && ((this.parentSharedFolderId == other.parentSharedFolderId) || (this.parentSharedFolderId.equals(other.parentSharedFolderId)))
                 && ((this.modifiedBy == other.modifiedBy) || (this.modifiedBy != null && this.modifiedBy.equals(other.modifiedBy)))
-                && (this.getReadOnly() == other.getReadOnly())
                 ;
         }
         else {
@@ -122,77 +140,107 @@ public class FileSharingInfo extends SharingInfo {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
-    }
-
-    public static FileSharingInfo fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
-
-    public static final JsonWriter<FileSharingInfo> _JSON_WRITER = new JsonWriter<FileSharingInfo>() {
-        public final void write(FileSharingInfo x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            SharingInfo._JSON_WRITER.writeFields(x, g);
-            FileSharingInfo._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
         }
-        public final void writeFields(FileSharingInfo x, JsonGenerator g) throws IOException {
-            g.writeFieldName("parent_shared_folder_id");
-            g.writeString(x.parentSharedFolderId);
-            if (x.modifiedBy != null) {
-                g.writeFieldName("modified_by");
-                g.writeString(x.modifiedBy);
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
+    }
+
+    static final class Serializer extends StructJsonSerializer<FileSharingInfo> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(FileSharingInfo.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(FileSharingInfo.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<FileSharingInfo> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(FileSharingInfo value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("read_only", value.readOnly);
+            g.writeObjectField("parent_shared_folder_id", value.parentSharedFolderId);
+            if (value.modifiedBy != null) {
+                g.writeObjectField("modified_by", value.modifiedBy);
             }
         }
-    };
+    }
 
-    public static final JsonReader<FileSharingInfo> _JSON_READER = new JsonReader<FileSharingInfo>() {
-        public final FileSharingInfo read(JsonParser parser) throws IOException, JsonReadException {
-            FileSharingInfo result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+    static final class Deserializer extends StructJsonDeserializer<FileSharingInfo> {
+        private static final long serialVersionUID = 0L;
+
+        public Deserializer() {
+            super(FileSharingInfo.class);
         }
 
-        public final FileSharingInfo readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(FileSharingInfo.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<FileSharingInfo> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public FileSharingInfo deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             Boolean readOnly = null;
             String parentSharedFolderId = null;
             String modifiedBy = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("read_only".equals(fieldName)) {
-                    readOnly = JsonReader.BooleanReader
-                        .readField(parser, "read_only", readOnly);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("read_only".equals(_field)) {
+                    readOnly = _p.getValueAsBoolean();
+                    _p.nextToken();
                 }
-                else if ("parent_shared_folder_id".equals(fieldName)) {
-                    parentSharedFolderId = JsonReader.StringReader
-                        .readField(parser, "parent_shared_folder_id", parentSharedFolderId);
+                else if ("parent_shared_folder_id".equals(_field)) {
+                    parentSharedFolderId = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("modified_by".equals(fieldName)) {
-                    modifiedBy = JsonReader.StringReader
-                        .readField(parser, "modified_by", modifiedBy);
+                else if ("modified_by".equals(_field)) {
+                    modifiedBy = getStringValue(_p);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (readOnly == null) {
-                throw new JsonReadException("Required field \"read_only\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"read_only\" is missing.");
             }
             if (parentSharedFolderId == null) {
-                throw new JsonReadException("Required field \"parent_shared_folder_id\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"parent_shared_folder_id\" is missing.");
             }
+
             return new FileSharingInfo(readOnly, parentSharedFolderId, modifiedBy);
         }
-    };
+    }
 }

@@ -5,32 +5,51 @@ package com.dropbox.core.v2.sharing;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
 /**
  * Basic information about a user. Use {@link
- * com.dropbox.core.v2.users.DbxUsers#getAccount(String)} and {@link
- * com.dropbox.core.v2.users.DbxUsers#getAccountBatch(java.util.List)} to obtain
- * more detailed information.
+ * com.dropbox.core.v2.users.DbxUserUsersRequests#getAccount(String)} and {@link
+ * com.dropbox.core.v2.users.DbxUserUsersRequests#getAccountBatch(java.util.List)}
+ * to obtain more detailed information.
  */
+@JsonSerialize(using=UserInfo.Serializer.class)
+@JsonDeserialize(using=UserInfo.Deserializer.class)
 public class UserInfo {
     // struct UserInfo
 
-    private final String accountId;
-    private final boolean sameTeam;
-    private final String teamMemberId;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final String accountId;
+    protected final boolean sameTeam;
+    protected final String teamMemberId;
 
     /**
      * Basic information about a user. Use {@link
-     * com.dropbox.core.v2.users.DbxUsers#getAccount(String)} and {@link
-     * com.dropbox.core.v2.users.DbxUsers#getAccountBatch(java.util.List)} to
-     * obtain more detailed information.
+     * com.dropbox.core.v2.users.DbxUserUsersRequests#getAccount(String)} and
+     * {@link
+     * com.dropbox.core.v2.users.DbxUserUsersRequests#getAccountBatch(java.util.List)}
+     * to obtain more detailed information.
      *
      * @param accountId  The account ID of the user. Must have length of at
      *     least 40, have length of at most 40, and not be {@code null}.
@@ -58,9 +77,10 @@ public class UserInfo {
 
     /**
      * Basic information about a user. Use {@link
-     * com.dropbox.core.v2.users.DbxUsers#getAccount(String)} and {@link
-     * com.dropbox.core.v2.users.DbxUsers#getAccountBatch(java.util.List)} to
-     * obtain more detailed information.
+     * com.dropbox.core.v2.users.DbxUserUsersRequests#getAccount(String)} and
+     * {@link
+     * com.dropbox.core.v2.users.DbxUserUsersRequests#getAccountBatch(java.util.List)}
+     * to obtain more detailed information.
      *
      * <p> The default values for unset fields will be used. </p>
      *
@@ -133,78 +153,107 @@ public class UserInfo {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
-    }
-
-    public static UserInfo fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
-
-    public static final JsonWriter<UserInfo> _JSON_WRITER = new JsonWriter<UserInfo>() {
-        public final void write(UserInfo x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            UserInfo._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
         }
-        public final void writeFields(UserInfo x, JsonGenerator g) throws IOException {
-            g.writeFieldName("account_id");
-            g.writeString(x.accountId);
-            g.writeFieldName("same_team");
-            g.writeBoolean(x.sameTeam);
-            if (x.teamMemberId != null) {
-                g.writeFieldName("team_member_id");
-                g.writeString(x.teamMemberId);
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
+    }
+
+    static final class Serializer extends StructJsonSerializer<UserInfo> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(UserInfo.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(UserInfo.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<UserInfo> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(UserInfo value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("account_id", value.accountId);
+            g.writeObjectField("same_team", value.sameTeam);
+            if (value.teamMemberId != null) {
+                g.writeObjectField("team_member_id", value.teamMemberId);
             }
         }
-    };
+    }
 
-    public static final JsonReader<UserInfo> _JSON_READER = new JsonReader<UserInfo>() {
-        public final UserInfo read(JsonParser parser) throws IOException, JsonReadException {
-            UserInfo result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+    static final class Deserializer extends StructJsonDeserializer<UserInfo> {
+        private static final long serialVersionUID = 0L;
+
+        public Deserializer() {
+            super(UserInfo.class);
         }
 
-        public final UserInfo readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(UserInfo.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<UserInfo> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public UserInfo deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             String accountId = null;
             Boolean sameTeam = null;
             String teamMemberId = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("account_id".equals(fieldName)) {
-                    accountId = JsonReader.StringReader
-                        .readField(parser, "account_id", accountId);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("account_id".equals(_field)) {
+                    accountId = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("same_team".equals(fieldName)) {
-                    sameTeam = JsonReader.BooleanReader
-                        .readField(parser, "same_team", sameTeam);
+                else if ("same_team".equals(_field)) {
+                    sameTeam = _p.getValueAsBoolean();
+                    _p.nextToken();
                 }
-                else if ("team_member_id".equals(fieldName)) {
-                    teamMemberId = JsonReader.StringReader
-                        .readField(parser, "team_member_id", teamMemberId);
+                else if ("team_member_id".equals(_field)) {
+                    teamMemberId = getStringValue(_p);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (accountId == null) {
-                throw new JsonReadException("Required field \"account_id\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"account_id\" is missing.");
             }
             if (sameTeam == null) {
-                throw new JsonReadException("Required field \"same_team\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"same_team\" is missing.");
             }
+
             return new UserInfo(accountId, sameTeam, teamMemberId);
         }
-    };
+    }
 }

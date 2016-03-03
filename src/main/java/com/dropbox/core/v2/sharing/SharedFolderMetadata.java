@@ -3,14 +3,25 @@
 
 package com.dropbox.core.v2.sharing;
 
-import com.dropbox.core.json.JsonArrayReader;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.List;
@@ -18,12 +29,18 @@ import java.util.List;
 /**
  * The metadata which includes basic information about the shared folder.
  */
+@JsonSerialize(using=SharedFolderMetadata.Serializer.class)
+@JsonDeserialize(using=SharedFolderMetadata.Deserializer.class)
 public class SharedFolderMetadata extends SharedFolderMetadataBase {
     // struct SharedFolderMetadata
 
-    private final String pathLower;
-    private final String name;
-    private final String sharedFolderId;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final String pathLower;
+    protected final String name;
+    protected final String sharedFolderId;
 
     /**
      * The metadata which includes basic information about the shared folder.
@@ -246,13 +263,13 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
         // be careful with inheritance
         else if (obj.getClass().equals(this.getClass())) {
             SharedFolderMetadata other = (SharedFolderMetadata) obj;
-            return ((this.pathLower == other.pathLower) || (this.pathLower != null && this.pathLower.equals(other.pathLower)))
+            return ((this.accessType == other.accessType) || (this.accessType.equals(other.accessType)))
+                && (this.isTeamFolder == other.isTeamFolder)
+                && ((this.policy == other.policy) || (this.policy.equals(other.policy)))
                 && ((this.name == other.name) || (this.name.equals(other.name)))
                 && ((this.sharedFolderId == other.sharedFolderId) || (this.sharedFolderId.equals(other.sharedFolderId)))
-                && ((this.getAccessType() == other.getAccessType()) || (this.getAccessType().equals(other.getAccessType())))
-                && (this.getIsTeamFolder() == other.getIsTeamFolder())
-                && ((this.getPolicy() == other.getPolicy()) || (this.getPolicy().equals(other.getPolicy())))
-                && ((this.getPermissions() == other.getPermissions()) || (this.getPermissions() != null && this.getPermissions().equals(other.getPermissions())))
+                && ((this.permissions == other.permissions) || (this.permissions != null && this.permissions.equals(other.permissions)))
+                && ((this.pathLower == other.pathLower) || (this.pathLower != null && this.pathLower.equals(other.pathLower)))
                 ;
         }
         else {
@@ -262,50 +279,81 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
-    }
-
-    public static SharedFolderMetadata fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
-
-    public static final JsonWriter<SharedFolderMetadata> _JSON_WRITER = new JsonWriter<SharedFolderMetadata>() {
-        public final void write(SharedFolderMetadata x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            SharedFolderMetadataBase._JSON_WRITER.writeFields(x, g);
-            SharedFolderMetadata._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
         }
-        public final void writeFields(SharedFolderMetadata x, JsonGenerator g) throws IOException {
-            if (x.pathLower != null) {
-                g.writeFieldName("path_lower");
-                g.writeString(x.pathLower);
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
+    }
+
+    static final class Serializer extends StructJsonSerializer<SharedFolderMetadata> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(SharedFolderMetadata.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(SharedFolderMetadata.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<SharedFolderMetadata> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(SharedFolderMetadata value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("access_type", value.accessType);
+            g.writeObjectField("is_team_folder", value.isTeamFolder);
+            g.writeObjectField("policy", value.policy);
+            g.writeObjectField("name", value.name);
+            g.writeObjectField("shared_folder_id", value.sharedFolderId);
+            if (value.permissions != null) {
+                g.writeObjectField("permissions", value.permissions);
             }
-            g.writeFieldName("name");
-            g.writeString(x.name);
-            g.writeFieldName("shared_folder_id");
-            g.writeString(x.sharedFolderId);
+            if (value.pathLower != null) {
+                g.writeObjectField("path_lower", value.pathLower);
+            }
         }
-    };
+    }
 
-    public static final JsonReader<SharedFolderMetadata> _JSON_READER = new JsonReader<SharedFolderMetadata>() {
-        public final SharedFolderMetadata read(JsonParser parser) throws IOException, JsonReadException {
-            SharedFolderMetadata result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+    static final class Deserializer extends StructJsonDeserializer<SharedFolderMetadata> {
+        private static final long serialVersionUID = 0L;
+
+        public Deserializer() {
+            super(SharedFolderMetadata.class);
         }
 
-        public final SharedFolderMetadata readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(SharedFolderMetadata.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<SharedFolderMetadata> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public SharedFolderMetadata deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             AccessLevel accessType = null;
             Boolean isTeamFolder = null;
             FolderPolicy policy = null;
@@ -313,57 +361,68 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
             String sharedFolderId = null;
             List<FolderPermission> permissions = null;
             String pathLower = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("access_type".equals(fieldName)) {
-                    accessType = AccessLevel._JSON_READER
-                        .readField(parser, "access_type", accessType);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("access_type".equals(_field)) {
+                    accessType = _p.readValueAs(AccessLevel.class);
+                    _p.nextToken();
                 }
-                else if ("is_team_folder".equals(fieldName)) {
-                    isTeamFolder = JsonReader.BooleanReader
-                        .readField(parser, "is_team_folder", isTeamFolder);
+                else if ("is_team_folder".equals(_field)) {
+                    isTeamFolder = _p.getValueAsBoolean();
+                    _p.nextToken();
                 }
-                else if ("policy".equals(fieldName)) {
-                    policy = FolderPolicy._JSON_READER
-                        .readField(parser, "policy", policy);
+                else if ("policy".equals(_field)) {
+                    policy = _p.readValueAs(FolderPolicy.class);
+                    _p.nextToken();
                 }
-                else if ("name".equals(fieldName)) {
-                    name = JsonReader.StringReader
-                        .readField(parser, "name", name);
+                else if ("name".equals(_field)) {
+                    name = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("shared_folder_id".equals(fieldName)) {
-                    sharedFolderId = JsonReader.StringReader
-                        .readField(parser, "shared_folder_id", sharedFolderId);
+                else if ("shared_folder_id".equals(_field)) {
+                    sharedFolderId = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("permissions".equals(fieldName)) {
-                    permissions = JsonArrayReader.mk(FolderPermission._JSON_READER)
-                        .readField(parser, "permissions", permissions);
+                else if ("permissions".equals(_field)) {
+                    expectArrayStart(_p);
+                    permissions = new java.util.ArrayList<FolderPermission>();
+                    while (!isArrayEnd(_p)) {
+                        FolderPermission _x = null;
+                        _x = _p.readValueAs(FolderPermission.class);
+                        _p.nextToken();
+                        permissions.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
                 }
-                else if ("path_lower".equals(fieldName)) {
-                    pathLower = JsonReader.StringReader
-                        .readField(parser, "path_lower", pathLower);
+                else if ("path_lower".equals(_field)) {
+                    pathLower = getStringValue(_p);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (accessType == null) {
-                throw new JsonReadException("Required field \"access_type\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"access_type\" is missing.");
             }
             if (isTeamFolder == null) {
-                throw new JsonReadException("Required field \"is_team_folder\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"is_team_folder\" is missing.");
             }
             if (policy == null) {
-                throw new JsonReadException("Required field \"policy\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"policy\" is missing.");
             }
             if (name == null) {
-                throw new JsonReadException("Required field \"name\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"name\" is missing.");
             }
             if (sharedFolderId == null) {
-                throw new JsonReadException("Required field \"shared_folder_id\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"shared_folder_id\" is missing.");
             }
+
             return new SharedFolderMetadata(accessType, isTeamFolder, policy, name, sharedFolderId, permissions, pathLower);
         }
-    };
+    }
 }

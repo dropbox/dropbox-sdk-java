@@ -3,14 +3,25 @@
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonDateReader;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.Date;
@@ -18,14 +29,20 @@ import java.util.Date;
 /**
  * Information about linked Dropbox desktop client sessions
  */
+@JsonSerialize(using=DesktopClientSession.Serializer.class)
+@JsonDeserialize(using=DesktopClientSession.Deserializer.class)
 public class DesktopClientSession extends DeviceSession {
     // struct DesktopClientSession
 
-    private final String hostName;
-    private final DesktopPlatform clientType;
-    private final String clientVersion;
-    private final String platform;
-    private final boolean isDeleteOnUnlinkSupported;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final String hostName;
+    protected final DesktopPlatform clientType;
+    protected final String clientVersion;
+    protected final String platform;
+    protected final boolean isDeleteOnUnlinkSupported;
 
     /**
      * Information about linked Dropbox desktop client sessions
@@ -227,16 +244,16 @@ public class DesktopClientSession extends DeviceSession {
         // be careful with inheritance
         else if (obj.getClass().equals(this.getClass())) {
             DesktopClientSession other = (DesktopClientSession) obj;
-            return ((this.hostName == other.hostName) || (this.hostName.equals(other.hostName)))
+            return ((this.sessionId == other.sessionId) || (this.sessionId.equals(other.sessionId)))
+                && ((this.hostName == other.hostName) || (this.hostName.equals(other.hostName)))
                 && ((this.clientType == other.clientType) || (this.clientType.equals(other.clientType)))
                 && ((this.clientVersion == other.clientVersion) || (this.clientVersion.equals(other.clientVersion)))
                 && ((this.platform == other.platform) || (this.platform.equals(other.platform)))
                 && (this.isDeleteOnUnlinkSupported == other.isDeleteOnUnlinkSupported)
-                && ((this.getSessionId() == other.getSessionId()) || (this.getSessionId().equals(other.getSessionId())))
-                && ((this.getIpAddress() == other.getIpAddress()) || (this.getIpAddress() != null && this.getIpAddress().equals(other.getIpAddress())))
-                && ((this.getCountry() == other.getCountry()) || (this.getCountry() != null && this.getCountry().equals(other.getCountry())))
-                && ((this.getCreated() == other.getCreated()) || (this.getCreated() != null && this.getCreated().equals(other.getCreated())))
-                && ((this.getUpdated() == other.getUpdated()) || (this.getUpdated() != null && this.getUpdated().equals(other.getUpdated())))
+                && ((this.ipAddress == other.ipAddress) || (this.ipAddress != null && this.ipAddress.equals(other.ipAddress)))
+                && ((this.country == other.country) || (this.country != null && this.country.equals(other.country)))
+                && ((this.created == other.created) || (this.created != null && this.created.equals(other.created)))
+                && ((this.updated == other.updated) || (this.updated != null && this.updated.equals(other.updated)))
                 ;
         }
         else {
@@ -246,52 +263,88 @@ public class DesktopClientSession extends DeviceSession {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static DesktopClientSession fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
+    static final class Serializer extends StructJsonSerializer<DesktopClientSession> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(DesktopClientSession.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(DesktopClientSession.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<DesktopClientSession> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(DesktopClientSession value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("session_id", value.sessionId);
+            g.writeObjectField("host_name", value.hostName);
+            g.writeObjectField("client_type", value.clientType);
+            g.writeObjectField("client_version", value.clientVersion);
+            g.writeObjectField("platform", value.platform);
+            g.writeObjectField("is_delete_on_unlink_supported", value.isDeleteOnUnlinkSupported);
+            if (value.ipAddress != null) {
+                g.writeObjectField("ip_address", value.ipAddress);
+            }
+            if (value.country != null) {
+                g.writeObjectField("country", value.country);
+            }
+            if (value.created != null) {
+                g.writeObjectField("created", value.created);
+            }
+            if (value.updated != null) {
+                g.writeObjectField("updated", value.updated);
+            }
+        }
     }
 
-    public static final JsonWriter<DesktopClientSession> _JSON_WRITER = new JsonWriter<DesktopClientSession>() {
-        public final void write(DesktopClientSession x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            DeviceSession._JSON_WRITER.writeFields(x, g);
-            DesktopClientSession._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
-        }
-        public final void writeFields(DesktopClientSession x, JsonGenerator g) throws IOException {
-            g.writeFieldName("host_name");
-            g.writeString(x.hostName);
-            g.writeFieldName("client_type");
-            DesktopPlatform._JSON_WRITER.write(x.clientType, g);
-            g.writeFieldName("client_version");
-            g.writeString(x.clientVersion);
-            g.writeFieldName("platform");
-            g.writeString(x.platform);
-            g.writeFieldName("is_delete_on_unlink_supported");
-            g.writeBoolean(x.isDeleteOnUnlinkSupported);
-        }
-    };
+    static final class Deserializer extends StructJsonDeserializer<DesktopClientSession> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonReader<DesktopClientSession> _JSON_READER = new JsonReader<DesktopClientSession>() {
-        public final DesktopClientSession read(JsonParser parser) throws IOException, JsonReadException {
-            DesktopClientSession result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+        public Deserializer() {
+            super(DesktopClientSession.class);
         }
 
-        public final DesktopClientSession readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(DesktopClientSession.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<DesktopClientSession> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public DesktopClientSession deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             String sessionId = null;
             String hostName = null;
             DesktopPlatform clientType = null;
@@ -302,72 +355,75 @@ public class DesktopClientSession extends DeviceSession {
             String country = null;
             Date created = null;
             Date updated = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("session_id".equals(fieldName)) {
-                    sessionId = JsonReader.StringReader
-                        .readField(parser, "session_id", sessionId);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("session_id".equals(_field)) {
+                    sessionId = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("host_name".equals(fieldName)) {
-                    hostName = JsonReader.StringReader
-                        .readField(parser, "host_name", hostName);
+                else if ("host_name".equals(_field)) {
+                    hostName = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("client_type".equals(fieldName)) {
-                    clientType = DesktopPlatform._JSON_READER
-                        .readField(parser, "client_type", clientType);
+                else if ("client_type".equals(_field)) {
+                    clientType = _p.readValueAs(DesktopPlatform.class);
+                    _p.nextToken();
                 }
-                else if ("client_version".equals(fieldName)) {
-                    clientVersion = JsonReader.StringReader
-                        .readField(parser, "client_version", clientVersion);
+                else if ("client_version".equals(_field)) {
+                    clientVersion = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("platform".equals(fieldName)) {
-                    platform = JsonReader.StringReader
-                        .readField(parser, "platform", platform);
+                else if ("platform".equals(_field)) {
+                    platform = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("is_delete_on_unlink_supported".equals(fieldName)) {
-                    isDeleteOnUnlinkSupported = JsonReader.BooleanReader
-                        .readField(parser, "is_delete_on_unlink_supported", isDeleteOnUnlinkSupported);
+                else if ("is_delete_on_unlink_supported".equals(_field)) {
+                    isDeleteOnUnlinkSupported = _p.getValueAsBoolean();
+                    _p.nextToken();
                 }
-                else if ("ip_address".equals(fieldName)) {
-                    ipAddress = JsonReader.StringReader
-                        .readField(parser, "ip_address", ipAddress);
+                else if ("ip_address".equals(_field)) {
+                    ipAddress = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("country".equals(fieldName)) {
-                    country = JsonReader.StringReader
-                        .readField(parser, "country", country);
+                else if ("country".equals(_field)) {
+                    country = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("created".equals(fieldName)) {
-                    created = JsonDateReader.DropboxV2
-                        .readField(parser, "created", created);
+                else if ("created".equals(_field)) {
+                    created = _ctx.parseDate(getStringValue(_p));
+                    _p.nextToken();
                 }
-                else if ("updated".equals(fieldName)) {
-                    updated = JsonDateReader.DropboxV2
-                        .readField(parser, "updated", updated);
+                else if ("updated".equals(_field)) {
+                    updated = _ctx.parseDate(getStringValue(_p));
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (sessionId == null) {
-                throw new JsonReadException("Required field \"session_id\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"session_id\" is missing.");
             }
             if (hostName == null) {
-                throw new JsonReadException("Required field \"host_name\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"host_name\" is missing.");
             }
             if (clientType == null) {
-                throw new JsonReadException("Required field \"client_type\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"client_type\" is missing.");
             }
             if (clientVersion == null) {
-                throw new JsonReadException("Required field \"client_version\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"client_version\" is missing.");
             }
             if (platform == null) {
-                throw new JsonReadException("Required field \"platform\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"platform\" is missing.");
             }
             if (isDeleteOnUnlinkSupported == null) {
-                throw new JsonReadException("Required field \"is_delete_on_unlink_supported\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"is_delete_on_unlink_supported\" is missing.");
             }
+
             return new DesktopClientSession(sessionId, hostName, clientType, clientVersion, platform, isDeleteOnUnlinkSupported, ipAddress, country, created, updated);
         }
-    };
+    }
 }

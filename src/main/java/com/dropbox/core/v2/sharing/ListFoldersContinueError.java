@@ -5,59 +5,85 @@ package com.dropbox.core.v2.sharing;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.UnionJsonDeserializer;
+import com.dropbox.core.json.UnionJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
+@JsonSerialize(using=ListFoldersContinueError.Serializer.class)
+@JsonDeserialize(using=ListFoldersContinueError.Deserializer.class)
 public enum ListFoldersContinueError {
     // union ListFoldersContinueError
     /**
      * {@link ListFoldersContinueArg#getCursor} is invalid.
      */
     INVALID_CURSOR,
+    /**
+     * Catch-all used for unknown tag values returned by the Dropbox servers.
+     *
+     * <p> Receiving a catch-all value typically indicates this SDK version is
+     * not up to date. Consider updating your SDK version to handle the new
+     * tags. </p>
+     */
     OTHER; // *catch_all
 
-    private static final java.util.HashMap<String, ListFoldersContinueError> VALUES_;
-    static {
-        VALUES_ = new java.util.HashMap<String, ListFoldersContinueError>();
-        VALUES_.put("invalid_cursor", INVALID_CURSOR);
-        VALUES_.put("other", OTHER);
-    }
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
-    }
+    static final class Serializer extends UnionJsonSerializer<ListFoldersContinueError> {
+        private static final long serialVersionUID = 0L;
 
-    public static ListFoldersContinueError fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
+        public Serializer() {
+            super(ListFoldersContinueError.class);
+        }
 
-    public static final JsonWriter<ListFoldersContinueError> _JSON_WRITER = new JsonWriter<ListFoldersContinueError>() {
-        public void write(ListFoldersContinueError x, JsonGenerator g) throws IOException {
-            switch (x) {
+        @Override
+        public void serialize(ListFoldersContinueError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            switch (value) {
                 case INVALID_CURSOR:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("invalid_cursor");
-                    g.writeEndObject();
                     break;
                 case OTHER:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("other");
-                    g.writeEndObject();
                     break;
             }
         }
-    };
+    }
 
-    public static final JsonReader<ListFoldersContinueError> _JSON_READER = new JsonReader<ListFoldersContinueError>() {
-        public final ListFoldersContinueError read(JsonParser parser) throws IOException, JsonReadException {
-            return JsonReader.readEnum(parser, VALUES_, OTHER);
+    static final class Deserializer extends UnionJsonDeserializer<ListFoldersContinueError, ListFoldersContinueError> {
+        private static final long serialVersionUID = 0L;
+
+        public Deserializer() {
+            super(ListFoldersContinueError.class, getTagMapping(), ListFoldersContinueError.OTHER);
         }
-    };
+
+        @Override
+        public ListFoldersContinueError deserialize(ListFoldersContinueError _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+            return _tag;
+        }
+
+        private static Map<String, ListFoldersContinueError> getTagMapping() {
+            Map<String, ListFoldersContinueError> values = new HashMap<String, ListFoldersContinueError>();
+            values.put("invalid_cursor", ListFoldersContinueError.INVALID_CURSOR);
+            values.put("other", ListFoldersContinueError.OTHER);
+            return Collections.unmodifiableMap(values);
+        }
+    }
 }

@@ -5,24 +5,42 @@ package com.dropbox.core.v2.files;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
 /**
  * Metadata for a file or folder.
  */
+@JsonSerialize(using=Metadata.Serializer.class)
+@JsonDeserialize(using=Metadata.Deserializer.class)
 public class Metadata {
     // struct Metadata
 
-    private final String name;
-    private final String pathLower;
-    private final String pathDisplay;
-    private final String parentSharedFolderId;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final String name;
+    protected final String pathLower;
+    protected final String pathDisplay;
+    protected final String parentSharedFolderId;
 
     /**
      * Metadata for a file or folder.
@@ -35,8 +53,8 @@ public class Metadata {
      *     In rare instances the casing will not correctly match the user's
      *     filesystem, but this behavior will match the path provided in the
      *     Core API v1. Changes to the casing of paths won't be returned by
-     *     {@link DbxFiles#listFolderContinue(String)}. Must not be {@code
-     *     null}.
+     *     {@link DbxUserFilesRequests#listFolderContinue(String)}. Must not be
+     *     {@code null}.
      * @param parentSharedFolderId  Deprecated. Please use {@link
      *     FileSharingInfo#getParentSharedFolderId} or {@link
      *     FolderSharingInfo#getParentSharedFolderId} instead. Must match
@@ -79,8 +97,8 @@ public class Metadata {
      *     In rare instances the casing will not correctly match the user's
      *     filesystem, but this behavior will match the path provided in the
      *     Core API v1. Changes to the casing of paths won't be returned by
-     *     {@link DbxFiles#listFolderContinue(String)}. Must not be {@code
-     *     null}.
+     *     {@link DbxUserFilesRequests#listFolderContinue(String)}. Must not be
+     *     {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -114,7 +132,7 @@ public class Metadata {
      * the casing will not correctly match the user's filesystem, but this
      * behavior will match the path provided in the Core API v1. Changes to the
      * casing of paths won't be returned by {@link
-     * DbxFiles#listFolderContinue(String)}
+     * DbxUserFilesRequests#listFolderContinue(String)}
      *
      * @return value for this field, never {@code null}.
      */
@@ -164,118 +182,121 @@ public class Metadata {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static Metadata fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
+    static final class Serializer extends StructJsonSerializer<Metadata> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(Metadata.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(Metadata.class, unwrapping);
+        }
+
+        @Override
+        protected void serializeFields(Metadata value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("name", value.name);
+            g.writeObjectField("path_lower", value.pathLower);
+            g.writeObjectField("path_display", value.pathDisplay);
+            if (value.parentSharedFolderId != null) {
+                g.writeObjectField("parent_shared_folder_id", value.parentSharedFolderId);
+            }
+        }
     }
 
-    public static final JsonWriter<Metadata> _JSON_WRITER = new JsonWriter<Metadata>() {
-        public final void write(Metadata x, JsonGenerator g) throws IOException {
-            if (x instanceof FileMetadata) {
-                FileMetadata._JSON_WRITER.write((FileMetadata) x, g);
-                return;
-            }
-            if (x instanceof FolderMetadata) {
-                FolderMetadata._JSON_WRITER.write((FolderMetadata) x, g);
-                return;
-            }
-            if (x instanceof DeletedMetadata) {
-                DeletedMetadata._JSON_WRITER.write((DeletedMetadata) x, g);
-                return;
-            }
+    static final class Deserializer extends StructJsonDeserializer<Metadata> {
+        private static final long serialVersionUID = 0L;
 
-            g.writeStartObject();
-            Metadata._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
-        }
-        public final void writeFields(Metadata x, JsonGenerator g) throws IOException {
-            g.writeFieldName("name");
-            g.writeString(x.name);
-            g.writeFieldName("path_lower");
-            g.writeString(x.pathLower);
-            g.writeFieldName("path_display");
-            g.writeString(x.pathDisplay);
-            if (x.parentSharedFolderId != null) {
-                g.writeFieldName("parent_shared_folder_id");
-                g.writeString(x.parentSharedFolderId);
-            }
-        }
-    };
-
-    public static final JsonReader<Metadata> _JSON_READER = new JsonReader<Metadata>() {
-        public final Metadata read(JsonParser parser) throws IOException, JsonReadException {
-            Metadata result;
-            JsonReader.expectObjectStart(parser);
-            String [] tags = readTags(parser);
-            result = readFromTags(tags, parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+        public Deserializer() {
+            super(Metadata.class, FileMetadata.class, FolderMetadata.class, DeletedMetadata.class);
         }
 
-        public final Metadata readFromTags(String [] tags, JsonParser parser) throws IOException, JsonReadException {
-            if (tags != null && tags.length > 0) {
-                if ("file".equals(tags[0])) {
-                    return FileMetadata._JSON_READER.readFromTags(tags, parser);
-                }
-                if ("folder".equals(tags[0])) {
-                    return FolderMetadata._JSON_READER.readFromTags(tags, parser);
-                }
-                if ("deleted".equals(tags[0])) {
-                    return DeletedMetadata._JSON_READER.readFromTags(tags, parser);
-                }
-                // If no match, fall back to base class
-            }
-            return readFields(parser);
+        public Deserializer(boolean unwrapping) {
+            super(Metadata.class, unwrapping, FileMetadata.class, FolderMetadata.class, DeletedMetadata.class);
         }
 
-        public final Metadata readFields(JsonParser parser) throws IOException, JsonReadException {
+        @Override
+        protected JsonDeserializer<Metadata> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public Metadata deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+            String _subtype_tag = readEnumeratedSubtypeTag(_p);
+            if ("file".equals(_subtype_tag)) {
+                return readCollapsedStructValue(FileMetadata.class, _p, _ctx);
+            }
+            if ("folder".equals(_subtype_tag)) {
+                return readCollapsedStructValue(FolderMetadata.class, _p, _ctx);
+            }
+            if ("deleted".equals(_subtype_tag)) {
+                return readCollapsedStructValue(DeletedMetadata.class, _p, _ctx);
+            }
+
             String name = null;
             String pathLower = null;
             String pathDisplay = null;
             String parentSharedFolderId = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("name".equals(fieldName)) {
-                    name = JsonReader.StringReader
-                        .readField(parser, "name", name);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("name".equals(_field)) {
+                    name = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("path_lower".equals(fieldName)) {
-                    pathLower = JsonReader.StringReader
-                        .readField(parser, "path_lower", pathLower);
+                else if ("path_lower".equals(_field)) {
+                    pathLower = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("path_display".equals(fieldName)) {
-                    pathDisplay = JsonReader.StringReader
-                        .readField(parser, "path_display", pathDisplay);
+                else if ("path_display".equals(_field)) {
+                    pathDisplay = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("parent_shared_folder_id".equals(fieldName)) {
-                    parentSharedFolderId = JsonReader.StringReader
-                        .readField(parser, "parent_shared_folder_id", parentSharedFolderId);
+                else if ("parent_shared_folder_id".equals(_field)) {
+                    parentSharedFolderId = getStringValue(_p);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (name == null) {
-                throw new JsonReadException("Required field \"name\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"name\" is missing.");
             }
             if (pathLower == null) {
-                throw new JsonReadException("Required field \"path_lower\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"path_lower\" is missing.");
             }
             if (pathDisplay == null) {
-                throw new JsonReadException("Required field \"path_display\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"path_display\" is missing.");
             }
+
             return new Metadata(name, pathLower, pathDisplay, parentSharedFolderId);
         }
-    };
+    }
 }

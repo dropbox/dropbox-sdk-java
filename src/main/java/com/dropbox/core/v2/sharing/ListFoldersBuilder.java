@@ -9,13 +9,14 @@ import com.dropbox.core.DbxException;
 import java.util.List;
 
 /**
- * The request builder returned by {@link DbxSharing#listFoldersBuilder()}.
+ * The request builder returned by {@link
+ * DbxUserSharingRequests#listFoldersBuilder()}.
  *
  * <p> Use this class to set optional request parameters and complete the
  * request. </p>
  */
 public class ListFoldersBuilder {
-    private final DbxSharing sharing;
+    private final DbxUserSharingRequests sharing;
     private final ListFoldersArgs.Builder listFoldersArgsBuilder;
 
     /**
@@ -27,7 +28,7 @@ public class ListFoldersBuilder {
      *
      * @return instsance of this builder
      */
-    ListFoldersBuilder(DbxSharing sharing, ListFoldersArgs.Builder listFoldersArgsBuilder) {
+    ListFoldersBuilder(DbxUserSharingRequests sharing, ListFoldersArgs.Builder listFoldersArgsBuilder) {
         if (sharing == null) {
             throw new NullPointerException("sharing");
         }

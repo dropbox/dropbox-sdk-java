@@ -11,9 +11,11 @@ import com.dropbox.core.LocalizedText;
  * SharedFolderAccessError} error.
  */
 public class SharedFolderAccessErrorException extends DbxApiException {
+    private static final long serialVersionUID = 0L;
 
     /**
-     * The error reported by {@link DbxSharing#listFolderMembers(String)}.
+     * The error reported by {@link
+     * DbxUserSharingRequests#listFolderMembers(String)}.
      */
     public final SharedFolderAccessError errorValue;
 

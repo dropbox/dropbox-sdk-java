@@ -6,12 +6,16 @@ package com.dropbox.core.v2.files;
 import com.dropbox.core.DbxRequestUtil;
 import com.dropbox.core.DbxUploader;
 import com.dropbox.core.http.HttpRequestor;
-import com.dropbox.core.json.JsonReadException;
+import com.dropbox.core.json.JsonUtil;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JavaType;
 
 import java.io.IOException;
 
 /**
- * The {@link DbxUploader} returned by {@link DbxFiles#upload(String)}.
+ * The {@link DbxUploader} returned by {@link
+ * DbxUserFilesRequests#upload(String)}.
  *
  * <p> Use this class to upload data to the server and complete the request.
  * </p>
@@ -20,7 +24,9 @@ import java.io.IOException;
  * and allow network connection reuse. Always call {@link #close} when complete
  * (see {@link DbxUploader} for examples). </p>
  */
-public class UploadUploader extends DbxUploader<FileMetadata, UploadErrorException> {
+public class UploadUploader extends DbxUploader<FileMetadata, UploadError, UploadErrorException> {
+    private static final JavaType _RESULT_TYPE = JsonUtil.createType(new TypeReference<FileMetadata>() {});
+    private static final JavaType _ERROR_TYPE = JsonUtil.createType(new TypeReference<UploadError>() {});
 
     /**
      * Creates a new instance of this uploader.
@@ -30,17 +36,9 @@ public class UploadUploader extends DbxUploader<FileMetadata, UploadErrorExcepti
      * @throws NullPointerException  if {@code httpUploader} is {@code null}
      */
     public UploadUploader(HttpRequestor.Uploader httpUploader) {
-        super(httpUploader);
+        super(httpUploader, _RESULT_TYPE, _ERROR_TYPE);
     }
-
-    @Override
-    protected FileMetadata parseResponse(HttpRequestor.Response response) throws JsonReadException, IOException {
-        return FileMetadata._JSON_READER.readFully(response.getBody());
-    }
-
-    @Override
-    protected UploadErrorException parseError(HttpRequestor.Response response) throws JsonReadException, IOException {
-        DbxRequestUtil.ErrorWrapper wrapper = DbxRequestUtil.ErrorWrapper.fromResponse(UploadError._JSON_READER, response);
-        return new UploadErrorException(wrapper.getRequestId(), wrapper.getUserMessage(), (UploadError) wrapper.getErrorValue());
+    protected UploadErrorException newException(DbxRequestUtil.ErrorWrapper error) {
+        return new UploadErrorException(error.getRequestId(), error.getUserMessage(), (UploadError) error.getErrorValue());
     }
 }

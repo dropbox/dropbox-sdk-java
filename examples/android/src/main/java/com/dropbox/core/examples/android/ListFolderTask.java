@@ -40,7 +40,7 @@ class ListFolderTask extends AsyncTask<String, Void, ListFolderResult> {
     @Override
     protected ListFolderResult doInBackground(String... params) {
         try {
-            return mDbxClient.files.listFolder(params[0]);
+            return mDbxClient.files().listFolder(params[0]);
         } catch (DbxException e) {
             mException = e;
         }

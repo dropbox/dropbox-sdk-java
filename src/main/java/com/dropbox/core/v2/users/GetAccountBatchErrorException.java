@@ -11,9 +11,11 @@ import com.dropbox.core.LocalizedText;
  * error.
  */
 public class GetAccountBatchErrorException extends DbxApiException {
+    private static final long serialVersionUID = 0L;
 
     /**
-     * The error reported by {@link DbxUsers#getAccountBatch(java.util.List)}.
+     * The error reported by {@link
+     * DbxUserUsersRequests#getAccountBatch(java.util.List)}.
      */
     public final GetAccountBatchError errorValue;
 

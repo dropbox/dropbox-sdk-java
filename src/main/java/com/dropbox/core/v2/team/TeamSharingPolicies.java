@@ -5,22 +5,40 @@ package com.dropbox.core.v2.team;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
 /**
  * Policies governing sharing within and outside of the team.
  */
+@JsonSerialize(using=TeamSharingPolicies.Serializer.class)
+@JsonDeserialize(using=TeamSharingPolicies.Deserializer.class)
 public class TeamSharingPolicies {
     // struct TeamSharingPolicies
 
-    private final SharedFolderMemberPolicy sharedFolderMemberPolicy;
-    private final SharedFolderJoinPolicy sharedFolderJoinPolicy;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final SharedFolderMemberPolicy sharedFolderMemberPolicy;
+    protected final SharedFolderJoinPolicy sharedFolderJoinPolicy;
 
     /**
      * Policies governing sharing within and outside of the team.
@@ -90,69 +108,99 @@ public class TeamSharingPolicies {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static TeamSharingPolicies fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
+    static final class Serializer extends StructJsonSerializer<TeamSharingPolicies> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(TeamSharingPolicies.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(TeamSharingPolicies.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<TeamSharingPolicies> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(TeamSharingPolicies value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("shared_folder_member_policy", value.sharedFolderMemberPolicy);
+            g.writeObjectField("shared_folder_join_policy", value.sharedFolderJoinPolicy);
+        }
     }
 
-    public static final JsonWriter<TeamSharingPolicies> _JSON_WRITER = new JsonWriter<TeamSharingPolicies>() {
-        public final void write(TeamSharingPolicies x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            TeamSharingPolicies._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
-        }
-        public final void writeFields(TeamSharingPolicies x, JsonGenerator g) throws IOException {
-            g.writeFieldName("shared_folder_member_policy");
-            SharedFolderMemberPolicy._JSON_WRITER.write(x.sharedFolderMemberPolicy, g);
-            g.writeFieldName("shared_folder_join_policy");
-            SharedFolderJoinPolicy._JSON_WRITER.write(x.sharedFolderJoinPolicy, g);
-        }
-    };
+    static final class Deserializer extends StructJsonDeserializer<TeamSharingPolicies> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonReader<TeamSharingPolicies> _JSON_READER = new JsonReader<TeamSharingPolicies>() {
-        public final TeamSharingPolicies read(JsonParser parser) throws IOException, JsonReadException {
-            TeamSharingPolicies result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+        public Deserializer() {
+            super(TeamSharingPolicies.class);
         }
 
-        public final TeamSharingPolicies readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(TeamSharingPolicies.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<TeamSharingPolicies> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public TeamSharingPolicies deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             SharedFolderMemberPolicy sharedFolderMemberPolicy = null;
             SharedFolderJoinPolicy sharedFolderJoinPolicy = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("shared_folder_member_policy".equals(fieldName)) {
-                    sharedFolderMemberPolicy = SharedFolderMemberPolicy._JSON_READER
-                        .readField(parser, "shared_folder_member_policy", sharedFolderMemberPolicy);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("shared_folder_member_policy".equals(_field)) {
+                    sharedFolderMemberPolicy = _p.readValueAs(SharedFolderMemberPolicy.class);
+                    _p.nextToken();
                 }
-                else if ("shared_folder_join_policy".equals(fieldName)) {
-                    sharedFolderJoinPolicy = SharedFolderJoinPolicy._JSON_READER
-                        .readField(parser, "shared_folder_join_policy", sharedFolderJoinPolicy);
+                else if ("shared_folder_join_policy".equals(_field)) {
+                    sharedFolderJoinPolicy = _p.readValueAs(SharedFolderJoinPolicy.class);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (sharedFolderMemberPolicy == null) {
-                throw new JsonReadException("Required field \"shared_folder_member_policy\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"shared_folder_member_policy\" is missing.");
             }
             if (sharedFolderJoinPolicy == null) {
-                throw new JsonReadException("Required field \"shared_folder_join_policy\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"shared_folder_join_policy\" is missing.");
             }
+
             return new TeamSharingPolicies(sharedFolderMemberPolicy, sharedFolderJoinPolicy);
         }
-    };
+    }
 }

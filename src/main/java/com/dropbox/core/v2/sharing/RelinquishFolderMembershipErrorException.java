@@ -11,10 +11,11 @@ import com.dropbox.core.LocalizedText;
  * RelinquishFolderMembershipError} error.
  */
 public class RelinquishFolderMembershipErrorException extends DbxApiException {
+    private static final long serialVersionUID = 0L;
 
     /**
      * The error reported by {@link
-     * DbxSharing#relinquishFolderMembership(String)}.
+     * DbxUserSharingRequests#relinquishFolderMembership(String)}.
      */
     public final RelinquishFolderMembershipError errorValue;
 

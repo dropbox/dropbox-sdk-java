@@ -5,6 +5,7 @@ import com.dropbox.core.DbxAuthInfo;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.DbxWebAuth;
+import com.dropbox.core.NetworkIOException;
 import com.dropbox.core.json.JsonReader;
 import com.dropbox.core.http.StandardHttpRequestor;
 import com.dropbox.core.v2.DbxClientV2;
@@ -17,6 +18,7 @@ import com.dropbox.core.v2.files.ListFolderResult;
 import com.dropbox.core.v2.files.Metadata;
 
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -42,7 +44,10 @@ public class Main {
         //
         StandardHttpRequestor.Config config = StandardHttpRequestor.Config.DEFAULT_INSTANCE;
         StandardHttpRequestor.Config longpollConfig = config.copy()
-            // read timeout should be well above longpoll timeout to allow for flucuations in response times.
+            // read timeout should be greater than our longpoll timeout and include enough buffer
+            // for the jitter introduced by the server. The server will add a random amount of delay
+            // to our longpoll timeout to avoid the stampeding herd problem. See
+            // DbxFiles.listFolderLongpoll(String, long) documentation for details.
             .withReadTimeout(5, TimeUnit.MINUTES)
             .build();
 
@@ -57,7 +62,8 @@ public class Main {
             System.out.println("Longpolling for changes... press CTRL-C to exit.");
             while (true) {
                 // will block for longpollTimeoutSecs or until a change is made in the folder
-                ListFolderLongpollResult result = dbxLongpollClient.files.listFolderLongpoll(cursor, longpollTimeoutSecs);
+                ListFolderLongpollResult result = dbxLongpollClient.files()
+                    .listFolderLongpoll(cursor, longpollTimeoutSecs);
 
                 // we have changes, list them
                 if (result.getChanges()) {
@@ -69,6 +75,7 @@ public class Main {
                 Long backoff = result.getBackoff();
                 if (backoff != null) {
                     try {
+                        System.out.printf("backing off for %d secs...\n", backoff.longValue());
                         Thread.sleep(TimeUnit.SECONDS.toMillis(backoff));
                     } catch (InterruptedException ex) {
                         System.exit(0);
@@ -80,11 +87,15 @@ public class Main {
             String message = ex.getUserMessage() != null ? ex.getUserMessage().getText() : ex.getMessage();
             System.err.println("Error making API call: " + message);
             System.exit(1);
-            return;
+        } catch (NetworkIOException ex) {
+            System.err.println("Error making API call: " + ex.getMessage());
+            if (ex.getCause() instanceof SocketTimeoutException) {
+                System.err.println("Consider increasing socket read timeout or decreasing longpoll timeout.");
+            }
+            System.exit(1);
         } catch (DbxException ex) {
             System.err.println("Error making API call: " + ex.getMessage());
             System.exit(1);
-            return;
         }
     }
 
@@ -117,7 +128,8 @@ public class Main {
      */
     private static String getLatestCursor(DbxClientV2 dbxClient, String path)
         throws DbxApiException, DbxException {
-        ListFolderGetLatestCursorResult result = dbxClient.files.listFolderGetLatestCursorBuilder(path)
+        ListFolderGetLatestCursorResult result = dbxClient.files()
+            .listFolderGetLatestCursorBuilder(path)
             .withIncludeDeleted(true)
             .withIncludeMediaInfo(false)
             .withRecursive(true)
@@ -138,7 +150,8 @@ public class Main {
         throws DbxApiException, DbxException {
 
         while (true) {
-            ListFolderResult result = client.files.listFolderContinue(cursor);
+            ListFolderResult result = client.files()
+                .listFolderContinue(cursor);
             for (Metadata metadata : result.getEntries()) {
                 String type;
                 String details;

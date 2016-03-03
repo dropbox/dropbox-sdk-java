@@ -6,13 +6,14 @@ package com.dropbox.core.v2.files;
 import com.dropbox.core.DbxException;
 
 /**
- * The request builder returned by {@link DbxFiles#getThumbnailBuilder(String)}.
+ * The request builder returned by {@link
+ * DbxUserFilesRequests#getThumbnailBuilder(String)}.
  *
  * <p> Use this class to set optional request parameters and complete the
  * request. </p>
  */
 public class GetThumbnailBuilder extends com.dropbox.core.v2.DbxDownloadStyleBuilder<FileMetadata> {
-    private final DbxFiles files;
+    private final DbxUserFilesRequests files;
     private final ThumbnailArg.Builder thumbnailArgBuilder;
 
     /**
@@ -24,7 +25,7 @@ public class GetThumbnailBuilder extends com.dropbox.core.v2.DbxDownloadStyleBui
      *
      * @return instsance of this builder
      */
-    GetThumbnailBuilder(DbxFiles files, ThumbnailArg.Builder thumbnailArgBuilder) {
+    GetThumbnailBuilder(DbxUserFilesRequests files, ThumbnailArg.Builder thumbnailArgBuilder) {
         if (files == null) {
             throw new NullPointerException("files");
         }

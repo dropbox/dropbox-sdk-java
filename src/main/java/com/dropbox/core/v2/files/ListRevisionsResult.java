@@ -3,23 +3,40 @@
 
 package com.dropbox.core.v2.files;
 
-import com.dropbox.core.json.JsonArrayReader;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.List;
 
+@JsonSerialize(using=ListRevisionsResult.Serializer.class)
+@JsonDeserialize(using=ListRevisionsResult.Deserializer.class)
 public class ListRevisionsResult {
     // struct ListRevisionsResult
 
-    private final boolean isDeleted;
-    private final List<FileMetadata> entries;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final boolean isDeleted;
+    protected final List<FileMetadata> entries;
 
     /**
      *
@@ -64,10 +81,11 @@ public class ListRevisionsResult {
 
     @Override
     public int hashCode() {
-        // objects containing lists are not hash-able. This is used as a safeguard
-        // against adding this object to a HashSet or HashMap. Since list fields are
-        // mutable, it is not safe to compute a hashCode here.
-        return System.identityHashCode(this);
+        int hash = java.util.Arrays.hashCode(new Object [] {
+            isDeleted,
+            entries
+        });
+        return hash;
     }
 
     @Override
@@ -89,75 +107,107 @@ public class ListRevisionsResult {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static ListRevisionsResult fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
+    static final class Serializer extends StructJsonSerializer<ListRevisionsResult> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(ListRevisionsResult.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(ListRevisionsResult.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<ListRevisionsResult> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(ListRevisionsResult value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("is_deleted", value.isDeleted);
+            g.writeObjectField("entries", value.entries);
+        }
     }
 
-    public static final JsonWriter<ListRevisionsResult> _JSON_WRITER = new JsonWriter<ListRevisionsResult>() {
-        public final void write(ListRevisionsResult x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            ListRevisionsResult._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
-        }
-        public final void writeFields(ListRevisionsResult x, JsonGenerator g) throws IOException {
-            g.writeFieldName("is_deleted");
-            g.writeBoolean(x.isDeleted);
-            g.writeFieldName("entries");
-            g.writeStartArray();
-            for (FileMetadata item: x.entries) {
-                if (item != null) {
-                    FileMetadata._JSON_WRITER.write(item, g);
-                }
-            }
-            g.writeEndArray();
-        }
-    };
+    static final class Deserializer extends StructJsonDeserializer<ListRevisionsResult> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonReader<ListRevisionsResult> _JSON_READER = new JsonReader<ListRevisionsResult>() {
-        public final ListRevisionsResult read(JsonParser parser) throws IOException, JsonReadException {
-            ListRevisionsResult result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+        public Deserializer() {
+            super(ListRevisionsResult.class);
         }
 
-        public final ListRevisionsResult readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(ListRevisionsResult.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<ListRevisionsResult> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public ListRevisionsResult deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             Boolean isDeleted = null;
             List<FileMetadata> entries = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("is_deleted".equals(fieldName)) {
-                    isDeleted = JsonReader.BooleanReader
-                        .readField(parser, "is_deleted", isDeleted);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("is_deleted".equals(_field)) {
+                    isDeleted = _p.getValueAsBoolean();
+                    _p.nextToken();
                 }
-                else if ("entries".equals(fieldName)) {
-                    entries = JsonArrayReader.mk(FileMetadata._JSON_READER)
-                        .readField(parser, "entries", entries);
+                else if ("entries".equals(_field)) {
+                    expectArrayStart(_p);
+                    entries = new java.util.ArrayList<FileMetadata>();
+                    while (!isArrayEnd(_p)) {
+                        FileMetadata _x = null;
+                        _x = _p.readValueAs(FileMetadata.class);
+                        _p.nextToken();
+                        entries.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (isDeleted == null) {
-                throw new JsonReadException("Required field \"is_deleted\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"is_deleted\" is missing.");
             }
             if (entries == null) {
-                throw new JsonReadException("Required field \"entries\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"entries\" is missing.");
             }
+
             return new ListRevisionsResult(isDeleted, entries);
         }
-    };
+    }
 }

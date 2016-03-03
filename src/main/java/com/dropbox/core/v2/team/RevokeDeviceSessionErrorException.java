@@ -11,10 +11,11 @@ import com.dropbox.core.LocalizedText;
  * RevokeDeviceSessionError} error.
  */
 public class RevokeDeviceSessionErrorException extends DbxApiException {
+    private static final long serialVersionUID = 0L;
 
     /**
      * The error reported by {@link
-     * DbxTeam#devicesRevokeDeviceSession(RevokeDeviceSessionArg)}.
+     * DbxTeamTeamRequests#devicesRevokeDeviceSession(RevokeDeviceSessionArg)}.
      */
     public final RevokeDeviceSessionError errorValue;
 

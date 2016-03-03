@@ -5,24 +5,42 @@ package com.dropbox.core.v2.sharing;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
 /**
  * If any of the policy's are unset, then they retain their current setting.
  */
-public class UpdateFolderPolicyArg {
+@JsonSerialize(using=UpdateFolderPolicyArg.Serializer.class)
+@JsonDeserialize(using=UpdateFolderPolicyArg.Deserializer.class)
+class UpdateFolderPolicyArg {
     // struct UpdateFolderPolicyArg
 
-    private final String sharedFolderId;
-    private final MemberPolicy memberPolicy;
-    private final AclUpdatePolicy aclUpdatePolicy;
-    private final SharedLinkPolicy sharedLinkPolicy;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final String sharedFolderId;
+    protected final MemberPolicy memberPolicy;
+    protected final AclUpdatePolicy aclUpdatePolicy;
+    protected final SharedLinkPolicy sharedLinkPolicy;
 
     /**
      * If any of the policy's are unset, then they retain their current setting.
@@ -228,86 +246,114 @@ public class UpdateFolderPolicyArg {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static UpdateFolderPolicyArg fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
+    static final class Serializer extends StructJsonSerializer<UpdateFolderPolicyArg> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(UpdateFolderPolicyArg.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(UpdateFolderPolicyArg.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<UpdateFolderPolicyArg> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(UpdateFolderPolicyArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("shared_folder_id", value.sharedFolderId);
+            if (value.memberPolicy != null) {
+                g.writeObjectField("member_policy", value.memberPolicy);
+            }
+            if (value.aclUpdatePolicy != null) {
+                g.writeObjectField("acl_update_policy", value.aclUpdatePolicy);
+            }
+            if (value.sharedLinkPolicy != null) {
+                g.writeObjectField("shared_link_policy", value.sharedLinkPolicy);
+            }
+        }
     }
 
-    public static final JsonWriter<UpdateFolderPolicyArg> _JSON_WRITER = new JsonWriter<UpdateFolderPolicyArg>() {
-        public final void write(UpdateFolderPolicyArg x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            UpdateFolderPolicyArg._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
-        }
-        public final void writeFields(UpdateFolderPolicyArg x, JsonGenerator g) throws IOException {
-            g.writeFieldName("shared_folder_id");
-            g.writeString(x.sharedFolderId);
-            if (x.memberPolicy != null) {
-                g.writeFieldName("member_policy");
-                MemberPolicy._JSON_WRITER.write(x.memberPolicy, g);
-            }
-            if (x.aclUpdatePolicy != null) {
-                g.writeFieldName("acl_update_policy");
-                AclUpdatePolicy._JSON_WRITER.write(x.aclUpdatePolicy, g);
-            }
-            if (x.sharedLinkPolicy != null) {
-                g.writeFieldName("shared_link_policy");
-                SharedLinkPolicy._JSON_WRITER.write(x.sharedLinkPolicy, g);
-            }
-        }
-    };
+    static final class Deserializer extends StructJsonDeserializer<UpdateFolderPolicyArg> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonReader<UpdateFolderPolicyArg> _JSON_READER = new JsonReader<UpdateFolderPolicyArg>() {
-        public final UpdateFolderPolicyArg read(JsonParser parser) throws IOException, JsonReadException {
-            UpdateFolderPolicyArg result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+        public Deserializer() {
+            super(UpdateFolderPolicyArg.class);
         }
 
-        public final UpdateFolderPolicyArg readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(UpdateFolderPolicyArg.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<UpdateFolderPolicyArg> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public UpdateFolderPolicyArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             String sharedFolderId = null;
             MemberPolicy memberPolicy = null;
             AclUpdatePolicy aclUpdatePolicy = null;
             SharedLinkPolicy sharedLinkPolicy = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("shared_folder_id".equals(fieldName)) {
-                    sharedFolderId = JsonReader.StringReader
-                        .readField(parser, "shared_folder_id", sharedFolderId);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("shared_folder_id".equals(_field)) {
+                    sharedFolderId = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("member_policy".equals(fieldName)) {
-                    memberPolicy = MemberPolicy._JSON_READER
-                        .readField(parser, "member_policy", memberPolicy);
+                else if ("member_policy".equals(_field)) {
+                    memberPolicy = _p.readValueAs(MemberPolicy.class);
+                    _p.nextToken();
                 }
-                else if ("acl_update_policy".equals(fieldName)) {
-                    aclUpdatePolicy = AclUpdatePolicy._JSON_READER
-                        .readField(parser, "acl_update_policy", aclUpdatePolicy);
+                else if ("acl_update_policy".equals(_field)) {
+                    aclUpdatePolicy = _p.readValueAs(AclUpdatePolicy.class);
+                    _p.nextToken();
                 }
-                else if ("shared_link_policy".equals(fieldName)) {
-                    sharedLinkPolicy = SharedLinkPolicy._JSON_READER
-                        .readField(parser, "shared_link_policy", sharedLinkPolicy);
+                else if ("shared_link_policy".equals(_field)) {
+                    sharedLinkPolicy = _p.readValueAs(SharedLinkPolicy.class);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (sharedFolderId == null) {
-                throw new JsonReadException("Required field \"shared_folder_id\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"shared_folder_id\" is missing.");
             }
+
             return new UpdateFolderPolicyArg(sharedFolderId, memberPolicy, aclUpdatePolicy, sharedLinkPolicy);
         }
-    };
+    }
 }

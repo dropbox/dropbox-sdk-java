@@ -5,20 +5,44 @@ package com.dropbox.core.v2.team;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.UnionJsonDeserializer;
+import com.dropbox.core.json.UnionJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Argument for selecting a single group, either by group_id or by external
  * group ID.
+ *
+ * <p> This class is a tagged union.  Tagged unions instances are always
+ * associated to a specific tag.  This means only one of the {@code isAbc()}
+ * methods will return {@code true}. You can use {@link #tag()} to determine the
+ * tag associated with this instance. </p>
  */
+@JsonSerialize(using=GroupSelector.Serializer.class)
+@JsonDeserialize(using=GroupSelector.Deserializer.class)
 public final class GroupSelector {
     // union GroupSelector
+
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link GroupSelector}.
@@ -32,13 +56,6 @@ public final class GroupSelector {
          * External ID of the group.
          */
         GROUP_EXTERNAL_ID; // String
-    }
-
-    private static final java.util.HashMap<String, Tag> VALUES_;
-    static {
-        VALUES_ = new java.util.HashMap<String, Tag>();
-        VALUES_.put("group_id", Tag.GROUP_ID);
-        VALUES_.put("group_external_id", Tag.GROUP_EXTERNAL_ID);
     }
 
     private final Tag tag;
@@ -61,9 +78,10 @@ public final class GroupSelector {
      * Returns the tag for this instance.
      *
      * <p> This class is a tagged union.  Tagged unions instances are always
-     * associated to a specific tag.  Callers are recommended to use the tag
-     * value in a {@code switch} statement to determine how to properly handle
-     * this {@code GroupSelector}. </p>
+     * associated to a specific tag.  This means only one of the {@code isXyz()}
+     * methods will return {@code true}. Callers are recommended to use the tag
+     * value in a {@code switch} statement to properly handle the different
+     * values for this {@code GroupSelector}. </p>
      *
      * @return the tag for this instance.
      */
@@ -75,8 +93,8 @@ public final class GroupSelector {
      * Returns {@code true} if this instance has the tag {@link Tag#GROUP_ID},
      * {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
-     *     Tag#GROUP_ID}, {@code false} otherwise.
+     * @return {@code true} if this instance is tagged as {@link Tag#GROUP_ID},
+     *     {@code false} otherwise.
      */
     public boolean isGroupId() {
         return this.tag == Tag.GROUP_ID;
@@ -88,8 +106,7 @@ public final class GroupSelector {
      *
      * <p> Group ID. </p>
      *
-     * @param value  {@link GroupSelector#groupId} value to assign to this
-     *     instance.
+     * @param value  value to assign to this instance.
      *
      * @return Instance of {@code GroupSelector} with its tag set to {@link
      *     Tag#GROUP_ID}.
@@ -124,7 +141,7 @@ public final class GroupSelector {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#GROUP_EXTERNAL_ID}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#GROUP_EXTERNAL_ID}, {@code false} otherwise.
      */
     public boolean isGroupExternalId() {
@@ -137,8 +154,7 @@ public final class GroupSelector {
      *
      * <p> External ID of the group. </p>
      *
-     * @param value  {@link GroupSelector#groupExternalId} value to assign to
-     *     this instance.
+     * @param value  value to assign to this instance.
      *
      * @return Instance of {@code GroupSelector} with its tag set to {@link
      *     Tag#GROUP_EXTERNAL_ID}.
@@ -206,96 +222,90 @@ public final class GroupSelector {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static GroupSelector fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
+    static final class Serializer extends UnionJsonSerializer<GroupSelector> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonWriter<GroupSelector> _JSON_WRITER = new JsonWriter<GroupSelector>() {
-        public final void write(GroupSelector x, JsonGenerator g) throws IOException {
-            switch (x.tag) {
+        public Serializer() {
+            super(GroupSelector.class);
+        }
+
+        @Override
+        public void serialize(GroupSelector value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            switch (value.tag) {
                 case GROUP_ID:
                     g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("group_id");
-                    g.writeFieldName("group_id");
-                    g.writeString(x.getGroupIdValue());
+                    g.writeStringField(".tag", "group_id");
+                    g.writeObjectField("group_id", value.groupIdValue);
                     g.writeEndObject();
                     break;
                 case GROUP_EXTERNAL_ID:
                     g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("group_external_id");
-                    g.writeFieldName("group_external_id");
-                    g.writeString(x.getGroupExternalIdValue());
+                    g.writeStringField(".tag", "group_external_id");
+                    g.writeObjectField("group_external_id", value.groupExternalIdValue);
                     g.writeEndObject();
                     break;
             }
         }
-    };
+    }
 
-    public static final JsonReader<GroupSelector> _JSON_READER = new JsonReader<GroupSelector>() {
+    static final class Deserializer extends UnionJsonDeserializer<GroupSelector, Tag> {
+        private static final long serialVersionUID = 0L;
 
-        public final GroupSelector read(JsonParser parser) throws IOException, JsonReadException {
-            if (parser.getCurrentToken() == JsonToken.VALUE_STRING) {
-                String text = parser.getText();
-                parser.nextToken();
-                Tag tag = VALUES_.get(text);
-                if (tag == null) {
-                    throw new JsonReadException("Unanticipated tag " + text + " without catch-all", parser.getTokenLocation());
-                }
-                switch (tag) {
-                }
-                throw new JsonReadException("Tag " + tag + " requires a value", parser.getTokenLocation());
-            }
-            JsonReader.expectObjectStart(parser);
-            String[] tags = readTags(parser);
-            assert tags != null && tags.length == 1;
-            String text = tags[0];
-            Tag tag = VALUES_.get(text);
-            GroupSelector value = null;
-            if (tag != null) {
-                switch (tag) {
-                    case GROUP_ID: {
-                        String v = null;
-                        assert parser.getCurrentToken() == JsonToken.FIELD_NAME;
-                        text = parser.getText();
-                        assert tags[0].equals(text);
-                        parser.nextToken();
-                        v = JsonReader.StringReader
-                            .readField(parser, "group_id", v);
-                        value = GroupSelector.groupId(v);
-                        break;
-                    }
-                    case GROUP_EXTERNAL_ID: {
-                        String v = null;
-                        assert parser.getCurrentToken() == JsonToken.FIELD_NAME;
-                        text = parser.getText();
-                        assert tags[0].equals(text);
-                        parser.nextToken();
-                        v = JsonReader.StringReader
-                            .readField(parser, "group_external_id", v);
-                        value = GroupSelector.groupExternalId(v);
-                        break;
-                    }
-                }
-            }
-            if (value == null) {
-                throw new JsonReadException("Unanticipated tag " + text, parser.getTokenLocation());
-            }
-            JsonReader.expectObjectEnd(parser);
-            return value;
+        public Deserializer() {
+            super(GroupSelector.class, getTagMapping(), null);
         }
 
-    };
+        @Override
+        public GroupSelector deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+            switch (_tag) {
+                case GROUP_ID: {
+                    String value = null;
+                    expectField(_p, "group_id");
+                    value = getStringValue(_p);
+                    _p.nextToken();
+                    return GroupSelector.groupId(value);
+                }
+                case GROUP_EXTERNAL_ID: {
+                    String value = null;
+                    expectField(_p, "group_external_id");
+                    value = getStringValue(_p);
+                    _p.nextToken();
+                    return GroupSelector.groupExternalId(value);
+                }
+            }
+            // should be impossible to get here
+            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
+        }
+
+        private static Map<String, GroupSelector.Tag> getTagMapping() {
+            Map<String, GroupSelector.Tag> values = new HashMap<String, GroupSelector.Tag>();
+            values.put("group_id", GroupSelector.Tag.GROUP_ID);
+            values.put("group_external_id", GroupSelector.Tag.GROUP_EXTERNAL_ID);
+            return Collections.unmodifiableMap(values);
+        }
+    }
 }

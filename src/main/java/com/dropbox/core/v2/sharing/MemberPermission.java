@@ -5,23 +5,41 @@ package com.dropbox.core.v2.sharing;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
 /**
  * Whether the user is allowed to take the action on the associated member.
  */
+@JsonSerialize(using=MemberPermission.Serializer.class)
+@JsonDeserialize(using=MemberPermission.Deserializer.class)
 public class MemberPermission {
     // struct MemberPermission
 
-    private final MemberAction action;
-    private final boolean allow;
-    private final PermissionDeniedReason reason;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final MemberAction action;
+    protected final boolean allow;
+    protected final PermissionDeniedReason reason;
 
     /**
      * Whether the user is allowed to take the action on the associated member.
@@ -118,78 +136,107 @@ public class MemberPermission {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
-    }
-
-    public static MemberPermission fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
-
-    public static final JsonWriter<MemberPermission> _JSON_WRITER = new JsonWriter<MemberPermission>() {
-        public final void write(MemberPermission x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            MemberPermission._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
         }
-        public final void writeFields(MemberPermission x, JsonGenerator g) throws IOException {
-            g.writeFieldName("action");
-            MemberAction._JSON_WRITER.write(x.action, g);
-            g.writeFieldName("allow");
-            g.writeBoolean(x.allow);
-            if (x.reason != null) {
-                g.writeFieldName("reason");
-                PermissionDeniedReason._JSON_WRITER.write(x.reason, g);
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
+    }
+
+    static final class Serializer extends StructJsonSerializer<MemberPermission> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(MemberPermission.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(MemberPermission.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<MemberPermission> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(MemberPermission value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("action", value.action);
+            g.writeObjectField("allow", value.allow);
+            if (value.reason != null) {
+                g.writeObjectField("reason", value.reason);
             }
         }
-    };
+    }
 
-    public static final JsonReader<MemberPermission> _JSON_READER = new JsonReader<MemberPermission>() {
-        public final MemberPermission read(JsonParser parser) throws IOException, JsonReadException {
-            MemberPermission result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+    static final class Deserializer extends StructJsonDeserializer<MemberPermission> {
+        private static final long serialVersionUID = 0L;
+
+        public Deserializer() {
+            super(MemberPermission.class);
         }
 
-        public final MemberPermission readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(MemberPermission.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<MemberPermission> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public MemberPermission deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             MemberAction action = null;
             Boolean allow = null;
             PermissionDeniedReason reason = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("action".equals(fieldName)) {
-                    action = MemberAction._JSON_READER
-                        .readField(parser, "action", action);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("action".equals(_field)) {
+                    action = _p.readValueAs(MemberAction.class);
+                    _p.nextToken();
                 }
-                else if ("allow".equals(fieldName)) {
-                    allow = JsonReader.BooleanReader
-                        .readField(parser, "allow", allow);
+                else if ("allow".equals(_field)) {
+                    allow = _p.getValueAsBoolean();
+                    _p.nextToken();
                 }
-                else if ("reason".equals(fieldName)) {
-                    reason = PermissionDeniedReason._JSON_READER
-                        .readField(parser, "reason", reason);
+                else if ("reason".equals(_field)) {
+                    reason = _p.readValueAs(PermissionDeniedReason.class);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (action == null) {
-                throw new JsonReadException("Required field \"action\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"action\" is missing.");
             }
             if (allow == null) {
-                throw new JsonReadException("Required field \"allow\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"allow\" is missing.");
             }
+
             return new MemberPermission(action, allow, reason);
         }
-    };
+    }
 }

@@ -11,9 +11,11 @@ import com.dropbox.core.LocalizedText;
  * error.
  */
 public class GroupDeleteErrorException extends DbxApiException {
+    private static final long serialVersionUID = 0L;
 
     /**
-     * The error reported by {@link DbxTeam#groupsDelete(GroupSelector)}.
+     * The error reported by {@link
+     * DbxTeamTeamRequests#groupsDelete(GroupSelector)}.
      */
     public final GroupDeleteError errorValue;
 

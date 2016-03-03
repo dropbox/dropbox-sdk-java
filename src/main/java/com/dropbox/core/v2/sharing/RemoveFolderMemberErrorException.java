@@ -11,10 +11,11 @@ import com.dropbox.core.LocalizedText;
  * RemoveFolderMemberError} error.
  */
 public class RemoveFolderMemberErrorException extends DbxApiException {
+    private static final long serialVersionUID = 0L;
 
     /**
      * The error reported by {@link
-     * DbxSharing#removeFolderMember(String,MemberSelector,boolean)}.
+     * DbxUserSharingRequests#removeFolderMember(String,MemberSelector,boolean)}.
      */
     public final RemoveFolderMemberError errorValue;
 

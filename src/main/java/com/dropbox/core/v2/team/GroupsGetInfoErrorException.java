@@ -11,9 +11,11 @@ import com.dropbox.core.LocalizedText;
  * error.
  */
 public class GroupsGetInfoErrorException extends DbxApiException {
+    private static final long serialVersionUID = 0L;
 
     /**
-     * The error reported by {@link DbxTeam#groupsGetInfo(GroupsSelector)}.
+     * The error reported by {@link
+     * DbxTeamTeamRequests#groupsGetInfo(GroupsSelector)}.
      */
     public final GroupsGetInfoError errorValue;
 

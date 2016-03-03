@@ -11,9 +11,11 @@ import com.dropbox.core.LocalizedText;
  * UploadSessionLookupError} error.
  */
 public class UploadSessionLookupErrorException extends DbxApiException {
+    private static final long serialVersionUID = 0L;
 
     /**
-     * The error reported by {@link DbxFiles#uploadSessionAppend(String,long)}.
+     * The error reported by {@link
+     * DbxUserFilesRequests#uploadSessionAppend(String,long)}.
      */
     public final UploadSessionLookupError errorValue;
 

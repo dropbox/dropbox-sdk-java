@@ -5,18 +5,36 @@ package com.dropbox.core.v2.team;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
+@JsonSerialize(using=RevokeDesktopClientArg.Serializer.class)
+@JsonDeserialize(using=RevokeDesktopClientArg.Deserializer.class)
 public class RevokeDesktopClientArg extends DeviceSessionArg {
     // struct RevokeDesktopClientArg
 
-    private final boolean deleteOnUnlink;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final boolean deleteOnUnlink;
 
     /**
      *
@@ -78,9 +96,9 @@ public class RevokeDesktopClientArg extends DeviceSessionArg {
         // be careful with inheritance
         else if (obj.getClass().equals(this.getClass())) {
             RevokeDesktopClientArg other = (RevokeDesktopClientArg) obj;
-            return (this.deleteOnUnlink == other.deleteOnUnlink)
-                && ((this.getSessionId() == other.getSessionId()) || (this.getSessionId().equals(other.getSessionId())))
-                && ((this.getTeamMemberId() == other.getTeamMemberId()) || (this.getTeamMemberId().equals(other.getTeamMemberId())))
+            return ((this.sessionId == other.sessionId) || (this.sessionId.equals(other.sessionId)))
+                && ((this.teamMemberId == other.teamMemberId) || (this.teamMemberId.equals(other.teamMemberId)))
+                && (this.deleteOnUnlink == other.deleteOnUnlink)
                 ;
         }
         else {
@@ -90,73 +108,105 @@ public class RevokeDesktopClientArg extends DeviceSessionArg {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static RevokeDesktopClientArg fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
+    static final class Serializer extends StructJsonSerializer<RevokeDesktopClientArg> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(RevokeDesktopClientArg.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(RevokeDesktopClientArg.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<RevokeDesktopClientArg> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(RevokeDesktopClientArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("session_id", value.sessionId);
+            g.writeObjectField("team_member_id", value.teamMemberId);
+            g.writeObjectField("delete_on_unlink", value.deleteOnUnlink);
+        }
     }
 
-    public static final JsonWriter<RevokeDesktopClientArg> _JSON_WRITER = new JsonWriter<RevokeDesktopClientArg>() {
-        public final void write(RevokeDesktopClientArg x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            DeviceSessionArg._JSON_WRITER.writeFields(x, g);
-            RevokeDesktopClientArg._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
-        }
-        public final void writeFields(RevokeDesktopClientArg x, JsonGenerator g) throws IOException {
-            g.writeFieldName("delete_on_unlink");
-            g.writeBoolean(x.deleteOnUnlink);
-        }
-    };
+    static final class Deserializer extends StructJsonDeserializer<RevokeDesktopClientArg> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonReader<RevokeDesktopClientArg> _JSON_READER = new JsonReader<RevokeDesktopClientArg>() {
-        public final RevokeDesktopClientArg read(JsonParser parser) throws IOException, JsonReadException {
-            RevokeDesktopClientArg result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+        public Deserializer() {
+            super(RevokeDesktopClientArg.class);
         }
 
-        public final RevokeDesktopClientArg readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(RevokeDesktopClientArg.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<RevokeDesktopClientArg> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public RevokeDesktopClientArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             String sessionId = null;
             String teamMemberId = null;
             Boolean deleteOnUnlink = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("session_id".equals(fieldName)) {
-                    sessionId = JsonReader.StringReader
-                        .readField(parser, "session_id", sessionId);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("session_id".equals(_field)) {
+                    sessionId = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("team_member_id".equals(fieldName)) {
-                    teamMemberId = JsonReader.StringReader
-                        .readField(parser, "team_member_id", teamMemberId);
+                else if ("team_member_id".equals(_field)) {
+                    teamMemberId = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("delete_on_unlink".equals(fieldName)) {
-                    deleteOnUnlink = JsonReader.BooleanReader
-                        .readField(parser, "delete_on_unlink", deleteOnUnlink);
+                else if ("delete_on_unlink".equals(_field)) {
+                    deleteOnUnlink = _p.getValueAsBoolean();
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (sessionId == null) {
-                throw new JsonReadException("Required field \"session_id\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"session_id\" is missing.");
             }
             if (teamMemberId == null) {
-                throw new JsonReadException("Required field \"team_member_id\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"team_member_id\" is missing.");
             }
+
             return new RevokeDesktopClientArg(sessionId, teamMemberId, deleteOnUnlink);
         }
-    };
+    }
 }

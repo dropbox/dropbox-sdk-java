@@ -10,13 +10,13 @@ import java.util.List;
 
 /**
  * The request builder returned by {@link
- * DbxSharing#listMountableFoldersBuilder()}.
+ * DbxUserSharingRequests#listMountableFoldersBuilder()}.
  *
  * <p> Use this class to set optional request parameters and complete the
  * request. </p>
  */
 public class ListMountableFoldersBuilder {
-    private final DbxSharing sharing;
+    private final DbxUserSharingRequests sharing;
     private final ListFoldersArgs.Builder listFoldersArgsBuilder;
 
     /**
@@ -28,7 +28,7 @@ public class ListMountableFoldersBuilder {
      *
      * @return instsance of this builder
      */
-    ListMountableFoldersBuilder(DbxSharing sharing, ListFoldersArgs.Builder listFoldersArgsBuilder) {
+    ListMountableFoldersBuilder(DbxUserSharingRequests sharing, ListFoldersArgs.Builder listFoldersArgsBuilder) {
         if (sharing == null) {
             throw new NullPointerException("sharing");
         }

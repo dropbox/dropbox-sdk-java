@@ -49,7 +49,7 @@ public class FileThumbnailRequestHandler extends RequestHandler {
 
         try {
             DbxDownloader<FileMetadata> downloader =
-                    mDbxClient.files.getThumbnailBuilder(request.uri.getPath())
+                    mDbxClient.files().getThumbnailBuilder(request.uri.getPath())
                             .withFormat(ThumbnailFormat.JPEG)
                             .withSize(ThumbnailSize.W1024H768)
                             .start();

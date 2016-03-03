@@ -3,23 +3,40 @@
 
 package com.dropbox.core.v2.sharing;
 
-import com.dropbox.core.json.JsonArrayReader;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.List;
 
-public class GetMetadataArgs {
+@JsonSerialize(using=GetMetadataArgs.Serializer.class)
+@JsonDeserialize(using=GetMetadataArgs.Deserializer.class)
+class GetMetadataArgs {
     // struct GetMetadataArgs
 
-    private final String sharedFolderId;
-    private final List<FolderAction> actions;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final String sharedFolderId;
+    protected final List<FolderAction> actions;
 
     /**
      *
@@ -108,74 +125,106 @@ public class GetMetadataArgs {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
-    }
-
-    public static GetMetadataArgs fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
-
-    public static final JsonWriter<GetMetadataArgs> _JSON_WRITER = new JsonWriter<GetMetadataArgs>() {
-        public final void write(GetMetadataArgs x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            GetMetadataArgs._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
         }
-        public final void writeFields(GetMetadataArgs x, JsonGenerator g) throws IOException {
-            g.writeFieldName("shared_folder_id");
-            g.writeString(x.sharedFolderId);
-            if (x.actions != null) {
-                g.writeFieldName("actions");
-                g.writeStartArray();
-                for (FolderAction item: x.actions) {
-                    if (item != null) {
-                        FolderAction._JSON_WRITER.write(item, g);
-                    }
-                }
-                g.writeEndArray();
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
+    }
+
+    static final class Serializer extends StructJsonSerializer<GetMetadataArgs> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(GetMetadataArgs.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(GetMetadataArgs.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<GetMetadataArgs> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(GetMetadataArgs value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("shared_folder_id", value.sharedFolderId);
+            if (value.actions != null) {
+                g.writeObjectField("actions", value.actions);
             }
         }
-    };
+    }
 
-    public static final JsonReader<GetMetadataArgs> _JSON_READER = new JsonReader<GetMetadataArgs>() {
-        public final GetMetadataArgs read(JsonParser parser) throws IOException, JsonReadException {
-            GetMetadataArgs result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+    static final class Deserializer extends StructJsonDeserializer<GetMetadataArgs> {
+        private static final long serialVersionUID = 0L;
+
+        public Deserializer() {
+            super(GetMetadataArgs.class);
         }
 
-        public final GetMetadataArgs readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(GetMetadataArgs.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<GetMetadataArgs> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public GetMetadataArgs deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             String sharedFolderId = null;
             List<FolderAction> actions = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("shared_folder_id".equals(fieldName)) {
-                    sharedFolderId = JsonReader.StringReader
-                        .readField(parser, "shared_folder_id", sharedFolderId);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("shared_folder_id".equals(_field)) {
+                    sharedFolderId = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("actions".equals(fieldName)) {
-                    actions = JsonArrayReader.mk(FolderAction._JSON_READER)
-                        .readField(parser, "actions", actions);
+                else if ("actions".equals(_field)) {
+                    expectArrayStart(_p);
+                    actions = new java.util.ArrayList<FolderAction>();
+                    while (!isArrayEnd(_p)) {
+                        FolderAction _x = null;
+                        _x = _p.readValueAs(FolderAction.class);
+                        _p.nextToken();
+                        actions.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (sharedFolderId == null) {
-                throw new JsonReadException("Required field \"shared_folder_id\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"shared_folder_id\" is missing.");
             }
+
             return new GetMetadataArgs(sharedFolderId, actions);
         }
-    };
+    }
 }

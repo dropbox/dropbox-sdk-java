@@ -11,9 +11,11 @@ import com.dropbox.core.LocalizedText;
  * error.
  */
 public class UnshareFolderErrorException extends DbxApiException {
+    private static final long serialVersionUID = 0L;
 
     /**
-     * The error reported by {@link DbxSharing#unshareFolder(String,boolean)}.
+     * The error reported by {@link
+     * DbxUserSharingRequests#unshareFolder(String,boolean)}.
      */
     public final UnshareFolderError errorValue;
 

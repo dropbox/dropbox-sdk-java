@@ -5,16 +5,45 @@ package com.dropbox.core.v2.sharing;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.UnionJsonDeserializer;
+import com.dropbox.core.json.UnionJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
+/**
+ * This class is an open tagged union.  Tagged unions instances are always
+ * associated to a specific tag.  This means only one of the {@code isAbc()}
+ * methods will return {@code true}. You can use {@link #tag()} to determine the
+ * tag associated with this instance.
+ *
+ * <p> Open unions may be extended in the future with additional tags. If a new
+ * tag is introduced that this SDK does not recognized, the {@link #OTHER} value
+ * will be used. </p>
+ */
+@JsonSerialize(using=ListFolderMembersContinueError.Serializer.class)
+@JsonDeserialize(using=ListFolderMembersContinueError.Deserializer.class)
 public final class ListFolderMembersContinueError {
     // union ListFolderMembersContinueError
+
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link ListFolderMembersContinueError}.
@@ -22,21 +51,33 @@ public final class ListFolderMembersContinueError {
     public enum Tag {
         ACCESS_ERROR, // SharedFolderAccessError
         /**
-         * {@link ListFolderMembersContinueArg#getCursor} is invalid.
+         * the {@code cursor} argument to {@link
+         * DbxUserSharingRequests#listFolderMembersContinue(String)} is invalid.
          */
         INVALID_CURSOR,
+        /**
+         * Catch-all used for unknown tag values returned by the Dropbox
+         * servers.
+         *
+         * <p> Receiving a catch-all value typically indicates this SDK version
+         * is not up to date. Consider updating your SDK version to handle the
+         * new tags. </p>
+         */
         OTHER; // *catch_all
     }
 
-    private static final java.util.HashMap<String, Tag> VALUES_;
-    static {
-        VALUES_ = new java.util.HashMap<String, Tag>();
-        VALUES_.put("access_error", Tag.ACCESS_ERROR);
-        VALUES_.put("invalid_cursor", Tag.INVALID_CURSOR);
-        VALUES_.put("other", Tag.OTHER);
-    }
-
+    /**
+     * the {@code cursor} argument to {@link
+     * DbxUserSharingRequests#listFolderMembersContinue(String)} is invalid.
+     */
     public static final ListFolderMembersContinueError INVALID_CURSOR = new ListFolderMembersContinueError(Tag.INVALID_CURSOR, null);
+    /**
+     * Catch-all used for unknown tag values returned by the Dropbox servers.
+     *
+     * <p> Receiving a catch-all value typically indicates this SDK version is
+     * not up to date. Consider updating your SDK version to handle the new
+     * tags. </p>
+     */
     public static final ListFolderMembersContinueError OTHER = new ListFolderMembersContinueError(Tag.OTHER, null);
 
     private final Tag tag;
@@ -55,9 +96,13 @@ public final class ListFolderMembersContinueError {
      * Returns the tag for this instance.
      *
      * <p> This class is a tagged union.  Tagged unions instances are always
-     * associated to a specific tag.  Callers are recommended to use the tag
-     * value in a {@code switch} statement to determine how to properly handle
-     * this {@code ListFolderMembersContinueError}. </p>
+     * associated to a specific tag.  This means only one of the {@code isXyz()}
+     * methods will return {@code true}. Callers are recommended to use the tag
+     * value in a {@code switch} statement to properly handle the different
+     * values for this {@code ListFolderMembersContinueError}. </p>
+     *
+     * <p> If a tag returned by the server is unrecognized by this SDK, the
+     * {@link Tag#OTHER} value will be used. </p>
      *
      * @return the tag for this instance.
      */
@@ -69,7 +114,7 @@ public final class ListFolderMembersContinueError {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#ACCESS_ERROR}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#ACCESS_ERROR}, {@code false} otherwise.
      */
     public boolean isAccessError() {
@@ -80,8 +125,7 @@ public final class ListFolderMembersContinueError {
      * Returns an instance of {@code ListFolderMembersContinueError} that has
      * its tag set to {@link Tag#ACCESS_ERROR}.
      *
-     * @param value  {@link ListFolderMembersContinueError#accessError} value to
-     *     assign to this instance.
+     * @param value  value to assign to this instance.
      *
      * @return Instance of {@code ListFolderMembersContinueError} with its tag
      *     set to {@link Tag#ACCESS_ERROR}.
@@ -116,7 +160,7 @@ public final class ListFolderMembersContinueError {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#INVALID_CURSOR}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#INVALID_CURSOR}, {@code false} otherwise.
      */
     public boolean isInvalidCursor() {
@@ -127,7 +171,7 @@ public final class ListFolderMembersContinueError {
      * Returns {@code true} if this instance has the tag {@link Tag#OTHER},
      * {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link Tag#OTHER},
+     * @return {@code true} if this instance is tagged as {@link Tag#OTHER},
      *     {@code false} otherwise.
      */
     public boolean isOther() {
@@ -171,99 +215,90 @@ public final class ListFolderMembersContinueError {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static ListFolderMembersContinueError fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
+    static final class Serializer extends UnionJsonSerializer<ListFolderMembersContinueError> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonWriter<ListFolderMembersContinueError> _JSON_WRITER = new JsonWriter<ListFolderMembersContinueError>() {
-        public final void write(ListFolderMembersContinueError x, JsonGenerator g) throws IOException {
-            switch (x.tag) {
+        public Serializer() {
+            super(ListFolderMembersContinueError.class);
+        }
+
+        @Override
+        public void serialize(ListFolderMembersContinueError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            switch (value.tag) {
                 case ACCESS_ERROR:
                     g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("access_error");
-                    g.writeFieldName("access_error");
-                    SharedFolderAccessError._JSON_WRITER.write(x.getAccessErrorValue(), g);
+                    g.writeStringField(".tag", "access_error");
+                    g.writeObjectField("access_error", value.accessErrorValue);
                     g.writeEndObject();
                     break;
                 case INVALID_CURSOR:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("invalid_cursor");
-                    g.writeEndObject();
                     break;
                 case OTHER:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("other");
-                    g.writeEndObject();
                     break;
             }
         }
-    };
+    }
 
-    public static final JsonReader<ListFolderMembersContinueError> _JSON_READER = new JsonReader<ListFolderMembersContinueError>() {
+    static final class Deserializer extends UnionJsonDeserializer<ListFolderMembersContinueError, Tag> {
+        private static final long serialVersionUID = 0L;
 
-        public final ListFolderMembersContinueError read(JsonParser parser) throws IOException, JsonReadException {
-            if (parser.getCurrentToken() == JsonToken.VALUE_STRING) {
-                String text = parser.getText();
-                parser.nextToken();
-                Tag tag = VALUES_.get(text);
-                if (tag == null) {
-                    return ListFolderMembersContinueError.OTHER;
-                }
-                switch (tag) {
-                    case INVALID_CURSOR: return ListFolderMembersContinueError.INVALID_CURSOR;
-                    case OTHER: return ListFolderMembersContinueError.OTHER;
-                }
-                throw new JsonReadException("Tag " + tag + " requires a value", parser.getTokenLocation());
-            }
-            JsonReader.expectObjectStart(parser);
-            String[] tags = readTags(parser);
-            assert tags != null && tags.length == 1;
-            String text = tags[0];
-            Tag tag = VALUES_.get(text);
-            ListFolderMembersContinueError value = null;
-            if (tag != null) {
-                switch (tag) {
-                    case ACCESS_ERROR: {
-                        SharedFolderAccessError v = null;
-                        assert parser.getCurrentToken() == JsonToken.FIELD_NAME;
-                        text = parser.getText();
-                        assert tags[0].equals(text);
-                        parser.nextToken();
-                        v = SharedFolderAccessError._JSON_READER
-                            .readField(parser, "access_error", v);
-                        value = ListFolderMembersContinueError.accessError(v);
-                        break;
-                    }
-                    case INVALID_CURSOR: {
-                        value = ListFolderMembersContinueError.INVALID_CURSOR;
-                        break;
-                    }
-                    case OTHER: {
-                        value = ListFolderMembersContinueError.OTHER;
-                        break;
-                    }
-                }
-            }
-            JsonReader.expectObjectEnd(parser);
-            if (value == null) {
-                return ListFolderMembersContinueError.OTHER;
-            }
-            return value;
+        public Deserializer() {
+            super(ListFolderMembersContinueError.class, getTagMapping(), Tag.OTHER);
         }
 
-    };
+        @Override
+        public ListFolderMembersContinueError deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+            switch (_tag) {
+                case ACCESS_ERROR: {
+                    SharedFolderAccessError value = null;
+                    expectField(_p, "access_error");
+                    value = _p.readValueAs(SharedFolderAccessError.class);
+                    _p.nextToken();
+                    return ListFolderMembersContinueError.accessError(value);
+                }
+                case INVALID_CURSOR: {
+                    return ListFolderMembersContinueError.INVALID_CURSOR;
+                }
+                case OTHER: {
+                    return ListFolderMembersContinueError.OTHER;
+                }
+            }
+            // should be impossible to get here
+            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
+        }
+
+        private static Map<String, ListFolderMembersContinueError.Tag> getTagMapping() {
+            Map<String, ListFolderMembersContinueError.Tag> values = new HashMap<String, ListFolderMembersContinueError.Tag>();
+            values.put("access_error", ListFolderMembersContinueError.Tag.ACCESS_ERROR);
+            values.put("invalid_cursor", ListFolderMembersContinueError.Tag.INVALID_CURSOR);
+            values.put("other", ListFolderMembersContinueError.Tag.OTHER);
+            return Collections.unmodifiableMap(values);
+        }
+    }
 }

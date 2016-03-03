@@ -39,8 +39,9 @@ import java.security.SecureRandomSpi;
  * global JVM settings.
  * </p>
  */
-public final class FixedSecureRandom extends SecureRandom
-{
+public final class FixedSecureRandom extends SecureRandom {
+    private static final long serialVersionUID = 0L;
+
     public static SecureRandom get()
     {
         if (Build.VERSION.SDK_INT > VERSION_CODE_JELLY_BEAN_MR2) {
@@ -63,8 +64,9 @@ public final class FixedSecureRandom extends SecureRandom
      * {@code Provider} of {@code SecureRandom} engines which pass through
      * all requests to the Linux PRNG.
      */
-    private static class LinuxPrngSecureRandomProvider extends Provider
-    {
+    private static class LinuxPrngSecureRandomProvider extends Provider {
+        private static final long serialVersionUID = 0L;
+
         public LinuxPrngSecureRandomProvider()
         {
             super("LinuxPRNG",
@@ -84,8 +86,9 @@ public final class FixedSecureRandom extends SecureRandom
      * {@link SecureRandomSpi} which passes all requests to the Linux PRNG
      * ({@code /dev/urandom}).
      */
-    public static class LinuxPrngSecureRandomSpi extends SecureRandomSpi
-    {
+    public static class LinuxPrngSecureRandomSpi extends SecureRandomSpi {
+        private static final long serialVersionUID = 0L;
+
         /*
          * IMPLEMENTATION NOTE: Requests to generate bytes and to mix in a seed
          * are passed through to the Linux PRNG (/dev/urandom). Instances of

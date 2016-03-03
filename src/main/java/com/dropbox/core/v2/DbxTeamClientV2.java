@@ -6,7 +6,7 @@ package com.dropbox.core.v2;
 import com.dropbox.core.DbxHost;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.http.HttpRequestor;
-import com.dropbox.core.v2.team.DbxTeam;
+import com.dropbox.core.v2.team.DbxTeamTeamRequests;
 
 /**
  * Use this class to make remote calls to the Dropbox API team endpoints.  Team
@@ -23,8 +23,8 @@ import com.dropbox.core.v2.team.DbxTeam;
  * in a thread safe {@link HttpRequestor} implementation. </p>
  */
 public final class DbxTeamClientV2 {
-    private final DbxRawClientV2 rawClient;
-    public final com.dropbox.core.v2.team.DbxTeam team;
+    private final DbxRawClientV2 _client;
+    private final com.dropbox.core.v2.team.DbxTeamTeamRequests team;
 
     /**
      * Creates a client that uses the given OAuth 2 access token as
@@ -65,9 +65,18 @@ public final class DbxTeamClientV2 {
      * @param host  Dropbox hosts to send requests to (used for mocking and
      *     testing)
      */
-    DbxTeamClientV2(DbxRawClientV2 rawClient) {
-        this.rawClient = rawClient;
-        this.team = new com.dropbox.core.v2.team.DbxTeam(rawClient);
+    DbxTeamClientV2(DbxRawClientV2 _client) {
+        this._client = _client;
+        this.team = new com.dropbox.core.v2.team.DbxTeamTeamRequests(_client);
+    }
+
+    /**
+     * Returns client for issuing requests in the {@code "team"} namespace.
+     *
+     * @return Dropbox team client
+     */
+    public com.dropbox.core.v2.team.DbxTeamTeamRequests team() {
+        return team;
     }
 
     /**
@@ -87,7 +96,7 @@ public final class DbxTeamClientV2 {
 
     public DbxClientV2 asMember(String memberId) {
         if (memberId == null) throw new IllegalArgumentException("'memberId' should not be null");
-        return new DbxClientV2(new DbxTeamRawClientV2(rawClient, memberId));
+        return new DbxClientV2(new DbxTeamRawClientV2(_client, memberId));
     }
     /**
      * {@link DbxRawClientV2} raw client that adds select-user header to all

@@ -5,22 +5,40 @@ package com.dropbox.core.v2.files;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
 /**
  * Dimensions for a photo or video.
  */
+@JsonSerialize(using=Dimensions.Serializer.class)
+@JsonDeserialize(using=Dimensions.Deserializer.class)
 public class Dimensions {
     // struct Dimensions
 
-    private final long height;
-    private final long width;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final long height;
+    protected final long width;
 
     /**
      * Dimensions for a photo or video.
@@ -79,69 +97,101 @@ public class Dimensions {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static Dimensions fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
+    static final class Serializer extends StructJsonSerializer<Dimensions> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(Dimensions.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(Dimensions.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<Dimensions> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(Dimensions value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("height", value.height);
+            g.writeObjectField("width", value.width);
+        }
     }
 
-    public static final JsonWriter<Dimensions> _JSON_WRITER = new JsonWriter<Dimensions>() {
-        public final void write(Dimensions x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            Dimensions._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
-        }
-        public final void writeFields(Dimensions x, JsonGenerator g) throws IOException {
-            g.writeFieldName("height");
-            g.writeNumber(x.height);
-            g.writeFieldName("width");
-            g.writeNumber(x.width);
-        }
-    };
+    static final class Deserializer extends StructJsonDeserializer<Dimensions> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonReader<Dimensions> _JSON_READER = new JsonReader<Dimensions>() {
-        public final Dimensions read(JsonParser parser) throws IOException, JsonReadException {
-            Dimensions result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+        public Deserializer() {
+            super(Dimensions.class);
         }
 
-        public final Dimensions readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(Dimensions.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<Dimensions> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public Dimensions deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             Long height = null;
             Long width = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("height".equals(fieldName)) {
-                    height = JsonReader.UInt64Reader
-                        .readField(parser, "height", height);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("height".equals(_field)) {
+                    height = _p.getLongValue();
+                    assertUnsigned(_p, height);
+                    _p.nextToken();
                 }
-                else if ("width".equals(fieldName)) {
-                    width = JsonReader.UInt64Reader
-                        .readField(parser, "width", width);
+                else if ("width".equals(_field)) {
+                    width = _p.getLongValue();
+                    assertUnsigned(_p, width);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (height == null) {
-                throw new JsonReadException("Required field \"height\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"height\" is missing.");
             }
             if (width == null) {
-                throw new JsonReadException("Required field \"width\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"width\" is missing.");
             }
+
             return new Dimensions(height, width);
         }
-    };
+    }
 }

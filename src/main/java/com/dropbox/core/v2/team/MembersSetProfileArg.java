@@ -5,11 +5,23 @@ package com.dropbox.core.v2.team;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
@@ -18,14 +30,20 @@ import java.io.IOException;
  * identify the user account. At least one of new_email, new_external_id,
  * new_given_name, and/or new_surname must be provided.
  */
-public class MembersSetProfileArg {
+@JsonSerialize(using=MembersSetProfileArg.Serializer.class)
+@JsonDeserialize(using=MembersSetProfileArg.Deserializer.class)
+class MembersSetProfileArg {
     // struct MembersSetProfileArg
 
-    private final UserSelectorArg user;
-    private final String newEmail;
-    private final String newExternalId;
-    private final String newGivenName;
-    private final String newSurname;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final UserSelectorArg user;
+    protected final String newEmail;
+    protected final String newExternalId;
+    protected final String newGivenName;
+    protected final String newSurname;
 
     /**
      * Exactly one of team_member_id, email, or external_id must be provided to
@@ -306,95 +324,122 @@ public class MembersSetProfileArg {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static MembersSetProfileArg fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
+    static final class Serializer extends StructJsonSerializer<MembersSetProfileArg> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(MembersSetProfileArg.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(MembersSetProfileArg.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<MembersSetProfileArg> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(MembersSetProfileArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("user", value.user);
+            if (value.newEmail != null) {
+                g.writeObjectField("new_email", value.newEmail);
+            }
+            if (value.newExternalId != null) {
+                g.writeObjectField("new_external_id", value.newExternalId);
+            }
+            if (value.newGivenName != null) {
+                g.writeObjectField("new_given_name", value.newGivenName);
+            }
+            if (value.newSurname != null) {
+                g.writeObjectField("new_surname", value.newSurname);
+            }
+        }
     }
 
-    public static final JsonWriter<MembersSetProfileArg> _JSON_WRITER = new JsonWriter<MembersSetProfileArg>() {
-        public final void write(MembersSetProfileArg x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            MembersSetProfileArg._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
-        }
-        public final void writeFields(MembersSetProfileArg x, JsonGenerator g) throws IOException {
-            g.writeFieldName("user");
-            UserSelectorArg._JSON_WRITER.write(x.user, g);
-            if (x.newEmail != null) {
-                g.writeFieldName("new_email");
-                g.writeString(x.newEmail);
-            }
-            if (x.newExternalId != null) {
-                g.writeFieldName("new_external_id");
-                g.writeString(x.newExternalId);
-            }
-            if (x.newGivenName != null) {
-                g.writeFieldName("new_given_name");
-                g.writeString(x.newGivenName);
-            }
-            if (x.newSurname != null) {
-                g.writeFieldName("new_surname");
-                g.writeString(x.newSurname);
-            }
-        }
-    };
+    static final class Deserializer extends StructJsonDeserializer<MembersSetProfileArg> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonReader<MembersSetProfileArg> _JSON_READER = new JsonReader<MembersSetProfileArg>() {
-        public final MembersSetProfileArg read(JsonParser parser) throws IOException, JsonReadException {
-            MembersSetProfileArg result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+        public Deserializer() {
+            super(MembersSetProfileArg.class);
         }
 
-        public final MembersSetProfileArg readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(MembersSetProfileArg.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<MembersSetProfileArg> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public MembersSetProfileArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             UserSelectorArg user = null;
             String newEmail = null;
             String newExternalId = null;
             String newGivenName = null;
             String newSurname = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("user".equals(fieldName)) {
-                    user = UserSelectorArg._JSON_READER
-                        .readField(parser, "user", user);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("user".equals(_field)) {
+                    user = _p.readValueAs(UserSelectorArg.class);
+                    _p.nextToken();
                 }
-                else if ("new_email".equals(fieldName)) {
-                    newEmail = JsonReader.StringReader
-                        .readField(parser, "new_email", newEmail);
+                else if ("new_email".equals(_field)) {
+                    newEmail = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("new_external_id".equals(fieldName)) {
-                    newExternalId = JsonReader.StringReader
-                        .readField(parser, "new_external_id", newExternalId);
+                else if ("new_external_id".equals(_field)) {
+                    newExternalId = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("new_given_name".equals(fieldName)) {
-                    newGivenName = JsonReader.StringReader
-                        .readField(parser, "new_given_name", newGivenName);
+                else if ("new_given_name".equals(_field)) {
+                    newGivenName = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("new_surname".equals(fieldName)) {
-                    newSurname = JsonReader.StringReader
-                        .readField(parser, "new_surname", newSurname);
+                else if ("new_surname".equals(_field)) {
+                    newSurname = getStringValue(_p);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (user == null) {
-                throw new JsonReadException("Required field \"user\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"user\" is missing.");
             }
+
             return new MembersSetProfileArg(user, newEmail, newExternalId, newGivenName, newSurname);
         }
-    };
+    }
 }

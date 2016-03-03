@@ -5,22 +5,40 @@ package com.dropbox.core.v2.team;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
 /**
  * Information about a team member.
  */
+@JsonSerialize(using=TeamMemberInfo.Serializer.class)
+@JsonDeserialize(using=TeamMemberInfo.Deserializer.class)
 public class TeamMemberInfo {
     // struct TeamMemberInfo
 
-    private final TeamMemberProfile profile;
-    private final AdminTier role;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final TeamMemberProfile profile;
+    protected final AdminTier role;
 
     /**
      * Information about a team member.
@@ -89,69 +107,99 @@ public class TeamMemberInfo {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static TeamMemberInfo fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
+    static final class Serializer extends StructJsonSerializer<TeamMemberInfo> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(TeamMemberInfo.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(TeamMemberInfo.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<TeamMemberInfo> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(TeamMemberInfo value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("profile", value.profile);
+            g.writeObjectField("role", value.role);
+        }
     }
 
-    public static final JsonWriter<TeamMemberInfo> _JSON_WRITER = new JsonWriter<TeamMemberInfo>() {
-        public final void write(TeamMemberInfo x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            TeamMemberInfo._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
-        }
-        public final void writeFields(TeamMemberInfo x, JsonGenerator g) throws IOException {
-            g.writeFieldName("profile");
-            TeamMemberProfile._JSON_WRITER.write(x.profile, g);
-            g.writeFieldName("role");
-            AdminTier._JSON_WRITER.write(x.role, g);
-        }
-    };
+    static final class Deserializer extends StructJsonDeserializer<TeamMemberInfo> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonReader<TeamMemberInfo> _JSON_READER = new JsonReader<TeamMemberInfo>() {
-        public final TeamMemberInfo read(JsonParser parser) throws IOException, JsonReadException {
-            TeamMemberInfo result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+        public Deserializer() {
+            super(TeamMemberInfo.class);
         }
 
-        public final TeamMemberInfo readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(TeamMemberInfo.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<TeamMemberInfo> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public TeamMemberInfo deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             TeamMemberProfile profile = null;
             AdminTier role = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("profile".equals(fieldName)) {
-                    profile = TeamMemberProfile._JSON_READER
-                        .readField(parser, "profile", profile);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("profile".equals(_field)) {
+                    profile = _p.readValueAs(TeamMemberProfile.class);
+                    _p.nextToken();
                 }
-                else if ("role".equals(fieldName)) {
-                    role = AdminTier._JSON_READER
-                        .readField(parser, "role", role);
+                else if ("role".equals(_field)) {
+                    role = _p.readValueAs(AdminTier.class);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (profile == null) {
-                throw new JsonReadException("Required field \"profile\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"profile\" is missing.");
             }
             if (role == null) {
-                throw new JsonReadException("Required field \"role\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"role\" is missing.");
             }
+
             return new TeamMemberInfo(profile, role);
         }
-    };
+    }
 }

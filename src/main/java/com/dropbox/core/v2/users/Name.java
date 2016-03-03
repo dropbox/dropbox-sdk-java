@@ -5,24 +5,42 @@ package com.dropbox.core.v2.users;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
 /**
  * Representations for a person's name to assist with internationalization.
  */
+@JsonSerialize(using=Name.Serializer.class)
+@JsonDeserialize(using=Name.Deserializer.class)
 public class Name {
     // struct Name
 
-    private final String givenName;
-    private final String surname;
-    private final String familiarName;
-    private final String displayName;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final String givenName;
+    protected final String surname;
+    protected final String familiarName;
+    protected final String displayName;
 
     /**
      * Representations for a person's name to assist with internationalization.
@@ -130,89 +148,117 @@ public class Name {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static Name fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
+    static final class Serializer extends StructJsonSerializer<Name> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(Name.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(Name.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<Name> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(Name value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("given_name", value.givenName);
+            g.writeObjectField("surname", value.surname);
+            g.writeObjectField("familiar_name", value.familiarName);
+            g.writeObjectField("display_name", value.displayName);
+        }
     }
 
-    public static final JsonWriter<Name> _JSON_WRITER = new JsonWriter<Name>() {
-        public final void write(Name x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            Name._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
-        }
-        public final void writeFields(Name x, JsonGenerator g) throws IOException {
-            g.writeFieldName("given_name");
-            g.writeString(x.givenName);
-            g.writeFieldName("surname");
-            g.writeString(x.surname);
-            g.writeFieldName("familiar_name");
-            g.writeString(x.familiarName);
-            g.writeFieldName("display_name");
-            g.writeString(x.displayName);
-        }
-    };
+    static final class Deserializer extends StructJsonDeserializer<Name> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonReader<Name> _JSON_READER = new JsonReader<Name>() {
-        public final Name read(JsonParser parser) throws IOException, JsonReadException {
-            Name result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+        public Deserializer() {
+            super(Name.class);
         }
 
-        public final Name readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(Name.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<Name> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public Name deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             String givenName = null;
             String surname = null;
             String familiarName = null;
             String displayName = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("given_name".equals(fieldName)) {
-                    givenName = JsonReader.StringReader
-                        .readField(parser, "given_name", givenName);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("given_name".equals(_field)) {
+                    givenName = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("surname".equals(fieldName)) {
-                    surname = JsonReader.StringReader
-                        .readField(parser, "surname", surname);
+                else if ("surname".equals(_field)) {
+                    surname = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("familiar_name".equals(fieldName)) {
-                    familiarName = JsonReader.StringReader
-                        .readField(parser, "familiar_name", familiarName);
+                else if ("familiar_name".equals(_field)) {
+                    familiarName = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("display_name".equals(fieldName)) {
-                    displayName = JsonReader.StringReader
-                        .readField(parser, "display_name", displayName);
+                else if ("display_name".equals(_field)) {
+                    displayName = getStringValue(_p);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (givenName == null) {
-                throw new JsonReadException("Required field \"given_name\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"given_name\" is missing.");
             }
             if (surname == null) {
-                throw new JsonReadException("Required field \"surname\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"surname\" is missing.");
             }
             if (familiarName == null) {
-                throw new JsonReadException("Required field \"familiar_name\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"familiar_name\" is missing.");
             }
             if (displayName == null) {
-                throw new JsonReadException("Required field \"display_name\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"display_name\" is missing.");
             }
+
             return new Name(givenName, surname, familiarName, displayName);
         }
-    };
+    }
 }

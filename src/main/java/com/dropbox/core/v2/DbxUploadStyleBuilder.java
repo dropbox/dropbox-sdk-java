@@ -51,9 +51,10 @@ import java.io.InputStream;
  *</code></pre>
  *
  * @param <R> response type returned by server on request success
- * @param <X> exception type returned by server on request failure
+ * @param <E> error type returned by server on request failure
+ * @param <X> exception type thrown by server on request failure (wraps error type)
  */
-public abstract class DbxUploadStyleBuilder<R,X extends DbxApiException> {
+public abstract class DbxUploadStyleBuilder<R,E, X extends DbxApiException> {
 
     /**
      * Begins the upload request using this builder's request parameters and returns a {@link
@@ -69,7 +70,7 @@ public abstract class DbxUploadStyleBuilder<R,X extends DbxApiException> {
      *
      * @throws DbxException if an error occursing initializing the request
      */
-    public abstract DbxUploader<R, X> start() throws DbxException;
+    public abstract DbxUploader<R, E, X> start() throws DbxException;
 
     /**
      * Convenience method for {@link DbxUploader#uploadAndFinish(InputStream)}:

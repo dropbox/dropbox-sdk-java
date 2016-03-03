@@ -1,14 +1,19 @@
 package com.dropbox.core;
 
+import static com.dropbox.core.DbxRequestUtil.ErrorWrapper;
+
 import java.io.Closeable;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import com.dropbox.core.DbxApiException;
-import com.dropbox.core.json.JsonReadException;
+import com.dropbox.core.json.JsonUtil;
 import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.util.IOUtil;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Class for completing upload requests.
@@ -41,44 +46,28 @@ import com.dropbox.core.util.IOUtil;
  * @param <R> response type returned by server on request success
  * @param <X> exception type returned by server on request failure
  */
-public abstract class DbxUploader<R, X extends DbxApiException> implements Closeable {
+public abstract class DbxUploader<R, E, X extends DbxApiException> implements Closeable {
+    protected static final ObjectMapper JSON = JsonUtil.getMapper();
+
     private final HttpRequestor.Uploader httpUploader;
+    private final JavaType responseType;
+    private final JavaType errorType;
 
     private boolean closed;
     private boolean finished;
 
-    protected DbxUploader(HttpRequestor.Uploader httpUploader) {
+    protected DbxUploader(HttpRequestor.Uploader httpUploader,
+                          JavaType responseType,
+                          JavaType errorType) {
         this.httpUploader = httpUploader;
+        this.responseType = responseType;
+        this.errorType = errorType;
 
         this.closed = false;
         this.finished = false;
     }
 
-    /**
-     * Parse and return the server response as the appropriate Java object.
-     *
-     * @param response Successful response from the server
-     *
-     * @return server response object
-     *
-     * @throws JsonReadException if unable to parse the response
-     * @throws IOException if an error occurs reading the response
-     */
-    protected abstract R parseResponse(HttpRequestor.Response response) throws JsonReadException, IOException;
-
-    /**
-     * Parse and return the server error response as the appropriate Java object.
-     *
-     * Implementations should throw the appropriate {@link DbxApiException} for their route.
-     *
-     * @param response error response from the server
-     *
-     * @return specific exception thrown by route
-     *
-     * @throws JsonReadException if unable to parse the response
-     * @throws IOException if an error occurs reading the response
-     */
-    protected abstract X parseError(HttpRequestor.Response response) throws JsonReadException, IOException;
+    protected abstract X newException(DbxRequestUtil.ErrorWrapper error);
 
     /**
      * Uploads all bytes read from the given {@link InputStream} and returns the response.
@@ -235,17 +224,18 @@ public abstract class DbxUploader<R, X extends DbxApiException> implements Close
 
             try {
                 if (response.getStatusCode() == 200) {
-                    return parseResponse(response);
+                    return JSON.readValue(response.getBody(), responseType);
                 }
                 else if (response.getStatusCode() == 409) {
-                    throw parseError(response);
+                    ErrorWrapper wrapper =  ErrorWrapper.fromResponse(errorType, response);
+                    throw newException(wrapper);
                 }
                 else {
                     throw DbxRequestUtil.unexpectedStatus(response);
                 }
-            } catch (JsonReadException ex) {
+            } catch (JsonProcessingException ex) {
                 String requestId = DbxRequestUtil.getRequestId(response);
-                throw new BadResponseException(requestId, "Bad JSON in response " + ex, ex);
+                throw new BadResponseException(requestId, "Bad JSON in response: " + ex, ex);
             }
         } catch (IOException ex) {
             throw new NetworkIOException(ex);

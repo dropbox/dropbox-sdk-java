@@ -7,13 +7,13 @@ import com.dropbox.core.DbxException;
 
 /**
  * The request builder returned by {@link
- * DbxSharing#updateFolderPolicyBuilder(String)}.
+ * DbxUserSharingRequests#updateFolderPolicyBuilder(String)}.
  *
  * <p> Use this class to set optional request parameters and complete the
  * request. </p>
  */
 public class UpdateFolderPolicyBuilder {
-    private final DbxSharing sharing;
+    private final DbxUserSharingRequests sharing;
     private final UpdateFolderPolicyArg.Builder updateFolderPolicyArgBuilder;
 
     /**
@@ -25,7 +25,7 @@ public class UpdateFolderPolicyBuilder {
      *
      * @return instsance of this builder
      */
-    UpdateFolderPolicyBuilder(DbxSharing sharing, UpdateFolderPolicyArg.Builder updateFolderPolicyArgBuilder) {
+    UpdateFolderPolicyBuilder(DbxUserSharingRequests sharing, UpdateFolderPolicyArg.Builder updateFolderPolicyArgBuilder) {
         if (sharing == null) {
             throw new NullPointerException("sharing");
         }

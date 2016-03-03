@@ -11,9 +11,11 @@ import com.dropbox.core.LocalizedText;
  * MembersUnsuspendError} error.
  */
 public class MembersUnsuspendErrorException extends DbxApiException {
+    private static final long serialVersionUID = 0L;
 
     /**
-     * The error reported by {@link DbxTeam#membersUnsuspend(UserSelectorArg)}.
+     * The error reported by {@link
+     * DbxTeamTeamRequests#membersUnsuspend(UserSelectorArg)}.
      */
     public final MembersUnsuspendError errorValue;
 

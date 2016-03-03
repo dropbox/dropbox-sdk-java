@@ -5,24 +5,43 @@ package com.dropbox.core.v2.files;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
+@JsonSerialize(using=UploadSessionCursor.Serializer.class)
+@JsonDeserialize(using=UploadSessionCursor.Deserializer.class)
 public class UploadSessionCursor {
     // struct UploadSessionCursor
 
-    private final String sessionId;
-    private final long offset;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final String sessionId;
+    protected final long offset;
 
     /**
      *
      * @param sessionId  The upload session ID (returned by {@link
-     *     DbxFiles#uploadSessionStart()}). Must not be {@code null}.
+     *     DbxUserFilesRequests#uploadSessionStart()}). Must not be {@code
+     *     null}.
      * @param offset  The amount of data that has been uploaded so far. We use
      *     this to make sure upload data isn't lost or duplicated in the event
      *     of a network error.
@@ -40,7 +59,7 @@ public class UploadSessionCursor {
 
     /**
      * The upload session ID (returned by {@link
-     * DbxFiles#uploadSessionStart()}).
+     * DbxUserFilesRequests#uploadSessionStart()}).
      *
      * @return value for this field, never {@code null}.
      */
@@ -87,69 +106,100 @@ public class UploadSessionCursor {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static UploadSessionCursor fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
+    static final class Serializer extends StructJsonSerializer<UploadSessionCursor> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(UploadSessionCursor.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(UploadSessionCursor.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<UploadSessionCursor> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(UploadSessionCursor value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("session_id", value.sessionId);
+            g.writeObjectField("offset", value.offset);
+        }
     }
 
-    public static final JsonWriter<UploadSessionCursor> _JSON_WRITER = new JsonWriter<UploadSessionCursor>() {
-        public final void write(UploadSessionCursor x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            UploadSessionCursor._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
-        }
-        public final void writeFields(UploadSessionCursor x, JsonGenerator g) throws IOException {
-            g.writeFieldName("session_id");
-            g.writeString(x.sessionId);
-            g.writeFieldName("offset");
-            g.writeNumber(x.offset);
-        }
-    };
+    static final class Deserializer extends StructJsonDeserializer<UploadSessionCursor> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonReader<UploadSessionCursor> _JSON_READER = new JsonReader<UploadSessionCursor>() {
-        public final UploadSessionCursor read(JsonParser parser) throws IOException, JsonReadException {
-            UploadSessionCursor result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+        public Deserializer() {
+            super(UploadSessionCursor.class);
         }
 
-        public final UploadSessionCursor readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(UploadSessionCursor.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<UploadSessionCursor> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public UploadSessionCursor deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             String sessionId = null;
             Long offset = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("session_id".equals(fieldName)) {
-                    sessionId = JsonReader.StringReader
-                        .readField(parser, "session_id", sessionId);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("session_id".equals(_field)) {
+                    sessionId = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("offset".equals(fieldName)) {
-                    offset = JsonReader.UInt64Reader
-                        .readField(parser, "offset", offset);
+                else if ("offset".equals(_field)) {
+                    offset = _p.getLongValue();
+                    assertUnsigned(_p, offset);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (sessionId == null) {
-                throw new JsonReadException("Required field \"session_id\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"session_id\" is missing.");
             }
             if (offset == null) {
-                throw new JsonReadException("Required field \"offset\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"offset\" is missing.");
             }
+
             return new UploadSessionCursor(sessionId, offset);
         }
-    };
+    }
 }

@@ -5,16 +5,45 @@ package com.dropbox.core.v2.sharing;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.UnionJsonDeserializer;
+import com.dropbox.core.json.UnionJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
+/**
+ * This class is an open tagged union.  Tagged unions instances are always
+ * associated to a specific tag.  This means only one of the {@code isAbc()}
+ * methods will return {@code true}. You can use {@link #tag()} to determine the
+ * tag associated with this instance.
+ *
+ * <p> Open unions may be extended in the future with additional tags. If a new
+ * tag is introduced that this SDK does not recognized, the {@link #OTHER} value
+ * will be used. </p>
+ */
+@JsonSerialize(using=AddMemberSelectorError.Serializer.class)
+@JsonDeserialize(using=AddMemberSelectorError.Deserializer.class)
 public final class AddMemberSelectorError {
     // union AddMemberSelectorError
+
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link AddMemberSelectorError}.
@@ -35,30 +64,44 @@ public final class AddMemberSelectorError {
          */
         UNVERIFIED_DROPBOX_ID, // String
         /**
-         * At least one of the specified groups in {@link
-         * AddFolderMemberArg#getMembers} is deleted.
+         * At least one of the specified groups in the {@code members} argument
+         * to {@link
+         * DbxUserSharingRequests#addFolderMember(String,java.util.List)} is
+         * deleted.
          */
         GROUP_DELETED,
         /**
          * Sharing to a group that is not on the current user's team.
          */
         GROUP_NOT_ON_TEAM,
+        /**
+         * Catch-all used for unknown tag values returned by the Dropbox
+         * servers.
+         *
+         * <p> Receiving a catch-all value typically indicates this SDK version
+         * is not up to date. Consider updating your SDK version to handle the
+         * new tags. </p>
+         */
         OTHER; // *catch_all
     }
 
-    private static final java.util.HashMap<String, Tag> VALUES_;
-    static {
-        VALUES_ = new java.util.HashMap<String, Tag>();
-        VALUES_.put("invalid_dropbox_id", Tag.INVALID_DROPBOX_ID);
-        VALUES_.put("invalid_email", Tag.INVALID_EMAIL);
-        VALUES_.put("unverified_dropbox_id", Tag.UNVERIFIED_DROPBOX_ID);
-        VALUES_.put("group_deleted", Tag.GROUP_DELETED);
-        VALUES_.put("group_not_on_team", Tag.GROUP_NOT_ON_TEAM);
-        VALUES_.put("other", Tag.OTHER);
-    }
-
+    /**
+     * At least one of the specified groups in the {@code members} argument to
+     * {@link DbxUserSharingRequests#addFolderMember(String,java.util.List)} is
+     * deleted.
+     */
     public static final AddMemberSelectorError GROUP_DELETED = new AddMemberSelectorError(Tag.GROUP_DELETED, null, null, null);
+    /**
+     * Sharing to a group that is not on the current user's team.
+     */
     public static final AddMemberSelectorError GROUP_NOT_ON_TEAM = new AddMemberSelectorError(Tag.GROUP_NOT_ON_TEAM, null, null, null);
+    /**
+     * Catch-all used for unknown tag values returned by the Dropbox servers.
+     *
+     * <p> Receiving a catch-all value typically indicates this SDK version is
+     * not up to date. Consider updating your SDK version to handle the new
+     * tags. </p>
+     */
     public static final AddMemberSelectorError OTHER = new AddMemberSelectorError(Tag.OTHER, null, null, null);
 
     private final Tag tag;
@@ -81,9 +124,13 @@ public final class AddMemberSelectorError {
      * Returns the tag for this instance.
      *
      * <p> This class is a tagged union.  Tagged unions instances are always
-     * associated to a specific tag.  Callers are recommended to use the tag
-     * value in a {@code switch} statement to determine how to properly handle
-     * this {@code AddMemberSelectorError}. </p>
+     * associated to a specific tag.  This means only one of the {@code isXyz()}
+     * methods will return {@code true}. Callers are recommended to use the tag
+     * value in a {@code switch} statement to properly handle the different
+     * values for this {@code AddMemberSelectorError}. </p>
+     *
+     * <p> If a tag returned by the server is unrecognized by this SDK, the
+     * {@link Tag#OTHER} value will be used. </p>
      *
      * @return the tag for this instance.
      */
@@ -95,7 +142,7 @@ public final class AddMemberSelectorError {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#INVALID_DROPBOX_ID}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#INVALID_DROPBOX_ID}, {@code false} otherwise.
      */
     public boolean isInvalidDropboxId() {
@@ -108,8 +155,7 @@ public final class AddMemberSelectorError {
      *
      * <p> The value is the ID that could not be identified. </p>
      *
-     * @param value  {@link AddMemberSelectorError#invalidDropboxId} value to
-     *     assign to this instance.
+     * @param value  value to assign to this instance.
      *
      * @return Instance of {@code AddMemberSelectorError} with its tag set to
      *     {@link Tag#INVALID_DROPBOX_ID}.
@@ -150,7 +196,7 @@ public final class AddMemberSelectorError {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#INVALID_EMAIL}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#INVALID_EMAIL}, {@code false} otherwise.
      */
     public boolean isInvalidEmail() {
@@ -163,8 +209,7 @@ public final class AddMemberSelectorError {
      *
      * <p> The value is the e-email address that is malformed. </p>
      *
-     * @param value  {@link AddMemberSelectorError#invalidEmail} value to assign
-     *     to this instance.
+     * @param value  value to assign to this instance.
      *
      * @return Instance of {@code AddMemberSelectorError} with its tag set to
      *     {@link Tag#INVALID_EMAIL}.
@@ -209,7 +254,7 @@ public final class AddMemberSelectorError {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#UNVERIFIED_DROPBOX_ID}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#UNVERIFIED_DROPBOX_ID}, {@code false} otherwise.
      */
     public boolean isUnverifiedDropboxId() {
@@ -224,8 +269,7 @@ public final class AddMemberSelectorError {
      * address.  Invite unverified users by e-mail address instead of by their
      * Dropbox ID. </p>
      *
-     * @param value  {@link AddMemberSelectorError#unverifiedDropboxId} value to
-     *     assign to this instance.
+     * @param value  value to assign to this instance.
      *
      * @return Instance of {@code AddMemberSelectorError} with its tag set to
      *     {@link Tag#UNVERIFIED_DROPBOX_ID}.
@@ -269,7 +313,7 @@ public final class AddMemberSelectorError {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#GROUP_DELETED}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#GROUP_DELETED}, {@code false} otherwise.
      */
     public boolean isGroupDeleted() {
@@ -280,7 +324,7 @@ public final class AddMemberSelectorError {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#GROUP_NOT_ON_TEAM}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#GROUP_NOT_ON_TEAM}, {@code false} otherwise.
      */
     public boolean isGroupNotOnTeam() {
@@ -291,7 +335,7 @@ public final class AddMemberSelectorError {
      * Returns {@code true} if this instance has the tag {@link Tag#OTHER},
      * {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link Tag#OTHER},
+     * @return {@code true} if this instance is tagged as {@link Tag#OTHER},
      *     {@code false} otherwise.
      */
     public boolean isOther() {
@@ -343,148 +387,125 @@ public final class AddMemberSelectorError {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static AddMemberSelectorError fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
+    static final class Serializer extends UnionJsonSerializer<AddMemberSelectorError> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonWriter<AddMemberSelectorError> _JSON_WRITER = new JsonWriter<AddMemberSelectorError>() {
-        public final void write(AddMemberSelectorError x, JsonGenerator g) throws IOException {
-            switch (x.tag) {
+        public Serializer() {
+            super(AddMemberSelectorError.class);
+        }
+
+        @Override
+        public void serialize(AddMemberSelectorError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            switch (value.tag) {
                 case INVALID_DROPBOX_ID:
                     g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("invalid_dropbox_id");
-                    g.writeFieldName("invalid_dropbox_id");
-                    g.writeString(x.getInvalidDropboxIdValue());
+                    g.writeStringField(".tag", "invalid_dropbox_id");
+                    g.writeObjectField("invalid_dropbox_id", value.invalidDropboxIdValue);
                     g.writeEndObject();
                     break;
                 case INVALID_EMAIL:
                     g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("invalid_email");
-                    g.writeFieldName("invalid_email");
-                    g.writeString(x.getInvalidEmailValue());
+                    g.writeStringField(".tag", "invalid_email");
+                    g.writeObjectField("invalid_email", value.invalidEmailValue);
                     g.writeEndObject();
                     break;
                 case UNVERIFIED_DROPBOX_ID:
                     g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("unverified_dropbox_id");
-                    g.writeFieldName("unverified_dropbox_id");
-                    g.writeString(x.getUnverifiedDropboxIdValue());
+                    g.writeStringField(".tag", "unverified_dropbox_id");
+                    g.writeObjectField("unverified_dropbox_id", value.unverifiedDropboxIdValue);
                     g.writeEndObject();
                     break;
                 case GROUP_DELETED:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("group_deleted");
-                    g.writeEndObject();
                     break;
                 case GROUP_NOT_ON_TEAM:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("group_not_on_team");
-                    g.writeEndObject();
                     break;
                 case OTHER:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("other");
-                    g.writeEndObject();
                     break;
             }
         }
-    };
+    }
 
-    public static final JsonReader<AddMemberSelectorError> _JSON_READER = new JsonReader<AddMemberSelectorError>() {
+    static final class Deserializer extends UnionJsonDeserializer<AddMemberSelectorError, Tag> {
+        private static final long serialVersionUID = 0L;
 
-        public final AddMemberSelectorError read(JsonParser parser) throws IOException, JsonReadException {
-            if (parser.getCurrentToken() == JsonToken.VALUE_STRING) {
-                String text = parser.getText();
-                parser.nextToken();
-                Tag tag = VALUES_.get(text);
-                if (tag == null) {
-                    return AddMemberSelectorError.OTHER;
-                }
-                switch (tag) {
-                    case GROUP_DELETED: return AddMemberSelectorError.GROUP_DELETED;
-                    case GROUP_NOT_ON_TEAM: return AddMemberSelectorError.GROUP_NOT_ON_TEAM;
-                    case OTHER: return AddMemberSelectorError.OTHER;
-                }
-                throw new JsonReadException("Tag " + tag + " requires a value", parser.getTokenLocation());
-            }
-            JsonReader.expectObjectStart(parser);
-            String[] tags = readTags(parser);
-            assert tags != null && tags.length == 1;
-            String text = tags[0];
-            Tag tag = VALUES_.get(text);
-            AddMemberSelectorError value = null;
-            if (tag != null) {
-                switch (tag) {
-                    case INVALID_DROPBOX_ID: {
-                        String v = null;
-                        assert parser.getCurrentToken() == JsonToken.FIELD_NAME;
-                        text = parser.getText();
-                        assert tags[0].equals(text);
-                        parser.nextToken();
-                        v = JsonReader.StringReader
-                            .readField(parser, "invalid_dropbox_id", v);
-                        value = AddMemberSelectorError.invalidDropboxId(v);
-                        break;
-                    }
-                    case INVALID_EMAIL: {
-                        String v = null;
-                        assert parser.getCurrentToken() == JsonToken.FIELD_NAME;
-                        text = parser.getText();
-                        assert tags[0].equals(text);
-                        parser.nextToken();
-                        v = JsonReader.StringReader
-                            .readField(parser, "invalid_email", v);
-                        value = AddMemberSelectorError.invalidEmail(v);
-                        break;
-                    }
-                    case UNVERIFIED_DROPBOX_ID: {
-                        String v = null;
-                        assert parser.getCurrentToken() == JsonToken.FIELD_NAME;
-                        text = parser.getText();
-                        assert tags[0].equals(text);
-                        parser.nextToken();
-                        v = JsonReader.StringReader
-                            .readField(parser, "unverified_dropbox_id", v);
-                        value = AddMemberSelectorError.unverifiedDropboxId(v);
-                        break;
-                    }
-                    case GROUP_DELETED: {
-                        value = AddMemberSelectorError.GROUP_DELETED;
-                        break;
-                    }
-                    case GROUP_NOT_ON_TEAM: {
-                        value = AddMemberSelectorError.GROUP_NOT_ON_TEAM;
-                        break;
-                    }
-                    case OTHER: {
-                        value = AddMemberSelectorError.OTHER;
-                        break;
-                    }
-                }
-            }
-            JsonReader.expectObjectEnd(parser);
-            if (value == null) {
-                return AddMemberSelectorError.OTHER;
-            }
-            return value;
+        public Deserializer() {
+            super(AddMemberSelectorError.class, getTagMapping(), Tag.OTHER);
         }
 
-    };
+        @Override
+        public AddMemberSelectorError deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+            switch (_tag) {
+                case INVALID_DROPBOX_ID: {
+                    String value = null;
+                    expectField(_p, "invalid_dropbox_id");
+                    value = getStringValue(_p);
+                    _p.nextToken();
+                    return AddMemberSelectorError.invalidDropboxId(value);
+                }
+                case INVALID_EMAIL: {
+                    String value = null;
+                    expectField(_p, "invalid_email");
+                    value = getStringValue(_p);
+                    _p.nextToken();
+                    return AddMemberSelectorError.invalidEmail(value);
+                }
+                case UNVERIFIED_DROPBOX_ID: {
+                    String value = null;
+                    expectField(_p, "unverified_dropbox_id");
+                    value = getStringValue(_p);
+                    _p.nextToken();
+                    return AddMemberSelectorError.unverifiedDropboxId(value);
+                }
+                case GROUP_DELETED: {
+                    return AddMemberSelectorError.GROUP_DELETED;
+                }
+                case GROUP_NOT_ON_TEAM: {
+                    return AddMemberSelectorError.GROUP_NOT_ON_TEAM;
+                }
+                case OTHER: {
+                    return AddMemberSelectorError.OTHER;
+                }
+            }
+            // should be impossible to get here
+            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
+        }
+
+        private static Map<String, AddMemberSelectorError.Tag> getTagMapping() {
+            Map<String, AddMemberSelectorError.Tag> values = new HashMap<String, AddMemberSelectorError.Tag>();
+            values.put("invalid_dropbox_id", AddMemberSelectorError.Tag.INVALID_DROPBOX_ID);
+            values.put("invalid_email", AddMemberSelectorError.Tag.INVALID_EMAIL);
+            values.put("unverified_dropbox_id", AddMemberSelectorError.Tag.UNVERIFIED_DROPBOX_ID);
+            values.put("group_deleted", AddMemberSelectorError.Tag.GROUP_DELETED);
+            values.put("group_not_on_team", AddMemberSelectorError.Tag.GROUP_NOT_ON_TEAM);
+            values.put("other", AddMemberSelectorError.Tag.OTHER);
+            return Collections.unmodifiableMap(values);
+        }
+    }
 }

@@ -5,21 +5,39 @@ package com.dropbox.core.v2.sharing;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
+@JsonSerialize(using=LinkPermissions.Serializer.class)
+@JsonDeserialize(using=LinkPermissions.Deserializer.class)
 public class LinkPermissions {
     // struct LinkPermissions
 
-    private final ResolvedVisibility resolvedVisibility;
-    private final RequestedVisibility requestedVisibility;
-    private final boolean canRevoke;
-    private final SharedLinkAccessFailureReason revokeFailureReason;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final ResolvedVisibility resolvedVisibility;
+    protected final RequestedVisibility requestedVisibility;
+    protected final boolean canRevoke;
+    protected final SharedLinkAccessFailureReason revokeFailureReason;
 
     /**
      * Use {@link newBuilder} to create instances of this class without
@@ -207,9 +225,9 @@ public class LinkPermissions {
         // be careful with inheritance
         else if (obj.getClass().equals(this.getClass())) {
             LinkPermissions other = (LinkPermissions) obj;
-            return ((this.resolvedVisibility == other.resolvedVisibility) || (this.resolvedVisibility != null && this.resolvedVisibility.equals(other.resolvedVisibility)))
+            return (this.canRevoke == other.canRevoke)
+                && ((this.resolvedVisibility == other.resolvedVisibility) || (this.resolvedVisibility != null && this.resolvedVisibility.equals(other.resolvedVisibility)))
                 && ((this.requestedVisibility == other.requestedVisibility) || (this.requestedVisibility != null && this.requestedVisibility.equals(other.requestedVisibility)))
-                && (this.canRevoke == other.canRevoke)
                 && ((this.revokeFailureReason == other.revokeFailureReason) || (this.revokeFailureReason != null && this.revokeFailureReason.equals(other.revokeFailureReason)))
                 ;
         }
@@ -220,86 +238,114 @@ public class LinkPermissions {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static LinkPermissions fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
+    static final class Serializer extends StructJsonSerializer<LinkPermissions> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(LinkPermissions.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(LinkPermissions.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<LinkPermissions> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(LinkPermissions value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("can_revoke", value.canRevoke);
+            if (value.resolvedVisibility != null) {
+                g.writeObjectField("resolved_visibility", value.resolvedVisibility);
+            }
+            if (value.requestedVisibility != null) {
+                g.writeObjectField("requested_visibility", value.requestedVisibility);
+            }
+            if (value.revokeFailureReason != null) {
+                g.writeObjectField("revoke_failure_reason", value.revokeFailureReason);
+            }
+        }
     }
 
-    public static final JsonWriter<LinkPermissions> _JSON_WRITER = new JsonWriter<LinkPermissions>() {
-        public final void write(LinkPermissions x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            LinkPermissions._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
-        }
-        public final void writeFields(LinkPermissions x, JsonGenerator g) throws IOException {
-            if (x.resolvedVisibility != null) {
-                g.writeFieldName("resolved_visibility");
-                ResolvedVisibility._JSON_WRITER.write(x.resolvedVisibility, g);
-            }
-            if (x.requestedVisibility != null) {
-                g.writeFieldName("requested_visibility");
-                RequestedVisibility._JSON_WRITER.write(x.requestedVisibility, g);
-            }
-            g.writeFieldName("can_revoke");
-            g.writeBoolean(x.canRevoke);
-            if (x.revokeFailureReason != null) {
-                g.writeFieldName("revoke_failure_reason");
-                SharedLinkAccessFailureReason._JSON_WRITER.write(x.revokeFailureReason, g);
-            }
-        }
-    };
+    static final class Deserializer extends StructJsonDeserializer<LinkPermissions> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonReader<LinkPermissions> _JSON_READER = new JsonReader<LinkPermissions>() {
-        public final LinkPermissions read(JsonParser parser) throws IOException, JsonReadException {
-            LinkPermissions result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+        public Deserializer() {
+            super(LinkPermissions.class);
         }
 
-        public final LinkPermissions readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(LinkPermissions.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<LinkPermissions> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public LinkPermissions deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             Boolean canRevoke = null;
             ResolvedVisibility resolvedVisibility = null;
             RequestedVisibility requestedVisibility = null;
             SharedLinkAccessFailureReason revokeFailureReason = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("can_revoke".equals(fieldName)) {
-                    canRevoke = JsonReader.BooleanReader
-                        .readField(parser, "can_revoke", canRevoke);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("can_revoke".equals(_field)) {
+                    canRevoke = _p.getValueAsBoolean();
+                    _p.nextToken();
                 }
-                else if ("resolved_visibility".equals(fieldName)) {
-                    resolvedVisibility = ResolvedVisibility._JSON_READER
-                        .readField(parser, "resolved_visibility", resolvedVisibility);
+                else if ("resolved_visibility".equals(_field)) {
+                    resolvedVisibility = _p.readValueAs(ResolvedVisibility.class);
+                    _p.nextToken();
                 }
-                else if ("requested_visibility".equals(fieldName)) {
-                    requestedVisibility = RequestedVisibility._JSON_READER
-                        .readField(parser, "requested_visibility", requestedVisibility);
+                else if ("requested_visibility".equals(_field)) {
+                    requestedVisibility = _p.readValueAs(RequestedVisibility.class);
+                    _p.nextToken();
                 }
-                else if ("revoke_failure_reason".equals(fieldName)) {
-                    revokeFailureReason = SharedLinkAccessFailureReason._JSON_READER
-                        .readField(parser, "revoke_failure_reason", revokeFailureReason);
+                else if ("revoke_failure_reason".equals(_field)) {
+                    revokeFailureReason = _p.readValueAs(SharedLinkAccessFailureReason.class);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (canRevoke == null) {
-                throw new JsonReadException("Required field \"can_revoke\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"can_revoke\" is missing.");
             }
+
             return new LinkPermissions(canRevoke, resolvedVisibility, requestedVisibility, revokeFailureReason);
         }
-    };
+    }
 }

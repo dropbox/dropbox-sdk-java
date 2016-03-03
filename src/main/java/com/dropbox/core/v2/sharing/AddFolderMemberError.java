@@ -5,16 +5,45 @@ package com.dropbox.core.v2.sharing;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.UnionJsonDeserializer;
+import com.dropbox.core.json.UnionJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
+/**
+ * This class is an open tagged union.  Tagged unions instances are always
+ * associated to a specific tag.  This means only one of the {@code isAbc()}
+ * methods will return {@code true}. You can use {@link #tag()} to determine the
+ * tag associated with this instance.
+ *
+ * <p> Open unions may be extended in the future with additional tags. If a new
+ * tag is introduced that this SDK does not recognized, the {@link #OTHER} value
+ * will be used. </p>
+ */
+@JsonSerialize(using=AddFolderMemberError.Serializer.class)
+@JsonDeserialize(using=AddFolderMemberError.Deserializer.class)
 public final class AddFolderMemberError {
     // union AddFolderMemberError
+
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link AddFolderMemberError}.
@@ -29,8 +58,9 @@ public final class AddFolderMemberError {
          */
         EMAIL_UNVERIFIED,
         /**
-         * {@link AddFolderMemberArg#getMembers} contains a bad invitation
-         * recipient.
+         * the {@code members} argument to {@link
+         * DbxUserSharingRequests#addFolderMember(String,java.util.List)}
+         * contains a bad invitation recipient.
          */
         BAD_MEMBER, // AddMemberSelectorError
         /**
@@ -63,31 +93,50 @@ public final class AddFolderMemberError {
          * The current user does not have permission to perform this action.
          */
         NO_PERMISSION,
+        /**
+         * Catch-all used for unknown tag values returned by the Dropbox
+         * servers.
+         *
+         * <p> Receiving a catch-all value typically indicates this SDK version
+         * is not up to date. Consider updating your SDK version to handle the
+         * new tags. </p>
+         */
         OTHER; // *catch_all
     }
 
-    private static final java.util.HashMap<String, Tag> VALUES_;
-    static {
-        VALUES_ = new java.util.HashMap<String, Tag>();
-        VALUES_.put("access_error", Tag.ACCESS_ERROR);
-        VALUES_.put("email_unverified", Tag.EMAIL_UNVERIFIED);
-        VALUES_.put("bad_member", Tag.BAD_MEMBER);
-        VALUES_.put("cant_share_outside_team", Tag.CANT_SHARE_OUTSIDE_TEAM);
-        VALUES_.put("too_many_members", Tag.TOO_MANY_MEMBERS);
-        VALUES_.put("too_many_pending_invites", Tag.TOO_MANY_PENDING_INVITES);
-        VALUES_.put("rate_limit", Tag.RATE_LIMIT);
-        VALUES_.put("insufficient_plan", Tag.INSUFFICIENT_PLAN);
-        VALUES_.put("team_folder", Tag.TEAM_FOLDER);
-        VALUES_.put("no_permission", Tag.NO_PERMISSION);
-        VALUES_.put("other", Tag.OTHER);
-    }
-
+    /**
+     * The current user's e-mail address is unverified.
+     */
     public static final AddFolderMemberError EMAIL_UNVERIFIED = new AddFolderMemberError(Tag.EMAIL_UNVERIFIED, null, null, null, null);
+    /**
+     * Your team policy does not allow sharing outside of the team.
+     */
     public static final AddFolderMemberError CANT_SHARE_OUTSIDE_TEAM = new AddFolderMemberError(Tag.CANT_SHARE_OUTSIDE_TEAM, null, null, null, null);
+    /**
+     * The user has reached the rate limit for invitations.
+     */
     public static final AddFolderMemberError RATE_LIMIT = new AddFolderMemberError(Tag.RATE_LIMIT, null, null, null, null);
+    /**
+     * The current user's account doesn't support this action. An example of
+     * this is when adding a read-only member. This action can only be performed
+     * by users that have upgraded to a Pro or Business plan.
+     */
     public static final AddFolderMemberError INSUFFICIENT_PLAN = new AddFolderMemberError(Tag.INSUFFICIENT_PLAN, null, null, null, null);
+    /**
+     * This action cannot be performed on a team shared folder.
+     */
     public static final AddFolderMemberError TEAM_FOLDER = new AddFolderMemberError(Tag.TEAM_FOLDER, null, null, null, null);
+    /**
+     * The current user does not have permission to perform this action.
+     */
     public static final AddFolderMemberError NO_PERMISSION = new AddFolderMemberError(Tag.NO_PERMISSION, null, null, null, null);
+    /**
+     * Catch-all used for unknown tag values returned by the Dropbox servers.
+     *
+     * <p> Receiving a catch-all value typically indicates this SDK version is
+     * not up to date. Consider updating your SDK version to handle the new
+     * tags. </p>
+     */
     public static final AddFolderMemberError OTHER = new AddFolderMemberError(Tag.OTHER, null, null, null, null);
 
     private final Tag tag;
@@ -112,9 +161,13 @@ public final class AddFolderMemberError {
      * Returns the tag for this instance.
      *
      * <p> This class is a tagged union.  Tagged unions instances are always
-     * associated to a specific tag.  Callers are recommended to use the tag
-     * value in a {@code switch} statement to determine how to properly handle
-     * this {@code AddFolderMemberError}. </p>
+     * associated to a specific tag.  This means only one of the {@code isXyz()}
+     * methods will return {@code true}. Callers are recommended to use the tag
+     * value in a {@code switch} statement to properly handle the different
+     * values for this {@code AddFolderMemberError}. </p>
+     *
+     * <p> If a tag returned by the server is unrecognized by this SDK, the
+     * {@link Tag#OTHER} value will be used. </p>
      *
      * @return the tag for this instance.
      */
@@ -126,7 +179,7 @@ public final class AddFolderMemberError {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#ACCESS_ERROR}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#ACCESS_ERROR}, {@code false} otherwise.
      */
     public boolean isAccessError() {
@@ -139,8 +192,7 @@ public final class AddFolderMemberError {
      *
      * <p> Unable to access shared folder. </p>
      *
-     * @param value  {@link AddFolderMemberError#accessError} value to assign to
-     *     this instance.
+     * @param value  value to assign to this instance.
      *
      * @return Instance of {@code AddFolderMemberError} with its tag set to
      *     {@link Tag#ACCESS_ERROR}.
@@ -176,7 +228,7 @@ public final class AddFolderMemberError {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#EMAIL_UNVERIFIED}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#EMAIL_UNVERIFIED}, {@code false} otherwise.
      */
     public boolean isEmailUnverified() {
@@ -187,7 +239,7 @@ public final class AddFolderMemberError {
      * Returns {@code true} if this instance has the tag {@link Tag#BAD_MEMBER},
      * {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#BAD_MEMBER}, {@code false} otherwise.
      */
     public boolean isBadMember() {
@@ -198,11 +250,11 @@ public final class AddFolderMemberError {
      * Returns an instance of {@code AddFolderMemberError} that has its tag set
      * to {@link Tag#BAD_MEMBER}.
      *
-     * <p> {@link AddFolderMemberArg#getMembers} contains a bad invitation
-     * recipient. </p>
+     * <p> the {@code members} argument to {@link
+     * DbxUserSharingRequests#addFolderMember(String,java.util.List)} contains a
+     * bad invitation recipient. </p>
      *
-     * @param value  {@link AddFolderMemberError#badMember} value to assign to
-     *     this instance.
+     * @param value  value to assign to this instance.
      *
      * @return Instance of {@code AddFolderMemberError} with its tag set to
      *     {@link Tag#BAD_MEMBER}.
@@ -217,8 +269,9 @@ public final class AddFolderMemberError {
     }
 
     /**
-     * {@link AddFolderMemberArg#getMembers} contains a bad invitation
-     * recipient.
+     * the {@code members} argument to {@link
+     * DbxUserSharingRequests#addFolderMember(String,java.util.List)} contains a
+     * bad invitation recipient.
      *
      * <p> This instance must be tagged as {@link Tag#BAD_MEMBER}. </p>
      *
@@ -238,7 +291,7 @@ public final class AddFolderMemberError {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#CANT_SHARE_OUTSIDE_TEAM}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#CANT_SHARE_OUTSIDE_TEAM}, {@code false} otherwise.
      */
     public boolean isCantShareOutsideTeam() {
@@ -249,7 +302,7 @@ public final class AddFolderMemberError {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#TOO_MANY_MEMBERS}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#TOO_MANY_MEMBERS}, {@code false} otherwise.
      */
     public boolean isTooManyMembers() {
@@ -262,8 +315,7 @@ public final class AddFolderMemberError {
      *
      * <p> The value is the member limit that was reached. </p>
      *
-     * @param value  {@link AddFolderMemberError#tooManyMembers} value to assign
-     *     to this instance.
+     * @param value  value to assign to this instance.
      *
      * @return Instance of {@code AddFolderMemberError} with its tag set to
      *     {@link Tag#TOO_MANY_MEMBERS}.
@@ -294,7 +346,7 @@ public final class AddFolderMemberError {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#TOO_MANY_PENDING_INVITES}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#TOO_MANY_PENDING_INVITES}, {@code false} otherwise.
      */
     public boolean isTooManyPendingInvites() {
@@ -307,8 +359,7 @@ public final class AddFolderMemberError {
      *
      * <p> The value is the pending invite limit that was reached. </p>
      *
-     * @param value  {@link AddFolderMemberError#tooManyPendingInvites} value to
-     *     assign to this instance.
+     * @param value  value to assign to this instance.
      *
      * @return Instance of {@code AddFolderMemberError} with its tag set to
      *     {@link Tag#TOO_MANY_PENDING_INVITES}.
@@ -341,7 +392,7 @@ public final class AddFolderMemberError {
      * Returns {@code true} if this instance has the tag {@link Tag#RATE_LIMIT},
      * {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#RATE_LIMIT}, {@code false} otherwise.
      */
     public boolean isRateLimit() {
@@ -352,7 +403,7 @@ public final class AddFolderMemberError {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#INSUFFICIENT_PLAN}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#INSUFFICIENT_PLAN}, {@code false} otherwise.
      */
     public boolean isInsufficientPlan() {
@@ -363,7 +414,7 @@ public final class AddFolderMemberError {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#TEAM_FOLDER}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#TEAM_FOLDER}, {@code false} otherwise.
      */
     public boolean isTeamFolder() {
@@ -374,7 +425,7 @@ public final class AddFolderMemberError {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#NO_PERMISSION}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#NO_PERMISSION}, {@code false} otherwise.
      */
     public boolean isNoPermission() {
@@ -385,7 +436,7 @@ public final class AddFolderMemberError {
      * Returns {@code true} if this instance has the tag {@link Tag#OTHER},
      * {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link Tag#OTHER},
+     * @return {@code true} if this instance is tagged as {@link Tag#OTHER},
      *     {@code false} otherwise.
      */
     public boolean isOther() {
@@ -448,211 +499,169 @@ public final class AddFolderMemberError {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static AddFolderMemberError fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
+    static final class Serializer extends UnionJsonSerializer<AddFolderMemberError> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonWriter<AddFolderMemberError> _JSON_WRITER = new JsonWriter<AddFolderMemberError>() {
-        public final void write(AddFolderMemberError x, JsonGenerator g) throws IOException {
-            switch (x.tag) {
+        public Serializer() {
+            super(AddFolderMemberError.class);
+        }
+
+        @Override
+        public void serialize(AddFolderMemberError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            switch (value.tag) {
                 case ACCESS_ERROR:
                     g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("access_error");
-                    g.writeFieldName("access_error");
-                    SharedFolderAccessError._JSON_WRITER.write(x.getAccessErrorValue(), g);
+                    g.writeStringField(".tag", "access_error");
+                    g.writeObjectField("access_error", value.accessErrorValue);
                     g.writeEndObject();
                     break;
                 case EMAIL_UNVERIFIED:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("email_unverified");
-                    g.writeEndObject();
                     break;
                 case BAD_MEMBER:
                     g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("bad_member");
-                    g.writeFieldName("bad_member");
-                    AddMemberSelectorError._JSON_WRITER.write(x.getBadMemberValue(), g);
+                    g.writeStringField(".tag", "bad_member");
+                    g.writeObjectField("bad_member", value.badMemberValue);
                     g.writeEndObject();
                     break;
                 case CANT_SHARE_OUTSIDE_TEAM:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("cant_share_outside_team");
-                    g.writeEndObject();
                     break;
                 case TOO_MANY_MEMBERS:
                     g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("too_many_members");
-                    g.writeFieldName("too_many_members");
-                    g.writeNumber(x.getTooManyMembersValue());
+                    g.writeStringField(".tag", "too_many_members");
+                    g.writeObjectField("too_many_members", value.tooManyMembersValue);
                     g.writeEndObject();
                     break;
                 case TOO_MANY_PENDING_INVITES:
                     g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("too_many_pending_invites");
-                    g.writeFieldName("too_many_pending_invites");
-                    g.writeNumber(x.getTooManyPendingInvitesValue());
+                    g.writeStringField(".tag", "too_many_pending_invites");
+                    g.writeObjectField("too_many_pending_invites", value.tooManyPendingInvitesValue);
                     g.writeEndObject();
                     break;
                 case RATE_LIMIT:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("rate_limit");
-                    g.writeEndObject();
                     break;
                 case INSUFFICIENT_PLAN:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("insufficient_plan");
-                    g.writeEndObject();
                     break;
                 case TEAM_FOLDER:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("team_folder");
-                    g.writeEndObject();
                     break;
                 case NO_PERMISSION:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("no_permission");
-                    g.writeEndObject();
                     break;
                 case OTHER:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("other");
-                    g.writeEndObject();
                     break;
             }
         }
-    };
+    }
 
-    public static final JsonReader<AddFolderMemberError> _JSON_READER = new JsonReader<AddFolderMemberError>() {
+    static final class Deserializer extends UnionJsonDeserializer<AddFolderMemberError, Tag> {
+        private static final long serialVersionUID = 0L;
 
-        public final AddFolderMemberError read(JsonParser parser) throws IOException, JsonReadException {
-            if (parser.getCurrentToken() == JsonToken.VALUE_STRING) {
-                String text = parser.getText();
-                parser.nextToken();
-                Tag tag = VALUES_.get(text);
-                if (tag == null) {
-                    return AddFolderMemberError.OTHER;
-                }
-                switch (tag) {
-                    case EMAIL_UNVERIFIED: return AddFolderMemberError.EMAIL_UNVERIFIED;
-                    case CANT_SHARE_OUTSIDE_TEAM: return AddFolderMemberError.CANT_SHARE_OUTSIDE_TEAM;
-                    case RATE_LIMIT: return AddFolderMemberError.RATE_LIMIT;
-                    case INSUFFICIENT_PLAN: return AddFolderMemberError.INSUFFICIENT_PLAN;
-                    case TEAM_FOLDER: return AddFolderMemberError.TEAM_FOLDER;
-                    case NO_PERMISSION: return AddFolderMemberError.NO_PERMISSION;
-                    case OTHER: return AddFolderMemberError.OTHER;
-                }
-                throw new JsonReadException("Tag " + tag + " requires a value", parser.getTokenLocation());
-            }
-            JsonReader.expectObjectStart(parser);
-            String[] tags = readTags(parser);
-            assert tags != null && tags.length == 1;
-            String text = tags[0];
-            Tag tag = VALUES_.get(text);
-            AddFolderMemberError value = null;
-            if (tag != null) {
-                switch (tag) {
-                    case ACCESS_ERROR: {
-                        SharedFolderAccessError v = null;
-                        assert parser.getCurrentToken() == JsonToken.FIELD_NAME;
-                        text = parser.getText();
-                        assert tags[0].equals(text);
-                        parser.nextToken();
-                        v = SharedFolderAccessError._JSON_READER
-                            .readField(parser, "access_error", v);
-                        value = AddFolderMemberError.accessError(v);
-                        break;
-                    }
-                    case EMAIL_UNVERIFIED: {
-                        value = AddFolderMemberError.EMAIL_UNVERIFIED;
-                        break;
-                    }
-                    case BAD_MEMBER: {
-                        AddMemberSelectorError v = null;
-                        assert parser.getCurrentToken() == JsonToken.FIELD_NAME;
-                        text = parser.getText();
-                        assert tags[0].equals(text);
-                        parser.nextToken();
-                        v = AddMemberSelectorError._JSON_READER
-                            .readField(parser, "bad_member", v);
-                        value = AddFolderMemberError.badMember(v);
-                        break;
-                    }
-                    case CANT_SHARE_OUTSIDE_TEAM: {
-                        value = AddFolderMemberError.CANT_SHARE_OUTSIDE_TEAM;
-                        break;
-                    }
-                    case TOO_MANY_MEMBERS: {
-                        Long v = null;
-                        assert parser.getCurrentToken() == JsonToken.FIELD_NAME;
-                        text = parser.getText();
-                        assert tags[0].equals(text);
-                        parser.nextToken();
-                        v = JsonReader.UInt64Reader
-                            .readField(parser, "too_many_members", v);
-                        value = AddFolderMemberError.tooManyMembers(v);
-                        break;
-                    }
-                    case TOO_MANY_PENDING_INVITES: {
-                        Long v = null;
-                        assert parser.getCurrentToken() == JsonToken.FIELD_NAME;
-                        text = parser.getText();
-                        assert tags[0].equals(text);
-                        parser.nextToken();
-                        v = JsonReader.UInt64Reader
-                            .readField(parser, "too_many_pending_invites", v);
-                        value = AddFolderMemberError.tooManyPendingInvites(v);
-                        break;
-                    }
-                    case RATE_LIMIT: {
-                        value = AddFolderMemberError.RATE_LIMIT;
-                        break;
-                    }
-                    case INSUFFICIENT_PLAN: {
-                        value = AddFolderMemberError.INSUFFICIENT_PLAN;
-                        break;
-                    }
-                    case TEAM_FOLDER: {
-                        value = AddFolderMemberError.TEAM_FOLDER;
-                        break;
-                    }
-                    case NO_PERMISSION: {
-                        value = AddFolderMemberError.NO_PERMISSION;
-                        break;
-                    }
-                    case OTHER: {
-                        value = AddFolderMemberError.OTHER;
-                        break;
-                    }
-                }
-            }
-            JsonReader.expectObjectEnd(parser);
-            if (value == null) {
-                return AddFolderMemberError.OTHER;
-            }
-            return value;
+        public Deserializer() {
+            super(AddFolderMemberError.class, getTagMapping(), Tag.OTHER);
         }
 
-    };
+        @Override
+        public AddFolderMemberError deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+            switch (_tag) {
+                case ACCESS_ERROR: {
+                    SharedFolderAccessError value = null;
+                    expectField(_p, "access_error");
+                    value = _p.readValueAs(SharedFolderAccessError.class);
+                    _p.nextToken();
+                    return AddFolderMemberError.accessError(value);
+                }
+                case EMAIL_UNVERIFIED: {
+                    return AddFolderMemberError.EMAIL_UNVERIFIED;
+                }
+                case BAD_MEMBER: {
+                    AddMemberSelectorError value = null;
+                    expectField(_p, "bad_member");
+                    value = _p.readValueAs(AddMemberSelectorError.class);
+                    _p.nextToken();
+                    return AddFolderMemberError.badMember(value);
+                }
+                case CANT_SHARE_OUTSIDE_TEAM: {
+                    return AddFolderMemberError.CANT_SHARE_OUTSIDE_TEAM;
+                }
+                case TOO_MANY_MEMBERS: {
+                    Long value = null;
+                    expectField(_p, "too_many_members");
+                    value = _p.getLongValue();
+                    assertUnsigned(_p, value);
+                    _p.nextToken();
+                    return AddFolderMemberError.tooManyMembers(value);
+                }
+                case TOO_MANY_PENDING_INVITES: {
+                    Long value = null;
+                    expectField(_p, "too_many_pending_invites");
+                    value = _p.getLongValue();
+                    assertUnsigned(_p, value);
+                    _p.nextToken();
+                    return AddFolderMemberError.tooManyPendingInvites(value);
+                }
+                case RATE_LIMIT: {
+                    return AddFolderMemberError.RATE_LIMIT;
+                }
+                case INSUFFICIENT_PLAN: {
+                    return AddFolderMemberError.INSUFFICIENT_PLAN;
+                }
+                case TEAM_FOLDER: {
+                    return AddFolderMemberError.TEAM_FOLDER;
+                }
+                case NO_PERMISSION: {
+                    return AddFolderMemberError.NO_PERMISSION;
+                }
+                case OTHER: {
+                    return AddFolderMemberError.OTHER;
+                }
+            }
+            // should be impossible to get here
+            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
+        }
+
+        private static Map<String, AddFolderMemberError.Tag> getTagMapping() {
+            Map<String, AddFolderMemberError.Tag> values = new HashMap<String, AddFolderMemberError.Tag>();
+            values.put("access_error", AddFolderMemberError.Tag.ACCESS_ERROR);
+            values.put("email_unverified", AddFolderMemberError.Tag.EMAIL_UNVERIFIED);
+            values.put("bad_member", AddFolderMemberError.Tag.BAD_MEMBER);
+            values.put("cant_share_outside_team", AddFolderMemberError.Tag.CANT_SHARE_OUTSIDE_TEAM);
+            values.put("too_many_members", AddFolderMemberError.Tag.TOO_MANY_MEMBERS);
+            values.put("too_many_pending_invites", AddFolderMemberError.Tag.TOO_MANY_PENDING_INVITES);
+            values.put("rate_limit", AddFolderMemberError.Tag.RATE_LIMIT);
+            values.put("insufficient_plan", AddFolderMemberError.Tag.INSUFFICIENT_PLAN);
+            values.put("team_folder", AddFolderMemberError.Tag.TEAM_FOLDER);
+            values.put("no_permission", AddFolderMemberError.Tag.NO_PERMISSION);
+            values.put("other", AddFolderMemberError.Tag.OTHER);
+            return Collections.unmodifiableMap(values);
+        }
+    }
 }

@@ -5,14 +5,29 @@ package com.dropbox.core.v2.team;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.UnionJsonDeserializer;
+import com.dropbox.core.json.UnionJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
+@JsonSerialize(using=GroupsPollError.Serializer.class)
+@JsonDeserialize(using=GroupsPollError.Deserializer.class)
 public enum GroupsPollError {
     // union GroupsPollError
     /**
@@ -34,54 +49,52 @@ public enum GroupsPollError {
      */
     ACCESS_DENIED;
 
-    private static final java.util.HashMap<String, GroupsPollError> VALUES_;
-    static {
-        VALUES_ = new java.util.HashMap<String, GroupsPollError>();
-        VALUES_.put("access_denied", ACCESS_DENIED);
-    }
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
-    }
+    static final class Serializer extends UnionJsonSerializer<GroupsPollError> {
+        private static final long serialVersionUID = 0L;
 
-    public static GroupsPollError fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
+        public Serializer() {
+            super(GroupsPollError.class);
+        }
 
-    public static final JsonWriter<GroupsPollError> _JSON_WRITER = new JsonWriter<GroupsPollError>() {
-        public void write(GroupsPollError x, JsonGenerator g) throws IOException {
-            switch (x) {
+        @Override
+        public void serialize(GroupsPollError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            switch (value) {
                 case INVALID_ASYNC_JOB_ID:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("invalid_async_job_id");
-                    g.writeEndObject();
                     break;
                 case INTERNAL_ERROR:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("internal_error");
-                    g.writeEndObject();
                     break;
                 case OTHER:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("other");
-                    g.writeEndObject();
                     break;
                 case ACCESS_DENIED:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("access_denied");
-                    g.writeEndObject();
                     break;
             }
         }
-    };
+    }
 
-    public static final JsonReader<GroupsPollError> _JSON_READER = new JsonReader<GroupsPollError>() {
-        public final GroupsPollError read(JsonParser parser) throws IOException, JsonReadException {
-            return JsonReader.readEnum(parser, VALUES_, null);
+    static final class Deserializer extends UnionJsonDeserializer<GroupsPollError, GroupsPollError> {
+        private static final long serialVersionUID = 0L;
+
+        public Deserializer() {
+            super(GroupsPollError.class, getTagMapping(), null);
         }
-    };
+
+        @Override
+        public GroupsPollError deserialize(GroupsPollError _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+            return _tag;
+        }
+
+        private static Map<String, GroupsPollError> getTagMapping() {
+            Map<String, GroupsPollError> values = new HashMap<String, GroupsPollError>();
+            values.put("access_denied", GroupsPollError.ACCESS_DENIED);
+            return Collections.unmodifiableMap(values);
+        }
+    }
 }

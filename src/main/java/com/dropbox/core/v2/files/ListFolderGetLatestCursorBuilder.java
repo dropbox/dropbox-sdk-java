@@ -7,13 +7,13 @@ import com.dropbox.core.DbxException;
 
 /**
  * The request builder returned by {@link
- * DbxFiles#listFolderGetLatestCursorBuilder(String)}.
+ * DbxUserFilesRequests#listFolderGetLatestCursorBuilder(String)}.
  *
  * <p> Use this class to set optional request parameters and complete the
  * request. </p>
  */
 public class ListFolderGetLatestCursorBuilder {
-    private final DbxFiles files;
+    private final DbxUserFilesRequests files;
     private final ListFolderArg.Builder listFolderArgBuilder;
 
     /**
@@ -25,7 +25,7 @@ public class ListFolderGetLatestCursorBuilder {
      *
      * @return instsance of this builder
      */
-    ListFolderGetLatestCursorBuilder(DbxFiles files, ListFolderArg.Builder listFolderArgBuilder) {
+    ListFolderGetLatestCursorBuilder(DbxUserFilesRequests files, ListFolderArg.Builder listFolderArgBuilder) {
         if (files == null) {
             throw new NullPointerException("files");
         }

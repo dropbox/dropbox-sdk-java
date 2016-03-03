@@ -7,13 +7,13 @@ import com.dropbox.core.DbxException;
 
 /**
  * The request builder returned by {@link
- * DbxSharing#createSharedLinkBuilder(String)}.
+ * DbxUserSharingRequests#createSharedLinkBuilder(String)}.
  *
  * <p> Use this class to set optional request parameters and complete the
  * request. </p>
  */
 public class CreateSharedLinkBuilder {
-    private final DbxSharing sharing;
+    private final DbxUserSharingRequests sharing;
     private final CreateSharedLinkArg.Builder createSharedLinkArgBuilder;
 
     /**
@@ -25,7 +25,7 @@ public class CreateSharedLinkBuilder {
      *
      * @return instsance of this builder
      */
-    CreateSharedLinkBuilder(DbxSharing sharing, CreateSharedLinkArg.Builder createSharedLinkArgBuilder) {
+    CreateSharedLinkBuilder(DbxUserSharingRequests sharing, CreateSharedLinkArg.Builder createSharedLinkArgBuilder) {
         if (sharing == null) {
             throw new NullPointerException("sharing");
         }

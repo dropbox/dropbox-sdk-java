@@ -14,12 +14,12 @@ If you're using Maven, then edit your project's "pom.xml" and add this to the `<
 <dependency>
     <groupId>com.dropbox.core</groupId>
     <artifactId>dropbox-core-sdk</artifactId>
-    <version>2.0-beta-7</version>
+    <version>2.0.0</version>
 </dependency>
 ```
 
 If you aren't using Maven, here are the JARs you need:
-- [Dropbox Core SDK 2.0-beta-7](https://oss.sonatype.org/content/repositories/releases/com/dropbox/core/dropbox-core-sdk/2.0-beta-7/dropbox-core-sdk-2.0-beta-7.jar)
+- [Dropbox Core SDK 2.0.0](https://oss.sonatype.org/content/repositories/releases/com/dropbox/core/dropbox-core-sdk/2.0.0/dropbox-core-sdk-2.0.0.jar)
 - [Jackson Core 2.6.1](https://oss.sonatype.org/content/repositories/releases/com/fasterxml/jackson/core/jackson-core/2.6.1/jackson-core-2.6.1.jar) (JSON parser)
 
 ## Get a Dropbox API key
@@ -157,3 +157,19 @@ mvn package -Dosgi.bnd.noee=true
 (This is equivalent to passing the "-noee" option to the OSGi "bnd" tool.)
 
 Another workaround is to tell your OSGi container to provide that requirement: [StackOverflow answer](https://stackoverflow.com/a/24673359/163832).
+
+### Does this SDK require any special ProGuard rules for shrink optimizations?
+
+Yes. This SDK uses Jackson JSON libraries for serialization. Specifically:
+
+  * [Jackson Core](https://github.com/FasterXML/jackson-core)
+  * [Jackson Annotations](https://github.com/FasterXML/jackson-annotations)
+  * [Jackson Databind](https://github.com/FasterXML/jackson-databind)
+
+Jackson Databind makes use of reflection and annotations to map Java objects to JSON. Your ProGuard configuration should ensure Jackson annotations and Object mapping classes are kept. An example configuration is shown below:
+
+```
+-keepattributes *Annotation*,EnclosingMethod,InnerClasses,Signature
+-keepnames class com.fasterxml.jackson.** { *; }
+-dontwarn com.fasterxml.jackson.databind.**
+```

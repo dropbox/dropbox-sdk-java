@@ -66,7 +66,7 @@ class DownloadFileTask extends AsyncTask<FileMetadata, Void, File> {
 
             // Download the file.
             try (OutputStream outputStream = new FileOutputStream(file)) {
-                mDbxClient.files.download(metadata.getPathLower(), metadata.getRev())
+                mDbxClient.files().download(metadata.getPathLower(), metadata.getRev())
                     .download(outputStream);
             }
 

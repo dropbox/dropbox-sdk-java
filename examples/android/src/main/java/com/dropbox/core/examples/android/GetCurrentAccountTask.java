@@ -39,7 +39,7 @@ class GetCurrentAccountTask extends AsyncTask<Void, Void, FullAccount> {
     protected FullAccount doInBackground(Void... params) {
 
         try {
-            return mDbxClient.users.getCurrentAccount();
+            return mDbxClient.users().getCurrentAccount();
 
         } catch (DbxException e) {
             mException = e;

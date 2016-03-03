@@ -5,14 +5,29 @@ package com.dropbox.core.v2.team;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.UnionJsonDeserializer;
+import com.dropbox.core.json.UnionJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
+@JsonSerialize(using=MembersRemoveError.Serializer.class)
+@JsonDeserialize(using=MembersRemoveError.Deserializer.class)
 public enum MembersRemoveError {
     // union MembersRemoveError
     /**
@@ -66,110 +81,84 @@ public enum MembersRemoveError {
      */
     TRANSFER_ADMIN_IS_NOT_ADMIN;
 
-    private static final java.util.HashMap<String, MembersRemoveError> VALUES_;
-    static {
-        VALUES_ = new java.util.HashMap<String, MembersRemoveError>();
-        VALUES_.put("remove_last_admin", REMOVE_LAST_ADMIN);
-        VALUES_.put("removed_and_transfer_dest_should_differ", REMOVED_AND_TRANSFER_DEST_SHOULD_DIFFER);
-        VALUES_.put("removed_and_transfer_admin_should_differ", REMOVED_AND_TRANSFER_ADMIN_SHOULD_DIFFER);
-        VALUES_.put("transfer_dest_user_not_found", TRANSFER_DEST_USER_NOT_FOUND);
-        VALUES_.put("transfer_dest_user_not_in_team", TRANSFER_DEST_USER_NOT_IN_TEAM);
-        VALUES_.put("transfer_admin_user_not_found", TRANSFER_ADMIN_USER_NOT_FOUND);
-        VALUES_.put("transfer_admin_user_not_in_team", TRANSFER_ADMIN_USER_NOT_IN_TEAM);
-        VALUES_.put("unspecified_transfer_admin_id", UNSPECIFIED_TRANSFER_ADMIN_ID);
-        VALUES_.put("transfer_admin_is_not_admin", TRANSFER_ADMIN_IS_NOT_ADMIN);
-    }
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
-    }
+    static final class Serializer extends UnionJsonSerializer<MembersRemoveError> {
+        private static final long serialVersionUID = 0L;
 
-    public static MembersRemoveError fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
+        public Serializer() {
+            super(MembersRemoveError.class);
+        }
 
-    public static final JsonWriter<MembersRemoveError> _JSON_WRITER = new JsonWriter<MembersRemoveError>() {
-        public void write(MembersRemoveError x, JsonGenerator g) throws IOException {
-            switch (x) {
+        @Override
+        public void serialize(MembersRemoveError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            switch (value) {
                 case USER_NOT_FOUND:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("user_not_found");
-                    g.writeEndObject();
                     break;
                 case USER_NOT_IN_TEAM:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("user_not_in_team");
-                    g.writeEndObject();
                     break;
                 case OTHER:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("other");
-                    g.writeEndObject();
                     break;
                 case REMOVE_LAST_ADMIN:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("remove_last_admin");
-                    g.writeEndObject();
                     break;
                 case REMOVED_AND_TRANSFER_DEST_SHOULD_DIFFER:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("removed_and_transfer_dest_should_differ");
-                    g.writeEndObject();
                     break;
                 case REMOVED_AND_TRANSFER_ADMIN_SHOULD_DIFFER:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("removed_and_transfer_admin_should_differ");
-                    g.writeEndObject();
                     break;
                 case TRANSFER_DEST_USER_NOT_FOUND:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("transfer_dest_user_not_found");
-                    g.writeEndObject();
                     break;
                 case TRANSFER_DEST_USER_NOT_IN_TEAM:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("transfer_dest_user_not_in_team");
-                    g.writeEndObject();
                     break;
                 case TRANSFER_ADMIN_USER_NOT_FOUND:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("transfer_admin_user_not_found");
-                    g.writeEndObject();
                     break;
                 case TRANSFER_ADMIN_USER_NOT_IN_TEAM:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("transfer_admin_user_not_in_team");
-                    g.writeEndObject();
                     break;
                 case UNSPECIFIED_TRANSFER_ADMIN_ID:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("unspecified_transfer_admin_id");
-                    g.writeEndObject();
                     break;
                 case TRANSFER_ADMIN_IS_NOT_ADMIN:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("transfer_admin_is_not_admin");
-                    g.writeEndObject();
                     break;
             }
         }
-    };
+    }
 
-    public static final JsonReader<MembersRemoveError> _JSON_READER = new JsonReader<MembersRemoveError>() {
-        public final MembersRemoveError read(JsonParser parser) throws IOException, JsonReadException {
-            return JsonReader.readEnum(parser, VALUES_, null);
+    static final class Deserializer extends UnionJsonDeserializer<MembersRemoveError, MembersRemoveError> {
+        private static final long serialVersionUID = 0L;
+
+        public Deserializer() {
+            super(MembersRemoveError.class, getTagMapping(), null);
         }
-    };
+
+        @Override
+        public MembersRemoveError deserialize(MembersRemoveError _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+            return _tag;
+        }
+
+        private static Map<String, MembersRemoveError> getTagMapping() {
+            Map<String, MembersRemoveError> values = new HashMap<String, MembersRemoveError>();
+            values.put("remove_last_admin", MembersRemoveError.REMOVE_LAST_ADMIN);
+            values.put("removed_and_transfer_dest_should_differ", MembersRemoveError.REMOVED_AND_TRANSFER_DEST_SHOULD_DIFFER);
+            values.put("removed_and_transfer_admin_should_differ", MembersRemoveError.REMOVED_AND_TRANSFER_ADMIN_SHOULD_DIFFER);
+            values.put("transfer_dest_user_not_found", MembersRemoveError.TRANSFER_DEST_USER_NOT_FOUND);
+            values.put("transfer_dest_user_not_in_team", MembersRemoveError.TRANSFER_DEST_USER_NOT_IN_TEAM);
+            values.put("transfer_admin_user_not_found", MembersRemoveError.TRANSFER_ADMIN_USER_NOT_FOUND);
+            values.put("transfer_admin_user_not_in_team", MembersRemoveError.TRANSFER_ADMIN_USER_NOT_IN_TEAM);
+            values.put("unspecified_transfer_admin_id", MembersRemoveError.UNSPECIFIED_TRANSFER_ADMIN_ID);
+            values.put("transfer_admin_is_not_admin", MembersRemoveError.TRANSFER_ADMIN_IS_NOT_ADMIN);
+            return Collections.unmodifiableMap(values);
+        }
+    }
 }

@@ -11,9 +11,10 @@ import com.dropbox.core.LocalizedText;
  * error.
  */
 public class ListRevisionsErrorException extends DbxApiException {
+    private static final long serialVersionUID = 0L;
 
     /**
-     * The error reported by {@link DbxFiles#listRevisions(String)}.
+     * The error reported by {@link DbxUserFilesRequests#listRevisions(String)}.
      */
     public final ListRevisionsError errorValue;
 

@@ -5,14 +5,29 @@ package com.dropbox.core.v2.team;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.UnionJsonDeserializer;
+import com.dropbox.core.json.UnionJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
+@JsonSerialize(using=MembersSetProfileError.Serializer.class)
+@JsonDeserialize(using=MembersSetProfileError.Deserializer.class)
 public enum MembersSetProfileError {
     // union MembersSetProfileError
     /**
@@ -54,90 +69,73 @@ public enum MembersSetProfileError {
      */
     OTHER; // *catch_all
 
-    private static final java.util.HashMap<String, MembersSetProfileError> VALUES_;
-    static {
-        VALUES_ = new java.util.HashMap<String, MembersSetProfileError>();
-        VALUES_.put("external_id_and_new_external_id_unsafe", EXTERNAL_ID_AND_NEW_EXTERNAL_ID_UNSAFE);
-        VALUES_.put("no_new_data_specified", NO_NEW_DATA_SPECIFIED);
-        VALUES_.put("email_reserved_for_other_user", EMAIL_RESERVED_FOR_OTHER_USER);
-        VALUES_.put("external_id_used_by_other_user", EXTERNAL_ID_USED_BY_OTHER_USER);
-        VALUES_.put("set_profile_disallowed", SET_PROFILE_DISALLOWED);
-        VALUES_.put("param_cannot_be_empty", PARAM_CANNOT_BE_EMPTY);
-        VALUES_.put("other", OTHER);
-    }
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
-    }
+    static final class Serializer extends UnionJsonSerializer<MembersSetProfileError> {
+        private static final long serialVersionUID = 0L;
 
-    public static MembersSetProfileError fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
+        public Serializer() {
+            super(MembersSetProfileError.class);
+        }
 
-    public static final JsonWriter<MembersSetProfileError> _JSON_WRITER = new JsonWriter<MembersSetProfileError>() {
-        public void write(MembersSetProfileError x, JsonGenerator g) throws IOException {
-            switch (x) {
+        @Override
+        public void serialize(MembersSetProfileError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            switch (value) {
                 case USER_NOT_FOUND:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("user_not_found");
-                    g.writeEndObject();
                     break;
                 case USER_NOT_IN_TEAM:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("user_not_in_team");
-                    g.writeEndObject();
                     break;
                 case EXTERNAL_ID_AND_NEW_EXTERNAL_ID_UNSAFE:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("external_id_and_new_external_id_unsafe");
-                    g.writeEndObject();
                     break;
                 case NO_NEW_DATA_SPECIFIED:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("no_new_data_specified");
-                    g.writeEndObject();
                     break;
                 case EMAIL_RESERVED_FOR_OTHER_USER:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("email_reserved_for_other_user");
-                    g.writeEndObject();
                     break;
                 case EXTERNAL_ID_USED_BY_OTHER_USER:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("external_id_used_by_other_user");
-                    g.writeEndObject();
                     break;
                 case SET_PROFILE_DISALLOWED:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("set_profile_disallowed");
-                    g.writeEndObject();
                     break;
                 case PARAM_CANNOT_BE_EMPTY:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("param_cannot_be_empty");
-                    g.writeEndObject();
                     break;
                 case OTHER:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("other");
-                    g.writeEndObject();
                     break;
             }
         }
-    };
+    }
 
-    public static final JsonReader<MembersSetProfileError> _JSON_READER = new JsonReader<MembersSetProfileError>() {
-        public final MembersSetProfileError read(JsonParser parser) throws IOException, JsonReadException {
-            return JsonReader.readEnum(parser, VALUES_, OTHER);
+    static final class Deserializer extends UnionJsonDeserializer<MembersSetProfileError, MembersSetProfileError> {
+        private static final long serialVersionUID = 0L;
+
+        public Deserializer() {
+            super(MembersSetProfileError.class, getTagMapping(), MembersSetProfileError.OTHER);
         }
-    };
+
+        @Override
+        public MembersSetProfileError deserialize(MembersSetProfileError _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+            return _tag;
+        }
+
+        private static Map<String, MembersSetProfileError> getTagMapping() {
+            Map<String, MembersSetProfileError> values = new HashMap<String, MembersSetProfileError>();
+            values.put("external_id_and_new_external_id_unsafe", MembersSetProfileError.EXTERNAL_ID_AND_NEW_EXTERNAL_ID_UNSAFE);
+            values.put("no_new_data_specified", MembersSetProfileError.NO_NEW_DATA_SPECIFIED);
+            values.put("email_reserved_for_other_user", MembersSetProfileError.EMAIL_RESERVED_FOR_OTHER_USER);
+            values.put("external_id_used_by_other_user", MembersSetProfileError.EXTERNAL_ID_USED_BY_OTHER_USER);
+            values.put("set_profile_disallowed", MembersSetProfileError.SET_PROFILE_DISALLOWED);
+            values.put("param_cannot_be_empty", MembersSetProfileError.PARAM_CANNOT_BE_EMPTY);
+            values.put("other", MembersSetProfileError.OTHER);
+            return Collections.unmodifiableMap(values);
+        }
+    }
 }

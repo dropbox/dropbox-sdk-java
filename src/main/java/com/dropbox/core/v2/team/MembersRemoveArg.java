@@ -5,19 +5,37 @@ package com.dropbox.core.v2.team;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
-public class MembersRemoveArg extends MembersDeactivateArg {
+@JsonSerialize(using=MembersRemoveArg.Serializer.class)
+@JsonDeserialize(using=MembersRemoveArg.Deserializer.class)
+class MembersRemoveArg extends MembersDeactivateArg {
     // struct MembersRemoveArg
 
-    private final UserSelectorArg transferDestId;
-    private final UserSelectorArg transferAdminId;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final UserSelectorArg transferDestId;
+    protected final UserSelectorArg transferAdminId;
 
     /**
      * Use {@link newBuilder} to create instances of this class without
@@ -190,10 +208,10 @@ public class MembersRemoveArg extends MembersDeactivateArg {
         // be careful with inheritance
         else if (obj.getClass().equals(this.getClass())) {
             MembersRemoveArg other = (MembersRemoveArg) obj;
-            return ((this.transferDestId == other.transferDestId) || (this.transferDestId != null && this.transferDestId.equals(other.transferDestId)))
+            return ((this.user == other.user) || (this.user.equals(other.user)))
+                && (this.wipeData == other.wipeData)
+                && ((this.transferDestId == other.transferDestId) || (this.transferDestId != null && this.transferDestId.equals(other.transferDestId)))
                 && ((this.transferAdminId == other.transferAdminId) || (this.transferAdminId != null && this.transferAdminId.equals(other.transferAdminId)))
-                && ((this.getUser() == other.getUser()) || (this.getUser().equals(other.getUser())))
-                && (this.getWipeData() == other.getWipeData())
                 ;
         }
         else {
@@ -203,81 +221,112 @@ public class MembersRemoveArg extends MembersDeactivateArg {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
-    }
-
-    public static MembersRemoveArg fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
-
-    public static final JsonWriter<MembersRemoveArg> _JSON_WRITER = new JsonWriter<MembersRemoveArg>() {
-        public final void write(MembersRemoveArg x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            MembersDeactivateArg._JSON_WRITER.writeFields(x, g);
-            MembersRemoveArg._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
         }
-        public final void writeFields(MembersRemoveArg x, JsonGenerator g) throws IOException {
-            if (x.transferDestId != null) {
-                g.writeFieldName("transfer_dest_id");
-                UserSelectorArg._JSON_WRITER.write(x.transferDestId, g);
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
+    }
+
+    static final class Serializer extends StructJsonSerializer<MembersRemoveArg> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(MembersRemoveArg.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(MembersRemoveArg.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<MembersRemoveArg> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(MembersRemoveArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("user", value.user);
+            g.writeObjectField("wipe_data", value.wipeData);
+            if (value.transferDestId != null) {
+                g.writeObjectField("transfer_dest_id", value.transferDestId);
             }
-            if (x.transferAdminId != null) {
-                g.writeFieldName("transfer_admin_id");
-                UserSelectorArg._JSON_WRITER.write(x.transferAdminId, g);
+            if (value.transferAdminId != null) {
+                g.writeObjectField("transfer_admin_id", value.transferAdminId);
             }
         }
-    };
+    }
 
-    public static final JsonReader<MembersRemoveArg> _JSON_READER = new JsonReader<MembersRemoveArg>() {
-        public final MembersRemoveArg read(JsonParser parser) throws IOException, JsonReadException {
-            MembersRemoveArg result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+    static final class Deserializer extends StructJsonDeserializer<MembersRemoveArg> {
+        private static final long serialVersionUID = 0L;
+
+        public Deserializer() {
+            super(MembersRemoveArg.class);
         }
 
-        public final MembersRemoveArg readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(MembersRemoveArg.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<MembersRemoveArg> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public MembersRemoveArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             UserSelectorArg user = null;
             Boolean wipeData = null;
             UserSelectorArg transferDestId = null;
             UserSelectorArg transferAdminId = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("user".equals(fieldName)) {
-                    user = UserSelectorArg._JSON_READER
-                        .readField(parser, "user", user);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("user".equals(_field)) {
+                    user = _p.readValueAs(UserSelectorArg.class);
+                    _p.nextToken();
                 }
-                else if ("wipe_data".equals(fieldName)) {
-                    wipeData = JsonReader.BooleanReader
-                        .readField(parser, "wipe_data", wipeData);
+                else if ("wipe_data".equals(_field)) {
+                    wipeData = _p.getValueAsBoolean();
+                    _p.nextToken();
                 }
-                else if ("transfer_dest_id".equals(fieldName)) {
-                    transferDestId = UserSelectorArg._JSON_READER
-                        .readField(parser, "transfer_dest_id", transferDestId);
+                else if ("transfer_dest_id".equals(_field)) {
+                    transferDestId = _p.readValueAs(UserSelectorArg.class);
+                    _p.nextToken();
                 }
-                else if ("transfer_admin_id".equals(fieldName)) {
-                    transferAdminId = UserSelectorArg._JSON_READER
-                        .readField(parser, "transfer_admin_id", transferAdminId);
+                else if ("transfer_admin_id".equals(_field)) {
+                    transferAdminId = _p.readValueAs(UserSelectorArg.class);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (user == null) {
-                throw new JsonReadException("Required field \"user\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"user\" is missing.");
             }
+
             return new MembersRemoveArg(user, wipeData, transferDestId, transferAdminId);
         }
-    };
+    }
 }

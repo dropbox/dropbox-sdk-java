@@ -11,10 +11,11 @@ import com.dropbox.core.LocalizedText;
  * UpdateFolderMemberError} error.
  */
 public class UpdateFolderMemberErrorException extends DbxApiException {
+    private static final long serialVersionUID = 0L;
 
     /**
      * The error reported by {@link
-     * DbxSharing#updateFolderMember(String,MemberSelector,AccessLevel)}.
+     * DbxUserSharingRequests#updateFolderMember(String,MemberSelector,AccessLevel)}.
      */
     public final UpdateFolderMemberError errorValue;
 

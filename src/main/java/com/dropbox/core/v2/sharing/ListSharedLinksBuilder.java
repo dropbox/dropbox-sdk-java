@@ -6,13 +6,14 @@ package com.dropbox.core.v2.sharing;
 import com.dropbox.core.DbxException;
 
 /**
- * The request builder returned by {@link DbxSharing#listSharedLinksBuilder()}.
+ * The request builder returned by {@link
+ * DbxUserSharingRequests#listSharedLinksBuilder()}.
  *
  * <p> Use this class to set optional request parameters and complete the
  * request. </p>
  */
 public class ListSharedLinksBuilder {
-    private final DbxSharing sharing;
+    private final DbxUserSharingRequests sharing;
     private final ListSharedLinksArg.Builder listSharedLinksArgBuilder;
 
     /**
@@ -24,7 +25,7 @@ public class ListSharedLinksBuilder {
      *
      * @return instsance of this builder
      */
-    ListSharedLinksBuilder(DbxSharing sharing, ListSharedLinksArg.Builder listSharedLinksArgBuilder) {
+    ListSharedLinksBuilder(DbxUserSharingRequests sharing, ListSharedLinksArg.Builder listSharedLinksArgBuilder) {
         if (sharing == null) {
             throw new NullPointerException("sharing");
         }
@@ -38,8 +39,9 @@ public class ListSharedLinksBuilder {
     /**
      * Set value for optional field.
      *
-     * @param path  See {@link DbxSharing#listSharedLinks()} description. Must
-     *     match pattern "{@code ((/|id:).*)|(rev:[0-9a-f]{9,})}".
+     * @param path  See {@link DbxUserSharingRequests#listSharedLinks()}
+     *     description. Must match pattern "{@code
+     *     ((/|id:).*)|(rev:[0-9a-f]{9,})}".
      *
      * @return this builder
      *
@@ -55,7 +57,7 @@ public class ListSharedLinksBuilder {
      * Set value for optional field.
      *
      * @param cursor  The cursor returned by your last call to {@link
-     *     DbxSharing#listSharedLinks()}.
+     *     DbxUserSharingRequests#listSharedLinks()}.
      *
      * @return this builder
      */
@@ -67,7 +69,8 @@ public class ListSharedLinksBuilder {
     /**
      * Set value for optional field.
      *
-     * @param directOnly  See {@link DbxSharing#listSharedLinks()} description.
+     * @param directOnly  See {@link DbxUserSharingRequests#listSharedLinks()}
+     *     description.
      *
      * @return this builder
      */

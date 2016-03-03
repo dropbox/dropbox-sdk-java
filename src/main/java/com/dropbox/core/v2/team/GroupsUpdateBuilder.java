@@ -7,13 +7,13 @@ import com.dropbox.core.DbxException;
 
 /**
  * The request builder returned by {@link
- * DbxTeam#groupsUpdateBuilder(GroupSelector)}.
+ * DbxTeamTeamRequests#groupsUpdateBuilder(GroupSelector)}.
  *
  * <p> Use this class to set optional request parameters and complete the
  * request. </p>
  */
 public class GroupsUpdateBuilder {
-    private final DbxTeam team;
+    private final DbxTeamTeamRequests team;
     private final GroupUpdateArgs.Builder groupUpdateArgsBuilder;
 
     /**
@@ -25,7 +25,7 @@ public class GroupsUpdateBuilder {
      *
      * @return instsance of this builder
      */
-    GroupsUpdateBuilder(DbxTeam team, GroupUpdateArgs.Builder groupUpdateArgsBuilder) {
+    GroupsUpdateBuilder(DbxTeamTeamRequests team, GroupUpdateArgs.Builder groupUpdateArgsBuilder) {
         if (team == null) {
             throw new NullPointerException("team");
         }

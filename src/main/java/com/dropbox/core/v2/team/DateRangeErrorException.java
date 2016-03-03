@@ -11,14 +11,15 @@ import com.dropbox.core.LocalizedText;
  * error.
  */
 public class DateRangeErrorException extends DbxApiException {
+    private static final long serialVersionUID = 0L;
 
     /**
-     * The error reported by {@link DbxTeam#reportsGetDevices()}.
+     * The error reported by {@link DbxTeamTeamRequests#reportsGetStorage()}.
      */
     public final DateRangeError errorValue;
 
     public DateRangeErrorException(String requestId, LocalizedText userMessage, DateRangeError errorValue) {
-        super(requestId, userMessage, buildMessage("reports/get_devices", userMessage, errorValue));
+        super(requestId, userMessage, buildMessage("reports/get_storage", userMessage, errorValue));
         if (errorValue == null) {
             throw new NullPointerException("errorValue");
         }

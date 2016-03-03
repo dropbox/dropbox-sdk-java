@@ -11,10 +11,11 @@ import com.dropbox.core.LocalizedText;
  * error.
  */
 public class RevokeLinkedAppErrorException extends DbxApiException {
+    private static final long serialVersionUID = 0L;
 
     /**
      * The error reported by {@link
-     * DbxTeam#linkedAppsRevokeLinkedApp(String,String)}.
+     * DbxTeamTeamRequests#linkedAppsRevokeLinkedApp(String,String)}.
      */
     public final RevokeLinkedAppError errorValue;
 

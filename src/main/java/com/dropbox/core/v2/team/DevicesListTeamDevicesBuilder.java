@@ -7,13 +7,13 @@ import com.dropbox.core.DbxException;
 
 /**
  * The request builder returned by {@link
- * DbxTeam#devicesListTeamDevicesBuilder()}.
+ * DbxTeamTeamRequests#devicesListTeamDevicesBuilder()}.
  *
  * <p> Use this class to set optional request parameters and complete the
  * request. </p>
  */
 public class DevicesListTeamDevicesBuilder {
-    private final DbxTeam team;
+    private final DbxTeamTeamRequests team;
     private final ListTeamDevicesArg.Builder listTeamDevicesArgBuilder;
 
     /**
@@ -25,7 +25,7 @@ public class DevicesListTeamDevicesBuilder {
      *
      * @return instsance of this builder
      */
-    DevicesListTeamDevicesBuilder(DbxTeam team, ListTeamDevicesArg.Builder listTeamDevicesArgBuilder) {
+    DevicesListTeamDevicesBuilder(DbxTeamTeamRequests team, ListTeamDevicesArg.Builder listTeamDevicesArgBuilder) {
         if (team == null) {
             throw new NullPointerException("team");
         }
@@ -40,10 +40,10 @@ public class DevicesListTeamDevicesBuilder {
      * Set value for optional field.
      *
      * @param cursor  At the first call to the {@link
-     *     DbxTeam#devicesListTeamDevices()} the cursor shouldn't be passed.
-     *     Then, if the result of the call includes a cursor, the following
-     *     requests should include the received cursors in order to receive the
-     *     next sub list of team devices.
+     *     DbxTeamTeamRequests#devicesListTeamDevices()} the cursor shouldn't be
+     *     passed. Then, if the result of the call includes a cursor, the
+     *     following requests should include the received cursors in order to
+     *     receive the next sub list of team devices.
      *
      * @return this builder
      */

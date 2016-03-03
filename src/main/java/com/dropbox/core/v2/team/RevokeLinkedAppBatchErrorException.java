@@ -11,10 +11,11 @@ import com.dropbox.core.LocalizedText;
  * RevokeLinkedAppBatchError} error.
  */
 public class RevokeLinkedAppBatchErrorException extends DbxApiException {
+    private static final long serialVersionUID = 0L;
 
     /**
      * The error reported by {@link
-     * DbxTeam#linkedAppsRevokeLinkedAppBatch(java.util.List)}.
+     * DbxTeamTeamRequests#linkedAppsRevokeLinkedAppBatch(java.util.List)}.
      */
     public final RevokeLinkedAppBatchError errorValue;
 

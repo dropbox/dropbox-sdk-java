@@ -11,10 +11,11 @@ import com.dropbox.core.LocalizedText;
  * MembersSendWelcomeError} error.
  */
 public class MembersSendWelcomeErrorException extends DbxApiException {
+    private static final long serialVersionUID = 0L;
 
     /**
      * The error reported by {@link
-     * DbxTeam#membersSendWelcomeEmail(UserSelectorArg)}.
+     * DbxTeamTeamRequests#membersSendWelcomeEmail(UserSelectorArg)}.
      */
     public final MembersSendWelcomeError errorValue;
 

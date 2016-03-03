@@ -3,39 +3,58 @@
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonArrayReader;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.List;
 
 /**
- * Information returned by {@link DbxTeam#linkedAppsListTeamLinkedApps()}.
+ * Information returned by {@link
+ * DbxTeamTeamRequests#linkedAppsListTeamLinkedApps()}.
  */
+@JsonSerialize(using=ListTeamAppsResult.Serializer.class)
+@JsonDeserialize(using=ListTeamAppsResult.Deserializer.class)
 public class ListTeamAppsResult {
     // struct ListTeamAppsResult
 
-    private final List<MemberLinkedApps> apps;
-    private final boolean hasMore;
-    private final String cursor;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final List<MemberLinkedApps> apps;
+    protected final boolean hasMore;
+    protected final String cursor;
 
     /**
-     * Information returned by {@link DbxTeam#linkedAppsListTeamLinkedApps()}.
+     * Information returned by {@link
+     * DbxTeamTeamRequests#linkedAppsListTeamLinkedApps()}.
      *
      * @param apps  The linked applications of each member of the team. Must not
      *     contain a {@code null} item and not be {@code null}.
      * @param hasMore  If true, then there are more apps available. Pass the
-     *     cursor to {@link DbxTeam#linkedAppsListTeamLinkedApps()} to retrieve
-     *     the rest.
+     *     cursor to {@link DbxTeamTeamRequests#linkedAppsListTeamLinkedApps()}
+     *     to retrieve the rest.
      * @param cursor  Pass the cursor into {@link
-     *     DbxTeam#linkedAppsListTeamLinkedApps()} to receive the next sub list
-     *     of team's applications.
+     *     DbxTeamTeamRequests#linkedAppsListTeamLinkedApps()} to receive the
+     *     next sub list of team's applications.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -55,15 +74,16 @@ public class ListTeamAppsResult {
     }
 
     /**
-     * Information returned by {@link DbxTeam#linkedAppsListTeamLinkedApps()}.
+     * Information returned by {@link
+     * DbxTeamTeamRequests#linkedAppsListTeamLinkedApps()}.
      *
      * <p> The default values for unset fields will be used. </p>
      *
      * @param apps  The linked applications of each member of the team. Must not
      *     contain a {@code null} item and not be {@code null}.
      * @param hasMore  If true, then there are more apps available. Pass the
-     *     cursor to {@link DbxTeam#linkedAppsListTeamLinkedApps()} to retrieve
-     *     the rest.
+     *     cursor to {@link DbxTeamTeamRequests#linkedAppsListTeamLinkedApps()}
+     *     to retrieve the rest.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -83,7 +103,7 @@ public class ListTeamAppsResult {
 
     /**
      * If true, then there are more apps available. Pass the cursor to {@link
-     * DbxTeam#linkedAppsListTeamLinkedApps()} to retrieve the rest.
+     * DbxTeamTeamRequests#linkedAppsListTeamLinkedApps()} to retrieve the rest.
      *
      * @return value for this field.
      */
@@ -92,8 +112,9 @@ public class ListTeamAppsResult {
     }
 
     /**
-     * Pass the cursor into {@link DbxTeam#linkedAppsListTeamLinkedApps()} to
-     * receive the next sub list of team's applications.
+     * Pass the cursor into {@link
+     * DbxTeamTeamRequests#linkedAppsListTeamLinkedApps()} to receive the next
+     * sub list of team's applications.
      *
      * @return value for this field, or {@code null} if not present.
      */
@@ -103,10 +124,12 @@ public class ListTeamAppsResult {
 
     @Override
     public int hashCode() {
-        // objects containing lists are not hash-able. This is used as a safeguard
-        // against adding this object to a HashSet or HashMap. Since list fields are
-        // mutable, it is not safe to compute a hashCode here.
-        return System.identityHashCode(this);
+        int hash = java.util.Arrays.hashCode(new Object [] {
+            apps,
+            hasMore,
+            cursor
+        });
+        return hash;
     }
 
     @Override
@@ -129,84 +152,115 @@ public class ListTeamAppsResult {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
-    }
-
-    public static ListTeamAppsResult fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
-
-    public static final JsonWriter<ListTeamAppsResult> _JSON_WRITER = new JsonWriter<ListTeamAppsResult>() {
-        public final void write(ListTeamAppsResult x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            ListTeamAppsResult._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
         }
-        public final void writeFields(ListTeamAppsResult x, JsonGenerator g) throws IOException {
-            g.writeFieldName("apps");
-            g.writeStartArray();
-            for (MemberLinkedApps item: x.apps) {
-                if (item != null) {
-                    MemberLinkedApps._JSON_WRITER.write(item, g);
-                }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
+    }
+
+    static final class Serializer extends StructJsonSerializer<ListTeamAppsResult> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(ListTeamAppsResult.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(ListTeamAppsResult.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<ListTeamAppsResult> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(ListTeamAppsResult value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("apps", value.apps);
+            g.writeObjectField("has_more", value.hasMore);
+            if (value.cursor != null) {
+                g.writeObjectField("cursor", value.cursor);
             }
-            g.writeEndArray();
-            g.writeFieldName("has_more");
-            g.writeBoolean(x.hasMore);
-            if (x.cursor != null) {
-                g.writeFieldName("cursor");
-                g.writeString(x.cursor);
-            }
         }
-    };
+    }
 
-    public static final JsonReader<ListTeamAppsResult> _JSON_READER = new JsonReader<ListTeamAppsResult>() {
-        public final ListTeamAppsResult read(JsonParser parser) throws IOException, JsonReadException {
-            ListTeamAppsResult result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+    static final class Deserializer extends StructJsonDeserializer<ListTeamAppsResult> {
+        private static final long serialVersionUID = 0L;
+
+        public Deserializer() {
+            super(ListTeamAppsResult.class);
         }
 
-        public final ListTeamAppsResult readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(ListTeamAppsResult.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<ListTeamAppsResult> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public ListTeamAppsResult deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             List<MemberLinkedApps> apps = null;
             Boolean hasMore = null;
             String cursor = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("apps".equals(fieldName)) {
-                    apps = JsonArrayReader.mk(MemberLinkedApps._JSON_READER)
-                        .readField(parser, "apps", apps);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("apps".equals(_field)) {
+                    expectArrayStart(_p);
+                    apps = new java.util.ArrayList<MemberLinkedApps>();
+                    while (!isArrayEnd(_p)) {
+                        MemberLinkedApps _x = null;
+                        _x = _p.readValueAs(MemberLinkedApps.class);
+                        _p.nextToken();
+                        apps.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
                 }
-                else if ("has_more".equals(fieldName)) {
-                    hasMore = JsonReader.BooleanReader
-                        .readField(parser, "has_more", hasMore);
+                else if ("has_more".equals(_field)) {
+                    hasMore = _p.getValueAsBoolean();
+                    _p.nextToken();
                 }
-                else if ("cursor".equals(fieldName)) {
-                    cursor = JsonReader.StringReader
-                        .readField(parser, "cursor", cursor);
+                else if ("cursor".equals(_field)) {
+                    cursor = getStringValue(_p);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (apps == null) {
-                throw new JsonReadException("Required field \"apps\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"apps\" is missing.");
             }
             if (hasMore == null) {
-                throw new JsonReadException("Required field \"has_more\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"has_more\" is missing.");
             }
+
             return new ListTeamAppsResult(apps, hasMore, cursor);
         }
-    };
+    }
 }

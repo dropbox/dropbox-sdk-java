@@ -5,23 +5,41 @@ package com.dropbox.core.v2.team;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
+@JsonSerialize(using=MemberAddArg.Serializer.class)
+@JsonDeserialize(using=MemberAddArg.Deserializer.class)
 public class MemberAddArg {
     // struct MemberAddArg
 
-    private final String memberEmail;
-    private final String memberGivenName;
-    private final String memberSurname;
-    private final String memberExternalId;
-    private final boolean sendWelcomeEmail;
-    private final AdminTier role;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final String memberEmail;
+    protected final String memberGivenName;
+    protected final String memberSurname;
+    protected final String memberExternalId;
+    protected final boolean sendWelcomeEmail;
+    protected final AdminTier role;
 
     /**
      * Use {@link newBuilder} to create instances of this class without
@@ -366,102 +384,128 @@ public class MemberAddArg {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
-    }
-
-    public static MemberAddArg fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
-
-    public static final JsonWriter<MemberAddArg> _JSON_WRITER = new JsonWriter<MemberAddArg>() {
-        public final void write(MemberAddArg x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            MemberAddArg._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
         }
-        public final void writeFields(MemberAddArg x, JsonGenerator g) throws IOException {
-            g.writeFieldName("member_email");
-            g.writeString(x.memberEmail);
-            g.writeFieldName("member_given_name");
-            g.writeString(x.memberGivenName);
-            g.writeFieldName("member_surname");
-            g.writeString(x.memberSurname);
-            if (x.memberExternalId != null) {
-                g.writeFieldName("member_external_id");
-                g.writeString(x.memberExternalId);
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
+    }
+
+    static final class Serializer extends StructJsonSerializer<MemberAddArg> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(MemberAddArg.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(MemberAddArg.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<MemberAddArg> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(MemberAddArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("member_email", value.memberEmail);
+            g.writeObjectField("member_given_name", value.memberGivenName);
+            g.writeObjectField("member_surname", value.memberSurname);
+            if (value.memberExternalId != null) {
+                g.writeObjectField("member_external_id", value.memberExternalId);
             }
-            g.writeFieldName("send_welcome_email");
-            g.writeBoolean(x.sendWelcomeEmail);
-            g.writeFieldName("role");
-            AdminTier._JSON_WRITER.write(x.role, g);
+            g.writeObjectField("send_welcome_email", value.sendWelcomeEmail);
+            g.writeObjectField("role", value.role);
         }
-    };
+    }
 
-    public static final JsonReader<MemberAddArg> _JSON_READER = new JsonReader<MemberAddArg>() {
-        public final MemberAddArg read(JsonParser parser) throws IOException, JsonReadException {
-            MemberAddArg result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+    static final class Deserializer extends StructJsonDeserializer<MemberAddArg> {
+        private static final long serialVersionUID = 0L;
+
+        public Deserializer() {
+            super(MemberAddArg.class);
         }
 
-        public final MemberAddArg readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(MemberAddArg.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<MemberAddArg> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public MemberAddArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             String memberEmail = null;
             String memberGivenName = null;
             String memberSurname = null;
             String memberExternalId = null;
             Boolean sendWelcomeEmail = null;
             AdminTier role = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("member_email".equals(fieldName)) {
-                    memberEmail = JsonReader.StringReader
-                        .readField(parser, "member_email", memberEmail);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("member_email".equals(_field)) {
+                    memberEmail = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("member_given_name".equals(fieldName)) {
-                    memberGivenName = JsonReader.StringReader
-                        .readField(parser, "member_given_name", memberGivenName);
+                else if ("member_given_name".equals(_field)) {
+                    memberGivenName = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("member_surname".equals(fieldName)) {
-                    memberSurname = JsonReader.StringReader
-                        .readField(parser, "member_surname", memberSurname);
+                else if ("member_surname".equals(_field)) {
+                    memberSurname = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("member_external_id".equals(fieldName)) {
-                    memberExternalId = JsonReader.StringReader
-                        .readField(parser, "member_external_id", memberExternalId);
+                else if ("member_external_id".equals(_field)) {
+                    memberExternalId = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("send_welcome_email".equals(fieldName)) {
-                    sendWelcomeEmail = JsonReader.BooleanReader
-                        .readField(parser, "send_welcome_email", sendWelcomeEmail);
+                else if ("send_welcome_email".equals(_field)) {
+                    sendWelcomeEmail = _p.getValueAsBoolean();
+                    _p.nextToken();
                 }
-                else if ("role".equals(fieldName)) {
-                    role = AdminTier._JSON_READER
-                        .readField(parser, "role", role);
+                else if ("role".equals(_field)) {
+                    role = _p.readValueAs(AdminTier.class);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (memberEmail == null) {
-                throw new JsonReadException("Required field \"member_email\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"member_email\" is missing.");
             }
             if (memberGivenName == null) {
-                throw new JsonReadException("Required field \"member_given_name\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"member_given_name\" is missing.");
             }
             if (memberSurname == null) {
-                throw new JsonReadException("Required field \"member_surname\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"member_surname\" is missing.");
             }
+
             return new MemberAddArg(memberEmail, memberGivenName, memberSurname, memberExternalId, sendWelcomeEmail, role);
         }
-    };
+    }
 }

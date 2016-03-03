@@ -5,59 +5,86 @@ package com.dropbox.core.v2.users;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.UnionJsonDeserializer;
+import com.dropbox.core.json.UnionJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
+@JsonSerialize(using=GetAccountError.Serializer.class)
+@JsonDeserialize(using=GetAccountError.Deserializer.class)
 public enum GetAccountError {
     // union GetAccountError
     /**
-     * The specified {@link GetAccountArg#getAccountId} does not exist.
+     * The specified the {@code accountId} argument to {@link
+     * DbxUserUsersRequests#getAccount(String)} does not exist.
      */
     NO_ACCOUNT,
+    /**
+     * Catch-all used for unknown tag values returned by the Dropbox servers.
+     *
+     * <p> Receiving a catch-all value typically indicates this SDK version is
+     * not up to date. Consider updating your SDK version to handle the new
+     * tags. </p>
+     */
     UNKNOWN; // *catch_all
 
-    private static final java.util.HashMap<String, GetAccountError> VALUES_;
-    static {
-        VALUES_ = new java.util.HashMap<String, GetAccountError>();
-        VALUES_.put("no_account", NO_ACCOUNT);
-        VALUES_.put("unknown", UNKNOWN);
-    }
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
-    }
+    static final class Serializer extends UnionJsonSerializer<GetAccountError> {
+        private static final long serialVersionUID = 0L;
 
-    public static GetAccountError fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
+        public Serializer() {
+            super(GetAccountError.class);
+        }
 
-    public static final JsonWriter<GetAccountError> _JSON_WRITER = new JsonWriter<GetAccountError>() {
-        public void write(GetAccountError x, JsonGenerator g) throws IOException {
-            switch (x) {
+        @Override
+        public void serialize(GetAccountError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            switch (value) {
                 case NO_ACCOUNT:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("no_account");
-                    g.writeEndObject();
                     break;
                 case UNKNOWN:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("unknown");
-                    g.writeEndObject();
                     break;
             }
         }
-    };
+    }
 
-    public static final JsonReader<GetAccountError> _JSON_READER = new JsonReader<GetAccountError>() {
-        public final GetAccountError read(JsonParser parser) throws IOException, JsonReadException {
-            return JsonReader.readEnum(parser, VALUES_, UNKNOWN);
+    static final class Deserializer extends UnionJsonDeserializer<GetAccountError, GetAccountError> {
+        private static final long serialVersionUID = 0L;
+
+        public Deserializer() {
+            super(GetAccountError.class, getTagMapping(), GetAccountError.UNKNOWN);
         }
-    };
+
+        @Override
+        public GetAccountError deserialize(GetAccountError _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+            return _tag;
+        }
+
+        private static Map<String, GetAccountError> getTagMapping() {
+            Map<String, GetAccountError> values = new HashMap<String, GetAccountError>();
+            values.put("no_account", GetAccountError.NO_ACCOUNT);
+            values.put("unknown", GetAccountError.UNKNOWN);
+            return Collections.unmodifiableMap(values);
+        }
+    }
 }

@@ -9,13 +9,13 @@ import java.util.List;
 
 /**
  * The request builder returned by {@link
- * DbxSharing#listFolderMembersBuilder(String)}.
+ * DbxUserSharingRequests#listFolderMembersBuilder(String)}.
  *
  * <p> Use this class to set optional request parameters and complete the
  * request. </p>
  */
 public class ListFolderMembersBuilder {
-    private final DbxSharing sharing;
+    private final DbxUserSharingRequests sharing;
     private final ListFolderMembersArgs.Builder listFolderMembersArgsBuilder;
 
     /**
@@ -27,7 +27,7 @@ public class ListFolderMembersBuilder {
      *
      * @return instsance of this builder
      */
-    ListFolderMembersBuilder(DbxSharing sharing, ListFolderMembersArgs.Builder listFolderMembersArgsBuilder) {
+    ListFolderMembersBuilder(DbxUserSharingRequests sharing, ListFolderMembersArgs.Builder listFolderMembersArgsBuilder) {
         if (sharing == null) {
             throw new NullPointerException("sharing");
         }

@@ -5,11 +5,23 @@ package com.dropbox.core.v2.sharing;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
@@ -17,11 +29,17 @@ import java.io.IOException;
  * The member and type of access the member should have when added to a shared
  * folder.
  */
+@JsonSerialize(using=AddMember.Serializer.class)
+@JsonDeserialize(using=AddMember.Deserializer.class)
 public class AddMember {
     // struct AddMember
 
-    private final MemberSelector member;
-    private final AccessLevel accessLevel;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final MemberSelector member;
+    protected final AccessLevel accessLevel;
 
     /**
      * The member and type of access the member should have when added to a
@@ -110,66 +128,96 @@ public class AddMember {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static AddMember fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
+    static final class Serializer extends StructJsonSerializer<AddMember> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(AddMember.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(AddMember.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<AddMember> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(AddMember value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("member", value.member);
+            g.writeObjectField("access_level", value.accessLevel);
+        }
     }
 
-    public static final JsonWriter<AddMember> _JSON_WRITER = new JsonWriter<AddMember>() {
-        public final void write(AddMember x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            AddMember._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
-        }
-        public final void writeFields(AddMember x, JsonGenerator g) throws IOException {
-            g.writeFieldName("member");
-            MemberSelector._JSON_WRITER.write(x.member, g);
-            g.writeFieldName("access_level");
-            AccessLevel._JSON_WRITER.write(x.accessLevel, g);
-        }
-    };
+    static final class Deserializer extends StructJsonDeserializer<AddMember> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonReader<AddMember> _JSON_READER = new JsonReader<AddMember>() {
-        public final AddMember read(JsonParser parser) throws IOException, JsonReadException {
-            AddMember result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+        public Deserializer() {
+            super(AddMember.class);
         }
 
-        public final AddMember readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(AddMember.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<AddMember> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public AddMember deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             MemberSelector member = null;
             AccessLevel accessLevel = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("member".equals(fieldName)) {
-                    member = MemberSelector._JSON_READER
-                        .readField(parser, "member", member);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("member".equals(_field)) {
+                    member = _p.readValueAs(MemberSelector.class);
+                    _p.nextToken();
                 }
-                else if ("access_level".equals(fieldName)) {
-                    accessLevel = AccessLevel._JSON_READER
-                        .readField(parser, "access_level", accessLevel);
+                else if ("access_level".equals(_field)) {
+                    accessLevel = _p.readValueAs(AccessLevel.class);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (member == null) {
-                throw new JsonReadException("Required field \"member\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"member\" is missing.");
             }
+
             return new AddMember(member, accessLevel);
         }
-    };
+    }
 }

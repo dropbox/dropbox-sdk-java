@@ -1,5 +1,17 @@
 
 ---------------------------------------------
+2.0.0 (2016-03-03)
+- Remove toJson(..) and fromJson(..) methods from data types.
+- Support ProGuard shrinking for Android development and provide example.
+- Rename v2 request classes to support future auth styles:
+    - DbxFiles -> DbxUserFilesRequests
+    - DbxSharing -> DbxUserSharingRequests
+    - DbxUsers -> DbxUserUsersRequests
+    - DbxTeam -> DbxTeamTeamRequests
+- Replace public final references in DbxClientV2 and DbxTeamClientV2 with accessor methods.
+- Update longpoll example with better documentation on setting timeout values.
+
+---------------------------------------------
 2.0-beta-7 (2016-02-24)
 - Updated to latest API specs.
 

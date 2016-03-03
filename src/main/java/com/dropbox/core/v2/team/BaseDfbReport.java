@@ -5,21 +5,39 @@ package com.dropbox.core.v2.team;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
 /**
  * Base report structure.
  */
+@JsonSerialize(using=BaseDfbReport.Serializer.class)
+@JsonDeserialize(using=BaseDfbReport.Deserializer.class)
 public class BaseDfbReport {
     // struct BaseDfbReport
 
-    private final String startDate;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final String startDate;
 
     /**
      * Base report structure.
@@ -71,59 +89,90 @@ public class BaseDfbReport {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static BaseDfbReport fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
+    static final class Serializer extends StructJsonSerializer<BaseDfbReport> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(BaseDfbReport.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(BaseDfbReport.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<BaseDfbReport> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(BaseDfbReport value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("start_date", value.startDate);
+        }
     }
 
-    public static final JsonWriter<BaseDfbReport> _JSON_WRITER = new JsonWriter<BaseDfbReport>() {
-        public final void write(BaseDfbReport x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            BaseDfbReport._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
-        }
-        public final void writeFields(BaseDfbReport x, JsonGenerator g) throws IOException {
-            g.writeFieldName("start_date");
-            g.writeString(x.startDate);
-        }
-    };
+    static final class Deserializer extends StructJsonDeserializer<BaseDfbReport> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonReader<BaseDfbReport> _JSON_READER = new JsonReader<BaseDfbReport>() {
-        public final BaseDfbReport read(JsonParser parser) throws IOException, JsonReadException {
-            BaseDfbReport result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+        public Deserializer() {
+            super(BaseDfbReport.class);
         }
 
-        public final BaseDfbReport readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(BaseDfbReport.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<BaseDfbReport> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public BaseDfbReport deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             String startDate = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("start_date".equals(fieldName)) {
-                    startDate = JsonReader.StringReader
-                        .readField(parser, "start_date", startDate);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("start_date".equals(_field)) {
+                    startDate = getStringValue(_p);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (startDate == null) {
-                throw new JsonReadException("Required field \"start_date\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"start_date\" is missing.");
             }
+
             return new BaseDfbReport(startDate);
         }
-    };
+    }
 }

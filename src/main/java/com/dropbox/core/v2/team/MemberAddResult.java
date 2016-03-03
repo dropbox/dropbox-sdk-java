@@ -5,22 +5,46 @@ package com.dropbox.core.v2.team;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.UnionJsonDeserializer;
+import com.dropbox.core.json.UnionJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Describes the result of attempting to add a single user to the team.
  * 'success' is the only value indicating that a user was indeed added to the
  * team - the other values explain the type of failure that occurred, and
  * include the email of the user for which the operation has failed.
+ *
+ * <p> This class is a tagged union.  Tagged unions instances are always
+ * associated to a specific tag.  This means only one of the {@code isAbc()}
+ * methods will return {@code true}. You can use {@link #tag()} to determine the
+ * tag associated with this instance. </p>
  */
+@JsonSerialize(using=MemberAddResult.Serializer.class)
+@JsonDeserialize(using=MemberAddResult.Deserializer.class)
 public final class MemberAddResult {
     // union MemberAddResult
+
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link MemberAddResult}.
@@ -68,20 +92,6 @@ public final class MemberAddResult {
         USER_CREATION_FAILED; // String
     }
 
-    private static final java.util.HashMap<String, Tag> VALUES_;
-    static {
-        VALUES_ = new java.util.HashMap<String, Tag>();
-        VALUES_.put("success", Tag.SUCCESS);
-        VALUES_.put("team_license_limit", Tag.TEAM_LICENSE_LIMIT);
-        VALUES_.put("free_team_member_limit_reached", Tag.FREE_TEAM_MEMBER_LIMIT_REACHED);
-        VALUES_.put("user_already_on_team", Tag.USER_ALREADY_ON_TEAM);
-        VALUES_.put("user_on_another_team", Tag.USER_ON_ANOTHER_TEAM);
-        VALUES_.put("user_already_paired", Tag.USER_ALREADY_PAIRED);
-        VALUES_.put("user_migration_failed", Tag.USER_MIGRATION_FAILED);
-        VALUES_.put("duplicate_external_member_id", Tag.DUPLICATE_EXTERNAL_MEMBER_ID);
-        VALUES_.put("user_creation_failed", Tag.USER_CREATION_FAILED);
-    }
-
     private final Tag tag;
     private final TeamMemberInfo successValue;
     private final String teamLicenseLimitValue;
@@ -118,9 +128,10 @@ public final class MemberAddResult {
      * Returns the tag for this instance.
      *
      * <p> This class is a tagged union.  Tagged unions instances are always
-     * associated to a specific tag.  Callers are recommended to use the tag
-     * value in a {@code switch} statement to determine how to properly handle
-     * this {@code MemberAddResult}. </p>
+     * associated to a specific tag.  This means only one of the {@code isXyz()}
+     * methods will return {@code true}. Callers are recommended to use the tag
+     * value in a {@code switch} statement to properly handle the different
+     * values for this {@code MemberAddResult}. </p>
      *
      * @return the tag for this instance.
      */
@@ -132,7 +143,7 @@ public final class MemberAddResult {
      * Returns {@code true} if this instance has the tag {@link Tag#SUCCESS},
      * {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link Tag#SUCCESS},
+     * @return {@code true} if this instance is tagged as {@link Tag#SUCCESS},
      *     {@code false} otherwise.
      */
     public boolean isSuccess() {
@@ -145,8 +156,7 @@ public final class MemberAddResult {
      *
      * <p> Describes a user that was successfully added to the team. </p>
      *
-     * @param value  {@link MemberAddResult#success} value to assign to this
-     *     instance.
+     * @param value  value to assign to this instance.
      *
      * @return Instance of {@code MemberAddResult} with its tag set to {@link
      *     Tag#SUCCESS}.
@@ -181,7 +191,7 @@ public final class MemberAddResult {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#TEAM_LICENSE_LIMIT}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#TEAM_LICENSE_LIMIT}, {@code false} otherwise.
      */
     public boolean isTeamLicenseLimit() {
@@ -195,8 +205,7 @@ public final class MemberAddResult {
      * <p> Team is already full. The organization has no available licenses.
      * </p>
      *
-     * @param value  {@link MemberAddResult#teamLicenseLimit} value to assign to
-     *     this instance.
+     * @param value  value to assign to this instance.
      *
      * @return Instance of {@code MemberAddResult} with its tag set to {@link
      *     Tag#TEAM_LICENSE_LIMIT}.
@@ -241,7 +250,7 @@ public final class MemberAddResult {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#FREE_TEAM_MEMBER_LIMIT_REACHED}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#FREE_TEAM_MEMBER_LIMIT_REACHED}, {@code false} otherwise.
      */
     public boolean isFreeTeamMemberLimitReached() {
@@ -255,8 +264,7 @@ public final class MemberAddResult {
      * <p> Team is already full. The free team member limit has been reached.
      * </p>
      *
-     * @param value  {@link MemberAddResult#freeTeamMemberLimitReached} value to
-     *     assign to this instance.
+     * @param value  value to assign to this instance.
      *
      * @return Instance of {@code MemberAddResult} with its tag set to {@link
      *     Tag#FREE_TEAM_MEMBER_LIMIT_REACHED}.
@@ -303,7 +311,7 @@ public final class MemberAddResult {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#USER_ALREADY_ON_TEAM}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#USER_ALREADY_ON_TEAM}, {@code false} otherwise.
      */
     public boolean isUserAlreadyOnTeam() {
@@ -318,8 +326,7 @@ public final class MemberAddResult {
      * associated with a user who is already a member of or invited to the team.
      * </p>
      *
-     * @param value  {@link MemberAddResult#userAlreadyOnTeam} value to assign
-     *     to this instance.
+     * @param value  value to assign to this instance.
      *
      * @return Instance of {@code MemberAddResult} with its tag set to {@link
      *     Tag#USER_ALREADY_ON_TEAM}.
@@ -366,7 +373,7 @@ public final class MemberAddResult {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#USER_ON_ANOTHER_TEAM}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#USER_ON_ANOTHER_TEAM}, {@code false} otherwise.
      */
     public boolean isUserOnAnotherTeam() {
@@ -381,8 +388,7 @@ public final class MemberAddResult {
      * associated with a user that is already a member or invited to another
      * team. </p>
      *
-     * @param value  {@link MemberAddResult#userOnAnotherTeam} value to assign
-     *     to this instance.
+     * @param value  value to assign to this instance.
      *
      * @return Instance of {@code MemberAddResult} with its tag set to {@link
      *     Tag#USER_ON_ANOTHER_TEAM}.
@@ -429,7 +435,7 @@ public final class MemberAddResult {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#USER_ALREADY_PAIRED}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#USER_ALREADY_PAIRED}, {@code false} otherwise.
      */
     public boolean isUserAlreadyPaired() {
@@ -442,8 +448,7 @@ public final class MemberAddResult {
      *
      * <p> User is already paired. </p>
      *
-     * @param value  {@link MemberAddResult#userAlreadyPaired} value to assign
-     *     to this instance.
+     * @param value  value to assign to this instance.
      *
      * @return Instance of {@code MemberAddResult} with its tag set to {@link
      *     Tag#USER_ALREADY_PAIRED}.
@@ -488,7 +493,7 @@ public final class MemberAddResult {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#USER_MIGRATION_FAILED}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#USER_MIGRATION_FAILED}, {@code false} otherwise.
      */
     public boolean isUserMigrationFailed() {
@@ -501,8 +506,7 @@ public final class MemberAddResult {
      *
      * <p> User migration has failed. </p>
      *
-     * @param value  {@link MemberAddResult#userMigrationFailed} value to assign
-     *     to this instance.
+     * @param value  value to assign to this instance.
      *
      * @return Instance of {@code MemberAddResult} with its tag set to {@link
      *     Tag#USER_MIGRATION_FAILED}.
@@ -548,7 +552,7 @@ public final class MemberAddResult {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#DUPLICATE_EXTERNAL_MEMBER_ID}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#DUPLICATE_EXTERNAL_MEMBER_ID}, {@code false} otherwise.
      */
     public boolean isDuplicateExternalMemberId() {
@@ -562,8 +566,7 @@ public final class MemberAddResult {
      * <p> A user with the given external member ID already exists on the team.
      * </p>
      *
-     * @param value  {@link MemberAddResult#duplicateExternalMemberId} value to
-     *     assign to this instance.
+     * @param value  value to assign to this instance.
      *
      * @return Instance of {@code MemberAddResult} with its tag set to {@link
      *     Tag#DUPLICATE_EXTERNAL_MEMBER_ID}.
@@ -610,7 +613,7 @@ public final class MemberAddResult {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#USER_CREATION_FAILED}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#USER_CREATION_FAILED}, {@code false} otherwise.
      */
     public boolean isUserCreationFailed() {
@@ -623,8 +626,7 @@ public final class MemberAddResult {
      *
      * <p> User creation has failed. </p>
      *
-     * @param value  {@link MemberAddResult#userCreationFailed} value to assign
-     *     to this instance.
+     * @param value  value to assign to this instance.
      *
      * @return Instance of {@code MemberAddResult} with its tag set to {@link
      *     Tag#USER_CREATION_FAILED}.
@@ -723,224 +725,186 @@ public final class MemberAddResult {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static MemberAddResult fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
+    static final class Serializer extends UnionJsonSerializer<MemberAddResult> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonWriter<MemberAddResult> _JSON_WRITER = new JsonWriter<MemberAddResult>() {
-        public final void write(MemberAddResult x, JsonGenerator g) throws IOException {
-            switch (x.tag) {
+        public Serializer() {
+            super(MemberAddResult.class, TeamMemberInfo.class);
+        }
+
+        @Override
+        public void serialize(MemberAddResult value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            switch (value.tag) {
                 case SUCCESS:
                     g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("success");
-                    g.writeFieldName("success");
-                    TeamMemberInfo._JSON_WRITER.write(x.getSuccessValue(), g);
+                    g.writeStringField(".tag", "success");
+                    getUnwrappingSerializer(TeamMemberInfo.class).serialize(value.successValue, g, provider);
                     g.writeEndObject();
                     break;
                 case TEAM_LICENSE_LIMIT:
                     g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("team_license_limit");
-                    g.writeFieldName("team_license_limit");
-                    g.writeString(x.getTeamLicenseLimitValue());
+                    g.writeStringField(".tag", "team_license_limit");
+                    g.writeObjectField("team_license_limit", value.teamLicenseLimitValue);
                     g.writeEndObject();
                     break;
                 case FREE_TEAM_MEMBER_LIMIT_REACHED:
                     g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("free_team_member_limit_reached");
-                    g.writeFieldName("free_team_member_limit_reached");
-                    g.writeString(x.getFreeTeamMemberLimitReachedValue());
+                    g.writeStringField(".tag", "free_team_member_limit_reached");
+                    g.writeObjectField("free_team_member_limit_reached", value.freeTeamMemberLimitReachedValue);
                     g.writeEndObject();
                     break;
                 case USER_ALREADY_ON_TEAM:
                     g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("user_already_on_team");
-                    g.writeFieldName("user_already_on_team");
-                    g.writeString(x.getUserAlreadyOnTeamValue());
+                    g.writeStringField(".tag", "user_already_on_team");
+                    g.writeObjectField("user_already_on_team", value.userAlreadyOnTeamValue);
                     g.writeEndObject();
                     break;
                 case USER_ON_ANOTHER_TEAM:
                     g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("user_on_another_team");
-                    g.writeFieldName("user_on_another_team");
-                    g.writeString(x.getUserOnAnotherTeamValue());
+                    g.writeStringField(".tag", "user_on_another_team");
+                    g.writeObjectField("user_on_another_team", value.userOnAnotherTeamValue);
                     g.writeEndObject();
                     break;
                 case USER_ALREADY_PAIRED:
                     g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("user_already_paired");
-                    g.writeFieldName("user_already_paired");
-                    g.writeString(x.getUserAlreadyPairedValue());
+                    g.writeStringField(".tag", "user_already_paired");
+                    g.writeObjectField("user_already_paired", value.userAlreadyPairedValue);
                     g.writeEndObject();
                     break;
                 case USER_MIGRATION_FAILED:
                     g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("user_migration_failed");
-                    g.writeFieldName("user_migration_failed");
-                    g.writeString(x.getUserMigrationFailedValue());
+                    g.writeStringField(".tag", "user_migration_failed");
+                    g.writeObjectField("user_migration_failed", value.userMigrationFailedValue);
                     g.writeEndObject();
                     break;
                 case DUPLICATE_EXTERNAL_MEMBER_ID:
                     g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("duplicate_external_member_id");
-                    g.writeFieldName("duplicate_external_member_id");
-                    g.writeString(x.getDuplicateExternalMemberIdValue());
+                    g.writeStringField(".tag", "duplicate_external_member_id");
+                    g.writeObjectField("duplicate_external_member_id", value.duplicateExternalMemberIdValue);
                     g.writeEndObject();
                     break;
                 case USER_CREATION_FAILED:
                     g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("user_creation_failed");
-                    g.writeFieldName("user_creation_failed");
-                    g.writeString(x.getUserCreationFailedValue());
+                    g.writeStringField(".tag", "user_creation_failed");
+                    g.writeObjectField("user_creation_failed", value.userCreationFailedValue);
                     g.writeEndObject();
                     break;
             }
         }
-    };
+    }
 
-    public static final JsonReader<MemberAddResult> _JSON_READER = new JsonReader<MemberAddResult>() {
+    static final class Deserializer extends UnionJsonDeserializer<MemberAddResult, Tag> {
+        private static final long serialVersionUID = 0L;
 
-        public final MemberAddResult read(JsonParser parser) throws IOException, JsonReadException {
-            if (parser.getCurrentToken() == JsonToken.VALUE_STRING) {
-                String text = parser.getText();
-                parser.nextToken();
-                Tag tag = VALUES_.get(text);
-                if (tag == null) {
-                    throw new JsonReadException("Unanticipated tag " + text + " without catch-all", parser.getTokenLocation());
-                }
-                switch (tag) {
-                }
-                throw new JsonReadException("Tag " + tag + " requires a value", parser.getTokenLocation());
-            }
-            JsonReader.expectObjectStart(parser);
-            String[] tags = readTags(parser);
-            assert tags != null && tags.length == 1;
-            String text = tags[0];
-            Tag tag = VALUES_.get(text);
-            MemberAddResult value = null;
-            if (tag != null) {
-                switch (tag) {
-                    case SUCCESS: {
-                        TeamMemberInfo v = null;
-                        v = TeamMemberInfo._JSON_READER.readFields(parser);
-                        value = MemberAddResult.success(v);
-                        break;
-                    }
-                    case TEAM_LICENSE_LIMIT: {
-                        String v = null;
-                        assert parser.getCurrentToken() == JsonToken.FIELD_NAME;
-                        text = parser.getText();
-                        assert tags[0].equals(text);
-                        parser.nextToken();
-                        v = JsonReader.StringReader
-                            .readField(parser, "team_license_limit", v);
-                        value = MemberAddResult.teamLicenseLimit(v);
-                        break;
-                    }
-                    case FREE_TEAM_MEMBER_LIMIT_REACHED: {
-                        String v = null;
-                        assert parser.getCurrentToken() == JsonToken.FIELD_NAME;
-                        text = parser.getText();
-                        assert tags[0].equals(text);
-                        parser.nextToken();
-                        v = JsonReader.StringReader
-                            .readField(parser, "free_team_member_limit_reached", v);
-                        value = MemberAddResult.freeTeamMemberLimitReached(v);
-                        break;
-                    }
-                    case USER_ALREADY_ON_TEAM: {
-                        String v = null;
-                        assert parser.getCurrentToken() == JsonToken.FIELD_NAME;
-                        text = parser.getText();
-                        assert tags[0].equals(text);
-                        parser.nextToken();
-                        v = JsonReader.StringReader
-                            .readField(parser, "user_already_on_team", v);
-                        value = MemberAddResult.userAlreadyOnTeam(v);
-                        break;
-                    }
-                    case USER_ON_ANOTHER_TEAM: {
-                        String v = null;
-                        assert parser.getCurrentToken() == JsonToken.FIELD_NAME;
-                        text = parser.getText();
-                        assert tags[0].equals(text);
-                        parser.nextToken();
-                        v = JsonReader.StringReader
-                            .readField(parser, "user_on_another_team", v);
-                        value = MemberAddResult.userOnAnotherTeam(v);
-                        break;
-                    }
-                    case USER_ALREADY_PAIRED: {
-                        String v = null;
-                        assert parser.getCurrentToken() == JsonToken.FIELD_NAME;
-                        text = parser.getText();
-                        assert tags[0].equals(text);
-                        parser.nextToken();
-                        v = JsonReader.StringReader
-                            .readField(parser, "user_already_paired", v);
-                        value = MemberAddResult.userAlreadyPaired(v);
-                        break;
-                    }
-                    case USER_MIGRATION_FAILED: {
-                        String v = null;
-                        assert parser.getCurrentToken() == JsonToken.FIELD_NAME;
-                        text = parser.getText();
-                        assert tags[0].equals(text);
-                        parser.nextToken();
-                        v = JsonReader.StringReader
-                            .readField(parser, "user_migration_failed", v);
-                        value = MemberAddResult.userMigrationFailed(v);
-                        break;
-                    }
-                    case DUPLICATE_EXTERNAL_MEMBER_ID: {
-                        String v = null;
-                        assert parser.getCurrentToken() == JsonToken.FIELD_NAME;
-                        text = parser.getText();
-                        assert tags[0].equals(text);
-                        parser.nextToken();
-                        v = JsonReader.StringReader
-                            .readField(parser, "duplicate_external_member_id", v);
-                        value = MemberAddResult.duplicateExternalMemberId(v);
-                        break;
-                    }
-                    case USER_CREATION_FAILED: {
-                        String v = null;
-                        assert parser.getCurrentToken() == JsonToken.FIELD_NAME;
-                        text = parser.getText();
-                        assert tags[0].equals(text);
-                        parser.nextToken();
-                        v = JsonReader.StringReader
-                            .readField(parser, "user_creation_failed", v);
-                        value = MemberAddResult.userCreationFailed(v);
-                        break;
-                    }
-                }
-            }
-            if (value == null) {
-                throw new JsonReadException("Unanticipated tag " + text, parser.getTokenLocation());
-            }
-            JsonReader.expectObjectEnd(parser);
-            return value;
+        public Deserializer() {
+            super(MemberAddResult.class, getTagMapping(), null, TeamMemberInfo.class);
         }
 
-    };
+        @Override
+        public MemberAddResult deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+            switch (_tag) {
+                case SUCCESS: {
+                    TeamMemberInfo value = null;
+                    value = readCollapsedStructValue(TeamMemberInfo.class, _p, _ctx);
+                    return MemberAddResult.success(value);
+                }
+                case TEAM_LICENSE_LIMIT: {
+                    String value = null;
+                    expectField(_p, "team_license_limit");
+                    value = getStringValue(_p);
+                    _p.nextToken();
+                    return MemberAddResult.teamLicenseLimit(value);
+                }
+                case FREE_TEAM_MEMBER_LIMIT_REACHED: {
+                    String value = null;
+                    expectField(_p, "free_team_member_limit_reached");
+                    value = getStringValue(_p);
+                    _p.nextToken();
+                    return MemberAddResult.freeTeamMemberLimitReached(value);
+                }
+                case USER_ALREADY_ON_TEAM: {
+                    String value = null;
+                    expectField(_p, "user_already_on_team");
+                    value = getStringValue(_p);
+                    _p.nextToken();
+                    return MemberAddResult.userAlreadyOnTeam(value);
+                }
+                case USER_ON_ANOTHER_TEAM: {
+                    String value = null;
+                    expectField(_p, "user_on_another_team");
+                    value = getStringValue(_p);
+                    _p.nextToken();
+                    return MemberAddResult.userOnAnotherTeam(value);
+                }
+                case USER_ALREADY_PAIRED: {
+                    String value = null;
+                    expectField(_p, "user_already_paired");
+                    value = getStringValue(_p);
+                    _p.nextToken();
+                    return MemberAddResult.userAlreadyPaired(value);
+                }
+                case USER_MIGRATION_FAILED: {
+                    String value = null;
+                    expectField(_p, "user_migration_failed");
+                    value = getStringValue(_p);
+                    _p.nextToken();
+                    return MemberAddResult.userMigrationFailed(value);
+                }
+                case DUPLICATE_EXTERNAL_MEMBER_ID: {
+                    String value = null;
+                    expectField(_p, "duplicate_external_member_id");
+                    value = getStringValue(_p);
+                    _p.nextToken();
+                    return MemberAddResult.duplicateExternalMemberId(value);
+                }
+                case USER_CREATION_FAILED: {
+                    String value = null;
+                    expectField(_p, "user_creation_failed");
+                    value = getStringValue(_p);
+                    _p.nextToken();
+                    return MemberAddResult.userCreationFailed(value);
+                }
+            }
+            // should be impossible to get here
+            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
+        }
+
+        private static Map<String, MemberAddResult.Tag> getTagMapping() {
+            Map<String, MemberAddResult.Tag> values = new HashMap<String, MemberAddResult.Tag>();
+            values.put("success", MemberAddResult.Tag.SUCCESS);
+            values.put("team_license_limit", MemberAddResult.Tag.TEAM_LICENSE_LIMIT);
+            values.put("free_team_member_limit_reached", MemberAddResult.Tag.FREE_TEAM_MEMBER_LIMIT_REACHED);
+            values.put("user_already_on_team", MemberAddResult.Tag.USER_ALREADY_ON_TEAM);
+            values.put("user_on_another_team", MemberAddResult.Tag.USER_ON_ANOTHER_TEAM);
+            values.put("user_already_paired", MemberAddResult.Tag.USER_ALREADY_PAIRED);
+            values.put("user_migration_failed", MemberAddResult.Tag.USER_MIGRATION_FAILED);
+            values.put("duplicate_external_member_id", MemberAddResult.Tag.DUPLICATE_EXTERNAL_MEMBER_ID);
+            values.put("user_creation_failed", MemberAddResult.Tag.USER_CREATION_FAILED);
+            return Collections.unmodifiableMap(values);
+        }
+    }
 }

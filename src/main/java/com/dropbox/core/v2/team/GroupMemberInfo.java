@@ -5,22 +5,40 @@ package com.dropbox.core.v2.team;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
 /**
  * Profile of group member, and role in group.
  */
+@JsonSerialize(using=GroupMemberInfo.Serializer.class)
+@JsonDeserialize(using=GroupMemberInfo.Deserializer.class)
 public class GroupMemberInfo {
     // struct GroupMemberInfo
 
-    private final MemberProfile profile;
-    private final GroupAccessType accessType;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final MemberProfile profile;
+    protected final GroupAccessType accessType;
 
     /**
      * Profile of group member, and role in group.
@@ -89,69 +107,99 @@ public class GroupMemberInfo {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static GroupMemberInfo fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
+    static final class Serializer extends StructJsonSerializer<GroupMemberInfo> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(GroupMemberInfo.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(GroupMemberInfo.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<GroupMemberInfo> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(GroupMemberInfo value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("profile", value.profile);
+            g.writeObjectField("access_type", value.accessType);
+        }
     }
 
-    public static final JsonWriter<GroupMemberInfo> _JSON_WRITER = new JsonWriter<GroupMemberInfo>() {
-        public final void write(GroupMemberInfo x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            GroupMemberInfo._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
-        }
-        public final void writeFields(GroupMemberInfo x, JsonGenerator g) throws IOException {
-            g.writeFieldName("profile");
-            MemberProfile._JSON_WRITER.write(x.profile, g);
-            g.writeFieldName("access_type");
-            GroupAccessType._JSON_WRITER.write(x.accessType, g);
-        }
-    };
+    static final class Deserializer extends StructJsonDeserializer<GroupMemberInfo> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonReader<GroupMemberInfo> _JSON_READER = new JsonReader<GroupMemberInfo>() {
-        public final GroupMemberInfo read(JsonParser parser) throws IOException, JsonReadException {
-            GroupMemberInfo result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+        public Deserializer() {
+            super(GroupMemberInfo.class);
         }
 
-        public final GroupMemberInfo readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(GroupMemberInfo.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<GroupMemberInfo> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public GroupMemberInfo deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             MemberProfile profile = null;
             GroupAccessType accessType = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("profile".equals(fieldName)) {
-                    profile = MemberProfile._JSON_READER
-                        .readField(parser, "profile", profile);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("profile".equals(_field)) {
+                    profile = _p.readValueAs(MemberProfile.class);
+                    _p.nextToken();
                 }
-                else if ("access_type".equals(fieldName)) {
-                    accessType = GroupAccessType._JSON_READER
-                        .readField(parser, "access_type", accessType);
+                else if ("access_type".equals(_field)) {
+                    accessType = _p.readValueAs(GroupAccessType.class);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (profile == null) {
-                throw new JsonReadException("Required field \"profile\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"profile\" is missing.");
             }
             if (accessType == null) {
-                throw new JsonReadException("Required field \"access_type\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"access_type\" is missing.");
             }
+
             return new GroupMemberInfo(profile, accessType);
         }
-    };
+    }
 }

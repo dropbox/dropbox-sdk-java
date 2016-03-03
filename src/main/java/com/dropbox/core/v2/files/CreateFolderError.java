@@ -5,28 +5,47 @@ package com.dropbox.core.v2.files;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.UnionJsonDeserializer;
+import com.dropbox.core.json.UnionJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
+/**
+ * This class is a tagged union.  Tagged unions instances are always associated
+ * to a specific tag.  This means only one of the {@code isAbc()} methods will
+ * return {@code true}. You can use {@link #tag()} to determine the tag
+ * associated with this instance.
+ */
+@JsonSerialize(using=CreateFolderError.Serializer.class)
+@JsonDeserialize(using=CreateFolderError.Deserializer.class)
 public final class CreateFolderError {
     // union CreateFolderError
+
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link CreateFolderError}.
      */
     public enum Tag {
         PATH; // WriteError
-    }
-
-    private static final java.util.HashMap<String, Tag> VALUES_;
-    static {
-        VALUES_ = new java.util.HashMap<String, Tag>();
-        VALUES_.put("path", Tag.PATH);
     }
 
     private final Tag tag;
@@ -45,9 +64,10 @@ public final class CreateFolderError {
      * Returns the tag for this instance.
      *
      * <p> This class is a tagged union.  Tagged unions instances are always
-     * associated to a specific tag.  Callers are recommended to use the tag
-     * value in a {@code switch} statement to determine how to properly handle
-     * this {@code CreateFolderError}. </p>
+     * associated to a specific tag.  This means only one of the {@code isXyz()}
+     * methods will return {@code true}. Callers are recommended to use the tag
+     * value in a {@code switch} statement to properly handle the different
+     * values for this {@code CreateFolderError}. </p>
      *
      * @return the tag for this instance.
      */
@@ -59,7 +79,7 @@ public final class CreateFolderError {
      * Returns {@code true} if this instance has the tag {@link Tag#PATH},
      * {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link Tag#PATH},
+     * @return {@code true} if this instance is tagged as {@link Tag#PATH},
      *     {@code false} otherwise.
      */
     public boolean isPath() {
@@ -70,8 +90,7 @@ public final class CreateFolderError {
      * Returns an instance of {@code CreateFolderError} that has its tag set to
      * {@link Tag#PATH}.
      *
-     * @param value  {@link CreateFolderError#path} value to assign to this
-     *     instance.
+     * @param value  value to assign to this instance.
      *
      * @return Instance of {@code CreateFolderError} with its tag set to {@link
      *     Tag#PATH}.
@@ -133,77 +152,76 @@ public final class CreateFolderError {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static CreateFolderError fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
+    static final class Serializer extends UnionJsonSerializer<CreateFolderError> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonWriter<CreateFolderError> _JSON_WRITER = new JsonWriter<CreateFolderError>() {
-        public final void write(CreateFolderError x, JsonGenerator g) throws IOException {
-            switch (x.tag) {
+        public Serializer() {
+            super(CreateFolderError.class);
+        }
+
+        @Override
+        public void serialize(CreateFolderError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            switch (value.tag) {
                 case PATH:
                     g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("path");
-                    g.writeFieldName("path");
-                    WriteError._JSON_WRITER.write(x.getPathValue(), g);
+                    g.writeStringField(".tag", "path");
+                    g.writeObjectField("path", value.pathValue);
                     g.writeEndObject();
                     break;
             }
         }
-    };
+    }
 
-    public static final JsonReader<CreateFolderError> _JSON_READER = new JsonReader<CreateFolderError>() {
+    static final class Deserializer extends UnionJsonDeserializer<CreateFolderError, Tag> {
+        private static final long serialVersionUID = 0L;
 
-        public final CreateFolderError read(JsonParser parser) throws IOException, JsonReadException {
-            if (parser.getCurrentToken() == JsonToken.VALUE_STRING) {
-                String text = parser.getText();
-                parser.nextToken();
-                Tag tag = VALUES_.get(text);
-                if (tag == null) {
-                    throw new JsonReadException("Unanticipated tag " + text + " without catch-all", parser.getTokenLocation());
-                }
-                switch (tag) {
-                }
-                throw new JsonReadException("Tag " + tag + " requires a value", parser.getTokenLocation());
-            }
-            JsonReader.expectObjectStart(parser);
-            String[] tags = readTags(parser);
-            assert tags != null && tags.length == 1;
-            String text = tags[0];
-            Tag tag = VALUES_.get(text);
-            CreateFolderError value = null;
-            if (tag != null) {
-                switch (tag) {
-                    case PATH: {
-                        WriteError v = null;
-                        assert parser.getCurrentToken() == JsonToken.FIELD_NAME;
-                        text = parser.getText();
-                        assert tags[0].equals(text);
-                        parser.nextToken();
-                        v = WriteError._JSON_READER
-                            .readField(parser, "path", v);
-                        value = CreateFolderError.path(v);
-                        break;
-                    }
-                }
-            }
-            if (value == null) {
-                throw new JsonReadException("Unanticipated tag " + text, parser.getTokenLocation());
-            }
-            JsonReader.expectObjectEnd(parser);
-            return value;
+        public Deserializer() {
+            super(CreateFolderError.class, getTagMapping(), null);
         }
 
-    };
+        @Override
+        public CreateFolderError deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+            switch (_tag) {
+                case PATH: {
+                    WriteError value = null;
+                    expectField(_p, "path");
+                    value = _p.readValueAs(WriteError.class);
+                    _p.nextToken();
+                    return CreateFolderError.path(value);
+                }
+            }
+            // should be impossible to get here
+            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
+        }
+
+        private static Map<String, CreateFolderError.Tag> getTagMapping() {
+            Map<String, CreateFolderError.Tag> values = new HashMap<String, CreateFolderError.Tag>();
+            values.put("path", CreateFolderError.Tag.PATH);
+            return Collections.unmodifiableMap(values);
+        }
+    }
 }

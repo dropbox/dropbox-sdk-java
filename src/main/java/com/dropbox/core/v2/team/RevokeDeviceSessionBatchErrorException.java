@@ -11,10 +11,11 @@ import com.dropbox.core.LocalizedText;
  * RevokeDeviceSessionBatchError} error.
  */
 public class RevokeDeviceSessionBatchErrorException extends DbxApiException {
+    private static final long serialVersionUID = 0L;
 
     /**
      * The error reported by {@link
-     * DbxTeam#devicesRevokeDeviceSessionBatch(java.util.List)}.
+     * DbxTeamTeamRequests#devicesRevokeDeviceSessionBatch(java.util.List)}.
      */
     public final RevokeDeviceSessionBatchError errorValue;
 

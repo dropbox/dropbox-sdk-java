@@ -9,13 +9,13 @@ import java.util.Date;
 
 /**
  * The request builder returned by {@link
- * DbxTeam#reportsGetMembershipBuilder()}.
+ * DbxTeamTeamRequests#reportsGetMembershipBuilder()}.
  *
  * <p> Use this class to set optional request parameters and complete the
  * request. </p>
  */
 public class ReportsGetMembershipBuilder {
-    private final DbxTeam team;
+    private final DbxTeamTeamRequests team;
     private final DateRange.Builder dateRangeBuilder;
 
     /**
@@ -27,7 +27,7 @@ public class ReportsGetMembershipBuilder {
      *
      * @return instsance of this builder
      */
-    ReportsGetMembershipBuilder(DbxTeam team, DateRange.Builder dateRangeBuilder) {
+    ReportsGetMembershipBuilder(DbxTeamTeamRequests team, DateRange.Builder dateRangeBuilder) {
         if (team == null) {
             throw new NullPointerException("team");
         }

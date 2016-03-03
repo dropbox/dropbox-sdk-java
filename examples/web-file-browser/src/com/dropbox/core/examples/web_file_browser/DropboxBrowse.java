@@ -8,7 +8,6 @@ import com.dropbox.core.util.IOUtil;
 import com.dropbox.core.util.StringUtil;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.DbxPathV2;
-import com.dropbox.core.v2.files.DbxFiles;
 import com.dropbox.core.v2.files.DeletedMetadata;
 import com.dropbox.core.v2.files.FileMetadata;
 import com.dropbox.core.v2.files.FolderMetadata;
@@ -77,7 +76,8 @@ public class DropboxBrowse
         ListFolderResult result;
         try {
             try {
-                result = dbxClient.files.listFolder(path);
+                result = dbxClient.files()
+                    .listFolder(path);
             }
             catch (ListFolderErrorException ex) {
                 if (ex.errorValue.isPath()) {
@@ -98,7 +98,8 @@ public class DropboxBrowse
                 if (!result.getHasMore()) break;
 
                 try {
-                    result = dbxClient.files.listFolderContinue(result.getCursor());
+                    result = dbxClient.files()
+                        .listFolderContinue(result.getCursor());
                 }
                 catch (ListFolderContinueErrorException ex) {
                     if (ex.errorValue.isPath()) {
@@ -203,7 +204,8 @@ public class DropboxBrowse
             }
             Metadata metadata;
             try {
-                metadata = dbxClient.files.getMetadata(path);
+                metadata = dbxClient.files()
+                    .getMetadata(path);
             }
             catch (GetMetadataErrorException ex) {
                 if (ex.errorValue.isPath()) {
@@ -271,7 +273,8 @@ public class DropboxBrowse
         String fullTargetPath = targetFolder + "/" + fileName;
         FileMetadata metadata;
         try {
-            metadata = dbxClient.files.upload(fullTargetPath)
+            metadata = dbxClient.files()
+                .upload(fullTargetPath)
                 .uploadAndFinish(filePart.getInputStream());
         }
         catch (DbxException ex) {

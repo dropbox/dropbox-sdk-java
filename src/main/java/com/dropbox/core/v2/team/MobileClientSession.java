@@ -3,14 +3,25 @@
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonDateReader;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.Date;
@@ -18,14 +29,20 @@ import java.util.Date;
 /**
  * Information about linked Dropbox mobile client sessions
  */
+@JsonSerialize(using=MobileClientSession.Serializer.class)
+@JsonDeserialize(using=MobileClientSession.Deserializer.class)
 public class MobileClientSession extends DeviceSession {
     // struct MobileClientSession
 
-    private final String deviceName;
-    private final MobileClientPlatform clientType;
-    private final String clientVersion;
-    private final String osVersion;
-    private final String lastCarrier;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final String deviceName;
+    protected final MobileClientPlatform clientType;
+    protected final String clientVersion;
+    protected final String osVersion;
+    protected final String lastCarrier;
 
     /**
      * Information about linked Dropbox mobile client sessions
@@ -234,16 +251,16 @@ public class MobileClientSession extends DeviceSession {
         // be careful with inheritance
         else if (obj.getClass().equals(this.getClass())) {
             MobileClientSession other = (MobileClientSession) obj;
-            return ((this.deviceName == other.deviceName) || (this.deviceName.equals(other.deviceName)))
+            return ((this.sessionId == other.sessionId) || (this.sessionId.equals(other.sessionId)))
+                && ((this.deviceName == other.deviceName) || (this.deviceName.equals(other.deviceName)))
                 && ((this.clientType == other.clientType) || (this.clientType.equals(other.clientType)))
+                && ((this.ipAddress == other.ipAddress) || (this.ipAddress != null && this.ipAddress.equals(other.ipAddress)))
+                && ((this.country == other.country) || (this.country != null && this.country.equals(other.country)))
+                && ((this.created == other.created) || (this.created != null && this.created.equals(other.created)))
+                && ((this.updated == other.updated) || (this.updated != null && this.updated.equals(other.updated)))
                 && ((this.clientVersion == other.clientVersion) || (this.clientVersion != null && this.clientVersion.equals(other.clientVersion)))
                 && ((this.osVersion == other.osVersion) || (this.osVersion != null && this.osVersion.equals(other.osVersion)))
                 && ((this.lastCarrier == other.lastCarrier) || (this.lastCarrier != null && this.lastCarrier.equals(other.lastCarrier)))
-                && ((this.getSessionId() == other.getSessionId()) || (this.getSessionId().equals(other.getSessionId())))
-                && ((this.getIpAddress() == other.getIpAddress()) || (this.getIpAddress() != null && this.getIpAddress().equals(other.getIpAddress())))
-                && ((this.getCountry() == other.getCountry()) || (this.getCountry() != null && this.getCountry().equals(other.getCountry())))
-                && ((this.getCreated() == other.getCreated()) || (this.getCreated() != null && this.getCreated().equals(other.getCreated())))
-                && ((this.getUpdated() == other.getUpdated()) || (this.getUpdated() != null && this.getUpdated().equals(other.getUpdated())))
                 ;
         }
         else {
@@ -253,58 +270,94 @@ public class MobileClientSession extends DeviceSession {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static MobileClientSession fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
+    static final class Serializer extends StructJsonSerializer<MobileClientSession> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(MobileClientSession.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(MobileClientSession.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<MobileClientSession> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(MobileClientSession value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("session_id", value.sessionId);
+            g.writeObjectField("device_name", value.deviceName);
+            g.writeObjectField("client_type", value.clientType);
+            if (value.ipAddress != null) {
+                g.writeObjectField("ip_address", value.ipAddress);
+            }
+            if (value.country != null) {
+                g.writeObjectField("country", value.country);
+            }
+            if (value.created != null) {
+                g.writeObjectField("created", value.created);
+            }
+            if (value.updated != null) {
+                g.writeObjectField("updated", value.updated);
+            }
+            if (value.clientVersion != null) {
+                g.writeObjectField("client_version", value.clientVersion);
+            }
+            if (value.osVersion != null) {
+                g.writeObjectField("os_version", value.osVersion);
+            }
+            if (value.lastCarrier != null) {
+                g.writeObjectField("last_carrier", value.lastCarrier);
+            }
+        }
     }
 
-    public static final JsonWriter<MobileClientSession> _JSON_WRITER = new JsonWriter<MobileClientSession>() {
-        public final void write(MobileClientSession x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            DeviceSession._JSON_WRITER.writeFields(x, g);
-            MobileClientSession._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
-        }
-        public final void writeFields(MobileClientSession x, JsonGenerator g) throws IOException {
-            g.writeFieldName("device_name");
-            g.writeString(x.deviceName);
-            g.writeFieldName("client_type");
-            MobileClientPlatform._JSON_WRITER.write(x.clientType, g);
-            if (x.clientVersion != null) {
-                g.writeFieldName("client_version");
-                g.writeString(x.clientVersion);
-            }
-            if (x.osVersion != null) {
-                g.writeFieldName("os_version");
-                g.writeString(x.osVersion);
-            }
-            if (x.lastCarrier != null) {
-                g.writeFieldName("last_carrier");
-                g.writeString(x.lastCarrier);
-            }
-        }
-    };
+    static final class Deserializer extends StructJsonDeserializer<MobileClientSession> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonReader<MobileClientSession> _JSON_READER = new JsonReader<MobileClientSession>() {
-        public final MobileClientSession read(JsonParser parser) throws IOException, JsonReadException {
-            MobileClientSession result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+        public Deserializer() {
+            super(MobileClientSession.class);
         }
 
-        public final MobileClientSession readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(MobileClientSession.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<MobileClientSession> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public MobileClientSession deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             String sessionId = null;
             String deviceName = null;
             MobileClientPlatform clientType = null;
@@ -315,63 +368,66 @@ public class MobileClientSession extends DeviceSession {
             String clientVersion = null;
             String osVersion = null;
             String lastCarrier = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("session_id".equals(fieldName)) {
-                    sessionId = JsonReader.StringReader
-                        .readField(parser, "session_id", sessionId);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("session_id".equals(_field)) {
+                    sessionId = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("device_name".equals(fieldName)) {
-                    deviceName = JsonReader.StringReader
-                        .readField(parser, "device_name", deviceName);
+                else if ("device_name".equals(_field)) {
+                    deviceName = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("client_type".equals(fieldName)) {
-                    clientType = MobileClientPlatform._JSON_READER
-                        .readField(parser, "client_type", clientType);
+                else if ("client_type".equals(_field)) {
+                    clientType = _p.readValueAs(MobileClientPlatform.class);
+                    _p.nextToken();
                 }
-                else if ("ip_address".equals(fieldName)) {
-                    ipAddress = JsonReader.StringReader
-                        .readField(parser, "ip_address", ipAddress);
+                else if ("ip_address".equals(_field)) {
+                    ipAddress = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("country".equals(fieldName)) {
-                    country = JsonReader.StringReader
-                        .readField(parser, "country", country);
+                else if ("country".equals(_field)) {
+                    country = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("created".equals(fieldName)) {
-                    created = JsonDateReader.DropboxV2
-                        .readField(parser, "created", created);
+                else if ("created".equals(_field)) {
+                    created = _ctx.parseDate(getStringValue(_p));
+                    _p.nextToken();
                 }
-                else if ("updated".equals(fieldName)) {
-                    updated = JsonDateReader.DropboxV2
-                        .readField(parser, "updated", updated);
+                else if ("updated".equals(_field)) {
+                    updated = _ctx.parseDate(getStringValue(_p));
+                    _p.nextToken();
                 }
-                else if ("client_version".equals(fieldName)) {
-                    clientVersion = JsonReader.StringReader
-                        .readField(parser, "client_version", clientVersion);
+                else if ("client_version".equals(_field)) {
+                    clientVersion = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("os_version".equals(fieldName)) {
-                    osVersion = JsonReader.StringReader
-                        .readField(parser, "os_version", osVersion);
+                else if ("os_version".equals(_field)) {
+                    osVersion = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("last_carrier".equals(fieldName)) {
-                    lastCarrier = JsonReader.StringReader
-                        .readField(parser, "last_carrier", lastCarrier);
+                else if ("last_carrier".equals(_field)) {
+                    lastCarrier = getStringValue(_p);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (sessionId == null) {
-                throw new JsonReadException("Required field \"session_id\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"session_id\" is missing.");
             }
             if (deviceName == null) {
-                throw new JsonReadException("Required field \"device_name\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"device_name\" is missing.");
             }
             if (clientType == null) {
-                throw new JsonReadException("Required field \"client_type\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"client_type\" is missing.");
             }
+
             return new MobileClientSession(sessionId, deviceName, clientType, ipAddress, country, created, updated, clientVersion, osVersion, lastCarrier);
         }
-    };
+    }
 }

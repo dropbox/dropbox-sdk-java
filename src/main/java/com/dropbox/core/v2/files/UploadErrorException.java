@@ -10,9 +10,10 @@ import com.dropbox.core.LocalizedText;
  * Exception thrown when the server responds with a {@link UploadError} error.
  */
 public class UploadErrorException extends DbxApiException {
+    private static final long serialVersionUID = 0L;
 
     /**
-     * The error reported by {@link DbxFiles#upload(String)}.
+     * The error reported by {@link DbxUserFilesRequests#upload(String)}.
      */
     public final UploadError errorValue;
 

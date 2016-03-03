@@ -5,19 +5,37 @@ package com.dropbox.core.v2.files;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
-public class GetMetadataArg {
+@JsonSerialize(using=GetMetadataArg.Serializer.class)
+@JsonDeserialize(using=GetMetadataArg.Deserializer.class)
+class GetMetadataArg {
     // struct GetMetadataArg
 
-    private final String path;
-    private final boolean includeMediaInfo;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final String path;
+    protected final boolean includeMediaInfo;
 
     /**
      *
@@ -100,66 +118,96 @@ public class GetMetadataArg {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static GetMetadataArg fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
+    static final class Serializer extends StructJsonSerializer<GetMetadataArg> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(GetMetadataArg.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(GetMetadataArg.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<GetMetadataArg> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(GetMetadataArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("path", value.path);
+            g.writeObjectField("include_media_info", value.includeMediaInfo);
+        }
     }
 
-    public static final JsonWriter<GetMetadataArg> _JSON_WRITER = new JsonWriter<GetMetadataArg>() {
-        public final void write(GetMetadataArg x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            GetMetadataArg._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
-        }
-        public final void writeFields(GetMetadataArg x, JsonGenerator g) throws IOException {
-            g.writeFieldName("path");
-            g.writeString(x.path);
-            g.writeFieldName("include_media_info");
-            g.writeBoolean(x.includeMediaInfo);
-        }
-    };
+    static final class Deserializer extends StructJsonDeserializer<GetMetadataArg> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonReader<GetMetadataArg> _JSON_READER = new JsonReader<GetMetadataArg>() {
-        public final GetMetadataArg read(JsonParser parser) throws IOException, JsonReadException {
-            GetMetadataArg result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+        public Deserializer() {
+            super(GetMetadataArg.class);
         }
 
-        public final GetMetadataArg readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(GetMetadataArg.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<GetMetadataArg> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public GetMetadataArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             String path = null;
             Boolean includeMediaInfo = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("path".equals(fieldName)) {
-                    path = JsonReader.StringReader
-                        .readField(parser, "path", path);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("path".equals(_field)) {
+                    path = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("include_media_info".equals(fieldName)) {
-                    includeMediaInfo = JsonReader.BooleanReader
-                        .readField(parser, "include_media_info", includeMediaInfo);
+                else if ("include_media_info".equals(_field)) {
+                    includeMediaInfo = _p.getValueAsBoolean();
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (path == null) {
-                throw new JsonReadException("Required field \"path\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"path\" is missing.");
             }
+
             return new GetMetadataArg(path, includeMediaInfo);
         }
-    };
+    }
 }

@@ -11,10 +11,11 @@ import com.dropbox.core.LocalizedText;
  * GroupMemberSelectorError} error.
  */
 public class GroupMemberSelectorErrorException extends DbxApiException {
+    private static final long serialVersionUID = 0L;
 
     /**
      * The error reported by {@link
-     * DbxTeam#groupsMembersSetAccessType(GroupSelector,UserSelectorArg,GroupAccessType)}.
+     * DbxTeamTeamRequests#groupsMembersSetAccessType(GroupSelector,UserSelectorArg,GroupAccessType)}.
      */
     public final GroupMemberSelectorError errorValue;
 

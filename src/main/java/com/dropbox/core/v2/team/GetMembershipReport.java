@@ -3,14 +3,25 @@
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonArrayReader;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.List;
@@ -20,14 +31,20 @@ import java.util.List;
  * of values, one value per day. If there is no data for a day, then the value
  * will be None.
  */
+@JsonSerialize(using=GetMembershipReport.Serializer.class)
+@JsonDeserialize(using=GetMembershipReport.Deserializer.class)
 public class GetMembershipReport extends BaseDfbReport {
     // struct GetMembershipReport
 
-    private final List<Long> teamSize;
-    private final List<Long> pendingInvites;
-    private final List<Long> membersJoined;
-    private final List<Long> suspendedMembers;
-    private final List<Long> licenses;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final List<Long> teamSize;
+    protected final List<Long> pendingInvites;
+    protected final List<Long> membersJoined;
+    protected final List<Long> suspendedMembers;
+    protected final List<Long> licenses;
 
     /**
      * Membership Report Result. Each of the items in the storage report is an
@@ -154,10 +171,15 @@ public class GetMembershipReport extends BaseDfbReport {
 
     @Override
     public int hashCode() {
-        // objects containing lists are not hash-able. This is used as a safeguard
-        // against adding this object to a HashSet or HashMap. Since list fields are
-        // mutable, it is not safe to compute a hashCode here.
-        return System.identityHashCode(this);
+        int hash = java.util.Arrays.hashCode(new Object [] {
+            teamSize,
+            pendingInvites,
+            membersJoined,
+            suspendedMembers,
+            licenses
+        });
+        hash = (31 * super.hashCode()) + hash;
+        return hash;
     }
 
     @Override
@@ -168,12 +190,12 @@ public class GetMembershipReport extends BaseDfbReport {
         // be careful with inheritance
         else if (obj.getClass().equals(this.getClass())) {
             GetMembershipReport other = (GetMembershipReport) obj;
-            return ((this.teamSize == other.teamSize) || (this.teamSize.equals(other.teamSize)))
+            return ((this.startDate == other.startDate) || (this.startDate.equals(other.startDate)))
+                && ((this.teamSize == other.teamSize) || (this.teamSize.equals(other.teamSize)))
                 && ((this.pendingInvites == other.pendingInvites) || (this.pendingInvites.equals(other.pendingInvites)))
                 && ((this.membersJoined == other.membersJoined) || (this.membersJoined.equals(other.membersJoined)))
                 && ((this.suspendedMembers == other.suspendedMembers) || (this.suspendedMembers.equals(other.suspendedMembers)))
                 && ((this.licenses == other.licenses) || (this.licenses.equals(other.licenses)))
-                && ((this.getStartDate() == other.getStartDate()) || (this.getStartDate().equals(other.getStartDate())))
                 ;
         }
         else {
@@ -183,138 +205,180 @@ public class GetMembershipReport extends BaseDfbReport {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static GetMembershipReport fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
+    static final class Serializer extends StructJsonSerializer<GetMembershipReport> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(GetMembershipReport.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(GetMembershipReport.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<GetMembershipReport> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(GetMembershipReport value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("start_date", value.startDate);
+            g.writeObjectField("team_size", value.teamSize);
+            g.writeObjectField("pending_invites", value.pendingInvites);
+            g.writeObjectField("members_joined", value.membersJoined);
+            g.writeObjectField("suspended_members", value.suspendedMembers);
+            g.writeObjectField("licenses", value.licenses);
+        }
     }
 
-    public static final JsonWriter<GetMembershipReport> _JSON_WRITER = new JsonWriter<GetMembershipReport>() {
-        public final void write(GetMembershipReport x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            BaseDfbReport._JSON_WRITER.writeFields(x, g);
-            GetMembershipReport._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
-        }
-        public final void writeFields(GetMembershipReport x, JsonGenerator g) throws IOException {
-            g.writeFieldName("team_size");
-            g.writeStartArray();
-            for (Long item: x.teamSize) {
-                if (item != null) {
-                    g.writeNumber(item);
-                }
-            }
-            g.writeEndArray();
-            g.writeFieldName("pending_invites");
-            g.writeStartArray();
-            for (Long item: x.pendingInvites) {
-                if (item != null) {
-                    g.writeNumber(item);
-                }
-            }
-            g.writeEndArray();
-            g.writeFieldName("members_joined");
-            g.writeStartArray();
-            for (Long item: x.membersJoined) {
-                if (item != null) {
-                    g.writeNumber(item);
-                }
-            }
-            g.writeEndArray();
-            g.writeFieldName("suspended_members");
-            g.writeStartArray();
-            for (Long item: x.suspendedMembers) {
-                if (item != null) {
-                    g.writeNumber(item);
-                }
-            }
-            g.writeEndArray();
-            g.writeFieldName("licenses");
-            g.writeStartArray();
-            for (Long item: x.licenses) {
-                if (item != null) {
-                    g.writeNumber(item);
-                }
-            }
-            g.writeEndArray();
-        }
-    };
+    static final class Deserializer extends StructJsonDeserializer<GetMembershipReport> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonReader<GetMembershipReport> _JSON_READER = new JsonReader<GetMembershipReport>() {
-        public final GetMembershipReport read(JsonParser parser) throws IOException, JsonReadException {
-            GetMembershipReport result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+        public Deserializer() {
+            super(GetMembershipReport.class);
         }
 
-        public final GetMembershipReport readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(GetMembershipReport.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<GetMembershipReport> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public GetMembershipReport deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             String startDate = null;
             List<Long> teamSize = null;
             List<Long> pendingInvites = null;
             List<Long> membersJoined = null;
             List<Long> suspendedMembers = null;
             List<Long> licenses = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("start_date".equals(fieldName)) {
-                    startDate = JsonReader.StringReader
-                        .readField(parser, "start_date", startDate);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("start_date".equals(_field)) {
+                    startDate = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("team_size".equals(fieldName)) {
-                    teamSize = JsonArrayReader.mk(JsonReader.UInt64Reader)
-                        .readField(parser, "team_size", teamSize);
+                else if ("team_size".equals(_field)) {
+                    expectArrayStart(_p);
+                    teamSize = new java.util.ArrayList<Long>();
+                    while (!isArrayEnd(_p)) {
+                        Long _x = null;
+                        _x = _p.getLongValue();
+                        assertUnsigned(_p, _x);
+                        _p.nextToken();
+                        teamSize.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
                 }
-                else if ("pending_invites".equals(fieldName)) {
-                    pendingInvites = JsonArrayReader.mk(JsonReader.UInt64Reader)
-                        .readField(parser, "pending_invites", pendingInvites);
+                else if ("pending_invites".equals(_field)) {
+                    expectArrayStart(_p);
+                    pendingInvites = new java.util.ArrayList<Long>();
+                    while (!isArrayEnd(_p)) {
+                        Long _x = null;
+                        _x = _p.getLongValue();
+                        assertUnsigned(_p, _x);
+                        _p.nextToken();
+                        pendingInvites.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
                 }
-                else if ("members_joined".equals(fieldName)) {
-                    membersJoined = JsonArrayReader.mk(JsonReader.UInt64Reader)
-                        .readField(parser, "members_joined", membersJoined);
+                else if ("members_joined".equals(_field)) {
+                    expectArrayStart(_p);
+                    membersJoined = new java.util.ArrayList<Long>();
+                    while (!isArrayEnd(_p)) {
+                        Long _x = null;
+                        _x = _p.getLongValue();
+                        assertUnsigned(_p, _x);
+                        _p.nextToken();
+                        membersJoined.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
                 }
-                else if ("suspended_members".equals(fieldName)) {
-                    suspendedMembers = JsonArrayReader.mk(JsonReader.UInt64Reader)
-                        .readField(parser, "suspended_members", suspendedMembers);
+                else if ("suspended_members".equals(_field)) {
+                    expectArrayStart(_p);
+                    suspendedMembers = new java.util.ArrayList<Long>();
+                    while (!isArrayEnd(_p)) {
+                        Long _x = null;
+                        _x = _p.getLongValue();
+                        assertUnsigned(_p, _x);
+                        _p.nextToken();
+                        suspendedMembers.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
                 }
-                else if ("licenses".equals(fieldName)) {
-                    licenses = JsonArrayReader.mk(JsonReader.UInt64Reader)
-                        .readField(parser, "licenses", licenses);
+                else if ("licenses".equals(_field)) {
+                    expectArrayStart(_p);
+                    licenses = new java.util.ArrayList<Long>();
+                    while (!isArrayEnd(_p)) {
+                        Long _x = null;
+                        _x = _p.getLongValue();
+                        assertUnsigned(_p, _x);
+                        _p.nextToken();
+                        licenses.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (startDate == null) {
-                throw new JsonReadException("Required field \"start_date\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"start_date\" is missing.");
             }
             if (teamSize == null) {
-                throw new JsonReadException("Required field \"team_size\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"team_size\" is missing.");
             }
             if (pendingInvites == null) {
-                throw new JsonReadException("Required field \"pending_invites\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"pending_invites\" is missing.");
             }
             if (membersJoined == null) {
-                throw new JsonReadException("Required field \"members_joined\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"members_joined\" is missing.");
             }
             if (suspendedMembers == null) {
-                throw new JsonReadException("Required field \"suspended_members\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"suspended_members\" is missing.");
             }
             if (licenses == null) {
-                throw new JsonReadException("Required field \"licenses\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"licenses\" is missing.");
             }
+
             return new GetMembershipReport(startDate, teamSize, pendingInvites, membersJoined, suspendedMembers, licenses);
         }
-    };
+    }
 }

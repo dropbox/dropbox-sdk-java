@@ -5,19 +5,37 @@ package com.dropbox.core.v2.team;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
+@JsonSerialize(using=RevokeDeviceSessionStatus.Serializer.class)
+@JsonDeserialize(using=RevokeDeviceSessionStatus.Deserializer.class)
 public class RevokeDeviceSessionStatus {
     // struct RevokeDeviceSessionStatus
 
-    private final boolean success;
-    private final RevokeDeviceSessionError errorType;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final boolean success;
+    protected final RevokeDeviceSessionError errorType;
 
     /**
      *
@@ -84,68 +102,98 @@ public class RevokeDeviceSessionStatus {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
-    }
-
-    public static RevokeDeviceSessionStatus fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
-
-    public static final JsonWriter<RevokeDeviceSessionStatus> _JSON_WRITER = new JsonWriter<RevokeDeviceSessionStatus>() {
-        public final void write(RevokeDeviceSessionStatus x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            RevokeDeviceSessionStatus._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
         }
-        public final void writeFields(RevokeDeviceSessionStatus x, JsonGenerator g) throws IOException {
-            g.writeFieldName("success");
-            g.writeBoolean(x.success);
-            if (x.errorType != null) {
-                g.writeFieldName("error_type");
-                RevokeDeviceSessionError._JSON_WRITER.write(x.errorType, g);
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
+    }
+
+    static final class Serializer extends StructJsonSerializer<RevokeDeviceSessionStatus> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(RevokeDeviceSessionStatus.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(RevokeDeviceSessionStatus.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<RevokeDeviceSessionStatus> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(RevokeDeviceSessionStatus value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("success", value.success);
+            if (value.errorType != null) {
+                g.writeObjectField("error_type", value.errorType);
             }
         }
-    };
+    }
 
-    public static final JsonReader<RevokeDeviceSessionStatus> _JSON_READER = new JsonReader<RevokeDeviceSessionStatus>() {
-        public final RevokeDeviceSessionStatus read(JsonParser parser) throws IOException, JsonReadException {
-            RevokeDeviceSessionStatus result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+    static final class Deserializer extends StructJsonDeserializer<RevokeDeviceSessionStatus> {
+        private static final long serialVersionUID = 0L;
+
+        public Deserializer() {
+            super(RevokeDeviceSessionStatus.class);
         }
 
-        public final RevokeDeviceSessionStatus readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(RevokeDeviceSessionStatus.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<RevokeDeviceSessionStatus> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public RevokeDeviceSessionStatus deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             Boolean success = null;
             RevokeDeviceSessionError errorType = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("success".equals(fieldName)) {
-                    success = JsonReader.BooleanReader
-                        .readField(parser, "success", success);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("success".equals(_field)) {
+                    success = _p.getValueAsBoolean();
+                    _p.nextToken();
                 }
-                else if ("error_type".equals(fieldName)) {
-                    errorType = RevokeDeviceSessionError._JSON_READER
-                        .readField(parser, "error_type", errorType);
+                else if ("error_type".equals(_field)) {
+                    errorType = _p.readValueAs(RevokeDeviceSessionError.class);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (success == null) {
-                throw new JsonReadException("Required field \"success\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"success\" is missing.");
             }
+
             return new RevokeDeviceSessionStatus(success, errorType);
         }
-    };
+    }
 }

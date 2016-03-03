@@ -5,18 +5,36 @@ package com.dropbox.core.v2.users;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
-public class GetAccountArg {
+@JsonSerialize(using=GetAccountArg.Serializer.class)
+@JsonDeserialize(using=GetAccountArg.Deserializer.class)
+class GetAccountArg {
     // struct GetAccountArg
 
-    private final String accountId;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final String accountId;
 
     /**
      *
@@ -73,59 +91,90 @@ public class GetAccountArg {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static GetAccountArg fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
+    static final class Serializer extends StructJsonSerializer<GetAccountArg> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(GetAccountArg.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(GetAccountArg.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<GetAccountArg> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(GetAccountArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("account_id", value.accountId);
+        }
     }
 
-    public static final JsonWriter<GetAccountArg> _JSON_WRITER = new JsonWriter<GetAccountArg>() {
-        public final void write(GetAccountArg x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            GetAccountArg._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
-        }
-        public final void writeFields(GetAccountArg x, JsonGenerator g) throws IOException {
-            g.writeFieldName("account_id");
-            g.writeString(x.accountId);
-        }
-    };
+    static final class Deserializer extends StructJsonDeserializer<GetAccountArg> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonReader<GetAccountArg> _JSON_READER = new JsonReader<GetAccountArg>() {
-        public final GetAccountArg read(JsonParser parser) throws IOException, JsonReadException {
-            GetAccountArg result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+        public Deserializer() {
+            super(GetAccountArg.class);
         }
 
-        public final GetAccountArg readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(GetAccountArg.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<GetAccountArg> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public GetAccountArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             String accountId = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("account_id".equals(fieldName)) {
-                    accountId = JsonReader.StringReader
-                        .readField(parser, "account_id", accountId);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("account_id".equals(_field)) {
+                    accountId = getStringValue(_p);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (accountId == null) {
-                throw new JsonReadException("Required field \"account_id\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"account_id\" is missing.");
             }
+
             return new GetAccountArg(accountId);
         }
-    };
+    }
 }

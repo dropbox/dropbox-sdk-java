@@ -11,10 +11,11 @@ import com.dropbox.core.LocalizedText;
  * ListFolderMembersContinueError} error.
  */
 public class ListFolderMembersContinueErrorException extends DbxApiException {
+    private static final long serialVersionUID = 0L;
 
     /**
      * The error reported by {@link
-     * DbxSharing#listFolderMembersContinue(String)}.
+     * DbxUserSharingRequests#listFolderMembersContinue(String)}.
      */
     public final ListFolderMembersContinueError errorValue;
 

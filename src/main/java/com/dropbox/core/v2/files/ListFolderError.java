@@ -5,16 +5,45 @@ package com.dropbox.core.v2.files;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.UnionJsonDeserializer;
+import com.dropbox.core.json.UnionJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
+/**
+ * This class is an open tagged union.  Tagged unions instances are always
+ * associated to a specific tag.  This means only one of the {@code isAbc()}
+ * methods will return {@code true}. You can use {@link #tag()} to determine the
+ * tag associated with this instance.
+ *
+ * <p> Open unions may be extended in the future with additional tags. If a new
+ * tag is introduced that this SDK does not recognized, the {@link #OTHER} value
+ * will be used. </p>
+ */
+@JsonSerialize(using=ListFolderError.Serializer.class)
+@JsonDeserialize(using=ListFolderError.Deserializer.class)
 public final class ListFolderError {
     // union ListFolderError
+
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link ListFolderError}.
@@ -27,13 +56,9 @@ public final class ListFolderError {
         OTHER; // *catch_all
     }
 
-    private static final java.util.HashMap<String, Tag> VALUES_;
-    static {
-        VALUES_ = new java.util.HashMap<String, Tag>();
-        VALUES_.put("path", Tag.PATH);
-        VALUES_.put("other", Tag.OTHER);
-    }
-
+    /**
+     * An unspecified error.
+     */
     public static final ListFolderError OTHER = new ListFolderError(Tag.OTHER, null);
 
     private final Tag tag;
@@ -52,9 +77,13 @@ public final class ListFolderError {
      * Returns the tag for this instance.
      *
      * <p> This class is a tagged union.  Tagged unions instances are always
-     * associated to a specific tag.  Callers are recommended to use the tag
-     * value in a {@code switch} statement to determine how to properly handle
-     * this {@code ListFolderError}. </p>
+     * associated to a specific tag.  This means only one of the {@code isXyz()}
+     * methods will return {@code true}. Callers are recommended to use the tag
+     * value in a {@code switch} statement to properly handle the different
+     * values for this {@code ListFolderError}. </p>
+     *
+     * <p> If a tag returned by the server is unrecognized by this SDK, the
+     * {@link Tag#OTHER} value will be used. </p>
      *
      * @return the tag for this instance.
      */
@@ -66,7 +95,7 @@ public final class ListFolderError {
      * Returns {@code true} if this instance has the tag {@link Tag#PATH},
      * {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link Tag#PATH},
+     * @return {@code true} if this instance is tagged as {@link Tag#PATH},
      *     {@code false} otherwise.
      */
     public boolean isPath() {
@@ -77,8 +106,7 @@ public final class ListFolderError {
      * Returns an instance of {@code ListFolderError} that has its tag set to
      * {@link Tag#PATH}.
      *
-     * @param value  {@link ListFolderError#path} value to assign to this
-     *     instance.
+     * @param value  value to assign to this instance.
      *
      * @return Instance of {@code ListFolderError} with its tag set to {@link
      *     Tag#PATH}.
@@ -111,7 +139,7 @@ public final class ListFolderError {
      * Returns {@code true} if this instance has the tag {@link Tag#OTHER},
      * {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link Tag#OTHER},
+     * @return {@code true} if this instance is tagged as {@link Tag#OTHER},
      *     {@code false} otherwise.
      */
     public boolean isOther() {
@@ -153,88 +181,83 @@ public final class ListFolderError {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static ListFolderError fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
+    static final class Serializer extends UnionJsonSerializer<ListFolderError> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonWriter<ListFolderError> _JSON_WRITER = new JsonWriter<ListFolderError>() {
-        public final void write(ListFolderError x, JsonGenerator g) throws IOException {
-            switch (x.tag) {
+        public Serializer() {
+            super(ListFolderError.class);
+        }
+
+        @Override
+        public void serialize(ListFolderError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            switch (value.tag) {
                 case PATH:
                     g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("path");
-                    g.writeFieldName("path");
-                    LookupError._JSON_WRITER.write(x.getPathValue(), g);
+                    g.writeStringField(".tag", "path");
+                    g.writeObjectField("path", value.pathValue);
                     g.writeEndObject();
                     break;
                 case OTHER:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("other");
-                    g.writeEndObject();
                     break;
             }
         }
-    };
+    }
 
-    public static final JsonReader<ListFolderError> _JSON_READER = new JsonReader<ListFolderError>() {
+    static final class Deserializer extends UnionJsonDeserializer<ListFolderError, Tag> {
+        private static final long serialVersionUID = 0L;
 
-        public final ListFolderError read(JsonParser parser) throws IOException, JsonReadException {
-            if (parser.getCurrentToken() == JsonToken.VALUE_STRING) {
-                String text = parser.getText();
-                parser.nextToken();
-                Tag tag = VALUES_.get(text);
-                if (tag == null) {
-                    return ListFolderError.OTHER;
-                }
-                switch (tag) {
-                    case OTHER: return ListFolderError.OTHER;
-                }
-                throw new JsonReadException("Tag " + tag + " requires a value", parser.getTokenLocation());
-            }
-            JsonReader.expectObjectStart(parser);
-            String[] tags = readTags(parser);
-            assert tags != null && tags.length == 1;
-            String text = tags[0];
-            Tag tag = VALUES_.get(text);
-            ListFolderError value = null;
-            if (tag != null) {
-                switch (tag) {
-                    case PATH: {
-                        LookupError v = null;
-                        assert parser.getCurrentToken() == JsonToken.FIELD_NAME;
-                        text = parser.getText();
-                        assert tags[0].equals(text);
-                        parser.nextToken();
-                        v = LookupError._JSON_READER
-                            .readField(parser, "path", v);
-                        value = ListFolderError.path(v);
-                        break;
-                    }
-                    case OTHER: {
-                        value = ListFolderError.OTHER;
-                        break;
-                    }
-                }
-            }
-            JsonReader.expectObjectEnd(parser);
-            if (value == null) {
-                return ListFolderError.OTHER;
-            }
-            return value;
+        public Deserializer() {
+            super(ListFolderError.class, getTagMapping(), Tag.OTHER);
         }
 
-    };
+        @Override
+        public ListFolderError deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+            switch (_tag) {
+                case PATH: {
+                    LookupError value = null;
+                    expectField(_p, "path");
+                    value = _p.readValueAs(LookupError.class);
+                    _p.nextToken();
+                    return ListFolderError.path(value);
+                }
+                case OTHER: {
+                    return ListFolderError.OTHER;
+                }
+            }
+            // should be impossible to get here
+            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
+        }
+
+        private static Map<String, ListFolderError.Tag> getTagMapping() {
+            Map<String, ListFolderError.Tag> values = new HashMap<String, ListFolderError.Tag>();
+            values.put("path", ListFolderError.Tag.PATH);
+            values.put("other", ListFolderError.Tag.OTHER);
+            return Collections.unmodifiableMap(values);
+        }
+    }
 }

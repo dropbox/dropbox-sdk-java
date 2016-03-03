@@ -3,14 +3,25 @@
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonDateReader;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.Date;
@@ -18,15 +29,21 @@ import java.util.Date;
 /**
  * Information on linked third party applications
  */
+@JsonSerialize(using=ApiApp.Serializer.class)
+@JsonDeserialize(using=ApiApp.Deserializer.class)
 public class ApiApp {
     // struct ApiApp
 
-    private final String appId;
-    private final String appName;
-    private final String publisher;
-    private final String publisherUrl;
-    private final Date linked;
-    private final boolean isAppFolder;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final String appId;
+    protected final String appName;
+    protected final String publisher;
+    protected final String publisherUrl;
+    protected final Date linked;
+    protected final boolean isAppFolder;
 
     /**
      * Information on linked third party applications
@@ -245,10 +262,10 @@ public class ApiApp {
             ApiApp other = (ApiApp) obj;
             return ((this.appId == other.appId) || (this.appId.equals(other.appId)))
                 && ((this.appName == other.appName) || (this.appName.equals(other.appName)))
+                && (this.isAppFolder == other.isAppFolder)
                 && ((this.publisher == other.publisher) || (this.publisher != null && this.publisher.equals(other.publisher)))
                 && ((this.publisherUrl == other.publisherUrl) || (this.publisherUrl != null && this.publisherUrl.equals(other.publisherUrl)))
                 && ((this.linked == other.linked) || (this.linked != null && this.linked.equals(other.linked)))
-                && (this.isAppFolder == other.isAppFolder)
                 ;
         }
         else {
@@ -258,106 +275,132 @@ public class ApiApp {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static ApiApp fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
+    static final class Serializer extends StructJsonSerializer<ApiApp> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(ApiApp.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(ApiApp.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<ApiApp> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(ApiApp value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("app_id", value.appId);
+            g.writeObjectField("app_name", value.appName);
+            g.writeObjectField("is_app_folder", value.isAppFolder);
+            if (value.publisher != null) {
+                g.writeObjectField("publisher", value.publisher);
+            }
+            if (value.publisherUrl != null) {
+                g.writeObjectField("publisher_url", value.publisherUrl);
+            }
+            if (value.linked != null) {
+                g.writeObjectField("linked", value.linked);
+            }
+        }
     }
 
-    public static final JsonWriter<ApiApp> _JSON_WRITER = new JsonWriter<ApiApp>() {
-        public final void write(ApiApp x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            ApiApp._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
-        }
-        public final void writeFields(ApiApp x, JsonGenerator g) throws IOException {
-            g.writeFieldName("app_id");
-            g.writeString(x.appId);
-            g.writeFieldName("app_name");
-            g.writeString(x.appName);
-            if (x.publisher != null) {
-                g.writeFieldName("publisher");
-                g.writeString(x.publisher);
-            }
-            if (x.publisherUrl != null) {
-                g.writeFieldName("publisher_url");
-                g.writeString(x.publisherUrl);
-            }
-            if (x.linked != null) {
-                g.writeFieldName("linked");
-                writeDateIso(x.linked, g);
-            }
-            g.writeFieldName("is_app_folder");
-            g.writeBoolean(x.isAppFolder);
-        }
-    };
+    static final class Deserializer extends StructJsonDeserializer<ApiApp> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonReader<ApiApp> _JSON_READER = new JsonReader<ApiApp>() {
-        public final ApiApp read(JsonParser parser) throws IOException, JsonReadException {
-            ApiApp result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+        public Deserializer() {
+            super(ApiApp.class);
         }
 
-        public final ApiApp readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(ApiApp.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<ApiApp> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public ApiApp deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             String appId = null;
             String appName = null;
             Boolean isAppFolder = null;
             String publisher = null;
             String publisherUrl = null;
             Date linked = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("app_id".equals(fieldName)) {
-                    appId = JsonReader.StringReader
-                        .readField(parser, "app_id", appId);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("app_id".equals(_field)) {
+                    appId = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("app_name".equals(fieldName)) {
-                    appName = JsonReader.StringReader
-                        .readField(parser, "app_name", appName);
+                else if ("app_name".equals(_field)) {
+                    appName = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("is_app_folder".equals(fieldName)) {
-                    isAppFolder = JsonReader.BooleanReader
-                        .readField(parser, "is_app_folder", isAppFolder);
+                else if ("is_app_folder".equals(_field)) {
+                    isAppFolder = _p.getValueAsBoolean();
+                    _p.nextToken();
                 }
-                else if ("publisher".equals(fieldName)) {
-                    publisher = JsonReader.StringReader
-                        .readField(parser, "publisher", publisher);
+                else if ("publisher".equals(_field)) {
+                    publisher = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("publisher_url".equals(fieldName)) {
-                    publisherUrl = JsonReader.StringReader
-                        .readField(parser, "publisher_url", publisherUrl);
+                else if ("publisher_url".equals(_field)) {
+                    publisherUrl = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("linked".equals(fieldName)) {
-                    linked = JsonDateReader.DropboxV2
-                        .readField(parser, "linked", linked);
+                else if ("linked".equals(_field)) {
+                    linked = _ctx.parseDate(getStringValue(_p));
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (appId == null) {
-                throw new JsonReadException("Required field \"app_id\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"app_id\" is missing.");
             }
             if (appName == null) {
-                throw new JsonReadException("Required field \"app_name\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"app_name\" is missing.");
             }
             if (isAppFolder == null) {
-                throw new JsonReadException("Required field \"is_app_folder\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"is_app_folder\" is missing.");
             }
+
             return new ApiApp(appId, appName, isAppFolder, publisher, publisherUrl, linked);
         }
-    };
+    }
 }

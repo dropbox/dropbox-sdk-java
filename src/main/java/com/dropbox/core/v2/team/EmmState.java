@@ -5,14 +5,29 @@ package com.dropbox.core.v2.team;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.UnionJsonDeserializer;
+import com.dropbox.core.json.UnionJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
+@JsonSerialize(using=EmmState.Serializer.class)
+@JsonDeserialize(using=EmmState.Deserializer.class)
 public enum EmmState {
     // union EmmState
     /**
@@ -27,59 +42,64 @@ public enum EmmState {
      * Emm token is required
      */
     REQUIRED,
+    /**
+     * Catch-all used for unknown tag values returned by the Dropbox servers.
+     *
+     * <p> Receiving a catch-all value typically indicates this SDK version is
+     * not up to date. Consider updating your SDK version to handle the new
+     * tags. </p>
+     */
     OTHER; // *catch_all
 
-    private static final java.util.HashMap<String, EmmState> VALUES_;
-    static {
-        VALUES_ = new java.util.HashMap<String, EmmState>();
-        VALUES_.put("disabled", DISABLED);
-        VALUES_.put("optional", OPTIONAL);
-        VALUES_.put("required", REQUIRED);
-        VALUES_.put("other", OTHER);
-    }
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
-    }
+    static final class Serializer extends UnionJsonSerializer<EmmState> {
+        private static final long serialVersionUID = 0L;
 
-    public static EmmState fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
+        public Serializer() {
+            super(EmmState.class);
+        }
 
-    public static final JsonWriter<EmmState> _JSON_WRITER = new JsonWriter<EmmState>() {
-        public void write(EmmState x, JsonGenerator g) throws IOException {
-            switch (x) {
+        @Override
+        public void serialize(EmmState value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            switch (value) {
                 case DISABLED:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("disabled");
-                    g.writeEndObject();
                     break;
                 case OPTIONAL:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("optional");
-                    g.writeEndObject();
                     break;
                 case REQUIRED:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("required");
-                    g.writeEndObject();
                     break;
                 case OTHER:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("other");
-                    g.writeEndObject();
                     break;
             }
         }
-    };
+    }
 
-    public static final JsonReader<EmmState> _JSON_READER = new JsonReader<EmmState>() {
-        public final EmmState read(JsonParser parser) throws IOException, JsonReadException {
-            return JsonReader.readEnum(parser, VALUES_, OTHER);
+    static final class Deserializer extends UnionJsonDeserializer<EmmState, EmmState> {
+        private static final long serialVersionUID = 0L;
+
+        public Deserializer() {
+            super(EmmState.class, getTagMapping(), EmmState.OTHER);
         }
-    };
+
+        @Override
+        public EmmState deserialize(EmmState _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+            return _tag;
+        }
+
+        private static Map<String, EmmState> getTagMapping() {
+            Map<String, EmmState> values = new HashMap<String, EmmState>();
+            values.put("disabled", EmmState.DISABLED);
+            values.put("optional", EmmState.OPTIONAL);
+            values.put("required", EmmState.REQUIRED);
+            values.put("other", EmmState.OTHER);
+            return Collections.unmodifiableMap(values);
+        }
+    }
 }

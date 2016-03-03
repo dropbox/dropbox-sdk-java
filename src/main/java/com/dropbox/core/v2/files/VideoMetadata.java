@@ -3,14 +3,25 @@
 
 package com.dropbox.core.v2.files;
 
-import com.dropbox.core.json.JsonDateReader;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.Date;
@@ -18,10 +29,16 @@ import java.util.Date;
 /**
  * Metadata for a video.
  */
+@JsonSerialize(using=VideoMetadata.Serializer.class)
+@JsonDeserialize(using=VideoMetadata.Deserializer.class)
 public class VideoMetadata extends MediaMetadata {
     // struct VideoMetadata
 
-    private final Long duration;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final Long duration;
 
     /**
      * Metadata for a video.
@@ -117,10 +134,10 @@ public class VideoMetadata extends MediaMetadata {
         // be careful with inheritance
         else if (obj.getClass().equals(this.getClass())) {
             VideoMetadata other = (VideoMetadata) obj;
-            return ((this.duration == other.duration) || (this.duration != null && this.duration.equals(other.duration)))
-                && ((this.getDimensions() == other.getDimensions()) || (this.getDimensions() != null && this.getDimensions().equals(other.getDimensions())))
-                && ((this.getLocation() == other.getLocation()) || (this.getLocation() != null && this.getLocation().equals(other.getLocation())))
-                && ((this.getTimeTaken() == other.getTimeTaken()) || (this.getTimeTaken() != null && this.getTimeTaken().equals(other.getTimeTaken())))
+            return ((this.dimensions == other.dimensions) || (this.dimensions != null && this.dimensions.equals(other.dimensions)))
+                && ((this.location == other.location) || (this.location != null && this.location.equals(other.location)))
+                && ((this.timeTaken == other.timeTaken) || (this.timeTaken != null && this.timeTaken.equals(other.timeTaken)))
+                && ((this.duration == other.duration) || (this.duration != null && this.duration.equals(other.duration)))
                 ;
         }
         else {
@@ -130,84 +147,111 @@ public class VideoMetadata extends MediaMetadata {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static VideoMetadata fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
+    static final class Serializer extends StructJsonSerializer<VideoMetadata> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonWriter<VideoMetadata> _JSON_WRITER = new JsonWriter<VideoMetadata>() {
-        public final void write(VideoMetadata x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
+        public Serializer() {
+            super(VideoMetadata.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(VideoMetadata.class, unwrapping);
+        }
+
+        @Override
+        protected void serializeFields(VideoMetadata value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
             g.writeStringField(".tag", "video");
-            MediaMetadata._JSON_WRITER.writeFields(x, g);
-            VideoMetadata._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
-        }
-        public final void writeFields(VideoMetadata x, JsonGenerator g) throws IOException {
-            if (x.duration != null) {
-                g.writeFieldName("duration");
-                g.writeNumber(x.duration);
+            if (value.dimensions != null) {
+                g.writeObjectField("dimensions", value.dimensions);
+            }
+            if (value.location != null) {
+                g.writeObjectField("location", value.location);
+            }
+            if (value.timeTaken != null) {
+                g.writeObjectField("time_taken", value.timeTaken);
+            }
+            if (value.duration != null) {
+                g.writeObjectField("duration", value.duration);
             }
         }
-    };
+    }
 
-    public static final JsonReader<VideoMetadata> _JSON_READER = new JsonReader<VideoMetadata>() {
-        public final VideoMetadata read(JsonParser parser) throws IOException, JsonReadException {
-            VideoMetadata result;
-            JsonReader.expectObjectStart(parser);
-            String [] tags = readTags(parser);
-            result = readFromTags(tags, parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+    static final class Deserializer extends StructJsonDeserializer<VideoMetadata> {
+        private static final long serialVersionUID = 0L;
+
+        public Deserializer() {
+            super(VideoMetadata.class);
         }
 
-        public final VideoMetadata readFromTags(String [] tags, JsonParser parser) throws IOException, JsonReadException {
-            if (tags != null) {
-                assert tags.length >= 1;
-                assert "video".equals(tags[0]);
-            }
-            return readFields(parser);
+        public Deserializer(boolean unwrapping) {
+            super(VideoMetadata.class, unwrapping);
         }
 
-        public final VideoMetadata readFields(JsonParser parser) throws IOException, JsonReadException {
+        @Override
+        protected JsonDeserializer<VideoMetadata> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public VideoMetadata deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+            String _subtype_tag = readEnumeratedSubtypeTag(_p, "video");
+
             Dimensions dimensions = null;
             GpsCoordinates location = null;
             Date timeTaken = null;
             Long duration = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("dimensions".equals(fieldName)) {
-                    dimensions = Dimensions._JSON_READER
-                        .readField(parser, "dimensions", dimensions);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("dimensions".equals(_field)) {
+                    dimensions = _p.readValueAs(Dimensions.class);
+                    _p.nextToken();
                 }
-                else if ("location".equals(fieldName)) {
-                    location = GpsCoordinates._JSON_READER
-                        .readField(parser, "location", location);
+                else if ("location".equals(_field)) {
+                    location = _p.readValueAs(GpsCoordinates.class);
+                    _p.nextToken();
                 }
-                else if ("time_taken".equals(fieldName)) {
-                    timeTaken = JsonDateReader.DropboxV2
-                        .readField(parser, "time_taken", timeTaken);
+                else if ("time_taken".equals(_field)) {
+                    timeTaken = _ctx.parseDate(getStringValue(_p));
+                    _p.nextToken();
                 }
-                else if ("duration".equals(fieldName)) {
-                    duration = JsonReader.UInt64Reader
-                        .readField(parser, "duration", duration);
+                else if ("duration".equals(_field)) {
+                    duration = _p.getLongValue();
+                    assertUnsigned(_p, duration);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
+
             return new VideoMetadata(dimensions, location, timeTaken, duration);
         }
-    };
+    }
 }

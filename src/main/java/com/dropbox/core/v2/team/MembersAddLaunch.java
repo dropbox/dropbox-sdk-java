@@ -3,20 +3,44 @@
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonArrayReader;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.UnionJsonDeserializer;
+import com.dropbox.core.json.UnionJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+/**
+ * This class is a tagged union.  Tagged unions instances are always associated
+ * to a specific tag.  This means only one of the {@code isAbc()} methods will
+ * return {@code true}. You can use {@link #tag()} to determine the tag
+ * associated with this instance.
+ */
+@JsonSerialize(using=MembersAddLaunch.Serializer.class)
+@JsonDeserialize(using=MembersAddLaunch.Deserializer.class)
 public final class MembersAddLaunch {
     // union MembersAddLaunch
+
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link MembersAddLaunch}.
@@ -29,12 +53,6 @@ public final class MembersAddLaunch {
          */
         ASYNC_JOB_ID, // String
         COMPLETE; // List<MemberAddResult>
-    }
-
-    private static final java.util.HashMap<String, Tag> VALUES_;
-    static {
-        VALUES_ = new java.util.HashMap<String, Tag>();
-        VALUES_.put("complete", Tag.COMPLETE);
     }
 
     private final Tag tag;
@@ -55,9 +73,10 @@ public final class MembersAddLaunch {
      * Returns the tag for this instance.
      *
      * <p> This class is a tagged union.  Tagged unions instances are always
-     * associated to a specific tag.  Callers are recommended to use the tag
-     * value in a {@code switch} statement to determine how to properly handle
-     * this {@code MembersAddLaunch}. </p>
+     * associated to a specific tag.  This means only one of the {@code isXyz()}
+     * methods will return {@code true}. Callers are recommended to use the tag
+     * value in a {@code switch} statement to properly handle the different
+     * values for this {@code MembersAddLaunch}. </p>
      *
      * @return the tag for this instance.
      */
@@ -69,7 +88,7 @@ public final class MembersAddLaunch {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#ASYNC_JOB_ID}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#ASYNC_JOB_ID}, {@code false} otherwise.
      */
     public boolean isAsyncJobId() {
@@ -84,8 +103,7 @@ public final class MembersAddLaunch {
      * string is an id that can be used to obtain the status of the asynchronous
      * job. </p>
      *
-     * @param value  {@link MembersAddLaunch#asyncJobId} value to assign to this
-     *     instance.
+     * @param value  value to assign to this instance.
      *
      * @return Instance of {@code MembersAddLaunch} with its tag set to {@link
      *     Tag#ASYNC_JOB_ID}.
@@ -125,8 +143,8 @@ public final class MembersAddLaunch {
      * Returns {@code true} if this instance has the tag {@link Tag#COMPLETE},
      * {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
-     *     Tag#COMPLETE}, {@code false} otherwise.
+     * @return {@code true} if this instance is tagged as {@link Tag#COMPLETE},
+     *     {@code false} otherwise.
      */
     public boolean isComplete() {
         return this.tag == Tag.COMPLETE;
@@ -136,8 +154,7 @@ public final class MembersAddLaunch {
      * Returns an instance of {@code MembersAddLaunch} that has its tag set to
      * {@link Tag#COMPLETE}.
      *
-     * @param value  {@link MembersAddLaunch#complete} value to assign to this
-     *     instance.
+     * @param value  value to assign to this instance.
      *
      * @return Instance of {@code MembersAddLaunch} with its tag set to {@link
      *     Tag#COMPLETE}.
@@ -174,10 +191,13 @@ public final class MembersAddLaunch {
 
     @Override
     public int hashCode() {
-        // objects containing lists are not hash-able. This is used as a safeguard
-        // against adding this object to a HashSet or HashMap. Since list fields are
-        // mutable, it is not safe to compute a hashCode here.
-        return System.identityHashCode(this);
+        int hash = java.util.Arrays.hashCode(new Object [] {
+            tag,
+            asyncJobIdValue,
+            completeValue
+        });
+        hash = (31 * super.hashCode()) + hash;
+        return hash;
     }
 
     @Override
@@ -206,102 +226,97 @@ public final class MembersAddLaunch {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static MembersAddLaunch fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
+    static final class Serializer extends UnionJsonSerializer<MembersAddLaunch> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonWriter<MembersAddLaunch> _JSON_WRITER = new JsonWriter<MembersAddLaunch>() {
-        public final void write(MembersAddLaunch x, JsonGenerator g) throws IOException {
-            switch (x.tag) {
+        public Serializer() {
+            super(MembersAddLaunch.class);
+        }
+
+        @Override
+        public void serialize(MembersAddLaunch value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            switch (value.tag) {
                 case ASYNC_JOB_ID:
                     g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("async_job_id");
-                    g.writeFieldName("async_job_id");
-                    g.writeString(x.getAsyncJobIdValue());
+                    g.writeStringField(".tag", "async_job_id");
+                    g.writeObjectField("async_job_id", value.asyncJobIdValue);
                     g.writeEndObject();
                     break;
                 case COMPLETE:
                     g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("complete");
-                    g.writeFieldName("complete");
-                    g.writeStartArray();
-                    for (MemberAddResult item: x.getCompleteValue()) {
-                        if (item != null) {
-                            MemberAddResult._JSON_WRITER.write(item, g);
-                        }
-                    }
-                    g.writeEndArray();
+                    g.writeStringField(".tag", "complete");
+                    g.writeObjectField("complete", value.completeValue);
                     g.writeEndObject();
                     break;
             }
         }
-    };
+    }
 
-    public static final JsonReader<MembersAddLaunch> _JSON_READER = new JsonReader<MembersAddLaunch>() {
+    static final class Deserializer extends UnionJsonDeserializer<MembersAddLaunch, Tag> {
+        private static final long serialVersionUID = 0L;
 
-        public final MembersAddLaunch read(JsonParser parser) throws IOException, JsonReadException {
-            if (parser.getCurrentToken() == JsonToken.VALUE_STRING) {
-                String text = parser.getText();
-                parser.nextToken();
-                Tag tag = VALUES_.get(text);
-                if (tag == null) {
-                    throw new JsonReadException("Unanticipated tag " + text + " without catch-all", parser.getTokenLocation());
-                }
-                switch (tag) {
-                }
-                throw new JsonReadException("Tag " + tag + " requires a value", parser.getTokenLocation());
-            }
-            JsonReader.expectObjectStart(parser);
-            String[] tags = readTags(parser);
-            assert tags != null && tags.length == 1;
-            String text = tags[0];
-            Tag tag = VALUES_.get(text);
-            MembersAddLaunch value = null;
-            if (tag != null) {
-                switch (tag) {
-                    case ASYNC_JOB_ID: {
-                        String v = null;
-                        assert parser.getCurrentToken() == JsonToken.FIELD_NAME;
-                        text = parser.getText();
-                        assert tags[0].equals(text);
-                        parser.nextToken();
-                        v = JsonReader.StringReader
-                            .readField(parser, "async_job_id", v);
-                        value = MembersAddLaunch.asyncJobId(v);
-                        break;
-                    }
-                    case COMPLETE: {
-                        List<MemberAddResult> v = null;
-                        assert parser.getCurrentToken() == JsonToken.FIELD_NAME;
-                        text = parser.getText();
-                        assert tags[0].equals(text);
-                        parser.nextToken();
-                        v = JsonArrayReader.mk(MemberAddResult._JSON_READER)
-                            .readField(parser, "complete", v);
-                        value = MembersAddLaunch.complete(v);
-                        break;
-                    }
-                }
-            }
-            if (value == null) {
-                throw new JsonReadException("Unanticipated tag " + text, parser.getTokenLocation());
-            }
-            JsonReader.expectObjectEnd(parser);
-            return value;
+        public Deserializer() {
+            super(MembersAddLaunch.class, getTagMapping(), null);
         }
 
-    };
+        @Override
+        public MembersAddLaunch deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+            switch (_tag) {
+                case ASYNC_JOB_ID: {
+                    String value = null;
+                    expectField(_p, "async_job_id");
+                    value = getStringValue(_p);
+                    _p.nextToken();
+                    return MembersAddLaunch.asyncJobId(value);
+                }
+                case COMPLETE: {
+                    List<MemberAddResult> value = null;
+                    expectField(_p, "complete");
+                    expectArrayStart(_p);
+                    value = new java.util.ArrayList<MemberAddResult>();
+                    while (!isArrayEnd(_p)) {
+                        MemberAddResult _x = null;
+                        _x = _p.readValueAs(MemberAddResult.class);
+                        _p.nextToken();
+                        value.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
+                    return MembersAddLaunch.complete(value);
+                }
+            }
+            // should be impossible to get here
+            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
+        }
+
+        private static Map<String, MembersAddLaunch.Tag> getTagMapping() {
+            Map<String, MembersAddLaunch.Tag> values = new HashMap<String, MembersAddLaunch.Tag>();
+            values.put("complete", MembersAddLaunch.Tag.COMPLETE);
+            return Collections.unmodifiableMap(values);
+        }
+    }
 }

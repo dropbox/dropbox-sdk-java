@@ -5,19 +5,37 @@ package com.dropbox.core.v2.users;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
+@JsonSerialize(using=TeamSpaceAllocation.Serializer.class)
+@JsonDeserialize(using=TeamSpaceAllocation.Deserializer.class)
 public class TeamSpaceAllocation {
     // struct TeamSpaceAllocation
 
-    private final long used;
-    private final long allocated;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final long used;
+    protected final long allocated;
 
     /**
      *
@@ -75,69 +93,101 @@ public class TeamSpaceAllocation {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static TeamSpaceAllocation fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
+    static final class Serializer extends StructJsonSerializer<TeamSpaceAllocation> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(TeamSpaceAllocation.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(TeamSpaceAllocation.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<TeamSpaceAllocation> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(TeamSpaceAllocation value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("used", value.used);
+            g.writeObjectField("allocated", value.allocated);
+        }
     }
 
-    public static final JsonWriter<TeamSpaceAllocation> _JSON_WRITER = new JsonWriter<TeamSpaceAllocation>() {
-        public final void write(TeamSpaceAllocation x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            TeamSpaceAllocation._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
-        }
-        public final void writeFields(TeamSpaceAllocation x, JsonGenerator g) throws IOException {
-            g.writeFieldName("used");
-            g.writeNumber(x.used);
-            g.writeFieldName("allocated");
-            g.writeNumber(x.allocated);
-        }
-    };
+    static final class Deserializer extends StructJsonDeserializer<TeamSpaceAllocation> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonReader<TeamSpaceAllocation> _JSON_READER = new JsonReader<TeamSpaceAllocation>() {
-        public final TeamSpaceAllocation read(JsonParser parser) throws IOException, JsonReadException {
-            TeamSpaceAllocation result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+        public Deserializer() {
+            super(TeamSpaceAllocation.class);
         }
 
-        public final TeamSpaceAllocation readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(TeamSpaceAllocation.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<TeamSpaceAllocation> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public TeamSpaceAllocation deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             Long used = null;
             Long allocated = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("used".equals(fieldName)) {
-                    used = JsonReader.UInt64Reader
-                        .readField(parser, "used", used);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("used".equals(_field)) {
+                    used = _p.getLongValue();
+                    assertUnsigned(_p, used);
+                    _p.nextToken();
                 }
-                else if ("allocated".equals(fieldName)) {
-                    allocated = JsonReader.UInt64Reader
-                        .readField(parser, "allocated", allocated);
+                else if ("allocated".equals(_field)) {
+                    allocated = _p.getLongValue();
+                    assertUnsigned(_p, allocated);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (used == null) {
-                throw new JsonReadException("Required field \"used\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"used\" is missing.");
             }
             if (allocated == null) {
-                throw new JsonReadException("Required field \"allocated\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"allocated\" is missing.");
             }
+
             return new TeamSpaceAllocation(used, allocated);
         }
-    };
+    }
 }

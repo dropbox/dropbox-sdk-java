@@ -3,24 +3,41 @@
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonArrayReader;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.List;
 
+@JsonSerialize(using=ListMemberDevicesResult.Serializer.class)
+@JsonDeserialize(using=ListMemberDevicesResult.Deserializer.class)
 public class ListMemberDevicesResult {
     // struct ListMemberDevicesResult
 
-    private final List<ActiveWebSession> activeWebSessions;
-    private final List<DesktopClientSession> desktopClientSessions;
-    private final List<MobileClientSession> mobileClientSessions;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final List<ActiveWebSession> activeWebSessions;
+    protected final List<DesktopClientSession> desktopClientSessions;
+    protected final List<MobileClientSession> mobileClientSessions;
 
     /**
      * Use {@link newBuilder} to create instances of this class without
@@ -231,94 +248,129 @@ public class ListMemberDevicesResult {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static ListMemberDevicesResult fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
+    static final class Serializer extends StructJsonSerializer<ListMemberDevicesResult> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(ListMemberDevicesResult.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(ListMemberDevicesResult.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<ListMemberDevicesResult> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(ListMemberDevicesResult value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            if (value.activeWebSessions != null) {
+                g.writeObjectField("active_web_sessions", value.activeWebSessions);
+            }
+            if (value.desktopClientSessions != null) {
+                g.writeObjectField("desktop_client_sessions", value.desktopClientSessions);
+            }
+            if (value.mobileClientSessions != null) {
+                g.writeObjectField("mobile_client_sessions", value.mobileClientSessions);
+            }
+        }
     }
 
-    public static final JsonWriter<ListMemberDevicesResult> _JSON_WRITER = new JsonWriter<ListMemberDevicesResult>() {
-        public final void write(ListMemberDevicesResult x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            ListMemberDevicesResult._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
-        }
-        public final void writeFields(ListMemberDevicesResult x, JsonGenerator g) throws IOException {
-            if (x.activeWebSessions != null) {
-                g.writeFieldName("active_web_sessions");
-                g.writeStartArray();
-                for (ActiveWebSession item: x.activeWebSessions) {
-                    if (item != null) {
-                        ActiveWebSession._JSON_WRITER.write(item, g);
-                    }
-                }
-                g.writeEndArray();
-            }
-            if (x.desktopClientSessions != null) {
-                g.writeFieldName("desktop_client_sessions");
-                g.writeStartArray();
-                for (DesktopClientSession item: x.desktopClientSessions) {
-                    if (item != null) {
-                        DesktopClientSession._JSON_WRITER.write(item, g);
-                    }
-                }
-                g.writeEndArray();
-            }
-            if (x.mobileClientSessions != null) {
-                g.writeFieldName("mobile_client_sessions");
-                g.writeStartArray();
-                for (MobileClientSession item: x.mobileClientSessions) {
-                    if (item != null) {
-                        MobileClientSession._JSON_WRITER.write(item, g);
-                    }
-                }
-                g.writeEndArray();
-            }
-        }
-    };
+    static final class Deserializer extends StructJsonDeserializer<ListMemberDevicesResult> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonReader<ListMemberDevicesResult> _JSON_READER = new JsonReader<ListMemberDevicesResult>() {
-        public final ListMemberDevicesResult read(JsonParser parser) throws IOException, JsonReadException {
-            ListMemberDevicesResult result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+        public Deserializer() {
+            super(ListMemberDevicesResult.class);
         }
 
-        public final ListMemberDevicesResult readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(ListMemberDevicesResult.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<ListMemberDevicesResult> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public ListMemberDevicesResult deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             List<ActiveWebSession> activeWebSessions = null;
             List<DesktopClientSession> desktopClientSessions = null;
             List<MobileClientSession> mobileClientSessions = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("active_web_sessions".equals(fieldName)) {
-                    activeWebSessions = JsonArrayReader.mk(ActiveWebSession._JSON_READER)
-                        .readField(parser, "active_web_sessions", activeWebSessions);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("active_web_sessions".equals(_field)) {
+                    expectArrayStart(_p);
+                    activeWebSessions = new java.util.ArrayList<ActiveWebSession>();
+                    while (!isArrayEnd(_p)) {
+                        ActiveWebSession _x = null;
+                        _x = _p.readValueAs(ActiveWebSession.class);
+                        _p.nextToken();
+                        activeWebSessions.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
                 }
-                else if ("desktop_client_sessions".equals(fieldName)) {
-                    desktopClientSessions = JsonArrayReader.mk(DesktopClientSession._JSON_READER)
-                        .readField(parser, "desktop_client_sessions", desktopClientSessions);
+                else if ("desktop_client_sessions".equals(_field)) {
+                    expectArrayStart(_p);
+                    desktopClientSessions = new java.util.ArrayList<DesktopClientSession>();
+                    while (!isArrayEnd(_p)) {
+                        DesktopClientSession _x = null;
+                        _x = _p.readValueAs(DesktopClientSession.class);
+                        _p.nextToken();
+                        desktopClientSessions.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
                 }
-                else if ("mobile_client_sessions".equals(fieldName)) {
-                    mobileClientSessions = JsonArrayReader.mk(MobileClientSession._JSON_READER)
-                        .readField(parser, "mobile_client_sessions", mobileClientSessions);
+                else if ("mobile_client_sessions".equals(_field)) {
+                    expectArrayStart(_p);
+                    mobileClientSessions = new java.util.ArrayList<MobileClientSession>();
+                    while (!isArrayEnd(_p)) {
+                        MobileClientSession _x = null;
+                        _x = _p.readValueAs(MobileClientSession.class);
+                        _p.nextToken();
+                        mobileClientSessions.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
+
             return new ListMemberDevicesResult(activeWebSessions, desktopClientSessions, mobileClientSessions);
         }
-    };
+    }
 }

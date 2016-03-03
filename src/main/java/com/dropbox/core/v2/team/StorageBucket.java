@@ -5,22 +5,40 @@ package com.dropbox.core.v2.team;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
 /**
  * Describes the number of users in a specific storage bucket.
  */
+@JsonSerialize(using=StorageBucket.Serializer.class)
+@JsonDeserialize(using=StorageBucket.Deserializer.class)
 public class StorageBucket {
     // struct StorageBucket
 
-    private final String bucket;
-    private final long users;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final String bucket;
+    protected final long users;
 
     /**
      * Describes the number of users in a specific storage bucket.
@@ -90,69 +108,100 @@ public class StorageBucket {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static StorageBucket fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
+    static final class Serializer extends StructJsonSerializer<StorageBucket> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(StorageBucket.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(StorageBucket.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<StorageBucket> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(StorageBucket value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("bucket", value.bucket);
+            g.writeObjectField("users", value.users);
+        }
     }
 
-    public static final JsonWriter<StorageBucket> _JSON_WRITER = new JsonWriter<StorageBucket>() {
-        public final void write(StorageBucket x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            StorageBucket._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
-        }
-        public final void writeFields(StorageBucket x, JsonGenerator g) throws IOException {
-            g.writeFieldName("bucket");
-            g.writeString(x.bucket);
-            g.writeFieldName("users");
-            g.writeNumber(x.users);
-        }
-    };
+    static final class Deserializer extends StructJsonDeserializer<StorageBucket> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonReader<StorageBucket> _JSON_READER = new JsonReader<StorageBucket>() {
-        public final StorageBucket read(JsonParser parser) throws IOException, JsonReadException {
-            StorageBucket result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+        public Deserializer() {
+            super(StorageBucket.class);
         }
 
-        public final StorageBucket readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(StorageBucket.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<StorageBucket> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public StorageBucket deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             String bucket = null;
             Long users = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("bucket".equals(fieldName)) {
-                    bucket = JsonReader.StringReader
-                        .readField(parser, "bucket", bucket);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("bucket".equals(_field)) {
+                    bucket = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("users".equals(fieldName)) {
-                    users = JsonReader.UInt64Reader
-                        .readField(parser, "users", users);
+                else if ("users".equals(_field)) {
+                    users = _p.getLongValue();
+                    assertUnsigned(_p, users);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (bucket == null) {
-                throw new JsonReadException("Required field \"bucket\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"bucket\" is missing.");
             }
             if (users == null) {
-                throw new JsonReadException("Required field \"users\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"users\" is missing.");
             }
+
             return new StorageBucket(bucket, users);
         }
-    };
+    }
 }

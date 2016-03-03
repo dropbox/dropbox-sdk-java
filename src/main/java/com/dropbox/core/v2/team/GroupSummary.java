@@ -5,24 +5,42 @@ package com.dropbox.core.v2.team;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
 /**
  * Information about a group.
  */
+@JsonSerialize(using=GroupSummary.Serializer.class)
+@JsonDeserialize(using=GroupSummary.Deserializer.class)
 public class GroupSummary {
     // struct GroupSummary
 
-    private final String groupName;
-    private final String groupId;
-    private final String groupExternalId;
-    private final long memberCount;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final String groupName;
+    protected final String groupId;
+    protected final String groupExternalId;
+    protected final long memberCount;
 
     /**
      * Information about a group.
@@ -121,8 +139,8 @@ public class GroupSummary {
             GroupSummary other = (GroupSummary) obj;
             return ((this.groupName == other.groupName) || (this.groupName.equals(other.groupName)))
                 && ((this.groupId == other.groupId) || (this.groupId.equals(other.groupId)))
-                && ((this.groupExternalId == other.groupExternalId) || (this.groupExternalId != null && this.groupExternalId.equals(other.groupExternalId)))
                 && (this.memberCount == other.memberCount)
+                && ((this.groupExternalId == other.groupExternalId) || (this.groupExternalId != null && this.groupExternalId.equals(other.groupExternalId)))
                 ;
         }
         else {
@@ -132,88 +150,120 @@ public class GroupSummary {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
-    }
-
-    public static GroupSummary fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
-
-    public static final JsonWriter<GroupSummary> _JSON_WRITER = new JsonWriter<GroupSummary>() {
-        public final void write(GroupSummary x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            GroupSummary._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
         }
-        public final void writeFields(GroupSummary x, JsonGenerator g) throws IOException {
-            g.writeFieldName("group_name");
-            g.writeString(x.groupName);
-            g.writeFieldName("group_id");
-            g.writeString(x.groupId);
-            if (x.groupExternalId != null) {
-                g.writeFieldName("group_external_id");
-                g.writeString(x.groupExternalId);
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
+    }
+
+    static final class Serializer extends StructJsonSerializer<GroupSummary> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(GroupSummary.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(GroupSummary.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<GroupSummary> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(GroupSummary value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("group_name", value.groupName);
+            g.writeObjectField("group_id", value.groupId);
+            g.writeObjectField("member_count", value.memberCount);
+            if (value.groupExternalId != null) {
+                g.writeObjectField("group_external_id", value.groupExternalId);
             }
-            g.writeFieldName("member_count");
-            g.writeNumber(x.memberCount);
         }
-    };
+    }
 
-    public static final JsonReader<GroupSummary> _JSON_READER = new JsonReader<GroupSummary>() {
-        public final GroupSummary read(JsonParser parser) throws IOException, JsonReadException {
-            GroupSummary result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+    static final class Deserializer extends StructJsonDeserializer<GroupSummary> {
+        private static final long serialVersionUID = 0L;
+
+        public Deserializer() {
+            super(GroupSummary.class);
         }
 
-        public final GroupSummary readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(GroupSummary.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<GroupSummary> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public GroupSummary deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             String groupName = null;
             String groupId = null;
             Long memberCount = null;
             String groupExternalId = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("group_name".equals(fieldName)) {
-                    groupName = JsonReader.StringReader
-                        .readField(parser, "group_name", groupName);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("group_name".equals(_field)) {
+                    groupName = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("group_id".equals(fieldName)) {
-                    groupId = JsonReader.StringReader
-                        .readField(parser, "group_id", groupId);
+                else if ("group_id".equals(_field)) {
+                    groupId = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("member_count".equals(fieldName)) {
-                    memberCount = JsonReader.UInt32Reader
-                        .readField(parser, "member_count", memberCount);
+                else if ("member_count".equals(_field)) {
+                    memberCount = _p.getLongValue();
+                    assertUnsigned(_p, memberCount);
+                    if (memberCount > Integer.MAX_VALUE) {
+                        throw new JsonParseException(_p, "expecting a 32-bit unsigned integer, got: " + memberCount);
+                    }
+                    _p.nextToken();
                 }
-                else if ("group_external_id".equals(fieldName)) {
-                    groupExternalId = JsonReader.StringReader
-                        .readField(parser, "group_external_id", groupExternalId);
+                else if ("group_external_id".equals(_field)) {
+                    groupExternalId = getStringValue(_p);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (groupName == null) {
-                throw new JsonReadException("Required field \"group_name\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"group_name\" is missing.");
             }
             if (groupId == null) {
-                throw new JsonReadException("Required field \"group_id\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"group_id\" is missing.");
             }
             if (memberCount == null) {
-                throw new JsonReadException("Required field \"member_count\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"member_count\" is missing.");
             }
+
             return new GroupSummary(groupName, groupId, memberCount, groupExternalId);
         }
-    };
+    }
 }

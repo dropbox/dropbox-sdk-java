@@ -3,23 +3,40 @@
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonArrayReader;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.List;
 
-public class MembersAddArg {
+@JsonSerialize(using=MembersAddArg.Serializer.class)
+@JsonDeserialize(using=MembersAddArg.Deserializer.class)
+class MembersAddArg {
     // struct MembersAddArg
 
-    private final List<MemberAddArg> newMembers;
-    private final boolean forceAsync;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final List<MemberAddArg> newMembers;
+    protected final boolean forceAsync;
 
     /**
      *
@@ -77,10 +94,11 @@ public class MembersAddArg {
 
     @Override
     public int hashCode() {
-        // objects containing lists are not hash-able. This is used as a safeguard
-        // against adding this object to a HashSet or HashMap. Since list fields are
-        // mutable, it is not safe to compute a hashCode here.
-        return System.identityHashCode(this);
+        int hash = java.util.Arrays.hashCode(new Object [] {
+            newMembers,
+            forceAsync
+        });
+        return hash;
     }
 
     @Override
@@ -102,72 +120,104 @@ public class MembersAddArg {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static MembersAddArg fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
+    static final class Serializer extends StructJsonSerializer<MembersAddArg> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(MembersAddArg.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(MembersAddArg.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<MembersAddArg> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(MembersAddArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("new_members", value.newMembers);
+            g.writeObjectField("force_async", value.forceAsync);
+        }
     }
 
-    public static final JsonWriter<MembersAddArg> _JSON_WRITER = new JsonWriter<MembersAddArg>() {
-        public final void write(MembersAddArg x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            MembersAddArg._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
-        }
-        public final void writeFields(MembersAddArg x, JsonGenerator g) throws IOException {
-            g.writeFieldName("new_members");
-            g.writeStartArray();
-            for (MemberAddArg item: x.newMembers) {
-                if (item != null) {
-                    MemberAddArg._JSON_WRITER.write(item, g);
-                }
-            }
-            g.writeEndArray();
-            g.writeFieldName("force_async");
-            g.writeBoolean(x.forceAsync);
-        }
-    };
+    static final class Deserializer extends StructJsonDeserializer<MembersAddArg> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonReader<MembersAddArg> _JSON_READER = new JsonReader<MembersAddArg>() {
-        public final MembersAddArg read(JsonParser parser) throws IOException, JsonReadException {
-            MembersAddArg result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+        public Deserializer() {
+            super(MembersAddArg.class);
         }
 
-        public final MembersAddArg readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(MembersAddArg.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<MembersAddArg> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public MembersAddArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             List<MemberAddArg> newMembers = null;
             Boolean forceAsync = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("new_members".equals(fieldName)) {
-                    newMembers = JsonArrayReader.mk(MemberAddArg._JSON_READER)
-                        .readField(parser, "new_members", newMembers);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("new_members".equals(_field)) {
+                    expectArrayStart(_p);
+                    newMembers = new java.util.ArrayList<MemberAddArg>();
+                    while (!isArrayEnd(_p)) {
+                        MemberAddArg _x = null;
+                        _x = _p.readValueAs(MemberAddArg.class);
+                        _p.nextToken();
+                        newMembers.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
                 }
-                else if ("force_async".equals(fieldName)) {
-                    forceAsync = JsonReader.BooleanReader
-                        .readField(parser, "force_async", forceAsync);
+                else if ("force_async".equals(_field)) {
+                    forceAsync = _p.getValueAsBoolean();
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (newMembers == null) {
-                throw new JsonReadException("Required field \"new_members\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"new_members\" is missing.");
             }
+
             return new MembersAddArg(newMembers, forceAsync);
         }
-    };
+    }
 }

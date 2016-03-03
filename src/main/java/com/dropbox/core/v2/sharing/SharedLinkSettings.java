@@ -3,24 +3,41 @@
 
 package com.dropbox.core.v2.sharing;
 
-import com.dropbox.core.json.JsonDateReader;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.Date;
 
+@JsonSerialize(using=SharedLinkSettings.Serializer.class)
+@JsonDeserialize(using=SharedLinkSettings.Deserializer.class)
 public class SharedLinkSettings {
     // struct SharedLinkSettings
 
-    private final RequestedVisibility requestedVisibility;
-    private final String linkPassword;
-    private final Date expires;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final RequestedVisibility requestedVisibility;
+    protected final String linkPassword;
+    protected final Date expires;
 
     /**
      * Use {@link newBuilder} to create instances of this class without
@@ -181,76 +198,105 @@ public class SharedLinkSettings {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static SharedLinkSettings fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
+    static final class Serializer extends StructJsonSerializer<SharedLinkSettings> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(SharedLinkSettings.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(SharedLinkSettings.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<SharedLinkSettings> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(SharedLinkSettings value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            if (value.requestedVisibility != null) {
+                g.writeObjectField("requested_visibility", value.requestedVisibility);
+            }
+            if (value.linkPassword != null) {
+                g.writeObjectField("link_password", value.linkPassword);
+            }
+            if (value.expires != null) {
+                g.writeObjectField("expires", value.expires);
+            }
+        }
     }
 
-    public static final JsonWriter<SharedLinkSettings> _JSON_WRITER = new JsonWriter<SharedLinkSettings>() {
-        public final void write(SharedLinkSettings x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            SharedLinkSettings._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
-        }
-        public final void writeFields(SharedLinkSettings x, JsonGenerator g) throws IOException {
-            if (x.requestedVisibility != null) {
-                g.writeFieldName("requested_visibility");
-                RequestedVisibility._JSON_WRITER.write(x.requestedVisibility, g);
-            }
-            if (x.linkPassword != null) {
-                g.writeFieldName("link_password");
-                g.writeString(x.linkPassword);
-            }
-            if (x.expires != null) {
-                g.writeFieldName("expires");
-                writeDateIso(x.expires, g);
-            }
-        }
-    };
+    static final class Deserializer extends StructJsonDeserializer<SharedLinkSettings> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonReader<SharedLinkSettings> _JSON_READER = new JsonReader<SharedLinkSettings>() {
-        public final SharedLinkSettings read(JsonParser parser) throws IOException, JsonReadException {
-            SharedLinkSettings result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+        public Deserializer() {
+            super(SharedLinkSettings.class);
         }
 
-        public final SharedLinkSettings readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(SharedLinkSettings.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<SharedLinkSettings> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public SharedLinkSettings deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             RequestedVisibility requestedVisibility = null;
             String linkPassword = null;
             Date expires = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("requested_visibility".equals(fieldName)) {
-                    requestedVisibility = RequestedVisibility._JSON_READER
-                        .readField(parser, "requested_visibility", requestedVisibility);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("requested_visibility".equals(_field)) {
+                    requestedVisibility = _p.readValueAs(RequestedVisibility.class);
+                    _p.nextToken();
                 }
-                else if ("link_password".equals(fieldName)) {
-                    linkPassword = JsonReader.StringReader
-                        .readField(parser, "link_password", linkPassword);
+                else if ("link_password".equals(_field)) {
+                    linkPassword = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("expires".equals(fieldName)) {
-                    expires = JsonDateReader.DropboxV2
-                        .readField(parser, "expires", expires);
+                else if ("expires".equals(_field)) {
+                    expires = _ctx.parseDate(getStringValue(_p));
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
+
             return new SharedLinkSettings(requestedVisibility, linkPassword, expires);
         }
-    };
+    }
 }

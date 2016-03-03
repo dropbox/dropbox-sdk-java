@@ -7,13 +7,13 @@ import com.dropbox.core.DbxException;
 
 /**
  * The request builder returned by {@link
- * DbxSharing#shareFolderBuilder(String)}.
+ * DbxUserSharingRequests#shareFolderBuilder(String)}.
  *
  * <p> Use this class to set optional request parameters and complete the
  * request. </p>
  */
 public class ShareFolderBuilder {
-    private final DbxSharing sharing;
+    private final DbxUserSharingRequests sharing;
     private final ShareFolderArg.Builder shareFolderArgBuilder;
 
     /**
@@ -25,7 +25,7 @@ public class ShareFolderBuilder {
      *
      * @return instsance of this builder
      */
-    ShareFolderBuilder(DbxSharing sharing, ShareFolderArg.Builder shareFolderArgBuilder) {
+    ShareFolderBuilder(DbxUserSharingRequests sharing, ShareFolderArg.Builder shareFolderArgBuilder) {
         if (sharing == null) {
             throw new NullPointerException("sharing");
         }

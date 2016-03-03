@@ -11,9 +11,10 @@ import com.dropbox.core.LocalizedText;
  * error.
  */
 public class ThumbnailErrorException extends DbxApiException {
+    private static final long serialVersionUID = 0L;
 
     /**
-     * The error reported by {@link DbxFiles#getThumbnail(String)}.
+     * The error reported by {@link DbxUserFilesRequests#getThumbnail(String)}.
      */
     public final ThumbnailError errorValue;
 

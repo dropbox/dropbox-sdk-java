@@ -5,22 +5,40 @@ package com.dropbox.core.v2.team;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
 /**
  * Argument for selecting a group and a list of users.
  */
+@JsonSerialize(using=GroupMembersSelector.Serializer.class)
+@JsonDeserialize(using=GroupMembersSelector.Deserializer.class)
 public class GroupMembersSelector {
     // struct GroupMembersSelector
 
-    private final GroupSelector group;
-    private final UsersSelectorArg users;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final GroupSelector group;
+    protected final UsersSelectorArg users;
 
     /**
      * Argument for selecting a group and a list of users.
@@ -90,69 +108,99 @@ public class GroupMembersSelector {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static GroupMembersSelector fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
+    static final class Serializer extends StructJsonSerializer<GroupMembersSelector> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(GroupMembersSelector.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(GroupMembersSelector.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<GroupMembersSelector> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(GroupMembersSelector value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("group", value.group);
+            g.writeObjectField("users", value.users);
+        }
     }
 
-    public static final JsonWriter<GroupMembersSelector> _JSON_WRITER = new JsonWriter<GroupMembersSelector>() {
-        public final void write(GroupMembersSelector x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            GroupMembersSelector._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
-        }
-        public final void writeFields(GroupMembersSelector x, JsonGenerator g) throws IOException {
-            g.writeFieldName("group");
-            GroupSelector._JSON_WRITER.write(x.group, g);
-            g.writeFieldName("users");
-            UsersSelectorArg._JSON_WRITER.write(x.users, g);
-        }
-    };
+    static final class Deserializer extends StructJsonDeserializer<GroupMembersSelector> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonReader<GroupMembersSelector> _JSON_READER = new JsonReader<GroupMembersSelector>() {
-        public final GroupMembersSelector read(JsonParser parser) throws IOException, JsonReadException {
-            GroupMembersSelector result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+        public Deserializer() {
+            super(GroupMembersSelector.class);
         }
 
-        public final GroupMembersSelector readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(GroupMembersSelector.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<GroupMembersSelector> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public GroupMembersSelector deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             GroupSelector group = null;
             UsersSelectorArg users = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("group".equals(fieldName)) {
-                    group = GroupSelector._JSON_READER
-                        .readField(parser, "group", group);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("group".equals(_field)) {
+                    group = _p.readValueAs(GroupSelector.class);
+                    _p.nextToken();
                 }
-                else if ("users".equals(fieldName)) {
-                    users = UsersSelectorArg._JSON_READER
-                        .readField(parser, "users", users);
+                else if ("users".equals(_field)) {
+                    users = _p.readValueAs(UsersSelectorArg.class);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (group == null) {
-                throw new JsonReadException("Required field \"group\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"group\" is missing.");
             }
             if (users == null) {
-                throw new JsonReadException("Required field \"users\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"users\" is missing.");
             }
+
             return new GroupMembersSelector(group, users);
         }
-    };
+    }
 }

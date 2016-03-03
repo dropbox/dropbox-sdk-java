@@ -8,13 +8,14 @@ import com.dropbox.core.DbxException;
 import java.util.Date;
 
 /**
- * The request builder returned by {@link DbxTeam#reportsGetStorageBuilder()}.
+ * The request builder returned by {@link
+ * DbxTeamTeamRequests#reportsGetStorageBuilder()}.
  *
  * <p> Use this class to set optional request parameters and complete the
  * request. </p>
  */
 public class ReportsGetStorageBuilder {
-    private final DbxTeam team;
+    private final DbxTeamTeamRequests team;
     private final DateRange.Builder dateRangeBuilder;
 
     /**
@@ -26,7 +27,7 @@ public class ReportsGetStorageBuilder {
      *
      * @return instsance of this builder
      */
-    ReportsGetStorageBuilder(DbxTeam team, DateRange.Builder dateRangeBuilder) {
+    ReportsGetStorageBuilder(DbxTeamTeamRequests team, DateRange.Builder dateRangeBuilder) {
         if (team == null) {
             throw new NullPointerException("team");
         }

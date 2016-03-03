@@ -6,13 +6,16 @@ package com.dropbox.core.v2.files;
 import com.dropbox.core.DbxRequestUtil;
 import com.dropbox.core.DbxUploader;
 import com.dropbox.core.http.HttpRequestor;
-import com.dropbox.core.json.JsonReadException;
+import com.dropbox.core.json.JsonUtil;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JavaType;
 
 import java.io.IOException;
 
 /**
  * The {@link DbxUploader} returned by {@link
- * DbxFiles#uploadSessionFinish(UploadSessionCursor,CommitInfo)}.
+ * DbxUserFilesRequests#uploadSessionFinish(UploadSessionCursor,CommitInfo)}.
  *
  * <p> Use this class to upload data to the server and complete the request.
  * </p>
@@ -21,7 +24,9 @@ import java.io.IOException;
  * and allow network connection reuse. Always call {@link #close} when complete
  * (see {@link DbxUploader} for examples). </p>
  */
-public class UploadSessionFinishUploader extends DbxUploader<FileMetadata, UploadSessionFinishErrorException> {
+public class UploadSessionFinishUploader extends DbxUploader<FileMetadata, UploadSessionFinishError, UploadSessionFinishErrorException> {
+    private static final JavaType _RESULT_TYPE = JsonUtil.createType(new TypeReference<FileMetadata>() {});
+    private static final JavaType _ERROR_TYPE = JsonUtil.createType(new TypeReference<UploadSessionFinishError>() {});
 
     /**
      * Creates a new instance of this uploader.
@@ -31,17 +36,9 @@ public class UploadSessionFinishUploader extends DbxUploader<FileMetadata, Uploa
      * @throws NullPointerException  if {@code httpUploader} is {@code null}
      */
     public UploadSessionFinishUploader(HttpRequestor.Uploader httpUploader) {
-        super(httpUploader);
+        super(httpUploader, _RESULT_TYPE, _ERROR_TYPE);
     }
-
-    @Override
-    protected FileMetadata parseResponse(HttpRequestor.Response response) throws JsonReadException, IOException {
-        return FileMetadata._JSON_READER.readFully(response.getBody());
-    }
-
-    @Override
-    protected UploadSessionFinishErrorException parseError(HttpRequestor.Response response) throws JsonReadException, IOException {
-        DbxRequestUtil.ErrorWrapper wrapper = DbxRequestUtil.ErrorWrapper.fromResponse(UploadSessionFinishError._JSON_READER, response);
-        return new UploadSessionFinishErrorException(wrapper.getRequestId(), wrapper.getUserMessage(), (UploadSessionFinishError) wrapper.getErrorValue());
+    protected UploadSessionFinishErrorException newException(DbxRequestUtil.ErrorWrapper error) {
+        return new UploadSessionFinishErrorException(error.getRequestId(), error.getUserMessage(), (UploadSessionFinishError) error.getErrorValue());
     }
 }

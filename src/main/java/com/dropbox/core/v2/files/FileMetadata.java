@@ -3,28 +3,45 @@
 
 package com.dropbox.core.v2.files;
 
-import com.dropbox.core.json.JsonDateReader;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.Date;
 
+@JsonSerialize(using=FileMetadata.Serializer.class)
+@JsonDeserialize(using=FileMetadata.Deserializer.class)
 public class FileMetadata extends Metadata {
     // struct FileMetadata
 
-    private final String id;
-    private final Date clientModified;
-    private final Date serverModified;
-    private final String rev;
-    private final long size;
-    private final MediaInfo mediaInfo;
-    private final FileSharingInfo sharingInfo;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final String id;
+    protected final Date clientModified;
+    protected final Date serverModified;
+    protected final String rev;
+    protected final long size;
+    protected final MediaInfo mediaInfo;
+    protected final FileSharingInfo sharingInfo;
 
     /**
      * Use {@link newBuilder} to create instances of this class without
@@ -38,8 +55,8 @@ public class FileMetadata extends Metadata {
      *     In rare instances the casing will not correctly match the user's
      *     filesystem, but this behavior will match the path provided in the
      *     Core API v1. Changes to the casing of paths won't be returned by
-     *     {@link DbxFiles#listFolderContinue(String)}. Must not be {@code
-     *     null}.
+     *     {@link DbxUserFilesRequests#listFolderContinue(String)}. Must not be
+     *     {@code null}.
      * @param id  A unique identifier for the file. Must have length of at least
      *     1 and not be {@code null}.
      * @param clientModified  For files, this is the modification time set by
@@ -108,8 +125,8 @@ public class FileMetadata extends Metadata {
      *     In rare instances the casing will not correctly match the user's
      *     filesystem, but this behavior will match the path provided in the
      *     Core API v1. Changes to the casing of paths won't be returned by
-     *     {@link DbxFiles#listFolderContinue(String)}. Must not be {@code
-     *     null}.
+     *     {@link DbxUserFilesRequests#listFolderContinue(String)}. Must not be
+     *     {@code null}.
      * @param id  A unique identifier for the file. Must have length of at least
      *     1 and not be {@code null}.
      * @param clientModified  For files, this is the modification time set by
@@ -213,8 +230,8 @@ public class FileMetadata extends Metadata {
      *     In rare instances the casing will not correctly match the user's
      *     filesystem, but this behavior will match the path provided in the
      *     Core API v1. Changes to the casing of paths won't be returned by
-     *     {@link DbxFiles#listFolderContinue(String)}. Must not be {@code
-     *     null}.
+     *     {@link DbxUserFilesRequests#listFolderContinue(String)}. Must not be
+     *     {@code null}.
      * @param id  A unique identifier for the file. Must have length of at least
      *     1 and not be {@code null}.
      * @param clientModified  For files, this is the modification time set by
@@ -383,17 +400,17 @@ public class FileMetadata extends Metadata {
         // be careful with inheritance
         else if (obj.getClass().equals(this.getClass())) {
             FileMetadata other = (FileMetadata) obj;
-            return ((this.id == other.id) || (this.id.equals(other.id)))
+            return ((this.name == other.name) || (this.name.equals(other.name)))
+                && ((this.pathLower == other.pathLower) || (this.pathLower.equals(other.pathLower)))
+                && ((this.pathDisplay == other.pathDisplay) || (this.pathDisplay.equals(other.pathDisplay)))
+                && ((this.id == other.id) || (this.id.equals(other.id)))
                 && ((this.clientModified == other.clientModified) || (this.clientModified.equals(other.clientModified)))
                 && ((this.serverModified == other.serverModified) || (this.serverModified.equals(other.serverModified)))
                 && ((this.rev == other.rev) || (this.rev.equals(other.rev)))
                 && (this.size == other.size)
+                && ((this.parentSharedFolderId == other.parentSharedFolderId) || (this.parentSharedFolderId != null && this.parentSharedFolderId.equals(other.parentSharedFolderId)))
                 && ((this.mediaInfo == other.mediaInfo) || (this.mediaInfo != null && this.mediaInfo.equals(other.mediaInfo)))
                 && ((this.sharingInfo == other.sharingInfo) || (this.sharingInfo != null && this.sharingInfo.equals(other.sharingInfo)))
-                && ((this.getName() == other.getName()) || (this.getName().equals(other.getName())))
-                && ((this.getPathLower() == other.getPathLower()) || (this.getPathLower().equals(other.getPathLower())))
-                && ((this.getPathDisplay() == other.getPathDisplay()) || (this.getPathDisplay().equals(other.getPathDisplay())))
-                && ((this.getParentSharedFolderId() == other.getParentSharedFolderId()) || (this.getParentSharedFolderId() != null && this.getParentSharedFolderId().equals(other.getParentSharedFolderId())))
                 ;
         }
         else {
@@ -403,70 +420,84 @@ public class FileMetadata extends Metadata {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static FileMetadata fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
+    static final class Serializer extends StructJsonSerializer<FileMetadata> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonWriter<FileMetadata> _JSON_WRITER = new JsonWriter<FileMetadata>() {
-        public final void write(FileMetadata x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
+        public Serializer() {
+            super(FileMetadata.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(FileMetadata.class, unwrapping);
+        }
+
+        @Override
+        protected void serializeFields(FileMetadata value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
             g.writeStringField(".tag", "file");
-            Metadata._JSON_WRITER.writeFields(x, g);
-            FileMetadata._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
-        }
-        public final void writeFields(FileMetadata x, JsonGenerator g) throws IOException {
-            g.writeFieldName("id");
-            g.writeString(x.id);
-            g.writeFieldName("client_modified");
-            writeDateIso(x.clientModified, g);
-            g.writeFieldName("server_modified");
-            writeDateIso(x.serverModified, g);
-            g.writeFieldName("rev");
-            g.writeString(x.rev);
-            g.writeFieldName("size");
-            g.writeNumber(x.size);
-            if (x.mediaInfo != null) {
-                g.writeFieldName("media_info");
-                MediaInfo._JSON_WRITER.write(x.mediaInfo, g);
+            g.writeObjectField("name", value.name);
+            g.writeObjectField("path_lower", value.pathLower);
+            g.writeObjectField("path_display", value.pathDisplay);
+            g.writeObjectField("id", value.id);
+            g.writeObjectField("client_modified", value.clientModified);
+            g.writeObjectField("server_modified", value.serverModified);
+            g.writeObjectField("rev", value.rev);
+            g.writeObjectField("size", value.size);
+            if (value.parentSharedFolderId != null) {
+                g.writeObjectField("parent_shared_folder_id", value.parentSharedFolderId);
             }
-            if (x.sharingInfo != null) {
-                g.writeFieldName("sharing_info");
-                FileSharingInfo._JSON_WRITER.write(x.sharingInfo, g);
+            if (value.mediaInfo != null) {
+                g.writeObjectField("media_info", value.mediaInfo);
+            }
+            if (value.sharingInfo != null) {
+                g.writeObjectField("sharing_info", value.sharingInfo);
             }
         }
-    };
+    }
 
-    public static final JsonReader<FileMetadata> _JSON_READER = new JsonReader<FileMetadata>() {
-        public final FileMetadata read(JsonParser parser) throws IOException, JsonReadException {
-            FileMetadata result;
-            JsonReader.expectObjectStart(parser);
-            String [] tags = readTags(parser);
-            result = readFromTags(tags, parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+    static final class Deserializer extends StructJsonDeserializer<FileMetadata> {
+        private static final long serialVersionUID = 0L;
+
+        public Deserializer() {
+            super(FileMetadata.class);
         }
 
-        public final FileMetadata readFromTags(String [] tags, JsonParser parser) throws IOException, JsonReadException {
-            if (tags != null) {
-                assert tags.length >= 1;
-                assert "file".equals(tags[0]);
-            }
-            return readFields(parser);
+        public Deserializer(boolean unwrapping) {
+            super(FileMetadata.class, unwrapping);
         }
 
-        public final FileMetadata readFields(JsonParser parser) throws IOException, JsonReadException {
+        @Override
+        protected JsonDeserializer<FileMetadata> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public FileMetadata deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+            String _subtype_tag = readEnumeratedSubtypeTag(_p, "file");
+
             String name = null;
             String pathLower = null;
             String pathDisplay = null;
@@ -478,82 +509,86 @@ public class FileMetadata extends Metadata {
             String parentSharedFolderId = null;
             MediaInfo mediaInfo = null;
             FileSharingInfo sharingInfo = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("name".equals(fieldName)) {
-                    name = JsonReader.StringReader
-                        .readField(parser, "name", name);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("name".equals(_field)) {
+                    name = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("path_lower".equals(fieldName)) {
-                    pathLower = JsonReader.StringReader
-                        .readField(parser, "path_lower", pathLower);
+                else if ("path_lower".equals(_field)) {
+                    pathLower = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("path_display".equals(fieldName)) {
-                    pathDisplay = JsonReader.StringReader
-                        .readField(parser, "path_display", pathDisplay);
+                else if ("path_display".equals(_field)) {
+                    pathDisplay = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("id".equals(fieldName)) {
-                    id = JsonReader.StringReader
-                        .readField(parser, "id", id);
+                else if ("id".equals(_field)) {
+                    id = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("client_modified".equals(fieldName)) {
-                    clientModified = JsonDateReader.DropboxV2
-                        .readField(parser, "client_modified", clientModified);
+                else if ("client_modified".equals(_field)) {
+                    clientModified = _ctx.parseDate(getStringValue(_p));
+                    _p.nextToken();
                 }
-                else if ("server_modified".equals(fieldName)) {
-                    serverModified = JsonDateReader.DropboxV2
-                        .readField(parser, "server_modified", serverModified);
+                else if ("server_modified".equals(_field)) {
+                    serverModified = _ctx.parseDate(getStringValue(_p));
+                    _p.nextToken();
                 }
-                else if ("rev".equals(fieldName)) {
-                    rev = JsonReader.StringReader
-                        .readField(parser, "rev", rev);
+                else if ("rev".equals(_field)) {
+                    rev = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("size".equals(fieldName)) {
-                    size = JsonReader.UInt64Reader
-                        .readField(parser, "size", size);
+                else if ("size".equals(_field)) {
+                    size = _p.getLongValue();
+                    assertUnsigned(_p, size);
+                    _p.nextToken();
                 }
-                else if ("parent_shared_folder_id".equals(fieldName)) {
-                    parentSharedFolderId = JsonReader.StringReader
-                        .readField(parser, "parent_shared_folder_id", parentSharedFolderId);
+                else if ("parent_shared_folder_id".equals(_field)) {
+                    parentSharedFolderId = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("media_info".equals(fieldName)) {
-                    mediaInfo = MediaInfo._JSON_READER
-                        .readField(parser, "media_info", mediaInfo);
+                else if ("media_info".equals(_field)) {
+                    mediaInfo = _p.readValueAs(MediaInfo.class);
+                    _p.nextToken();
                 }
-                else if ("sharing_info".equals(fieldName)) {
-                    sharingInfo = FileSharingInfo._JSON_READER
-                        .readField(parser, "sharing_info", sharingInfo);
+                else if ("sharing_info".equals(_field)) {
+                    sharingInfo = _p.readValueAs(FileSharingInfo.class);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (name == null) {
-                throw new JsonReadException("Required field \"name\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"name\" is missing.");
             }
             if (pathLower == null) {
-                throw new JsonReadException("Required field \"path_lower\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"path_lower\" is missing.");
             }
             if (pathDisplay == null) {
-                throw new JsonReadException("Required field \"path_display\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"path_display\" is missing.");
             }
             if (id == null) {
-                throw new JsonReadException("Required field \"id\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"id\" is missing.");
             }
             if (clientModified == null) {
-                throw new JsonReadException("Required field \"client_modified\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"client_modified\" is missing.");
             }
             if (serverModified == null) {
-                throw new JsonReadException("Required field \"server_modified\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"server_modified\" is missing.");
             }
             if (rev == null) {
-                throw new JsonReadException("Required field \"rev\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"rev\" is missing.");
             }
             if (size == null) {
-                throw new JsonReadException("Required field \"size\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"size\" is missing.");
             }
+
             return new FileMetadata(name, pathLower, pathDisplay, id, clientModified, serverModified, rev, size, parentSharedFolderId, mediaInfo, sharingInfo);
         }
-    };
+    }
 }

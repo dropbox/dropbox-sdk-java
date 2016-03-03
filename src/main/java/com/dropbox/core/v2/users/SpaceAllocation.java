@@ -5,19 +5,47 @@ package com.dropbox.core.v2.users;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.UnionJsonDeserializer;
+import com.dropbox.core.json.UnionJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Space is allocated differently based on the type of account.
+ *
+ * <p> This class is an open tagged union.  Tagged unions instances are always
+ * associated to a specific tag.  This means only one of the {@code isAbc()}
+ * methods will return {@code true}. You can use {@link #tag()} to determine the
+ * tag associated with this instance. </p>
+ *
+ * <p> Open unions may be extended in the future with additional tags. If a new
+ * tag is introduced that this SDK does not recognized, the {@link #OTHER} value
+ * will be used. </p>
  */
+@JsonSerialize(using=SpaceAllocation.Serializer.class)
+@JsonDeserialize(using=SpaceAllocation.Deserializer.class)
 public final class SpaceAllocation {
     // union SpaceAllocation
+
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link SpaceAllocation}.
@@ -31,17 +59,24 @@ public final class SpaceAllocation {
          * The user shares space with other members of their team.
          */
         TEAM, // TeamSpaceAllocation
+        /**
+         * Catch-all used for unknown tag values returned by the Dropbox
+         * servers.
+         *
+         * <p> Receiving a catch-all value typically indicates this SDK version
+         * is not up to date. Consider updating your SDK version to handle the
+         * new tags. </p>
+         */
         OTHER; // *catch_all
     }
 
-    private static final java.util.HashMap<String, Tag> VALUES_;
-    static {
-        VALUES_ = new java.util.HashMap<String, Tag>();
-        VALUES_.put("individual", Tag.INDIVIDUAL);
-        VALUES_.put("team", Tag.TEAM);
-        VALUES_.put("other", Tag.OTHER);
-    }
-
+    /**
+     * Catch-all used for unknown tag values returned by the Dropbox servers.
+     *
+     * <p> Receiving a catch-all value typically indicates this SDK version is
+     * not up to date. Consider updating your SDK version to handle the new
+     * tags. </p>
+     */
     public static final SpaceAllocation OTHER = new SpaceAllocation(Tag.OTHER, null, null);
 
     private final Tag tag;
@@ -63,9 +98,13 @@ public final class SpaceAllocation {
      * Returns the tag for this instance.
      *
      * <p> This class is a tagged union.  Tagged unions instances are always
-     * associated to a specific tag.  Callers are recommended to use the tag
-     * value in a {@code switch} statement to determine how to properly handle
-     * this {@code SpaceAllocation}. </p>
+     * associated to a specific tag.  This means only one of the {@code isXyz()}
+     * methods will return {@code true}. Callers are recommended to use the tag
+     * value in a {@code switch} statement to properly handle the different
+     * values for this {@code SpaceAllocation}. </p>
+     *
+     * <p> If a tag returned by the server is unrecognized by this SDK, the
+     * {@link Tag#OTHER} value will be used. </p>
      *
      * @return the tag for this instance.
      */
@@ -77,7 +116,7 @@ public final class SpaceAllocation {
      * Returns {@code true} if this instance has the tag {@link Tag#INDIVIDUAL},
      * {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#INDIVIDUAL}, {@code false} otherwise.
      */
     public boolean isIndividual() {
@@ -91,8 +130,7 @@ public final class SpaceAllocation {
      * <p> The user's space allocation applies only to their individual account.
      * </p>
      *
-     * @param value  {@link SpaceAllocation#individual} value to assign to this
-     *     instance.
+     * @param value  value to assign to this instance.
      *
      * @return Instance of {@code SpaceAllocation} with its tag set to {@link
      *     Tag#INDIVIDUAL}.
@@ -127,7 +165,7 @@ public final class SpaceAllocation {
      * Returns {@code true} if this instance has the tag {@link Tag#TEAM},
      * {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link Tag#TEAM},
+     * @return {@code true} if this instance is tagged as {@link Tag#TEAM},
      *     {@code false} otherwise.
      */
     public boolean isTeam() {
@@ -140,8 +178,7 @@ public final class SpaceAllocation {
      *
      * <p> The user shares space with other members of their team. </p>
      *
-     * @param value  {@link SpaceAllocation#team} value to assign to this
-     *     instance.
+     * @param value  value to assign to this instance.
      *
      * @return Instance of {@code SpaceAllocation} with its tag set to {@link
      *     Tag#TEAM}.
@@ -176,7 +213,7 @@ public final class SpaceAllocation {
      * Returns {@code true} if this instance has the tag {@link Tag#OTHER},
      * {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link Tag#OTHER},
+     * @return {@code true} if this instance is tagged as {@link Tag#OTHER},
      *     {@code false} otherwise.
      */
     public boolean isOther() {
@@ -221,97 +258,93 @@ public final class SpaceAllocation {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static SpaceAllocation fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
+    static final class Serializer extends UnionJsonSerializer<SpaceAllocation> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonWriter<SpaceAllocation> _JSON_WRITER = new JsonWriter<SpaceAllocation>() {
-        public final void write(SpaceAllocation x, JsonGenerator g) throws IOException {
-            switch (x.tag) {
+        public Serializer() {
+            super(SpaceAllocation.class, IndividualSpaceAllocation.class, TeamSpaceAllocation.class);
+        }
+
+        @Override
+        public void serialize(SpaceAllocation value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            switch (value.tag) {
                 case INDIVIDUAL:
                     g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("individual");
-                    g.writeFieldName("individual");
-                    IndividualSpaceAllocation._JSON_WRITER.write(x.getIndividualValue(), g);
+                    g.writeStringField(".tag", "individual");
+                    getUnwrappingSerializer(IndividualSpaceAllocation.class).serialize(value.individualValue, g, provider);
                     g.writeEndObject();
                     break;
                 case TEAM:
                     g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("team");
-                    g.writeFieldName("team");
-                    TeamSpaceAllocation._JSON_WRITER.write(x.getTeamValue(), g);
+                    g.writeStringField(".tag", "team");
+                    getUnwrappingSerializer(TeamSpaceAllocation.class).serialize(value.teamValue, g, provider);
                     g.writeEndObject();
                     break;
                 case OTHER:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("other");
-                    g.writeEndObject();
                     break;
             }
         }
-    };
+    }
 
-    public static final JsonReader<SpaceAllocation> _JSON_READER = new JsonReader<SpaceAllocation>() {
+    static final class Deserializer extends UnionJsonDeserializer<SpaceAllocation, Tag> {
+        private static final long serialVersionUID = 0L;
 
-        public final SpaceAllocation read(JsonParser parser) throws IOException, JsonReadException {
-            if (parser.getCurrentToken() == JsonToken.VALUE_STRING) {
-                String text = parser.getText();
-                parser.nextToken();
-                Tag tag = VALUES_.get(text);
-                if (tag == null) {
-                    return SpaceAllocation.OTHER;
-                }
-                switch (tag) {
-                    case OTHER: return SpaceAllocation.OTHER;
-                }
-                throw new JsonReadException("Tag " + tag + " requires a value", parser.getTokenLocation());
-            }
-            JsonReader.expectObjectStart(parser);
-            String[] tags = readTags(parser);
-            assert tags != null && tags.length == 1;
-            String text = tags[0];
-            Tag tag = VALUES_.get(text);
-            SpaceAllocation value = null;
-            if (tag != null) {
-                switch (tag) {
-                    case INDIVIDUAL: {
-                        IndividualSpaceAllocation v = null;
-                        v = IndividualSpaceAllocation._JSON_READER.readFields(parser);
-                        value = SpaceAllocation.individual(v);
-                        break;
-                    }
-                    case TEAM: {
-                        TeamSpaceAllocation v = null;
-                        v = TeamSpaceAllocation._JSON_READER.readFields(parser);
-                        value = SpaceAllocation.team(v);
-                        break;
-                    }
-                    case OTHER: {
-                        value = SpaceAllocation.OTHER;
-                        break;
-                    }
-                }
-            }
-            JsonReader.expectObjectEnd(parser);
-            if (value == null) {
-                return SpaceAllocation.OTHER;
-            }
-            return value;
+        public Deserializer() {
+            super(SpaceAllocation.class, getTagMapping(), Tag.OTHER, IndividualSpaceAllocation.class, TeamSpaceAllocation.class);
         }
 
-    };
+        @Override
+        public SpaceAllocation deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+            switch (_tag) {
+                case INDIVIDUAL: {
+                    IndividualSpaceAllocation value = null;
+                    value = readCollapsedStructValue(IndividualSpaceAllocation.class, _p, _ctx);
+                    return SpaceAllocation.individual(value);
+                }
+                case TEAM: {
+                    TeamSpaceAllocation value = null;
+                    value = readCollapsedStructValue(TeamSpaceAllocation.class, _p, _ctx);
+                    return SpaceAllocation.team(value);
+                }
+                case OTHER: {
+                    return SpaceAllocation.OTHER;
+                }
+            }
+            // should be impossible to get here
+            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
+        }
+
+        private static Map<String, SpaceAllocation.Tag> getTagMapping() {
+            Map<String, SpaceAllocation.Tag> values = new HashMap<String, SpaceAllocation.Tag>();
+            values.put("individual", SpaceAllocation.Tag.INDIVIDUAL);
+            values.put("team", SpaceAllocation.Tag.TEAM);
+            values.put("other", SpaceAllocation.Tag.OTHER);
+            return Collections.unmodifiableMap(values);
+        }
+    }
 }

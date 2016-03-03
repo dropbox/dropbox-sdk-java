@@ -3,22 +3,39 @@
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonArrayReader;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.List;
 
+@JsonSerialize(using=RevokeLinkedAppBatchResult.Serializer.class)
+@JsonDeserialize(using=RevokeLinkedAppBatchResult.Deserializer.class)
 public class RevokeLinkedAppBatchResult {
     // struct RevokeLinkedAppBatchResult
 
-    private final List<RevokeLinkedAppStatus> revokeLinkedAppStatus;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final List<RevokeLinkedAppStatus> revokeLinkedAppStatus;
 
     /**
      *
@@ -50,10 +67,10 @@ public class RevokeLinkedAppBatchResult {
 
     @Override
     public int hashCode() {
-        // objects containing lists are not hash-able. This is used as a safeguard
-        // against adding this object to a HashSet or HashMap. Since list fields are
-        // mutable, it is not safe to compute a hashCode here.
-        return System.identityHashCode(this);
+        int hash = java.util.Arrays.hashCode(new Object [] {
+            revokeLinkedAppStatus
+        });
+        return hash;
     }
 
     @Override
@@ -73,65 +90,98 @@ public class RevokeLinkedAppBatchResult {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static RevokeLinkedAppBatchResult fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
+    static final class Serializer extends StructJsonSerializer<RevokeLinkedAppBatchResult> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(RevokeLinkedAppBatchResult.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(RevokeLinkedAppBatchResult.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<RevokeLinkedAppBatchResult> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(RevokeLinkedAppBatchResult value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("revoke_linked_app_status", value.revokeLinkedAppStatus);
+        }
     }
 
-    public static final JsonWriter<RevokeLinkedAppBatchResult> _JSON_WRITER = new JsonWriter<RevokeLinkedAppBatchResult>() {
-        public final void write(RevokeLinkedAppBatchResult x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            RevokeLinkedAppBatchResult._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
-        }
-        public final void writeFields(RevokeLinkedAppBatchResult x, JsonGenerator g) throws IOException {
-            g.writeFieldName("revoke_linked_app_status");
-            g.writeStartArray();
-            for (RevokeLinkedAppStatus item: x.revokeLinkedAppStatus) {
-                if (item != null) {
-                    RevokeLinkedAppStatus._JSON_WRITER.write(item, g);
-                }
-            }
-            g.writeEndArray();
-        }
-    };
+    static final class Deserializer extends StructJsonDeserializer<RevokeLinkedAppBatchResult> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonReader<RevokeLinkedAppBatchResult> _JSON_READER = new JsonReader<RevokeLinkedAppBatchResult>() {
-        public final RevokeLinkedAppBatchResult read(JsonParser parser) throws IOException, JsonReadException {
-            RevokeLinkedAppBatchResult result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+        public Deserializer() {
+            super(RevokeLinkedAppBatchResult.class);
         }
 
-        public final RevokeLinkedAppBatchResult readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(RevokeLinkedAppBatchResult.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<RevokeLinkedAppBatchResult> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public RevokeLinkedAppBatchResult deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             List<RevokeLinkedAppStatus> revokeLinkedAppStatus = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("revoke_linked_app_status".equals(fieldName)) {
-                    revokeLinkedAppStatus = JsonArrayReader.mk(RevokeLinkedAppStatus._JSON_READER)
-                        .readField(parser, "revoke_linked_app_status", revokeLinkedAppStatus);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("revoke_linked_app_status".equals(_field)) {
+                    expectArrayStart(_p);
+                    revokeLinkedAppStatus = new java.util.ArrayList<RevokeLinkedAppStatus>();
+                    while (!isArrayEnd(_p)) {
+                        RevokeLinkedAppStatus _x = null;
+                        _x = _p.readValueAs(RevokeLinkedAppStatus.class);
+                        _p.nextToken();
+                        revokeLinkedAppStatus.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (revokeLinkedAppStatus == null) {
-                throw new JsonReadException("Required field \"revoke_linked_app_status\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"revoke_linked_app_status\" is missing.");
             }
+
             return new RevokeLinkedAppBatchResult(revokeLinkedAppStatus);
         }
-    };
+    }
 }

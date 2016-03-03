@@ -5,18 +5,33 @@ package com.dropbox.core.v2.team;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.UnionJsonDeserializer;
+import com.dropbox.core.json.UnionJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Error that can be raised when {@link GroupMemberSelector} is used, and the
  * user is required to be a member of the specified group.
  */
+@JsonSerialize(using=GroupMemberSelectorError.Serializer.class)
+@JsonDeserialize(using=GroupMemberSelectorError.Deserializer.class)
 public enum GroupMemberSelectorError {
     // union GroupMemberSelectorError
     /**
@@ -29,48 +44,49 @@ public enum GroupMemberSelectorError {
      */
     MEMBER_NOT_IN_GROUP;
 
-    private static final java.util.HashMap<String, GroupMemberSelectorError> VALUES_;
-    static {
-        VALUES_ = new java.util.HashMap<String, GroupMemberSelectorError>();
-        VALUES_.put("member_not_in_group", MEMBER_NOT_IN_GROUP);
-    }
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
-    }
+    static final class Serializer extends UnionJsonSerializer<GroupMemberSelectorError> {
+        private static final long serialVersionUID = 0L;
 
-    public static GroupMemberSelectorError fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
+        public Serializer() {
+            super(GroupMemberSelectorError.class);
+        }
 
-    public static final JsonWriter<GroupMemberSelectorError> _JSON_WRITER = new JsonWriter<GroupMemberSelectorError>() {
-        public void write(GroupMemberSelectorError x, JsonGenerator g) throws IOException {
-            switch (x) {
+        @Override
+        public void serialize(GroupMemberSelectorError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            switch (value) {
                 case GROUP_NOT_FOUND:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("group_not_found");
-                    g.writeEndObject();
                     break;
                 case OTHER:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("other");
-                    g.writeEndObject();
                     break;
                 case MEMBER_NOT_IN_GROUP:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("member_not_in_group");
-                    g.writeEndObject();
                     break;
             }
         }
-    };
+    }
 
-    public static final JsonReader<GroupMemberSelectorError> _JSON_READER = new JsonReader<GroupMemberSelectorError>() {
-        public final GroupMemberSelectorError read(JsonParser parser) throws IOException, JsonReadException {
-            return JsonReader.readEnum(parser, VALUES_, null);
+    static final class Deserializer extends UnionJsonDeserializer<GroupMemberSelectorError, GroupMemberSelectorError> {
+        private static final long serialVersionUID = 0L;
+
+        public Deserializer() {
+            super(GroupMemberSelectorError.class, getTagMapping(), null);
         }
-    };
+
+        @Override
+        public GroupMemberSelectorError deserialize(GroupMemberSelectorError _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+            return _tag;
+        }
+
+        private static Map<String, GroupMemberSelectorError> getTagMapping() {
+            Map<String, GroupMemberSelectorError> values = new HashMap<String, GroupMemberSelectorError>();
+            values.put("member_not_in_group", GroupMemberSelectorError.MEMBER_NOT_IN_GROUP);
+            return Collections.unmodifiableMap(values);
+        }
+    }
 }

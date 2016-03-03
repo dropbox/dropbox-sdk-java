@@ -3,15 +3,26 @@
 
 package com.dropbox.core.v2.sharing;
 
-import com.dropbox.core.json.JsonDateReader;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 import com.dropbox.core.v2.users.Team;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.Date;
@@ -19,17 +30,23 @@ import java.util.Date;
 /**
  * The metadata of a shared link
  */
+@JsonSerialize(using=SharedLinkMetadata.Serializer.class)
+@JsonDeserialize(using=SharedLinkMetadata.Deserializer.class)
 public class SharedLinkMetadata {
     // struct SharedLinkMetadata
 
-    private final String url;
-    private final String id;
-    private final String name;
-    private final Date expires;
-    private final String pathLower;
-    private final LinkPermissions linkPermissions;
-    private final TeamMemberInfo teamMemberInfo;
-    private final Team contentOwnerTeamInfo;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final String url;
+    protected final String id;
+    protected final String name;
+    protected final Date expires;
+    protected final String pathLower;
+    protected final LinkPermissions linkPermissions;
+    protected final TeamMemberInfo teamMemberInfo;
+    protected final Team contentOwnerTeamInfo;
 
     /**
      * The metadata of a shared link
@@ -344,11 +361,11 @@ public class SharedLinkMetadata {
         else if (obj.getClass().equals(this.getClass())) {
             SharedLinkMetadata other = (SharedLinkMetadata) obj;
             return ((this.url == other.url) || (this.url.equals(other.url)))
-                && ((this.id == other.id) || (this.id != null && this.id.equals(other.id)))
                 && ((this.name == other.name) || (this.name.equals(other.name)))
+                && ((this.linkPermissions == other.linkPermissions) || (this.linkPermissions.equals(other.linkPermissions)))
+                && ((this.id == other.id) || (this.id != null && this.id.equals(other.id)))
                 && ((this.expires == other.expires) || (this.expires != null && this.expires.equals(other.expires)))
                 && ((this.pathLower == other.pathLower) || (this.pathLower != null && this.pathLower.equals(other.pathLower)))
-                && ((this.linkPermissions == other.linkPermissions) || (this.linkPermissions.equals(other.linkPermissions)))
                 && ((this.teamMemberInfo == other.teamMemberInfo) || (this.teamMemberInfo != null && this.teamMemberInfo.equals(other.teamMemberInfo)))
                 && ((this.contentOwnerTeamInfo == other.contentOwnerTeamInfo) || (this.contentOwnerTeamInfo != null && this.contentOwnerTeamInfo.equals(other.contentOwnerTeamInfo)))
                 ;
@@ -360,90 +377,90 @@ public class SharedLinkMetadata {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static SharedLinkMetadata fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
+    static final class Serializer extends StructJsonSerializer<SharedLinkMetadata> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(SharedLinkMetadata.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(SharedLinkMetadata.class, unwrapping);
+        }
+
+        @Override
+        protected void serializeFields(SharedLinkMetadata value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("url", value.url);
+            g.writeObjectField("name", value.name);
+            g.writeObjectField("link_permissions", value.linkPermissions);
+            if (value.id != null) {
+                g.writeObjectField("id", value.id);
+            }
+            if (value.expires != null) {
+                g.writeObjectField("expires", value.expires);
+            }
+            if (value.pathLower != null) {
+                g.writeObjectField("path_lower", value.pathLower);
+            }
+            if (value.teamMemberInfo != null) {
+                g.writeObjectField("team_member_info", value.teamMemberInfo);
+            }
+            if (value.contentOwnerTeamInfo != null) {
+                g.writeObjectField("content_owner_team_info", value.contentOwnerTeamInfo);
+            }
+        }
     }
 
-    public static final JsonWriter<SharedLinkMetadata> _JSON_WRITER = new JsonWriter<SharedLinkMetadata>() {
-        public final void write(SharedLinkMetadata x, JsonGenerator g) throws IOException {
-            if (x instanceof FileLinkMetadata) {
-                FileLinkMetadata._JSON_WRITER.write((FileLinkMetadata) x, g);
-                return;
-            }
-            if (x instanceof FolderLinkMetadata) {
-                FolderLinkMetadata._JSON_WRITER.write((FolderLinkMetadata) x, g);
-                return;
-            }
+    static final class Deserializer extends StructJsonDeserializer<SharedLinkMetadata> {
+        private static final long serialVersionUID = 0L;
 
-            g.writeStartObject();
-            SharedLinkMetadata._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
-        }
-        public final void writeFields(SharedLinkMetadata x, JsonGenerator g) throws IOException {
-            g.writeFieldName("url");
-            g.writeString(x.url);
-            if (x.id != null) {
-                g.writeFieldName("id");
-                g.writeString(x.id);
-            }
-            g.writeFieldName("name");
-            g.writeString(x.name);
-            if (x.expires != null) {
-                g.writeFieldName("expires");
-                writeDateIso(x.expires, g);
-            }
-            if (x.pathLower != null) {
-                g.writeFieldName("path_lower");
-                g.writeString(x.pathLower);
-            }
-            g.writeFieldName("link_permissions");
-            LinkPermissions._JSON_WRITER.write(x.linkPermissions, g);
-            if (x.teamMemberInfo != null) {
-                g.writeFieldName("team_member_info");
-                TeamMemberInfo._JSON_WRITER.write(x.teamMemberInfo, g);
-            }
-            if (x.contentOwnerTeamInfo != null) {
-                g.writeFieldName("content_owner_team_info");
-                Team._JSON_WRITER.write(x.contentOwnerTeamInfo, g);
-            }
-        }
-    };
-
-    public static final JsonReader<SharedLinkMetadata> _JSON_READER = new JsonReader<SharedLinkMetadata>() {
-        public final SharedLinkMetadata read(JsonParser parser) throws IOException, JsonReadException {
-            SharedLinkMetadata result;
-            JsonReader.expectObjectStart(parser);
-            String [] tags = readTags(parser);
-            result = readFromTags(tags, parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+        public Deserializer() {
+            super(SharedLinkMetadata.class, FileLinkMetadata.class, FolderLinkMetadata.class);
         }
 
-        public final SharedLinkMetadata readFromTags(String [] tags, JsonParser parser) throws IOException, JsonReadException {
-            if (tags != null && tags.length > 0) {
-                if ("file".equals(tags[0])) {
-                    return FileLinkMetadata._JSON_READER.readFromTags(tags, parser);
-                }
-                if ("folder".equals(tags[0])) {
-                    return FolderLinkMetadata._JSON_READER.readFromTags(tags, parser);
-                }
-                // If no match, fall back to base class
-            }
-            return readFields(parser);
+        public Deserializer(boolean unwrapping) {
+            super(SharedLinkMetadata.class, unwrapping, FileLinkMetadata.class, FolderLinkMetadata.class);
         }
 
-        public final SharedLinkMetadata readFields(JsonParser parser) throws IOException, JsonReadException {
+        @Override
+        protected JsonDeserializer<SharedLinkMetadata> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public SharedLinkMetadata deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+            String _subtype_tag = readEnumeratedSubtypeTag(_p);
+            if ("file".equals(_subtype_tag)) {
+                return readCollapsedStructValue(FileLinkMetadata.class, _p, _ctx);
+            }
+            if ("folder".equals(_subtype_tag)) {
+                return readCollapsedStructValue(FolderLinkMetadata.class, _p, _ctx);
+            }
+
             String url = null;
             String name = null;
             LinkPermissions linkPermissions = null;
@@ -452,55 +469,58 @@ public class SharedLinkMetadata {
             String pathLower = null;
             TeamMemberInfo teamMemberInfo = null;
             Team contentOwnerTeamInfo = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("url".equals(fieldName)) {
-                    url = JsonReader.StringReader
-                        .readField(parser, "url", url);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("url".equals(_field)) {
+                    url = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("name".equals(fieldName)) {
-                    name = JsonReader.StringReader
-                        .readField(parser, "name", name);
+                else if ("name".equals(_field)) {
+                    name = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("link_permissions".equals(fieldName)) {
-                    linkPermissions = LinkPermissions._JSON_READER
-                        .readField(parser, "link_permissions", linkPermissions);
+                else if ("link_permissions".equals(_field)) {
+                    linkPermissions = _p.readValueAs(LinkPermissions.class);
+                    _p.nextToken();
                 }
-                else if ("id".equals(fieldName)) {
-                    id = JsonReader.StringReader
-                        .readField(parser, "id", id);
+                else if ("id".equals(_field)) {
+                    id = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("expires".equals(fieldName)) {
-                    expires = JsonDateReader.DropboxV2
-                        .readField(parser, "expires", expires);
+                else if ("expires".equals(_field)) {
+                    expires = _ctx.parseDate(getStringValue(_p));
+                    _p.nextToken();
                 }
-                else if ("path_lower".equals(fieldName)) {
-                    pathLower = JsonReader.StringReader
-                        .readField(parser, "path_lower", pathLower);
+                else if ("path_lower".equals(_field)) {
+                    pathLower = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("team_member_info".equals(fieldName)) {
-                    teamMemberInfo = TeamMemberInfo._JSON_READER
-                        .readField(parser, "team_member_info", teamMemberInfo);
+                else if ("team_member_info".equals(_field)) {
+                    teamMemberInfo = _p.readValueAs(TeamMemberInfo.class);
+                    _p.nextToken();
                 }
-                else if ("content_owner_team_info".equals(fieldName)) {
-                    contentOwnerTeamInfo = Team._JSON_READER
-                        .readField(parser, "content_owner_team_info", contentOwnerTeamInfo);
+                else if ("content_owner_team_info".equals(_field)) {
+                    contentOwnerTeamInfo = _p.readValueAs(Team.class);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (url == null) {
-                throw new JsonReadException("Required field \"url\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"url\" is missing.");
             }
             if (name == null) {
-                throw new JsonReadException("Required field \"name\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"name\" is missing.");
             }
             if (linkPermissions == null) {
-                throw new JsonReadException("Required field \"link_permissions\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"link_permissions\" is missing.");
             }
+
             return new SharedLinkMetadata(url, name, linkPermissions, id, expires, pathLower, teamMemberInfo, contentOwnerTeamInfo);
         }
-    };
+    }
 }

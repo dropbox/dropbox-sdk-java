@@ -5,16 +5,41 @@ package com.dropbox.core.v2.sharing;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.UnionJsonDeserializer;
+import com.dropbox.core.json.UnionJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
+/**
+ * This class is a tagged union.  Tagged unions instances are always associated
+ * to a specific tag.  This means only one of the {@code isAbc()} methods will
+ * return {@code true}. You can use {@link #tag()} to determine the tag
+ * associated with this instance.
+ */
+@JsonSerialize(using=ShareFolderJobStatus.Serializer.class)
+@JsonDeserialize(using=ShareFolderJobStatus.Deserializer.class)
 public final class ShareFolderJobStatus {
     // union ShareFolderJobStatus
+
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link ShareFolderJobStatus}.
@@ -31,13 +56,9 @@ public final class ShareFolderJobStatus {
         FAILED; // ShareFolderError
     }
 
-    private static final java.util.HashMap<String, Tag> VALUES_;
-    static {
-        VALUES_ = new java.util.HashMap<String, Tag>();
-        VALUES_.put("complete", Tag.COMPLETE);
-        VALUES_.put("failed", Tag.FAILED);
-    }
-
+    /**
+     * The asynchronous job is still in progress.
+     */
     public static final ShareFolderJobStatus IN_PROGRESS = new ShareFolderJobStatus(Tag.IN_PROGRESS, null, null);
 
     private final Tag tag;
@@ -58,9 +79,10 @@ public final class ShareFolderJobStatus {
      * Returns the tag for this instance.
      *
      * <p> This class is a tagged union.  Tagged unions instances are always
-     * associated to a specific tag.  Callers are recommended to use the tag
-     * value in a {@code switch} statement to determine how to properly handle
-     * this {@code ShareFolderJobStatus}. </p>
+     * associated to a specific tag.  This means only one of the {@code isXyz()}
+     * methods will return {@code true}. Callers are recommended to use the tag
+     * value in a {@code switch} statement to properly handle the different
+     * values for this {@code ShareFolderJobStatus}. </p>
      *
      * @return the tag for this instance.
      */
@@ -72,7 +94,7 @@ public final class ShareFolderJobStatus {
      * Returns {@code true} if this instance has the tag {@link
      * Tag#IN_PROGRESS}, {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
+     * @return {@code true} if this instance is tagged as {@link
      *     Tag#IN_PROGRESS}, {@code false} otherwise.
      */
     public boolean isInProgress() {
@@ -83,8 +105,8 @@ public final class ShareFolderJobStatus {
      * Returns {@code true} if this instance has the tag {@link Tag#COMPLETE},
      * {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link
-     *     Tag#COMPLETE}, {@code false} otherwise.
+     * @return {@code true} if this instance is tagged as {@link Tag#COMPLETE},
+     *     {@code false} otherwise.
      */
     public boolean isComplete() {
         return this.tag == Tag.COMPLETE;
@@ -97,8 +119,7 @@ public final class ShareFolderJobStatus {
      * <p> The share job has finished. The value is the metadata for the folder.
      * </p>
      *
-     * @param value  {@link ShareFolderJobStatus#complete} value to assign to
-     *     this instance.
+     * @param value  value to assign to this instance.
      *
      * @return Instance of {@code ShareFolderJobStatus} with its tag set to
      *     {@link Tag#COMPLETE}.
@@ -133,7 +154,7 @@ public final class ShareFolderJobStatus {
      * Returns {@code true} if this instance has the tag {@link Tag#FAILED},
      * {@code false} otherwise.
      *
-     * @return {@code true} if this insta5Bnce is tagged as {@link Tag#FAILED},
+     * @return {@code true} if this instance is tagged as {@link Tag#FAILED},
      *     {@code false} otherwise.
      */
     public boolean isFailed() {
@@ -144,8 +165,7 @@ public final class ShareFolderJobStatus {
      * Returns an instance of {@code ShareFolderJobStatus} that has its tag set
      * to {@link Tag#FAILED}.
      *
-     * @param value  {@link ShareFolderJobStatus#failed} value to assign to this
-     *     instance.
+     * @param value  value to assign to this instance.
      *
      * @return Instance of {@code ShareFolderJobStatus} with its tag set to
      *     {@link Tag#FAILED}.
@@ -213,102 +233,94 @@ public final class ShareFolderJobStatus {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static ShareFolderJobStatus fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
+    static final class Serializer extends UnionJsonSerializer<ShareFolderJobStatus> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonWriter<ShareFolderJobStatus> _JSON_WRITER = new JsonWriter<ShareFolderJobStatus>() {
-        public final void write(ShareFolderJobStatus x, JsonGenerator g) throws IOException {
-            switch (x.tag) {
+        public Serializer() {
+            super(ShareFolderJobStatus.class, SharedFolderMetadata.class);
+        }
+
+        @Override
+        public void serialize(ShareFolderJobStatus value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            switch (value.tag) {
                 case IN_PROGRESS:
-                    g.writeStartObject();
-                    g.writeFieldName(".tag");
                     g.writeString("in_progress");
-                    g.writeEndObject();
                     break;
                 case COMPLETE:
                     g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("complete");
-                    g.writeFieldName("complete");
-                    SharedFolderMetadata._JSON_WRITER.write(x.getCompleteValue(), g);
+                    g.writeStringField(".tag", "complete");
+                    getUnwrappingSerializer(SharedFolderMetadata.class).serialize(value.completeValue, g, provider);
                     g.writeEndObject();
                     break;
                 case FAILED:
                     g.writeStartObject();
-                    g.writeFieldName(".tag");
-                    g.writeString("failed");
-                    g.writeFieldName("failed");
-                    ShareFolderError._JSON_WRITER.write(x.getFailedValue(), g);
+                    g.writeStringField(".tag", "failed");
+                    g.writeObjectField("failed", value.failedValue);
                     g.writeEndObject();
                     break;
             }
         }
-    };
+    }
 
-    public static final JsonReader<ShareFolderJobStatus> _JSON_READER = new JsonReader<ShareFolderJobStatus>() {
+    static final class Deserializer extends UnionJsonDeserializer<ShareFolderJobStatus, Tag> {
+        private static final long serialVersionUID = 0L;
 
-        public final ShareFolderJobStatus read(JsonParser parser) throws IOException, JsonReadException {
-            if (parser.getCurrentToken() == JsonToken.VALUE_STRING) {
-                String text = parser.getText();
-                parser.nextToken();
-                Tag tag = VALUES_.get(text);
-                if (tag == null) {
-                    throw new JsonReadException("Unanticipated tag " + text + " without catch-all", parser.getTokenLocation());
-                }
-                switch (tag) {
-                    case IN_PROGRESS: return ShareFolderJobStatus.IN_PROGRESS;
-                }
-                throw new JsonReadException("Tag " + tag + " requires a value", parser.getTokenLocation());
-            }
-            JsonReader.expectObjectStart(parser);
-            String[] tags = readTags(parser);
-            assert tags != null && tags.length == 1;
-            String text = tags[0];
-            Tag tag = VALUES_.get(text);
-            ShareFolderJobStatus value = null;
-            if (tag != null) {
-                switch (tag) {
-                    case IN_PROGRESS: {
-                        value = ShareFolderJobStatus.IN_PROGRESS;
-                        break;
-                    }
-                    case COMPLETE: {
-                        SharedFolderMetadata v = null;
-                        v = SharedFolderMetadata._JSON_READER.readFields(parser);
-                        value = ShareFolderJobStatus.complete(v);
-                        break;
-                    }
-                    case FAILED: {
-                        ShareFolderError v = null;
-                        assert parser.getCurrentToken() == JsonToken.FIELD_NAME;
-                        text = parser.getText();
-                        assert tags[0].equals(text);
-                        parser.nextToken();
-                        v = ShareFolderError._JSON_READER
-                            .readField(parser, "failed", v);
-                        value = ShareFolderJobStatus.failed(v);
-                        break;
-                    }
-                }
-            }
-            if (value == null) {
-                throw new JsonReadException("Unanticipated tag " + text, parser.getTokenLocation());
-            }
-            JsonReader.expectObjectEnd(parser);
-            return value;
+        public Deserializer() {
+            super(ShareFolderJobStatus.class, getTagMapping(), null, SharedFolderMetadata.class);
         }
 
-    };
+        @Override
+        public ShareFolderJobStatus deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+            switch (_tag) {
+                case IN_PROGRESS: {
+                    return ShareFolderJobStatus.IN_PROGRESS;
+                }
+                case COMPLETE: {
+                    SharedFolderMetadata value = null;
+                    value = readCollapsedStructValue(SharedFolderMetadata.class, _p, _ctx);
+                    return ShareFolderJobStatus.complete(value);
+                }
+                case FAILED: {
+                    ShareFolderError value = null;
+                    expectField(_p, "failed");
+                    value = _p.readValueAs(ShareFolderError.class);
+                    _p.nextToken();
+                    return ShareFolderJobStatus.failed(value);
+                }
+            }
+            // should be impossible to get here
+            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
+        }
+
+        private static Map<String, ShareFolderJobStatus.Tag> getTagMapping() {
+            Map<String, ShareFolderJobStatus.Tag> values = new HashMap<String, ShareFolderJobStatus.Tag>();
+            values.put("complete", ShareFolderJobStatus.Tag.COMPLETE);
+            values.put("failed", ShareFolderJobStatus.Tag.FAILED);
+            return Collections.unmodifiableMap(values);
+        }
+    }
 }

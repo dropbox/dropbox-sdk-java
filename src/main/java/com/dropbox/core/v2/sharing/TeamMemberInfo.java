@@ -5,24 +5,42 @@ package com.dropbox.core.v2.sharing;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 import com.dropbox.core.v2.users.Team;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
 /**
  * Information about a team member.
  */
+@JsonSerialize(using=TeamMemberInfo.Serializer.class)
+@JsonDeserialize(using=TeamMemberInfo.Deserializer.class)
 public class TeamMemberInfo {
     // struct TeamMemberInfo
 
-    private final Team teamInfo;
-    private final String displayName;
-    private final String memberId;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final Team teamInfo;
+    protected final String displayName;
+    protected final String memberId;
 
     /**
      * Information about a team member.
@@ -124,78 +142,107 @@ public class TeamMemberInfo {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
-    }
-
-    public static TeamMemberInfo fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
-    }
-
-    public static final JsonWriter<TeamMemberInfo> _JSON_WRITER = new JsonWriter<TeamMemberInfo>() {
-        public final void write(TeamMemberInfo x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            TeamMemberInfo._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
         }
-        public final void writeFields(TeamMemberInfo x, JsonGenerator g) throws IOException {
-            g.writeFieldName("team_info");
-            Team._JSON_WRITER.write(x.teamInfo, g);
-            g.writeFieldName("display_name");
-            g.writeString(x.displayName);
-            if (x.memberId != null) {
-                g.writeFieldName("member_id");
-                g.writeString(x.memberId);
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
+    }
+
+    static final class Serializer extends StructJsonSerializer<TeamMemberInfo> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(TeamMemberInfo.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(TeamMemberInfo.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<TeamMemberInfo> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(TeamMemberInfo value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("team_info", value.teamInfo);
+            g.writeObjectField("display_name", value.displayName);
+            if (value.memberId != null) {
+                g.writeObjectField("member_id", value.memberId);
             }
         }
-    };
+    }
 
-    public static final JsonReader<TeamMemberInfo> _JSON_READER = new JsonReader<TeamMemberInfo>() {
-        public final TeamMemberInfo read(JsonParser parser) throws IOException, JsonReadException {
-            TeamMemberInfo result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+    static final class Deserializer extends StructJsonDeserializer<TeamMemberInfo> {
+        private static final long serialVersionUID = 0L;
+
+        public Deserializer() {
+            super(TeamMemberInfo.class);
         }
 
-        public final TeamMemberInfo readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(TeamMemberInfo.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<TeamMemberInfo> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public TeamMemberInfo deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             Team teamInfo = null;
             String displayName = null;
             String memberId = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("team_info".equals(fieldName)) {
-                    teamInfo = Team._JSON_READER
-                        .readField(parser, "team_info", teamInfo);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("team_info".equals(_field)) {
+                    teamInfo = _p.readValueAs(Team.class);
+                    _p.nextToken();
                 }
-                else if ("display_name".equals(fieldName)) {
-                    displayName = JsonReader.StringReader
-                        .readField(parser, "display_name", displayName);
+                else if ("display_name".equals(_field)) {
+                    displayName = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("member_id".equals(fieldName)) {
-                    memberId = JsonReader.StringReader
-                        .readField(parser, "member_id", memberId);
+                else if ("member_id".equals(_field)) {
+                    memberId = getStringValue(_p);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (teamInfo == null) {
-                throw new JsonReadException("Required field \"team_info\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"team_info\" is missing.");
             }
             if (displayName == null) {
-                throw new JsonReadException("Required field \"display_name\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"display_name\" is missing.");
             }
+
             return new TeamMemberInfo(teamInfo, displayName, memberId);
         }
-    };
+    }
 }

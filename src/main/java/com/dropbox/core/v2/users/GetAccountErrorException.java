@@ -11,9 +11,10 @@ import com.dropbox.core.LocalizedText;
  * error.
  */
 public class GetAccountErrorException extends DbxApiException {
+    private static final long serialVersionUID = 0L;
 
     /**
-     * The error reported by {@link DbxUsers#getAccount(String)}.
+     * The error reported by {@link DbxUserUsersRequests#getAccount(String)}.
      */
     public final GetAccountError errorValue;
 

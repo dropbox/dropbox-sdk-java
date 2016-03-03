@@ -11,10 +11,11 @@ import com.dropbox.core.LocalizedText;
  * CreateSharedLinkWithSettingsError} error.
  */
 public class CreateSharedLinkWithSettingsErrorException extends DbxApiException {
+    private static final long serialVersionUID = 0L;
 
     /**
      * The error reported by {@link
-     * DbxSharing#createSharedLinkWithSettings(String)}.
+     * DbxUserSharingRequests#createSharedLinkWithSettings(String)}.
      */
     public final CreateSharedLinkWithSettingsError errorValue;
 

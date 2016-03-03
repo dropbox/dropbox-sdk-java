@@ -5,22 +5,40 @@ package com.dropbox.core.v2.files;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonWriter;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
-public class SearchArg {
+@JsonSerialize(using=SearchArg.Serializer.class)
+@JsonDeserialize(using=SearchArg.Deserializer.class)
+class SearchArg {
     // struct SearchArg
 
-    private final String path;
-    private final String query;
-    private final long start;
-    private final long maxResults;
-    private final SearchMode mode;
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final String path;
+    protected final String query;
+    protected final long start;
+    protected final long maxResults;
+    protected final SearchMode mode;
 
     /**
      * Use {@link newBuilder} to create instances of this class without
@@ -308,90 +326,119 @@ public class SearchArg {
 
     @Override
     public String toString() {
-        return _JSON_WRITER.writeToString(this, false);
+        return serialize(false);
     }
 
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
     public String toStringMultiline() {
-        return _JSON_WRITER.writeToString(this, true);
+        return serialize(true);
     }
 
-    public String toJson(Boolean longForm) {
-        return _JSON_WRITER.writeToString(this, longForm);
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
     }
 
-    public static SearchArg fromJson(String s) throws JsonReadException {
-        return _JSON_READER.readFully(s);
+    static final class Serializer extends StructJsonSerializer<SearchArg> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(SearchArg.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(SearchArg.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<SearchArg> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(SearchArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("path", value.path);
+            g.writeObjectField("query", value.query);
+            g.writeObjectField("start", value.start);
+            g.writeObjectField("max_results", value.maxResults);
+            g.writeObjectField("mode", value.mode);
+        }
     }
 
-    public static final JsonWriter<SearchArg> _JSON_WRITER = new JsonWriter<SearchArg>() {
-        public final void write(SearchArg x, JsonGenerator g) throws IOException {
-            g.writeStartObject();
-            SearchArg._JSON_WRITER.writeFields(x, g);
-            g.writeEndObject();
-        }
-        public final void writeFields(SearchArg x, JsonGenerator g) throws IOException {
-            g.writeFieldName("path");
-            g.writeString(x.path);
-            g.writeFieldName("query");
-            g.writeString(x.query);
-            g.writeFieldName("start");
-            g.writeNumber(x.start);
-            g.writeFieldName("max_results");
-            g.writeNumber(x.maxResults);
-            g.writeFieldName("mode");
-            SearchMode._JSON_WRITER.write(x.mode, g);
-        }
-    };
+    static final class Deserializer extends StructJsonDeserializer<SearchArg> {
+        private static final long serialVersionUID = 0L;
 
-    public static final JsonReader<SearchArg> _JSON_READER = new JsonReader<SearchArg>() {
-        public final SearchArg read(JsonParser parser) throws IOException, JsonReadException {
-            SearchArg result;
-            JsonReader.expectObjectStart(parser);
-            result = readFields(parser);
-            JsonReader.expectObjectEnd(parser);
-            return result;
+        public Deserializer() {
+            super(SearchArg.class);
         }
 
-        public final SearchArg readFields(JsonParser parser) throws IOException, JsonReadException {
+        public Deserializer(boolean unwrapping) {
+            super(SearchArg.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<SearchArg> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public SearchArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
             String path = null;
             String query = null;
             Long start = null;
             Long maxResults = null;
             SearchMode mode = null;
-            while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String fieldName = parser.getCurrentName();
-                parser.nextToken();
-                if ("path".equals(fieldName)) {
-                    path = JsonReader.StringReader
-                        .readField(parser, "path", path);
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("path".equals(_field)) {
+                    path = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("query".equals(fieldName)) {
-                    query = JsonReader.StringReader
-                        .readField(parser, "query", query);
+                else if ("query".equals(_field)) {
+                    query = getStringValue(_p);
+                    _p.nextToken();
                 }
-                else if ("start".equals(fieldName)) {
-                    start = JsonReader.UInt64Reader
-                        .readField(parser, "start", start);
+                else if ("start".equals(_field)) {
+                    start = _p.getLongValue();
+                    assertUnsigned(_p, start);
+                    _p.nextToken();
                 }
-                else if ("max_results".equals(fieldName)) {
-                    maxResults = JsonReader.UInt64Reader
-                        .readField(parser, "max_results", maxResults);
+                else if ("max_results".equals(_field)) {
+                    maxResults = _p.getLongValue();
+                    assertUnsigned(_p, maxResults);
+                    _p.nextToken();
                 }
-                else if ("mode".equals(fieldName)) {
-                    mode = SearchMode._JSON_READER
-                        .readField(parser, "mode", mode);
+                else if ("mode".equals(_field)) {
+                    mode = _p.readValueAs(SearchMode.class);
+                    _p.nextToken();
                 }
                 else {
-                    JsonReader.skipValue(parser);
+                    skipValue(_p);
                 }
             }
+
             if (path == null) {
-                throw new JsonReadException("Required field \"path\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"path\" is missing.");
             }
             if (query == null) {
-                throw new JsonReadException("Required field \"query\" is missing.", parser.getTokenLocation());
+                throw new JsonParseException(_p, "Required field \"query\" is missing.");
             }
+
             return new SearchArg(path, query, start, maxResults, mode);
         }
-    };
+    }
 }
