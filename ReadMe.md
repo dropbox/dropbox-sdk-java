@@ -72,7 +72,7 @@ This produces a file named "test.auth" that has the access token.  This file can
 
 ### account-info
 
-A trivial example that calls the /account/info API endpoint.
+A simple example that fetches and displays information about the account associated with the access token.
 
 ```
 cd examples
@@ -80,6 +80,21 @@ cd examples
 ```
 
 (You must first generate "test.auth" using the "authorize" example above.)
+
+### longpoll
+
+An example of how to watch for changes in a Dropbox directory.
+
+```
+cd examples
+./run longpoll test.auth "/path/to/watch"
+```
+
+(You must first generate "test.auth" using the "authorize" example above.)
+
+### tutorial
+
+The example from our (online tutorial)[https://www.dropbox.com/developers/documentation/java#tutorial]. Unlike the other examples, this example is not meant to be run without modification.
 
 ### upload-file
 
