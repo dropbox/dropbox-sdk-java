@@ -94,7 +94,7 @@ cd examples
 
 ### tutorial
 
-The example from our (online tutorial)[https://www.dropbox.com/developers/documentation/java#tutorial]. Unlike the other examples, this example is not meant to be run without modification.
+The example from our [online tutorial](https://www.dropbox.com/developers/documentation/java#tutorial). Unlike the other examples, this example is not meant to be run without modification.
 
 ### upload-file
 
