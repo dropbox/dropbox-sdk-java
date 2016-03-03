@@ -1,3 +1,6 @@
+
+---------------------------------------------
+2.0.0 (2016-03-03)
 - Remove toJson(..) and fromJson(..) methods from data types.
 - Support ProGuard shrinking for Android development and provide example.
 - Rename v2 request classes to support future auth styles:
