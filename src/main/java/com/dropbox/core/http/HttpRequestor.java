@@ -28,7 +28,9 @@ public abstract class HttpRequestor
      *
      * A value of 0 indicates the timeout should be disabled.
      */
-    public static final long DEFAULT_READ_TIMEOUT_MILLIS = TimeUnit.SECONDS.toMillis(20);
+    // Careful about lowering this value. Large file uploads can result in slow responses from the
+    // server.
+    public static final long DEFAULT_READ_TIMEOUT_MILLIS = TimeUnit.MINUTES.toMillis(2);
 
     public abstract Response doGet(String url, Iterable<Header> headers) throws IOException;
     public abstract Uploader startPost(String url, Iterable<Header> headers) throws IOException;
