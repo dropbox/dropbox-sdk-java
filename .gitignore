@@ -6,3 +6,6 @@
 
 # Output file when rendering ReadMe.md locally.
 /ReadMe.html
+
+# editor temp files
+*~

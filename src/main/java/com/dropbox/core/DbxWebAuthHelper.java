@@ -41,9 +41,7 @@ abstract class DbxWebAuthHelper
         };
 
         ArrayList<HttpRequestor.Header> headers = new ArrayList<HttpRequestor.Header>();
-        String credentials = appInfo.getKey() + ":" + appInfo.getSecret();
-        String base64Credentials = StringUtil.base64Encode(StringUtil.stringToUtf8(credentials));
-        headers.add(new HttpRequestor.Header("Authorization", "Basic " + base64Credentials));
+        DbxRequestUtil.addBasicAuthHeader(headers, appInfo.getKey(), appInfo.getSecret());
 
         return DbxRequestUtil.doPostNoAuth(
             requestConfig,

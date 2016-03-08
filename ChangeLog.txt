@@ -1,3 +1,4 @@
+- Add support for Dropbox API app endpoints.
 - Update upload-file example to include chunked upload example.
 - Increase default socket read timeout to 2 minutes.
 - Parse Retry-After header for 503 retry exceptions in API v1.

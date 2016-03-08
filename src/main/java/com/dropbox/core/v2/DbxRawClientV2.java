@@ -42,7 +42,7 @@ import java.util.List;
  * {@link HttpRequestor} implementation.
  * </p>
  */
-public class DbxRawClientV2 {
+public abstract class DbxRawClientV2 {
     private static final JsonFactory JSON_FACTORY = new JsonFactory();
     // The HTTP status codes returned for errors specific to particular API calls.
     private final static List<Integer> FUNCTION_SPECIFIC_ERROR_CODES = Arrays.asList(403, 404, 409);
@@ -50,44 +50,27 @@ public class DbxRawClientV2 {
     private static final ObjectMapper JSON = JsonUtil.getMapper();
 
     private final DbxRequestConfig requestConfig;
-    private final String accessToken;
     private final DbxHost host;
 
     /**
-     * The same as {@link #DbxRawClientV2(DbxRequestConfig, String)} except you can also set the
-     * hostnames of the Dropbox API servers.  This is used in testing.  You don't normally need
-     * to call this.
+     * @param requestConfig Configuration controlling How requests should be issued to Dropbox
+     * servers.
+     * @param host Dropbox server hostnames (primarily for internal use)
      */
-    public DbxRawClientV2(DbxRequestConfig requestConfig, String accessToken, DbxHost host) {
+    protected DbxRawClientV2(DbxRequestConfig requestConfig, DbxHost host) {
         if (requestConfig == null) throw new NullPointerException("requestConfig");
-        if (accessToken == null) throw new NullPointerException("accessToken");
         if (host == null) throw new NullPointerException("host");
 
         this.requestConfig = requestConfig;
-        this.accessToken = accessToken;
         this.host = host;
     }
 
     /**
-     * @param accessToken The OAuth 2 access token (that you got from Dropbox) that gives your app the ability
-     *                    to make Dropbox API calls against some particular user's account.  The standard way
-     *                    to get one of these is to use {@link DbxWebAuth} to send your user through Dropbox's
-     *                    OAuth 2 authorization flow.
+     * Add the appropriate authentication headers to the request, if any.
+     *
+     * @param headers List of request headers. Add authentication headers to this list.
      */
-    public DbxRawClientV2(DbxRequestConfig requestConfig, String accessToken) {
-        this(requestConfig, accessToken, DbxHost.DEFAULT);
-    }
-
-    // package-private
-    DbxRawClientV2(DbxRawClientV2 copy) {
-        this.requestConfig = copy.requestConfig;
-        this.accessToken = copy.accessToken;
-        this.host = copy.host;
-    }
-
-    protected void addAuthHeaders(List<HttpRequestor.Header> headers) {
-        DbxRequestUtil.addAuthHeader(headers, accessToken);
-    }
+    protected abstract void addAuthHeaders(List<HttpRequestor.Header> headers);
 
     public <ArgT,ResT,ErrT> ResT rpcStyle(final String host,
                                           final String path,
@@ -231,15 +214,6 @@ public class DbxRawClientV2 {
      */
     public DbxRequestConfig getRequestConfig() {
         return requestConfig;
-    }
-
-    /**
-     * Returns the {@code DbxAccessToken} that was passed in to the constructor.
-     *
-     * @return OAuth2 access token used for request authorization.
-     */
-    public String getAccessToken() {
-        return accessToken;
     }
 
     /**

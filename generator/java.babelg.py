@@ -93,12 +93,21 @@ def sanitize_pattern(pattern):
     return pattern.replace('\\', '\\\\').replace('"', '\\"')
 
 
+_JAVADOC_REPLACEMENT_CHARS = (
+    ('&', '&amp;'),
+    ('<', '&lt;'),
+    ('>', '&gt;'),
+)
 def sanitize_javadoc(doc):
     # sanitize &, <, > characters
-    for char, code in (('&', '&amp;'),
-                       ('<', '&lt;'),
-                       ('>', '&gt;')):
+    for char, code in _JAVADOC_REPLACEMENT_CHARS:
         doc = doc.replace(char, code)
+    return doc
+
+
+def unsanitize_javadoc(doc):
+    for char, code in _JAVADOC_REPLACEMENT_CHARS:
+        doc = doc.replace(code, char)
     return doc
 
 
@@ -333,7 +342,9 @@ class GeneratorContext(object):
         local_package = self.current_java_package
         if local_package:
             local_prefix = local_package + '.'
-            return frozenset(i for i in self._current_imports if not i.startswith(local_prefix))
+            def is_local(import_):
+                return import_.startswith(local_prefix) and '.' not in import_[len(local_prefix):]
+            return frozenset(i for i in self._current_imports if not is_local(i))
         else:
             return frozenset(self._current_imports)
 
@@ -349,13 +360,17 @@ class GeneratorContext(object):
         class if necessary.
 
         """
-        assert self.current_java_class, "No Java class scoped for generation."
+        assert self._current_class, "No Java class scoped for generation."
 
         get_name = lambda v: v.rsplit('.', 1)[-1]
 
-        current_class_prefix = self._current_class + '.' if self._current_class else None
+        current_class_prefix = self._current_class + '.'
 
         existing_names = set(get_name(import_) for import_ in self._current_imports)
+
+        # avoid issues where we import a class with the same name as us
+        existing_names.add(get_name(self._current_class))
+
         for import_ in imports:
             if not isinstance(import_, JavaClass):
                 java_class = JavaClass(self, import_)
@@ -718,8 +733,9 @@ class NamespaceWrapper(BabelWrapper):
         # fallback to first route
         for route in self.routes:
             filenames[route.babel_filename] = None
+        # TODO: fallback to aliases. enable assert after doing this
+        #assert filenames, "namespace not associated with any babel files: %s" % self.babel_name
 
-        assert filenames, "namespace not associated with any babel files"
         return filenames.keys()
 
     @property
@@ -1561,6 +1577,8 @@ class JavadocGenerator(object):
                 ref = '{@code %s}' % camelcase(val)
         elif tag == 'link':
             anchor, link = val.rsplit(' ', 1)
+            # unsanitize from previous sanitize calls
+            anchor = unsanitize_javadoc(anchor)
             # do not sanitize this HTML
             return '<a href="%s">%s</a>' % (link, anchor)
         elif tag == 'val':
@@ -1574,7 +1592,7 @@ class JavadocGenerator(object):
     def translate_babel_doc(self, doc, context=None):
         if doc:
             handler = lambda tag, val: self.javadoc_ref_handler(tag, val, context=context)
-            return self._ctx.g.process_doc(doc, handler)
+            return self._ctx.g.process_doc(sanitize_javadoc(doc), handler)
         else:
             return doc
 
@@ -2241,71 +2259,11 @@ class JavaCodeGenerationInstance(object):
     def generate_dbx_clients(self):
         out = self.g.emit
 
-        user_client_class_name = 'DbxClientV2'
-        with self.dbx_client(
-                self.ctx.base_package, user_client_class_name, 'user',
+        self.generate_dbx_client(self.ctx.base_package, 'DbxClientV2Base', 'user')
+        self.generate_dbx_client(self.ctx.base_package, 'DbxTeamClientV2Base', 'team')
+        self.generate_dbx_client(self.ctx.base_package, 'DbxAppClientV2Base', 'app')
 
-        """
-                Use this class to make remote calls to the Dropbox API user endpoints.  User endpoints
-                expose actions you can perform as a Dropbox user.  You'll need an access token first,
-                normally acquired by directing a Dropbox user through the auth flow using {@link
-                com.dropbox.core.DbxWebAuth}.
-                """
-        ):
-            pass
-
-        with self.dbx_client(
-                self.ctx.base_package, 'DbxTeamClientV2', 'team',
-                """
-                Use this class to make remote calls to the Dropbox API team endpoints.  Team endpoints
-                expose actions you can perform on or for a Dropbox team.  You'll need a team access
-                token first, normally acquired by directing a Dropbox Business team administrator
-                through the auth flow using {@link com.dropbox.core.DbxWebAuth}.
-
-                Team clients can access user endpoints by using the {@link #asMember} method.  This
-                allows team clients to perform actions as a particular team member.
-                """
-        ):
-            self.doc.generate_javadoc(
-                """
-                Returns a {@link %s} that performs requests against Dropbox API user endpoints as the
-                given team member.
-
-                This method performs no validation of the team member ID.
-                """ % (user_client_class_name,),
-                params=OrderedDict(memberId="Team member ID of member in this client's team, never {@code null}."),
-                returns="Dropbox client that issues requests to user endpoints as the given team member",
-                throws=OrderedDict(IllegalArgumentException="If {@code memberId} is {@code null}")
-            )
-
-            out('')
-            with self.g.block('public %s asMember(String memberId)' % (user_client_class_name,)):
-                out('if (memberId == null) throw new IllegalArgumentException("\'memberId\' should not be null");')
-                out('return new %s(new DbxTeamRawClientV2(_client, memberId));' % (user_client_class_name,))
-
-            self.doc.generate_javadoc(
-                """
-                {@link DbxRawClientV2} raw client that adds select-user header to all requests.
-                Used to perform requests as a particular team member.
-                """
-            )
-            with self.g.block('private static final class DbxTeamRawClientV2 extends DbxRawClientV2'):
-                out('private final String memberId;')
-                out('')
-                with self.g.block('private DbxTeamRawClientV2(DbxRawClientV2 underlying, String memberId)'):
-                    out('super(underlying);')
-                    out('this.memberId = memberId;')
-                out('')
-                out('@Override')
-                with self.g.block('protected void addAuthHeaders(java.util.List<HttpRequestor.Header> headers)'):
-                    out('super.addAuthHeaders(headers);')
-                    out('com.dropbox.core.DbxRequestUtil.addSelectUserHeader(headers, memberId);')
-
-
-    @contextmanager
-    def dbx_client(self, package_name, class_name, auth, class_doc):
-        assert class_doc
-
+    def generate_dbx_client(self, package_name, class_name, auth):
         out = self.g.emit
 
         if auth == 'user':
@@ -2320,76 +2278,36 @@ class JavaCodeGenerationInstance(object):
 
         package_relpath = self.create_package_path(package_name)
         file_name = os.path.join(package_relpath, class_name + '.java')
-        with self.g.output_to_relative_path(file_name):
+        fq_class_name = package_name + '.' + class_name
+        with self.g.output_to_relative_path(file_name), self.ctx.scoped(fq_class_name):
             self.generate_file_header()
             out('package %s;' % package_name)
-            out('')
-            out('import com.dropbox.core.DbxHost;')
-            out('import com.dropbox.core.DbxRequestConfig;')
-            out('import com.dropbox.core.http.HttpRequestor;')
 
             for namespace in namespaces:
-                out('import %s;' % namespace.java_class(auth))
+                self.ctx.add_imports(namespace.java_class(auth))
+
+            self.importer.generate_imports()
 
             out('')
             self.doc.generate_javadoc(
                 """
-                %s
-
-                This class has no mutable state, so it's thread safe as long as you pass in a thread
-                safe {@link HttpRequestor} implementation.
-                """ % class_doc
+                Base class for %s auth clients.
+                """ % auth
             )
-            with self.g.block('public final class %s' % class_name):
-                out('private final DbxRawClientV2 _client;')
+            with self.g.block('public class %s' % class_name):
+                out('protected final DbxRawClientV2 _client;')
+                out('')
                 for namespace in namespaces:
                     out('private final %s %s;' % (namespace.java_class(auth), namespace.java_field))
-                out('')
-
-                param_docs = OrderedDict((
-                    ('requestConfig', 'Default attributes to use for each request'),
-                    ('accessToken', 'OAuth 2 access token (that you got from Dropbox) '
-                     'that gives your app the ability to make Dropbox API calls. Typically '
-                     'acquired through {@link com.dropbox.core.DbxWebAuth}'),
-                    ('host', 'Dropbox hosts to send requests to (used for mocking and testing)'),
-                ))
-
-                self.doc.generate_javadoc(
-                    """
-                    Creates a client that uses the given OAuth 2 access token as authorization when
-                    performing requests against the default Dropbox hosts.
-                    """,
-                    params=OrderedDict(
-                        (k, v) for k, v in param_docs.items()
-                        if k in ('requestConfig', 'accessToken')
-                    )
-                )
-                with self.g.block('public %s(DbxRequestConfig requestConfig, String accessToken)' % class_name):
-                    out('this(requestConfig, accessToken, DbxHost.DEFAULT);')
-
-                out('')
-
-
-                self.doc.generate_javadoc(
-                    """
-                    Same as {@link #%s(DbxRequestConfig, String)} except you can also set the
-                    hostnames of the Dropbox API servers. This is used in testing. You don't
-                    normally need to call this.
-                    """ % (class_name,),
-                    params=param_docs
-                )
-                with self.g.block('public %s(DbxRequestConfig requestConfig, String accessToken, DbxHost host)' % class_name):
-                    out('this(new DbxRawClientV2(requestConfig, accessToken, host));')
 
                 out('')
                 self.doc.generate_javadoc(
                     """
                     For internal use only.
                     """,
-                    params=param_docs
+                    params=(('_client', 'Raw v2 client to use for issuing requests'),)
                 )
-                # package-private
-                with self.g.block('%s(DbxRawClientV2 _client)' % class_name):
+                with self.g.block('protected %s(DbxRawClientV2 _client)' % class_name):
                     out('this._client = _client;')
                     for namespace in namespaces:
                         out('this.%s = new %s(_client);' % (
@@ -2406,11 +2324,6 @@ class JavaCodeGenerationInstance(object):
                     )
                     with self.g.block("public %s %s()" % (namespace.java_class(auth), namespace.java_getter)):
                         out('return %s;' % namespace.java_field)
-
-                out('')
-                # allow caller to add custom methods to the client
-                yield
-
 
     def generate_namespace(self, namespace):
         # create class files for all namespace data types in this package

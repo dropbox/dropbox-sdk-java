@@ -72,7 +72,7 @@ echo "Generating..."
 PYTHONPATH="$babel_dir" python3 -m babelapi.cli \
     "$generator" \
     "$gen_dir"\
-    "${spec_dir}"/*.babel \
+    $(find "${spec_dir}" -name "*.babel") \
      --\
      --package com.dropbox.core.v2
 
