@@ -33,4 +33,4 @@ classpath_file="$build_dir/test-classpath"
 
 classpath="$build_dir/classes:$build_dir/test-classes"
 classpath="$classpath:$(cat "$classpath_file")"
-exec java -cp "$classpath" com.dropbox.core.CaliperMainRelay "$@"
+exec java -cp "$classpath" org.openjdk.jmh.Main "$@"

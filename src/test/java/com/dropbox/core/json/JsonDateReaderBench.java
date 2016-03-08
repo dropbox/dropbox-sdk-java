@@ -1,8 +1,12 @@
 package com.dropbox.core.json;
 
-import com.google.caliper.Benchmark;
+import org.openjdk.jmh.annotations.Benchmark;
+import org.openjdk.jmh.annotations.Scope;
+import org.openjdk.jmh.annotations.State;
+import org.openjdk.jmh.infra.Blackhole;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class JsonDateReaderBench
 {
@@ -10,9 +14,10 @@ public class JsonDateReaderBench
      * Compare our specialized date parser to Java's more generic
      * SimpleDateFormat parser.
      */
-    public static final class ParseDropboxDate
+    public static class ParseDropboxDate
     {
-        private static final String[] dates = {
+        // Not 'final' to avoid constant folding.
+        static String[] dates = {
             "Sun, 01 Jan 1971 00:02:03 +0000",
             "Mon, 06 Feb 1982 01:13:14 +0000",
             "Tue, 10 Mar 1993 22:24:25 +0000",
@@ -27,7 +32,7 @@ public class JsonDateReaderBench
             "Fri, 31 Dec 2082 21:13:14 +0000",
         };
 
-        private static final char[][] dateBufs = new char[dates.length][];
+        static char[][] dateBufs = new char[dates.length][];
 
         static {
             for (int i = 0; i < dates.length; i++) {
@@ -36,52 +41,56 @@ public class JsonDateReaderBench
         }
 
         @Benchmark
-        public void timeSpecialized(int reps)
+        public Date specialized(Blackhole bh)
         {
-            for (int i = 0; i < reps; i++) {
-                for (char[] dateBuf : dateBufs) {
-                    try {
-                        JsonDateReader.parseDropboxDate(dateBuf, 0, dateBuf.length);
-                    }
-                    catch (java.text.ParseException ex) {
-                        throw new AssertionError(ex);
-                    }
+            for (char[] dateBuf : dateBufs) {
+                try {
+                    bh.consume(JsonDateReader.parseDropboxDate(dateBuf, 0, dateBuf.length));
+                }
+                catch (java.text.ParseException ex) {
+                    throw new AssertionError(ex);
+                }
+            }
+            return null;
+        }
+
+        @State(Scope.Thread)
+        public static class SimpleDateFormatHolder
+        {
+            public final SimpleDateFormat f = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss ZZZZZ");
+
+            {
+                f.setTimeZone(JsonDateReader.UTC);
+            }
+        }
+
+        @Benchmark
+        public void standard(Blackhole bh, SimpleDateFormatHolder h)
+        {
+            for (String date : dates) {
+                try {
+                    bh.consume(h.f.parse(date));
+                }
+                catch (java.text.ParseException ex) {
+                    throw new AssertionError(ex);
                 }
             }
         }
 
         @Benchmark
-        public void timeStandard(int reps)
+        public void standardThreadLocal(Blackhole bh)
         {
-            SimpleDateFormat f = dateFormatHolder.get();
-            for (int i = 0; i < reps; i++) {
-                for (String date : dates) {
-                    try {
-                        f.parse(date);
-                    }
-                    catch (java.text.ParseException ex) {
-                        throw new AssertionError(ex);
-                    }
+            for (String date : dates) {
+                try {
+                    bh.consume(dateFormatThreadLocal.get().parse(date));
+                }
+                catch (java.text.ParseException ex) {
+                    throw new AssertionError(ex);
                 }
             }
         }
 
-        @Benchmark
-        public void timeStandardThreadLocal(int reps)
-        {
-            for (int i = 0; i < reps; i++) {
-                for (String date : dates) {
-                    try {
-                        dateFormatHolder.get().parse(date);
-                    }
-                    catch (java.text.ParseException ex) {
-                        throw new AssertionError(ex);
-                    }
-                }
-            }
-        }
-
-        private static final ThreadLocal<SimpleDateFormat> dateFormatHolder =  new ThreadLocal<SimpleDateFormat>() {
+        static final ThreadLocal<SimpleDateFormat> dateFormatThreadLocal = new ThreadLocal<SimpleDateFormat>() {
             protected SimpleDateFormat initialValue()
             {
                 SimpleDateFormat f = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss ZZZZZ");
