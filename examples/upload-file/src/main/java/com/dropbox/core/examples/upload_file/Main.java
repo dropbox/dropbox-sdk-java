@@ -32,9 +32,20 @@ import java.util.Locale;
  * flow (using {@link DbxWebAuth}).
  */
 public class Main {
-    private static final long CHUNKED_UPLOAD_CHUNK_SIZE = 4L << 20; // 4MiB
-    private static final int CHUNKED_UPLOAD_MAX_ATTEMPTS = 20;
+    // Adjust the chunk size based on your network speed and reliability. Larger chunk sizes will
+    // result in fewer network requests, which will be faster. But if an error occurs, the entire
+    // chunk will be lost and have to be re-uploaded. Use a multiple of 4MiB for your chunk size.
+    private static final long CHUNKED_UPLOAD_CHUNK_SIZE = 8L << 20; // 8MiB
+    private static final int CHUNKED_UPLOAD_MAX_ATTEMPTS = 5;
 
+    /**
+     * Uploads a file in a single request. This approach is preferred for small files since it
+     * eliminates unnecessary round-trips to the servers.
+     *
+     * @param dbxClient Dropbox user authenticated client
+     * @param localFIle local file to upload
+     * @param dropboxPath Where to upload the file to within Dropbox
+     */
     private static void uploadFile(DbxClientV2 dbxClient, File localFile, String dropboxPath) {
         try (InputStream in = new FileInputStream(localFile)) {
             FileMetadata metadata = dbxClient.files().uploadBuilder(dropboxPath)
@@ -55,10 +66,21 @@ public class Main {
         }
     }
 
+    /**
+     * Uploads a file in chunks using multiple requests. This approach is preferred for larger files
+     * since it allows for more efficient processing of the file contents on the server side and
+     * also allows partial uploads to be retried (e.g. network connection problem will not cause you
+     * to re-upload all the bytes).
+     *
+     * @param dbxClient Dropbox user authenticated client
+     * @param localFIle local file to upload
+     * @param dropboxPath Where to upload the file to within Dropbox
+     */
     private static void chunkedUploadFile(DbxClientV2 dbxClient, File localFile, String dropboxPath) {
         long size = localFile.length();
 
-        // assert our file is at least the chunk upload size
+        // assert our file is at least the chunk upload size. We make this assumption in the code
+        // below to simplify the logic.
         if (size < CHUNKED_UPLOAD_CHUNK_SIZE) {
             System.err.println("File too small, use upload() instead.");
             System.exit(1);
@@ -125,35 +147,36 @@ public class Main {
                 // network issue with Dropbox (maybe a timeout?) try again
                 continue;
             } catch (UploadSessionLookupErrorException ex) {
-                thrown = ex;
-                // server offset into the stream doesn't match our offset (uploaded). Seek to
-                // the expected offset according to the server and try again.
                 if (ex.errorValue.isIncorrectOffset()) {
-                    System.out.printf("%s: current offset: %d, expected offset: %d\n", sessionId, uploaded, ex.errorValue
-                                      .getIncorrectOffsetValue()
-                                      .getCorrectOffset());
+                    thrown = ex;
+                    // server offset into the stream doesn't match our offset (uploaded). Seek to
+                    // the expected offset according to the server and try again.
                     uploaded = ex.errorValue
                         .getIncorrectOffsetValue()
                         .getCorrectOffset();
                     continue;
+                } else {
+                    // Some other error occurred, give up.
+                    System.err.println("Error uploading to Dropbox: " + ex.getMessage());
+                    System.exit(1);
+                    return;
                 }
-                System.err.println("Error uploading to Dropbox: " + ex.getMessage());
-                System.exit(1);
-                return;
             } catch (UploadSessionFinishErrorException ex) {
-                thrown = ex;
-                // server offset into the stream doesn't match our offset (uploaded). Seek to
-                // the expected offset according to the server and try again.
                 if (ex.errorValue.isLookupFailed() && ex.errorValue.getLookupFailedValue().isIncorrectOffset()) {
+                    thrown = ex;
+                    // server offset into the stream doesn't match our offset (uploaded). Seek to
+                    // the expected offset according to the server and try again.
                     uploaded = ex.errorValue
                         .getLookupFailedValue()
                         .getIncorrectOffsetValue()
                         .getCorrectOffset();
                     continue;
+                } else {
+                    // some other error occurred, give up.
+                    System.err.println("Error uploading to Dropbox: " + ex.getMessage());
+                    System.exit(1);
+                    return;
                 }
-                System.err.println("Error uploading to Dropbox: " + ex.getMessage());
-                System.exit(1);
-                return;
             } catch (DbxException ex) {
                 System.err.println("Error uploading to Dropbox: " + ex.getMessage());
                 System.exit(1);
@@ -250,8 +273,9 @@ public class Main {
         DbxClientV2 dbxClient = new DbxClientV2(requestConfig, authInfo.getAccessToken(), authInfo.getHost());
 
         // upload the file with simple upload API if it is small enough, otherwise use chunked
-        // upload API for better performance.
-        if (localFile.length() < CHUNKED_UPLOAD_CHUNK_SIZE) {
+        // upload API for better performance. Arbitrarily chose 2 times our chunk size as the
+        // deciding factor. This should really depend on your network.
+        if (localFile.length() <= (2 * CHUNKED_UPLOAD_CHUNK_SIZE)) {
             uploadFile(dbxClient, localFile, dropboxPath);
         } else {
             chunkedUploadFile(dbxClient, localFile, dropboxPath);
