@@ -1,3 +1,7 @@
+- Fix bug when deserializing v2 data types with missing optional primitive fields.
+- Fix bug where some Date objects were not being properly truncated to seconds granularity in v2
+  data types.
+- Fix v2 timestamp parsing to support DateTime and Date formats.
 - Add support for Dropbox API app endpoints.
 - Update upload-file example to include chunked upload example.
 - Increase default socket read timeout to 2 minutes.

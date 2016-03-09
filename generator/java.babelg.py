@@ -3617,13 +3617,18 @@ class JavaCodeGenerationInstance(object):
         lhs = lhs or ('this.%s' % field.java_name)
         rhs = rhs or field.java_name
 
+        underlying_data_type = field.data_type
+        if underlying_data_type.is_nullable:
+            underlying_data_type = underlying_data_type.nullable_data_type
+        if underlying_data_type.is_list:
+            underlying_data_type = underlying_data_type.list_data_type
+
         # our timestamp format only allows for second-level granularity (no millis).
         # enforce this.
         #
         # TODO: gotta be a better way than this...
-        if is_timestamp_type(field.data_type.as_babel) and rhs != 'null':
-            rhs = 'new %s(%s.getTime() - (%s.getTime() %% 1000))' % (
-                JavaClass(self.ctx, "java.util.Date"), rhs, rhs)
+        if is_timestamp_type(underlying_data_type.as_babel) and rhs != 'null':
+            rhs = 'com.dropbox.core.util.LangUtil.truncateMillis(%s)' % rhs
 
         if allow_default and field.has_default:
             if rhs == 'null':
@@ -3829,7 +3834,10 @@ class JavaCodeGenerationInstance(object):
             #
             out('')
             for field in data_type.all_fields:
-                out('%s %s = null;' % (field.data_type.java_type(boxed=True), field.java_name))
+                if field.has_default:
+                    out('%s %s = %s;' % (field.java_type(), field.java_name, field.default_value))
+                else:
+                    out('%s %s = null;' % (field.data_type.java_type(boxed=True), field.java_name))
 
             out('')
             with self.g.block('while (_p.getCurrentToken() == JsonToken.FIELD_NAME)'):
