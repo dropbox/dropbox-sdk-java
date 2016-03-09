@@ -1,3 +1,6 @@
+
+---------------------------------------------
+2.0.1 (2016-03-09)
 - Update to latest API specs:
   - Update documentation.
   - Add FolderPolicy.getResolvedMemberPolicy()
