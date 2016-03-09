@@ -1,3 +1,15 @@
+- Update to latest API specs:
+  - Update documentation.
+  - Add FolderPolicy.getResolvedMemberPolicy()
+  - Add GroupInfo.getGroupType()
+  - Add SharedFolderMetadataBase.getOwnerTeam()
+  - Add SharedFolderMetadataBase.getParentSharedFolderId()
+  - Add MountFolderError.NOT_MOUNTABLE
+  - Add UmountFolderError.NOT_UNMOUNTABLE
+  - Add validation for member external id and email address
+  - Add TeamSharingPolicies.getSharedLinkCreatePolicy()
+  - Add MembersSuspendError.TEAM_LICENSE_LIMIT
+  - Add MembersUnsuspendError.TEAM_LICENSE_LIMIT
 - Fix bug when deserializing v2 data types with missing optional primitive fields.
 - Fix bug where some Date objects were not being properly truncated to seconds granularity in v2
   data types.
