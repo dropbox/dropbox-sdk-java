@@ -203,7 +203,7 @@ public class RevokeLinkedApiAppArg {
 
             String appId = null;
             String teamMemberId = null;
-            Boolean keepAppFolder = null;
+            boolean keepAppFolder = true;
 
             while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
                 String _field = _p.getCurrentName();

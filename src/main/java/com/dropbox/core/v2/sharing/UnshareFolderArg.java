@@ -61,6 +61,19 @@ class UnshareFolderArg {
     }
 
     /**
+     * The default values for unset fields will be used.
+     *
+     * @param sharedFolderId  The ID for the shared folder. Must match pattern
+     *     "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public UnshareFolderArg(String sharedFolderId) {
+        this(sharedFolderId, false);
+    }
+
+    /**
      * The ID for the shared folder.
      *
      * @return value for this field, never {@code null}.
@@ -74,7 +87,8 @@ class UnshareFolderArg {
      * after it's unshared. Otherwise, it will be removed from their Dropbox.
      * The current user, who is an owner, will always retain their copy.
      *
-     * @return value for this field.
+     * @return value for this field, or {@code null} if not present. Defaults to
+     *     false.
      */
     public boolean getLeaveACopy() {
         return leaveACopy;
@@ -175,7 +189,7 @@ class UnshareFolderArg {
         public UnshareFolderArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
 
             String sharedFolderId = null;
-            Boolean leaveACopy = null;
+            boolean leaveACopy = false;
 
             while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
                 String _field = _p.getCurrentName();
@@ -195,9 +209,6 @@ class UnshareFolderArg {
 
             if (sharedFolderId == null) {
                 throw new JsonParseException(_p, "Required field \"shared_folder_id\" is missing.");
-            }
-            if (leaveACopy == null) {
-                throw new JsonParseException(_p, "Required field \"leave_a_copy\" is missing.");
             }
 
             return new UnshareFolderArg(sharedFolderId, leaveACopy);

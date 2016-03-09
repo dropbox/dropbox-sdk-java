@@ -64,7 +64,7 @@ public class LinkMetadata {
             throw new IllegalArgumentException("Required value for 'visibility' is null");
         }
         this.visibility = visibility;
-        this.expires = expires;
+        this.expires = com.dropbox.core.util.LangUtil.truncateMillis(expires);
     }
 
     /**

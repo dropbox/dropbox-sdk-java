@@ -1,5 +1,29 @@
 
 ---------------------------------------------
+2.0.1 (2016-03-09)
+- Update to latest API specs:
+  - Update documentation.
+  - Add FolderPolicy.getResolvedMemberPolicy()
+  - Add GroupInfo.getGroupType()
+  - Add SharedFolderMetadataBase.getOwnerTeam()
+  - Add SharedFolderMetadataBase.getParentSharedFolderId()
+  - Add MountFolderError.NOT_MOUNTABLE
+  - Add UmountFolderError.NOT_UNMOUNTABLE
+  - Add validation for member external id and email address
+  - Add TeamSharingPolicies.getSharedLinkCreatePolicy()
+  - Add MembersSuspendError.TEAM_LICENSE_LIMIT
+  - Add MembersUnsuspendError.TEAM_LICENSE_LIMIT
+- Fix bug when deserializing v2 data types with missing optional primitive fields.
+- Fix bug where some Date objects were not being properly truncated to seconds granularity in v2
+  data types.
+- Fix v2 timestamp parsing to support DateTime and Date formats.
+- Add support for Dropbox API app endpoints.
+- Update upload-file example to include chunked upload example.
+- Increase default socket read timeout to 2 minutes.
+- Parse Retry-After header for 503 retry exceptions in API v1.
+- Add example from online tutorial.
+
+---------------------------------------------
 2.0.0 (2016-03-03)
 - Remove toJson(..) and fromJson(..) methods from data types.
 - Support ProGuard shrinking for Android development and provide example.

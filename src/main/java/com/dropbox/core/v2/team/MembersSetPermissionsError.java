@@ -48,6 +48,10 @@ public enum MembersSetPermissionsError {
      */
     CANNOT_SET_PERMISSIONS,
     /**
+     * Team is full. The organization has no available licenses.
+     */
+    TEAM_LICENSE_LIMIT,
+    /**
      * An unspecified error.
      */
     OTHER; // *catch_all
@@ -78,6 +82,9 @@ public enum MembersSetPermissionsError {
                 case CANNOT_SET_PERMISSIONS:
                     g.writeString("cannot_set_permissions");
                     break;
+                case TEAM_LICENSE_LIMIT:
+                    g.writeString("team_license_limit");
+                    break;
                 case OTHER:
                     g.writeString("other");
                     break;
@@ -102,6 +109,7 @@ public enum MembersSetPermissionsError {
             values.put("last_admin", MembersSetPermissionsError.LAST_ADMIN);
             values.put("user_not_in_team", MembersSetPermissionsError.USER_NOT_IN_TEAM);
             values.put("cannot_set_permissions", MembersSetPermissionsError.CANNOT_SET_PERMISSIONS);
+            values.put("team_license_limit", MembersSetPermissionsError.TEAM_LICENSE_LIMIT);
             values.put("other", MembersSetPermissionsError.OTHER);
             return Collections.unmodifiableMap(values);
         }

@@ -55,6 +55,12 @@ public final class UnmountFolderError {
          */
         NO_PERMISSION,
         /**
+         * The shared folder can't be unmounted. One example where this can
+         * occur is when the shared folder's parent folder is also a shared
+         * folder that resides in the current user's Dropbox.
+         */
+        NOT_UNMOUNTABLE,
+        /**
          * Catch-all used for unknown tag values returned by the Dropbox
          * servers.
          *
@@ -69,6 +75,12 @@ public final class UnmountFolderError {
      * The current user does not have permission to perform this action.
      */
     public static final UnmountFolderError NO_PERMISSION = new UnmountFolderError(Tag.NO_PERMISSION, null);
+    /**
+     * The shared folder can't be unmounted. One example where this can occur is
+     * when the shared folder's parent folder is also a shared folder that
+     * resides in the current user's Dropbox.
+     */
+    public static final UnmountFolderError NOT_UNMOUNTABLE = new UnmountFolderError(Tag.NOT_UNMOUNTABLE, null);
     /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *
@@ -165,6 +177,17 @@ public final class UnmountFolderError {
     }
 
     /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#NOT_UNMOUNTABLE}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#NOT_UNMOUNTABLE}, {@code false} otherwise.
+     */
+    public boolean isNotUnmountable() {
+        return this.tag == Tag.NOT_UNMOUNTABLE;
+    }
+
+    /**
      * Returns {@code true} if this instance has the tag {@link Tag#OTHER},
      * {@code false} otherwise.
      *
@@ -198,6 +221,8 @@ public final class UnmountFolderError {
                 case ACCESS_ERROR:
                     return (this.accessErrorValue == other.accessErrorValue) || (this.accessErrorValue.equals(other.accessErrorValue));
                 case NO_PERMISSION:
+                    return true;
+                case NOT_UNMOUNTABLE:
                     return true;
                 case OTHER:
                     return true;
@@ -255,6 +280,9 @@ public final class UnmountFolderError {
                 case NO_PERMISSION:
                     g.writeString("no_permission");
                     break;
+                case NOT_UNMOUNTABLE:
+                    g.writeString("not_unmountable");
+                    break;
                 case OTHER:
                     g.writeString("other");
                     break;
@@ -282,6 +310,9 @@ public final class UnmountFolderError {
                 case NO_PERMISSION: {
                     return UnmountFolderError.NO_PERMISSION;
                 }
+                case NOT_UNMOUNTABLE: {
+                    return UnmountFolderError.NOT_UNMOUNTABLE;
+                }
                 case OTHER: {
                     return UnmountFolderError.OTHER;
                 }
@@ -294,6 +325,7 @@ public final class UnmountFolderError {
             Map<String, UnmountFolderError.Tag> values = new HashMap<String, UnmountFolderError.Tag>();
             values.put("access_error", UnmountFolderError.Tag.ACCESS_ERROR);
             values.put("no_permission", UnmountFolderError.Tag.NO_PERMISSION);
+            values.put("not_unmountable", UnmountFolderError.Tag.NOT_UNMOUNTABLE);
             values.put("other", UnmountFolderError.Tag.OTHER);
             return Collections.unmodifiableMap(values);
         }

@@ -55,7 +55,7 @@ public class MediaMetadata {
     public MediaMetadata(Dimensions dimensions, GpsCoordinates location, Date timeTaken) {
         this.dimensions = dimensions;
         this.location = location;
-        this.timeTaken = timeTaken;
+        this.timeTaken = com.dropbox.core.util.LangUtil.truncateMillis(timeTaken);
     }
 
     /**
@@ -150,7 +150,7 @@ public class MediaMetadata {
          * @return this builder
          */
         public Builder withTimeTaken(Date timeTaken) {
-            this.timeTaken = timeTaken;
+            this.timeTaken = com.dropbox.core.util.LangUtil.truncateMillis(timeTaken);
             return this;
         }
 

@@ -55,8 +55,11 @@ class MembersSetProfileArg {
      *
      * @param user  Identity of user whose profile will be set. Must not be
      *     {@code null}.
-     * @param newEmail  New email for member.
-     * @param newExternalId  New external ID for member.
+     * @param newEmail  New email for member. Must have length of at most 255
+     *     and match pattern "{@code
+     *     ^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$}".
+     * @param newExternalId  New external ID for member. Must have length of at
+     *     most 64.
      * @param newGivenName  New given name for member. Must have length of at
      *     least 1, have length of at most 100, and match pattern "{@code
      *     [^/:?*<>\"|]*}".
@@ -72,7 +75,20 @@ class MembersSetProfileArg {
             throw new IllegalArgumentException("Required value for 'user' is null");
         }
         this.user = user;
+        if (newEmail != null) {
+            if (newEmail.length() > 255) {
+                throw new IllegalArgumentException("String 'newEmail' is longer than 255");
+            }
+            if (!java.util.regex.Pattern.matches("^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$", newEmail)) {
+                throw new IllegalArgumentException("String 'newEmail' does not match pattern");
+            }
+        }
         this.newEmail = newEmail;
+        if (newExternalId != null) {
+            if (newExternalId.length() > 64) {
+                throw new IllegalArgumentException("String 'newExternalId' is longer than 64");
+            }
+        }
         this.newExternalId = newExternalId;
         if (newGivenName != null) {
             if (newGivenName.length() < 1) {
@@ -202,11 +218,24 @@ class MembersSetProfileArg {
         /**
          * Set value for optional field.
          *
-         * @param newEmail  New email for member.
+         * @param newEmail  New email for member. Must have length of at most
+         *     255 and match pattern "{@code
+         *     ^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$}".
          *
          * @return this builder
+         *
+         * @throws IllegalArgumentException  If any argument does not meet its
+         *     preconditions.
          */
         public Builder withNewEmail(String newEmail) {
+            if (newEmail != null) {
+                if (newEmail.length() > 255) {
+                    throw new IllegalArgumentException("String 'newEmail' is longer than 255");
+                }
+                if (!java.util.regex.Pattern.matches("^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$", newEmail)) {
+                    throw new IllegalArgumentException("String 'newEmail' does not match pattern");
+                }
+            }
             this.newEmail = newEmail;
             return this;
         }
@@ -214,11 +243,20 @@ class MembersSetProfileArg {
         /**
          * Set value for optional field.
          *
-         * @param newExternalId  New external ID for member.
+         * @param newExternalId  New external ID for member. Must have length of
+         *     at most 64.
          *
          * @return this builder
+         *
+         * @throws IllegalArgumentException  If any argument does not meet its
+         *     preconditions.
          */
         public Builder withNewExternalId(String newExternalId) {
+            if (newExternalId != null) {
+                if (newExternalId.length() > 64) {
+                    throw new IllegalArgumentException("String 'newExternalId' is longer than 64");
+                }
+            }
             this.newExternalId = newExternalId;
             return this;
         }

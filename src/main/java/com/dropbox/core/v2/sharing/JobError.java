@@ -28,7 +28,7 @@ import java.util.Map;
 
 /**
  * Error occurred while performing an asynchronous job from {@link
- * DbxUserSharingRequests#unshareFolder(String,boolean)} or {@link
+ * DbxUserSharingRequests#unshareFolder(String)} or {@link
  * DbxUserSharingRequests#removeFolderMember(String,MemberSelector,boolean)}.
  *
  * <p> This class is an open tagged union.  Tagged unions instances are always
@@ -55,7 +55,7 @@ public final class JobError {
     public enum Tag {
         /**
          * Error occurred while performing {@link
-         * DbxUserSharingRequests#unshareFolder(String,boolean)} action.
+         * DbxUserSharingRequests#unshareFolder(String)} action.
          */
         UNSHARE_FOLDER_ERROR, // UnshareFolderError
         /**
@@ -90,7 +90,7 @@ public final class JobError {
 
     /**
      * Error occurred while performing an asynchronous job from {@link
-     * DbxUserSharingRequests#unshareFolder(String,boolean)} or {@link
+     * DbxUserSharingRequests#unshareFolder(String)} or {@link
      * DbxUserSharingRequests#removeFolderMember(String,MemberSelector,boolean)}.
      *
      * @param tag  Discriminating tag for this instance.
@@ -135,7 +135,7 @@ public final class JobError {
      * Tag#UNSHARE_FOLDER_ERROR}.
      *
      * <p> Error occurred while performing {@link
-     * DbxUserSharingRequests#unshareFolder(String,boolean)} action. </p>
+     * DbxUserSharingRequests#unshareFolder(String)} action. </p>
      *
      * @param value  value to assign to this instance.
      *
@@ -153,7 +153,7 @@ public final class JobError {
 
     /**
      * Error occurred while performing {@link
-     * DbxUserSharingRequests#unshareFolder(String,boolean)} action.
+     * DbxUserSharingRequests#unshareFolder(String)} action.
      *
      * <p> This instance must be tagged as {@link Tag#UNSHARE_FOLDER_ERROR}.
      * </p>

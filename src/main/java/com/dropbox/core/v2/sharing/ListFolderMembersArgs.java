@@ -28,7 +28,7 @@ import java.util.List;
 
 @JsonSerialize(using=ListFolderMembersArgs.Serializer.class)
 @JsonDeserialize(using=ListFolderMembersArgs.Deserializer.class)
-class ListFolderMembersArgs {
+class ListFolderMembersArgs extends ListFolderMembersCursorArg {
     // struct ListFolderMembersArgs
 
     // ProGuard work-around since we declare serializers in annotation
@@ -36,8 +36,6 @@ class ListFolderMembersArgs {
     static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final String sharedFolderId;
-    protected final List<MemberAction> actions;
-    protected final long limit;
 
     /**
      * Use {@link newBuilder} to create instances of this class without
@@ -45,8 +43,8 @@ class ListFolderMembersArgs {
      *
      * @param sharedFolderId  The ID for the shared folder. Must match pattern
      *     "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
-     * @param actions  Member actions to query. This field is optional. Must not
-     *     contain a {@code null} item.
+     * @param actions  Member actions to query. Must not contain a {@code null}
+     *     item.
      * @param limit  The maximum number of results that include members, groups
      *     and invitees to return per request. Must be greater than or equal to
      *     1 and be less than or equal to 1000.
@@ -55,6 +53,7 @@ class ListFolderMembersArgs {
      *     preconditions.
      */
     public ListFolderMembersArgs(String sharedFolderId, List<MemberAction> actions, long limit) {
+        super(actions, limit);
         if (sharedFolderId == null) {
             throw new IllegalArgumentException("Required value for 'sharedFolderId' is null");
         }
@@ -62,21 +61,6 @@ class ListFolderMembersArgs {
             throw new IllegalArgumentException("String 'sharedFolderId' does not match pattern");
         }
         this.sharedFolderId = sharedFolderId;
-        if (actions != null) {
-            for (MemberAction x : actions) {
-                if (x == null) {
-                    throw new IllegalArgumentException("An item in list 'actions' is null");
-                }
-            }
-        }
-        this.actions = actions;
-        if (limit < 1L) {
-            throw new IllegalArgumentException("Number 'limit' is smaller than 1L");
-        }
-        if (limit > 1000L) {
-            throw new IllegalArgumentException("Number 'limit' is larger than 1000L");
-        }
-        this.limit = limit;
     }
 
     /**
@@ -102,26 +86,6 @@ class ListFolderMembersArgs {
     }
 
     /**
-     * Member actions to query. This field is optional.
-     *
-     * @return value for this field, or {@code null} if not present.
-     */
-    public List<MemberAction> getActions() {
-        return actions;
-    }
-
-    /**
-     * The maximum number of results that include members, groups and invitees
-     * to return per request.
-     *
-     * @return value for this field, or {@code null} if not present. Defaults to
-     *     1000L.
-     */
-    public long getLimit() {
-        return limit;
-    }
-
-    /**
      * Returns a new builder for creating an instance of this class.
      *
      * @param sharedFolderId  The ID for the shared folder. Must match pattern
@@ -139,11 +103,8 @@ class ListFolderMembersArgs {
     /**
      * Builder for {@link ListFolderMembersArgs}.
      */
-    public static class Builder {
+    public static class Builder extends ListFolderMembersCursorArg.Builder {
         protected final String sharedFolderId;
-
-        protected List<MemberAction> actions;
-        protected long limit;
 
         protected Builder(String sharedFolderId) {
             if (sharedFolderId == null) {
@@ -153,63 +114,6 @@ class ListFolderMembersArgs {
                 throw new IllegalArgumentException("String 'sharedFolderId' does not match pattern");
             }
             this.sharedFolderId = sharedFolderId;
-            this.actions = null;
-            this.limit = 1000L;
-        }
-
-        /**
-         * Set value for optional field.
-         *
-         * @param actions  Member actions to query. This field is optional. Must
-         *     not contain a {@code null} item.
-         *
-         * @return this builder
-         *
-         * @throws IllegalArgumentException  If any argument does not meet its
-         *     preconditions.
-         */
-        public Builder withActions(List<MemberAction> actions) {
-            if (actions != null) {
-                for (MemberAction x : actions) {
-                    if (x == null) {
-                        throw new IllegalArgumentException("An item in list 'actions' is null");
-                    }
-                }
-            }
-            this.actions = actions;
-            return this;
-        }
-
-        /**
-         * Set value for optional field.
-         *
-         * <p> If left unset or set to {@code null}, defaults to {@code 1000L}.
-         * </p>
-         *
-         * @param limit  The maximum number of results that include members,
-         *     groups and invitees to return per request. Must be greater than
-         *     or equal to 1 and be less than or equal to 1000. Defaults to
-         *     {@code 1000L} when set to {@code null}.
-         *
-         * @return this builder
-         *
-         * @throws IllegalArgumentException  If any argument does not meet its
-         *     preconditions.
-         */
-        public Builder withLimit(Long limit) {
-            if (limit < 1L) {
-                throw new IllegalArgumentException("Number 'limit' is smaller than 1L");
-            }
-            if (limit > 1000L) {
-                throw new IllegalArgumentException("Number 'limit' is larger than 1000L");
-            }
-            if (limit != null) {
-                this.limit = limit;
-            }
-            else {
-                this.limit = 1000L;
-            }
-            return this;
         }
 
         /**
@@ -226,10 +130,9 @@ class ListFolderMembersArgs {
     @Override
     public int hashCode() {
         int hash = java.util.Arrays.hashCode(new Object [] {
-            sharedFolderId,
-            actions,
-            limit
+            sharedFolderId
         });
+        hash = (31 * super.hashCode()) + hash;
         return hash;
     }
 
@@ -324,7 +227,7 @@ class ListFolderMembersArgs {
 
             String sharedFolderId = null;
             List<MemberAction> actions = null;
-            Long limit = null;
+            long limit = 1000L;
 
             while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
                 String _field = _p.getCurrentName();

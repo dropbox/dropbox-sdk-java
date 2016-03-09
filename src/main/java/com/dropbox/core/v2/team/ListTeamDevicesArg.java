@@ -331,9 +331,9 @@ class ListTeamDevicesArg {
         public ListTeamDevicesArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
 
             String cursor = null;
-            Boolean includeWebSessions = null;
-            Boolean includeDesktopClients = null;
-            Boolean includeMobileClients = null;
+            boolean includeWebSessions = true;
+            boolean includeDesktopClients = true;
+            boolean includeMobileClients = true;
 
             while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
                 String _field = _p.getCurrentName();

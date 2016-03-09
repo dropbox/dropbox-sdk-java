@@ -48,7 +48,7 @@ public class FolderPermission {
      *     Must not be {@code null}.
      * @param allow  True if the user is allowed to take the action.
      * @param reason  The reason why the user is denied the permission. Not
-     *     present if the action is allowed.
+     *     present if the action is allowed, or if no reason is available.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -98,7 +98,7 @@ public class FolderPermission {
 
     /**
      * The reason why the user is denied the permission. Not present if the
-     * action is allowed
+     * action is allowed, or if no reason is available.
      *
      * @return value for this field, or {@code null} if not present.
      */

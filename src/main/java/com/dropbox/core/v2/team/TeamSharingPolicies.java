@@ -39,6 +39,7 @@ public class TeamSharingPolicies {
 
     protected final SharedFolderMemberPolicy sharedFolderMemberPolicy;
     protected final SharedFolderJoinPolicy sharedFolderJoinPolicy;
+    protected final SharedLinkCreatePolicy sharedLinkCreatePolicy;
 
     /**
      * Policies governing sharing within and outside of the team.
@@ -47,11 +48,13 @@ public class TeamSharingPolicies {
      *     members. Must not be {@code null}.
      * @param sharedFolderJoinPolicy  Which shared folders team members can
      *     join. Must not be {@code null}.
+     * @param sharedLinkCreatePolicy  What is the visibility of newly created
+     *     shared links. Must not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamSharingPolicies(SharedFolderMemberPolicy sharedFolderMemberPolicy, SharedFolderJoinPolicy sharedFolderJoinPolicy) {
+    public TeamSharingPolicies(SharedFolderMemberPolicy sharedFolderMemberPolicy, SharedFolderJoinPolicy sharedFolderJoinPolicy, SharedLinkCreatePolicy sharedLinkCreatePolicy) {
         if (sharedFolderMemberPolicy == null) {
             throw new IllegalArgumentException("Required value for 'sharedFolderMemberPolicy' is null");
         }
@@ -60,6 +63,10 @@ public class TeamSharingPolicies {
             throw new IllegalArgumentException("Required value for 'sharedFolderJoinPolicy' is null");
         }
         this.sharedFolderJoinPolicy = sharedFolderJoinPolicy;
+        if (sharedLinkCreatePolicy == null) {
+            throw new IllegalArgumentException("Required value for 'sharedLinkCreatePolicy' is null");
+        }
+        this.sharedLinkCreatePolicy = sharedLinkCreatePolicy;
     }
 
     /**
@@ -80,11 +87,21 @@ public class TeamSharingPolicies {
         return sharedFolderJoinPolicy;
     }
 
+    /**
+     * What is the visibility of newly created shared links.
+     *
+     * @return value for this field, never {@code null}.
+     */
+    public SharedLinkCreatePolicy getSharedLinkCreatePolicy() {
+        return sharedLinkCreatePolicy;
+    }
+
     @Override
     public int hashCode() {
         int hash = java.util.Arrays.hashCode(new Object [] {
             sharedFolderMemberPolicy,
-            sharedFolderJoinPolicy
+            sharedFolderJoinPolicy,
+            sharedLinkCreatePolicy
         });
         return hash;
     }
@@ -99,6 +116,7 @@ public class TeamSharingPolicies {
             TeamSharingPolicies other = (TeamSharingPolicies) obj;
             return ((this.sharedFolderMemberPolicy == other.sharedFolderMemberPolicy) || (this.sharedFolderMemberPolicy.equals(other.sharedFolderMemberPolicy)))
                 && ((this.sharedFolderJoinPolicy == other.sharedFolderJoinPolicy) || (this.sharedFolderJoinPolicy.equals(other.sharedFolderJoinPolicy)))
+                && ((this.sharedLinkCreatePolicy == other.sharedLinkCreatePolicy) || (this.sharedLinkCreatePolicy.equals(other.sharedLinkCreatePolicy)))
                 ;
         }
         else {
@@ -152,6 +170,7 @@ public class TeamSharingPolicies {
         protected void serializeFields(TeamSharingPolicies value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
             g.writeObjectField("shared_folder_member_policy", value.sharedFolderMemberPolicy);
             g.writeObjectField("shared_folder_join_policy", value.sharedFolderJoinPolicy);
+            g.writeObjectField("shared_link_create_policy", value.sharedLinkCreatePolicy);
         }
     }
 
@@ -176,6 +195,7 @@ public class TeamSharingPolicies {
 
             SharedFolderMemberPolicy sharedFolderMemberPolicy = null;
             SharedFolderJoinPolicy sharedFolderJoinPolicy = null;
+            SharedLinkCreatePolicy sharedLinkCreatePolicy = null;
 
             while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
                 String _field = _p.getCurrentName();
@@ -186,6 +206,10 @@ public class TeamSharingPolicies {
                 }
                 else if ("shared_folder_join_policy".equals(_field)) {
                     sharedFolderJoinPolicy = _p.readValueAs(SharedFolderJoinPolicy.class);
+                    _p.nextToken();
+                }
+                else if ("shared_link_create_policy".equals(_field)) {
+                    sharedLinkCreatePolicy = _p.readValueAs(SharedLinkCreatePolicy.class);
                     _p.nextToken();
                 }
                 else {
@@ -199,8 +223,11 @@ public class TeamSharingPolicies {
             if (sharedFolderJoinPolicy == null) {
                 throw new JsonParseException(_p, "Required field \"shared_folder_join_policy\" is missing.");
             }
+            if (sharedLinkCreatePolicy == null) {
+                throw new JsonParseException(_p, "Required field \"shared_link_create_policy\" is missing.");
+            }
 
-            return new TeamSharingPolicies(sharedFolderMemberPolicy, sharedFolderJoinPolicy);
+            return new TeamSharingPolicies(sharedFolderMemberPolicy, sharedFolderJoinPolicy, sharedLinkCreatePolicy);
         }
     }
 }

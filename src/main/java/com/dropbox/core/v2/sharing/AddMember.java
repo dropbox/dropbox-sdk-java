@@ -195,7 +195,7 @@ public class AddMember {
         public AddMember deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
 
             MemberSelector member = null;
-            AccessLevel accessLevel = null;
+            AccessLevel accessLevel = AccessLevel.VIEWER;
 
             while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
                 String _field = _p.getCurrentName();

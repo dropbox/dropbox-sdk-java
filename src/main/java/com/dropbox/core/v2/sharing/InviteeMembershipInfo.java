@@ -246,7 +246,7 @@ public class InviteeMembershipInfo extends MembershipInfo {
             InviteeInfo invitee = null;
             List<MemberPermission> permissions = null;
             String initials = null;
-            Boolean isInherited = null;
+            boolean isInherited = false;
 
             while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
                 String _field = _p.getCurrentName();

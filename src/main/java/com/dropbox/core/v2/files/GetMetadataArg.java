@@ -185,7 +185,7 @@ class GetMetadataArg {
         public GetMetadataArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
 
             String path = null;
-            Boolean includeMediaInfo = null;
+            boolean includeMediaInfo = false;
 
             while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
                 String _field = _p.getCurrentName();

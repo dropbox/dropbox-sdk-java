@@ -345,7 +345,7 @@ class AddFolderMemberArg {
 
             String sharedFolderId = null;
             List<AddMember> members = null;
-            Boolean quiet = null;
+            boolean quiet = false;
             String customMessage = null;
 
             while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {

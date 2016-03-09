@@ -414,8 +414,8 @@ public final class DbxUserSharingRequests {
      *
      * @param sharedFolderId  The ID for the shared folder. Must match pattern
      *     "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
-     * @param actions  Folder actions to query. This field is optional. Must not
-     *     contain a {@code null} item.
+     * @param actions  Folder actions to query. Must not contain a {@code null}
+     *     item.
      *
      * @return The metadata which includes basic information about the shared
      *     folder.
@@ -739,9 +739,10 @@ public final class DbxUserSharingRequests {
      * backwards-incompatible changes.
      *
      *
-     * @return Result for {@link DbxUserSharingRequests#listFolders()}.
-     *     Unmounted shared folders can be identified by the absence of {@link
-     *     SharedFolderMetadata#getPathLower}.
+     * @return Result for {@link DbxUserSharingRequests#listFolders()} or {@link
+     *     DbxUserSharingRequests#listMountableFolders()}, depending on which
+     *     endpoint was requested. Unmounted shared folders can be identified by
+     *     the absence of {@link SharedFolderMetadata#getPathLower}.
      */
     ListFoldersResult listFolders(ListFoldersArgs listFoldersArgs) throws DbxException {
         try {
@@ -766,9 +767,10 @@ public final class DbxUserSharingRequests {
      * <p> The default values for the optional request parameters will be used.
      * See {@link ListFoldersBuilder} for more details. </p>
      *
-     * @return Result for {@link DbxUserSharingRequests#listFolders()}.
-     *     Unmounted shared folders can be identified by the absence of {@link
-     *     SharedFolderMetadata#getPathLower}.
+     * @return Result for {@link DbxUserSharingRequests#listFolders()} or {@link
+     *     DbxUserSharingRequests#listMountableFolders()}, depending on which
+     *     endpoint was requested. Unmounted shared folders can be identified by
+     *     the absence of {@link SharedFolderMetadata#getPathLower}.
      */
     public ListFoldersResult listFolders() throws DbxException {
         ListFoldersArgs arg = new ListFoldersArgs();
@@ -796,14 +798,17 @@ public final class DbxUserSharingRequests {
     /**
      * Once a cursor has been retrieved from {@link
      * DbxUserSharingRequests#listFolders()}, use this to paginate through all
-     * shared folders. Apps must have full Dropbox access to use this endpoint.
-     * Warning: This endpoint is in beta and is subject to minor but possibly
-     * backwards-incompatible changes.
+     * shared folders. The cursor must come from a previous call to {@link
+     * DbxUserSharingRequests#listFolders()} or {@link
+     * DbxUserSharingRequests#listFoldersContinue(String)}. Apps must have full
+     * Dropbox access to use this endpoint. Warning: This endpoint is in beta
+     * and is subject to minor but possibly backwards-incompatible changes.
      *
      *
-     * @return Result for {@link DbxUserSharingRequests#listFolders()}.
-     *     Unmounted shared folders can be identified by the absence of {@link
-     *     SharedFolderMetadata#getPathLower}.
+     * @return Result for {@link DbxUserSharingRequests#listFolders()} or {@link
+     *     DbxUserSharingRequests#listMountableFolders()}, depending on which
+     *     endpoint was requested. Unmounted shared folders can be identified by
+     *     the absence of {@link SharedFolderMetadata#getPathLower}.
      */
     ListFoldersResult listFoldersContinue(ListFoldersContinueArg listFoldersContinueArg) throws ListFoldersContinueErrorException, DbxException {
         try {
@@ -822,18 +827,19 @@ public final class DbxUserSharingRequests {
     /**
      * Once a cursor has been retrieved from {@link
      * DbxUserSharingRequests#listFolders()}, use this to paginate through all
-     * shared folders. Apps must have full Dropbox access to use this endpoint.
-     * Warning: This endpoint is in beta and is subject to minor but possibly
-     * backwards-incompatible changes.
+     * shared folders. The cursor must come from a previous call to {@link
+     * DbxUserSharingRequests#listFolders()} or {@link
+     * DbxUserSharingRequests#listFoldersContinue(String)}. Apps must have full
+     * Dropbox access to use this endpoint. Warning: This endpoint is in beta
+     * and is subject to minor but possibly backwards-incompatible changes.
      *
-     * @param cursor  The cursor returned by your last call to {@link
-     *     DbxUserSharingRequests#listFolders()} or {@link
-     *     DbxUserSharingRequests#listFoldersContinue(String)}. Must not be
-     *     {@code null}.
+     * @param cursor  The cursor returned by the previous API call specified in
+     *     the endpoint description. Must not be {@code null}.
      *
-     * @return Result for {@link DbxUserSharingRequests#listFolders()}.
-     *     Unmounted shared folders can be identified by the absence of {@link
-     *     SharedFolderMetadata#getPathLower}.
+     * @return Result for {@link DbxUserSharingRequests#listFolders()} or {@link
+     *     DbxUserSharingRequests#listMountableFolders()}, depending on which
+     *     endpoint was requested. Unmounted shared folders can be identified by
+     *     the absence of {@link SharedFolderMetadata#getPathLower}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -852,9 +858,10 @@ public final class DbxUserSharingRequests {
      * unmount. Apps must have full Dropbox access to use this endpoint.
      *
      *
-     * @return Result for {@link DbxUserSharingRequests#listFolders()}.
-     *     Unmounted shared folders can be identified by the absence of {@link
-     *     SharedFolderMetadata#getPathLower}.
+     * @return Result for {@link DbxUserSharingRequests#listFolders()} or {@link
+     *     DbxUserSharingRequests#listMountableFolders()}, depending on which
+     *     endpoint was requested. Unmounted shared folders can be identified by
+     *     the absence of {@link SharedFolderMetadata#getPathLower}.
      */
     ListFoldersResult listMountableFolders(ListFoldersArgs listFoldersArgs) throws DbxException {
         try {
@@ -877,9 +884,10 @@ public final class DbxUserSharingRequests {
      * <p> The default values for the optional request parameters will be used.
      * See {@link ListMountableFoldersBuilder} for more details. </p>
      *
-     * @return Result for {@link DbxUserSharingRequests#listFolders()}.
-     *     Unmounted shared folders can be identified by the absence of {@link
-     *     SharedFolderMetadata#getPathLower}.
+     * @return Result for {@link DbxUserSharingRequests#listFolders()} or {@link
+     *     DbxUserSharingRequests#listMountableFolders()}, depending on which
+     *     endpoint was requested. Unmounted shared folders can be identified by
+     *     the absence of {@link SharedFolderMetadata#getPathLower}.
      */
     public ListFoldersResult listMountableFolders() throws DbxException {
         ListFoldersArgs arg = new ListFoldersArgs();
@@ -905,13 +913,16 @@ public final class DbxUserSharingRequests {
     /**
      * Once a cursor has been retrieved from {@link
      * DbxUserSharingRequests#listMountableFolders()}, use this to paginate
-     * through all mountable shared folders. Apps must have full Dropbox access
-     * to use this endpoint.
+     * through all mountable shared folders. The cursor must come from a
+     * previous call to {@link DbxUserSharingRequests#listMountableFolders()} or
+     * {@link DbxUserSharingRequests#listMountableFoldersContinue(String)}. Apps
+     * must have full Dropbox access to use this endpoint.
      *
      *
-     * @return Result for {@link DbxUserSharingRequests#listFolders()}.
-     *     Unmounted shared folders can be identified by the absence of {@link
-     *     SharedFolderMetadata#getPathLower}.
+     * @return Result for {@link DbxUserSharingRequests#listFolders()} or {@link
+     *     DbxUserSharingRequests#listMountableFolders()}, depending on which
+     *     endpoint was requested. Unmounted shared folders can be identified by
+     *     the absence of {@link SharedFolderMetadata#getPathLower}.
      */
     ListFoldersResult listMountableFoldersContinue(ListFoldersContinueArg listFoldersContinueArg) throws ListFoldersContinueErrorException, DbxException {
         try {
@@ -930,17 +941,18 @@ public final class DbxUserSharingRequests {
     /**
      * Once a cursor has been retrieved from {@link
      * DbxUserSharingRequests#listMountableFolders()}, use this to paginate
-     * through all mountable shared folders. Apps must have full Dropbox access
-     * to use this endpoint.
+     * through all mountable shared folders. The cursor must come from a
+     * previous call to {@link DbxUserSharingRequests#listMountableFolders()} or
+     * {@link DbxUserSharingRequests#listMountableFoldersContinue(String)}. Apps
+     * must have full Dropbox access to use this endpoint.
      *
-     * @param cursor  The cursor returned by your last call to {@link
-     *     DbxUserSharingRequests#listFolders()} or {@link
-     *     DbxUserSharingRequests#listFoldersContinue(String)}. Must not be
-     *     {@code null}.
+     * @param cursor  The cursor returned by the previous API call specified in
+     *     the endpoint description. Must not be {@code null}.
      *
-     * @return Result for {@link DbxUserSharingRequests#listFolders()}.
-     *     Unmounted shared folders can be identified by the absence of {@link
-     *     SharedFolderMetadata#getPathLower}.
+     * @return Result for {@link DbxUserSharingRequests#listFolders()} or {@link
+     *     DbxUserSharingRequests#listMountableFolders()}, depending on which
+     *     endpoint was requested. Unmounted shared folders can be identified by
+     *     the absence of {@link SharedFolderMetadata#getPathLower}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -1342,9 +1354,10 @@ public final class DbxUserSharingRequests {
 
     /**
      * Transfer ownership of a shared folder to a member of the shared folder.
-     * Apps must have full Dropbox access to use this endpoint. Warning: This
-     * endpoint is in beta and is subject to minor but possibly
-     * backwards-incompatible changes.
+     * User must have {@link AccessLevel#OWNER} access to the shared folder to
+     * perform a transfer. Apps must have full Dropbox access to use this
+     * endpoint. Warning: This endpoint is in beta and is subject to minor but
+     * possibly backwards-incompatible changes.
      *
      */
     void transferFolder(TransferFolderArg transferFolderArg) throws TransferFolderErrorException, DbxException {
@@ -1363,9 +1376,10 @@ public final class DbxUserSharingRequests {
 
     /**
      * Transfer ownership of a shared folder to a member of the shared folder.
-     * Apps must have full Dropbox access to use this endpoint. Warning: This
-     * endpoint is in beta and is subject to minor but possibly
-     * backwards-incompatible changes.
+     * User must have {@link AccessLevel#OWNER} access to the shared folder to
+     * perform a transfer. Apps must have full Dropbox access to use this
+     * endpoint. Warning: This endpoint is in beta and is subject to minor but
+     * possibly backwards-incompatible changes.
      *
      * @param sharedFolderId  The ID for the shared folder. Must match pattern
      *     "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
@@ -1461,6 +1475,31 @@ public final class DbxUserSharingRequests {
      * use this endpoint. Warning: This endpoint is in beta and is subject to
      * minor but possibly backwards-incompatible changes.
      *
+     * <p> The {@code leaveACopy} request parameter will default to {@code
+     * false} (see {@link #unshareFolder(String,boolean)}). </p>
+     *
+     * @param sharedFolderId  The ID for the shared folder. Must match pattern
+     *     "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
+     *
+     * @return Result returned by methods that may either launch an asynchronous
+     *     job or complete synchronously. Upon synchronous completion of the
+     *     job, no additional information is returned.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public LaunchEmptyResult unshareFolder(String sharedFolderId) throws UnshareFolderErrorException, DbxException {
+        UnshareFolderArg arg = new UnshareFolderArg(sharedFolderId);
+        return unshareFolder(arg);
+    }
+
+    /**
+     * Allows a shared folder owner to unshare the folder. You'll need to call
+     * {@link DbxUserSharingRequests#checkJobStatus(String)} to determine if the
+     * action has completed successfully. Apps must have full Dropbox access to
+     * use this endpoint. Warning: This endpoint is in beta and is subject to
+     * minor but possibly backwards-incompatible changes.
+     *
      * @param sharedFolderId  The ID for the shared folder. Must match pattern
      *     "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
      * @param leaveACopy  If true, members of this shared folder will get a copy
@@ -1534,9 +1573,11 @@ public final class DbxUserSharingRequests {
     //
 
     /**
-     * Update the sharing policies for a shared folder. Apps must have full
-     * Dropbox access to use this endpoint. Warning: This endpoint is in beta
-     * and is subject to minor but possibly backwards-incompatible changes.
+     * Update the sharing policies for a shared folder. User must have {@link
+     * AccessLevel#OWNER} access to the shared folder to update its policies.
+     * Apps must have full Dropbox access to use this endpoint. Warning: This
+     * endpoint is in beta and is subject to minor but possibly
+     * backwards-incompatible changes.
      *
      * @param updateFolderPolicyArg  If any of the policy's are unset, then they
      *     retain their current setting.
@@ -1559,9 +1600,11 @@ public final class DbxUserSharingRequests {
     }
 
     /**
-     * Update the sharing policies for a shared folder. Apps must have full
-     * Dropbox access to use this endpoint. Warning: This endpoint is in beta
-     * and is subject to minor but possibly backwards-incompatible changes.
+     * Update the sharing policies for a shared folder. User must have {@link
+     * AccessLevel#OWNER} access to the shared folder to update its policies.
+     * Apps must have full Dropbox access to use this endpoint. Warning: This
+     * endpoint is in beta and is subject to minor but possibly
+     * backwards-incompatible changes.
      *
      * @param sharedFolderId  The ID for the shared folder. Must match pattern
      *     "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
@@ -1578,9 +1621,11 @@ public final class DbxUserSharingRequests {
     }
 
     /**
-     * Update the sharing policies for a shared folder. Apps must have full
-     * Dropbox access to use this endpoint. Warning: This endpoint is in beta
-     * and is subject to minor but possibly backwards-incompatible changes.
+     * Update the sharing policies for a shared folder. User must have {@link
+     * AccessLevel#OWNER} access to the shared folder to update its policies.
+     * Apps must have full Dropbox access to use this endpoint. Warning: This
+     * endpoint is in beta and is subject to minor but possibly
+     * backwards-incompatible changes.
      *
      * @param sharedFolderId  The ID for the shared folder. Must match pattern
      *     "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.

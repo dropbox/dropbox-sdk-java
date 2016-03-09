@@ -46,7 +46,11 @@ public enum MembersUnsuspendError {
     /**
      * The user is unsuspended, so it cannot be unsuspended again.
      */
-    UNSUSPEND_NON_SUSPENDED_MEMBER;
+    UNSUSPEND_NON_SUSPENDED_MEMBER,
+    /**
+     * Team is full. The organization has no available licenses.
+     */
+    TEAM_LICENSE_LIMIT;
 
     // ProGuard work-around since we declare serializers in annotation
     static final Serializer SERIALIZER = new Serializer();
@@ -74,6 +78,9 @@ public enum MembersUnsuspendError {
                 case UNSUSPEND_NON_SUSPENDED_MEMBER:
                     g.writeString("unsuspend_non_suspended_member");
                     break;
+                case TEAM_LICENSE_LIMIT:
+                    g.writeString("team_license_limit");
+                    break;
             }
         }
     }
@@ -93,6 +100,7 @@ public enum MembersUnsuspendError {
         private static Map<String, MembersUnsuspendError> getTagMapping() {
             Map<String, MembersUnsuspendError> values = new HashMap<String, MembersUnsuspendError>();
             values.put("unsuspend_non_suspended_member", MembersUnsuspendError.UNSUSPEND_NON_SUSPENDED_MEMBER);
+            values.put("team_license_limit", MembersUnsuspendError.TEAM_LICENSE_LIMIT);
             return Collections.unmodifiableMap(values);
         }
     }

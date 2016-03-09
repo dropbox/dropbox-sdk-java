@@ -294,7 +294,7 @@ class MembersRemoveArg extends MembersDeactivateArg {
         public MembersRemoveArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
 
             UserSelectorArg user = null;
-            Boolean wipeData = null;
+            boolean wipeData = true;
             UserSelectorArg transferDestId = null;
             UserSelectorArg transferAdminId = null;
 

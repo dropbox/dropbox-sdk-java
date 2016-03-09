@@ -212,8 +212,8 @@ public final class MemberAddResult {
      *
      * @throws IllegalArgumentException  if {@code value} is longer than 255,
      *     does not match pattern "{@code
-     *     ^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$}", or
-     *     is {@code null}.
+     *     ^['&amp;A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$}",
+     *     or is {@code null}.
      */
     public static MemberAddResult teamLicenseLimit(String value) {
         if (value == null) {
@@ -271,8 +271,8 @@ public final class MemberAddResult {
      *
      * @throws IllegalArgumentException  if {@code value} is longer than 255,
      *     does not match pattern "{@code
-     *     ^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$}", or
-     *     is {@code null}.
+     *     ^['&amp;A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$}",
+     *     or is {@code null}.
      */
     public static MemberAddResult freeTeamMemberLimitReached(String value) {
         if (value == null) {
@@ -333,8 +333,8 @@ public final class MemberAddResult {
      *
      * @throws IllegalArgumentException  if {@code value} is longer than 255,
      *     does not match pattern "{@code
-     *     ^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$}", or
-     *     is {@code null}.
+     *     ^['&amp;A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$}",
+     *     or is {@code null}.
      */
     public static MemberAddResult userAlreadyOnTeam(String value) {
         if (value == null) {
@@ -395,8 +395,8 @@ public final class MemberAddResult {
      *
      * @throws IllegalArgumentException  if {@code value} is longer than 255,
      *     does not match pattern "{@code
-     *     ^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$}", or
-     *     is {@code null}.
+     *     ^['&amp;A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$}",
+     *     or is {@code null}.
      */
     public static MemberAddResult userOnAnotherTeam(String value) {
         if (value == null) {
@@ -455,8 +455,8 @@ public final class MemberAddResult {
      *
      * @throws IllegalArgumentException  if {@code value} is longer than 255,
      *     does not match pattern "{@code
-     *     ^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$}", or
-     *     is {@code null}.
+     *     ^['&amp;A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$}",
+     *     or is {@code null}.
      */
     public static MemberAddResult userAlreadyPaired(String value) {
         if (value == null) {
@@ -513,8 +513,8 @@ public final class MemberAddResult {
      *
      * @throws IllegalArgumentException  if {@code value} is longer than 255,
      *     does not match pattern "{@code
-     *     ^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$}", or
-     *     is {@code null}.
+     *     ^['&amp;A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$}",
+     *     or is {@code null}.
      */
     public static MemberAddResult userMigrationFailed(String value) {
         if (value == null) {
@@ -573,8 +573,8 @@ public final class MemberAddResult {
      *
      * @throws IllegalArgumentException  if {@code value} is longer than 255,
      *     does not match pattern "{@code
-     *     ^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$}", or
-     *     is {@code null}.
+     *     ^['&amp;A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$}",
+     *     or is {@code null}.
      */
     public static MemberAddResult duplicateExternalMemberId(String value) {
         if (value == null) {
@@ -633,8 +633,8 @@ public final class MemberAddResult {
      *
      * @throws IllegalArgumentException  if {@code value} is longer than 255,
      *     does not match pattern "{@code
-     *     ^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$}", or
-     *     is {@code null}.
+     *     ^['&amp;A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$}",
+     *     or is {@code null}.
      */
     public static MemberAddResult userCreationFailed(String value) {
         if (value == null) {

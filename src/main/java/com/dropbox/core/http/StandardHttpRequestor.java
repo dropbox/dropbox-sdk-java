@@ -46,7 +46,7 @@ public class StandardHttpRequestor extends HttpRequestor
     {
         int responseCode = conn.getResponseCode();
         InputStream bodyStream;
-        if (responseCode >= 400) {
+        if (responseCode >= 400 || responseCode == -1) {
             bodyStream = conn.getErrorStream();
         } else {
             bodyStream = conn.getInputStream();

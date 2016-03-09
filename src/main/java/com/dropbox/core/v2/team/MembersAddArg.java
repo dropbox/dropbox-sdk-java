@@ -187,7 +187,7 @@ class MembersAddArg {
         public MembersAddArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
 
             List<MemberAddArg> newMembers = null;
-            Boolean forceAsync = null;
+            boolean forceAsync = false;
 
             while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
                 String _field = _p.getCurrentName();

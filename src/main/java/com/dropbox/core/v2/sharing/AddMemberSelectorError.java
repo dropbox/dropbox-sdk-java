@@ -216,8 +216,8 @@ public final class AddMemberSelectorError {
      *
      * @throws IllegalArgumentException  if {@code value} is longer than 255,
      *     does not match pattern "{@code
-     *     ^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$}", or
-     *     is {@code null}.
+     *     ^['&amp;A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$}",
+     *     or is {@code null}.
      */
     public static AddMemberSelectorError invalidEmail(String value) {
         if (value == null) {

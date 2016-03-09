@@ -53,7 +53,7 @@ public class SharedLinkSettings {
     public SharedLinkSettings(RequestedVisibility requestedVisibility, String linkPassword, Date expires) {
         this.requestedVisibility = requestedVisibility;
         this.linkPassword = linkPassword;
-        this.expires = expires;
+        this.expires = com.dropbox.core.util.LangUtil.truncateMillis(expires);
     }
 
     /**
@@ -153,7 +153,7 @@ public class SharedLinkSettings {
          * @return this builder
          */
         public Builder withExpires(Date expires) {
-            this.expires = expires;
+            this.expires = com.dropbox.core.util.LangUtil.truncateMillis(expires);
             return this;
         }
 

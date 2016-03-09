@@ -177,7 +177,7 @@ public class RevokeDesktopClientArg extends DeviceSessionArg {
 
             String sessionId = null;
             String teamMemberId = null;
-            Boolean deleteOnUnlink = null;
+            boolean deleteOnUnlink = false;
 
             while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
                 String _field = _p.getCurrentName();

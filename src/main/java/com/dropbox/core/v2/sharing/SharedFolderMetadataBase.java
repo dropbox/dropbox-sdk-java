@@ -8,6 +8,7 @@ import com.dropbox.core.json.JsonReader;
 import com.dropbox.core.json.JsonUtil;
 import com.dropbox.core.json.StructJsonDeserializer;
 import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.v2.users.Team;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -42,9 +43,14 @@ public class SharedFolderMetadataBase {
     protected final boolean isTeamFolder;
     protected final FolderPolicy policy;
     protected final List<FolderPermission> permissions;
+    protected final Team ownerTeam;
+    protected final String parentSharedFolderId;
 
     /**
      * Properties of the shared folder.
+     *
+     * <p> Use {@link newBuilder} to create instances of this class without
+     * specifying values for all optional fields. </p>
      *
      * @param accessType  The current user's access level for this shared
      *     folder. Must not be {@code null}.
@@ -55,11 +61,16 @@ public class SharedFolderMetadataBase {
      * @param permissions  Actions the current user may perform on the folder
      *     and its contents. The set of permissions corresponds to the
      *     FolderActions in the request. Must not contain a {@code null} item.
+     * @param ownerTeam  The team that owns the folder. This field is not
+     *     present if the folder is not owned by a team.
+     * @param parentSharedFolderId  The ID of the parent shared folder. This
+     *     field is present only if the folder is contained within another
+     *     shared folder. Must match pattern "{@code [-_0-9a-zA-Z:]+}".
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedFolderMetadataBase(AccessLevel accessType, boolean isTeamFolder, FolderPolicy policy, List<FolderPermission> permissions) {
+    public SharedFolderMetadataBase(AccessLevel accessType, boolean isTeamFolder, FolderPolicy policy, List<FolderPermission> permissions, Team ownerTeam, String parentSharedFolderId) {
         if (accessType == null) {
             throw new IllegalArgumentException("Required value for 'accessType' is null");
         }
@@ -77,6 +88,13 @@ public class SharedFolderMetadataBase {
             }
         }
         this.permissions = permissions;
+        this.ownerTeam = ownerTeam;
+        if (parentSharedFolderId != null) {
+            if (!java.util.regex.Pattern.matches("[-_0-9a-zA-Z:]+", parentSharedFolderId)) {
+                throw new IllegalArgumentException("String 'parentSharedFolderId' does not match pattern");
+            }
+        }
+        this.parentSharedFolderId = parentSharedFolderId;
     }
 
     /**
@@ -95,7 +113,7 @@ public class SharedFolderMetadataBase {
      *     preconditions.
      */
     public SharedFolderMetadataBase(AccessLevel accessType, boolean isTeamFolder, FolderPolicy policy) {
-        this(accessType, isTeamFolder, policy, null);
+        this(accessType, isTeamFolder, policy, null, null, null);
     }
 
     /**
@@ -136,13 +154,152 @@ public class SharedFolderMetadataBase {
         return permissions;
     }
 
+    /**
+     * The team that owns the folder. This field is not present if the folder is
+     * not owned by a team.
+     *
+     * @return value for this field, or {@code null} if not present.
+     */
+    public Team getOwnerTeam() {
+        return ownerTeam;
+    }
+
+    /**
+     * The ID of the parent shared folder. This field is present only if the
+     * folder is contained within another shared folder.
+     *
+     * @return value for this field, or {@code null} if not present.
+     */
+    public String getParentSharedFolderId() {
+        return parentSharedFolderId;
+    }
+
+    /**
+     * Returns a new builder for creating an instance of this class.
+     *
+     * @param accessType  The current user's access level for this shared
+     *     folder. Must not be {@code null}.
+     * @param isTeamFolder  Whether this folder is a <a
+     *     href="https://www.dropbox.com/en/help/986">team folder</a>.
+     * @param policy  Policies governing this shared folder. Must not be {@code
+     *     null}.
+     *
+     * @return builder for this class.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public static Builder newBuilder(AccessLevel accessType, boolean isTeamFolder, FolderPolicy policy) {
+        return new Builder(accessType, isTeamFolder, policy);
+    }
+
+    /**
+     * Builder for {@link SharedFolderMetadataBase}.
+     */
+    public static class Builder {
+        protected final AccessLevel accessType;
+        protected final boolean isTeamFolder;
+        protected final FolderPolicy policy;
+
+        protected List<FolderPermission> permissions;
+        protected Team ownerTeam;
+        protected String parentSharedFolderId;
+
+        protected Builder(AccessLevel accessType, boolean isTeamFolder, FolderPolicy policy) {
+            if (accessType == null) {
+                throw new IllegalArgumentException("Required value for 'accessType' is null");
+            }
+            this.accessType = accessType;
+            this.isTeamFolder = isTeamFolder;
+            if (policy == null) {
+                throw new IllegalArgumentException("Required value for 'policy' is null");
+            }
+            this.policy = policy;
+            this.permissions = null;
+            this.ownerTeam = null;
+            this.parentSharedFolderId = null;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param permissions  Actions the current user may perform on the
+         *     folder and its contents. The set of permissions corresponds to
+         *     the FolderActions in the request. Must not contain a {@code null}
+         *     item.
+         *
+         * @return this builder
+         *
+         * @throws IllegalArgumentException  If any argument does not meet its
+         *     preconditions.
+         */
+        public Builder withPermissions(List<FolderPermission> permissions) {
+            if (permissions != null) {
+                for (FolderPermission x : permissions) {
+                    if (x == null) {
+                        throw new IllegalArgumentException("An item in list 'permissions' is null");
+                    }
+                }
+            }
+            this.permissions = permissions;
+            return this;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param ownerTeam  The team that owns the folder. This field is not
+         *     present if the folder is not owned by a team.
+         *
+         * @return this builder
+         */
+        public Builder withOwnerTeam(Team ownerTeam) {
+            this.ownerTeam = ownerTeam;
+            return this;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param parentSharedFolderId  The ID of the parent shared folder. This
+         *     field is present only if the folder is contained within another
+         *     shared folder. Must match pattern "{@code [-_0-9a-zA-Z:]+}".
+         *
+         * @return this builder
+         *
+         * @throws IllegalArgumentException  If any argument does not meet its
+         *     preconditions.
+         */
+        public Builder withParentSharedFolderId(String parentSharedFolderId) {
+            if (parentSharedFolderId != null) {
+                if (!java.util.regex.Pattern.matches("[-_0-9a-zA-Z:]+", parentSharedFolderId)) {
+                    throw new IllegalArgumentException("String 'parentSharedFolderId' does not match pattern");
+                }
+            }
+            this.parentSharedFolderId = parentSharedFolderId;
+            return this;
+        }
+
+        /**
+         * Builds an instance of {@link SharedFolderMetadataBase} configured
+         * with this builder's values
+         *
+         * @return new instance of {@link SharedFolderMetadataBase}
+         */
+        public SharedFolderMetadataBase build() {
+            return new SharedFolderMetadataBase(accessType, isTeamFolder, policy, permissions, ownerTeam, parentSharedFolderId);
+        }
+    }
+
     @Override
     public int hashCode() {
         int hash = java.util.Arrays.hashCode(new Object [] {
             accessType,
             isTeamFolder,
             policy,
-            permissions
+            permissions,
+            ownerTeam,
+            parentSharedFolderId
         });
         return hash;
     }
@@ -159,6 +316,8 @@ public class SharedFolderMetadataBase {
                 && (this.isTeamFolder == other.isTeamFolder)
                 && ((this.policy == other.policy) || (this.policy.equals(other.policy)))
                 && ((this.permissions == other.permissions) || (this.permissions != null && this.permissions.equals(other.permissions)))
+                && ((this.ownerTeam == other.ownerTeam) || (this.ownerTeam != null && this.ownerTeam.equals(other.ownerTeam)))
+                && ((this.parentSharedFolderId == other.parentSharedFolderId) || (this.parentSharedFolderId != null && this.parentSharedFolderId.equals(other.parentSharedFolderId)))
                 ;
         }
         else {
@@ -216,6 +375,12 @@ public class SharedFolderMetadataBase {
             if (value.permissions != null) {
                 g.writeObjectField("permissions", value.permissions);
             }
+            if (value.ownerTeam != null) {
+                g.writeObjectField("owner_team", value.ownerTeam);
+            }
+            if (value.parentSharedFolderId != null) {
+                g.writeObjectField("parent_shared_folder_id", value.parentSharedFolderId);
+            }
         }
     }
 
@@ -242,6 +407,8 @@ public class SharedFolderMetadataBase {
             Boolean isTeamFolder = null;
             FolderPolicy policy = null;
             List<FolderPermission> permissions = null;
+            Team ownerTeam = null;
+            String parentSharedFolderId = null;
 
             while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
                 String _field = _p.getCurrentName();
@@ -270,6 +437,14 @@ public class SharedFolderMetadataBase {
                     expectArrayEnd(_p);
                     _p.nextToken();
                 }
+                else if ("owner_team".equals(_field)) {
+                    ownerTeam = _p.readValueAs(Team.class);
+                    _p.nextToken();
+                }
+                else if ("parent_shared_folder_id".equals(_field)) {
+                    parentSharedFolderId = getStringValue(_p);
+                    _p.nextToken();
+                }
                 else {
                     skipValue(_p);
                 }
@@ -285,7 +460,7 @@ public class SharedFolderMetadataBase {
                 throw new JsonParseException(_p, "Required field \"policy\" is missing.");
             }
 
-            return new SharedFolderMetadataBase(accessType, isTeamFolder, policy, permissions);
+            return new SharedFolderMetadataBase(accessType, isTeamFolder, policy, permissions, ownerTeam, parentSharedFolderId);
         }
     }
 }

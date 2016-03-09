@@ -282,7 +282,7 @@ class CreateSharedLinkArg {
         public CreateSharedLinkArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
 
             String path = null;
-            Boolean shortUrl = null;
+            boolean shortUrl = false;
             PendingUploadMode pendingUpload = null;
 
             while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {

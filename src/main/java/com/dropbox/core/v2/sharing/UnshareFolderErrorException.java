@@ -15,7 +15,7 @@ public class UnshareFolderErrorException extends DbxApiException {
 
     /**
      * The error reported by {@link
-     * DbxUserSharingRequests#unshareFolder(String,boolean)}.
+     * DbxUserSharingRequests#unshareFolder(String)}.
      */
     public final UnshareFolderError errorValue;
 

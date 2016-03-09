@@ -191,7 +191,7 @@ class ListRevisionsArg {
         public ListRevisionsArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
 
             String path = null;
-            Long limit = null;
+            long limit = 10L;
 
             while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
                 String _field = _p.getCurrentName();

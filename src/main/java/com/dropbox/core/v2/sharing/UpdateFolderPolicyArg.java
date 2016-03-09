@@ -50,12 +50,13 @@ class UpdateFolderPolicyArg {
      *
      * @param sharedFolderId  The ID for the shared folder. Must match pattern
      *     "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
-     * @param memberPolicy  Who can be a member of this shared folder. Only set
-     *     this if the current user is on a team.
+     * @param memberPolicy  Who can be a member of this shared folder. Only
+     *     applicable if the current user is on a team.
      * @param aclUpdatePolicy  Who can add and remove members of this shared
      *     folder.
      * @param sharedLinkPolicy  The policy to apply to shared links created for
-     *     content inside this shared folder.
+     *     content inside this shared folder. The current user must be on a team
+     *     to set this policy to {@link SharedLinkPolicy#MEMBERS}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -98,7 +99,7 @@ class UpdateFolderPolicyArg {
     }
 
     /**
-     * Who can be a member of this shared folder. Only set this if the current
+     * Who can be a member of this shared folder. Only applicable if the current
      * user is on a team.
      *
      * @return value for this field, or {@code null} if not present.
@@ -118,7 +119,8 @@ class UpdateFolderPolicyArg {
 
     /**
      * The policy to apply to shared links created for content inside this
-     * shared folder.
+     * shared folder. The current user must be on a team to set this policy to
+     * {@link SharedLinkPolicy#MEMBERS}.
      *
      * @return value for this field, or {@code null} if not present.
      */
@@ -168,7 +170,7 @@ class UpdateFolderPolicyArg {
          * Set value for optional field.
          *
          * @param memberPolicy  Who can be a member of this shared folder. Only
-         *     set this if the current user is on a team.
+         *     applicable if the current user is on a team.
          *
          * @return this builder
          */
@@ -194,7 +196,8 @@ class UpdateFolderPolicyArg {
          * Set value for optional field.
          *
          * @param sharedLinkPolicy  The policy to apply to shared links created
-         *     for content inside this shared folder.
+         *     for content inside this shared folder. The current user must be
+         *     on a team to set this policy to {@link SharedLinkPolicy#MEMBERS}.
          *
          * @return this builder
          */

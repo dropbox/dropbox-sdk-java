@@ -161,7 +161,7 @@ class MembersListArg {
         @Override
         public MembersListArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
 
-            Long limit = null;
+            long limit = 1000L;
 
             while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
                 String _field = _p.getCurrentName();

@@ -51,8 +51,8 @@ class DateRange {
      * @param endDate  Optional ending date (exclusive).
      */
     public DateRange(Date startDate, Date endDate) {
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.startDate = com.dropbox.core.util.LangUtil.truncateMillis(startDate);
+        this.endDate = com.dropbox.core.util.LangUtil.truncateMillis(endDate);
     }
 
     /**
@@ -112,7 +112,7 @@ class DateRange {
          * @return this builder
          */
         public Builder withStartDate(Date startDate) {
-            this.startDate = startDate;
+            this.startDate = com.dropbox.core.util.LangUtil.truncateMillis(startDate);
             return this;
         }
 
@@ -124,7 +124,7 @@ class DateRange {
          * @return this builder
          */
         public Builder withEndDate(Date endDate) {
-            this.endDate = endDate;
+            this.endDate = com.dropbox.core.util.LangUtil.truncateMillis(endDate);
             return this;
         }
 

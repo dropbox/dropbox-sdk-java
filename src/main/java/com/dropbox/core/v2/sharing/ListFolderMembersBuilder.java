@@ -41,8 +41,8 @@ public class ListFolderMembersBuilder {
     /**
      * Set value for optional field.
      *
-     * @param actions  Member actions to query. This field is optional. Must not
-     *     contain a {@code null} item.
+     * @param actions  Member actions to query. Must not contain a {@code null}
+     *     item.
      *
      * @return this builder
      *

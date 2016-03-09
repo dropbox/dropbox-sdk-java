@@ -8,6 +8,7 @@ import com.dropbox.core.json.JsonReader;
 import com.dropbox.core.json.JsonUtil;
 import com.dropbox.core.json.StructJsonDeserializer;
 import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.v2.users.Team;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -61,14 +62,19 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
      * @param permissions  Actions the current user may perform on the folder
      *     and its contents. The set of permissions corresponds to the
      *     FolderActions in the request. Must not contain a {@code null} item.
+     * @param ownerTeam  The team that owns the folder. This field is not
+     *     present if the folder is not owned by a team.
+     * @param parentSharedFolderId  The ID of the parent shared folder. This
+     *     field is present only if the folder is contained within another
+     *     shared folder. Must match pattern "{@code [-_0-9a-zA-Z:]+}".
      * @param pathLower  The lower-cased full path of this shared folder. Absent
      *     for unmounted folders.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedFolderMetadata(AccessLevel accessType, boolean isTeamFolder, FolderPolicy policy, String name, String sharedFolderId, List<FolderPermission> permissions, String pathLower) {
-        super(accessType, isTeamFolder, policy, permissions);
+    public SharedFolderMetadata(AccessLevel accessType, boolean isTeamFolder, FolderPolicy policy, String name, String sharedFolderId, List<FolderPermission> permissions, Team ownerTeam, String parentSharedFolderId, String pathLower) {
+        super(accessType, isTeamFolder, policy, permissions, ownerTeam, parentSharedFolderId);
         this.pathLower = pathLower;
         if (name == null) {
             throw new IllegalArgumentException("Required value for 'name' is null");
@@ -103,7 +109,7 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
      *     preconditions.
      */
     public SharedFolderMetadata(AccessLevel accessType, boolean isTeamFolder, FolderPolicy policy, String name, String sharedFolderId) {
-        this(accessType, isTeamFolder, policy, name, sharedFolderId, null, null);
+        this(accessType, isTeamFolder, policy, name, sharedFolderId, null, null, null, null);
     }
 
     /**
@@ -160,26 +166,14 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
     /**
      * Builder for {@link SharedFolderMetadata}.
      */
-    public static class Builder {
-        protected final AccessLevel accessType;
-        protected final boolean isTeamFolder;
-        protected final FolderPolicy policy;
+    public static class Builder extends SharedFolderMetadataBase.Builder {
         protected final String name;
         protected final String sharedFolderId;
 
-        protected List<FolderPermission> permissions;
         protected String pathLower;
 
         protected Builder(AccessLevel accessType, boolean isTeamFolder, FolderPolicy policy, String name, String sharedFolderId) {
-            if (accessType == null) {
-                throw new IllegalArgumentException("Required value for 'accessType' is null");
-            }
-            this.accessType = accessType;
-            this.isTeamFolder = isTeamFolder;
-            if (policy == null) {
-                throw new IllegalArgumentException("Required value for 'policy' is null");
-            }
-            this.policy = policy;
+            super(accessType, isTeamFolder, policy);
             if (name == null) {
                 throw new IllegalArgumentException("Required value for 'name' is null");
             }
@@ -191,33 +185,7 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
                 throw new IllegalArgumentException("String 'sharedFolderId' does not match pattern");
             }
             this.sharedFolderId = sharedFolderId;
-            this.permissions = null;
             this.pathLower = null;
-        }
-
-        /**
-         * Set value for optional field.
-         *
-         * @param permissions  Actions the current user may perform on the
-         *     folder and its contents. The set of permissions corresponds to
-         *     the FolderActions in the request. Must not contain a {@code null}
-         *     item.
-         *
-         * @return this builder
-         *
-         * @throws IllegalArgumentException  If any argument does not meet its
-         *     preconditions.
-         */
-        public Builder withPermissions(List<FolderPermission> permissions) {
-            if (permissions != null) {
-                for (FolderPermission x : permissions) {
-                    if (x == null) {
-                        throw new IllegalArgumentException("An item in list 'permissions' is null");
-                    }
-                }
-            }
-            this.permissions = permissions;
-            return this;
         }
 
         /**
@@ -240,7 +208,7 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
          * @return new instance of {@link SharedFolderMetadata}
          */
         public SharedFolderMetadata build() {
-            return new SharedFolderMetadata(accessType, isTeamFolder, policy, name, sharedFolderId, permissions, pathLower);
+            return new SharedFolderMetadata(accessType, isTeamFolder, policy, name, sharedFolderId, permissions, ownerTeam, parentSharedFolderId, pathLower);
         }
     }
 
@@ -269,6 +237,8 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
                 && ((this.name == other.name) || (this.name.equals(other.name)))
                 && ((this.sharedFolderId == other.sharedFolderId) || (this.sharedFolderId.equals(other.sharedFolderId)))
                 && ((this.permissions == other.permissions) || (this.permissions != null && this.permissions.equals(other.permissions)))
+                && ((this.ownerTeam == other.ownerTeam) || (this.ownerTeam != null && this.ownerTeam.equals(other.ownerTeam)))
+                && ((this.parentSharedFolderId == other.parentSharedFolderId) || (this.parentSharedFolderId != null && this.parentSharedFolderId.equals(other.parentSharedFolderId)))
                 && ((this.pathLower == other.pathLower) || (this.pathLower != null && this.pathLower.equals(other.pathLower)))
                 ;
         }
@@ -329,6 +299,12 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
             if (value.permissions != null) {
                 g.writeObjectField("permissions", value.permissions);
             }
+            if (value.ownerTeam != null) {
+                g.writeObjectField("owner_team", value.ownerTeam);
+            }
+            if (value.parentSharedFolderId != null) {
+                g.writeObjectField("parent_shared_folder_id", value.parentSharedFolderId);
+            }
             if (value.pathLower != null) {
                 g.writeObjectField("path_lower", value.pathLower);
             }
@@ -360,6 +336,8 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
             String name = null;
             String sharedFolderId = null;
             List<FolderPermission> permissions = null;
+            Team ownerTeam = null;
+            String parentSharedFolderId = null;
             String pathLower = null;
 
             while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
@@ -397,6 +375,14 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
                     expectArrayEnd(_p);
                     _p.nextToken();
                 }
+                else if ("owner_team".equals(_field)) {
+                    ownerTeam = _p.readValueAs(Team.class);
+                    _p.nextToken();
+                }
+                else if ("parent_shared_folder_id".equals(_field)) {
+                    parentSharedFolderId = getStringValue(_p);
+                    _p.nextToken();
+                }
                 else if ("path_lower".equals(_field)) {
                     pathLower = getStringValue(_p);
                     _p.nextToken();
@@ -422,7 +408,7 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
                 throw new JsonParseException(_p, "Required field \"shared_folder_id\" is missing.");
             }
 
-            return new SharedFolderMetadata(accessType, isTeamFolder, policy, name, sharedFolderId, permissions, pathLower);
+            return new SharedFolderMetadata(accessType, isTeamFolder, policy, name, sharedFolderId, permissions, ownerTeam, parentSharedFolderId, pathLower);
         }
     }
 }

@@ -42,8 +42,9 @@ public class ShareFolderBuilder {
      * <p> If left unset or set to {@code null}, defaults to {@code
      * MemberPolicy.ANYONE}. </p>
      *
-     * @param memberPolicy  Who can be a member of this shared folder. Defaults
-     *     to {@code MemberPolicy.ANYONE} when set to {@code null}.
+     * @param memberPolicy  Who can be a member of this shared folder. Only
+     *     applicable if the current user is on a team. Defaults to {@code
+     *     MemberPolicy.ANYONE} when set to {@code null}.
      *
      * @return this builder
      */
@@ -76,8 +77,9 @@ public class ShareFolderBuilder {
      * SharedLinkPolicy.ANYONE}. </p>
      *
      * @param sharedLinkPolicy  The policy to apply to shared links created for
-     *     content inside this shared folder. Defaults to {@code
-     *     SharedLinkPolicy.ANYONE} when set to {@code null}.
+     *     content inside this shared folder.  The current user must be on a
+     *     team to set this policy to {@link SharedLinkPolicy#MEMBERS}. Defaults
+     *     to {@code SharedLinkPolicy.ANYONE} when set to {@code null}.
      *
      * @return this builder
      */

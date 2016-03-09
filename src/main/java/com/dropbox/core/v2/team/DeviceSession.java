@@ -62,8 +62,8 @@ public class DeviceSession {
         this.sessionId = sessionId;
         this.ipAddress = ipAddress;
         this.country = country;
-        this.created = created;
-        this.updated = updated;
+        this.created = com.dropbox.core.util.LangUtil.truncateMillis(created);
+        this.updated = com.dropbox.core.util.LangUtil.truncateMillis(updated);
     }
 
     /**
@@ -193,7 +193,7 @@ public class DeviceSession {
          * @return this builder
          */
         public Builder withCreated(Date created) {
-            this.created = created;
+            this.created = com.dropbox.core.util.LangUtil.truncateMillis(created);
             return this;
         }
 
@@ -205,7 +205,7 @@ public class DeviceSession {
          * @return this builder
          */
         public Builder withUpdated(Date updated) {
-            this.updated = updated;
+            this.updated = com.dropbox.core.util.LangUtil.truncateMillis(updated);
             return this;
         }
 

@@ -151,11 +151,15 @@ public final class UserSelectorArg {
      * @return Instance of {@code UserSelectorArg} with its tag set to {@link
      *     Tag#EXTERNAL_ID}.
      *
-     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     * @throws IllegalArgumentException  if {@code value} is longer than 64 or
+     *     is {@code null}.
      */
     public static UserSelectorArg externalId(String value) {
         if (value == null) {
             throw new IllegalArgumentException("Value is null");
+        }
+        if (value.length() > 64) {
+            throw new IllegalArgumentException("String is longer than 64");
         }
         return new UserSelectorArg(Tag.EXTERNAL_ID, null, value, null);
     }
@@ -195,11 +199,20 @@ public final class UserSelectorArg {
      * @return Instance of {@code UserSelectorArg} with its tag set to {@link
      *     Tag#EMAIL}.
      *
-     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     * @throws IllegalArgumentException  if {@code value} is longer than 255,
+     *     does not match pattern "{@code
+     *     ^['&amp;A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$}",
+     *     or is {@code null}.
      */
     public static UserSelectorArg email(String value) {
         if (value == null) {
             throw new IllegalArgumentException("Value is null");
+        }
+        if (value.length() > 255) {
+            throw new IllegalArgumentException("String is longer than 255");
+        }
+        if (!java.util.regex.Pattern.matches("^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$", value)) {
+            throw new IllegalArgumentException("String does not match pattern");
         }
         return new UserSelectorArg(Tag.EMAIL, null, null, value);
     }

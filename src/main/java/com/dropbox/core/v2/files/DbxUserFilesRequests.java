@@ -118,7 +118,10 @@ public final class DbxUserFilesRequests {
 
     /**
      * Delete the file or folder at a given path. If the path is a folder, all
-     * its contents will be deleted too.
+     * its contents will be deleted too. A successful response indicates that
+     * the file or folder was deleted. The returned metadata will be the
+     * corresponding {@link FileMetadata} or {@link FolderMetadata} for the item
+     * at time of deletion, and not a {@link DeletedMetadata} object.
      *
      *
      * @return Metadata for a file or folder.
@@ -139,7 +142,10 @@ public final class DbxUserFilesRequests {
 
     /**
      * Delete the file or folder at a given path. If the path is a folder, all
-     * its contents will be deleted too.
+     * its contents will be deleted too. A successful response indicates that
+     * the file or folder was deleted. The returned metadata will be the
+     * corresponding {@link FileMetadata} or {@link FolderMetadata} for the item
+     * at time of deletion, and not a {@link DeletedMetadata} object.
      *
      * @param path  Path in the user's Dropbox to delete. Must match pattern
      *     "{@code /.*}" and not be {@code null}.
@@ -650,8 +656,10 @@ public final class DbxUserFilesRequests {
      *
      * @param cursor  A cursor as returned by {@link
      *     DbxUserFilesRequests#listFolder(String)} or {@link
-     *     DbxUserFilesRequests#listFolderContinue(String)}. Must have length of
-     *     at least 1 and not be {@code null}.
+     *     DbxUserFilesRequests#listFolderContinue(String)}. Cursors retrieved
+     *     by setting {@link ListFolderArg#getIncludeMediaInfo} to {@code true}
+     *     are not supported. Must have length of at least 1 and not be {@code
+     *     null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -673,8 +681,10 @@ public final class DbxUserFilesRequests {
      *
      * @param cursor  A cursor as returned by {@link
      *     DbxUserFilesRequests#listFolder(String)} or {@link
-     *     DbxUserFilesRequests#listFolderContinue(String)}. Must have length of
-     *     at least 1 and not be {@code null}.
+     *     DbxUserFilesRequests#listFolderContinue(String)}. Cursors retrieved
+     *     by setting {@link ListFolderArg#getIncludeMediaInfo} to {@code true}
+     *     are not supported. Must have length of at least 1 and not be {@code
+     *     null}.
      * @param timeout  A timeout in seconds. The request will block for at most
      *     this length of time, plus up to 90 seconds of random jitter added to
      *     avoid the thundering herd problem. Care should be taken when using

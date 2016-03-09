@@ -61,8 +61,8 @@ public class ListMountableFoldersBuilder {
     /**
      * Set value for optional field.
      *
-     * @param actions  Folder actions to query. This field is optional. Must not
-     *     contain a {@code null} item.
+     * @param actions  Folder actions to query. Must not contain a {@code null}
+     *     item.
      *
      * @return this builder
      *

@@ -306,8 +306,8 @@ class ThumbnailArg {
         public ThumbnailArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
 
             String path = null;
-            ThumbnailFormat format = null;
-            ThumbnailSize size = null;
+            ThumbnailFormat format = ThumbnailFormat.JPEG;
+            ThumbnailSize size = ThumbnailSize.W64H64;
 
             while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
                 String _field = _p.getCurrentName();

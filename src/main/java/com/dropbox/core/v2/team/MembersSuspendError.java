@@ -50,7 +50,11 @@ public enum MembersSuspendError {
     /**
      * The user is the last admin of the team, so it cannot be suspended.
      */
-    SUSPEND_LAST_ADMIN;
+    SUSPEND_LAST_ADMIN,
+    /**
+     * Team is full. The organization has no available licenses.
+     */
+    TEAM_LICENSE_LIMIT;
 
     // ProGuard work-around since we declare serializers in annotation
     static final Serializer SERIALIZER = new Serializer();
@@ -81,6 +85,9 @@ public enum MembersSuspendError {
                 case SUSPEND_LAST_ADMIN:
                     g.writeString("suspend_last_admin");
                     break;
+                case TEAM_LICENSE_LIMIT:
+                    g.writeString("team_license_limit");
+                    break;
             }
         }
     }
@@ -101,6 +108,7 @@ public enum MembersSuspendError {
             Map<String, MembersSuspendError> values = new HashMap<String, MembersSuspendError>();
             values.put("suspend_inactive_user", MembersSuspendError.SUSPEND_INACTIVE_USER);
             values.put("suspend_last_admin", MembersSuspendError.SUSPEND_LAST_ADMIN);
+            values.put("team_license_limit", MembersSuspendError.TEAM_LICENSE_LIMIT);
             return Collections.unmodifiableMap(values);
         }
     }

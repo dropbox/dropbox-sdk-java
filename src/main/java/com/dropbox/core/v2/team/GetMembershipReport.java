@@ -61,9 +61,8 @@ public class GetMembershipReport extends BaseDfbReport {
      * @param membersJoined  The number of members that joined the team, for
      *     each day. Must not contain a {@code null} item and not be {@code
      *     null}.
-     * @param suspendedMembers  The number of members that joined the team, for
-     *     each day. Must not contain a {@code null} item and not be {@code
-     *     null}.
+     * @param suspendedMembers  The number of suspended team members, for each
+     *     day. Must not contain a {@code null} item and not be {@code null}.
      * @param licenses  The total number of licenses the team has, for each day.
      *     Must not contain a {@code null} item and not be {@code null}.
      *
@@ -152,7 +151,7 @@ public class GetMembershipReport extends BaseDfbReport {
     }
 
     /**
-     * The number of members that joined the team, for each day.
+     * The number of suspended team members, for each day.
      *
      * @return value for this field, never {@code null}.
      */

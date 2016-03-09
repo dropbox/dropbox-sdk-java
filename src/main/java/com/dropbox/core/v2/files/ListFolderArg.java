@@ -340,9 +340,9 @@ class ListFolderArg {
         public ListFolderArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
 
             String path = null;
-            Boolean recursive = null;
-            Boolean includeMediaInfo = null;
-            Boolean includeDeleted = null;
+            boolean recursive = false;
+            boolean includeMediaInfo = false;
+            boolean includeDeleted = false;
 
             while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
                 String _field = _p.getCurrentName();

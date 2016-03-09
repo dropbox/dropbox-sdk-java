@@ -91,11 +91,11 @@ public class FileLinkMetadata extends SharedLinkMetadata {
         if (clientModified == null) {
             throw new IllegalArgumentException("Required value for 'clientModified' is null");
         }
-        this.clientModified = new Date(clientModified.getTime() - (clientModified.getTime() % 1000));
+        this.clientModified = com.dropbox.core.util.LangUtil.truncateMillis(clientModified);
         if (serverModified == null) {
             throw new IllegalArgumentException("Required value for 'serverModified' is null");
         }
-        this.serverModified = new Date(serverModified.getTime() - (serverModified.getTime() % 1000));
+        this.serverModified = com.dropbox.core.util.LangUtil.truncateMillis(serverModified);
         if (rev == null) {
             throw new IllegalArgumentException("Required value for 'rev' is null");
         }
@@ -227,11 +227,11 @@ public class FileLinkMetadata extends SharedLinkMetadata {
             if (clientModified == null) {
                 throw new IllegalArgumentException("Required value for 'clientModified' is null");
             }
-            this.clientModified = new Date(clientModified.getTime() - (clientModified.getTime() % 1000));
+            this.clientModified = com.dropbox.core.util.LangUtil.truncateMillis(clientModified);
             if (serverModified == null) {
                 throw new IllegalArgumentException("Required value for 'serverModified' is null");
             }
-            this.serverModified = new Date(serverModified.getTime() - (serverModified.getTime() % 1000));
+            this.serverModified = com.dropbox.core.util.LangUtil.truncateMillis(serverModified);
             if (rev == null) {
                 throw new IllegalArgumentException("Required value for 'rev' is null");
             }

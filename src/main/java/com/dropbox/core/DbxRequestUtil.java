@@ -93,15 +93,29 @@ public final class DbxRequestUtil {
     }
 
     public static List<HttpRequestor.Header> addAuthHeader(/*@Nullable*/List<HttpRequestor.Header> headers, String accessToken) {
+        if (accessToken == null) throw new NullPointerException("accessToken");
         if (headers == null) headers = new ArrayList<HttpRequestor.Header>();
+
         headers.add(new HttpRequestor.Header("Authorization", "Bearer " + accessToken));
         return headers;
     }
 
     public static List<HttpRequestor.Header> addSelectUserHeader(/*@Nullable*/List<HttpRequestor.Header> headers, String memberId) {
-        if (memberId == null) throw new IllegalArgumentException("'memberId' is null");
+        if (memberId == null) throw new NullPointerException("memberId");
         if (headers == null) headers = new ArrayList<HttpRequestor.Header>();
+
         headers.add(new HttpRequestor.Header("Dropbox-API-Select-User", memberId));
+        return headers;
+    }
+
+    public static List<HttpRequestor.Header> addBasicAuthHeader(/*@Nullable*/List<HttpRequestor.Header> headers, String username, String password) {
+        if (username == null) throw new NullPointerException("username");
+        if (password == null) throw new NullPointerException("password");
+        if (headers == null) headers = new ArrayList<HttpRequestor.Header>();
+
+        String credentials = username + ":" + password;
+        String base64Credentials = StringUtil.base64Encode(StringUtil.stringToUtf8(credentials));
+        headers.add(new HttpRequestor.Header("Authorization", "Basic " + base64Credentials));
         return headers;
     }
 
@@ -332,7 +346,18 @@ public final class DbxRequestUtil {
             case 500:
                 return new ServerException(requestId, message);
             case 503:
-                return new RetryException(requestId, message);
+                // API v1 may include Retry-After in 503 responses, v2 does not
+                String retryAfter = getFirstHeaderMaybe(response, "Retry-After");
+                try {
+                    if (retryAfter != null && !retryAfter.trim().isEmpty()) {
+                        int backoffSecs = Integer.parseInt(retryAfter);
+                        return new RetryException(requestId, message, backoffSecs, TimeUnit.SECONDS);
+                    } else {
+                        return new RetryException(requestId, message);
+                    }
+                } catch (NumberFormatException ex) {
+                    return new BadResponseException(requestId, "Invalid value for HTTP header: \"Retry-After\"");
+                }
             default:
                 return new BadResponseCodeException(
                     requestId,

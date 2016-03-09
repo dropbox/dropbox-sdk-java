@@ -460,8 +460,8 @@ public class MemberAddArg {
             String memberGivenName = null;
             String memberSurname = null;
             String memberExternalId = null;
-            Boolean sendWelcomeEmail = null;
-            AdminTier role = null;
+            boolean sendWelcomeEmail = true;
+            AdminTier role = AdminTier.MEMBER_ONLY;
 
             while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
                 String _field = _p.getCurrentName();

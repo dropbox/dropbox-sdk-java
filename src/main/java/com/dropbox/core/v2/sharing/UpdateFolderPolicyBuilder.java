@@ -39,8 +39,8 @@ public class UpdateFolderPolicyBuilder {
     /**
      * Set value for optional field.
      *
-     * @param memberPolicy  Who can be a member of this shared folder. Only set
-     *     this if the current user is on a team.
+     * @param memberPolicy  Who can be a member of this shared folder. Only
+     *     applicable if the current user is on a team.
      *
      * @return this builder
      */
@@ -66,7 +66,8 @@ public class UpdateFolderPolicyBuilder {
      * Set value for optional field.
      *
      * @param sharedLinkPolicy  The policy to apply to shared links created for
-     *     content inside this shared folder.
+     *     content inside this shared folder. The current user must be on a team
+     *     to set this policy to {@link SharedLinkPolicy#MEMBERS}.
      *
      * @return this builder
      */

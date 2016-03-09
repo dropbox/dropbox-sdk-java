@@ -188,8 +188,8 @@ public final class MemberSelector {
      *
      * @throws IllegalArgumentException  if {@code value} is longer than 255,
      *     does not match pattern "{@code
-     *     ^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$}", or
-     *     is {@code null}.
+     *     ^['&amp;A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$}",
+     *     or is {@code null}.
      */
     public static MemberSelector email(String value) {
         if (value == null) {

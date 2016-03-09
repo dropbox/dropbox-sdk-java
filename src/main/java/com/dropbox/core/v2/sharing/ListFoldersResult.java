@@ -27,9 +27,10 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Result for {@link DbxUserSharingRequests#listFolders()}. Unmounted shared
- * folders can be identified by the absence of {@link
- * SharedFolderMetadata#getPathLower}.
+ * Result for {@link DbxUserSharingRequests#listFolders()} or {@link
+ * DbxUserSharingRequests#listMountableFolders()}, depending on which endpoint
+ * was requested. Unmounted shared folders can be identified by the absence of
+ * {@link SharedFolderMetadata#getPathLower}.
  */
 @JsonSerialize(using=ListFoldersResult.Serializer.class)
 @JsonDeserialize(using=ListFoldersResult.Deserializer.class)
@@ -44,16 +45,19 @@ public class ListFoldersResult {
     protected final String cursor;
 
     /**
-     * Result for {@link DbxUserSharingRequests#listFolders()}. Unmounted shared
-     * folders can be identified by the absence of {@link
-     * SharedFolderMetadata#getPathLower}.
+     * Result for {@link DbxUserSharingRequests#listFolders()} or {@link
+     * DbxUserSharingRequests#listMountableFolders()}, depending on which
+     * endpoint was requested. Unmounted shared folders can be identified by the
+     * absence of {@link SharedFolderMetadata#getPathLower}.
      *
      * @param entries  List of all shared folders the authenticated user has
      *     access to. Must not contain a {@code null} item and not be {@code
      *     null}.
      * @param cursor  Present if there are additional shared folders that have
-     *     not been returned yet. Pass the cursor into {@link
-     *     DbxUserSharingRequests#listFoldersContinue(String)} to list
+     *     not been returned yet. Pass the cursor into the corresponding
+     *     continue endpoint (either {@link
+     *     DbxUserSharingRequests#listFoldersContinue(String)} or {@link
+     *     DbxUserSharingRequests#listMountableFoldersContinue(String)}) to list
      *     additional folders.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
@@ -73,9 +77,10 @@ public class ListFoldersResult {
     }
 
     /**
-     * Result for {@link DbxUserSharingRequests#listFolders()}. Unmounted shared
-     * folders can be identified by the absence of {@link
-     * SharedFolderMetadata#getPathLower}.
+     * Result for {@link DbxUserSharingRequests#listFolders()} or {@link
+     * DbxUserSharingRequests#listMountableFolders()}, depending on which
+     * endpoint was requested. Unmounted shared folders can be identified by the
+     * absence of {@link SharedFolderMetadata#getPathLower}.
      *
      * <p> The default values for unset fields will be used. </p>
      *
@@ -101,9 +106,10 @@ public class ListFoldersResult {
 
     /**
      * Present if there are additional shared folders that have not been
-     * returned yet. Pass the cursor into {@link
-     * DbxUserSharingRequests#listFoldersContinue(String)} to list additional
-     * folders.
+     * returned yet. Pass the cursor into the corresponding continue endpoint
+     * (either {@link DbxUserSharingRequests#listFoldersContinue(String)} or
+     * {@link DbxUserSharingRequests#listMountableFoldersContinue(String)}) to
+     * list additional folders.
      *
      * @return value for this field, or {@code null} if not present.
      */

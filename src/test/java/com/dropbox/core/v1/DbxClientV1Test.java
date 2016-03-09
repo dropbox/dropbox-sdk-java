@@ -21,6 +21,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -65,20 +66,28 @@ public class DbxClientV1Test {
         DbxClientV1 client = new DbxClientV1(config, "fakeAccessToken");
         String json = "{\"reset\":true,\"entries\":[],\"cursor\":\"fakeCursor\",\"has_more\":true}";
 
+
         // 503 twice, then return result
         HttpRequestor.Uploader mockUploader = mockUploader();
         when(mockUploader.finish())
-            .thenReturn(createEmptyResponse(503))
-            .thenReturn(createEmptyResponse(503))
+            .thenReturn(createEmptyResponse(503))   // no backoff
+            .thenReturn(createRateLimitResponse(1)) // backoff 1 sec
+            .thenReturn(createRateLimitResponse(2)) // backoff 2 sec
             .thenReturn(createSuccessResponse(json));
 
         when(mockRequestor.startPost(anyString(), anyHeaders()))
             .thenReturn(mockUploader);
 
+        long start = System.currentTimeMillis();
         DbxDelta<DbxEntry> actual = client.getDelta(null);
+        long end = System.currentTimeMillis();
 
-        // should have only been called 3 times: initial call + 2 retries
-        verify(mockRequestor, times(3)).startPost(anyString(), anyHeaders());
+        // no way easy way to properly test this, but request should
+        // have taken AT LEAST 3 seconds due to backoff.
+        assertTrue((end - start) >= 3000L, "duration: " + (end - start) + " millis");
+
+        // should have been called 4 times: initial call + 3 retries
+        verify(mockRequestor, times(4)).startPost(anyString(), anyHeaders());
 
         assertEquals(actual.reset, true);
         assertEquals(actual.cursor, "fakeCursor");
@@ -178,14 +187,20 @@ public class DbxClientV1Test {
         );
     }
 
-    private static HttpRequestor.Response createDownloaderResponse(byte [] body, String header, String json) {
-        Map<String, List<String>> headers = new TreeMap<String, List<String>>(String.CASE_INSENSITIVE_ORDER);
-        headers.put(header, Collections.<String>singletonList(json));
+    private static HttpRequestor.Response createRateLimitResponse(long backoffSeconds) {
+        byte [] body = new byte[0];
+        return new HttpRequestor.Response(
+            503, // API v1 uses 503 for rate limits
+            new ByteArrayInputStream(body),
+            headers("Retry-After", Long.toString(backoffSeconds))
+        );
+    }
 
+    private static HttpRequestor.Response createDownloaderResponse(byte [] body, String header, String json) {
         return new HttpRequestor.Response(
             200,
             new ByteArrayInputStream(body),
-            headers
+            headers(header, json)
         );
     }
 
@@ -208,6 +223,27 @@ public class DbxClientV1Test {
                 }
             });
         return uploader;
+    }
+
+    private static Map<String, List<String>> headers(String name, String value, String ... rest) {
+        assertTrue(rest.length % 2 == 0);
+
+        Map<String, List<String>> headers = new TreeMap<String, List<String>>(String.CASE_INSENSITIVE_ORDER);
+        List<String> values = new ArrayList<String>();
+        headers.put(name, values);
+        values.add(value);
+        for (int i = 0; i < rest.length; i += 2) {
+            name = rest[i];
+            value = rest[i+1];
+            values = headers.get(name);
+            if (values == null) {
+                values = new ArrayList<String>();
+                headers.put(name, values);
+            }
+            values.add(value);
+        }
+
+        return headers;
     }
 
     private static Iterable<HttpRequestor.Header> anyHeaders() {

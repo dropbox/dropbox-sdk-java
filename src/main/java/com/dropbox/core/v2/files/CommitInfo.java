@@ -78,7 +78,7 @@ public class CommitInfo {
         }
         this.mode = mode;
         this.autorename = autorename;
-        this.clientModified = clientModified;
+        this.clientModified = com.dropbox.core.util.LangUtil.truncateMillis(clientModified);
         this.mute = mute;
     }
 
@@ -248,7 +248,7 @@ public class CommitInfo {
          * @return this builder
          */
         public Builder withClientModified(Date clientModified) {
-            this.clientModified = clientModified;
+            this.clientModified = com.dropbox.core.util.LangUtil.truncateMillis(clientModified);
             return this;
         }
 
@@ -393,10 +393,10 @@ public class CommitInfo {
         public CommitInfo deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
 
             String path = null;
-            WriteMode mode = null;
-            Boolean autorename = null;
+            WriteMode mode = WriteMode.ADD;
+            boolean autorename = false;
             Date clientModified = null;
-            Boolean mute = null;
+            boolean mute = false;
 
             while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
                 String _field = _p.getCurrentName();

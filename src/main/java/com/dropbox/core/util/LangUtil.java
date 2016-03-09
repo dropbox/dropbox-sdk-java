@@ -1,6 +1,9 @@
 package com.dropbox.core.util;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 /*>>> import checkers.nullness.quals.Nullable; */
 /*>>> import checkers.nullness.quals.NonNull; */
@@ -49,5 +52,27 @@ public class LangUtil
     {
         if (o == null) return 0;
         return o.hashCode() + 1;
+    }
+
+    public static Date truncateMillis(/*@Nullable*/Date date) {
+        if (date != null) {
+            long time = date.getTime();
+            return new Date(time - (time % 1000L));
+        } else {
+            return date;
+        }
+    }
+
+    public static List<Date> truncateMillis(/*@Nullable*/List<Date> dates) {
+        if (dates != null) {
+            List<Date> truncated = new ArrayList<Date>(dates.size());
+            for (Date date : dates) {
+                long time = date.getTime();
+                truncated.add(new Date(time - (time % 1000L)));
+            }
+            return truncated;
+        } else {
+            return dates;
+        }
     }
 }

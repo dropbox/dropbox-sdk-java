@@ -184,6 +184,9 @@ public final class UsersSelectorArg {
             if (x == null) {
                 throw new IllegalArgumentException("An item in list is null");
             }
+            if (x.length() > 64) {
+                throw new IllegalArgumentException("Stringan item in list is longer than 64");
+            }
         }
         return new UsersSelectorArg(Tag.EXTERNAL_IDS, null, value, null);
     }
@@ -238,6 +241,12 @@ public final class UsersSelectorArg {
         for (String x : value) {
             if (x == null) {
                 throw new IllegalArgumentException("An item in list is null");
+            }
+            if (x.length() > 255) {
+                throw new IllegalArgumentException("Stringan item in list is longer than 255");
+            }
+            if (!java.util.regex.Pattern.matches("^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$", x)) {
+                throw new IllegalArgumentException("Stringan item in list does not match pattern");
             }
         }
         return new UsersSelectorArg(Tag.EMAILS, null, null, value);

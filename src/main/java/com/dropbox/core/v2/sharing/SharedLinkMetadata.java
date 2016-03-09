@@ -92,7 +92,7 @@ public class SharedLinkMetadata {
             throw new IllegalArgumentException("Required value for 'name' is null");
         }
         this.name = name;
-        this.expires = expires;
+        this.expires = com.dropbox.core.util.LangUtil.truncateMillis(expires);
         this.pathLower = pathLower;
         if (linkPermissions == null) {
             throw new IllegalArgumentException("Required value for 'linkPermissions' is null");
@@ -279,7 +279,7 @@ public class SharedLinkMetadata {
          * @return this builder
          */
         public Builder withExpires(Date expires) {
-            this.expires = expires;
+            this.expires = com.dropbox.core.util.LangUtil.truncateMillis(expires);
             return this;
         }
 

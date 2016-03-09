@@ -38,6 +38,7 @@ public class FolderPolicy {
     static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final MemberPolicy memberPolicy;
+    protected final MemberPolicy resolvedMemberPolicy;
     protected final AclUpdatePolicy aclUpdatePolicy;
     protected final SharedLinkPolicy sharedLinkPolicy;
 
@@ -45,18 +46,29 @@ public class FolderPolicy {
      * A set of policies governing membership and privileges for a shared
      * folder.
      *
+     * <p> Use {@link newBuilder} to create instances of this class without
+     * specifying values for all optional fields. </p>
+     *
      * @param aclUpdatePolicy  Who can add and remove members from this shared
      *     folder. Must not be {@code null}.
      * @param sharedLinkPolicy  Who links can be shared with. Must not be {@code
      *     null}.
-     * @param memberPolicy  Who can be a member of this shared folder. Only set
-     *     if the user is a member of a team.
+     * @param memberPolicy  Who can be a member of this shared folder, as set on
+     *     the folder itself. The effective policy may differ from this value if
+     *     the team-wide policy is more restrictive. Present only if the folder
+     *     is owned by a team.
+     * @param resolvedMemberPolicy  Who can be a member of this shared folder,
+     *     taking into account both the folder and the team-wide policy. This
+     *     value may differ from that of member_policy if the team-wide policy
+     *     is more restrictive than the folder policy. Present only if the
+     *     folder is owned by a team.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FolderPolicy(AclUpdatePolicy aclUpdatePolicy, SharedLinkPolicy sharedLinkPolicy, MemberPolicy memberPolicy) {
+    public FolderPolicy(AclUpdatePolicy aclUpdatePolicy, SharedLinkPolicy sharedLinkPolicy, MemberPolicy memberPolicy, MemberPolicy resolvedMemberPolicy) {
         this.memberPolicy = memberPolicy;
+        this.resolvedMemberPolicy = resolvedMemberPolicy;
         if (aclUpdatePolicy == null) {
             throw new IllegalArgumentException("Required value for 'aclUpdatePolicy' is null");
         }
@@ -82,17 +94,30 @@ public class FolderPolicy {
      *     preconditions.
      */
     public FolderPolicy(AclUpdatePolicy aclUpdatePolicy, SharedLinkPolicy sharedLinkPolicy) {
-        this(aclUpdatePolicy, sharedLinkPolicy, null);
+        this(aclUpdatePolicy, sharedLinkPolicy, null, null);
     }
 
     /**
-     * Who can be a member of this shared folder. Only set if the user is a
-     * member of a team.
+     * Who can be a member of this shared folder, as set on the folder itself.
+     * The effective policy may differ from this value if the team-wide policy
+     * is more restrictive. Present only if the folder is owned by a team.
      *
      * @return value for this field, or {@code null} if not present.
      */
     public MemberPolicy getMemberPolicy() {
         return memberPolicy;
+    }
+
+    /**
+     * Who can be a member of this shared folder, taking into account both the
+     * folder and the team-wide policy. This value may differ from that of
+     * member_policy if the team-wide policy is more restrictive than the folder
+     * policy. Present only if the folder is owned by a team.
+     *
+     * @return value for this field, or {@code null} if not present.
+     */
+    public MemberPolicy getResolvedMemberPolicy() {
+        return resolvedMemberPolicy;
     }
 
     /**
@@ -113,10 +138,93 @@ public class FolderPolicy {
         return sharedLinkPolicy;
     }
 
+    /**
+     * Returns a new builder for creating an instance of this class.
+     *
+     * @param aclUpdatePolicy  Who can add and remove members from this shared
+     *     folder. Must not be {@code null}.
+     * @param sharedLinkPolicy  Who links can be shared with. Must not be {@code
+     *     null}.
+     *
+     * @return builder for this class.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public static Builder newBuilder(AclUpdatePolicy aclUpdatePolicy, SharedLinkPolicy sharedLinkPolicy) {
+        return new Builder(aclUpdatePolicy, sharedLinkPolicy);
+    }
+
+    /**
+     * Builder for {@link FolderPolicy}.
+     */
+    public static class Builder {
+        protected final AclUpdatePolicy aclUpdatePolicy;
+        protected final SharedLinkPolicy sharedLinkPolicy;
+
+        protected MemberPolicy memberPolicy;
+        protected MemberPolicy resolvedMemberPolicy;
+
+        protected Builder(AclUpdatePolicy aclUpdatePolicy, SharedLinkPolicy sharedLinkPolicy) {
+            if (aclUpdatePolicy == null) {
+                throw new IllegalArgumentException("Required value for 'aclUpdatePolicy' is null");
+            }
+            this.aclUpdatePolicy = aclUpdatePolicy;
+            if (sharedLinkPolicy == null) {
+                throw new IllegalArgumentException("Required value for 'sharedLinkPolicy' is null");
+            }
+            this.sharedLinkPolicy = sharedLinkPolicy;
+            this.memberPolicy = null;
+            this.resolvedMemberPolicy = null;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param memberPolicy  Who can be a member of this shared folder, as
+         *     set on the folder itself. The effective policy may differ from
+         *     this value if the team-wide policy is more restrictive. Present
+         *     only if the folder is owned by a team.
+         *
+         * @return this builder
+         */
+        public Builder withMemberPolicy(MemberPolicy memberPolicy) {
+            this.memberPolicy = memberPolicy;
+            return this;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param resolvedMemberPolicy  Who can be a member of this shared
+         *     folder, taking into account both the folder and the team-wide
+         *     policy. This value may differ from that of member_policy if the
+         *     team-wide policy is more restrictive than the folder policy.
+         *     Present only if the folder is owned by a team.
+         *
+         * @return this builder
+         */
+        public Builder withResolvedMemberPolicy(MemberPolicy resolvedMemberPolicy) {
+            this.resolvedMemberPolicy = resolvedMemberPolicy;
+            return this;
+        }
+
+        /**
+         * Builds an instance of {@link FolderPolicy} configured with this
+         * builder's values
+         *
+         * @return new instance of {@link FolderPolicy}
+         */
+        public FolderPolicy build() {
+            return new FolderPolicy(aclUpdatePolicy, sharedLinkPolicy, memberPolicy, resolvedMemberPolicy);
+        }
+    }
+
     @Override
     public int hashCode() {
         int hash = java.util.Arrays.hashCode(new Object [] {
             memberPolicy,
+            resolvedMemberPolicy,
             aclUpdatePolicy,
             sharedLinkPolicy
         });
@@ -134,6 +242,7 @@ public class FolderPolicy {
             return ((this.aclUpdatePolicy == other.aclUpdatePolicy) || (this.aclUpdatePolicy.equals(other.aclUpdatePolicy)))
                 && ((this.sharedLinkPolicy == other.sharedLinkPolicy) || (this.sharedLinkPolicy.equals(other.sharedLinkPolicy)))
                 && ((this.memberPolicy == other.memberPolicy) || (this.memberPolicy != null && this.memberPolicy.equals(other.memberPolicy)))
+                && ((this.resolvedMemberPolicy == other.resolvedMemberPolicy) || (this.resolvedMemberPolicy != null && this.resolvedMemberPolicy.equals(other.resolvedMemberPolicy)))
                 ;
         }
         else {
@@ -190,6 +299,9 @@ public class FolderPolicy {
             if (value.memberPolicy != null) {
                 g.writeObjectField("member_policy", value.memberPolicy);
             }
+            if (value.resolvedMemberPolicy != null) {
+                g.writeObjectField("resolved_member_policy", value.resolvedMemberPolicy);
+            }
         }
     }
 
@@ -215,6 +327,7 @@ public class FolderPolicy {
             AclUpdatePolicy aclUpdatePolicy = null;
             SharedLinkPolicy sharedLinkPolicy = null;
             MemberPolicy memberPolicy = null;
+            MemberPolicy resolvedMemberPolicy = null;
 
             while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
                 String _field = _p.getCurrentName();
@@ -231,6 +344,10 @@ public class FolderPolicy {
                     memberPolicy = _p.readValueAs(MemberPolicy.class);
                     _p.nextToken();
                 }
+                else if ("resolved_member_policy".equals(_field)) {
+                    resolvedMemberPolicy = _p.readValueAs(MemberPolicy.class);
+                    _p.nextToken();
+                }
                 else {
                     skipValue(_p);
                 }
@@ -243,7 +360,7 @@ public class FolderPolicy {
                 throw new JsonParseException(_p, "Required field \"shared_link_policy\" is missing.");
             }
 
-            return new FolderPolicy(aclUpdatePolicy, sharedLinkPolicy, memberPolicy);
+            return new FolderPolicy(aclUpdatePolicy, sharedLinkPolicy, memberPolicy, resolvedMemberPolicy);
         }
     }
 }

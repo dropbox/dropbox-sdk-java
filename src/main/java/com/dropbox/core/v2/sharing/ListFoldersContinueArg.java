@@ -38,10 +38,8 @@ class ListFoldersContinueArg {
 
     /**
      *
-     * @param cursor  The cursor returned by your last call to {@link
-     *     DbxUserSharingRequests#listFolders()} or {@link
-     *     DbxUserSharingRequests#listFoldersContinue(String)}. Must not be
-     *     {@code null}.
+     * @param cursor  The cursor returned by the previous API call specified in
+     *     the endpoint description. Must not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -54,9 +52,8 @@ class ListFoldersContinueArg {
     }
 
     /**
-     * The cursor returned by your last call to {@link
-     * DbxUserSharingRequests#listFolders()} or {@link
-     * DbxUserSharingRequests#listFoldersContinue(String)}.
+     * The cursor returned by the previous API call specified in the endpoint
+     * description.
      *
      * @return value for this field, never {@code null}.
      */

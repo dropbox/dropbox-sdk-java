@@ -69,6 +69,12 @@ public final class MountFolderError {
          */
         NO_PERMISSION,
         /**
+         * The shared folder is not mountable. One example where this can occur
+         * is when the shared folder belongs within a team folder in the user's
+         * Dropbox.
+         */
+        NOT_MOUNTABLE,
+        /**
          * Catch-all used for unknown tag values returned by the Dropbox
          * servers.
          *
@@ -96,6 +102,12 @@ public final class MountFolderError {
      * The current user does not have permission to perform this action.
      */
     public static final MountFolderError NO_PERMISSION = new MountFolderError(Tag.NO_PERMISSION, null);
+    /**
+     * The shared folder is not mountable. One example where this can occur is
+     * when the shared folder belongs within a team folder in the user's
+     * Dropbox.
+     */
+    public static final MountFolderError NOT_MOUNTABLE = new MountFolderError(Tag.NOT_MOUNTABLE, null);
     /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *
@@ -225,6 +237,17 @@ public final class MountFolderError {
     }
 
     /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#NOT_MOUNTABLE}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#NOT_MOUNTABLE}, {@code false} otherwise.
+     */
+    public boolean isNotMountable() {
+        return this.tag == Tag.NOT_MOUNTABLE;
+    }
+
+    /**
      * Returns {@code true} if this instance has the tag {@link Tag#OTHER},
      * {@code false} otherwise.
      *
@@ -264,6 +287,8 @@ public final class MountFolderError {
                 case ALREADY_MOUNTED:
                     return true;
                 case NO_PERMISSION:
+                    return true;
+                case NOT_MOUNTABLE:
                     return true;
                 case OTHER:
                     return true;
@@ -330,6 +355,9 @@ public final class MountFolderError {
                 case NO_PERMISSION:
                     g.writeString("no_permission");
                     break;
+                case NOT_MOUNTABLE:
+                    g.writeString("not_mountable");
+                    break;
                 case OTHER:
                     g.writeString("other");
                     break;
@@ -366,6 +394,9 @@ public final class MountFolderError {
                 case NO_PERMISSION: {
                     return MountFolderError.NO_PERMISSION;
                 }
+                case NOT_MOUNTABLE: {
+                    return MountFolderError.NOT_MOUNTABLE;
+                }
                 case OTHER: {
                     return MountFolderError.OTHER;
                 }
@@ -381,6 +412,7 @@ public final class MountFolderError {
             values.put("insufficient_quota", MountFolderError.Tag.INSUFFICIENT_QUOTA);
             values.put("already_mounted", MountFolderError.Tag.ALREADY_MOUNTED);
             values.put("no_permission", MountFolderError.Tag.NO_PERMISSION);
+            values.put("not_mountable", MountFolderError.Tag.NOT_MOUNTABLE);
             values.put("other", MountFolderError.Tag.OTHER);
             return Collections.unmodifiableMap(values);
         }

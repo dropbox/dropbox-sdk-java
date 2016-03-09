@@ -47,11 +47,13 @@ class ShareFolderArg {
      * @param path  The path to the folder to share. If it does not exist, then
      *     a new one is created. Must match pattern "{@code /.*}" and not be
      *     {@code null}.
-     * @param memberPolicy  Who can be a member of this shared folder.
+     * @param memberPolicy  Who can be a member of this shared folder. Only
+     *     applicable if the current user is on a team.
      * @param aclUpdatePolicy  Who can add and remove members of this shared
      *     folder.
      * @param sharedLinkPolicy  The policy to apply to shared links created for
-     *     content inside this shared folder.
+     *     content inside this shared folder.  The current user must be on a
+     *     team to set this policy to {@link SharedLinkPolicy#MEMBERS}.
      * @param forceAsync  Whether to force the share to happen asynchronously.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
@@ -105,7 +107,8 @@ class ShareFolderArg {
     }
 
     /**
-     * Who can be a member of this shared folder.
+     * Who can be a member of this shared folder. Only applicable if the current
+     * user is on a team.
      *
      * @return value for this field, or {@code null} if not present. Defaults to
      *     MemberPolicy.ANYONE.
@@ -126,7 +129,8 @@ class ShareFolderArg {
 
     /**
      * The policy to apply to shared links created for content inside this
-     * shared folder.
+     * shared folder.  The current user must be on a team to set this policy to
+     * {@link SharedLinkPolicy#MEMBERS}.
      *
      * @return value for this field, or {@code null} if not present. Defaults to
      *     SharedLinkPolicy.ANYONE.
@@ -192,8 +196,9 @@ class ShareFolderArg {
          * <p> If left unset or set to {@code null}, defaults to {@code
          * MemberPolicy.ANYONE}. </p>
          *
-         * @param memberPolicy  Who can be a member of this shared folder.
-         *     Defaults to {@code MemberPolicy.ANYONE} when set to {@code null}.
+         * @param memberPolicy  Who can be a member of this shared folder. Only
+         *     applicable if the current user is on a team. Defaults to {@code
+         *     MemberPolicy.ANYONE} when set to {@code null}.
          *
          * @return this builder
          */
@@ -236,8 +241,10 @@ class ShareFolderArg {
          * SharedLinkPolicy.ANYONE}. </p>
          *
          * @param sharedLinkPolicy  The policy to apply to shared links created
-         *     for content inside this shared folder. Defaults to {@code
-         *     SharedLinkPolicy.ANYONE} when set to {@code null}.
+         *     for content inside this shared folder.  The current user must be
+         *     on a team to set this policy to {@link SharedLinkPolicy#MEMBERS}.
+         *     Defaults to {@code SharedLinkPolicy.ANYONE} when set to {@code
+         *     null}.
          *
          * @return this builder
          */
@@ -388,10 +395,10 @@ class ShareFolderArg {
         public ShareFolderArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
 
             String path = null;
-            MemberPolicy memberPolicy = null;
-            AclUpdatePolicy aclUpdatePolicy = null;
-            SharedLinkPolicy sharedLinkPolicy = null;
-            Boolean forceAsync = null;
+            MemberPolicy memberPolicy = MemberPolicy.ANYONE;
+            AclUpdatePolicy aclUpdatePolicy = AclUpdatePolicy.OWNER;
+            SharedLinkPolicy sharedLinkPolicy = SharedLinkPolicy.ANYONE;
+            boolean forceAsync = false;
 
             while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
                 String _field = _p.getCurrentName();

@@ -44,8 +44,8 @@ class ListFoldersArgs {
      *
      * @param limit  The maximum number of results to return per request. Must
      *     be greater than or equal to 1 and be less than or equal to 1000.
-     * @param actions  Folder actions to query. This field is optional. Must not
-     *     contain a {@code null} item.
+     * @param actions  Folder actions to query. Must not contain a {@code null}
+     *     item.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -86,7 +86,7 @@ class ListFoldersArgs {
     }
 
     /**
-     * Folder actions to query. This field is optional.
+     * Folder actions to query.
      *
      * @return value for this field, or {@code null} if not present.
      */
@@ -150,8 +150,8 @@ class ListFoldersArgs {
         /**
          * Set value for optional field.
          *
-         * @param actions  Folder actions to query. This field is optional. Must
-         *     not contain a {@code null} item.
+         * @param actions  Folder actions to query. Must not contain a {@code
+         *     null} item.
          *
          * @return this builder
          *
@@ -277,7 +277,7 @@ class ListFoldersArgs {
         @Override
         public ListFoldersArgs deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
 
-            Long limit = null;
+            long limit = 1000L;
             List<FolderAction> actions = null;
 
             while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {

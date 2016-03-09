@@ -14,13 +14,18 @@ If you're using Maven, then edit your project's "pom.xml" and add this to the `<
 <dependency>
     <groupId>com.dropbox.core</groupId>
     <artifactId>dropbox-core-sdk</artifactId>
-    <version>2.0.0</version>
+    <version>2.0.1</version>
 </dependency>
 ```
 
-If you aren't using Maven, here are the JARs you need:
-- [Dropbox Core SDK 2.0.0](https://oss.sonatype.org/content/repositories/releases/com/dropbox/core/dropbox-core-sdk/2.0.0/dropbox-core-sdk-2.0.0.jar)
-- [Jackson Core 2.6.1](https://oss.sonatype.org/content/repositories/releases/com/fasterxml/jackson/core/jackson-core/2.6.1/jackson-core-2.6.1.jar) (JSON parser)
+If you are using Gradle, then edit your project's "build.gradle" and add this to the `dependencies` section:
+
+```groovy
+dependencies {
+    // ...
+    compile 'com.dropbox.core:dropbox-core-sdk:2.0.1'
+}
+```
 
 ## Get a Dropbox API key
 
@@ -72,7 +77,7 @@ This produces a file named "test.auth" that has the access token.  This file can
 
 ### account-info
 
-A trivial example that calls the /account/info API endpoint.
+A simple example that fetches and displays information about the account associated with the access token.
 
 ```
 cd examples
@@ -81,9 +86,24 @@ cd examples
 
 (You must first generate "test.auth" using the "authorize" example above.)
 
+### longpoll
+
+An example of how to watch for changes in a Dropbox directory.
+
+```
+cd examples
+./run longpoll test.auth "/path/to/watch"
+```
+
+(You must first generate "test.auth" using the "authorize" example above.)
+
+### tutorial
+
+The example from our [online tutorial](https://www.dropbox.com/developers/documentation/java#tutorial). Unlike the other examples, this example is not meant to be run without modification.
+
 ### upload-file
 
-Uploads a file to Dropbox.
+Uploads a file to Dropbox. The example includes regular and chunked file uploads.
 
 ```
 cd examples
@@ -109,17 +129,6 @@ cd examples
 2. `./run-integration-tests <path-to-test.auth>`
 
 Run `./run-integration-tests` with no arguments to see how to run individual tests.
-
-## Running the benchmarks
-
-1. `mvn test-compile`
-2. `./run-bench <fully-qualified-benchmark-class>`
-
-For example: `./run-bench com.dropbox.core.json.JsonDateReaderBench.ParseDropboxDate`
-
-## Running the Checker Framework static analysis
-
-`mvn checker:check`
 
 ## Loading the project in IntelliJ 14
 

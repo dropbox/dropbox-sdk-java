@@ -73,7 +73,7 @@ public class ApiApp {
         this.appName = appName;
         this.publisher = publisher;
         this.publisherUrl = publisherUrl;
-        this.linked = linked;
+        this.linked = com.dropbox.core.util.LangUtil.truncateMillis(linked);
         this.isAppFolder = isAppFolder;
     }
 
@@ -224,7 +224,7 @@ public class ApiApp {
          * @return this builder
          */
         public Builder withLinked(Date linked) {
-            this.linked = linked;
+            this.linked = com.dropbox.core.util.LangUtil.truncateMillis(linked);
             return this;
         }
 

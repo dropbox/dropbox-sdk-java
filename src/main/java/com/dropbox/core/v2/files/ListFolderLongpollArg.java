@@ -41,8 +41,10 @@ class ListFolderLongpollArg {
      *
      * @param cursor  A cursor as returned by {@link
      *     DbxUserFilesRequests#listFolder(String)} or {@link
-     *     DbxUserFilesRequests#listFolderContinue(String)}. Must have length of
-     *     at least 1 and not be {@code null}.
+     *     DbxUserFilesRequests#listFolderContinue(String)}. Cursors retrieved
+     *     by setting {@link ListFolderArg#getIncludeMediaInfo} to {@code true}
+     *     are not supported. Must have length of at least 1 and not be {@code
+     *     null}.
      * @param timeout  A timeout in seconds. The request will block for at most
      *     this length of time, plus up to 90 seconds of random jitter added to
      *     avoid the thundering herd problem. Care should be taken when using
@@ -75,8 +77,10 @@ class ListFolderLongpollArg {
      *
      * @param cursor  A cursor as returned by {@link
      *     DbxUserFilesRequests#listFolder(String)} or {@link
-     *     DbxUserFilesRequests#listFolderContinue(String)}. Must have length of
-     *     at least 1 and not be {@code null}.
+     *     DbxUserFilesRequests#listFolderContinue(String)}. Cursors retrieved
+     *     by setting {@link ListFolderArg#getIncludeMediaInfo} to {@code true}
+     *     are not supported. Must have length of at least 1 and not be {@code
+     *     null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -87,7 +91,9 @@ class ListFolderLongpollArg {
 
     /**
      * A cursor as returned by {@link DbxUserFilesRequests#listFolder(String)}
-     * or {@link DbxUserFilesRequests#listFolderContinue(String)}
+     * or {@link DbxUserFilesRequests#listFolderContinue(String)}. Cursors
+     * retrieved by setting {@link ListFolderArg#getIncludeMediaInfo} to {@code
+     * true} are not supported.
      *
      * @return value for this field, never {@code null}.
      */
@@ -203,7 +209,7 @@ class ListFolderLongpollArg {
         public ListFolderLongpollArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
 
             String cursor = null;
-            Long timeout = null;
+            long timeout = 30L;
 
             while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
                 String _field = _p.getCurrentName();

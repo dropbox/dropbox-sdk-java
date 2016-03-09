@@ -397,9 +397,9 @@ class SearchArg {
 
             String path = null;
             String query = null;
-            Long start = null;
-            Long maxResults = null;
-            SearchMode mode = null;
+            long start = 0L;
+            long maxResults = 100L;
+            SearchMode mode = SearchMode.FILENAME;
 
             while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
                 String _field = _p.getCurrentName();

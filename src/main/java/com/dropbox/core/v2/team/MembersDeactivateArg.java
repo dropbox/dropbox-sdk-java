@@ -192,7 +192,7 @@ class MembersDeactivateArg {
         public MembersDeactivateArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
 
             UserSelectorArg user = null;
-            Boolean wipeData = null;
+            boolean wipeData = true;
 
             while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
                 String _field = _p.getCurrentName();

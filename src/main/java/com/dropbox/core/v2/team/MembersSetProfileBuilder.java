@@ -39,9 +39,14 @@ public class MembersSetProfileBuilder {
     /**
      * Set value for optional field.
      *
-     * @param newEmail  New email for member.
+     * @param newEmail  New email for member. Must have length of at most 255
+     *     and match pattern "{@code
+     *     ^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*.[A-Za-z]{2,15}$}".
      *
      * @return this builder
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
      */
     public MembersSetProfileBuilder withNewEmail(String newEmail) {
         this.membersSetProfileArgBuilder.withNewEmail(newEmail);
@@ -51,9 +56,13 @@ public class MembersSetProfileBuilder {
     /**
      * Set value for optional field.
      *
-     * @param newExternalId  New external ID for member.
+     * @param newExternalId  New external ID for member. Must have length of at
+     *     most 64.
      *
      * @return this builder
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
      */
     public MembersSetProfileBuilder withNewExternalId(String newExternalId) {
         this.membersSetProfileArgBuilder.withNewExternalId(newExternalId);

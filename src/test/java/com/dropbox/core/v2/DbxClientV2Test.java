@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.mockito.Matchers;
+
 import org.testng.annotations.Test;
 
 import java.io.ByteArrayInputStream;
