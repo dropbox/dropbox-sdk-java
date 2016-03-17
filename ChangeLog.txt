@@ -1,3 +1,4 @@
+- Fix tutorial example to list folder entries for folders with many files.
 
 ---------------------------------------------
 2.0.1 (2016-03-09)
