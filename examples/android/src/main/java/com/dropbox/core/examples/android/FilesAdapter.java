@@ -9,28 +9,31 @@ import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.dropbox.core.v2.DbxFiles;
+import com.dropbox.core.v2.files.FileMetadata;
+import com.dropbox.core.v2.files.FolderMetadata;
+import com.dropbox.core.v2.files.Metadata;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * Adapter for file list
  */
 public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.MetadataViewHolder> {
-    private List<DbxFiles.Metadata> mFiles;
+    private List<Metadata> mFiles;
     private final Picasso mPicasso;
     private final Callback mCallback;
 
-    public void setFiles(ArrayList<DbxFiles.Metadata> files) {
-        mFiles = files;
+    public void setFiles(List<Metadata> files) {
+        mFiles = Collections.unmodifiableList(new ArrayList<>(files));
         notifyDataSetChanged();
     }
 
     public interface Callback {
-        void onFolderClicked(DbxFiles.FolderMetadata folder);
-        void onFileClicked(DbxFiles.FileMetadata file);
+        void onFolderClicked(FolderMetadata folder);
+        void onFileClicked(FileMetadata file);
     }
 
     public FilesAdapter(Picasso picasso, Callback callback) {
@@ -53,7 +56,7 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.MetadataView
 
     @Override
     public long getItemId(int position) {
-        return mFiles.get(position).pathLower.hashCode();
+        return mFiles.get(position).getPathLower().hashCode();
     }
 
     @Override
@@ -64,7 +67,7 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.MetadataView
     public class MetadataViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final TextView mTextView;
         private final ImageView mImageView;
-        private DbxFiles.Metadata mItem;
+        private Metadata mItem;
 
         public MetadataViewHolder(View itemView) {
             super(itemView);
@@ -76,27 +79,27 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.MetadataView
         @Override
         public void onClick(View v) {
 
-            if (mItem instanceof DbxFiles.FolderMetadata) {
-                mCallback.onFolderClicked((DbxFiles.FolderMetadata) mItem);
-            }  else if (mItem instanceof DbxFiles.FileMetadata) {
-                mCallback.onFileClicked((DbxFiles.FileMetadata)mItem);
+            if (mItem instanceof FolderMetadata) {
+                mCallback.onFolderClicked((FolderMetadata) mItem);
+            }  else if (mItem instanceof FileMetadata) {
+                mCallback.onFileClicked((FileMetadata)mItem);
             }
         }
 
-        public void bind(DbxFiles.Metadata item) {
+        public void bind(Metadata item) {
             mItem = item;
-            mTextView.setText(mItem.name);
+            mTextView.setText(mItem.getName());
 
             // Load based on file path
             // Prepending a magic scheme to get it to
             // be picked up by DropboxPicassoRequestHandler
 
-            if (item instanceof DbxFiles.FileMetadata) {
+            if (item instanceof FileMetadata) {
                 MimeTypeMap mime = MimeTypeMap.getSingleton();
-                String ext = item.name.substring(item.name.indexOf(".") + 1);
+                String ext = item.getName().substring(item.getName().indexOf(".") + 1);
                 String type = mime.getMimeTypeFromExtension(ext);
                 if (type != null && type.startsWith("image/")) {
-                    mPicasso.load(FileThumbnailRequestHandler.buildPicassoUri((DbxFiles.FileMetadata)item))
+                    mPicasso.load(FileThumbnailRequestHandler.buildPicassoUri((FileMetadata)item))
                             .placeholder(R.drawable.ic_photo_grey_600_36dp)
                             .error(R.drawable.ic_photo_grey_600_36dp)
                             .into(mImageView);
@@ -105,7 +108,7 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.MetadataView
                             .noFade()
                             .into(mImageView);
                 }
-            } else if (item instanceof DbxFiles.FolderMetadata) {
+            } else if (item instanceof FolderMetadata) {
                 mPicasso.load(R.drawable.ic_folder_blue_36dp)
                         .noFade()
                         .into(mImageView);

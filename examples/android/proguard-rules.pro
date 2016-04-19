@@ -15,3 +15,19 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+# Dropbox SDK Serialization
+
+-keepattributes *Annotation*,EnclosingMethod,InnerClasses,Signature
+-keepnames class com.fasterxml.jackson.** { *; }
+-dontwarn com.fasterxml.jackson.databind.**
+
+# OkHttp and Servlet optional dependencies
+-dontwarn okio.**
+-dontwarn javax.servlet.**
+
+# Support classes for compatibility with older API versions
+
+-dontwarn android.support.**
+-dontnote android.support.**
+

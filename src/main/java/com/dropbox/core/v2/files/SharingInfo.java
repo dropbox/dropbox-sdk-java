@@ -1,0 +1,172 @@
+/* DO NOT EDIT */
+/* This file was generated from files.babel */
+
+package com.dropbox.core.v2.files;
+
+import com.dropbox.core.json.JsonReadException;
+import com.dropbox.core.json.JsonReader;
+import com.dropbox.core.json.JsonUtil;
+import com.dropbox.core.json.StructJsonDeserializer;
+import com.dropbox.core.json.StructJsonSerializer;
+
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import java.io.IOException;
+
+/**
+ * Sharing info for a file or folder.
+ */
+@JsonSerialize(using=SharingInfo.Serializer.class)
+@JsonDeserialize(using=SharingInfo.Deserializer.class)
+public class SharingInfo {
+    // struct SharingInfo
+
+    // ProGuard work-around since we declare serializers in annotation
+    static final Serializer SERIALIZER = new Serializer();
+    static final Deserializer DESERIALIZER = new Deserializer();
+
+    protected final boolean readOnly;
+
+    /**
+     * Sharing info for a file or folder.
+     *
+     * @param readOnly  True if the file or folder is inside a read-only shared
+     *     folder.
+     */
+    public SharingInfo(boolean readOnly) {
+        this.readOnly = readOnly;
+    }
+
+    /**
+     * True if the file or folder is inside a read-only shared folder.
+     *
+     * @return value for this field.
+     */
+    public boolean getReadOnly() {
+        return readOnly;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = java.util.Arrays.hashCode(new Object [] {
+            readOnly
+        });
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        // be careful with inheritance
+        else if (obj.getClass().equals(this.getClass())) {
+            SharingInfo other = (SharingInfo) obj;
+            return this.readOnly == other.readOnly;
+        }
+        else {
+            return false;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return serialize(false);
+    }
+
+    /**
+     * Returns a String representation of this object formatted for easier
+     * readability.
+     *
+     * <p> The returned String may contain newlines. </p>
+     *
+     * @return Formatted, multiline String representation of this object
+     */
+    public String toStringMultiline() {
+        return serialize(true);
+    }
+
+    private String serialize(boolean longForm) {
+        try {
+            return JsonUtil.getMapper(longForm).writeValueAsString(this);
+        }
+        catch (JsonProcessingException ex) {
+            throw new RuntimeException("Failed to serialize object", ex);
+        }
+    }
+
+    static final class Serializer extends StructJsonSerializer<SharingInfo> {
+        private static final long serialVersionUID = 0L;
+
+        public Serializer() {
+            super(SharingInfo.class);
+        }
+
+        public Serializer(boolean unwrapping) {
+            super(SharingInfo.class, unwrapping);
+        }
+
+        @Override
+        protected JsonSerializer<SharingInfo> asUnwrapping() {
+            return new Serializer(true);
+        }
+
+        @Override
+        protected void serializeFields(SharingInfo value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+            g.writeObjectField("read_only", value.readOnly);
+        }
+    }
+
+    static final class Deserializer extends StructJsonDeserializer<SharingInfo> {
+        private static final long serialVersionUID = 0L;
+
+        public Deserializer() {
+            super(SharingInfo.class);
+        }
+
+        public Deserializer(boolean unwrapping) {
+            super(SharingInfo.class, unwrapping);
+        }
+
+        @Override
+        protected JsonDeserializer<SharingInfo> asUnwrapping() {
+            return new Deserializer(true);
+        }
+
+        @Override
+        public SharingInfo deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+
+            Boolean readOnly = null;
+
+            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String _field = _p.getCurrentName();
+                _p.nextToken();
+                if ("read_only".equals(_field)) {
+                    readOnly = _p.getValueAsBoolean();
+                    _p.nextToken();
+                }
+                else {
+                    skipValue(_p);
+                }
+            }
+
+            if (readOnly == null) {
+                throw new JsonParseException(_p, "Required field \"read_only\" is missing.");
+            }
+
+            return new SharingInfo(readOnly);
+        }
+    }
+}

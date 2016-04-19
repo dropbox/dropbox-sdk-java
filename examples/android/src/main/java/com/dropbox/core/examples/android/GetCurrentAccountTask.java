@@ -3,29 +3,30 @@ package com.dropbox.core.examples.android;
 import android.os.AsyncTask;
 
 import com.dropbox.core.DbxException;
-import com.dropbox.core.v2.DbxUsers;
+import com.dropbox.core.v2.DbxClientV2;
+import com.dropbox.core.v2.users.FullAccount;
 
 /**
  * Async task for getting user account info
  */
-class GetCurrentAccountTask extends AsyncTask<Void, Void, DbxUsers.FullAccount> {
+class GetCurrentAccountTask extends AsyncTask<Void, Void, FullAccount> {
 
-    private final DbxUsers mDbxUsersClient;
+    private final DbxClientV2 mDbxClient;
     private final Callback mCallback;
     private Exception mException;
 
     public interface Callback {
-        void onComplete(DbxUsers.FullAccount result);
+        void onComplete(FullAccount result);
         void onError(Exception e);
     }
 
-    GetCurrentAccountTask(DbxUsers DbxUsersClient, Callback callback) {
-        mDbxUsersClient = DbxUsersClient;
+    GetCurrentAccountTask(DbxClientV2 dbxClient, Callback callback) {
+        mDbxClient = dbxClient;
         mCallback = callback;
     }
 
     @Override
-    protected void onPostExecute(DbxUsers.FullAccount account) {
+    protected void onPostExecute(FullAccount account) {
         super.onPostExecute(account);
         if (mException != null) {
             mCallback.onError(mException);
@@ -35,14 +36,13 @@ class GetCurrentAccountTask extends AsyncTask<Void, Void, DbxUsers.FullAccount> 
     }
 
     @Override
-    protected DbxUsers.FullAccount doInBackground(Void... params) {
+    protected FullAccount doInBackground(Void... params) {
 
         try {
-            return mDbxUsersClient.getCurrentAccount();
+            return mDbxClient.users().getCurrentAccount();
 
         } catch (DbxException e) {
             mException = e;
-            e.printStackTrace();
         }
 
         return null;

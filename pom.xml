@@ -37,24 +37,41 @@
         </developer>
     </developers>
 
+    <prerequisites>
+        <maven>3.0.5</maven>
+    </prerequisites>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <skipTests>true</skipTests>
         <osgi.bnd.noee>false</osgi.bnd.noee>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>2.7.1</version>
+        </dependency>
+
+        <!-- Important: Jackson 2.8+ will be free to use JDK7 features
+             and no longer guarantees JDK6 compatibility -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
-            <version>[2.2,2.7)</version>
+            <version>2.7.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.7.1-1</version>
         </dependency>
 
         <!-- A "soft" dependency on the Servlet API. -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
-            <version>2.2</version>
+            <version>2.5</version>
             <scope>provided</scope>
         </dependency>
 
@@ -62,7 +79,7 @@
         <dependency>
             <groupId>com.squareup.okhttp</groupId>
             <artifactId>okhttp</artifactId>
-            <version>2.5.0</version>
+            <version>2.7.4</version>
             <scope>provided</scope>
         </dependency>
 
@@ -77,24 +94,29 @@
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
-            <version>[6,7)</version>
+            <version>6.9.10</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>1.10.19</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.google.caliper</groupId>
             <artifactId>caliper</artifactId>
-            <version>1.0-beta-1</version>
+            <version>1.0-beta-2</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
 
     <build>
-        <sourceDirectory>src</sourceDirectory>
         <resources>
             <resource>
-                <directory>${project.build.sourceDirectory}</directory>
+                <directory>src/main/resources</directory>
                 <includes>
-                    <include>com/dropbox/core/sdk-version.txt</include>
+                    <include>sdk-version.txt</include>
                 </includes>
                 <filtering>true</filtering>
             </resource>
@@ -102,27 +124,24 @@
                 <directory>${project.build.directory}/generated-resources/certs</directory>
             </resource>
         </resources>
-        <testSourceDirectory>test</testSourceDirectory>
-        <testResources>
-            <testResource>
-                <directory>test</directory>
-            </testResource>
-        </testResources>
 
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
+                <version>3.5.1</version>
                 <configuration>
-                    <source>6</source>
-                    <target>6</target>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                    <compilerArgument>-Xlint:all</compilerArgument>
+                    <showWarnings>true</showWarnings>
+                    <showDeprecation>true</showDeprecation>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>animal-sniffer-maven-plugin</artifactId>
-                <version>1.11</version>
+                <version>1.14</version>
                 <configuration>
                     <signature>
                         <groupId>org.codehaus.mojo.signature</groupId>
@@ -143,7 +162,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>2.2.1</version>
+                <version>3.0.0</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -172,7 +191,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
-                <version>1.7</version>
+                <version>1.8</version>
                 <executions>
                     <execution>
                         <id>copy</id>
@@ -191,10 +210,33 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.15</version>
+                <version>2.19.1</version>
+                <!-- enable parallel tests, since some methods called in tests may sleep -->
                 <configuration>
-                    <skipTests>${skipTests}</skipTests>
+                    <parallel>classesAndMethods</parallel>
+                    <threadCount>2</threadCount>
+                    <perCoreThreadCount>true</perCoreThreadCount>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.19.1</version>
+                <configuration>
+                    <failIfNoTests>true</failIfNoTests>
+                    <trimStackTrace>false</trimStackTrace>
+                </configuration>
+                <!-- we don't add these or else mvn install will cause integration tests to run -->
+                <!--
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                -->
             </plugin>
             <plugin>
                 <groupId>com.dropbox.maven</groupId>
@@ -203,7 +245,7 @@
                 <executions>
                     <execution>
                         <configuration>
-                            <input>src/com/dropbox/core/http/trusted-certs.crt</input>
+                            <input>src/main/resources/trusted-certs.crt</input>
                             <output>${project.build.directory}/generated-resources/certs/com/dropbox/core/http/trusted-certs.raw</output>
                         </configuration>
                         <goals>
@@ -217,7 +259,7 @@
             <!-- Add OSGi metadata to JAR manifest. -->
             <plugin>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>2.5</version>
+                <version>2.6</version>
                 <configuration>
                     <archive>
                         <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
@@ -227,7 +269,7 @@
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
-                <version>2.5.0</version>
+                <version>3.0.1</version>
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
@@ -270,7 +312,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>findbugs-maven-plugin</artifactId>
-                <version>2.5.3</version>
+                <version>3.0.3</version>
                 <configuration>
                     <effort>max</effort>
                     <threshold>low</threshold>
@@ -315,6 +357,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>2.10.3</version>
                         <configuration>
                             <!--
                                 TODO: We want to pass a single arg: "-Xdoclint:all,-missing", but

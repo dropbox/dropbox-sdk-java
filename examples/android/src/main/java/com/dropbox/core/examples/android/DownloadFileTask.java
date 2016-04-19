@@ -7,7 +7,8 @@ import android.os.AsyncTask;
 import android.os.Environment;
 
 import com.dropbox.core.DbxException;
-import com.dropbox.core.v2.DbxFiles;
+import com.dropbox.core.v2.DbxClientV2;
+import com.dropbox.core.v2.files.FileMetadata;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -17,21 +18,21 @@ import java.io.OutputStream;
 /**
  * Task to download a file from Dropbox and put it in the Downloads folder
  */
-class DownloadFileTask extends AsyncTask<DbxFiles.FileMetadata, Void, File> {
+class DownloadFileTask extends AsyncTask<FileMetadata, Void, File> {
 
     private final Context mContext;
-    private final DbxFiles mFilesClient;
+    private final DbxClientV2 mDbxClient;
+    private final Callback mCallback;
     private Exception mException;
-    private Callback mCallback;
 
     public interface Callback {
         void onDownloadComplete(File result);
         void onError(Exception e);
     }
 
-    DownloadFileTask(Context context, DbxFiles filesClient, Callback callback) {
+    DownloadFileTask(Context context, DbxClientV2 dbxClient, Callback callback) {
         mContext = context;
-        mFilesClient = filesClient;
+        mDbxClient = dbxClient;
         mCallback = callback;
     }
 
@@ -46,23 +47,27 @@ class DownloadFileTask extends AsyncTask<DbxFiles.FileMetadata, Void, File> {
     }
 
     @Override
-    protected File doInBackground(DbxFiles.FileMetadata... params) {
-        DbxFiles.FileMetadata metadata = params[0];
+    protected File doInBackground(FileMetadata... params) {
+        FileMetadata metadata = params[0];
         try {
             File path = Environment.getExternalStoragePublicDirectory(
                     Environment.DIRECTORY_DOWNLOADS);
-            File file = new File(path, metadata.name);
+            File file = new File(path, metadata.getName());
 
             // Make sure the Downloads directory exists.
-            path.mkdirs();
+            if (!path.exists()) {
+                if (!path.mkdirs()) {
+                    mException = new RuntimeException("Unable to create directory: " + path);
+                }
+            } else if (!path.isDirectory()) {
+                mException = new IllegalStateException("Download path is not a directory: " + path);
+                return null;
+            }
 
-            // Upload the file.
-            OutputStream outputStream = new FileOutputStream(file);
-            try {
-                mFilesClient.downloadBuilder(metadata.pathLower).
-                        rev(metadata.rev).run(outputStream);
-            } finally {
-                outputStream.close();
+            // Download the file.
+            try (OutputStream outputStream = new FileOutputStream(file)) {
+                mDbxClient.files().download(metadata.getPathLower(), metadata.getRev())
+                    .download(outputStream);
             }
 
             // Tell android about the file
@@ -72,7 +77,6 @@ class DownloadFileTask extends AsyncTask<DbxFiles.FileMetadata, Void, File> {
 
             return file;
         } catch (DbxException | IOException e) {
-            e.printStackTrace();
             mException = e;
         }
 

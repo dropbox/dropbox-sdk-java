@@ -1,5 +1,74 @@
 
 ---------------------------------------------
+2.0.1 (2016-03-09)
+- Update to latest API specs:
+  - Update documentation.
+  - Add FolderPolicy.getResolvedMemberPolicy()
+  - Add GroupInfo.getGroupType()
+  - Add SharedFolderMetadataBase.getOwnerTeam()
+  - Add SharedFolderMetadataBase.getParentSharedFolderId()
+  - Add MountFolderError.NOT_MOUNTABLE
+  - Add UmountFolderError.NOT_UNMOUNTABLE
+  - Add validation for member external id and email address
+  - Add TeamSharingPolicies.getSharedLinkCreatePolicy()
+  - Add MembersSuspendError.TEAM_LICENSE_LIMIT
+  - Add MembersUnsuspendError.TEAM_LICENSE_LIMIT
+- Fix bug when deserializing v2 data types with missing optional primitive fields.
+- Fix bug where some Date objects were not being properly truncated to seconds granularity in v2
+  data types.
+- Fix v2 timestamp parsing to support DateTime and Date formats.
+- Add support for Dropbox API app endpoints.
+- Update upload-file example to include chunked upload example.
+- Increase default socket read timeout to 2 minutes.
+- Parse Retry-After header for 503 retry exceptions in API v1.
+- Add example from online tutorial.
+
+---------------------------------------------
+2.0.0 (2016-03-03)
+- Remove toJson(..) and fromJson(..) methods from data types.
+- Support ProGuard shrinking for Android development and provide example.
+- Rename v2 request classes to support future auth styles:
+    - DbxFiles -> DbxUserFilesRequests
+    - DbxSharing -> DbxUserSharingRequests
+    - DbxUsers -> DbxUserUsersRequests
+    - DbxTeam -> DbxTeamTeamRequests
+- Replace public final references in DbxClientV2 and DbxTeamClientV2 with accessor methods.
+- Update longpoll example with better documentation on setting timeout values.
+
+---------------------------------------------
+2.0-beta-7 (2016-02-24)
+- Updated to latest API specs.
+
+---------------------------------------------
+2.0-beta-6 (2016-02-22)
+- Updated to latest API specs.
+- Use getter methods instead of public final fields.
+- Rename exception classes to be consistent with Java practices (e.g. end in "Exception").
+- Move DbxException inner classes out into their own files.
+- Expose Retry-After backoff for rate limiting exceptions.
+- Add configuration setting for automatically retrying failed requests.
+- Fix bug that hid certain routes containing union request arguments.
+- Add new Java packages for v2 client.
+- Break out v2 nested classes into their own files in the appropriate packages.
+- Change format of builder methods.
+  - Prepend 'with' to method names
+- Change format of tagged union classes.
+  - getTag() renamed to tag() to avoid naming conflicts
+  - Tags without values now referenced as public static final singletons
+  - Unions of value-less tags generated as enums
+- Add builders for request and response classes.
+- Fix deserialization bug with Union containing tags with optional values.
+- Make read timeouts more easily configurable for StandardHttpRequestor.
+- Add longpoll example.
+- Separate integration tests from unit tests and enable unit tests by default.
+- Fix android example bugs and linter warnings
+  - Fix compilation error
+  - Fix upload failure bug
+  - Fix download failure bug
+  - Update build dependencies
+  - Stop using deprecated interfaces
+
+---------------------------------------------
 2.0-beta-5 (2016-01-22)
 - Updated to latest API specs.
 - Change format of tagged union classes.
