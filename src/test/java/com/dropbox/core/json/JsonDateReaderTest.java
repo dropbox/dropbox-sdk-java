@@ -46,7 +46,7 @@ public class JsonDateReaderTest
     private static final ThreadLocal<SimpleDateFormat> dateFormatHolder =  new ThreadLocal<SimpleDateFormat>() {
         protected SimpleDateFormat initialValue()
         {
-            SimpleDateFormat f = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss ZZZZZ");
+            SimpleDateFormat f = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss ZZZZZ", Locale.ENGLISH);
             f.setTimeZone(JsonDateReader.UTC);
             return f;
         }
