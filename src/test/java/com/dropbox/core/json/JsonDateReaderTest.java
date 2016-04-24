@@ -6,6 +6,7 @@ import org.testng.annotations.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 
 public class JsonDateReaderTest
 {
@@ -54,7 +55,7 @@ public class JsonDateReaderTest
     private static final ThreadLocal<SimpleDateFormat> preciseDateFormatHolder =  new ThreadLocal<SimpleDateFormat>() {
         protected SimpleDateFormat initialValue()
         {
-            SimpleDateFormat f = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss.SSS ZZZZZ");
+            SimpleDateFormat f = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss.SSS ZZZZZ", Locale.ENGLISH);
             f.setTimeZone(JsonDateReader.UTC);
             return f;
         }
