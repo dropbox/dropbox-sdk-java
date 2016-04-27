@@ -22,7 +22,12 @@
 -keepnames class com.fasterxml.jackson.** { *; }
 -dontwarn com.fasterxml.jackson.databind.**
 
+# Dropbox SSL trusted certs
+
+-adaptresourcefilenames com/dropbox/core/http/trusted-certs.raw
+
 # OkHttp and Servlet optional dependencies
+
 -dontwarn okio.**
 -dontwarn javax.servlet.**
 

@@ -181,4 +181,5 @@ Jackson Databind makes use of reflection and annotations to map Java objects to 
 -keepattributes *Annotation*,EnclosingMethod,InnerClasses,Signature
 -keepnames class com.fasterxml.jackson.** { *; }
 -dontwarn com.fasterxml.jackson.databind.**
+-adaptresourcefilenames com/dropbox/core/http/trusted-certs.raw
 ```
