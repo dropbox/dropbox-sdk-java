@@ -47,19 +47,22 @@ public class GroupInfo extends GroupSummary {
      * The information about a group. Groups is a way to manage a list of users
      * who need same access permission to the shared folder.
      *
+     * <p> Use {@link newBuilder} to create instances of this class without
+     * specifying values for all optional fields. </p>
+     *
      * @param groupName  Must not be {@code null}.
      * @param groupId  Must not be {@code null}.
-     * @param memberCount  The number of members in the group.
      * @param groupType  The type of group. Must not be {@code null}.
      * @param sameTeam  If the group is owned by the current user's team.
      * @param groupExternalId  External ID of group. This is an arbitrary ID
      *     that an admin can attach to a group.
+     * @param memberCount  The number of members in the group.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupInfo(String groupName, String groupId, long memberCount, GroupType groupType, boolean sameTeam, String groupExternalId) {
-        super(groupName, groupId, memberCount, groupExternalId);
+    public GroupInfo(String groupName, String groupId, GroupType groupType, boolean sameTeam, String groupExternalId, Long memberCount) {
+        super(groupName, groupId, groupExternalId, memberCount);
         if (groupType == null) {
             throw new IllegalArgumentException("Required value for 'groupType' is null");
         }
@@ -75,15 +78,14 @@ public class GroupInfo extends GroupSummary {
      *
      * @param groupName  Must not be {@code null}.
      * @param groupId  Must not be {@code null}.
-     * @param memberCount  The number of members in the group.
      * @param groupType  The type of group. Must not be {@code null}.
      * @param sameTeam  If the group is owned by the current user's team.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupInfo(String groupName, String groupId, long memberCount, GroupType groupType, boolean sameTeam) {
-        this(groupName, groupId, memberCount, groupType, sameTeam, null);
+    public GroupInfo(String groupName, String groupId, GroupType groupType, boolean sameTeam) {
+        this(groupName, groupId, groupType, sameTeam, null, null);
     }
 
     /**
@@ -102,6 +104,50 @@ public class GroupInfo extends GroupSummary {
      */
     public boolean getSameTeam() {
         return sameTeam;
+    }
+
+    /**
+     * Returns a new builder for creating an instance of this class.
+     *
+     * @param groupName  Must not be {@code null}.
+     * @param groupId  Must not be {@code null}.
+     * @param groupType  The type of group. Must not be {@code null}.
+     * @param sameTeam  If the group is owned by the current user's team.
+     *
+     * @return builder for this class.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public static Builder newBuilder(String groupName, String groupId, GroupType groupType, boolean sameTeam) {
+        return new Builder(groupName, groupId, groupType, sameTeam);
+    }
+
+    /**
+     * Builder for {@link GroupInfo}.
+     */
+    public static class Builder extends GroupSummary.Builder {
+        protected final GroupType groupType;
+        protected final boolean sameTeam;
+
+        protected Builder(String groupName, String groupId, GroupType groupType, boolean sameTeam) {
+            super(groupName, groupId);
+            if (groupType == null) {
+                throw new IllegalArgumentException("Required value for 'groupType' is null");
+            }
+            this.groupType = groupType;
+            this.sameTeam = sameTeam;
+        }
+
+        /**
+         * Builds an instance of {@link GroupInfo} configured with this
+         * builder's values
+         *
+         * @return new instance of {@link GroupInfo}
+         */
+        public GroupInfo build() {
+            return new GroupInfo(groupName, groupId, groupType, sameTeam, groupExternalId, memberCount);
+        }
     }
 
     @Override
@@ -124,10 +170,10 @@ public class GroupInfo extends GroupSummary {
             GroupInfo other = (GroupInfo) obj;
             return ((this.groupName == other.groupName) || (this.groupName.equals(other.groupName)))
                 && ((this.groupId == other.groupId) || (this.groupId.equals(other.groupId)))
-                && (this.memberCount == other.memberCount)
                 && ((this.groupType == other.groupType) || (this.groupType.equals(other.groupType)))
                 && (this.sameTeam == other.sameTeam)
                 && ((this.groupExternalId == other.groupExternalId) || (this.groupExternalId != null && this.groupExternalId.equals(other.groupExternalId)))
+                && ((this.memberCount == other.memberCount) || (this.memberCount != null && this.memberCount.equals(other.memberCount)))
                 ;
         }
         else {
@@ -181,11 +227,13 @@ public class GroupInfo extends GroupSummary {
         protected void serializeFields(GroupInfo value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
             g.writeObjectField("group_name", value.groupName);
             g.writeObjectField("group_id", value.groupId);
-            g.writeObjectField("member_count", value.memberCount);
             g.writeObjectField("group_type", value.groupType);
             g.writeObjectField("same_team", value.sameTeam);
             if (value.groupExternalId != null) {
                 g.writeObjectField("group_external_id", value.groupExternalId);
+            }
+            if (value.memberCount != null) {
+                g.writeObjectField("member_count", value.memberCount);
             }
         }
     }
@@ -211,10 +259,10 @@ public class GroupInfo extends GroupSummary {
 
             String groupName = null;
             String groupId = null;
-            Long memberCount = null;
             GroupType groupType = null;
             Boolean sameTeam = null;
             String groupExternalId = null;
+            Long memberCount = null;
 
             while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
                 String _field = _p.getCurrentName();
@@ -225,14 +273,6 @@ public class GroupInfo extends GroupSummary {
                 }
                 else if ("group_id".equals(_field)) {
                     groupId = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("member_count".equals(_field)) {
-                    memberCount = _p.getLongValue();
-                    assertUnsigned(_p, memberCount);
-                    if (memberCount > Integer.MAX_VALUE) {
-                        throw new JsonParseException(_p, "expecting a 32-bit unsigned integer, got: " + memberCount);
-                    }
                     _p.nextToken();
                 }
                 else if ("group_type".equals(_field)) {
@@ -247,6 +287,14 @@ public class GroupInfo extends GroupSummary {
                     groupExternalId = getStringValue(_p);
                     _p.nextToken();
                 }
+                else if ("member_count".equals(_field)) {
+                    memberCount = _p.getLongValue();
+                    assertUnsigned(_p, memberCount);
+                    if (memberCount > Integer.MAX_VALUE) {
+                        throw new JsonParseException(_p, "expecting a 32-bit unsigned integer, got: " + memberCount);
+                    }
+                    _p.nextToken();
+                }
                 else {
                     skipValue(_p);
                 }
@@ -258,9 +306,6 @@ public class GroupInfo extends GroupSummary {
             if (groupId == null) {
                 throw new JsonParseException(_p, "Required field \"group_id\" is missing.");
             }
-            if (memberCount == null) {
-                throw new JsonParseException(_p, "Required field \"member_count\" is missing.");
-            }
             if (groupType == null) {
                 throw new JsonParseException(_p, "Required field \"group_type\" is missing.");
             }
@@ -268,7 +313,7 @@ public class GroupInfo extends GroupSummary {
                 throw new JsonParseException(_p, "Required field \"same_team\" is missing.");
             }
 
-            return new GroupInfo(groupName, groupId, memberCount, groupType, sameTeam, groupExternalId);
+            return new GroupInfo(groupName, groupId, groupType, sameTeam, groupExternalId, memberCount);
         }
     }
 }

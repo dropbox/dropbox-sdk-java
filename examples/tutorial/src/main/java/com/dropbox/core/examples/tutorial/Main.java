@@ -4,6 +4,7 @@ import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.files.FileMetadata;
+import com.dropbox.core.v2.files.ListFolderResult;
 import com.dropbox.core.v2.files.Metadata;
 import com.dropbox.core.v2.users.FullAccount;
 
@@ -26,9 +27,17 @@ public class Main {
         System.out.println(account.getName().getDisplayName());
 
         // Get files and folder metadata from Dropbox root directory
-        List<Metadata> entries = client.files().listFolder("").getEntries();
-        for (Metadata metadata : entries) {
-            System.out.println(metadata.getPathLower());
+        ListFolderResult result = client.files().listFolder("");
+        while (true) {
+            for (Metadata metadata : result.getEntries()) {
+                System.out.println(metadata.getPathLower());
+            }
+
+            if (!result.getHasMore()) {
+                break;
+            }
+
+            result = client.files().listFolderContinue(result.getCursor());
         }
 
         // Upload "test.txt" to Dropbox

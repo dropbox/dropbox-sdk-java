@@ -116,17 +116,19 @@ public class Main {
                     printProgress(uploaded, size);
                 }
 
+                UploadSessionCursor cursor = new UploadSessionCursor(sessionId, uploaded);
+
                 // (2) Append
                 while ((size - uploaded) > CHUNKED_UPLOAD_CHUNK_SIZE) {
-                    dbxClient.files().uploadSessionAppend(sessionId, uploaded)
+                    dbxClient.files().uploadSessionAppendV2(cursor)
                         .uploadAndFinish(in, CHUNKED_UPLOAD_CHUNK_SIZE);
                     uploaded += CHUNKED_UPLOAD_CHUNK_SIZE;
                     printProgress(uploaded, size);
+                    cursor = new UploadSessionCursor(sessionId, uploaded);
                 }
 
                 // (3) Finish
                 long remaining = size - uploaded;
-                UploadSessionCursor cursor = new UploadSessionCursor(sessionId, uploaded);
                 CommitInfo commitInfo = CommitInfo.newBuilder(dropboxPath)
                     .withMode(WriteMode.ADD)
                     .withClientModified(new Date(localFile.lastModified()))

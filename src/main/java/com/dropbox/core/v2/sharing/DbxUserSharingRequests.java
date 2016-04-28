@@ -42,9 +42,7 @@ public final class DbxUserSharingRequests {
      * folder to add another member. For the new member to get access to all the
      * functionality for this folder, you will need to call {@link
      * DbxUserSharingRequests#mountFolder(String)} on their behalf. Apps must
-     * have full Dropbox access to use this endpoint. Warning: This endpoint is
-     * in beta and is subject to minor but possibly backwards-incompatible
-     * changes.
+     * have full Dropbox access to use this endpoint.
      *
      */
     void addFolderMember(AddFolderMemberArg addFolderMemberArg) throws AddFolderMemberErrorException, DbxException {
@@ -66,9 +64,7 @@ public final class DbxUserSharingRequests {
      * folder to add another member. For the new member to get access to all the
      * functionality for this folder, you will need to call {@link
      * DbxUserSharingRequests#mountFolder(String)} on their behalf. Apps must
-     * have full Dropbox access to use this endpoint. Warning: This endpoint is
-     * in beta and is subject to minor but possibly backwards-incompatible
-     * changes.
+     * have full Dropbox access to use this endpoint.
      *
      * <p> The default values for the optional request parameters will be used.
      * See {@link AddFolderMemberBuilder} for more details. </p>
@@ -92,9 +88,7 @@ public final class DbxUserSharingRequests {
      * folder to add another member. For the new member to get access to all the
      * functionality for this folder, you will need to call {@link
      * DbxUserSharingRequests#mountFolder(String)} on their behalf. Apps must
-     * have full Dropbox access to use this endpoint. Warning: This endpoint is
-     * in beta and is subject to minor but possibly backwards-incompatible
-     * changes.
+     * have full Dropbox access to use this endpoint.
      *
      * @param sharedFolderId  The ID for the shared folder. Must match pattern
      *     "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
@@ -119,8 +113,7 @@ public final class DbxUserSharingRequests {
 
     /**
      * Returns the status of an asynchronous job. Apps must have full Dropbox
-     * access to use this endpoint. Warning: This endpoint is in beta and is
-     * subject to minor but possibly backwards-incompatible changes.
+     * access to use this endpoint.
      *
      * @param pollArg  Arguments for methods that poll the status of an
      *     asynchronous job.
@@ -141,8 +134,7 @@ public final class DbxUserSharingRequests {
 
     /**
      * Returns the status of an asynchronous job. Apps must have full Dropbox
-     * access to use this endpoint. Warning: This endpoint is in beta and is
-     * subject to minor but possibly backwards-incompatible changes.
+     * access to use this endpoint.
      *
      * @param asyncJobId  Id of the asynchronous job. This is the value of a
      *     response returned from the method that launched the job. Must have
@@ -162,9 +154,7 @@ public final class DbxUserSharingRequests {
 
     /**
      * Returns the status of an asynchronous job for sharing a folder. Apps must
-     * have full Dropbox access to use this endpoint. Warning: This endpoint is
-     * in beta and is subject to minor but possibly backwards-incompatible
-     * changes.
+     * have full Dropbox access to use this endpoint.
      *
      * @param pollArg  Arguments for methods that poll the status of an
      *     asynchronous job.
@@ -185,9 +175,7 @@ public final class DbxUserSharingRequests {
 
     /**
      * Returns the status of an asynchronous job for sharing a folder. Apps must
-     * have full Dropbox access to use this endpoint. Warning: This endpoint is
-     * in beta and is subject to minor but possibly backwards-incompatible
-     * changes.
+     * have full Dropbox access to use this endpoint.
      *
      * @param asyncJobId  Id of the asynchronous job. This is the value of a
      *     response returned from the method that launched the job. Must have
@@ -219,7 +207,11 @@ public final class DbxUserSharingRequests {
      *
      *
      * @return Metadata for a path-based shared link.
+     *
+     * @deprecated use {@link
+     *     DbxUserSharingRequests#createSharedLinkWithSettings(String)} instead.
      */
+    @Deprecated
     PathLinkMetadata createSharedLink(CreateSharedLinkArg createSharedLinkArg) throws CreateSharedLinkErrorException, DbxException {
         try {
             return client.rpcStyle(client.getHost().getApi(),
@@ -367,8 +359,7 @@ public final class DbxUserSharingRequests {
 
     /**
      * Returns shared folder metadata by its folder ID. Apps must have full
-     * Dropbox access to use this endpoint. Warning: This endpoint is in beta
-     * and is subject to minor but possibly backwards-incompatible changes.
+     * Dropbox access to use this endpoint.
      *
      *
      * @return The metadata which includes basic information about the shared
@@ -390,8 +381,7 @@ public final class DbxUserSharingRequests {
 
     /**
      * Returns shared folder metadata by its folder ID. Apps must have full
-     * Dropbox access to use this endpoint. Warning: This endpoint is in beta
-     * and is subject to minor but possibly backwards-incompatible changes.
+     * Dropbox access to use this endpoint.
      *
      * @param sharedFolderId  The ID for the shared folder. Must match pattern
      *     "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
@@ -409,8 +399,7 @@ public final class DbxUserSharingRequests {
 
     /**
      * Returns shared folder metadata by its folder ID. Apps must have full
-     * Dropbox access to use this endpoint. Warning: This endpoint is in beta
-     * and is subject to minor but possibly backwards-incompatible changes.
+     * Dropbox access to use this endpoint.
      *
      * @param sharedFolderId  The ID for the shared folder. Must match pattern
      *     "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
@@ -560,7 +549,10 @@ public final class DbxUserSharingRequests {
      * in this case. Note that the url field in the response is never the
      * shortened URL.
      *
+     *
+     * @deprecated use {@link DbxUserSharingRequests#listSharedLinks()} instead.
      */
+    @Deprecated
     GetSharedLinksResult getSharedLinks(GetSharedLinksArg getSharedLinksArg) throws GetSharedLinksErrorException, DbxException {
         try {
             return client.rpcStyle(client.getHost().getApi(),
@@ -618,8 +610,7 @@ public final class DbxUserSharingRequests {
 
     /**
      * Returns shared folder membership by its folder ID. Apps must have full
-     * Dropbox access to use this endpoint. Warning: This endpoint is in beta
-     * and is subject to minor but possibly backwards-incompatible changes.
+     * Dropbox access to use this endpoint.
      *
      *
      * @return Shared folder user and group membership.
@@ -640,8 +631,7 @@ public final class DbxUserSharingRequests {
 
     /**
      * Returns shared folder membership by its folder ID. Apps must have full
-     * Dropbox access to use this endpoint. Warning: This endpoint is in beta
-     * and is subject to minor but possibly backwards-incompatible changes.
+     * Dropbox access to use this endpoint.
      *
      * <p> The default values for the optional request parameters will be used.
      * See {@link ListFolderMembersBuilder} for more details. </p>
@@ -661,8 +651,7 @@ public final class DbxUserSharingRequests {
 
     /**
      * Returns shared folder membership by its folder ID. Apps must have full
-     * Dropbox access to use this endpoint. Warning: This endpoint is in beta
-     * and is subject to minor but possibly backwards-incompatible changes.
+     * Dropbox access to use this endpoint.
      *
      * @param sharedFolderId  The ID for the shared folder. Must match pattern
      *     "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
@@ -686,8 +675,7 @@ public final class DbxUserSharingRequests {
      * Once a cursor has been retrieved from {@link
      * DbxUserSharingRequests#listFolderMembers(String)}, use this to paginate
      * through all shared folder members. Apps must have full Dropbox access to
-     * use this endpoint. Warning: This endpoint is in beta and is subject to
-     * minor but possibly backwards-incompatible changes.
+     * use this endpoint.
      *
      *
      * @return Shared folder user and group membership.
@@ -710,8 +698,7 @@ public final class DbxUserSharingRequests {
      * Once a cursor has been retrieved from {@link
      * DbxUserSharingRequests#listFolderMembers(String)}, use this to paginate
      * through all shared folder members. Apps must have full Dropbox access to
-     * use this endpoint. Warning: This endpoint is in beta and is subject to
-     * minor but possibly backwards-incompatible changes.
+     * use this endpoint.
      *
      * @param cursor  The cursor returned by your last call to {@link
      *     DbxUserSharingRequests#listFolderMembers(String)} or {@link
@@ -734,9 +721,7 @@ public final class DbxUserSharingRequests {
 
     /**
      * Return the list of all shared folders the current user has access to.
-     * Apps must have full Dropbox access to use this endpoint. Warning: This
-     * endpoint is in beta and is subject to minor but possibly
-     * backwards-incompatible changes.
+     * Apps must have full Dropbox access to use this endpoint.
      *
      *
      * @return Result for {@link DbxUserSharingRequests#listFolders()} or {@link
@@ -760,9 +745,7 @@ public final class DbxUserSharingRequests {
 
     /**
      * Return the list of all shared folders the current user has access to.
-     * Apps must have full Dropbox access to use this endpoint. Warning: This
-     * endpoint is in beta and is subject to minor but possibly
-     * backwards-incompatible changes.
+     * Apps must have full Dropbox access to use this endpoint.
      *
      * <p> The default values for the optional request parameters will be used.
      * See {@link ListFoldersBuilder} for more details. </p>
@@ -779,9 +762,7 @@ public final class DbxUserSharingRequests {
 
     /**
      * Return the list of all shared folders the current user has access to.
-     * Apps must have full Dropbox access to use this endpoint. Warning: This
-     * endpoint is in beta and is subject to minor but possibly
-     * backwards-incompatible changes.
+     * Apps must have full Dropbox access to use this endpoint.
      *
      * @return Request builder for configuring request parameters and completing
      *     the request.
@@ -801,8 +782,7 @@ public final class DbxUserSharingRequests {
      * shared folders. The cursor must come from a previous call to {@link
      * DbxUserSharingRequests#listFolders()} or {@link
      * DbxUserSharingRequests#listFoldersContinue(String)}. Apps must have full
-     * Dropbox access to use this endpoint. Warning: This endpoint is in beta
-     * and is subject to minor but possibly backwards-incompatible changes.
+     * Dropbox access to use this endpoint.
      *
      *
      * @return Result for {@link DbxUserSharingRequests#listFolders()} or {@link
@@ -830,8 +810,7 @@ public final class DbxUserSharingRequests {
      * shared folders. The cursor must come from a previous call to {@link
      * DbxUserSharingRequests#listFolders()} or {@link
      * DbxUserSharingRequests#listFoldersContinue(String)}. Apps must have full
-     * Dropbox access to use this endpoint. Warning: This endpoint is in beta
-     * and is subject to minor but possibly backwards-incompatible changes.
+     * Dropbox access to use this endpoint.
      *
      * @param cursor  The cursor returned by the previous API call specified in
      *     the endpoint description. Must not be {@code null}.
@@ -1057,6 +1036,10 @@ public final class DbxUserSharingRequests {
      * and the {@link LinkPermissions#getRequestedVisibility} will reflect the
      * requested visibility.
      *
+     * <p> The {@code removeExpiration} request parameter will default to {@code
+     * false} (see {@link
+     * #modifySharedLinkSettings(String,SharedLinkSettings,boolean)}). </p>
+     *
      * @param url  URL of the shared link to change its settings. Must not be
      *     {@code null}.
      * @param settings  Set of settings for the shared link. Must not be {@code
@@ -1072,6 +1055,32 @@ public final class DbxUserSharingRequests {
         return modifySharedLinkSettings(arg);
     }
 
+    /**
+     * Modify the shared link's settings. If the requested visibility conflict
+     * with the shared links policy of the team or the shared folder (in case
+     * the linked file is part of a shared folder) then the {@link
+     * LinkPermissions#getResolvedVisibility} of the returned {@link
+     * SharedLinkMetadata} will reflect the actual visibility of the shared link
+     * and the {@link LinkPermissions#getRequestedVisibility} will reflect the
+     * requested visibility.
+     *
+     * @param url  URL of the shared link to change its settings. Must not be
+     *     {@code null}.
+     * @param settings  Set of settings for the shared link. Must not be {@code
+     *     null}.
+     * @param removeExpiration  If set to true, removes the expiration of the
+     *     shared link.
+     *
+     * @return The metadata of a shared link
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public SharedLinkMetadata modifySharedLinkSettings(String url, SharedLinkSettings settings, boolean removeExpiration) throws ModifySharedLinkSettingsErrorException, DbxException {
+        ModifySharedLinkSettingsArgs arg = new ModifySharedLinkSettingsArgs(url, settings, removeExpiration);
+        return modifySharedLinkSettings(arg);
+    }
+
     //
     // route sharing/mount_folder
     //
@@ -1080,8 +1089,7 @@ public final class DbxUserSharingRequests {
      * The current user mounts the designated folder. Mount a shared folder for
      * a user after they have been added as a member. Once mounted, the shared
      * folder will appear in their Dropbox. Apps must have full Dropbox access
-     * to use this endpoint. Warning: This endpoint is in beta and is subject to
-     * minor but possibly backwards-incompatible changes.
+     * to use this endpoint.
      *
      *
      * @return The metadata which includes basic information about the shared
@@ -1105,8 +1113,7 @@ public final class DbxUserSharingRequests {
      * The current user mounts the designated folder. Mount a shared folder for
      * a user after they have been added as a member. Once mounted, the shared
      * folder will appear in their Dropbox. Apps must have full Dropbox access
-     * to use this endpoint. Warning: This endpoint is in beta and is subject to
-     * minor but possibly backwards-incompatible changes.
+     * to use this endpoint.
      *
      * @param sharedFolderId  The ID of the shared folder to mount. Must match
      *     pattern "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
@@ -1130,8 +1137,7 @@ public final class DbxUserSharingRequests {
      * The current user relinquishes their membership in the designated shared
      * folder and will no longer have access to the folder.  A folder owner
      * cannot relinquish membership in their own folder. Apps must have full
-     * Dropbox access to use this endpoint. Warning: This endpoint is in beta
-     * and is subject to minor but possibly backwards-incompatible changes.
+     * Dropbox access to use this endpoint.
      *
      */
     void relinquishFolderMembership(RelinquishFolderMembershipArg relinquishFolderMembershipArg) throws RelinquishFolderMembershipErrorException, DbxException {
@@ -1152,8 +1158,7 @@ public final class DbxUserSharingRequests {
      * The current user relinquishes their membership in the designated shared
      * folder and will no longer have access to the folder.  A folder owner
      * cannot relinquish membership in their own folder. Apps must have full
-     * Dropbox access to use this endpoint. Warning: This endpoint is in beta
-     * and is subject to minor but possibly backwards-incompatible changes.
+     * Dropbox access to use this endpoint.
      *
      * @param sharedFolderId  The ID for the shared folder. Must match pattern
      *     "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
@@ -1173,8 +1178,7 @@ public final class DbxUserSharingRequests {
     /**
      * Allows an owner or editor (if the ACL update policy allows) of a shared
      * folder to remove another member. Apps must have full Dropbox access to
-     * use this endpoint. Warning: This endpoint is in beta and is subject to
-     * minor but possibly backwards-incompatible changes.
+     * use this endpoint.
      *
      *
      * @return Result returned by methods that may either launch an asynchronous
@@ -1198,8 +1202,7 @@ public final class DbxUserSharingRequests {
     /**
      * Allows an owner or editor (if the ACL update policy allows) of a shared
      * folder to remove another member. Apps must have full Dropbox access to
-     * use this endpoint. Warning: This endpoint is in beta and is subject to
-     * minor but possibly backwards-incompatible changes.
+     * use this endpoint.
      *
      * @param sharedFolderId  The ID for the shared folder. Must match pattern
      *     "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
@@ -1280,8 +1283,7 @@ public final class DbxUserSharingRequests {
      * {@link ShareFolderLaunch#asyncJobId} is returned, you'll need to call
      * {@link DbxUserSharingRequests#checkShareJobStatus(String)} until the
      * action completes to get the metadata for the folder. Apps must have full
-     * Dropbox access to use this endpoint. Warning: This endpoint is in beta
-     * and is subject to minor but possibly backwards-incompatible changes.
+     * Dropbox access to use this endpoint.
      *
      */
     ShareFolderLaunch shareFolder(ShareFolderArg shareFolderArg) throws ShareFolderErrorException, DbxException {
@@ -1305,8 +1307,7 @@ public final class DbxUserSharingRequests {
      * {@link ShareFolderLaunch#asyncJobId} is returned, you'll need to call
      * {@link DbxUserSharingRequests#checkShareJobStatus(String)} until the
      * action completes to get the metadata for the folder. Apps must have full
-     * Dropbox access to use this endpoint. Warning: This endpoint is in beta
-     * and is subject to minor but possibly backwards-incompatible changes.
+     * Dropbox access to use this endpoint.
      *
      * <p> The default values for the optional request parameters will be used.
      * See {@link ShareFolderBuilder} for more details. </p>
@@ -1330,8 +1331,7 @@ public final class DbxUserSharingRequests {
      * {@link ShareFolderLaunch#asyncJobId} is returned, you'll need to call
      * {@link DbxUserSharingRequests#checkShareJobStatus(String)} until the
      * action completes to get the metadata for the folder. Apps must have full
-     * Dropbox access to use this endpoint. Warning: This endpoint is in beta
-     * and is subject to minor but possibly backwards-incompatible changes.
+     * Dropbox access to use this endpoint.
      *
      * @param path  The path to the folder to share. If it does not exist, then
      *     a new one is created. Must match pattern "{@code /.*}" and not be
@@ -1356,8 +1356,7 @@ public final class DbxUserSharingRequests {
      * Transfer ownership of a shared folder to a member of the shared folder.
      * User must have {@link AccessLevel#OWNER} access to the shared folder to
      * perform a transfer. Apps must have full Dropbox access to use this
-     * endpoint. Warning: This endpoint is in beta and is subject to minor but
-     * possibly backwards-incompatible changes.
+     * endpoint.
      *
      */
     void transferFolder(TransferFolderArg transferFolderArg) throws TransferFolderErrorException, DbxException {
@@ -1378,8 +1377,7 @@ public final class DbxUserSharingRequests {
      * Transfer ownership of a shared folder to a member of the shared folder.
      * User must have {@link AccessLevel#OWNER} access to the shared folder to
      * perform a transfer. Apps must have full Dropbox access to use this
-     * endpoint. Warning: This endpoint is in beta and is subject to minor but
-     * possibly backwards-incompatible changes.
+     * endpoint.
      *
      * @param sharedFolderId  The ID for the shared folder. Must match pattern
      *     "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
@@ -1402,8 +1400,7 @@ public final class DbxUserSharingRequests {
      * The current user unmounts the designated folder. They can re-mount the
      * folder at a later time using {@link
      * DbxUserSharingRequests#mountFolder(String)}. Apps must have full Dropbox
-     * access to use this endpoint. Warning: This endpoint is in beta and is
-     * subject to minor but possibly backwards-incompatible changes.
+     * access to use this endpoint.
      *
      */
     void unmountFolder(UnmountFolderArg unmountFolderArg) throws UnmountFolderErrorException, DbxException {
@@ -1424,8 +1421,7 @@ public final class DbxUserSharingRequests {
      * The current user unmounts the designated folder. They can re-mount the
      * folder at a later time using {@link
      * DbxUserSharingRequests#mountFolder(String)}. Apps must have full Dropbox
-     * access to use this endpoint. Warning: This endpoint is in beta and is
-     * subject to minor but possibly backwards-incompatible changes.
+     * access to use this endpoint.
      *
      * @param sharedFolderId  The ID for the shared folder. Must match pattern
      *     "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
@@ -1446,8 +1442,7 @@ public final class DbxUserSharingRequests {
      * Allows a shared folder owner to unshare the folder. You'll need to call
      * {@link DbxUserSharingRequests#checkJobStatus(String)} to determine if the
      * action has completed successfully. Apps must have full Dropbox access to
-     * use this endpoint. Warning: This endpoint is in beta and is subject to
-     * minor but possibly backwards-incompatible changes.
+     * use this endpoint.
      *
      *
      * @return Result returned by methods that may either launch an asynchronous
@@ -1472,8 +1467,7 @@ public final class DbxUserSharingRequests {
      * Allows a shared folder owner to unshare the folder. You'll need to call
      * {@link DbxUserSharingRequests#checkJobStatus(String)} to determine if the
      * action has completed successfully. Apps must have full Dropbox access to
-     * use this endpoint. Warning: This endpoint is in beta and is subject to
-     * minor but possibly backwards-incompatible changes.
+     * use this endpoint.
      *
      * <p> The {@code leaveACopy} request parameter will default to {@code
      * false} (see {@link #unshareFolder(String,boolean)}). </p>
@@ -1497,8 +1491,7 @@ public final class DbxUserSharingRequests {
      * Allows a shared folder owner to unshare the folder. You'll need to call
      * {@link DbxUserSharingRequests#checkJobStatus(String)} to determine if the
      * action has completed successfully. Apps must have full Dropbox access to
-     * use this endpoint. Warning: This endpoint is in beta and is subject to
-     * minor but possibly backwards-incompatible changes.
+     * use this endpoint.
      *
      * @param sharedFolderId  The ID for the shared folder. Must match pattern
      *     "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
@@ -1526,8 +1519,6 @@ public final class DbxUserSharingRequests {
     /**
      * Allows an owner or editor of a shared folder to update another member's
      * permissions. Apps must have full Dropbox access to use this endpoint.
-     * Warning: This endpoint is in beta and is subject to minor but possibly
-     * backwards-incompatible changes.
      *
      */
     void updateFolderMember(UpdateFolderMemberArg updateFolderMemberArg) throws UpdateFolderMemberErrorException, DbxException {
@@ -1547,8 +1538,6 @@ public final class DbxUserSharingRequests {
     /**
      * Allows an owner or editor of a shared folder to update another member's
      * permissions. Apps must have full Dropbox access to use this endpoint.
-     * Warning: This endpoint is in beta and is subject to minor but possibly
-     * backwards-incompatible changes.
      *
      * @param sharedFolderId  The ID for the shared folder. Must match pattern
      *     "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
@@ -1575,9 +1564,7 @@ public final class DbxUserSharingRequests {
     /**
      * Update the sharing policies for a shared folder. User must have {@link
      * AccessLevel#OWNER} access to the shared folder to update its policies.
-     * Apps must have full Dropbox access to use this endpoint. Warning: This
-     * endpoint is in beta and is subject to minor but possibly
-     * backwards-incompatible changes.
+     * Apps must have full Dropbox access to use this endpoint.
      *
      * @param updateFolderPolicyArg  If any of the policy's are unset, then they
      *     retain their current setting.
@@ -1602,9 +1589,7 @@ public final class DbxUserSharingRequests {
     /**
      * Update the sharing policies for a shared folder. User must have {@link
      * AccessLevel#OWNER} access to the shared folder to update its policies.
-     * Apps must have full Dropbox access to use this endpoint. Warning: This
-     * endpoint is in beta and is subject to minor but possibly
-     * backwards-incompatible changes.
+     * Apps must have full Dropbox access to use this endpoint.
      *
      * @param sharedFolderId  The ID for the shared folder. Must match pattern
      *     "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
@@ -1623,9 +1608,7 @@ public final class DbxUserSharingRequests {
     /**
      * Update the sharing policies for a shared folder. User must have {@link
      * AccessLevel#OWNER} access to the shared folder to update its policies.
-     * Apps must have full Dropbox access to use this endpoint. Warning: This
-     * endpoint is in beta and is subject to minor but possibly
-     * backwards-incompatible changes.
+     * Apps must have full Dropbox access to use this endpoint.
      *
      * @param sharedFolderId  The ID for the shared folder. Must match pattern
      *     "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.

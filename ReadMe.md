@@ -14,7 +14,7 @@ If you're using Maven, then edit your project's "pom.xml" and add this to the `<
 <dependency>
     <groupId>com.dropbox.core</groupId>
     <artifactId>dropbox-core-sdk</artifactId>
-    <version>2.0.1</version>
+    <version>2.0.2</version>
 </dependency>
 ```
 
@@ -23,7 +23,7 @@ If you are using Gradle, then edit your project's "build.gradle" and add this to
 ```groovy
 dependencies {
     // ...
-    compile 'com.dropbox.core:dropbox-core-sdk:2.0.1'
+    compile 'com.dropbox.core:dropbox-core-sdk:2.0.2'
 }
 ```
 
@@ -181,4 +181,5 @@ Jackson Databind makes use of reflection and annotations to map Java objects to 
 -keepattributes *Annotation*,EnclosingMethod,InnerClasses,Signature
 -keepnames class com.fasterxml.jackson.** { *; }
 -dontwarn com.fasterxml.jackson.databind.**
+-adaptresourcefilenames com/dropbox/core/http/trusted-certs.raw
 ```

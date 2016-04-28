@@ -8,6 +8,7 @@ import com.dropbox.core.json.JsonReader;
 import com.dropbox.core.json.JsonUtil;
 import com.dropbox.core.json.StructJsonDeserializer;
 import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.v2.properties.PropertyGroup;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -25,6 +26,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 @JsonSerialize(using=FileMetadata.Serializer.class)
 @JsonDeserialize(using=FileMetadata.Deserializer.class)
@@ -42,6 +44,8 @@ public class FileMetadata extends Metadata {
     protected final long size;
     protected final MediaInfo mediaInfo;
     protected final FileSharingInfo sharingInfo;
+    protected final List<PropertyGroup> propertyGroups;
+    protected final Boolean hasExplicitSharedMembers;
 
     /**
      * Use {@link newBuilder} to create instances of this class without
@@ -78,11 +82,22 @@ public class FileMetadata extends Metadata {
      *     pattern "{@code [-_0-9a-zA-Z:]+}".
      * @param mediaInfo  Additional information if the file is a photo or video.
      * @param sharingInfo  Set if this file is contained in a shared folder.
+     * @param propertyGroups  Additional information if the file has custom
+     *     properties with the property template specified. Must not contain a
+     *     {@code null} item.
+     * @param hasExplicitSharedMembers  This flag will only be present if
+     *     include_has_explicit_shared_members  is true in {@link
+     *     DbxUserFilesRequests#listFolder(String)} or {@link
+     *     DbxUserFilesRequests#getMetadata(String)}. If this  flag is present,
+     *     it will be true if this file has any explicit shared  members. This
+     *     is different from sharing_info in that this could be true  in the
+     *     case where a file has explicit members but is not contained within  a
+     *     shared folder.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileMetadata(String name, String pathLower, String pathDisplay, String id, Date clientModified, Date serverModified, String rev, long size, String parentSharedFolderId, MediaInfo mediaInfo, FileSharingInfo sharingInfo) {
+    public FileMetadata(String name, String pathLower, String pathDisplay, String id, Date clientModified, Date serverModified, String rev, long size, String parentSharedFolderId, MediaInfo mediaInfo, FileSharingInfo sharingInfo, List<PropertyGroup> propertyGroups, Boolean hasExplicitSharedMembers) {
         super(name, pathLower, pathDisplay, parentSharedFolderId);
         if (id == null) {
             throw new IllegalArgumentException("Required value for 'id' is null");
@@ -112,6 +127,15 @@ public class FileMetadata extends Metadata {
         this.size = size;
         this.mediaInfo = mediaInfo;
         this.sharingInfo = sharingInfo;
+        if (propertyGroups != null) {
+            for (PropertyGroup x : propertyGroups) {
+                if (x == null) {
+                    throw new IllegalArgumentException("An item in list 'propertyGroups' is null");
+                }
+            }
+        }
+        this.propertyGroups = propertyGroups;
+        this.hasExplicitSharedMembers = hasExplicitSharedMembers;
     }
 
     /**
@@ -147,7 +171,7 @@ public class FileMetadata extends Metadata {
      *     preconditions.
      */
     public FileMetadata(String name, String pathLower, String pathDisplay, String id, Date clientModified, Date serverModified, String rev, long size) {
-        this(name, pathLower, pathDisplay, id, clientModified, serverModified, rev, size, null, null, null);
+        this(name, pathLower, pathDisplay, id, clientModified, serverModified, rev, size, null, null, null, null, null);
     }
 
     /**
@@ -220,6 +244,30 @@ public class FileMetadata extends Metadata {
     }
 
     /**
+     * Additional information if the file has custom properties with the
+     * property template specified.
+     *
+     * @return value for this field, or {@code null} if not present.
+     */
+    public List<PropertyGroup> getPropertyGroups() {
+        return propertyGroups;
+    }
+
+    /**
+     * This flag will only be present if include_has_explicit_shared_members  is
+     * true in {@link DbxUserFilesRequests#listFolder(String)} or {@link
+     * DbxUserFilesRequests#getMetadata(String)}. If this  flag is present, it
+     * will be true if this file has any explicit shared  members. This is
+     * different from sharing_info in that this could be true  in the case where
+     * a file has explicit members but is not contained within  a shared folder.
+     *
+     * @return value for this field, or {@code null} if not present.
+     */
+    public Boolean getHasExplicitSharedMembers() {
+        return hasExplicitSharedMembers;
+    }
+
+    /**
      * Returns a new builder for creating an instance of this class.
      *
      * @param name  The last component of the path (including extension). This
@@ -273,6 +321,8 @@ public class FileMetadata extends Metadata {
         protected String parentSharedFolderId;
         protected MediaInfo mediaInfo;
         protected FileSharingInfo sharingInfo;
+        protected List<PropertyGroup> propertyGroups;
+        protected Boolean hasExplicitSharedMembers;
 
         protected Builder(String name, String pathLower, String pathDisplay, String id, Date clientModified, Date serverModified, String rev, long size) {
             if (name == null) {
@@ -316,6 +366,8 @@ public class FileMetadata extends Metadata {
             this.parentSharedFolderId = null;
             this.mediaInfo = null;
             this.sharingInfo = null;
+            this.propertyGroups = null;
+            this.hasExplicitSharedMembers = null;
         }
 
         /**
@@ -367,13 +419,56 @@ public class FileMetadata extends Metadata {
         }
 
         /**
+         * Set value for optional field.
+         *
+         * @param propertyGroups  Additional information if the file has custom
+         *     properties with the property template specified. Must not contain
+         *     a {@code null} item.
+         *
+         * @return this builder
+         *
+         * @throws IllegalArgumentException  If any argument does not meet its
+         *     preconditions.
+         */
+        public Builder withPropertyGroups(List<PropertyGroup> propertyGroups) {
+            if (propertyGroups != null) {
+                for (PropertyGroup x : propertyGroups) {
+                    if (x == null) {
+                        throw new IllegalArgumentException("An item in list 'propertyGroups' is null");
+                    }
+                }
+            }
+            this.propertyGroups = propertyGroups;
+            return this;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param hasExplicitSharedMembers  This flag will only be present if
+         *     include_has_explicit_shared_members  is true in {@link
+         *     DbxUserFilesRequests#listFolder(String)} or {@link
+         *     DbxUserFilesRequests#getMetadata(String)}. If this  flag is
+         *     present, it will be true if this file has any explicit shared
+         *     members. This is different from sharing_info in that this could
+         *     be true  in the case where a file has explicit members but is not
+         *     contained within  a shared folder.
+         *
+         * @return this builder
+         */
+        public Builder withHasExplicitSharedMembers(Boolean hasExplicitSharedMembers) {
+            this.hasExplicitSharedMembers = hasExplicitSharedMembers;
+            return this;
+        }
+
+        /**
          * Builds an instance of {@link FileMetadata} configured with this
          * builder's values
          *
          * @return new instance of {@link FileMetadata}
          */
         public FileMetadata build() {
-            return new FileMetadata(name, pathLower, pathDisplay, id, clientModified, serverModified, rev, size, parentSharedFolderId, mediaInfo, sharingInfo);
+            return new FileMetadata(name, pathLower, pathDisplay, id, clientModified, serverModified, rev, size, parentSharedFolderId, mediaInfo, sharingInfo, propertyGroups, hasExplicitSharedMembers);
         }
     }
 
@@ -386,7 +481,9 @@ public class FileMetadata extends Metadata {
             rev,
             size,
             mediaInfo,
-            sharingInfo
+            sharingInfo,
+            propertyGroups,
+            hasExplicitSharedMembers
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;
@@ -411,6 +508,8 @@ public class FileMetadata extends Metadata {
                 && ((this.parentSharedFolderId == other.parentSharedFolderId) || (this.parentSharedFolderId != null && this.parentSharedFolderId.equals(other.parentSharedFolderId)))
                 && ((this.mediaInfo == other.mediaInfo) || (this.mediaInfo != null && this.mediaInfo.equals(other.mediaInfo)))
                 && ((this.sharingInfo == other.sharingInfo) || (this.sharingInfo != null && this.sharingInfo.equals(other.sharingInfo)))
+                && ((this.propertyGroups == other.propertyGroups) || (this.propertyGroups != null && this.propertyGroups.equals(other.propertyGroups)))
+                && ((this.hasExplicitSharedMembers == other.hasExplicitSharedMembers) || (this.hasExplicitSharedMembers != null && this.hasExplicitSharedMembers.equals(other.hasExplicitSharedMembers)))
                 ;
         }
         else {
@@ -475,6 +574,12 @@ public class FileMetadata extends Metadata {
             if (value.sharingInfo != null) {
                 g.writeObjectField("sharing_info", value.sharingInfo);
             }
+            if (value.propertyGroups != null) {
+                g.writeObjectField("property_groups", value.propertyGroups);
+            }
+            if (value.hasExplicitSharedMembers != null) {
+                g.writeObjectField("has_explicit_shared_members", value.hasExplicitSharedMembers);
+            }
         }
     }
 
@@ -509,6 +614,8 @@ public class FileMetadata extends Metadata {
             String parentSharedFolderId = null;
             MediaInfo mediaInfo = null;
             FileSharingInfo sharingInfo = null;
+            List<PropertyGroup> propertyGroups = null;
+            Boolean hasExplicitSharedMembers = null;
 
             while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
                 String _field = _p.getCurrentName();
@@ -558,6 +665,22 @@ public class FileMetadata extends Metadata {
                     sharingInfo = _p.readValueAs(FileSharingInfo.class);
                     _p.nextToken();
                 }
+                else if ("property_groups".equals(_field)) {
+                    expectArrayStart(_p);
+                    propertyGroups = new java.util.ArrayList<PropertyGroup>();
+                    while (!isArrayEnd(_p)) {
+                        PropertyGroup _x = null;
+                        _x = _p.readValueAs(PropertyGroup.class);
+                        _p.nextToken();
+                        propertyGroups.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
+                }
+                else if ("has_explicit_shared_members".equals(_field)) {
+                    hasExplicitSharedMembers = _p.getValueAsBoolean();
+                    _p.nextToken();
+                }
                 else {
                     skipValue(_p);
                 }
@@ -588,7 +711,7 @@ public class FileMetadata extends Metadata {
                 throw new JsonParseException(_p, "Required field \"size\" is missing.");
             }
 
-            return new FileMetadata(name, pathLower, pathDisplay, id, clientModified, serverModified, rev, size, parentSharedFolderId, mediaInfo, sharingInfo);
+            return new FileMetadata(name, pathLower, pathDisplay, id, clientModified, serverModified, rev, size, parentSharedFolderId, mediaInfo, sharingInfo, propertyGroups, hasExplicitSharedMembers);
         }
     }
 }

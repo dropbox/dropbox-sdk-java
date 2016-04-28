@@ -36,8 +36,34 @@ class ModifySharedLinkSettingsArgs {
 
     protected final String url;
     protected final SharedLinkSettings settings;
+    protected final boolean removeExpiration;
 
     /**
+     *
+     * @param url  URL of the shared link to change its settings. Must not be
+     *     {@code null}.
+     * @param settings  Set of settings for the shared link. Must not be {@code
+     *     null}.
+     * @param removeExpiration  If set to true, removes the expiration of the
+     *     shared link.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public ModifySharedLinkSettingsArgs(String url, SharedLinkSettings settings, boolean removeExpiration) {
+        if (url == null) {
+            throw new IllegalArgumentException("Required value for 'url' is null");
+        }
+        this.url = url;
+        if (settings == null) {
+            throw new IllegalArgumentException("Required value for 'settings' is null");
+        }
+        this.settings = settings;
+        this.removeExpiration = removeExpiration;
+    }
+
+    /**
+     * The default values for unset fields will be used.
      *
      * @param url  URL of the shared link to change its settings. Must not be
      *     {@code null}.
@@ -48,14 +74,7 @@ class ModifySharedLinkSettingsArgs {
      *     preconditions.
      */
     public ModifySharedLinkSettingsArgs(String url, SharedLinkSettings settings) {
-        if (url == null) {
-            throw new IllegalArgumentException("Required value for 'url' is null");
-        }
-        this.url = url;
-        if (settings == null) {
-            throw new IllegalArgumentException("Required value for 'settings' is null");
-        }
-        this.settings = settings;
+        this(url, settings, false);
     }
 
     /**
@@ -76,11 +95,22 @@ class ModifySharedLinkSettingsArgs {
         return settings;
     }
 
+    /**
+     * If set to true, removes the expiration of the shared link.
+     *
+     * @return value for this field, or {@code null} if not present. Defaults to
+     *     false.
+     */
+    public boolean getRemoveExpiration() {
+        return removeExpiration;
+    }
+
     @Override
     public int hashCode() {
         int hash = java.util.Arrays.hashCode(new Object [] {
             url,
-            settings
+            settings,
+            removeExpiration
         });
         return hash;
     }
@@ -95,6 +125,7 @@ class ModifySharedLinkSettingsArgs {
             ModifySharedLinkSettingsArgs other = (ModifySharedLinkSettingsArgs) obj;
             return ((this.url == other.url) || (this.url.equals(other.url)))
                 && ((this.settings == other.settings) || (this.settings.equals(other.settings)))
+                && (this.removeExpiration == other.removeExpiration)
                 ;
         }
         else {
@@ -148,6 +179,7 @@ class ModifySharedLinkSettingsArgs {
         protected void serializeFields(ModifySharedLinkSettingsArgs value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
             g.writeObjectField("url", value.url);
             g.writeObjectField("settings", value.settings);
+            g.writeObjectField("remove_expiration", value.removeExpiration);
         }
     }
 
@@ -172,6 +204,7 @@ class ModifySharedLinkSettingsArgs {
 
             String url = null;
             SharedLinkSettings settings = null;
+            boolean removeExpiration = false;
 
             while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
                 String _field = _p.getCurrentName();
@@ -182,6 +215,10 @@ class ModifySharedLinkSettingsArgs {
                 }
                 else if ("settings".equals(_field)) {
                     settings = _p.readValueAs(SharedLinkSettings.class);
+                    _p.nextToken();
+                }
+                else if ("remove_expiration".equals(_field)) {
+                    removeExpiration = _p.getValueAsBoolean();
                     _p.nextToken();
                 }
                 else {
@@ -196,7 +233,7 @@ class ModifySharedLinkSettingsArgs {
                 throw new JsonParseException(_p, "Required field \"settings\" is missing.");
             }
 
-            return new ModifySharedLinkSettingsArgs(url, settings);
+            return new ModifySharedLinkSettingsArgs(url, settings, removeExpiration);
         }
     }
 }

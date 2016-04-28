@@ -86,6 +86,22 @@ public class ListFolderBuilder {
     }
 
     /**
+     * Set value for optional field.
+     *
+     * <p> If left unset or set to {@code null}, defaults to {@code false}. </p>
+     *
+     * @param includeHasExplicitSharedMembers  If true, the results will include
+     *     a flag for each file indicating whether or not  that file has any
+     *     explicit members. Defaults to {@code false} when set to {@code null}.
+     *
+     * @return this builder
+     */
+    public ListFolderBuilder withIncludeHasExplicitSharedMembers(Boolean includeHasExplicitSharedMembers) {
+        this.listFolderArgBuilder.withIncludeHasExplicitSharedMembers(includeHasExplicitSharedMembers);
+        return this;
+    }
+
+    /**
      * Issues the request.
      */
     public ListFolderResult start() throws ListFolderErrorException, DbxException {

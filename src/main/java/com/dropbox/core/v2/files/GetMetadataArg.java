@@ -36,18 +36,28 @@ class GetMetadataArg {
 
     protected final String path;
     protected final boolean includeMediaInfo;
+    protected final boolean includeDeleted;
+    protected final boolean includeHasExplicitSharedMembers;
 
     /**
+     * Use {@link newBuilder} to create instances of this class without
+     * specifying values for all optional fields.
      *
      * @param path  The path of a file or folder on Dropbox. Must match pattern
      *     "{@code ((/|id:).*)|(rev:[0-9a-f]{9,})}" and not be {@code null}.
      * @param includeMediaInfo  If true, {@link FileMetadata#getMediaInfo} is
      *     set for photo and video.
+     * @param includeDeleted  If true, {@link DeletedMetadata} will be returned
+     *     for deleted file or folder, otherwise {@link LookupError#NOT_FOUND}
+     *     will be returned.
+     * @param includeHasExplicitSharedMembers  If true, the results will include
+     *     a flag for each file indicating whether or not  that file has any
+     *     explicit members.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetMetadataArg(String path, boolean includeMediaInfo) {
+    public GetMetadataArg(String path, boolean includeMediaInfo, boolean includeDeleted, boolean includeHasExplicitSharedMembers) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
@@ -56,6 +66,8 @@ class GetMetadataArg {
         }
         this.path = path;
         this.includeMediaInfo = includeMediaInfo;
+        this.includeDeleted = includeDeleted;
+        this.includeHasExplicitSharedMembers = includeHasExplicitSharedMembers;
     }
 
     /**
@@ -68,7 +80,7 @@ class GetMetadataArg {
      *     preconditions.
      */
     public GetMetadataArg(String path) {
-        this(path, false);
+        this(path, false, false, false);
     }
 
     /**
@@ -90,11 +102,152 @@ class GetMetadataArg {
         return includeMediaInfo;
     }
 
+    /**
+     * If true, {@link DeletedMetadata} will be returned for deleted file or
+     * folder, otherwise {@link LookupError#NOT_FOUND} will be returned.
+     *
+     * @return value for this field, or {@code null} if not present. Defaults to
+     *     false.
+     */
+    public boolean getIncludeDeleted() {
+        return includeDeleted;
+    }
+
+    /**
+     * If true, the results will include a flag for each file indicating whether
+     * or not  that file has any explicit members.
+     *
+     * @return value for this field, or {@code null} if not present. Defaults to
+     *     false.
+     */
+    public boolean getIncludeHasExplicitSharedMembers() {
+        return includeHasExplicitSharedMembers;
+    }
+
+    /**
+     * Returns a new builder for creating an instance of this class.
+     *
+     * @param path  The path of a file or folder on Dropbox. Must match pattern
+     *     "{@code ((/|id:).*)|(rev:[0-9a-f]{9,})}" and not be {@code null}.
+     *
+     * @return builder for this class.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public static Builder newBuilder(String path) {
+        return new Builder(path);
+    }
+
+    /**
+     * Builder for {@link GetMetadataArg}.
+     */
+    public static class Builder {
+        protected final String path;
+
+        protected boolean includeMediaInfo;
+        protected boolean includeDeleted;
+        protected boolean includeHasExplicitSharedMembers;
+
+        protected Builder(String path) {
+            if (path == null) {
+                throw new IllegalArgumentException("Required value for 'path' is null");
+            }
+            if (!java.util.regex.Pattern.matches("((/|id:).*)|(rev:[0-9a-f]{9,})", path)) {
+                throw new IllegalArgumentException("String 'path' does not match pattern");
+            }
+            this.path = path;
+            this.includeMediaInfo = false;
+            this.includeDeleted = false;
+            this.includeHasExplicitSharedMembers = false;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * <p> If left unset or set to {@code null}, defaults to {@code false}.
+         * </p>
+         *
+         * @param includeMediaInfo  If true, {@link FileMetadata#getMediaInfo}
+         *     is set for photo and video. Defaults to {@code false} when set to
+         *     {@code null}.
+         *
+         * @return this builder
+         */
+        public Builder withIncludeMediaInfo(Boolean includeMediaInfo) {
+            if (includeMediaInfo != null) {
+                this.includeMediaInfo = includeMediaInfo;
+            }
+            else {
+                this.includeMediaInfo = false;
+            }
+            return this;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * <p> If left unset or set to {@code null}, defaults to {@code false}.
+         * </p>
+         *
+         * @param includeDeleted  If true, {@link DeletedMetadata} will be
+         *     returned for deleted file or folder, otherwise {@link
+         *     LookupError#NOT_FOUND} will be returned. Defaults to {@code
+         *     false} when set to {@code null}.
+         *
+         * @return this builder
+         */
+        public Builder withIncludeDeleted(Boolean includeDeleted) {
+            if (includeDeleted != null) {
+                this.includeDeleted = includeDeleted;
+            }
+            else {
+                this.includeDeleted = false;
+            }
+            return this;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * <p> If left unset or set to {@code null}, defaults to {@code false}.
+         * </p>
+         *
+         * @param includeHasExplicitSharedMembers  If true, the results will
+         *     include a flag for each file indicating whether or not  that file
+         *     has any explicit members. Defaults to {@code false} when set to
+         *     {@code null}.
+         *
+         * @return this builder
+         */
+        public Builder withIncludeHasExplicitSharedMembers(Boolean includeHasExplicitSharedMembers) {
+            if (includeHasExplicitSharedMembers != null) {
+                this.includeHasExplicitSharedMembers = includeHasExplicitSharedMembers;
+            }
+            else {
+                this.includeHasExplicitSharedMembers = false;
+            }
+            return this;
+        }
+
+        /**
+         * Builds an instance of {@link GetMetadataArg} configured with this
+         * builder's values
+         *
+         * @return new instance of {@link GetMetadataArg}
+         */
+        public GetMetadataArg build() {
+            return new GetMetadataArg(path, includeMediaInfo, includeDeleted, includeHasExplicitSharedMembers);
+        }
+    }
+
     @Override
     public int hashCode() {
         int hash = java.util.Arrays.hashCode(new Object [] {
             path,
-            includeMediaInfo
+            includeMediaInfo,
+            includeDeleted,
+            includeHasExplicitSharedMembers
         });
         return hash;
     }
@@ -109,6 +262,8 @@ class GetMetadataArg {
             GetMetadataArg other = (GetMetadataArg) obj;
             return ((this.path == other.path) || (this.path.equals(other.path)))
                 && (this.includeMediaInfo == other.includeMediaInfo)
+                && (this.includeDeleted == other.includeDeleted)
+                && (this.includeHasExplicitSharedMembers == other.includeHasExplicitSharedMembers)
                 ;
         }
         else {
@@ -162,6 +317,8 @@ class GetMetadataArg {
         protected void serializeFields(GetMetadataArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
             g.writeObjectField("path", value.path);
             g.writeObjectField("include_media_info", value.includeMediaInfo);
+            g.writeObjectField("include_deleted", value.includeDeleted);
+            g.writeObjectField("include_has_explicit_shared_members", value.includeHasExplicitSharedMembers);
         }
     }
 
@@ -186,6 +343,8 @@ class GetMetadataArg {
 
             String path = null;
             boolean includeMediaInfo = false;
+            boolean includeDeleted = false;
+            boolean includeHasExplicitSharedMembers = false;
 
             while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
                 String _field = _p.getCurrentName();
@@ -198,6 +357,14 @@ class GetMetadataArg {
                     includeMediaInfo = _p.getValueAsBoolean();
                     _p.nextToken();
                 }
+                else if ("include_deleted".equals(_field)) {
+                    includeDeleted = _p.getValueAsBoolean();
+                    _p.nextToken();
+                }
+                else if ("include_has_explicit_shared_members".equals(_field)) {
+                    includeHasExplicitSharedMembers = _p.getValueAsBoolean();
+                    _p.nextToken();
+                }
                 else {
                     skipValue(_p);
                 }
@@ -207,7 +374,7 @@ class GetMetadataArg {
                 throw new JsonParseException(_p, "Required field \"path\" is missing.");
             }
 
-            return new GetMetadataArg(path, includeMediaInfo);
+            return new GetMetadataArg(path, includeMediaInfo, includeDeleted, includeHasExplicitSharedMembers);
         }
     }
 }

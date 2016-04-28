@@ -62,6 +62,10 @@ public enum FolderAction {
      */
     UNSHARE,
     /**
+     * Keep a copy of the contents upon leaving or being kicked from the folder.
+     */
+    LEAVE_A_COPY,
+    /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *
      * <p> Receiving a catch-all value typically indicates this SDK version is
@@ -105,6 +109,9 @@ public enum FolderAction {
                 case UNSHARE:
                     g.writeString("unshare");
                     break;
+                case LEAVE_A_COPY:
+                    g.writeString("leave_a_copy");
+                    break;
                 case OTHER:
                     g.writeString("other");
                     break;
@@ -133,6 +140,7 @@ public enum FolderAction {
             values.put("relinquish_membership", FolderAction.RELINQUISH_MEMBERSHIP);
             values.put("unmount", FolderAction.UNMOUNT);
             values.put("unshare", FolderAction.UNSHARE);
+            values.put("leave_a_copy", FolderAction.LEAVE_A_COPY);
             values.put("other", FolderAction.OTHER);
             return Collections.unmodifiableMap(values);
         }

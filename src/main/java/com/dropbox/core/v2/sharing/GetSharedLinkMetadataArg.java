@@ -27,7 +27,7 @@ import java.io.IOException;
 
 @JsonSerialize(using=GetSharedLinkMetadataArg.Serializer.class)
 @JsonDeserialize(using=GetSharedLinkMetadataArg.Deserializer.class)
-class GetSharedLinkMetadataArg {
+public class GetSharedLinkMetadataArg {
     // struct GetSharedLinkMetadataArg
 
     // ProGuard work-around since we declare serializers in annotation

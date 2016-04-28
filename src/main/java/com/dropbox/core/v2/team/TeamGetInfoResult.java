@@ -8,6 +8,7 @@ import com.dropbox.core.json.JsonReader;
 import com.dropbox.core.json.JsonUtil;
 import com.dropbox.core.json.StructJsonDeserializer;
 import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.v2.teampolicies.TeamPolicies;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;

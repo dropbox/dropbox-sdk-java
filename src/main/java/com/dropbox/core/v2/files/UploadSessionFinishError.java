@@ -58,11 +58,23 @@ public final class UploadSessionFinishError {
          */
         PATH, // WriteError
         /**
+         * The batch request commits files into too many different shared
+         * folders. Please limit your batch request to files contained in a
+         * single shared folder.
+         */
+        TOO_MANY_SHARED_FOLDER_TARGETS,
+        /**
          * An unspecified error.
          */
         OTHER; // *catch_all
     }
 
+    /**
+     * The batch request commits files into too many different shared folders.
+     * Please limit your batch request to files contained in a single shared
+     * folder.
+     */
+    public static final UploadSessionFinishError TOO_MANY_SHARED_FOLDER_TARGETS = new UploadSessionFinishError(Tag.TOO_MANY_SHARED_FOLDER_TARGETS, null, null);
     /**
      * An unspecified error.
      */
@@ -200,6 +212,17 @@ public final class UploadSessionFinishError {
     }
 
     /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#TOO_MANY_SHARED_FOLDER_TARGETS}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#TOO_MANY_SHARED_FOLDER_TARGETS}, {@code false} otherwise.
+     */
+    public boolean isTooManySharedFolderTargets() {
+        return this.tag == Tag.TOO_MANY_SHARED_FOLDER_TARGETS;
+    }
+
+    /**
      * Returns {@code true} if this instance has the tag {@link Tag#OTHER},
      * {@code false} otherwise.
      *
@@ -235,6 +258,8 @@ public final class UploadSessionFinishError {
                     return (this.lookupFailedValue == other.lookupFailedValue) || (this.lookupFailedValue.equals(other.lookupFailedValue));
                 case PATH:
                     return (this.pathValue == other.pathValue) || (this.pathValue.equals(other.pathValue));
+                case TOO_MANY_SHARED_FOLDER_TARGETS:
+                    return true;
                 case OTHER:
                     return true;
                 default:
@@ -294,6 +319,9 @@ public final class UploadSessionFinishError {
                     g.writeObjectField("path", value.pathValue);
                     g.writeEndObject();
                     break;
+                case TOO_MANY_SHARED_FOLDER_TARGETS:
+                    g.writeString("too_many_shared_folder_targets");
+                    break;
                 case OTHER:
                     g.writeString("other");
                     break;
@@ -325,6 +353,9 @@ public final class UploadSessionFinishError {
                     _p.nextToken();
                     return UploadSessionFinishError.path(value);
                 }
+                case TOO_MANY_SHARED_FOLDER_TARGETS: {
+                    return UploadSessionFinishError.TOO_MANY_SHARED_FOLDER_TARGETS;
+                }
                 case OTHER: {
                     return UploadSessionFinishError.OTHER;
                 }
@@ -337,6 +368,7 @@ public final class UploadSessionFinishError {
             Map<String, UploadSessionFinishError.Tag> values = new HashMap<String, UploadSessionFinishError.Tag>();
             values.put("lookup_failed", UploadSessionFinishError.Tag.LOOKUP_FAILED);
             values.put("path", UploadSessionFinishError.Tag.PATH);
+            values.put("too_many_shared_folder_targets", UploadSessionFinishError.Tag.TOO_MANY_SHARED_FOLDER_TARGETS);
             values.put("other", UploadSessionFinishError.Tag.OTHER);
             return Collections.unmodifiableMap(values);
         }

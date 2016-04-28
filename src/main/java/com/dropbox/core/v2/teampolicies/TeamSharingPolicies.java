@@ -1,7 +1,7 @@
 /* DO NOT EDIT */
-/* This file was generated from team.babel */
+/* This file was generated from team_policies.babel */
 
-package com.dropbox.core.v2.team;
+package com.dropbox.core.v2.teampolicies;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;

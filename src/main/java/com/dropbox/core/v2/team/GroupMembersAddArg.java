@@ -28,7 +28,7 @@ import java.util.List;
 
 @JsonSerialize(using=GroupMembersAddArg.Serializer.class)
 @JsonDeserialize(using=GroupMembersAddArg.Deserializer.class)
-class GroupMembersAddArg {
+class GroupMembersAddArg extends IncludeMembersArg {
     // struct GroupMembersAddArg
 
     // ProGuard work-around since we declare serializers in annotation
@@ -44,11 +44,15 @@ class GroupMembersAddArg {
      *     null}.
      * @param members  List of users to be added to the group. Must not contain
      *     a {@code null} item and not be {@code null}.
+     * @param returnMembers  Whether to return the list of members in the group.
+     *     Note that the default value will cause all the group members  to be
+     *     returned in the response. This may take a long time for large groups.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupMembersAddArg(GroupSelector group, List<MemberAccess> members) {
+    public GroupMembersAddArg(GroupSelector group, List<MemberAccess> members, boolean returnMembers) {
+        super(returnMembers);
         if (group == null) {
             throw new IllegalArgumentException("Required value for 'group' is null");
         }
@@ -62,6 +66,21 @@ class GroupMembersAddArg {
             }
         }
         this.members = members;
+    }
+
+    /**
+     * The default values for unset fields will be used.
+     *
+     * @param group  Group to which users will be added. Must not be {@code
+     *     null}.
+     * @param members  List of users to be added to the group. Must not contain
+     *     a {@code null} item and not be {@code null}.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public GroupMembersAddArg(GroupSelector group, List<MemberAccess> members) {
+        this(group, members, true);
     }
 
     /**
@@ -88,6 +107,7 @@ class GroupMembersAddArg {
             group,
             members
         });
+        hash = (31 * super.hashCode()) + hash;
         return hash;
     }
 
@@ -101,6 +121,7 @@ class GroupMembersAddArg {
             GroupMembersAddArg other = (GroupMembersAddArg) obj;
             return ((this.group == other.group) || (this.group.equals(other.group)))
                 && ((this.members == other.members) || (this.members.equals(other.members)))
+                && (this.returnMembers == other.returnMembers)
                 ;
         }
         else {
@@ -154,6 +175,7 @@ class GroupMembersAddArg {
         protected void serializeFields(GroupMembersAddArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
             g.writeObjectField("group", value.group);
             g.writeObjectField("members", value.members);
+            g.writeObjectField("return_members", value.returnMembers);
         }
     }
 
@@ -178,6 +200,7 @@ class GroupMembersAddArg {
 
             GroupSelector group = null;
             List<MemberAccess> members = null;
+            boolean returnMembers = true;
 
             while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
                 String _field = _p.getCurrentName();
@@ -198,6 +221,10 @@ class GroupMembersAddArg {
                     expectArrayEnd(_p);
                     _p.nextToken();
                 }
+                else if ("return_members".equals(_field)) {
+                    returnMembers = _p.getValueAsBoolean();
+                    _p.nextToken();
+                }
                 else {
                     skipValue(_p);
                 }
@@ -210,7 +237,7 @@ class GroupMembersAddArg {
                 throw new JsonParseException(_p, "Required field \"members\" is missing.");
             }
 
-            return new GroupMembersAddArg(group, members);
+            return new GroupMembersAddArg(group, members, returnMembers);
         }
     }
 }

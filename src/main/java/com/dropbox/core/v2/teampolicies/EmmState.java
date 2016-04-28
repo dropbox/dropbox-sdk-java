@@ -1,7 +1,7 @@
 /* DO NOT EDIT */
-/* This file was generated from team.babel */
+/* This file was generated from team_policies.babel */
 
-package com.dropbox.core.v2.team;
+package com.dropbox.core.v2.teampolicies;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
@@ -26,22 +26,22 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Policy governing which shared folders a team member can join.
- */
-@JsonSerialize(using=SharedFolderJoinPolicy.Serializer.class)
-@JsonDeserialize(using=SharedFolderJoinPolicy.Deserializer.class)
-public enum SharedFolderJoinPolicy {
-    // union SharedFolderJoinPolicy
+@JsonSerialize(using=EmmState.Serializer.class)
+@JsonDeserialize(using=EmmState.Deserializer.class)
+public enum EmmState {
+    // union EmmState
     /**
-     * Team members can only join folders shared by teammates.
+     * Emm token is disabled
      */
-    FROM_TEAM_ONLY,
+    DISABLED,
     /**
-     * Team members can join any shared folder, including those shared by users
-     * outside the team.
+     * Emm token is optional
      */
-    FROM_ANYONE,
+    OPTIONAL,
+    /**
+     * Emm token is required
+     */
+    REQUIRED,
     /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *
@@ -55,21 +55,24 @@ public enum SharedFolderJoinPolicy {
     static final Serializer SERIALIZER = new Serializer();
     static final Deserializer DESERIALIZER = new Deserializer();
 
-    static final class Serializer extends UnionJsonSerializer<SharedFolderJoinPolicy> {
+    static final class Serializer extends UnionJsonSerializer<EmmState> {
         private static final long serialVersionUID = 0L;
 
         public Serializer() {
-            super(SharedFolderJoinPolicy.class);
+            super(EmmState.class);
         }
 
         @Override
-        public void serialize(SharedFolderJoinPolicy value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+        public void serialize(EmmState value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
             switch (value) {
-                case FROM_TEAM_ONLY:
-                    g.writeString("from_team_only");
+                case DISABLED:
+                    g.writeString("disabled");
                     break;
-                case FROM_ANYONE:
-                    g.writeString("from_anyone");
+                case OPTIONAL:
+                    g.writeString("optional");
+                    break;
+                case REQUIRED:
+                    g.writeString("required");
                     break;
                 case OTHER:
                     g.writeString("other");
@@ -78,23 +81,24 @@ public enum SharedFolderJoinPolicy {
         }
     }
 
-    static final class Deserializer extends UnionJsonDeserializer<SharedFolderJoinPolicy, SharedFolderJoinPolicy> {
+    static final class Deserializer extends UnionJsonDeserializer<EmmState, EmmState> {
         private static final long serialVersionUID = 0L;
 
         public Deserializer() {
-            super(SharedFolderJoinPolicy.class, getTagMapping(), SharedFolderJoinPolicy.OTHER);
+            super(EmmState.class, getTagMapping(), EmmState.OTHER);
         }
 
         @Override
-        public SharedFolderJoinPolicy deserialize(SharedFolderJoinPolicy _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+        public EmmState deserialize(EmmState _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
             return _tag;
         }
 
-        private static Map<String, SharedFolderJoinPolicy> getTagMapping() {
-            Map<String, SharedFolderJoinPolicy> values = new HashMap<String, SharedFolderJoinPolicy>();
-            values.put("from_team_only", SharedFolderJoinPolicy.FROM_TEAM_ONLY);
-            values.put("from_anyone", SharedFolderJoinPolicy.FROM_ANYONE);
-            values.put("other", SharedFolderJoinPolicy.OTHER);
+        private static Map<String, EmmState> getTagMapping() {
+            Map<String, EmmState> values = new HashMap<String, EmmState>();
+            values.put("disabled", EmmState.DISABLED);
+            values.put("optional", EmmState.OPTIONAL);
+            values.put("required", EmmState.REQUIRED);
+            values.put("other", EmmState.OTHER);
             return Collections.unmodifiableMap(values);
         }
     }

@@ -27,7 +27,7 @@ import java.io.IOException;
 
 @JsonSerialize(using=GroupUpdateArgs.Serializer.class)
 @JsonDeserialize(using=GroupUpdateArgs.Deserializer.class)
-class GroupUpdateArgs {
+class GroupUpdateArgs extends IncludeMembersArg {
     // struct GroupUpdateArgs
 
     // ProGuard work-around since we declare serializers in annotation
@@ -43,6 +43,9 @@ class GroupUpdateArgs {
      * specifying values for all optional fields.
      *
      * @param group  Specify a group. Must not be {@code null}.
+     * @param returnMembers  Whether to return the list of members in the group.
+     *     Note that the default value will cause all the group members  to be
+     *     returned in the response. This may take a long time for large groups.
      * @param newGroupName  Optional argument. Set group name to this if
      *     provided.
      * @param newGroupExternalId  Optional argument. New group external ID. If
@@ -53,7 +56,8 @@ class GroupUpdateArgs {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupUpdateArgs(GroupSelector group, String newGroupName, String newGroupExternalId) {
+    public GroupUpdateArgs(GroupSelector group, boolean returnMembers, String newGroupName, String newGroupExternalId) {
+        super(returnMembers);
         if (group == null) {
             throw new IllegalArgumentException("Required value for 'group' is null");
         }
@@ -71,7 +75,7 @@ class GroupUpdateArgs {
      *     preconditions.
      */
     public GroupUpdateArgs(GroupSelector group) {
-        this(group, null, null);
+        this(group, true, null, null);
     }
 
     /**
@@ -123,6 +127,7 @@ class GroupUpdateArgs {
     public static class Builder {
         protected final GroupSelector group;
 
+        protected boolean returnMembers;
         protected String newGroupName;
         protected String newGroupExternalId;
 
@@ -131,8 +136,33 @@ class GroupUpdateArgs {
                 throw new IllegalArgumentException("Required value for 'group' is null");
             }
             this.group = group;
+            this.returnMembers = true;
             this.newGroupName = null;
             this.newGroupExternalId = null;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * <p> If left unset or set to {@code null}, defaults to {@code true}.
+         * </p>
+         *
+         * @param returnMembers  Whether to return the list of members in the
+         *     group.  Note that the default value will cause all the group
+         *     members  to be returned in the response. This may take a long
+         *     time for large groups. Defaults to {@code true} when set to
+         *     {@code null}.
+         *
+         * @return this builder
+         */
+        public Builder withReturnMembers(Boolean returnMembers) {
+            if (returnMembers != null) {
+                this.returnMembers = returnMembers;
+            }
+            else {
+                this.returnMembers = true;
+            }
+            return this;
         }
 
         /**
@@ -170,7 +200,7 @@ class GroupUpdateArgs {
          * @return new instance of {@link GroupUpdateArgs}
          */
         public GroupUpdateArgs build() {
-            return new GroupUpdateArgs(group, newGroupName, newGroupExternalId);
+            return new GroupUpdateArgs(group, returnMembers, newGroupName, newGroupExternalId);
         }
     }
 
@@ -181,6 +211,7 @@ class GroupUpdateArgs {
             newGroupName,
             newGroupExternalId
         });
+        hash = (31 * super.hashCode()) + hash;
         return hash;
     }
 
@@ -193,6 +224,7 @@ class GroupUpdateArgs {
         else if (obj.getClass().equals(this.getClass())) {
             GroupUpdateArgs other = (GroupUpdateArgs) obj;
             return ((this.group == other.group) || (this.group.equals(other.group)))
+                && (this.returnMembers == other.returnMembers)
                 && ((this.newGroupName == other.newGroupName) || (this.newGroupName != null && this.newGroupName.equals(other.newGroupName)))
                 && ((this.newGroupExternalId == other.newGroupExternalId) || (this.newGroupExternalId != null && this.newGroupExternalId.equals(other.newGroupExternalId)))
                 ;
@@ -247,6 +279,7 @@ class GroupUpdateArgs {
         @Override
         protected void serializeFields(GroupUpdateArgs value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
             g.writeObjectField("group", value.group);
+            g.writeObjectField("return_members", value.returnMembers);
             if (value.newGroupName != null) {
                 g.writeObjectField("new_group_name", value.newGroupName);
             }
@@ -276,6 +309,7 @@ class GroupUpdateArgs {
         public GroupUpdateArgs deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
 
             GroupSelector group = null;
+            boolean returnMembers = true;
             String newGroupName = null;
             String newGroupExternalId = null;
 
@@ -284,6 +318,10 @@ class GroupUpdateArgs {
                 _p.nextToken();
                 if ("group".equals(_field)) {
                     group = _p.readValueAs(GroupSelector.class);
+                    _p.nextToken();
+                }
+                else if ("return_members".equals(_field)) {
+                    returnMembers = _p.getValueAsBoolean();
                     _p.nextToken();
                 }
                 else if ("new_group_name".equals(_field)) {
@@ -303,7 +341,7 @@ class GroupUpdateArgs {
                 throw new JsonParseException(_p, "Required field \"group\" is missing.");
             }
 
-            return new GroupUpdateArgs(group, newGroupName, newGroupExternalId);
+            return new GroupUpdateArgs(group, returnMembers, newGroupName, newGroupExternalId);
         }
     }
 }

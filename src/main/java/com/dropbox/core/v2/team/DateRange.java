@@ -31,7 +31,7 @@ import java.util.Date;
  */
 @JsonSerialize(using=DateRange.Serializer.class)
 @JsonDeserialize(using=DateRange.Deserializer.class)
-class DateRange {
+public class DateRange {
     // struct DateRange
 
     // ProGuard work-around since we declare serializers in annotation

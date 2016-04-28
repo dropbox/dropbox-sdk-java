@@ -27,7 +27,7 @@ import java.io.IOException;
 
 @JsonSerialize(using=DeleteArg.Serializer.class)
 @JsonDeserialize(using=DeleteArg.Deserializer.class)
-class DeleteArg {
+public class DeleteArg {
     // struct DeleteArg
 
     // ProGuard work-around since we declare serializers in annotation

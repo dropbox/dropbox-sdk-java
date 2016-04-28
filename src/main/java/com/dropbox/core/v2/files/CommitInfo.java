@@ -48,11 +48,12 @@ public class CommitInfo {
      * @param path  Path in the user's Dropbox to save the file. Must match
      *     pattern "{@code /.*}" and not be {@code null}.
      * @param mode  Selects what to do if the file already exists.
-     * @param autorename  If there's a conflict, as determined by {@link
-     *     CommitInfo#getMode}, have the Dropbox server try to autorename the
-     *     file to avoid conflict.
-     * @param clientModified  The value to store as the {@link
-     *     CommitInfo#getClientModified} timestamp. Dropbox automatically
+     * @param autorename  If there's a conflict, as determined by the {@code
+     *     mode} argument to {@link DbxUserFilesRequests#upload(String)}, have
+     *     the Dropbox server try to autorename the file to avoid conflict.
+     * @param clientModified  The value to store as the the {@code
+     *     clientModified} argument to {@link
+     *     DbxUserFilesRequests#upload(String)} timestamp. Dropbox automatically
      *     records the time at which the file was written to the Dropbox
      *     servers. It can also record an additional timestamp, provided by
      *     Dropbox desktop clients, mobile clients, and API apps of when the
@@ -115,8 +116,9 @@ public class CommitInfo {
     }
 
     /**
-     * If there's a conflict, as determined by {@link CommitInfo#getMode}, have
-     * the Dropbox server try to autorename the file to avoid conflict.
+     * If there's a conflict, as determined by the {@code mode} argument to
+     * {@link DbxUserFilesRequests#upload(String)}, have the Dropbox server try
+     * to autorename the file to avoid conflict.
      *
      * @return value for this field, or {@code null} if not present. Defaults to
      *     false.
@@ -126,11 +128,12 @@ public class CommitInfo {
     }
 
     /**
-     * The value to store as the {@link CommitInfo#getClientModified} timestamp.
-     * Dropbox automatically records the time at which the file was written to
-     * the Dropbox servers. It can also record an additional timestamp, provided
-     * by Dropbox desktop clients, mobile clients, and API apps of when the file
-     * was actually created or modified.
+     * The value to store as the the {@code clientModified} argument to {@link
+     * DbxUserFilesRequests#upload(String)} timestamp. Dropbox automatically
+     * records the time at which the file was written to the Dropbox servers. It
+     * can also record an additional timestamp, provided by Dropbox desktop
+     * clients, mobile clients, and API apps of when the file was actually
+     * created or modified.
      *
      * @return value for this field, or {@code null} if not present.
      */
@@ -218,10 +221,10 @@ public class CommitInfo {
          * <p> If left unset or set to {@code null}, defaults to {@code false}.
          * </p>
          *
-         * @param autorename  If there's a conflict, as determined by {@link
-         *     CommitInfo#getMode}, have the Dropbox server try to autorename
-         *     the file to avoid conflict. Defaults to {@code false} when set to
-         *     {@code null}.
+         * @param autorename  If there's a conflict, as determined by the {@code
+         *     mode} argument to {@link DbxUserFilesRequests#upload(String)},
+         *     have the Dropbox server try to autorename the file to avoid
+         *     conflict. Defaults to {@code false} when set to {@code null}.
          *
          * @return this builder
          */
@@ -238,12 +241,13 @@ public class CommitInfo {
         /**
          * Set value for optional field.
          *
-         * @param clientModified  The value to store as the {@link
-         *     CommitInfo#getClientModified} timestamp. Dropbox automatically
-         *     records the time at which the file was written to the Dropbox
-         *     servers. It can also record an additional timestamp, provided by
-         *     Dropbox desktop clients, mobile clients, and API apps of when the
-         *     file was actually created or modified.
+         * @param clientModified  The value to store as the the {@code
+         *     clientModified} argument to {@link
+         *     DbxUserFilesRequests#upload(String)} timestamp. Dropbox
+         *     automatically records the time at which the file was written to
+         *     the Dropbox servers. It can also record an additional timestamp,
+         *     provided by Dropbox desktop clients, mobile clients, and API apps
+         *     of when the file was actually created or modified.
          *
          * @return this builder
          */

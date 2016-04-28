@@ -8,18 +8,18 @@ import com.dropbox.core.LocalizedText;
 
 /**
  * Exception thrown when the server responds with a {@link
- * GroupMemberSelectorError} error.
+ * GroupMemberSetAccessTypeError} error.
  */
-public class GroupMemberSelectorErrorException extends DbxApiException {
+public class GroupMemberSetAccessTypeErrorException extends DbxApiException {
     private static final long serialVersionUID = 0L;
 
     /**
      * The error reported by {@link
      * DbxTeamTeamRequests#groupsMembersSetAccessType(GroupSelector,UserSelectorArg,GroupAccessType)}.
      */
-    public final GroupMemberSelectorError errorValue;
+    public final GroupMemberSetAccessTypeError errorValue;
 
-    public GroupMemberSelectorErrorException(String requestId, LocalizedText userMessage, GroupMemberSelectorError errorValue) {
+    public GroupMemberSetAccessTypeErrorException(String requestId, LocalizedText userMessage, GroupMemberSetAccessTypeError errorValue) {
         super(requestId, userMessage, buildMessage("groups/members/set_access_type", userMessage, errorValue));
         if (errorValue == null) {
             throw new NullPointerException("errorValue");

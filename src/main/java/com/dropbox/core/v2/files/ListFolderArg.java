@@ -27,7 +27,7 @@ import java.io.IOException;
 
 @JsonSerialize(using=ListFolderArg.Serializer.class)
 @JsonDeserialize(using=ListFolderArg.Deserializer.class)
-class ListFolderArg {
+public class ListFolderArg {
     // struct ListFolderArg
 
     // ProGuard work-around since we declare serializers in annotation
@@ -38,6 +38,7 @@ class ListFolderArg {
     protected final boolean recursive;
     protected final boolean includeMediaInfo;
     protected final boolean includeDeleted;
+    protected final boolean includeHasExplicitSharedMembers;
 
     /**
      * Use {@link newBuilder} to create instances of this class without
@@ -52,11 +53,14 @@ class ListFolderArg {
      *     set for photo and video.
      * @param includeDeleted  If true, the results will include entries for
      *     files and folders that used to exist but were deleted.
+     * @param includeHasExplicitSharedMembers  If true, the results will include
+     *     a flag for each file indicating whether or not  that file has any
+     *     explicit members.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFolderArg(String path, boolean recursive, boolean includeMediaInfo, boolean includeDeleted) {
+    public ListFolderArg(String path, boolean recursive, boolean includeMediaInfo, boolean includeDeleted, boolean includeHasExplicitSharedMembers) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
@@ -67,6 +71,7 @@ class ListFolderArg {
         this.recursive = recursive;
         this.includeMediaInfo = includeMediaInfo;
         this.includeDeleted = includeDeleted;
+        this.includeHasExplicitSharedMembers = includeHasExplicitSharedMembers;
     }
 
     /**
@@ -79,7 +84,7 @@ class ListFolderArg {
      *     preconditions.
      */
     public ListFolderArg(String path) {
-        this(path, false, false, false);
+        this(path, false, false, false, false);
     }
 
     /**
@@ -124,6 +129,17 @@ class ListFolderArg {
     }
 
     /**
+     * If true, the results will include a flag for each file indicating whether
+     * or not  that file has any explicit members.
+     *
+     * @return value for this field, or {@code null} if not present. Defaults to
+     *     false.
+     */
+    public boolean getIncludeHasExplicitSharedMembers() {
+        return includeHasExplicitSharedMembers;
+    }
+
+    /**
      * Returns a new builder for creating an instance of this class.
      *
      * @param path  The path to the folder you want to see the contents of. Must
@@ -147,6 +163,7 @@ class ListFolderArg {
         protected boolean recursive;
         protected boolean includeMediaInfo;
         protected boolean includeDeleted;
+        protected boolean includeHasExplicitSharedMembers;
 
         protected Builder(String path) {
             if (path == null) {
@@ -159,6 +176,7 @@ class ListFolderArg {
             this.recursive = false;
             this.includeMediaInfo = false;
             this.includeDeleted = false;
+            this.includeHasExplicitSharedMembers = false;
         }
 
         /**
@@ -229,13 +247,36 @@ class ListFolderArg {
         }
 
         /**
+         * Set value for optional field.
+         *
+         * <p> If left unset or set to {@code null}, defaults to {@code false}.
+         * </p>
+         *
+         * @param includeHasExplicitSharedMembers  If true, the results will
+         *     include a flag for each file indicating whether or not  that file
+         *     has any explicit members. Defaults to {@code false} when set to
+         *     {@code null}.
+         *
+         * @return this builder
+         */
+        public Builder withIncludeHasExplicitSharedMembers(Boolean includeHasExplicitSharedMembers) {
+            if (includeHasExplicitSharedMembers != null) {
+                this.includeHasExplicitSharedMembers = includeHasExplicitSharedMembers;
+            }
+            else {
+                this.includeHasExplicitSharedMembers = false;
+            }
+            return this;
+        }
+
+        /**
          * Builds an instance of {@link ListFolderArg} configured with this
          * builder's values
          *
          * @return new instance of {@link ListFolderArg}
          */
         public ListFolderArg build() {
-            return new ListFolderArg(path, recursive, includeMediaInfo, includeDeleted);
+            return new ListFolderArg(path, recursive, includeMediaInfo, includeDeleted, includeHasExplicitSharedMembers);
         }
     }
 
@@ -245,7 +286,8 @@ class ListFolderArg {
             path,
             recursive,
             includeMediaInfo,
-            includeDeleted
+            includeDeleted,
+            includeHasExplicitSharedMembers
         });
         return hash;
     }
@@ -262,6 +304,7 @@ class ListFolderArg {
                 && (this.recursive == other.recursive)
                 && (this.includeMediaInfo == other.includeMediaInfo)
                 && (this.includeDeleted == other.includeDeleted)
+                && (this.includeHasExplicitSharedMembers == other.includeHasExplicitSharedMembers)
                 ;
         }
         else {
@@ -317,6 +360,7 @@ class ListFolderArg {
             g.writeObjectField("recursive", value.recursive);
             g.writeObjectField("include_media_info", value.includeMediaInfo);
             g.writeObjectField("include_deleted", value.includeDeleted);
+            g.writeObjectField("include_has_explicit_shared_members", value.includeHasExplicitSharedMembers);
         }
     }
 
@@ -343,6 +387,7 @@ class ListFolderArg {
             boolean recursive = false;
             boolean includeMediaInfo = false;
             boolean includeDeleted = false;
+            boolean includeHasExplicitSharedMembers = false;
 
             while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
                 String _field = _p.getCurrentName();
@@ -363,6 +408,10 @@ class ListFolderArg {
                     includeDeleted = _p.getValueAsBoolean();
                     _p.nextToken();
                 }
+                else if ("include_has_explicit_shared_members".equals(_field)) {
+                    includeHasExplicitSharedMembers = _p.getValueAsBoolean();
+                    _p.nextToken();
+                }
                 else {
                     skipValue(_p);
                 }
@@ -372,7 +421,7 @@ class ListFolderArg {
                 throw new JsonParseException(_p, "Required field \"path\" is missing.");
             }
 
-            return new ListFolderArg(path, recursive, includeMediaInfo, includeDeleted);
+            return new ListFolderArg(path, recursive, includeMediaInfo, includeDeleted, includeHasExplicitSharedMembers);
         }
     }
 }

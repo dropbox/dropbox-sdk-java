@@ -31,7 +31,7 @@ import java.io.IOException;
  */
 @JsonSerialize(using=MembersDeactivateArg.Serializer.class)
 @JsonDeserialize(using=MembersDeactivateArg.Deserializer.class)
-class MembersDeactivateArg {
+public class MembersDeactivateArg {
     // struct MembersDeactivateArg
 
     // ProGuard work-around since we declare serializers in annotation

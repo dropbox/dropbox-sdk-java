@@ -3,6 +3,7 @@
 
 package com.dropbox.core.v2;
 
+import com.dropbox.core.v2.auth.DbxUserAuthRequests;
 import com.dropbox.core.v2.files.DbxUserFilesRequests;
 import com.dropbox.core.v2.sharing.DbxUserSharingRequests;
 import com.dropbox.core.v2.users.DbxUserUsersRequests;
@@ -13,6 +14,7 @@ import com.dropbox.core.v2.users.DbxUserUsersRequests;
 public class DbxClientV2Base {
     protected final DbxRawClientV2 _client;
 
+    private final DbxUserAuthRequests auth;
     private final DbxUserFilesRequests files;
     private final DbxUserSharingRequests sharing;
     private final DbxUserUsersRequests users;
@@ -24,9 +26,19 @@ public class DbxClientV2Base {
      */
     protected DbxClientV2Base(DbxRawClientV2 _client) {
         this._client = _client;
+        this.auth = new DbxUserAuthRequests(_client);
         this.files = new DbxUserFilesRequests(_client);
         this.sharing = new DbxUserSharingRequests(_client);
         this.users = new DbxUserUsersRequests(_client);
+    }
+
+    /**
+     * Returns client for issuing requests in the {@code "auth"} namespace.
+     *
+     * @return Dropbox auth client
+     */
+    public DbxUserAuthRequests auth() {
+        return auth;
     }
 
     /**

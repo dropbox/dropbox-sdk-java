@@ -28,7 +28,7 @@ import java.util.List;
 
 @JsonSerialize(using=ListFoldersArgs.Serializer.class)
 @JsonDeserialize(using=ListFoldersArgs.Deserializer.class)
-class ListFoldersArgs {
+public class ListFoldersArgs {
     // struct ListFoldersArgs
 
     // ProGuard work-around since we declare serializers in annotation

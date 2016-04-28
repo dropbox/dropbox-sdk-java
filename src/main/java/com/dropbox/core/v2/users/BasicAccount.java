@@ -54,6 +54,7 @@ public class BasicAccount extends Account {
      *     possible that the user has since lost access to their e-mail. Must
      *     not be {@code null}.
      * @param emailVerified  Whether the user has verified their e-mail address.
+     * @param disabled  Whether the user has been disabled.
      * @param isTeammate  Whether this user is a teammate of the current user.
      *     If this account is the current user's account, then this will be
      *     {@code true}.
@@ -66,8 +67,8 @@ public class BasicAccount extends Account {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public BasicAccount(String accountId, Name name, String email, boolean emailVerified, boolean isTeammate, String profilePhotoUrl, String teamMemberId) {
-        super(accountId, name, email, emailVerified, profilePhotoUrl);
+    public BasicAccount(String accountId, Name name, String email, boolean emailVerified, boolean disabled, boolean isTeammate, String profilePhotoUrl, String teamMemberId) {
+        super(accountId, name, email, emailVerified, disabled, profilePhotoUrl);
         this.isTeammate = isTeammate;
         this.teamMemberId = teamMemberId;
     }
@@ -85,6 +86,7 @@ public class BasicAccount extends Account {
      *     possible that the user has since lost access to their e-mail. Must
      *     not be {@code null}.
      * @param emailVerified  Whether the user has verified their e-mail address.
+     * @param disabled  Whether the user has been disabled.
      * @param isTeammate  Whether this user is a teammate of the current user.
      *     If this account is the current user's account, then this will be
      *     {@code true}.
@@ -92,8 +94,8 @@ public class BasicAccount extends Account {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public BasicAccount(String accountId, Name name, String email, boolean emailVerified, boolean isTeammate) {
-        this(accountId, name, email, emailVerified, isTeammate, null, null);
+    public BasicAccount(String accountId, Name name, String email, boolean emailVerified, boolean disabled, boolean isTeammate) {
+        this(accountId, name, email, emailVerified, disabled, isTeammate, null, null);
     }
 
     /**
@@ -128,6 +130,7 @@ public class BasicAccount extends Account {
      *     possible that the user has since lost access to their e-mail. Must
      *     not be {@code null}.
      * @param emailVerified  Whether the user has verified their e-mail address.
+     * @param disabled  Whether the user has been disabled.
      * @param isTeammate  Whether this user is a teammate of the current user.
      *     If this account is the current user's account, then this will be
      *     {@code true}.
@@ -137,8 +140,8 @@ public class BasicAccount extends Account {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public static Builder newBuilder(String accountId, Name name, String email, boolean emailVerified, boolean isTeammate) {
-        return new Builder(accountId, name, email, emailVerified, isTeammate);
+    public static Builder newBuilder(String accountId, Name name, String email, boolean emailVerified, boolean disabled, boolean isTeammate) {
+        return new Builder(accountId, name, email, emailVerified, disabled, isTeammate);
     }
 
     /**
@@ -149,12 +152,13 @@ public class BasicAccount extends Account {
         protected final Name name;
         protected final String email;
         protected final boolean emailVerified;
+        protected final boolean disabled;
         protected final boolean isTeammate;
 
         protected String profilePhotoUrl;
         protected String teamMemberId;
 
-        protected Builder(String accountId, Name name, String email, boolean emailVerified, boolean isTeammate) {
+        protected Builder(String accountId, Name name, String email, boolean emailVerified, boolean disabled, boolean isTeammate) {
             if (accountId == null) {
                 throw new IllegalArgumentException("Required value for 'accountId' is null");
             }
@@ -174,6 +178,7 @@ public class BasicAccount extends Account {
             }
             this.email = email;
             this.emailVerified = emailVerified;
+            this.disabled = disabled;
             this.isTeammate = isTeammate;
             this.profilePhotoUrl = null;
             this.teamMemberId = null;
@@ -213,7 +218,7 @@ public class BasicAccount extends Account {
          * @return new instance of {@link BasicAccount}
          */
         public BasicAccount build() {
-            return new BasicAccount(accountId, name, email, emailVerified, isTeammate, profilePhotoUrl, teamMemberId);
+            return new BasicAccount(accountId, name, email, emailVerified, disabled, isTeammate, profilePhotoUrl, teamMemberId);
         }
     }
 
@@ -239,6 +244,7 @@ public class BasicAccount extends Account {
                 && ((this.name == other.name) || (this.name.equals(other.name)))
                 && ((this.email == other.email) || (this.email.equals(other.email)))
                 && (this.emailVerified == other.emailVerified)
+                && (this.disabled == other.disabled)
                 && (this.isTeammate == other.isTeammate)
                 && ((this.profilePhotoUrl == other.profilePhotoUrl) || (this.profilePhotoUrl != null && this.profilePhotoUrl.equals(other.profilePhotoUrl)))
                 && ((this.teamMemberId == other.teamMemberId) || (this.teamMemberId != null && this.teamMemberId.equals(other.teamMemberId)))
@@ -297,6 +303,7 @@ public class BasicAccount extends Account {
             g.writeObjectField("name", value.name);
             g.writeObjectField("email", value.email);
             g.writeObjectField("email_verified", value.emailVerified);
+            g.writeObjectField("disabled", value.disabled);
             g.writeObjectField("is_teammate", value.isTeammate);
             if (value.profilePhotoUrl != null) {
                 g.writeObjectField("profile_photo_url", value.profilePhotoUrl);
@@ -330,6 +337,7 @@ public class BasicAccount extends Account {
             Name name = null;
             String email = null;
             Boolean emailVerified = null;
+            Boolean disabled = null;
             Boolean isTeammate = null;
             String profilePhotoUrl = null;
             String teamMemberId = null;
@@ -351,6 +359,10 @@ public class BasicAccount extends Account {
                 }
                 else if ("email_verified".equals(_field)) {
                     emailVerified = _p.getValueAsBoolean();
+                    _p.nextToken();
+                }
+                else if ("disabled".equals(_field)) {
+                    disabled = _p.getValueAsBoolean();
                     _p.nextToken();
                 }
                 else if ("is_teammate".equals(_field)) {
@@ -382,11 +394,14 @@ public class BasicAccount extends Account {
             if (emailVerified == null) {
                 throw new JsonParseException(_p, "Required field \"email_verified\" is missing.");
             }
+            if (disabled == null) {
+                throw new JsonParseException(_p, "Required field \"disabled\" is missing.");
+            }
             if (isTeammate == null) {
                 throw new JsonParseException(_p, "Required field \"is_teammate\" is missing.");
             }
 
-            return new BasicAccount(accountId, name, email, emailVerified, isTeammate, profilePhotoUrl, teamMemberId);
+            return new BasicAccount(accountId, name, email, emailVerified, disabled, isTeammate, profilePhotoUrl, teamMemberId);
         }
     }
 }

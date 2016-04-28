@@ -44,27 +44,29 @@ public class GroupFullInfo extends GroupSummary {
     /**
      * Full description of a group.
      *
+     * <p> Use {@link newBuilder} to create instances of this class without
+     * specifying values for all optional fields. </p>
+     *
      * @param groupName  Must not be {@code null}.
      * @param groupId  Must not be {@code null}.
-     * @param memberCount  The number of members in the group.
-     * @param members  List of group members. Must not contain a {@code null}
-     *     item and not be {@code null}.
      * @param created  The group creation time as a UTC timestamp in
      *     milliseconds since the Unix epoch.
      * @param groupExternalId  External ID of group. This is an arbitrary ID
      *     that an admin can attach to a group.
+     * @param memberCount  The number of members in the group.
+     * @param members  List of group members. Must not contain a {@code null}
+     *     item.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupFullInfo(String groupName, String groupId, long memberCount, List<GroupMemberInfo> members, long created, String groupExternalId) {
-        super(groupName, groupId, memberCount, groupExternalId);
-        if (members == null) {
-            throw new IllegalArgumentException("Required value for 'members' is null");
-        }
-        for (GroupMemberInfo x : members) {
-            if (x == null) {
-                throw new IllegalArgumentException("An item in list 'members' is null");
+    public GroupFullInfo(String groupName, String groupId, long created, String groupExternalId, Long memberCount, List<GroupMemberInfo> members) {
+        super(groupName, groupId, groupExternalId, memberCount);
+        if (members != null) {
+            for (GroupMemberInfo x : members) {
+                if (x == null) {
+                    throw new IllegalArgumentException("An item in list 'members' is null");
+                }
             }
         }
         this.members = members;
@@ -78,23 +80,20 @@ public class GroupFullInfo extends GroupSummary {
      *
      * @param groupName  Must not be {@code null}.
      * @param groupId  Must not be {@code null}.
-     * @param memberCount  The number of members in the group.
-     * @param members  List of group members. Must not contain a {@code null}
-     *     item and not be {@code null}.
      * @param created  The group creation time as a UTC timestamp in
      *     milliseconds since the Unix epoch.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupFullInfo(String groupName, String groupId, long memberCount, List<GroupMemberInfo> members, long created) {
-        this(groupName, groupId, memberCount, members, created, null);
+    public GroupFullInfo(String groupName, String groupId, long created) {
+        this(groupName, groupId, created, null, null, null);
     }
 
     /**
      * List of group members.
      *
-     * @return value for this field, never {@code null}.
+     * @return value for this field, or {@code null} if not present.
      */
     public List<GroupMemberInfo> getMembers() {
         return members;
@@ -108,6 +107,71 @@ public class GroupFullInfo extends GroupSummary {
      */
     public long getCreated() {
         return created;
+    }
+
+    /**
+     * Returns a new builder for creating an instance of this class.
+     *
+     * @param groupName  Must not be {@code null}.
+     * @param groupId  Must not be {@code null}.
+     * @param created  The group creation time as a UTC timestamp in
+     *     milliseconds since the Unix epoch.
+     *
+     * @return builder for this class.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public static Builder newBuilder(String groupName, String groupId, long created) {
+        return new Builder(groupName, groupId, created);
+    }
+
+    /**
+     * Builder for {@link GroupFullInfo}.
+     */
+    public static class Builder extends GroupSummary.Builder {
+        protected final long created;
+
+        protected List<GroupMemberInfo> members;
+
+        protected Builder(String groupName, String groupId, long created) {
+            super(groupName, groupId);
+            this.created = created;
+            this.members = null;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param members  List of group members. Must not contain a {@code
+         *     null} item.
+         *
+         * @return this builder
+         *
+         * @throws IllegalArgumentException  If any argument does not meet its
+         *     preconditions.
+         */
+        public Builder withMembers(List<GroupMemberInfo> members) {
+            if (members != null) {
+                for (GroupMemberInfo x : members) {
+                    if (x == null) {
+                        throw new IllegalArgumentException("An item in list 'members' is null");
+                    }
+                }
+            }
+            this.members = members;
+            return this;
+        }
+
+        /**
+         * Builds an instance of {@link GroupFullInfo} configured with this
+         * builder's values
+         *
+         * @return new instance of {@link GroupFullInfo}
+         */
+        public GroupFullInfo build() {
+            return new GroupFullInfo(groupName, groupId, created, groupExternalId, memberCount, members);
+        }
     }
 
     @Override
@@ -130,10 +194,10 @@ public class GroupFullInfo extends GroupSummary {
             GroupFullInfo other = (GroupFullInfo) obj;
             return ((this.groupName == other.groupName) || (this.groupName.equals(other.groupName)))
                 && ((this.groupId == other.groupId) || (this.groupId.equals(other.groupId)))
-                && (this.memberCount == other.memberCount)
-                && ((this.members == other.members) || (this.members.equals(other.members)))
                 && (this.created == other.created)
                 && ((this.groupExternalId == other.groupExternalId) || (this.groupExternalId != null && this.groupExternalId.equals(other.groupExternalId)))
+                && ((this.memberCount == other.memberCount) || (this.memberCount != null && this.memberCount.equals(other.memberCount)))
+                && ((this.members == other.members) || (this.members != null && this.members.equals(other.members)))
                 ;
         }
         else {
@@ -187,11 +251,15 @@ public class GroupFullInfo extends GroupSummary {
         protected void serializeFields(GroupFullInfo value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
             g.writeObjectField("group_name", value.groupName);
             g.writeObjectField("group_id", value.groupId);
-            g.writeObjectField("member_count", value.memberCount);
-            g.writeObjectField("members", value.members);
             g.writeObjectField("created", value.created);
             if (value.groupExternalId != null) {
                 g.writeObjectField("group_external_id", value.groupExternalId);
+            }
+            if (value.memberCount != null) {
+                g.writeObjectField("member_count", value.memberCount);
+            }
+            if (value.members != null) {
+                g.writeObjectField("members", value.members);
             }
         }
     }
@@ -217,10 +285,10 @@ public class GroupFullInfo extends GroupSummary {
 
             String groupName = null;
             String groupId = null;
-            Long memberCount = null;
-            List<GroupMemberInfo> members = null;
             Long created = null;
             String groupExternalId = null;
+            Long memberCount = null;
+            List<GroupMemberInfo> members = null;
 
             while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
                 String _field = _p.getCurrentName();
@@ -231,6 +299,15 @@ public class GroupFullInfo extends GroupSummary {
                 }
                 else if ("group_id".equals(_field)) {
                     groupId = getStringValue(_p);
+                    _p.nextToken();
+                }
+                else if ("created".equals(_field)) {
+                    created = _p.getLongValue();
+                    assertUnsigned(_p, created);
+                    _p.nextToken();
+                }
+                else if ("group_external_id".equals(_field)) {
+                    groupExternalId = getStringValue(_p);
                     _p.nextToken();
                 }
                 else if ("member_count".equals(_field)) {
@@ -253,15 +330,6 @@ public class GroupFullInfo extends GroupSummary {
                     expectArrayEnd(_p);
                     _p.nextToken();
                 }
-                else if ("created".equals(_field)) {
-                    created = _p.getLongValue();
-                    assertUnsigned(_p, created);
-                    _p.nextToken();
-                }
-                else if ("group_external_id".equals(_field)) {
-                    groupExternalId = getStringValue(_p);
-                    _p.nextToken();
-                }
                 else {
                     skipValue(_p);
                 }
@@ -273,17 +341,11 @@ public class GroupFullInfo extends GroupSummary {
             if (groupId == null) {
                 throw new JsonParseException(_p, "Required field \"group_id\" is missing.");
             }
-            if (memberCount == null) {
-                throw new JsonParseException(_p, "Required field \"member_count\" is missing.");
-            }
-            if (members == null) {
-                throw new JsonParseException(_p, "Required field \"members\" is missing.");
-            }
             if (created == null) {
                 throw new JsonParseException(_p, "Required field \"created\" is missing.");
             }
 
-            return new GroupFullInfo(groupName, groupId, memberCount, members, created, groupExternalId);
+            return new GroupFullInfo(groupName, groupId, created, groupExternalId, memberCount, members);
         }
     }
 }

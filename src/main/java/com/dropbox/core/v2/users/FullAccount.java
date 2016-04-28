@@ -40,7 +40,7 @@ public class FullAccount extends Account {
     protected final String country;
     protected final String locale;
     protected final String referralLink;
-    protected final Team team;
+    protected final FullTeam team;
     protected final String teamMemberId;
     protected final boolean isPaired;
     protected final AccountType accountType;
@@ -59,6 +59,7 @@ public class FullAccount extends Account {
      *     possible that the user has since lost access to their e-mail. Must
      *     not be {@code null}.
      * @param emailVerified  Whether the user has verified their e-mail address.
+     * @param disabled  Whether the user has been disabled.
      * @param locale  The language that the user specified. Locale tags will be
      *     <a href="http://en.wikipedia.org/wiki/IETF_language_tag">IETF
      *     language tags</a>. Must have length of at least 2 and not be {@code
@@ -86,8 +87,8 @@ public class FullAccount extends Account {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FullAccount(String accountId, Name name, String email, boolean emailVerified, String locale, String referralLink, boolean isPaired, AccountType accountType, String profilePhotoUrl, String country, Team team, String teamMemberId) {
-        super(accountId, name, email, emailVerified, profilePhotoUrl);
+    public FullAccount(String accountId, Name name, String email, boolean emailVerified, boolean disabled, String locale, String referralLink, boolean isPaired, AccountType accountType, String profilePhotoUrl, String country, FullTeam team, String teamMemberId) {
+        super(accountId, name, email, emailVerified, disabled, profilePhotoUrl);
         if (country != null) {
             if (country.length() < 2) {
                 throw new IllegalArgumentException("String 'country' is shorter than 2");
@@ -130,6 +131,7 @@ public class FullAccount extends Account {
      *     possible that the user has since lost access to their e-mail. Must
      *     not be {@code null}.
      * @param emailVerified  Whether the user has verified their e-mail address.
+     * @param disabled  Whether the user has been disabled.
      * @param locale  The language that the user specified. Locale tags will be
      *     <a href="http://en.wikipedia.org/wiki/IETF_language_tag">IETF
      *     language tags</a>. Must have length of at least 2 and not be {@code
@@ -147,8 +149,8 @@ public class FullAccount extends Account {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FullAccount(String accountId, Name name, String email, boolean emailVerified, String locale, String referralLink, boolean isPaired, AccountType accountType) {
-        this(accountId, name, email, emailVerified, locale, referralLink, isPaired, accountType, null, null, null, null);
+    public FullAccount(String accountId, Name name, String email, boolean emailVerified, boolean disabled, String locale, String referralLink, boolean isPaired, AccountType accountType) {
+        this(accountId, name, email, emailVerified, disabled, locale, referralLink, isPaired, accountType, null, null, null, null);
     }
 
     /**
@@ -186,7 +188,7 @@ public class FullAccount extends Account {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    public Team getTeam() {
+    public FullTeam getTeam() {
         return team;
     }
 
@@ -232,6 +234,7 @@ public class FullAccount extends Account {
      *     possible that the user has since lost access to their e-mail. Must
      *     not be {@code null}.
      * @param emailVerified  Whether the user has verified their e-mail address.
+     * @param disabled  Whether the user has been disabled.
      * @param locale  The language that the user specified. Locale tags will be
      *     <a href="http://en.wikipedia.org/wiki/IETF_language_tag">IETF
      *     language tags</a>. Must have length of at least 2 and not be {@code
@@ -251,8 +254,8 @@ public class FullAccount extends Account {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public static Builder newBuilder(String accountId, Name name, String email, boolean emailVerified, String locale, String referralLink, boolean isPaired, AccountType accountType) {
-        return new Builder(accountId, name, email, emailVerified, locale, referralLink, isPaired, accountType);
+    public static Builder newBuilder(String accountId, Name name, String email, boolean emailVerified, boolean disabled, String locale, String referralLink, boolean isPaired, AccountType accountType) {
+        return new Builder(accountId, name, email, emailVerified, disabled, locale, referralLink, isPaired, accountType);
     }
 
     /**
@@ -263,6 +266,7 @@ public class FullAccount extends Account {
         protected final Name name;
         protected final String email;
         protected final boolean emailVerified;
+        protected final boolean disabled;
         protected final String locale;
         protected final String referralLink;
         protected final boolean isPaired;
@@ -270,10 +274,10 @@ public class FullAccount extends Account {
 
         protected String profilePhotoUrl;
         protected String country;
-        protected Team team;
+        protected FullTeam team;
         protected String teamMemberId;
 
-        protected Builder(String accountId, Name name, String email, boolean emailVerified, String locale, String referralLink, boolean isPaired, AccountType accountType) {
+        protected Builder(String accountId, Name name, String email, boolean emailVerified, boolean disabled, String locale, String referralLink, boolean isPaired, AccountType accountType) {
             if (accountId == null) {
                 throw new IllegalArgumentException("Required value for 'accountId' is null");
             }
@@ -293,6 +297,7 @@ public class FullAccount extends Account {
             }
             this.email = email;
             this.emailVerified = emailVerified;
+            this.disabled = disabled;
             if (locale == null) {
                 throw new IllegalArgumentException("Required value for 'locale' is null");
             }
@@ -362,7 +367,7 @@ public class FullAccount extends Account {
          *
          * @return this builder
          */
-        public Builder withTeam(Team team) {
+        public Builder withTeam(FullTeam team) {
             this.team = team;
             return this;
         }
@@ -387,7 +392,7 @@ public class FullAccount extends Account {
          * @return new instance of {@link FullAccount}
          */
         public FullAccount build() {
-            return new FullAccount(accountId, name, email, emailVerified, locale, referralLink, isPaired, accountType, profilePhotoUrl, country, team, teamMemberId);
+            return new FullAccount(accountId, name, email, emailVerified, disabled, locale, referralLink, isPaired, accountType, profilePhotoUrl, country, team, teamMemberId);
         }
     }
 
@@ -418,6 +423,7 @@ public class FullAccount extends Account {
                 && ((this.name == other.name) || (this.name.equals(other.name)))
                 && ((this.email == other.email) || (this.email.equals(other.email)))
                 && (this.emailVerified == other.emailVerified)
+                && (this.disabled == other.disabled)
                 && ((this.locale == other.locale) || (this.locale.equals(other.locale)))
                 && ((this.referralLink == other.referralLink) || (this.referralLink.equals(other.referralLink)))
                 && (this.isPaired == other.isPaired)
@@ -481,6 +487,7 @@ public class FullAccount extends Account {
             g.writeObjectField("name", value.name);
             g.writeObjectField("email", value.email);
             g.writeObjectField("email_verified", value.emailVerified);
+            g.writeObjectField("disabled", value.disabled);
             g.writeObjectField("locale", value.locale);
             g.writeObjectField("referral_link", value.referralLink);
             g.writeObjectField("is_paired", value.isPaired);
@@ -523,13 +530,14 @@ public class FullAccount extends Account {
             Name name = null;
             String email = null;
             Boolean emailVerified = null;
+            Boolean disabled = null;
             String locale = null;
             String referralLink = null;
             Boolean isPaired = null;
             AccountType accountType = null;
             String profilePhotoUrl = null;
             String country = null;
-            Team team = null;
+            FullTeam team = null;
             String teamMemberId = null;
 
             while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
@@ -549,6 +557,10 @@ public class FullAccount extends Account {
                 }
                 else if ("email_verified".equals(_field)) {
                     emailVerified = _p.getValueAsBoolean();
+                    _p.nextToken();
+                }
+                else if ("disabled".equals(_field)) {
+                    disabled = _p.getValueAsBoolean();
                     _p.nextToken();
                 }
                 else if ("locale".equals(_field)) {
@@ -576,7 +588,7 @@ public class FullAccount extends Account {
                     _p.nextToken();
                 }
                 else if ("team".equals(_field)) {
-                    team = _p.readValueAs(Team.class);
+                    team = _p.readValueAs(FullTeam.class);
                     _p.nextToken();
                 }
                 else if ("team_member_id".equals(_field)) {
@@ -600,6 +612,9 @@ public class FullAccount extends Account {
             if (emailVerified == null) {
                 throw new JsonParseException(_p, "Required field \"email_verified\" is missing.");
             }
+            if (disabled == null) {
+                throw new JsonParseException(_p, "Required field \"disabled\" is missing.");
+            }
             if (locale == null) {
                 throw new JsonParseException(_p, "Required field \"locale\" is missing.");
             }
@@ -613,7 +628,7 @@ public class FullAccount extends Account {
                 throw new JsonParseException(_p, "Required field \"account_type\" is missing.");
             }
 
-            return new FullAccount(accountId, name, email, emailVerified, locale, referralLink, isPaired, accountType, profilePhotoUrl, country, team, teamMemberId);
+            return new FullAccount(accountId, name, email, emailVerified, disabled, locale, referralLink, isPaired, accountType, profilePhotoUrl, country, team, teamMemberId);
         }
     }
 }

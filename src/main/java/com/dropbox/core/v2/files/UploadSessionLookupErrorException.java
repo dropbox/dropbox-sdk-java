@@ -15,12 +15,12 @@ public class UploadSessionLookupErrorException extends DbxApiException {
 
     /**
      * The error reported by {@link
-     * DbxUserFilesRequests#uploadSessionAppend(String,long)}.
+     * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)}.
      */
     public final UploadSessionLookupError errorValue;
 
     public UploadSessionLookupErrorException(String requestId, LocalizedText userMessage, UploadSessionLookupError errorValue) {
-        super(requestId, userMessage, buildMessage("upload_session/append", userMessage, errorValue));
+        super(requestId, userMessage, buildMessage("upload_session/append_v2", userMessage, errorValue));
         if (errorValue == null) {
             throw new NullPointerException("errorValue");
         }

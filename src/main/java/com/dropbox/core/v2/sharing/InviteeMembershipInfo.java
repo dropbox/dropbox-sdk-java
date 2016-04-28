@@ -27,7 +27,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The information about a user invited to become a member of a shared folder.
+ * Information about an invited member of a shared folder.
  */
 @JsonSerialize(using=InviteeMembershipInfo.Serializer.class)
 @JsonDeserialize(using=InviteeMembershipInfo.Deserializer.class)
@@ -39,56 +39,55 @@ public class InviteeMembershipInfo extends MembershipInfo {
     static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final InviteeInfo invitee;
+    protected final UserInfo user;
 
     /**
-     * The information about a user invited to become a member of a shared
-     * folder.
+     * Information about an invited member of a shared folder.
      *
      * <p> Use {@link newBuilder} to create instances of this class without
      * specifying values for all optional fields. </p>
      *
      * @param accessType  The access type for this member. Must not be {@code
      *     null}.
-     * @param invitee  The information for the invited user. Must not be {@code
-     *     null}.
+     * @param invitee  Recipient of the invitation. Must not be {@code null}.
      * @param permissions  The permissions that requesting user has on this
      *     member. The set of permissions corresponds to the MemberActions in
      *     the request. Must not contain a {@code null} item.
      * @param initials  Suggested name initials for a member.
      * @param isInherited  True if the member's access to the file is inherited
      *     from a parent folder.
+     * @param user  The user this invitation is tied to, if available.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public InviteeMembershipInfo(AccessLevel accessType, InviteeInfo invitee, List<MemberPermission> permissions, String initials, boolean isInherited) {
+    public InviteeMembershipInfo(AccessLevel accessType, InviteeInfo invitee, List<MemberPermission> permissions, String initials, boolean isInherited, UserInfo user) {
         super(accessType, permissions, initials, isInherited);
         if (invitee == null) {
             throw new IllegalArgumentException("Required value for 'invitee' is null");
         }
         this.invitee = invitee;
+        this.user = user;
     }
 
     /**
-     * The information about a user invited to become a member of a shared
-     * folder.
+     * Information about an invited member of a shared folder.
      *
      * <p> The default values for unset fields will be used. </p>
      *
      * @param accessType  The access type for this member. Must not be {@code
      *     null}.
-     * @param invitee  The information for the invited user. Must not be {@code
-     *     null}.
+     * @param invitee  Recipient of the invitation. Must not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
     public InviteeMembershipInfo(AccessLevel accessType, InviteeInfo invitee) {
-        this(accessType, invitee, null, null, false);
+        this(accessType, invitee, null, null, false, null);
     }
 
     /**
-     * The information for the invited user.
+     * Recipient of the invitation.
      *
      * @return value for this field, never {@code null}.
      */
@@ -97,12 +96,20 @@ public class InviteeMembershipInfo extends MembershipInfo {
     }
 
     /**
+     * The user this invitation is tied to, if available.
+     *
+     * @return value for this field, or {@code null} if not present.
+     */
+    public UserInfo getUser() {
+        return user;
+    }
+
+    /**
      * Returns a new builder for creating an instance of this class.
      *
      * @param accessType  The access type for this member. Must not be {@code
      *     null}.
-     * @param invitee  The information for the invited user. Must not be {@code
-     *     null}.
+     * @param invitee  Recipient of the invitation. Must not be {@code null}.
      *
      * @return builder for this class.
      *
@@ -119,12 +126,27 @@ public class InviteeMembershipInfo extends MembershipInfo {
     public static class Builder extends MembershipInfo.Builder {
         protected final InviteeInfo invitee;
 
+        protected UserInfo user;
+
         protected Builder(AccessLevel accessType, InviteeInfo invitee) {
             super(accessType);
             if (invitee == null) {
                 throw new IllegalArgumentException("Required value for 'invitee' is null");
             }
             this.invitee = invitee;
+            this.user = null;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param user  The user this invitation is tied to, if available.
+         *
+         * @return this builder
+         */
+        public Builder withUser(UserInfo user) {
+            this.user = user;
+            return this;
         }
 
         /**
@@ -134,14 +156,15 @@ public class InviteeMembershipInfo extends MembershipInfo {
          * @return new instance of {@link InviteeMembershipInfo}
          */
         public InviteeMembershipInfo build() {
-            return new InviteeMembershipInfo(accessType, invitee, permissions, initials, isInherited);
+            return new InviteeMembershipInfo(accessType, invitee, permissions, initials, isInherited, user);
         }
     }
 
     @Override
     public int hashCode() {
         int hash = java.util.Arrays.hashCode(new Object [] {
-            invitee
+            invitee,
+            user
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;
@@ -160,6 +183,7 @@ public class InviteeMembershipInfo extends MembershipInfo {
                 && ((this.permissions == other.permissions) || (this.permissions != null && this.permissions.equals(other.permissions)))
                 && ((this.initials == other.initials) || (this.initials != null && this.initials.equals(other.initials)))
                 && (this.isInherited == other.isInherited)
+                && ((this.user == other.user) || (this.user != null && this.user.equals(other.user)))
                 ;
         }
         else {
@@ -220,6 +244,9 @@ public class InviteeMembershipInfo extends MembershipInfo {
                 g.writeObjectField("initials", value.initials);
             }
             g.writeObjectField("is_inherited", value.isInherited);
+            if (value.user != null) {
+                g.writeObjectField("user", value.user);
+            }
         }
     }
 
@@ -247,6 +274,7 @@ public class InviteeMembershipInfo extends MembershipInfo {
             List<MemberPermission> permissions = null;
             String initials = null;
             boolean isInherited = false;
+            UserInfo user = null;
 
             while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
                 String _field = _p.getCurrentName();
@@ -279,6 +307,10 @@ public class InviteeMembershipInfo extends MembershipInfo {
                     isInherited = _p.getValueAsBoolean();
                     _p.nextToken();
                 }
+                else if ("user".equals(_field)) {
+                    user = _p.readValueAs(UserInfo.class);
+                    _p.nextToken();
+                }
                 else {
                     skipValue(_p);
                 }
@@ -291,7 +323,7 @@ public class InviteeMembershipInfo extends MembershipInfo {
                 throw new JsonParseException(_p, "Required field \"invitee\" is missing.");
             }
 
-            return new InviteeMembershipInfo(accessType, invitee, permissions, initials, isInherited);
+            return new InviteeMembershipInfo(accessType, invitee, permissions, initials, isInherited, user);
         }
     }
 }

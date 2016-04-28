@@ -27,7 +27,7 @@ import java.io.IOException;
 
 @JsonSerialize(using=ListFoldersContinueArg.Serializer.class)
 @JsonDeserialize(using=ListFoldersContinueArg.Deserializer.class)
-class ListFoldersContinueArg {
+public class ListFoldersContinueArg {
     // struct ListFoldersContinueArg
 
     // ProGuard work-around since we declare serializers in annotation

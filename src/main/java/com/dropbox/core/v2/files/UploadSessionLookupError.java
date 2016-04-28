@@ -66,6 +66,11 @@ public final class UploadSessionLookupError {
          */
         CLOSED,
         /**
+         * The session must be closed before calling
+         * upload_session/finish_batch.
+         */
+        NOT_CLOSED,
+        /**
          * An unspecified error.
          */
         OTHER; // *catch_all
@@ -80,6 +85,10 @@ public final class UploadSessionLookupError {
      * been closed (i.e. committed).
      */
     public static final UploadSessionLookupError CLOSED = new UploadSessionLookupError(Tag.CLOSED, null);
+    /**
+     * The session must be closed before calling upload_session/finish_batch.
+     */
+    public static final UploadSessionLookupError NOT_CLOSED = new UploadSessionLookupError(Tag.NOT_CLOSED, null);
     /**
      * An unspecified error.
      */
@@ -194,6 +203,17 @@ public final class UploadSessionLookupError {
     }
 
     /**
+     * Returns {@code true} if this instance has the tag {@link Tag#NOT_CLOSED},
+     * {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#NOT_CLOSED}, {@code false} otherwise.
+     */
+    public boolean isNotClosed() {
+        return this.tag == Tag.NOT_CLOSED;
+    }
+
+    /**
      * Returns {@code true} if this instance has the tag {@link Tag#OTHER},
      * {@code false} otherwise.
      *
@@ -229,6 +249,8 @@ public final class UploadSessionLookupError {
                 case INCORRECT_OFFSET:
                     return (this.incorrectOffsetValue == other.incorrectOffsetValue) || (this.incorrectOffsetValue.equals(other.incorrectOffsetValue));
                 case CLOSED:
+                    return true;
+                case NOT_CLOSED:
                     return true;
                 case OTHER:
                     return true;
@@ -289,6 +311,9 @@ public final class UploadSessionLookupError {
                 case CLOSED:
                     g.writeString("closed");
                     break;
+                case NOT_CLOSED:
+                    g.writeString("not_closed");
+                    break;
                 case OTHER:
                     g.writeString("other");
                     break;
@@ -317,6 +342,9 @@ public final class UploadSessionLookupError {
                 case CLOSED: {
                     return UploadSessionLookupError.CLOSED;
                 }
+                case NOT_CLOSED: {
+                    return UploadSessionLookupError.NOT_CLOSED;
+                }
                 case OTHER: {
                     return UploadSessionLookupError.OTHER;
                 }
@@ -330,6 +358,7 @@ public final class UploadSessionLookupError {
             values.put("not_found", UploadSessionLookupError.Tag.NOT_FOUND);
             values.put("incorrect_offset", UploadSessionLookupError.Tag.INCORRECT_OFFSET);
             values.put("closed", UploadSessionLookupError.Tag.CLOSED);
+            values.put("not_closed", UploadSessionLookupError.Tag.NOT_CLOSED);
             values.put("other", UploadSessionLookupError.Tag.OTHER);
             return Collections.unmodifiableMap(values);
         }

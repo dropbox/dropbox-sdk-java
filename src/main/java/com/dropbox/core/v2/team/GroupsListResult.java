@@ -44,11 +44,11 @@ public class GroupsListResult {
      * @param groups  Must not contain a {@code null} item and not be {@code
      *     null}.
      * @param cursor  Pass the cursor into {@link
-     *     DbxTeamTeamRequests#membersListContinue(String)} to obtain the
-     *     additional members. Must not be {@code null}.
-     * @param hasMore  Is true if there are additional team members that have
-     *     not been returned yet. An additional call to {@link
-     *     DbxTeamTeamRequests#membersListContinue(String)} can retrieve them.
+     *     DbxTeamTeamRequests#groupsListContinue(String)} to obtain the
+     *     additional groups. Must not be {@code null}.
+     * @param hasMore  Is true if there are additional groups that have not been
+     *     returned yet. An additional call to {@link
+     *     DbxTeamTeamRequests#groupsListContinue(String)} can retrieve them.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -80,8 +80,8 @@ public class GroupsListResult {
 
     /**
      * Pass the cursor into {@link
-     * DbxTeamTeamRequests#membersListContinue(String)} to obtain the additional
-     * members.
+     * DbxTeamTeamRequests#groupsListContinue(String)} to obtain the additional
+     * groups.
      *
      * @return value for this field, never {@code null}.
      */
@@ -90,9 +90,9 @@ public class GroupsListResult {
     }
 
     /**
-     * Is true if there are additional team members that have not been returned
-     * yet. An additional call to {@link
-     * DbxTeamTeamRequests#membersListContinue(String)} can retrieve them.
+     * Is true if there are additional groups that have not been returned yet.
+     * An additional call to {@link
+     * DbxTeamTeamRequests#groupsListContinue(String)} can retrieve them.
      *
      * @return value for this field.
      */

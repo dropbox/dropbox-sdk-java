@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_devices.babel, team_members.babel, team_linked_apps.babel, team_reports.babel, team.babel, team_groups.babel, team_common.babel */
+/* This file was generated from team_devices.babel, team_property_templates.babel, team_members.babel, team_linked_apps.babel, team_reports.babel, team_groups.babel, team_common.babel, team.babel */
 
 package com.dropbox.core.v2.team;
 
@@ -13,6 +13,11 @@ import com.dropbox.core.v2.async.LaunchEmptyResult;
 import com.dropbox.core.v2.async.PollArg;
 import com.dropbox.core.v2.async.PollEmptyResult;
 import com.dropbox.core.v2.async.PollErrorException;
+import com.dropbox.core.v2.properties.GetPropertyTemplateArg;
+import com.dropbox.core.v2.properties.GetPropertyTemplateResult;
+import com.dropbox.core.v2.properties.ListPropertyTemplateIds;
+import com.dropbox.core.v2.properties.ModifyPropertyTemplateErrorException;
+import com.dropbox.core.v2.properties.PropertyTemplateErrorException;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
@@ -88,13 +93,61 @@ public final class DbxTeamTeamRequests {
     }
 
     //
-    // route team/devices/list_team_devices
+    // route team/devices/list_members_devices
     //
 
     /**
      * List all device sessions of a team.
      *
      */
+    ListMembersDevicesResult devicesListMembersDevices(ListMembersDevicesArg listMembersDevicesArg) throws ListMembersDevicesErrorException, DbxException {
+        try {
+            return client.rpcStyle(client.getHost().getApi(),
+                                   "2/team/devices/list_members_devices",
+                                   listMembersDevicesArg,
+                                   false,
+                                   JsonUtil.createType(ListMembersDevicesResult.class),
+                                   JsonUtil.createType(ListMembersDevicesError.class));
+        }
+        catch (DbxRequestUtil.ErrorWrapper ew) {
+            throw new ListMembersDevicesErrorException(ew.getRequestId(), ew.getUserMessage(), (ListMembersDevicesError) ew.getErrorValue());
+        }
+    }
+
+    /**
+     * List all device sessions of a team.
+     *
+     * <p> The default values for the optional request parameters will be used.
+     * See {@link DevicesListMembersDevicesBuilder} for more details. </p>
+     */
+    public ListMembersDevicesResult devicesListMembersDevices() throws ListMembersDevicesErrorException, DbxException {
+        ListMembersDevicesArg arg = new ListMembersDevicesArg();
+        return devicesListMembersDevices(arg);
+    }
+
+    /**
+     * List all device sessions of a team.
+     *
+     * @return Request builder for configuring request parameters and completing
+     *     the request.
+     */
+    public DevicesListMembersDevicesBuilder devicesListMembersDevicesBuilder() {
+        ListMembersDevicesArg.Builder argBuilder = ListMembersDevicesArg.newBuilder();
+        return new DevicesListMembersDevicesBuilder(this, argBuilder);
+    }
+
+    //
+    // route team/devices/list_team_devices
+    //
+
+    /**
+     * List all device sessions of a team.
+     *
+     *
+     * @deprecated use {@link DbxTeamTeamRequests#devicesListMembersDevices()}
+     *     instead.
+     */
+    @Deprecated
     ListTeamDevicesResult devicesListTeamDevices(ListTeamDevicesArg listTeamDevicesArg) throws ListTeamDevicesErrorException, DbxException {
         try {
             return client.rpcStyle(client.getHost().getApi(),
@@ -114,7 +167,11 @@ public final class DbxTeamTeamRequests {
      *
      * <p> The default values for the optional request parameters will be used.
      * See {@link DevicesListTeamDevicesBuilder} for more details. </p>
+     *
+     * @deprecated use {@link DbxTeamTeamRequests#devicesListMembersDevices()}
+     *     instead.
      */
+    @Deprecated
     public ListTeamDevicesResult devicesListTeamDevices() throws ListTeamDevicesErrorException, DbxException {
         ListTeamDevicesArg arg = new ListTeamDevicesArg();
         return devicesListTeamDevices(arg);
@@ -125,7 +182,11 @@ public final class DbxTeamTeamRequests {
      *
      * @return Request builder for configuring request parameters and completing
      *     the request.
+     *
+     * @deprecated use {@link DbxTeamTeamRequests#devicesListMembersDevices()}
+     *     instead.
      */
+    @Deprecated
     public DevicesListTeamDevicesBuilder devicesListTeamDevicesBuilder() {
         ListTeamDevicesArg.Builder argBuilder = ListTeamDevicesArg.newBuilder();
         return new DevicesListTeamDevicesBuilder(this, argBuilder);
@@ -510,6 +571,9 @@ public final class DbxTeamTeamRequests {
      * {@link DbxTeamTeamRequests#groupsJobStatusGet(String)} to determine
      * whether this process has completed. Permission : Team member management
      *
+     * <p> The {@code returnMembers} request parameter will default to {@code
+     * true} (see {@link #groupsMembersAdd(GroupSelector,List,boolean)}). </p>
+     *
      * @param group  Group to which users will be added. Must not be {@code
      *     null}.
      * @param members  List of users to be added to the group. Must not contain
@@ -524,6 +588,32 @@ public final class DbxTeamTeamRequests {
      */
     public GroupMembersChangeResult groupsMembersAdd(GroupSelector group, List<MemberAccess> members) throws GroupMembersAddErrorException, DbxException {
         GroupMembersAddArg arg = new GroupMembersAddArg(group, members);
+        return groupsMembersAdd(arg);
+    }
+
+    /**
+     * Adds members to a group. The members are added immediately. However the
+     * granting of group-owned resources may take additional time. Use the
+     * {@link DbxTeamTeamRequests#groupsJobStatusGet(String)} to determine
+     * whether this process has completed. Permission : Team member management
+     *
+     * @param group  Group to which users will be added. Must not be {@code
+     *     null}.
+     * @param members  List of users to be added to the group. Must not contain
+     *     a {@code null} item and not be {@code null}.
+     * @param returnMembers  Whether to return the list of members in the group.
+     *     Note that the default value will cause all the group members  to be
+     *     returned in the response. This may take a long time for large groups.
+     *
+     * @return Result returned by {@link
+     *     DbxTeamTeamRequests#groupsMembersAdd(GroupSelector,List)} and {@link
+     *     DbxTeamTeamRequests#groupsMembersRemove(GroupSelector,List)}.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public GroupMembersChangeResult groupsMembersAdd(GroupSelector group, List<MemberAccess> members, boolean returnMembers) throws GroupMembersAddErrorException, DbxException {
+        GroupMembersAddArg arg = new GroupMembersAddArg(group, members, returnMembers);
         return groupsMembersAdd(arg);
     }
 
@@ -564,9 +654,14 @@ public final class DbxTeamTeamRequests {
      * determine whether this process has completed. Permission : Team member
      * management
      *
-     * @param group  Must not be {@code null}.
-     * @param users  Must not contain a {@code null} item and not be {@code
+     * <p> The {@code returnMembers} request parameter will default to {@code
+     * true} (see {@link #groupsMembersRemove(GroupSelector,List,boolean)}).
+     * </p>
+     *
+     * @param group  Group from which users will be removed. Must not be {@code
      *     null}.
+     * @param users  List of users to be removed from the group. Must not
+     *     contain a {@code null} item and not be {@code null}.
      *
      * @return Result returned by {@link
      *     DbxTeamTeamRequests#groupsMembersAdd(GroupSelector,List)} and {@link
@@ -580,6 +675,33 @@ public final class DbxTeamTeamRequests {
         return groupsMembersRemove(arg);
     }
 
+    /**
+     * Removes members from a group. The members are removed immediately.
+     * However the revoking of group-owned resources may take additional time.
+     * Use the {@link DbxTeamTeamRequests#groupsJobStatusGet(String)} to
+     * determine whether this process has completed. Permission : Team member
+     * management
+     *
+     * @param group  Group from which users will be removed. Must not be {@code
+     *     null}.
+     * @param users  List of users to be removed from the group. Must not
+     *     contain a {@code null} item and not be {@code null}.
+     * @param returnMembers  Whether to return the list of members in the group.
+     *     Note that the default value will cause all the group members  to be
+     *     returned in the response. This may take a long time for large groups.
+     *
+     * @return Result returned by {@link
+     *     DbxTeamTeamRequests#groupsMembersAdd(GroupSelector,List)} and {@link
+     *     DbxTeamTeamRequests#groupsMembersRemove(GroupSelector,List)}.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public GroupMembersChangeResult groupsMembersRemove(GroupSelector group, List<UserSelectorArg> users, boolean returnMembers) throws GroupMembersRemoveErrorException, DbxException {
+        GroupMembersRemoveArg arg = new GroupMembersRemoveArg(group, users, returnMembers);
+        return groupsMembersRemove(arg);
+    }
+
     //
     // route team/groups/members/set_access_type
     //
@@ -589,18 +711,41 @@ public final class DbxTeamTeamRequests {
      * management
      *
      */
-    List<GroupsGetInfoItem> groupsMembersSetAccessType(GroupMembersSetAccessTypeArg groupMembersSetAccessTypeArg) throws GroupMemberSelectorErrorException, DbxException {
+    List<GroupsGetInfoItem> groupsMembersSetAccessType(GroupMembersSetAccessTypeArg groupMembersSetAccessTypeArg) throws GroupMemberSetAccessTypeErrorException, DbxException {
         try {
             return client.rpcStyle(client.getHost().getApi(),
                                    "2/team/groups/members/set_access_type",
                                    groupMembersSetAccessTypeArg,
                                    false,
                                    JsonUtil.createType(new TypeReference<List<GroupsGetInfoItem>>() {}),
-                                   JsonUtil.createType(GroupMemberSelectorError.class));
+                                   JsonUtil.createType(GroupMemberSetAccessTypeError.class));
         }
         catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new GroupMemberSelectorErrorException(ew.getRequestId(), ew.getUserMessage(), (GroupMemberSelectorError) ew.getErrorValue());
+            throw new GroupMemberSetAccessTypeErrorException(ew.getRequestId(), ew.getUserMessage(), (GroupMemberSetAccessTypeError) ew.getErrorValue());
         }
+    }
+
+    /**
+     * Sets a member's access type in a group. Permission : Team member
+     * management
+     *
+     * <p> The {@code returnMembers} request parameter will default to {@code
+     * true} (see {@link
+     * #groupsMembersSetAccessType(GroupSelector,UserSelectorArg,GroupAccessType,boolean)}).
+     * </p>
+     *
+     * @param group  Specify a group. Must not be {@code null}.
+     * @param user  Identity of a user that is a member of {@link
+     *     GroupMemberSelector#getGroup}. Must not be {@code null}.
+     * @param accessType  New group access type the user will have. Must not be
+     *     {@code null}.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public List<GroupsGetInfoItem> groupsMembersSetAccessType(GroupSelector group, UserSelectorArg user, GroupAccessType accessType) throws GroupMemberSetAccessTypeErrorException, DbxException {
+        GroupMembersSetAccessTypeArg arg = new GroupMembersSetAccessTypeArg(group, user, accessType);
+        return groupsMembersSetAccessType(arg);
     }
 
     /**
@@ -612,12 +757,15 @@ public final class DbxTeamTeamRequests {
      *     GroupMemberSelector#getGroup}. Must not be {@code null}.
      * @param accessType  New group access type the user will have. Must not be
      *     {@code null}.
+     * @param returnMembers  Whether to return the list of members in the group.
+     *     Note that the default value will cause all the group members  to be
+     *     returned in the response. This may take a long time for large groups.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public List<GroupsGetInfoItem> groupsMembersSetAccessType(GroupSelector group, UserSelectorArg user, GroupAccessType accessType) throws GroupMemberSelectorErrorException, DbxException {
-        GroupMembersSetAccessTypeArg arg = new GroupMembersSetAccessTypeArg(group, user, accessType);
+    public List<GroupsGetInfoItem> groupsMembersSetAccessType(GroupSelector group, UserSelectorArg user, GroupAccessType accessType, boolean returnMembers) throws GroupMemberSetAccessTypeErrorException, DbxException {
+        GroupMembersSetAccessTypeArg arg = new GroupMembersSetAccessTypeArg(group, user, accessType, returnMembers);
         return groupsMembersSetAccessType(arg);
     }
 
@@ -649,6 +797,9 @@ public final class DbxTeamTeamRequests {
     /**
      * Updates a group's name and/or external ID. Permission : Team member
      * management
+     *
+     * <p> The default values for the optional request parameters will be used.
+     * See {@link GroupsUpdateBuilder} for more details. </p>
      *
      * @param group  Specify a group. Must not be {@code null}.
      *
@@ -684,8 +835,8 @@ public final class DbxTeamTeamRequests {
     //
 
     /**
-     * List all linked applications of the team member. Note, this endpoint
-     * doesn't list any team-linked applications.
+     * List all linked applications of the team member. Note, this endpoint does
+     * not list any team-linked applications.
      *
      */
     ListMemberAppsResult linkedAppsListMemberLinkedApps(ListMemberAppsArg listMemberAppsArg) throws ListMemberAppsErrorException, DbxException {
@@ -703,8 +854,8 @@ public final class DbxTeamTeamRequests {
     }
 
     /**
-     * List all linked applications of the team member. Note, this endpoint
-     * doesn't list any team-linked applications.
+     * List all linked applications of the team member. Note, this endpoint does
+     * not list any team-linked applications.
      *
      * @param teamMemberId  The team member id. Must not be {@code null}.
      *
@@ -714,6 +865,64 @@ public final class DbxTeamTeamRequests {
     public ListMemberAppsResult linkedAppsListMemberLinkedApps(String teamMemberId) throws ListMemberAppsErrorException, DbxException {
         ListMemberAppsArg arg = new ListMemberAppsArg(teamMemberId);
         return linkedAppsListMemberLinkedApps(arg);
+    }
+
+    //
+    // route team/linked_apps/list_members_linked_apps
+    //
+
+    /**
+     * List all applications linked to the team members' accounts. Note, this
+     * endpoint does not list any team-linked applications.
+     *
+     * @param listMembersAppsArg  Arguments for {@link
+     *     DbxTeamTeamRequests#linkedAppsListMembersLinkedApps()}.
+     *
+     * @return Information returned by {@link
+     *     DbxTeamTeamRequests#linkedAppsListMembersLinkedApps()}.
+     */
+    ListMembersAppsResult linkedAppsListMembersLinkedApps(ListMembersAppsArg listMembersAppsArg) throws ListMembersAppsErrorException, DbxException {
+        try {
+            return client.rpcStyle(client.getHost().getApi(),
+                                   "2/team/linked_apps/list_members_linked_apps",
+                                   listMembersAppsArg,
+                                   false,
+                                   JsonUtil.createType(ListMembersAppsResult.class),
+                                   JsonUtil.createType(ListMembersAppsError.class));
+        }
+        catch (DbxRequestUtil.ErrorWrapper ew) {
+            throw new ListMembersAppsErrorException(ew.getRequestId(), ew.getUserMessage(), (ListMembersAppsError) ew.getErrorValue());
+        }
+    }
+
+    /**
+     * List all applications linked to the team members' accounts. Note, this
+     * endpoint does not list any team-linked applications.
+     *
+     * @return Information returned by {@link
+     *     DbxTeamTeamRequests#linkedAppsListMembersLinkedApps()}.
+     */
+    public ListMembersAppsResult linkedAppsListMembersLinkedApps() throws ListMembersAppsErrorException, DbxException {
+        ListMembersAppsArg arg = new ListMembersAppsArg();
+        return linkedAppsListMembersLinkedApps(arg);
+    }
+
+    /**
+     * List all applications linked to the team members' accounts. Note, this
+     * endpoint does not list any team-linked applications.
+     *
+     * @param cursor  At the first call to the {@link
+     *     DbxTeamTeamRequests#linkedAppsListMembersLinkedApps()} the cursor
+     *     shouldn't be passed. Then, if the result of the call includes a
+     *     cursor, the following requests should include the received cursors in
+     *     order to receive the next sub list of the team applications.
+     *
+     * @return Information returned by {@link
+     *     DbxTeamTeamRequests#linkedAppsListMembersLinkedApps()}.
+     */
+    public ListMembersAppsResult linkedAppsListMembersLinkedApps(String cursor) throws ListMembersAppsErrorException, DbxException {
+        ListMembersAppsArg arg = new ListMembersAppsArg(cursor);
+        return linkedAppsListMembersLinkedApps(arg);
     }
 
     //
@@ -729,7 +938,11 @@ public final class DbxTeamTeamRequests {
      *
      * @return Information returned by {@link
      *     DbxTeamTeamRequests#linkedAppsListTeamLinkedApps()}.
+     *
+     * @deprecated use {@link
+     *     DbxTeamTeamRequests#linkedAppsListMembersLinkedApps()} instead.
      */
+    @Deprecated
     ListTeamAppsResult linkedAppsListTeamLinkedApps(ListTeamAppsArg listTeamAppsArg) throws ListTeamAppsErrorException, DbxException {
         try {
             return client.rpcStyle(client.getHost().getApi(),
@@ -750,7 +963,11 @@ public final class DbxTeamTeamRequests {
      *
      * @return Information returned by {@link
      *     DbxTeamTeamRequests#linkedAppsListTeamLinkedApps()}.
+     *
+     * @deprecated use {@link
+     *     DbxTeamTeamRequests#linkedAppsListMembersLinkedApps()} instead.
      */
+    @Deprecated
     public ListTeamAppsResult linkedAppsListTeamLinkedApps() throws ListTeamAppsErrorException, DbxException {
         ListTeamAppsArg arg = new ListTeamAppsArg();
         return linkedAppsListTeamLinkedApps(arg);
@@ -768,7 +985,11 @@ public final class DbxTeamTeamRequests {
      *
      * @return Information returned by {@link
      *     DbxTeamTeamRequests#linkedAppsListTeamLinkedApps()}.
+     *
+     * @deprecated use {@link
+     *     DbxTeamTeamRequests#linkedAppsListMembersLinkedApps()} instead.
      */
+    @Deprecated
     public ListTeamAppsResult linkedAppsListTeamLinkedApps(String cursor) throws ListTeamAppsErrorException, DbxException {
         ListTeamAppsArg arg = new ListTeamAppsArg(cursor);
         return linkedAppsListTeamLinkedApps(arg);
@@ -1001,8 +1222,9 @@ public final class DbxTeamTeamRequests {
 
     /**
      * Returns information about multiple team members. Permission : Team
-     * information This endpoint will return an empty member_info item, for IDs
-     * (or emails) that cannot be matched to a valid team member.
+     * information This endpoint will return {@link
+     * MembersGetInfoItem#idNotFound}, for IDs (or emails) that cannot be
+     * matched to a valid team member.
      *
      */
     List<MembersGetInfoItem> membersGetInfo(MembersGetInfoArgs membersGetInfoArgs) throws MembersGetInfoErrorException, DbxException {
@@ -1021,8 +1243,9 @@ public final class DbxTeamTeamRequests {
 
     /**
      * Returns information about multiple team members. Permission : Team
-     * information This endpoint will return an empty member_info item, for IDs
-     * (or emails) that cannot be matched to a valid team member.
+     * information This endpoint will return {@link
+     * MembersGetInfoItem#idNotFound}, for IDs (or emails) that cannot be
+     * matched to a valid team member.
      *
      * @param members  List of team members. Must not contain a {@code null}
      *     item and not be {@code null}.
@@ -1501,6 +1724,176 @@ public final class DbxTeamTeamRequests {
     public void membersUnsuspend(UserSelectorArg user) throws MembersUnsuspendErrorException, DbxException {
         MembersUnsuspendArg arg = new MembersUnsuspendArg(user);
         membersUnsuspend(arg);
+    }
+
+    //
+    // route team/properties/template/add
+    //
+
+    /**
+     * Add a property template. See route files/properties/add to add properties
+     * to a file.
+     *
+     * @param addPropertyTemplateArg  Arguments for adding property templates.
+     */
+    AddPropertyTemplateResult propertiesTemplateAdd(AddPropertyTemplateArg addPropertyTemplateArg) throws ModifyPropertyTemplateErrorException, DbxException {
+        try {
+            return client.rpcStyle(client.getHost().getApi(),
+                                   "2/team/properties/template/add",
+                                   addPropertyTemplateArg,
+                                   false,
+                                   JsonUtil.createType(AddPropertyTemplateResult.class),
+                                   JsonUtil.createType(com.dropbox.core.v2.properties.ModifyPropertyTemplateError.class));
+        }
+        catch (DbxRequestUtil.ErrorWrapper ew) {
+            throw new ModifyPropertyTemplateErrorException(ew.getRequestId(), ew.getUserMessage(), (com.dropbox.core.v2.properties.ModifyPropertyTemplateError) ew.getErrorValue());
+        }
+    }
+
+    /**
+     * Add a property template. See route files/properties/add to add properties
+     * to a file.
+     *
+     * @param name  A display name for the property template. Property template
+     *     names can be up to 256 bytes. Must not be {@code null}.
+     * @param description  Description for new property template. Property
+     *     template descriptions can be up to 1024 bytes. Must not be {@code
+     *     null}.
+     * @param fields  This is a list of custom properties associated with a
+     *     property template. There can be up to 64 properties in a single
+     *     property template. Must not contain a {@code null} item and not be
+     *     {@code null}.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public AddPropertyTemplateResult propertiesTemplateAdd(String name, String description, List<com.dropbox.core.v2.properties.PropertyFieldTemplate> fields) throws ModifyPropertyTemplateErrorException, DbxException {
+        AddPropertyTemplateArg arg = new AddPropertyTemplateArg(name, description, fields);
+        return propertiesTemplateAdd(arg);
+    }
+
+    //
+    // route team/properties/template/get
+    //
+
+    /**
+     * Get the schema for a specified template.
+     *
+     *
+     * @return The Property template for the specified template.
+     */
+    GetPropertyTemplateResult propertiesTemplateGet(GetPropertyTemplateArg getPropertyTemplateArg) throws PropertyTemplateErrorException, DbxException {
+        try {
+            return client.rpcStyle(client.getHost().getApi(),
+                                   "2/team/properties/template/get",
+                                   getPropertyTemplateArg,
+                                   false,
+                                   JsonUtil.createType(GetPropertyTemplateResult.class),
+                                   JsonUtil.createType(com.dropbox.core.v2.properties.PropertyTemplateError.class));
+        }
+        catch (DbxRequestUtil.ErrorWrapper ew) {
+            throw new PropertyTemplateErrorException(ew.getRequestId(), ew.getUserMessage(), (com.dropbox.core.v2.properties.PropertyTemplateError) ew.getErrorValue());
+        }
+    }
+
+    /**
+     * Get the schema for a specified template.
+     *
+     * @param templateId  An identifier for property template added by route
+     *     properties/template/add. Must have length of at least 1, match
+     *     pattern "{@code (/|ptid:).*}", and not be {@code null}.
+     *
+     * @return The Property template for the specified template.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public GetPropertyTemplateResult propertiesTemplateGet(String templateId) throws PropertyTemplateErrorException, DbxException {
+        GetPropertyTemplateArg arg = new GetPropertyTemplateArg(templateId);
+        return propertiesTemplateGet(arg);
+    }
+
+    //
+    // route team/properties/template/list
+    //
+
+    /**
+     * Get the property template identifiers for a team. To get the schema of
+     * each template use {@link
+     * DbxTeamTeamRequests#propertiesTemplateGet(String)}.
+     */
+    public ListPropertyTemplateIds propertiesTemplateList() throws PropertyTemplateErrorException, DbxException {
+        try {
+            return client.rpcStyle(client.getHost().getApi(),
+                                   "2/team/properties/template/list",
+                                   null,
+                                   false,
+                                   JsonUtil.createType(ListPropertyTemplateIds.class),
+                                   JsonUtil.createType(com.dropbox.core.v2.properties.PropertyTemplateError.class));
+        }
+        catch (DbxRequestUtil.ErrorWrapper ew) {
+            throw new PropertyTemplateErrorException(ew.getRequestId(), ew.getUserMessage(), (com.dropbox.core.v2.properties.PropertyTemplateError) ew.getErrorValue());
+        }
+    }
+
+    //
+    // route team/properties/template/update
+    //
+
+    /**
+     * Update a property template. This route can update the template name, the
+     * template description and add optional properties to templates.
+     *
+     */
+    UpdatePropertyTemplateResult propertiesTemplateUpdate(UpdatePropertyTemplateArg updatePropertyTemplateArg) throws ModifyPropertyTemplateErrorException, DbxException {
+        try {
+            return client.rpcStyle(client.getHost().getApi(),
+                                   "2/team/properties/template/update",
+                                   updatePropertyTemplateArg,
+                                   false,
+                                   JsonUtil.createType(UpdatePropertyTemplateResult.class),
+                                   JsonUtil.createType(com.dropbox.core.v2.properties.ModifyPropertyTemplateError.class));
+        }
+        catch (DbxRequestUtil.ErrorWrapper ew) {
+            throw new ModifyPropertyTemplateErrorException(ew.getRequestId(), ew.getUserMessage(), (com.dropbox.core.v2.properties.ModifyPropertyTemplateError) ew.getErrorValue());
+        }
+    }
+
+    /**
+     * Update a property template. This route can update the template name, the
+     * template description and add optional properties to templates.
+     *
+     * @param templateId  An identifier for property template added by {@link
+     *     DbxTeamTeamRequests#propertiesTemplateAdd(String,String,List)}. Must
+     *     have length of at least 1, match pattern "{@code (/|ptid:).*}", and
+     *     not be {@code null}.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public UpdatePropertyTemplateResult propertiesTemplateUpdate(String templateId) throws ModifyPropertyTemplateErrorException, DbxException {
+        UpdatePropertyTemplateArg arg = new UpdatePropertyTemplateArg(templateId);
+        return propertiesTemplateUpdate(arg);
+    }
+
+    /**
+     * Update a property template. This route can update the template name, the
+     * template description and add optional properties to templates.
+     *
+     * @param templateId  An identifier for property template added by {@link
+     *     DbxTeamTeamRequests#propertiesTemplateAdd(String,String,List)}. Must
+     *     have length of at least 1, match pattern "{@code (/|ptid:).*}", and
+     *     not be {@code null}.
+     *
+     * @return Request builder for configuring request parameters and completing
+     *     the request.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public PropertiesTemplateUpdateBuilder propertiesTemplateUpdateBuilder(String templateId) {
+        UpdatePropertyTemplateArg.Builder argBuilder = UpdatePropertyTemplateArg.newBuilder(templateId);
+        return new PropertiesTemplateUpdateBuilder(this, argBuilder);
     }
 
     //

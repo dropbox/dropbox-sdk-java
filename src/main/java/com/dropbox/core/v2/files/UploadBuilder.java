@@ -59,10 +59,10 @@ public class UploadBuilder extends com.dropbox.core.v2.DbxUploadStyleBuilder<Fil
      *
      * <p> If left unset or set to {@code null}, defaults to {@code false}. </p>
      *
-     * @param autorename  If there's a conflict, as determined by {@link
-     *     CommitInfo#getMode}, have the Dropbox server try to autorename the
-     *     file to avoid conflict. Defaults to {@code false} when set to {@code
-     *     null}.
+     * @param autorename  If there's a conflict, as determined by the {@code
+     *     mode} argument to {@link DbxUserFilesRequests#upload(String)}, have
+     *     the Dropbox server try to autorename the file to avoid conflict.
+     *     Defaults to {@code false} when set to {@code null}.
      *
      * @return this builder
      */
@@ -74,8 +74,9 @@ public class UploadBuilder extends com.dropbox.core.v2.DbxUploadStyleBuilder<Fil
     /**
      * Set value for optional field.
      *
-     * @param clientModified  The value to store as the {@link
-     *     CommitInfo#getClientModified} timestamp. Dropbox automatically
+     * @param clientModified  The value to store as the the {@code
+     *     clientModified} argument to {@link
+     *     DbxUserFilesRequests#upload(String)} timestamp. Dropbox automatically
      *     records the time at which the file was written to the Dropbox
      *     servers. It can also record an additional timestamp, provided by
      *     Dropbox desktop clients, mobile clients, and API apps of when the

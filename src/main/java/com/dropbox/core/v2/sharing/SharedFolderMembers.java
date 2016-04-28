@@ -50,10 +50,8 @@ public class SharedFolderMembers {
      *     contain a {@code null} item and not be {@code null}.
      * @param groups  The list of group members of the shared folder. Must not
      *     contain a {@code null} item and not be {@code null}.
-     * @param invitees  The list of invited members of the shared folder. This
-     *     list will not include invitees that have already accepted or declined
-     *     to join the shared folder. Must not contain a {@code null} item and
-     *     not be {@code null}.
+     * @param invitees  The list of invitees to the shared folder. Must not
+     *     contain a {@code null} item and not be {@code null}.
      * @param cursor  Present if there are additional shared folder members that
      *     have not been returned yet. Pass the cursor into {@link
      *     DbxUserSharingRequests#listFolderMembersContinue(String)} to list
@@ -102,10 +100,8 @@ public class SharedFolderMembers {
      *     contain a {@code null} item and not be {@code null}.
      * @param groups  The list of group members of the shared folder. Must not
      *     contain a {@code null} item and not be {@code null}.
-     * @param invitees  The list of invited members of the shared folder. This
-     *     list will not include invitees that have already accepted or declined
-     *     to join the shared folder. Must not contain a {@code null} item and
-     *     not be {@code null}.
+     * @param invitees  The list of invitees to the shared folder. Must not
+     *     contain a {@code null} item and not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -133,9 +129,7 @@ public class SharedFolderMembers {
     }
 
     /**
-     * The list of invited members of the shared folder. This list will not
-     * include invitees that have already accepted or declined to join the
-     * shared folder.
+     * The list of invitees to the shared folder.
      *
      * @return value for this field, never {@code null}.
      */

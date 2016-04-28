@@ -51,6 +51,15 @@ public enum SharePathError {
      */
     INSIDE_APP_FOLDER,
     /**
+     * A public folder can't be shared this way. Use a public link instead.
+     */
+    IS_PUBLIC_FOLDER,
+    /**
+     * A folder inside a public folder can't be shared this way. Use a public
+     * link instead.
+     */
+    INSIDE_PUBLIC_FOLDER,
+    /**
      * Folder is already shared.
      */
     ALREADY_SHARED,
@@ -58,6 +67,14 @@ public enum SharePathError {
      * Path is not valid.
      */
     INVALID_PATH,
+    /**
+     * We do not support sharing a Mac OS X package.
+     */
+    IS_OSX_PACKAGE,
+    /**
+     * We do not support sharing a folder inside a Mac OS X package.
+     */
+    INSIDE_OSX_PACKAGE,
     /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *
@@ -96,11 +113,23 @@ public enum SharePathError {
                 case INSIDE_APP_FOLDER:
                     g.writeString("inside_app_folder");
                     break;
+                case IS_PUBLIC_FOLDER:
+                    g.writeString("is_public_folder");
+                    break;
+                case INSIDE_PUBLIC_FOLDER:
+                    g.writeString("inside_public_folder");
+                    break;
                 case ALREADY_SHARED:
                     g.writeString("already_shared");
                     break;
                 case INVALID_PATH:
                     g.writeString("invalid_path");
+                    break;
+                case IS_OSX_PACKAGE:
+                    g.writeString("is_osx_package");
+                    break;
+                case INSIDE_OSX_PACKAGE:
+                    g.writeString("inside_osx_package");
                     break;
                 case OTHER:
                     g.writeString("other");
@@ -128,8 +157,12 @@ public enum SharePathError {
             values.put("contains_shared_folder", SharePathError.CONTAINS_SHARED_FOLDER);
             values.put("is_app_folder", SharePathError.IS_APP_FOLDER);
             values.put("inside_app_folder", SharePathError.INSIDE_APP_FOLDER);
+            values.put("is_public_folder", SharePathError.IS_PUBLIC_FOLDER);
+            values.put("inside_public_folder", SharePathError.INSIDE_PUBLIC_FOLDER);
             values.put("already_shared", SharePathError.ALREADY_SHARED);
             values.put("invalid_path", SharePathError.INVALID_PATH);
+            values.put("is_osx_package", SharePathError.IS_OSX_PACKAGE);
+            values.put("inside_osx_package", SharePathError.INSIDE_OSX_PACKAGE);
             values.put("other", SharePathError.OTHER);
             return Collections.unmodifiableMap(values);
         }

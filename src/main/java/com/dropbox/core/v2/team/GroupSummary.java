@@ -40,21 +40,24 @@ public class GroupSummary {
     protected final String groupName;
     protected final String groupId;
     protected final String groupExternalId;
-    protected final long memberCount;
+    protected final Long memberCount;
 
     /**
      * Information about a group.
      *
+     * <p> Use {@link newBuilder} to create instances of this class without
+     * specifying values for all optional fields. </p>
+     *
      * @param groupName  Must not be {@code null}.
      * @param groupId  Must not be {@code null}.
-     * @param memberCount  The number of members in the group.
      * @param groupExternalId  External ID of group. This is an arbitrary ID
      *     that an admin can attach to a group.
+     * @param memberCount  The number of members in the group.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupSummary(String groupName, String groupId, long memberCount, String groupExternalId) {
+    public GroupSummary(String groupName, String groupId, String groupExternalId, Long memberCount) {
         if (groupName == null) {
             throw new IllegalArgumentException("Required value for 'groupName' is null");
         }
@@ -74,13 +77,12 @@ public class GroupSummary {
      *
      * @param groupName  Must not be {@code null}.
      * @param groupId  Must not be {@code null}.
-     * @param memberCount  The number of members in the group.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupSummary(String groupName, String groupId, long memberCount) {
-        this(groupName, groupId, memberCount, null);
+    public GroupSummary(String groupName, String groupId) {
+        this(groupName, groupId, null, null);
     }
 
     /**
@@ -112,10 +114,84 @@ public class GroupSummary {
     /**
      * The number of members in the group.
      *
-     * @return value for this field.
+     * @return value for this field, or {@code null} if not present.
      */
-    public long getMemberCount() {
+    public Long getMemberCount() {
         return memberCount;
+    }
+
+    /**
+     * Returns a new builder for creating an instance of this class.
+     *
+     * @param groupName  Must not be {@code null}.
+     * @param groupId  Must not be {@code null}.
+     *
+     * @return builder for this class.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public static Builder newBuilder(String groupName, String groupId) {
+        return new Builder(groupName, groupId);
+    }
+
+    /**
+     * Builder for {@link GroupSummary}.
+     */
+    public static class Builder {
+        protected final String groupName;
+        protected final String groupId;
+
+        protected String groupExternalId;
+        protected Long memberCount;
+
+        protected Builder(String groupName, String groupId) {
+            if (groupName == null) {
+                throw new IllegalArgumentException("Required value for 'groupName' is null");
+            }
+            this.groupName = groupName;
+            if (groupId == null) {
+                throw new IllegalArgumentException("Required value for 'groupId' is null");
+            }
+            this.groupId = groupId;
+            this.groupExternalId = null;
+            this.memberCount = null;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param groupExternalId  External ID of group. This is an arbitrary ID
+         *     that an admin can attach to a group.
+         *
+         * @return this builder
+         */
+        public Builder withGroupExternalId(String groupExternalId) {
+            this.groupExternalId = groupExternalId;
+            return this;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param memberCount  The number of members in the group.
+         *
+         * @return this builder
+         */
+        public Builder withMemberCount(Long memberCount) {
+            this.memberCount = memberCount;
+            return this;
+        }
+
+        /**
+         * Builds an instance of {@link GroupSummary} configured with this
+         * builder's values
+         *
+         * @return new instance of {@link GroupSummary}
+         */
+        public GroupSummary build() {
+            return new GroupSummary(groupName, groupId, groupExternalId, memberCount);
+        }
     }
 
     @Override
@@ -139,8 +215,8 @@ public class GroupSummary {
             GroupSummary other = (GroupSummary) obj;
             return ((this.groupName == other.groupName) || (this.groupName.equals(other.groupName)))
                 && ((this.groupId == other.groupId) || (this.groupId.equals(other.groupId)))
-                && (this.memberCount == other.memberCount)
                 && ((this.groupExternalId == other.groupExternalId) || (this.groupExternalId != null && this.groupExternalId.equals(other.groupExternalId)))
+                && ((this.memberCount == other.memberCount) || (this.memberCount != null && this.memberCount.equals(other.memberCount)))
                 ;
         }
         else {
@@ -194,9 +270,11 @@ public class GroupSummary {
         protected void serializeFields(GroupSummary value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
             g.writeObjectField("group_name", value.groupName);
             g.writeObjectField("group_id", value.groupId);
-            g.writeObjectField("member_count", value.memberCount);
             if (value.groupExternalId != null) {
                 g.writeObjectField("group_external_id", value.groupExternalId);
+            }
+            if (value.memberCount != null) {
+                g.writeObjectField("member_count", value.memberCount);
             }
         }
     }
@@ -222,8 +300,8 @@ public class GroupSummary {
 
             String groupName = null;
             String groupId = null;
-            Long memberCount = null;
             String groupExternalId = null;
+            Long memberCount = null;
 
             while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
                 String _field = _p.getCurrentName();
@@ -236,16 +314,16 @@ public class GroupSummary {
                     groupId = getStringValue(_p);
                     _p.nextToken();
                 }
+                else if ("group_external_id".equals(_field)) {
+                    groupExternalId = getStringValue(_p);
+                    _p.nextToken();
+                }
                 else if ("member_count".equals(_field)) {
                     memberCount = _p.getLongValue();
                     assertUnsigned(_p, memberCount);
                     if (memberCount > Integer.MAX_VALUE) {
                         throw new JsonParseException(_p, "expecting a 32-bit unsigned integer, got: " + memberCount);
                     }
-                    _p.nextToken();
-                }
-                else if ("group_external_id".equals(_field)) {
-                    groupExternalId = getStringValue(_p);
                     _p.nextToken();
                 }
                 else {
@@ -259,11 +337,8 @@ public class GroupSummary {
             if (groupId == null) {
                 throw new JsonParseException(_p, "Required field \"group_id\" is missing.");
             }
-            if (memberCount == null) {
-                throw new JsonParseException(_p, "Required field \"member_count\" is missing.");
-            }
 
-            return new GroupSummary(groupName, groupId, memberCount, groupExternalId);
+            return new GroupSummary(groupName, groupId, groupExternalId, memberCount);
         }
     }
 }

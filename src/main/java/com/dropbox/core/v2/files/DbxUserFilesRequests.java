@@ -77,6 +77,88 @@ public final class DbxUserFilesRequests {
     }
 
     //
+    // route files/copy_reference/get
+    //
+
+    /**
+     * Get a copy reference to a file or folder. This reference string can be
+     * used to save that file or folder to another user's Dropbox by passing it
+     * to {@link DbxUserFilesRequests#copyReferenceSave(String,String)}.
+     *
+     */
+    GetCopyReferenceResult copyReferenceGet(GetCopyReferenceArg getCopyReferenceArg) throws GetCopyReferenceErrorException, DbxException {
+        try {
+            return client.rpcStyle(client.getHost().getApi(),
+                                   "2/files/copy_reference/get",
+                                   getCopyReferenceArg,
+                                   false,
+                                   JsonUtil.createType(GetCopyReferenceResult.class),
+                                   JsonUtil.createType(GetCopyReferenceError.class));
+        }
+        catch (DbxRequestUtil.ErrorWrapper ew) {
+            throw new GetCopyReferenceErrorException(ew.getRequestId(), ew.getUserMessage(), (GetCopyReferenceError) ew.getErrorValue());
+        }
+    }
+
+    /**
+     * Get a copy reference to a file or folder. This reference string can be
+     * used to save that file or folder to another user's Dropbox by passing it
+     * to {@link DbxUserFilesRequests#copyReferenceSave(String,String)}.
+     *
+     * @param path  The path to the file or folder you want to get a copy
+     *     reference to. Must match pattern "{@code
+     *     ((/|id:).*)|(rev:[0-9a-f]{9,})}" and not be {@code null}.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public GetCopyReferenceResult copyReferenceGet(String path) throws GetCopyReferenceErrorException, DbxException {
+        GetCopyReferenceArg arg = new GetCopyReferenceArg(path);
+        return copyReferenceGet(arg);
+    }
+
+    //
+    // route files/copy_reference/save
+    //
+
+    /**
+     * Save a copy reference returned by {@link
+     * DbxUserFilesRequests#copyReferenceGet(String)} to the user's Dropbox.
+     *
+     */
+    SaveCopyReferenceResult copyReferenceSave(SaveCopyReferenceArg saveCopyReferenceArg) throws SaveCopyReferenceErrorException, DbxException {
+        try {
+            return client.rpcStyle(client.getHost().getApi(),
+                                   "2/files/copy_reference/save",
+                                   saveCopyReferenceArg,
+                                   false,
+                                   JsonUtil.createType(SaveCopyReferenceResult.class),
+                                   JsonUtil.createType(SaveCopyReferenceError.class));
+        }
+        catch (DbxRequestUtil.ErrorWrapper ew) {
+            throw new SaveCopyReferenceErrorException(ew.getRequestId(), ew.getUserMessage(), (SaveCopyReferenceError) ew.getErrorValue());
+        }
+    }
+
+    /**
+     * Save a copy reference returned by {@link
+     * DbxUserFilesRequests#copyReferenceGet(String)} to the user's Dropbox.
+     *
+     * @param copyReference  A copy reference returned by {@link
+     *     DbxUserFilesRequests#copyReferenceGet(String)}. Must not be {@code
+     *     null}.
+     * @param path  Path in the user's Dropbox that is the destination. Must
+     *     match pattern "{@code /.*}" and not be {@code null}.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public SaveCopyReferenceResult copyReferenceSave(String copyReference, String path) throws SaveCopyReferenceErrorException, DbxException {
+        SaveCopyReferenceArg arg = new SaveCopyReferenceArg(copyReference, path);
+        return copyReferenceSave(arg);
+    }
+
+    //
     // route files/create_folder
     //
 
@@ -259,8 +341,8 @@ public final class DbxUserFilesRequests {
      * Returns the metadata for a file or folder. Note: Metadata for the root
      * folder is unsupported.
      *
-     * <p> The {@code includeMediaInfo} request parameter will default to {@code
-     * false} (see {@link #getMetadata(String,boolean)}). </p>
+     * <p> The default values for the optional request parameters will be used.
+     * See {@link GetMetadataBuilder} for more details. </p>
      *
      * @param path  The path of a file or folder on Dropbox. Must match pattern
      *     "{@code ((/|id:).*)|(rev:[0-9a-f]{9,})}" and not be {@code null}.
@@ -281,17 +363,16 @@ public final class DbxUserFilesRequests {
      *
      * @param path  The path of a file or folder on Dropbox. Must match pattern
      *     "{@code ((/|id:).*)|(rev:[0-9a-f]{9,})}" and not be {@code null}.
-     * @param includeMediaInfo  If true, {@link FileMetadata#getMediaInfo} is
-     *     set for photo and video.
      *
-     * @return Metadata for a file or folder.
+     * @return Request builder for configuring request parameters and completing
+     *     the request.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public Metadata getMetadata(String path, boolean includeMediaInfo) throws GetMetadataErrorException, DbxException {
-        GetMetadataArg arg = new GetMetadataArg(path, includeMediaInfo);
-        return getMetadata(arg);
+    public GetMetadataBuilder getMetadataBuilder(String path) {
+        GetMetadataArg.Builder argBuilder = GetMetadataArg.newBuilder(path);
+        return new GetMetadataBuilder(this, argBuilder);
     }
 
     //
@@ -368,6 +449,47 @@ public final class DbxUserFilesRequests {
         }
         PreviewArg arg = new PreviewArg(path, rev);
         return getPreview(arg);
+    }
+
+    //
+    // route files/get_temporary_link
+    //
+
+    /**
+     * Get a temporary link to stream content of a file. This link will expire
+     * in four hours and afterwards you will get 410 Gone. Content-Type of the
+     * link is determined automatically by the file's mime type.
+     *
+     */
+    GetTemporaryLinkResult getTemporaryLink(GetTemporaryLinkArg getTemporaryLinkArg) throws GetTemporaryLinkErrorException, DbxException {
+        try {
+            return client.rpcStyle(client.getHost().getApi(),
+                                   "2/files/get_temporary_link",
+                                   getTemporaryLinkArg,
+                                   false,
+                                   JsonUtil.createType(GetTemporaryLinkResult.class),
+                                   JsonUtil.createType(GetTemporaryLinkError.class));
+        }
+        catch (DbxRequestUtil.ErrorWrapper ew) {
+            throw new GetTemporaryLinkErrorException(ew.getRequestId(), ew.getUserMessage(), (GetTemporaryLinkError) ew.getErrorValue());
+        }
+    }
+
+    /**
+     * Get a temporary link to stream content of a file. This link will expire
+     * in four hours and afterwards you will get 410 Gone. Content-Type of the
+     * link is determined automatically by the file's mime type.
+     *
+     * @param path  The path to the file you want a temporary link to. Must
+     *     match pattern "{@code ((/|id:).*)|(rev:[0-9a-f]{9,})}" and not be
+     *     {@code null}.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public GetTemporaryLinkResult getTemporaryLink(String path) throws GetTemporaryLinkErrorException, DbxException {
+        GetTemporaryLinkArg arg = new GetTemporaryLinkArg(path);
+        return getTemporaryLink(arg);
     }
 
     //
@@ -894,7 +1016,8 @@ public final class DbxUserFilesRequests {
     //
 
     /**
-     * Searches for files and folders.
+     * Searches for files and folders. Note: Recent changes may not immediately
+     * be reflected in search results due to a short delay in indexing.
      *
      */
     SearchResult search(SearchArg searchArg) throws SearchErrorException, DbxException {
@@ -912,7 +1035,8 @@ public final class DbxUserFilesRequests {
     }
 
     /**
-     * Searches for files and folders.
+     * Searches for files and folders. Note: Recent changes may not immediately
+     * be reflected in search results due to a short delay in indexing.
      *
      * <p> The default values for the optional request parameters will be used.
      * See {@link SearchBuilder} for more details. </p>
@@ -934,7 +1058,8 @@ public final class DbxUserFilesRequests {
     }
 
     /**
-     * Searches for files and folders.
+     * Searches for files and folders. Note: Recent changes may not immediately
+     * be reflected in search results due to a short delay in indexing.
      *
      * @param path  The path in the user's Dropbox to search. Should probably be
      *     a folder. Must match pattern "{@code (/.*)?}" and not be {@code
@@ -1025,7 +1150,12 @@ public final class DbxUserFilesRequests {
      *
      *
      * @return Uploader used to upload the request body and finish request.
+     *
+     * @deprecated use {@link
+     *     DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)}
+     *     instead.
      */
+    @Deprecated
     UploadSessionAppendUploader uploadSessionAppend(UploadSessionCursor uploadSessionCursor) throws DbxException {
         HttpRequestor.Uploader uploader = client.uploadStyle(client.getHost().getContent(),
                                                              "2/files/upload_session/append",
@@ -1049,10 +1179,77 @@ public final class DbxUserFilesRequests {
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
+     *
+     * @deprecated use {@link
+     *     DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)}
+     *     instead.
      */
+    @Deprecated
     public UploadSessionAppendUploader uploadSessionAppend(String sessionId, long offset) throws DbxException {
         UploadSessionCursor arg = new UploadSessionCursor(sessionId, offset);
         return uploadSessionAppend(arg);
+    }
+
+    //
+    // route files/upload_session/append_v2
+    //
+
+    /**
+     * Append more data to an upload session. When the parameter close is set,
+     * this call will close the session. A single request should not upload more
+     * than 150 MB of file contents.
+     *
+     *
+     * @return Uploader used to upload the request body and finish request.
+     */
+    UploadSessionAppendV2Uploader uploadSessionAppendV2(UploadSessionAppendArg uploadSessionAppendArg) throws DbxException {
+        HttpRequestor.Uploader uploader = client.uploadStyle(client.getHost().getContent(),
+                                                             "2/files/upload_session/append_v2",
+                                                             uploadSessionAppendArg,
+                                                             false);
+        return new UploadSessionAppendV2Uploader(uploader);
+    }
+
+    /**
+     * Append more data to an upload session. When the parameter close is set,
+     * this call will close the session. A single request should not upload more
+     * than 150 MB of file contents.
+     *
+     * <p> The {@code close} request parameter will default to {@code false}
+     * (see {@link #uploadSessionAppendV2(UploadSessionCursor,boolean)}). </p>
+     *
+     * @param cursor  Contains the upload session ID and the offset. Must not be
+     *     {@code null}.
+     *
+     * @return Uploader used to upload the request body and finish request.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public UploadSessionAppendV2Uploader uploadSessionAppendV2(UploadSessionCursor cursor) throws DbxException {
+        UploadSessionAppendArg arg = new UploadSessionAppendArg(cursor);
+        return uploadSessionAppendV2(arg);
+    }
+
+    /**
+     * Append more data to an upload session. When the parameter close is set,
+     * this call will close the session. A single request should not upload more
+     * than 150 MB of file contents.
+     *
+     * @param cursor  Contains the upload session ID and the offset. Must not be
+     *     {@code null}.
+     * @param close  If true, current session will be closed. You cannot do
+     *     {@link DbxUserFilesRequests#uploadSessionAppend(String,long)} any
+     *     more to current session.
+     *
+     * @return Uploader used to upload the request body and finish request.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public UploadSessionAppendV2Uploader uploadSessionAppendV2(UploadSessionCursor cursor, boolean close) throws DbxException {
+        UploadSessionAppendArg arg = new UploadSessionAppendArg(cursor, close);
+        return uploadSessionAppendV2(arg);
     }
 
     //
@@ -1109,13 +1306,55 @@ public final class DbxUserFilesRequests {
      * to save all the data to a file in Dropbox. A single request should not
      * upload more than 150 MB of file contents.
      *
+     *
+     * @return Uploader used to upload the request body and finish request.
+     */
+    UploadSessionStartUploader uploadSessionStart(UploadSessionStartArg uploadSessionStartArg) throws DbxException {
+        HttpRequestor.Uploader uploader = client.uploadStyle(client.getHost().getContent(),
+                                                             "2/files/upload_session/start",
+                                                             uploadSessionStartArg,
+                                                             false);
+        return new UploadSessionStartUploader(uploader);
+    }
+
+    /**
+     * Upload sessions allow you to upload a single file using multiple
+     * requests. This call starts a new upload session with the given data.  You
+     * can then use {@link
+     * DbxUserFilesRequests#uploadSessionAppend(String,long)} to add more data
+     * and {@link
+     * DbxUserFilesRequests#uploadSessionFinish(UploadSessionCursor,CommitInfo)}
+     * to save all the data to a file in Dropbox. A single request should not
+     * upload more than 150 MB of file contents.
+     *
+     * <p> The {@code close} request parameter will default to {@code false}
+     * (see {@link #uploadSessionStart(boolean)}). </p>
+     *
      * @return Uploader used to upload the request body and finish request.
      */
     public UploadSessionStartUploader uploadSessionStart() throws DbxException {
-        HttpRequestor.Uploader uploader = client.uploadStyle(client.getHost().getContent(),
-                                                             "2/files/upload_session/start",
-                                                             null,
-                                                             false);
-        return new UploadSessionStartUploader(uploader);
+        UploadSessionStartArg arg = new UploadSessionStartArg();
+        return uploadSessionStart(arg);
+    }
+
+    /**
+     * Upload sessions allow you to upload a single file using multiple
+     * requests. This call starts a new upload session with the given data.  You
+     * can then use {@link
+     * DbxUserFilesRequests#uploadSessionAppend(String,long)} to add more data
+     * and {@link
+     * DbxUserFilesRequests#uploadSessionFinish(UploadSessionCursor,CommitInfo)}
+     * to save all the data to a file in Dropbox. A single request should not
+     * upload more than 150 MB of file contents.
+     *
+     * @param close  If true, current session will be closed. You cannot do
+     *     {@link DbxUserFilesRequests#uploadSessionAppend(String,long)} any
+     *     more to current session.
+     *
+     * @return Uploader used to upload the request body and finish request.
+     */
+    public UploadSessionStartUploader uploadSessionStart(boolean close) throws DbxException {
+        UploadSessionStartArg arg = new UploadSessionStartArg(close);
+        return uploadSessionStart(arg);
     }
 }

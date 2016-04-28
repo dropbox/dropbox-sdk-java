@@ -8,6 +8,7 @@ import com.dropbox.core.json.JsonReader;
 import com.dropbox.core.json.JsonUtil;
 import com.dropbox.core.json.StructJsonDeserializer;
 import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.v2.properties.PropertyGroup;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -24,6 +25,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
+import java.util.List;
 
 @JsonSerialize(using=FolderMetadata.Serializer.class)
 @JsonDeserialize(using=FolderMetadata.Deserializer.class)
@@ -37,6 +39,7 @@ public class FolderMetadata extends Metadata {
     protected final String id;
     protected final String sharedFolderId;
     protected final FolderSharingInfo sharingInfo;
+    protected final List<PropertyGroup> propertyGroups;
 
     /**
      * Use {@link newBuilder} to create instances of this class without
@@ -63,11 +66,14 @@ public class FolderMetadata extends Metadata {
      *     [-_0-9a-zA-Z:]+}".
      * @param sharingInfo  Set if the folder is contained in a shared folder or
      *     is a shared folder mount point.
+     * @param propertyGroups  Additional information if the file has custom
+     *     properties with the property template specified. Must not contain a
+     *     {@code null} item.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FolderMetadata(String name, String pathLower, String pathDisplay, String id, String parentSharedFolderId, String sharedFolderId, FolderSharingInfo sharingInfo) {
+    public FolderMetadata(String name, String pathLower, String pathDisplay, String id, String parentSharedFolderId, String sharedFolderId, FolderSharingInfo sharingInfo, List<PropertyGroup> propertyGroups) {
         super(name, pathLower, pathDisplay, parentSharedFolderId);
         if (id == null) {
             throw new IllegalArgumentException("Required value for 'id' is null");
@@ -83,6 +89,14 @@ public class FolderMetadata extends Metadata {
         }
         this.sharedFolderId = sharedFolderId;
         this.sharingInfo = sharingInfo;
+        if (propertyGroups != null) {
+            for (PropertyGroup x : propertyGroups) {
+                if (x == null) {
+                    throw new IllegalArgumentException("An item in list 'propertyGroups' is null");
+                }
+            }
+        }
+        this.propertyGroups = propertyGroups;
     }
 
     /**
@@ -105,7 +119,7 @@ public class FolderMetadata extends Metadata {
      *     preconditions.
      */
     public FolderMetadata(String name, String pathLower, String pathDisplay, String id) {
-        this(name, pathLower, pathDisplay, id, null, null, null);
+        this(name, pathLower, pathDisplay, id, null, null, null, null);
     }
 
     /**
@@ -134,6 +148,16 @@ public class FolderMetadata extends Metadata {
      */
     public FolderSharingInfo getSharingInfo() {
         return sharingInfo;
+    }
+
+    /**
+     * Additional information if the file has custom properties with the
+     * property template specified.
+     *
+     * @return value for this field, or {@code null} if not present.
+     */
+    public List<PropertyGroup> getPropertyGroups() {
+        return propertyGroups;
     }
 
     /**
@@ -173,6 +197,7 @@ public class FolderMetadata extends Metadata {
         protected String parentSharedFolderId;
         protected String sharedFolderId;
         protected FolderSharingInfo sharingInfo;
+        protected List<PropertyGroup> propertyGroups;
 
         protected Builder(String name, String pathLower, String pathDisplay, String id) {
             if (name == null) {
@@ -197,6 +222,7 @@ public class FolderMetadata extends Metadata {
             this.parentSharedFolderId = null;
             this.sharedFolderId = null;
             this.sharingInfo = null;
+            this.propertyGroups = null;
         }
 
         /**
@@ -258,13 +284,37 @@ public class FolderMetadata extends Metadata {
         }
 
         /**
+         * Set value for optional field.
+         *
+         * @param propertyGroups  Additional information if the file has custom
+         *     properties with the property template specified. Must not contain
+         *     a {@code null} item.
+         *
+         * @return this builder
+         *
+         * @throws IllegalArgumentException  If any argument does not meet its
+         *     preconditions.
+         */
+        public Builder withPropertyGroups(List<PropertyGroup> propertyGroups) {
+            if (propertyGroups != null) {
+                for (PropertyGroup x : propertyGroups) {
+                    if (x == null) {
+                        throw new IllegalArgumentException("An item in list 'propertyGroups' is null");
+                    }
+                }
+            }
+            this.propertyGroups = propertyGroups;
+            return this;
+        }
+
+        /**
          * Builds an instance of {@link FolderMetadata} configured with this
          * builder's values
          *
          * @return new instance of {@link FolderMetadata}
          */
         public FolderMetadata build() {
-            return new FolderMetadata(name, pathLower, pathDisplay, id, parentSharedFolderId, sharedFolderId, sharingInfo);
+            return new FolderMetadata(name, pathLower, pathDisplay, id, parentSharedFolderId, sharedFolderId, sharingInfo, propertyGroups);
         }
     }
 
@@ -273,7 +323,8 @@ public class FolderMetadata extends Metadata {
         int hash = java.util.Arrays.hashCode(new Object [] {
             id,
             sharedFolderId,
-            sharingInfo
+            sharingInfo,
+            propertyGroups
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;
@@ -294,6 +345,7 @@ public class FolderMetadata extends Metadata {
                 && ((this.parentSharedFolderId == other.parentSharedFolderId) || (this.parentSharedFolderId != null && this.parentSharedFolderId.equals(other.parentSharedFolderId)))
                 && ((this.sharedFolderId == other.sharedFolderId) || (this.sharedFolderId != null && this.sharedFolderId.equals(other.sharedFolderId)))
                 && ((this.sharingInfo == other.sharingInfo) || (this.sharingInfo != null && this.sharingInfo.equals(other.sharingInfo)))
+                && ((this.propertyGroups == other.propertyGroups) || (this.propertyGroups != null && this.propertyGroups.equals(other.propertyGroups)))
                 ;
         }
         else {
@@ -354,6 +406,9 @@ public class FolderMetadata extends Metadata {
             if (value.sharingInfo != null) {
                 g.writeObjectField("sharing_info", value.sharingInfo);
             }
+            if (value.propertyGroups != null) {
+                g.writeObjectField("property_groups", value.propertyGroups);
+            }
         }
     }
 
@@ -384,6 +439,7 @@ public class FolderMetadata extends Metadata {
             String parentSharedFolderId = null;
             String sharedFolderId = null;
             FolderSharingInfo sharingInfo = null;
+            List<PropertyGroup> propertyGroups = null;
 
             while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
                 String _field = _p.getCurrentName();
@@ -416,6 +472,18 @@ public class FolderMetadata extends Metadata {
                     sharingInfo = _p.readValueAs(FolderSharingInfo.class);
                     _p.nextToken();
                 }
+                else if ("property_groups".equals(_field)) {
+                    expectArrayStart(_p);
+                    propertyGroups = new java.util.ArrayList<PropertyGroup>();
+                    while (!isArrayEnd(_p)) {
+                        PropertyGroup _x = null;
+                        _x = _p.readValueAs(PropertyGroup.class);
+                        _p.nextToken();
+                        propertyGroups.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
+                }
                 else {
                     skipValue(_p);
                 }
@@ -434,7 +502,7 @@ public class FolderMetadata extends Metadata {
                 throw new JsonParseException(_p, "Required field \"id\" is missing.");
             }
 
-            return new FolderMetadata(name, pathLower, pathDisplay, id, parentSharedFolderId, sharedFolderId, sharingInfo);
+            return new FolderMetadata(name, pathLower, pathDisplay, id, parentSharedFolderId, sharedFolderId, sharingInfo, propertyGroups);
         }
     }
 }

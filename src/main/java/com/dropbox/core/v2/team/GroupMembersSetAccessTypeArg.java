@@ -35,8 +35,33 @@ class GroupMembersSetAccessTypeArg extends GroupMemberSelector {
     static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final GroupAccessType accessType;
+    protected final boolean returnMembers;
 
     /**
+     *
+     * @param group  Specify a group. Must not be {@code null}.
+     * @param user  Identity of a user that is a member of {@link
+     *     GroupMemberSelector#getGroup}. Must not be {@code null}.
+     * @param accessType  New group access type the user will have. Must not be
+     *     {@code null}.
+     * @param returnMembers  Whether to return the list of members in the group.
+     *     Note that the default value will cause all the group members  to be
+     *     returned in the response. This may take a long time for large groups.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public GroupMembersSetAccessTypeArg(GroupSelector group, UserSelectorArg user, GroupAccessType accessType, boolean returnMembers) {
+        super(group, user);
+        if (accessType == null) {
+            throw new IllegalArgumentException("Required value for 'accessType' is null");
+        }
+        this.accessType = accessType;
+        this.returnMembers = returnMembers;
+    }
+
+    /**
+     * The default values for unset fields will be used.
      *
      * @param group  Specify a group. Must not be {@code null}.
      * @param user  Identity of a user that is a member of {@link
@@ -48,11 +73,7 @@ class GroupMembersSetAccessTypeArg extends GroupMemberSelector {
      *     preconditions.
      */
     public GroupMembersSetAccessTypeArg(GroupSelector group, UserSelectorArg user, GroupAccessType accessType) {
-        super(group, user);
-        if (accessType == null) {
-            throw new IllegalArgumentException("Required value for 'accessType' is null");
-        }
-        this.accessType = accessType;
+        this(group, user, accessType, true);
     }
 
     /**
@@ -64,10 +85,23 @@ class GroupMembersSetAccessTypeArg extends GroupMemberSelector {
         return accessType;
     }
 
+    /**
+     * Whether to return the list of members in the group.  Note that the
+     * default value will cause all the group members  to be returned in the
+     * response. This may take a long time for large groups.
+     *
+     * @return value for this field, or {@code null} if not present. Defaults to
+     *     true.
+     */
+    public boolean getReturnMembers() {
+        return returnMembers;
+    }
+
     @Override
     public int hashCode() {
         int hash = java.util.Arrays.hashCode(new Object [] {
-            accessType
+            accessType,
+            returnMembers
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;
@@ -84,6 +118,7 @@ class GroupMembersSetAccessTypeArg extends GroupMemberSelector {
             return ((this.group == other.group) || (this.group.equals(other.group)))
                 && ((this.user == other.user) || (this.user.equals(other.user)))
                 && ((this.accessType == other.accessType) || (this.accessType.equals(other.accessType)))
+                && (this.returnMembers == other.returnMembers)
                 ;
         }
         else {
@@ -138,6 +173,7 @@ class GroupMembersSetAccessTypeArg extends GroupMemberSelector {
             g.writeObjectField("group", value.group);
             g.writeObjectField("user", value.user);
             g.writeObjectField("access_type", value.accessType);
+            g.writeObjectField("return_members", value.returnMembers);
         }
     }
 
@@ -163,6 +199,7 @@ class GroupMembersSetAccessTypeArg extends GroupMemberSelector {
             GroupSelector group = null;
             UserSelectorArg user = null;
             GroupAccessType accessType = null;
+            boolean returnMembers = true;
 
             while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
                 String _field = _p.getCurrentName();
@@ -177,6 +214,10 @@ class GroupMembersSetAccessTypeArg extends GroupMemberSelector {
                 }
                 else if ("access_type".equals(_field)) {
                     accessType = _p.readValueAs(GroupAccessType.class);
+                    _p.nextToken();
+                }
+                else if ("return_members".equals(_field)) {
+                    returnMembers = _p.getValueAsBoolean();
                     _p.nextToken();
                 }
                 else {
@@ -194,7 +235,7 @@ class GroupMembersSetAccessTypeArg extends GroupMemberSelector {
                 throw new JsonParseException(_p, "Required field \"access_type\" is missing.");
             }
 
-            return new GroupMembersSetAccessTypeArg(group, user, accessType);
+            return new GroupMembersSetAccessTypeArg(group, user, accessType, returnMembers);
         }
     }
 }

@@ -76,41 +76,47 @@ public final class GroupMembersAddError {
         /**
          * A suspended user cannot be added to a group as owner.
          */
-        USER_MUST_BE_ACTIVE_TO_BE_OWNER;
+        USER_MUST_BE_ACTIVE_TO_BE_OWNER,
+        /**
+         * A company-managed group cannot be managed by a user.
+         */
+        USER_CANNOT_BE_MANAGER_OF_COMPANY_MANAGED_GROUP; // List<String>
     }
 
     /**
      * No matching group found. No groups match the specified group ID.
      */
-    public static final GroupMembersAddError GROUP_NOT_FOUND = new GroupMembersAddError(Tag.GROUP_NOT_FOUND, null, null);
-    public static final GroupMembersAddError OTHER = new GroupMembersAddError(Tag.OTHER, null, null);
+    public static final GroupMembersAddError GROUP_NOT_FOUND = new GroupMembersAddError(Tag.GROUP_NOT_FOUND, null, null, null);
+    public static final GroupMembersAddError OTHER = new GroupMembersAddError(Tag.OTHER, null, null, null);
     /**
      * You cannot add duplicate users. One or more of the members you are trying
      * to add is already a member of the group.
      */
-    public static final GroupMembersAddError DUPLICATE_USER = new GroupMembersAddError(Tag.DUPLICATE_USER, null, null);
+    public static final GroupMembersAddError DUPLICATE_USER = new GroupMembersAddError(Tag.DUPLICATE_USER, null, null, null);
     /**
      * Group is not in this team. You cannot add members to a group that is
      * outside of your team.
      */
-    public static final GroupMembersAddError GROUP_NOT_IN_TEAM = new GroupMembersAddError(Tag.GROUP_NOT_IN_TEAM, null, null);
+    public static final GroupMembersAddError GROUP_NOT_IN_TEAM = new GroupMembersAddError(Tag.GROUP_NOT_IN_TEAM, null, null, null);
     /**
      * A suspended user cannot be added to a group as owner.
      */
-    public static final GroupMembersAddError USER_MUST_BE_ACTIVE_TO_BE_OWNER = new GroupMembersAddError(Tag.USER_MUST_BE_ACTIVE_TO_BE_OWNER, null, null);
+    public static final GroupMembersAddError USER_MUST_BE_ACTIVE_TO_BE_OWNER = new GroupMembersAddError(Tag.USER_MUST_BE_ACTIVE_TO_BE_OWNER, null, null, null);
 
     private final Tag tag;
     private final List<String> membersNotInTeamValue;
     private final List<String> usersNotFoundValue;
+    private final List<String> userCannotBeManagerOfCompanyManagedGroupValue;
 
     /**
      *
      * @param tag  Discriminating tag for this instance.
      */
-    private GroupMembersAddError(Tag tag, List<String> membersNotInTeamValue, List<String> usersNotFoundValue) {
+    private GroupMembersAddError(Tag tag, List<String> membersNotInTeamValue, List<String> usersNotFoundValue, List<String> userCannotBeManagerOfCompanyManagedGroupValue) {
         this.tag = tag;
         this.membersNotInTeamValue = membersNotInTeamValue;
         this.usersNotFoundValue = usersNotFoundValue;
+        this.userCannotBeManagerOfCompanyManagedGroupValue = userCannotBeManagerOfCompanyManagedGroupValue;
     }
 
     /**
@@ -210,7 +216,7 @@ public final class GroupMembersAddError {
                 throw new IllegalArgumentException("An item in list is null");
             }
         }
-        return new GroupMembersAddError(Tag.MEMBERS_NOT_IN_TEAM, value, null);
+        return new GroupMembersAddError(Tag.MEMBERS_NOT_IN_TEAM, value, null, null);
     }
 
     /**
@@ -270,7 +276,7 @@ public final class GroupMembersAddError {
                 throw new IllegalArgumentException("An item in list is null");
             }
         }
-        return new GroupMembersAddError(Tag.USERS_NOT_FOUND, null, value);
+        return new GroupMembersAddError(Tag.USERS_NOT_FOUND, null, value, null);
     }
 
     /**
@@ -302,12 +308,73 @@ public final class GroupMembersAddError {
         return this.tag == Tag.USER_MUST_BE_ACTIVE_TO_BE_OWNER;
     }
 
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#USER_CANNOT_BE_MANAGER_OF_COMPANY_MANAGED_GROUP}, {@code false}
+     * otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#USER_CANNOT_BE_MANAGER_OF_COMPANY_MANAGED_GROUP}, {@code false}
+     *     otherwise.
+     */
+    public boolean isUserCannotBeManagerOfCompanyManagedGroup() {
+        return this.tag == Tag.USER_CANNOT_BE_MANAGER_OF_COMPANY_MANAGED_GROUP;
+    }
+
+    /**
+     * Returns an instance of {@code GroupMembersAddError} that has its tag set
+     * to {@link Tag#USER_CANNOT_BE_MANAGER_OF_COMPANY_MANAGED_GROUP}.
+     *
+     * <p> A company-managed group cannot be managed by a user. </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code GroupMembersAddError} with its tag set to
+     *     {@link Tag#USER_CANNOT_BE_MANAGER_OF_COMPANY_MANAGED_GROUP}.
+     *
+     * @throws IllegalArgumentException  if {@code value} contains a {@code
+     *     null} item or is {@code null}.
+     */
+    public static GroupMembersAddError userCannotBeManagerOfCompanyManagedGroup(List<String> value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        for (String x : value) {
+            if (x == null) {
+                throw new IllegalArgumentException("An item in list is null");
+            }
+        }
+        return new GroupMembersAddError(Tag.USER_CANNOT_BE_MANAGER_OF_COMPANY_MANAGED_GROUP, null, null, value);
+    }
+
+    /**
+     * A company-managed group cannot be managed by a user.
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#USER_CANNOT_BE_MANAGER_OF_COMPANY_MANAGED_GROUP}. </p>
+     *
+     * @return The {@link
+     *     GroupMembersAddError#userCannotBeManagerOfCompanyManagedGroup} value
+     *     associated with this instance if {@link
+     *     #isUserCannotBeManagerOfCompanyManagedGroup} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isUserCannotBeManagerOfCompanyManagedGroup} is {@code false}.
+     */
+    public List<String> getUserCannotBeManagerOfCompanyManagedGroupValue() {
+        if (this.tag != Tag.USER_CANNOT_BE_MANAGER_OF_COMPANY_MANAGED_GROUP) {
+            throw new IllegalStateException("Invalid tag: required Tag.USER_CANNOT_BE_MANAGER_OF_COMPANY_MANAGED_GROUP, but was Tag." + tag.name());
+        }
+        return userCannotBeManagerOfCompanyManagedGroupValue;
+    }
+
     @Override
     public int hashCode() {
         int hash = java.util.Arrays.hashCode(new Object [] {
             tag,
             membersNotInTeamValue,
-            usersNotFoundValue
+            usersNotFoundValue,
+            userCannotBeManagerOfCompanyManagedGroupValue
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;
@@ -338,6 +405,8 @@ public final class GroupMembersAddError {
                     return (this.usersNotFoundValue == other.usersNotFoundValue) || (this.usersNotFoundValue.equals(other.usersNotFoundValue));
                 case USER_MUST_BE_ACTIVE_TO_BE_OWNER:
                     return true;
+                case USER_CANNOT_BE_MANAGER_OF_COMPANY_MANAGED_GROUP:
+                    return (this.userCannotBeManagerOfCompanyManagedGroupValue == other.userCannotBeManagerOfCompanyManagedGroupValue) || (this.userCannotBeManagerOfCompanyManagedGroupValue.equals(other.userCannotBeManagerOfCompanyManagedGroupValue));
                 default:
                     return false;
             }
@@ -410,6 +479,12 @@ public final class GroupMembersAddError {
                 case USER_MUST_BE_ACTIVE_TO_BE_OWNER:
                     g.writeString("user_must_be_active_to_be_owner");
                     break;
+                case USER_CANNOT_BE_MANAGER_OF_COMPANY_MANAGED_GROUP:
+                    g.writeStartObject();
+                    g.writeStringField(".tag", "user_cannot_be_manager_of_company_managed_group");
+                    g.writeObjectField("user_cannot_be_manager_of_company_managed_group", value.userCannotBeManagerOfCompanyManagedGroupValue);
+                    g.writeEndObject();
+                    break;
             }
         }
     }
@@ -469,6 +544,21 @@ public final class GroupMembersAddError {
                 case USER_MUST_BE_ACTIVE_TO_BE_OWNER: {
                     return GroupMembersAddError.USER_MUST_BE_ACTIVE_TO_BE_OWNER;
                 }
+                case USER_CANNOT_BE_MANAGER_OF_COMPANY_MANAGED_GROUP: {
+                    List<String> value = null;
+                    expectField(_p, "user_cannot_be_manager_of_company_managed_group");
+                    expectArrayStart(_p);
+                    value = new java.util.ArrayList<String>();
+                    while (!isArrayEnd(_p)) {
+                        String _x = null;
+                        _x = getStringValue(_p);
+                        _p.nextToken();
+                        value.add(_x);
+                    }
+                    expectArrayEnd(_p);
+                    _p.nextToken();
+                    return GroupMembersAddError.userCannotBeManagerOfCompanyManagedGroup(value);
+                }
             }
             // should be impossible to get here
             throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
@@ -481,6 +571,7 @@ public final class GroupMembersAddError {
             values.put("members_not_in_team", GroupMembersAddError.Tag.MEMBERS_NOT_IN_TEAM);
             values.put("users_not_found", GroupMembersAddError.Tag.USERS_NOT_FOUND);
             values.put("user_must_be_active_to_be_owner", GroupMembersAddError.Tag.USER_MUST_BE_ACTIVE_TO_BE_OWNER);
+            values.put("user_cannot_be_manager_of_company_managed_group", GroupMembersAddError.Tag.USER_CANNOT_BE_MANAGER_OF_COMPANY_MANAGED_GROUP);
             return Collections.unmodifiableMap(values);
         }
     }

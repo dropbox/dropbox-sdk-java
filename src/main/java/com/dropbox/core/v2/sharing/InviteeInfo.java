@@ -27,7 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * The information about a user invited to become a member a shared folder.
+ * Information about the recipient of a shared folder invitation.
  *
  * <p> This class is an open tagged union.  Tagged unions instances are always
  * associated to a specific tag.  This means only one of the {@code isAbc()}
@@ -79,7 +79,7 @@ public final class InviteeInfo {
     private final String emailValue;
 
     /**
-     * The information about a user invited to become a member a shared folder.
+     * Information about the recipient of a shared folder invitation.
      *
      * @param tag  Discriminating tag for this instance.
      */

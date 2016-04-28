@@ -49,8 +49,8 @@ public class GroupMembersChangeResult {
      * {@link
      * DbxTeamTeamRequests#groupsMembersRemove(GroupSelector,java.util.List)}.
      *
-     * @param groupInfo  Lists the group members after the member change
-     *     operation has been performed. Must not be {@code null}.
+     * @param groupInfo  The group info after member change operation has been
+     *     performed. Must not be {@code null}.
      * @param asyncJobId  An ID that can be used to obtain the status of
      *     granting/revoking group-owned resources. Must have length of at least
      *     1 and not be {@code null}.
@@ -73,8 +73,7 @@ public class GroupMembersChangeResult {
     }
 
     /**
-     * Lists the group members after the member change operation has been
-     * performed.
+     * The group info after member change operation has been performed.
      *
      * @return value for this field, never {@code null}.
      */

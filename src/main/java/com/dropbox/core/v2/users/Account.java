@@ -43,6 +43,7 @@ public class Account {
     protected final String email;
     protected final boolean emailVerified;
     protected final String profilePhotoUrl;
+    protected final boolean disabled;
 
     /**
      * The amount of detail revealed about an account depends on the user being
@@ -56,13 +57,14 @@ public class Account {
      *     possible that the user has since lost access to their e-mail. Must
      *     not be {@code null}.
      * @param emailVerified  Whether the user has verified their e-mail address.
+     * @param disabled  Whether the user has been disabled.
      * @param profilePhotoUrl  URL for the photo representing the user, if one
      *     is set.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public Account(String accountId, Name name, String email, boolean emailVerified, String profilePhotoUrl) {
+    public Account(String accountId, Name name, String email, boolean emailVerified, boolean disabled, String profilePhotoUrl) {
         if (accountId == null) {
             throw new IllegalArgumentException("Required value for 'accountId' is null");
         }
@@ -83,6 +85,7 @@ public class Account {
         this.email = email;
         this.emailVerified = emailVerified;
         this.profilePhotoUrl = profilePhotoUrl;
+        this.disabled = disabled;
     }
 
     /**
@@ -99,12 +102,13 @@ public class Account {
      *     possible that the user has since lost access to their e-mail. Must
      *     not be {@code null}.
      * @param emailVerified  Whether the user has verified their e-mail address.
+     * @param disabled  Whether the user has been disabled.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public Account(String accountId, Name name, String email, boolean emailVerified) {
-        this(accountId, name, email, emailVerified, null);
+    public Account(String accountId, Name name, String email, boolean emailVerified, boolean disabled) {
+        this(accountId, name, email, emailVerified, disabled, null);
     }
 
     /**
@@ -154,6 +158,15 @@ public class Account {
         return profilePhotoUrl;
     }
 
+    /**
+     * Whether the user has been disabled.
+     *
+     * @return value for this field.
+     */
+    public boolean getDisabled() {
+        return disabled;
+    }
+
     @Override
     public int hashCode() {
         int hash = java.util.Arrays.hashCode(new Object [] {
@@ -161,7 +174,8 @@ public class Account {
             name,
             email,
             emailVerified,
-            profilePhotoUrl
+            profilePhotoUrl,
+            disabled
         });
         return hash;
     }
@@ -178,6 +192,7 @@ public class Account {
                 && ((this.name == other.name) || (this.name.equals(other.name)))
                 && ((this.email == other.email) || (this.email.equals(other.email)))
                 && (this.emailVerified == other.emailVerified)
+                && (this.disabled == other.disabled)
                 && ((this.profilePhotoUrl == other.profilePhotoUrl) || (this.profilePhotoUrl != null && this.profilePhotoUrl.equals(other.profilePhotoUrl)))
                 ;
         }
@@ -234,6 +249,7 @@ public class Account {
             g.writeObjectField("name", value.name);
             g.writeObjectField("email", value.email);
             g.writeObjectField("email_verified", value.emailVerified);
+            g.writeObjectField("disabled", value.disabled);
             if (value.profilePhotoUrl != null) {
                 g.writeObjectField("profile_photo_url", value.profilePhotoUrl);
             }
@@ -263,6 +279,7 @@ public class Account {
             Name name = null;
             String email = null;
             Boolean emailVerified = null;
+            Boolean disabled = null;
             String profilePhotoUrl = null;
 
             while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
@@ -282,6 +299,10 @@ public class Account {
                 }
                 else if ("email_verified".equals(_field)) {
                     emailVerified = _p.getValueAsBoolean();
+                    _p.nextToken();
+                }
+                else if ("disabled".equals(_field)) {
+                    disabled = _p.getValueAsBoolean();
                     _p.nextToken();
                 }
                 else if ("profile_photo_url".equals(_field)) {
@@ -305,8 +326,11 @@ public class Account {
             if (emailVerified == null) {
                 throw new JsonParseException(_p, "Required field \"email_verified\" is missing.");
             }
+            if (disabled == null) {
+                throw new JsonParseException(_p, "Required field \"disabled\" is missing.");
+            }
 
-            return new Account(accountId, name, email, emailVerified, profilePhotoUrl);
+            return new Account(accountId, name, email, emailVerified, disabled, profilePhotoUrl);
         }
     }
 }

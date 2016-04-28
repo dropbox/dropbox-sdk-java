@@ -28,7 +28,7 @@ import java.util.List;
 
 @JsonSerialize(using=GroupMembersRemoveArg.Serializer.class)
 @JsonDeserialize(using=GroupMembersRemoveArg.Deserializer.class)
-class GroupMembersRemoveArg {
+class GroupMembersRemoveArg extends IncludeMembersArg {
     // struct GroupMembersRemoveArg
 
     // ProGuard work-around since we declare serializers in annotation
@@ -40,14 +40,19 @@ class GroupMembersRemoveArg {
 
     /**
      *
-     * @param group  Must not be {@code null}.
-     * @param users  Must not contain a {@code null} item and not be {@code
+     * @param group  Group from which users will be removed. Must not be {@code
      *     null}.
+     * @param users  List of users to be removed from the group. Must not
+     *     contain a {@code null} item and not be {@code null}.
+     * @param returnMembers  Whether to return the list of members in the group.
+     *     Note that the default value will cause all the group members  to be
+     *     returned in the response. This may take a long time for large groups.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupMembersRemoveArg(GroupSelector group, List<UserSelectorArg> users) {
+    public GroupMembersRemoveArg(GroupSelector group, List<UserSelectorArg> users, boolean returnMembers) {
+        super(returnMembers);
         if (group == null) {
             throw new IllegalArgumentException("Required value for 'group' is null");
         }
@@ -64,6 +69,22 @@ class GroupMembersRemoveArg {
     }
 
     /**
+     * The default values for unset fields will be used.
+     *
+     * @param group  Group from which users will be removed. Must not be {@code
+     *     null}.
+     * @param users  List of users to be removed from the group. Must not
+     *     contain a {@code null} item and not be {@code null}.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public GroupMembersRemoveArg(GroupSelector group, List<UserSelectorArg> users) {
+        this(group, users, true);
+    }
+
+    /**
+     * Group from which users will be removed.
      *
      * @return value for this field, never {@code null}.
      */
@@ -72,6 +93,7 @@ class GroupMembersRemoveArg {
     }
 
     /**
+     * List of users to be removed from the group.
      *
      * @return value for this field, never {@code null}.
      */
@@ -85,6 +107,7 @@ class GroupMembersRemoveArg {
             group,
             users
         });
+        hash = (31 * super.hashCode()) + hash;
         return hash;
     }
 
@@ -98,6 +121,7 @@ class GroupMembersRemoveArg {
             GroupMembersRemoveArg other = (GroupMembersRemoveArg) obj;
             return ((this.group == other.group) || (this.group.equals(other.group)))
                 && ((this.users == other.users) || (this.users.equals(other.users)))
+                && (this.returnMembers == other.returnMembers)
                 ;
         }
         else {
@@ -151,6 +175,7 @@ class GroupMembersRemoveArg {
         protected void serializeFields(GroupMembersRemoveArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
             g.writeObjectField("group", value.group);
             g.writeObjectField("users", value.users);
+            g.writeObjectField("return_members", value.returnMembers);
         }
     }
 
@@ -175,6 +200,7 @@ class GroupMembersRemoveArg {
 
             GroupSelector group = null;
             List<UserSelectorArg> users = null;
+            boolean returnMembers = true;
 
             while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
                 String _field = _p.getCurrentName();
@@ -195,6 +221,10 @@ class GroupMembersRemoveArg {
                     expectArrayEnd(_p);
                     _p.nextToken();
                 }
+                else if ("return_members".equals(_field)) {
+                    returnMembers = _p.getValueAsBoolean();
+                    _p.nextToken();
+                }
                 else {
                     skipValue(_p);
                 }
@@ -207,7 +237,7 @@ class GroupMembersRemoveArg {
                 throw new JsonParseException(_p, "Required field \"users\" is missing.");
             }
 
-            return new GroupMembersRemoveArg(group, users);
+            return new GroupMembersRemoveArg(group, users, returnMembers);
         }
     }
 }

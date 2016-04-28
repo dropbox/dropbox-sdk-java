@@ -1,7 +1,7 @@
 /* DO NOT EDIT */
-/* This file was generated from team.babel */
+/* This file was generated from team_policies.babel */
 
-package com.dropbox.core.v2.team;
+package com.dropbox.core.v2.teampolicies;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
@@ -27,20 +27,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Policy governing who can be a member of a folder shared by a team member.
+ * Policy governing which shared folders a team member can join.
  */
-@JsonSerialize(using=SharedFolderMemberPolicy.Serializer.class)
-@JsonDeserialize(using=SharedFolderMemberPolicy.Deserializer.class)
-public enum SharedFolderMemberPolicy {
-    // union SharedFolderMemberPolicy
+@JsonSerialize(using=SharedFolderJoinPolicy.Serializer.class)
+@JsonDeserialize(using=SharedFolderJoinPolicy.Deserializer.class)
+public enum SharedFolderJoinPolicy {
+    // union SharedFolderJoinPolicy
     /**
-     * Only a teammate can be a member of a folder shared by a team member.
+     * Team members can only join folders shared by teammates.
      */
-    TEAM,
+    FROM_TEAM_ONLY,
     /**
-     * Anyone can be a member of a folder shared by a team member.
+     * Team members can join any shared folder, including those shared by users
+     * outside the team.
      */
-    ANYONE,
+    FROM_ANYONE,
     /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *
@@ -54,21 +55,21 @@ public enum SharedFolderMemberPolicy {
     static final Serializer SERIALIZER = new Serializer();
     static final Deserializer DESERIALIZER = new Deserializer();
 
-    static final class Serializer extends UnionJsonSerializer<SharedFolderMemberPolicy> {
+    static final class Serializer extends UnionJsonSerializer<SharedFolderJoinPolicy> {
         private static final long serialVersionUID = 0L;
 
         public Serializer() {
-            super(SharedFolderMemberPolicy.class);
+            super(SharedFolderJoinPolicy.class);
         }
 
         @Override
-        public void serialize(SharedFolderMemberPolicy value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+        public void serialize(SharedFolderJoinPolicy value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
             switch (value) {
-                case TEAM:
-                    g.writeString("team");
+                case FROM_TEAM_ONLY:
+                    g.writeString("from_team_only");
                     break;
-                case ANYONE:
-                    g.writeString("anyone");
+                case FROM_ANYONE:
+                    g.writeString("from_anyone");
                     break;
                 case OTHER:
                     g.writeString("other");
@@ -77,23 +78,23 @@ public enum SharedFolderMemberPolicy {
         }
     }
 
-    static final class Deserializer extends UnionJsonDeserializer<SharedFolderMemberPolicy, SharedFolderMemberPolicy> {
+    static final class Deserializer extends UnionJsonDeserializer<SharedFolderJoinPolicy, SharedFolderJoinPolicy> {
         private static final long serialVersionUID = 0L;
 
         public Deserializer() {
-            super(SharedFolderMemberPolicy.class, getTagMapping(), SharedFolderMemberPolicy.OTHER);
+            super(SharedFolderJoinPolicy.class, getTagMapping(), SharedFolderJoinPolicy.OTHER);
         }
 
         @Override
-        public SharedFolderMemberPolicy deserialize(SharedFolderMemberPolicy _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
+        public SharedFolderJoinPolicy deserialize(SharedFolderJoinPolicy _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
             return _tag;
         }
 
-        private static Map<String, SharedFolderMemberPolicy> getTagMapping() {
-            Map<String, SharedFolderMemberPolicy> values = new HashMap<String, SharedFolderMemberPolicy>();
-            values.put("team", SharedFolderMemberPolicy.TEAM);
-            values.put("anyone", SharedFolderMemberPolicy.ANYONE);
-            values.put("other", SharedFolderMemberPolicy.OTHER);
+        private static Map<String, SharedFolderJoinPolicy> getTagMapping() {
+            Map<String, SharedFolderJoinPolicy> values = new HashMap<String, SharedFolderJoinPolicy>();
+            values.put("from_team_only", SharedFolderJoinPolicy.FROM_TEAM_ONLY);
+            values.put("from_anyone", SharedFolderJoinPolicy.FROM_ANYONE);
+            values.put("other", SharedFolderJoinPolicy.OTHER);
             return Collections.unmodifiableMap(values);
         }
     }
