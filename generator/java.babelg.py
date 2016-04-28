@@ -210,6 +210,15 @@ def get_ancestors(data_type):
     return ancestors
 
 
+def get_underlying_type(data_type, allow_lists=True):
+    while True:
+        if allow_lists and is_list_type(data_type):
+            data_type = data_type.data_type
+        elif is_nullable_type(data_type):
+            data_type = data_type.data_type
+        else:
+            return data_type
+
 def get_routes_with_arg_type(data_type, allow_lists=True):
     assert isinstance(data_type, DataTypeWrapper), repr(data_type)
 
@@ -218,13 +227,25 @@ def get_routes_with_arg_type(data_type, allow_lists=True):
     routes = []
     for babel_namespace in ctx.api.namespaces.values():
         for babel_route in babel_namespace.routes:
-            arg_type = babel_route.arg_data_type
-            if allow_lists and is_list_type(arg_type):
-                arg_type = arg_type.data_type
-            elif is_nullable_type(arg_type):
-                arg_type = arg_type.data_type
+            arg_type = get_underlying_type(babel_route.arg_data_type, allow_lists)
 
             if arg_type == data_type.as_babel:
+                routes.append(RouteWrapper(ctx, babel_namespace, babel_route))
+
+    return routes
+
+
+def get_routes_with_result_type(data_type, allow_lists=True):
+    assert isinstance(data_type, DataTypeWrapper), repr(data_type)
+
+    ctx = data_type._ctx
+
+    routes = []
+    for babel_namespace in ctx.api.namespaces.values():
+        for babel_route in babel_namespace.routes:
+            result_type = get_underlying_type(babel_route.result_data_type, allow_lists)
+
+            if result_type == data_type.as_babel:
                 routes.append(RouteWrapper(ctx, babel_namespace, babel_route))
 
     return routes
@@ -250,6 +271,58 @@ def get_fields_with_data_type(data_type):
                         fields.append(FieldWrapper(ctx, babel_data_type, babel_field))
 
     return fields
+
+def get_data_types_with_parent_type(data_type):
+    assert isinstance(data_type, DataTypeWrapper), repr(data_type)
+
+    ctx = data_type._ctx
+
+    babel_parent_type = data_type.as_babel
+
+    data_types = []
+    for babel_namespace in ctx.api.namespaces.values():
+        for babel_data_type in babel_namespace.data_types:
+            if babel_data_type.parent_type == babel_parent_type:
+                data_types.append(DataTypeWrapper(ctx, babel_data_type))
+
+    return data_types
+
+
+def is_data_type_required_outside_package(data_type):
+    # only structs can be flattened by routes. Unions must be passed explicitly as arguments.
+    if not data_type.is_struct:
+        return True
+
+    # we can hide structs if they are only used by a single route. In these cases, we make all
+    # references to the struct point to the route instead. Since we flatten the struct fields into
+    # the route method call, the users don't have to be aware that we use a POJO in the background.
+    #
+    # Note, if no routes use this data type, then it may be used elsewhere and we will have to make
+    # it public for references. This only works when exactly 1 routes uses it as an argument.
+    routes_with_arg = get_routes_with_arg_type(data_type)
+    if len(routes_with_arg) != 1:
+        return True
+
+    # make sure single route is in same namespace
+    if routes_with_arg[0].namespace != data_type.namespace:
+        return True
+
+    # if we return this type in any of our routes, it must be made available outside the package
+    if get_routes_with_result_type(data_type):
+        return True
+
+    # Routes will flatten struct fields so callers don't have to pass in an instance of the
+    # struct. However, we must verify the struct is not a field of some other struct.
+    fields_with_type = get_fields_with_data_type(data_type)
+    if fields_with_type:
+        return True
+
+    # if any data types inherit form this data types, then make it public
+    sub_data_types = get_data_types_with_parent_type(data_type)
+    if sub_data_types:
+        return True
+
+    return False
 
 
 class GeneratorContext(object):
@@ -632,6 +705,15 @@ class BabelWrapper(object):
         return self._babel_ent.name
 
     @property
+    def fq_babel_name(self):
+        """
+        Fully-qualified Babel entity name.
+
+        :rtype: str
+        """
+        return '.'.join((self.namespace.babel_name, self.babel_name))
+
+    @property
     def java_class(self):
         """
         Generated Java class that maps to the wrapped Babel entity. May not be implemented for
@@ -744,6 +826,10 @@ class NamespaceWrapper(BabelWrapper):
         Please use :field:`babel_filenames` for namespaces.
         """
         raise AssertionError("use babel_filenames for namespaces")
+
+    @property
+    def fq_babel_name(self):
+        return self.babel_name
 
     @property
     def data_types(self):
@@ -1374,6 +1460,10 @@ class FieldWrapper(BabelWrapper):
         self._containing_babel_data_type = containing_data_type
 
     @property
+    def fq_babel_name(self):
+        return '.'.join((self.namespace.babel_name, self.containing_data_type.babel_name, self.babel_name))
+
+    @property
     def babel_doc(self):
         doc = super(FieldWrapper, self).babel_doc
         if self.is_catch_all and not doc:
@@ -1590,6 +1680,11 @@ class JavadocGenerator(object):
         return sanitize_javadoc(ref)
 
     def translate_babel_doc(self, doc, context=None):
+        if isinstance(doc, BabelWrapper):
+            wrapper = doc
+            doc = wrapper.babel_doc
+            context = wrapper
+
         if doc:
             handler = lambda tag, val: self.javadoc_ref_handler(tag, val, context=context)
             return self._ctx.g.process_doc(sanitize_javadoc(doc), handler)
@@ -1597,13 +1692,26 @@ class JavadocGenerator(object):
             return doc
 
     def generate_javadoc(self, doc, context=None, fields=(), params=(), returns=None, throws=(), deprecated=None, allow_defaults=True):
+        # convenience for inferring various arguments from our wrapper objects
+        if isinstance(doc, BabelWrapper):
+            wrapper = doc
+            doc = wrapper.babel_doc
+            context = context or wrapper
+
         assert isinstance(doc, str), repr(doc)
         assert isinstance(context, BabelWrapper) or context is None, repr(context)
         assert isinstance(fields, (Sequence, types.GeneratorType)), repr(fields)
         assert isinstance(params, (Sequence, types.GeneratorType, OrderedDict)), repr(params)
-        assert isinstance(returns, str) or returns is None, repr(returns)
+        assert isinstance(returns, (str, BabelWrapper)) or returns is None, repr(returns)
         assert isinstance(throws, (Sequence, types.GeneratorType, OrderedDict)), repr(throws)
         assert isinstance(deprecated, (RouteWrapper, bool)) or deprecated is None, repr(deprecated)
+
+        # look at context to determine if we are deprecated, unless explicitly specified
+        if deprecated is None and context is not None:
+            if hasattr(context, "is_deprecated"):
+                deprecated = context.is_deprecated
+            if deprecated and hasattr(context, "deprecated_by") and context.deprecated_by is not None:
+                deprecated = context.deprecated_by
 
         params_doc = self.javadoc_params(fields, allow_defaults=allow_defaults)
         params_doc.update(self._translate_ordered_collection(params, context))
@@ -1916,13 +2024,14 @@ class JavadocGenerator(object):
         containing_data_type = field.containing_data_type
         if containing_data_type.is_struct:
             routes = get_routes_with_arg_type(containing_data_type)
+
             # we only handle cases where the struct appears as the argument to a single route
             if len(routes) == 1:
-                fields = get_fields_with_data_type(containing_data_type)
-
                 # the struct should not appear anywhere else besides as a route argument
-                if not fields:
-                    return 'the {@code %s} argument to %s' % (field.java_name, self._javadoc_route_ref(routes[0]))
+                return 'the {@code %s} argument to %s' % (field.java_name, self._javadoc_route_ref(routes[0]))
+
+        # can't reference a package-private data type.
+        assert is_data_type_required_outside_package(containing_data_type), field.fq_babel_name
 
         # fallback to standard ref
         if field.containing_data_type.is_enum:
@@ -2411,7 +2520,7 @@ class JavaCodeGenerationInstance(object):
         elif route.request_style == 'download':
             returns="Downloader used to download the response body and view the server response."
         elif route.has_result and (result_type.is_struct or result_type.is_union):
-            returns=result_type.babel_doc
+            returns=result_type
         else:
             returns=None
 
@@ -2440,8 +2549,8 @@ class JavaCodeGenerationInstance(object):
             signature = 'public %s %s() throws %s' % (return_type, route.java_method, throws)
 
         out('')
-        javadoc(route.babel_doc, context=route, returns=returns, deprecated=deprecated,
-                params=((method_arg_name, arg_type.babel_doc),) if not route.arg.is_void else ())
+        javadoc(route, returns=returns, deprecated=deprecated,
+                params=((method_arg_name, arg_type),) if not route.arg.is_void else ())
         with self.g.block(signature.strip()):
             if route.request_style == 'rpc':
                 self.generate_route_rpc_call(route, method_arg_name)
@@ -2480,7 +2589,7 @@ class JavaCodeGenerationInstance(object):
         elif route.request_style == 'download':
             returns="Downloader used to download the response body and view the server response."
         elif route.has_result and (result_type.is_struct or result_type.is_union):
-            returns=result_type.babel_doc
+            returns=result_type
         else:
             returns=None
 
@@ -2511,7 +2620,7 @@ class JavaCodeGenerationInstance(object):
                 )
 
         out('')
-        javadoc(doc, fields=fields, returns=returns, context=route, deprecated=route.deprecated_by, allow_defaults=False)
+        javadoc(doc, fields=fields, returns=returns, context=route, allow_defaults=False)
         with self.g.block('public %s %s(%s) throws %s' % (return_type, route.java_method, args, throws)):
             arg_class = arg_type.java_type()
             required_args = ', '.join(f.java_name for f in arg_type.all_required_fields)
@@ -2562,7 +2671,7 @@ class JavaCodeGenerationInstance(object):
         args = ', '.join(f.java_type_and_name() for f in required_fields)
 
         out('')
-        javadoc(route.babel_doc, fields=required_fields, returns=returns, context=route, deprecated=route.deprecated_by)
+        javadoc(route, fields=required_fields, returns=returns)
         with self.g.block('public %s %s(%s)' % (return_type, route.java_builder_method, args)):
             builder_args = ', '.join(f.java_name for f in required_fields)
             out('%s argBuilder = %s.newBuilder(%s);' % (
@@ -2665,7 +2774,7 @@ class JavaCodeGenerationInstance(object):
         javadoc = self.doc.generate_javadoc
 
         out('')
-        javadoc(data_type.babel_doc, context=data_type)
+        javadoc(data_type)
         out('@JsonSerialize(using=%s.Serializer.class)' % data_type.java_class.name)
         out('@JsonDeserialize(using=%s.Deserializer.class)' % data_type.java_class.name)
         with self.g.block('public enum %s' % data_type.java_class):
@@ -2899,7 +3008,7 @@ class JavaCodeGenerationInstance(object):
 
         all_fields = data_type.all_fields
         for i, field in enumerate(all_fields):
-            javadoc(field.babel_doc, context=field, deprecated=field.is_deprecated)
+            javadoc(field)
             comment = ''
             if field.is_catch_all:
                 assert field.data_type.is_void, field.data_type
@@ -2954,7 +3063,7 @@ class JavaCodeGenerationInstance(object):
             for field in data_type.all_fields:
                 if not field.has_value:
                     singleton_args = ', '.join(chain(("Tag.%s" % field.tag_name,), nulls))
-                    javadoc(field.babel_doc, context=field, deprecated=field.is_deprecated)
+                    javadoc(field)
                     out('public static final %s %s = new %s(%s);' % (
                         data_type.java_class,
                         field.java_singleton, data_type.java_class,
@@ -2979,8 +3088,7 @@ class JavaCodeGenerationInstance(object):
                  for field in data_type.all_fields if field.has_value),
             ))
             out('')
-            javadoc(data_type.babel_doc,
-                    context=data_type,
+            javadoc(data_type,
                     fields=(f for f in data_type.all_fields if f.has_value),
                     params=OrderedDict(tag="Discriminating tag for this instance."))
             with self.g.block('private %s(%s)' % (data_type.java_class, args)):
@@ -3153,7 +3261,6 @@ class JavaCodeGenerationInstance(object):
                     params=OrderedDict(value="value to assign to this instance.") if field.has_value else (),
                     returns=returns,
                     throws=self.doc.javadoc_throws(field, "value"),
-                    deprecated=field.is_deprecated,
                 )
                 if field.has_value:
                     with self.g.block('public static %s %s(%s value)' % (
@@ -3170,7 +3277,7 @@ class JavaCodeGenerationInstance(object):
 
                     if field.data_type.is_nullable:
                         out('')
-                        javadoc(doc, context=field, returns=returns, deprecated=field.is_deprecated)
+                        javadoc(doc, context=field, returns=returns)
                         with self.g.block('public static %s %s()' % (data_type.java_class, field.java_factory_method)):
                             out('return %s(null);' % field.java_factory_method)
 
@@ -3191,8 +3298,7 @@ class JavaCodeGenerationInstance(object):
                     """ % (self.doc.javadoc_ref(field), field.java_is_union_type_method),
                     throws=OrderedDict(
                         IllegalStateException="If {@link #%s} is {@code false}." % field.java_is_union_type_method,
-                    ),
-                    deprecated=field.is_deprecated,
+                    )
                 )
                 with self.g.block('public %s %s()' % (field.java_type(), field.java_getter)):
                     with self.g.block('if (this.tag != Tag.%s)' % field.tag_name):
@@ -3211,16 +3317,14 @@ class JavaCodeGenerationInstance(object):
         #
         # The exception to this rule are struct classes located in namespaces outside the route
         # namespace. To be able to import these classes, they will have to remain public.
-        visibility = 'public'
-        route_refs = get_routes_with_arg_type(data_type, allow_lists=False)
-        if route_refs and all(r.namespace == data_type.namespace for r in route_refs):
-            field_refs = get_fields_with_data_type(data_type)
-            if not field_refs:
-                # package private since this struct only gets used privately as a route arg.
-                visibility = ''
+        if is_data_type_required_outside_package(data_type):
+            visibility = 'public'
+        else:
+            # package private since this struct only gets used privately as a route arg.
+            visibility = ''
 
         out('')
-        javadoc(data_type.babel_doc, context=data_type)
+        javadoc(data_type)
         out('@JsonSerialize(using=%s.Serializer.class)' % data_type.java_class.name)
         out('@JsonDeserialize(using=%s.Deserializer.class)' % data_type.java_class.name)
         with self.g.block(('%s class %s' % (visibility, data_type.java_class_with_inheritance)).strip()):
@@ -3308,7 +3412,7 @@ class JavaCodeGenerationInstance(object):
                 if field.has_default:
                     returns += ' Defaults to %s.' % field.default_value
 
-                javadoc(field.babel_doc, context=field, returns=returns, deprecated=field.is_deprecated)
+                javadoc(field, returns=returns)
                 with self.g.block('public %s %s()' % (field.java_type(), field.java_getter)):
                     out('return %s;' % field.java_name)
 
@@ -3433,7 +3537,7 @@ class JavaCodeGenerationInstance(object):
             # withFieldName(FieldType fieldValue);
             #
             out('')
-            javadoc(doc, context=field, fields=(field,), returns='this builder', deprecated=field.is_deprecated)
+            javadoc(doc, context=field, fields=(field,), returns='this builder')
             with self.g.block('public %s %s(%s %s)' % (
                     builder_class,
                     field.java_builder_setter,
