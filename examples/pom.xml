@@ -64,6 +64,7 @@
                         <source>8</source>
                         <target>8</target>
                         <encoding>UTF-8</encoding>
+                        <showDeprecation>true</showDeprecation>
                     </configuration>
                 </plugin>
             </plugins>

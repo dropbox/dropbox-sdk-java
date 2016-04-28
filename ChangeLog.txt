@@ -1,3 +1,29 @@
+---------------------------------------------
+2.0.2 (2016-04-28)
+- Update to latest API specs:
+  - Authentication
+    - Add token/revoke endpoint.
+  - Account
+    - Add disabled field to Account.
+  - Files (DbxUserFilesRequests)
+    - Add withIncludeDeleted(Boolean) and withIncludeHasExplicitSharedMembers(Boolean) to GetMetadataBuilder and ListFolderBuilder.
+    - Add close argument to uploadSessionStart(..) to explicitly close an upload session.
+    - Add uploadSessionAppendV2(..) that provides explicit session close support. uploadSessionAppend(..) is now deprecated.
+    - Add copyReferenceGet(..) and copyReferenceSave(..) for copying files and folders.
+    - Add getTemporaryLink(..) endpoint.
+  - Shared links (DbxUserSharingRequests)
+    - Add removeExpiration argument to modifySharedLinkSettings(..).
+  - Shared folders
+    - Add FolderAction.LEAVE_A_COPY.
+    - Add SharedFolderMetadata.getTimeInvited().
+    - Add IS_OSX_PACKAGE and INSIDE_OSX_PACKAGE to SharePathError. Returned when a user attempts to share an OS X package or folder inside an OS X package.
+  - Business endpoints (DbxTeamTeamRequests)
+    - GroupSummary.getMemberCount() is now optional and returns a Long.
+    - devicesListTeamDevices(..) is now deprecated by devicesListMemberDevices(..).
+    - linkedAppsListTeamLinkedApps(..) is now deprecated by linkedAppsListMembersLinkedApps(..).
+    - Add returnMembers argument to groupsMembersSetAccessType(..).
+- Fix JsonDateReaderTest failures for non-English systems.
+- Update ProGuard rules to fix handling of embedded trusted SSL certs resource.
 - Fix tutorial example to list folder entries for folders with many files.
 
 ---------------------------------------------

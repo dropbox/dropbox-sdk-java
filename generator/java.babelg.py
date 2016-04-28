@@ -945,7 +945,7 @@ class RouteWrapper(BabelWrapper):
 
     @property
     def is_deprecated(self):
-        return self.as_babel.deprecrated is not None
+        return self.as_babel.deprecated is not None
 
     @property
     def deprecated_by(self):
@@ -1708,10 +1708,12 @@ class JavadocGenerator(object):
 
         # look at context to determine if we are deprecated, unless explicitly specified
         if deprecated is None and context is not None:
-            if hasattr(context, "is_deprecated"):
+            if isinstance(context, RouteWrapper):
+                deprecated = context.deprecated_by or context.is_deprecated
+            elif isinstance(context, FieldWrapper):
                 deprecated = context.is_deprecated
-            if deprecated and hasattr(context, "deprecated_by") and context.deprecated_by is not None:
-                deprecated = context.deprecated_by
+            else:
+                assert not hasattr(context, "is_deprecated"), repr(context)
 
         params_doc = self.javadoc_params(fields, allow_defaults=allow_defaults)
         params_doc.update(self._translate_ordered_collection(params, context))
