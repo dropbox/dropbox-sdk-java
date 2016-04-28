@@ -9,6 +9,8 @@ com.dropbox.core.v2.async
 com.dropbox.core.v2.auth
 com.dropbox.core.v2.common
 com.dropbox.core.v2.files
+com.dropbox.core.v2.properties
 com.dropbox.core.v2.sharing
 com.dropbox.core.v2.team
+com.dropbox.core.v2.teampolicies
 com.dropbox.core.v2.users
