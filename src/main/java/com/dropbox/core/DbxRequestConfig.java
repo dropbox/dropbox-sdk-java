@@ -1,5 +1,7 @@
 package com.dropbox.core;
 
+import java.util.Locale;
+
 import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.http.StandardHttpRequestor;
 
@@ -195,6 +197,20 @@ public class DbxRequestConfig {
          */
         public Builder withUserLocale(/*@Nullable*/ String userLocale) {
             this.userLocale = userLocale;
+            return this;
+        }
+
+        /**
+         * Set the locale of the app user. User-visible messages returned by the Dropbox servers
+         * will be localized to this locale.
+         *
+         * <p> Defaults to {@code null}, which disables localization (messages will be in English).
+         *
+         * @param userLocale Locale of app user, or {@code null} to disable localization
+         * @return this builder
+         */
+        public Builder withUserLocale(/*@Nullable*/ Locale userLocale) {
+            this.userLocale = userLocale == null ? null : userLocale.toLanguageTag();
             return this;
         }
 

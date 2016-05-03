@@ -20,7 +20,7 @@ task generateBabelSources(type: Exec) {
     }
 
     inputs.file generateScriptFile
-    inputs.dir generatorDir
+    inputs.dir fileTree(dir: generatorDir, exclude: '**/*.pyc')
     inputs.sourceDir specDir
     outputs.dir outputDir
 

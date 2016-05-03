@@ -1107,7 +1107,7 @@ class RouteWrapper(BabelWrapper):
 
         :rtype: :class:`JavaClass`
         """
-        assert self.supports_builder
+        assert self.supports_builder or self.request_style == 'download'
         return self._as_java_class(classname(self.babel_name + '_builder'))
 
     @property
@@ -1153,7 +1153,7 @@ class RouteWrapper(BabelWrapper):
 
         :rtype: str
         """
-        assert self.supports_builder
+        assert self.supports_builder or self.request_style == 'download'
         return camelcase(self.babel_name + '_builder')
 
     @property
@@ -1254,7 +1254,7 @@ class RouteWrapper(BabelWrapper):
 
         :rtype: str
         """
-        assert self.supports_builder, "Route doesn't support builder-style requests"
+        assert self.supports_builder or self.request_style == 'download', "Route doesn't support builder-style requests"
         return str(self.java_builder_class)
 
     @property
@@ -2267,9 +2267,12 @@ class JavaImportGenerator(object):
             if route.supports_builder:
                 self._ctx.add_imports('com.dropbox.core.v2.DbxUploadStyleBuilder')
         elif route.request_style == 'download':
-            self._ctx.add_imports('com.dropbox.core.DbxDownloader')
-            if route.supports_builder:
-                self._ctx.add_imports('com.dropbox.core.v2.DbxDownloadStyleBuilder')
+            self._ctx.add_imports(
+                'com.dropbox.core.DbxDownloader',
+                'com.dropbox.core.v2.DbxDownloadStyleBuilder',
+                'java.util.Collections',
+                'java.util.List',
+            )
 
     def add_imports_for_route_builder(self, route):
         route_auth = route.auth_style if route.auth_style != 'noauth' else 'user'
@@ -2280,10 +2283,19 @@ class JavaImportGenerator(object):
         )
         for field in route.arg.all_optional_fields:
             self.add_imports_for_field(field)
+
         if route.has_error:
             self._ctx.add_imports(route.error.java_exception_class)
         else:
             self._ctx.add_imports('com.dropbox.core.DbxApiException')
+
+        if route.request_style == 'download':
+            self._ctx.add_imports(
+                'com.dropbox.core.v2.DbxDownloadStyleBuilder',
+                'com.dropbox.core.DbxDownloader',
+            )
+        elif route.request_style == 'upload':
+            self._ctx.add_imports('com.dropbox.core.DbxUploader')
 
     def add_imports_for_route_uploader(self, route):
         self._ctx.add_imports(
@@ -2597,7 +2609,8 @@ class JavaCodeGenerationInstance(object):
                     self.generate_route_base(route)
                     self.generate_route(route, required_only=True)
                     # we don't use builders if we have too few optional fields. Instead we just
-                    # create another method call.
+                    # create another method call. We have an exception for download endpoints, which
+                    # recently added builders for previous routes that had no builders
                     if route.has_optional_arg_fields and not route.supports_builder:
                         self.generate_route(route, required_only=False)
                     self.generate_route_builder(route)
@@ -2618,7 +2631,7 @@ class JavaCodeGenerationInstance(object):
         with self.new_file(namespace, 'package-info', package_doc=package_doc):
             pass
 
-    def generate_route_base(self, route):
+    def generate_route_base(self, route, force_public=False):
         out = self.g.emit
         javadoc = self.doc.generate_javadoc
 
@@ -2640,18 +2653,27 @@ class JavaCodeGenerationInstance(object):
         if route.has_arg:
             method_arg_type = arg_type.java_type()
             method_arg_name = arg_type.java_name
-            if arg_type.is_union:
+            args = [(method_arg_type, method_arg_name)]
+            if route.request_style == 'download' and not force_public:
+                headers_var = 'headers_'
+                args.extend([
+                    ('List<HttpRequestor.Header>', headers_var),
+                ])
+            else:
+                headers_var = 'Collections.<HttpRequestor.Header>emptyList()'
+
+            if arg_type.is_union and (force_public or route.request_style != 'download'):
                 deprecated = route.deprecated_by
                 visibility = 'public'
             else:
                 deprecated = None # Don't mark private methods deprecated since we don't care
                 visibility = ''   # package private
-            signature = '%s %s %s(%s %s) throws %s' % (
+
+            signature = '%s %s %s(%s) throws %s' % (
                 visibility,
                 return_type,
                 route.java_method,
-                method_arg_type,
-                method_arg_name,
+                ', '.join('%s %s' % (k, v) for k, v in args),
                 throws,
             )
         else:
@@ -2668,12 +2690,20 @@ class JavaCodeGenerationInstance(object):
             elif route.request_style == 'upload':
                 self.generate_route_upload_call(route, method_arg_name)
             elif route.request_style == 'download':
-                self.generate_route_download_call(route, method_arg_name)
+                if arg_type.is_union and force_public:
+                    self.generate_route_download_call(route, method_arg_name, headers_var)
+                else:
+                    self.generate_route_download_call(route, method_arg_name, headers_var)
             else:
                 assert False, "unrecognized route request style: %s" % route.request_style
 
     def generate_route(self, route, required_only=True):
-        if not route.has_arg or route.arg.is_union:
+        if not route.has_arg:
+            return
+
+        if route.arg.is_union:
+            if route.request_style == 'download':
+                generate_route_base(route, force_public=True)
             return
 
         out = self.g.emit
@@ -2684,7 +2714,8 @@ class JavaCodeGenerationInstance(object):
         return_type = route.java_return_type
         throws = ', '.join(map(str, route.java_throws))
 
-        assert arg_type.is_struct, "Primitive arg types not supported: %s" % arg_type
+        assert arg_type.is_struct, repr(arg_type)
+
         if not required_only:
             assert not route.supports_builder, "Route has builder, so unpacked method unnecessary."
             n_optional = len(arg_type.all_optional_fields)
@@ -2756,12 +2787,15 @@ class JavaCodeGenerationInstance(object):
                     out('%(cls)s arg = new %(cls)s(%(args)s);' % dict(cls=arg_class, args=all_args))
 
             if route.has_result or route.request_style in ('upload', 'download'):
-                out('return %s(arg);' % route.java_method)
+                args = ('arg',)
+                if route.request_style == 'download':
+                    args += ('Collections.<HttpRequestor.Header>emptyList()',) # headers
+                out('return %s(%s);' % (route.java_method, ', '.join(args)))
             else:
                 out('%s(arg);' % route.java_method)
 
     def generate_route_builder(self, route):
-        if not route.supports_builder:
+        if not (route.request_style == 'download' or route.supports_builder):
             return
 
         out = self.g.emit
@@ -2785,12 +2819,20 @@ class JavaCodeGenerationInstance(object):
         javadoc(route, fields=required_fields, returns=returns)
         with self.g.block('public %s %s(%s)' % (return_type, route.java_builder_method, args)):
             builder_args = ', '.join(f.java_name for f in required_fields)
-            out('%s argBuilder = %s.newBuilder(%s);' % (
-                arg_type.java_builder_class,
-                arg_type.java_class,
-                builder_args,
-            ))
-            out('return new %s(this, argBuilder);' % return_type)
+            if arg_type.supports_builder:
+                out('%s argBuilder_ = %s.newBuilder(%s);' % (
+                    arg_type.java_builder_class,
+                    arg_type.java_class,
+                    builder_args,
+                ))
+                out('return new %s(this, argBuilder_);' % return_type)
+            else:
+                out('%s arg_ = new %s(%s);' % (
+                    arg_type.java_class,
+                    arg_type.java_class,
+                    ', '.join(f.java_name for f in required_fields)
+                ))
+                out('return new %s(this, %s);' % (return_type, builder_args))
 
     def translate_error_wrapper(self, route, error_wrapper_var):
         if route.has_error:
@@ -2809,20 +2851,25 @@ class JavaCodeGenerationInstance(object):
                 ew=error_wrapper_var,
             )
 
-    def generate_route_simple_call(self, route, arg_var, before):
+    def generate_route_simple_call(self, route, arg_var, *other_args, before=''):
         out = self.g.emit
 
         with self.g.block('try'):
+            multiline_args = [
+                'client.getHost().%s()' % camelcase('get_' + route.host),
+                '"%s"' % route.url_path,
+                arg_var if route.has_arg else 'null',
+                'true' if route.auth_style == 'noauth' else 'false',
+            ]
+            multiline_args.extend(other_args)
+            multiline_args.extend([
+                route.arg.java_serializer,
+                route.result.java_serializer,
+                route.error.java_serializer,
+            ])
+
             self.g.generate_multiline_list(
-                (
-                    'client.getHost().%s()' % camelcase('get_' + route.host),
-                    '"%s"' % route.url_path,
-                    arg_var if route.has_arg else 'null',
-                    'true' if route.auth_style == 'noauth' else 'false',
-                    route.arg.java_serializer,
-                    route.result.java_serializer,
-                    route.error.java_serializer,
-                ),
+                multiline_args,
                 before=before,
                 after=';',
             )
@@ -2837,10 +2884,11 @@ class JavaCodeGenerationInstance(object):
             before=('return ' if route.has_result else '') + 'client.rpcStyle',
         )
 
-    def generate_route_download_call(self, route, arg_var):
+    def generate_route_download_call(self, route, arg_var, headers_var):
         self.generate_route_simple_call(
             route,
             arg_var,
+            headers_var,
             # always need to return a downloader
             before='return client.downloadStyle',
         )
@@ -3239,7 +3287,7 @@ class JavaCodeGenerationInstance(object):
         out = self.g.emit
         javadoc = self.doc.generate_javadoc
 
-        assert data_type.supports_builder, "Data type does not support builder: %r" % data_type
+        assert data_type.supports_builder, repr(data_type)
 
         parent_supports_builder = data_type.parent and data_type.parent.supports_builder
         all_required_fields = data_type.all_required_fields
@@ -3426,7 +3474,7 @@ class JavaCodeGenerationInstance(object):
                     out('return %s' % self.translate_error_wrapper(route, 'error'))
 
     def generate_builder_type(self, route):
-        if not route.supports_builder:
+        if not (route.request_style == 'download' or route.supports_builder):
             return
 
         out = self.g.emit
@@ -3444,9 +3492,10 @@ class JavaCodeGenerationInstance(object):
                 exception_class = route.java_exception_class
             else:
                 exception_class = 'DbxApiException'
-            builder_arg_class = arg_type.java_builder_class
-            builder_arg_name = arg_type.java_builder_field
-            client_name = route.namespace.java_field
+            if arg_type.supports_builder:
+                builder_arg_class = arg_type.java_builder_class
+                builder_arg_name = arg_type.java_builder_field
+            client_name = route.namespace.java_field + '_'
             route_auth = route.auth_style if route.auth_style != 'noauth' else 'user'
 
             out('')
@@ -3459,41 +3508,67 @@ class JavaCodeGenerationInstance(object):
             )
             with self.g.block('public class %s' % route.java_builder_class_with_inheritance):
                 out('private final %s %s;' % (route.namespace.java_class(route_auth), client_name))
-                out('private final %s %s;' % (builder_arg_class, builder_arg_name))
+                if arg_type.supports_builder:
+                    out('private final %s %s;' % (builder_arg_class, builder_arg_name))
+                else:
+                    for field in arg_type.all_required_fields:
+                        out('private final %s;' % field.java_type_and_name())
+                    for field in arg_type.all_optional_fields:
+                        out('private %s;' % field.java_type_and_name())
 
                 #
                 # CONSTRUCTOR
                 #
 
-                args = ', '.join('%s %s' % pair for pair in (
-                    (route.namespace.java_class(route_auth), client_name),
-                    (builder_arg_class, builder_arg_name),
-                ))
+                params=[
+                    (client_name, 'Dropbox namespace-specific client used to issue %s requests.' % route.namespace.babel_name)
+                ]
+                if arg_type.supports_builder:
+                    args = ', '.join('%s %s' % pair for pair in (
+                        (route.namespace.java_class(route_auth), client_name),
+                        (builder_arg_class, builder_arg_name),
+                    ))
+                    params.append((builder_arg_name, 'Request argument builder.'))
+                else:
+                    args = '%s %s, %s' % (
+                        route.namespace.java_class(route_auth),
+                        client_name,
+                        ', '.join(f.java_type_and_name() for f in arg_type.all_required_fields)
+                    )
 
 
                 out('')
                 javadoc(
                     'Creates a new instance of this builder.',
-                    params=[
-                        (client_name, 'Dropbox namespace-specific client used to issue %s requests.' % route.namespace.babel_name),
-                        (builder_arg_name, 'Request argument builder.'),
-                    ],
+                    params=params,
+                    fields=() if arg_type.supports_builder else arg_type.all_required_fields,
                     returns='instsance of this builder',
                 )
                 # package private
                 with self.g.block('%s(%s)' % (class_name, args)):
                     with self.g.block('if (%s == null)' % client_name):
                         out('throw new NullPointerException("%s");' % client_name)
-                    with self.g.block('if (%s == null)' % builder_arg_name):
-                        out('throw new NullPointerException("%s");' % builder_arg_name)
                     out('this.%(nf)s = %(nf)s;' % dict(nf=client_name));
-                    out('this.%(nf)s = %(nf)s;' % dict(nf=builder_arg_name));
+
+                    if arg_type.supports_builder:
+                        with self.g.block('if (%s == null)' % builder_arg_name):
+                            out('throw new NullPointerException("%s");' % builder_arg_name)
+                        out('this.%(nf)s = %(nf)s;' % dict(nf=builder_arg_name));
+                    else:
+                        for field in arg_type.all_required_fields:
+                            out('this.%(nf)s = %(nf)s;' % dict(nf=field.java_name))
+                        for field in arg_type.all_optional_fields:
+                            if field.has_default:
+                                out('this.%s = %s;' % (field.java_name, field.default_value))
+                            else:
+                                out('this.%s = null;' % field.java_name)
 
                 #
                 # SETTERS/ADDERs for optional/list fields
                 #
 
-                self.generate_builder_methods(class_name, arg_type.all_fields, wrapped_builder_name=builder_arg_name)
+                wrapped_builder_name = builder_arg_name if arg_type.supports_builder else None
+                self.generate_builder_methods(class_name, arg_type.all_fields, wrapped_builder_name=wrapped_builder_name)
 
                 #
                 # BUILD method to start request
@@ -3508,11 +3583,21 @@ class JavaCodeGenerationInstance(object):
                 if route.is_deprecated:
                     out('@SuppressWarnings("deprecation")')
                 with self.g.block('public %s start() throws %s, DbxException' % (route.java_return_type, exception_class)):
-                    out('%s arg = this.%s.build();' % (arg_type.java_type(), builder_arg_name))
-                    if route.has_result:
-                        out('return %s.%s(arg);' % (client_name, route.java_method))
+                    if arg_type.supports_builder:
+                        out('%s arg_ = this.%s.build();' % (arg_type.java_type(), builder_arg_name))
                     else:
-                        out('%s.%s(arg);' % (client_name, route.java_method))
+                        out('%s arg_ = new %s(%s);' % (
+                            arg_type.java_type(),
+                            arg_type.java_class,
+                            ', '.join(f.java_name for f in arg_type.all_fields)
+                        ))
+                    args = ('arg_',)
+                    if route.request_style == 'download':
+                        args += ('getHeaders()',)
+                    if route.has_result:
+                        out('return %s.%s(%s);' % (client_name, route.java_method, ', '.join(args)))
+                    else:
+                        out('%s.%s(%s);' % (client_name, route.java_method, ', '.join(args)))
 
     def generate_field_assignment(self, field, lhs=None, rhs=None, allow_default=True):
         out = self.g.emit

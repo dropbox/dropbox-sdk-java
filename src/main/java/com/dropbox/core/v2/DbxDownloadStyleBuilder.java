@@ -1,9 +1,14 @@
 package com.dropbox.core.v2;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxDownloader;
 import com.dropbox.core.DbxStreamReader;
 import com.dropbox.core.NoThrowInputStream;
+import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.util.IOUtil;
 
 import java.io.IOException;
@@ -52,6 +57,29 @@ import java.io.OutputStream;
  * @param <R> The return type of the {@link DbxDownloader}
  */
 public abstract class DbxDownloadStyleBuilder<R> {
+    private Long start;
+    private Long length;
+
+    protected DbxDownloadStyleBuilder() {
+        this.start = null;
+        this.length = null;
+    }
+
+    protected List<HttpRequestor.Header> getHeaders() {
+        if (start == null) {
+            return Collections.emptyList();
+        }
+
+        List<HttpRequestor.Header> headers = new ArrayList<HttpRequestor.Header>();
+        String rangeValue = String.format("bytes=%d-", start.longValue());
+        if (length != null) {
+            // Range header is inclusive (e.g. bytes=0-499 means first 500 bytes)
+            rangeValue += Long.toString(start.longValue() + length.longValue() - 1);
+        }
+        headers.add(new HttpRequestor.Header("Range", rangeValue));
+
+        return headers;
+    }
 
     /**
      * Issues the download request using this builder's request parameters and returns a {@link
@@ -69,6 +97,55 @@ public abstract class DbxDownloadStyleBuilder<R> {
      */
     public abstract DbxDownloader<R> start() throws DbxException;
 
+    /**
+     * Sets the partial byte range to download.
+     *
+     * Only the specified bytes of the content will be downloaded. The HTTP Range header will be set
+     * for this request. If {@code start} is greater than the length of the content, the range
+     * request will be ignored and server will return the entire contents. If {@code length} extends
+     * beyond the end of the cont`ent, the server will return all bytes from {@code start} until the
+     * end of the content.
+     *
+     * @param start index of first byte in range (index starts at 0)
+     * @param length number of bytes to download starting at {@code start}
+     *
+     * @return this builder
+     *
+     * @throws IllegalArgumentException if {@code start} or {@code length} are negative
+     */
+    public DbxDownloadStyleBuilder<R> range(long start, long length) {
+        if (start < 0) throw new IllegalArgumentException("start must be non-negative");
+        if (length < 1) throw new IllegalArgumentException("length must be positive");
+
+        this.start = start;
+        this.length = length;
+
+        return this;
+    }
+
+    /**
+     * Sets the partial byte range to download.
+     *
+     * Only bytes from {@code start} (inclusive) until the end of the content will be
+     * downloaded. The HTTP Range header will be set for this request. If {@code start} is greater
+     * than the length of the content, the range request will be ignored and server will return the
+     * entire contents.
+     *
+     * @param start index of first byte in range (index starts at 0). All following bytes in the
+     * content will be downloaded.
+     *
+     * @return this builder
+     *
+     * @throws IllegalArgumentException if {@code start} is negative
+     */
+    public DbxDownloadStyleBuilder<R> range(long start) {
+        if (start < 0) throw new IllegalArgumentException("start must be non-negative");
+
+        this.start = start;
+        this.length = null;
+
+        return this;
+    }
 
     /**
      * Convenience method for {@link DbxDownloader#download(OutputStream)}:

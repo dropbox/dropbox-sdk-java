@@ -3,8 +3,10 @@
 - Migrate build from maven to gradle.
 - Improve code shrinking when using ProGuard.
   - Response/request serialization updated to be better optimized by ProGuard.
-- Properly support multidex builds
+- Properly support multidex builds.
   - Response/request objects should no longer always be kept in primary dex.
+- Add partial download support through range requests.
+- Fix deserialization bug when handling new server responses that were previously void.
 
 ---------------------------------------------
 2.0.3 (2016-05-07)

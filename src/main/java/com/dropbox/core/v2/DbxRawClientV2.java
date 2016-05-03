@@ -112,12 +112,13 @@ public abstract class DbxRawClientV2 {
                                                               final String path,
                                                               final ArgT arg,
                                                               final boolean noAuth,
+                                                              final List<HttpRequestor.Header> extraHeaders,
                                                               final BabelSerializer<ArgT> argSerializer,
                                                               final BabelSerializer<ResT> responseSerializer,
                                                               final BabelSerializer<ErrT> errorSerializer)
         throws DbxWrappedException, DbxException {
 
-        final List<HttpRequestor.Header> headers = new ArrayList<HttpRequestor.Header>();
+        final List<HttpRequestor.Header> headers = new ArrayList<HttpRequestor.Header>(extraHeaders);
         if (!noAuth) {
             addAuthHeaders(headers);
         }
@@ -133,7 +134,7 @@ public abstract class DbxRawClientV2 {
                 String requestId = DbxRequestUtil.getRequestId(response);
 
                 try {
-                    if (response.getStatusCode() == 200) {
+                    if (response.getStatusCode() == 200 || response.getStatusCode() == 206) {
                         List<String> resultHeaders = response.getHeaders().get("dropbox-api-result");
                         if (resultHeaders == null) {
                             throw new BadResponseException(requestId, "Missing Dropbox-API-Result header; " + response.getHeaders());

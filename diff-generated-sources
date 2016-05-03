@@ -25,8 +25,7 @@ branch=`git rev-parse --abbrev-ref HEAD`
 git checkout master
 git submodule sync
 git submodule update --init
-rm -rf target/generated-sources
-./run-babel-codegen
+./gradlew cleanGenerateBabelSources generateBabelSources
 
 # Save these source files ia temp directory.
 temp_dir="$(mktemp -d -t diff-generated-sources.XXXXXX)"  # Weird usage, but works on Linux and Mac OS
@@ -34,20 +33,19 @@ function finish() {
     [[ ! -e "$temp_dir" ]] || rm -r "$temp_dir"
 }
 trap finish EXIT
-cp -r target/generated-sources/ $temp_dir
+cp -r build/generated-sources/ $temp_dir
 
 # Switch back to the original branch, update the suprepos and generate source files.
 git checkout $branch
 git submodule sync
 git submodule update --init
-rm -rf target/generated-sources
-./run-babel-codegen
+./gradlew cleanGenerateBabelSources generateBabelSources
 
 # Create the diff and open the page to submit to Phabricator.
 # The diff command uses its return command to signal whether there was any
 # difference, so we disable exiting on non-zero return codes for this command.
 set +e
-raw_diff=`diff -uNr ${temp_dir}/babel/ target/generated-sources/babel/`
+raw_diff=`diff -uNr ${temp_dir}/babel/ build/generated-sources/babel/`
 diff_status=$?
 set -e
 if [ $diff_status -eq 1 ]; then
