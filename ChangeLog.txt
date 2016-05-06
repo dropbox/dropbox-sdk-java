@@ -1,4 +1,8 @@
 ---------------------------------------------
+2.0.3
+- Fix Bad JSON error on ProGuard optimized APKs when deserializing error responses.
+
+---------------------------------------------
 2.0.2 (2016-04-28)
 - Update to latest API specs:
   - Authentication
