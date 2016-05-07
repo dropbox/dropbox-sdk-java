@@ -1,6 +1,9 @@
 ---------------------------------------------
-2.0.3
+2.0.3 (2016-05-07)
 - Fix Bad JSON error on ProGuard optimized APKs when deserializing error responses.
+  - All 2.0.x versions before 2.0.3 are affected and should be upgraded immediately.
+  - Only affects Android apps that enable ProGuard.
+  - Affected apps may crash when deserializing an error response from Dropbox servers.
 
 ---------------------------------------------
 2.0.2 (2016-04-28)
