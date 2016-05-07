@@ -14,7 +14,7 @@ If you're using Maven, then edit your project's "pom.xml" and add this to the `<
 <dependency>
     <groupId>com.dropbox.core</groupId>
     <artifactId>dropbox-core-sdk</artifactId>
-    <version>2.0.2</version>
+    <version>2.0.3</version>
 </dependency>
 ```
 
@@ -23,7 +23,7 @@ If you are using Gradle, then edit your project's "build.gradle" and add this to
 ```groovy
 dependencies {
     // ...
-    compile 'com.dropbox.core:dropbox-core-sdk:2.0.2'
+    compile 'com.dropbox.core:dropbox-core-sdk:2.0.3'
 }
 ```
 
@@ -183,3 +183,5 @@ Jackson Databind makes use of reflection and annotations to map Java objects to 
 -dontwarn com.fasterxml.jackson.databind.**
 -adaptresourcefilenames com/dropbox/core/http/trusted-certs.raw
 ```
+
+**IMPORTANT: If you are running version 2.0.x before 2.0.3, you should update to the latest Dropbox SDK version to avoid a deserialization bug that can cause Android apps that use ProGuard to crash.**

@@ -272,6 +272,13 @@ public final class DbxRequestUtil {
                 );
             ApiErrorResponse<?> apiResponse = JSON.readValue(response.getBody(), type);
 
+            // ProGuard/Dex hack: prevent ProGuard/Dex from optimizing away our @JsonCreator
+            // constructor. We add this code here instead of updating our rules to allow developers
+            // to easily fix their broken apps by updating the SDK version (see T94429).
+            if (errType == null) {
+                new ApiErrorResponse<Object>("impossible", new LocalizedText("impossible", "en_US"));
+            }
+
             return new ErrorWrapper(apiResponse.getError(), requestId, apiResponse.getUserMessage());
         }
 
