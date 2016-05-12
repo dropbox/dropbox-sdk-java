@@ -1,0 +1,240 @@
+apply plugin: 'java'
+apply plugin: 'osgi'
+apply plugin: 'maven'
+
+description = 'Official Java client library for the Dropbox API.'
+group = 'com.dropbox.core'
+archivesBaseName = 'dropbox-core-sdk'
+version = '0-SNAPSHOT'
+sourceCompatibility = JavaVersion.VERSION_1_6
+targetCompatibility = JavaVersion.VERSION_1_6
+
+// needed before we define the pom
+conf2ScopeMappings.addMapping(1, configurations.compileOnly, 'provided')
+
+ext {
+    generatedSources = file("$buildDir/generated-sources")
+    generatedResources = file("$buildDir/generated-resources")
+    basePom = pom {
+        artifactId = archivesBaseName
+        project {
+            packaging 'jar'
+            url 'https://www.dropbox.com/developers/core'
+
+            scm {
+                connection 'scm:git:git@github.com:dropbox/dropbox-sdk-java.git'
+                developerConnection 'scm:git:git@github.com:dropbox/dropbox-sdk-java.git'
+                url 'https://github.com/dropbox/dropbox-sdk-java'
+            }
+
+            developers {
+                developer {
+                    id 'dropbox-api-team'
+                    name 'Dropbox API Team'
+                    email 'api-support@dropbox.com'
+                    organization 'Dropbox'
+                }
+            }
+
+            licenses {
+                license {
+                    name 'MIT'
+                    url 'http://opensource.org/licenses/MIT'
+                    distribution 'repo'
+                }
+            }
+        }
+    }
+}
+
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.12.0'
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Important: Jackson 2.8+ will be free to use JDK7 features and no longer guarantees JDK6
+    //            compatibility
+    compile 'com.fasterxml.jackson.core:jackson-core:2.7.4'
+    compile 'com.fasterxml.jackson.core:jackson-annotations:2.7.4'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.7.4'
+
+    compileOnly 'javax.servlet:servlet-api:2.5'
+    compileOnly 'com.squareup.okhttp:okhttp:2.7.5'
+    compileOnly 'com.google.android:android:4.1.1.4'
+
+    testCompile 'org.testng:testng:6.9.10'
+    testCompile 'org.mockito:mockito-core:1.10.19'
+    testCompile 'org.openjdk.jmh:jmh-core:1.12'
+    testCompile 'org.openjdk.jmh:jmh-generator-annprocess:1.12'
+}
+
+processResources {
+    filesMatching('**/sdk-version.txt') {
+        expand project.properties
+    }
+}
+
+compileJava {
+    options.compilerArgs << '-Xlint:all'
+    options.warnings = true
+    options.deprecation = true
+    options.encoding = 'utf-8'
+}
+
+test {
+    useTestNG()
+
+    // TestNG specific options
+    options.parallel 'classesAndMethods'
+    options.preserveOrder true
+    options.threadCount 4
+
+    // exclude integration tests
+    exclude '**/IT*.class'
+    exclude '**/*IT.class'
+    exclude '**/*IT$*.class'
+
+    testLogging {
+        events "skipped", "failed"
+    }
+}
+
+task integrationTest(type: Test) {
+    description 'Runs integration tests against Production or Dev servers.'
+
+    useTestNG()
+
+    // TestNG specific options
+    options.preserveOrder true
+
+    // only select integration tests (similar to maven-failsafe-plugin rules)
+    include '**/IT*.class'
+    include '**/*IT.class'
+    include '**/*IT$*.class'
+
+    testLogging {
+        events "skipped", "failed"
+    }
+
+    reports {
+        html {
+            destination = file("${buildDir}/reports/integration-tests")
+        }
+    }
+
+    ext {
+        authInfoPropertyName = 'com.dropbox.test.authInfoFile'
+        okHttpPropertyName = 'com.dropbox.test.okHttp'
+    }
+
+    doFirst {
+        // we need authentication information to run integration tests
+        if (!project.hasProperty(authInfoPropertyName)) {
+            throw new GradleException('' +
+                "Integration tests require the \"${authInfoPropertyName}\" " +
+                "project property be set to point to an authorization JSON file " +
+                "(e.g. gradle integrationTest -P${authInfoPropertyName}=auth.json)."
+            )
+        }
+
+        def authInfoFile = file(project.property(authInfoPropertyName))
+        if (!authInfoFile.exists()) {
+            throw new GradleException('' +
+                "Integration test auth info file does not exist: \"${authInfoFile.absolutePath}\". " +
+                "Please ensure the \"${authInfoPropertyName}\" project property is set to point to " +
+                "the correct authorization JSON file."
+            )
+        }
+
+        systemProperty authInfoPropertyName, authInfoFile.absolutePath
+        if (project.hasProperty(okHttpPropertyName)) {
+            systemProperty okHttpPropertyName, project.property(okHttpPropertyName)
+        }
+    }
+}
+
+javadoc {
+    title "${project.name} ${project.version} API"
+    failOnError true
+
+    // JDK 8's javadoc has an on-by-default lint called "missing", which requires that everything
+    // be documented. Disable this lint because we intentionally don't document some things.
+    //
+    // NOTE: ugly hack to set our doclint settings due to strange handling of string options by the
+    // javadoc task.
+    options.addBooleanOption "Xdoclint:all,-missing", true
+    options.addStringOption "link", "http://docs.oracle.com/javase/6/docs/api/"
+}
+
+jar {
+    // OsgiManifest since we import 'osgi' plugin
+    manifest {
+        name project.name
+        description project.description
+        license project.basePom.getModel().getLicenses()[0].url
+
+        def noeeProp = 'osgi.bnd.noee'
+        def noee = project.properties.get(noeeProp, System.properties.get(noeeProp, 'false'))
+        instruction '-noee', noee
+    }
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}
+
+install {
+    repositories.mavenInstaller {
+        pom = project.basePom
+    }
+}
+
+// To avoid cross-compilation surprises, add JDK6 libs to the boot classpath. This prevents issues
+// where we depend on a JDK7 interface that did not exist in JDK6.
+if (project.sourceCompatibility == JavaVersion.VERSION_1_6) {
+    if (System.env.JDK6_HOME == null) {
+        logger.warn("Set JDK6_HOME environment to disable boot classpath warnings.")
+    } else {
+        def jdkHome = System.env.JDK6_HOME
+        def sep = File.pathSeparator
+
+        logger.info("Setting JVM boot classpath to use ${jdkHome}")
+        project.tasks.withType(JavaCompile) {
+            options.bootClasspath = "${jdkHome}/jre/lib/rt.jar"
+            options.bootClasspath += "${sep}${jdkHome}/jre/lib/jsse.jar"
+            options.bootClasspath += "${sep}${jdkHome}/jre/lib/jce.jar"
+        }
+    }
+}
+
+/* BEGIN PRIVATE REPO ONLY */
+
+apply from: 'babel.gradle'
+
+// load release configuration
+if (!project.version.contains('SNAPSHOT')) {
+    apply from: 'release.gradle'
+}
+
+/* END PRIVATE REPO ONLY */

@@ -213,7 +213,7 @@ public class Main {
         // Only display important log messages.
         Logger.getLogger("").setLevel(Level.WARNING);
 
-        if (args.length == 0) {
+        if (args.length != 3) {
             System.out.println("");
             System.out.println("Usage: COMMAND <auth-file> <local-path> <dropbox-path>");
             System.out.println("");
@@ -226,12 +226,7 @@ public class Main {
             System.out.println(" <dropbox-path>: The path on Dropbox to save the file to.");
             System.out.println("");
             System.exit(1);
-        }
-
-        if (args.length != 3) {
-            System.err.println("Expecting exactly 3 arguments, got " + args.length + ".");
-            System.err.println("Run with no arguments for help.");
-            System.exit(1);
+            return;
         }
 
         String argAuthFile = args[0];

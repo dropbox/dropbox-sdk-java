@@ -8,6 +8,8 @@
 # IntelliJ project folder
 /intellij/
 /.idea/
+/*.iml
+/local.properties
 
 # Output file when rendering ReadMe.md locally.
 /ReadMe.html

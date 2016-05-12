@@ -34,15 +34,17 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 // integration test
-public class DbxClientV1IT
-{
+public class DbxClientV1IT {
+    private static String AUTH_INFO_FILE_PROPERTY = "com.dropbox.test.authInfoFile";
+    private static String AUTH_INFO_FILE = System.getProperty(AUTH_INFO_FILE_PROPERTY);
+
     private String testFolder;
     private DbxClientV1 client;
 
     private static DbxRequestConfig.Builder createRequestConfig() {
         DbxRequestConfig.Builder builder = DbxRequestConfig.newBuilder("sdk-test");
 
-        String okHttp = System.getProperty("okHttp");
+        String okHttp = System.getProperty("com.dropbox.test.okHttp");
         if (okHttp != null && !okHttp.equals("true") && !okHttp.equals("false")) {
             throw new RuntimeException("Invalid value for System property \"okHttp\"." +
                                        " Expected \"true\" or \"false\", got " + jq(okHttp) + ".");
@@ -64,17 +66,16 @@ public class DbxClientV1IT
     private void init()
         throws DbxException
     {
-        String authInfoFile = System.getProperty("dbxAuthInfoFile");
-        if (authInfoFile == null) {
-            throw new RuntimeException("System property \"dbxAuthInfoFile\" not set.");
+        if (AUTH_INFO_FILE == null) {
+            throw new RuntimeException("System property \"" + AUTH_INFO_FILE_PROPERTY + "\" not set.");
         }
 
         DbxAuthInfo authInfo;
         try {
-            authInfo = DbxAuthInfo.Reader.readFromFile(authInfoFile);
+            authInfo = DbxAuthInfo.Reader.readFromFile(AUTH_INFO_FILE);
         }
         catch (JsonReader.FileLoadException ex) {
-            throw new RuntimeException("Error reading auth info from \"" + authInfoFile + "\": " + ex.getMessage());
+            throw new RuntimeException("Error reading auth info from \"" + AUTH_INFO_FILE + "\": " + ex.getMessage());
         }
 
         DbxRequestConfig requestConfig = createRequestConfig().build();

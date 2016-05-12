@@ -21,22 +21,31 @@ import java.util.logging.Logger;
  * An example command-line application that runs through the web-based OAuth
  * flow (using {@link DbxWebAuth}).
  */
-public class Main
-{
-    public static void main(String[] args)
-        throws IOException
-    {
+public class Main {
+
+    public static void main(String[] args) throws IOException {
         // Only display important log messages.
         Logger.getLogger("").setLevel(Level.WARNING);
 
-        if (args.length == 0) {
-            printHelp(System.out);
-            return;
-        }
         if (args.length != 2) {
-            System.err.println("Expecting exactly 2 arguments, got " + args.length + ".");
-            System.err.println("Run with no arguments for help.");
-            System.exit(1); return;
+            System.out.println("Usage: COMMAND <app-info-file> <auth-file-output>");
+            System.out.println("");
+            System.out.println("<app-info-file>: a JSON file with information about your API app.  Example:");
+            System.out.println("");
+            System.out.println("  {");
+            System.out.println("    \"key\": \"Your Dropbox API app key...\",");
+            System.out.println("    \"secret\": \"Your Dropbox API app secret...\"");
+            System.out.println("  }");
+            System.out.println("");
+            System.out.println("  Get an API app key by registering with Dropbox:");
+            System.out.println("    https://dropbox.com/developers/apps");
+            System.out.println("");
+            System.out.println("<auth-file-output>: If authorization is successful, the resulting API");
+            System.out.println("  access token will be saved to this file, which can then be used with");
+            System.out.println("  other example programs, such as the one in \"examples/account-info\".");
+            System.out.println("");
+            System.exit(1);
+            return;
         }
 
         String argAppInfoFile = args[0];
@@ -46,8 +55,7 @@ public class Main
         DbxAppInfo appInfo;
         try {
             appInfo = DbxAppInfo.Reader.readFromFile(argAppInfoFile);
-        }
-        catch (JsonReader.FileLoadException ex) {
+        } catch (JsonReader.FileLoadException ex) {
             System.err.println("Error reading <app-info-file>: " + ex.getMessage());
             System.exit(1); return;
         }
@@ -72,8 +80,7 @@ public class Main
         DbxAuthFinish authFinish;
         try {
             authFinish = webAuth.finish(code);
-        }
-        catch (DbxException ex) {
+        } catch (DbxException ex) {
             System.err.println("Error in DbxWebAuth.start: " + ex.getMessage());
             System.exit(1); return;
         }
@@ -87,32 +94,11 @@ public class Main
         try {
             DbxAuthInfo.Writer.writeToFile(authInfo, argAuthFileOutput);
             System.out.println("Saved authorization information to \"" + argAuthFileOutput + "\".");
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             System.err.println("Error saving to <auth-file-out>: " + ex.getMessage());
             System.err.println("Dumping to stderr instead:");
             DbxAuthInfo.Writer.writeToStream(authInfo, System.err);
             System.exit(1); return;
         }
-    }
-
-    private static void printHelp(PrintStream out)
-    {
-        out.println("Usage: COMMAND <app-info-file> <auth-file-output>");
-        out.println("");
-        out.println("<app-info-file>: a JSON file with information about your API app.  Example:");
-        out.println("");
-        out.println("  {");
-        out.println("    \"key\": \"Your Dropbox API app key...\",");
-        out.println("    \"secret\": \"Your Dropbox API app secret...\"");
-        out.println("  }");
-        out.println("");
-        out.println("  Get an API app key by registering with Dropbox:");
-        out.println("    https://dropbox.com/developers/apps");
-        out.println("");
-        out.println("<auth-file-output>: If authorization is successful, the resulting API");
-        out.println("  access token will be saved to this file, which can then be used with");
-        out.println("  other example programs, such as the one in \"examples/account-info\".");
-        out.println("");
     }
 }

@@ -18,62 +18,56 @@ done
 base_dir=`dirname "$loc"`
 
 babel_dir="$base_dir/babel"
+spec_dir="${base_dir}/spec"
 gen_dir="$base_dir/$mvn_target_dir/generated-sources/babel"
 generator="$base_dir/generator/java.babelg.py"
 
 usage() {
-    echo "usage: $0 [SPEC_DIR]"
+    echo "usage: $0 [SPEC_DIR [OUTPUT_DIR]]"
     echo ""
     echo "positional arguments:"
-    echo "  SPEC_DIR     Top-level directory containing Babel spec files."
+    echo "  SPEC_DIR     Top-level directory containing Babel spec files (default: ${spec_dir})."
+    echo "  OUTPUT_DIR   Top-level directory to output generated source files (default: ${gen_dir})."
     echo ""
     echo "optional arguments:"
     echo "  -h/--help    Display this message and exit."
 }
 
-if [[ $# -gt 0 ]]; then
+args=("${spec_dir}", "${gen_dir}")
+argi=0
+while [[ $# -gt 0 ]]; do
     case "$1" in
         "-h"|"--help")
             usage
-            exit 0
+            exit 1
             ;;
         *)
-            spec_dir="$1"
+            echo "args[$argi]=$1"
+            args[$argi]="${1}"
+            argi=$(( $argi + 1 ))
             shift
     esac
-else
-    spec_dir="$base_dir/spec"
-fi
+done
 
-if [[ $# -ne 0 ]]; then
+if [[ ${#args[@]} -gt 2 ]]; then
     echo "$0: Too many arguments" 1>&2
     usage
     exit 1
 fi
 
-up_to_date() {
-    local target="$1"; shift
-    [[ -f "$target" && $(find "$@" -newer "$target" | head -n 1 | wc -l) -eq 0 ]]
-}
+spec_dir="${args[0]}"
+gen_dir="${args[1]}"
 
 if [[ -e "$gen_dir" ]]; then
-    # If Babel and the specs haven't changed, there's nothing to do.
-    if up_to_date "$gen_dir/stamp" "$babel_dir" "$spec_dir" "generator" "$loc"; then
-        echo "Already up to date."
-        exit 0
-    fi
     rm -r "$gen_dir"
 fi
 
 mkdir -p "$gen_dir"
-touch "$gen_dir/stamp.tmp"  # Create here to get the timestamp from before codegen.
 
 echo "Generating..."
 PYTHONPATH="$babel_dir" python3 -m babelapi.cli \
     "$generator" \
     "$gen_dir"\
-    $(find "${spec_dir}" -name "*.babel") \
+    $(find -H "${spec_dir}" -name "*.babel") \
      --\
      --package com.dropbox.core.v2
-
-mv "$gen_dir/stamp.tmp" "$gen_dir/stamp"  # Only move to "stamp" when codegen succeeds.

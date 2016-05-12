@@ -24,15 +24,12 @@ import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
  * An example web application that uses the Dropbox API to let users browse
  * their Dropbox folder.
  */
-public class Main extends AbstractHandler
-{
+public class Main extends AbstractHandler {
     private final Common common;
     private final DropboxAuth dropboxAuth;
     private final DropboxBrowse dropboxBrowse;
 
-    private Main(PrintWriter log, DbxAppInfo dbxAppInfo, File userDbFile)
-        throws IOException, Common.DatabaseException
-    {
+    private Main(PrintWriter log, DbxAppInfo dbxAppInfo, File userDbFile) throws IOException, Common.DatabaseException {
         this.common = new Common(log, dbxAppInfo, userDbFile);
         this.dropboxAuth = new DropboxAuth(common);
         this.dropboxBrowse = new DropboxBrowse(common);
@@ -43,8 +40,7 @@ public class Main extends AbstractHandler
     // -------------------------------------------------------------------------------------------
 
     public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response)
-        throws IOException, ServletException
-    {
+        throws IOException, ServletException {
         // Don't pollute the logging with the favicon.ico requests that browsers issue.
         if (target.equals("/favicon.ico")) {
             response.sendError(404);
@@ -60,34 +56,25 @@ public class Main extends AbstractHandler
 
         if (target.equals("/")) {
             doIndex(request, response);
-        }
-        else if (target.equals("/login")) {
+        } else if (target.equals("/login")) {
             doLogin(request, response);
-        }
-        else if (target.equals("/home")) {
+        } else if (target.equals("/home")) {
             doHome(request, response);
-        }
-        else if (target.equals("/logout")) {
+        } else if (target.equals("/logout")) {
             doLogout(request, response);
-        }
-        // Dropbox authorization routes.
-        else if (target.equals("/dropbox-auth-start")) {
+        // Dropbox authorize routes
+        } else if (target.equals("/dropbox-auth-start")) {
             dropboxAuth.doStart(request, response);
-        }
-        else if (target.equals("/dropbox-auth-finish")) {
+        } else if (target.equals("/dropbox-auth-finish")) {
             dropboxAuth.doFinish(request, response);
-        }
-        else if (target.equals("/dropbox-unlink")) {
+        } else if (target.equals("/dropbox-unlink")) {
             dropboxAuth.doUnlink(request, response);
-        }
         // Dropbox file browsing routes.
-        else if (target.equals("/browse")) {
+        } else if (target.equals("/browse")) {
             dropboxBrowse.doBrowse(request, response);
-        }
-        else if (target.equals("/upload")) {
+        } else if (target.equals("/upload")) {
             dropboxBrowse.doUpload(request, response);
-        }
-        else {
+        } else {
             response.sendError(404);
         }
     }
@@ -98,9 +85,7 @@ public class Main extends AbstractHandler
     // The front page with a login form.  If there's already a user logged in, they get
     // redirected to "/home".
 
-    public void doIndex(HttpServletRequest request, HttpServletResponse response)
-        throws IOException, ServletException
-    {
+    public void doIndex(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         if (!common.checkGet(request, response)) return;
 
         // If there's a user logged in, send them to "/home".
@@ -140,9 +125,7 @@ public class Main extends AbstractHandler
     // -------------------------------------------------------------------------------------------
     // Login form handler.
 
-    public void doLogin(HttpServletRequest request, HttpServletResponse response)
-        throws IOException, ServletException
-    {
+    public void doLogin(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         if (!common.checkPost(request, response)) return;
 
         String username = request.getParameter("username");
@@ -176,14 +159,13 @@ public class Main extends AbstractHandler
     }
 
     // Returns 'null' if the username is ok.
-    private static String checkUsername(String username)
-    {
+    private static String checkUsername(String username) {
         if (username.length() < 3) {
             return "too short (minimum: 3 characters)";
-        }
-        else if (username.length() > 64) {
+        } else if (username.length() > 64) {
             return "too long (maximum: 64 characters)";
         }
+
         for (int i = 0; i < username.length(); i++) {
             char c = username.charAt(i);
             if (c >= 'A' && c <= 'Z') continue;
@@ -192,6 +174,7 @@ public class Main extends AbstractHandler
             if (c == '_') continue;
             return "invalid character at position " + (i+1) + ": " + jq(""+c);
         }
+
         return null;
     }
 
@@ -201,9 +184,7 @@ public class Main extends AbstractHandler
     // If a user is logged in, show them information about their account and let them connect their
     // account to their Dropbox account.  If nobody is logged in, redirect to "/".
 
-    public void doHome(HttpServletRequest request, HttpServletResponse response)
-        throws IOException, ServletException
-    {
+    public void doHome(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         if (!common.checkGet(request, response)) return;
 
         // If nobody's logged in, send the browser to "/".
@@ -259,9 +240,7 @@ public class Main extends AbstractHandler
     // -------------------------------------------------------------------------------------------
     // Logout form handler.
 
-    public void doLogout(HttpServletRequest request, HttpServletResponse response)
-        throws IOException, ServletException
-    {
+    public void doLogout(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         if (!common.checkPost(request, response)) return;
         request.getSession().removeAttribute("logged-in-username");
         response.sendRedirect("/");
@@ -272,10 +251,8 @@ public class Main extends AbstractHandler
     // -------------------------------------------------------------------------------------------
     // Parse command-line arguments and start server.
 
-    public static void main(String[] args)
-        throws IOException
-    {
-        if (args.length == 0) {
+    public static void main(String[] args) throws IOException {
+        if (args.length != 3) {
             System.out.println("");
             System.out.println("Usage: COMMAND <http-listen-port> <app-info-file> <database-file>");
             System.out.println("");
@@ -293,13 +270,8 @@ public class Main extends AbstractHandler
             System.out.println(" <database-file>: Where you want this program to store its database.  For");
             System.out.println("    example, \"web-file-browser.db\".");
             System.out.println("");
+            System.exit(1);
             return;
-        }
-
-        if (args.length != 3) {
-            System.err.println("Expecting exactly 3 arguments, got " + args.length + ".");
-            System.err.println("Run with no arguments for help.");
-            System.exit(1); return;
         }
 
         String argPort = args[0];
@@ -314,8 +286,7 @@ public class Main extends AbstractHandler
                 System.err.println("Expecting <http-listen-port> to be a number from 1 to 65535.  Got: " + port + ".");
                 System.exit(1); return;
             }
-        }
-        catch (NumberFormatException ex) {
+        } catch (NumberFormatException ex) {
             System.err.println("Expecting <http-listen-port> to be a number from 1 to 65535.  Got: " + jq(argPort) + ".");
             System.exit(1); return;
         }
@@ -324,8 +295,7 @@ public class Main extends AbstractHandler
         DbxAppInfo dbxAppInfo;
         try {
             dbxAppInfo = DbxAppInfo.Reader.readFromFile(argAppInfo);
-        }
-        catch (JsonReader.FileLoadException ex) {
+        } catch (JsonReader.FileLoadException ex) {
             System.err.println("Error loading <app-info-file>: " + ex.getMessage());
             System.exit(1); return;
         }
@@ -347,8 +317,7 @@ public class Main extends AbstractHandler
             System.out.println("Server running: http://localhost:" + port + "/");
 
             server.join();
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             System.err.println("Error running server: " + ex.getMessage());
             System.exit(1);
         }

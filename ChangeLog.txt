@@ -1,3 +1,7 @@
+2.0.4
+---------------------------------------------
+- Migrate build from maven to gradle
+
 ---------------------------------------------
 2.0.3 (2016-05-07)
 - Fix Bad JSON error on ProGuard optimized APKs when deserializing error responses.

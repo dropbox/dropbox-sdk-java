@@ -56,13 +56,11 @@ You only need to perform the authorization process once per user.  Once you have
 
 ## Running the examples
 
-Prerequisites: Apache Maven
-
 1. Download this repository.
 2. Save your Dropbox API key in a file called "test.app".  See: [Get a Dropbox API key](#get-a-dropbox-api-key), above.
-3. `mvn install`
-4. To compile all the examples: `mvn -f examples/pom.xml compile`
-5. To compile just one example: `mvn -f examples/<example-name>/pom.xml compile`.
+3. Compile and install the SDK into your local maven repo: `./gradlew install`
+4. To compile all the examples: `(cd examples/ && ./gradlew classes`
+5. To compile just one example: `(cd examples/ && ./gradlew :<example-name>:classes`
 
 ### authorize
 
@@ -126,23 +124,12 @@ cd examples
 ## Running the integration tests
 
 1. Run through the `authorize` example above to get a "test.auth" file.
-2. `./run-integration-tests <path-to-test.auth>`
+2. `./gradlew -Pcom.dropbox.test.authInfoFile=<path-to-test.auth> integrationTest`
 
-Run `./run-integration-tests` with no arguments to see how to run individual tests.
-
-## Loading the project in IntelliJ 14
-
-Assume "{sdk}" represents the top-level folder of this SDK.
-
-1. Click *Import Project*, select "{sdk}/pom.xml".
-2. You'll see the *Import Project From Maven* dialog.
-   - Check *Search for projects recursively*
-   - Check *Keep project files in*, set it to "{sdk}/intellij"
-   - Check *Import Maven projects automatically*
-   - Uncheck *Use Maven output directories*
-   - Click *Next*
-3. Clicking *Next* on the rest of the dialogs.
-4. On the last dialog, you can change *Project name* if you want **but make sure** you set *Project file location* back to "{sdk}/intellij".
+To run individual tests, use the `--tests` gradle test filter:
+```
+./gradlew -Pcom.dropbox.test.authInfoFile=<path-to-test.auth> integrationTest --tests '*.DbxClientV1IT.testAccountInfo'
+```
 
 ## FAQ
 
@@ -159,8 +146,8 @@ OSGi containers running on Java 1.6 or above should provide this capability.  Un
 As a workaround, you can build your own version of the JAR that omits the "osgi.ee" capability by running:
 
 ```
-mvn clean
-mvn package -Dosgi.bnd.noee=true
+./gradlew clean
+./gradlew -Posgi.bnd.noee=true jar
 ```
 
 (This is equivalent to passing the "-noee" option to the OSGi "bnd" tool.)

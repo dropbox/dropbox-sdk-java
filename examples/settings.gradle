@@ -1,0 +1,9 @@
+rootProject.name = 'examples'
+include ':account-info'
+include ':authorize'
+include ':longpoll'
+include ':tutorial'
+include ':upgrade-oauth1-token'
+include ':upload-file'
+include ':web-file-browser'
+

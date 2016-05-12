@@ -1,0 +1,42 @@
+apply plugin: 'java'
+
+task generateBabelSources(type: Exec) {
+    description 'Runs Babel generation script to generate API spec Java source files.'
+
+    ext {
+        generateScriptFile = file('run-babel-codegen')
+        generatorDir = file('generator')
+        specDir = file(project.properties.get('com.dropbox.api.specDir','spec'))
+        outputDir = file("${generatedSources}/babel")
+        logDir = file("${buildDir}")
+        logFile = file("${logDir}/babel.log")
+    }
+
+    logDir.mkdirs()
+    outputDir.mkdirs()
+
+    if (!specDir.exists()) {
+        throw new GradleException("Dropbox API Babel spec directory does not exist: ${specDir.absolutePath}")
+    }
+
+    inputs.file generateScriptFile
+    inputs.dir generatorDir
+    inputs.sourceDir specDir
+    outputs.dir outputDir
+
+    standardOutput = new FileOutputStream(logFile)
+
+    commandLine generateScriptFile.absolutePath, specDir.absolutePath, outputDir.absolutePath
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir "${generatedSources}"
+        }
+    }
+}
+
+compileJava {
+    dependsOn generateBabelSources
+}

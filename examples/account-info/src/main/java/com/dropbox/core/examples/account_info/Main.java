@@ -25,7 +25,7 @@ public class Main
         // Only display important log messages.
         Logger.getLogger("").setLevel(Level.WARNING);
 
-        if (args.length == 0) {
+        if (args.length != 1) {
             System.out.println("");
             System.out.println("Usage: COMMAND <auth-file>");
             System.out.println("");
@@ -33,13 +33,8 @@ public class Main
             System.out.println("    an authorized Dropbox API request.  Generate this file using the \"authorize\"");
             System.out.println("    example program.");
             System.out.println("");
+            System.exit(1);
             return;
-        }
-
-        if (args.length != 1) {
-            System.err.println("Expecting exactly 1 argument, got " + args.length + ".");
-            System.err.println("Run with no arguments for help.");
-            System.exit(1); return;
         }
 
         String argAuthFile = args[0];

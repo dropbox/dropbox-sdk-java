@@ -1,0 +1,105 @@
+apply plugin: 'java'
+apply plugin: 'signing'
+apply plugin: 'maven'
+apply plugin: 'com.github.ben-manes.versions' // dependencyUpdates task
+
+signing {
+    required {
+        // don't sign for installing in local maven
+        !project.version.contains("SNAPSHOT") && gradle.taskGraph.hasTask("uploadArchives")
+    }
+    sign configurations.archives
+}
+
+def getPassword(prop, description) {
+    if (project.hasProperty(prop)) {
+        return prop
+    }
+
+    def console = System.console()
+    if (console != null) {
+        println "Please enter ${description}:"
+        return new String(console.readPassword())
+    }
+
+    // If gradle is run as a daemon or through an IDE, then we won't have a console
+    throw new GradleException(
+        "Missing password property: ${prop}. " +
+        "Run with --no-daemon option, specify the property with the -P flag, or add it to " +
+        "~/.gradle/gradle.properties."
+    )
+}
+
+gradle.taskGraph.whenReady { graph ->
+    if (graph.hasTask(signArchives) && signArchives.required) {
+        println "${graph.allTasks}"
+        ['signing.keyId', 'signing.secretKeyRingFile'].each { prop ->
+            def dropboxProp = "com.dropbox.api.${prop}"
+            if (!project.hasProperty(dropboxProp)) {
+                throw new GradleException(
+                    "Missing required property for signing: ${dropboxProp}. " +
+                    "Add the property to ~/.gradle/gradle.properties or specify it with the -P flag."
+                )
+            }
+            project.ext.set(prop, project.getProperty(dropboxProp))
+        }
+
+        project.ext."signing.password" = getPassword(
+            'com.dropbox.api.signing.password',
+            'PGP Private Key Password'
+        )
+    }
+}
+
+task sonatypeCredentials () {
+    ext {
+        usernameProp = "com.dropbox.api.release.sonatypeUser"
+        passwordProp = "com.dropbox.api.release.sonatypePassword"
+        username = "dropbox-api-team"
+        password = null
+    }
+
+    doLast {
+        if (project.hasProperty(usernameProp)) {
+            username = getProperty(usernameProp)
+        }
+
+        password = getPassword(passwordProp, 'OSS Sonatype password')
+    }
+}
+
+uploadArchives {
+    dependsOn sonatypeCredentials
+
+    repositories {
+        mavenDeployer {
+            beforeDeployment { deployment ->
+                signing.signPom(deployment)
+            }
+
+            pom = project.basePom
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(
+                    userName: sonatypeCredentials.username,
+                    password: sonatypeCredentials.password
+                )
+            }
+        }
+    }
+}
+
+// reject dependencyUpdates candidates with alpha or beta in their names:
+dependencyUpdates.resolutionStrategy = {
+  componentSelection { rules ->
+    rules.all { ComponentSelection selection ->
+      boolean rejected = ['alpha', 'beta', 'rc'].any { qualifier ->
+        selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
+      }
+      if (rejected) {
+        selection.reject('Release candidate')
+      }
+    }
+  }
+}
+

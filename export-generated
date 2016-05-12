@@ -21,6 +21,7 @@ IGNORE_PATTERNS = [
     '/generator',
     '.gitmodules',
     '/diff-generated-sources',
+    '/release.gradle', # public repo should not include signing and release information
 ]
 
 cmdline_desc = """\
@@ -76,32 +77,32 @@ def get_files_in_repo(repo_path, exclude_ignored_files=False):
         ignored_files = []
     return [file for file in files_list if file not in ignored_files]
 
-def modify_pom_file(repo_path):
-    """Delete everything in the pom.xml between the private repo tags"""
-    pom_filename = os.path.join(repo_path, 'pom.xml')
+def modify_build_file(repo_path):
+    """Delete everything in the gradle.build between the private repo tags"""
+    filename = os.path.join(repo_path, 'gradle.build')
     lines = []
 
-    with open(pom_filename, 'r+') as pom_file:
+    with open(filename, 'r+') as f:
         level = 0
         modified = False
-        for line in pom_file:
-            if line.strip() == '<!-- BEGIN PRIVATE REPO ONLY -->':
+        for line in f:
+            if line.strip() == '/* BEGIN PRIVATE REPO ONLY */':
                 level += 1
                 modified = True
-            if level == 0:
-                lines.append(line)
-            if line.strip() == '<!-- END PRIVATE REPO ONLY -->':
+            elif line.strip() == '/* END PRIVATE REPO ONLY */':
                 level -= 1
                 if level < 0:
-                    error('Unmatched \"END PRIVATE REPO ONLY\" tag in pom.xml')
+                    error('Unmatched \"END PRIVATE REPO ONLY\" tag in %s' % filename)
+            elif level == 0:
+                lines.append(line)
 
     if level != 0:
-        error('Unmatched \"BEGIN PRIVATE REPO ONLY\" tag in pom.xml')
+        error('Unmatched \"BEGIN PRIVATE REPO ONLY\" tag in %s' % filename)
     if not modified:
-        print('Warning: pom.xml not modified.', file=sys.stderr)
+        print('Warning: %s not modified.' % filename, file=sys.stderr)
 
-    with open(pom_filename, 'w+') as pom_file:
-        pom_file.writelines(lines)
+    with open(filename, 'w+') as f:
+        f.writelines(lines)
 
 def error(msg):
     print('error: ' + msg, file=sys.stderr)
@@ -150,29 +151,29 @@ def main():
 
     # Generate source files and copy across to the public repo.
     log('Regenerating source files')
-    subprocess.check_call(['rm', '-rf', 'target/generated-sources'])
+    subprocess.check_call(['rm', '-rf', 'build/generated-sources'])
     subprocess.check_output(['./run-babel-codegen'])
 
     target_path = os.path.join(repo_path, 'src/main/java/com/')
     log('Copying generated sources to ' + target_path)
     subprocess.check_call(['rsync', '-r',
-                           'target/generated-sources/babel/com/',
+                           'build/generated-sources/babel/com/',
                            target_path])
 
-    # Modify the pom.xml for the public repo
-    log('Modifying pom.xml for the public repo.')
-    modify_pom_file(repo_path)
+    # Modify the gradle.build for the public repo
+    log('Modifying gradle.build for the public repo.')
+    modify_build_file(repo_path)
 
     if not args.skip_build:
         # Check that the project compiles
         example_folder = os.path.join(repo_path, 'examples')
         log('Compiling the SDK.')
-        subprocess.check_output(['mvn', 'install',], cwd=repo_path)
+        subprocess.check_output(['./gradlew', 'install',], cwd=repo_path)
         log('Compiling the examples.')
-        subprocess.check_output(['mvn', 'compile'], cwd=example_folder)
+        subprocess.check_output(['./gradlew', 'classes'], cwd=example_folder)
         log('Cleaning up')
-        subprocess.check_output(['mvn', 'clean'], cwd=example_folder)
-        subprocess.check_output(['mvn', 'clean'], cwd=repo_path)
+        subprocess.check_output(['./gradlew', 'clean'], cwd=example_folder)
+        subprocess.check_output(['./gradlew', 'clean'], cwd=repo_path)
 
 
 if __name__ == '__main__':
