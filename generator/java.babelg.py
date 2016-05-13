@@ -3710,6 +3710,8 @@ class JavaCodeGenerationInstance(object):
                     # inehrit doc from parent
                 else:
                     javadoc('Issues the request.')
+                if route.is_deprecated:
+                    out('@SuppressWarnings("deprecation")')
                 with self.g.block('public %s start() throws %s, DbxException' % (route.java_return_type, exception_class)):
                     out('%s arg = this.%s.build();' % (arg_type.java_type(), builder_arg_name))
                     if route.has_result:
