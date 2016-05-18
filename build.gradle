@@ -65,8 +65,6 @@ dependencies {
     // Important: Jackson 2.8+ will be free to use JDK7 features and no longer guarantees JDK6
     //            compatibility
     compile 'com.fasterxml.jackson.core:jackson-core:2.7.4'
-    compile 'com.fasterxml.jackson.core:jackson-annotations:2.7.4'
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.7.4'
 
     compileOnly 'javax.servlet:servlet-api:2.5'
     compileOnly 'com.squareup.okhttp:okhttp:2.7.5'
@@ -106,6 +104,9 @@ test {
 
     testLogging {
         events "skipped", "failed"
+        info {
+            events "passed", "skipped", "failed"
+        }
     }
 }
 
@@ -124,6 +125,9 @@ task integrationTest(type: Test) {
 
     testLogging {
         events "skipped", "failed"
+        info {
+            events "passed", "skipped", "failed"
+        }
     }
 
     reports {

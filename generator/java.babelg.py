@@ -170,7 +170,7 @@ def get_ancestors(data_type):
 
       struct A
       struct B extends A
-      struct C extends C
+      struct C extends B
 
     Without enumerated subtypes:
     - get_ancestors(C) returns [(None, A), (None, B), (None, C)]
@@ -208,6 +208,56 @@ def get_ancestors(data_type):
         data_type = parent_type
     ancestors.reverse()
     return ancestors
+
+
+def get_enumerated_subtypes_recursively(data_type):
+    """
+    Returns a list of (tag, DataTypeWrapper) pairs.
+
+    This method searches for all possible enumerated subtypes of the given data type. In the
+    example:
+
+    struct A
+      union
+        b B
+        c C
+    struct B extends A
+      union
+        d D
+        e E
+    struct C extends A
+      union
+        f F
+    struct D extends B
+    struct E extends B
+    struct F extends C
+
+    The following value would be returned:
+    - get_enumerated_subtypes_recursively(A): [('b', B), ('c', C), ('b.d', D), ('b.e', E), ('c.f', F)]
+    - get_enumerated_subtypes_recursively(B): [('b.d', D), ('b.e', E)]
+    - get_enumerated_subtypes_recursively(C): [('c.f', F)]
+    - get_enumerated_subtypes_recursively(D): []
+    """
+    assert isinstance(data_type, DataTypeWrapper), repr(data_type)
+
+    if not data_type.has_enumerated_subtypes:
+        return []
+
+    subtypes = []
+    def add_subtype(data_type):
+        subtypes.append(data_type)
+        if data_type.has_enumerated_subtypes:
+            for subtype in data_type.enumerated_subtypes:
+                add_subtype(subtype.data_type)
+
+    add_subtype(data_type)
+
+    result = []
+    for subtype in subtypes:
+        tag = '.'.join(name for name, _ in get_ancestors(subtype.as_babel) if name)
+        result.append((tag, subtype))
+
+    return result
 
 
 def get_underlying_type(data_type, allow_lists=True):
@@ -251,6 +301,22 @@ def get_routes_with_result_type(data_type, allow_lists=True):
     return routes
 
 
+def get_routes_with_error_type(data_type, allow_lists=True):
+    assert isinstance(data_type, DataTypeWrapper), repr(data_type)
+
+    ctx = data_type._ctx
+
+    routes = []
+    for babel_namespace in ctx.api.namespaces.values():
+        for babel_route in babel_namespace.routes:
+            err_type = get_underlying_type(babel_route.error_data_type, allow_lists)
+
+            if err_type == data_type.as_babel:
+                routes.append(RouteWrapper(ctx, babel_namespace, babel_route))
+
+    return routes
+
+
 def get_fields_with_data_type(data_type):
     assert isinstance(data_type, DataTypeWrapper), repr(data_type)
 
@@ -262,9 +328,7 @@ def get_fields_with_data_type(data_type):
             if is_composite_type(babel_data_type):
                 for babel_field in babel_data_type.all_fields:
                     field_type = babel_field.data_type
-                    if is_list_type(field_type):
-                        field_type = field_type.data_type
-                    elif is_nullable_type(field_type):
+                    while is_list_type(field_type) or is_nullable_type(field_type):
                         field_type = field_type.data_type
 
                     if field_type == data_type.as_babel:
@@ -286,6 +350,30 @@ def get_data_types_with_parent_type(data_type):
                 data_types.append(DataTypeWrapper(ctx, babel_data_type))
 
     return data_types
+
+
+def is_data_type_serializer_required_outside_package(data_type):
+    def has_other_namespace(wrappers):
+        return any(w.namespace != data_type.namespace for w in wrappers)
+
+    if has_other_namespace(get_routes_with_arg_type(data_type)):
+        return True
+
+    if has_other_namespace(get_routes_with_result_type(data_type)):
+        return True
+
+    if has_other_namespace(get_routes_with_error_type(data_type)):
+        return True
+
+    if has_other_namespace(get_fields_with_data_type(data_type)):
+        return True
+
+    if data_type.is_struct and data_type.has_enumerated_subtypes:
+        subtypes = get_enumerated_subtypes_recursively(data_type)
+        if has_other_namespace(st for _, st in subtypes):
+            return True
+
+    return False
 
 
 def is_data_type_required_outside_package(data_type):
@@ -323,6 +411,31 @@ def is_data_type_required_outside_package(data_type):
         return True
 
     return False
+
+
+def get_all_required_data_types_for_namespace(namespace):
+    data_types = []
+    seen_types = set()
+
+    def add_data_type(data_type):
+        if not data_type:
+            return
+        if data_type in seen_types:
+            return
+        if not (data_type.is_union or data_type.is_struct):
+            return
+
+        data_types.append(data_type)
+        seen_types.add(data_type)
+
+        add_data_type(data_type.parent)
+        for field in data_type.all_fields:
+            add_data_type(field.data_type)
+
+    for data_type in namespace.data_types:
+        add_data_type(data_type)
+
+    return data_types
 
 
 class GeneratorContext(object):
@@ -857,6 +970,10 @@ class NamespaceWrapper(BabelWrapper):
 
     def java_class(self, auth):
         return self._as_java_class(classname('dbx_' + auth + '_' + self.babel_name + '_requests'))
+
+    @property
+    def java_serializers_class(self):
+        return self._as_java_class(classname('dbx_' + self.babel_name + '_serializers'))
 
     @property
     def java_getter(self):
@@ -1397,6 +1514,23 @@ class DataTypeWrapper(BabelWrapper):
         assert not self.is_primitive, "primitive data types cannot have exception classes: %r" % self
         return self._as_java_class(classname(self.babel_name + '_exception'))
 
+    @property
+    def java_serializer_singleton(self):
+        assert self.is_struct or self.is_union, repr(self)
+        return _fixreserved('_' + self.babel_name + '_SERIALIZER');
+
+    @property
+    def java_serializer(self):
+        core_serializers_class = JavaClass(self._ctx, 'com.dropbox.core.babel.BabelSerializers')
+        if self.is_nullable:
+            return '%s.nullable(%s)' % (core_serializers_class, self.nullable_data_type.java_serializer)
+        elif self.is_list:
+            return '%s.list(%s)' % (core_serializers_class, self.list_data_type.java_serializer)
+        elif self.is_struct or self.is_union:
+            return '%s.Serializer.INSTANCE' % self.java_class
+        else:
+            return '%s.%s()' % (core_serializers_class, camelcase(self.babel_name))
+
     def java_type(self, boxed=True, generics=True):
         if self.is_nullable:
             return self.nullable_data_type.java_type(boxed=True, generics=generics)
@@ -1491,6 +1625,7 @@ class FieldWrapper(BabelWrapper):
 
     @property
     def is_optional(self):
+        assert self.containing_data_type.is_struct, repr(self.containing_data_type)
         return self.as_babel in self.containing_data_type.as_babel.all_optional_fields
 
     @property
@@ -2107,12 +2242,9 @@ class JavaImportGenerator(object):
 
         self._ctx.add_imports(
             'com.dropbox.core.DbxException',
-            'com.dropbox.core.DbxRequestUtil',
+            'com.dropbox.core.DbxWrappedException',
             'com.dropbox.core.http.HttpRequestor',
-            'com.dropbox.core.json.JsonUtil',
             'com.dropbox.core.v2.DbxRawClientV2',
-            'com.fasterxml.jackson.core.type.TypeReference',
-            'com.fasterxml.jackson.databind.JavaType',
             'java.util.HashMap',
             'java.util.Map',
         )
@@ -2155,12 +2287,9 @@ class JavaImportGenerator(object):
 
     def add_imports_for_route_uploader(self, route):
         self._ctx.add_imports(
-            'com.dropbox.core.DbxRequestUtil',
+            'com.dropbox.core.DbxWrappedException',
             'com.dropbox.core.DbxUploader',
             'com.dropbox.core.http.HttpRequestor',
-            'com.dropbox.core.json.JsonUtil',
-            'com.fasterxml.jackson.core.type.TypeReference',
-            'com.fasterxml.jackson.databind.JavaType',
             'java.io.IOException',
         )
         if route.has_result:
@@ -2216,38 +2345,18 @@ class JavaImportGenerator(object):
 
     def _add_imports_for_data_type_serializers(self, data_type):
         self._ctx.add_imports(
+            'java.io.IOException',
             'com.fasterxml.jackson.core.JsonGenerationException',
             'com.fasterxml.jackson.core.JsonGenerator',
             'com.fasterxml.jackson.core.JsonParseException',
             'com.fasterxml.jackson.core.JsonParser',
-            'com.fasterxml.jackson.core.JsonProcessingException',
             'com.fasterxml.jackson.core.JsonToken',
-            'com.fasterxml.jackson.databind.annotation.JsonDeserialize',
-            'com.fasterxml.jackson.databind.annotation.JsonSerialize',
-            'com.fasterxml.jackson.databind.DeserializationContext',
-            'com.fasterxml.jackson.databind.ObjectMapper',
-            'com.fasterxml.jackson.databind.SerializerProvider',
-            'com.dropbox.core.json.JsonReader',
-            'com.dropbox.core.json.JsonReadException',
-            'com.dropbox.core.json.JsonUtil',
-            'java.io.IOException',
+            'com.dropbox.core.babel.BabelSerializers',
         )
-
         if data_type.is_struct:
-            self._ctx.add_imports(
-                'com.fasterxml.jackson.databind.JsonSerializer',
-                'com.fasterxml.jackson.databind.JsonDeserializer',
-                'com.dropbox.core.json.StructJsonSerializer',
-                'com.dropbox.core.json.StructJsonDeserializer',
-            )
+            self._ctx.add_imports('com.dropbox.core.babel.StructSerializer')
         elif data_type.is_union:
-            self._ctx.add_imports(
-                'com.dropbox.core.json.UnionJsonSerializer',
-                'com.dropbox.core.json.UnionJsonDeserializer',
-                'java.util.Collections',
-                'java.util.HashMap',
-                'java.util.Map',
-            )
+            self._ctx.add_imports('com.dropbox.core.babel.UnionSerializer')
 
     def __repr__(self):
         return '%s(imports=%s)' % (self.__class__.__name__, self._ctx.current_imports)
@@ -2691,23 +2800,17 @@ class JavaCodeGenerationInstance(object):
                 ew=error_wrapper_var,
             )
         else:
-            message = 'Unexpected error response for \\"%(route)s\\": %(ew)s.errValue' % dict(
+            message = '"Unexpected error response for \\"%(route)s\\":" + %(ew)s.getErrorValue()' % dict(
                 route=route.babel_name,
                 ew=error_wrapper_var,
             )
-            return 'new DbxApiException(%(ew)s.getRequestId(), %(ew)s.getUserMessage(), "%(msg)s");' % dict(
+            return 'new DbxApiException(%(ew)s.getRequestId(), %(ew)s.getUserMessage(), %(msg)s);' % dict(
                 msg=message,
                 ew=error_wrapper_var,
             )
 
     def generate_route_simple_call(self, route, arg_var, before):
         out = self.g.emit
-
-        def as_jackson_type(data_type):
-            if data_type.is_list:
-                return 'JsonUtil.createType(new TypeReference<%s>() {})' % data_type.java_type()
-            else:
-                return 'JsonUtil.createType(%s.class)' % data_type.java_type(generics=False)
 
         with self.g.block('try'):
             self.g.generate_multiline_list(
@@ -2716,14 +2819,15 @@ class JavaCodeGenerationInstance(object):
                     '"%s"' % route.url_path,
                     arg_var if route.has_arg else 'null',
                     'true' if route.auth_style == 'noauth' else 'false',
-                    as_jackson_type(route.result),
-                    as_jackson_type(route.error),
+                    route.arg.java_serializer,
+                    route.result.java_serializer,
+                    route.error.java_serializer,
                 ),
                 before=before,
                 after=';',
             )
-        with self.g.block('catch (DbxRequestUtil.ErrorWrapper ew)'):
-            out('throw %s' % self.translate_error_wrapper(route, 'ew'))
+        with self.g.block('catch (DbxWrappedException ex)'):
+            out('throw %s' % self.translate_error_wrapper(route, 'ex'))
 
     def generate_route_rpc_call(self, route, arg_var):
         self.generate_route_simple_call(
@@ -2750,6 +2854,7 @@ class JavaCodeGenerationInstance(object):
                 '"%s"' % route.url_path,
                 arg_var if route.has_arg else 'null',
                 'true' if route.auth_style == 'noauth' else 'false',
+                route.arg.java_serializer,
             ),
             before='HttpRequestor.Uploader uploader = client.uploadStyle',
             after=';',
@@ -2777,231 +2882,14 @@ class JavaCodeGenerationInstance(object):
 
         out('')
         javadoc(data_type)
-        out('@JsonSerialize(using=%s.Serializer.class)' % data_type.java_class.name)
-        out('@JsonDeserialize(using=%s.Deserializer.class)' % data_type.java_class.name)
         with self.g.block('public enum %s' % data_type.java_class):
             out('// union %s' % data_type.babel_name)
             self.generate_enum_values(data_type)
 
-            self.generate_proguard_workaround()
-
             #
-            # JSON (de)serialization
+            # Serialization
             #
-            self.generate_enum_json_writer(data_type)
-            self.generate_enum_json_reader(data_type)
-
-    @contextmanager
-    def generate_union_json_writer_base(self, data_type):
-        assert data_type.is_union, repr(data_type)
-
-        out = self.g.emit
-
-        collapsible_fields = tuple(f for f in data_type.all_fields if f.is_collapsible)
-
-        out('')
-        with self.g.block('static final class Serializer extends UnionJsonSerializer<%s>' % data_type.java_class):
-            out('private static final long serialVersionUID = 0L;')
-
-            #
-            # Constructor
-            #
-
-            out('')
-            with self.g.block('public Serializer()'):
-                args = chain(
-                    ('%s.class' % data_type.java_class,),
-                    ('%s.class' % f.java_type() for f in collapsible_fields),
-                )
-                out('super(%s);' % ', '.join(args))
-
-            #
-            # serialize
-            #
-
-            out('')
-            out('@Override')
-            with self.g.block('public void serialize(%s value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException' % data_type.java_class):
-                yield
-
-    @contextmanager
-    def generate_struct_json_writer_base(self, data_type):
-        assert data_type.is_struct, repr(data_type)
-
-        out = self.g.emit
-
-        out('')
-        with self.g.block('static final class Serializer extends StructJsonSerializer<%s>' % data_type.java_class):
-            out('private static final long serialVersionUID = 0L;')
-
-            #
-            # Constructor
-            #
-
-            out('')
-            with self.g.block('public Serializer()'):
-                out('super(%s.class);' % data_type.java_class)
-
-            out('')
-            with self.g.block('public Serializer(boolean unwrapping)'):
-                out('super(%s.class, unwrapping);' % data_type.java_class)
-
-
-            #
-            # unwrapping Factory method
-            #
-
-            # allow struct to collapse into parent object
-            if data_type.is_collapsible:
-                out('')
-                out('@Override')
-                with self.g.block('protected JsonSerializer<%s> asUnwrapping()' % data_type.java_class):
-                    out('return new Serializer(true);')
-
-            #
-            # serialize fields
-            #
-
-            out('')
-            out('@Override')
-            with self.g.block('protected void serializeFields(%s value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException' % data_type.java_class):
-                yield
-
-    @contextmanager
-    def generate_union_json_reader_base(self, data_type):
-        assert data_type.is_union, repr(data_type)
-
-        out = self.g.emit
-
-        collapsible_fields = tuple(f for f in data_type.all_fields if f.is_collapsible)
-        tag_class = data_type.java_class if data_type.is_enum else 'Tag'
-
-        out('')
-        with self.g.block('static final class Deserializer extends UnionJsonDeserializer<%s, %s>' % (data_type.java_class, tag_class)):
-            out('private static final long serialVersionUID = 0L;')
-
-            #
-            # Constructor
-            #
-
-            out('')
-            with self.g.block('public Deserializer()'):
-                if data_type.catch_all_field is not None:
-                    catch_all = '%s.%s' % (tag_class, data_type.catch_all_field.tag_name)
-                else:
-                    catch_all = 'null'
-
-                # workaround for ProGuard not being able to properly inline our tag mapping if we
-                # make it a private static final constant. By leaving the tag mapping as a method
-                # call, then ProGuard will replace it will ``null``
-                args = chain(
-                    ('%s.class' % data_type.java_class, 'getTagMapping()', catch_all),
-                    ('%s.class' % f.java_type() for f in collapsible_fields),
-                )
-                out('super(%s);' % ', '.join(args))
-
-            #
-            # deserialize
-            #
-
-            out('')
-            out('@Override')
-            with self.g.block('public %s deserialize(%s _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException' % (data_type.java_class, tag_class)):
-                yield
-
-            #
-            # Tag mapping
-            #
-
-            tag_class = str(data_type.java_class) if data_type.is_enum else ('%s.Tag' % data_type.java_class)
-
-            out('')
-            with self.g.block('private static Map<String, %s> getTagMapping()' % tag_class):
-                out('Map<String, %s> values = new HashMap<String, %s>();' % (tag_class, tag_class))
-                for field in data_type.fields:
-                    if data_type.is_enum:
-                        tag_value = '%s.%s' % (data_type.java_class, field.java_enum)
-                    else:
-                        tag_value = '%s.Tag.%s' % (data_type.java_class, field.tag_name)
-                    out('values.put("%s", %s);' % (field.babel_name, tag_value))
-                out('return Collections.unmodifiableMap(values);')
-
-    @contextmanager
-    def generate_struct_json_reader_base(self, data_type):
-        assert data_type.is_struct, repr(data_type)
-
-        out = self.g.emit
-
-        subtypes = data_type.enumerated_subtypes if data_type.has_enumerated_subtypes else ()
-
-        out('')
-        with self.g.block('static final class Deserializer extends StructJsonDeserializer<%s>' % data_type.java_class):
-            out('private static final long serialVersionUID = 0L;')
-
-            #
-            # Constructor
-            #
-
-            out('')
-            with self.g.block('public Deserializer()'):
-                args = ', '.join(chain(
-                    ('%s.class' % data_type.java_class,),
-                    ('%s.class' % f.data_type.java_class for f in subtypes),
-                ))
-                out('super(%s);' % args)
-
-            out('')
-            with self.g.block('public Deserializer(boolean unwrapping)'):
-                args = ', '.join(chain(
-                    ('%s.class' % data_type.java_class,),
-                    ('unwrapping',),
-                    ('%s.class' % f.data_type.java_class for f in subtypes),
-                ))
-                out('super(%s);' % args)
-
-
-            #
-            # unwrapping Factory method
-            #
-
-            # allow struct to collapse into parent object
-            if data_type.is_collapsible or data_type.is_enumerated_subtype:
-                out('')
-                out('@Override')
-                with self.g.block('protected JsonDeserializer<%s> asUnwrapping()' % data_type.java_class):
-                    out('return new Deserializer(true);')
-
-            #
-            # deserialize
-            #
-
-            out('')
-            out('@Override')
-            with self.g.block('public %s deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException' % data_type.java_class):
-                yield
-
-    def generate_enum_json_writer(self, data_type):
-        out = self.g.emit
-
-        with self.generate_union_json_writer_base(data_type):
-            with self.g.block('switch (value)'):
-                for field in data_type.all_fields:
-                    out('case %s:' % field.java_name)
-                    with self.g.indent():
-                        if not field.has_value:
-                            # can ommit ".tag" for simple fields, e.g. "no_permission"
-                            out('g.writeString("%s");' % field.babel_name)
-                        else:
-                            out('g.writeStartObject();')
-                            out('g.writeStringField(".tag", "%s");' % field.babel_name)
-                            out('g.writeEndObject();')
-                        out('break;')
-
-    def generate_enum_json_reader(self, data_type):
-        out = self.g.emit
-
-        with self.generate_union_json_reader_base(data_type):
-            out('return _tag;')
+            self.generate_union_serializer(data_type)
 
     def generate_enum_values(self, data_type):
         """Generate enum values for simple unions or tags."""
@@ -3041,12 +2929,8 @@ class JavaCodeGenerationInstance(object):
 
         out('')
         javadoc(class_doc, context=data_type)
-        out('@JsonSerialize(using=%s.Serializer.class)' % data_type.java_class.name)
-        out('@JsonDeserialize(using=%s.Deserializer.class)' % data_type.java_class.name)
         with self.g.block('public final class %s' % data_type.java_class):
             out('// union %s' % data_type.java_class)
-
-            self.generate_proguard_workaround()
 
             #
             # Tag
@@ -3132,93 +3016,12 @@ class JavaCodeGenerationInstance(object):
             #
             self.generate_hash_code(data_type)
             self.generate_equals(data_type)
-            self.generate_to_string()
+            self.generate_to_string(data_type)
 
             #
-            # JSON (de)serialization
+            # Serialization
             #
-            self.generate_union_json_writer(data_type)
-            self.generate_union_json_reader(data_type)
-
-    def generate_union_json_writer(self, data_type):
-        out = self.g.emit
-
-        with self.generate_union_json_writer_base(data_type):
-            with self.g.block('switch (value.tag)'):
-                for field in data_type.all_fields:
-                    out('case %s:' % field.tag_name)
-                    with self.g.indent():
-                        if not field.has_value:
-                            # can ommit ".tag" for simple fields, e.g. "no_permission"
-                            out('g.writeString("%s");' % field.babel_name)
-                        else:
-                            # standard format: Nest the tag value in its own object
-                            #
-                            #    {".tag": "path", "path": {".tag": "malformed", "malformed": "/A^%"}}
-                            #
-                            # collapsed format: Embed tag value fields into current object. Used
-                            #                   only if tag value is a simple struct (no enumerated
-                            #                   subtypes)
-                            #
-                            #    {".tag": "conflict", "path_lower": "/a/b/c", "rev": "abc1234567"}
-                            #
-                            field_dt = field.data_type
-                            out('g.writeStartObject();')
-                            out('g.writeStringField(".tag", "%s");' % field.babel_name)
-
-                            if field.is_collapsible:
-                                out('getUnwrappingSerializer(%s.class).serialize(value.%s, g, provider);' % (field.java_type(), field.java_name))
-                            else:
-                                self.generate_write_field(field, 'value.%s' % field.java_name)
-
-                            out('g.writeEndObject();')
-                        out('break;')
-
-    def generate_union_json_reader(self, data_type):
-        out = self.g.emit
-
-        tag_fields = data_type.all_fields
-        if data_type.catch_all_field:
-            tag_fields + (data_type.catch_all_field,)
-
-        with self.generate_union_json_reader_base(data_type):
-            with self.g.block('switch (_tag)'):
-
-                for field in tag_fields:
-                    field_dt = field.data_type
-
-                    with self.g.block('case %s:' % field.tag_name):
-                        #
-                        # Simple fields + CATCH ALL
-                        #
-                        if not field.has_value:
-                            out('return %s.%s;' % (data_type.java_class, field.java_singleton))
-                            continue
-
-                        #
-                        # Nullable fields
-                        #
-                        if field_dt.is_nullable:
-                            field_dt = field_dt.nullable_data_type
-                            with self.g.block('if (isObjectEnd(_p))'):
-                                out('return %s.%s();' % (data_type.java_class, field.java_factory_method))
-
-                        #
-                        # Value fields
-                        #
-                        out('%s value = null;' % field_dt.java_type())
-                        if field.is_collapsible:
-                            # struct has been collapsed (e.g. unwrapped) into our union
-                            # object. This means there is no nested object for the tag value.
-                            # Read the fields directly.
-                            out('value = readCollapsedStructValue(%s.class, _p, _ctx);' % field_dt.java_class)
-                        else:
-                            self.generate_read_field(field, 'value')
-
-                        out('return %s.%s(value);' % (data_type.java_class, field.java_factory_method))
-
-            out('// should be impossible to get here')
-            out('throw new IllegalStateException("Unparsed tag: \\"" + _tag + "\\"");')
+            self.generate_union_serializer(data_type)
 
     def generate_data_type_union_field_methods(self, data_type):
         out = self.g.emit
@@ -3327,12 +3130,8 @@ class JavaCodeGenerationInstance(object):
 
         out('')
         javadoc(data_type)
-        out('@JsonSerialize(using=%s.Serializer.class)' % data_type.java_class.name)
-        out('@JsonDeserialize(using=%s.Deserializer.class)' % data_type.java_class.name)
         with self.g.block(('%s class %s' % (visibility, data_type.java_class_with_inheritance)).strip()):
             out('// struct %s' % data_type.babel_name)
-
-            self.generate_proguard_workaround()
 
             #
             # instance fields
@@ -3348,8 +3147,7 @@ class JavaCodeGenerationInstance(object):
 
             # use builder or required-only constructor for default values
             args = ', '.join(
-                field.java_type_and_name()
-                for field in data_type.all_fields
+                field.java_type_and_name() for field in data_type.all_fields
             )
             doc = data_type.babel_doc
             if data_type.supports_builder:
@@ -3430,13 +3228,12 @@ class JavaCodeGenerationInstance(object):
             #
             self.generate_hash_code(data_type)
             self.generate_equals(data_type)
-            self.generate_to_string()
+            self.generate_to_string(data_type)
 
             #
-            # JSON (de)serialization
+            # Serialization
             #
-            self.generate_struct_json_writer(data_type)
-            self.generate_struct_json_reader(data_type)
+            self.generate_struct_serializer(data_type)
 
     def generate_struct_builder(self, data_type):
         out = self.g.emit
@@ -3615,9 +3412,6 @@ class JavaCodeGenerationInstance(object):
                 """ % self.doc.javadoc_ref(route)
             )
             with self.g.block('public class %s extends DbxUploader<%s, %s, %s>' % (class_name, result_type, error_type, exception_type)):
-                out('private static final JavaType _RESULT_TYPE = JsonUtil.createType(new TypeReference<%s>() {});' % result_type)
-                out('private static final JavaType _ERROR_TYPE = JsonUtil.createType(new TypeReference<%s>() {});' % error_type)
-
                 out('')
                 javadoc(
                     'Creates a new instance of this uploader.',
@@ -3625,9 +3419,10 @@ class JavaCodeGenerationInstance(object):
                     throws=(('NullPointerException', 'if {@code httpUploader} is {@code null}'),)
                 )
                 with self.g.block('public %s(HttpRequestor.Uploader httpUploader)' % class_name):
-                    out('super(httpUploader, _RESULT_TYPE, _ERROR_TYPE);')
+                    out('super(httpUploader, %s, %s);' % (route.result.java_serializer, route.error.java_serializer))
 
-                with self.g.block('protected %s newException(DbxRequestUtil.ErrorWrapper error)' % exception_type):
+                out('')
+                with self.g.block('protected %s newException(DbxWrappedException error)' % exception_type):
                     out('return %s' % self.translate_error_wrapper(route, 'error'))
 
     def generate_builder_type(self, route):
@@ -3772,6 +3567,282 @@ class JavaCodeGenerationInstance(object):
                         out('throw new IllegalArgumentException("Required value for \'%s\' is null");' % value_name)
             self.generate_data_type_validation(data_type, value_name, omit_arg_name=omit_arg_name)
 
+    def generate_namespace_serializers(self, namespace):
+        out = self.g.emit
+        javadoc = self.doc.generate_javadoc
+
+        serializers_class = namespace.java_serializers_class
+        package_relpath = self.create_package_path(serializers_class.package)
+        file_name = os.path.join(package_relpath, serializers_class.name + '.java')
+
+        # resolve all required data types
+        required_data_types = get_all_required_data_types_for_namespace(namespace)
+
+        with self.g.output_to_relative_path(file_name), self.ctx.scoped(serializers_class.fq):
+            self.generate_file_header()
+            out('package %s;' % serializers_class.package)
+
+            if any(dt.is_struct for dt in namespace.data_types):
+                self.ctx.add_imports('com.dropbox.core.babel.StructSerializer')
+            if any(dt.is_union for dt in namespace.data_types):
+                self.ctx.add_imports('com.dropbox.core.babel.UnionSerializer')
+
+            # import every data type...
+            self.ctx.add_imports(*(data_type.java_class for data_type in required_data_types))
+            self.importer.generate_imports()
+
+            out('')
+            javadoc(
+                """
+                Internal class used for Babel serialization. This class is subject to change at any
+                time. No fields within this class should be accessed outside of this library.
+                """
+            )
+            with self.g.block('public final class %s' % serializers_class.name):
+                for data_type in namespace.data_types:
+                    serializer_type = 'Struct' if data_type.is_struct else 'Union'
+                    javadoc("For internal use only.")
+                    out('public static final %s.Serializer %s = new %s.Serializer();' % (
+                        data_type.java_class,
+                        data_type.java_serializer_singleton,
+                        data_type.java_class,
+                    ))
+
+    # T95586: Because Android has a bug that forces all classes with RUNTIME annotations into the
+    # primary dex, we cannot use annotation-based serialization. If we do, then every POJO will be
+    # added to a multidex app's primary dex, potentially exceeding the method count limit.
+    #
+    # The solution is to generate the serialization code for every POJO. Note that from a
+    # performance and maintenance standpoint, this is not ideal.
+    #
+    # The dalvik bug is tracked here: https://code.google.com/p/android/issues/detail?id=78144
+    def generate_struct_serializer(self, data_type):
+        assert isinstance(data_type, DataTypeWrapper), repr(data_type)
+        assert data_type.is_struct, repr(data_type)
+
+        out = self.g.emit
+        javadoc = self.doc.generate_javadoc
+
+        # attempt to limit scope to avoid polluting the Javadoc
+        if is_data_type_serializer_required_outside_package(data_type):
+            scope = 'public '
+        else:
+            scope = ''
+
+        out('')
+        javadoc("For internal use only.")
+        with self.g.block('%sstatic final class Serializer extends StructSerializer<%s>' % (scope, data_type.java_class)):
+            out('public static final Serializer INSTANCE = new Serializer();')
+            self.generate_struct_serialize(data_type)
+            self.generate_struct_deserialize(data_type)
+
+    def generate_union_serializer(self, data_type):
+        assert isinstance(data_type, DataTypeWrapper), repr(data_type)
+        assert data_type.is_union, repr(data_type)
+
+        out = self.g.emit
+        javadoc = self.doc.generate_javadoc
+
+        # attempt to limit the scope to avoid polluting the Javadoc
+        if is_data_type_serializer_required_outside_package(data_type):
+            scope = 'public '
+        else:
+            scope = ''
+
+        out('')
+        javadoc("For internal use only.")
+        with self.g.block('%sstatic final class Serializer extends UnionSerializer<%s>' % (scope, data_type.java_class)):
+            out('public static final Serializer INSTANCE = new Serializer();')
+            self.generate_union_serialize(data_type)
+            self.generate_union_deserialize(data_type)
+
+    def generate_struct_serialize(self, data_type):
+        assert data_type.is_struct, repr(data_type)
+
+        out = self.g.emit
+
+        out('')
+        out('@Override')
+        with self.g.block('public void serialize(%s value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException' % data_type.java_type()):
+
+            if data_type.has_enumerated_subtypes:
+                for subtype in data_type.enumerated_subtypes:
+                    subtype_class = subtype.data_type.java_class
+                    serializer = subtype.data_type.java_serializer
+                    with self.g.block('if (value instanceof %s)' % subtype_class):
+                        out('%s.serialize((%s) value, g, collapse);' % (serializer, subtype_class))
+                        out('return;')
+
+            with self.g.block('if (!collapse)'):
+                out('g.writeStartObject();')
+
+            ancestors = get_ancestors(data_type.as_babel)
+            tag = '.'.join(name for name, _ in ancestors[1:] if name)
+            if tag:
+                out('writeTag("%s", g);' % tag)
+
+            for field in data_type.all_fields:
+                field_dt = field.data_type
+                field_value = 'value.%s' % field.java_name
+                with self.conditional_block('if (%s != null)' % field_value, field_dt.is_nullable):
+                    out('g.writeFieldName("%s");' % field.babel_name)
+                    out('%s.serialize(%s, g);' % (field_dt.java_serializer, field_value))
+
+            with self.g.block('if (!collapse)'):
+                out('g.writeEndObject();')
+
+    def generate_struct_deserialize(self, data_type):
+        assert data_type.is_struct, repr(data_type)
+
+        out = self.g.emit
+
+        out('')
+        out('@Override')
+        with self.g.block('public %s deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException' % data_type.java_type()):
+            out('%s value;' % data_type.java_type())
+            out('String tag = null;')
+
+            with self.g.block('if (!collapsed)'):
+                out('expectStartObject(p);')
+                out('tag = readTag(p);')
+                if data_type.is_enumerated_subtype:
+                    ancestors = get_ancestors(data_type.as_babel)
+                    expected_tag = '.'.join(name for name, _ in ancestors if name)
+                    with self.g.block('if ("%s".equals(tag))' % expected_tag):
+                        out('tag = null;')
+
+            with self.g.block('if (tag == null)'):
+                for field in data_type.all_fields:
+                    default_value = field.default_value if field.has_default else 'null'
+                    out('%s f_%s = %s;' % (
+                        field.data_type.java_type(boxed=True), field.java_name, default_value
+                    ))
+                with self.g.block('while (p.getCurrentToken() == JsonToken.FIELD_NAME)'):
+                    out('String field = p.getCurrentName();')
+                    out('p.nextToken();')
+
+                    for i, field in enumerate(data_type.all_fields):
+                        conditional = 'if' if i == 0 else 'else if'
+                        serializer = field.data_type.java_serializer
+                        with self.g.block('%s ("%s".equals(field))' % (conditional, field.babel_name)):
+                            out('f_%s = %s.deserialize(p);' % (field.java_name, serializer))
+                    with self.g.block('else'):
+                        out('skipValue(p);')
+
+                for field in data_type.all_fields:
+                    if not field.is_optional:
+                        with self.g.block('if (f_%s == null)' % field.java_name):
+                            out('throw new JsonParseException(p, "Required field \\"%s\\" missing.");' % field.babel_name)
+                args = ['f_%s' % f.java_name for f in data_type.all_fields]
+                out('value = new %s(%s);' % (data_type.java_class, ', '.join(args)))
+
+            for tag, subtype_dt in get_enumerated_subtypes_recursively(data_type):
+                with self.g.block('else if ("%s".equals(tag))' % tag):
+                    out('value = %s.deserialize(p, true);' % subtype_dt.java_serializer)
+
+            with self.g.block('else'):
+                out('throw new JsonParseException(p, "No subtype found that matches tag: \\"" + tag + "\\"");')
+
+            with self.g.block('if (!collapsed)'):
+                out('expectEndObject(p);')
+
+            out('return value;')
+
+    def generate_union_serialize(self, data_type):
+        assert data_type.is_union, repr(data_type)
+
+        out = self.g.emit
+
+        out('')
+        out('@Override')
+        with self.g.block('public void serialize(%s value, JsonGenerator g) throws IOException, JsonGenerationException' % data_type.java_type()):
+            tag = 'value' if data_type.is_enum else 'value.tag()'
+            with self.g.block('switch (%s)' % tag):
+                for field in data_type.all_fields:
+                    if field.is_catch_all:
+                        continue
+                    with self.g.block('case %s:' % field.tag_name):
+                        if field.data_type.is_void:
+                            out('g.writeString("%s");' % field.babel_name)
+                        else:
+                            out('g.writeStartObject();')
+                            out('writeTag("%s", g);' % field.babel_name)
+                            serializer = field.data_type.java_serializer
+                            value = 'value.%s' % field.java_name
+                            if field.data_type.is_struct and field.data_type.is_collapsible:
+                                out('%s.serialize(%s, g, true);' % (serializer, value))
+                            else:
+                                out('g.writeFieldName("%s");' % field.babel_name)
+                                out('%s.serialize(%s, g);' % (serializer, value))
+                            out('g.writeEndObject();')
+                        out('break;')
+
+                with self.g.block('default:'):
+                    if data_type.catch_all_field:
+                        out('g.writeString("%s");' % data_type.catch_all_field.babel_name)
+                    else:
+                        out('throw new IllegalArgumentException("Unrecognized tag: " + %s);' % tag)
+
+    def generate_union_deserialize(self, data_type):
+        assert data_type.is_union, repr(data_type)
+
+        out = self.g.emit
+
+        out('')
+        out('@Override')
+        with self.g.block('public %s deserialize(JsonParser p) throws IOException, JsonParseException' % data_type.java_type()):
+            out('%s value;' % data_type.java_type())
+            out('boolean collapsed;')
+            out('String tag;')
+
+            with self.g.block('if (p.getCurrentToken() == JsonToken.VALUE_STRING)'):
+                out('collapsed = true;')
+                out('tag = getStringValue(p);')
+                out('p.nextToken();')
+            with self.g.block('else'):
+                out('collapsed = false;')
+                out('expectStartObject(p);')
+                out('tag = readTag(p);')
+
+            with self.g.block('if (tag == null)'):
+                out('throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);')
+
+            for field in data_type.all_fields:
+                if field.is_catch_all:
+                    continue
+
+                field_dt = field.data_type
+                with self.g.block('else if ("%s".equals(tag))' % field.babel_name):
+                    if not field.has_value:
+                        out('value = %s.%s;' % (data_type.java_class, field.java_singleton))
+                    else:
+                        out('%s fieldValue = null;' % field_dt.java_type())
+                        with self.conditional_block('if (p.getCurrentToken() != JsonToken.END_OBJECT)', field_dt.is_nullable):
+                            if field_dt.is_struct and field_dt.is_collapsible:
+                                out('fieldValue = %s.deserialize(p, true);' % field_dt.java_serializer)
+                            else:
+                                out('expectField("%s", p);' % field.babel_name)
+                                out('fieldValue = %s.deserialize(p);' % field_dt.java_serializer)
+
+                        if field_dt.is_nullable:
+                            with self.g.block('if (fieldValue == null)'):
+                                out('value = %s.%s();' % (data_type.java_class, field.java_factory_method))
+                            with self.g.block('else'):
+                                out('value = %s.%s(fieldValue);' % (data_type.java_class, field.java_factory_method))
+                        else:
+                            out('value = %s.%s(fieldValue);' % (data_type.java_class, field.java_factory_method))
+            with self.g.block('else'):
+                if data_type.catch_all_field:
+                    out('value = %s.%s;' % (data_type.java_class, data_type.catch_all_field.java_singleton))
+                    out('skipFields(p);')
+                else:
+                    out('throw new JsonParseException(p, "Unknown tag: " + tag);')
+
+            with self.g.block('if (!collapsed)'):
+                out('expectEndObject(p);')
+
+            out('return value;')
+
     def generate_data_type_validation(self, data_type, value_name, description=None, omit_arg_name=False, level=0):
         out = self.g.emit
 
@@ -3888,163 +3959,14 @@ class JavaCodeGenerationInstance(object):
 
             out('this.%s.add(x_);' % value_name)
 
-    def generate_struct_json_writer(self, data_type):
-        out = self.g.emit
-        ancestors = get_ancestors(data_type.as_babel)
-        with self.generate_struct_json_writer_base(data_type):
-            tags = [tag for tag, __ in ancestors if tag]
-            if tags:
-                out('g.writeStringField(".tag", "%s");' % '.'.join(tags))
-            for field in data_type.all_fields:
-                field_value = 'value.%s' % field.java_name
-                self.generate_write_field(field, field_value)
-
-    def generate_write_field(self, field, var_name):
-        out = self.g.emit
-
-        if field.data_type.is_nullable:
-            field_dt = field.data_type.nullable_data_type
-            nullable = True
-        else:
-            field_dt = field.data_type
-            nullable = False
-
-        babel_dt = field_dt.as_babel
-
-        with self.conditional_block('if (%s != null)' % var_name, nullable):
-            # TODO(krieb): support collapsing structs into unions
-            out('g.writeObjectField("%s", %s);' % (field.babel_name, var_name))
-
-    def generate_struct_json_reader(self, data_type):
-        out = self.g.emit
-
-        ancestors = get_ancestors(data_type.as_babel)
-
-        with self.generate_struct_json_reader_base(data_type):
-            #
-            # Enumerated subtypes
-            #
-            if data_type.is_enumerated_subtype:
-                args = ', '.join(chain(
-                    ('_p',),
-                    ('"%s"' % tag for tag, __ in ancestors[1:]),
-                ))
-                out('String _subtype_tag = readEnumeratedSubtypeTag(%s);' % args)
-
-                # delegate parsing to subtypes if we have any
-                if data_type.has_enumerated_subtypes:
-                    for field in data_type.enumerated_subtypes:
-                        with self.g.block('if ("%s".equals(_subtype_tag))' % field.babel_name):
-                            out('return readCollapsedStructValue(%s.class, _p, _ctx);' % field.data_type.java_class)
-
-            #
-            # Parse fields
-            #
-            out('')
-            for field in data_type.all_fields:
-                if field.has_default:
-                    out('%s %s = %s;' % (field.java_type(), field.java_name, field.default_value))
-                else:
-                    out('%s %s = null;' % (field.data_type.java_type(boxed=True), field.java_name))
-
-            out('')
-            with self.g.block('while (_p.getCurrentToken() == JsonToken.FIELD_NAME)'):
-                out('String _field = _p.getCurrentName();')
-                out('_p.nextToken();')
-
-                condition = 'if'
-                for field in data_type.all_fields:
-                    with self.g.block('%s ("%s".equals(_field))' % (condition, field.babel_name)):
-                        self.generate_read_data_type(field.data_type, field.java_name)
-                    condition = 'else if'
-                with self.g.block('else'):
-                    out('skipValue(_p);')
-
-            #
-            # Validate required fields present
-            #
-            out('')
-            for field in data_type.all_required_fields:
-                with self.g.block('if (%s == null)' % field.java_name):
-                    out('throw new JsonParseException(_p, "Required field \\"%s\\" is missing.");' % field.babel_name)
-
-            contructor_args = ', '.join(f.java_name for f in data_type.all_fields)
-            out('')
-            out('return new %s(%s);' % (data_type.java_class, contructor_args))
-
-    def generate_read_field(self, field, var_name=None):
-        out = self.g.emit
-
-        out('expectField(_p, "%s");' % field.babel_name)
-        self.generate_read_data_type(field.data_type, var_name)
-
-    def generate_read_data_type(self, data_type, var_name=None, level=0):
-        out = self.g.emit
-
-        if data_type.is_nullable:
-            data_type = data_type.nullable_data_type
-
-        babel_data_type = data_type.as_babel
-
-        # special handling of list type
-        if is_list_type(babel_data_type):
-            list_data_type = data_type.list_data_type;
-            out('expectArrayStart(_p);')
-            out('%s = new java.util.ArrayList<%s>();' % (var_name, list_data_type.java_type()))
-            with self.g.block('while (!isArrayEnd(_p))'):
-                var_item = ('_x%s' % level) if level else '_x'
-                out('%s %s = null;' % (list_data_type.java_type(), var_item))
-                self.generate_read_data_type(list_data_type, var_item, level=(level+1))
-                out('%s.add(%s);' % (var_name, var_item))
-            out('expectArrayEnd(_p);')
-            out('_p.nextToken();')
-            return
-
-        if is_composite_type(babel_data_type):
-            out('%s = _p.readValueAs(%s.class);' % (var_name, data_type.java_class))
-        elif is_string_type(babel_data_type):
-            out('%s = getStringValue(_p);' % var_name)
-        elif is_boolean_type(babel_data_type):
-            out('%s = _p.getValueAsBoolean();' % var_name)
-        elif is_numeric_type(babel_data_type):
-            java_type = data_type.java_type(boxed=False).name
-            unsigned = data_type.babel_name.startswith('U')
-
-            if java_type == 'long':
-                out('%s = _p.getLongValue();' % var_name)
-            elif java_type == 'int':
-                out('%s = _p.getIntValue();' % var_name)
-            elif java_type == 'float':
-                out('%s = _p.getFloatValue();' % var_name)
-            elif java_type == 'double':
-                out('%s = _p.getDoubleValue();' % var_name)
-            else:
-                raise AssertionError("unsupported numeric babel type: %r" % babel_data_type)
-
-            if unsigned:
-                out('assertUnsigned(_p, %s);' % var_name)
-                if data_type.babel_name == 'UInt32':
-                    with self.g.block('if (%s > Integer.MAX_VALUE)' % var_name):
-                        out('throw new JsonParseException(_p, "expecting a 32-bit unsigned integer, got: " + %s);' % var_name)
-        elif is_timestamp_type(babel_data_type):
-            out('%s = _ctx.parseDate(getStringValue(_p));' % var_name)
-        elif is_bytes_type(babel_data_type):
-            out('%s = _p.getBinaryValue();' % var_name)
-        elif is_void_type(babel_data_type):
-            out('_p.skipChildren();')
-        else:
-            raise AssertionError("unsupported babel type: %r" % babel_data_type)
-
-        out('_p.nextToken();')
-
-    def generate_to_string(self):
+    def generate_to_string(self, data_type):
         out = self.g.emit
         javadoc = self.doc.generate_javadoc
 
         out('')
         out('@Override')
         with self.g.block('public String toString()'):
-            out('return serialize(false);')
+            out('return Serializer.INSTANCE.serialize(this, false);')
 
         out('')
         javadoc(
@@ -4056,14 +3978,7 @@ class JavaCodeGenerationInstance(object):
             returns="Formatted, multiline String representation of this object"
         )
         with self.g.block('public String toStringMultiline()'):
-            out('return serialize(true);')
-
-        out('')
-        with self.g.block('private String serialize(boolean longForm)'):
-            with self.g.block('try'):
-                out('return JsonUtil.getMapper(longForm).writeValueAsString(this);')
-            with self.g.block('catch (JsonProcessingException ex)'):
-                out('throw new RuntimeException("Failed to serialize object", ex);')
+            out('return Serializer.INSTANCE.serialize(this, true);')
 
     def generate_hash_code(self, data_type):
         out = self.g.emit
@@ -4168,14 +4083,6 @@ class JavaCodeGenerationInstance(object):
                         out(';')
             with self.g.block('else'):
                 out('return false;')
-
-    def generate_proguard_workaround(self):
-        out = self.g.emit
-
-        out('')
-        out('// ProGuard work-around since we declare serializers in annotation')
-        out('static final Serializer SERIALIZER = new Serializer();')
-        out('static final Deserializer DESERIALIZER = new Deserializer();')
 
     @contextmanager
     def conditional_block(self, text, predicate):

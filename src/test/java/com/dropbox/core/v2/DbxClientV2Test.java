@@ -2,9 +2,9 @@ package com.dropbox.core.v2;
 
 import static org.mockito.Mockito.*;
 import static org.testng.Assert.*;
+import static com.dropbox.core.v2.files.FilesSerializers.serializer;
 
 import com.dropbox.core.http.HttpRequestor;
-import com.dropbox.core.json.JsonUtil;
 import com.dropbox.core.v2.files.FileMetadata;
 import com.dropbox.core.v2.files.Metadata;
 import com.dropbox.core.util.IOUtil;
@@ -13,8 +13,6 @@ import com.dropbox.core.DbxDownloader;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.RetryException;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -35,7 +33,6 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class DbxClientV2Test {
-    private static final ObjectMapper JSON = JsonUtil.getMapper();
 
     // default config
     private static DbxRequestConfig.Builder createRequestConfig() {
@@ -323,14 +320,16 @@ public class DbxClientV2Test {
         return Matchers.<Iterable<HttpRequestor.Header>>any();
     }
 
-    private static byte [] serialize(Object obj) {
-        assertNotNull(obj);
+    private static byte [] serialize(Metadata metadata) {
+        assertNotNull(metadata);
 
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
         try {
-            return JSON.writeValueAsBytes(obj);
+            serializer(Metadata.class).serialize(metadata, out);
         } catch (Exception ex) {
-            fail("unserializable type: " + obj.getClass(), ex);
+            fail("unserializable type: " + metadata.getClass(), ex);
             return null;
         }
+        return out.toByteArray();
     }
 }

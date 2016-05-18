@@ -8,17 +8,16 @@ import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.DbxRequestUtil;
 import com.dropbox.core.DbxUploader;
 import com.dropbox.core.DbxWebAuth;
+import com.dropbox.core.DbxWrappedException;
 import com.dropbox.core.NetworkIOException;
 import com.dropbox.core.RetryException;
+import com.dropbox.core.babel.BabelSerializer;
 import com.dropbox.core.http.HttpRequestor;
-import com.dropbox.core.json.JsonUtil;
 import com.dropbox.core.util.LangUtil;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -43,11 +42,10 @@ import java.util.List;
  * </p>
  */
 public abstract class DbxRawClientV2 {
-    private static final JsonFactory JSON_FACTORY = new JsonFactory();
     // The HTTP status codes returned for errors specific to particular API calls.
-    private final static List<Integer> FUNCTION_SPECIFIC_ERROR_CODES = Arrays.asList(403, 404, 409);
+    private static final List<Integer> FUNCTION_SPECIFIC_ERROR_CODES = Arrays.asList(403, 404, 409);
     private static final String USER_AGENT_ID = "OfficialDropboxJavaSDKv2";
-    private static final ObjectMapper JSON = JsonUtil.getMapper();
+    private static final JsonFactory JSON = new JsonFactory();
 
     private final DbxRequestConfig requestConfig;
     private final DbxHost host;
@@ -76,11 +74,12 @@ public abstract class DbxRawClientV2 {
                                           final String path,
                                           final ArgT arg,
                                           final boolean noAuth,
-                                          final JavaType responseType,
-                                          final JavaType errorType)
-        throws DbxRequestUtil.ErrorWrapper, DbxException {
+                                          final BabelSerializer<ArgT> argSerializer,
+                                          final BabelSerializer<ResT> responseSerializer,
+                                          final BabelSerializer<ErrT> errorSerializer)
+        throws DbxWrappedException, DbxException {
 
-        final byte [] body = writeAsBytes(arg);
+        final byte [] body = writeAsBytes(argSerializer, arg);
         final List<HttpRequestor.Header> headers = new ArrayList<HttpRequestor.Header>();
         if (!noAuth) {
             addAuthHeaders(headers);
@@ -89,13 +88,13 @@ public abstract class DbxRawClientV2 {
 
         return executeRetriable(requestConfig.getMaxRetries(), new RetriableExecution<ResT> () {
             @Override
-            public ResT execute() throws DbxRequestUtil.ErrorWrapper, DbxException {
+            public ResT execute() throws DbxWrappedException, DbxException {
                 HttpRequestor.Response response = DbxRequestUtil.startPostRaw(requestConfig, USER_AGENT_ID, host, path, body, headers);
                 try {
                     if (response.getStatusCode() == 200) {
-                        return JSON.readValue(response.getBody(), responseType);
+                        return responseSerializer.deserialize(response.getBody());
                     } else if (FUNCTION_SPECIFIC_ERROR_CODES.contains(response.getStatusCode())) {
-                        throw DbxRequestUtil.ErrorWrapper.fromResponse(errorType, response);
+                        throw DbxWrappedException.fromResponse(errorSerializer, response);
                     } else {
                         throw DbxRequestUtil.unexpectedStatus(response);
                     }
@@ -113,22 +112,23 @@ public abstract class DbxRawClientV2 {
                                                               final String path,
                                                               final ArgT arg,
                                                               final boolean noAuth,
-                                                              final JavaType responseType,
-                                                              final JavaType errorType)
-        throws DbxRequestUtil.ErrorWrapper, DbxException {
+                                                              final BabelSerializer<ArgT> argSerializer,
+                                                              final BabelSerializer<ResT> responseSerializer,
+                                                              final BabelSerializer<ErrT> errorSerializer)
+        throws DbxWrappedException, DbxException {
 
         final List<HttpRequestor.Header> headers = new ArrayList<HttpRequestor.Header>();
         if (!noAuth) {
             addAuthHeaders(headers);
         }
-        headers.add(new HttpRequestor.Header("Dropbox-API-Arg", headerSafeJson(arg)));
+        headers.add(new HttpRequestor.Header("Dropbox-API-Arg", headerSafeJson(argSerializer, arg)));
         headers.add(new HttpRequestor.Header("Content-Type", ""));
 
         final byte[] body = new byte[0];
 
         return executeRetriable(requestConfig.getMaxRetries(), new RetriableExecution<DbxDownloader<ResT>>() {
             @Override
-            public DbxDownloader<ResT> execute() throws DbxRequestUtil.ErrorWrapper, DbxException {
+            public DbxDownloader<ResT> execute() throws DbxWrappedException, DbxException {
                 HttpRequestor.Response response = DbxRequestUtil.startPostRaw(requestConfig, USER_AGENT_ID, host, path, body, headers);
                 String requestId = DbxRequestUtil.getRequestId(response);
 
@@ -146,10 +146,10 @@ public abstract class DbxRawClientV2 {
                             throw new BadResponseException(requestId, "Null Dropbox-API-Result header; " + response.getHeaders());
                         }
 
-                        ResT result = JSON.readValue(resultHeader, responseType);
+                        ResT result = responseSerializer.deserialize(resultHeader);
                         return new DbxDownloader<ResT>(result, response.getBody());
                     } else if (FUNCTION_SPECIFIC_ERROR_CODES.contains(response.getStatusCode())) {
-                        throw DbxRequestUtil.ErrorWrapper.fromResponse(errorType, response);
+                        throw DbxWrappedException.fromResponse(errorSerializer, response);
                     } else {
                         throw DbxRequestUtil.unexpectedStatus(response);
                     }
@@ -162,25 +162,24 @@ public abstract class DbxRawClientV2 {
         });
     }
 
-    private static <T> byte [] writeAsBytes(T arg) throws DbxException {
+    private static <T> byte [] writeAsBytes(BabelSerializer<T> serializer, T arg) throws DbxException {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
         try {
-            return JSON.writeValueAsBytes(arg);
-        } catch (JsonProcessingException ex) {
-            // should never happen
-            throw LangUtil.mkAssert("Failed to serialize argument", ex);
+            serializer.serialize(arg, out);
         } catch (IOException ex) {
-            throw new NetworkIOException(ex);
+            throw LangUtil.mkAssert("Impossible", ex);
         }
+        return out.toByteArray();
     }
 
-    private static <T> String headerSafeJson(T value) {
+    private static <T> String headerSafeJson(BabelSerializer<T> serializer, T value) {
         StringWriter out = new StringWriter();
         try {
-            JsonGenerator g = JSON.getFactory().createGenerator(out);
+            JsonGenerator g = JSON.createGenerator(out);
             // Escape 0x7F, because it's not allowed in an HTTP header.
             // Escape all non-ASCII because the new HTTP spec recommends against non-ASCII in headers.
             g.setHighestNonEscapedChar(0x7E);
-            JSON.writeValue(g, value);
+            serializer.serialize(value, g);
             g.flush();
         } catch (IOException ex) {
             throw LangUtil.mkAssert("Impossible", ex);
@@ -188,7 +187,11 @@ public abstract class DbxRawClientV2 {
         return out.toString();
     }
 
-    public <ArgT> HttpRequestor.Uploader uploadStyle(String host, String path, ArgT arg, boolean noAuth)
+    public <ArgT> HttpRequestor.Uploader uploadStyle(String host,
+                                                     String path,
+                                                     ArgT arg,
+                                                     boolean noAuth,
+                                                     BabelSerializer<ArgT> argSerializer)
         throws DbxException {
 
         String uri = DbxRequestUtil.buildUri(host, path);
@@ -198,7 +201,7 @@ public abstract class DbxRawClientV2 {
         }
         headers.add(new HttpRequestor.Header("Content-Type", "application/octet-stream"));
         headers = DbxRequestUtil.addUserAgentHeader(headers, requestConfig, USER_AGENT_ID);
-        headers.add(new HttpRequestor.Header("Dropbox-API-Arg", headerSafeJson(arg)));
+        headers.add(new HttpRequestor.Header("Dropbox-API-Arg", headerSafeJson(argSerializer, arg)));
         try {
             return requestConfig.getHttpRequestor().startPost(uri, headers);
         }
@@ -233,7 +236,7 @@ public abstract class DbxRawClientV2 {
      * behavior backwards compatibility in v1, we leave the old implementation in {@code
      * DbxRequestUtil} unchanged.
      */
-    private static <T> T executeRetriable(int maxRetries, RetriableExecution<T> execution) throws DbxRequestUtil.ErrorWrapper, DbxException {
+    private static <T> T executeRetriable(int maxRetries, RetriableExecution<T> execution) throws DbxWrappedException, DbxException {
         if (maxRetries == 0) {
             return execution.execute();
         }
@@ -267,6 +270,6 @@ public abstract class DbxRawClientV2 {
     }
 
     private interface RetriableExecution<T> {
-        T execute() throws DbxRequestUtil.ErrorWrapper, DbxException;
+        T execute() throws DbxWrappedException, DbxException;
     }
 }

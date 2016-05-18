@@ -55,4 +55,4 @@ for arg in "${@}" ; do
     i=$((i+1))
 done
 
-exec ./gradlew --console plain --quiet ":${example_name}:run" "${project_properties[@]}"
+exec "${base_dir}/gradlew" -b "${base_dir}/build.gradle" --console plain --quiet ":${example_name}:run" "${project_properties[@]}"

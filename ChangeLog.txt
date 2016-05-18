@@ -1,6 +1,10 @@
 2.0.4
 ---------------------------------------------
-- Migrate build from maven to gradle
+- Migrate build from maven to gradle.
+- Improve code shrinking when using ProGuard.
+  - Response/request serialization updated to be better optimized by ProGuard.
+- Properly support multidex builds
+  - Response/request objects should no longer always be kept in primary dex.
 
 ---------------------------------------------
 2.0.3 (2016-05-07)

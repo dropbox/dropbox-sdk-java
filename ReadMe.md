@@ -156,19 +156,6 @@ Another workaround is to tell your OSGi container to provide that requirement: [
 
 ### Does this SDK require any special ProGuard rules for shrink optimizations?
 
-Yes. This SDK uses Jackson JSON libraries for serialization. Specifically:
-
-  * [Jackson Core](https://github.com/FasterXML/jackson-core)
-  * [Jackson Annotations](https://github.com/FasterXML/jackson-annotations)
-  * [Jackson Databind](https://github.com/FasterXML/jackson-databind)
-
-Jackson Databind makes use of reflection and annotations to map Java objects to JSON. Your ProGuard configuration should ensure Jackson annotations and Object mapping classes are kept. An example configuration is shown below:
-
-```
--keepattributes *Annotation*,EnclosingMethod,InnerClasses,Signature
--keepnames class com.fasterxml.jackson.** { *; }
--dontwarn com.fasterxml.jackson.databind.**
--adaptresourcefilenames com/dropbox/core/http/trusted-certs.raw
-```
+Versions 2.0.0-2.0.3 of this SDK require specific ProGuard rules to work with shrinking enabled. However, since version **2.0.4**, the SDK no longer needs special ProGuard directives.
 
 **IMPORTANT: If you are running version 2.0.x before 2.0.3, you should update to the latest Dropbox SDK version to avoid a deserialization bug that can cause Android apps that use ProGuard to crash.**

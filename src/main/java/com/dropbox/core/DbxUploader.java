@@ -1,19 +1,15 @@
 package com.dropbox.core;
 
-import static com.dropbox.core.DbxRequestUtil.ErrorWrapper;
-
 import java.io.Closeable;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import com.dropbox.core.json.JsonUtil;
+import com.fasterxml.jackson.core.JsonProcessingException;
+
+import com.dropbox.core.babel.BabelSerializer;
 import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.util.IOUtil;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Class for completing upload requests.
@@ -47,27 +43,23 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * @param <X> exception type returned by server on request failure
  */
 public abstract class DbxUploader<R, E, X extends DbxApiException> implements Closeable {
-    protected static final ObjectMapper JSON = JsonUtil.getMapper();
-
     private final HttpRequestor.Uploader httpUploader;
-    private final JavaType responseType;
-    private final JavaType errorType;
+    private final BabelSerializer<R> responseSerializer;
+    private final BabelSerializer<E> errorSerializer;
 
     private boolean closed;
     private boolean finished;
 
-    protected DbxUploader(HttpRequestor.Uploader httpUploader,
-                          JavaType responseType,
-                          JavaType errorType) {
+    protected DbxUploader(HttpRequestor.Uploader httpUploader, BabelSerializer<R> responseSerializer, BabelSerializer<E> errorSerializer) {
         this.httpUploader = httpUploader;
-        this.responseType = responseType;
-        this.errorType = errorType;
+        this.responseSerializer = responseSerializer;
+        this.errorSerializer = errorSerializer;
 
         this.closed = false;
         this.finished = false;
     }
 
-    protected abstract X newException(DbxRequestUtil.ErrorWrapper error);
+    protected abstract X newException(DbxWrappedException error);
 
     /**
      * Uploads all bytes read from the given {@link InputStream} and returns the response.
@@ -224,11 +216,11 @@ public abstract class DbxUploader<R, E, X extends DbxApiException> implements Cl
 
             try {
                 if (response.getStatusCode() == 200) {
-                    return JSON.readValue(response.getBody(), responseType);
+                    return responseSerializer.deserialize(response.getBody());
                 }
                 else if (response.getStatusCode() == 409) {
-                    ErrorWrapper wrapper =  ErrorWrapper.fromResponse(errorType, response);
-                    throw newException(wrapper);
+                    DbxWrappedException wrapped =  DbxWrappedException.fromResponse(errorSerializer, response);
+                    throw newException(wrapped);
                 }
                 else {
                     throw DbxRequestUtil.unexpectedStatus(response);
