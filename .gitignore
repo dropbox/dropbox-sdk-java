@@ -1,15 +1,15 @@
 # Gradle
-/.gradle/
-/build/
+.gradle/
+build/
 
 # Maven build output folder
 /target/
 
 # IntelliJ project folder
-/intellij/
-/.idea/
-/*.iml
-/local.properties
+intellij/
+.idea/
+*.iml
+local.properties
 
 # Output file when rendering ReadMe.md locally.
 /ReadMe.html

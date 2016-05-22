@@ -3,6 +3,12 @@ apply plugin: 'signing'
 apply plugin: 'maven'
 apply plugin: 'com.github.ben-manes.versions' // dependencyUpdates task
 
+task releaseTest() {
+    dependsOn ':proguard:testProguard'
+    dependsOn test
+    dependsOn integrationTest
+}
+
 signing {
     required {
         // don't sign for installing in local maven

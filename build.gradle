@@ -15,6 +15,7 @@ conf2ScopeMappings.addMapping(1, configurations.compileOnly, 'provided')
 ext {
     generatedSources = file("$buildDir/generated-sources")
     generatedResources = file("$buildDir/generated-resources")
+    authInfoPropertyName = 'com.dropbox.test.authInfoFile'
     basePom = pom {
         artifactId = archivesBaseName
         project {
@@ -110,6 +111,27 @@ test {
     }
 }
 
+def getAuthInfoFile() {
+    if (!project.hasProperty(authInfoPropertyName)) {
+        throw new GradleException('' +
+            "These tests require the \"${authInfoPropertyName}\" " +
+            "project property be set to point to an authorization JSON file " +
+            "(e.g. ./gradlew integrationTest -P${authInfoPropertyName}=auth.json)."
+        )
+    }
+
+    def authInfoFile = file(project.property(authInfoPropertyName))
+    if (!authInfoFile.exists()) {
+        throw new GradleException('' +
+            "The test auth info file does not exist: \"${authInfoFile.absolutePath}\". " +
+            "Please ensure the \"${authInfoPropertyName}\" project property is set to point to " +
+            "the correct authorization JSON file."
+        )
+    }
+    return authInfoFile
+}
+
+
 task integrationTest(type: Test) {
     description 'Runs integration tests against Production or Dev servers.'
 
@@ -142,25 +164,7 @@ task integrationTest(type: Test) {
     }
 
     doFirst {
-        // we need authentication information to run integration tests
-        if (!project.hasProperty(authInfoPropertyName)) {
-            throw new GradleException('' +
-                "Integration tests require the \"${authInfoPropertyName}\" " +
-                "project property be set to point to an authorization JSON file " +
-                "(e.g. gradle integrationTest -P${authInfoPropertyName}=auth.json)."
-            )
-        }
-
-        def authInfoFile = file(project.property(authInfoPropertyName))
-        if (!authInfoFile.exists()) {
-            throw new GradleException('' +
-                "Integration test auth info file does not exist: \"${authInfoFile.absolutePath}\". " +
-                "Please ensure the \"${authInfoPropertyName}\" project property is set to point to " +
-                "the correct authorization JSON file."
-            )
-        }
-
-        systemProperty authInfoPropertyName, authInfoFile.absolutePath
+        systemProperty authInfoPropertyName, getAuthInfoFile().absolutePath
         if (project.hasProperty(okHttpPropertyName)) {
             systemProperty okHttpPropertyName, project.property(okHttpPropertyName)
         }

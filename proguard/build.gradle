@@ -1,0 +1,75 @@
+apply plugin: 'maven'
+apply plugin: 'java'
+
+description = 'ProGuard minified SDK test suite for ProGuard compatibility tests.'
+group = 'com.dropbox.core.test'
+archivesBaseName = 'dropbox-proguard-test'
+version = '0-SNAPSHOT'
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'net.sf.proguard:proguard-gradle:5.2.1'
+        classpath 'net.sf.proguard:proguard-base:5.2.1'
+    }
+}
+
+repositories {
+    jcenter()
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    //compile group: 'com.dropbox.core', name: 'dropbox-core-sdk', version: '0-SNAPSHOT', changing: true
+    compile rootProject
+    compile 'org.testng:testng:6.9.10'
+}
+
+compileJava {
+    options.compilerArgs << '-Xlint:all'
+    options.warnings = true
+    options.deprecation = true
+    options.encoding = 'utf-8'
+}
+
+task proguard(type: proguard.gradle.ProGuardTask) {
+    ext {
+        configDir = file("src/main/resources/proguard/")
+        configFile = file("../examples/android/proguard-rules.pro")
+        proguardJar = file("${project.libsDir}/${project.archivesBaseName}-${project.version}-proguard.jar")
+    }
+
+    inputs.dir configDir
+    inputs.file configFile
+
+    injars sourceSets.main.runtimeClasspath, filter:'!META-INF/*'
+    libraryjars "${System.getProperty('java.home')}/lib/rt.jar"
+    libraryjars sourceSets.main.compileClasspath.filter { file ->
+        return !sourceSets.main.runtimeClasspath.contains(file)
+    }
+
+    outjars proguardJar
+
+    fileTree(dir: configDir, include: '**/*.pro').each { file ->
+        configuration file
+    }
+    configuration configFile
+}
+
+task proguardTest(type: JavaExec) {
+    dependsOn proguard
+    classpath = files(proguard.proguardJar)
+    main = 'com.dropbox.core.test.proguard.Main'
+    ignoreExitValue false
+
+    doFirst {
+        args getAuthInfoFile().absolutePath
+    }
+}

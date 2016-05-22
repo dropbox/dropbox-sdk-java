@@ -22,7 +22,8 @@ IGNORE_PATTERNS = [
     '.gitmodules',
     '/diff-generated-sources',
     '/release.gradle', # public repo should not include signing and release information
-    '/proguard',
+    '/babel.gradle',
+    '/proguard', # ProGuard tests are mostly for release testing
 ]
 
 cmdline_desc = """\
@@ -78,12 +79,11 @@ def get_files_in_repo(repo_path, exclude_ignored_files=False):
         ignored_files = []
     return [file for file in files_list if file not in ignored_files]
 
-def modify_build_file(repo_path):
-    """Delete everything in the gradle.build between the private repo tags"""
-    filename = os.path.join(repo_path, 'gradle.build')
+def strip_private_sections(path):
+    """Delete everything in the file between the private repo tags"""
     lines = []
 
-    with open(filename, 'r+') as f:
+    with open(path, 'r+') as f:
         level = 0
         modified = False
         for line in f:
@@ -100,10 +100,16 @@ def modify_build_file(repo_path):
     if level != 0:
         error('Unmatched \"BEGIN PRIVATE REPO ONLY\" tag in %s' % filename)
     if not modified:
-        print('Warning: %s not modified.' % filename, file=sys.stderr)
+        print('%s not modified.' % filename, file=sys.stdout)
 
     with open(filename, 'w+') as f:
         f.writelines(lines)
+
+def list_build_files(root):
+    for dirname, dir_list, file_list in os.walk(root):
+        for filename in file_list:
+            if filename.endswith('.gradle'):
+                yield os.path.join(dirname, filename)
 
 def error(msg):
     print('error: ' + msg, file=sys.stderr)
@@ -163,7 +169,8 @@ def main():
 
     # Modify the gradle.build for the public repo
     log('Modifying gradle.build for the public repo.')
-    modify_build_file(repo_path)
+    for build_file in list_build_files(repo_path):
+        strip_private_sections(build_file)
 
     if not args.skip_build:
         # Check that the project compiles
