@@ -27,6 +27,8 @@ dependencies {
 }
 ```
 
+You can also download the Java SDK JAR and and its dependencies directly from the [latest release page](https://github.com/dropbox/dropbox-sdk-java/releases/latest).
+
 ## Get a Dropbox API key
 
 You need a Dropbox API key to make API requests.

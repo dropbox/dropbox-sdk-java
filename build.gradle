@@ -17,6 +17,7 @@ ext {
     generatedResources = file("$buildDir/generated-resources")
     authInfoPropertyName = 'com.dropbox.test.authInfoFile'
     basePom = pom {
+        name = 'Official Dropbox Java SDK'
         artifactId = archivesBaseName
         project {
             packaging 'jar'

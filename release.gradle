@@ -1,4 +1,5 @@
 apply plugin: 'java'
+apply plugin: 'java-library-distribution'
 apply plugin: 'signing'
 apply plugin: 'maven'
 apply plugin: 'com.github.ben-manes.versions' // dependencyUpdates task
@@ -38,7 +39,6 @@ def getPassword(prop, description) {
 
 gradle.taskGraph.whenReady { graph ->
     if (graph.hasTask(signArchives) && signArchives.required) {
-        println "${graph.allTasks}"
         ['signing.keyId', 'signing.secretKeyRingFile'].each { prop ->
             def dropboxProp = "com.dropbox.api.${prop}"
             if (!project.hasProperty(dropboxProp)) {
@@ -54,6 +54,19 @@ gradle.taskGraph.whenReady { graph ->
             'com.dropbox.api.signing.password',
             'PGP Private Key Password'
         )
+    }
+}
+
+// Remember to upload binary with releases on GitHub. Some 3rd party developers still rely on
+// manually downloading and managing their dependencies.
+distributions {
+    main {
+        baseName = project.archivesBaseName
+        contents {
+            // Add source JARs
+            from { sourcesJar.outputs.getFiles() }
+            from { 'ChangeLog.txt' }
+        }
     }
 }
 
