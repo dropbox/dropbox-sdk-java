@@ -62,6 +62,12 @@ public class BabelSerializersTest {
         BabelSerializers.timestamp().deserialize(quoted("2016/03/08"));
     }
 
+    @Test
+    public void testDeserializeNonEmptyVoidType() throws Exception {
+        BabelSerializers.void_().deserialize("{\".tag\":\"foo\"}");
+        BabelSerializers.void_().deserialize(quoted("bar"));
+    }
+
     private static String quoted(String value) {
         return "\"" + value + "\"";
     }

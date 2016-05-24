@@ -209,6 +209,7 @@ public final class BabelSerializers {
 
         @Override
         public Void deserialize(JsonParser p) throws IOException, JsonParseException {
+            skipValue(p);
             return null;
         }
     }
