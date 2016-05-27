@@ -119,6 +119,16 @@ public final class DbxRequestUtil {
         return headers;
     }
 
+    public static List<HttpRequestor.Header> addUserLocaleHeader(/*@Nullable*/List<HttpRequestor.Header> headers, DbxRequestConfig requestConfig) {
+        if (requestConfig.getUserLocale() == null) {
+            return headers;
+        }
+
+        if (headers == null) headers = new ArrayList<HttpRequestor.Header>();
+        headers.add(new HttpRequestor.Header("Dropbox-API-User-Locale", requestConfig.getUserLocale()));
+        return headers;
+    }
+
     public static HttpRequestor.Header buildUserAgentHeader(DbxRequestConfig requestConfig, String sdkUserAgentIdentifier) {
         return new HttpRequestor.Header("User-Agent",  requestConfig.getClientIdentifier() + " " + sdkUserAgentIdentifier + "/" + DbxSdkVersion.Version);
     }
@@ -203,6 +213,7 @@ public final class DbxRequestUtil {
 
         headers = copyHeaders(headers);
         headers = addUserAgentHeader(headers, requestConfig, sdkUserAgentIdentifier);
+        headers = addUserLocaleHeader(headers, requestConfig);
         headers.add(new HttpRequestor.Header("Content-Length", Integer.toString(body.length)));
 
         try {

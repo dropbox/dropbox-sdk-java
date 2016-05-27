@@ -5,10 +5,12 @@ import static org.testng.Assert.*;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Date;
+import java.util.Locale;
 
 import org.testng.annotations.Test;
 
 import com.dropbox.core.BadRequestException;
+import com.dropbox.core.DbxApiException;
 import com.dropbox.core.DbxDownloader;
 import com.dropbox.core.ITUtil;
 import com.dropbox.core.v2.files.FileMetadata;
@@ -202,6 +204,24 @@ public class DbxClientV2IT {
         }
     }
 
+    @Test(enabled=false) // re-enable after T90620 is fixed
+    public void testUserLocale() throws Exception {
+        assertUserMessageLocale(Locale.ENGLISH); // en
+        assertUserMessageLocale(Locale.UK); // en-UK
+        assertUserMessageLocale(Locale.FRENCH); // fr
+        assertUserMessageLocale(Locale.FRANCE); // fr-FR
+
+        // Use user's Dropbox locale preference
+        DbxClientV2 client = ITUtil.newClientV2(ITUtil.newRequestConfig().withUserLocaleFromPreferences());
+        try {
+            client.sharing().getFolderMetadata("-1");
+        } catch (DbxApiException ex) {
+            assertNotNull(ex.getUserMessage());
+            assertNotNull(ex.getUserMessage().getLocale());
+            assertNotEquals(ex.getUserMessage().getLocale(), ""); // make sure something is specified
+        }
+    }
+
     private static void assertRangeDownload(DbxClientV2 client, String path, byte [] contents, int start, Integer length) throws Exception {
         ByteArrayOutputStream out = new ByteArrayOutputStream(contents.length);
         byte [] expected;
@@ -221,5 +241,22 @@ public class DbxClientV2IT {
         byte [] actual = out.toByteArray();
 
         assertEquals(actual, expected);
+    }
+
+    private static void assertUserMessageLocale(Locale locale) throws Exception {
+        DbxClientV2 client = ITUtil.newClientV2(ITUtil.newRequestConfig().withUserLocaleFrom(locale));
+        try {
+            client.sharing().getFolderMetadata("-1");
+        } catch (DbxApiException ex) {
+            assertNotNull(ex.getUserMessage());
+            System.out.printf("%s: %s\n", locale.toLanguageTag(), ex.getUserMessage());
+            assertNotNull(ex.getUserMessage().getLocale());
+            if (ex.getUserMessage().getLocale().contains("-")) {
+                assertEquals(ex.getUserMessage().getLocale(), locale.toLanguageTag());
+            } else {
+                // omit the country code
+                assertEquals(ex.getUserMessage().getLocale(), locale.getLanguage());
+            }
+        }
     }
 }

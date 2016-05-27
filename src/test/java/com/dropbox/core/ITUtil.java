@@ -41,7 +41,7 @@ public final class ITUtil {
         DbxRequestConfig.Builder builder = DbxRequestConfig.newBuilder("sdk-test")
             // enable auto-retry to avoid flakiness
             .withAutoRetryEnabled(MAX_RETRIES)
-            .withUserLocale(Locale.US);
+            .withUserLocaleFrom(Locale.US);
 
         String okHttp = System.getProperty("com.dropbox.test.okHttp");
         if (okHttp != null && !okHttp.equals("true") && !okHttp.equals("false")) {
@@ -92,18 +92,34 @@ public final class ITUtil {
     }
 
     public static DbxClientV1 newClientV1() {
+        return newClientV1(newRequestConfig());
+    }
+
+    public static DbxClientV1 newClientV1(DbxRequestConfig.Builder config) {
+        return newClientV1(config.build());
+    }
+
+    public static DbxClientV1 newClientV1(DbxRequestConfig config) {
         DbxAuthInfo auth = getAuth();
         return new DbxClientV1(
-            newRequestConfig().build(),
+            config,
             auth.getAccessToken(),
             auth.getHost()
         );
     }
 
     public static DbxClientV2 newClientV2() {
+        return newClientV2(newRequestConfig());
+    }
+
+    public static DbxClientV2 newClientV2(DbxRequestConfig.Builder config) {
+        return newClientV2(config.build());
+    }
+
+    public static DbxClientV2 newClientV2(DbxRequestConfig config) {
         DbxAuthInfo auth = getAuth();
         return new DbxClientV2(
-            newRequestConfig().build(),
+            config,
             auth.getAccessToken(),
             auth.getHost()
         );

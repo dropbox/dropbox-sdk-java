@@ -17,7 +17,7 @@ public class DbxRequestConfig {
     private final HttpRequestor httpRequestor;
     private final int maxRetries;
 
-    private DbxRequestConfig(String clientIdentifier, /*@Nullable*/String userLocale, HttpRequestor httpRequestor, int maxRetries) {
+    private DbxRequestConfig(String clientIdentifier, /*@Nullable*/ String userLocale, HttpRequestor httpRequestor, int maxRetries) {
         if (clientIdentifier == null) throw new NullPointerException("clientIdentifier");
         if (httpRequestor == null) throw new NullPointerException("httpRequestor");
         if (maxRetries < 0) throw new IllegalArgumentException("maxRetries");
@@ -28,11 +28,28 @@ public class DbxRequestConfig {
         this.maxRetries = maxRetries;
     }
 
-    public DbxRequestConfig(String clientIdentifier, String userLocale) {
+    /**
+     * Creates a new configuration.
+     *
+     * @param clientIdentifier client identifier typically in the form "Name/Version" to be used in
+     *                         the User-Agent header (see {@link #getClientIdentifier}).
+     * @param userLocale IETF BCP 47 language tag of locale to use for user-visible text in responses, or
+     *                   {@code null} to use the user's Dropbox locale preference.
+     */
+    public DbxRequestConfig(String clientIdentifier, /*@Nullable*/ String userLocale) {
         this(clientIdentifier, userLocale, StandardHttpRequestor.INSTANCE);
     }
 
-    public DbxRequestConfig(String clientIdentifier, /*@Nullable*/String userLocale, HttpRequestor httpRequestor) {
+    /**
+     * Creates a new configuration.
+     *
+     * @param clientIdentifier client identifier typically in the form "Name/Version" to be used in
+     *                         the User-Agent header (see {@link #getClientIdentifier}).
+     * @param userLocale IETF BCP 47 language tag of locale to use for user-visible text in responses, or
+     *                   {@code null} to use the user's Dropbox locale preference.
+     * @param httpRequestor HTTP client to use for issuing requests.
+     */
+    public DbxRequestConfig(String clientIdentifier, /*@Nullable*/ String userLocale, HttpRequestor httpRequestor) {
         this(clientIdentifier, userLocale, httpRequestor, 0);
     }
 
@@ -67,17 +84,15 @@ public class DbxRequestConfig {
     }
 
     /**
-     * Returns the locale of the user of your app.  This is used by the Dropbox server to localize
-     * user-visible strings returned by API calls.
+     * Returns the locale of the user of your app as an IETF BCP 47 language tag.  This is used by
+     * the Dropbox server to localize user-visible strings returned by API calls.
      *
-     * <p>
-     * If the value is {@code null} or some locale that Dropbox doesn't support, the localized
-     * strings will be in English.
-     * </p>
+     * <p> If the value is {@code null} or some locale that Dropbox doesn't support, the strings
+     * will be localized based on the user's Dropbox locale preference.
      *
      * <p> Defaults to {@code null}.
      *
-     * @return locale of app user, or {@code null} if not localized.
+     * @return locale of app user, or {@code null} to use user's Dropbox locale settings.
      */
     public String getUserLocale() {
         return userLocale;
@@ -190,9 +205,12 @@ public class DbxRequestConfig {
          * Set the locale of the app user. User-visible messages returned by the Dropbox servers
          * will be localized to this locale.
          *
-         * <p> Defaults to {@code null}, which disables localization (messages will be in English).
+         * <p> Defaults to {@code null}, which means strings will be localized according to the
+         * user's Dropbox locale preference.
          *
-         * @param userLocale Locale of app user, or {@code null} to disable localization
+         * @param userLocale locale of app user as an IETF BCP 47 language tag, or {@code null} to
+         *                   use the user's Dropbox locale settings.
+         *
          * @return this builder
          */
         public Builder withUserLocale(/*@Nullable*/ String userLocale) {
@@ -201,15 +219,31 @@ public class DbxRequestConfig {
         }
 
         /**
+         * Set the locale of user-visible messages returned by the Dropbox servers to the user's
+         * Dropbox locale.
+         *
+         * <p> User-visible strings will be localized according to the user's Dropbox locale
+         * preference.
+         *
+         * @return this builder
+         */
+        public Builder withUserLocaleFromPreferences() {
+            this.userLocale = null;
+            return this;
+        }
+
+        /**
          * Set the locale of the app user. User-visible messages returned by the Dropbox servers
          * will be localized to this locale.
          *
-         * <p> Defaults to {@code null}, which disables localization (messages will be in English).
+         * <p> Defaults to {@code null}, which means strings will be localized according to the
+         * user's Dropbox locale preference.
          *
-         * @param userLocale Locale of app user, or {@code null} to disable localization
+         * @param userLocale Locale of app user, or {@code null} to use user's Dropbox locale settings.
+         *
          * @return this builder
          */
-        public Builder withUserLocale(/*@Nullable*/ Locale userLocale) {
+        public Builder withUserLocaleFrom(/*@Nullable*/ Locale userLocale) { // not named withUserLocale because of ambiguous calls when passing 'null'
             this.userLocale = userLocale == null ? null : userLocale.toLanguageTag();
             return this;
         }
