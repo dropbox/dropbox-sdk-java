@@ -11,7 +11,7 @@ import java.util.Random;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
-import com.squareup.okhttp.OkHttpClient;
+import okhttp3.OkHttpClient;
 
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
@@ -59,8 +59,9 @@ public final class ITUtil {
     }
 
     public static HttpRequestor newOkHttpRequestor() {
-        OkHttpClient httpClient = OkHttpRequestor.INSTANCE.getClient().clone();
-        httpClient.setReadTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS);
+        OkHttpClient httpClient = OkHttpRequestor.INSTANCE.getClient().newBuilder()
+            .readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS)
+            .build();
         return new OkHttpRequestor(httpClient);
     }
 

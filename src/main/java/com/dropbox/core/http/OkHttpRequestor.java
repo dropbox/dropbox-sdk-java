@@ -1,12 +1,12 @@
 package com.dropbox.core.http;
 
-import com.squareup.okhttp.Call;
-import com.squareup.okhttp.Headers;
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.internal.Util;
+import okhttp3.Call;
+import okhttp3.Headers;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.internal.Util;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -37,11 +37,11 @@ public class OkHttpRequestor extends HttpRequestor {
     private final OkHttpClient client;
 
     private static OkHttpClient defaultOkHttpClient() {
-        OkHttpClient client = new OkHttpClient();
-        client.setConnectTimeout(DEFAULT_CONNECT_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
-        client.setReadTimeout(DEFAULT_READ_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
-        client.setWriteTimeout(DEFAULT_READ_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
-        return client;
+        return new OkHttpClient.Builder()
+            .connectTimeout(DEFAULT_CONNECT_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)
+            .readTimeout(DEFAULT_READ_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)
+            .writeTimeout(DEFAULT_READ_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)
+            .build();
     }
 
     public OkHttpRequestor(OkHttpClient client) {
@@ -56,7 +56,7 @@ public class OkHttpRequestor extends HttpRequestor {
     public Response doGet(String url, Iterable<Header> headers) throws IOException {
         Request.Builder builder = new Request.Builder().get().url(url);
         toOkHttpHeaders(headers, builder);
-        com.squareup.okhttp.Response response = client.newCall(builder.build()).execute();
+        okhttp3.Response response = client.newCall(builder.build()).execute();
         Map<String, List<String>> responseHeaders = fromOkHttpHeaders(response.headers());
         return new Response(response.code(), response.body().byteStream(), responseHeaders);
     }
@@ -120,7 +120,7 @@ public class OkHttpRequestor extends HttpRequestor {
 
         @Override
         public Response finish() throws IOException {
-            com.squareup.okhttp.Response response = call.execute();
+            okhttp3.Response response = call.execute();
             Map<String, List<String>> responseHeaders = fromOkHttpHeaders(response.headers());
             return new Response(response.code(), response.body().byteStream(), responseHeaders);
         }
