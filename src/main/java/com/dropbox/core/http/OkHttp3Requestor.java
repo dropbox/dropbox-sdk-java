@@ -1,19 +1,17 @@
 package com.dropbox.core.http;
 
-import com.squareup.okhttp.Call;
-import com.squareup.okhttp.Headers;
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.internal.Util;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-
+import okhttp3.Call;
+import okhttp3.Headers;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.internal.Util;
 import okio.Buffer;
 import okio.BufferedSink;
 
@@ -27,26 +25,27 @@ import okio.BufferedSink;
  * To use this, pass {@link #INSTANCE} to the {@link com.dropbox.core.DbxRequestConfig} constructor.
  * </p>
  */
-public class OkHttpRequestor extends HttpRequestor
+public class OkHttp3Requestor extends HttpRequestor
 {
     /**
      * A thread-safe instance of {@code OkHttpRequestor} that connects directly
      * (as opposed to using a proxy).
      */
-    public static final OkHttpRequestor INSTANCE = new OkHttpRequestor(defaultOkHttpClient());
+    public static final OkHttp3Requestor INSTANCE = new OkHttp3Requestor(defaultOkHttpClient());
 
     private final OkHttpClient client;
 
     private static OkHttpClient defaultOkHttpClient()
     {
-        OkHttpClient client = new OkHttpClient();
-        client.setConnectTimeout(DEFAULT_CONNECT_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
-        client.setReadTimeout(DEFAULT_READ_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
-        client.setWriteTimeout(DEFAULT_READ_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
+        OkHttpClient client = new OkHttpClient.Builder()
+            .connectTimeout(DEFAULT_CONNECT_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)
+            .readTimeout(DEFAULT_READ_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)
+            .writeTimeout(DEFAULT_READ_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)
+            .build();
         return client;
     }
 
-    public OkHttpRequestor(OkHttpClient client)
+    public OkHttp3Requestor(OkHttpClient client)
     {
         this.client = client;
     }
@@ -57,7 +56,7 @@ public class OkHttpRequestor extends HttpRequestor
     {
         Request.Builder builder = new Request.Builder().get().url(url);
         toOkHttpHeaders(headers, builder);
-        com.squareup.okhttp.Response response = client.newCall(builder.build()).execute();
+        okhttp3.Response response = client.newCall(builder.build()).execute();
         Map<String, List<String>> responseHeaders = fromOkHttpHeaders(response.headers());
         return new Response(response.code(), response.body().byteStream(), responseHeaders);
     }
@@ -102,11 +101,11 @@ public class OkHttpRequestor extends HttpRequestor
     }
 
     /**
-     * Implementation of {@link com.dropbox.core.http.HttpRequestor.Uploader} that exposes
+     * Implementation of {@link Uploader} that exposes
      * the {@link java.io.OutputStream} from an Okio {@link Buffer} that is connected to an OkHttp
      * {@link RequestBody}.  Calling {@link #finish()} will execute the request with OkHttp
      */
-    private static class BufferUploader extends HttpRequestor.Uploader
+    private static class BufferUploader extends Uploader
     {
         private final Call call;
         private final Buffer requestBuffer;
@@ -134,7 +133,7 @@ public class OkHttpRequestor extends HttpRequestor
         public Response finish()
             throws IOException
         {
-            com.squareup.okhttp.Response response = call.execute();
+            okhttp3.Response response = call.execute();
             Map<String, List<String>> responseHeaders = fromOkHttpHeaders(response.headers());
             return new Response(response.code(), response.body().byteStream(), responseHeaders);
         }
