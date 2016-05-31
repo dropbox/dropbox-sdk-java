@@ -249,14 +249,28 @@ public class DbxClientV2IT {
             client.sharing().getFolderMetadata("-1");
         } catch (DbxApiException ex) {
             assertNotNull(ex.getUserMessage());
-            System.out.printf("%s: %s\n", locale.toLanguageTag(), ex.getUserMessage());
             assertNotNull(ex.getUserMessage().getLocale());
             if (ex.getUserMessage().getLocale().contains("-")) {
-                assertEquals(ex.getUserMessage().getLocale(), locale.toLanguageTag());
+                // TODO: update this test to properly support language tags when we upgrade away
+                // from Java 6
+                assertEquals(ex.getUserMessage().getLocale(), toLanguageTag(locale));
             } else {
                 // omit the country code
                 assertEquals(ex.getUserMessage().getLocale(), locale.getLanguage());
             }
         }
+    }
+
+    private static String toLanguageTag(Locale locale) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(locale.getLanguage().toLowerCase());
+
+        if (!locale.getCountry().isEmpty()) {
+            sb.append("-");
+            sb.append(locale.getCountry().toUpperCase());
+        }
+
+        return sb.toString();
     }
 }

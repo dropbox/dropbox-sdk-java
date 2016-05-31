@@ -19,7 +19,7 @@ public class Main {
 
     public static void main(String args[]) throws DbxException, IOException {
         // Create Dropbox client
-        DbxRequestConfig config = new DbxRequestConfig("dropbox/java-tutorial", "en_US");
+        DbxRequestConfig config = new DbxRequestConfig("dropbox/java-tutorial");
         DbxClientV2 client = new DbxClientV2(config, ACCESS_TOKEN);
 
         // Get current account info

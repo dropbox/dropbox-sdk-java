@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dropbox.core.babel.BabelSerializer;
+import com.dropbox.core.stone.StoneSerializer;
 import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
@@ -213,7 +213,6 @@ public final class DbxRequestUtil {
 
         headers = copyHeaders(headers);
         headers = addUserAgentHeader(headers, requestConfig, sdkUserAgentIdentifier);
-        headers = addUserLocaleHeader(headers, requestConfig);
         headers.add(new HttpRequestor.Header("Content-Length", Integer.toString(body.length)));
 
         try {
@@ -239,6 +238,10 @@ public final class DbxRequestUtil {
 
     public static byte[] loadErrorBody(HttpRequestor.Response response)
         throws NetworkIOException {
+        if (response.getBody() == null) {
+            return new byte[0];
+        }
+
         // Slurp the body into memory (up to 4k; anything past that is probably not useful).
         try {
             return IOUtil.slurp(response.getBody(), 4096);

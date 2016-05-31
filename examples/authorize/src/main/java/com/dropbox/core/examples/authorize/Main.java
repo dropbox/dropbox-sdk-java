@@ -61,7 +61,7 @@ public class Main {
         }
 
         // Run through Dropbox API authorization process
-        String userLocale = Locale.getDefault().toString();
+        String userLocale = Locale.getDefault().toLanguageTag();
         DbxRequestConfig requestConfig = new DbxRequestConfig("examples-authorize", userLocale);
         DbxWebAuthNoRedirect webAuth = new DbxWebAuthNoRedirect(requestConfig, appInfo);
 

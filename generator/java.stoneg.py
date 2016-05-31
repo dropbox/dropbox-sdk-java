@@ -9,13 +9,13 @@ from contextlib import contextmanager
 from functools import partial, total_ordering
 from itertools import chain
 
-from babelapi.api import (
+from stone.api import (
     Api,
     ApiNamespace,
     ApiRoute,
 )
-from babelapi.generator import CodeGenerator
-from babelapi.data_type import (
+from stone.generator import CodeGenerator
+from stone.data_type import (
     DataType,
     Field,
     is_boolean_type,
@@ -128,7 +128,7 @@ def classname(s):
 
 def get_auth_types_set(namespace, noauth_as_user=False):
     if isinstance(namespace, NamespaceWrapper):
-        namespace = namespace.as_babel
+        namespace = namespace.as_stone
 
     routes = namespace.routes
     if not routes:
@@ -254,7 +254,7 @@ def get_enumerated_subtypes_recursively(data_type):
 
     result = []
     for subtype in subtypes:
-        tag = '.'.join(name for name, _ in get_ancestors(subtype.as_babel) if name)
+        tag = '.'.join(name for name, _ in get_ancestors(subtype.as_stone) if name)
         result.append((tag, subtype))
 
     return result
@@ -275,12 +275,12 @@ def get_routes_with_arg_type(data_type, allow_lists=True):
     ctx = data_type._ctx
 
     routes = []
-    for babel_namespace in ctx.api.namespaces.values():
-        for babel_route in babel_namespace.routes:
-            arg_type = get_underlying_type(babel_route.arg_data_type, allow_lists)
+    for stone_namespace in ctx.api.namespaces.values():
+        for stone_route in stone_namespace.routes:
+            arg_type = get_underlying_type(stone_route.arg_data_type, allow_lists)
 
-            if arg_type == data_type.as_babel:
-                routes.append(RouteWrapper(ctx, babel_namespace, babel_route))
+            if arg_type == data_type.as_stone:
+                routes.append(RouteWrapper(ctx, stone_namespace, stone_route))
 
     return routes
 
@@ -291,12 +291,12 @@ def get_routes_with_result_type(data_type, allow_lists=True):
     ctx = data_type._ctx
 
     routes = []
-    for babel_namespace in ctx.api.namespaces.values():
-        for babel_route in babel_namespace.routes:
-            result_type = get_underlying_type(babel_route.result_data_type, allow_lists)
+    for stone_namespace in ctx.api.namespaces.values():
+        for stone_route in stone_namespace.routes:
+            result_type = get_underlying_type(stone_route.result_data_type, allow_lists)
 
-            if result_type == data_type.as_babel:
-                routes.append(RouteWrapper(ctx, babel_namespace, babel_route))
+            if result_type == data_type.as_stone:
+                routes.append(RouteWrapper(ctx, stone_namespace, stone_route))
 
     return routes
 
@@ -307,12 +307,12 @@ def get_routes_with_error_type(data_type, allow_lists=True):
     ctx = data_type._ctx
 
     routes = []
-    for babel_namespace in ctx.api.namespaces.values():
-        for babel_route in babel_namespace.routes:
-            err_type = get_underlying_type(babel_route.error_data_type, allow_lists)
+    for stone_namespace in ctx.api.namespaces.values():
+        for stone_route in stone_namespace.routes:
+            err_type = get_underlying_type(stone_route.error_data_type, allow_lists)
 
-            if err_type == data_type.as_babel:
-                routes.append(RouteWrapper(ctx, babel_namespace, babel_route))
+            if err_type == data_type.as_stone:
+                routes.append(RouteWrapper(ctx, stone_namespace, stone_route))
 
     return routes
 
@@ -323,16 +323,16 @@ def get_fields_with_data_type(data_type):
     ctx = data_type._ctx
 
     fields = []
-    for babel_namespace in ctx.api.namespaces.values():
-        for babel_data_type in babel_namespace.data_types:
-            if is_composite_type(babel_data_type):
-                for babel_field in babel_data_type.all_fields:
-                    field_type = babel_field.data_type
+    for stone_namespace in ctx.api.namespaces.values():
+        for stone_data_type in stone_namespace.data_types:
+            if is_composite_type(stone_data_type):
+                for stone_field in stone_data_type.all_fields:
+                    field_type = stone_field.data_type
                     while is_list_type(field_type) or is_nullable_type(field_type):
                         field_type = field_type.data_type
 
-                    if field_type == data_type.as_babel:
-                        fields.append(FieldWrapper(ctx, babel_data_type, babel_field))
+                    if field_type == data_type.as_stone:
+                        fields.append(FieldWrapper(ctx, stone_data_type, stone_field))
 
     return fields
 
@@ -341,13 +341,13 @@ def get_data_types_with_parent_type(data_type):
 
     ctx = data_type._ctx
 
-    babel_parent_type = data_type.as_babel
+    stone_parent_type = data_type.as_stone
 
     data_types = []
-    for babel_namespace in ctx.api.namespaces.values():
-        for babel_data_type in babel_namespace.data_types:
-            if babel_data_type.parent_type == babel_parent_type:
-                data_types.append(DataTypeWrapper(ctx, babel_data_type))
+    for stone_namespace in ctx.api.namespaces.values():
+        for stone_data_type in stone_namespace.data_types:
+            if stone_data_type.parent_type == stone_parent_type:
+                data_types.append(DataTypeWrapper(ctx, stone_data_type))
 
     return data_types
 
@@ -413,6 +413,41 @@ def is_data_type_required_outside_package(data_type):
     return False
 
 
+def is_data_type_referenced(data_type, seen=None):
+    seen = seen or set()
+    if data_type in seen:
+        return False
+    else:
+        seen.add(data_type)
+
+    # due to filtering, we can encounter data types that are never referenced. Don't generate these.
+    if get_routes_with_arg_type(data_type):
+        return True
+
+    if get_routes_with_result_type(data_type):
+        return True
+
+    if get_routes_with_error_type(data_type):
+        return True
+
+    if any(is_data_type_referenced(f.containing_data_type, seen) for f in get_fields_with_data_type(data_type)):
+        return True
+
+    if any(is_data_type_referenced(subtype, seen) for subtype in get_data_types_with_parent_type(data_type)):
+        return True
+
+    if data_type.is_struct and data_type.has_enumerated_subtypes:
+        subtypes = get_enumerated_subtypes_recursively(data_type)
+        if any(is_data_type_referenced(subtype, seen) for subtype in subtypes):
+            return True
+
+    if (data_type.is_struct or data_type.is_union) and data_type.parent:
+        if is_data_type_referenced(data_type.parent, seen):
+            return True
+
+    return False
+
+
 def get_all_required_data_types_for_namespace(namespace):
     data_types = []
     seen_types = set()
@@ -442,11 +477,11 @@ class GeneratorContext(object):
     """
     Context for a single execution of the JavaCodeGenerator.
 
-    This class is used to reference the Babel tree being generated, along with information about the
+    This class is used to reference the Stone tree being generated, along with information about the
     Java package of the currently open file and existing Java imports.
 
-    :ivar :class:`babelapi.generator.CodeGenerator` code_generator: code generator instance created by Babel for generating the Java code
-    :ivar :class:`babelapi.api.Api` api: Babel tree to generate into Java
+    :ivar :class:`stone.generator.CodeGenerator` code_generator: code generator instance created by Stone for generating the Java code
+    :ivar :class:`stone.api.Api` api: Stone tree to generate into Java
     """
 
     def __init__(self, code_generator, api):
@@ -461,9 +496,9 @@ class GeneratorContext(object):
     @property
     def api(self):
         """
-        The Babel Api tree being generated.
+        The Stone Api tree being generated.
 
-        :rtype: babelapi.api.Api
+        :rtype: stone.api.Api
         """
         return self._api
 
@@ -748,88 +783,88 @@ class JavaClass(object):
         return self._fq_name < other._fq_name
 
 
-class BabelWrapper(object):
+class StoneWrapper(object):
     """
-    Wrapper around a Babel object (e.g. ApiNamespace, ApiRoute, DataType, Field, etc).
+    Wrapper around a Stone object (e.g. ApiNamespace, ApiRoute, DataType, Field, etc).
 
-    This wrapper provides convenience methods for converting Babel names and references to Java
+    This wrapper provides convenience methods for converting Stone names and references to Java
     package, class, types, and methods names.
 
     :ivar :class:`GeneratorContext` ctx: context for current generation
-    :ivar :class:`babelapi.api.ApiNamespace` namespace: Babel namespace of ``babel_ent``
-    :ivar babel_ent: Babel entity to wrap (e.g. ApiNamespace, ApiRoute, etc)
+    :ivar :class:`stone.api.ApiNamespace` namespace: Stone namespace of ``stone_ent``
+    :ivar stone_ent: Stone entity to wrap (e.g. ApiNamespace, ApiRoute, etc)
     """
 
-    def __init__(self, ctx, namespace, babel_ent):
+    def __init__(self, ctx, namespace, stone_ent):
         assert isinstance(ctx, GeneratorContext), repr(ctx)
-        assert babel_ent is not None
+        assert stone_ent is not None
         assert namespace is None or isinstance(namespace, ApiNamespace), repr(namespace)
 
         self._ctx = ctx
-        self._babel_namespace = namespace
-        self._babel_ent = babel_ent
+        self._stone_namespace = namespace
+        self._stone_ent = stone_ent
 
     @property
     def namespace(self):
         """
-        Namespace of the wrapped Babel entity, or ``None`` if entity has no namespace (e.g. primitive data type)
+        Namespace of the wrapped Stone entity, or ``None`` if entity has no namespace (e.g. primitive data type)
 
         :rtype: NamespaceWrapper
         """
-        if self._babel_namespace:
-            return NamespaceWrapper(self._ctx, self._babel_namespace)
+        if self._stone_namespace:
+            return NamespaceWrapper(self._ctx, self._stone_namespace)
         else:
             return None
 
     @property
-    def babel_doc(self):
+    def stone_doc(self):
         """
-        Babel documentation for wrapped Babel entity or empty string if entity has no documentation.
+        Stone documentation for wrapped Stone entity or empty string if entity has no documentation.
 
         :rtype: str
         """
-        assert hasattr(self._babel_ent, "doc"), repr(self) + " has no doc"
-        return self._babel_ent.doc or ""
+        assert hasattr(self._stone_ent, "doc"), repr(self) + " has no doc"
+        return self._stone_ent.doc or ""
 
     @property
-    def babel_filename(self):
+    def stone_filename(self):
         """
-        Base file name of babel spec file containing wrapped Babel entity definition.
+        Base file name of stone spec file containing wrapped Stone entity definition.
 
         :rtype: str
         """
-        assert hasattr(self._babel_ent, "_token"), repr(self) + " has no Babel token"
-        return os.path.basename(self._babel_ent._token.path)
+        assert hasattr(self._stone_ent, "_token"), repr(self) + " has no Stone token"
+        return os.path.basename(self._stone_ent._token.path)
 
     @property
-    def as_babel(self):
+    def as_stone(self):
         """
-        Wrapped Babel entity.
+        Wrapped Stone entity.
         """
-        return self._babel_ent
+        return self._stone_ent
 
     @property
-    def babel_name(self):
+    def stone_name(self):
         """
-        Name of Babel entity.
+        Name of Stone entity.
 
         :rtype: str
         """
-        return self._babel_ent.name
+        return self._stone_ent.name
 
     @property
-    def fq_babel_name(self):
+    def fq_stone_name(self):
         """
-        Fully-qualified Babel entity name.
+        Fully-qualified Stone entity name.
 
         :rtype: str
         """
-        return '.'.join((self.namespace.babel_name, self.babel_name))
+        return '.'.join((self.namespace.stone_name, self.stone_name))
 
     @property
     def java_class(self):
         """
-        Generated Java class that maps to the wrapped Babel entity. May not be implemented for
+        Generated Java class that maps to the wrapped Stone entity. May not be implemented for
         entities that do not map to classes (e.g. fields).
 
         :rtype: :class:`JavaClass`
@@ -839,24 +874,24 @@ class BabelWrapper(object):
     @property
     def java_field(self):
         """
-        Java variable name to use for referencing this Babel entity in generated code.
+        Java variable name to use for referencing this Stone entity in generated code.
 
         :rtype: str
         """
-        return camelcase(self.babel_name)
+        return camelcase(self.stone_name)
 
     @property
     def java_package(self):
         """
-        Java package that should contain the generated class for the wrapped Babel entity.
+        Java package that should contain the generated class for the wrapped Stone entity.
 
         May be ``None`` if the wrapped entity has no namespace (e.g. primitive type).
 
         :rtype: str
         """
         assert self._ctx.base_package, "No base package in context"
-        if self._babel_namespace:
-            name = self._babel_namespace.name.lower().replace('_', '')
+        if self._stone_namespace:
+            name = self._stone_namespace.name.lower().replace('_', '')
             return '.'.join((self._ctx.base_package.rstrip('.'), name))
         else:
             return None
@@ -886,63 +921,63 @@ class BabelWrapper(object):
         return JavaClass(self._ctx, fq_name)
 
     def __str__(self):
-        if self._babel_namespace:
-            return '%s(%s.%s)' % (type(self).__name__, self._babel_namespace.name, self.babel_name)
+        if self._stone_namespace:
+            return '%s(%s.%s)' % (type(self).__name__, self._stone_namespace.name, self.stone_name)
         else:
-            return '%s(%s)' % (type(self).__name__, self.babel_name)
+            return '%s(%s)' % (type(self).__name__, self.stone_name)
 
     def __repr__(self):
-        return '%s(%s)' % (type(self), repr(self.as_babel))
+        return '%s(%s)' % (type(self), repr(self.as_stone))
 
     def __eq__(self, other):
         if isinstance(other, type(self)):
-            return self._babel_ent == other._babel_ent
+            return self._stone_ent == other._stone_ent
         return False
 
     def __hash__(self):
-        return hash(self._babel_ent)
+        return hash(self._stone_ent)
 
 
-class NamespaceWrapper(BabelWrapper):
+class NamespaceWrapper(StoneWrapper):
     """
-    Wrapper around a Babel namespace.
+    Wrapper around a Stone namespace.
 
     :ivar :class:`GeneratorContext` ctx: context for current generation
-    :ivar :class:`babelapi.api.ApiNamespace` namespace: Babel namespace
+    :ivar :class:`stone.api.ApiNamespace` namespace: Stone namespace
     """
 
     def __init__(self, ctx, namespace):
         super(NamespaceWrapper, self).__init__(ctx, namespace, namespace)
 
     @property
-    def babel_filenames(self):
+    def stone_filenames(self):
         """
-        List of Babel spec base file names defining this namespace.
+        List of Stone spec base file names defining this namespace.
 
         :rtype: list[str]
         """
         filenames = OrderedDict() # use as ordered set
         # use first data type
         for data_type in self.data_types:
-            filenames[data_type.babel_filename] = None
+            filenames[data_type.stone_filename] = None
         # fallback to first route
         for route in self.routes:
-            filenames[route.babel_filename] = None
+            filenames[route.stone_filename] = None
         # TODO: fallback to aliases. enable assert after doing this
-        #assert filenames, "namespace not associated with any babel files: %s" % self.babel_name
+        #assert filenames, "namespace not associated with any stone files: %s" % self.stone_name
 
         return filenames.keys()
 
     @property
-    def babel_filename(self):
+    def stone_filename(self):
         """
-        Please use :field:`babel_filenames` for namespaces.
+        Please use :field:`stone_filenames` for namespaces.
         """
-        raise AssertionError("use babel_filenames for namespaces")
+        raise AssertionError("use stone_filenames for namespaces")
 
     @property
-    def fq_babel_name(self):
-        return self.babel_name
+    def fq_stone_name(self):
+        return self.stone_name
 
     @property
     def data_types(self):
@@ -953,7 +988,7 @@ class NamespaceWrapper(BabelWrapper):
         """
         return tuple(
             DataTypeWrapper(self._ctx, dt)
-            for dt in self.as_babel.linearize_data_types()
+            for dt in self.as_stone.linearize_data_types()
         )
 
     @property
@@ -964,32 +999,32 @@ class NamespaceWrapper(BabelWrapper):
         :rtype: tuple[:class:`RouteWrapper`]
         """
         return tuple(
-            RouteWrapper(self._ctx, self.as_babel, route)
-            for route in self.as_babel.routes
+            RouteWrapper(self._ctx, self.as_stone, route)
+            for route in self.as_stone.routes
         )
 
     def java_class(self, auth):
-        return self._as_java_class(classname('dbx_' + auth + '_' + self.babel_name + '_requests'))
+        return self._as_java_class(classname('dbx_' + auth + '_' + self.stone_name + '_requests'))
 
     @property
     def java_serializers_class(self):
-        return self._as_java_class(classname('dbx_' + self.babel_name + '_serializers'))
+        return self._as_java_class(classname('dbx_' + self.stone_name + '_serializers'))
 
     @property
     def java_getter(self):
-        return camelcase(self.babel_name)
+        return camelcase(self.stone_name)
 
-class RouteWrapper(BabelWrapper):
+class RouteWrapper(StoneWrapper):
     """
-    Wrapper around a Babel route.
+    Wrapper around a Stone route.
 
     :ivar :class:`GeneratorContext` ctx: context for current generation
-    :ivar :class:`babelapi.api.ApiNamespace` namespace: Babel namespace containing route
-    :ivar :class:`babelapi.api.ApiRoute` route: Babel route to wrap
+    :ivar :class:`stone.api.ApiNamespace` namespace: Stone namespace containing route
+    :ivar :class:`stone.api.ApiRoute` route: Stone route to wrap
     """
 
     def __init__(self, ctx, namespace, route):
-        assert isinstance(route, ApiRoute)
+        assert isinstance(route, ApiRoute), repr(route)
         super(RouteWrapper, self).__init__(ctx, namespace, route)
 
     @property
@@ -1004,7 +1039,7 @@ class RouteWrapper(BabelWrapper):
 
         :rtype: :class:`DataTypeWrapper`
         """
-        return DataTypeWrapper(self._ctx, self.as_babel.arg_data_type)
+        return DataTypeWrapper(self._ctx, self.as_stone.arg_data_type)
 
     @property
     def result(self):
@@ -1013,7 +1048,7 @@ class RouteWrapper(BabelWrapper):
 
         :rtype: :class:`DataTypeWrapper`
         """
-        return DataTypeWrapper(self._ctx, self.as_babel.result_data_type)
+        return DataTypeWrapper(self._ctx, self.as_stone.result_data_type)
 
     @property
     def error(self):
@@ -1022,7 +1057,7 @@ class RouteWrapper(BabelWrapper):
 
         :rtype: :class:`DataTypeWrapper`
         """
-        return DataTypeWrapper(self._ctx, self.as_babel.error_data_type)
+        return DataTypeWrapper(self._ctx, self.as_stone.error_data_type)
 
     @property
     def has_arg(self):
@@ -1062,25 +1097,25 @@ class RouteWrapper(BabelWrapper):
 
     @property
     def is_deprecated(self):
-        return self.as_babel.deprecated is not None
+        return self.as_stone.deprecated is not None
 
     @property
     def deprecated_by(self):
-        info = self.as_babel.deprecated
+        info = self.as_stone.deprecated
         if info is None:
             return None
 
-        babel_route = info.by
-        if babel_route is None:
+        stone_route = info.by
+        if stone_route is None:
             return None
 
         # must find namespace for this route
-        for babel_namespace in self._ctx.api.namespaces.values():
-            namespace_route = babel_namespace.route_by_name.get(babel_route.name, None)
-            if namespace_route == babel_route:
-                return RouteWrapper(self._ctx, babel_namespace, babel_route)
+        for stone_namespace in self._ctx.api.namespaces.values():
+            namespace_route = stone_namespace.route_by_name.get(stone_route.name, None)
+            if namespace_route == stone_route:
+                return RouteWrapper(self._ctx, stone_namespace, stone_route)
 
-        assert False, "Failed to find namespace for route: %r" % babel_route
+        assert False, "Failed to find namespace for route: %r" % stone_route
 
     @property
     def java_method(self):
@@ -1089,7 +1124,7 @@ class RouteWrapper(BabelWrapper):
 
         :rtype: str
         """
-        return camelcase(self.babel_name)
+        return camelcase(self.stone_name)
 
     @property
     def supports_builder(self):
@@ -1108,7 +1143,7 @@ class RouteWrapper(BabelWrapper):
         :rtype: :class:`JavaClass`
         """
         assert self.supports_builder or self.request_style == 'download'
-        return self._as_java_class(classname(self.babel_name + '_builder'))
+        return self._as_java_class(classname(self.stone_name + '_builder'))
 
     @property
     def java_builder_class_with_inheritance(self):
@@ -1154,7 +1189,7 @@ class RouteWrapper(BabelWrapper):
         :rtype: str
         """
         assert self.supports_builder or self.request_style == 'download'
-        return camelcase(self.babel_name + '_builder')
+        return camelcase(self.stone_name + '_builder')
 
     @property
     def java_uploader_class(self):
@@ -1164,7 +1199,7 @@ class RouteWrapper(BabelWrapper):
         :rtype: :class:`JavaClass`
         """
         assert self.request_style == 'upload'
-        return self._as_java_class(classname(self.babel_name + '_uploader'))
+        return self._as_java_class(classname(self.stone_name + '_uploader'))
 
     @property
     def java_downloader_class(self):
@@ -1183,7 +1218,7 @@ class RouteWrapper(BabelWrapper):
 
         :rtype: str
         """
-        return self.as_babel.attrs.get('style', 'rpc')
+        return self.as_stone.attrs.get('style', 'rpc')
 
     @property
     def auth_style(self):
@@ -1192,7 +1227,7 @@ class RouteWrapper(BabelWrapper):
 
         :rtype: str
         """
-        return self.as_babel.attrs.get('auth', 'user')
+        return self.as_stone.attrs.get('auth', 'user')
 
     @property
     def host(self):
@@ -1201,7 +1236,7 @@ class RouteWrapper(BabelWrapper):
 
         :rtype: str
         """
-        return self.as_babel.attrs.get('host', 'api')
+        return self.as_stone.attrs.get('host', 'api')
 
     @property
     def url_path(self):
@@ -1210,7 +1245,7 @@ class RouteWrapper(BabelWrapper):
 
         :rtype: str
         """
-        return '2/%s/%s' % (self.namespace.babel_name, self.babel_name)
+        return '2/%s/%s' % (self.namespace.stone_name, self.stone_name)
 
     @property
     def java_exception_class(self):
@@ -1272,12 +1307,12 @@ class RouteWrapper(BabelWrapper):
         else:
             return (dbx_exc,)
 
-class DataTypeWrapper(BabelWrapper):
+class DataTypeWrapper(StoneWrapper):
     """
-    Wrapper around a Babel data type.
+    Wrapper around a Stone data type.
 
     :ivar :class:`GeneratorContext` ctx: context for current generation
-    :ivar :class:`babelapi.data_type.DataType` data_type: Babel data type to wrap
+    :ivar :class:`stone.data_type.DataType` data_type: Stone data type to wrap
     """
 
     def __init__(self, ctx, data_type):
@@ -1291,8 +1326,8 @@ class DataTypeWrapper(BabelWrapper):
 
     @property
     def parent(self):
-        if (self.is_struct or self.is_union) and self.as_babel.parent_type:
-            return DataTypeWrapper(self._ctx, self.as_babel.parent_type)
+        if (self.is_struct or self.is_union) and self.as_stone.parent_type:
+            return DataTypeWrapper(self._ctx, self.as_stone.parent_type)
         else:
             return None
 
@@ -1301,32 +1336,32 @@ class DataTypeWrapper(BabelWrapper):
         if self.is_union or self.is_struct:
             return tuple(
                 DataTypeWrapper(self._ctx, subtype)
-                for subtype in self.as_babel.subtypes
+                for subtype in self.as_stone.subtypes
             )
         return ()
 
     @property
     def all_fields(self):
         if self.is_union:
-            return tuple(FieldWrapper(self._ctx, self.as_babel, f) for f in self.as_babel.all_fields)
+            return tuple(FieldWrapper(self._ctx, self.as_stone, f) for f in self.as_stone.all_fields)
         elif self.is_struct:
             # properly handle inheritence of fields
             fields_by_name = {
-                f.babel_name: f
+                f.stone_name: f
                 for f in self.all_parent_fields
             }
             fields_by_name.update(
-                (f.name, FieldWrapper(self._ctx, self.as_babel, f))
-                for f in self.as_babel.fields
+                (f.name, FieldWrapper(self._ctx, self.as_stone, f))
+                for f in self.as_stone.fields
             )
 
             # sanity check
             field_names = set(fields_by_name.keys())
-            all_field_names = {f.name for f in self.as_babel.all_fields}
+            all_field_names = {f.name for f in self.as_stone.all_fields}
             missing_fields = field_names.symmetric_difference(all_field_names)
             assert not missing_fields, "Missing fields for %s: %s" % (self, missing_fields)
 
-            return tuple(fields_by_name[f.name] for f in self.as_babel.all_fields)
+            return tuple(fields_by_name[f.name] for f in self.as_stone.all_fields)
         else:
             return ()
 
@@ -1341,7 +1376,7 @@ class DataTypeWrapper(BabelWrapper):
     @property
     def fields(self):
         if self.is_union or self.is_struct:
-            return tuple(FieldWrapper(self._ctx, self.as_babel, f) for f in self.as_babel.fields)
+            return tuple(FieldWrapper(self._ctx, self.as_stone, f) for f in self.as_stone.fields)
         else:
             return ()
 
@@ -1367,8 +1402,8 @@ class DataTypeWrapper(BabelWrapper):
 
     @property
     def catch_all_field(self):
-        if self.is_union and self.as_babel.catch_all_field is not None:
-            return FieldWrapper(self._ctx, self.as_babel, self.as_babel.catch_all_field)
+        if self.is_union and self.as_stone.catch_all_field is not None:
+            return FieldWrapper(self._ctx, self.as_stone, self.as_stone.catch_all_field)
         else:
             return None
 
@@ -1382,17 +1417,17 @@ class DataTypeWrapper(BabelWrapper):
     @property
     def list_data_type(self):
         assert self.is_list
-        return DataTypeWrapper(self._ctx, self.as_babel.data_type)
+        return DataTypeWrapper(self._ctx, self.as_stone.data_type)
 
     @property
     def nullable_data_type(self):
         assert self.is_nullable
-        return DataTypeWrapper(self._ctx, self.as_babel.data_type)
+        return DataTypeWrapper(self._ctx, self.as_stone.data_type)
 
     @property
     def supports_builder(self):
         if self.is_struct:
-            n_optional = len(self.as_babel.all_optional_fields)
+            n_optional = len(self.as_stone.all_optional_fields)
             return n_optional > 1
         else:
             return False
@@ -1407,48 +1442,48 @@ class DataTypeWrapper(BabelWrapper):
 
     @property
     def is_union(self):
-        return is_union_type(self.as_babel)
+        return is_union_type(self.as_stone)
 
     @property
     def is_struct(self):
-        return is_struct_type(self.as_babel)
+        return is_struct_type(self.as_stone)
 
     @property
     def is_list(self):
-        return is_list_type(self.as_babel)
+        return is_list_type(self.as_stone)
 
     @property
     def is_nullable(self):
-        return is_nullable_type(self.as_babel)
+        return is_nullable_type(self.as_stone)
 
     @property
     def is_primitive(self):
         if not self.is_nullable:
             return (
-                is_boolean_type(self.as_babel) or
-                is_numeric_type(self.as_babel) or
-                is_void_type(self.as_babel)
+                is_boolean_type(self.as_stone) or
+                is_numeric_type(self.as_stone) or
+                is_void_type(self.as_stone)
             )
         return False
 
     @property
     def is_void(self):
-        return is_void_type(self.as_babel)
+        return is_void_type(self.as_stone)
 
     @property
     def is_enumerated_subtype(self):
-        return self.as_babel.is_member_of_enumerated_subtypes_tree()
+        return self.as_stone.is_member_of_enumerated_subtypes_tree()
 
     @property
     def has_enumerated_subtypes(self):
-        return self.as_babel.has_enumerated_subtypes()
+        return self.as_stone.has_enumerated_subtypes()
 
     @property
     def enumerated_subtypes(self):
         assert self.has_enumerated_subtypes
         return tuple(
-            FieldWrapper(self._ctx, self.as_babel, f)
-            for f in self.as_babel.get_enumerated_subtypes()
+            FieldWrapper(self._ctx, self.as_stone, f)
+            for f in self.as_stone.get_enumerated_subtypes()
         )
 
     @property
@@ -1460,19 +1495,19 @@ class DataTypeWrapper(BabelWrapper):
 
     @property
     def requires_validation(self):
-        babel_dt = self.as_babel
-        if is_list_type(babel_dt):
+        stone_dt = self.as_stone
+        if is_list_type(stone_dt):
             return True
-        elif is_numeric_type(babel_dt):
+        elif is_numeric_type(stone_dt):
             return any(r is not None for r in (
-                babel_dt.min_value,
-                babel_dt.max_value,
+                stone_dt.min_value,
+                stone_dt.max_value,
             ))
-        elif is_string_type(babel_dt):
+        elif is_string_type(stone_dt):
             return any(r is not None for r in (
-                babel_dt.min_length,
-                babel_dt.max_length,
-                babel_dt.pattern,
+                stone_dt.min_length,
+                stone_dt.max_length,
+                stone_dt.pattern,
             ))
         else:
             return False
@@ -1481,7 +1516,7 @@ class DataTypeWrapper(BabelWrapper):
     def java_class(self):
         assert not self.is_primitive, "primitive data types do not have custom classes"
         if self.is_struct or self.is_union:
-            return self._as_java_class(classname(self.babel_name))
+            return self._as_java_class(classname(self.stone_name))
         else:
             return self.java_type(boxed=True, generics=False)
 
@@ -1496,7 +1531,7 @@ class DataTypeWrapper(BabelWrapper):
     def java_builder_class(self):
         assert self.is_struct, "only structs have builder classes: %r" % self
         # builders are nested in their class (e.g. CommitInfo.Builder)
-        return self._as_java_class(classname(self.babel_name) + '.Builder')
+        return self._as_java_class(classname(self.stone_name) + '.Builder')
 
     @property
     def java_builder_class_with_inheritance(self):
@@ -1507,21 +1542,21 @@ class DataTypeWrapper(BabelWrapper):
 
     @property
     def java_builder_field(self):
-        return camelcase(self.babel_name + '_builder')
+        return camelcase(self.stone_name + '_builder')
 
     @property
     def java_exception_class(self):
         assert not self.is_primitive, "primitive data types cannot have exception classes: %r" % self
-        return self._as_java_class(classname(self.babel_name + '_exception'))
+        return self._as_java_class(classname(self.stone_name + '_exception'))
 
     @property
     def java_serializer_singleton(self):
         assert self.is_struct or self.is_union, repr(self)
-        return _fixreserved('_' + self.babel_name + '_SERIALIZER');
+        return _fixreserved('_' + self.stone_name + '_SERIALIZER');
 
     @property
     def java_serializer(self):
-        core_serializers_class = JavaClass(self._ctx, 'com.dropbox.core.babel.BabelSerializers')
+        core_serializers_class = JavaClass(self._ctx, 'com.dropbox.core.stone.StoneSerializers')
         if self.is_nullable:
             return '%s.nullable(%s)' % (core_serializers_class, self.nullable_data_type.java_serializer)
         elif self.is_list:
@@ -1529,7 +1564,7 @@ class DataTypeWrapper(BabelWrapper):
         elif self.is_struct or self.is_union:
             return '%s.Serializer.INSTANCE' % self.java_class
         else:
-            return '%s.%s()' % (core_serializers_class, camelcase(self.babel_name))
+            return '%s.%s()' % (core_serializers_class, camelcase(self.stone_name))
 
     def java_type(self, boxed=True, generics=True):
         if self.is_nullable:
@@ -1544,24 +1579,24 @@ class DataTypeWrapper(BabelWrapper):
 
         else:
             type_map = _TYPE_MAP_BOXED if boxed else _TYPE_MAP_UNBOXED
-            if self.babel_name in type_map:
-                return JavaClass(self._ctx, type_map[self.babel_name])
+            if self.stone_name in type_map:
+                return JavaClass(self._ctx, type_map[self.stone_name])
             else:
-                assert is_composite_type(self.as_babel), repr(self)
+                assert is_composite_type(self.as_stone), repr(self)
                 return self.java_class
 
-    def java_value(self, babel_value):
-        if isinstance(babel_value, bool):
-            return 'true' if babel_value else 'false'
-        if isinstance(babel_value, float):
-            return repr(babel_value)  # Because str() drops the last few digits.
-        if self.babel_name in ('Int64', 'UInt64', 'UInt32'):
-            return str(babel_value) + 'L'  # Need exact type match for boxed values.
+    def java_value(self, stone_value):
+        if isinstance(stone_value, bool):
+            return 'true' if stone_value else 'false'
+        if isinstance(stone_value, float):
+            return repr(stone_value)  # Because str() drops the last few digits.
+        if self.stone_name in ('Int64', 'UInt64', 'UInt32'):
+            return str(stone_value) + 'L'  # Need exact type match for boxed values.
         if self.is_union:
-            assert isinstance(babel_value, TagRef), (self, babel_value)
-            assert self.as_babel is babel_value.union_data_type, (self, babel_value)
+            assert isinstance(stone_value, TagRef), (self, stone_value)
+            assert self.as_stone is stone_value.union_data_type, (self, stone_value)
             for field in self.all_fields:
-                if field.babel_name == babel_value.tag_name:
+                if field.stone_name == stone_value.tag_name:
                     if self.is_enum:
                         return '%s.%s' % (field.containing_data_type.java_class, field.java_enum)
                     elif field.has_value:
@@ -1569,21 +1604,21 @@ class DataTypeWrapper(BabelWrapper):
                     else:
                         return '%s.%s' % (field.containing_data_type.java_class, field.java_singleton)
             else:
-                assert False, "Could not find tag '%s' in '%s'" % (babel_value.tag_name, self)
-        return str(babel_value)
+                assert False, "Could not find tag '%s' in '%s'" % (stone_value.tag_name, self)
+        return str(stone_value)
 
     @property
     def java_name(self):
-        return camelcase(self.babel_name)
+        return camelcase(self.stone_name)
 
 
-class FieldWrapper(BabelWrapper):
+class FieldWrapper(StoneWrapper):
     """
-    Wrapper around a Babel field.
+    Wrapper around a Stone field.
 
     :ivar :class:`GeneratorContext` ctx: context for current generation
-    :ivar :class:`babelapi.data_type.DataType` data_type: Babel data type containing this field
-    :ivar :class:`babelapi.data_type.Field` field: Babel field to wrap
+    :ivar :class:`stone.data_type.DataType` data_type: Stone data type containing this field
+    :ivar :class:`stone.data_type.Field` field: Stone field to wrap
     """
 
     def __init__(self, ctx, containing_data_type, field):
@@ -1591,15 +1626,15 @@ class FieldWrapper(BabelWrapper):
         assert hasattr(containing_data_type, "namespace"), repr(containing_data_type)
         assert isinstance(field, Field), repr(field)
         super(FieldWrapper, self).__init__(ctx, containing_data_type.namespace, field)
-        self._containing_babel_data_type = containing_data_type
+        self._containing_stone_data_type = containing_data_type
 
     @property
-    def fq_babel_name(self):
-        return '.'.join((self.namespace.babel_name, self.containing_data_type.babel_name, self.babel_name))
+    def fq_stone_name(self):
+        return '.'.join((self.namespace.stone_name, self.containing_data_type.stone_name, self.stone_name))
 
     @property
-    def babel_doc(self):
-        doc = super(FieldWrapper, self).babel_doc
+    def stone_doc(self):
+        doc = super(FieldWrapper, self).stone_doc
         if self.is_catch_all and not doc:
             return """
             Catch-all used for unknown tag values returned by the Dropbox servers.
@@ -1612,41 +1647,41 @@ class FieldWrapper(BabelWrapper):
 
     @property
     def containing_data_type(self):
-        return DataTypeWrapper(self._ctx, self._containing_babel_data_type)
+        return DataTypeWrapper(self._ctx, self._containing_stone_data_type)
 
     @property
     def data_type(self):
-        return DataTypeWrapper(self._ctx, self.as_babel.data_type)
+        return DataTypeWrapper(self._ctx, self.as_stone.data_type)
 
     @property
     def is_required(self):
         assert not self.containing_data_type.is_union, "unions don't have required fields"
-        return self.as_babel in self.containing_data_type.as_babel.all_required_fields
+        return self.as_stone in self.containing_data_type.as_stone.all_required_fields
 
     @property
     def is_optional(self):
         assert self.containing_data_type.is_struct, repr(self.containing_data_type)
-        return self.as_babel in self.containing_data_type.as_babel.all_optional_fields
+        return self.as_stone in self.containing_data_type.as_stone.all_optional_fields
 
     @property
     def is_catch_all(self):
         catch_all_field = self.containing_data_type.catch_all_field
-        return catch_all_field is not None and self.as_babel is catch_all_field.as_babel
+        return catch_all_field is not None and self.as_stone is catch_all_field.as_stone
 
     @property
     def is_enumerated_subtype(self):
         containing_dt = self.containing_data_type
         if containing_dt.has_enumerated_subtypes:
-            return self.as_babel in tuple(subtype.as_babel for subtype in containing_dt.enumerated_subtypes)
+            return self.as_stone in tuple(subtype.as_stone for subtype in containing_dt.enumerated_subtypes)
         return False
 
     @property
     def is_deprecated(self):
-        return getattr(self.as_babel, "deprecated", False)
+        return getattr(self.as_stone, "deprecated", False)
 
     @property
     def has_default(self):
-        return self.containing_data_type.is_struct and self.as_babel.has_default
+        return self.containing_data_type.is_struct and self.as_stone.has_default
 
     @property
     def has_value(self):
@@ -1660,20 +1695,20 @@ class FieldWrapper(BabelWrapper):
     def default_value(self):
         assert self.containing_data_type.is_struct, "only structs have default values"
         assert self.has_default, "value has no default"
-        return self.data_type.java_value(self.as_babel.default)
+        return self.data_type.java_value(self.as_stone.default)
 
     def java_type(self, generics=True):
         return self.data_type.java_type(boxed=self.data_type.is_nullable, generics=generics)
 
     @property
     def java_name(self):
-        babel_name = self.babel_name
+        stone_name = self.stone_name
         if self.containing_data_type.is_enum:
             return self.java_enum
         elif self.containing_data_type.is_union:
-            return camelcase(babel_name + '_value')
+            return camelcase(stone_name + '_value')
         else:
-            return camelcase(babel_name)
+            return camelcase(stone_name)
 
     @property
     def java_enum(self):
@@ -1681,11 +1716,11 @@ class FieldWrapper(BabelWrapper):
 
     @property
     def tag_name(self):
-        return allcaps(self.babel_name)
+        return allcaps(self.stone_name)
 
     @property
     def java_singleton(self):
-        return allcaps(self.babel_name)
+        return allcaps(self.stone_name)
 
     def java_type_and_name(self, generics=True):
         return '%s %s' % (self.java_type(generics=generics), self.java_name)
@@ -1693,7 +1728,7 @@ class FieldWrapper(BabelWrapper):
     @property
     def java_is_union_type_method(self):
         assert not self.containing_data_type.is_enum, "enum fields don't have isType() methods: %s" % self.containing_data_type
-        return camelcase('is_' + self.babel_name)
+        return camelcase('is_' + self.stone_name)
 
     @property
     def java_getter(self):
@@ -1722,18 +1757,18 @@ class FieldWrapper(BabelWrapper):
     def java_factory_method(self):
         assert not self.containing_data_type.is_enum, "enum fields don't have factory methods"
         assert self.has_value, "field does not have a value, so does not require a factory method"
-        return camelcase(self.babel_name)
+        return camelcase(self.stone_name)
 
     def __str__(self):
-        namespace = self.namespace.babel_name if self.namespace else ''
-        data_type = self.containing_data_type.babel_name
-        name = self.babel_name
+        namespace = self.namespace.stone_name if self.namespace else ''
+        data_type = self.containing_data_type.stone_name
+        name = self.stone_name
         return '%s(%s)' % (type(self).__name__, '.'.join(filter(None, (namespace, data_type, name))))
 
 
 class JavadocGenerator(object):
     """
-    Javadoc generator that intelligently inspects Babel items to product appropriate Javadoc
+    Javadoc generator that intelligently inspects Stone items to product appropriate Javadoc
     annotations.
 
     :ivar :class:`GeneratorContext` ctx: context for current generation
@@ -1743,10 +1778,10 @@ class JavadocGenerator(object):
         assert isinstance(ctx, GeneratorContext), repr(ctx)
         self._ctx = ctx
 
-    def lookup_babel_ref(self, tag, val, context=None):
+    def lookup_stone_ref(self, tag, val, context=None):
         assert isinstance(tag, str), repr(tag)
         assert isinstance(val, str), repr(val)
-        assert context is None or isinstance(context, BabelWrapper), repr(context)
+        assert context is None or isinstance(context, StoneWrapper), repr(context)
 
         if tag == 'route':
             namespace, route = self._split_id(val, 2)
@@ -1765,7 +1800,7 @@ class JavadocGenerator(object):
             assert False, 'Unsupported tag (:%s:`%s`)' % (tag, val)
 
     def javadoc_ref(self, element, builder=False):
-        assert isinstance(element, BabelWrapper), repr(element)
+        assert isinstance(element, StoneWrapper), repr(element)
 
         if isinstance(element, RouteWrapper):
             ref = self._javadoc_route_ref(element, builder=builder)
@@ -1779,26 +1814,26 @@ class JavadocGenerator(object):
         return sanitize_javadoc(ref)
 
     def javadoc_ref_handler(self, tag, val, context=None):
-        element = self.lookup_babel_ref(tag, val, context)
+        element = self.lookup_stone_ref(tag, val, context)
 
         # use {@code ...} tag for unresolved references so we don't have broken links in our Javadoc
         if tag == 'route':
             if element:
                 ref = self._javadoc_route_ref(element)
             else:
-                self._ctx.g.logger.warn('Unable to resolve Babel reference (:%s:`%s`) [ctx=%s]' % (tag, val, context))
+                self._ctx.g.logger.warn('Unable to resolve Stone reference (:%s:`%s`) [ctx=%s]' % (tag, val, context))
                 ref = '{@code %s}' % camelcase(val)
         elif tag == 'type':
             if element:
                 ref = self._javadoc_data_type_ref(element)
             else:
-                self._ctx.g.logger.warn('Unable to resolve Babel reference (:%s:`%s`) [ctx=%s]' % (tag, val, context))
+                self._ctx.g.logger.warn('Unable to resolve Stone reference (:%s:`%s`) [ctx=%s]' % (tag, val, context))
                 ref = '{@code %s}' % classname(val)
         elif tag == 'field':
             if element:
                 ref = self._javadoc_field_ref(element)
             else:
-                self._ctx.g.logger.warn('Unable to resolve Babel reference (:%s:`%s`) [ctx=%s]' % (tag, val, context))
+                self._ctx.g.logger.warn('Unable to resolve Stone reference (:%s:`%s`) [ctx=%s]' % (tag, val, context))
                 ref = '{@code %s}' % camelcase(val)
         elif tag == 'link':
             anchor, link = val.rsplit(' ', 1)
@@ -1807,17 +1842,17 @@ class JavadocGenerator(object):
             # do not sanitize this HTML
             return '<a href="%s">%s</a>' % (link, anchor)
         elif tag == 'val':
-            # Note that all valid Babel literals happen to be valid Java literals.
+            # Note that all valid Stone literals happen to be valid Java literals.
             ref = '{@code %s}' % val
         else:
             assert False, 'Unsupported tag (:%s:`%s`)' % (tag, val)
 
         return sanitize_javadoc(ref)
 
-    def translate_babel_doc(self, doc, context=None):
-        if isinstance(doc, BabelWrapper):
+    def translate_stone_doc(self, doc, context=None):
+        if isinstance(doc, StoneWrapper):
             wrapper = doc
-            doc = wrapper.babel_doc
+            doc = wrapper.stone_doc
             context = wrapper
 
         if doc:
@@ -1828,16 +1863,16 @@ class JavadocGenerator(object):
 
     def generate_javadoc(self, doc, context=None, fields=(), params=(), returns=None, throws=(), deprecated=None, allow_defaults=True):
         # convenience for inferring various arguments from our wrapper objects
-        if isinstance(doc, BabelWrapper):
+        if isinstance(doc, StoneWrapper):
             wrapper = doc
-            doc = wrapper.babel_doc
+            doc = wrapper.stone_doc
             context = context or wrapper
 
         assert isinstance(doc, str), repr(doc)
-        assert isinstance(context, BabelWrapper) or context is None, repr(context)
+        assert isinstance(context, StoneWrapper) or context is None, repr(context)
         assert isinstance(fields, (Sequence, types.GeneratorType)), repr(fields)
         assert isinstance(params, (Sequence, types.GeneratorType, OrderedDict)), repr(params)
-        assert isinstance(returns, (str, BabelWrapper)) or returns is None, repr(returns)
+        assert isinstance(returns, (str, StoneWrapper)) or returns is None, repr(returns)
         assert isinstance(throws, (Sequence, types.GeneratorType, OrderedDict)), repr(throws)
         assert isinstance(deprecated, (RouteWrapper, bool)) or deprecated is None, repr(deprecated)
 
@@ -1852,7 +1887,7 @@ class JavadocGenerator(object):
 
         params_doc = self.javadoc_params(fields, allow_defaults=allow_defaults)
         params_doc.update(self._translate_ordered_collection(params, context))
-        returns_doc = self.translate_babel_doc(returns, context)
+        returns_doc = self.translate_stone_doc(returns, context)
         throws_doc = self._translate_ordered_collection(throws, context)
         deprecated_doc = self.javadoc_deprecated(deprecated)
 
@@ -1865,7 +1900,7 @@ class JavadocGenerator(object):
                 throws_doc[exception] = "If any argument does not meet its preconditions."
 
         return self.generate_javadoc_raw(
-            self.translate_babel_doc(doc, context),
+            self.translate_stone_doc(doc, context),
             params=params_doc,
             returns=returns_doc,
             throws=throws_doc,
@@ -1940,8 +1975,8 @@ class JavadocGenerator(object):
         params = OrderedDict()
         for field in fields:
             param_name = field.java_name
-            param_babel_doc = field.babel_doc
-            param_doc = self.translate_babel_doc(param_babel_doc, field)
+            param_stone_doc = field.stone_doc
+            param_doc = self.translate_stone_doc(param_stone_doc, field)
 
             # add '.' at end of doc if we have a doc and its missing.
             if param_doc.strip() and not param_doc.endswith('.'):
@@ -1990,7 +2025,7 @@ class JavadocGenerator(object):
             collection = collection.items()
 
         return OrderedDict(
-            (k, self.translate_babel_doc(v, context))
+            (k, self.translate_stone_doc(v, context))
             for k, v in collection
         )
 
@@ -2005,7 +2040,7 @@ class JavadocGenerator(object):
         if nullable:
             data_type = data_type.nullable_data_type
 
-        babel_dt = data_type.as_babel
+        stone_dt = data_type.as_stone
         requirements = []
         def add_req(precondition, failure_reason):
             if as_failure_reasons:
@@ -2021,15 +2056,15 @@ class JavadocGenerator(object):
                 ('min_length', ('have length of at least %s', 'is shorter than %s')),
                 ('max_length', ('have length of at most %s', 'is longer than %s'))
         ):
-            if hasattr(babel_dt, condition):
-                val = getattr(babel_dt, condition)
+            if hasattr(stone_dt, condition):
+                val = getattr(stone_dt, condition)
                 if val is not None:
                     add_req(precondition % val, failure_reason % val)
 
-        if is_list_type(babel_dt):
+        if is_list_type(stone_dt):
             add_req('not contain a {@code null} item', 'contains a {@code null} item')
-        elif is_string_type(babel_dt) and babel_dt.pattern is not None:
-            pattern = sanitize_pattern(babel_dt.pattern)
+        elif is_string_type(stone_dt) and stone_dt.pattern is not None:
+            pattern = sanitize_pattern(stone_dt.pattern)
             add_req('match pattern "{@code %s}"' % pattern, 'does not match pattern "{@code %s}"' % pattern)
 
         if not (nullable or data_type.is_primitive or field.has_default):
@@ -2037,29 +2072,29 @@ class JavadocGenerator(object):
 
         return requirements
 
-    def _split_id(self, babel_id, max_parts):
-        assert isinstance(babel_id, str), repr(babel_id)
+    def _split_id(self, stone_id, max_parts):
+        assert isinstance(stone_id, str), repr(stone_id)
         assert max_parts > 0, "max_parts must be positive"
 
-        parts = babel_id.split('.')
+        parts = stone_id.split('.')
         if len(parts) > max_parts:
-            # mark tag as invalid... can't raise exception here since we don't validate babel docs
-            self._ctx.g.logger.warn('Malformed Babel reference value: `%s`' % babel_id)
+            # mark tag as invalid... can't raise exception here since we don't validate stone docs
+            self._ctx.g.logger.warn('Malformed Stone reference value: `%s`' % stone_id)
             return (None,) * max_parts
         else:
             filler = (None,) * (max_parts - len(parts))
             return filler + tuple(parts)
 
-    def _lookup_babel_namespace(self, namespace, context):
+    def _lookup_stone_namespace(self, namespace, context):
         assert isinstance(namespace, str) or namespace is None, repr(namespace)
-        assert isinstance(context, BabelWrapper) or context is None, repr(context)
+        assert isinstance(context, StoneWrapper) or context is None, repr(context)
 
         if namespace:
             return self._ctx.api.namespaces.get(namespace)
         elif context:
             namespace_element = context.namespace
             if namespace_element:
-                return namespace_element.as_babel
+                return namespace_element.as_stone
 
         return None
 
@@ -2067,11 +2102,12 @@ class JavadocGenerator(object):
         assert isinstance(route, str) or route is None, repr(route)
         if namespace: assert route, "Cannot specify namespace name without route name"
 
-        babel_namespace = self._lookup_babel_namespace(namespace, context)
+        stone_namespace = self._lookup_stone_namespace(namespace, context)
 
-        if babel_namespace and route:
-            babel_route = babel_namespace.route_by_name.get(route)
-            return RouteWrapper(self._ctx, babel_namespace, babel_route)
+        if stone_namespace and route:
+            stone_route = stone_namespace.route_by_name.get(route)
+            if stone_route:
+                return RouteWrapper(self._ctx, stone_namespace, stone_route)
         elif context and not route:
             if isinstance(context, RouteWrapper):
                 return context
@@ -2084,11 +2120,12 @@ class JavadocGenerator(object):
         assert isinstance(data_type, str) or data_type is None, repr(data_type)
         if namespace: assert data_type, "Cannot specify namespace name without data_type name"
 
-        babel_namespace = self._lookup_babel_namespace(namespace, context)
+        stone_namespace = self._lookup_stone_namespace(namespace, context)
 
-        if babel_namespace and data_type:
-            babel_data_type = babel_namespace.data_type_by_name.get(data_type)
-            return DataTypeWrapper(self._ctx, babel_data_type)
+        if stone_namespace and data_type:
+            stone_data_type = stone_namespace.data_type_by_name.get(data_type)
+            if stone_data_type:
+                return DataTypeWrapper(self._ctx, stone_data_type)
         elif context and not data_type:
             if isinstance(context, FieldWrapper):
                 # we might be within a field, which has a containing data type
@@ -2106,7 +2143,7 @@ class JavadocGenerator(object):
 
         if data_type and field:
             for data_type_field in data_type.all_fields:
-                if data_type_field.babel_name == field:
+                if data_type_field.stone_name == field:
                     return data_type_field
         elif context and not field:
             if isinstance(context, FieldWrapper):
@@ -2168,7 +2205,7 @@ class JavadocGenerator(object):
                 return 'the {@code %s} argument to %s' % (field.java_name, self._javadoc_route_ref(routes[0]))
 
         # can't reference a package-private data type.
-        assert is_data_type_required_outside_package(containing_data_type), field.fq_babel_name
+        assert is_data_type_required_outside_package(containing_data_type), field.fq_stone_name
 
         # fallback to standard ref
         if field.containing_data_type.is_enum:
@@ -2363,12 +2400,12 @@ class JavaImportGenerator(object):
             'com.fasterxml.jackson.core.JsonParseException',
             'com.fasterxml.jackson.core.JsonParser',
             'com.fasterxml.jackson.core.JsonToken',
-            'com.dropbox.core.babel.BabelSerializers',
+            'com.dropbox.core.stone.StoneSerializers',
         )
         if data_type.is_struct:
-            self._ctx.add_imports('com.dropbox.core.babel.StructSerializer')
+            self._ctx.add_imports('com.dropbox.core.stone.StructSerializer')
         elif data_type.is_union:
-            self._ctx.add_imports('com.dropbox.core.babel.UnionSerializer')
+            self._ctx.add_imports('com.dropbox.core.stone.UnionSerializer')
 
     def __repr__(self):
         return '%s(imports=%s)' % (self.__class__.__name__, self._ctx.current_imports)
@@ -2384,7 +2421,7 @@ class JavaCodeGenerator(CodeGenerator):
         """
         Toplevel code generation method.
 
-        This is called by babelapi.cli.
+        This is called by stone.cli.
         """
         ctx = GeneratorContext(self, api)
         JavaCodeGenerationInstance(ctx).generate()
@@ -2392,7 +2429,7 @@ class JavaCodeGenerator(CodeGenerator):
 
 class JavaCodeGenerationInstance(object):
     """
-    Java code generation instance for a particular Babel tree (:class:`babelapi.api.Api`).
+    Java code generation instance for a particular Stone tree (:class:`stone.api.Api`).
 
     :ivar :class:`GeneratorContext` ctx: context for current generation
     """
@@ -2420,7 +2457,7 @@ class JavaCodeGenerationInstance(object):
         All generated Java classes should call this method to ensure imports are properly handled
         and Javadoc annotation references are correct.
 
-        :param :class:`BabelWrapper` element: Babel wrapped element that maps to the new Java class file.
+        :param :class:`StoneWrapper` element: Stone wrapped element that maps to the new Java class file.
         :param str class_name: Name of new Java class, defaults to ``element.java_class.name``
         :param str package_doc: Documentation for package (if generating a ``package-info.java`` class file).
         """
@@ -2444,7 +2481,7 @@ class JavaCodeGenerationInstance(object):
             package_relpath = self.create_package_path(java_class.package)
             file_name = java_class.name + '.java'
             file_path = os.path.join(package_relpath, file_name)
-            babel_filenames = element.babel_filenames if isinstance(element, NamespaceWrapper) else [element.babel_filename]
+            stone_filenames = element.stone_filenames if isinstance(element, NamespaceWrapper) else [element.stone_filename]
 
             with self.g.output_to_relative_path(file_path):
                 self.generate_file_header(element)
@@ -2457,26 +2494,26 @@ class JavaCodeGenerationInstance(object):
     def generate(self):
         self.generate_dbx_clients()
 
-        for babel_namespace in self.ctx.api.namespaces.values():
-            namespace = NamespaceWrapper(self.ctx, babel_namespace)
+        for stone_namespace in self.ctx.api.namespaces.values():
+            namespace = NamespaceWrapper(self.ctx, stone_namespace)
             self.generate_namespace(namespace)
 
     def generate_file_header(self, element=None):
         out = self.g.emit
 
         if isinstance(element, NamespaceWrapper):
-            babel_filenames = element.babel_filenames
-        elif isinstance(element, BabelWrapper):
-            babel_filenames = (element.babel_filename,)
+            stone_filenames = element.stone_filenames
+        elif isinstance(element, StoneWrapper):
+            stone_filenames = (element.stone_filename,)
         else:
             assert element is None, repr(element)
-            babel_filenames = None
+            stone_filenames = None
 
         out('/* DO NOT EDIT */')
-        if babel_filenames:
-            out('/* This file was generated from %s */' % ', '.join(babel_filenames))
+        if stone_filenames:
+            out('/* This file was generated from %s */' % ', '.join(stone_filenames))
         else:
-            out('/* This file was generated by Babel */')
+            out('/* This file was generated by Stone */')
         out('')
 
     def create_package_path(self, package_name):
@@ -2551,8 +2588,8 @@ class JavaCodeGenerationInstance(object):
                     self.doc.generate_javadoc(
                         """
                         Returns client for issuing requests in the {@code "%s"} namespace.
-                        """ % namespace.babel_name,
-                        returns="Dropbox %s client" % namespace.babel_name
+                        """ % namespace.stone_name,
+                        returns="Dropbox %s client" % namespace.stone_name
                     )
                     with self.g.block("public %s %s()" % (namespace.java_class(auth), namespace.java_getter)):
                         out('return %s;' % namespace.java_field)
@@ -2587,9 +2624,9 @@ class JavaCodeGenerationInstance(object):
             self.importer.generate_imports()
 
             out('')
-            javadoc('Routes in namespace "%s" that support %s auth.' % (namespace.babel_name, auth))
+            javadoc('Routes in namespace "%s" that support %s auth.' % (namespace.stone_name, auth))
             with self.g.block('public final class %s' % namespace.java_class(auth)):
-                out('// namespace %s' % namespace.babel_name)
+                out('// namespace %s' % namespace.stone_name)
                 out('')
                 out('private final DbxRawClientV2 client;')
 
@@ -2604,7 +2641,7 @@ class JavaCodeGenerationInstance(object):
 
                     out('')
                     out('//')
-                    out('// route %s/%s' % (route.namespace.babel_name, route.babel_name))
+                    out('// route %s/%s' % (route.namespace.stone_name, route.stone_name))
                     out('//')
                     self.generate_route_base(route)
                     self.generate_route(route, required_only=True)
@@ -2625,7 +2662,7 @@ class JavaCodeGenerationInstance(object):
             %s
 
             See %s for a list of possible requests for this namespace.
-            """ % (namespace.babel_doc, classes)
+            """ % (namespace.stone_doc, classes)
         )
 
         with self.new_file(namespace, 'package-info', package_doc=package_doc):
@@ -2742,7 +2779,7 @@ class JavaCodeGenerationInstance(object):
         args = ', '.join(f.java_type_and_name() for f in fields)
 
         default_fields = tuple(f for f in arg_type.all_optional_fields if f.has_default)
-        doc = route.babel_doc
+        doc = route.stone_doc
         if required_only and default_fields:
             if route.supports_builder:
                 doc += """
@@ -2843,7 +2880,7 @@ class JavaCodeGenerationInstance(object):
             )
         else:
             message = '"Unexpected error response for \\"%(route)s\\":" + %(ew)s.getErrorValue()' % dict(
-                route=route.babel_name,
+                route=route.stone_name,
                 ew=error_wrapper_var,
             )
             return 'new DbxApiException(%(ew)s.getRequestId(), %(ew)s.getUserMessage(), %(msg)s);' % dict(
@@ -2913,6 +2950,11 @@ class JavaCodeGenerationInstance(object):
         """Generate a class definition for a datatype (a struct or a union)."""
         out = self.g.emit
 
+        # some data types get orphaned by route filtering
+        # TODO(krieb): enable this when the bugs are worked out
+        #if not is_data_type_referenced(data_type):
+        #    return
+
         with self.new_file(data_type):
             self.importer.add_imports_for_data_type(data_type)
             self.importer.generate_imports()
@@ -2931,7 +2973,7 @@ class JavaCodeGenerationInstance(object):
         out('')
         javadoc(data_type)
         with self.g.block('public enum %s' % data_type.java_class):
-            out('// union %s' % data_type.babel_name)
+            out('// union %s' % data_type.stone_name)
             self.generate_enum_values(data_type)
 
             #
@@ -2966,7 +3008,7 @@ class JavaCodeGenerationInstance(object):
             This class is %s union.  Tagged unions instances are always associated to a
             specific tag.  This means only one of the {@code isAbc()} methods will return {@code
             true}. You can use {@link #tag()} to determine the tag associated with this instance.
-            """ % (data_type.babel_doc, 'an open tagged' if data_type.catch_all_field else 'a tagged')
+            """ % (data_type.stone_doc, 'an open tagged' if data_type.catch_all_field else 'a tagged')
         if data_type.catch_all_field:
                 class_doc += """
 
@@ -3105,7 +3147,7 @@ class JavaCodeGenerationInstance(object):
                     Returns an instance of {@code %s} that has its tag set to {@link Tag#%s}.
 
                     %s
-                    """ % (data_type.java_class, field.tag_name, field.babel_doc)
+                    """ % (data_type.java_class, field.tag_name, field.stone_doc)
                 )
                 returns = "Instance of {@code %s} with its tag set to {@link Tag#%s}." % (data_type.java_class, field.tag_name)
                 javadoc(
@@ -3123,7 +3165,7 @@ class JavaCodeGenerationInstance(object):
                     )):
                         self.generate_field_validation(field, value_name="value", omit_arg_name=True, allow_default=False)
                         args = ", ".join(
-                            "value" if f.as_babel is field.as_babel else "null"
+                            "value" if f.as_stone is field.as_stone else "null"
                             for f in data_type.all_fields if f.has_value
                         )
                         out('return new %s(Tag.%s, %s);' % (data_type.java_class, field.tag_name, args))
@@ -3143,7 +3185,7 @@ class JavaCodeGenerationInstance(object):
                     %s
 
                     This instance must be tagged as {@link Tag#%s}.
-                    """ % (field.babel_doc, field.tag_name),
+                    """ % (field.stone_doc, field.tag_name),
                     context=field,
                     returns="""
                     The %s value associated with this instance if {@link #%s} is
@@ -3179,7 +3221,7 @@ class JavaCodeGenerationInstance(object):
         out('')
         javadoc(data_type)
         with self.g.block(('%s class %s' % (visibility, data_type.java_class_with_inheritance)).strip()):
-            out('// struct %s' % data_type.babel_name)
+            out('// struct %s' % data_type.stone_name)
 
             #
             # instance fields
@@ -3197,7 +3239,7 @@ class JavaCodeGenerationInstance(object):
             args = ', '.join(
                 field.java_type_and_name() for field in data_type.all_fields
             )
-            doc = data_type.babel_doc
+            doc = data_type.stone_doc
             if data_type.supports_builder:
                 doc += """
 
@@ -3230,7 +3272,7 @@ class JavaCodeGenerationInstance(object):
                     %s
 
                     The default values for unset fields will be used.
-                    """ % data_type.babel_doc,
+                    """ % data_type.stone_doc,
                     context=data_type,
                     fields=required_fields
                 )
@@ -3294,7 +3336,7 @@ class JavaCodeGenerationInstance(object):
         fields = data_type.fields if parent_supports_builder else data_type.all_fields
         required_fields = tuple(f for f in fields if f.is_required)
         optional_fields = tuple(f for f in fields if f.is_optional)
-        ancestors = get_ancestors(data_type.as_babel)
+        ancestors = get_ancestors(data_type.as_stone)
 
         all_required_args = ', '.join(f.java_type_and_name() for f in all_required_fields)
         required_args = ', '.join(f.java_type_and_name() for f in required_fields)
@@ -3423,7 +3465,7 @@ class JavaCodeGenerationInstance(object):
 
                 out('')
                 with self.g.block('public %s(String requestId, LocalizedText userMessage, %s errorValue)' % (class_name, error_type)):
-                    out('super(requestId, userMessage, buildMessage("%s", userMessage, errorValue));' % route.babel_name)
+                    out('super(requestId, userMessage, buildMessage("%s", userMessage, errorValue));' % route.stone_name)
                     with self.g.block('if (errorValue == null)'):
                         out('throw new NullPointerException("errorValue");')
                     out('this.errorValue = errorValue;')
@@ -3521,7 +3563,7 @@ class JavaCodeGenerationInstance(object):
                 #
 
                 params=[
-                    (client_name, 'Dropbox namespace-specific client used to issue %s requests.' % route.namespace.babel_name)
+                    (client_name, 'Dropbox namespace-specific client used to issue %s requests.' % route.namespace.stone_name)
                 ]
                 if arg_type.supports_builder:
                     args = ', '.join('%s %s' % pair for pair in (
@@ -3615,7 +3657,7 @@ class JavaCodeGenerationInstance(object):
         # enforce this.
         #
         # TODO: gotta be a better way than this...
-        if is_timestamp_type(underlying_data_type.as_babel) and rhs != 'null':
+        if is_timestamp_type(underlying_data_type.as_stone) and rhs != 'null':
             rhs = 'com.dropbox.core.util.LangUtil.truncateMillis(%s)' % rhs
 
         if allow_default and field.has_default:
@@ -3668,9 +3710,9 @@ class JavaCodeGenerationInstance(object):
             out('package %s;' % serializers_class.package)
 
             if any(dt.is_struct for dt in namespace.data_types):
-                self.ctx.add_imports('com.dropbox.core.babel.StructSerializer')
+                self.ctx.add_imports('com.dropbox.core.stone.StructSerializer')
             if any(dt.is_union for dt in namespace.data_types):
-                self.ctx.add_imports('com.dropbox.core.babel.UnionSerializer')
+                self.ctx.add_imports('com.dropbox.core.stone.UnionSerializer')
 
             # import every data type...
             self.ctx.add_imports(*(data_type.java_class for data_type in required_data_types))
@@ -3679,7 +3721,7 @@ class JavaCodeGenerationInstance(object):
             out('')
             javadoc(
                 """
-                Internal class used for Babel serialization. This class is subject to change at any
+                Internal class used for Stone serialization. This class is subject to change at any
                 time. No fields within this class should be accessed outside of this library.
                 """
             )
@@ -3761,7 +3803,7 @@ class JavaCodeGenerationInstance(object):
             with self.g.block('if (!collapse)'):
                 out('g.writeStartObject();')
 
-            ancestors = get_ancestors(data_type.as_babel)
+            ancestors = get_ancestors(data_type.as_stone)
             tag = '.'.join(name for name, _ in ancestors[1:] if name)
             if tag:
                 out('writeTag("%s", g);' % tag)
@@ -3770,7 +3812,7 @@ class JavaCodeGenerationInstance(object):
                 field_dt = field.data_type
                 field_value = 'value.%s' % field.java_name
                 with self.conditional_block('if (%s != null)' % field_value, field_dt.is_nullable):
-                    out('g.writeFieldName("%s");' % field.babel_name)
+                    out('g.writeFieldName("%s");' % field.stone_name)
                     out('%s.serialize(%s, g);' % (field_dt.java_serializer, field_value))
 
             with self.g.block('if (!collapse)'):
@@ -3791,7 +3833,7 @@ class JavaCodeGenerationInstance(object):
                 out('expectStartObject(p);')
                 out('tag = readTag(p);')
                 if data_type.is_enumerated_subtype:
-                    ancestors = get_ancestors(data_type.as_babel)
+                    ancestors = get_ancestors(data_type.as_stone)
                     expected_tag = '.'.join(name for name, _ in ancestors if name)
                     with self.g.block('if ("%s".equals(tag))' % expected_tag):
                         out('tag = null;')
@@ -3809,7 +3851,7 @@ class JavaCodeGenerationInstance(object):
                     for i, field in enumerate(data_type.all_fields):
                         conditional = 'if' if i == 0 else 'else if'
                         serializer = field.data_type.java_serializer
-                        with self.g.block('%s ("%s".equals(field))' % (conditional, field.babel_name)):
+                        with self.g.block('%s ("%s".equals(field))' % (conditional, field.stone_name)):
                             out('f_%s = %s.deserialize(p);' % (field.java_name, serializer))
                     with self.g.block('else'):
                         out('skipValue(p);')
@@ -3817,7 +3859,7 @@ class JavaCodeGenerationInstance(object):
                 for field in data_type.all_fields:
                     if not field.is_optional:
                         with self.g.block('if (f_%s == null)' % field.java_name):
-                            out('throw new JsonParseException(p, "Required field \\"%s\\" missing.");' % field.babel_name)
+                            out('throw new JsonParseException(p, "Required field \\"%s\\" missing.");' % field.stone_name)
                 args = ['f_%s' % f.java_name for f in data_type.all_fields]
                 out('value = new %s(%s);' % (data_type.java_class, ', '.join(args)))
 
@@ -3848,23 +3890,23 @@ class JavaCodeGenerationInstance(object):
                         continue
                     with self.g.block('case %s:' % field.tag_name):
                         if field.data_type.is_void:
-                            out('g.writeString("%s");' % field.babel_name)
+                            out('g.writeString("%s");' % field.stone_name)
                         else:
                             out('g.writeStartObject();')
-                            out('writeTag("%s", g);' % field.babel_name)
+                            out('writeTag("%s", g);' % field.stone_name)
                             serializer = field.data_type.java_serializer
                             value = 'value.%s' % field.java_name
                             if field.data_type.is_struct and field.data_type.is_collapsible:
                                 out('%s.serialize(%s, g, true);' % (serializer, value))
                             else:
-                                out('g.writeFieldName("%s");' % field.babel_name)
+                                out('g.writeFieldName("%s");' % field.stone_name)
                                 out('%s.serialize(%s, g);' % (serializer, value))
                             out('g.writeEndObject();')
                         out('break;')
 
                 with self.g.block('default:'):
                     if data_type.catch_all_field:
-                        out('g.writeString("%s");' % data_type.catch_all_field.babel_name)
+                        out('g.writeString("%s");' % data_type.catch_all_field.stone_name)
                     else:
                         out('throw new IllegalArgumentException("Unrecognized tag: " + %s);' % tag)
 
@@ -3897,7 +3939,7 @@ class JavaCodeGenerationInstance(object):
                     continue
 
                 field_dt = field.data_type
-                with self.g.block('else if ("%s".equals(tag))' % field.babel_name):
+                with self.g.block('else if ("%s".equals(tag))' % field.stone_name):
                     if not field.has_value:
                         out('value = %s.%s;' % (data_type.java_class, field.java_singleton))
                     else:
@@ -3906,7 +3948,7 @@ class JavaCodeGenerationInstance(object):
                             if field_dt.is_struct and field_dt.is_collapsible:
                                 out('fieldValue = %s.deserialize(p, true);' % field_dt.java_serializer)
                             else:
-                                out('expectField("%s", p);' % field.babel_name)
+                                out('expectField("%s", p);' % field.stone_name)
                                 out('fieldValue = %s.deserialize(p);' % field_dt.java_serializer)
 
                         if field_dt.is_nullable:
@@ -3936,60 +3978,60 @@ class JavaCodeGenerationInstance(object):
         else:
             description = description or (" '%s'" % value_name)
 
-        babel_dt = data_type.as_babel
+        stone_dt = data_type.as_stone
 
-        if is_list_type(babel_dt):
-            if babel_dt.min_items is not None:
-                with self.g.block('if (%s.size() < %s)' % (value_name, data_type.java_value(babel_dt.min_items))):
+        if is_list_type(stone_dt):
+            if stone_dt.min_items is not None:
+                with self.g.block('if (%s.size() < %s)' % (value_name, data_type.java_value(stone_dt.min_items))):
                     out('throw new IllegalArgumentException("List%s has fewer than %s items");' % (
-                        description, data_type.java_value(babel_dt.min_items)))
-            if babel_dt.max_items is not None:
-                with self.g.block('if (%s.size() > %s)' % (value_name, data_type.java_value(babel_dt.max_items))):
+                        description, data_type.java_value(stone_dt.min_items)))
+            if stone_dt.max_items is not None:
+                with self.g.block('if (%s.size() > %s)' % (value_name, data_type.java_value(stone_dt.max_items))):
                     out('throw new IllegalArgumentException("List%s has more than %s items");' %
-                        (description, data_type.java_value(babel_dt.max_items)))
+                        (description, data_type.java_value(stone_dt.max_items)))
             xn = 'x' if level == 0 else 'x%d' % level
             with self.g.block('for (%s %s : %s)' % (data_type.list_data_type.java_type(), xn, value_name)):
                 with self.g.block('if (%s == null)' % xn):
                     out('throw new IllegalArgumentException("An item in list%s is null");' % description)
                 self.generate_data_type_validation(data_type.list_data_type, xn, 'an item in list%s' % description, level=level+1)
 
-        elif is_numeric_type(data_type.as_babel):
-            if babel_dt.min_value is not None:
-                with self.g.block('if (%s < %s)' % (value_name, data_type.java_value(babel_dt.min_value))):
+        elif is_numeric_type(data_type.as_stone):
+            if stone_dt.min_value is not None:
+                with self.g.block('if (%s < %s)' % (value_name, data_type.java_value(stone_dt.min_value))):
                     out('throw new IllegalArgumentException("Number%s is smaller than %s");' %
-                        (description, data_type.java_value(babel_dt.min_value)))
-            if babel_dt.max_value is not None:
-                with self.g.block('if (%s > %s)' % (value_name, data_type.java_value(babel_dt.max_value))):
+                        (description, data_type.java_value(stone_dt.min_value)))
+            if stone_dt.max_value is not None:
+                with self.g.block('if (%s > %s)' % (value_name, data_type.java_value(stone_dt.max_value))):
                     out('throw new IllegalArgumentException("Number%s is larger than %s");' %
-                        (description, data_type.java_value(babel_dt.max_value)))
+                        (description, data_type.java_value(stone_dt.max_value)))
 
-        elif is_string_type(babel_dt):
-            if babel_dt.min_length is not None:
-                with self.g.block('if (%s.length() < %d)' % (value_name, babel_dt.min_length)):
+        elif is_string_type(stone_dt):
+            if stone_dt.min_length is not None:
+                with self.g.block('if (%s.length() < %d)' % (value_name, stone_dt.min_length)):
                     out('throw new IllegalArgumentException("String%s is shorter than %s");' %
-                        (description, data_type.java_value(babel_dt.min_length)))
-            if babel_dt.max_length is not None:
-                with self.g.block('if (%s.length() > %d)' % (value_name, babel_dt.max_length)):
+                        (description, data_type.java_value(stone_dt.min_length)))
+            if stone_dt.max_length is not None:
+                with self.g.block('if (%s.length() > %d)' % (value_name, stone_dt.max_length)):
                     out('throw new IllegalArgumentException("String%s is longer than %s");' %
-                        (description, data_type.java_value(babel_dt.max_length)))
-            if babel_dt.pattern is not None:
+                        (description, data_type.java_value(stone_dt.max_length)))
+            if stone_dt.pattern is not None:
                 # TODO: Save the pattern as a static variable.
                 # NOTE: pattern should match against entire input sequence
                 with self.g.block('if (!java.util.regex.Pattern.matches("%s", %s))' % (
-                        sanitize_pattern(babel_dt.pattern), value_name)):
+                        sanitize_pattern(stone_dt.pattern), value_name)):
                     out('throw new IllegalArgumentException("String%s does not match pattern");' % description)
 
         elif any((
-                is_composite_type(babel_dt),
-                is_boolean_type(babel_dt),
-                is_timestamp_type(babel_dt),
-                is_bytes_type(babel_dt),
+                is_composite_type(stone_dt),
+                is_boolean_type(stone_dt),
+                is_timestamp_type(stone_dt),
+                is_bytes_type(stone_dt),
         )):
             pass  # Nothing to do for these
 
         else:
             out('throw new RuntimeException("XXX Don\'t know how to validate %s: type %s");' %
-                (description, data_type.babel_name))
+                (description, data_type.stone_name))
 
     def generate_list_builder_ensure_mutable(self, field):
         assert field.data_type.is_list, "field must be a list type: %r" % field.data_type
@@ -4037,7 +4079,7 @@ class JavaCodeGenerationInstance(object):
 
             self.generate_data_type_validation(data_type, 'x_', 'an item in %s' % description)
 
-            max_items = field.data_type.as_babel.max_items
+            max_items = field.data_type.as_stone.max_items
             if max_items is not None:
                 with self.g.block('if (this.%s.size() >= %s)' % (value_name, max_items)):
                     out('throw new IllegalArgumentException("List at capacity with %s item");' % max_items)

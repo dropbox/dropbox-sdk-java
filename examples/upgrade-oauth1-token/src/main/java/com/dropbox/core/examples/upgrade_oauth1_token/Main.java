@@ -47,7 +47,7 @@ public class Main
                 new DbxOAuth1AccessToken(cfg.accessTokenKey, cfg.accessTokenSecret);
 
         // Get an OAuth 2 access token.
-        String userLocale = Locale.getDefault().toString();
+        String userLocale = Locale.getDefault().toLanguageTag();
         DbxRequestConfig requestConfig = new DbxRequestConfig("examples-authorize", userLocale);
         DbxOAuth1Upgrader upgrader = new DbxOAuth1Upgrader(requestConfig, appInfo);
 

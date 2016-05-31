@@ -265,7 +265,7 @@ public class Main {
 
 
         // Create a DbxClientV2, which is what you use to make API calls.
-        String userLocale = Locale.getDefault().toString();
+        String userLocale = Locale.getDefault().toLanguageTag();
         DbxRequestConfig requestConfig = new DbxRequestConfig("examples-upload-file", userLocale);
         DbxClientV2 dbxClient = new DbxClientV2(requestConfig, authInfo.getAccessToken(), authInfo.getHost());
 

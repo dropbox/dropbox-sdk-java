@@ -16,7 +16,7 @@ public class DropboxClientFactory {
 
     public static void init(String accessToken) {
         if (sDbxClient == null) {
-            String userLocale = Locale.getDefault().toString();
+            String userLocale = Locale.getDefault().toLanguageTag();
             DbxRequestConfig requestConfig = new DbxRequestConfig(
                     "examples-v2-demo",
                     userLocale,

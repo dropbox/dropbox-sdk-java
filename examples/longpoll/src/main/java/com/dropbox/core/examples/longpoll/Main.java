@@ -110,7 +110,7 @@ public class Main {
      */
     private static DbxClientV2 createClient(DbxAuthInfo auth, StandardHttpRequestor.Config config) {
         String clientUserAgentId = "examples-longpoll";
-        String userLocale = Locale.getDefault().toString();
+        String userLocale = Locale.getDefault().toLanguageTag();
         StandardHttpRequestor requestor = new StandardHttpRequestor(config);
         DbxRequestConfig requestConfig = new DbxRequestConfig(clientUserAgentId, userLocale, requestor);
 

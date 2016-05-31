@@ -3,7 +3,6 @@ package com.dropbox.core.test.proguard;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.LinkedHashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.logging.Level;
@@ -189,8 +188,7 @@ public class Main {
             return null;
         }
 
-        String userLocale = Locale.getDefault().toString();
-        DbxRequestConfig requestConfig = new DbxRequestConfig("examples-proguard", userLocale);
+        DbxRequestConfig requestConfig = new DbxRequestConfig("examples-proguard");
         return new DbxClientV2(requestConfig, authInfo.getAccessToken(), authInfo.getHost());
     }
 

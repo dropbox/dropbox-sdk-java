@@ -7,7 +7,7 @@ import java.io.OutputStream;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-import com.dropbox.core.babel.BabelSerializer;
+import com.dropbox.core.stone.StoneSerializer;
 import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.util.IOUtil;
 
@@ -44,13 +44,13 @@ import com.dropbox.core.util.IOUtil;
  */
 public abstract class DbxUploader<R, E, X extends DbxApiException> implements Closeable {
     private final HttpRequestor.Uploader httpUploader;
-    private final BabelSerializer<R> responseSerializer;
-    private final BabelSerializer<E> errorSerializer;
+    private final StoneSerializer<R> responseSerializer;
+    private final StoneSerializer<E> errorSerializer;
 
     private boolean closed;
     private boolean finished;
 
-    protected DbxUploader(HttpRequestor.Uploader httpUploader, BabelSerializer<R> responseSerializer, BabelSerializer<E> errorSerializer) {
+    protected DbxUploader(HttpRequestor.Uploader httpUploader, StoneSerializer<R> responseSerializer, StoneSerializer<E> errorSerializer) {
         this.httpUploader = httpUploader;
         this.responseSerializer = responseSerializer;
         this.errorSerializer = errorSerializer;

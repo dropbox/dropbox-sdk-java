@@ -2,8 +2,8 @@ package com.dropbox.core;
 
 import java.io.IOException;
 
-import com.dropbox.core.babel.BabelSerializer;
-import com.dropbox.core.babel.BabelSerializers;
+import com.dropbox.core.stone.StoneSerializer;
+import com.dropbox.core.stone.StoneSerializers;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -63,7 +63,7 @@ public final class LocalizedText {
     /**
      * For internal use only.
      */
-    static final BabelSerializer<LocalizedText> BABEL_SERIALIZER = new BabelSerializer<LocalizedText>() {
+    static final StoneSerializer<LocalizedText> BABEL_SERIALIZER = new StoneSerializer<LocalizedText>() {
         @Override
         public void serialize(LocalizedText value, JsonGenerator g) throws IOException, JsonGenerationException {
             throw new UnsupportedOperationException("Error wrapper serialization not supported.");
@@ -79,9 +79,9 @@ public final class LocalizedText {
                 String field = p.getCurrentName();
                 p.nextToken();
                 if ("text".equals(field)) {
-                    text = BabelSerializers.string().deserialize(p);
+                    text = StoneSerializers.string().deserialize(p);
                 } else if ("locale".equals(field)) {
-                    locale = BabelSerializers.string().deserialize(p);
+                    locale = StoneSerializers.string().deserialize(p);
                 } else {
                     skipValue(p);
                 }

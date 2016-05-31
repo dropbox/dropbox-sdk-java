@@ -1,4 +1,4 @@
-package com.dropbox.core.babel;
+package com.dropbox.core.stone;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -12,7 +12,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 
-public abstract class BabelSerializer<T> {
+public abstract class StoneSerializer<T> {
     private static final Charset UTF8 = Charset.forName("UTF-8");
 
     public String serialize(T value) {

@@ -1,4 +1,4 @@
-package com.dropbox.core.babel;
+package com.dropbox.core.stone;
 
 import java.io.IOException;
 
@@ -8,7 +8,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 
-public abstract class CompositeSerializer<T> extends BabelSerializer<T> {
+public abstract class CompositeSerializer<T> extends StoneSerializer<T> {
     protected static final String TAG_FIELD = ".tag";
 
     protected static boolean hasTag(JsonParser p) throws IOException, JsonParseException {

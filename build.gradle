@@ -240,7 +240,7 @@ if (project.sourceCompatibility == JavaVersion.VERSION_1_6) {
 
 /* BEGIN PRIVATE REPO ONLY */
 
-apply from: 'babel.gradle'
+apply from: 'stone.gradle'
 
 // load release configuration
 if (!project.version.contains('SNAPSHOT')) {

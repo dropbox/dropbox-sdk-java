@@ -1,7 +1,7 @@
 #! /usr/bin/env bash
 set -euo pipefail
 
-mvn_target_dir="target"
+gradle_build_dir="build"
 
 # Locate the script file.  Cross symlinks if necessary.
 loc="$0"
@@ -17,23 +17,23 @@ done
 
 base_dir=`dirname "$loc"`
 
-babel_dir="$base_dir/babel"
+stone_dir="$base_dir/stone"
 spec_dir="${base_dir}/spec"
-gen_dir="$base_dir/$mvn_target_dir/generated-sources/babel"
-generator="$base_dir/generator/java.babelg.py"
+gen_dir="$base_dir/$gradle_build_dir/generated-sources/stone"
+generator="$base_dir/generator/java.stoneg.py"
 
 usage() {
     echo "usage: $0 [SPEC_DIR [OUTPUT_DIR]]"
     echo ""
     echo "positional arguments:"
-    echo "  SPEC_DIR     Top-level directory containing Babel spec files (default: ${spec_dir})."
+    echo "  SPEC_DIR     Top-level directory containing Stone spec files (default: ${spec_dir})."
     echo "  OUTPUT_DIR   Top-level directory to output generated source files (default: ${gen_dir})."
     echo ""
     echo "optional arguments:"
     echo "  -h/--help    Display this message and exit."
 }
 
-args=("${spec_dir}", "${gen_dir}")
+args=("${spec_dir}" "${gen_dir}")
 argi=0
 while [[ $# -gt 0 ]]; do
     case "$1" in
@@ -42,7 +42,6 @@ while [[ $# -gt 0 ]]; do
             exit 1
             ;;
         *)
-            echo "args[$argi]=$1"
             args[$argi]="${1}"
             argi=$(( $argi + 1 ))
             shift
@@ -65,9 +64,10 @@ fi
 mkdir -p "$gen_dir"
 
 echo "Generating..."
-PYTHONPATH="$babel_dir" python3 -m babelapi.cli \
+PYTHONPATH="$stone_dir" python3 -m stone.cli \
+    --filter-by-route-attr 'alpha_group=null and beta_group=null' \
     "$generator" \
     "$gen_dir"\
-    $(find -H "${spec_dir}" -name "*.babel") \
-     --\
+    $(find -H "${spec_dir}" -name "*.stone") \
+     -- \
      --package com.dropbox.core.v2

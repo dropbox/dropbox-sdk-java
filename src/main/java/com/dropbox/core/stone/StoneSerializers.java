@@ -1,4 +1,4 @@
-package com.dropbox.core.babel;
+package com.dropbox.core.stone;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -12,62 +12,62 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 
-public final class BabelSerializers {
+public final class StoneSerializers {
 
-    public static BabelSerializer<Long> uInt64() {
+    public static StoneSerializer<Long> uInt64() {
         return LongSerializer.INSTANCE;
     }
 
-    public static BabelSerializer<Long> int64() {
+    public static StoneSerializer<Long> int64() {
         return LongSerializer.INSTANCE;
     }
 
-    public static BabelSerializer<Long> uInt32() {
+    public static StoneSerializer<Long> uInt32() {
         return LongSerializer.INSTANCE;
     }
 
-    public static BabelSerializer<Integer> int32() {
+    public static StoneSerializer<Integer> int32() {
         return IntSerializer.INSTANCE;
     }
 
-    public static BabelSerializer<Double> float64() {
+    public static StoneSerializer<Double> float64() {
         return DoubleSerializer.INSTANCE;
     }
 
-    public static BabelSerializer<Float> float32() {
+    public static StoneSerializer<Float> float32() {
         return FloatSerializer.INSTANCE;
     }
 
-    public static BabelSerializer<Boolean> boolean_() {
+    public static StoneSerializer<Boolean> boolean_() {
         return BooleanSerializer.INSTANCE;
     }
 
-    public static BabelSerializer<byte []> binary() {
+    public static StoneSerializer<byte []> binary() {
         return ByteArraySerializer.INSTANCE;
     }
 
-    public static BabelSerializer<String> string() {
+    public static StoneSerializer<String> string() {
         return StringSerializer.INSTANCE;
     }
 
-    public static BabelSerializer<Date> timestamp() {
+    public static StoneSerializer<Date> timestamp() {
         return DateSerializer.INSTANCE;
     }
 
-    public static BabelSerializer<Void> void_() {
+    public static StoneSerializer<Void> void_() {
         return VoidSerializer.INSTANCE;
     }
 
-    public static <T> BabelSerializer<T> nullable(BabelSerializer<T> underlying) {
+    public static <T> StoneSerializer<T> nullable(StoneSerializer<T> underlying) {
         return new NullableSerializer<T>(underlying);
     }
 
-    public static <T> BabelSerializer<List<T>> list(BabelSerializer<T> underlying) {
+    public static <T> StoneSerializer<List<T>> list(StoneSerializer<T> underlying) {
         return new ListSerializer<T>(underlying);
     }
 
 
-    private static final class LongSerializer extends BabelSerializer<Long> {
+    private static final class LongSerializer extends StoneSerializer<Long> {
         public static final LongSerializer INSTANCE = new LongSerializer();
 
         @Override
@@ -83,7 +83,7 @@ public final class BabelSerializers {
         }
     }
 
-    private static final class IntSerializer extends BabelSerializer<Integer> {
+    private static final class IntSerializer extends StoneSerializer<Integer> {
         public static final IntSerializer INSTANCE = new IntSerializer();
 
         @Override
@@ -99,7 +99,7 @@ public final class BabelSerializers {
         }
     }
 
-    private static final class DoubleSerializer extends BabelSerializer<Double> {
+    private static final class DoubleSerializer extends StoneSerializer<Double> {
         public static final DoubleSerializer INSTANCE = new DoubleSerializer();
 
         @Override
@@ -115,7 +115,7 @@ public final class BabelSerializers {
         }
     }
 
-    private static final class FloatSerializer extends BabelSerializer<Float> {
+    private static final class FloatSerializer extends StoneSerializer<Float> {
         public static final FloatSerializer INSTANCE = new FloatSerializer();
 
         @Override
@@ -131,7 +131,7 @@ public final class BabelSerializers {
         }
     }
 
-    private static final class BooleanSerializer extends BabelSerializer<Boolean> {
+    private static final class BooleanSerializer extends StoneSerializer<Boolean> {
         public static final BooleanSerializer INSTANCE = new BooleanSerializer();
 
         @Override
@@ -147,7 +147,7 @@ public final class BabelSerializers {
         }
     }
 
-    private static final class ByteArraySerializer extends BabelSerializer<byte []> {
+    private static final class ByteArraySerializer extends StoneSerializer<byte []> {
         public static final ByteArraySerializer INSTANCE = new ByteArraySerializer();
 
         @Override
@@ -163,7 +163,7 @@ public final class BabelSerializers {
         }
     }
 
-    private static final class StringSerializer extends BabelSerializer<String> {
+    private static final class StringSerializer extends StoneSerializer<String> {
         public static final StringSerializer INSTANCE = new StringSerializer();
 
         @Override
@@ -179,7 +179,7 @@ public final class BabelSerializers {
         }
     }
 
-    private static final class DateSerializer extends BabelSerializer<Date> {
+    private static final class DateSerializer extends StoneSerializer<Date> {
         public static final DateSerializer INSTANCE = new DateSerializer();
 
         @Override
@@ -199,7 +199,7 @@ public final class BabelSerializers {
         }
     }
 
-    private static final class VoidSerializer extends BabelSerializer<Void> {
+    private static final class VoidSerializer extends StoneSerializer<Void> {
         public static final VoidSerializer INSTANCE = new VoidSerializer();
 
         @Override
@@ -214,10 +214,10 @@ public final class BabelSerializers {
         }
     }
 
-    private static final class NullableSerializer<T> extends BabelSerializer<T> {
-        private final BabelSerializer<T> underlying;
+    private static final class NullableSerializer<T> extends StoneSerializer<T> {
+        private final StoneSerializer<T> underlying;
 
-        public NullableSerializer(BabelSerializer<T> underlying) {
+        public NullableSerializer(StoneSerializer<T> underlying) {
             this.underlying = underlying;
         }
 
@@ -241,10 +241,10 @@ public final class BabelSerializers {
         }
     }
 
-    private static final class ListSerializer<T> extends BabelSerializer<List<T>> {
-        private final BabelSerializer<T> underlying;
+    private static final class ListSerializer<T> extends StoneSerializer<List<T>> {
+        private final StoneSerializer<T> underlying;
 
-        public ListSerializer(BabelSerializer<T> underlying) {
+        public ListSerializer(StoneSerializer<T> underlying) {
             this.underlying = underlying;
         }
 

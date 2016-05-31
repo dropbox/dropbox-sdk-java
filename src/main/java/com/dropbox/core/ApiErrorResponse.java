@@ -8,7 +8,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonToken;
 
-import com.dropbox.core.babel.BabelSerializer;
+import com.dropbox.core.stone.StoneSerializer;
 
 final class ApiErrorResponse<T> {
     private final T error;
@@ -33,10 +33,10 @@ final class ApiErrorResponse<T> {
     /**
      * For internal use only.
      */
-    static final class Serializer<T> extends BabelSerializer<ApiErrorResponse<T>> {
-        private BabelSerializer<T> errSerializer;
+    static final class Serializer<T> extends StoneSerializer<ApiErrorResponse<T>> {
+        private StoneSerializer<T> errSerializer;
 
-        public Serializer(BabelSerializer<T> errSerializer) {
+        public Serializer(StoneSerializer<T> errSerializer) {
             this.errSerializer = errSerializer;
         }
 

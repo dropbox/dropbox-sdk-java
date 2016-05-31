@@ -1,5 +1,7 @@
 package com.dropbox.core.v2;
 
+import static com.dropbox.core.DbxRequestUtil.addUserLocaleHeader;
+
 import com.dropbox.core.BadResponseException;
 import com.dropbox.core.DbxDownloader;
 import com.dropbox.core.DbxException;
@@ -11,7 +13,7 @@ import com.dropbox.core.DbxWebAuth;
 import com.dropbox.core.DbxWrappedException;
 import com.dropbox.core.NetworkIOException;
 import com.dropbox.core.RetryException;
-import com.dropbox.core.babel.BabelSerializer;
+import com.dropbox.core.stone.StoneSerializer;
 import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.util.LangUtil;
 
@@ -74,9 +76,9 @@ public abstract class DbxRawClientV2 {
                                           final String path,
                                           final ArgT arg,
                                           final boolean noAuth,
-                                          final BabelSerializer<ArgT> argSerializer,
-                                          final BabelSerializer<ResT> responseSerializer,
-                                          final BabelSerializer<ErrT> errorSerializer)
+                                          final StoneSerializer<ArgT> argSerializer,
+                                          final StoneSerializer<ResT> responseSerializer,
+                                          final StoneSerializer<ErrT> errorSerializer)
         throws DbxWrappedException, DbxException {
 
         final byte [] body = writeAsBytes(argSerializer, arg);
@@ -84,6 +86,11 @@ public abstract class DbxRawClientV2 {
         if (!noAuth) {
             addAuthHeaders(headers);
         }
+        if (!this.host.getNotify().equals(host)) {
+            // TODO(krieb): fix this ugliness
+            addUserLocaleHeader(headers, requestConfig);
+        }
+
         headers.add(new HttpRequestor.Header("Content-Type", "application/json; charset=utf-8"));
 
         return executeRetriable(requestConfig.getMaxRetries(), new RetriableExecution<ResT> () {
@@ -113,15 +120,16 @@ public abstract class DbxRawClientV2 {
                                                               final ArgT arg,
                                                               final boolean noAuth,
                                                               final List<HttpRequestor.Header> extraHeaders,
-                                                              final BabelSerializer<ArgT> argSerializer,
-                                                              final BabelSerializer<ResT> responseSerializer,
-                                                              final BabelSerializer<ErrT> errorSerializer)
+                                                              final StoneSerializer<ArgT> argSerializer,
+                                                              final StoneSerializer<ResT> responseSerializer,
+                                                              final StoneSerializer<ErrT> errorSerializer)
         throws DbxWrappedException, DbxException {
 
         final List<HttpRequestor.Header> headers = new ArrayList<HttpRequestor.Header>(extraHeaders);
         if (!noAuth) {
             addAuthHeaders(headers);
         }
+        addUserLocaleHeader(headers, requestConfig);
         headers.add(new HttpRequestor.Header("Dropbox-API-Arg", headerSafeJson(argSerializer, arg)));
         headers.add(new HttpRequestor.Header("Content-Type", ""));
 
@@ -163,7 +171,7 @@ public abstract class DbxRawClientV2 {
         });
     }
 
-    private static <T> byte [] writeAsBytes(BabelSerializer<T> serializer, T arg) throws DbxException {
+    private static <T> byte [] writeAsBytes(StoneSerializer<T> serializer, T arg) throws DbxException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         try {
             serializer.serialize(arg, out);
@@ -173,7 +181,7 @@ public abstract class DbxRawClientV2 {
         return out.toByteArray();
     }
 
-    private static <T> String headerSafeJson(BabelSerializer<T> serializer, T value) {
+    private static <T> String headerSafeJson(StoneSerializer<T> serializer, T value) {
         StringWriter out = new StringWriter();
         try {
             JsonGenerator g = JSON.createGenerator(out);
@@ -192,7 +200,7 @@ public abstract class DbxRawClientV2 {
                                                      String path,
                                                      ArgT arg,
                                                      boolean noAuth,
-                                                     BabelSerializer<ArgT> argSerializer)
+                                                     StoneSerializer<ArgT> argSerializer)
         throws DbxException {
 
         String uri = DbxRequestUtil.buildUri(host, path);
@@ -200,6 +208,7 @@ public abstract class DbxRawClientV2 {
         if (!noAuth) {
             addAuthHeaders(headers);
         }
+        addUserLocaleHeader(headers, requestConfig);
         headers.add(new HttpRequestor.Header("Content-Type", "application/octet-stream"));
         headers = DbxRequestUtil.addUserAgentHeader(headers, requestConfig, USER_AGENT_ID);
         headers.add(new HttpRequestor.Header("Dropbox-API-Arg", headerSafeJson(argSerializer, arg)));

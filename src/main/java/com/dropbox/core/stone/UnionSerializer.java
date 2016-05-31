@@ -1,4 +1,4 @@
-package com.dropbox.core.babel;
+package com.dropbox.core.stone;
 
 import java.io.IOException;
 

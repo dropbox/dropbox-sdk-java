@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import com.fasterxml.jackson.core.JsonParseException;
 
-import com.dropbox.core.babel.BabelSerializer;
+import com.dropbox.core.stone.StoneSerializer;
 import com.dropbox.core.http.HttpRequestor;
 
 /**
@@ -35,7 +35,7 @@ public final class DbxWrappedException extends Exception {
         return userMessage;
     }
 
-    public static <T> DbxWrappedException fromResponse(BabelSerializer<T> errSerializer, HttpRequestor.Response response)
+    public static <T> DbxWrappedException fromResponse(StoneSerializer<T> errSerializer, HttpRequestor.Response response)
         throws IOException, JsonParseException {
         String requestId = DbxRequestUtil.getRequestId(response);
 

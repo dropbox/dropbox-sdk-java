@@ -33,6 +33,16 @@ public class DbxRequestConfig {
      *
      * @param clientIdentifier client identifier typically in the form "Name/Version" to be used in
      *                         the User-Agent header (see {@link #getClientIdentifier}).
+     */
+    public DbxRequestConfig(String clientIdentifier) {
+        this(clientIdentifier, null);
+    }
+
+    /**
+     * Creates a new configuration.
+     *
+     * @param clientIdentifier client identifier typically in the form "Name/Version" to be used in
+     *                         the User-Agent header (see {@link #getClientIdentifier}).
      * @param userLocale IETF BCP 47 language tag of locale to use for user-visible text in responses, or
      *                   {@code null} to use the user's Dropbox locale preference.
      */
@@ -173,6 +183,23 @@ public class DbxRequestConfig {
         return new Builder(clientIdentifier);
     }
 
+    // Available in Java 7, but not in Java 6. Do a hacky version of it here.
+    private static String toLanguageTag(Locale locale) {
+        if (locale == null) {
+            return null;
+        }
+        StringBuilder tag = new StringBuilder();
+
+        tag.append(locale.getLanguage().toLowerCase());
+
+        if (!locale.getCountry().isEmpty()) {
+            tag.append("-");
+            tag.append(locale.getCountry().toUpperCase());
+        }
+
+        return tag.toString();
+    }
+
     /**
      * Builder for {@link DbxRequestConfig}.
      */
@@ -244,7 +271,7 @@ public class DbxRequestConfig {
          * @return this builder
          */
         public Builder withUserLocaleFrom(/*@Nullable*/ Locale userLocale) { // not named withUserLocale because of ambiguous calls when passing 'null'
-            this.userLocale = userLocale == null ? null : userLocale.toLanguageTag();
+            this.userLocale = toLanguageTag(userLocale);
             return this;
         }
 

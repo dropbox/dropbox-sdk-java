@@ -1,27 +1,27 @@
 apply plugin: 'java'
 
-task generateBabelSources(type: Exec) {
-    description 'Runs Babel generation script to generate API spec Java source files.'
+task generateStoneSources(type: Exec) {
+    description 'Runs Stone generation script to generate API spec Java source files.'
 
     ext {
-        generateScriptFile = file('run-babel-codegen')
+        generateScriptFile = file('run-stone-codegen')
         generatorDir = file('generator')
         specDir = file(project.properties.get('com.dropbox.api.specDir','spec'))
-        outputDir = file("${generatedSources}/babel")
+        outputDir = file("${generatedSources}/stone")
         logDir = file("${buildDir}")
-        logFile = file("${logDir}/babel.log")
+        logFile = file("${logDir}/stone.log")
     }
 
     logDir.mkdirs()
     outputDir.mkdirs()
 
     if (!specDir.exists()) {
-        throw new GradleException("Dropbox API Babel spec directory does not exist: ${specDir.absolutePath}")
+        throw new GradleException("Dropbox API Stone spec directory does not exist: ${specDir.absolutePath}")
     }
 
     inputs.file generateScriptFile
     inputs.dir fileTree(dir: generatorDir, exclude: '**/*.pyc')
-    inputs.sourceDir specDir
+    inputs.sourceDir fileTree(dir: specDir, include: '**/*.stone')
     outputs.dir outputDir
 
     standardOutput = new FileOutputStream(logFile)
@@ -38,5 +38,5 @@ sourceSets {
 }
 
 compileJava {
-    dependsOn generateBabelSources
+    dependsOn generateStoneSources
 }
