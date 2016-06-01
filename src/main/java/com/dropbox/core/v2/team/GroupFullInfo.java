@@ -1,27 +1,17 @@
 /* DO NOT EDIT */
-/* This file was generated from team_groups.babel */
+/* This file was generated from team_groups.stone */
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
+import com.dropbox.core.v2.teamcommon.GroupSummary;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.List;
@@ -29,14 +19,8 @@ import java.util.List;
 /**
  * Full description of a group.
  */
-@JsonSerialize(using=GroupFullInfo.Serializer.class)
-@JsonDeserialize(using=GroupFullInfo.Deserializer.class)
 public class GroupFullInfo extends GroupSummary {
     // struct GroupFullInfo
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final List<GroupMemberInfo> members;
     protected final long created;
@@ -207,7 +191,7 @@ public class GroupFullInfo extends GroupSummary {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -219,133 +203,101 @@ public class GroupFullInfo extends GroupSummary {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<GroupFullInfo> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(GroupFullInfo.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(GroupFullInfo.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<GroupFullInfo> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected JsonSerializer<GroupFullInfo> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(GroupFullInfo value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("group_name", value.groupName);
-            g.writeObjectField("group_id", value.groupId);
-            g.writeObjectField("created", value.created);
+        public void serialize(GroupFullInfo value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
+            }
+            g.writeFieldName("group_name");
+            StoneSerializers.string().serialize(value.groupName, g);
+            g.writeFieldName("group_id");
+            StoneSerializers.string().serialize(value.groupId, g);
+            g.writeFieldName("created");
+            StoneSerializers.uInt64().serialize(value.created, g);
             if (value.groupExternalId != null) {
-                g.writeObjectField("group_external_id", value.groupExternalId);
+                g.writeFieldName("group_external_id");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.groupExternalId, g);
             }
             if (value.memberCount != null) {
-                g.writeObjectField("member_count", value.memberCount);
+                g.writeFieldName("member_count");
+                StoneSerializers.nullable(StoneSerializers.uInt32()).serialize(value.memberCount, g);
             }
             if (value.members != null) {
-                g.writeObjectField("members", value.members);
+                g.writeFieldName("members");
+                StoneSerializers.nullable(StoneSerializers.list(GroupMemberInfo.Serializer.INSTANCE)).serialize(value.members, g);
             }
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<GroupFullInfo> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(GroupFullInfo.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(GroupFullInfo.class, unwrapping);
+            if (!collapse) {
+                g.writeEndObject();
+            }
         }
 
         @Override
-        protected JsonDeserializer<GroupFullInfo> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public GroupFullInfo deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            String groupName = null;
-            String groupId = null;
-            Long created = null;
-            String groupExternalId = null;
-            Long memberCount = null;
-            List<GroupMemberInfo> members = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("group_name".equals(_field)) {
-                    groupName = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("group_id".equals(_field)) {
-                    groupId = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("created".equals(_field)) {
-                    created = _p.getLongValue();
-                    assertUnsigned(_p, created);
-                    _p.nextToken();
-                }
-                else if ("group_external_id".equals(_field)) {
-                    groupExternalId = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("member_count".equals(_field)) {
-                    memberCount = _p.getLongValue();
-                    assertUnsigned(_p, memberCount);
-                    if (memberCount > Integer.MAX_VALUE) {
-                        throw new JsonParseException(_p, "expecting a 32-bit unsigned integer, got: " + memberCount);
+        public GroupFullInfo deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            GroupFullInfo value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                String f_groupName = null;
+                String f_groupId = null;
+                Long f_created = null;
+                String f_groupExternalId = null;
+                Long f_memberCount = null;
+                List<GroupMemberInfo> f_members = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("group_name".equals(field)) {
+                        f_groupName = StoneSerializers.string().deserialize(p);
                     }
-                    _p.nextToken();
-                }
-                else if ("members".equals(_field)) {
-                    expectArrayStart(_p);
-                    members = new java.util.ArrayList<GroupMemberInfo>();
-                    while (!isArrayEnd(_p)) {
-                        GroupMemberInfo _x = null;
-                        _x = _p.readValueAs(GroupMemberInfo.class);
-                        _p.nextToken();
-                        members.add(_x);
+                    else if ("group_id".equals(field)) {
+                        f_groupId = StoneSerializers.string().deserialize(p);
                     }
-                    expectArrayEnd(_p);
-                    _p.nextToken();
+                    else if ("created".equals(field)) {
+                        f_created = StoneSerializers.uInt64().deserialize(p);
+                    }
+                    else if ("group_external_id".equals(field)) {
+                        f_groupExternalId = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                    }
+                    else if ("member_count".equals(field)) {
+                        f_memberCount = StoneSerializers.nullable(StoneSerializers.uInt32()).deserialize(p);
+                    }
+                    else if ("members".equals(field)) {
+                        f_members = StoneSerializers.nullable(StoneSerializers.list(GroupMemberInfo.Serializer.INSTANCE)).deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
                 }
-                else {
-                    skipValue(_p);
+                if (f_groupName == null) {
+                    throw new JsonParseException(p, "Required field \"group_name\" missing.");
                 }
+                if (f_groupId == null) {
+                    throw new JsonParseException(p, "Required field \"group_id\" missing.");
+                }
+                if (f_created == null) {
+                    throw new JsonParseException(p, "Required field \"created\" missing.");
+                }
+                value = new GroupFullInfo(f_groupName, f_groupId, f_created, f_groupExternalId, f_memberCount, f_members);
             }
-
-            if (groupName == null) {
-                throw new JsonParseException(_p, "Required field \"group_name\" is missing.");
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
             }
-            if (groupId == null) {
-                throw new JsonParseException(_p, "Required field \"group_id\" is missing.");
+            if (!collapsed) {
+                expectEndObject(p);
             }
-            if (created == null) {
-                throw new JsonParseException(_p, "Required field \"created\" is missing.");
-            }
-
-            return new GroupFullInfo(groupName, groupId, created, groupExternalId, memberCount, members);
+            return value;
         }
     }
 }

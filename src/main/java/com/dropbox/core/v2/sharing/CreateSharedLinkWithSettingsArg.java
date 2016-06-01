@@ -1,38 +1,21 @@
 /* DO NOT EDIT */
-/* This file was generated from shared_links.babel */
+/* This file was generated from shared_links.stone */
 
 package com.dropbox.core.v2.sharing;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
-@JsonSerialize(using=CreateSharedLinkWithSettingsArg.Serializer.class)
-@JsonDeserialize(using=CreateSharedLinkWithSettingsArg.Deserializer.class)
 class CreateSharedLinkWithSettingsArg {
     // struct CreateSharedLinkWithSettingsArg
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final String path;
     protected final SharedLinkSettings settings;
@@ -40,7 +23,8 @@ class CreateSharedLinkWithSettingsArg {
     /**
      *
      * @param path  The path to be shared by the shared link. Must match pattern
-     *     "{@code ((/|id:).*)|(rev:[0-9a-f]{9,})}" and not be {@code null}.
+     *     "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}" and not be {@code
+     *     null}.
      * @param settings  The requested settings for the newly created shared
      *     link.
      *
@@ -51,7 +35,7 @@ class CreateSharedLinkWithSettingsArg {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
-        if (!java.util.regex.Pattern.matches("((/|id:).*)|(rev:[0-9a-f]{9,})", path)) {
+        if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})", path)) {
             throw new IllegalArgumentException("String 'path' does not match pattern");
         }
         this.path = path;
@@ -62,7 +46,8 @@ class CreateSharedLinkWithSettingsArg {
      * The default values for unset fields will be used.
      *
      * @param path  The path to be shared by the shared link. Must match pattern
-     *     "{@code ((/|id:).*)|(rev:[0-9a-f]{9,})}" and not be {@code null}.
+     *     "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}" and not be {@code
+     *     null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -117,7 +102,7 @@ class CreateSharedLinkWithSettingsArg {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -129,86 +114,67 @@ class CreateSharedLinkWithSettingsArg {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<CreateSharedLinkWithSettingsArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(CreateSharedLinkWithSettingsArg.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(CreateSharedLinkWithSettingsArg.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<CreateSharedLinkWithSettingsArg> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected JsonSerializer<CreateSharedLinkWithSettingsArg> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(CreateSharedLinkWithSettingsArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("path", value.path);
+        public void serialize(CreateSharedLinkWithSettingsArg value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
+            }
+            g.writeFieldName("path");
+            StoneSerializers.string().serialize(value.path, g);
             if (value.settings != null) {
-                g.writeObjectField("settings", value.settings);
+                g.writeFieldName("settings");
+                StoneSerializers.nullable(SharedLinkSettings.Serializer.INSTANCE).serialize(value.settings, g);
             }
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<CreateSharedLinkWithSettingsArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(CreateSharedLinkWithSettingsArg.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(CreateSharedLinkWithSettingsArg.class, unwrapping);
+            if (!collapse) {
+                g.writeEndObject();
+            }
         }
 
         @Override
-        protected JsonDeserializer<CreateSharedLinkWithSettingsArg> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public CreateSharedLinkWithSettingsArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            String path = null;
-            SharedLinkSettings settings = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("path".equals(_field)) {
-                    path = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("settings".equals(_field)) {
-                    settings = _p.readValueAs(SharedLinkSettings.class);
-                    _p.nextToken();
-                }
-                else {
-                    skipValue(_p);
-                }
+        public CreateSharedLinkWithSettingsArg deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            CreateSharedLinkWithSettingsArg value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
             }
-
-            if (path == null) {
-                throw new JsonParseException(_p, "Required field \"path\" is missing.");
+            if (tag == null) {
+                String f_path = null;
+                SharedLinkSettings f_settings = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("path".equals(field)) {
+                        f_path = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("settings".equals(field)) {
+                        f_settings = StoneSerializers.nullable(SharedLinkSettings.Serializer.INSTANCE).deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
+                }
+                if (f_path == null) {
+                    throw new JsonParseException(p, "Required field \"path\" missing.");
+                }
+                value = new CreateSharedLinkWithSettingsArg(f_path, f_settings);
             }
-
-            return new CreateSharedLinkWithSettingsArg(path, settings);
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

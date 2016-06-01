@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_reports.babel */
+/* This file was generated from team_reports.stone */
 
 package com.dropbox.core.v2.team;
 

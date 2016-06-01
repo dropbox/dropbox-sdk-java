@@ -1,30 +1,18 @@
 /* DO NOT EDIT */
-/* This file was generated from files.babel */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This class is an open tagged union.  Tagged unions instances are always
@@ -36,14 +24,8 @@ import java.util.Map;
  * tag is introduced that this SDK does not recognized, the {@link #OTHER} value
  * will be used. </p>
  */
-@JsonSerialize(using=UploadSessionLookupError.Serializer.class)
-@JsonDeserialize(using=UploadSessionLookupError.Deserializer.class)
 public final class UploadSessionLookupError {
     // union UploadSessionLookupError
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link UploadSessionLookupError}.
@@ -265,7 +247,7 @@ public final class UploadSessionLookupError {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -277,90 +259,83 @@ public final class UploadSessionLookupError {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends UnionJsonSerializer<UploadSessionLookupError> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(UploadSessionLookupError.class, UploadSessionOffsetError.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<UploadSessionLookupError> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(UploadSessionLookupError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            switch (value.tag) {
-                case NOT_FOUND:
+        public void serialize(UploadSessionLookupError value, JsonGenerator g) throws IOException, JsonGenerationException {
+            switch (value.tag()) {
+                case NOT_FOUND: {
                     g.writeString("not_found");
                     break;
-                case INCORRECT_OFFSET:
+                }
+                case INCORRECT_OFFSET: {
                     g.writeStartObject();
-                    g.writeStringField(".tag", "incorrect_offset");
-                    getUnwrappingSerializer(UploadSessionOffsetError.class).serialize(value.incorrectOffsetValue, g, provider);
+                    writeTag("incorrect_offset", g);
+                    UploadSessionOffsetError.Serializer.INSTANCE.serialize(value.incorrectOffsetValue, g, true);
                     g.writeEndObject();
                     break;
-                case CLOSED:
+                }
+                case CLOSED: {
                     g.writeString("closed");
                     break;
-                case NOT_CLOSED:
+                }
+                case NOT_CLOSED: {
                     g.writeString("not_closed");
                     break;
-                case OTHER:
+                }
+                default: {
                     g.writeString("other");
-                    break;
+                }
             }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<UploadSessionLookupError, Tag> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(UploadSessionLookupError.class, getTagMapping(), Tag.OTHER, UploadSessionOffsetError.class);
         }
 
         @Override
-        public UploadSessionLookupError deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            switch (_tag) {
-                case NOT_FOUND: {
-                    return UploadSessionLookupError.NOT_FOUND;
-                }
-                case INCORRECT_OFFSET: {
-                    UploadSessionOffsetError value = null;
-                    value = readCollapsedStructValue(UploadSessionOffsetError.class, _p, _ctx);
-                    return UploadSessionLookupError.incorrectOffset(value);
-                }
-                case CLOSED: {
-                    return UploadSessionLookupError.CLOSED;
-                }
-                case NOT_CLOSED: {
-                    return UploadSessionLookupError.NOT_CLOSED;
-                }
-                case OTHER: {
-                    return UploadSessionLookupError.OTHER;
-                }
+        public UploadSessionLookupError deserialize(JsonParser p) throws IOException, JsonParseException {
+            UploadSessionLookupError value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
             }
-            // should be impossible to get here
-            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
-        }
-
-        private static Map<String, UploadSessionLookupError.Tag> getTagMapping() {
-            Map<String, UploadSessionLookupError.Tag> values = new HashMap<String, UploadSessionLookupError.Tag>();
-            values.put("not_found", UploadSessionLookupError.Tag.NOT_FOUND);
-            values.put("incorrect_offset", UploadSessionLookupError.Tag.INCORRECT_OFFSET);
-            values.put("closed", UploadSessionLookupError.Tag.CLOSED);
-            values.put("not_closed", UploadSessionLookupError.Tag.NOT_CLOSED);
-            values.put("other", UploadSessionLookupError.Tag.OTHER);
-            return Collections.unmodifiableMap(values);
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("not_found".equals(tag)) {
+                value = UploadSessionLookupError.NOT_FOUND;
+            }
+            else if ("incorrect_offset".equals(tag)) {
+                UploadSessionOffsetError fieldValue = null;
+                fieldValue = UploadSessionOffsetError.Serializer.INSTANCE.deserialize(p, true);
+                value = UploadSessionLookupError.incorrectOffset(fieldValue);
+            }
+            else if ("closed".equals(tag)) {
+                value = UploadSessionLookupError.CLOSED;
+            }
+            else if ("not_closed".equals(tag)) {
+                value = UploadSessionLookupError.NOT_CLOSED;
+            }
+            else {
+                value = UploadSessionLookupError.OTHER;
+                skipFields(p);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

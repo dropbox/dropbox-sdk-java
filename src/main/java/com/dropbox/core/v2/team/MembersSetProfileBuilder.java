@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_members.babel */
+/* This file was generated from team_members.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -13,26 +13,26 @@ import com.dropbox.core.DbxException;
  * request. </p>
  */
 public class MembersSetProfileBuilder {
-    private final DbxTeamTeamRequests team;
+    private final DbxTeamTeamRequests team_;
     private final MembersSetProfileArg.Builder membersSetProfileArgBuilder;
 
     /**
      * Creates a new instance of this builder.
      *
-     * @param team  Dropbox namespace-specific client used to issue team
+     * @param team_  Dropbox namespace-specific client used to issue team
      *     requests.
      * @param membersSetProfileArgBuilder  Request argument builder.
      *
      * @return instsance of this builder
      */
-    MembersSetProfileBuilder(DbxTeamTeamRequests team, MembersSetProfileArg.Builder membersSetProfileArgBuilder) {
-        if (team == null) {
-            throw new NullPointerException("team");
+    MembersSetProfileBuilder(DbxTeamTeamRequests team_, MembersSetProfileArg.Builder membersSetProfileArgBuilder) {
+        if (team_ == null) {
+            throw new NullPointerException("team_");
         }
+        this.team_ = team_;
         if (membersSetProfileArgBuilder == null) {
             throw new NullPointerException("membersSetProfileArgBuilder");
         }
-        this.team = team;
         this.membersSetProfileArgBuilder = membersSetProfileArgBuilder;
     }
 
@@ -107,7 +107,7 @@ public class MembersSetProfileBuilder {
      * Issues the request.
      */
     public TeamMemberInfo start() throws MembersSetProfileErrorException, DbxException {
-        MembersSetProfileArg arg = this.membersSetProfileArgBuilder.build();
-        return team.membersSetProfile(arg);
+        MembersSetProfileArg arg_ = this.membersSetProfileArgBuilder.build();
+        return team_.membersSetProfile(arg_);
     }
 }

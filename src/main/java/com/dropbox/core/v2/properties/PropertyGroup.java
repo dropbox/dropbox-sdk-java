@@ -1,27 +1,16 @@
 /* DO NOT EDIT */
-/* This file was generated from properties.babel */
+/* This file was generated from properties.stone */
 
 package com.dropbox.core.v2.properties;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.List;
@@ -29,14 +18,8 @@ import java.util.List;
 /**
  * Collection of custom properties in filled property templates.
  */
-@JsonSerialize(using=PropertyGroup.Serializer.class)
-@JsonDeserialize(using=PropertyGroup.Deserializer.class)
 public class PropertyGroup {
     // struct PropertyGroup
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final String templateId;
     protected final List<PropertyField> fields;
@@ -123,7 +106,7 @@ public class PropertyGroup {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -135,95 +118,68 @@ public class PropertyGroup {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
+    /**
+     * For internal use only.
+     */
+    public static final class Serializer extends StructSerializer<PropertyGroup> {
+        public static final Serializer INSTANCE = new Serializer();
 
-    static final class Serializer extends StructJsonSerializer<PropertyGroup> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(PropertyGroup.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(PropertyGroup.class, unwrapping);
+        @Override
+        public void serialize(PropertyGroup value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
+            }
+            g.writeFieldName("template_id");
+            StoneSerializers.string().serialize(value.templateId, g);
+            g.writeFieldName("fields");
+            StoneSerializers.list(PropertyField.Serializer.INSTANCE).serialize(value.fields, g);
+            if (!collapse) {
+                g.writeEndObject();
+            }
         }
 
         @Override
-        protected JsonSerializer<PropertyGroup> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(PropertyGroup value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("template_id", value.templateId);
-            g.writeObjectField("fields", value.fields);
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<PropertyGroup> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(PropertyGroup.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(PropertyGroup.class, unwrapping);
-        }
-
-        @Override
-        protected JsonDeserializer<PropertyGroup> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public PropertyGroup deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            String templateId = null;
-            List<PropertyField> fields = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("template_id".equals(_field)) {
-                    templateId = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("fields".equals(_field)) {
-                    expectArrayStart(_p);
-                    fields = new java.util.ArrayList<PropertyField>();
-                    while (!isArrayEnd(_p)) {
-                        PropertyField _x = null;
-                        _x = _p.readValueAs(PropertyField.class);
-                        _p.nextToken();
-                        fields.add(_x);
+        public PropertyGroup deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            PropertyGroup value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                String f_templateId = null;
+                List<PropertyField> f_fields = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("template_id".equals(field)) {
+                        f_templateId = StoneSerializers.string().deserialize(p);
                     }
-                    expectArrayEnd(_p);
-                    _p.nextToken();
+                    else if ("fields".equals(field)) {
+                        f_fields = StoneSerializers.list(PropertyField.Serializer.INSTANCE).deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
                 }
-                else {
-                    skipValue(_p);
+                if (f_templateId == null) {
+                    throw new JsonParseException(p, "Required field \"template_id\" missing.");
                 }
+                if (f_fields == null) {
+                    throw new JsonParseException(p, "Required field \"fields\" missing.");
+                }
+                value = new PropertyGroup(f_templateId, f_fields);
             }
-
-            if (templateId == null) {
-                throw new JsonParseException(_p, "Required field \"template_id\" is missing.");
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
             }
-            if (fields == null) {
-                throw new JsonParseException(_p, "Required field \"fields\" is missing.");
+            if (!collapsed) {
+                expectEndObject(p);
             }
-
-            return new PropertyGroup(templateId, fields);
+            return value;
         }
     }
 }

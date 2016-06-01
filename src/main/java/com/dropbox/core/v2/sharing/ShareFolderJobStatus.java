@@ -1,30 +1,18 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.babel */
+/* This file was generated from sharing_folders.stone */
 
 package com.dropbox.core.v2.sharing;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This class is a tagged union.  Tagged unions instances are always associated
@@ -32,14 +20,8 @@ import java.util.Map;
  * return {@code true}. You can use {@link #tag()} to determine the tag
  * associated with this instance.
  */
-@JsonSerialize(using=ShareFolderJobStatus.Serializer.class)
-@JsonDeserialize(using=ShareFolderJobStatus.Deserializer.class)
 public final class ShareFolderJobStatus {
     // union ShareFolderJobStatus
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link ShareFolderJobStatus}.
@@ -233,7 +215,7 @@ public final class ShareFolderJobStatus {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -245,82 +227,82 @@ public final class ShareFolderJobStatus {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends UnionJsonSerializer<ShareFolderJobStatus> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(ShareFolderJobStatus.class, SharedFolderMetadata.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<ShareFolderJobStatus> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(ShareFolderJobStatus value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            switch (value.tag) {
-                case IN_PROGRESS:
+        public void serialize(ShareFolderJobStatus value, JsonGenerator g) throws IOException, JsonGenerationException {
+            switch (value.tag()) {
+                case IN_PROGRESS: {
                     g.writeString("in_progress");
                     break;
-                case COMPLETE:
+                }
+                case COMPLETE: {
                     g.writeStartObject();
-                    g.writeStringField(".tag", "complete");
-                    getUnwrappingSerializer(SharedFolderMetadata.class).serialize(value.completeValue, g, provider);
+                    writeTag("complete", g);
+                    SharedFolderMetadata.Serializer.INSTANCE.serialize(value.completeValue, g, true);
                     g.writeEndObject();
                     break;
-                case FAILED:
+                }
+                case FAILED: {
                     g.writeStartObject();
-                    g.writeStringField(".tag", "failed");
-                    g.writeObjectField("failed", value.failedValue);
+                    writeTag("failed", g);
+                    g.writeFieldName("failed");
+                    ShareFolderError.Serializer.INSTANCE.serialize(value.failedValue, g);
                     g.writeEndObject();
                     break;
+                }
+                default: {
+                    throw new IllegalArgumentException("Unrecognized tag: " + value.tag());
+                }
             }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<ShareFolderJobStatus, Tag> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(ShareFolderJobStatus.class, getTagMapping(), null, SharedFolderMetadata.class);
         }
 
         @Override
-        public ShareFolderJobStatus deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            switch (_tag) {
-                case IN_PROGRESS: {
-                    return ShareFolderJobStatus.IN_PROGRESS;
-                }
-                case COMPLETE: {
-                    SharedFolderMetadata value = null;
-                    value = readCollapsedStructValue(SharedFolderMetadata.class, _p, _ctx);
-                    return ShareFolderJobStatus.complete(value);
-                }
-                case FAILED: {
-                    ShareFolderError value = null;
-                    expectField(_p, "failed");
-                    value = _p.readValueAs(ShareFolderError.class);
-                    _p.nextToken();
-                    return ShareFolderJobStatus.failed(value);
-                }
+        public ShareFolderJobStatus deserialize(JsonParser p) throws IOException, JsonParseException {
+            ShareFolderJobStatus value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
             }
-            // should be impossible to get here
-            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
-        }
-
-        private static Map<String, ShareFolderJobStatus.Tag> getTagMapping() {
-            Map<String, ShareFolderJobStatus.Tag> values = new HashMap<String, ShareFolderJobStatus.Tag>();
-            values.put("complete", ShareFolderJobStatus.Tag.COMPLETE);
-            values.put("failed", ShareFolderJobStatus.Tag.FAILED);
-            return Collections.unmodifiableMap(values);
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("in_progress".equals(tag)) {
+                value = ShareFolderJobStatus.IN_PROGRESS;
+            }
+            else if ("complete".equals(tag)) {
+                SharedFolderMetadata fieldValue = null;
+                fieldValue = SharedFolderMetadata.Serializer.INSTANCE.deserialize(p, true);
+                value = ShareFolderJobStatus.complete(fieldValue);
+            }
+            else if ("failed".equals(tag)) {
+                ShareFolderError fieldValue = null;
+                expectField("failed", p);
+                fieldValue = ShareFolderError.Serializer.INSTANCE.deserialize(p);
+                value = ShareFolderJobStatus.failed(fieldValue);
+            }
+            else {
+                throw new JsonParseException(p, "Unknown tag: " + tag);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

@@ -1,39 +1,22 @@
 /* DO NOT EDIT */
-/* This file was generated from files.babel */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.List;
 
-@JsonSerialize(using=ListRevisionsResult.Serializer.class)
-@JsonDeserialize(using=ListRevisionsResult.Deserializer.class)
 public class ListRevisionsResult {
     // struct ListRevisionsResult
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final boolean isDeleted;
     protected final List<FileMetadata> entries;
@@ -107,7 +90,7 @@ public class ListRevisionsResult {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -119,95 +102,68 @@ public class ListRevisionsResult {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<ListRevisionsResult> {
+        public static final Serializer INSTANCE = new Serializer();
 
-    static final class Serializer extends StructJsonSerializer<ListRevisionsResult> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(ListRevisionsResult.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(ListRevisionsResult.class, unwrapping);
+        @Override
+        public void serialize(ListRevisionsResult value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
+            }
+            g.writeFieldName("is_deleted");
+            StoneSerializers.boolean_().serialize(value.isDeleted, g);
+            g.writeFieldName("entries");
+            StoneSerializers.list(FileMetadata.Serializer.INSTANCE).serialize(value.entries, g);
+            if (!collapse) {
+                g.writeEndObject();
+            }
         }
 
         @Override
-        protected JsonSerializer<ListRevisionsResult> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(ListRevisionsResult value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("is_deleted", value.isDeleted);
-            g.writeObjectField("entries", value.entries);
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<ListRevisionsResult> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(ListRevisionsResult.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(ListRevisionsResult.class, unwrapping);
-        }
-
-        @Override
-        protected JsonDeserializer<ListRevisionsResult> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public ListRevisionsResult deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            Boolean isDeleted = null;
-            List<FileMetadata> entries = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("is_deleted".equals(_field)) {
-                    isDeleted = _p.getValueAsBoolean();
-                    _p.nextToken();
-                }
-                else if ("entries".equals(_field)) {
-                    expectArrayStart(_p);
-                    entries = new java.util.ArrayList<FileMetadata>();
-                    while (!isArrayEnd(_p)) {
-                        FileMetadata _x = null;
-                        _x = _p.readValueAs(FileMetadata.class);
-                        _p.nextToken();
-                        entries.add(_x);
+        public ListRevisionsResult deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            ListRevisionsResult value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                Boolean f_isDeleted = null;
+                List<FileMetadata> f_entries = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("is_deleted".equals(field)) {
+                        f_isDeleted = StoneSerializers.boolean_().deserialize(p);
                     }
-                    expectArrayEnd(_p);
-                    _p.nextToken();
+                    else if ("entries".equals(field)) {
+                        f_entries = StoneSerializers.list(FileMetadata.Serializer.INSTANCE).deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
                 }
-                else {
-                    skipValue(_p);
+                if (f_isDeleted == null) {
+                    throw new JsonParseException(p, "Required field \"is_deleted\" missing.");
                 }
+                if (f_entries == null) {
+                    throw new JsonParseException(p, "Required field \"entries\" missing.");
+                }
+                value = new ListRevisionsResult(f_isDeleted, f_entries);
             }
-
-            if (isDeleted == null) {
-                throw new JsonParseException(_p, "Required field \"is_deleted\" is missing.");
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
             }
-            if (entries == null) {
-                throw new JsonParseException(_p, "Required field \"entries\" is missing.");
+            if (!collapsed) {
+                expectEndObject(p);
             }
-
-            return new ListRevisionsResult(isDeleted, entries);
+            return value;
         }
     }
 }

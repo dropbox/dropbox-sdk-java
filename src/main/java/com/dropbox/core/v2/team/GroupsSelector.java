@@ -1,31 +1,19 @@
 /* DO NOT EDIT */
-/* This file was generated from team_groups.babel */
+/* This file was generated from team_groups.stone */
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Argument for selecting a list of groups, either by group_ids, or external
@@ -36,14 +24,8 @@ import java.util.Map;
  * methods will return {@code true}. You can use {@link #tag()} to determine the
  * tag associated with this instance. </p>
  */
-@JsonSerialize(using=GroupsSelector.Serializer.class)
-@JsonDeserialize(using=GroupsSelector.Deserializer.class)
 public final class GroupsSelector {
     // union GroupsSelector
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link GroupsSelector}.
@@ -235,7 +217,7 @@ public final class GroupsSelector {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -247,94 +229,77 @@ public final class GroupsSelector {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends UnionJsonSerializer<GroupsSelector> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(GroupsSelector.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<GroupsSelector> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(GroupsSelector value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            switch (value.tag) {
-                case GROUP_IDS:
-                    g.writeStartObject();
-                    g.writeStringField(".tag", "group_ids");
-                    g.writeObjectField("group_ids", value.groupIdsValue);
-                    g.writeEndObject();
-                    break;
-                case GROUP_EXTERNAL_IDS:
-                    g.writeStartObject();
-                    g.writeStringField(".tag", "group_external_ids");
-                    g.writeObjectField("group_external_ids", value.groupExternalIdsValue);
-                    g.writeEndObject();
-                    break;
-            }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<GroupsSelector, Tag> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(GroupsSelector.class, getTagMapping(), null);
-        }
-
-        @Override
-        public GroupsSelector deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            switch (_tag) {
+        public void serialize(GroupsSelector value, JsonGenerator g) throws IOException, JsonGenerationException {
+            switch (value.tag()) {
                 case GROUP_IDS: {
-                    List<String> value = null;
-                    expectField(_p, "group_ids");
-                    expectArrayStart(_p);
-                    value = new java.util.ArrayList<String>();
-                    while (!isArrayEnd(_p)) {
-                        String _x = null;
-                        _x = getStringValue(_p);
-                        _p.nextToken();
-                        value.add(_x);
-                    }
-                    expectArrayEnd(_p);
-                    _p.nextToken();
-                    return GroupsSelector.groupIds(value);
+                    g.writeStartObject();
+                    writeTag("group_ids", g);
+                    g.writeFieldName("group_ids");
+                    StoneSerializers.list(StoneSerializers.string()).serialize(value.groupIdsValue, g);
+                    g.writeEndObject();
+                    break;
                 }
                 case GROUP_EXTERNAL_IDS: {
-                    List<String> value = null;
-                    expectField(_p, "group_external_ids");
-                    expectArrayStart(_p);
-                    value = new java.util.ArrayList<String>();
-                    while (!isArrayEnd(_p)) {
-                        String _x = null;
-                        _x = getStringValue(_p);
-                        _p.nextToken();
-                        value.add(_x);
-                    }
-                    expectArrayEnd(_p);
-                    _p.nextToken();
-                    return GroupsSelector.groupExternalIds(value);
+                    g.writeStartObject();
+                    writeTag("group_external_ids", g);
+                    g.writeFieldName("group_external_ids");
+                    StoneSerializers.list(StoneSerializers.string()).serialize(value.groupExternalIdsValue, g);
+                    g.writeEndObject();
+                    break;
+                }
+                default: {
+                    throw new IllegalArgumentException("Unrecognized tag: " + value.tag());
                 }
             }
-            // should be impossible to get here
-            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
         }
 
-        private static Map<String, GroupsSelector.Tag> getTagMapping() {
-            Map<String, GroupsSelector.Tag> values = new HashMap<String, GroupsSelector.Tag>();
-            values.put("group_ids", GroupsSelector.Tag.GROUP_IDS);
-            values.put("group_external_ids", GroupsSelector.Tag.GROUP_EXTERNAL_IDS);
-            return Collections.unmodifiableMap(values);
+        @Override
+        public GroupsSelector deserialize(JsonParser p) throws IOException, JsonParseException {
+            GroupsSelector value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
+            }
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("group_ids".equals(tag)) {
+                List<String> fieldValue = null;
+                expectField("group_ids", p);
+                fieldValue = StoneSerializers.list(StoneSerializers.string()).deserialize(p);
+                value = GroupsSelector.groupIds(fieldValue);
+            }
+            else if ("group_external_ids".equals(tag)) {
+                List<String> fieldValue = null;
+                expectField("group_external_ids", p);
+                fieldValue = StoneSerializers.list(StoneSerializers.string()).deserialize(p);
+                value = GroupsSelector.groupExternalIds(fieldValue);
+            }
+            else {
+                throw new JsonParseException(p, "Unknown tag: " + tag);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

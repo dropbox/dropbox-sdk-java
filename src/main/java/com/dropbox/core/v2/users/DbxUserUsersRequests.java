@@ -1,17 +1,13 @@
 /* DO NOT EDIT */
-/* This file was generated from users.babel */
+/* This file was generated from users.stone */
 
 package com.dropbox.core.v2.users;
 
 import com.dropbox.core.DbxApiException;
 import com.dropbox.core.DbxException;
-import com.dropbox.core.DbxRequestUtil;
+import com.dropbox.core.DbxWrappedException;
 import com.dropbox.core.http.HttpRequestor;
-import com.dropbox.core.json.JsonUtil;
 import com.dropbox.core.v2.DbxRawClientV2;
-
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JavaType;
 
 import java.util.HashMap;
 import java.util.List;
@@ -45,11 +41,12 @@ public final class DbxUserUsersRequests {
                                    "2/users/get_account",
                                    getAccountArg,
                                    false,
-                                   JsonUtil.createType(BasicAccount.class),
-                                   JsonUtil.createType(GetAccountError.class));
+                                   GetAccountArg.Serializer.INSTANCE,
+                                   BasicAccount.Serializer.INSTANCE,
+                                   GetAccountError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new GetAccountErrorException(ew.getRequestId(), ew.getUserMessage(), (GetAccountError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new GetAccountErrorException(ex.getRequestId(), ex.getUserMessage(), (GetAccountError) ex.getErrorValue());
         }
     }
 
@@ -84,11 +81,12 @@ public final class DbxUserUsersRequests {
                                    "2/users/get_account_batch",
                                    getAccountBatchArg,
                                    false,
-                                   JsonUtil.createType(new TypeReference<List<BasicAccount>>() {}),
-                                   JsonUtil.createType(GetAccountBatchError.class));
+                                   GetAccountBatchArg.Serializer.INSTANCE,
+                                   com.dropbox.core.stone.StoneSerializers.list(BasicAccount.Serializer.INSTANCE),
+                                   GetAccountBatchError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new GetAccountBatchErrorException(ew.getRequestId(), ew.getUserMessage(), (GetAccountBatchError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new GetAccountBatchErrorException(ex.getRequestId(), ex.getUserMessage(), (GetAccountBatchError) ex.getErrorValue());
         }
     }
 
@@ -123,11 +121,12 @@ public final class DbxUserUsersRequests {
                                    "2/users/get_current_account",
                                    null,
                                    false,
-                                   JsonUtil.createType(FullAccount.class),
-                                   JsonUtil.createType(Void.class));
+                                   com.dropbox.core.stone.StoneSerializers.void_(),
+                                   FullAccount.Serializer.INSTANCE,
+                                   com.dropbox.core.stone.StoneSerializers.void_());
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new DbxApiException(ew.getRequestId(), ew.getUserMessage(), "Unexpected error response for \"get_current_account\": ew.errValue");
+        catch (DbxWrappedException ex) {
+            throw new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"get_current_account\":" + ex.getErrorValue());
         }
     }
 
@@ -146,11 +145,12 @@ public final class DbxUserUsersRequests {
                                    "2/users/get_space_usage",
                                    null,
                                    false,
-                                   JsonUtil.createType(SpaceUsage.class),
-                                   JsonUtil.createType(Void.class));
+                                   com.dropbox.core.stone.StoneSerializers.void_(),
+                                   SpaceUsage.Serializer.INSTANCE,
+                                   com.dropbox.core.stone.StoneSerializers.void_());
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new DbxApiException(ew.getRequestId(), ew.getUserMessage(), "Unexpected error response for \"get_space_usage\": ew.errValue");
+        catch (DbxWrappedException ex) {
+            throw new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"get_space_usage\":" + ex.getErrorValue());
         }
     }
 }

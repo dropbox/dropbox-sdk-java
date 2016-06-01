@@ -1,38 +1,21 @@
 /* DO NOT EDIT */
-/* This file was generated from users.babel */
+/* This file was generated from users.stone */
 
 package com.dropbox.core.v2.users;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
-@JsonSerialize(using=IndividualSpaceAllocation.Serializer.class)
-@JsonDeserialize(using=IndividualSpaceAllocation.Deserializer.class)
 public class IndividualSpaceAllocation {
     // struct IndividualSpaceAllocation
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final long allocated;
 
@@ -79,7 +62,7 @@ public class IndividualSpaceAllocation {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -91,79 +74,59 @@ public class IndividualSpaceAllocation {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<IndividualSpaceAllocation> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(IndividualSpaceAllocation.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(IndividualSpaceAllocation.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<IndividualSpaceAllocation> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected JsonSerializer<IndividualSpaceAllocation> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(IndividualSpaceAllocation value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("allocated", value.allocated);
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<IndividualSpaceAllocation> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(IndividualSpaceAllocation.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(IndividualSpaceAllocation.class, unwrapping);
-        }
-
-        @Override
-        protected JsonDeserializer<IndividualSpaceAllocation> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public IndividualSpaceAllocation deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            Long allocated = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("allocated".equals(_field)) {
-                    allocated = _p.getLongValue();
-                    assertUnsigned(_p, allocated);
-                    _p.nextToken();
-                }
-                else {
-                    skipValue(_p);
-                }
+        public void serialize(IndividualSpaceAllocation value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
             }
-
-            if (allocated == null) {
-                throw new JsonParseException(_p, "Required field \"allocated\" is missing.");
+            g.writeFieldName("allocated");
+            StoneSerializers.uInt64().serialize(value.allocated, g);
+            if (!collapse) {
+                g.writeEndObject();
             }
+        }
 
-            return new IndividualSpaceAllocation(allocated);
+        @Override
+        public IndividualSpaceAllocation deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            IndividualSpaceAllocation value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                Long f_allocated = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("allocated".equals(field)) {
+                        f_allocated = StoneSerializers.uInt64().deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
+                }
+                if (f_allocated == null) {
+                    throw new JsonParseException(p, "Required field \"allocated\" missing.");
+                }
+                value = new IndividualSpaceAllocation(f_allocated);
+            }
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

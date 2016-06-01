@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from shared_links.babel */
+/* This file was generated from shared_links.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -13,26 +13,26 @@ import com.dropbox.core.DbxException;
  * request. </p>
  */
 public class CreateSharedLinkBuilder {
-    private final DbxUserSharingRequests sharing;
+    private final DbxUserSharingRequests sharing_;
     private final CreateSharedLinkArg.Builder createSharedLinkArgBuilder;
 
     /**
      * Creates a new instance of this builder.
      *
-     * @param sharing  Dropbox namespace-specific client used to issue sharing
+     * @param sharing_  Dropbox namespace-specific client used to issue sharing
      *     requests.
      * @param createSharedLinkArgBuilder  Request argument builder.
      *
      * @return instsance of this builder
      */
-    CreateSharedLinkBuilder(DbxUserSharingRequests sharing, CreateSharedLinkArg.Builder createSharedLinkArgBuilder) {
-        if (sharing == null) {
-            throw new NullPointerException("sharing");
+    CreateSharedLinkBuilder(DbxUserSharingRequests sharing_, CreateSharedLinkArg.Builder createSharedLinkArgBuilder) {
+        if (sharing_ == null) {
+            throw new NullPointerException("sharing_");
         }
+        this.sharing_ = sharing_;
         if (createSharedLinkArgBuilder == null) {
             throw new NullPointerException("createSharedLinkArgBuilder");
         }
-        this.sharing = sharing;
         this.createSharedLinkArgBuilder = createSharedLinkArgBuilder;
     }
 
@@ -69,8 +69,9 @@ public class CreateSharedLinkBuilder {
     /**
      * Issues the request.
      */
+    @SuppressWarnings("deprecation")
     public PathLinkMetadata start() throws CreateSharedLinkErrorException, DbxException {
-        CreateSharedLinkArg arg = this.createSharedLinkArgBuilder.build();
-        return sharing.createSharedLink(arg);
+        CreateSharedLinkArg arg_ = this.createSharedLinkArgBuilder.build();
+        return sharing_.createSharedLink(arg_);
     }
 }

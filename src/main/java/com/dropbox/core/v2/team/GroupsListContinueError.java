@@ -1,33 +1,19 @@
 /* DO NOT EDIT */
-/* This file was generated from team_groups.babel */
+/* This file was generated from team_groups.stone */
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
-@JsonSerialize(using=GroupsListContinueError.Serializer.class)
-@JsonDeserialize(using=GroupsListContinueError.Deserializer.class)
 public enum GroupsListContinueError {
     // union GroupsListContinueError
     /**
@@ -39,47 +25,54 @@ public enum GroupsListContinueError {
      */
     OTHER; // *catch_all
 
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
-
-    static final class Serializer extends UnionJsonSerializer<GroupsListContinueError> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(GroupsListContinueError.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<GroupsListContinueError> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(GroupsListContinueError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+        public void serialize(GroupsListContinueError value, JsonGenerator g) throws IOException, JsonGenerationException {
             switch (value) {
-                case INVALID_CURSOR:
+                case INVALID_CURSOR: {
                     g.writeString("invalid_cursor");
                     break;
-                case OTHER:
+                }
+                default: {
                     g.writeString("other");
-                    break;
+                }
             }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<GroupsListContinueError, GroupsListContinueError> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(GroupsListContinueError.class, getTagMapping(), GroupsListContinueError.OTHER);
         }
 
         @Override
-        public GroupsListContinueError deserialize(GroupsListContinueError _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            return _tag;
-        }
-
-        private static Map<String, GroupsListContinueError> getTagMapping() {
-            Map<String, GroupsListContinueError> values = new HashMap<String, GroupsListContinueError>();
-            values.put("invalid_cursor", GroupsListContinueError.INVALID_CURSOR);
-            values.put("other", GroupsListContinueError.OTHER);
-            return Collections.unmodifiableMap(values);
+        public GroupsListContinueError deserialize(JsonParser p) throws IOException, JsonParseException {
+            GroupsListContinueError value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
+            }
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("invalid_cursor".equals(tag)) {
+                value = GroupsListContinueError.INVALID_CURSOR;
+            }
+            else {
+                value = GroupsListContinueError.OTHER;
+                skipFields(p);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

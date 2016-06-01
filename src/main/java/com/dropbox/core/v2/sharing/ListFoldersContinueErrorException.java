@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.babel */
+/* This file was generated from sharing_folders.stone */
 
 package com.dropbox.core.v2.sharing;
 

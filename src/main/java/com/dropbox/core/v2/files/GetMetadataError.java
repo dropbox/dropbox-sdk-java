@@ -1,30 +1,18 @@
 /* DO NOT EDIT */
-/* This file was generated from files.babel */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This class is a tagged union.  Tagged unions instances are always associated
@@ -32,14 +20,8 @@ import java.util.Map;
  * return {@code true}. You can use {@link #tag()} to determine the tag
  * associated with this instance.
  */
-@JsonSerialize(using=GetMetadataError.Serializer.class)
-@JsonDeserialize(using=GetMetadataError.Deserializer.class)
 public final class GetMetadataError {
     // union GetMetadataError
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link GetMetadataError}.
@@ -152,7 +134,7 @@ public final class GetMetadataError {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -164,64 +146,63 @@ public final class GetMetadataError {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends UnionJsonSerializer<GetMetadataError> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(GetMetadataError.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<GetMetadataError> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(GetMetadataError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            switch (value.tag) {
-                case PATH:
+        public void serialize(GetMetadataError value, JsonGenerator g) throws IOException, JsonGenerationException {
+            switch (value.tag()) {
+                case PATH: {
                     g.writeStartObject();
-                    g.writeStringField(".tag", "path");
-                    g.writeObjectField("path", value.pathValue);
+                    writeTag("path", g);
+                    g.writeFieldName("path");
+                    LookupError.Serializer.INSTANCE.serialize(value.pathValue, g);
                     g.writeEndObject();
                     break;
+                }
+                default: {
+                    throw new IllegalArgumentException("Unrecognized tag: " + value.tag());
+                }
             }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<GetMetadataError, Tag> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(GetMetadataError.class, getTagMapping(), null);
         }
 
         @Override
-        public GetMetadataError deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            switch (_tag) {
-                case PATH: {
-                    LookupError value = null;
-                    expectField(_p, "path");
-                    value = _p.readValueAs(LookupError.class);
-                    _p.nextToken();
-                    return GetMetadataError.path(value);
-                }
+        public GetMetadataError deserialize(JsonParser p) throws IOException, JsonParseException {
+            GetMetadataError value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
             }
-            // should be impossible to get here
-            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
-        }
-
-        private static Map<String, GetMetadataError.Tag> getTagMapping() {
-            Map<String, GetMetadataError.Tag> values = new HashMap<String, GetMetadataError.Tag>();
-            values.put("path", GetMetadataError.Tag.PATH);
-            return Collections.unmodifiableMap(values);
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("path".equals(tag)) {
+                LookupError fieldValue = null;
+                expectField("path", p);
+                fieldValue = LookupError.Serializer.INSTANCE.deserialize(p);
+                value = GetMetadataError.path(fieldValue);
+            }
+            else {
+                throw new JsonParseException(p, "Unknown tag: " + tag);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

@@ -1,41 +1,24 @@
 /* DO NOT EDIT */
-/* This file was generated from users.babel */
+/* This file was generated from users.stone */
 
 package com.dropbox.core.v2.users;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
 /**
  * Detailed information about the current user's account.
  */
-@JsonSerialize(using=FullAccount.Serializer.class)
-@JsonDeserialize(using=FullAccount.Deserializer.class)
 public class FullAccount extends Account {
     // struct FullAccount
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final String country;
     protected final String locale;
@@ -441,7 +424,7 @@ public class FullAccount extends Account {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -453,182 +436,163 @@ public class FullAccount extends Account {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<FullAccount> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(FullAccount.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(FullAccount.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<FullAccount> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected JsonSerializer<FullAccount> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(FullAccount value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("account_id", value.accountId);
-            g.writeObjectField("name", value.name);
-            g.writeObjectField("email", value.email);
-            g.writeObjectField("email_verified", value.emailVerified);
-            g.writeObjectField("disabled", value.disabled);
-            g.writeObjectField("locale", value.locale);
-            g.writeObjectField("referral_link", value.referralLink);
-            g.writeObjectField("is_paired", value.isPaired);
-            g.writeObjectField("account_type", value.accountType);
+        public void serialize(FullAccount value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
+            }
+            g.writeFieldName("account_id");
+            StoneSerializers.string().serialize(value.accountId, g);
+            g.writeFieldName("name");
+            Name.Serializer.INSTANCE.serialize(value.name, g);
+            g.writeFieldName("email");
+            StoneSerializers.string().serialize(value.email, g);
+            g.writeFieldName("email_verified");
+            StoneSerializers.boolean_().serialize(value.emailVerified, g);
+            g.writeFieldName("disabled");
+            StoneSerializers.boolean_().serialize(value.disabled, g);
+            g.writeFieldName("locale");
+            StoneSerializers.string().serialize(value.locale, g);
+            g.writeFieldName("referral_link");
+            StoneSerializers.string().serialize(value.referralLink, g);
+            g.writeFieldName("is_paired");
+            StoneSerializers.boolean_().serialize(value.isPaired, g);
+            g.writeFieldName("account_type");
+            AccountType.Serializer.INSTANCE.serialize(value.accountType, g);
             if (value.profilePhotoUrl != null) {
-                g.writeObjectField("profile_photo_url", value.profilePhotoUrl);
+                g.writeFieldName("profile_photo_url");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.profilePhotoUrl, g);
             }
             if (value.country != null) {
-                g.writeObjectField("country", value.country);
+                g.writeFieldName("country");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.country, g);
             }
             if (value.team != null) {
-                g.writeObjectField("team", value.team);
+                g.writeFieldName("team");
+                StoneSerializers.nullable(FullTeam.Serializer.INSTANCE).serialize(value.team, g);
             }
             if (value.teamMemberId != null) {
-                g.writeObjectField("team_member_id", value.teamMemberId);
+                g.writeFieldName("team_member_id");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.teamMemberId, g);
             }
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<FullAccount> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(FullAccount.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(FullAccount.class, unwrapping);
+            if (!collapse) {
+                g.writeEndObject();
+            }
         }
 
         @Override
-        protected JsonDeserializer<FullAccount> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public FullAccount deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            String accountId = null;
-            Name name = null;
-            String email = null;
-            Boolean emailVerified = null;
-            Boolean disabled = null;
-            String locale = null;
-            String referralLink = null;
-            Boolean isPaired = null;
-            AccountType accountType = null;
-            String profilePhotoUrl = null;
-            String country = null;
-            FullTeam team = null;
-            String teamMemberId = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("account_id".equals(_field)) {
-                    accountId = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("name".equals(_field)) {
-                    name = _p.readValueAs(Name.class);
-                    _p.nextToken();
-                }
-                else if ("email".equals(_field)) {
-                    email = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("email_verified".equals(_field)) {
-                    emailVerified = _p.getValueAsBoolean();
-                    _p.nextToken();
-                }
-                else if ("disabled".equals(_field)) {
-                    disabled = _p.getValueAsBoolean();
-                    _p.nextToken();
-                }
-                else if ("locale".equals(_field)) {
-                    locale = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("referral_link".equals(_field)) {
-                    referralLink = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("is_paired".equals(_field)) {
-                    isPaired = _p.getValueAsBoolean();
-                    _p.nextToken();
-                }
-                else if ("account_type".equals(_field)) {
-                    accountType = _p.readValueAs(AccountType.class);
-                    _p.nextToken();
-                }
-                else if ("profile_photo_url".equals(_field)) {
-                    profilePhotoUrl = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("country".equals(_field)) {
-                    country = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("team".equals(_field)) {
-                    team = _p.readValueAs(FullTeam.class);
-                    _p.nextToken();
-                }
-                else if ("team_member_id".equals(_field)) {
-                    teamMemberId = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else {
-                    skipValue(_p);
-                }
+        public FullAccount deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            FullAccount value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
             }
-
-            if (accountId == null) {
-                throw new JsonParseException(_p, "Required field \"account_id\" is missing.");
+            if (tag == null) {
+                String f_accountId = null;
+                Name f_name = null;
+                String f_email = null;
+                Boolean f_emailVerified = null;
+                Boolean f_disabled = null;
+                String f_locale = null;
+                String f_referralLink = null;
+                Boolean f_isPaired = null;
+                AccountType f_accountType = null;
+                String f_profilePhotoUrl = null;
+                String f_country = null;
+                FullTeam f_team = null;
+                String f_teamMemberId = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("account_id".equals(field)) {
+                        f_accountId = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("name".equals(field)) {
+                        f_name = Name.Serializer.INSTANCE.deserialize(p);
+                    }
+                    else if ("email".equals(field)) {
+                        f_email = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("email_verified".equals(field)) {
+                        f_emailVerified = StoneSerializers.boolean_().deserialize(p);
+                    }
+                    else if ("disabled".equals(field)) {
+                        f_disabled = StoneSerializers.boolean_().deserialize(p);
+                    }
+                    else if ("locale".equals(field)) {
+                        f_locale = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("referral_link".equals(field)) {
+                        f_referralLink = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("is_paired".equals(field)) {
+                        f_isPaired = StoneSerializers.boolean_().deserialize(p);
+                    }
+                    else if ("account_type".equals(field)) {
+                        f_accountType = AccountType.Serializer.INSTANCE.deserialize(p);
+                    }
+                    else if ("profile_photo_url".equals(field)) {
+                        f_profilePhotoUrl = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                    }
+                    else if ("country".equals(field)) {
+                        f_country = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                    }
+                    else if ("team".equals(field)) {
+                        f_team = StoneSerializers.nullable(FullTeam.Serializer.INSTANCE).deserialize(p);
+                    }
+                    else if ("team_member_id".equals(field)) {
+                        f_teamMemberId = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
+                }
+                if (f_accountId == null) {
+                    throw new JsonParseException(p, "Required field \"account_id\" missing.");
+                }
+                if (f_name == null) {
+                    throw new JsonParseException(p, "Required field \"name\" missing.");
+                }
+                if (f_email == null) {
+                    throw new JsonParseException(p, "Required field \"email\" missing.");
+                }
+                if (f_emailVerified == null) {
+                    throw new JsonParseException(p, "Required field \"email_verified\" missing.");
+                }
+                if (f_disabled == null) {
+                    throw new JsonParseException(p, "Required field \"disabled\" missing.");
+                }
+                if (f_locale == null) {
+                    throw new JsonParseException(p, "Required field \"locale\" missing.");
+                }
+                if (f_referralLink == null) {
+                    throw new JsonParseException(p, "Required field \"referral_link\" missing.");
+                }
+                if (f_isPaired == null) {
+                    throw new JsonParseException(p, "Required field \"is_paired\" missing.");
+                }
+                if (f_accountType == null) {
+                    throw new JsonParseException(p, "Required field \"account_type\" missing.");
+                }
+                value = new FullAccount(f_accountId, f_name, f_email, f_emailVerified, f_disabled, f_locale, f_referralLink, f_isPaired, f_accountType, f_profilePhotoUrl, f_country, f_team, f_teamMemberId);
             }
-            if (name == null) {
-                throw new JsonParseException(_p, "Required field \"name\" is missing.");
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
             }
-            if (email == null) {
-                throw new JsonParseException(_p, "Required field \"email\" is missing.");
+            if (!collapsed) {
+                expectEndObject(p);
             }
-            if (emailVerified == null) {
-                throw new JsonParseException(_p, "Required field \"email_verified\" is missing.");
-            }
-            if (disabled == null) {
-                throw new JsonParseException(_p, "Required field \"disabled\" is missing.");
-            }
-            if (locale == null) {
-                throw new JsonParseException(_p, "Required field \"locale\" is missing.");
-            }
-            if (referralLink == null) {
-                throw new JsonParseException(_p, "Required field \"referral_link\" is missing.");
-            }
-            if (isPaired == null) {
-                throw new JsonParseException(_p, "Required field \"is_paired\" is missing.");
-            }
-            if (accountType == null) {
-                throw new JsonParseException(_p, "Required field \"account_type\" is missing.");
-            }
-
-            return new FullAccount(accountId, name, email, emailVerified, disabled, locale, referralLink, isPaired, accountType, profilePhotoUrl, country, team, teamMemberId);
+            return value;
         }
     }
 }

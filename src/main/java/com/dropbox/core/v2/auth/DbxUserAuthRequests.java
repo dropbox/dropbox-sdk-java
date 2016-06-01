@@ -1,17 +1,13 @@
 /* DO NOT EDIT */
-/* This file was generated from auth.babel */
+/* This file was generated from auth.stone */
 
 package com.dropbox.core.v2.auth;
 
 import com.dropbox.core.DbxApiException;
 import com.dropbox.core.DbxException;
-import com.dropbox.core.DbxRequestUtil;
+import com.dropbox.core.DbxWrappedException;
 import com.dropbox.core.http.HttpRequestor;
-import com.dropbox.core.json.JsonUtil;
 import com.dropbox.core.v2.DbxRawClientV2;
-
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JavaType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,11 +37,12 @@ public final class DbxUserAuthRequests {
                             "2/auth/token/revoke",
                             null,
                             false,
-                            JsonUtil.createType(Void.class),
-                            JsonUtil.createType(Void.class));
+                            com.dropbox.core.stone.StoneSerializers.void_(),
+                            com.dropbox.core.stone.StoneSerializers.void_(),
+                            com.dropbox.core.stone.StoneSerializers.void_());
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new DbxApiException(ew.getRequestId(), ew.getUserMessage(), "Unexpected error response for \"token/revoke\": ew.errValue");
+        catch (DbxWrappedException ex) {
+            throw new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"token/revoke\":" + ex.getErrorValue());
         }
     }
 }

@@ -1,38 +1,21 @@
 /* DO NOT EDIT */
-/* This file was generated from files.babel */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
-@JsonSerialize(using=UploadSessionStartResult.Serializer.class)
-@JsonDeserialize(using=UploadSessionStartResult.Deserializer.class)
 public class UploadSessionStartResult {
     // struct UploadSessionStartResult
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final String sessionId;
 
@@ -90,7 +73,7 @@ public class UploadSessionStartResult {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -102,78 +85,59 @@ public class UploadSessionStartResult {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<UploadSessionStartResult> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(UploadSessionStartResult.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(UploadSessionStartResult.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<UploadSessionStartResult> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected JsonSerializer<UploadSessionStartResult> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(UploadSessionStartResult value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("session_id", value.sessionId);
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<UploadSessionStartResult> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(UploadSessionStartResult.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(UploadSessionStartResult.class, unwrapping);
-        }
-
-        @Override
-        protected JsonDeserializer<UploadSessionStartResult> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public UploadSessionStartResult deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            String sessionId = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("session_id".equals(_field)) {
-                    sessionId = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else {
-                    skipValue(_p);
-                }
+        public void serialize(UploadSessionStartResult value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
             }
-
-            if (sessionId == null) {
-                throw new JsonParseException(_p, "Required field \"session_id\" is missing.");
+            g.writeFieldName("session_id");
+            StoneSerializers.string().serialize(value.sessionId, g);
+            if (!collapse) {
+                g.writeEndObject();
             }
+        }
 
-            return new UploadSessionStartResult(sessionId);
+        @Override
+        public UploadSessionStartResult deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            UploadSessionStartResult value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                String f_sessionId = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("session_id".equals(field)) {
+                        f_sessionId = StoneSerializers.string().deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
+                }
+                if (f_sessionId == null) {
+                    throw new JsonParseException(p, "Required field \"session_id\" missing.");
+                }
+                value = new UploadSessionStartResult(f_sessionId);
+            }
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

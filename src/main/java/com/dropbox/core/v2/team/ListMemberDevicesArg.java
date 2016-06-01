@@ -1,38 +1,21 @@
 /* DO NOT EDIT */
-/* This file was generated from team_devices.babel */
+/* This file was generated from team_devices.stone */
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
-@JsonSerialize(using=ListMemberDevicesArg.Serializer.class)
-@JsonDeserialize(using=ListMemberDevicesArg.Deserializer.class)
 class ListMemberDevicesArg {
     // struct ListMemberDevicesArg
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final String teamMemberId;
     protected final boolean includeWebSessions;
@@ -257,7 +240,7 @@ class ListMemberDevicesArg {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -269,96 +252,77 @@ class ListMemberDevicesArg {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<ListMemberDevicesArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(ListMemberDevicesArg.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(ListMemberDevicesArg.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<ListMemberDevicesArg> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected JsonSerializer<ListMemberDevicesArg> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(ListMemberDevicesArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("team_member_id", value.teamMemberId);
-            g.writeObjectField("include_web_sessions", value.includeWebSessions);
-            g.writeObjectField("include_desktop_clients", value.includeDesktopClients);
-            g.writeObjectField("include_mobile_clients", value.includeMobileClients);
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<ListMemberDevicesArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(ListMemberDevicesArg.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(ListMemberDevicesArg.class, unwrapping);
-        }
-
-        @Override
-        protected JsonDeserializer<ListMemberDevicesArg> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public ListMemberDevicesArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            String teamMemberId = null;
-            boolean includeWebSessions = true;
-            boolean includeDesktopClients = true;
-            boolean includeMobileClients = true;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("team_member_id".equals(_field)) {
-                    teamMemberId = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("include_web_sessions".equals(_field)) {
-                    includeWebSessions = _p.getValueAsBoolean();
-                    _p.nextToken();
-                }
-                else if ("include_desktop_clients".equals(_field)) {
-                    includeDesktopClients = _p.getValueAsBoolean();
-                    _p.nextToken();
-                }
-                else if ("include_mobile_clients".equals(_field)) {
-                    includeMobileClients = _p.getValueAsBoolean();
-                    _p.nextToken();
-                }
-                else {
-                    skipValue(_p);
-                }
+        public void serialize(ListMemberDevicesArg value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
             }
-
-            if (teamMemberId == null) {
-                throw new JsonParseException(_p, "Required field \"team_member_id\" is missing.");
+            g.writeFieldName("team_member_id");
+            StoneSerializers.string().serialize(value.teamMemberId, g);
+            g.writeFieldName("include_web_sessions");
+            StoneSerializers.boolean_().serialize(value.includeWebSessions, g);
+            g.writeFieldName("include_desktop_clients");
+            StoneSerializers.boolean_().serialize(value.includeDesktopClients, g);
+            g.writeFieldName("include_mobile_clients");
+            StoneSerializers.boolean_().serialize(value.includeMobileClients, g);
+            if (!collapse) {
+                g.writeEndObject();
             }
+        }
 
-            return new ListMemberDevicesArg(teamMemberId, includeWebSessions, includeDesktopClients, includeMobileClients);
+        @Override
+        public ListMemberDevicesArg deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            ListMemberDevicesArg value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                String f_teamMemberId = null;
+                Boolean f_includeWebSessions = true;
+                Boolean f_includeDesktopClients = true;
+                Boolean f_includeMobileClients = true;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("team_member_id".equals(field)) {
+                        f_teamMemberId = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("include_web_sessions".equals(field)) {
+                        f_includeWebSessions = StoneSerializers.boolean_().deserialize(p);
+                    }
+                    else if ("include_desktop_clients".equals(field)) {
+                        f_includeDesktopClients = StoneSerializers.boolean_().deserialize(p);
+                    }
+                    else if ("include_mobile_clients".equals(field)) {
+                        f_includeMobileClients = StoneSerializers.boolean_().deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
+                }
+                if (f_teamMemberId == null) {
+                    throw new JsonParseException(p, "Required field \"team_member_id\" missing.");
+                }
+                value = new ListMemberDevicesArg(f_teamMemberId, f_includeWebSessions, f_includeDesktopClients, f_includeMobileClients);
+            }
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

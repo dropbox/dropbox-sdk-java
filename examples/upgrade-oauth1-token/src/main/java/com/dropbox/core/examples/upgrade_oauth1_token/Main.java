@@ -47,7 +47,7 @@ public class Main
                 new DbxOAuth1AccessToken(cfg.accessTokenKey, cfg.accessTokenSecret);
 
         // Get an OAuth 2 access token.
-        String userLocale = Locale.getDefault().toString();
+        String userLocale = Locale.getDefault().toLanguageTag();
         DbxRequestConfig requestConfig = new DbxRequestConfig("examples-authorize", userLocale);
         DbxOAuth1Upgrader upgrader = new DbxOAuth1Upgrader(requestConfig, appInfo);
 
@@ -143,8 +143,8 @@ public class Main
                     disable = true;
                 }
                 else {
+                    printHelp(System.out);
                     System.err.println("Unrecognized option \"" + arg + "\".");
-                    System.err.println("Run with no arguments for help.");
                     return null;
                 }
             }
@@ -154,8 +154,8 @@ public class Main
         }
 
         if (remainingArgs.size() != 3) {
+            printHelp(System.out);
             System.err.println("Expecting at least 3 non-option arguments, got " + remainingArgs.size() + ".");
-            System.err.println("Run with no arguments for help.");
             return null;
         }
 

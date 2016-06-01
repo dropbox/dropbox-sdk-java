@@ -1,30 +1,18 @@
 /* DO NOT EDIT */
-/* This file was generated from properties.babel */
+/* This file was generated from properties.stone */
 
 package com.dropbox.core.v2.properties;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This class is a tagged union.  Tagged unions instances are always associated
@@ -32,14 +20,8 @@ import java.util.Map;
  * return {@code true}. You can use {@link #tag()} to determine the tag
  * associated with this instance.
  */
-@JsonSerialize(using=ModifyPropertyTemplateError.Serializer.class)
-@JsonDeserialize(using=ModifyPropertyTemplateError.Deserializer.class)
 public final class ModifyPropertyTemplateError {
     // union ModifyPropertyTemplateError
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link ModifyPropertyTemplateError}.
@@ -298,7 +280,7 @@ public final class ModifyPropertyTemplateError {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -310,103 +292,105 @@ public final class ModifyPropertyTemplateError {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends UnionJsonSerializer<ModifyPropertyTemplateError> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(ModifyPropertyTemplateError.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<ModifyPropertyTemplateError> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(ModifyPropertyTemplateError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            switch (value.tag) {
-                case TEMPLATE_NOT_FOUND:
+        public void serialize(ModifyPropertyTemplateError value, JsonGenerator g) throws IOException, JsonGenerationException {
+            switch (value.tag()) {
+                case TEMPLATE_NOT_FOUND: {
                     g.writeStartObject();
-                    g.writeStringField(".tag", "template_not_found");
-                    g.writeObjectField("template_not_found", value.templateNotFoundValue);
+                    writeTag("template_not_found", g);
+                    g.writeFieldName("template_not_found");
+                    StoneSerializers.string().serialize(value.templateNotFoundValue, g);
                     g.writeEndObject();
                     break;
-                case RESTRICTED_CONTENT:
+                }
+                case RESTRICTED_CONTENT: {
                     g.writeString("restricted_content");
                     break;
-                case OTHER:
+                }
+                case OTHER: {
                     g.writeString("other");
                     break;
-                case CONFLICTING_PROPERTY_NAMES:
+                }
+                case CONFLICTING_PROPERTY_NAMES: {
                     g.writeString("conflicting_property_names");
                     break;
-                case TOO_MANY_PROPERTIES:
+                }
+                case TOO_MANY_PROPERTIES: {
                     g.writeString("too_many_properties");
                     break;
-                case TOO_MANY_TEMPLATES:
+                }
+                case TOO_MANY_TEMPLATES: {
                     g.writeString("too_many_templates");
                     break;
-                case TEMPLATE_ATTRIBUTE_TOO_LARGE:
+                }
+                case TEMPLATE_ATTRIBUTE_TOO_LARGE: {
                     g.writeString("template_attribute_too_large");
                     break;
+                }
+                default: {
+                    throw new IllegalArgumentException("Unrecognized tag: " + value.tag());
+                }
             }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<ModifyPropertyTemplateError, Tag> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(ModifyPropertyTemplateError.class, getTagMapping(), null);
         }
 
         @Override
-        public ModifyPropertyTemplateError deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            switch (_tag) {
-                case TEMPLATE_NOT_FOUND: {
-                    String value = null;
-                    expectField(_p, "template_not_found");
-                    value = getStringValue(_p);
-                    _p.nextToken();
-                    return ModifyPropertyTemplateError.templateNotFound(value);
-                }
-                case RESTRICTED_CONTENT: {
-                    return ModifyPropertyTemplateError.RESTRICTED_CONTENT;
-                }
-                case OTHER: {
-                    return ModifyPropertyTemplateError.OTHER;
-                }
-                case CONFLICTING_PROPERTY_NAMES: {
-                    return ModifyPropertyTemplateError.CONFLICTING_PROPERTY_NAMES;
-                }
-                case TOO_MANY_PROPERTIES: {
-                    return ModifyPropertyTemplateError.TOO_MANY_PROPERTIES;
-                }
-                case TOO_MANY_TEMPLATES: {
-                    return ModifyPropertyTemplateError.TOO_MANY_TEMPLATES;
-                }
-                case TEMPLATE_ATTRIBUTE_TOO_LARGE: {
-                    return ModifyPropertyTemplateError.TEMPLATE_ATTRIBUTE_TOO_LARGE;
-                }
+        public ModifyPropertyTemplateError deserialize(JsonParser p) throws IOException, JsonParseException {
+            ModifyPropertyTemplateError value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
             }
-            // should be impossible to get here
-            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
-        }
-
-        private static Map<String, ModifyPropertyTemplateError.Tag> getTagMapping() {
-            Map<String, ModifyPropertyTemplateError.Tag> values = new HashMap<String, ModifyPropertyTemplateError.Tag>();
-            values.put("conflicting_property_names", ModifyPropertyTemplateError.Tag.CONFLICTING_PROPERTY_NAMES);
-            values.put("too_many_properties", ModifyPropertyTemplateError.Tag.TOO_MANY_PROPERTIES);
-            values.put("too_many_templates", ModifyPropertyTemplateError.Tag.TOO_MANY_TEMPLATES);
-            values.put("template_attribute_too_large", ModifyPropertyTemplateError.Tag.TEMPLATE_ATTRIBUTE_TOO_LARGE);
-            return Collections.unmodifiableMap(values);
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("template_not_found".equals(tag)) {
+                String fieldValue = null;
+                expectField("template_not_found", p);
+                fieldValue = StoneSerializers.string().deserialize(p);
+                value = ModifyPropertyTemplateError.templateNotFound(fieldValue);
+            }
+            else if ("restricted_content".equals(tag)) {
+                value = ModifyPropertyTemplateError.RESTRICTED_CONTENT;
+            }
+            else if ("other".equals(tag)) {
+                value = ModifyPropertyTemplateError.OTHER;
+            }
+            else if ("conflicting_property_names".equals(tag)) {
+                value = ModifyPropertyTemplateError.CONFLICTING_PROPERTY_NAMES;
+            }
+            else if ("too_many_properties".equals(tag)) {
+                value = ModifyPropertyTemplateError.TOO_MANY_PROPERTIES;
+            }
+            else if ("too_many_templates".equals(tag)) {
+                value = ModifyPropertyTemplateError.TOO_MANY_TEMPLATES;
+            }
+            else if ("template_attribute_too_large".equals(tag)) {
+                value = ModifyPropertyTemplateError.TEMPLATE_ATTRIBUTE_TOO_LARGE;
+            }
+            else {
+                throw new JsonParseException(p, "Unknown tag: " + tag);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

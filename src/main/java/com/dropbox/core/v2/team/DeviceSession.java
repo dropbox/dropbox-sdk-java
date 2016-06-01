@@ -1,39 +1,22 @@
 /* DO NOT EDIT */
-/* This file was generated from team_devices.babel */
+/* This file was generated from team_devices.stone */
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.Date;
 
-@JsonSerialize(using=DeviceSession.Serializer.class)
-@JsonDeserialize(using=DeviceSession.Deserializer.class)
 public class DeviceSession {
     // struct DeviceSession
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final String sessionId;
     protected final String ipAddress;
@@ -254,7 +237,7 @@ public class DeviceSession {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -266,110 +249,91 @@ public class DeviceSession {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<DeviceSession> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(DeviceSession.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(DeviceSession.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<DeviceSession> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected JsonSerializer<DeviceSession> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(DeviceSession value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("session_id", value.sessionId);
+        public void serialize(DeviceSession value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
+            }
+            g.writeFieldName("session_id");
+            StoneSerializers.string().serialize(value.sessionId, g);
             if (value.ipAddress != null) {
-                g.writeObjectField("ip_address", value.ipAddress);
+                g.writeFieldName("ip_address");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.ipAddress, g);
             }
             if (value.country != null) {
-                g.writeObjectField("country", value.country);
+                g.writeFieldName("country");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.country, g);
             }
             if (value.created != null) {
-                g.writeObjectField("created", value.created);
+                g.writeFieldName("created");
+                StoneSerializers.nullable(StoneSerializers.timestamp()).serialize(value.created, g);
             }
             if (value.updated != null) {
-                g.writeObjectField("updated", value.updated);
+                g.writeFieldName("updated");
+                StoneSerializers.nullable(StoneSerializers.timestamp()).serialize(value.updated, g);
             }
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<DeviceSession> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(DeviceSession.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(DeviceSession.class, unwrapping);
+            if (!collapse) {
+                g.writeEndObject();
+            }
         }
 
         @Override
-        protected JsonDeserializer<DeviceSession> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public DeviceSession deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            String sessionId = null;
-            String ipAddress = null;
-            String country = null;
-            Date created = null;
-            Date updated = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("session_id".equals(_field)) {
-                    sessionId = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("ip_address".equals(_field)) {
-                    ipAddress = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("country".equals(_field)) {
-                    country = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("created".equals(_field)) {
-                    created = _ctx.parseDate(getStringValue(_p));
-                    _p.nextToken();
-                }
-                else if ("updated".equals(_field)) {
-                    updated = _ctx.parseDate(getStringValue(_p));
-                    _p.nextToken();
-                }
-                else {
-                    skipValue(_p);
-                }
+        public DeviceSession deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            DeviceSession value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
             }
-
-            if (sessionId == null) {
-                throw new JsonParseException(_p, "Required field \"session_id\" is missing.");
+            if (tag == null) {
+                String f_sessionId = null;
+                String f_ipAddress = null;
+                String f_country = null;
+                Date f_created = null;
+                Date f_updated = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("session_id".equals(field)) {
+                        f_sessionId = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("ip_address".equals(field)) {
+                        f_ipAddress = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                    }
+                    else if ("country".equals(field)) {
+                        f_country = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                    }
+                    else if ("created".equals(field)) {
+                        f_created = StoneSerializers.nullable(StoneSerializers.timestamp()).deserialize(p);
+                    }
+                    else if ("updated".equals(field)) {
+                        f_updated = StoneSerializers.nullable(StoneSerializers.timestamp()).deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
+                }
+                if (f_sessionId == null) {
+                    throw new JsonParseException(p, "Required field \"session_id\" missing.");
+                }
+                value = new DeviceSession(f_sessionId, f_ipAddress, f_country, f_created, f_updated);
             }
-
-            return new DeviceSession(sessionId, ipAddress, country, created, updated);
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

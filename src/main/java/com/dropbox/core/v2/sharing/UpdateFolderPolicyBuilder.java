@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.babel */
+/* This file was generated from sharing_folders.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -13,26 +13,26 @@ import com.dropbox.core.DbxException;
  * request. </p>
  */
 public class UpdateFolderPolicyBuilder {
-    private final DbxUserSharingRequests sharing;
+    private final DbxUserSharingRequests sharing_;
     private final UpdateFolderPolicyArg.Builder updateFolderPolicyArgBuilder;
 
     /**
      * Creates a new instance of this builder.
      *
-     * @param sharing  Dropbox namespace-specific client used to issue sharing
+     * @param sharing_  Dropbox namespace-specific client used to issue sharing
      *     requests.
      * @param updateFolderPolicyArgBuilder  Request argument builder.
      *
      * @return instsance of this builder
      */
-    UpdateFolderPolicyBuilder(DbxUserSharingRequests sharing, UpdateFolderPolicyArg.Builder updateFolderPolicyArgBuilder) {
-        if (sharing == null) {
-            throw new NullPointerException("sharing");
+    UpdateFolderPolicyBuilder(DbxUserSharingRequests sharing_, UpdateFolderPolicyArg.Builder updateFolderPolicyArgBuilder) {
+        if (sharing_ == null) {
+            throw new NullPointerException("sharing_");
         }
+        this.sharing_ = sharing_;
         if (updateFolderPolicyArgBuilder == null) {
             throw new NullPointerException("updateFolderPolicyArgBuilder");
         }
-        this.sharing = sharing;
         this.updateFolderPolicyArgBuilder = updateFolderPolicyArgBuilder;
     }
 
@@ -80,7 +80,7 @@ public class UpdateFolderPolicyBuilder {
      * Issues the request.
      */
     public SharedFolderMetadata start() throws UpdateFolderPolicyErrorException, DbxException {
-        UpdateFolderPolicyArg arg = this.updateFolderPolicyArgBuilder.build();
-        return sharing.updateFolderPolicy(arg);
+        UpdateFolderPolicyArg arg_ = this.updateFolderPolicyArgBuilder.build();
+        return sharing_.updateFolderPolicy(arg_);
     }
 }

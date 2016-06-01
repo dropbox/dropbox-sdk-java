@@ -1,27 +1,16 @@
 /* DO NOT EDIT */
-/* This file was generated from team_members.babel */
+/* This file was generated from team_members.stone */
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
@@ -29,14 +18,8 @@ import java.io.IOException;
  * Exactly one of team_member_id, email, or external_id must be provided to
  * identify the user account.
  */
-@JsonSerialize(using=MembersDeactivateArg.Serializer.class)
-@JsonDeserialize(using=MembersDeactivateArg.Deserializer.class)
 public class MembersDeactivateArg {
     // struct MembersDeactivateArg
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final UserSelectorArg user;
     protected final boolean wipeData;
@@ -125,7 +108,7 @@ public class MembersDeactivateArg {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -137,84 +120,65 @@ public class MembersDeactivateArg {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<MembersDeactivateArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(MembersDeactivateArg.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(MembersDeactivateArg.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<MembersDeactivateArg> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected JsonSerializer<MembersDeactivateArg> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(MembersDeactivateArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("user", value.user);
-            g.writeObjectField("wipe_data", value.wipeData);
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<MembersDeactivateArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(MembersDeactivateArg.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(MembersDeactivateArg.class, unwrapping);
-        }
-
-        @Override
-        protected JsonDeserializer<MembersDeactivateArg> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public MembersDeactivateArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            UserSelectorArg user = null;
-            boolean wipeData = true;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("user".equals(_field)) {
-                    user = _p.readValueAs(UserSelectorArg.class);
-                    _p.nextToken();
-                }
-                else if ("wipe_data".equals(_field)) {
-                    wipeData = _p.getValueAsBoolean();
-                    _p.nextToken();
-                }
-                else {
-                    skipValue(_p);
-                }
+        public void serialize(MembersDeactivateArg value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
             }
-
-            if (user == null) {
-                throw new JsonParseException(_p, "Required field \"user\" is missing.");
+            g.writeFieldName("user");
+            UserSelectorArg.Serializer.INSTANCE.serialize(value.user, g);
+            g.writeFieldName("wipe_data");
+            StoneSerializers.boolean_().serialize(value.wipeData, g);
+            if (!collapse) {
+                g.writeEndObject();
             }
+        }
 
-            return new MembersDeactivateArg(user, wipeData);
+        @Override
+        public MembersDeactivateArg deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            MembersDeactivateArg value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                UserSelectorArg f_user = null;
+                Boolean f_wipeData = true;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("user".equals(field)) {
+                        f_user = UserSelectorArg.Serializer.INSTANCE.deserialize(p);
+                    }
+                    else if ("wipe_data".equals(field)) {
+                        f_wipeData = StoneSerializers.boolean_().deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
+                }
+                if (f_user == null) {
+                    throw new JsonParseException(p, "Required field \"user\" missing.");
+                }
+                value = new MembersDeactivateArg(f_user, f_wipeData);
+            }
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

@@ -1,30 +1,18 @@
 /* DO NOT EDIT */
-/* This file was generated from files.babel */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This class is an open tagged union.  Tagged unions instances are always
@@ -36,14 +24,8 @@ import java.util.Map;
  * tag is introduced that this SDK does not recognized, the {@link #OTHER} value
  * will be used. </p>
  */
-@JsonSerialize(using=WriteError.Serializer.class)
-@JsonDeserialize(using=WriteError.Deserializer.class)
 public final class WriteError {
     // union WriteError
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link WriteError}.
@@ -320,7 +302,7 @@ public final class WriteError {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -332,111 +314,106 @@ public final class WriteError {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends UnionJsonSerializer<WriteError> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(WriteError.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<WriteError> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(WriteError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            switch (value.tag) {
-                case MALFORMED_PATH:
-                    g.writeStartObject();
-                    g.writeStringField(".tag", "malformed_path");
-                    if (value.malformedPathValue != null) {
-                        g.writeObjectField("malformed_path", value.malformedPathValue);
-                    }
-                    g.writeEndObject();
-                    break;
-                case CONFLICT:
-                    g.writeStartObject();
-                    g.writeStringField(".tag", "conflict");
-                    g.writeObjectField("conflict", value.conflictValue);
-                    g.writeEndObject();
-                    break;
-                case NO_WRITE_PERMISSION:
-                    g.writeString("no_write_permission");
-                    break;
-                case INSUFFICIENT_SPACE:
-                    g.writeString("insufficient_space");
-                    break;
-                case DISALLOWED_NAME:
-                    g.writeString("disallowed_name");
-                    break;
-                case OTHER:
-                    g.writeString("other");
-                    break;
-            }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<WriteError, Tag> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(WriteError.class, getTagMapping(), Tag.OTHER);
-        }
-
-        @Override
-        public WriteError deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            switch (_tag) {
+        public void serialize(WriteError value, JsonGenerator g) throws IOException, JsonGenerationException {
+            switch (value.tag()) {
                 case MALFORMED_PATH: {
-                    if (isObjectEnd(_p)) {
-                        return WriteError.malformedPath();
-                    }
-                    String value = null;
-                    expectField(_p, "malformed_path");
-                    value = getStringValue(_p);
-                    _p.nextToken();
-                    return WriteError.malformedPath(value);
+                    g.writeStartObject();
+                    writeTag("malformed_path", g);
+                    g.writeFieldName("malformed_path");
+                    StoneSerializers.nullable(StoneSerializers.string()).serialize(value.malformedPathValue, g);
+                    g.writeEndObject();
+                    break;
                 }
                 case CONFLICT: {
-                    WriteConflictError value = null;
-                    expectField(_p, "conflict");
-                    value = _p.readValueAs(WriteConflictError.class);
-                    _p.nextToken();
-                    return WriteError.conflict(value);
+                    g.writeStartObject();
+                    writeTag("conflict", g);
+                    g.writeFieldName("conflict");
+                    WriteConflictError.Serializer.INSTANCE.serialize(value.conflictValue, g);
+                    g.writeEndObject();
+                    break;
                 }
                 case NO_WRITE_PERMISSION: {
-                    return WriteError.NO_WRITE_PERMISSION;
+                    g.writeString("no_write_permission");
+                    break;
                 }
                 case INSUFFICIENT_SPACE: {
-                    return WriteError.INSUFFICIENT_SPACE;
+                    g.writeString("insufficient_space");
+                    break;
                 }
                 case DISALLOWED_NAME: {
-                    return WriteError.DISALLOWED_NAME;
+                    g.writeString("disallowed_name");
+                    break;
                 }
-                case OTHER: {
-                    return WriteError.OTHER;
+                default: {
+                    g.writeString("other");
                 }
             }
-            // should be impossible to get here
-            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
         }
 
-        private static Map<String, WriteError.Tag> getTagMapping() {
-            Map<String, WriteError.Tag> values = new HashMap<String, WriteError.Tag>();
-            values.put("malformed_path", WriteError.Tag.MALFORMED_PATH);
-            values.put("conflict", WriteError.Tag.CONFLICT);
-            values.put("no_write_permission", WriteError.Tag.NO_WRITE_PERMISSION);
-            values.put("insufficient_space", WriteError.Tag.INSUFFICIENT_SPACE);
-            values.put("disallowed_name", WriteError.Tag.DISALLOWED_NAME);
-            values.put("other", WriteError.Tag.OTHER);
-            return Collections.unmodifiableMap(values);
+        @Override
+        public WriteError deserialize(JsonParser p) throws IOException, JsonParseException {
+            WriteError value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
+            }
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("malformed_path".equals(tag)) {
+                String fieldValue = null;
+                if (p.getCurrentToken() != JsonToken.END_OBJECT) {
+                    expectField("malformed_path", p);
+                    fieldValue = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                }
+                if (fieldValue == null) {
+                    value = WriteError.malformedPath();
+                }
+                else {
+                    value = WriteError.malformedPath(fieldValue);
+                }
+            }
+            else if ("conflict".equals(tag)) {
+                WriteConflictError fieldValue = null;
+                expectField("conflict", p);
+                fieldValue = WriteConflictError.Serializer.INSTANCE.deserialize(p);
+                value = WriteError.conflict(fieldValue);
+            }
+            else if ("no_write_permission".equals(tag)) {
+                value = WriteError.NO_WRITE_PERMISSION;
+            }
+            else if ("insufficient_space".equals(tag)) {
+                value = WriteError.INSUFFICIENT_SPACE;
+            }
+            else if ("disallowed_name".equals(tag)) {
+                value = WriteError.DISALLOWED_NAME;
+            }
+            else {
+                value = WriteError.OTHER;
+                skipFields(p);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

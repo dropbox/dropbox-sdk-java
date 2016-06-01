@@ -1,33 +1,19 @@
 /* DO NOT EDIT */
-/* This file was generated from team_devices.babel */
+/* This file was generated from team_devices.stone */
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
-@JsonSerialize(using=RevokeDeviceSessionBatchError.Serializer.class)
-@JsonDeserialize(using=RevokeDeviceSessionBatchError.Deserializer.class)
 public enum RevokeDeviceSessionBatchError {
     // union RevokeDeviceSessionBatchError
     /**
@@ -35,43 +21,47 @@ public enum RevokeDeviceSessionBatchError {
      */
     UNSPECIFIED; // *catch_all
 
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
-
-    static final class Serializer extends UnionJsonSerializer<RevokeDeviceSessionBatchError> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(RevokeDeviceSessionBatchError.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<RevokeDeviceSessionBatchError> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(RevokeDeviceSessionBatchError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+        public void serialize(RevokeDeviceSessionBatchError value, JsonGenerator g) throws IOException, JsonGenerationException {
             switch (value) {
-                case UNSPECIFIED:
+                default: {
                     g.writeString("unspecified");
-                    break;
+                }
             }
         }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<RevokeDeviceSessionBatchError, RevokeDeviceSessionBatchError> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(RevokeDeviceSessionBatchError.class, getTagMapping(), RevokeDeviceSessionBatchError.UNSPECIFIED);
-        }
 
         @Override
-        public RevokeDeviceSessionBatchError deserialize(RevokeDeviceSessionBatchError _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            return _tag;
-        }
-
-        private static Map<String, RevokeDeviceSessionBatchError> getTagMapping() {
-            Map<String, RevokeDeviceSessionBatchError> values = new HashMap<String, RevokeDeviceSessionBatchError>();
-            values.put("unspecified", RevokeDeviceSessionBatchError.UNSPECIFIED);
-            return Collections.unmodifiableMap(values);
+        public RevokeDeviceSessionBatchError deserialize(JsonParser p) throws IOException, JsonParseException {
+            RevokeDeviceSessionBatchError value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
+            }
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else {
+                value = RevokeDeviceSessionBatchError.UNSPECIFIED;
+                skipFields(p);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

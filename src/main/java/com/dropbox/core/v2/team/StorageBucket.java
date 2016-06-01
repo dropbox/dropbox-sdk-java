@@ -1,41 +1,24 @@
 /* DO NOT EDIT */
-/* This file was generated from team_reports.babel */
+/* This file was generated from team_reports.stone */
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
 /**
  * Describes the number of users in a specific storage bucket.
  */
-@JsonSerialize(using=StorageBucket.Serializer.class)
-@JsonDeserialize(using=StorageBucket.Deserializer.class)
 public class StorageBucket {
     // struct StorageBucket
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final String bucket;
     protected final long users;
@@ -108,7 +91,7 @@ public class StorageBucket {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -120,88 +103,68 @@ public class StorageBucket {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<StorageBucket> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(StorageBucket.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(StorageBucket.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<StorageBucket> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected JsonSerializer<StorageBucket> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(StorageBucket value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("bucket", value.bucket);
-            g.writeObjectField("users", value.users);
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<StorageBucket> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(StorageBucket.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(StorageBucket.class, unwrapping);
-        }
-
-        @Override
-        protected JsonDeserializer<StorageBucket> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public StorageBucket deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            String bucket = null;
-            Long users = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("bucket".equals(_field)) {
-                    bucket = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("users".equals(_field)) {
-                    users = _p.getLongValue();
-                    assertUnsigned(_p, users);
-                    _p.nextToken();
-                }
-                else {
-                    skipValue(_p);
-                }
+        public void serialize(StorageBucket value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
             }
-
-            if (bucket == null) {
-                throw new JsonParseException(_p, "Required field \"bucket\" is missing.");
+            g.writeFieldName("bucket");
+            StoneSerializers.string().serialize(value.bucket, g);
+            g.writeFieldName("users");
+            StoneSerializers.uInt64().serialize(value.users, g);
+            if (!collapse) {
+                g.writeEndObject();
             }
-            if (users == null) {
-                throw new JsonParseException(_p, "Required field \"users\" is missing.");
-            }
+        }
 
-            return new StorageBucket(bucket, users);
+        @Override
+        public StorageBucket deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            StorageBucket value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                String f_bucket = null;
+                Long f_users = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("bucket".equals(field)) {
+                        f_bucket = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("users".equals(field)) {
+                        f_users = StoneSerializers.uInt64().deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
+                }
+                if (f_bucket == null) {
+                    throw new JsonParseException(p, "Required field \"bucket\" missing.");
+                }
+                if (f_users == null) {
+                    throw new JsonParseException(p, "Required field \"users\" missing.");
+                }
+                value = new StorageBucket(f_bucket, f_users);
+            }
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

@@ -1,39 +1,22 @@
 /* DO NOT EDIT */
-/* This file was generated from shared_links.babel */
+/* This file was generated from shared_links.stone */
 
 package com.dropbox.core.v2.sharing;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.Date;
 
-@JsonSerialize(using=SharedLinkSettings.Serializer.class)
-@JsonDeserialize(using=SharedLinkSettings.Deserializer.class)
 public class SharedLinkSettings {
     // struct SharedLinkSettings
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final RequestedVisibility requestedVisibility;
     protected final String linkPassword;
@@ -198,7 +181,7 @@ public class SharedLinkSettings {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -210,93 +193,74 @@ public class SharedLinkSettings {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<SharedLinkSettings> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(SharedLinkSettings.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(SharedLinkSettings.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<SharedLinkSettings> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected JsonSerializer<SharedLinkSettings> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(SharedLinkSettings value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+        public void serialize(SharedLinkSettings value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
+            }
             if (value.requestedVisibility != null) {
-                g.writeObjectField("requested_visibility", value.requestedVisibility);
+                g.writeFieldName("requested_visibility");
+                StoneSerializers.nullable(RequestedVisibility.Serializer.INSTANCE).serialize(value.requestedVisibility, g);
             }
             if (value.linkPassword != null) {
-                g.writeObjectField("link_password", value.linkPassword);
+                g.writeFieldName("link_password");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.linkPassword, g);
             }
             if (value.expires != null) {
-                g.writeObjectField("expires", value.expires);
+                g.writeFieldName("expires");
+                StoneSerializers.nullable(StoneSerializers.timestamp()).serialize(value.expires, g);
             }
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<SharedLinkSettings> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(SharedLinkSettings.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(SharedLinkSettings.class, unwrapping);
+            if (!collapse) {
+                g.writeEndObject();
+            }
         }
 
         @Override
-        protected JsonDeserializer<SharedLinkSettings> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public SharedLinkSettings deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            RequestedVisibility requestedVisibility = null;
-            String linkPassword = null;
-            Date expires = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("requested_visibility".equals(_field)) {
-                    requestedVisibility = _p.readValueAs(RequestedVisibility.class);
-                    _p.nextToken();
-                }
-                else if ("link_password".equals(_field)) {
-                    linkPassword = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("expires".equals(_field)) {
-                    expires = _ctx.parseDate(getStringValue(_p));
-                    _p.nextToken();
-                }
-                else {
-                    skipValue(_p);
-                }
+        public SharedLinkSettings deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            SharedLinkSettings value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
             }
-
-
-            return new SharedLinkSettings(requestedVisibility, linkPassword, expires);
+            if (tag == null) {
+                RequestedVisibility f_requestedVisibility = null;
+                String f_linkPassword = null;
+                Date f_expires = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("requested_visibility".equals(field)) {
+                        f_requestedVisibility = StoneSerializers.nullable(RequestedVisibility.Serializer.INSTANCE).deserialize(p);
+                    }
+                    else if ("link_password".equals(field)) {
+                        f_linkPassword = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                    }
+                    else if ("expires".equals(field)) {
+                        f_expires = StoneSerializers.nullable(StoneSerializers.timestamp()).deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
+                }
+                value = new SharedLinkSettings(f_requestedVisibility, f_linkPassword, f_expires);
+            }
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

@@ -1,37 +1,23 @@
 /* DO NOT EDIT */
-/* This file was generated from properties.babel */
+/* This file was generated from properties.stone */
 
 package com.dropbox.core.v2.properties;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Data type of the given property added. This endpoint is in beta and  only
  * properties of type strings is supported.
  */
-@JsonSerialize(using=PropertyType.Serializer.class)
-@JsonDeserialize(using=PropertyType.Deserializer.class)
 public enum PropertyType {
     // union PropertyType
     /**
@@ -47,47 +33,54 @@ public enum PropertyType {
      */
     OTHER; // *catch_all
 
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
-
-    static final class Serializer extends UnionJsonSerializer<PropertyType> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(PropertyType.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<PropertyType> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(PropertyType value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+        public void serialize(PropertyType value, JsonGenerator g) throws IOException, JsonGenerationException {
             switch (value) {
-                case STRING:
+                case STRING: {
                     g.writeString("string");
                     break;
-                case OTHER:
+                }
+                default: {
                     g.writeString("other");
-                    break;
+                }
             }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<PropertyType, PropertyType> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(PropertyType.class, getTagMapping(), PropertyType.OTHER);
         }
 
         @Override
-        public PropertyType deserialize(PropertyType _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            return _tag;
-        }
-
-        private static Map<String, PropertyType> getTagMapping() {
-            Map<String, PropertyType> values = new HashMap<String, PropertyType>();
-            values.put("string", PropertyType.STRING);
-            values.put("other", PropertyType.OTHER);
-            return Collections.unmodifiableMap(values);
+        public PropertyType deserialize(JsonParser p) throws IOException, JsonParseException {
+            PropertyType value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
+            }
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("string".equals(tag)) {
+                value = PropertyType.STRING;
+            }
+            else {
+                value = PropertyType.OTHER;
+                skipFields(p);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

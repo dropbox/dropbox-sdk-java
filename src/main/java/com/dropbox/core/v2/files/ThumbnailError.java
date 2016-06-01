@@ -1,30 +1,18 @@
 /* DO NOT EDIT */
-/* This file was generated from files.babel */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This class is a tagged union.  Tagged unions instances are always associated
@@ -32,14 +20,8 @@ import java.util.Map;
  * return {@code true}. You can use {@link #tag()} to determine the tag
  * associated with this instance.
  */
-@JsonSerialize(using=ThumbnailError.Serializer.class)
-@JsonDeserialize(using=ThumbnailError.Deserializer.class)
 public final class ThumbnailError {
     // union ThumbnailError
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link ThumbnailError}.
@@ -223,7 +205,7 @@ public final class ThumbnailError {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -235,85 +217,84 @@ public final class ThumbnailError {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends UnionJsonSerializer<ThumbnailError> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(ThumbnailError.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<ThumbnailError> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(ThumbnailError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            switch (value.tag) {
-                case PATH:
+        public void serialize(ThumbnailError value, JsonGenerator g) throws IOException, JsonGenerationException {
+            switch (value.tag()) {
+                case PATH: {
                     g.writeStartObject();
-                    g.writeStringField(".tag", "path");
-                    g.writeObjectField("path", value.pathValue);
+                    writeTag("path", g);
+                    g.writeFieldName("path");
+                    LookupError.Serializer.INSTANCE.serialize(value.pathValue, g);
                     g.writeEndObject();
                     break;
-                case UNSUPPORTED_EXTENSION:
+                }
+                case UNSUPPORTED_EXTENSION: {
                     g.writeString("unsupported_extension");
                     break;
-                case UNSUPPORTED_IMAGE:
+                }
+                case UNSUPPORTED_IMAGE: {
                     g.writeString("unsupported_image");
                     break;
-                case CONVERSION_ERROR:
+                }
+                case CONVERSION_ERROR: {
                     g.writeString("conversion_error");
                     break;
+                }
+                default: {
+                    throw new IllegalArgumentException("Unrecognized tag: " + value.tag());
+                }
             }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<ThumbnailError, Tag> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(ThumbnailError.class, getTagMapping(), null);
         }
 
         @Override
-        public ThumbnailError deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            switch (_tag) {
-                case PATH: {
-                    LookupError value = null;
-                    expectField(_p, "path");
-                    value = _p.readValueAs(LookupError.class);
-                    _p.nextToken();
-                    return ThumbnailError.path(value);
-                }
-                case UNSUPPORTED_EXTENSION: {
-                    return ThumbnailError.UNSUPPORTED_EXTENSION;
-                }
-                case UNSUPPORTED_IMAGE: {
-                    return ThumbnailError.UNSUPPORTED_IMAGE;
-                }
-                case CONVERSION_ERROR: {
-                    return ThumbnailError.CONVERSION_ERROR;
-                }
+        public ThumbnailError deserialize(JsonParser p) throws IOException, JsonParseException {
+            ThumbnailError value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
             }
-            // should be impossible to get here
-            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
-        }
-
-        private static Map<String, ThumbnailError.Tag> getTagMapping() {
-            Map<String, ThumbnailError.Tag> values = new HashMap<String, ThumbnailError.Tag>();
-            values.put("path", ThumbnailError.Tag.PATH);
-            values.put("unsupported_extension", ThumbnailError.Tag.UNSUPPORTED_EXTENSION);
-            values.put("unsupported_image", ThumbnailError.Tag.UNSUPPORTED_IMAGE);
-            values.put("conversion_error", ThumbnailError.Tag.CONVERSION_ERROR);
-            return Collections.unmodifiableMap(values);
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("path".equals(tag)) {
+                LookupError fieldValue = null;
+                expectField("path", p);
+                fieldValue = LookupError.Serializer.INSTANCE.deserialize(p);
+                value = ThumbnailError.path(fieldValue);
+            }
+            else if ("unsupported_extension".equals(tag)) {
+                value = ThumbnailError.UNSUPPORTED_EXTENSION;
+            }
+            else if ("unsupported_image".equals(tag)) {
+                value = ThumbnailError.UNSUPPORTED_IMAGE;
+            }
+            else if ("conversion_error".equals(tag)) {
+                value = ThumbnailError.CONVERSION_ERROR;
+            }
+            else {
+                throw new JsonParseException(p, "Unknown tag: " + tag);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

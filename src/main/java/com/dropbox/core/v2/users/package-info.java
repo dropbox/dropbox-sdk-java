@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from users.babel */
+/* This file was generated from users.stone */
 
 /**
  * This namespace contains endpoints and data types for user management.

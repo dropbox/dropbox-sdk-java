@@ -1,39 +1,22 @@
 /* DO NOT EDIT */
-/* This file was generated from team_devices.babel */
+/* This file was generated from team_devices.stone */
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.List;
 
-@JsonSerialize(using=ListMembersDevicesResult.Serializer.class)
-@JsonDeserialize(using=ListMembersDevicesResult.Deserializer.class)
 public class ListMembersDevicesResult {
     // struct ListMembersDevicesResult
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final List<MemberDevices> devices;
     protected final boolean hasMore;
@@ -143,7 +126,7 @@ public class ListMembersDevicesResult {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -155,103 +138,76 @@ public class ListMembersDevicesResult {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<ListMembersDevicesResult> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(ListMembersDevicesResult.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(ListMembersDevicesResult.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<ListMembersDevicesResult> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected JsonSerializer<ListMembersDevicesResult> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(ListMembersDevicesResult value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("devices", value.devices);
-            g.writeObjectField("has_more", value.hasMore);
+        public void serialize(ListMembersDevicesResult value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
+            }
+            g.writeFieldName("devices");
+            StoneSerializers.list(MemberDevices.Serializer.INSTANCE).serialize(value.devices, g);
+            g.writeFieldName("has_more");
+            StoneSerializers.boolean_().serialize(value.hasMore, g);
             if (value.cursor != null) {
-                g.writeObjectField("cursor", value.cursor);
+                g.writeFieldName("cursor");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.cursor, g);
+            }
+            if (!collapse) {
+                g.writeEndObject();
             }
         }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<ListMembersDevicesResult> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(ListMembersDevicesResult.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(ListMembersDevicesResult.class, unwrapping);
-        }
 
         @Override
-        protected JsonDeserializer<ListMembersDevicesResult> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public ListMembersDevicesResult deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            List<MemberDevices> devices = null;
-            Boolean hasMore = null;
-            String cursor = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("devices".equals(_field)) {
-                    expectArrayStart(_p);
-                    devices = new java.util.ArrayList<MemberDevices>();
-                    while (!isArrayEnd(_p)) {
-                        MemberDevices _x = null;
-                        _x = _p.readValueAs(MemberDevices.class);
-                        _p.nextToken();
-                        devices.add(_x);
+        public ListMembersDevicesResult deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            ListMembersDevicesResult value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                List<MemberDevices> f_devices = null;
+                Boolean f_hasMore = null;
+                String f_cursor = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("devices".equals(field)) {
+                        f_devices = StoneSerializers.list(MemberDevices.Serializer.INSTANCE).deserialize(p);
                     }
-                    expectArrayEnd(_p);
-                    _p.nextToken();
+                    else if ("has_more".equals(field)) {
+                        f_hasMore = StoneSerializers.boolean_().deserialize(p);
+                    }
+                    else if ("cursor".equals(field)) {
+                        f_cursor = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
                 }
-                else if ("has_more".equals(_field)) {
-                    hasMore = _p.getValueAsBoolean();
-                    _p.nextToken();
+                if (f_devices == null) {
+                    throw new JsonParseException(p, "Required field \"devices\" missing.");
                 }
-                else if ("cursor".equals(_field)) {
-                    cursor = getStringValue(_p);
-                    _p.nextToken();
+                if (f_hasMore == null) {
+                    throw new JsonParseException(p, "Required field \"has_more\" missing.");
                 }
-                else {
-                    skipValue(_p);
-                }
+                value = new ListMembersDevicesResult(f_devices, f_hasMore, f_cursor);
             }
-
-            if (devices == null) {
-                throw new JsonParseException(_p, "Required field \"devices\" is missing.");
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
             }
-            if (hasMore == null) {
-                throw new JsonParseException(_p, "Required field \"has_more\" is missing.");
+            if (!collapsed) {
+                expectEndObject(p);
             }
-
-            return new ListMembersDevicesResult(devices, hasMore, cursor);
+            return value;
         }
     }
 }

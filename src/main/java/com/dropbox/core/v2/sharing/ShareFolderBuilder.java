@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.babel */
+/* This file was generated from sharing_folders.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -13,26 +13,26 @@ import com.dropbox.core.DbxException;
  * request. </p>
  */
 public class ShareFolderBuilder {
-    private final DbxUserSharingRequests sharing;
+    private final DbxUserSharingRequests sharing_;
     private final ShareFolderArg.Builder shareFolderArgBuilder;
 
     /**
      * Creates a new instance of this builder.
      *
-     * @param sharing  Dropbox namespace-specific client used to issue sharing
+     * @param sharing_  Dropbox namespace-specific client used to issue sharing
      *     requests.
      * @param shareFolderArgBuilder  Request argument builder.
      *
      * @return instsance of this builder
      */
-    ShareFolderBuilder(DbxUserSharingRequests sharing, ShareFolderArg.Builder shareFolderArgBuilder) {
-        if (sharing == null) {
-            throw new NullPointerException("sharing");
+    ShareFolderBuilder(DbxUserSharingRequests sharing_, ShareFolderArg.Builder shareFolderArgBuilder) {
+        if (sharing_ == null) {
+            throw new NullPointerException("sharing_");
         }
+        this.sharing_ = sharing_;
         if (shareFolderArgBuilder == null) {
             throw new NullPointerException("shareFolderArgBuilder");
         }
-        this.sharing = sharing;
         this.shareFolderArgBuilder = shareFolderArgBuilder;
     }
 
@@ -107,7 +107,7 @@ public class ShareFolderBuilder {
      * Issues the request.
      */
     public ShareFolderLaunch start() throws ShareFolderErrorException, DbxException {
-        ShareFolderArg arg = this.shareFolderArgBuilder.build();
-        return sharing.shareFolder(arg);
+        ShareFolderArg arg_ = this.shareFolderArgBuilder.build();
+        return sharing_.shareFolder(arg_);
     }
 }

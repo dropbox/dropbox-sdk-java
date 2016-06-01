@@ -1,37 +1,23 @@
 /* DO NOT EDIT */
-/* This file was generated from async.babel */
+/* This file was generated from async.stone */
 
 package com.dropbox.core.v2.async;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Result returned by methods that poll for the status of an asynchronous job.
  * Upon completion of the job, no additional information is returned.
  */
-@JsonSerialize(using=PollEmptyResult.Serializer.class)
-@JsonDeserialize(using=PollEmptyResult.Deserializer.class)
 public enum PollEmptyResult {
     // union PollEmptyResult
     /**
@@ -43,46 +29,60 @@ public enum PollEmptyResult {
      */
     COMPLETE;
 
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
-
-    static final class Serializer extends UnionJsonSerializer<PollEmptyResult> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(PollEmptyResult.class);
-        }
+    /**
+     * For internal use only.
+     */
+    public static final class Serializer extends UnionSerializer<PollEmptyResult> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(PollEmptyResult value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+        public void serialize(PollEmptyResult value, JsonGenerator g) throws IOException, JsonGenerationException {
             switch (value) {
-                case IN_PROGRESS:
+                case IN_PROGRESS: {
                     g.writeString("in_progress");
                     break;
-                case COMPLETE:
+                }
+                case COMPLETE: {
                     g.writeString("complete");
                     break;
+                }
+                default: {
+                    throw new IllegalArgumentException("Unrecognized tag: " + value);
+                }
             }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<PollEmptyResult, PollEmptyResult> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(PollEmptyResult.class, getTagMapping(), null);
         }
 
         @Override
-        public PollEmptyResult deserialize(PollEmptyResult _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            return _tag;
-        }
-
-        private static Map<String, PollEmptyResult> getTagMapping() {
-            Map<String, PollEmptyResult> values = new HashMap<String, PollEmptyResult>();
-            values.put("complete", PollEmptyResult.COMPLETE);
-            return Collections.unmodifiableMap(values);
+        public PollEmptyResult deserialize(JsonParser p) throws IOException, JsonParseException {
+            PollEmptyResult value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
+            }
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("in_progress".equals(tag)) {
+                value = PollEmptyResult.IN_PROGRESS;
+            }
+            else if ("complete".equals(tag)) {
+                value = PollEmptyResult.COMPLETE;
+            }
+            else {
+                throw new JsonParseException(p, "Unknown tag: " + tag);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

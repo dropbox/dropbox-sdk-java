@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from auth.babel */
+/* This file was generated from auth.stone */
 
 /**
  * See {@link com.dropbox.core.v2.auth.DbxUserAuthRequests} for a list of

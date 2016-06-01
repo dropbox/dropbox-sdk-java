@@ -1,38 +1,21 @@
 /* DO NOT EDIT */
-/* This file was generated from shared_links.babel */
+/* This file was generated from shared_links.stone */
 
 package com.dropbox.core.v2.sharing;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
-@JsonSerialize(using=LinkPermissions.Serializer.class)
-@JsonDeserialize(using=LinkPermissions.Deserializer.class)
 public class LinkPermissions {
     // struct LinkPermissions
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final ResolvedVisibility resolvedVisibility;
     protected final RequestedVisibility requestedVisibility;
@@ -238,7 +221,7 @@ public class LinkPermissions {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -250,102 +233,83 @@ public class LinkPermissions {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<LinkPermissions> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(LinkPermissions.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(LinkPermissions.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<LinkPermissions> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected JsonSerializer<LinkPermissions> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(LinkPermissions value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("can_revoke", value.canRevoke);
+        public void serialize(LinkPermissions value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
+            }
+            g.writeFieldName("can_revoke");
+            StoneSerializers.boolean_().serialize(value.canRevoke, g);
             if (value.resolvedVisibility != null) {
-                g.writeObjectField("resolved_visibility", value.resolvedVisibility);
+                g.writeFieldName("resolved_visibility");
+                StoneSerializers.nullable(ResolvedVisibility.Serializer.INSTANCE).serialize(value.resolvedVisibility, g);
             }
             if (value.requestedVisibility != null) {
-                g.writeObjectField("requested_visibility", value.requestedVisibility);
+                g.writeFieldName("requested_visibility");
+                StoneSerializers.nullable(RequestedVisibility.Serializer.INSTANCE).serialize(value.requestedVisibility, g);
             }
             if (value.revokeFailureReason != null) {
-                g.writeObjectField("revoke_failure_reason", value.revokeFailureReason);
+                g.writeFieldName("revoke_failure_reason");
+                StoneSerializers.nullable(SharedLinkAccessFailureReason.Serializer.INSTANCE).serialize(value.revokeFailureReason, g);
             }
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<LinkPermissions> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(LinkPermissions.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(LinkPermissions.class, unwrapping);
+            if (!collapse) {
+                g.writeEndObject();
+            }
         }
 
         @Override
-        protected JsonDeserializer<LinkPermissions> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public LinkPermissions deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            Boolean canRevoke = null;
-            ResolvedVisibility resolvedVisibility = null;
-            RequestedVisibility requestedVisibility = null;
-            SharedLinkAccessFailureReason revokeFailureReason = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("can_revoke".equals(_field)) {
-                    canRevoke = _p.getValueAsBoolean();
-                    _p.nextToken();
-                }
-                else if ("resolved_visibility".equals(_field)) {
-                    resolvedVisibility = _p.readValueAs(ResolvedVisibility.class);
-                    _p.nextToken();
-                }
-                else if ("requested_visibility".equals(_field)) {
-                    requestedVisibility = _p.readValueAs(RequestedVisibility.class);
-                    _p.nextToken();
-                }
-                else if ("revoke_failure_reason".equals(_field)) {
-                    revokeFailureReason = _p.readValueAs(SharedLinkAccessFailureReason.class);
-                    _p.nextToken();
-                }
-                else {
-                    skipValue(_p);
-                }
+        public LinkPermissions deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            LinkPermissions value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
             }
-
-            if (canRevoke == null) {
-                throw new JsonParseException(_p, "Required field \"can_revoke\" is missing.");
+            if (tag == null) {
+                Boolean f_canRevoke = null;
+                ResolvedVisibility f_resolvedVisibility = null;
+                RequestedVisibility f_requestedVisibility = null;
+                SharedLinkAccessFailureReason f_revokeFailureReason = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("can_revoke".equals(field)) {
+                        f_canRevoke = StoneSerializers.boolean_().deserialize(p);
+                    }
+                    else if ("resolved_visibility".equals(field)) {
+                        f_resolvedVisibility = StoneSerializers.nullable(ResolvedVisibility.Serializer.INSTANCE).deserialize(p);
+                    }
+                    else if ("requested_visibility".equals(field)) {
+                        f_requestedVisibility = StoneSerializers.nullable(RequestedVisibility.Serializer.INSTANCE).deserialize(p);
+                    }
+                    else if ("revoke_failure_reason".equals(field)) {
+                        f_revokeFailureReason = StoneSerializers.nullable(SharedLinkAccessFailureReason.Serializer.INSTANCE).deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
+                }
+                if (f_canRevoke == null) {
+                    throw new JsonParseException(p, "Required field \"can_revoke\" missing.");
+                }
+                value = new LinkPermissions(f_canRevoke, f_resolvedVisibility, f_requestedVisibility, f_revokeFailureReason);
             }
-
-            return new LinkPermissions(canRevoke, resolvedVisibility, requestedVisibility, revokeFailureReason);
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

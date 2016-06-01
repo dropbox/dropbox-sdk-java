@@ -1,30 +1,18 @@
 /* DO NOT EDIT */
-/* This file was generated from shared_links.babel */
+/* This file was generated from shared_links.stone */
 
 package com.dropbox.core.v2.sharing;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This class is a tagged union.  Tagged unions instances are always associated
@@ -32,14 +20,8 @@ import java.util.Map;
  * return {@code true}. You can use {@link #tag()} to determine the tag
  * associated with this instance.
  */
-@JsonSerialize(using=ModifySharedLinkSettingsError.Serializer.class)
-@JsonDeserialize(using=ModifySharedLinkSettingsError.Deserializer.class)
 public final class ModifySharedLinkSettingsError {
     // union ModifySharedLinkSettingsError
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link ModifySharedLinkSettingsError}.
@@ -247,7 +229,7 @@ public final class ModifySharedLinkSettingsError {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -259,89 +241,91 @@ public final class ModifySharedLinkSettingsError {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends UnionJsonSerializer<ModifySharedLinkSettingsError> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(ModifySharedLinkSettingsError.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<ModifySharedLinkSettingsError> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(ModifySharedLinkSettingsError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            switch (value.tag) {
-                case SHARED_LINK_NOT_FOUND:
+        public void serialize(ModifySharedLinkSettingsError value, JsonGenerator g) throws IOException, JsonGenerationException {
+            switch (value.tag()) {
+                case SHARED_LINK_NOT_FOUND: {
                     g.writeString("shared_link_not_found");
                     break;
-                case SHARED_LINK_ACCESS_DENIED:
+                }
+                case SHARED_LINK_ACCESS_DENIED: {
                     g.writeString("shared_link_access_denied");
                     break;
-                case OTHER:
+                }
+                case OTHER: {
                     g.writeString("other");
                     break;
-                case SETTINGS_ERROR:
+                }
+                case SETTINGS_ERROR: {
                     g.writeStartObject();
-                    g.writeStringField(".tag", "settings_error");
-                    g.writeObjectField("settings_error", value.settingsErrorValue);
+                    writeTag("settings_error", g);
+                    g.writeFieldName("settings_error");
+                    SharedLinkSettingsError.Serializer.INSTANCE.serialize(value.settingsErrorValue, g);
                     g.writeEndObject();
                     break;
-                case EMAIL_NOT_VERIFIED:
+                }
+                case EMAIL_NOT_VERIFIED: {
                     g.writeString("email_not_verified");
                     break;
+                }
+                default: {
+                    throw new IllegalArgumentException("Unrecognized tag: " + value.tag());
+                }
             }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<ModifySharedLinkSettingsError, Tag> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(ModifySharedLinkSettingsError.class, getTagMapping(), null);
         }
 
         @Override
-        public ModifySharedLinkSettingsError deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            switch (_tag) {
-                case SHARED_LINK_NOT_FOUND: {
-                    return ModifySharedLinkSettingsError.SHARED_LINK_NOT_FOUND;
-                }
-                case SHARED_LINK_ACCESS_DENIED: {
-                    return ModifySharedLinkSettingsError.SHARED_LINK_ACCESS_DENIED;
-                }
-                case OTHER: {
-                    return ModifySharedLinkSettingsError.OTHER;
-                }
-                case SETTINGS_ERROR: {
-                    SharedLinkSettingsError value = null;
-                    expectField(_p, "settings_error");
-                    value = _p.readValueAs(SharedLinkSettingsError.class);
-                    _p.nextToken();
-                    return ModifySharedLinkSettingsError.settingsError(value);
-                }
-                case EMAIL_NOT_VERIFIED: {
-                    return ModifySharedLinkSettingsError.EMAIL_NOT_VERIFIED;
-                }
+        public ModifySharedLinkSettingsError deserialize(JsonParser p) throws IOException, JsonParseException {
+            ModifySharedLinkSettingsError value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
             }
-            // should be impossible to get here
-            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
-        }
-
-        private static Map<String, ModifySharedLinkSettingsError.Tag> getTagMapping() {
-            Map<String, ModifySharedLinkSettingsError.Tag> values = new HashMap<String, ModifySharedLinkSettingsError.Tag>();
-            values.put("settings_error", ModifySharedLinkSettingsError.Tag.SETTINGS_ERROR);
-            values.put("email_not_verified", ModifySharedLinkSettingsError.Tag.EMAIL_NOT_VERIFIED);
-            return Collections.unmodifiableMap(values);
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("shared_link_not_found".equals(tag)) {
+                value = ModifySharedLinkSettingsError.SHARED_LINK_NOT_FOUND;
+            }
+            else if ("shared_link_access_denied".equals(tag)) {
+                value = ModifySharedLinkSettingsError.SHARED_LINK_ACCESS_DENIED;
+            }
+            else if ("other".equals(tag)) {
+                value = ModifySharedLinkSettingsError.OTHER;
+            }
+            else if ("settings_error".equals(tag)) {
+                SharedLinkSettingsError fieldValue = null;
+                expectField("settings_error", p);
+                fieldValue = SharedLinkSettingsError.Serializer.INSTANCE.deserialize(p);
+                value = ModifySharedLinkSettingsError.settingsError(fieldValue);
+            }
+            else if ("email_not_verified".equals(tag)) {
+                value = ModifySharedLinkSettingsError.EMAIL_NOT_VERIFIED;
+            }
+            else {
+                throw new JsonParseException(p, "Unknown tag: " + tag);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

@@ -1,27 +1,16 @@
 /* DO NOT EDIT */
-/* This file was generated from team_groups.babel */
+/* This file was generated from team_groups.stone */
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
@@ -31,14 +20,8 @@ import java.io.IOException;
  * {@link
  * DbxTeamTeamRequests#groupsMembersRemove(GroupSelector,java.util.List)}.
  */
-@JsonSerialize(using=GroupMembersChangeResult.Serializer.class)
-@JsonDeserialize(using=GroupMembersChangeResult.Deserializer.class)
 public class GroupMembersChangeResult {
     // struct GroupMembersChangeResult
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final GroupFullInfo groupInfo;
     protected final String asyncJobId;
@@ -119,7 +102,7 @@ public class GroupMembersChangeResult {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -131,87 +114,68 @@ public class GroupMembersChangeResult {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<GroupMembersChangeResult> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(GroupMembersChangeResult.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(GroupMembersChangeResult.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<GroupMembersChangeResult> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected JsonSerializer<GroupMembersChangeResult> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(GroupMembersChangeResult value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("group_info", value.groupInfo);
-            g.writeObjectField("async_job_id", value.asyncJobId);
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<GroupMembersChangeResult> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(GroupMembersChangeResult.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(GroupMembersChangeResult.class, unwrapping);
-        }
-
-        @Override
-        protected JsonDeserializer<GroupMembersChangeResult> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public GroupMembersChangeResult deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            GroupFullInfo groupInfo = null;
-            String asyncJobId = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("group_info".equals(_field)) {
-                    groupInfo = _p.readValueAs(GroupFullInfo.class);
-                    _p.nextToken();
-                }
-                else if ("async_job_id".equals(_field)) {
-                    asyncJobId = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else {
-                    skipValue(_p);
-                }
+        public void serialize(GroupMembersChangeResult value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
             }
-
-            if (groupInfo == null) {
-                throw new JsonParseException(_p, "Required field \"group_info\" is missing.");
+            g.writeFieldName("group_info");
+            GroupFullInfo.Serializer.INSTANCE.serialize(value.groupInfo, g);
+            g.writeFieldName("async_job_id");
+            StoneSerializers.string().serialize(value.asyncJobId, g);
+            if (!collapse) {
+                g.writeEndObject();
             }
-            if (asyncJobId == null) {
-                throw new JsonParseException(_p, "Required field \"async_job_id\" is missing.");
-            }
+        }
 
-            return new GroupMembersChangeResult(groupInfo, asyncJobId);
+        @Override
+        public GroupMembersChangeResult deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            GroupMembersChangeResult value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                GroupFullInfo f_groupInfo = null;
+                String f_asyncJobId = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("group_info".equals(field)) {
+                        f_groupInfo = GroupFullInfo.Serializer.INSTANCE.deserialize(p);
+                    }
+                    else if ("async_job_id".equals(field)) {
+                        f_asyncJobId = StoneSerializers.string().deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
+                }
+                if (f_groupInfo == null) {
+                    throw new JsonParseException(p, "Required field \"group_info\" missing.");
+                }
+                if (f_asyncJobId == null) {
+                    throw new JsonParseException(p, "Required field \"async_job_id\" missing.");
+                }
+                value = new GroupMembersChangeResult(f_groupInfo, f_asyncJobId);
+            }
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

@@ -1,27 +1,16 @@
 /* DO NOT EDIT */
-/* This file was generated from files.babel */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.Date;
@@ -29,14 +18,8 @@ import java.util.Date;
 /**
  * Metadata for a photo or video.
  */
-@JsonSerialize(using=MediaMetadata.Serializer.class)
-@JsonDeserialize(using=MediaMetadata.Deserializer.class)
 public class MediaMetadata {
     // struct MediaMetadata
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final Dimensions dimensions;
     protected final GpsCoordinates location;
@@ -195,7 +178,7 @@ public class MediaMetadata {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -207,95 +190,94 @@ public class MediaMetadata {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<MediaMetadata> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(MediaMetadata.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(MediaMetadata.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<MediaMetadata> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected void serializeFields(MediaMetadata value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+        public void serialize(MediaMetadata value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (value instanceof PhotoMetadata) {
+                PhotoMetadata.Serializer.INSTANCE.serialize((PhotoMetadata) value, g, collapse);
+                return;
+            }
+            if (value instanceof VideoMetadata) {
+                VideoMetadata.Serializer.INSTANCE.serialize((VideoMetadata) value, g, collapse);
+                return;
+            }
+            if (!collapse) {
+                g.writeStartObject();
+            }
             if (value.dimensions != null) {
-                g.writeObjectField("dimensions", value.dimensions);
+                g.writeFieldName("dimensions");
+                StoneSerializers.nullable(Dimensions.Serializer.INSTANCE).serialize(value.dimensions, g);
             }
             if (value.location != null) {
-                g.writeObjectField("location", value.location);
+                g.writeFieldName("location");
+                StoneSerializers.nullable(GpsCoordinates.Serializer.INSTANCE).serialize(value.location, g);
             }
             if (value.timeTaken != null) {
-                g.writeObjectField("time_taken", value.timeTaken);
+                g.writeFieldName("time_taken");
+                StoneSerializers.nullable(StoneSerializers.timestamp()).serialize(value.timeTaken, g);
             }
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<MediaMetadata> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(MediaMetadata.class, PhotoMetadata.class, VideoMetadata.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(MediaMetadata.class, unwrapping, PhotoMetadata.class, VideoMetadata.class);
+            if (!collapse) {
+                g.writeEndObject();
+            }
         }
 
         @Override
-        protected JsonDeserializer<MediaMetadata> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public MediaMetadata deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            String _subtype_tag = readEnumeratedSubtypeTag(_p);
-            if ("photo".equals(_subtype_tag)) {
-                return readCollapsedStructValue(PhotoMetadata.class, _p, _ctx);
-            }
-            if ("video".equals(_subtype_tag)) {
-                return readCollapsedStructValue(VideoMetadata.class, _p, _ctx);
-            }
-
-            Dimensions dimensions = null;
-            GpsCoordinates location = null;
-            Date timeTaken = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("dimensions".equals(_field)) {
-                    dimensions = _p.readValueAs(Dimensions.class);
-                    _p.nextToken();
-                }
-                else if ("location".equals(_field)) {
-                    location = _p.readValueAs(GpsCoordinates.class);
-                    _p.nextToken();
-                }
-                else if ("time_taken".equals(_field)) {
-                    timeTaken = _ctx.parseDate(getStringValue(_p));
-                    _p.nextToken();
-                }
-                else {
-                    skipValue(_p);
+        public MediaMetadata deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            MediaMetadata value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+                if ("".equals(tag)) {
+                    tag = null;
                 }
             }
-
-
-            return new MediaMetadata(dimensions, location, timeTaken);
+            if (tag == null) {
+                Dimensions f_dimensions = null;
+                GpsCoordinates f_location = null;
+                Date f_timeTaken = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("dimensions".equals(field)) {
+                        f_dimensions = StoneSerializers.nullable(Dimensions.Serializer.INSTANCE).deserialize(p);
+                    }
+                    else if ("location".equals(field)) {
+                        f_location = StoneSerializers.nullable(GpsCoordinates.Serializer.INSTANCE).deserialize(p);
+                    }
+                    else if ("time_taken".equals(field)) {
+                        f_timeTaken = StoneSerializers.nullable(StoneSerializers.timestamp()).deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
+                }
+                value = new MediaMetadata(f_dimensions, f_location, f_timeTaken);
+            }
+            else if ("".equals(tag)) {
+                value = MediaMetadata.Serializer.INSTANCE.deserialize(p, true);
+            }
+            else if ("photo".equals(tag)) {
+                value = PhotoMetadata.Serializer.INSTANCE.deserialize(p, true);
+            }
+            else if ("video".equals(tag)) {
+                value = VideoMetadata.Serializer.INSTANCE.deserialize(p, true);
+            }
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

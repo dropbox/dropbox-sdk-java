@@ -1,26 +1,17 @@
 /* DO NOT EDIT */
-/* This file was generated from team_devices.babel, team_property_templates.babel, team_members.babel, team_linked_apps.babel, team_reports.babel, team_groups.babel, team_common.babel, team.babel */
+/* This file was generated from team_devices.stone, team_property_templates.stone, team_members.stone, team_groups.stone, team_linked_apps.stone, team_reports.stone, team.stone */
 
 package com.dropbox.core.v2.team;
 
 import com.dropbox.core.DbxApiException;
 import com.dropbox.core.DbxException;
-import com.dropbox.core.DbxRequestUtil;
+import com.dropbox.core.DbxWrappedException;
 import com.dropbox.core.http.HttpRequestor;
-import com.dropbox.core.json.JsonUtil;
 import com.dropbox.core.v2.DbxRawClientV2;
 import com.dropbox.core.v2.async.LaunchEmptyResult;
 import com.dropbox.core.v2.async.PollArg;
 import com.dropbox.core.v2.async.PollEmptyResult;
 import com.dropbox.core.v2.async.PollErrorException;
-import com.dropbox.core.v2.properties.GetPropertyTemplateArg;
-import com.dropbox.core.v2.properties.GetPropertyTemplateResult;
-import com.dropbox.core.v2.properties.ListPropertyTemplateIds;
-import com.dropbox.core.v2.properties.ModifyPropertyTemplateErrorException;
-import com.dropbox.core.v2.properties.PropertyTemplateErrorException;
-
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JavaType;
 
 import java.util.HashMap;
 import java.util.List;
@@ -52,11 +43,12 @@ public final class DbxTeamTeamRequests {
                                    "2/team/devices/list_member_devices",
                                    listMemberDevicesArg,
                                    false,
-                                   JsonUtil.createType(ListMemberDevicesResult.class),
-                                   JsonUtil.createType(ListMemberDevicesError.class));
+                                   ListMemberDevicesArg.Serializer.INSTANCE,
+                                   ListMemberDevicesResult.Serializer.INSTANCE,
+                                   ListMemberDevicesError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new ListMemberDevicesErrorException(ew.getRequestId(), ew.getUserMessage(), (ListMemberDevicesError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new ListMemberDevicesErrorException(ex.getRequestId(), ex.getUserMessage(), (ListMemberDevicesError) ex.getErrorValue());
         }
     }
 
@@ -88,8 +80,8 @@ public final class DbxTeamTeamRequests {
      *     preconditions.
      */
     public DevicesListMemberDevicesBuilder devicesListMemberDevicesBuilder(String teamMemberId) {
-        ListMemberDevicesArg.Builder argBuilder = ListMemberDevicesArg.newBuilder(teamMemberId);
-        return new DevicesListMemberDevicesBuilder(this, argBuilder);
+        ListMemberDevicesArg.Builder argBuilder_ = ListMemberDevicesArg.newBuilder(teamMemberId);
+        return new DevicesListMemberDevicesBuilder(this, argBuilder_);
     }
 
     //
@@ -106,11 +98,12 @@ public final class DbxTeamTeamRequests {
                                    "2/team/devices/list_members_devices",
                                    listMembersDevicesArg,
                                    false,
-                                   JsonUtil.createType(ListMembersDevicesResult.class),
-                                   JsonUtil.createType(ListMembersDevicesError.class));
+                                   ListMembersDevicesArg.Serializer.INSTANCE,
+                                   ListMembersDevicesResult.Serializer.INSTANCE,
+                                   ListMembersDevicesError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new ListMembersDevicesErrorException(ew.getRequestId(), ew.getUserMessage(), (ListMembersDevicesError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new ListMembersDevicesErrorException(ex.getRequestId(), ex.getUserMessage(), (ListMembersDevicesError) ex.getErrorValue());
         }
     }
 
@@ -132,8 +125,8 @@ public final class DbxTeamTeamRequests {
      *     the request.
      */
     public DevicesListMembersDevicesBuilder devicesListMembersDevicesBuilder() {
-        ListMembersDevicesArg.Builder argBuilder = ListMembersDevicesArg.newBuilder();
-        return new DevicesListMembersDevicesBuilder(this, argBuilder);
+        ListMembersDevicesArg.Builder argBuilder_ = ListMembersDevicesArg.newBuilder();
+        return new DevicesListMembersDevicesBuilder(this, argBuilder_);
     }
 
     //
@@ -154,11 +147,12 @@ public final class DbxTeamTeamRequests {
                                    "2/team/devices/list_team_devices",
                                    listTeamDevicesArg,
                                    false,
-                                   JsonUtil.createType(ListTeamDevicesResult.class),
-                                   JsonUtil.createType(ListTeamDevicesError.class));
+                                   ListTeamDevicesArg.Serializer.INSTANCE,
+                                   ListTeamDevicesResult.Serializer.INSTANCE,
+                                   ListTeamDevicesError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new ListTeamDevicesErrorException(ew.getRequestId(), ew.getUserMessage(), (ListTeamDevicesError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new ListTeamDevicesErrorException(ex.getRequestId(), ex.getUserMessage(), (ListTeamDevicesError) ex.getErrorValue());
         }
     }
 
@@ -188,8 +182,8 @@ public final class DbxTeamTeamRequests {
      */
     @Deprecated
     public DevicesListTeamDevicesBuilder devicesListTeamDevicesBuilder() {
-        ListTeamDevicesArg.Builder argBuilder = ListTeamDevicesArg.newBuilder();
-        return new DevicesListTeamDevicesBuilder(this, argBuilder);
+        ListTeamDevicesArg.Builder argBuilder_ = ListTeamDevicesArg.newBuilder();
+        return new DevicesListTeamDevicesBuilder(this, argBuilder_);
     }
 
     //
@@ -206,11 +200,12 @@ public final class DbxTeamTeamRequests {
                             "2/team/devices/revoke_device_session",
                             revokeDeviceSessionArg,
                             false,
-                            JsonUtil.createType(Void.class),
-                            JsonUtil.createType(RevokeDeviceSessionError.class));
+                            RevokeDeviceSessionArg.Serializer.INSTANCE,
+                            com.dropbox.core.stone.StoneSerializers.void_(),
+                            RevokeDeviceSessionError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new RevokeDeviceSessionErrorException(ew.getRequestId(), ew.getUserMessage(), (RevokeDeviceSessionError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new RevokeDeviceSessionErrorException(ex.getRequestId(), ex.getUserMessage(), (RevokeDeviceSessionError) ex.getErrorValue());
         }
     }
 
@@ -228,11 +223,12 @@ public final class DbxTeamTeamRequests {
                                    "2/team/devices/revoke_device_session_batch",
                                    revokeDeviceSessionBatchArg,
                                    false,
-                                   JsonUtil.createType(RevokeDeviceSessionBatchResult.class),
-                                   JsonUtil.createType(RevokeDeviceSessionBatchError.class));
+                                   RevokeDeviceSessionBatchArg.Serializer.INSTANCE,
+                                   RevokeDeviceSessionBatchResult.Serializer.INSTANCE,
+                                   RevokeDeviceSessionBatchError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new RevokeDeviceSessionBatchErrorException(ew.getRequestId(), ew.getUserMessage(), (RevokeDeviceSessionBatchError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new RevokeDeviceSessionBatchErrorException(ex.getRequestId(), ex.getUserMessage(), (RevokeDeviceSessionBatchError) ex.getErrorValue());
         }
     }
 
@@ -263,11 +259,12 @@ public final class DbxTeamTeamRequests {
                                    "2/team/get_info",
                                    null,
                                    false,
-                                   JsonUtil.createType(TeamGetInfoResult.class),
-                                   JsonUtil.createType(Void.class));
+                                   com.dropbox.core.stone.StoneSerializers.void_(),
+                                   TeamGetInfoResult.Serializer.INSTANCE,
+                                   com.dropbox.core.stone.StoneSerializers.void_());
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new DbxApiException(ew.getRequestId(), ew.getUserMessage(), "Unexpected error response for \"get_info\": ew.errValue");
+        catch (DbxWrappedException ex) {
+            throw new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"get_info\":" + ex.getErrorValue());
         }
     }
 
@@ -288,11 +285,12 @@ public final class DbxTeamTeamRequests {
                                    "2/team/groups/create",
                                    groupCreateArg,
                                    false,
-                                   JsonUtil.createType(GroupFullInfo.class),
-                                   JsonUtil.createType(GroupCreateError.class));
+                                   GroupCreateArg.Serializer.INSTANCE,
+                                   GroupFullInfo.Serializer.INSTANCE,
+                                   GroupCreateError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new GroupCreateErrorException(ew.getRequestId(), ew.getUserMessage(), (GroupCreateError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new GroupCreateErrorException(ex.getRequestId(), ex.getUserMessage(), (GroupCreateError) ex.getErrorValue());
         }
     }
 
@@ -317,8 +315,8 @@ public final class DbxTeamTeamRequests {
      * member management
      *
      * @param groupName  Group name. Must not be {@code null}.
-     * @param groupExternalId  Optional argument. The creator of a team can
-     *     associate an arbitrary external ID to the group.
+     * @param groupExternalId  The creator of a team can associate an arbitrary
+     *     external ID to the group.
      *
      * @return Full description of a group.
      *
@@ -353,11 +351,12 @@ public final class DbxTeamTeamRequests {
                                    "2/team/groups/delete",
                                    groupSelector,
                                    false,
-                                   JsonUtil.createType(LaunchEmptyResult.class),
-                                   JsonUtil.createType(GroupDeleteError.class));
+                                   GroupSelector.Serializer.INSTANCE,
+                                   LaunchEmptyResult.Serializer.INSTANCE,
+                                   GroupDeleteError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new GroupDeleteErrorException(ew.getRequestId(), ew.getUserMessage(), (GroupDeleteError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new GroupDeleteErrorException(ex.getRequestId(), ex.getUserMessage(), (GroupDeleteError) ex.getErrorValue());
         }
     }
 
@@ -378,11 +377,12 @@ public final class DbxTeamTeamRequests {
                                    "2/team/groups/get_info",
                                    groupsSelector,
                                    false,
-                                   JsonUtil.createType(new TypeReference<List<GroupsGetInfoItem>>() {}),
-                                   JsonUtil.createType(GroupsGetInfoError.class));
+                                   GroupsSelector.Serializer.INSTANCE,
+                                   com.dropbox.core.stone.StoneSerializers.list(GroupsGetInfoItem.Serializer.INSTANCE),
+                                   GroupsGetInfoError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new GroupsGetInfoErrorException(ew.getRequestId(), ew.getUserMessage(), (GroupsGetInfoError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new GroupsGetInfoErrorException(ex.getRequestId(), ex.getUserMessage(), (GroupsGetInfoError) ex.getErrorValue());
         }
     }
 
@@ -411,11 +411,12 @@ public final class DbxTeamTeamRequests {
                                    "2/team/groups/job_status/get",
                                    pollArg,
                                    false,
-                                   JsonUtil.createType(PollEmptyResult.class),
-                                   JsonUtil.createType(GroupsPollError.class));
+                                   PollArg.Serializer.INSTANCE,
+                                   PollEmptyResult.Serializer.INSTANCE,
+                                   GroupsPollError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new GroupsPollErrorException(ew.getRequestId(), ew.getUserMessage(), (GroupsPollError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new GroupsPollErrorException(ex.getRequestId(), ex.getUserMessage(), (GroupsPollError) ex.getErrorValue());
         }
     }
 
@@ -457,11 +458,12 @@ public final class DbxTeamTeamRequests {
                                    "2/team/groups/list",
                                    groupsListArg,
                                    false,
-                                   JsonUtil.createType(GroupsListResult.class),
-                                   JsonUtil.createType(Void.class));
+                                   GroupsListArg.Serializer.INSTANCE,
+                                   GroupsListResult.Serializer.INSTANCE,
+                                   com.dropbox.core.stone.StoneSerializers.void_());
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new DbxApiException(ew.getRequestId(), ew.getUserMessage(), "Unexpected error response for \"groups/list\": ew.errValue");
+        catch (DbxWrappedException ex) {
+            throw new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"groups/list\":" + ex.getErrorValue());
         }
     }
 
@@ -512,11 +514,12 @@ public final class DbxTeamTeamRequests {
                                    "2/team/groups/list/continue",
                                    groupsListContinueArg,
                                    false,
-                                   JsonUtil.createType(GroupsListResult.class),
-                                   JsonUtil.createType(GroupsListContinueError.class));
+                                   GroupsListContinueArg.Serializer.INSTANCE,
+                                   GroupsListResult.Serializer.INSTANCE,
+                                   GroupsListContinueError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new GroupsListContinueErrorException(ew.getRequestId(), ew.getUserMessage(), (GroupsListContinueError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new GroupsListContinueErrorException(ex.getRequestId(), ex.getUserMessage(), (GroupsListContinueError) ex.getErrorValue());
         }
     }
 
@@ -557,11 +560,12 @@ public final class DbxTeamTeamRequests {
                                    "2/team/groups/members/add",
                                    groupMembersAddArg,
                                    false,
-                                   JsonUtil.createType(GroupMembersChangeResult.class),
-                                   JsonUtil.createType(GroupMembersAddError.class));
+                                   GroupMembersAddArg.Serializer.INSTANCE,
+                                   GroupMembersChangeResult.Serializer.INSTANCE,
+                                   GroupMembersAddError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new GroupMembersAddErrorException(ew.getRequestId(), ew.getUserMessage(), (GroupMembersAddError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new GroupMembersAddErrorException(ex.getRequestId(), ex.getUserMessage(), (GroupMembersAddError) ex.getErrorValue());
         }
     }
 
@@ -618,6 +622,109 @@ public final class DbxTeamTeamRequests {
     }
 
     //
+    // route team/groups/members/list
+    //
+
+    /**
+     * Lists members of a group. Permission : Team Information
+     *
+     */
+    GroupsMembersListResult groupsMembersList(GroupsMembersListArg groupsMembersListArg) throws GroupSelectorErrorException, DbxException {
+        try {
+            return client.rpcStyle(client.getHost().getApi(),
+                                   "2/team/groups/members/list",
+                                   groupsMembersListArg,
+                                   false,
+                                   GroupsMembersListArg.Serializer.INSTANCE,
+                                   GroupsMembersListResult.Serializer.INSTANCE,
+                                   GroupSelectorError.Serializer.INSTANCE);
+        }
+        catch (DbxWrappedException ex) {
+            throw new GroupSelectorErrorException(ex.getRequestId(), ex.getUserMessage(), (GroupSelectorError) ex.getErrorValue());
+        }
+    }
+
+    /**
+     * Lists members of a group. Permission : Team Information
+     *
+     * <p> The {@code limit} request parameter will default to {@code 1000L}
+     * (see {@link #groupsMembersList(GroupSelector,long)}). </p>
+     *
+     * @param group  The group whose members are to be listed. Must not be
+     *     {@code null}.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public GroupsMembersListResult groupsMembersList(GroupSelector group) throws GroupSelectorErrorException, DbxException {
+        GroupsMembersListArg arg = new GroupsMembersListArg(group);
+        return groupsMembersList(arg);
+    }
+
+    /**
+     * Lists members of a group. Permission : Team Information
+     *
+     * @param group  The group whose members are to be listed. Must not be
+     *     {@code null}.
+     * @param limit  Number of results to return per call. Must be greater than
+     *     or equal to 1 and be less than or equal to 1000.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public GroupsMembersListResult groupsMembersList(GroupSelector group, long limit) throws GroupSelectorErrorException, DbxException {
+        if (limit < 1L) {
+            throw new IllegalArgumentException("Number 'limit' is smaller than 1L");
+        }
+        if (limit > 1000L) {
+            throw new IllegalArgumentException("Number 'limit' is larger than 1000L");
+        }
+        GroupsMembersListArg arg = new GroupsMembersListArg(group, limit);
+        return groupsMembersList(arg);
+    }
+
+    //
+    // route team/groups/members/list/continue
+    //
+
+    /**
+     * Once a cursor has been retrieved from {@link
+     * DbxTeamTeamRequests#groupsMembersList(GroupSelector)}, use this to
+     * paginate through all members of the group. Permission : Team information
+     *
+     */
+    GroupsMembersListResult groupsMembersListContinue(GroupsMembersListContinueArg groupsMembersListContinueArg) throws GroupsMembersListContinueErrorException, DbxException {
+        try {
+            return client.rpcStyle(client.getHost().getApi(),
+                                   "2/team/groups/members/list/continue",
+                                   groupsMembersListContinueArg,
+                                   false,
+                                   GroupsMembersListContinueArg.Serializer.INSTANCE,
+                                   GroupsMembersListResult.Serializer.INSTANCE,
+                                   GroupsMembersListContinueError.Serializer.INSTANCE);
+        }
+        catch (DbxWrappedException ex) {
+            throw new GroupsMembersListContinueErrorException(ex.getRequestId(), ex.getUserMessage(), (GroupsMembersListContinueError) ex.getErrorValue());
+        }
+    }
+
+    /**
+     * Once a cursor has been retrieved from {@link
+     * DbxTeamTeamRequests#groupsMembersList(GroupSelector)}, use this to
+     * paginate through all members of the group. Permission : Team information
+     *
+     * @param cursor  Indicates from what point to get the next set of groups.
+     *     Must not be {@code null}.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public GroupsMembersListResult groupsMembersListContinue(String cursor) throws GroupsMembersListContinueErrorException, DbxException {
+        GroupsMembersListContinueArg arg = new GroupsMembersListContinueArg(cursor);
+        return groupsMembersListContinue(arg);
+    }
+
+    //
     // route team/groups/members/remove
     //
 
@@ -639,11 +746,12 @@ public final class DbxTeamTeamRequests {
                                    "2/team/groups/members/remove",
                                    groupMembersRemoveArg,
                                    false,
-                                   JsonUtil.createType(GroupMembersChangeResult.class),
-                                   JsonUtil.createType(GroupMembersRemoveError.class));
+                                   GroupMembersRemoveArg.Serializer.INSTANCE,
+                                   GroupMembersChangeResult.Serializer.INSTANCE,
+                                   GroupMembersRemoveError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new GroupMembersRemoveErrorException(ew.getRequestId(), ew.getUserMessage(), (GroupMembersRemoveError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new GroupMembersRemoveErrorException(ex.getRequestId(), ex.getUserMessage(), (GroupMembersRemoveError) ex.getErrorValue());
         }
     }
 
@@ -717,11 +825,12 @@ public final class DbxTeamTeamRequests {
                                    "2/team/groups/members/set_access_type",
                                    groupMembersSetAccessTypeArg,
                                    false,
-                                   JsonUtil.createType(new TypeReference<List<GroupsGetInfoItem>>() {}),
-                                   JsonUtil.createType(GroupMemberSetAccessTypeError.class));
+                                   GroupMembersSetAccessTypeArg.Serializer.INSTANCE,
+                                   com.dropbox.core.stone.StoneSerializers.list(GroupsGetInfoItem.Serializer.INSTANCE),
+                                   GroupMemberSetAccessTypeError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new GroupMemberSetAccessTypeErrorException(ew.getRequestId(), ew.getUserMessage(), (GroupMemberSetAccessTypeError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new GroupMemberSetAccessTypeErrorException(ex.getRequestId(), ex.getUserMessage(), (GroupMemberSetAccessTypeError) ex.getErrorValue());
         }
     }
 
@@ -786,11 +895,12 @@ public final class DbxTeamTeamRequests {
                                    "2/team/groups/update",
                                    groupUpdateArgs,
                                    false,
-                                   JsonUtil.createType(GroupFullInfo.class),
-                                   JsonUtil.createType(GroupUpdateError.class));
+                                   GroupUpdateArgs.Serializer.INSTANCE,
+                                   GroupFullInfo.Serializer.INSTANCE,
+                                   GroupUpdateError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new GroupUpdateErrorException(ew.getRequestId(), ew.getUserMessage(), (GroupUpdateError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new GroupUpdateErrorException(ex.getRequestId(), ex.getUserMessage(), (GroupUpdateError) ex.getErrorValue());
         }
     }
 
@@ -826,8 +936,8 @@ public final class DbxTeamTeamRequests {
      *     preconditions.
      */
     public GroupsUpdateBuilder groupsUpdateBuilder(GroupSelector group) {
-        GroupUpdateArgs.Builder argBuilder = GroupUpdateArgs.newBuilder(group);
-        return new GroupsUpdateBuilder(this, argBuilder);
+        GroupUpdateArgs.Builder argBuilder_ = GroupUpdateArgs.newBuilder(group);
+        return new GroupsUpdateBuilder(this, argBuilder_);
     }
 
     //
@@ -845,11 +955,12 @@ public final class DbxTeamTeamRequests {
                                    "2/team/linked_apps/list_member_linked_apps",
                                    listMemberAppsArg,
                                    false,
-                                   JsonUtil.createType(ListMemberAppsResult.class),
-                                   JsonUtil.createType(ListMemberAppsError.class));
+                                   ListMemberAppsArg.Serializer.INSTANCE,
+                                   ListMemberAppsResult.Serializer.INSTANCE,
+                                   ListMemberAppsError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new ListMemberAppsErrorException(ew.getRequestId(), ew.getUserMessage(), (ListMemberAppsError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new ListMemberAppsErrorException(ex.getRequestId(), ex.getUserMessage(), (ListMemberAppsError) ex.getErrorValue());
         }
     }
 
@@ -887,11 +998,12 @@ public final class DbxTeamTeamRequests {
                                    "2/team/linked_apps/list_members_linked_apps",
                                    listMembersAppsArg,
                                    false,
-                                   JsonUtil.createType(ListMembersAppsResult.class),
-                                   JsonUtil.createType(ListMembersAppsError.class));
+                                   ListMembersAppsArg.Serializer.INSTANCE,
+                                   ListMembersAppsResult.Serializer.INSTANCE,
+                                   ListMembersAppsError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new ListMembersAppsErrorException(ew.getRequestId(), ew.getUserMessage(), (ListMembersAppsError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new ListMembersAppsErrorException(ex.getRequestId(), ex.getUserMessage(), (ListMembersAppsError) ex.getErrorValue());
         }
     }
 
@@ -949,11 +1061,12 @@ public final class DbxTeamTeamRequests {
                                    "2/team/linked_apps/list_team_linked_apps",
                                    listTeamAppsArg,
                                    false,
-                                   JsonUtil.createType(ListTeamAppsResult.class),
-                                   JsonUtil.createType(ListTeamAppsError.class));
+                                   ListTeamAppsArg.Serializer.INSTANCE,
+                                   ListTeamAppsResult.Serializer.INSTANCE,
+                                   ListTeamAppsError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new ListTeamAppsErrorException(ew.getRequestId(), ew.getUserMessage(), (ListTeamAppsError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new ListTeamAppsErrorException(ex.getRequestId(), ex.getUserMessage(), (ListTeamAppsError) ex.getErrorValue());
         }
     }
 
@@ -1009,11 +1122,12 @@ public final class DbxTeamTeamRequests {
                             "2/team/linked_apps/revoke_linked_app",
                             revokeLinkedApiAppArg,
                             false,
-                            JsonUtil.createType(Void.class),
-                            JsonUtil.createType(RevokeLinkedAppError.class));
+                            RevokeLinkedApiAppArg.Serializer.INSTANCE,
+                            com.dropbox.core.stone.StoneSerializers.void_(),
+                            RevokeLinkedAppError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new RevokeLinkedAppErrorException(ew.getRequestId(), ew.getUserMessage(), (RevokeLinkedAppError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new RevokeLinkedAppErrorException(ex.getRequestId(), ex.getUserMessage(), (RevokeLinkedAppError) ex.getErrorValue());
         }
     }
 
@@ -1067,11 +1181,12 @@ public final class DbxTeamTeamRequests {
                                    "2/team/linked_apps/revoke_linked_app_batch",
                                    revokeLinkedApiAppBatchArg,
                                    false,
-                                   JsonUtil.createType(RevokeLinkedAppBatchResult.class),
-                                   JsonUtil.createType(RevokeLinkedAppBatchError.class));
+                                   RevokeLinkedApiAppBatchArg.Serializer.INSTANCE,
+                                   RevokeLinkedAppBatchResult.Serializer.INSTANCE,
+                                   RevokeLinkedAppBatchError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new RevokeLinkedAppBatchErrorException(ew.getRequestId(), ew.getUserMessage(), (RevokeLinkedAppBatchError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new RevokeLinkedAppBatchErrorException(ex.getRequestId(), ex.getUserMessage(), (RevokeLinkedAppBatchError) ex.getErrorValue());
         }
     }
 
@@ -1113,11 +1228,12 @@ public final class DbxTeamTeamRequests {
                                    "2/team/members/add",
                                    membersAddArg,
                                    false,
-                                   JsonUtil.createType(MembersAddLaunch.class),
-                                   JsonUtil.createType(Void.class));
+                                   MembersAddArg.Serializer.INSTANCE,
+                                   MembersAddLaunch.Serializer.INSTANCE,
+                                   com.dropbox.core.stone.StoneSerializers.void_());
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new DbxApiException(ew.getRequestId(), ew.getUserMessage(), "Unexpected error response for \"members/add\": ew.errValue");
+        catch (DbxWrappedException ex) {
+            throw new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"members/add\":" + ex.getErrorValue());
         }
     }
 
@@ -1191,11 +1307,12 @@ public final class DbxTeamTeamRequests {
                                    "2/team/members/add/job_status/get",
                                    pollArg,
                                    false,
-                                   JsonUtil.createType(MembersAddJobStatus.class),
-                                   JsonUtil.createType(com.dropbox.core.v2.async.PollError.class));
+                                   PollArg.Serializer.INSTANCE,
+                                   MembersAddJobStatus.Serializer.INSTANCE,
+                                   com.dropbox.core.v2.async.PollError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new PollErrorException(ew.getRequestId(), ew.getUserMessage(), (com.dropbox.core.v2.async.PollError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new PollErrorException(ex.getRequestId(), ex.getUserMessage(), (com.dropbox.core.v2.async.PollError) ex.getErrorValue());
         }
     }
 
@@ -1233,11 +1350,12 @@ public final class DbxTeamTeamRequests {
                                    "2/team/members/get_info",
                                    membersGetInfoArgs,
                                    false,
-                                   JsonUtil.createType(new TypeReference<List<MembersGetInfoItem>>() {}),
-                                   JsonUtil.createType(MembersGetInfoError.class));
+                                   MembersGetInfoArgs.Serializer.INSTANCE,
+                                   com.dropbox.core.stone.StoneSerializers.list(MembersGetInfoItem.Serializer.INSTANCE),
+                                   MembersGetInfoError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new MembersGetInfoErrorException(ew.getRequestId(), ew.getUserMessage(), (MembersGetInfoError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new MembersGetInfoErrorException(ex.getRequestId(), ex.getUserMessage(), (MembersGetInfoError) ex.getErrorValue());
         }
     }
 
@@ -1272,11 +1390,12 @@ public final class DbxTeamTeamRequests {
                                    "2/team/members/list",
                                    membersListArg,
                                    false,
-                                   JsonUtil.createType(MembersListResult.class),
-                                   JsonUtil.createType(MembersListError.class));
+                                   MembersListArg.Serializer.INSTANCE,
+                                   MembersListResult.Serializer.INSTANCE,
+                                   MembersListError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new MembersListErrorException(ew.getRequestId(), ew.getUserMessage(), (MembersListError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new MembersListErrorException(ex.getRequestId(), ex.getUserMessage(), (MembersListError) ex.getErrorValue());
         }
     }
 
@@ -1327,11 +1446,12 @@ public final class DbxTeamTeamRequests {
                                    "2/team/members/list/continue",
                                    membersListContinueArg,
                                    false,
-                                   JsonUtil.createType(MembersListResult.class),
-                                   JsonUtil.createType(MembersListContinueError.class));
+                                   MembersListContinueArg.Serializer.INSTANCE,
+                                   MembersListResult.Serializer.INSTANCE,
+                                   MembersListContinueError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new MembersListContinueErrorException(ew.getRequestId(), ew.getUserMessage(), (MembersListContinueError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new MembersListContinueErrorException(ex.getRequestId(), ex.getUserMessage(), (MembersListContinueError) ex.getErrorValue());
         }
     }
 
@@ -1378,11 +1498,12 @@ public final class DbxTeamTeamRequests {
                                    "2/team/members/remove",
                                    membersRemoveArg,
                                    false,
-                                   JsonUtil.createType(LaunchEmptyResult.class),
-                                   JsonUtil.createType(MembersRemoveError.class));
+                                   MembersRemoveArg.Serializer.INSTANCE,
+                                   LaunchEmptyResult.Serializer.INSTANCE,
+                                   MembersRemoveError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new MembersRemoveErrorException(ew.getRequestId(), ew.getUserMessage(), (MembersRemoveError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new MembersRemoveErrorException(ex.getRequestId(), ex.getUserMessage(), (MembersRemoveError) ex.getErrorValue());
         }
     }
 
@@ -1438,8 +1559,8 @@ public final class DbxTeamTeamRequests {
      *     preconditions.
      */
     public MembersRemoveBuilder membersRemoveBuilder(UserSelectorArg user) {
-        MembersRemoveArg.Builder argBuilder = MembersRemoveArg.newBuilder(user);
-        return new MembersRemoveBuilder(this, argBuilder);
+        MembersRemoveArg.Builder argBuilder_ = MembersRemoveArg.newBuilder(user);
+        return new MembersRemoveBuilder(this, argBuilder_);
     }
 
     //
@@ -1465,11 +1586,12 @@ public final class DbxTeamTeamRequests {
                                    "2/team/members/remove/job_status/get",
                                    pollArg,
                                    false,
-                                   JsonUtil.createType(PollEmptyResult.class),
-                                   JsonUtil.createType(com.dropbox.core.v2.async.PollError.class));
+                                   PollArg.Serializer.INSTANCE,
+                                   PollEmptyResult.Serializer.INSTANCE,
+                                   com.dropbox.core.v2.async.PollError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new PollErrorException(ew.getRequestId(), ew.getUserMessage(), (com.dropbox.core.v2.async.PollError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new PollErrorException(ex.getRequestId(), ex.getUserMessage(), (com.dropbox.core.v2.async.PollError) ex.getErrorValue());
         }
     }
 
@@ -1514,11 +1636,12 @@ public final class DbxTeamTeamRequests {
                             "2/team/members/send_welcome_email",
                             userSelectorArg,
                             false,
-                            JsonUtil.createType(Void.class),
-                            JsonUtil.createType(MembersSendWelcomeError.class));
+                            UserSelectorArg.Serializer.INSTANCE,
+                            com.dropbox.core.stone.StoneSerializers.void_(),
+                            MembersSendWelcomeError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new MembersSendWelcomeErrorException(ew.getRequestId(), ew.getUserMessage(), (MembersSendWelcomeError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new MembersSendWelcomeErrorException(ex.getRequestId(), ex.getUserMessage(), (MembersSendWelcomeError) ex.getErrorValue());
         }
     }
 
@@ -1538,11 +1661,12 @@ public final class DbxTeamTeamRequests {
                                    "2/team/members/set_admin_permissions",
                                    membersSetPermissionsArg,
                                    false,
-                                   JsonUtil.createType(MembersSetPermissionsResult.class),
-                                   JsonUtil.createType(MembersSetPermissionsError.class));
+                                   MembersSetPermissionsArg.Serializer.INSTANCE,
+                                   MembersSetPermissionsResult.Serializer.INSTANCE,
+                                   MembersSetPermissionsError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new MembersSetPermissionsErrorException(ew.getRequestId(), ew.getUserMessage(), (MembersSetPermissionsError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new MembersSetPermissionsErrorException(ex.getRequestId(), ex.getUserMessage(), (MembersSetPermissionsError) ex.getErrorValue());
         }
     }
 
@@ -1581,11 +1705,12 @@ public final class DbxTeamTeamRequests {
                                    "2/team/members/set_profile",
                                    membersSetProfileArg,
                                    false,
-                                   JsonUtil.createType(TeamMemberInfo.class),
-                                   JsonUtil.createType(MembersSetProfileError.class));
+                                   MembersSetProfileArg.Serializer.INSTANCE,
+                                   TeamMemberInfo.Serializer.INSTANCE,
+                                   MembersSetProfileError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new MembersSetProfileErrorException(ew.getRequestId(), ew.getUserMessage(), (MembersSetProfileError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new MembersSetProfileErrorException(ex.getRequestId(), ex.getUserMessage(), (MembersSetProfileError) ex.getErrorValue());
         }
     }
 
@@ -1618,8 +1743,8 @@ public final class DbxTeamTeamRequests {
      *     preconditions.
      */
     public MembersSetProfileBuilder membersSetProfileBuilder(UserSelectorArg user) {
-        MembersSetProfileArg.Builder argBuilder = MembersSetProfileArg.newBuilder(user);
-        return new MembersSetProfileBuilder(this, argBuilder);
+        MembersSetProfileArg.Builder argBuilder_ = MembersSetProfileArg.newBuilder(user);
+        return new MembersSetProfileBuilder(this, argBuilder_);
     }
 
     //
@@ -1640,11 +1765,12 @@ public final class DbxTeamTeamRequests {
                             "2/team/members/suspend",
                             membersDeactivateArg,
                             false,
-                            JsonUtil.createType(Void.class),
-                            JsonUtil.createType(MembersSuspendError.class));
+                            MembersDeactivateArg.Serializer.INSTANCE,
+                            com.dropbox.core.stone.StoneSerializers.void_(),
+                            MembersSuspendError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new MembersSuspendErrorException(ew.getRequestId(), ew.getUserMessage(), (MembersSuspendError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new MembersSuspendErrorException(ex.getRequestId(), ex.getUserMessage(), (MembersSuspendError) ex.getErrorValue());
         }
     }
 
@@ -1703,11 +1829,12 @@ public final class DbxTeamTeamRequests {
                             "2/team/members/unsuspend",
                             membersUnsuspendArg,
                             false,
-                            JsonUtil.createType(Void.class),
-                            JsonUtil.createType(MembersUnsuspendError.class));
+                            MembersUnsuspendArg.Serializer.INSTANCE,
+                            com.dropbox.core.stone.StoneSerializers.void_(),
+                            MembersUnsuspendError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new MembersUnsuspendErrorException(ew.getRequestId(), ew.getUserMessage(), (MembersUnsuspendError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new MembersUnsuspendErrorException(ex.getRequestId(), ex.getUserMessage(), (MembersUnsuspendError) ex.getErrorValue());
         }
     }
 
@@ -1724,176 +1851,6 @@ public final class DbxTeamTeamRequests {
     public void membersUnsuspend(UserSelectorArg user) throws MembersUnsuspendErrorException, DbxException {
         MembersUnsuspendArg arg = new MembersUnsuspendArg(user);
         membersUnsuspend(arg);
-    }
-
-    //
-    // route team/properties/template/add
-    //
-
-    /**
-     * Add a property template. See route files/properties/add to add properties
-     * to a file.
-     *
-     * @param addPropertyTemplateArg  Arguments for adding property templates.
-     */
-    AddPropertyTemplateResult propertiesTemplateAdd(AddPropertyTemplateArg addPropertyTemplateArg) throws ModifyPropertyTemplateErrorException, DbxException {
-        try {
-            return client.rpcStyle(client.getHost().getApi(),
-                                   "2/team/properties/template/add",
-                                   addPropertyTemplateArg,
-                                   false,
-                                   JsonUtil.createType(AddPropertyTemplateResult.class),
-                                   JsonUtil.createType(com.dropbox.core.v2.properties.ModifyPropertyTemplateError.class));
-        }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new ModifyPropertyTemplateErrorException(ew.getRequestId(), ew.getUserMessage(), (com.dropbox.core.v2.properties.ModifyPropertyTemplateError) ew.getErrorValue());
-        }
-    }
-
-    /**
-     * Add a property template. See route files/properties/add to add properties
-     * to a file.
-     *
-     * @param name  A display name for the property template. Property template
-     *     names can be up to 256 bytes. Must not be {@code null}.
-     * @param description  Description for new property template. Property
-     *     template descriptions can be up to 1024 bytes. Must not be {@code
-     *     null}.
-     * @param fields  This is a list of custom properties associated with a
-     *     property template. There can be up to 64 properties in a single
-     *     property template. Must not contain a {@code null} item and not be
-     *     {@code null}.
-     *
-     * @throws IllegalArgumentException  If any argument does not meet its
-     *     preconditions.
-     */
-    public AddPropertyTemplateResult propertiesTemplateAdd(String name, String description, List<com.dropbox.core.v2.properties.PropertyFieldTemplate> fields) throws ModifyPropertyTemplateErrorException, DbxException {
-        AddPropertyTemplateArg arg = new AddPropertyTemplateArg(name, description, fields);
-        return propertiesTemplateAdd(arg);
-    }
-
-    //
-    // route team/properties/template/get
-    //
-
-    /**
-     * Get the schema for a specified template.
-     *
-     *
-     * @return The Property template for the specified template.
-     */
-    GetPropertyTemplateResult propertiesTemplateGet(GetPropertyTemplateArg getPropertyTemplateArg) throws PropertyTemplateErrorException, DbxException {
-        try {
-            return client.rpcStyle(client.getHost().getApi(),
-                                   "2/team/properties/template/get",
-                                   getPropertyTemplateArg,
-                                   false,
-                                   JsonUtil.createType(GetPropertyTemplateResult.class),
-                                   JsonUtil.createType(com.dropbox.core.v2.properties.PropertyTemplateError.class));
-        }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new PropertyTemplateErrorException(ew.getRequestId(), ew.getUserMessage(), (com.dropbox.core.v2.properties.PropertyTemplateError) ew.getErrorValue());
-        }
-    }
-
-    /**
-     * Get the schema for a specified template.
-     *
-     * @param templateId  An identifier for property template added by route
-     *     properties/template/add. Must have length of at least 1, match
-     *     pattern "{@code (/|ptid:).*}", and not be {@code null}.
-     *
-     * @return The Property template for the specified template.
-     *
-     * @throws IllegalArgumentException  If any argument does not meet its
-     *     preconditions.
-     */
-    public GetPropertyTemplateResult propertiesTemplateGet(String templateId) throws PropertyTemplateErrorException, DbxException {
-        GetPropertyTemplateArg arg = new GetPropertyTemplateArg(templateId);
-        return propertiesTemplateGet(arg);
-    }
-
-    //
-    // route team/properties/template/list
-    //
-
-    /**
-     * Get the property template identifiers for a team. To get the schema of
-     * each template use {@link
-     * DbxTeamTeamRequests#propertiesTemplateGet(String)}.
-     */
-    public ListPropertyTemplateIds propertiesTemplateList() throws PropertyTemplateErrorException, DbxException {
-        try {
-            return client.rpcStyle(client.getHost().getApi(),
-                                   "2/team/properties/template/list",
-                                   null,
-                                   false,
-                                   JsonUtil.createType(ListPropertyTemplateIds.class),
-                                   JsonUtil.createType(com.dropbox.core.v2.properties.PropertyTemplateError.class));
-        }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new PropertyTemplateErrorException(ew.getRequestId(), ew.getUserMessage(), (com.dropbox.core.v2.properties.PropertyTemplateError) ew.getErrorValue());
-        }
-    }
-
-    //
-    // route team/properties/template/update
-    //
-
-    /**
-     * Update a property template. This route can update the template name, the
-     * template description and add optional properties to templates.
-     *
-     */
-    UpdatePropertyTemplateResult propertiesTemplateUpdate(UpdatePropertyTemplateArg updatePropertyTemplateArg) throws ModifyPropertyTemplateErrorException, DbxException {
-        try {
-            return client.rpcStyle(client.getHost().getApi(),
-                                   "2/team/properties/template/update",
-                                   updatePropertyTemplateArg,
-                                   false,
-                                   JsonUtil.createType(UpdatePropertyTemplateResult.class),
-                                   JsonUtil.createType(com.dropbox.core.v2.properties.ModifyPropertyTemplateError.class));
-        }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new ModifyPropertyTemplateErrorException(ew.getRequestId(), ew.getUserMessage(), (com.dropbox.core.v2.properties.ModifyPropertyTemplateError) ew.getErrorValue());
-        }
-    }
-
-    /**
-     * Update a property template. This route can update the template name, the
-     * template description and add optional properties to templates.
-     *
-     * @param templateId  An identifier for property template added by {@link
-     *     DbxTeamTeamRequests#propertiesTemplateAdd(String,String,List)}. Must
-     *     have length of at least 1, match pattern "{@code (/|ptid:).*}", and
-     *     not be {@code null}.
-     *
-     * @throws IllegalArgumentException  If any argument does not meet its
-     *     preconditions.
-     */
-    public UpdatePropertyTemplateResult propertiesTemplateUpdate(String templateId) throws ModifyPropertyTemplateErrorException, DbxException {
-        UpdatePropertyTemplateArg arg = new UpdatePropertyTemplateArg(templateId);
-        return propertiesTemplateUpdate(arg);
-    }
-
-    /**
-     * Update a property template. This route can update the template name, the
-     * template description and add optional properties to templates.
-     *
-     * @param templateId  An identifier for property template added by {@link
-     *     DbxTeamTeamRequests#propertiesTemplateAdd(String,String,List)}. Must
-     *     have length of at least 1, match pattern "{@code (/|ptid:).*}", and
-     *     not be {@code null}.
-     *
-     * @return Request builder for configuring request parameters and completing
-     *     the request.
-     *
-     * @throws IllegalArgumentException  If any argument does not meet its
-     *     preconditions.
-     */
-    public PropertiesTemplateUpdateBuilder propertiesTemplateUpdateBuilder(String templateId) {
-        UpdatePropertyTemplateArg.Builder argBuilder = UpdatePropertyTemplateArg.newBuilder(templateId);
-        return new PropertiesTemplateUpdateBuilder(this, argBuilder);
     }
 
     //
@@ -1915,11 +1872,12 @@ public final class DbxTeamTeamRequests {
                                    "2/team/reports/get_activity",
                                    dateRange,
                                    false,
-                                   JsonUtil.createType(GetActivityReport.class),
-                                   JsonUtil.createType(DateRangeError.class));
+                                   DateRange.Serializer.INSTANCE,
+                                   GetActivityReport.Serializer.INSTANCE,
+                                   DateRangeError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new DateRangeErrorException(ew.getRequestId(), ew.getUserMessage(), (DateRangeError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new DateRangeErrorException(ex.getRequestId(), ex.getUserMessage(), (DateRangeError) ex.getErrorValue());
         }
     }
 
@@ -1942,8 +1900,8 @@ public final class DbxTeamTeamRequests {
      *     the request.
      */
     public ReportsGetActivityBuilder reportsGetActivityBuilder() {
-        DateRange.Builder argBuilder = DateRange.newBuilder();
-        return new ReportsGetActivityBuilder(this, argBuilder);
+        DateRange.Builder argBuilder_ = DateRange.newBuilder();
+        return new ReportsGetActivityBuilder(this, argBuilder_);
     }
 
     //
@@ -1966,11 +1924,12 @@ public final class DbxTeamTeamRequests {
                                    "2/team/reports/get_devices",
                                    dateRange,
                                    false,
-                                   JsonUtil.createType(GetDevicesReport.class),
-                                   JsonUtil.createType(DateRangeError.class));
+                                   DateRange.Serializer.INSTANCE,
+                                   GetDevicesReport.Serializer.INSTANCE,
+                                   DateRangeError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new DateRangeErrorException(ew.getRequestId(), ew.getUserMessage(), (DateRangeError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new DateRangeErrorException(ex.getRequestId(), ex.getUserMessage(), (DateRangeError) ex.getErrorValue());
         }
     }
 
@@ -1994,8 +1953,8 @@ public final class DbxTeamTeamRequests {
      *     the request.
      */
     public ReportsGetDevicesBuilder reportsGetDevicesBuilder() {
-        DateRange.Builder argBuilder = DateRange.newBuilder();
-        return new ReportsGetDevicesBuilder(this, argBuilder);
+        DateRange.Builder argBuilder_ = DateRange.newBuilder();
+        return new ReportsGetDevicesBuilder(this, argBuilder_);
     }
 
     //
@@ -2017,11 +1976,12 @@ public final class DbxTeamTeamRequests {
                                    "2/team/reports/get_membership",
                                    dateRange,
                                    false,
-                                   JsonUtil.createType(GetMembershipReport.class),
-                                   JsonUtil.createType(DateRangeError.class));
+                                   DateRange.Serializer.INSTANCE,
+                                   GetMembershipReport.Serializer.INSTANCE,
+                                   DateRangeError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new DateRangeErrorException(ew.getRequestId(), ew.getUserMessage(), (DateRangeError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new DateRangeErrorException(ex.getRequestId(), ex.getUserMessage(), (DateRangeError) ex.getErrorValue());
         }
     }
 
@@ -2044,8 +2004,8 @@ public final class DbxTeamTeamRequests {
      *     the request.
      */
     public ReportsGetMembershipBuilder reportsGetMembershipBuilder() {
-        DateRange.Builder argBuilder = DateRange.newBuilder();
-        return new ReportsGetMembershipBuilder(this, argBuilder);
+        DateRange.Builder argBuilder_ = DateRange.newBuilder();
+        return new ReportsGetMembershipBuilder(this, argBuilder_);
     }
 
     //
@@ -2067,11 +2027,12 @@ public final class DbxTeamTeamRequests {
                                    "2/team/reports/get_storage",
                                    dateRange,
                                    false,
-                                   JsonUtil.createType(GetStorageReport.class),
-                                   JsonUtil.createType(DateRangeError.class));
+                                   DateRange.Serializer.INSTANCE,
+                                   GetStorageReport.Serializer.INSTANCE,
+                                   DateRangeError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new DateRangeErrorException(ew.getRequestId(), ew.getUserMessage(), (DateRangeError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new DateRangeErrorException(ex.getRequestId(), ex.getUserMessage(), (DateRangeError) ex.getErrorValue());
         }
     }
 
@@ -2094,7 +2055,7 @@ public final class DbxTeamTeamRequests {
      *     the request.
      */
     public ReportsGetStorageBuilder reportsGetStorageBuilder() {
-        DateRange.Builder argBuilder = DateRange.newBuilder();
-        return new ReportsGetStorageBuilder(this, argBuilder);
+        DateRange.Builder argBuilder_ = DateRange.newBuilder();
+        return new ReportsGetStorageBuilder(this, argBuilder_);
     }
 }

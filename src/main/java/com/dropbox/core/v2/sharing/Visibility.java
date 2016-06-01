@@ -1,38 +1,24 @@
 /* DO NOT EDIT */
-/* This file was generated from shared_links.babel */
+/* This file was generated from shared_links.stone */
 
 package com.dropbox.core.v2.sharing;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Who can access a shared link. The most open visibility is {@link
  * Visibility#PUBLIC}. The default depends on many aspects, such as team and
  * user preferences and shared folder settings.
  */
-@JsonSerialize(using=Visibility.Serializer.class)
-@JsonDeserialize(using=Visibility.Deserializer.class)
 public enum Visibility {
     // union Visibility
     /**
@@ -63,63 +49,82 @@ public enum Visibility {
      */
     OTHER; // *catch_all
 
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
-
-    static final class Serializer extends UnionJsonSerializer<Visibility> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(Visibility.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<Visibility> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(Visibility value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+        public void serialize(Visibility value, JsonGenerator g) throws IOException, JsonGenerationException {
             switch (value) {
-                case PUBLIC:
+                case PUBLIC: {
                     g.writeString("public");
                     break;
-                case TEAM_ONLY:
+                }
+                case TEAM_ONLY: {
                     g.writeString("team_only");
                     break;
-                case PASSWORD:
+                }
+                case PASSWORD: {
                     g.writeString("password");
                     break;
-                case TEAM_AND_PASSWORD:
+                }
+                case TEAM_AND_PASSWORD: {
                     g.writeString("team_and_password");
                     break;
-                case SHARED_FOLDER_ONLY:
+                }
+                case SHARED_FOLDER_ONLY: {
                     g.writeString("shared_folder_only");
                     break;
-                case OTHER:
+                }
+                default: {
                     g.writeString("other");
-                    break;
+                }
             }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<Visibility, Visibility> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(Visibility.class, getTagMapping(), Visibility.OTHER);
         }
 
         @Override
-        public Visibility deserialize(Visibility _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            return _tag;
-        }
-
-        private static Map<String, Visibility> getTagMapping() {
-            Map<String, Visibility> values = new HashMap<String, Visibility>();
-            values.put("public", Visibility.PUBLIC);
-            values.put("team_only", Visibility.TEAM_ONLY);
-            values.put("password", Visibility.PASSWORD);
-            values.put("team_and_password", Visibility.TEAM_AND_PASSWORD);
-            values.put("shared_folder_only", Visibility.SHARED_FOLDER_ONLY);
-            values.put("other", Visibility.OTHER);
-            return Collections.unmodifiableMap(values);
+        public Visibility deserialize(JsonParser p) throws IOException, JsonParseException {
+            Visibility value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
+            }
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("public".equals(tag)) {
+                value = Visibility.PUBLIC;
+            }
+            else if ("team_only".equals(tag)) {
+                value = Visibility.TEAM_ONLY;
+            }
+            else if ("password".equals(tag)) {
+                value = Visibility.PASSWORD;
+            }
+            else if ("team_and_password".equals(tag)) {
+                value = Visibility.TEAM_AND_PASSWORD;
+            }
+            else if ("shared_folder_only".equals(tag)) {
+                value = Visibility.SHARED_FOLDER_ONLY;
+            }
+            else {
+                value = Visibility.OTHER;
+                skipFields(p);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

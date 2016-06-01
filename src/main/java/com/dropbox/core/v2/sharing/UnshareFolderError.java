@@ -1,30 +1,18 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.babel */
+/* This file was generated from sharing_folders.stone */
 
 package com.dropbox.core.v2.sharing;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This class is an open tagged union.  Tagged unions instances are always
@@ -36,14 +24,8 @@ import java.util.Map;
  * tag is introduced that this SDK does not recognized, the {@link #OTHER} value
  * will be used. </p>
  */
-@JsonSerialize(using=UnshareFolderError.Serializer.class)
-@JsonDeserialize(using=UnshareFolderError.Deserializer.class)
 public final class UnshareFolderError {
     // union UnshareFolderError
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link UnshareFolderError}.
@@ -233,7 +215,7 @@ public final class UnshareFolderError {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -245,85 +227,78 @@ public final class UnshareFolderError {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends UnionJsonSerializer<UnshareFolderError> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(UnshareFolderError.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<UnshareFolderError> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(UnshareFolderError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            switch (value.tag) {
-                case ACCESS_ERROR:
+        public void serialize(UnshareFolderError value, JsonGenerator g) throws IOException, JsonGenerationException {
+            switch (value.tag()) {
+                case ACCESS_ERROR: {
                     g.writeStartObject();
-                    g.writeStringField(".tag", "access_error");
-                    g.writeObjectField("access_error", value.accessErrorValue);
+                    writeTag("access_error", g);
+                    g.writeFieldName("access_error");
+                    SharedFolderAccessError.Serializer.INSTANCE.serialize(value.accessErrorValue, g);
                     g.writeEndObject();
                     break;
-                case TEAM_FOLDER:
+                }
+                case TEAM_FOLDER: {
                     g.writeString("team_folder");
                     break;
-                case NO_PERMISSION:
+                }
+                case NO_PERMISSION: {
                     g.writeString("no_permission");
                     break;
-                case OTHER:
+                }
+                default: {
                     g.writeString("other");
-                    break;
+                }
             }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<UnshareFolderError, Tag> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(UnshareFolderError.class, getTagMapping(), Tag.OTHER);
         }
 
         @Override
-        public UnshareFolderError deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            switch (_tag) {
-                case ACCESS_ERROR: {
-                    SharedFolderAccessError value = null;
-                    expectField(_p, "access_error");
-                    value = _p.readValueAs(SharedFolderAccessError.class);
-                    _p.nextToken();
-                    return UnshareFolderError.accessError(value);
-                }
-                case TEAM_FOLDER: {
-                    return UnshareFolderError.TEAM_FOLDER;
-                }
-                case NO_PERMISSION: {
-                    return UnshareFolderError.NO_PERMISSION;
-                }
-                case OTHER: {
-                    return UnshareFolderError.OTHER;
-                }
+        public UnshareFolderError deserialize(JsonParser p) throws IOException, JsonParseException {
+            UnshareFolderError value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
             }
-            // should be impossible to get here
-            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
-        }
-
-        private static Map<String, UnshareFolderError.Tag> getTagMapping() {
-            Map<String, UnshareFolderError.Tag> values = new HashMap<String, UnshareFolderError.Tag>();
-            values.put("access_error", UnshareFolderError.Tag.ACCESS_ERROR);
-            values.put("team_folder", UnshareFolderError.Tag.TEAM_FOLDER);
-            values.put("no_permission", UnshareFolderError.Tag.NO_PERMISSION);
-            values.put("other", UnshareFolderError.Tag.OTHER);
-            return Collections.unmodifiableMap(values);
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("access_error".equals(tag)) {
+                SharedFolderAccessError fieldValue = null;
+                expectField("access_error", p);
+                fieldValue = SharedFolderAccessError.Serializer.INSTANCE.deserialize(p);
+                value = UnshareFolderError.accessError(fieldValue);
+            }
+            else if ("team_folder".equals(tag)) {
+                value = UnshareFolderError.TEAM_FOLDER;
+            }
+            else if ("no_permission".equals(tag)) {
+                value = UnshareFolderError.NO_PERMISSION;
+            }
+            else {
+                value = UnshareFolderError.OTHER;
+                skipFields(p);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

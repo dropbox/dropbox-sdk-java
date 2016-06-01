@@ -1,39 +1,22 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.babel */
+/* This file was generated from sharing_folders.stone */
 
 package com.dropbox.core.v2.sharing;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.List;
 
-@JsonSerialize(using=ListFolderMembersCursorArg.Serializer.class)
-@JsonDeserialize(using=ListFolderMembersCursorArg.Deserializer.class)
 public class ListFolderMembersCursorArg {
     // struct ListFolderMembersCursorArg
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final List<MemberAction> actions;
     protected final long limit;
@@ -212,7 +195,7 @@ public class ListFolderMembersCursorArg {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -224,95 +207,64 @@ public class ListFolderMembersCursorArg {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<ListFolderMembersCursorArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(ListFolderMembersCursorArg.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(ListFolderMembersCursorArg.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<ListFolderMembersCursorArg> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected JsonSerializer<ListFolderMembersCursorArg> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(ListFolderMembersCursorArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+        public void serialize(ListFolderMembersCursorArg value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
+            }
             if (value.actions != null) {
-                g.writeObjectField("actions", value.actions);
+                g.writeFieldName("actions");
+                StoneSerializers.nullable(StoneSerializers.list(MemberAction.Serializer.INSTANCE)).serialize(value.actions, g);
             }
-            g.writeObjectField("limit", value.limit);
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<ListFolderMembersCursorArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(ListFolderMembersCursorArg.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(ListFolderMembersCursorArg.class, unwrapping);
+            g.writeFieldName("limit");
+            StoneSerializers.uInt32().serialize(value.limit, g);
+            if (!collapse) {
+                g.writeEndObject();
+            }
         }
 
         @Override
-        protected JsonDeserializer<ListFolderMembersCursorArg> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public ListFolderMembersCursorArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            List<MemberAction> actions = null;
-            long limit = 1000L;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("actions".equals(_field)) {
-                    expectArrayStart(_p);
-                    actions = new java.util.ArrayList<MemberAction>();
-                    while (!isArrayEnd(_p)) {
-                        MemberAction _x = null;
-                        _x = _p.readValueAs(MemberAction.class);
-                        _p.nextToken();
-                        actions.add(_x);
-                    }
-                    expectArrayEnd(_p);
-                    _p.nextToken();
-                }
-                else if ("limit".equals(_field)) {
-                    limit = _p.getLongValue();
-                    assertUnsigned(_p, limit);
-                    if (limit > Integer.MAX_VALUE) {
-                        throw new JsonParseException(_p, "expecting a 32-bit unsigned integer, got: " + limit);
-                    }
-                    _p.nextToken();
-                }
-                else {
-                    skipValue(_p);
-                }
+        public ListFolderMembersCursorArg deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            ListFolderMembersCursorArg value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
             }
-
-
-            return new ListFolderMembersCursorArg(actions, limit);
+            if (tag == null) {
+                List<MemberAction> f_actions = null;
+                Long f_limit = 1000L;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("actions".equals(field)) {
+                        f_actions = StoneSerializers.nullable(StoneSerializers.list(MemberAction.Serializer.INSTANCE)).deserialize(p);
+                    }
+                    else if ("limit".equals(field)) {
+                        f_limit = StoneSerializers.uInt32().deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
+                }
+                value = new ListFolderMembersCursorArg(f_actions, f_limit);
+            }
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

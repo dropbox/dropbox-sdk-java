@@ -1,27 +1,16 @@
 /* DO NOT EDIT */
-/* This file was generated from team_devices.babel */
+/* This file was generated from team_devices.stone */
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.Date;
@@ -29,14 +18,8 @@ import java.util.Date;
 /**
  * Information about linked Dropbox mobile client sessions
  */
-@JsonSerialize(using=MobileClientSession.Serializer.class)
-@JsonDeserialize(using=MobileClientSession.Deserializer.class)
 public class MobileClientSession extends DeviceSession {
     // struct MobileClientSession
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final String deviceName;
     protected final MobileClientPlatform clientType;
@@ -270,7 +253,7 @@ public class MobileClientSession extends DeviceSession {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -282,152 +265,133 @@ public class MobileClientSession extends DeviceSession {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<MobileClientSession> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(MobileClientSession.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(MobileClientSession.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<MobileClientSession> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected JsonSerializer<MobileClientSession> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(MobileClientSession value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("session_id", value.sessionId);
-            g.writeObjectField("device_name", value.deviceName);
-            g.writeObjectField("client_type", value.clientType);
+        public void serialize(MobileClientSession value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
+            }
+            g.writeFieldName("session_id");
+            StoneSerializers.string().serialize(value.sessionId, g);
+            g.writeFieldName("device_name");
+            StoneSerializers.string().serialize(value.deviceName, g);
+            g.writeFieldName("client_type");
+            MobileClientPlatform.Serializer.INSTANCE.serialize(value.clientType, g);
             if (value.ipAddress != null) {
-                g.writeObjectField("ip_address", value.ipAddress);
+                g.writeFieldName("ip_address");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.ipAddress, g);
             }
             if (value.country != null) {
-                g.writeObjectField("country", value.country);
+                g.writeFieldName("country");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.country, g);
             }
             if (value.created != null) {
-                g.writeObjectField("created", value.created);
+                g.writeFieldName("created");
+                StoneSerializers.nullable(StoneSerializers.timestamp()).serialize(value.created, g);
             }
             if (value.updated != null) {
-                g.writeObjectField("updated", value.updated);
+                g.writeFieldName("updated");
+                StoneSerializers.nullable(StoneSerializers.timestamp()).serialize(value.updated, g);
             }
             if (value.clientVersion != null) {
-                g.writeObjectField("client_version", value.clientVersion);
+                g.writeFieldName("client_version");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.clientVersion, g);
             }
             if (value.osVersion != null) {
-                g.writeObjectField("os_version", value.osVersion);
+                g.writeFieldName("os_version");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.osVersion, g);
             }
             if (value.lastCarrier != null) {
-                g.writeObjectField("last_carrier", value.lastCarrier);
+                g.writeFieldName("last_carrier");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.lastCarrier, g);
             }
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<MobileClientSession> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(MobileClientSession.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(MobileClientSession.class, unwrapping);
+            if (!collapse) {
+                g.writeEndObject();
+            }
         }
 
         @Override
-        protected JsonDeserializer<MobileClientSession> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public MobileClientSession deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            String sessionId = null;
-            String deviceName = null;
-            MobileClientPlatform clientType = null;
-            String ipAddress = null;
-            String country = null;
-            Date created = null;
-            Date updated = null;
-            String clientVersion = null;
-            String osVersion = null;
-            String lastCarrier = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("session_id".equals(_field)) {
-                    sessionId = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("device_name".equals(_field)) {
-                    deviceName = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("client_type".equals(_field)) {
-                    clientType = _p.readValueAs(MobileClientPlatform.class);
-                    _p.nextToken();
-                }
-                else if ("ip_address".equals(_field)) {
-                    ipAddress = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("country".equals(_field)) {
-                    country = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("created".equals(_field)) {
-                    created = _ctx.parseDate(getStringValue(_p));
-                    _p.nextToken();
-                }
-                else if ("updated".equals(_field)) {
-                    updated = _ctx.parseDate(getStringValue(_p));
-                    _p.nextToken();
-                }
-                else if ("client_version".equals(_field)) {
-                    clientVersion = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("os_version".equals(_field)) {
-                    osVersion = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("last_carrier".equals(_field)) {
-                    lastCarrier = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else {
-                    skipValue(_p);
-                }
+        public MobileClientSession deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            MobileClientSession value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
             }
-
-            if (sessionId == null) {
-                throw new JsonParseException(_p, "Required field \"session_id\" is missing.");
+            if (tag == null) {
+                String f_sessionId = null;
+                String f_deviceName = null;
+                MobileClientPlatform f_clientType = null;
+                String f_ipAddress = null;
+                String f_country = null;
+                Date f_created = null;
+                Date f_updated = null;
+                String f_clientVersion = null;
+                String f_osVersion = null;
+                String f_lastCarrier = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("session_id".equals(field)) {
+                        f_sessionId = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("device_name".equals(field)) {
+                        f_deviceName = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("client_type".equals(field)) {
+                        f_clientType = MobileClientPlatform.Serializer.INSTANCE.deserialize(p);
+                    }
+                    else if ("ip_address".equals(field)) {
+                        f_ipAddress = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                    }
+                    else if ("country".equals(field)) {
+                        f_country = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                    }
+                    else if ("created".equals(field)) {
+                        f_created = StoneSerializers.nullable(StoneSerializers.timestamp()).deserialize(p);
+                    }
+                    else if ("updated".equals(field)) {
+                        f_updated = StoneSerializers.nullable(StoneSerializers.timestamp()).deserialize(p);
+                    }
+                    else if ("client_version".equals(field)) {
+                        f_clientVersion = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                    }
+                    else if ("os_version".equals(field)) {
+                        f_osVersion = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                    }
+                    else if ("last_carrier".equals(field)) {
+                        f_lastCarrier = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
+                }
+                if (f_sessionId == null) {
+                    throw new JsonParseException(p, "Required field \"session_id\" missing.");
+                }
+                if (f_deviceName == null) {
+                    throw new JsonParseException(p, "Required field \"device_name\" missing.");
+                }
+                if (f_clientType == null) {
+                    throw new JsonParseException(p, "Required field \"client_type\" missing.");
+                }
+                value = new MobileClientSession(f_sessionId, f_deviceName, f_clientType, f_ipAddress, f_country, f_created, f_updated, f_clientVersion, f_osVersion, f_lastCarrier);
             }
-            if (deviceName == null) {
-                throw new JsonParseException(_p, "Required field \"device_name\" is missing.");
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
             }
-            if (clientType == null) {
-                throw new JsonParseException(_p, "Required field \"client_type\" is missing.");
+            if (!collapsed) {
+                expectEndObject(p);
             }
-
-            return new MobileClientSession(sessionId, deviceName, clientType, ipAddress, country, created, updated, clientVersion, osVersion, lastCarrier);
+            return value;
         }
     }
 }

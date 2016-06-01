@@ -1,39 +1,22 @@
 /* DO NOT EDIT */
-/* This file was generated from team_members.babel */
+/* This file was generated from team_members.stone */
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.List;
 
-@JsonSerialize(using=MembersAddArg.Serializer.class)
-@JsonDeserialize(using=MembersAddArg.Deserializer.class)
 class MembersAddArg {
     // struct MembersAddArg
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final List<MemberAddArg> newMembers;
     protected final boolean forceAsync;
@@ -120,7 +103,7 @@ class MembersAddArg {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -132,92 +115,65 @@ class MembersAddArg {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<MembersAddArg> {
+        public static final Serializer INSTANCE = new Serializer();
 
-    static final class Serializer extends StructJsonSerializer<MembersAddArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(MembersAddArg.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(MembersAddArg.class, unwrapping);
+        @Override
+        public void serialize(MembersAddArg value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
+            }
+            g.writeFieldName("new_members");
+            StoneSerializers.list(MemberAddArg.Serializer.INSTANCE).serialize(value.newMembers, g);
+            g.writeFieldName("force_async");
+            StoneSerializers.boolean_().serialize(value.forceAsync, g);
+            if (!collapse) {
+                g.writeEndObject();
+            }
         }
 
         @Override
-        protected JsonSerializer<MembersAddArg> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(MembersAddArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("new_members", value.newMembers);
-            g.writeObjectField("force_async", value.forceAsync);
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<MembersAddArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(MembersAddArg.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(MembersAddArg.class, unwrapping);
-        }
-
-        @Override
-        protected JsonDeserializer<MembersAddArg> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public MembersAddArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            List<MemberAddArg> newMembers = null;
-            boolean forceAsync = false;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("new_members".equals(_field)) {
-                    expectArrayStart(_p);
-                    newMembers = new java.util.ArrayList<MemberAddArg>();
-                    while (!isArrayEnd(_p)) {
-                        MemberAddArg _x = null;
-                        _x = _p.readValueAs(MemberAddArg.class);
-                        _p.nextToken();
-                        newMembers.add(_x);
+        public MembersAddArg deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            MembersAddArg value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                List<MemberAddArg> f_newMembers = null;
+                Boolean f_forceAsync = false;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("new_members".equals(field)) {
+                        f_newMembers = StoneSerializers.list(MemberAddArg.Serializer.INSTANCE).deserialize(p);
                     }
-                    expectArrayEnd(_p);
-                    _p.nextToken();
+                    else if ("force_async".equals(field)) {
+                        f_forceAsync = StoneSerializers.boolean_().deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
                 }
-                else if ("force_async".equals(_field)) {
-                    forceAsync = _p.getValueAsBoolean();
-                    _p.nextToken();
+                if (f_newMembers == null) {
+                    throw new JsonParseException(p, "Required field \"new_members\" missing.");
                 }
-                else {
-                    skipValue(_p);
-                }
+                value = new MembersAddArg(f_newMembers, f_forceAsync);
             }
-
-            if (newMembers == null) {
-                throw new JsonParseException(_p, "Required field \"new_members\" is missing.");
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
             }
-
-            return new MembersAddArg(newMembers, forceAsync);
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

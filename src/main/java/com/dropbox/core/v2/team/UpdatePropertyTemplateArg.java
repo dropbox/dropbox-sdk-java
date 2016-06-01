@@ -1,40 +1,23 @@
 /* DO NOT EDIT */
-/* This file was generated from team_property_templates.babel */
+/* This file was generated from team_property_templates.stone */
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 import com.dropbox.core.v2.properties.PropertyFieldTemplate;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.List;
 
-@JsonSerialize(using=UpdatePropertyTemplateArg.Serializer.class)
-@JsonDeserialize(using=UpdatePropertyTemplateArg.Deserializer.class)
-class UpdatePropertyTemplateArg {
+public class UpdatePropertyTemplateArg {
     // struct UpdatePropertyTemplateArg
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final String templateId;
     protected final String name;
@@ -45,10 +28,9 @@ class UpdatePropertyTemplateArg {
      * Use {@link newBuilder} to create instances of this class without
      * specifying values for all optional fields.
      *
-     * @param templateId  An identifier for property template added by {@link
-     *     DbxTeamTeamRequests#propertiesTemplateAdd(String,String,List)}. Must
-     *     have length of at least 1, match pattern "{@code (/|ptid:).*}", and
-     *     not be {@code null}.
+     * @param templateId  An identifier for property template added by {@code
+     *     propertiesTemplateAdd}. Must have length of at least 1, match pattern
+     *     "{@code (/|ptid:).*}", and not be {@code null}.
      * @param name  A display name for the property template. Property template
      *     names can be up to 256 bytes.
      * @param description  Description for new property template. Property
@@ -86,10 +68,9 @@ class UpdatePropertyTemplateArg {
     /**
      * The default values for unset fields will be used.
      *
-     * @param templateId  An identifier for property template added by {@link
-     *     DbxTeamTeamRequests#propertiesTemplateAdd(String,String,List)}. Must
-     *     have length of at least 1, match pattern "{@code (/|ptid:).*}", and
-     *     not be {@code null}.
+     * @param templateId  An identifier for property template added by {@code
+     *     propertiesTemplateAdd}. Must have length of at least 1, match pattern
+     *     "{@code (/|ptid:).*}", and not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -99,8 +80,8 @@ class UpdatePropertyTemplateArg {
     }
 
     /**
-     * An identifier for property template added by {@link
-     * DbxTeamTeamRequests#propertiesTemplateAdd(String,String,List)}.
+     * An identifier for property template added by {@code
+     * propertiesTemplateAdd}.
      *
      * @return value for this field, never {@code null}.
      */
@@ -141,10 +122,9 @@ class UpdatePropertyTemplateArg {
     /**
      * Returns a new builder for creating an instance of this class.
      *
-     * @param templateId  An identifier for property template added by {@link
-     *     DbxTeamTeamRequests#propertiesTemplateAdd(String,String,List)}. Must
-     *     have length of at least 1, match pattern "{@code (/|ptid:).*}", and
-     *     not be {@code null}.
+     * @param templateId  An identifier for property template added by {@code
+     *     propertiesTemplateAdd}. Must have length of at least 1, match pattern
+     *     "{@code (/|ptid:).*}", and not be {@code null}.
      *
      * @return builder for this class.
      *
@@ -274,7 +254,7 @@ class UpdatePropertyTemplateArg {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -286,110 +266,83 @@ class UpdatePropertyTemplateArg {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<UpdatePropertyTemplateArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(UpdatePropertyTemplateArg.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(UpdatePropertyTemplateArg.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<UpdatePropertyTemplateArg> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected JsonSerializer<UpdatePropertyTemplateArg> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(UpdatePropertyTemplateArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("template_id", value.templateId);
+        public void serialize(UpdatePropertyTemplateArg value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
+            }
+            g.writeFieldName("template_id");
+            StoneSerializers.string().serialize(value.templateId, g);
             if (value.name != null) {
-                g.writeObjectField("name", value.name);
+                g.writeFieldName("name");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.name, g);
             }
             if (value.description != null) {
-                g.writeObjectField("description", value.description);
+                g.writeFieldName("description");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.description, g);
             }
             if (value.addFields != null) {
-                g.writeObjectField("add_fields", value.addFields);
+                g.writeFieldName("add_fields");
+                StoneSerializers.nullable(StoneSerializers.list(PropertyFieldTemplate.Serializer.INSTANCE)).serialize(value.addFields, g);
+            }
+            if (!collapse) {
+                g.writeEndObject();
             }
         }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<UpdatePropertyTemplateArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(UpdatePropertyTemplateArg.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(UpdatePropertyTemplateArg.class, unwrapping);
-        }
 
         @Override
-        protected JsonDeserializer<UpdatePropertyTemplateArg> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public UpdatePropertyTemplateArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            String templateId = null;
-            String name = null;
-            String description = null;
-            List<PropertyFieldTemplate> addFields = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("template_id".equals(_field)) {
-                    templateId = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("name".equals(_field)) {
-                    name = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("description".equals(_field)) {
-                    description = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("add_fields".equals(_field)) {
-                    expectArrayStart(_p);
-                    addFields = new java.util.ArrayList<PropertyFieldTemplate>();
-                    while (!isArrayEnd(_p)) {
-                        PropertyFieldTemplate _x = null;
-                        _x = _p.readValueAs(PropertyFieldTemplate.class);
-                        _p.nextToken();
-                        addFields.add(_x);
+        public UpdatePropertyTemplateArg deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            UpdatePropertyTemplateArg value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                String f_templateId = null;
+                String f_name = null;
+                String f_description = null;
+                List<PropertyFieldTemplate> f_addFields = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("template_id".equals(field)) {
+                        f_templateId = StoneSerializers.string().deserialize(p);
                     }
-                    expectArrayEnd(_p);
-                    _p.nextToken();
+                    else if ("name".equals(field)) {
+                        f_name = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                    }
+                    else if ("description".equals(field)) {
+                        f_description = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                    }
+                    else if ("add_fields".equals(field)) {
+                        f_addFields = StoneSerializers.nullable(StoneSerializers.list(PropertyFieldTemplate.Serializer.INSTANCE)).deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
                 }
-                else {
-                    skipValue(_p);
+                if (f_templateId == null) {
+                    throw new JsonParseException(p, "Required field \"template_id\" missing.");
                 }
+                value = new UpdatePropertyTemplateArg(f_templateId, f_name, f_description, f_addFields);
             }
-
-            if (templateId == null) {
-                throw new JsonParseException(_p, "Required field \"template_id\" is missing.");
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
             }
-
-            return new UpdatePropertyTemplateArg(templateId, name, description, addFields);
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

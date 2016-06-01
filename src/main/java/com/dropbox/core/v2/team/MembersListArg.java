@@ -1,38 +1,21 @@
 /* DO NOT EDIT */
-/* This file was generated from team_members.babel */
+/* This file was generated from team_members.stone */
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
-@JsonSerialize(using=MembersListArg.Serializer.class)
-@JsonDeserialize(using=MembersListArg.Deserializer.class)
 class MembersListArg {
     // struct MembersListArg
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final long limit;
 
@@ -96,7 +79,7 @@ class MembersListArg {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -108,79 +91,56 @@ class MembersListArg {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<MembersListArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(MembersListArg.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(MembersListArg.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<MembersListArg> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected JsonSerializer<MembersListArg> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(MembersListArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("limit", value.limit);
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<MembersListArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(MembersListArg.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(MembersListArg.class, unwrapping);
-        }
-
-        @Override
-        protected JsonDeserializer<MembersListArg> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public MembersListArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            long limit = 1000L;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("limit".equals(_field)) {
-                    limit = _p.getLongValue();
-                    assertUnsigned(_p, limit);
-                    if (limit > Integer.MAX_VALUE) {
-                        throw new JsonParseException(_p, "expecting a 32-bit unsigned integer, got: " + limit);
-                    }
-                    _p.nextToken();
-                }
-                else {
-                    skipValue(_p);
-                }
+        public void serialize(MembersListArg value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
             }
+            g.writeFieldName("limit");
+            StoneSerializers.uInt32().serialize(value.limit, g);
+            if (!collapse) {
+                g.writeEndObject();
+            }
+        }
 
-
-            return new MembersListArg(limit);
+        @Override
+        public MembersListArg deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            MembersListArg value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                Long f_limit = 1000L;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("limit".equals(field)) {
+                        f_limit = StoneSerializers.uInt32().deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
+                }
+                value = new MembersListArg(f_limit);
+            }
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

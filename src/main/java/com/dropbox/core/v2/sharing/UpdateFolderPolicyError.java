@@ -1,30 +1,18 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.babel */
+/* This file was generated from sharing_folders.stone */
 
 package com.dropbox.core.v2.sharing;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This class is an open tagged union.  Tagged unions instances are always
@@ -36,14 +24,8 @@ import java.util.Map;
  * tag is introduced that this SDK does not recognized, the {@link #OTHER} value
  * will be used. </p>
  */
-@JsonSerialize(using=UpdateFolderPolicyError.Serializer.class)
-@JsonDeserialize(using=UpdateFolderPolicyError.Deserializer.class)
 public final class UpdateFolderPolicyError {
     // union UpdateFolderPolicyError
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link UpdateFolderPolicyError}.
@@ -264,7 +246,7 @@ public final class UpdateFolderPolicyError {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -276,92 +258,85 @@ public final class UpdateFolderPolicyError {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends UnionJsonSerializer<UpdateFolderPolicyError> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(UpdateFolderPolicyError.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<UpdateFolderPolicyError> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(UpdateFolderPolicyError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            switch (value.tag) {
-                case ACCESS_ERROR:
+        public void serialize(UpdateFolderPolicyError value, JsonGenerator g) throws IOException, JsonGenerationException {
+            switch (value.tag()) {
+                case ACCESS_ERROR: {
                     g.writeStartObject();
-                    g.writeStringField(".tag", "access_error");
-                    g.writeObjectField("access_error", value.accessErrorValue);
+                    writeTag("access_error", g);
+                    g.writeFieldName("access_error");
+                    SharedFolderAccessError.Serializer.INSTANCE.serialize(value.accessErrorValue, g);
                     g.writeEndObject();
                     break;
-                case NOT_ON_TEAM:
+                }
+                case NOT_ON_TEAM: {
                     g.writeString("not_on_team");
                     break;
-                case TEAM_POLICY_DISALLOWS_MEMBER_POLICY:
+                }
+                case TEAM_POLICY_DISALLOWS_MEMBER_POLICY: {
                     g.writeString("team_policy_disallows_member_policy");
                     break;
-                case DISALLOWED_SHARED_LINK_POLICY:
+                }
+                case DISALLOWED_SHARED_LINK_POLICY: {
                     g.writeString("disallowed_shared_link_policy");
                     break;
-                case OTHER:
+                }
+                default: {
                     g.writeString("other");
-                    break;
+                }
             }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<UpdateFolderPolicyError, Tag> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(UpdateFolderPolicyError.class, getTagMapping(), Tag.OTHER);
         }
 
         @Override
-        public UpdateFolderPolicyError deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            switch (_tag) {
-                case ACCESS_ERROR: {
-                    SharedFolderAccessError value = null;
-                    expectField(_p, "access_error");
-                    value = _p.readValueAs(SharedFolderAccessError.class);
-                    _p.nextToken();
-                    return UpdateFolderPolicyError.accessError(value);
-                }
-                case NOT_ON_TEAM: {
-                    return UpdateFolderPolicyError.NOT_ON_TEAM;
-                }
-                case TEAM_POLICY_DISALLOWS_MEMBER_POLICY: {
-                    return UpdateFolderPolicyError.TEAM_POLICY_DISALLOWS_MEMBER_POLICY;
-                }
-                case DISALLOWED_SHARED_LINK_POLICY: {
-                    return UpdateFolderPolicyError.DISALLOWED_SHARED_LINK_POLICY;
-                }
-                case OTHER: {
-                    return UpdateFolderPolicyError.OTHER;
-                }
+        public UpdateFolderPolicyError deserialize(JsonParser p) throws IOException, JsonParseException {
+            UpdateFolderPolicyError value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
             }
-            // should be impossible to get here
-            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
-        }
-
-        private static Map<String, UpdateFolderPolicyError.Tag> getTagMapping() {
-            Map<String, UpdateFolderPolicyError.Tag> values = new HashMap<String, UpdateFolderPolicyError.Tag>();
-            values.put("access_error", UpdateFolderPolicyError.Tag.ACCESS_ERROR);
-            values.put("not_on_team", UpdateFolderPolicyError.Tag.NOT_ON_TEAM);
-            values.put("team_policy_disallows_member_policy", UpdateFolderPolicyError.Tag.TEAM_POLICY_DISALLOWS_MEMBER_POLICY);
-            values.put("disallowed_shared_link_policy", UpdateFolderPolicyError.Tag.DISALLOWED_SHARED_LINK_POLICY);
-            values.put("other", UpdateFolderPolicyError.Tag.OTHER);
-            return Collections.unmodifiableMap(values);
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("access_error".equals(tag)) {
+                SharedFolderAccessError fieldValue = null;
+                expectField("access_error", p);
+                fieldValue = SharedFolderAccessError.Serializer.INSTANCE.deserialize(p);
+                value = UpdateFolderPolicyError.accessError(fieldValue);
+            }
+            else if ("not_on_team".equals(tag)) {
+                value = UpdateFolderPolicyError.NOT_ON_TEAM;
+            }
+            else if ("team_policy_disallows_member_policy".equals(tag)) {
+                value = UpdateFolderPolicyError.TEAM_POLICY_DISALLOWS_MEMBER_POLICY;
+            }
+            else if ("disallowed_shared_link_policy".equals(tag)) {
+                value = UpdateFolderPolicyError.DISALLOWED_SHARED_LINK_POLICY;
+            }
+            else {
+                value = UpdateFolderPolicyError.OTHER;
+                skipFields(p);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

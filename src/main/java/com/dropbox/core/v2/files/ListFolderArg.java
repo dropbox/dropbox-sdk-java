@@ -1,38 +1,21 @@
 /* DO NOT EDIT */
-/* This file was generated from files.babel */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
-@JsonSerialize(using=ListFolderArg.Serializer.class)
-@JsonDeserialize(using=ListFolderArg.Deserializer.class)
 public class ListFolderArg {
     // struct ListFolderArg
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final String path;
     protected final boolean recursive;
@@ -45,7 +28,7 @@ public class ListFolderArg {
      * specifying values for all optional fields.
      *
      * @param path  The path to the folder you want to see the contents of. Must
-     *     match pattern "{@code (/.*)?}" and not be {@code null}.
+     *     match pattern "{@code (/(.|[\\r\\n])*)?}" and not be {@code null}.
      * @param recursive  If true, the list folder operation will be applied
      *     recursively to all subfolders and the response will contain contents
      *     of all subfolders.
@@ -64,7 +47,7 @@ public class ListFolderArg {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
-        if (!java.util.regex.Pattern.matches("(/.*)?", path)) {
+        if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*)?", path)) {
             throw new IllegalArgumentException("String 'path' does not match pattern");
         }
         this.path = path;
@@ -78,7 +61,7 @@ public class ListFolderArg {
      * The default values for unset fields will be used.
      *
      * @param path  The path to the folder you want to see the contents of. Must
-     *     match pattern "{@code (/.*)?}" and not be {@code null}.
+     *     match pattern "{@code (/(.|[\\r\\n])*)?}" and not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -143,7 +126,7 @@ public class ListFolderArg {
      * Returns a new builder for creating an instance of this class.
      *
      * @param path  The path to the folder you want to see the contents of. Must
-     *     match pattern "{@code (/.*)?}" and not be {@code null}.
+     *     match pattern "{@code (/(.|[\\r\\n])*)?}" and not be {@code null}.
      *
      * @return builder for this class.
      *
@@ -169,7 +152,7 @@ public class ListFolderArg {
             if (path == null) {
                 throw new IllegalArgumentException("Required value for 'path' is null");
             }
-            if (!java.util.regex.Pattern.matches("(/.*)?", path)) {
+            if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*)?", path)) {
                 throw new IllegalArgumentException("String 'path' does not match pattern");
             }
             this.path = path;
@@ -314,7 +297,7 @@ public class ListFolderArg {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -326,102 +309,83 @@ public class ListFolderArg {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<ListFolderArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(ListFolderArg.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(ListFolderArg.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<ListFolderArg> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected JsonSerializer<ListFolderArg> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(ListFolderArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("path", value.path);
-            g.writeObjectField("recursive", value.recursive);
-            g.writeObjectField("include_media_info", value.includeMediaInfo);
-            g.writeObjectField("include_deleted", value.includeDeleted);
-            g.writeObjectField("include_has_explicit_shared_members", value.includeHasExplicitSharedMembers);
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<ListFolderArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(ListFolderArg.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(ListFolderArg.class, unwrapping);
-        }
-
-        @Override
-        protected JsonDeserializer<ListFolderArg> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public ListFolderArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            String path = null;
-            boolean recursive = false;
-            boolean includeMediaInfo = false;
-            boolean includeDeleted = false;
-            boolean includeHasExplicitSharedMembers = false;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("path".equals(_field)) {
-                    path = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("recursive".equals(_field)) {
-                    recursive = _p.getValueAsBoolean();
-                    _p.nextToken();
-                }
-                else if ("include_media_info".equals(_field)) {
-                    includeMediaInfo = _p.getValueAsBoolean();
-                    _p.nextToken();
-                }
-                else if ("include_deleted".equals(_field)) {
-                    includeDeleted = _p.getValueAsBoolean();
-                    _p.nextToken();
-                }
-                else if ("include_has_explicit_shared_members".equals(_field)) {
-                    includeHasExplicitSharedMembers = _p.getValueAsBoolean();
-                    _p.nextToken();
-                }
-                else {
-                    skipValue(_p);
-                }
+        public void serialize(ListFolderArg value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
             }
-
-            if (path == null) {
-                throw new JsonParseException(_p, "Required field \"path\" is missing.");
+            g.writeFieldName("path");
+            StoneSerializers.string().serialize(value.path, g);
+            g.writeFieldName("recursive");
+            StoneSerializers.boolean_().serialize(value.recursive, g);
+            g.writeFieldName("include_media_info");
+            StoneSerializers.boolean_().serialize(value.includeMediaInfo, g);
+            g.writeFieldName("include_deleted");
+            StoneSerializers.boolean_().serialize(value.includeDeleted, g);
+            g.writeFieldName("include_has_explicit_shared_members");
+            StoneSerializers.boolean_().serialize(value.includeHasExplicitSharedMembers, g);
+            if (!collapse) {
+                g.writeEndObject();
             }
+        }
 
-            return new ListFolderArg(path, recursive, includeMediaInfo, includeDeleted, includeHasExplicitSharedMembers);
+        @Override
+        public ListFolderArg deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            ListFolderArg value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                String f_path = null;
+                Boolean f_recursive = false;
+                Boolean f_includeMediaInfo = false;
+                Boolean f_includeDeleted = false;
+                Boolean f_includeHasExplicitSharedMembers = false;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("path".equals(field)) {
+                        f_path = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("recursive".equals(field)) {
+                        f_recursive = StoneSerializers.boolean_().deserialize(p);
+                    }
+                    else if ("include_media_info".equals(field)) {
+                        f_includeMediaInfo = StoneSerializers.boolean_().deserialize(p);
+                    }
+                    else if ("include_deleted".equals(field)) {
+                        f_includeDeleted = StoneSerializers.boolean_().deserialize(p);
+                    }
+                    else if ("include_has_explicit_shared_members".equals(field)) {
+                        f_includeHasExplicitSharedMembers = StoneSerializers.boolean_().deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
+                }
+                if (f_path == null) {
+                    throw new JsonParseException(p, "Required field \"path\" missing.");
+                }
+                value = new ListFolderArg(f_path, f_recursive, f_includeMediaInfo, f_includeDeleted, f_includeHasExplicitSharedMembers);
+            }
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

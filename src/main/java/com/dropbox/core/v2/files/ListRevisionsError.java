@@ -1,30 +1,18 @@
 /* DO NOT EDIT */
-/* This file was generated from files.babel */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This class is an open tagged union.  Tagged unions instances are always
@@ -36,14 +24,8 @@ import java.util.Map;
  * tag is introduced that this SDK does not recognized, the {@link #OTHER} value
  * will be used. </p>
  */
-@JsonSerialize(using=ListRevisionsError.Serializer.class)
-@JsonDeserialize(using=ListRevisionsError.Deserializer.class)
 public final class ListRevisionsError {
     // union ListRevisionsError
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link ListRevisionsError}.
@@ -190,7 +172,7 @@ public final class ListRevisionsError {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -202,71 +184,64 @@ public final class ListRevisionsError {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends UnionJsonSerializer<ListRevisionsError> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(ListRevisionsError.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<ListRevisionsError> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(ListRevisionsError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            switch (value.tag) {
-                case PATH:
+        public void serialize(ListRevisionsError value, JsonGenerator g) throws IOException, JsonGenerationException {
+            switch (value.tag()) {
+                case PATH: {
                     g.writeStartObject();
-                    g.writeStringField(".tag", "path");
-                    g.writeObjectField("path", value.pathValue);
+                    writeTag("path", g);
+                    g.writeFieldName("path");
+                    LookupError.Serializer.INSTANCE.serialize(value.pathValue, g);
                     g.writeEndObject();
                     break;
-                case OTHER:
+                }
+                default: {
                     g.writeString("other");
-                    break;
+                }
             }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<ListRevisionsError, Tag> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(ListRevisionsError.class, getTagMapping(), Tag.OTHER);
         }
 
         @Override
-        public ListRevisionsError deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            switch (_tag) {
-                case PATH: {
-                    LookupError value = null;
-                    expectField(_p, "path");
-                    value = _p.readValueAs(LookupError.class);
-                    _p.nextToken();
-                    return ListRevisionsError.path(value);
-                }
-                case OTHER: {
-                    return ListRevisionsError.OTHER;
-                }
+        public ListRevisionsError deserialize(JsonParser p) throws IOException, JsonParseException {
+            ListRevisionsError value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
             }
-            // should be impossible to get here
-            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
-        }
-
-        private static Map<String, ListRevisionsError.Tag> getTagMapping() {
-            Map<String, ListRevisionsError.Tag> values = new HashMap<String, ListRevisionsError.Tag>();
-            values.put("path", ListRevisionsError.Tag.PATH);
-            values.put("other", ListRevisionsError.Tag.OTHER);
-            return Collections.unmodifiableMap(values);
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("path".equals(tag)) {
+                LookupError fieldValue = null;
+                expectField("path", p);
+                fieldValue = LookupError.Serializer.INSTANCE.deserialize(p);
+                value = ListRevisionsError.path(fieldValue);
+            }
+            else {
+                value = ListRevisionsError.OTHER;
+                skipFields(p);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

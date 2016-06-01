@@ -1,38 +1,21 @@
 /* DO NOT EDIT */
-/* This file was generated from shared_links.babel */
+/* This file was generated from shared_links.stone */
 
 package com.dropbox.core.v2.sharing;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
-@JsonSerialize(using=ModifySharedLinkSettingsArgs.Serializer.class)
-@JsonDeserialize(using=ModifySharedLinkSettingsArgs.Deserializer.class)
 class ModifySharedLinkSettingsArgs {
     // struct ModifySharedLinkSettingsArgs
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final String url;
     protected final SharedLinkSettings settings;
@@ -135,7 +118,7 @@ class ModifySharedLinkSettingsArgs {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -147,93 +130,74 @@ class ModifySharedLinkSettingsArgs {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<ModifySharedLinkSettingsArgs> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(ModifySharedLinkSettingsArgs.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(ModifySharedLinkSettingsArgs.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<ModifySharedLinkSettingsArgs> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected JsonSerializer<ModifySharedLinkSettingsArgs> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(ModifySharedLinkSettingsArgs value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("url", value.url);
-            g.writeObjectField("settings", value.settings);
-            g.writeObjectField("remove_expiration", value.removeExpiration);
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<ModifySharedLinkSettingsArgs> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(ModifySharedLinkSettingsArgs.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(ModifySharedLinkSettingsArgs.class, unwrapping);
-        }
-
-        @Override
-        protected JsonDeserializer<ModifySharedLinkSettingsArgs> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public ModifySharedLinkSettingsArgs deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            String url = null;
-            SharedLinkSettings settings = null;
-            boolean removeExpiration = false;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("url".equals(_field)) {
-                    url = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("settings".equals(_field)) {
-                    settings = _p.readValueAs(SharedLinkSettings.class);
-                    _p.nextToken();
-                }
-                else if ("remove_expiration".equals(_field)) {
-                    removeExpiration = _p.getValueAsBoolean();
-                    _p.nextToken();
-                }
-                else {
-                    skipValue(_p);
-                }
+        public void serialize(ModifySharedLinkSettingsArgs value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
             }
-
-            if (url == null) {
-                throw new JsonParseException(_p, "Required field \"url\" is missing.");
+            g.writeFieldName("url");
+            StoneSerializers.string().serialize(value.url, g);
+            g.writeFieldName("settings");
+            SharedLinkSettings.Serializer.INSTANCE.serialize(value.settings, g);
+            g.writeFieldName("remove_expiration");
+            StoneSerializers.boolean_().serialize(value.removeExpiration, g);
+            if (!collapse) {
+                g.writeEndObject();
             }
-            if (settings == null) {
-                throw new JsonParseException(_p, "Required field \"settings\" is missing.");
-            }
+        }
 
-            return new ModifySharedLinkSettingsArgs(url, settings, removeExpiration);
+        @Override
+        public ModifySharedLinkSettingsArgs deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            ModifySharedLinkSettingsArgs value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                String f_url = null;
+                SharedLinkSettings f_settings = null;
+                Boolean f_removeExpiration = false;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("url".equals(field)) {
+                        f_url = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("settings".equals(field)) {
+                        f_settings = SharedLinkSettings.Serializer.INSTANCE.deserialize(p);
+                    }
+                    else if ("remove_expiration".equals(field)) {
+                        f_removeExpiration = StoneSerializers.boolean_().deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
+                }
+                if (f_url == null) {
+                    throw new JsonParseException(p, "Required field \"url\" missing.");
+                }
+                if (f_settings == null) {
+                    throw new JsonParseException(p, "Required field \"settings\" missing.");
+                }
+                value = new ModifySharedLinkSettingsArgs(f_url, f_settings, f_removeExpiration);
+            }
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

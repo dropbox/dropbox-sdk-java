@@ -1,33 +1,19 @@
 /* DO NOT EDIT */
-/* This file was generated from team_groups.babel */
+/* This file was generated from team_groups.stone */
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
-@JsonSerialize(using=GroupCreateError.Serializer.class)
-@JsonDeserialize(using=GroupCreateError.Deserializer.class)
 public enum GroupCreateError {
     // union GroupCreateError
     /**
@@ -51,55 +37,68 @@ public enum GroupCreateError {
      */
     OTHER; // *catch_all
 
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
-
-    static final class Serializer extends UnionJsonSerializer<GroupCreateError> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(GroupCreateError.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<GroupCreateError> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(GroupCreateError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+        public void serialize(GroupCreateError value, JsonGenerator g) throws IOException, JsonGenerationException {
             switch (value) {
-                case GROUP_NAME_ALREADY_USED:
+                case GROUP_NAME_ALREADY_USED: {
                     g.writeString("group_name_already_used");
                     break;
-                case GROUP_NAME_INVALID:
+                }
+                case GROUP_NAME_INVALID: {
                     g.writeString("group_name_invalid");
                     break;
-                case EXTERNAL_ID_ALREADY_IN_USE:
+                }
+                case EXTERNAL_ID_ALREADY_IN_USE: {
                     g.writeString("external_id_already_in_use");
                     break;
-                case OTHER:
+                }
+                default: {
                     g.writeString("other");
-                    break;
+                }
             }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<GroupCreateError, GroupCreateError> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(GroupCreateError.class, getTagMapping(), GroupCreateError.OTHER);
         }
 
         @Override
-        public GroupCreateError deserialize(GroupCreateError _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            return _tag;
-        }
-
-        private static Map<String, GroupCreateError> getTagMapping() {
-            Map<String, GroupCreateError> values = new HashMap<String, GroupCreateError>();
-            values.put("group_name_already_used", GroupCreateError.GROUP_NAME_ALREADY_USED);
-            values.put("group_name_invalid", GroupCreateError.GROUP_NAME_INVALID);
-            values.put("external_id_already_in_use", GroupCreateError.EXTERNAL_ID_ALREADY_IN_USE);
-            values.put("other", GroupCreateError.OTHER);
-            return Collections.unmodifiableMap(values);
+        public GroupCreateError deserialize(JsonParser p) throws IOException, JsonParseException {
+            GroupCreateError value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
+            }
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("group_name_already_used".equals(tag)) {
+                value = GroupCreateError.GROUP_NAME_ALREADY_USED;
+            }
+            else if ("group_name_invalid".equals(tag)) {
+                value = GroupCreateError.GROUP_NAME_INVALID;
+            }
+            else if ("external_id_already_in_use".equals(tag)) {
+                value = GroupCreateError.EXTERNAL_ID_ALREADY_IN_USE;
+            }
+            else {
+                value = GroupCreateError.OTHER;
+                skipFields(p);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

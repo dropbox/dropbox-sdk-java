@@ -1,33 +1,19 @@
 /* DO NOT EDIT */
-/* This file was generated from team_members.babel */
+/* This file was generated from team_members.stone */
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
-@JsonSerialize(using=MembersSetPermissionsError.Serializer.class)
-@JsonDeserialize(using=MembersSetPermissionsError.Deserializer.class)
 public enum MembersSetPermissionsError {
     // union MembersSetPermissionsError
     /**
@@ -56,62 +42,82 @@ public enum MembersSetPermissionsError {
      */
     OTHER; // *catch_all
 
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
-
-    static final class Serializer extends UnionJsonSerializer<MembersSetPermissionsError> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(MembersSetPermissionsError.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<MembersSetPermissionsError> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(MembersSetPermissionsError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+        public void serialize(MembersSetPermissionsError value, JsonGenerator g) throws IOException, JsonGenerationException {
             switch (value) {
-                case USER_NOT_FOUND:
+                case USER_NOT_FOUND: {
                     g.writeString("user_not_found");
                     break;
-                case LAST_ADMIN:
+                }
+                case LAST_ADMIN: {
                     g.writeString("last_admin");
                     break;
-                case USER_NOT_IN_TEAM:
+                }
+                case USER_NOT_IN_TEAM: {
                     g.writeString("user_not_in_team");
                     break;
-                case CANNOT_SET_PERMISSIONS:
+                }
+                case CANNOT_SET_PERMISSIONS: {
                     g.writeString("cannot_set_permissions");
                     break;
-                case TEAM_LICENSE_LIMIT:
+                }
+                case TEAM_LICENSE_LIMIT: {
                     g.writeString("team_license_limit");
                     break;
-                case OTHER:
+                }
+                default: {
                     g.writeString("other");
-                    break;
+                }
             }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<MembersSetPermissionsError, MembersSetPermissionsError> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(MembersSetPermissionsError.class, getTagMapping(), MembersSetPermissionsError.OTHER);
         }
 
         @Override
-        public MembersSetPermissionsError deserialize(MembersSetPermissionsError _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            return _tag;
-        }
-
-        private static Map<String, MembersSetPermissionsError> getTagMapping() {
-            Map<String, MembersSetPermissionsError> values = new HashMap<String, MembersSetPermissionsError>();
-            values.put("last_admin", MembersSetPermissionsError.LAST_ADMIN);
-            values.put("user_not_in_team", MembersSetPermissionsError.USER_NOT_IN_TEAM);
-            values.put("cannot_set_permissions", MembersSetPermissionsError.CANNOT_SET_PERMISSIONS);
-            values.put("team_license_limit", MembersSetPermissionsError.TEAM_LICENSE_LIMIT);
-            values.put("other", MembersSetPermissionsError.OTHER);
-            return Collections.unmodifiableMap(values);
+        public MembersSetPermissionsError deserialize(JsonParser p) throws IOException, JsonParseException {
+            MembersSetPermissionsError value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
+            }
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("user_not_found".equals(tag)) {
+                value = MembersSetPermissionsError.USER_NOT_FOUND;
+            }
+            else if ("last_admin".equals(tag)) {
+                value = MembersSetPermissionsError.LAST_ADMIN;
+            }
+            else if ("user_not_in_team".equals(tag)) {
+                value = MembersSetPermissionsError.USER_NOT_IN_TEAM;
+            }
+            else if ("cannot_set_permissions".equals(tag)) {
+                value = MembersSetPermissionsError.CANNOT_SET_PERMISSIONS;
+            }
+            else if ("team_license_limit".equals(tag)) {
+                value = MembersSetPermissionsError.TEAM_LICENSE_LIMIT;
+            }
+            else {
+                value = MembersSetPermissionsError.OTHER;
+                skipFields(p);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

@@ -1,30 +1,18 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.babel */
+/* This file was generated from sharing_folders.stone */
 
 package com.dropbox.core.v2.sharing;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Includes different ways to identify a member of a shared folder.
@@ -38,14 +26,8 @@ import java.util.Map;
  * tag is introduced that this SDK does not recognized, the {@link #OTHER} value
  * will be used. </p>
  */
-@JsonSerialize(using=MemberSelector.Serializer.class)
-@JsonDeserialize(using=MemberSelector.Deserializer.class)
 public final class MemberSelector {
     // union MemberSelector
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link MemberSelector}.
@@ -270,7 +252,7 @@ public final class MemberSelector {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -282,85 +264,78 @@ public final class MemberSelector {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends UnionJsonSerializer<MemberSelector> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(MemberSelector.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<MemberSelector> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(MemberSelector value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            switch (value.tag) {
-                case DROPBOX_ID:
-                    g.writeStartObject();
-                    g.writeStringField(".tag", "dropbox_id");
-                    g.writeObjectField("dropbox_id", value.dropboxIdValue);
-                    g.writeEndObject();
-                    break;
-                case EMAIL:
-                    g.writeStartObject();
-                    g.writeStringField(".tag", "email");
-                    g.writeObjectField("email", value.emailValue);
-                    g.writeEndObject();
-                    break;
-                case OTHER:
-                    g.writeString("other");
-                    break;
-            }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<MemberSelector, Tag> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(MemberSelector.class, getTagMapping(), Tag.OTHER);
-        }
-
-        @Override
-        public MemberSelector deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            switch (_tag) {
+        public void serialize(MemberSelector value, JsonGenerator g) throws IOException, JsonGenerationException {
+            switch (value.tag()) {
                 case DROPBOX_ID: {
-                    String value = null;
-                    expectField(_p, "dropbox_id");
-                    value = getStringValue(_p);
-                    _p.nextToken();
-                    return MemberSelector.dropboxId(value);
+                    g.writeStartObject();
+                    writeTag("dropbox_id", g);
+                    g.writeFieldName("dropbox_id");
+                    StoneSerializers.string().serialize(value.dropboxIdValue, g);
+                    g.writeEndObject();
+                    break;
                 }
                 case EMAIL: {
-                    String value = null;
-                    expectField(_p, "email");
-                    value = getStringValue(_p);
-                    _p.nextToken();
-                    return MemberSelector.email(value);
+                    g.writeStartObject();
+                    writeTag("email", g);
+                    g.writeFieldName("email");
+                    StoneSerializers.string().serialize(value.emailValue, g);
+                    g.writeEndObject();
+                    break;
                 }
-                case OTHER: {
-                    return MemberSelector.OTHER;
+                default: {
+                    g.writeString("other");
                 }
             }
-            // should be impossible to get here
-            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
         }
 
-        private static Map<String, MemberSelector.Tag> getTagMapping() {
-            Map<String, MemberSelector.Tag> values = new HashMap<String, MemberSelector.Tag>();
-            values.put("dropbox_id", MemberSelector.Tag.DROPBOX_ID);
-            values.put("email", MemberSelector.Tag.EMAIL);
-            values.put("other", MemberSelector.Tag.OTHER);
-            return Collections.unmodifiableMap(values);
+        @Override
+        public MemberSelector deserialize(JsonParser p) throws IOException, JsonParseException {
+            MemberSelector value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
+            }
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("dropbox_id".equals(tag)) {
+                String fieldValue = null;
+                expectField("dropbox_id", p);
+                fieldValue = StoneSerializers.string().deserialize(p);
+                value = MemberSelector.dropboxId(fieldValue);
+            }
+            else if ("email".equals(tag)) {
+                String fieldValue = null;
+                expectField("email", p);
+                fieldValue = StoneSerializers.string().deserialize(p);
+                value = MemberSelector.email(fieldValue);
+            }
+            else {
+                value = MemberSelector.OTHER;
+                skipFields(p);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

@@ -1,39 +1,22 @@
 /* DO NOT EDIT */
-/* This file was generated from shared_links.babel */
+/* This file was generated from shared_links.stone */
 
 package com.dropbox.core.v2.sharing;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.List;
 
-@JsonSerialize(using=GetSharedLinksResult.Serializer.class)
-@JsonDeserialize(using=GetSharedLinksResult.Deserializer.class)
 public class GetSharedLinksResult {
     // struct GetSharedLinksResult
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final List<LinkMetadata> links;
 
@@ -91,7 +74,7 @@ public class GetSharedLinksResult {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -103,86 +86,59 @@ public class GetSharedLinksResult {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<GetSharedLinksResult> {
+        public static final Serializer INSTANCE = new Serializer();
 
-    static final class Serializer extends StructJsonSerializer<GetSharedLinksResult> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(GetSharedLinksResult.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(GetSharedLinksResult.class, unwrapping);
+        @Override
+        public void serialize(GetSharedLinksResult value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
+            }
+            g.writeFieldName("links");
+            StoneSerializers.list(LinkMetadata.Serializer.INSTANCE).serialize(value.links, g);
+            if (!collapse) {
+                g.writeEndObject();
+            }
         }
 
         @Override
-        protected JsonSerializer<GetSharedLinksResult> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(GetSharedLinksResult value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("links", value.links);
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<GetSharedLinksResult> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(GetSharedLinksResult.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(GetSharedLinksResult.class, unwrapping);
-        }
-
-        @Override
-        protected JsonDeserializer<GetSharedLinksResult> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public GetSharedLinksResult deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            List<LinkMetadata> links = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("links".equals(_field)) {
-                    expectArrayStart(_p);
-                    links = new java.util.ArrayList<LinkMetadata>();
-                    while (!isArrayEnd(_p)) {
-                        LinkMetadata _x = null;
-                        _x = _p.readValueAs(LinkMetadata.class);
-                        _p.nextToken();
-                        links.add(_x);
+        public GetSharedLinksResult deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            GetSharedLinksResult value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                List<LinkMetadata> f_links = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("links".equals(field)) {
+                        f_links = StoneSerializers.list(LinkMetadata.Serializer.INSTANCE).deserialize(p);
                     }
-                    expectArrayEnd(_p);
-                    _p.nextToken();
+                    else {
+                        skipValue(p);
+                    }
                 }
-                else {
-                    skipValue(_p);
+                if (f_links == null) {
+                    throw new JsonParseException(p, "Required field \"links\" missing.");
                 }
+                value = new GetSharedLinksResult(f_links);
             }
-
-            if (links == null) {
-                throw new JsonParseException(_p, "Required field \"links\" is missing.");
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
             }
-
-            return new GetSharedLinksResult(links);
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

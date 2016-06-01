@@ -1,30 +1,18 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.babel */
+/* This file was generated from sharing_folders.stone */
 
 package com.dropbox.core.v2.sharing;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This class is an open tagged union.  Tagged unions instances are always
@@ -36,14 +24,8 @@ import java.util.Map;
  * tag is introduced that this SDK does not recognized, the {@link #OTHER} value
  * will be used. </p>
  */
-@JsonSerialize(using=RelinquishFolderMembershipError.Serializer.class)
-@JsonDeserialize(using=RelinquishFolderMembershipError.Deserializer.class)
 public final class RelinquishFolderMembershipError {
     // union RelinquishFolderMembershipError
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link RelinquishFolderMembershipError}.
@@ -305,7 +287,7 @@ public final class RelinquishFolderMembershipError {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -317,106 +299,99 @@ public final class RelinquishFolderMembershipError {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends UnionJsonSerializer<RelinquishFolderMembershipError> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(RelinquishFolderMembershipError.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<RelinquishFolderMembershipError> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(RelinquishFolderMembershipError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            switch (value.tag) {
-                case ACCESS_ERROR:
+        public void serialize(RelinquishFolderMembershipError value, JsonGenerator g) throws IOException, JsonGenerationException {
+            switch (value.tag()) {
+                case ACCESS_ERROR: {
                     g.writeStartObject();
-                    g.writeStringField(".tag", "access_error");
-                    g.writeObjectField("access_error", value.accessErrorValue);
+                    writeTag("access_error", g);
+                    g.writeFieldName("access_error");
+                    SharedFolderAccessError.Serializer.INSTANCE.serialize(value.accessErrorValue, g);
                     g.writeEndObject();
                     break;
-                case FOLDER_OWNER:
+                }
+                case FOLDER_OWNER: {
                     g.writeString("folder_owner");
                     break;
-                case MOUNTED:
+                }
+                case MOUNTED: {
                     g.writeString("mounted");
                     break;
-                case GROUP_ACCESS:
+                }
+                case GROUP_ACCESS: {
                     g.writeString("group_access");
                     break;
-                case TEAM_FOLDER:
+                }
+                case TEAM_FOLDER: {
                     g.writeString("team_folder");
                     break;
-                case NO_PERMISSION:
+                }
+                case NO_PERMISSION: {
                     g.writeString("no_permission");
                     break;
-                case OTHER:
+                }
+                default: {
                     g.writeString("other");
-                    break;
+                }
             }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<RelinquishFolderMembershipError, Tag> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(RelinquishFolderMembershipError.class, getTagMapping(), Tag.OTHER);
         }
 
         @Override
-        public RelinquishFolderMembershipError deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            switch (_tag) {
-                case ACCESS_ERROR: {
-                    SharedFolderAccessError value = null;
-                    expectField(_p, "access_error");
-                    value = _p.readValueAs(SharedFolderAccessError.class);
-                    _p.nextToken();
-                    return RelinquishFolderMembershipError.accessError(value);
-                }
-                case FOLDER_OWNER: {
-                    return RelinquishFolderMembershipError.FOLDER_OWNER;
-                }
-                case MOUNTED: {
-                    return RelinquishFolderMembershipError.MOUNTED;
-                }
-                case GROUP_ACCESS: {
-                    return RelinquishFolderMembershipError.GROUP_ACCESS;
-                }
-                case TEAM_FOLDER: {
-                    return RelinquishFolderMembershipError.TEAM_FOLDER;
-                }
-                case NO_PERMISSION: {
-                    return RelinquishFolderMembershipError.NO_PERMISSION;
-                }
-                case OTHER: {
-                    return RelinquishFolderMembershipError.OTHER;
-                }
+        public RelinquishFolderMembershipError deserialize(JsonParser p) throws IOException, JsonParseException {
+            RelinquishFolderMembershipError value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
             }
-            // should be impossible to get here
-            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
-        }
-
-        private static Map<String, RelinquishFolderMembershipError.Tag> getTagMapping() {
-            Map<String, RelinquishFolderMembershipError.Tag> values = new HashMap<String, RelinquishFolderMembershipError.Tag>();
-            values.put("access_error", RelinquishFolderMembershipError.Tag.ACCESS_ERROR);
-            values.put("folder_owner", RelinquishFolderMembershipError.Tag.FOLDER_OWNER);
-            values.put("mounted", RelinquishFolderMembershipError.Tag.MOUNTED);
-            values.put("group_access", RelinquishFolderMembershipError.Tag.GROUP_ACCESS);
-            values.put("team_folder", RelinquishFolderMembershipError.Tag.TEAM_FOLDER);
-            values.put("no_permission", RelinquishFolderMembershipError.Tag.NO_PERMISSION);
-            values.put("other", RelinquishFolderMembershipError.Tag.OTHER);
-            return Collections.unmodifiableMap(values);
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("access_error".equals(tag)) {
+                SharedFolderAccessError fieldValue = null;
+                expectField("access_error", p);
+                fieldValue = SharedFolderAccessError.Serializer.INSTANCE.deserialize(p);
+                value = RelinquishFolderMembershipError.accessError(fieldValue);
+            }
+            else if ("folder_owner".equals(tag)) {
+                value = RelinquishFolderMembershipError.FOLDER_OWNER;
+            }
+            else if ("mounted".equals(tag)) {
+                value = RelinquishFolderMembershipError.MOUNTED;
+            }
+            else if ("group_access".equals(tag)) {
+                value = RelinquishFolderMembershipError.GROUP_ACCESS;
+            }
+            else if ("team_folder".equals(tag)) {
+                value = RelinquishFolderMembershipError.TEAM_FOLDER;
+            }
+            else if ("no_permission".equals(tag)) {
+                value = RelinquishFolderMembershipError.NO_PERMISSION;
+            }
+            else {
+                value = RelinquishFolderMembershipError.OTHER;
+                skipFields(p);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

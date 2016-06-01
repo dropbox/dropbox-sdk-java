@@ -1,27 +1,16 @@
 /* DO NOT EDIT */
-/* This file was generated from team_linked_apps.babel */
+/* This file was generated from team_linked_apps.stone */
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.List;
@@ -30,14 +19,8 @@ import java.util.List;
  * Information returned by {@link
  * DbxTeamTeamRequests#linkedAppsListTeamLinkedApps()}.
  */
-@JsonSerialize(using=ListTeamAppsResult.Serializer.class)
-@JsonDeserialize(using=ListTeamAppsResult.Deserializer.class)
 public class ListTeamAppsResult {
     // struct ListTeamAppsResult
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final List<MemberLinkedApps> apps;
     protected final boolean hasMore;
@@ -152,7 +135,7 @@ public class ListTeamAppsResult {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -164,103 +147,76 @@ public class ListTeamAppsResult {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<ListTeamAppsResult> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(ListTeamAppsResult.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(ListTeamAppsResult.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<ListTeamAppsResult> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected JsonSerializer<ListTeamAppsResult> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(ListTeamAppsResult value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("apps", value.apps);
-            g.writeObjectField("has_more", value.hasMore);
+        public void serialize(ListTeamAppsResult value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
+            }
+            g.writeFieldName("apps");
+            StoneSerializers.list(MemberLinkedApps.Serializer.INSTANCE).serialize(value.apps, g);
+            g.writeFieldName("has_more");
+            StoneSerializers.boolean_().serialize(value.hasMore, g);
             if (value.cursor != null) {
-                g.writeObjectField("cursor", value.cursor);
+                g.writeFieldName("cursor");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.cursor, g);
+            }
+            if (!collapse) {
+                g.writeEndObject();
             }
         }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<ListTeamAppsResult> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(ListTeamAppsResult.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(ListTeamAppsResult.class, unwrapping);
-        }
 
         @Override
-        protected JsonDeserializer<ListTeamAppsResult> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public ListTeamAppsResult deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            List<MemberLinkedApps> apps = null;
-            Boolean hasMore = null;
-            String cursor = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("apps".equals(_field)) {
-                    expectArrayStart(_p);
-                    apps = new java.util.ArrayList<MemberLinkedApps>();
-                    while (!isArrayEnd(_p)) {
-                        MemberLinkedApps _x = null;
-                        _x = _p.readValueAs(MemberLinkedApps.class);
-                        _p.nextToken();
-                        apps.add(_x);
+        public ListTeamAppsResult deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            ListTeamAppsResult value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                List<MemberLinkedApps> f_apps = null;
+                Boolean f_hasMore = null;
+                String f_cursor = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("apps".equals(field)) {
+                        f_apps = StoneSerializers.list(MemberLinkedApps.Serializer.INSTANCE).deserialize(p);
                     }
-                    expectArrayEnd(_p);
-                    _p.nextToken();
+                    else if ("has_more".equals(field)) {
+                        f_hasMore = StoneSerializers.boolean_().deserialize(p);
+                    }
+                    else if ("cursor".equals(field)) {
+                        f_cursor = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
                 }
-                else if ("has_more".equals(_field)) {
-                    hasMore = _p.getValueAsBoolean();
-                    _p.nextToken();
+                if (f_apps == null) {
+                    throw new JsonParseException(p, "Required field \"apps\" missing.");
                 }
-                else if ("cursor".equals(_field)) {
-                    cursor = getStringValue(_p);
-                    _p.nextToken();
+                if (f_hasMore == null) {
+                    throw new JsonParseException(p, "Required field \"has_more\" missing.");
                 }
-                else {
-                    skipValue(_p);
-                }
+                value = new ListTeamAppsResult(f_apps, f_hasMore, f_cursor);
             }
-
-            if (apps == null) {
-                throw new JsonParseException(_p, "Required field \"apps\" is missing.");
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
             }
-            if (hasMore == null) {
-                throw new JsonParseException(_p, "Required field \"has_more\" is missing.");
+            if (!collapsed) {
+                expectEndObject(p);
             }
-
-            return new ListTeamAppsResult(apps, hasMore, cursor);
+            return value;
         }
     }
 }

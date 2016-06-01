@@ -1,41 +1,24 @@
 /* DO NOT EDIT */
-/* This file was generated from files.babel */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
 /**
  * Metadata for a file or folder.
  */
-@JsonSerialize(using=Metadata.Serializer.class)
-@JsonDeserialize(using=Metadata.Deserializer.class)
 public class Metadata {
     // struct Metadata
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final String name;
     protected final String pathLower;
@@ -182,7 +165,7 @@ public class Metadata {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -194,109 +177,112 @@ public class Metadata {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<Metadata> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(Metadata.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(Metadata.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<Metadata> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected void serializeFields(Metadata value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("name", value.name);
-            g.writeObjectField("path_lower", value.pathLower);
-            g.writeObjectField("path_display", value.pathDisplay);
+        public void serialize(Metadata value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (value instanceof FileMetadata) {
+                FileMetadata.Serializer.INSTANCE.serialize((FileMetadata) value, g, collapse);
+                return;
+            }
+            if (value instanceof FolderMetadata) {
+                FolderMetadata.Serializer.INSTANCE.serialize((FolderMetadata) value, g, collapse);
+                return;
+            }
+            if (value instanceof DeletedMetadata) {
+                DeletedMetadata.Serializer.INSTANCE.serialize((DeletedMetadata) value, g, collapse);
+                return;
+            }
+            if (!collapse) {
+                g.writeStartObject();
+            }
+            g.writeFieldName("name");
+            StoneSerializers.string().serialize(value.name, g);
+            g.writeFieldName("path_lower");
+            StoneSerializers.string().serialize(value.pathLower, g);
+            g.writeFieldName("path_display");
+            StoneSerializers.string().serialize(value.pathDisplay, g);
             if (value.parentSharedFolderId != null) {
-                g.writeObjectField("parent_shared_folder_id", value.parentSharedFolderId);
+                g.writeFieldName("parent_shared_folder_id");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.parentSharedFolderId, g);
             }
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<Metadata> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(Metadata.class, FileMetadata.class, FolderMetadata.class, DeletedMetadata.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(Metadata.class, unwrapping, FileMetadata.class, FolderMetadata.class, DeletedMetadata.class);
+            if (!collapse) {
+                g.writeEndObject();
+            }
         }
 
         @Override
-        protected JsonDeserializer<Metadata> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public Metadata deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            String _subtype_tag = readEnumeratedSubtypeTag(_p);
-            if ("file".equals(_subtype_tag)) {
-                return readCollapsedStructValue(FileMetadata.class, _p, _ctx);
-            }
-            if ("folder".equals(_subtype_tag)) {
-                return readCollapsedStructValue(FolderMetadata.class, _p, _ctx);
-            }
-            if ("deleted".equals(_subtype_tag)) {
-                return readCollapsedStructValue(DeletedMetadata.class, _p, _ctx);
-            }
-
-            String name = null;
-            String pathLower = null;
-            String pathDisplay = null;
-            String parentSharedFolderId = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("name".equals(_field)) {
-                    name = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("path_lower".equals(_field)) {
-                    pathLower = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("path_display".equals(_field)) {
-                    pathDisplay = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("parent_shared_folder_id".equals(_field)) {
-                    parentSharedFolderId = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else {
-                    skipValue(_p);
+        public Metadata deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            Metadata value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+                if ("".equals(tag)) {
+                    tag = null;
                 }
             }
-
-            if (name == null) {
-                throw new JsonParseException(_p, "Required field \"name\" is missing.");
+            if (tag == null) {
+                String f_name = null;
+                String f_pathLower = null;
+                String f_pathDisplay = null;
+                String f_parentSharedFolderId = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("name".equals(field)) {
+                        f_name = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("path_lower".equals(field)) {
+                        f_pathLower = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("path_display".equals(field)) {
+                        f_pathDisplay = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("parent_shared_folder_id".equals(field)) {
+                        f_parentSharedFolderId = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
+                }
+                if (f_name == null) {
+                    throw new JsonParseException(p, "Required field \"name\" missing.");
+                }
+                if (f_pathLower == null) {
+                    throw new JsonParseException(p, "Required field \"path_lower\" missing.");
+                }
+                if (f_pathDisplay == null) {
+                    throw new JsonParseException(p, "Required field \"path_display\" missing.");
+                }
+                value = new Metadata(f_name, f_pathLower, f_pathDisplay, f_parentSharedFolderId);
             }
-            if (pathLower == null) {
-                throw new JsonParseException(_p, "Required field \"path_lower\" is missing.");
+            else if ("".equals(tag)) {
+                value = Metadata.Serializer.INSTANCE.deserialize(p, true);
             }
-            if (pathDisplay == null) {
-                throw new JsonParseException(_p, "Required field \"path_display\" is missing.");
+            else if ("file".equals(tag)) {
+                value = FileMetadata.Serializer.INSTANCE.deserialize(p, true);
             }
-
-            return new Metadata(name, pathLower, pathDisplay, parentSharedFolderId);
+            else if ("folder".equals(tag)) {
+                value = FolderMetadata.Serializer.INSTANCE.deserialize(p, true);
+            }
+            else if ("deleted".equals(tag)) {
+                value = DeletedMetadata.Serializer.INSTANCE.deserialize(p, true);
+            }
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

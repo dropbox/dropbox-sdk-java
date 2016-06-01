@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_groups.babel */
+/* This file was generated from team_groups.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -13,26 +13,26 @@ import com.dropbox.core.DbxException;
  * request. </p>
  */
 public class GroupsUpdateBuilder {
-    private final DbxTeamTeamRequests team;
+    private final DbxTeamTeamRequests team_;
     private final GroupUpdateArgs.Builder groupUpdateArgsBuilder;
 
     /**
      * Creates a new instance of this builder.
      *
-     * @param team  Dropbox namespace-specific client used to issue team
+     * @param team_  Dropbox namespace-specific client used to issue team
      *     requests.
      * @param groupUpdateArgsBuilder  Request argument builder.
      *
      * @return instsance of this builder
      */
-    GroupsUpdateBuilder(DbxTeamTeamRequests team, GroupUpdateArgs.Builder groupUpdateArgsBuilder) {
-        if (team == null) {
-            throw new NullPointerException("team");
+    GroupsUpdateBuilder(DbxTeamTeamRequests team_, GroupUpdateArgs.Builder groupUpdateArgsBuilder) {
+        if (team_ == null) {
+            throw new NullPointerException("team_");
         }
+        this.team_ = team_;
         if (groupUpdateArgsBuilder == null) {
             throw new NullPointerException("groupUpdateArgsBuilder");
         }
-        this.team = team;
         this.groupUpdateArgsBuilder = groupUpdateArgsBuilder;
     }
 
@@ -85,7 +85,7 @@ public class GroupsUpdateBuilder {
      * Issues the request.
      */
     public GroupFullInfo start() throws GroupUpdateErrorException, DbxException {
-        GroupUpdateArgs arg = this.groupUpdateArgsBuilder.build();
-        return team.groupsUpdate(arg);
+        GroupUpdateArgs arg_ = this.groupUpdateArgsBuilder.build();
+        return team_.groupsUpdate(arg_);
     }
 }

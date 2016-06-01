@@ -1,38 +1,21 @@
 /* DO NOT EDIT */
-/* This file was generated from files.babel */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
-@JsonSerialize(using=RelocationArg.Serializer.class)
-@JsonDeserialize(using=RelocationArg.Deserializer.class)
 public class RelocationArg {
     // struct RelocationArg
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final String fromPath;
     protected final String toPath;
@@ -40,9 +23,9 @@ public class RelocationArg {
     /**
      *
      * @param fromPath  Path in the user's Dropbox to be copied or moved. Must
-     *     match pattern "{@code /.*}" and not be {@code null}.
+     *     match pattern "{@code /(.|[\\r\\n])*}" and not be {@code null}.
      * @param toPath  Path in the user's Dropbox that is the destination. Must
-     *     match pattern "{@code /.*}" and not be {@code null}.
+     *     match pattern "{@code /(.|[\\r\\n])*}" and not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -51,14 +34,14 @@ public class RelocationArg {
         if (fromPath == null) {
             throw new IllegalArgumentException("Required value for 'fromPath' is null");
         }
-        if (!java.util.regex.Pattern.matches("/.*", fromPath)) {
+        if (!java.util.regex.Pattern.matches("/(.|[\\r\\n])*", fromPath)) {
             throw new IllegalArgumentException("String 'fromPath' does not match pattern");
         }
         this.fromPath = fromPath;
         if (toPath == null) {
             throw new IllegalArgumentException("Required value for 'toPath' is null");
         }
-        if (!java.util.regex.Pattern.matches("/.*", toPath)) {
+        if (!java.util.regex.Pattern.matches("/(.|[\\r\\n])*", toPath)) {
             throw new IllegalArgumentException("String 'toPath' does not match pattern");
         }
         this.toPath = toPath;
@@ -110,7 +93,7 @@ public class RelocationArg {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -122,87 +105,68 @@ public class RelocationArg {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<RelocationArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(RelocationArg.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(RelocationArg.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<RelocationArg> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected JsonSerializer<RelocationArg> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(RelocationArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("from_path", value.fromPath);
-            g.writeObjectField("to_path", value.toPath);
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<RelocationArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(RelocationArg.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(RelocationArg.class, unwrapping);
-        }
-
-        @Override
-        protected JsonDeserializer<RelocationArg> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public RelocationArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            String fromPath = null;
-            String toPath = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("from_path".equals(_field)) {
-                    fromPath = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("to_path".equals(_field)) {
-                    toPath = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else {
-                    skipValue(_p);
-                }
+        public void serialize(RelocationArg value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
             }
-
-            if (fromPath == null) {
-                throw new JsonParseException(_p, "Required field \"from_path\" is missing.");
+            g.writeFieldName("from_path");
+            StoneSerializers.string().serialize(value.fromPath, g);
+            g.writeFieldName("to_path");
+            StoneSerializers.string().serialize(value.toPath, g);
+            if (!collapse) {
+                g.writeEndObject();
             }
-            if (toPath == null) {
-                throw new JsonParseException(_p, "Required field \"to_path\" is missing.");
-            }
+        }
 
-            return new RelocationArg(fromPath, toPath);
+        @Override
+        public RelocationArg deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            RelocationArg value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                String f_fromPath = null;
+                String f_toPath = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("from_path".equals(field)) {
+                        f_fromPath = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("to_path".equals(field)) {
+                        f_toPath = StoneSerializers.string().deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
+                }
+                if (f_fromPath == null) {
+                    throw new JsonParseException(p, "Required field \"from_path\" missing.");
+                }
+                if (f_toPath == null) {
+                    throw new JsonParseException(p, "Required field \"to_path\" missing.");
+                }
+                value = new RelocationArg(f_fromPath, f_toPath);
+            }
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

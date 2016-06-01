@@ -1,38 +1,21 @@
 /* DO NOT EDIT */
-/* This file was generated from files.babel */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
-@JsonSerialize(using=SearchArg.Serializer.class)
-@JsonDeserialize(using=SearchArg.Deserializer.class)
 class SearchArg {
     // struct SearchArg
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final String path;
     protected final String query;
@@ -45,8 +28,8 @@ class SearchArg {
      * specifying values for all optional fields.
      *
      * @param path  The path in the user's Dropbox to search. Should probably be
-     *     a folder. Must match pattern "{@code (/.*)?}" and not be {@code
-     *     null}.
+     *     a folder. Must match pattern "{@code (/(.|[\\r\\n])*)?}" and not be
+     *     {@code null}.
      * @param query  The string to search for. The search string is split on
      *     spaces into multiple tokens. For file name searching, the last token
      *     is used for prefix matching (i.e. "bat c" matches "bat cave" but not
@@ -66,7 +49,7 @@ class SearchArg {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
-        if (!java.util.regex.Pattern.matches("(/.*)?", path)) {
+        if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*)?", path)) {
             throw new IllegalArgumentException("String 'path' does not match pattern");
         }
         this.path = path;
@@ -92,8 +75,8 @@ class SearchArg {
      * The default values for unset fields will be used.
      *
      * @param path  The path in the user's Dropbox to search. Should probably be
-     *     a folder. Must match pattern "{@code (/.*)?}" and not be {@code
-     *     null}.
+     *     a folder. Must match pattern "{@code (/(.|[\\r\\n])*)?}" and not be
+     *     {@code null}.
      * @param query  The string to search for. The search string is split on
      *     spaces into multiple tokens. For file name searching, the last token
      *     is used for prefix matching (i.e. "bat c" matches "bat cave" but not
@@ -162,8 +145,8 @@ class SearchArg {
      * Returns a new builder for creating an instance of this class.
      *
      * @param path  The path in the user's Dropbox to search. Should probably be
-     *     a folder. Must match pattern "{@code (/.*)?}" and not be {@code
-     *     null}.
+     *     a folder. Must match pattern "{@code (/(.|[\\r\\n])*)?}" and not be
+     *     {@code null}.
      * @param query  The string to search for. The search string is split on
      *     spaces into multiple tokens. For file name searching, the last token
      *     is used for prefix matching (i.e. "bat c" matches "bat cave" but not
@@ -193,7 +176,7 @@ class SearchArg {
             if (path == null) {
                 throw new IllegalArgumentException("Required value for 'path' is null");
             }
-            if (!java.util.regex.Pattern.matches("(/.*)?", path)) {
+            if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*)?", path)) {
                 throw new IllegalArgumentException("String 'path' does not match pattern");
             }
             this.path = path;
@@ -326,7 +309,7 @@ class SearchArg {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -338,107 +321,86 @@ class SearchArg {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<SearchArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(SearchArg.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(SearchArg.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<SearchArg> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected JsonSerializer<SearchArg> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(SearchArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("path", value.path);
-            g.writeObjectField("query", value.query);
-            g.writeObjectField("start", value.start);
-            g.writeObjectField("max_results", value.maxResults);
-            g.writeObjectField("mode", value.mode);
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<SearchArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(SearchArg.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(SearchArg.class, unwrapping);
-        }
-
-        @Override
-        protected JsonDeserializer<SearchArg> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public SearchArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            String path = null;
-            String query = null;
-            long start = 0L;
-            long maxResults = 100L;
-            SearchMode mode = SearchMode.FILENAME;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("path".equals(_field)) {
-                    path = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("query".equals(_field)) {
-                    query = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("start".equals(_field)) {
-                    start = _p.getLongValue();
-                    assertUnsigned(_p, start);
-                    _p.nextToken();
-                }
-                else if ("max_results".equals(_field)) {
-                    maxResults = _p.getLongValue();
-                    assertUnsigned(_p, maxResults);
-                    _p.nextToken();
-                }
-                else if ("mode".equals(_field)) {
-                    mode = _p.readValueAs(SearchMode.class);
-                    _p.nextToken();
-                }
-                else {
-                    skipValue(_p);
-                }
+        public void serialize(SearchArg value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
             }
-
-            if (path == null) {
-                throw new JsonParseException(_p, "Required field \"path\" is missing.");
+            g.writeFieldName("path");
+            StoneSerializers.string().serialize(value.path, g);
+            g.writeFieldName("query");
+            StoneSerializers.string().serialize(value.query, g);
+            g.writeFieldName("start");
+            StoneSerializers.uInt64().serialize(value.start, g);
+            g.writeFieldName("max_results");
+            StoneSerializers.uInt64().serialize(value.maxResults, g);
+            g.writeFieldName("mode");
+            SearchMode.Serializer.INSTANCE.serialize(value.mode, g);
+            if (!collapse) {
+                g.writeEndObject();
             }
-            if (query == null) {
-                throw new JsonParseException(_p, "Required field \"query\" is missing.");
-            }
+        }
 
-            return new SearchArg(path, query, start, maxResults, mode);
+        @Override
+        public SearchArg deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            SearchArg value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                String f_path = null;
+                String f_query = null;
+                Long f_start = 0L;
+                Long f_maxResults = 100L;
+                SearchMode f_mode = SearchMode.FILENAME;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("path".equals(field)) {
+                        f_path = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("query".equals(field)) {
+                        f_query = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("start".equals(field)) {
+                        f_start = StoneSerializers.uInt64().deserialize(p);
+                    }
+                    else if ("max_results".equals(field)) {
+                        f_maxResults = StoneSerializers.uInt64().deserialize(p);
+                    }
+                    else if ("mode".equals(field)) {
+                        f_mode = SearchMode.Serializer.INSTANCE.deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
+                }
+                if (f_path == null) {
+                    throw new JsonParseException(p, "Required field \"path\" missing.");
+                }
+                if (f_query == null) {
+                    throw new JsonParseException(p, "Required field \"query\" missing.");
+                }
+                value = new SearchArg(f_path, f_query, f_start, f_maxResults, f_mode);
+            }
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

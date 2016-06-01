@@ -1,42 +1,25 @@
 /* DO NOT EDIT */
-/* This file was generated from users.babel */
+/* This file was generated from users.stone */
 
 package com.dropbox.core.v2.users;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 import com.dropbox.core.v2.teampolicies.TeamSharingPolicies;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
 /**
  * Detailed information about a team.
  */
-@JsonSerialize(using=FullTeam.Serializer.class)
-@JsonDeserialize(using=FullTeam.Deserializer.class)
 public class FullTeam extends Team {
     // struct FullTeam
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final TeamSharingPolicies sharingPolicies;
 
@@ -97,7 +80,7 @@ public class FullTeam extends Team {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -109,96 +92,77 @@ public class FullTeam extends Team {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<FullTeam> {
+        public static final Serializer INSTANCE = new Serializer();
 
-    static final class Serializer extends StructJsonSerializer<FullTeam> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(FullTeam.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(FullTeam.class, unwrapping);
+        @Override
+        public void serialize(FullTeam value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
+            }
+            g.writeFieldName("id");
+            StoneSerializers.string().serialize(value.id, g);
+            g.writeFieldName("name");
+            StoneSerializers.string().serialize(value.name, g);
+            g.writeFieldName("sharing_policies");
+            TeamSharingPolicies.Serializer.INSTANCE.serialize(value.sharingPolicies, g);
+            if (!collapse) {
+                g.writeEndObject();
+            }
         }
 
         @Override
-        protected JsonSerializer<FullTeam> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(FullTeam value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("id", value.id);
-            g.writeObjectField("name", value.name);
-            g.writeObjectField("sharing_policies", value.sharingPolicies);
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<FullTeam> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(FullTeam.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(FullTeam.class, unwrapping);
-        }
-
-        @Override
-        protected JsonDeserializer<FullTeam> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public FullTeam deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            String id = null;
-            String name = null;
-            TeamSharingPolicies sharingPolicies = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("id".equals(_field)) {
-                    id = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("name".equals(_field)) {
-                    name = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("sharing_policies".equals(_field)) {
-                    sharingPolicies = _p.readValueAs(TeamSharingPolicies.class);
-                    _p.nextToken();
-                }
-                else {
-                    skipValue(_p);
-                }
+        public FullTeam deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            FullTeam value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
             }
-
-            if (id == null) {
-                throw new JsonParseException(_p, "Required field \"id\" is missing.");
+            if (tag == null) {
+                String f_id = null;
+                String f_name = null;
+                TeamSharingPolicies f_sharingPolicies = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("id".equals(field)) {
+                        f_id = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("name".equals(field)) {
+                        f_name = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("sharing_policies".equals(field)) {
+                        f_sharingPolicies = TeamSharingPolicies.Serializer.INSTANCE.deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
+                }
+                if (f_id == null) {
+                    throw new JsonParseException(p, "Required field \"id\" missing.");
+                }
+                if (f_name == null) {
+                    throw new JsonParseException(p, "Required field \"name\" missing.");
+                }
+                if (f_sharingPolicies == null) {
+                    throw new JsonParseException(p, "Required field \"sharing_policies\" missing.");
+                }
+                value = new FullTeam(f_id, f_name, f_sharingPolicies);
             }
-            if (name == null) {
-                throw new JsonParseException(_p, "Required field \"name\" is missing.");
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
             }
-            if (sharingPolicies == null) {
-                throw new JsonParseException(_p, "Required field \"sharing_policies\" is missing.");
+            if (!collapsed) {
+                expectEndObject(p);
             }
-
-            return new FullTeam(id, name, sharingPolicies);
+            return value;
         }
     }
 }

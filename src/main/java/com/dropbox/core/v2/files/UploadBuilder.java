@@ -1,9 +1,10 @@
 /* DO NOT EDIT */
-/* This file was generated from files.babel */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
 import com.dropbox.core.DbxException;
+import com.dropbox.core.DbxUploader;
 
 import java.util.Date;
 
@@ -15,26 +16,26 @@ import java.util.Date;
  * request. </p>
  */
 public class UploadBuilder extends com.dropbox.core.v2.DbxUploadStyleBuilder<FileMetadata,UploadError,UploadErrorException> {
-    private final DbxUserFilesRequests files;
+    private final DbxUserFilesRequests files_;
     private final CommitInfo.Builder commitInfoBuilder;
 
     /**
      * Creates a new instance of this builder.
      *
-     * @param files  Dropbox namespace-specific client used to issue files
+     * @param files_  Dropbox namespace-specific client used to issue files
      *     requests.
      * @param commitInfoBuilder  Request argument builder.
      *
      * @return instsance of this builder
      */
-    UploadBuilder(DbxUserFilesRequests files, CommitInfo.Builder commitInfoBuilder) {
-        if (files == null) {
-            throw new NullPointerException("files");
+    UploadBuilder(DbxUserFilesRequests files_, CommitInfo.Builder commitInfoBuilder) {
+        if (files_ == null) {
+            throw new NullPointerException("files_");
         }
+        this.files_ = files_;
         if (commitInfoBuilder == null) {
             throw new NullPointerException("commitInfoBuilder");
         }
-        this.files = files;
         this.commitInfoBuilder = commitInfoBuilder;
     }
 
@@ -109,7 +110,7 @@ public class UploadBuilder extends com.dropbox.core.v2.DbxUploadStyleBuilder<Fil
 
     @Override
     public UploadUploader start() throws UploadErrorException, DbxException {
-        CommitInfo arg = this.commitInfoBuilder.build();
-        return files.upload(arg);
+        CommitInfo arg_ = this.commitInfoBuilder.build();
+        return files_.upload(arg_);
     }
 }

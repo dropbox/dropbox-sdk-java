@@ -1,30 +1,18 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.babel */
+/* This file was generated from sharing_folders.stone */
 
 package com.dropbox.core.v2.sharing;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Error occurred while performing an asynchronous job from {@link
@@ -40,14 +28,8 @@ import java.util.Map;
  * tag is introduced that this SDK does not recognized, the {@link #OTHER} value
  * will be used. </p>
  */
-@JsonSerialize(using=JobError.Serializer.class)
-@JsonDeserialize(using=JobError.Deserializer.class)
 public final class JobError {
     // union JobError
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link JobError}.
@@ -64,6 +46,11 @@ public final class JobError {
          * action.
          */
         REMOVE_FOLDER_MEMBER_ERROR, // RemoveFolderMemberError
+        /**
+         * Error occurred while performing {@link
+         * DbxUserSharingRequests#relinquishFolderMembership(String)} action.
+         */
+        RELINQUISH_FOLDER_MEMBERSHIP_ERROR, // RelinquishFolderMembershipError
         /**
          * Catch-all used for unknown tag values returned by the Dropbox
          * servers.
@@ -82,11 +69,12 @@ public final class JobError {
      * not up to date. Consider updating your SDK version to handle the new
      * tags. </p>
      */
-    public static final JobError OTHER = new JobError(Tag.OTHER, null, null);
+    public static final JobError OTHER = new JobError(Tag.OTHER, null, null, null);
 
     private final Tag tag;
     private final UnshareFolderError unshareFolderErrorValue;
     private final RemoveFolderMemberError removeFolderMemberErrorValue;
+    private final RelinquishFolderMembershipError relinquishFolderMembershipErrorValue;
 
     /**
      * Error occurred while performing an asynchronous job from {@link
@@ -95,10 +83,11 @@ public final class JobError {
      *
      * @param tag  Discriminating tag for this instance.
      */
-    private JobError(Tag tag, UnshareFolderError unshareFolderErrorValue, RemoveFolderMemberError removeFolderMemberErrorValue) {
+    private JobError(Tag tag, UnshareFolderError unshareFolderErrorValue, RemoveFolderMemberError removeFolderMemberErrorValue, RelinquishFolderMembershipError relinquishFolderMembershipErrorValue) {
         this.tag = tag;
         this.unshareFolderErrorValue = unshareFolderErrorValue;
         this.removeFolderMemberErrorValue = removeFolderMemberErrorValue;
+        this.relinquishFolderMembershipErrorValue = relinquishFolderMembershipErrorValue;
     }
 
     /**
@@ -148,7 +137,7 @@ public final class JobError {
         if (value == null) {
             throw new IllegalArgumentException("Value is null");
         }
-        return new JobError(Tag.UNSHARE_FOLDER_ERROR, value, null);
+        return new JobError(Tag.UNSHARE_FOLDER_ERROR, value, null, null);
     }
 
     /**
@@ -201,7 +190,7 @@ public final class JobError {
         if (value == null) {
             throw new IllegalArgumentException("Value is null");
         }
-        return new JobError(Tag.REMOVE_FOLDER_MEMBER_ERROR, null, value);
+        return new JobError(Tag.REMOVE_FOLDER_MEMBER_ERROR, null, value, null);
     }
 
     /**
@@ -227,6 +216,59 @@ public final class JobError {
     }
 
     /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#RELINQUISH_FOLDER_MEMBERSHIP_ERROR}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#RELINQUISH_FOLDER_MEMBERSHIP_ERROR}, {@code false} otherwise.
+     */
+    public boolean isRelinquishFolderMembershipError() {
+        return this.tag == Tag.RELINQUISH_FOLDER_MEMBERSHIP_ERROR;
+    }
+
+    /**
+     * Returns an instance of {@code JobError} that has its tag set to {@link
+     * Tag#RELINQUISH_FOLDER_MEMBERSHIP_ERROR}.
+     *
+     * <p> Error occurred while performing {@link
+     * DbxUserSharingRequests#relinquishFolderMembership(String)} action. </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code JobError} with its tag set to {@link
+     *     Tag#RELINQUISH_FOLDER_MEMBERSHIP_ERROR}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static JobError relinquishFolderMembershipError(RelinquishFolderMembershipError value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new JobError(Tag.RELINQUISH_FOLDER_MEMBERSHIP_ERROR, null, null, value);
+    }
+
+    /**
+     * Error occurred while performing {@link
+     * DbxUserSharingRequests#relinquishFolderMembership(String)} action.
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#RELINQUISH_FOLDER_MEMBERSHIP_ERROR}. </p>
+     *
+     * @return The {@link JobError#relinquishFolderMembershipError} value
+     *     associated with this instance if {@link
+     *     #isRelinquishFolderMembershipError} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isRelinquishFolderMembershipError} is {@code false}.
+     */
+    public RelinquishFolderMembershipError getRelinquishFolderMembershipErrorValue() {
+        if (this.tag != Tag.RELINQUISH_FOLDER_MEMBERSHIP_ERROR) {
+            throw new IllegalStateException("Invalid tag: required Tag.RELINQUISH_FOLDER_MEMBERSHIP_ERROR, but was Tag." + tag.name());
+        }
+        return relinquishFolderMembershipErrorValue;
+    }
+
+    /**
      * Returns {@code true} if this instance has the tag {@link Tag#OTHER},
      * {@code false} otherwise.
      *
@@ -242,7 +284,8 @@ public final class JobError {
         int hash = java.util.Arrays.hashCode(new Object [] {
             tag,
             unshareFolderErrorValue,
-            removeFolderMemberErrorValue
+            removeFolderMemberErrorValue,
+            relinquishFolderMembershipErrorValue
         });
         return hash;
     }
@@ -262,6 +305,8 @@ public final class JobError {
                     return (this.unshareFolderErrorValue == other.unshareFolderErrorValue) || (this.unshareFolderErrorValue.equals(other.unshareFolderErrorValue));
                 case REMOVE_FOLDER_MEMBER_ERROR:
                     return (this.removeFolderMemberErrorValue == other.removeFolderMemberErrorValue) || (this.removeFolderMemberErrorValue.equals(other.removeFolderMemberErrorValue));
+                case RELINQUISH_FOLDER_MEMBERSHIP_ERROR:
+                    return (this.relinquishFolderMembershipErrorValue == other.relinquishFolderMembershipErrorValue) || (this.relinquishFolderMembershipErrorValue.equals(other.relinquishFolderMembershipErrorValue));
                 case OTHER:
                     return true;
                 default:
@@ -275,7 +320,7 @@ public final class JobError {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -287,85 +332,92 @@ public final class JobError {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends UnionJsonSerializer<JobError> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(JobError.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<JobError> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(JobError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            switch (value.tag) {
-                case UNSHARE_FOLDER_ERROR:
-                    g.writeStartObject();
-                    g.writeStringField(".tag", "unshare_folder_error");
-                    g.writeObjectField("unshare_folder_error", value.unshareFolderErrorValue);
-                    g.writeEndObject();
-                    break;
-                case REMOVE_FOLDER_MEMBER_ERROR:
-                    g.writeStartObject();
-                    g.writeStringField(".tag", "remove_folder_member_error");
-                    g.writeObjectField("remove_folder_member_error", value.removeFolderMemberErrorValue);
-                    g.writeEndObject();
-                    break;
-                case OTHER:
-                    g.writeString("other");
-                    break;
-            }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<JobError, Tag> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(JobError.class, getTagMapping(), Tag.OTHER);
-        }
-
-        @Override
-        public JobError deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            switch (_tag) {
+        public void serialize(JobError value, JsonGenerator g) throws IOException, JsonGenerationException {
+            switch (value.tag()) {
                 case UNSHARE_FOLDER_ERROR: {
-                    UnshareFolderError value = null;
-                    expectField(_p, "unshare_folder_error");
-                    value = _p.readValueAs(UnshareFolderError.class);
-                    _p.nextToken();
-                    return JobError.unshareFolderError(value);
+                    g.writeStartObject();
+                    writeTag("unshare_folder_error", g);
+                    g.writeFieldName("unshare_folder_error");
+                    UnshareFolderError.Serializer.INSTANCE.serialize(value.unshareFolderErrorValue, g);
+                    g.writeEndObject();
+                    break;
                 }
                 case REMOVE_FOLDER_MEMBER_ERROR: {
-                    RemoveFolderMemberError value = null;
-                    expectField(_p, "remove_folder_member_error");
-                    value = _p.readValueAs(RemoveFolderMemberError.class);
-                    _p.nextToken();
-                    return JobError.removeFolderMemberError(value);
+                    g.writeStartObject();
+                    writeTag("remove_folder_member_error", g);
+                    g.writeFieldName("remove_folder_member_error");
+                    RemoveFolderMemberError.Serializer.INSTANCE.serialize(value.removeFolderMemberErrorValue, g);
+                    g.writeEndObject();
+                    break;
                 }
-                case OTHER: {
-                    return JobError.OTHER;
+                case RELINQUISH_FOLDER_MEMBERSHIP_ERROR: {
+                    g.writeStartObject();
+                    writeTag("relinquish_folder_membership_error", g);
+                    g.writeFieldName("relinquish_folder_membership_error");
+                    RelinquishFolderMembershipError.Serializer.INSTANCE.serialize(value.relinquishFolderMembershipErrorValue, g);
+                    g.writeEndObject();
+                    break;
+                }
+                default: {
+                    g.writeString("other");
                 }
             }
-            // should be impossible to get here
-            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
         }
 
-        private static Map<String, JobError.Tag> getTagMapping() {
-            Map<String, JobError.Tag> values = new HashMap<String, JobError.Tag>();
-            values.put("unshare_folder_error", JobError.Tag.UNSHARE_FOLDER_ERROR);
-            values.put("remove_folder_member_error", JobError.Tag.REMOVE_FOLDER_MEMBER_ERROR);
-            values.put("other", JobError.Tag.OTHER);
-            return Collections.unmodifiableMap(values);
+        @Override
+        public JobError deserialize(JsonParser p) throws IOException, JsonParseException {
+            JobError value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
+            }
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("unshare_folder_error".equals(tag)) {
+                UnshareFolderError fieldValue = null;
+                expectField("unshare_folder_error", p);
+                fieldValue = UnshareFolderError.Serializer.INSTANCE.deserialize(p);
+                value = JobError.unshareFolderError(fieldValue);
+            }
+            else if ("remove_folder_member_error".equals(tag)) {
+                RemoveFolderMemberError fieldValue = null;
+                expectField("remove_folder_member_error", p);
+                fieldValue = RemoveFolderMemberError.Serializer.INSTANCE.deserialize(p);
+                value = JobError.removeFolderMemberError(fieldValue);
+            }
+            else if ("relinquish_folder_membership_error".equals(tag)) {
+                RelinquishFolderMembershipError fieldValue = null;
+                expectField("relinquish_folder_membership_error", p);
+                fieldValue = RelinquishFolderMembershipError.Serializer.INSTANCE.deserialize(p);
+                value = JobError.relinquishFolderMembershipError(fieldValue);
+            }
+            else {
+                value = JobError.OTHER;
+                skipFields(p);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

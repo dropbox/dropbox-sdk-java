@@ -1,41 +1,24 @@
 /* DO NOT EDIT */
-/* This file was generated from users.babel */
+/* This file was generated from users.stone */
 
 package com.dropbox.core.v2.users;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
 /**
  * Representations for a person's name to assist with internationalization.
  */
-@JsonSerialize(using=Name.Serializer.class)
-@JsonDeserialize(using=Name.Deserializer.class)
 public class Name {
     // struct Name
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final String givenName;
     protected final String surname;
@@ -148,7 +131,7 @@ public class Name {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -160,105 +143,86 @@ public class Name {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
+    /**
+     * For internal use only.
+     */
+    public static final class Serializer extends StructSerializer<Name> {
+        public static final Serializer INSTANCE = new Serializer();
 
-    static final class Serializer extends StructJsonSerializer<Name> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(Name.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(Name.class, unwrapping);
+        @Override
+        public void serialize(Name value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
+            }
+            g.writeFieldName("given_name");
+            StoneSerializers.string().serialize(value.givenName, g);
+            g.writeFieldName("surname");
+            StoneSerializers.string().serialize(value.surname, g);
+            g.writeFieldName("familiar_name");
+            StoneSerializers.string().serialize(value.familiarName, g);
+            g.writeFieldName("display_name");
+            StoneSerializers.string().serialize(value.displayName, g);
+            if (!collapse) {
+                g.writeEndObject();
+            }
         }
 
         @Override
-        protected JsonSerializer<Name> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(Name value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("given_name", value.givenName);
-            g.writeObjectField("surname", value.surname);
-            g.writeObjectField("familiar_name", value.familiarName);
-            g.writeObjectField("display_name", value.displayName);
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<Name> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(Name.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(Name.class, unwrapping);
-        }
-
-        @Override
-        protected JsonDeserializer<Name> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public Name deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            String givenName = null;
-            String surname = null;
-            String familiarName = null;
-            String displayName = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("given_name".equals(_field)) {
-                    givenName = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("surname".equals(_field)) {
-                    surname = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("familiar_name".equals(_field)) {
-                    familiarName = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("display_name".equals(_field)) {
-                    displayName = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else {
-                    skipValue(_p);
-                }
+        public Name deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            Name value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
             }
-
-            if (givenName == null) {
-                throw new JsonParseException(_p, "Required field \"given_name\" is missing.");
+            if (tag == null) {
+                String f_givenName = null;
+                String f_surname = null;
+                String f_familiarName = null;
+                String f_displayName = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("given_name".equals(field)) {
+                        f_givenName = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("surname".equals(field)) {
+                        f_surname = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("familiar_name".equals(field)) {
+                        f_familiarName = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("display_name".equals(field)) {
+                        f_displayName = StoneSerializers.string().deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
+                }
+                if (f_givenName == null) {
+                    throw new JsonParseException(p, "Required field \"given_name\" missing.");
+                }
+                if (f_surname == null) {
+                    throw new JsonParseException(p, "Required field \"surname\" missing.");
+                }
+                if (f_familiarName == null) {
+                    throw new JsonParseException(p, "Required field \"familiar_name\" missing.");
+                }
+                if (f_displayName == null) {
+                    throw new JsonParseException(p, "Required field \"display_name\" missing.");
+                }
+                value = new Name(f_givenName, f_surname, f_familiarName, f_displayName);
             }
-            if (surname == null) {
-                throw new JsonParseException(_p, "Required field \"surname\" is missing.");
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
             }
-            if (familiarName == null) {
-                throw new JsonParseException(_p, "Required field \"familiar_name\" is missing.");
+            if (!collapsed) {
+                expectEndObject(p);
             }
-            if (displayName == null) {
-                throw new JsonParseException(_p, "Required field \"display_name\" is missing.");
-            }
-
-            return new Name(givenName, surname, familiarName, displayName);
+            return value;
         }
     }
 }

@@ -1,27 +1,16 @@
 /* DO NOT EDIT */
-/* This file was generated from team_reports.babel */
+/* This file was generated from team_reports.stone */
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.List;
@@ -31,14 +20,8 @@ import java.util.List;
  * number of devices active within a time window, ending with that day. If there
  * is no data for a day, then the value will be None.
  */
-@JsonSerialize(using=DevicesActive.Serializer.class)
-@JsonDeserialize(using=DevicesActive.Deserializer.class)
 public class DevicesActive {
     // struct DevicesActive
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final List<Long> windows;
     protected final List<Long> macos;
@@ -83,7 +66,6 @@ public class DevicesActive {
             if (x == null) {
                 throw new IllegalArgumentException("An item in list 'windows' is null");
             }
-            throw new RuntimeException("XXX Don't know how to validate an item in list 'windows': type Nullable");
         }
         this.windows = windows;
         if (macos == null) {
@@ -93,7 +75,6 @@ public class DevicesActive {
             if (x == null) {
                 throw new IllegalArgumentException("An item in list 'macos' is null");
             }
-            throw new RuntimeException("XXX Don't know how to validate an item in list 'macos': type Nullable");
         }
         this.macos = macos;
         if (linux == null) {
@@ -103,7 +84,6 @@ public class DevicesActive {
             if (x == null) {
                 throw new IllegalArgumentException("An item in list 'linux' is null");
             }
-            throw new RuntimeException("XXX Don't know how to validate an item in list 'linux': type Nullable");
         }
         this.linux = linux;
         if (ios == null) {
@@ -113,7 +93,6 @@ public class DevicesActive {
             if (x == null) {
                 throw new IllegalArgumentException("An item in list 'ios' is null");
             }
-            throw new RuntimeException("XXX Don't know how to validate an item in list 'ios': type Nullable");
         }
         this.ios = ios;
         if (android == null) {
@@ -123,7 +102,6 @@ public class DevicesActive {
             if (x == null) {
                 throw new IllegalArgumentException("An item in list 'android' is null");
             }
-            throw new RuntimeException("XXX Don't know how to validate an item in list 'android': type Nullable");
         }
         this.android = android;
         if (other == null) {
@@ -133,7 +111,6 @@ public class DevicesActive {
             if (x == null) {
                 throw new IllegalArgumentException("An item in list 'other' is null");
             }
-            throw new RuntimeException("XXX Don't know how to validate an item in list 'other': type Nullable");
         }
         this.other = other;
         if (total == null) {
@@ -143,7 +120,6 @@ public class DevicesActive {
             if (x == null) {
                 throw new IllegalArgumentException("An item in list 'total' is null");
             }
-            throw new RuntimeException("XXX Don't know how to validate an item in list 'total': type Nullable");
         }
         this.total = total;
     }
@@ -250,7 +226,7 @@ public class DevicesActive {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -262,195 +238,113 @@ public class DevicesActive {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<DevicesActive> {
+        public static final Serializer INSTANCE = new Serializer();
 
-    static final class Serializer extends StructJsonSerializer<DevicesActive> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(DevicesActive.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(DevicesActive.class, unwrapping);
+        @Override
+        public void serialize(DevicesActive value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
+            }
+            g.writeFieldName("windows");
+            StoneSerializers.list(StoneSerializers.nullable(StoneSerializers.uInt64())).serialize(value.windows, g);
+            g.writeFieldName("macos");
+            StoneSerializers.list(StoneSerializers.nullable(StoneSerializers.uInt64())).serialize(value.macos, g);
+            g.writeFieldName("linux");
+            StoneSerializers.list(StoneSerializers.nullable(StoneSerializers.uInt64())).serialize(value.linux, g);
+            g.writeFieldName("ios");
+            StoneSerializers.list(StoneSerializers.nullable(StoneSerializers.uInt64())).serialize(value.ios, g);
+            g.writeFieldName("android");
+            StoneSerializers.list(StoneSerializers.nullable(StoneSerializers.uInt64())).serialize(value.android, g);
+            g.writeFieldName("other");
+            StoneSerializers.list(StoneSerializers.nullable(StoneSerializers.uInt64())).serialize(value.other, g);
+            g.writeFieldName("total");
+            StoneSerializers.list(StoneSerializers.nullable(StoneSerializers.uInt64())).serialize(value.total, g);
+            if (!collapse) {
+                g.writeEndObject();
+            }
         }
 
         @Override
-        protected JsonSerializer<DevicesActive> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(DevicesActive value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("windows", value.windows);
-            g.writeObjectField("macos", value.macos);
-            g.writeObjectField("linux", value.linux);
-            g.writeObjectField("ios", value.ios);
-            g.writeObjectField("android", value.android);
-            g.writeObjectField("other", value.other);
-            g.writeObjectField("total", value.total);
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<DevicesActive> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(DevicesActive.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(DevicesActive.class, unwrapping);
-        }
-
-        @Override
-        protected JsonDeserializer<DevicesActive> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public DevicesActive deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            List<Long> windows = null;
-            List<Long> macos = null;
-            List<Long> linux = null;
-            List<Long> ios = null;
-            List<Long> android = null;
-            List<Long> other = null;
-            List<Long> total = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("windows".equals(_field)) {
-                    expectArrayStart(_p);
-                    windows = new java.util.ArrayList<Long>();
-                    while (!isArrayEnd(_p)) {
-                        Long _x = null;
-                        _x = _p.getLongValue();
-                        assertUnsigned(_p, _x);
-                        _p.nextToken();
-                        windows.add(_x);
+        public DevicesActive deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            DevicesActive value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                List<Long> f_windows = null;
+                List<Long> f_macos = null;
+                List<Long> f_linux = null;
+                List<Long> f_ios = null;
+                List<Long> f_android = null;
+                List<Long> f_other = null;
+                List<Long> f_total = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("windows".equals(field)) {
+                        f_windows = StoneSerializers.list(StoneSerializers.nullable(StoneSerializers.uInt64())).deserialize(p);
                     }
-                    expectArrayEnd(_p);
-                    _p.nextToken();
-                }
-                else if ("macos".equals(_field)) {
-                    expectArrayStart(_p);
-                    macos = new java.util.ArrayList<Long>();
-                    while (!isArrayEnd(_p)) {
-                        Long _x = null;
-                        _x = _p.getLongValue();
-                        assertUnsigned(_p, _x);
-                        _p.nextToken();
-                        macos.add(_x);
+                    else if ("macos".equals(field)) {
+                        f_macos = StoneSerializers.list(StoneSerializers.nullable(StoneSerializers.uInt64())).deserialize(p);
                     }
-                    expectArrayEnd(_p);
-                    _p.nextToken();
-                }
-                else if ("linux".equals(_field)) {
-                    expectArrayStart(_p);
-                    linux = new java.util.ArrayList<Long>();
-                    while (!isArrayEnd(_p)) {
-                        Long _x = null;
-                        _x = _p.getLongValue();
-                        assertUnsigned(_p, _x);
-                        _p.nextToken();
-                        linux.add(_x);
+                    else if ("linux".equals(field)) {
+                        f_linux = StoneSerializers.list(StoneSerializers.nullable(StoneSerializers.uInt64())).deserialize(p);
                     }
-                    expectArrayEnd(_p);
-                    _p.nextToken();
-                }
-                else if ("ios".equals(_field)) {
-                    expectArrayStart(_p);
-                    ios = new java.util.ArrayList<Long>();
-                    while (!isArrayEnd(_p)) {
-                        Long _x = null;
-                        _x = _p.getLongValue();
-                        assertUnsigned(_p, _x);
-                        _p.nextToken();
-                        ios.add(_x);
+                    else if ("ios".equals(field)) {
+                        f_ios = StoneSerializers.list(StoneSerializers.nullable(StoneSerializers.uInt64())).deserialize(p);
                     }
-                    expectArrayEnd(_p);
-                    _p.nextToken();
-                }
-                else if ("android".equals(_field)) {
-                    expectArrayStart(_p);
-                    android = new java.util.ArrayList<Long>();
-                    while (!isArrayEnd(_p)) {
-                        Long _x = null;
-                        _x = _p.getLongValue();
-                        assertUnsigned(_p, _x);
-                        _p.nextToken();
-                        android.add(_x);
+                    else if ("android".equals(field)) {
+                        f_android = StoneSerializers.list(StoneSerializers.nullable(StoneSerializers.uInt64())).deserialize(p);
                     }
-                    expectArrayEnd(_p);
-                    _p.nextToken();
-                }
-                else if ("other".equals(_field)) {
-                    expectArrayStart(_p);
-                    other = new java.util.ArrayList<Long>();
-                    while (!isArrayEnd(_p)) {
-                        Long _x = null;
-                        _x = _p.getLongValue();
-                        assertUnsigned(_p, _x);
-                        _p.nextToken();
-                        other.add(_x);
+                    else if ("other".equals(field)) {
+                        f_other = StoneSerializers.list(StoneSerializers.nullable(StoneSerializers.uInt64())).deserialize(p);
                     }
-                    expectArrayEnd(_p);
-                    _p.nextToken();
-                }
-                else if ("total".equals(_field)) {
-                    expectArrayStart(_p);
-                    total = new java.util.ArrayList<Long>();
-                    while (!isArrayEnd(_p)) {
-                        Long _x = null;
-                        _x = _p.getLongValue();
-                        assertUnsigned(_p, _x);
-                        _p.nextToken();
-                        total.add(_x);
+                    else if ("total".equals(field)) {
+                        f_total = StoneSerializers.list(StoneSerializers.nullable(StoneSerializers.uInt64())).deserialize(p);
                     }
-                    expectArrayEnd(_p);
-                    _p.nextToken();
+                    else {
+                        skipValue(p);
+                    }
                 }
-                else {
-                    skipValue(_p);
+                if (f_windows == null) {
+                    throw new JsonParseException(p, "Required field \"windows\" missing.");
                 }
+                if (f_macos == null) {
+                    throw new JsonParseException(p, "Required field \"macos\" missing.");
+                }
+                if (f_linux == null) {
+                    throw new JsonParseException(p, "Required field \"linux\" missing.");
+                }
+                if (f_ios == null) {
+                    throw new JsonParseException(p, "Required field \"ios\" missing.");
+                }
+                if (f_android == null) {
+                    throw new JsonParseException(p, "Required field \"android\" missing.");
+                }
+                if (f_other == null) {
+                    throw new JsonParseException(p, "Required field \"other\" missing.");
+                }
+                if (f_total == null) {
+                    throw new JsonParseException(p, "Required field \"total\" missing.");
+                }
+                value = new DevicesActive(f_windows, f_macos, f_linux, f_ios, f_android, f_other, f_total);
             }
-
-            if (windows == null) {
-                throw new JsonParseException(_p, "Required field \"windows\" is missing.");
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
             }
-            if (macos == null) {
-                throw new JsonParseException(_p, "Required field \"macos\" is missing.");
+            if (!collapsed) {
+                expectEndObject(p);
             }
-            if (linux == null) {
-                throw new JsonParseException(_p, "Required field \"linux\" is missing.");
-            }
-            if (ios == null) {
-                throw new JsonParseException(_p, "Required field \"ios\" is missing.");
-            }
-            if (android == null) {
-                throw new JsonParseException(_p, "Required field \"android\" is missing.");
-            }
-            if (other == null) {
-                throw new JsonParseException(_p, "Required field \"other\" is missing.");
-            }
-            if (total == null) {
-                throw new JsonParseException(_p, "Required field \"total\" is missing.");
-            }
-
-            return new DevicesActive(windows, macos, linux, ios, android, other, total);
+            return value;
         }
     }
 }

@@ -1,30 +1,18 @@
 /* DO NOT EDIT */
-/* This file was generated from files.babel */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This class is an open tagged union.  Tagged unions instances are always
@@ -36,14 +24,8 @@ import java.util.Map;
  * tag is introduced that this SDK does not recognized, the {@link #OTHER} value
  * will be used. </p>
  */
-@JsonSerialize(using=RestoreError.Serializer.class)
-@JsonDeserialize(using=RestoreError.Deserializer.class)
 public final class RestoreError {
     // union RestoreError
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link RestoreError}.
@@ -275,7 +257,7 @@ public final class RestoreError {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -287,92 +269,85 @@ public final class RestoreError {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends UnionJsonSerializer<RestoreError> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(RestoreError.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<RestoreError> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(RestoreError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            switch (value.tag) {
-                case PATH_LOOKUP:
-                    g.writeStartObject();
-                    g.writeStringField(".tag", "path_lookup");
-                    g.writeObjectField("path_lookup", value.pathLookupValue);
-                    g.writeEndObject();
-                    break;
-                case PATH_WRITE:
-                    g.writeStartObject();
-                    g.writeStringField(".tag", "path_write");
-                    g.writeObjectField("path_write", value.pathWriteValue);
-                    g.writeEndObject();
-                    break;
-                case INVALID_REVISION:
-                    g.writeString("invalid_revision");
-                    break;
-                case OTHER:
-                    g.writeString("other");
-                    break;
-            }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<RestoreError, Tag> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(RestoreError.class, getTagMapping(), Tag.OTHER);
-        }
-
-        @Override
-        public RestoreError deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            switch (_tag) {
+        public void serialize(RestoreError value, JsonGenerator g) throws IOException, JsonGenerationException {
+            switch (value.tag()) {
                 case PATH_LOOKUP: {
-                    LookupError value = null;
-                    expectField(_p, "path_lookup");
-                    value = _p.readValueAs(LookupError.class);
-                    _p.nextToken();
-                    return RestoreError.pathLookup(value);
+                    g.writeStartObject();
+                    writeTag("path_lookup", g);
+                    g.writeFieldName("path_lookup");
+                    LookupError.Serializer.INSTANCE.serialize(value.pathLookupValue, g);
+                    g.writeEndObject();
+                    break;
                 }
                 case PATH_WRITE: {
-                    WriteError value = null;
-                    expectField(_p, "path_write");
-                    value = _p.readValueAs(WriteError.class);
-                    _p.nextToken();
-                    return RestoreError.pathWrite(value);
+                    g.writeStartObject();
+                    writeTag("path_write", g);
+                    g.writeFieldName("path_write");
+                    WriteError.Serializer.INSTANCE.serialize(value.pathWriteValue, g);
+                    g.writeEndObject();
+                    break;
                 }
                 case INVALID_REVISION: {
-                    return RestoreError.INVALID_REVISION;
+                    g.writeString("invalid_revision");
+                    break;
                 }
-                case OTHER: {
-                    return RestoreError.OTHER;
+                default: {
+                    g.writeString("other");
                 }
             }
-            // should be impossible to get here
-            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
         }
 
-        private static Map<String, RestoreError.Tag> getTagMapping() {
-            Map<String, RestoreError.Tag> values = new HashMap<String, RestoreError.Tag>();
-            values.put("path_lookup", RestoreError.Tag.PATH_LOOKUP);
-            values.put("path_write", RestoreError.Tag.PATH_WRITE);
-            values.put("invalid_revision", RestoreError.Tag.INVALID_REVISION);
-            values.put("other", RestoreError.Tag.OTHER);
-            return Collections.unmodifiableMap(values);
+        @Override
+        public RestoreError deserialize(JsonParser p) throws IOException, JsonParseException {
+            RestoreError value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
+            }
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("path_lookup".equals(tag)) {
+                LookupError fieldValue = null;
+                expectField("path_lookup", p);
+                fieldValue = LookupError.Serializer.INSTANCE.deserialize(p);
+                value = RestoreError.pathLookup(fieldValue);
+            }
+            else if ("path_write".equals(tag)) {
+                WriteError fieldValue = null;
+                expectField("path_write", p);
+                fieldValue = WriteError.Serializer.INSTANCE.deserialize(p);
+                value = RestoreError.pathWrite(fieldValue);
+            }
+            else if ("invalid_revision".equals(tag)) {
+                value = RestoreError.INVALID_REVISION;
+            }
+            else {
+                value = RestoreError.OTHER;
+                skipFields(p);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

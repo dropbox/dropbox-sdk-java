@@ -1,28 +1,17 @@
 /* DO NOT EDIT */
-/* This file was generated from shared_links.babel */
+/* This file was generated from shared_links.stone */
 
 package com.dropbox.core.v2.sharing;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 import com.dropbox.core.v2.users.Team;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.Date;
@@ -30,14 +19,8 @@ import java.util.Date;
 /**
  * The metadata of a folder shared link
  */
-@JsonSerialize(using=FolderLinkMetadata.Serializer.class)
-@JsonDeserialize(using=FolderLinkMetadata.Deserializer.class)
 public class FolderLinkMetadata extends SharedLinkMetadata {
     // struct FolderLinkMetadata
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
 
     /**
@@ -160,7 +143,7 @@ public class FolderLinkMetadata extends SharedLinkMetadata {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -172,133 +155,121 @@ public class FolderLinkMetadata extends SharedLinkMetadata {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<FolderLinkMetadata> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(FolderLinkMetadata.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(FolderLinkMetadata.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<FolderLinkMetadata> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected void serializeFields(FolderLinkMetadata value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeStringField(".tag", "folder");
-            g.writeObjectField("url", value.url);
-            g.writeObjectField("name", value.name);
-            g.writeObjectField("link_permissions", value.linkPermissions);
+        public void serialize(FolderLinkMetadata value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
+            }
+            writeTag("folder", g);
+            g.writeFieldName("url");
+            StoneSerializers.string().serialize(value.url, g);
+            g.writeFieldName("name");
+            StoneSerializers.string().serialize(value.name, g);
+            g.writeFieldName("link_permissions");
+            LinkPermissions.Serializer.INSTANCE.serialize(value.linkPermissions, g);
             if (value.id != null) {
-                g.writeObjectField("id", value.id);
+                g.writeFieldName("id");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.id, g);
             }
             if (value.expires != null) {
-                g.writeObjectField("expires", value.expires);
+                g.writeFieldName("expires");
+                StoneSerializers.nullable(StoneSerializers.timestamp()).serialize(value.expires, g);
             }
             if (value.pathLower != null) {
-                g.writeObjectField("path_lower", value.pathLower);
+                g.writeFieldName("path_lower");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.pathLower, g);
             }
             if (value.teamMemberInfo != null) {
-                g.writeObjectField("team_member_info", value.teamMemberInfo);
+                g.writeFieldName("team_member_info");
+                StoneSerializers.nullable(TeamMemberInfo.Serializer.INSTANCE).serialize(value.teamMemberInfo, g);
             }
             if (value.contentOwnerTeamInfo != null) {
-                g.writeObjectField("content_owner_team_info", value.contentOwnerTeamInfo);
+                g.writeFieldName("content_owner_team_info");
+                StoneSerializers.nullable(Team.Serializer.INSTANCE).serialize(value.contentOwnerTeamInfo, g);
             }
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<FolderLinkMetadata> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(FolderLinkMetadata.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(FolderLinkMetadata.class, unwrapping);
+            if (!collapse) {
+                g.writeEndObject();
+            }
         }
 
         @Override
-        protected JsonDeserializer<FolderLinkMetadata> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public FolderLinkMetadata deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            String _subtype_tag = readEnumeratedSubtypeTag(_p, "folder");
-
-            String url = null;
-            String name = null;
-            LinkPermissions linkPermissions = null;
-            String id = null;
-            Date expires = null;
-            String pathLower = null;
-            TeamMemberInfo teamMemberInfo = null;
-            Team contentOwnerTeamInfo = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("url".equals(_field)) {
-                    url = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("name".equals(_field)) {
-                    name = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("link_permissions".equals(_field)) {
-                    linkPermissions = _p.readValueAs(LinkPermissions.class);
-                    _p.nextToken();
-                }
-                else if ("id".equals(_field)) {
-                    id = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("expires".equals(_field)) {
-                    expires = _ctx.parseDate(getStringValue(_p));
-                    _p.nextToken();
-                }
-                else if ("path_lower".equals(_field)) {
-                    pathLower = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("team_member_info".equals(_field)) {
-                    teamMemberInfo = _p.readValueAs(TeamMemberInfo.class);
-                    _p.nextToken();
-                }
-                else if ("content_owner_team_info".equals(_field)) {
-                    contentOwnerTeamInfo = _p.readValueAs(Team.class);
-                    _p.nextToken();
-                }
-                else {
-                    skipValue(_p);
+        public FolderLinkMetadata deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            FolderLinkMetadata value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+                if ("folder".equals(tag)) {
+                    tag = null;
                 }
             }
-
-            if (url == null) {
-                throw new JsonParseException(_p, "Required field \"url\" is missing.");
+            if (tag == null) {
+                String f_url = null;
+                String f_name = null;
+                LinkPermissions f_linkPermissions = null;
+                String f_id = null;
+                Date f_expires = null;
+                String f_pathLower = null;
+                TeamMemberInfo f_teamMemberInfo = null;
+                Team f_contentOwnerTeamInfo = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("url".equals(field)) {
+                        f_url = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("name".equals(field)) {
+                        f_name = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("link_permissions".equals(field)) {
+                        f_linkPermissions = LinkPermissions.Serializer.INSTANCE.deserialize(p);
+                    }
+                    else if ("id".equals(field)) {
+                        f_id = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                    }
+                    else if ("expires".equals(field)) {
+                        f_expires = StoneSerializers.nullable(StoneSerializers.timestamp()).deserialize(p);
+                    }
+                    else if ("path_lower".equals(field)) {
+                        f_pathLower = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                    }
+                    else if ("team_member_info".equals(field)) {
+                        f_teamMemberInfo = StoneSerializers.nullable(TeamMemberInfo.Serializer.INSTANCE).deserialize(p);
+                    }
+                    else if ("content_owner_team_info".equals(field)) {
+                        f_contentOwnerTeamInfo = StoneSerializers.nullable(Team.Serializer.INSTANCE).deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
+                }
+                if (f_url == null) {
+                    throw new JsonParseException(p, "Required field \"url\" missing.");
+                }
+                if (f_name == null) {
+                    throw new JsonParseException(p, "Required field \"name\" missing.");
+                }
+                if (f_linkPermissions == null) {
+                    throw new JsonParseException(p, "Required field \"link_permissions\" missing.");
+                }
+                value = new FolderLinkMetadata(f_url, f_name, f_linkPermissions, f_id, f_expires, f_pathLower, f_teamMemberInfo, f_contentOwnerTeamInfo);
             }
-            if (name == null) {
-                throw new JsonParseException(_p, "Required field \"name\" is missing.");
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
             }
-            if (linkPermissions == null) {
-                throw new JsonParseException(_p, "Required field \"link_permissions\" is missing.");
+            if (!collapsed) {
+                expectEndObject(p);
             }
-
-            return new FolderLinkMetadata(url, name, linkPermissions, id, expires, pathLower, teamMemberInfo, contentOwnerTeamInfo);
+            return value;
         }
     }
 }

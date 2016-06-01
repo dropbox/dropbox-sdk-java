@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from shared_links.babel */
+/* This file was generated from shared_links.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -13,26 +13,26 @@ import com.dropbox.core.DbxException;
  * request. </p>
  */
 public class ListSharedLinksBuilder {
-    private final DbxUserSharingRequests sharing;
+    private final DbxUserSharingRequests sharing_;
     private final ListSharedLinksArg.Builder listSharedLinksArgBuilder;
 
     /**
      * Creates a new instance of this builder.
      *
-     * @param sharing  Dropbox namespace-specific client used to issue sharing
+     * @param sharing_  Dropbox namespace-specific client used to issue sharing
      *     requests.
      * @param listSharedLinksArgBuilder  Request argument builder.
      *
      * @return instsance of this builder
      */
-    ListSharedLinksBuilder(DbxUserSharingRequests sharing, ListSharedLinksArg.Builder listSharedLinksArgBuilder) {
-        if (sharing == null) {
-            throw new NullPointerException("sharing");
+    ListSharedLinksBuilder(DbxUserSharingRequests sharing_, ListSharedLinksArg.Builder listSharedLinksArgBuilder) {
+        if (sharing_ == null) {
+            throw new NullPointerException("sharing_");
         }
+        this.sharing_ = sharing_;
         if (listSharedLinksArgBuilder == null) {
             throw new NullPointerException("listSharedLinksArgBuilder");
         }
-        this.sharing = sharing;
         this.listSharedLinksArgBuilder = listSharedLinksArgBuilder;
     }
 
@@ -41,7 +41,7 @@ public class ListSharedLinksBuilder {
      *
      * @param path  See {@link DbxUserSharingRequests#listSharedLinks()}
      *     description. Must match pattern "{@code
-     *     ((/|id:).*)|(rev:[0-9a-f]{9,})}".
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}".
      *
      * @return this builder
      *
@@ -83,7 +83,7 @@ public class ListSharedLinksBuilder {
      * Issues the request.
      */
     public ListSharedLinksResult start() throws ListSharedLinksErrorException, DbxException {
-        ListSharedLinksArg arg = this.listSharedLinksArgBuilder.build();
-        return sharing.listSharedLinks(arg);
+        ListSharedLinksArg arg_ = this.listSharedLinksArgBuilder.build();
+        return sharing_.listSharedLinks(arg_);
     }
 }

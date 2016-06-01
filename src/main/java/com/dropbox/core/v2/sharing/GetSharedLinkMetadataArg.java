@@ -1,38 +1,21 @@
 /* DO NOT EDIT */
-/* This file was generated from shared_links.babel */
+/* This file was generated from shared_links.stone */
 
 package com.dropbox.core.v2.sharing;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
-@JsonSerialize(using=GetSharedLinkMetadataArg.Serializer.class)
-@JsonDeserialize(using=GetSharedLinkMetadataArg.Deserializer.class)
 public class GetSharedLinkMetadataArg {
     // struct GetSharedLinkMetadataArg
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final String url;
     protected final String path;
@@ -46,7 +29,7 @@ public class GetSharedLinkMetadataArg {
      * @param path  If the shared link is to a folder, this parameter can be
      *     used to retrieve the metadata for a specific file or sub-folder in
      *     this folder. A relative path should be used. Must match pattern
-     *     "{@code /.*}".
+     *     "{@code /(.|[\\r\\n])*}".
      * @param linkPassword  If the shared link has a password, this parameter
      *     can be used.
      *
@@ -59,7 +42,7 @@ public class GetSharedLinkMetadataArg {
         }
         this.url = url;
         if (path != null) {
-            if (!java.util.regex.Pattern.matches("/.*", path)) {
+            if (!java.util.regex.Pattern.matches("/(.|[\\r\\n])*", path)) {
                 throw new IllegalArgumentException("String 'path' does not match pattern");
             }
         }
@@ -146,7 +129,7 @@ public class GetSharedLinkMetadataArg {
          * @param path  If the shared link is to a folder, this parameter can be
          *     used to retrieve the metadata for a specific file or sub-folder
          *     in this folder. A relative path should be used. Must match
-         *     pattern "{@code /.*}".
+         *     pattern "{@code /(.|[\\r\\n])*}".
          *
          * @return this builder
          *
@@ -155,7 +138,7 @@ public class GetSharedLinkMetadataArg {
          */
         public Builder withPath(String path) {
             if (path != null) {
-                if (!java.util.regex.Pattern.matches("/.*", path)) {
+                if (!java.util.regex.Pattern.matches("/(.|[\\r\\n])*", path)) {
                     throw new IllegalArgumentException("String 'path' does not match pattern");
                 }
             }
@@ -217,7 +200,7 @@ public class GetSharedLinkMetadataArg {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -229,94 +212,75 @@ public class GetSharedLinkMetadataArg {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<GetSharedLinkMetadataArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(GetSharedLinkMetadataArg.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(GetSharedLinkMetadataArg.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<GetSharedLinkMetadataArg> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected JsonSerializer<GetSharedLinkMetadataArg> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(GetSharedLinkMetadataArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("url", value.url);
+        public void serialize(GetSharedLinkMetadataArg value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
+            }
+            g.writeFieldName("url");
+            StoneSerializers.string().serialize(value.url, g);
             if (value.path != null) {
-                g.writeObjectField("path", value.path);
+                g.writeFieldName("path");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.path, g);
             }
             if (value.linkPassword != null) {
-                g.writeObjectField("link_password", value.linkPassword);
+                g.writeFieldName("link_password");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.linkPassword, g);
             }
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<GetSharedLinkMetadataArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(GetSharedLinkMetadataArg.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(GetSharedLinkMetadataArg.class, unwrapping);
+            if (!collapse) {
+                g.writeEndObject();
+            }
         }
 
         @Override
-        protected JsonDeserializer<GetSharedLinkMetadataArg> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public GetSharedLinkMetadataArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            String url = null;
-            String path = null;
-            String linkPassword = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("url".equals(_field)) {
-                    url = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("path".equals(_field)) {
-                    path = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("link_password".equals(_field)) {
-                    linkPassword = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else {
-                    skipValue(_p);
-                }
+        public GetSharedLinkMetadataArg deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            GetSharedLinkMetadataArg value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
             }
-
-            if (url == null) {
-                throw new JsonParseException(_p, "Required field \"url\" is missing.");
+            if (tag == null) {
+                String f_url = null;
+                String f_path = null;
+                String f_linkPassword = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("url".equals(field)) {
+                        f_url = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("path".equals(field)) {
+                        f_path = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                    }
+                    else if ("link_password".equals(field)) {
+                        f_linkPassword = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
+                }
+                if (f_url == null) {
+                    throw new JsonParseException(p, "Required field \"url\" missing.");
+                }
+                value = new GetSharedLinkMetadataArg(f_url, f_path, f_linkPassword);
             }
-
-            return new GetSharedLinkMetadataArg(url, path, linkPassword);
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

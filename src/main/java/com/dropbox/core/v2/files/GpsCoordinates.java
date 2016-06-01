@@ -1,41 +1,24 @@
 /* DO NOT EDIT */
-/* This file was generated from files.babel */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
 /**
  * GPS coordinates for a photo or video.
  */
-@JsonSerialize(using=GpsCoordinates.Serializer.class)
-@JsonDeserialize(using=GpsCoordinates.Deserializer.class)
 public class GpsCoordinates {
     // struct GpsCoordinates
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final double latitude;
     protected final double longitude;
@@ -97,7 +80,7 @@ public class GpsCoordinates {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -109,87 +92,68 @@ public class GpsCoordinates {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<GpsCoordinates> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(GpsCoordinates.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(GpsCoordinates.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<GpsCoordinates> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected JsonSerializer<GpsCoordinates> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(GpsCoordinates value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("latitude", value.latitude);
-            g.writeObjectField("longitude", value.longitude);
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<GpsCoordinates> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(GpsCoordinates.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(GpsCoordinates.class, unwrapping);
-        }
-
-        @Override
-        protected JsonDeserializer<GpsCoordinates> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public GpsCoordinates deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            Double latitude = null;
-            Double longitude = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("latitude".equals(_field)) {
-                    latitude = _p.getDoubleValue();
-                    _p.nextToken();
-                }
-                else if ("longitude".equals(_field)) {
-                    longitude = _p.getDoubleValue();
-                    _p.nextToken();
-                }
-                else {
-                    skipValue(_p);
-                }
+        public void serialize(GpsCoordinates value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
             }
-
-            if (latitude == null) {
-                throw new JsonParseException(_p, "Required field \"latitude\" is missing.");
+            g.writeFieldName("latitude");
+            StoneSerializers.float64().serialize(value.latitude, g);
+            g.writeFieldName("longitude");
+            StoneSerializers.float64().serialize(value.longitude, g);
+            if (!collapse) {
+                g.writeEndObject();
             }
-            if (longitude == null) {
-                throw new JsonParseException(_p, "Required field \"longitude\" is missing.");
-            }
+        }
 
-            return new GpsCoordinates(latitude, longitude);
+        @Override
+        public GpsCoordinates deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            GpsCoordinates value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                Double f_latitude = null;
+                Double f_longitude = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("latitude".equals(field)) {
+                        f_latitude = StoneSerializers.float64().deserialize(p);
+                    }
+                    else if ("longitude".equals(field)) {
+                        f_longitude = StoneSerializers.float64().deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
+                }
+                if (f_latitude == null) {
+                    throw new JsonParseException(p, "Required field \"latitude\" missing.");
+                }
+                if (f_longitude == null) {
+                    throw new JsonParseException(p, "Required field \"longitude\" missing.");
+                }
+                value = new GpsCoordinates(f_latitude, f_longitude);
+            }
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

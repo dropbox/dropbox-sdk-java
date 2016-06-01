@@ -1,38 +1,21 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.babel */
+/* This file was generated from sharing_folders.stone */
 
 package com.dropbox.core.v2.sharing;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
-@JsonSerialize(using=ShareFolderArg.Serializer.class)
-@JsonDeserialize(using=ShareFolderArg.Deserializer.class)
 class ShareFolderArg {
     // struct ShareFolderArg
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final String path;
     protected final MemberPolicy memberPolicy;
@@ -45,8 +28,8 @@ class ShareFolderArg {
      * specifying values for all optional fields.
      *
      * @param path  The path to the folder to share. If it does not exist, then
-     *     a new one is created. Must match pattern "{@code /.*}" and not be
-     *     {@code null}.
+     *     a new one is created. Must match pattern "{@code /(.|[\\r\\n])*}" and
+     *     not be {@code null}.
      * @param memberPolicy  Who can be a member of this shared folder. Only
      *     applicable if the current user is on a team.
      * @param aclUpdatePolicy  Who can add and remove members of this shared
@@ -63,7 +46,7 @@ class ShareFolderArg {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
-        if (!java.util.regex.Pattern.matches("/.*", path)) {
+        if (!java.util.regex.Pattern.matches("/(.|[\\r\\n])*", path)) {
             throw new IllegalArgumentException("String 'path' does not match pattern");
         }
         this.path = path;
@@ -86,8 +69,8 @@ class ShareFolderArg {
      * The default values for unset fields will be used.
      *
      * @param path  The path to the folder to share. If it does not exist, then
-     *     a new one is created. Must match pattern "{@code /.*}" and not be
-     *     {@code null}.
+     *     a new one is created. Must match pattern "{@code /(.|[\\r\\n])*}" and
+     *     not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -153,8 +136,8 @@ class ShareFolderArg {
      * Returns a new builder for creating an instance of this class.
      *
      * @param path  The path to the folder to share. If it does not exist, then
-     *     a new one is created. Must match pattern "{@code /.*}" and not be
-     *     {@code null}.
+     *     a new one is created. Must match pattern "{@code /(.|[\\r\\n])*}" and
+     *     not be {@code null}.
      *
      * @return builder for this class.
      *
@@ -180,7 +163,7 @@ class ShareFolderArg {
             if (path == null) {
                 throw new IllegalArgumentException("Required value for 'path' is null");
             }
-            if (!java.util.regex.Pattern.matches("/.*", path)) {
+            if (!java.util.regex.Pattern.matches("/(.|[\\r\\n])*", path)) {
                 throw new IllegalArgumentException("String 'path' does not match pattern");
             }
             this.path = path;
@@ -325,7 +308,7 @@ class ShareFolderArg {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -337,102 +320,83 @@ class ShareFolderArg {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<ShareFolderArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(ShareFolderArg.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(ShareFolderArg.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<ShareFolderArg> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected JsonSerializer<ShareFolderArg> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(ShareFolderArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("path", value.path);
-            g.writeObjectField("member_policy", value.memberPolicy);
-            g.writeObjectField("acl_update_policy", value.aclUpdatePolicy);
-            g.writeObjectField("shared_link_policy", value.sharedLinkPolicy);
-            g.writeObjectField("force_async", value.forceAsync);
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<ShareFolderArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(ShareFolderArg.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(ShareFolderArg.class, unwrapping);
-        }
-
-        @Override
-        protected JsonDeserializer<ShareFolderArg> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public ShareFolderArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            String path = null;
-            MemberPolicy memberPolicy = MemberPolicy.ANYONE;
-            AclUpdatePolicy aclUpdatePolicy = AclUpdatePolicy.OWNER;
-            SharedLinkPolicy sharedLinkPolicy = SharedLinkPolicy.ANYONE;
-            boolean forceAsync = false;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("path".equals(_field)) {
-                    path = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("member_policy".equals(_field)) {
-                    memberPolicy = _p.readValueAs(MemberPolicy.class);
-                    _p.nextToken();
-                }
-                else if ("acl_update_policy".equals(_field)) {
-                    aclUpdatePolicy = _p.readValueAs(AclUpdatePolicy.class);
-                    _p.nextToken();
-                }
-                else if ("shared_link_policy".equals(_field)) {
-                    sharedLinkPolicy = _p.readValueAs(SharedLinkPolicy.class);
-                    _p.nextToken();
-                }
-                else if ("force_async".equals(_field)) {
-                    forceAsync = _p.getValueAsBoolean();
-                    _p.nextToken();
-                }
-                else {
-                    skipValue(_p);
-                }
+        public void serialize(ShareFolderArg value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
             }
-
-            if (path == null) {
-                throw new JsonParseException(_p, "Required field \"path\" is missing.");
+            g.writeFieldName("path");
+            StoneSerializers.string().serialize(value.path, g);
+            g.writeFieldName("member_policy");
+            MemberPolicy.Serializer.INSTANCE.serialize(value.memberPolicy, g);
+            g.writeFieldName("acl_update_policy");
+            AclUpdatePolicy.Serializer.INSTANCE.serialize(value.aclUpdatePolicy, g);
+            g.writeFieldName("shared_link_policy");
+            SharedLinkPolicy.Serializer.INSTANCE.serialize(value.sharedLinkPolicy, g);
+            g.writeFieldName("force_async");
+            StoneSerializers.boolean_().serialize(value.forceAsync, g);
+            if (!collapse) {
+                g.writeEndObject();
             }
+        }
 
-            return new ShareFolderArg(path, memberPolicy, aclUpdatePolicy, sharedLinkPolicy, forceAsync);
+        @Override
+        public ShareFolderArg deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            ShareFolderArg value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                String f_path = null;
+                MemberPolicy f_memberPolicy = MemberPolicy.ANYONE;
+                AclUpdatePolicy f_aclUpdatePolicy = AclUpdatePolicy.OWNER;
+                SharedLinkPolicy f_sharedLinkPolicy = SharedLinkPolicy.ANYONE;
+                Boolean f_forceAsync = false;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("path".equals(field)) {
+                        f_path = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("member_policy".equals(field)) {
+                        f_memberPolicy = MemberPolicy.Serializer.INSTANCE.deserialize(p);
+                    }
+                    else if ("acl_update_policy".equals(field)) {
+                        f_aclUpdatePolicy = AclUpdatePolicy.Serializer.INSTANCE.deserialize(p);
+                    }
+                    else if ("shared_link_policy".equals(field)) {
+                        f_sharedLinkPolicy = SharedLinkPolicy.Serializer.INSTANCE.deserialize(p);
+                    }
+                    else if ("force_async".equals(field)) {
+                        f_forceAsync = StoneSerializers.boolean_().deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
+                }
+                if (f_path == null) {
+                    throw new JsonParseException(p, "Required field \"path\" missing.");
+                }
+                value = new ShareFolderArg(f_path, f_memberPolicy, f_aclUpdatePolicy, f_sharedLinkPolicy, f_forceAsync);
+            }
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

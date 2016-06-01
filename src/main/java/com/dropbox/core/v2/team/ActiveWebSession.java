@@ -1,27 +1,16 @@
 /* DO NOT EDIT */
-/* This file was generated from team_devices.babel */
+/* This file was generated from team_devices.stone */
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.Date;
@@ -29,14 +18,8 @@ import java.util.Date;
 /**
  * Information on active web sessions
  */
-@JsonSerialize(using=ActiveWebSession.Serializer.class)
-@JsonDeserialize(using=ActiveWebSession.Deserializer.class)
 public class ActiveWebSession extends DeviceSession {
     // struct ActiveWebSession
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final String userAgent;
     protected final String os;
@@ -218,7 +201,7 @@ public class ActiveWebSession extends DeviceSession {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -230,137 +213,118 @@ public class ActiveWebSession extends DeviceSession {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<ActiveWebSession> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(ActiveWebSession.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(ActiveWebSession.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<ActiveWebSession> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected JsonSerializer<ActiveWebSession> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(ActiveWebSession value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("session_id", value.sessionId);
-            g.writeObjectField("user_agent", value.userAgent);
-            g.writeObjectField("os", value.os);
-            g.writeObjectField("browser", value.browser);
+        public void serialize(ActiveWebSession value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
+            }
+            g.writeFieldName("session_id");
+            StoneSerializers.string().serialize(value.sessionId, g);
+            g.writeFieldName("user_agent");
+            StoneSerializers.string().serialize(value.userAgent, g);
+            g.writeFieldName("os");
+            StoneSerializers.string().serialize(value.os, g);
+            g.writeFieldName("browser");
+            StoneSerializers.string().serialize(value.browser, g);
             if (value.ipAddress != null) {
-                g.writeObjectField("ip_address", value.ipAddress);
+                g.writeFieldName("ip_address");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.ipAddress, g);
             }
             if (value.country != null) {
-                g.writeObjectField("country", value.country);
+                g.writeFieldName("country");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.country, g);
             }
             if (value.created != null) {
-                g.writeObjectField("created", value.created);
+                g.writeFieldName("created");
+                StoneSerializers.nullable(StoneSerializers.timestamp()).serialize(value.created, g);
             }
             if (value.updated != null) {
-                g.writeObjectField("updated", value.updated);
+                g.writeFieldName("updated");
+                StoneSerializers.nullable(StoneSerializers.timestamp()).serialize(value.updated, g);
             }
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<ActiveWebSession> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(ActiveWebSession.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(ActiveWebSession.class, unwrapping);
+            if (!collapse) {
+                g.writeEndObject();
+            }
         }
 
         @Override
-        protected JsonDeserializer<ActiveWebSession> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public ActiveWebSession deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            String sessionId = null;
-            String userAgent = null;
-            String os = null;
-            String browser = null;
-            String ipAddress = null;
-            String country = null;
-            Date created = null;
-            Date updated = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("session_id".equals(_field)) {
-                    sessionId = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("user_agent".equals(_field)) {
-                    userAgent = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("os".equals(_field)) {
-                    os = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("browser".equals(_field)) {
-                    browser = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("ip_address".equals(_field)) {
-                    ipAddress = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("country".equals(_field)) {
-                    country = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("created".equals(_field)) {
-                    created = _ctx.parseDate(getStringValue(_p));
-                    _p.nextToken();
-                }
-                else if ("updated".equals(_field)) {
-                    updated = _ctx.parseDate(getStringValue(_p));
-                    _p.nextToken();
-                }
-                else {
-                    skipValue(_p);
-                }
+        public ActiveWebSession deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            ActiveWebSession value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
             }
-
-            if (sessionId == null) {
-                throw new JsonParseException(_p, "Required field \"session_id\" is missing.");
+            if (tag == null) {
+                String f_sessionId = null;
+                String f_userAgent = null;
+                String f_os = null;
+                String f_browser = null;
+                String f_ipAddress = null;
+                String f_country = null;
+                Date f_created = null;
+                Date f_updated = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("session_id".equals(field)) {
+                        f_sessionId = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("user_agent".equals(field)) {
+                        f_userAgent = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("os".equals(field)) {
+                        f_os = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("browser".equals(field)) {
+                        f_browser = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("ip_address".equals(field)) {
+                        f_ipAddress = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                    }
+                    else if ("country".equals(field)) {
+                        f_country = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                    }
+                    else if ("created".equals(field)) {
+                        f_created = StoneSerializers.nullable(StoneSerializers.timestamp()).deserialize(p);
+                    }
+                    else if ("updated".equals(field)) {
+                        f_updated = StoneSerializers.nullable(StoneSerializers.timestamp()).deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
+                }
+                if (f_sessionId == null) {
+                    throw new JsonParseException(p, "Required field \"session_id\" missing.");
+                }
+                if (f_userAgent == null) {
+                    throw new JsonParseException(p, "Required field \"user_agent\" missing.");
+                }
+                if (f_os == null) {
+                    throw new JsonParseException(p, "Required field \"os\" missing.");
+                }
+                if (f_browser == null) {
+                    throw new JsonParseException(p, "Required field \"browser\" missing.");
+                }
+                value = new ActiveWebSession(f_sessionId, f_userAgent, f_os, f_browser, f_ipAddress, f_country, f_created, f_updated);
             }
-            if (userAgent == null) {
-                throw new JsonParseException(_p, "Required field \"user_agent\" is missing.");
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
             }
-            if (os == null) {
-                throw new JsonParseException(_p, "Required field \"os\" is missing.");
+            if (!collapsed) {
+                expectEndObject(p);
             }
-            if (browser == null) {
-                throw new JsonParseException(_p, "Required field \"browser\" is missing.");
-            }
-
-            return new ActiveWebSession(sessionId, userAgent, os, browser, ipAddress, country, created, updated);
+            return value;
         }
     }
 }

@@ -1,39 +1,22 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.babel */
+/* This file was generated from sharing_folders.stone */
 
 package com.dropbox.core.v2.sharing;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.List;
 
-@JsonSerialize(using=AddFolderMemberArg.Serializer.class)
-@JsonDeserialize(using=AddFolderMemberArg.Deserializer.class)
 class AddFolderMemberArg {
     // struct AddFolderMemberArg
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final String sharedFolderId;
     protected final List<AddMember> members;
@@ -273,7 +256,7 @@ class AddFolderMemberArg {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -285,109 +268,82 @@ class AddFolderMemberArg {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<AddFolderMemberArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(AddFolderMemberArg.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(AddFolderMemberArg.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<AddFolderMemberArg> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected JsonSerializer<AddFolderMemberArg> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(AddFolderMemberArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("shared_folder_id", value.sharedFolderId);
-            g.writeObjectField("members", value.members);
-            g.writeObjectField("quiet", value.quiet);
+        public void serialize(AddFolderMemberArg value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
+            }
+            g.writeFieldName("shared_folder_id");
+            StoneSerializers.string().serialize(value.sharedFolderId, g);
+            g.writeFieldName("members");
+            StoneSerializers.list(AddMember.Serializer.INSTANCE).serialize(value.members, g);
+            g.writeFieldName("quiet");
+            StoneSerializers.boolean_().serialize(value.quiet, g);
             if (value.customMessage != null) {
-                g.writeObjectField("custom_message", value.customMessage);
+                g.writeFieldName("custom_message");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.customMessage, g);
+            }
+            if (!collapse) {
+                g.writeEndObject();
             }
         }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<AddFolderMemberArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(AddFolderMemberArg.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(AddFolderMemberArg.class, unwrapping);
-        }
 
         @Override
-        protected JsonDeserializer<AddFolderMemberArg> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public AddFolderMemberArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            String sharedFolderId = null;
-            List<AddMember> members = null;
-            boolean quiet = false;
-            String customMessage = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("shared_folder_id".equals(_field)) {
-                    sharedFolderId = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("members".equals(_field)) {
-                    expectArrayStart(_p);
-                    members = new java.util.ArrayList<AddMember>();
-                    while (!isArrayEnd(_p)) {
-                        AddMember _x = null;
-                        _x = _p.readValueAs(AddMember.class);
-                        _p.nextToken();
-                        members.add(_x);
+        public AddFolderMemberArg deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            AddFolderMemberArg value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                String f_sharedFolderId = null;
+                List<AddMember> f_members = null;
+                Boolean f_quiet = false;
+                String f_customMessage = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("shared_folder_id".equals(field)) {
+                        f_sharedFolderId = StoneSerializers.string().deserialize(p);
                     }
-                    expectArrayEnd(_p);
-                    _p.nextToken();
+                    else if ("members".equals(field)) {
+                        f_members = StoneSerializers.list(AddMember.Serializer.INSTANCE).deserialize(p);
+                    }
+                    else if ("quiet".equals(field)) {
+                        f_quiet = StoneSerializers.boolean_().deserialize(p);
+                    }
+                    else if ("custom_message".equals(field)) {
+                        f_customMessage = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
                 }
-                else if ("quiet".equals(_field)) {
-                    quiet = _p.getValueAsBoolean();
-                    _p.nextToken();
+                if (f_sharedFolderId == null) {
+                    throw new JsonParseException(p, "Required field \"shared_folder_id\" missing.");
                 }
-                else if ("custom_message".equals(_field)) {
-                    customMessage = getStringValue(_p);
-                    _p.nextToken();
+                if (f_members == null) {
+                    throw new JsonParseException(p, "Required field \"members\" missing.");
                 }
-                else {
-                    skipValue(_p);
-                }
+                value = new AddFolderMemberArg(f_sharedFolderId, f_members, f_quiet, f_customMessage);
             }
-
-            if (sharedFolderId == null) {
-                throw new JsonParseException(_p, "Required field \"shared_folder_id\" is missing.");
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
             }
-            if (members == null) {
-                throw new JsonParseException(_p, "Required field \"members\" is missing.");
+            if (!collapsed) {
+                expectEndObject(p);
             }
-
-            return new AddFolderMemberArg(sharedFolderId, members, quiet, customMessage);
+            return value;
         }
     }
 }

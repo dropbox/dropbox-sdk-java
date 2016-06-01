@@ -1,38 +1,21 @@
 /* DO NOT EDIT */
-/* This file was generated from files.babel */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
-@JsonSerialize(using=GetCopyReferenceArg.Serializer.class)
-@JsonDeserialize(using=GetCopyReferenceArg.Deserializer.class)
 class GetCopyReferenceArg {
     // struct GetCopyReferenceArg
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final String path;
 
@@ -40,7 +23,7 @@ class GetCopyReferenceArg {
      *
      * @param path  The path to the file or folder you want to get a copy
      *     reference to. Must match pattern "{@code
-     *     ((/|id:).*)|(rev:[0-9a-f]{9,})}" and not be {@code null}.
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}" and not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -49,7 +32,7 @@ class GetCopyReferenceArg {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
-        if (!java.util.regex.Pattern.matches("((/|id:).*)|(rev:[0-9a-f]{9,})", path)) {
+        if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})", path)) {
             throw new IllegalArgumentException("String 'path' does not match pattern");
         }
         this.path = path;
@@ -89,7 +72,7 @@ class GetCopyReferenceArg {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -101,78 +84,59 @@ class GetCopyReferenceArg {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<GetCopyReferenceArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(GetCopyReferenceArg.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(GetCopyReferenceArg.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<GetCopyReferenceArg> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected JsonSerializer<GetCopyReferenceArg> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(GetCopyReferenceArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("path", value.path);
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<GetCopyReferenceArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(GetCopyReferenceArg.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(GetCopyReferenceArg.class, unwrapping);
-        }
-
-        @Override
-        protected JsonDeserializer<GetCopyReferenceArg> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public GetCopyReferenceArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            String path = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("path".equals(_field)) {
-                    path = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else {
-                    skipValue(_p);
-                }
+        public void serialize(GetCopyReferenceArg value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
             }
-
-            if (path == null) {
-                throw new JsonParseException(_p, "Required field \"path\" is missing.");
+            g.writeFieldName("path");
+            StoneSerializers.string().serialize(value.path, g);
+            if (!collapse) {
+                g.writeEndObject();
             }
+        }
 
-            return new GetCopyReferenceArg(path);
+        @Override
+        public GetCopyReferenceArg deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            GetCopyReferenceArg value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                String f_path = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("path".equals(field)) {
+                        f_path = StoneSerializers.string().deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
+                }
+                if (f_path == null) {
+                    throw new JsonParseException(p, "Required field \"path\" missing.");
+                }
+                value = new GetCopyReferenceArg(f_path);
+            }
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

@@ -1,30 +1,18 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.babel */
+/* This file was generated from sharing_folders.stone */
 
 package com.dropbox.core.v2.sharing;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This class is an open tagged union.  Tagged unions instances are always
@@ -36,14 +24,8 @@ import java.util.Map;
  * tag is introduced that this SDK does not recognized, the {@link #OTHER} value
  * will be used. </p>
  */
-@JsonSerialize(using=ShareFolderError.Serializer.class)
-@JsonDeserialize(using=ShareFolderError.Deserializer.class)
 public final class ShareFolderError {
     // union ShareFolderError
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link ShareFolderError}.
@@ -290,7 +272,7 @@ public final class ShareFolderError {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -302,99 +284,92 @@ public final class ShareFolderError {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends UnionJsonSerializer<ShareFolderError> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(ShareFolderError.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<ShareFolderError> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(ShareFolderError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            switch (value.tag) {
-                case EMAIL_UNVERIFIED:
+        public void serialize(ShareFolderError value, JsonGenerator g) throws IOException, JsonGenerationException {
+            switch (value.tag()) {
+                case EMAIL_UNVERIFIED: {
                     g.writeString("email_unverified");
                     break;
-                case BAD_PATH:
+                }
+                case BAD_PATH: {
                     g.writeStartObject();
-                    g.writeStringField(".tag", "bad_path");
-                    g.writeObjectField("bad_path", value.badPathValue);
+                    writeTag("bad_path", g);
+                    g.writeFieldName("bad_path");
+                    SharePathError.Serializer.INSTANCE.serialize(value.badPathValue, g);
                     g.writeEndObject();
                     break;
-                case TEAM_POLICY_DISALLOWS_MEMBER_POLICY:
+                }
+                case TEAM_POLICY_DISALLOWS_MEMBER_POLICY: {
                     g.writeString("team_policy_disallows_member_policy");
                     break;
-                case DISALLOWED_SHARED_LINK_POLICY:
+                }
+                case DISALLOWED_SHARED_LINK_POLICY: {
                     g.writeString("disallowed_shared_link_policy");
                     break;
-                case NO_PERMISSION:
+                }
+                case NO_PERMISSION: {
                     g.writeString("no_permission");
                     break;
-                case OTHER:
+                }
+                default: {
                     g.writeString("other");
-                    break;
+                }
             }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<ShareFolderError, Tag> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(ShareFolderError.class, getTagMapping(), Tag.OTHER);
         }
 
         @Override
-        public ShareFolderError deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            switch (_tag) {
-                case EMAIL_UNVERIFIED: {
-                    return ShareFolderError.EMAIL_UNVERIFIED;
-                }
-                case BAD_PATH: {
-                    SharePathError value = null;
-                    expectField(_p, "bad_path");
-                    value = _p.readValueAs(SharePathError.class);
-                    _p.nextToken();
-                    return ShareFolderError.badPath(value);
-                }
-                case TEAM_POLICY_DISALLOWS_MEMBER_POLICY: {
-                    return ShareFolderError.TEAM_POLICY_DISALLOWS_MEMBER_POLICY;
-                }
-                case DISALLOWED_SHARED_LINK_POLICY: {
-                    return ShareFolderError.DISALLOWED_SHARED_LINK_POLICY;
-                }
-                case NO_PERMISSION: {
-                    return ShareFolderError.NO_PERMISSION;
-                }
-                case OTHER: {
-                    return ShareFolderError.OTHER;
-                }
+        public ShareFolderError deserialize(JsonParser p) throws IOException, JsonParseException {
+            ShareFolderError value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
             }
-            // should be impossible to get here
-            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
-        }
-
-        private static Map<String, ShareFolderError.Tag> getTagMapping() {
-            Map<String, ShareFolderError.Tag> values = new HashMap<String, ShareFolderError.Tag>();
-            values.put("email_unverified", ShareFolderError.Tag.EMAIL_UNVERIFIED);
-            values.put("bad_path", ShareFolderError.Tag.BAD_PATH);
-            values.put("team_policy_disallows_member_policy", ShareFolderError.Tag.TEAM_POLICY_DISALLOWS_MEMBER_POLICY);
-            values.put("disallowed_shared_link_policy", ShareFolderError.Tag.DISALLOWED_SHARED_LINK_POLICY);
-            values.put("no_permission", ShareFolderError.Tag.NO_PERMISSION);
-            values.put("other", ShareFolderError.Tag.OTHER);
-            return Collections.unmodifiableMap(values);
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("email_unverified".equals(tag)) {
+                value = ShareFolderError.EMAIL_UNVERIFIED;
+            }
+            else if ("bad_path".equals(tag)) {
+                SharePathError fieldValue = null;
+                expectField("bad_path", p);
+                fieldValue = SharePathError.Serializer.INSTANCE.deserialize(p);
+                value = ShareFolderError.badPath(fieldValue);
+            }
+            else if ("team_policy_disallows_member_policy".equals(tag)) {
+                value = ShareFolderError.TEAM_POLICY_DISALLOWS_MEMBER_POLICY;
+            }
+            else if ("disallowed_shared_link_policy".equals(tag)) {
+                value = ShareFolderError.DISALLOWED_SHARED_LINK_POLICY;
+            }
+            else if ("no_permission".equals(tag)) {
+                value = ShareFolderError.NO_PERMISSION;
+            }
+            else {
+                value = ShareFolderError.OTHER;
+                skipFields(p);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

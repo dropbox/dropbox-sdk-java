@@ -1,33 +1,19 @@
 /* DO NOT EDIT */
-/* This file was generated from team_devices.babel */
+/* This file was generated from team_devices.stone */
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
-@JsonSerialize(using=MobileClientPlatform.Serializer.class)
-@JsonDeserialize(using=MobileClientPlatform.Deserializer.class)
 public enum MobileClientPlatform {
     // union MobileClientPlatform
     /**
@@ -55,63 +41,82 @@ public enum MobileClientPlatform {
      */
     OTHER; // *catch_all
 
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
-
-    static final class Serializer extends UnionJsonSerializer<MobileClientPlatform> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(MobileClientPlatform.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<MobileClientPlatform> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(MobileClientPlatform value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+        public void serialize(MobileClientPlatform value, JsonGenerator g) throws IOException, JsonGenerationException {
             switch (value) {
-                case IPHONE:
+                case IPHONE: {
                     g.writeString("iphone");
                     break;
-                case IPAD:
+                }
+                case IPAD: {
                     g.writeString("ipad");
                     break;
-                case ANDROID:
+                }
+                case ANDROID: {
                     g.writeString("android");
                     break;
-                case WINDOWS_PHONE:
+                }
+                case WINDOWS_PHONE: {
                     g.writeString("windows_phone");
                     break;
-                case BLACKBERRY:
+                }
+                case BLACKBERRY: {
                     g.writeString("blackberry");
                     break;
-                case OTHER:
+                }
+                default: {
                     g.writeString("other");
-                    break;
+                }
             }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<MobileClientPlatform, MobileClientPlatform> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(MobileClientPlatform.class, getTagMapping(), MobileClientPlatform.OTHER);
         }
 
         @Override
-        public MobileClientPlatform deserialize(MobileClientPlatform _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            return _tag;
-        }
-
-        private static Map<String, MobileClientPlatform> getTagMapping() {
-            Map<String, MobileClientPlatform> values = new HashMap<String, MobileClientPlatform>();
-            values.put("iphone", MobileClientPlatform.IPHONE);
-            values.put("ipad", MobileClientPlatform.IPAD);
-            values.put("android", MobileClientPlatform.ANDROID);
-            values.put("windows_phone", MobileClientPlatform.WINDOWS_PHONE);
-            values.put("blackberry", MobileClientPlatform.BLACKBERRY);
-            values.put("other", MobileClientPlatform.OTHER);
-            return Collections.unmodifiableMap(values);
+        public MobileClientPlatform deserialize(JsonParser p) throws IOException, JsonParseException {
+            MobileClientPlatform value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
+            }
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("iphone".equals(tag)) {
+                value = MobileClientPlatform.IPHONE;
+            }
+            else if ("ipad".equals(tag)) {
+                value = MobileClientPlatform.IPAD;
+            }
+            else if ("android".equals(tag)) {
+                value = MobileClientPlatform.ANDROID;
+            }
+            else if ("windows_phone".equals(tag)) {
+                value = MobileClientPlatform.WINDOWS_PHONE;
+            }
+            else if ("blackberry".equals(tag)) {
+                value = MobileClientPlatform.BLACKBERRY;
+            }
+            else {
+                value = MobileClientPlatform.OTHER;
+                skipFields(p);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

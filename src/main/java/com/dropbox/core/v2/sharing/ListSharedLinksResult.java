@@ -1,39 +1,22 @@
 /* DO NOT EDIT */
-/* This file was generated from shared_links.babel */
+/* This file was generated from shared_links.stone */
 
 package com.dropbox.core.v2.sharing;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.List;
 
-@JsonSerialize(using=ListSharedLinksResult.Serializer.class)
-@JsonDeserialize(using=ListSharedLinksResult.Deserializer.class)
 public class ListSharedLinksResult {
     // struct ListSharedLinksResult
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final List<SharedLinkMetadata> links;
     protected final boolean hasMore;
@@ -145,7 +128,7 @@ public class ListSharedLinksResult {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -157,103 +140,76 @@ public class ListSharedLinksResult {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<ListSharedLinksResult> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(ListSharedLinksResult.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(ListSharedLinksResult.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<ListSharedLinksResult> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected JsonSerializer<ListSharedLinksResult> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(ListSharedLinksResult value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("links", value.links);
-            g.writeObjectField("has_more", value.hasMore);
+        public void serialize(ListSharedLinksResult value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
+            }
+            g.writeFieldName("links");
+            StoneSerializers.list(SharedLinkMetadata.Serializer.INSTANCE).serialize(value.links, g);
+            g.writeFieldName("has_more");
+            StoneSerializers.boolean_().serialize(value.hasMore, g);
             if (value.cursor != null) {
-                g.writeObjectField("cursor", value.cursor);
+                g.writeFieldName("cursor");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.cursor, g);
+            }
+            if (!collapse) {
+                g.writeEndObject();
             }
         }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<ListSharedLinksResult> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(ListSharedLinksResult.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(ListSharedLinksResult.class, unwrapping);
-        }
 
         @Override
-        protected JsonDeserializer<ListSharedLinksResult> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public ListSharedLinksResult deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            List<SharedLinkMetadata> links = null;
-            Boolean hasMore = null;
-            String cursor = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("links".equals(_field)) {
-                    expectArrayStart(_p);
-                    links = new java.util.ArrayList<SharedLinkMetadata>();
-                    while (!isArrayEnd(_p)) {
-                        SharedLinkMetadata _x = null;
-                        _x = _p.readValueAs(SharedLinkMetadata.class);
-                        _p.nextToken();
-                        links.add(_x);
+        public ListSharedLinksResult deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            ListSharedLinksResult value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                List<SharedLinkMetadata> f_links = null;
+                Boolean f_hasMore = null;
+                String f_cursor = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("links".equals(field)) {
+                        f_links = StoneSerializers.list(SharedLinkMetadata.Serializer.INSTANCE).deserialize(p);
                     }
-                    expectArrayEnd(_p);
-                    _p.nextToken();
+                    else if ("has_more".equals(field)) {
+                        f_hasMore = StoneSerializers.boolean_().deserialize(p);
+                    }
+                    else if ("cursor".equals(field)) {
+                        f_cursor = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
                 }
-                else if ("has_more".equals(_field)) {
-                    hasMore = _p.getValueAsBoolean();
-                    _p.nextToken();
+                if (f_links == null) {
+                    throw new JsonParseException(p, "Required field \"links\" missing.");
                 }
-                else if ("cursor".equals(_field)) {
-                    cursor = getStringValue(_p);
-                    _p.nextToken();
+                if (f_hasMore == null) {
+                    throw new JsonParseException(p, "Required field \"has_more\" missing.");
                 }
-                else {
-                    skipValue(_p);
-                }
+                value = new ListSharedLinksResult(f_links, f_hasMore, f_cursor);
             }
-
-            if (links == null) {
-                throw new JsonParseException(_p, "Required field \"links\" is missing.");
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
             }
-            if (hasMore == null) {
-                throw new JsonParseException(_p, "Required field \"has_more\" is missing.");
+            if (!collapsed) {
+                expectEndObject(p);
             }
-
-            return new ListSharedLinksResult(links, hasMore, cursor);
+            return value;
         }
     }
 }

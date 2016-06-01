@@ -1,38 +1,21 @@
 /* DO NOT EDIT */
-/* This file was generated from files.babel */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
-@JsonSerialize(using=ThumbnailArg.Serializer.class)
-@JsonDeserialize(using=ThumbnailArg.Deserializer.class)
 class ThumbnailArg {
     // struct ThumbnailArg
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final String path;
     protected final ThumbnailFormat format;
@@ -43,8 +26,8 @@ class ThumbnailArg {
      * specifying values for all optional fields.
      *
      * @param path  The path to the image file you want to thumbnail. Must match
-     *     pattern "{@code ((/|id:).*)|(rev:[0-9a-f]{9,})}" and not be {@code
-     *     null}.
+     *     pattern "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}" and not
+     *     be {@code null}.
      * @param format  The format for the thumbnail image, jpeg (default) or png.
      *     For  images that are photos, jpeg should be preferred, while png is
      *     better for screenshots and digital arts.
@@ -57,7 +40,7 @@ class ThumbnailArg {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
-        if (!java.util.regex.Pattern.matches("((/|id:).*)|(rev:[0-9a-f]{9,})", path)) {
+        if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})", path)) {
             throw new IllegalArgumentException("String 'path' does not match pattern");
         }
         this.path = path;
@@ -75,8 +58,8 @@ class ThumbnailArg {
      * The default values for unset fields will be used.
      *
      * @param path  The path to the image file you want to thumbnail. Must match
-     *     pattern "{@code ((/|id:).*)|(rev:[0-9a-f]{9,})}" and not be {@code
-     *     null}.
+     *     pattern "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}" and not
+     *     be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -120,8 +103,8 @@ class ThumbnailArg {
      * Returns a new builder for creating an instance of this class.
      *
      * @param path  The path to the image file you want to thumbnail. Must match
-     *     pattern "{@code ((/|id:).*)|(rev:[0-9a-f]{9,})}" and not be {@code
-     *     null}.
+     *     pattern "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}" and not
+     *     be {@code null}.
      *
      * @return builder for this class.
      *
@@ -145,7 +128,7 @@ class ThumbnailArg {
             if (path == null) {
                 throw new IllegalArgumentException("Required value for 'path' is null");
             }
-            if (!java.util.regex.Pattern.matches("((/|id:).*)|(rev:[0-9a-f]{9,})", path)) {
+            if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})", path)) {
                 throw new IllegalArgumentException("String 'path' does not match pattern");
             }
             this.path = path;
@@ -238,7 +221,7 @@ class ThumbnailArg {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -250,90 +233,71 @@ class ThumbnailArg {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<ThumbnailArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(ThumbnailArg.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(ThumbnailArg.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<ThumbnailArg> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected JsonSerializer<ThumbnailArg> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(ThumbnailArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("path", value.path);
-            g.writeObjectField("format", value.format);
-            g.writeObjectField("size", value.size);
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<ThumbnailArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(ThumbnailArg.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(ThumbnailArg.class, unwrapping);
-        }
-
-        @Override
-        protected JsonDeserializer<ThumbnailArg> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public ThumbnailArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            String path = null;
-            ThumbnailFormat format = ThumbnailFormat.JPEG;
-            ThumbnailSize size = ThumbnailSize.W64H64;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("path".equals(_field)) {
-                    path = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("format".equals(_field)) {
-                    format = _p.readValueAs(ThumbnailFormat.class);
-                    _p.nextToken();
-                }
-                else if ("size".equals(_field)) {
-                    size = _p.readValueAs(ThumbnailSize.class);
-                    _p.nextToken();
-                }
-                else {
-                    skipValue(_p);
-                }
+        public void serialize(ThumbnailArg value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
             }
-
-            if (path == null) {
-                throw new JsonParseException(_p, "Required field \"path\" is missing.");
+            g.writeFieldName("path");
+            StoneSerializers.string().serialize(value.path, g);
+            g.writeFieldName("format");
+            ThumbnailFormat.Serializer.INSTANCE.serialize(value.format, g);
+            g.writeFieldName("size");
+            ThumbnailSize.Serializer.INSTANCE.serialize(value.size, g);
+            if (!collapse) {
+                g.writeEndObject();
             }
+        }
 
-            return new ThumbnailArg(path, format, size);
+        @Override
+        public ThumbnailArg deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            ThumbnailArg value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                String f_path = null;
+                ThumbnailFormat f_format = ThumbnailFormat.JPEG;
+                ThumbnailSize f_size = ThumbnailSize.W64H64;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("path".equals(field)) {
+                        f_path = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("format".equals(field)) {
+                        f_format = ThumbnailFormat.Serializer.INSTANCE.deserialize(p);
+                    }
+                    else if ("size".equals(field)) {
+                        f_size = ThumbnailSize.Serializer.INSTANCE.deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
+                }
+                if (f_path == null) {
+                    throw new JsonParseException(p, "Required field \"path\" missing.");
+                }
+                value = new ThumbnailArg(f_path, f_format, f_size);
+            }
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

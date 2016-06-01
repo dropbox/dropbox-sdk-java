@@ -1,30 +1,18 @@
 /* DO NOT EDIT */
-/* This file was generated from files.babel */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This class is an open tagged union.  Tagged unions instances are always
@@ -36,14 +24,8 @@ import java.util.Map;
  * tag is introduced that this SDK does not recognized, the {@link #OTHER} value
  * will be used. </p>
  */
-@JsonSerialize(using=LookupError.Serializer.class)
-@JsonDeserialize(using=LookupError.Deserializer.class)
 public final class LookupError {
     // union LookupError
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link LookupError}.
@@ -288,7 +270,7 @@ public final class LookupError {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -300,104 +282,99 @@ public final class LookupError {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends UnionJsonSerializer<LookupError> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(LookupError.class);
-        }
+    /**
+     * For internal use only.
+     */
+    public static final class Serializer extends UnionSerializer<LookupError> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(LookupError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            switch (value.tag) {
-                case MALFORMED_PATH:
+        public void serialize(LookupError value, JsonGenerator g) throws IOException, JsonGenerationException {
+            switch (value.tag()) {
+                case MALFORMED_PATH: {
                     g.writeStartObject();
-                    g.writeStringField(".tag", "malformed_path");
-                    if (value.malformedPathValue != null) {
-                        g.writeObjectField("malformed_path", value.malformedPathValue);
-                    }
+                    writeTag("malformed_path", g);
+                    g.writeFieldName("malformed_path");
+                    StoneSerializers.nullable(StoneSerializers.string()).serialize(value.malformedPathValue, g);
                     g.writeEndObject();
                     break;
-                case NOT_FOUND:
+                }
+                case NOT_FOUND: {
                     g.writeString("not_found");
                     break;
-                case NOT_FILE:
+                }
+                case NOT_FILE: {
                     g.writeString("not_file");
                     break;
-                case NOT_FOLDER:
+                }
+                case NOT_FOLDER: {
                     g.writeString("not_folder");
                     break;
-                case RESTRICTED_CONTENT:
+                }
+                case RESTRICTED_CONTENT: {
                     g.writeString("restricted_content");
                     break;
-                case OTHER:
+                }
+                default: {
                     g.writeString("other");
-                    break;
+                }
             }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<LookupError, Tag> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(LookupError.class, getTagMapping(), Tag.OTHER);
         }
 
         @Override
-        public LookupError deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            switch (_tag) {
-                case MALFORMED_PATH: {
-                    if (isObjectEnd(_p)) {
-                        return LookupError.malformedPath();
-                    }
-                    String value = null;
-                    expectField(_p, "malformed_path");
-                    value = getStringValue(_p);
-                    _p.nextToken();
-                    return LookupError.malformedPath(value);
+        public LookupError deserialize(JsonParser p) throws IOException, JsonParseException {
+            LookupError value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
+            }
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("malformed_path".equals(tag)) {
+                String fieldValue = null;
+                if (p.getCurrentToken() != JsonToken.END_OBJECT) {
+                    expectField("malformed_path", p);
+                    fieldValue = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
                 }
-                case NOT_FOUND: {
-                    return LookupError.NOT_FOUND;
+                if (fieldValue == null) {
+                    value = LookupError.malformedPath();
                 }
-                case NOT_FILE: {
-                    return LookupError.NOT_FILE;
-                }
-                case NOT_FOLDER: {
-                    return LookupError.NOT_FOLDER;
-                }
-                case RESTRICTED_CONTENT: {
-                    return LookupError.RESTRICTED_CONTENT;
-                }
-                case OTHER: {
-                    return LookupError.OTHER;
+                else {
+                    value = LookupError.malformedPath(fieldValue);
                 }
             }
-            // should be impossible to get here
-            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
-        }
-
-        private static Map<String, LookupError.Tag> getTagMapping() {
-            Map<String, LookupError.Tag> values = new HashMap<String, LookupError.Tag>();
-            values.put("malformed_path", LookupError.Tag.MALFORMED_PATH);
-            values.put("not_found", LookupError.Tag.NOT_FOUND);
-            values.put("not_file", LookupError.Tag.NOT_FILE);
-            values.put("not_folder", LookupError.Tag.NOT_FOLDER);
-            values.put("restricted_content", LookupError.Tag.RESTRICTED_CONTENT);
-            values.put("other", LookupError.Tag.OTHER);
-            return Collections.unmodifiableMap(values);
+            else if ("not_found".equals(tag)) {
+                value = LookupError.NOT_FOUND;
+            }
+            else if ("not_file".equals(tag)) {
+                value = LookupError.NOT_FILE;
+            }
+            else if ("not_folder".equals(tag)) {
+                value = LookupError.NOT_FOLDER;
+            }
+            else if ("restricted_content".equals(tag)) {
+                value = LookupError.RESTRICTED_CONTENT;
+            }
+            else {
+                value = LookupError.OTHER;
+                skipFields(p);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

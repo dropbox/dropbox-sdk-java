@@ -1,38 +1,21 @@
 /* DO NOT EDIT */
-/* This file was generated from files.babel */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
-@JsonSerialize(using=ListRevisionsArg.Serializer.class)
-@JsonDeserialize(using=ListRevisionsArg.Deserializer.class)
 class ListRevisionsArg {
     // struct ListRevisionsArg
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final String path;
     protected final long limit;
@@ -40,7 +23,7 @@ class ListRevisionsArg {
     /**
      *
      * @param path  The path to the file you want to see the revisions of. Must
-     *     match pattern "{@code /.*}" and not be {@code null}.
+     *     match pattern "{@code /(.|[\\r\\n])*}" and not be {@code null}.
      * @param limit  The maximum number of revision entries returned. Must be
      *     greater than or equal to 1 and be less than or equal to 100.
      *
@@ -51,7 +34,7 @@ class ListRevisionsArg {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
-        if (!java.util.regex.Pattern.matches("/.*", path)) {
+        if (!java.util.regex.Pattern.matches("/(.|[\\r\\n])*", path)) {
             throw new IllegalArgumentException("String 'path' does not match pattern");
         }
         this.path = path;
@@ -68,7 +51,7 @@ class ListRevisionsArg {
      * The default values for unset fields will be used.
      *
      * @param path  The path to the file you want to see the revisions of. Must
-     *     match pattern "{@code /.*}" and not be {@code null}.
+     *     match pattern "{@code /(.|[\\r\\n])*}" and not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -124,7 +107,7 @@ class ListRevisionsArg {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -136,85 +119,65 @@ class ListRevisionsArg {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<ListRevisionsArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(ListRevisionsArg.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(ListRevisionsArg.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<ListRevisionsArg> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected JsonSerializer<ListRevisionsArg> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(ListRevisionsArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("path", value.path);
-            g.writeObjectField("limit", value.limit);
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<ListRevisionsArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(ListRevisionsArg.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(ListRevisionsArg.class, unwrapping);
-        }
-
-        @Override
-        protected JsonDeserializer<ListRevisionsArg> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public ListRevisionsArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            String path = null;
-            long limit = 10L;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("path".equals(_field)) {
-                    path = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("limit".equals(_field)) {
-                    limit = _p.getLongValue();
-                    assertUnsigned(_p, limit);
-                    _p.nextToken();
-                }
-                else {
-                    skipValue(_p);
-                }
+        public void serialize(ListRevisionsArg value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
             }
-
-            if (path == null) {
-                throw new JsonParseException(_p, "Required field \"path\" is missing.");
+            g.writeFieldName("path");
+            StoneSerializers.string().serialize(value.path, g);
+            g.writeFieldName("limit");
+            StoneSerializers.uInt64().serialize(value.limit, g);
+            if (!collapse) {
+                g.writeEndObject();
             }
+        }
 
-            return new ListRevisionsArg(path, limit);
+        @Override
+        public ListRevisionsArg deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            ListRevisionsArg value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                String f_path = null;
+                Long f_limit = 10L;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("path".equals(field)) {
+                        f_path = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("limit".equals(field)) {
+                        f_limit = StoneSerializers.uInt64().deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
+                }
+                if (f_path == null) {
+                    throw new JsonParseException(p, "Required field \"path\" missing.");
+                }
+                value = new ListRevisionsArg(f_path, f_limit);
+            }
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

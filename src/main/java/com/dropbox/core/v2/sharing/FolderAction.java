@@ -1,36 +1,22 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.babel */
+/* This file was generated from sharing_folders.stone */
 
 package com.dropbox.core.v2.sharing;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Actions that may be taken on shared folders.
  */
-@JsonSerialize(using=FolderAction.Serializer.class)
-@JsonDeserialize(using=FolderAction.Deserializer.class)
 public enum FolderAction {
     // union FolderAction
     /**
@@ -74,75 +60,103 @@ public enum FolderAction {
      */
     OTHER; // *catch_all
 
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
-
-    static final class Serializer extends UnionJsonSerializer<FolderAction> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(FolderAction.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<FolderAction> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(FolderAction value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+        public void serialize(FolderAction value, JsonGenerator g) throws IOException, JsonGenerationException {
             switch (value) {
-                case CHANGE_OPTIONS:
+                case CHANGE_OPTIONS: {
                     g.writeString("change_options");
                     break;
-                case EDIT_CONTENTS:
+                }
+                case EDIT_CONTENTS: {
                     g.writeString("edit_contents");
                     break;
-                case INVITE_EDITOR:
+                }
+                case INVITE_EDITOR: {
                     g.writeString("invite_editor");
                     break;
-                case INVITE_VIEWER:
+                }
+                case INVITE_VIEWER: {
                     g.writeString("invite_viewer");
                     break;
-                case RELINQUISH_MEMBERSHIP:
+                }
+                case RELINQUISH_MEMBERSHIP: {
                     g.writeString("relinquish_membership");
                     break;
-                case UNMOUNT:
+                }
+                case UNMOUNT: {
                     g.writeString("unmount");
                     break;
-                case UNSHARE:
+                }
+                case UNSHARE: {
                     g.writeString("unshare");
                     break;
-                case LEAVE_A_COPY:
+                }
+                case LEAVE_A_COPY: {
                     g.writeString("leave_a_copy");
                     break;
-                case OTHER:
+                }
+                default: {
                     g.writeString("other");
-                    break;
+                }
             }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<FolderAction, FolderAction> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(FolderAction.class, getTagMapping(), FolderAction.OTHER);
         }
 
         @Override
-        public FolderAction deserialize(FolderAction _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            return _tag;
-        }
-
-        private static Map<String, FolderAction> getTagMapping() {
-            Map<String, FolderAction> values = new HashMap<String, FolderAction>();
-            values.put("change_options", FolderAction.CHANGE_OPTIONS);
-            values.put("edit_contents", FolderAction.EDIT_CONTENTS);
-            values.put("invite_editor", FolderAction.INVITE_EDITOR);
-            values.put("invite_viewer", FolderAction.INVITE_VIEWER);
-            values.put("relinquish_membership", FolderAction.RELINQUISH_MEMBERSHIP);
-            values.put("unmount", FolderAction.UNMOUNT);
-            values.put("unshare", FolderAction.UNSHARE);
-            values.put("leave_a_copy", FolderAction.LEAVE_A_COPY);
-            values.put("other", FolderAction.OTHER);
-            return Collections.unmodifiableMap(values);
+        public FolderAction deserialize(JsonParser p) throws IOException, JsonParseException {
+            FolderAction value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
+            }
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("change_options".equals(tag)) {
+                value = FolderAction.CHANGE_OPTIONS;
+            }
+            else if ("edit_contents".equals(tag)) {
+                value = FolderAction.EDIT_CONTENTS;
+            }
+            else if ("invite_editor".equals(tag)) {
+                value = FolderAction.INVITE_EDITOR;
+            }
+            else if ("invite_viewer".equals(tag)) {
+                value = FolderAction.INVITE_VIEWER;
+            }
+            else if ("relinquish_membership".equals(tag)) {
+                value = FolderAction.RELINQUISH_MEMBERSHIP;
+            }
+            else if ("unmount".equals(tag)) {
+                value = FolderAction.UNMOUNT;
+            }
+            else if ("unshare".equals(tag)) {
+                value = FolderAction.UNSHARE;
+            }
+            else if ("leave_a_copy".equals(tag)) {
+                value = FolderAction.LEAVE_A_COPY;
+            }
+            else {
+                value = FolderAction.OTHER;
+                skipFields(p);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

@@ -13,21 +13,12 @@ import java.util.concurrent.TimeUnit;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.dropbox.core.stone.StoneSerializer;
 import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
 import com.dropbox.core.util.IOUtil;
 import com.dropbox.core.util.StringUtil;
-
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static com.dropbox.core.util.StringUtil.jq;
 import static com.dropbox.core.util.LangUtil.mkAssert;
@@ -35,7 +26,6 @@ import static com.dropbox.core.util.LangUtil.mkAssert;
 /*>>> import checkers.nullness.quals.Nullable; */
 
 public final class DbxRequestUtil {
-    private static final ObjectMapper JSON = JsonUtil.getMapper();
 
     public static String encodeUrlParam(String s) {
         try {
@@ -126,6 +116,16 @@ public final class DbxRequestUtil {
     ) {
         if (headers == null) headers = new ArrayList<HttpRequestor.Header>();
         headers.add(buildUserAgentHeader(requestConfig, sdkUserAgentIdentifier));
+        return headers;
+    }
+
+    public static List<HttpRequestor.Header> addUserLocaleHeader(/*@Nullable*/List<HttpRequestor.Header> headers, DbxRequestConfig requestConfig) {
+        if (requestConfig.getUserLocale() == null) {
+            return headers;
+        }
+
+        if (headers == null) headers = new ArrayList<HttpRequestor.Header>();
+        headers.add(new HttpRequestor.Header("Dropbox-API-User-Locale", requestConfig.getUserLocale()));
         return headers;
     }
 
@@ -236,81 +236,12 @@ public final class DbxRequestUtil {
         }
     }
 
-    public static class ErrorWrapper extends Exception {
-        private static final long serialVersionUID = 0L;
-
-        private final Object errValue;  // Really an ErrT instance, but Throwable does not allow generic subclasses.
-        private final String requestId;
-        private final LocalizedText userMessage;
-
-        public ErrorWrapper(Object errValue, String requestId, LocalizedText userMessage) {
-            this.errValue = errValue;
-            this.requestId = requestId;
-            this.userMessage = userMessage;
-        }
-
-        public Object getErrorValue() {
-            return errValue;
-        }
-
-        public String getRequestId() {
-            return requestId;
-        }
-
-        public LocalizedText getUserMessage() {
-            return userMessage;
-        }
-
-        public static ErrorWrapper fromResponse(Type errType, HttpRequestor.Response response)
-            throws IOException, JsonParseException {
-            String requestId = DbxRequestUtil.getRequestId(response);
-
-            JavaType type = JSON.getTypeFactory()
-                .constructParametricType(
-                    ApiErrorResponse.class,
-                    JSON.getTypeFactory().constructType(errType)
-                );
-            ApiErrorResponse<?> apiResponse = JSON.readValue(response.getBody(), type);
-
-            // ProGuard/Dex hack: prevent ProGuard/Dex from optimizing away our @JsonCreator
-            // constructor. We add this code here instead of updating our rules to allow developers
-            // to easily fix their broken apps by updating the SDK version (see T94429).
-            if (errType == null) {
-                new ApiErrorResponse<Object>("impossible", new LocalizedText("impossible", "en_US"));
-            }
-
-            return new ErrorWrapper(apiResponse.getError(), requestId, apiResponse.getUserMessage());
-        }
-
-        @JsonIgnoreProperties(ignoreUnknown=true)
-        private static final class ApiErrorResponse<T> {
-            private final T error;
-            private LocalizedText userMessage;
-
-            @JsonCreator
-            public ApiErrorResponse(
-                @JsonProperty(value="error", required=true) T error,
-                @JsonProperty("user_message") LocalizedText userMessage
-            ) {
-                if (error == null) {
-                    throw new NullPointerException("error");
-                }
-                this.error = error;
-                this.userMessage = userMessage;
-            }
-
-            public T getError() {
-                return error;
-            }
-
-            public LocalizedText getUserMessage() {
-                return userMessage;
-            }
-        }
-    }
-
     public static byte[] loadErrorBody(HttpRequestor.Response response)
         throws NetworkIOException {
+        if (response.getBody() == null) {
+            return new byte[0];
+        }
+
         // Slurp the body into memory (up to 4k; anything past that is probably not useful).
         try {
             return IOUtil.slurp(response.getBody(), 4096);

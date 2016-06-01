@@ -1,33 +1,19 @@
 /* DO NOT EDIT */
-/* This file was generated from team_members.babel */
+/* This file was generated from team_members.stone */
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
-@JsonSerialize(using=MembersSuspendError.Serializer.class)
-@JsonDeserialize(using=MembersSuspendError.Deserializer.class)
 public enum MembersSuspendError {
     // union MembersSuspendError
     /**
@@ -56,60 +42,88 @@ public enum MembersSuspendError {
      */
     TEAM_LICENSE_LIMIT;
 
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
-
-    static final class Serializer extends UnionJsonSerializer<MembersSuspendError> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(MembersSuspendError.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<MembersSuspendError> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(MembersSuspendError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+        public void serialize(MembersSuspendError value, JsonGenerator g) throws IOException, JsonGenerationException {
             switch (value) {
-                case USER_NOT_FOUND:
+                case USER_NOT_FOUND: {
                     g.writeString("user_not_found");
                     break;
-                case USER_NOT_IN_TEAM:
+                }
+                case USER_NOT_IN_TEAM: {
                     g.writeString("user_not_in_team");
                     break;
-                case OTHER:
+                }
+                case OTHER: {
                     g.writeString("other");
                     break;
-                case SUSPEND_INACTIVE_USER:
+                }
+                case SUSPEND_INACTIVE_USER: {
                     g.writeString("suspend_inactive_user");
                     break;
-                case SUSPEND_LAST_ADMIN:
+                }
+                case SUSPEND_LAST_ADMIN: {
                     g.writeString("suspend_last_admin");
                     break;
-                case TEAM_LICENSE_LIMIT:
+                }
+                case TEAM_LICENSE_LIMIT: {
                     g.writeString("team_license_limit");
                     break;
+                }
+                default: {
+                    throw new IllegalArgumentException("Unrecognized tag: " + value);
+                }
             }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<MembersSuspendError, MembersSuspendError> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(MembersSuspendError.class, getTagMapping(), null);
         }
 
         @Override
-        public MembersSuspendError deserialize(MembersSuspendError _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            return _tag;
-        }
-
-        private static Map<String, MembersSuspendError> getTagMapping() {
-            Map<String, MembersSuspendError> values = new HashMap<String, MembersSuspendError>();
-            values.put("suspend_inactive_user", MembersSuspendError.SUSPEND_INACTIVE_USER);
-            values.put("suspend_last_admin", MembersSuspendError.SUSPEND_LAST_ADMIN);
-            values.put("team_license_limit", MembersSuspendError.TEAM_LICENSE_LIMIT);
-            return Collections.unmodifiableMap(values);
+        public MembersSuspendError deserialize(JsonParser p) throws IOException, JsonParseException {
+            MembersSuspendError value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
+            }
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("user_not_found".equals(tag)) {
+                value = MembersSuspendError.USER_NOT_FOUND;
+            }
+            else if ("user_not_in_team".equals(tag)) {
+                value = MembersSuspendError.USER_NOT_IN_TEAM;
+            }
+            else if ("other".equals(tag)) {
+                value = MembersSuspendError.OTHER;
+            }
+            else if ("suspend_inactive_user".equals(tag)) {
+                value = MembersSuspendError.SUSPEND_INACTIVE_USER;
+            }
+            else if ("suspend_last_admin".equals(tag)) {
+                value = MembersSuspendError.SUSPEND_LAST_ADMIN;
+            }
+            else if ("team_license_limit".equals(tag)) {
+                value = MembersSuspendError.TEAM_LICENSE_LIMIT;
+            }
+            else {
+                throw new JsonParseException(p, "Unknown tag: " + tag);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

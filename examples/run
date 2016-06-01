@@ -33,31 +33,26 @@ if [ $# -eq 0 ]; then
     die "" \
         "Usage: run <example-name> example-args..." \
         "" \
-        "For example: run web-file-browser ..." \
+        "For example: run upload-file ..." \
         ""
+fi
+
+declare -a project_properties
+if [ "${1}" == '--use-auth-prop' ] ; then
+    project_properties+=("-PuseAuthInfoFileProp=true")
+    shift
 fi
 
 example_name="$1" ; shift
 example_name="$(echo "$example_name" | sed 's|/*$||')"
     # Remove trailing slashes, since shell tab completion will usually add one.
 
-example_folder=${example_name//_/-}
-example_package=${example_name//-/_}
-
-if [ ! -f "$base_dir/$example_folder/pom.xml" ]; then
-    die "Invalid example \"$example_name\"." \
-        "(Couldn't find \"pom.xml\" in \"$base_dir/$example_folder\".)"
-fi
-
-if [ ! -f "$base_dir/$example_folder/target/runtime-classpath" ]; then
-    die "Unable to run example \"$example_name\"." \
-        "Couldn't find \"target/runtime-classpath\" in \"$base_dir/$example_folder\"." \
-        "\"ReadMe.md\" at the top level has instructions for running the examples."
-fi
-
 base_dir=`dirname "$loc"`
 
-classpath="$base_dir/$example_folder/target/classes:$(cat $base_dir/$example_folder/target/runtime-classpath)"
-main_class=com.dropbox.core.examples."$example_package".Main
+i=0
+for arg in "${@}" ; do
+    project_properties+=("-Parg${i}=${arg}")
+    i=$((i+1))
+done
 
-exec java -ea -cp "$classpath" "$main_class" "$@"
+exec "${base_dir}/gradlew" -b "${base_dir}/build.gradle" --console plain --quiet ":${example_name}:run" "${project_properties[@]}"

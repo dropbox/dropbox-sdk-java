@@ -1,27 +1,16 @@
 /* DO NOT EDIT */
-/* This file was generated from properties.babel */
+/* This file was generated from properties.stone */
 
 package com.dropbox.core.v2.properties;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
@@ -29,14 +18,8 @@ import java.io.IOException;
  * Describe a single property field type which that can be part of a property
  * template.
  */
-@JsonSerialize(using=PropertyFieldTemplate.Serializer.class)
-@JsonDeserialize(using=PropertyFieldTemplate.Deserializer.class)
 public class PropertyFieldTemplate {
     // struct PropertyFieldTemplate
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final String name;
     protected final String description;
@@ -134,7 +117,7 @@ public class PropertyFieldTemplate {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -146,96 +129,77 @@ public class PropertyFieldTemplate {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
+    /**
+     * For internal use only.
+     */
+    public static final class Serializer extends StructSerializer<PropertyFieldTemplate> {
+        public static final Serializer INSTANCE = new Serializer();
 
-    static final class Serializer extends StructJsonSerializer<PropertyFieldTemplate> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(PropertyFieldTemplate.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(PropertyFieldTemplate.class, unwrapping);
+        @Override
+        public void serialize(PropertyFieldTemplate value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
+            }
+            g.writeFieldName("name");
+            StoneSerializers.string().serialize(value.name, g);
+            g.writeFieldName("description");
+            StoneSerializers.string().serialize(value.description, g);
+            g.writeFieldName("type");
+            PropertyType.Serializer.INSTANCE.serialize(value.type, g);
+            if (!collapse) {
+                g.writeEndObject();
+            }
         }
 
         @Override
-        protected JsonSerializer<PropertyFieldTemplate> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(PropertyFieldTemplate value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("name", value.name);
-            g.writeObjectField("description", value.description);
-            g.writeObjectField("type", value.type);
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<PropertyFieldTemplate> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(PropertyFieldTemplate.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(PropertyFieldTemplate.class, unwrapping);
-        }
-
-        @Override
-        protected JsonDeserializer<PropertyFieldTemplate> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public PropertyFieldTemplate deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            String name = null;
-            String description = null;
-            PropertyType type = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("name".equals(_field)) {
-                    name = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("description".equals(_field)) {
-                    description = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("type".equals(_field)) {
-                    type = _p.readValueAs(PropertyType.class);
-                    _p.nextToken();
-                }
-                else {
-                    skipValue(_p);
-                }
+        public PropertyFieldTemplate deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            PropertyFieldTemplate value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
             }
-
-            if (name == null) {
-                throw new JsonParseException(_p, "Required field \"name\" is missing.");
+            if (tag == null) {
+                String f_name = null;
+                String f_description = null;
+                PropertyType f_type = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("name".equals(field)) {
+                        f_name = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("description".equals(field)) {
+                        f_description = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("type".equals(field)) {
+                        f_type = PropertyType.Serializer.INSTANCE.deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
+                }
+                if (f_name == null) {
+                    throw new JsonParseException(p, "Required field \"name\" missing.");
+                }
+                if (f_description == null) {
+                    throw new JsonParseException(p, "Required field \"description\" missing.");
+                }
+                if (f_type == null) {
+                    throw new JsonParseException(p, "Required field \"type\" missing.");
+                }
+                value = new PropertyFieldTemplate(f_name, f_description, f_type);
             }
-            if (description == null) {
-                throw new JsonParseException(_p, "Required field \"description\" is missing.");
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
             }
-            if (type == null) {
-                throw new JsonParseException(_p, "Required field \"type\" is missing.");
+            if (!collapsed) {
+                expectEndObject(p);
             }
-
-            return new PropertyFieldTemplate(name, description, type);
+            return value;
         }
     }
 }

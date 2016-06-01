@@ -1,41 +1,24 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.babel */
+/* This file was generated from sharing_folders.stone */
 
 package com.dropbox.core.v2.sharing;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
 /**
  * A set of policies governing membership and privileges for a shared folder.
  */
-@JsonSerialize(using=FolderPolicy.Serializer.class)
-@JsonDeserialize(using=FolderPolicy.Deserializer.class)
 public class FolderPolicy {
     // struct FolderPolicy
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final MemberPolicy memberPolicy;
     protected final MemberPolicy resolvedMemberPolicy;
@@ -252,7 +235,7 @@ public class FolderPolicy {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -264,103 +247,84 @@ public class FolderPolicy {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<FolderPolicy> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(FolderPolicy.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(FolderPolicy.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<FolderPolicy> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected JsonSerializer<FolderPolicy> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(FolderPolicy value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("acl_update_policy", value.aclUpdatePolicy);
-            g.writeObjectField("shared_link_policy", value.sharedLinkPolicy);
+        public void serialize(FolderPolicy value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
+            }
+            g.writeFieldName("acl_update_policy");
+            AclUpdatePolicy.Serializer.INSTANCE.serialize(value.aclUpdatePolicy, g);
+            g.writeFieldName("shared_link_policy");
+            SharedLinkPolicy.Serializer.INSTANCE.serialize(value.sharedLinkPolicy, g);
             if (value.memberPolicy != null) {
-                g.writeObjectField("member_policy", value.memberPolicy);
+                g.writeFieldName("member_policy");
+                StoneSerializers.nullable(MemberPolicy.Serializer.INSTANCE).serialize(value.memberPolicy, g);
             }
             if (value.resolvedMemberPolicy != null) {
-                g.writeObjectField("resolved_member_policy", value.resolvedMemberPolicy);
+                g.writeFieldName("resolved_member_policy");
+                StoneSerializers.nullable(MemberPolicy.Serializer.INSTANCE).serialize(value.resolvedMemberPolicy, g);
             }
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<FolderPolicy> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(FolderPolicy.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(FolderPolicy.class, unwrapping);
+            if (!collapse) {
+                g.writeEndObject();
+            }
         }
 
         @Override
-        protected JsonDeserializer<FolderPolicy> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public FolderPolicy deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            AclUpdatePolicy aclUpdatePolicy = null;
-            SharedLinkPolicy sharedLinkPolicy = null;
-            MemberPolicy memberPolicy = null;
-            MemberPolicy resolvedMemberPolicy = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("acl_update_policy".equals(_field)) {
-                    aclUpdatePolicy = _p.readValueAs(AclUpdatePolicy.class);
-                    _p.nextToken();
-                }
-                else if ("shared_link_policy".equals(_field)) {
-                    sharedLinkPolicy = _p.readValueAs(SharedLinkPolicy.class);
-                    _p.nextToken();
-                }
-                else if ("member_policy".equals(_field)) {
-                    memberPolicy = _p.readValueAs(MemberPolicy.class);
-                    _p.nextToken();
-                }
-                else if ("resolved_member_policy".equals(_field)) {
-                    resolvedMemberPolicy = _p.readValueAs(MemberPolicy.class);
-                    _p.nextToken();
-                }
-                else {
-                    skipValue(_p);
-                }
+        public FolderPolicy deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            FolderPolicy value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
             }
-
-            if (aclUpdatePolicy == null) {
-                throw new JsonParseException(_p, "Required field \"acl_update_policy\" is missing.");
+            if (tag == null) {
+                AclUpdatePolicy f_aclUpdatePolicy = null;
+                SharedLinkPolicy f_sharedLinkPolicy = null;
+                MemberPolicy f_memberPolicy = null;
+                MemberPolicy f_resolvedMemberPolicy = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("acl_update_policy".equals(field)) {
+                        f_aclUpdatePolicy = AclUpdatePolicy.Serializer.INSTANCE.deserialize(p);
+                    }
+                    else if ("shared_link_policy".equals(field)) {
+                        f_sharedLinkPolicy = SharedLinkPolicy.Serializer.INSTANCE.deserialize(p);
+                    }
+                    else if ("member_policy".equals(field)) {
+                        f_memberPolicy = StoneSerializers.nullable(MemberPolicy.Serializer.INSTANCE).deserialize(p);
+                    }
+                    else if ("resolved_member_policy".equals(field)) {
+                        f_resolvedMemberPolicy = StoneSerializers.nullable(MemberPolicy.Serializer.INSTANCE).deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
+                }
+                if (f_aclUpdatePolicy == null) {
+                    throw new JsonParseException(p, "Required field \"acl_update_policy\" missing.");
+                }
+                if (f_sharedLinkPolicy == null) {
+                    throw new JsonParseException(p, "Required field \"shared_link_policy\" missing.");
+                }
+                value = new FolderPolicy(f_aclUpdatePolicy, f_sharedLinkPolicy, f_memberPolicy, f_resolvedMemberPolicy);
             }
-            if (sharedLinkPolicy == null) {
-                throw new JsonParseException(_p, "Required field \"shared_link_policy\" is missing.");
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
             }
-
-            return new FolderPolicy(aclUpdatePolicy, sharedLinkPolicy, memberPolicy, resolvedMemberPolicy);
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

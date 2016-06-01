@@ -1,15 +1,11 @@
 /* DO NOT EDIT */
-/* This file was generated from files.babel */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
-import com.dropbox.core.DbxRequestUtil;
 import com.dropbox.core.DbxUploader;
+import com.dropbox.core.DbxWrappedException;
 import com.dropbox.core.http.HttpRequestor;
-import com.dropbox.core.json.JsonUtil;
-
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JavaType;
 
 import java.io.IOException;
 
@@ -25,8 +21,6 @@ import java.io.IOException;
  * (see {@link DbxUploader} for examples). </p>
  */
 public class UploadSessionAppendV2Uploader extends DbxUploader<Void, UploadSessionLookupError, UploadSessionLookupErrorException> {
-    private static final JavaType _RESULT_TYPE = JsonUtil.createType(new TypeReference<Void>() {});
-    private static final JavaType _ERROR_TYPE = JsonUtil.createType(new TypeReference<UploadSessionLookupError>() {});
 
     /**
      * Creates a new instance of this uploader.
@@ -36,9 +30,10 @@ public class UploadSessionAppendV2Uploader extends DbxUploader<Void, UploadSessi
      * @throws NullPointerException  if {@code httpUploader} is {@code null}
      */
     public UploadSessionAppendV2Uploader(HttpRequestor.Uploader httpUploader) {
-        super(httpUploader, _RESULT_TYPE, _ERROR_TYPE);
+        super(httpUploader, com.dropbox.core.stone.StoneSerializers.void_(), UploadSessionLookupError.Serializer.INSTANCE);
     }
-    protected UploadSessionLookupErrorException newException(DbxRequestUtil.ErrorWrapper error) {
+
+    protected UploadSessionLookupErrorException newException(DbxWrappedException error) {
         return new UploadSessionLookupErrorException(error.getRequestId(), error.getUserMessage(), (UploadSessionLookupError) error.getErrorValue());
     }
 }

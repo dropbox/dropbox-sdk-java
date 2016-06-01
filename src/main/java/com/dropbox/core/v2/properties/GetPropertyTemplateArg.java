@@ -1,38 +1,21 @@
 /* DO NOT EDIT */
-/* This file was generated from properties.babel */
+/* This file was generated from properties.stone */
 
 package com.dropbox.core.v2.properties;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
-@JsonSerialize(using=GetPropertyTemplateArg.Serializer.class)
-@JsonDeserialize(using=GetPropertyTemplateArg.Deserializer.class)
 public class GetPropertyTemplateArg {
     // struct GetPropertyTemplateArg
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final String templateId;
 
@@ -93,7 +76,7 @@ public class GetPropertyTemplateArg {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -105,78 +88,59 @@ public class GetPropertyTemplateArg {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<GetPropertyTemplateArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(GetPropertyTemplateArg.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(GetPropertyTemplateArg.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<GetPropertyTemplateArg> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected JsonSerializer<GetPropertyTemplateArg> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(GetPropertyTemplateArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("template_id", value.templateId);
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<GetPropertyTemplateArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(GetPropertyTemplateArg.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(GetPropertyTemplateArg.class, unwrapping);
-        }
-
-        @Override
-        protected JsonDeserializer<GetPropertyTemplateArg> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public GetPropertyTemplateArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            String templateId = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("template_id".equals(_field)) {
-                    templateId = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else {
-                    skipValue(_p);
-                }
+        public void serialize(GetPropertyTemplateArg value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
             }
-
-            if (templateId == null) {
-                throw new JsonParseException(_p, "Required field \"template_id\" is missing.");
+            g.writeFieldName("template_id");
+            StoneSerializers.string().serialize(value.templateId, g);
+            if (!collapse) {
+                g.writeEndObject();
             }
+        }
 
-            return new GetPropertyTemplateArg(templateId);
+        @Override
+        public GetPropertyTemplateArg deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            GetPropertyTemplateArg value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                String f_templateId = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("template_id".equals(field)) {
+                        f_templateId = StoneSerializers.string().deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
+                }
+                if (f_templateId == null) {
+                    throw new JsonParseException(p, "Required field \"template_id\" missing.");
+                }
+                value = new GetPropertyTemplateArg(f_templateId);
+            }
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

@@ -1,27 +1,16 @@
 /* DO NOT EDIT */
-/* This file was generated from shared_links.babel */
+/* This file was generated from shared_links.stone */
 
 package com.dropbox.core.v2.sharing;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.Date;
@@ -29,14 +18,8 @@ import java.util.Date;
 /**
  * Metadata for a collection-based shared link.
  */
-@JsonSerialize(using=CollectionLinkMetadata.Serializer.class)
-@JsonDeserialize(using=CollectionLinkMetadata.Deserializer.class)
 public class CollectionLinkMetadata extends LinkMetadata {
     // struct CollectionLinkMetadata
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
 
     /**
@@ -95,7 +78,7 @@ public class CollectionLinkMetadata extends LinkMetadata {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -107,92 +90,80 @@ public class CollectionLinkMetadata extends LinkMetadata {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<CollectionLinkMetadata> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(CollectionLinkMetadata.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(CollectionLinkMetadata.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<CollectionLinkMetadata> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected void serializeFields(CollectionLinkMetadata value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeStringField(".tag", "collection");
-            g.writeObjectField("url", value.url);
-            g.writeObjectField("visibility", value.visibility);
+        public void serialize(CollectionLinkMetadata value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
+            }
+            writeTag("collection", g);
+            g.writeFieldName("url");
+            StoneSerializers.string().serialize(value.url, g);
+            g.writeFieldName("visibility");
+            Visibility.Serializer.INSTANCE.serialize(value.visibility, g);
             if (value.expires != null) {
-                g.writeObjectField("expires", value.expires);
+                g.writeFieldName("expires");
+                StoneSerializers.nullable(StoneSerializers.timestamp()).serialize(value.expires, g);
             }
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<CollectionLinkMetadata> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(CollectionLinkMetadata.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(CollectionLinkMetadata.class, unwrapping);
+            if (!collapse) {
+                g.writeEndObject();
+            }
         }
 
         @Override
-        protected JsonDeserializer<CollectionLinkMetadata> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public CollectionLinkMetadata deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            String _subtype_tag = readEnumeratedSubtypeTag(_p, "collection");
-
-            String url = null;
-            Visibility visibility = null;
-            Date expires = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("url".equals(_field)) {
-                    url = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("visibility".equals(_field)) {
-                    visibility = _p.readValueAs(Visibility.class);
-                    _p.nextToken();
-                }
-                else if ("expires".equals(_field)) {
-                    expires = _ctx.parseDate(getStringValue(_p));
-                    _p.nextToken();
-                }
-                else {
-                    skipValue(_p);
+        public CollectionLinkMetadata deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            CollectionLinkMetadata value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+                if ("collection".equals(tag)) {
+                    tag = null;
                 }
             }
-
-            if (url == null) {
-                throw new JsonParseException(_p, "Required field \"url\" is missing.");
+            if (tag == null) {
+                String f_url = null;
+                Visibility f_visibility = null;
+                Date f_expires = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("url".equals(field)) {
+                        f_url = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("visibility".equals(field)) {
+                        f_visibility = Visibility.Serializer.INSTANCE.deserialize(p);
+                    }
+                    else if ("expires".equals(field)) {
+                        f_expires = StoneSerializers.nullable(StoneSerializers.timestamp()).deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
+                }
+                if (f_url == null) {
+                    throw new JsonParseException(p, "Required field \"url\" missing.");
+                }
+                if (f_visibility == null) {
+                    throw new JsonParseException(p, "Required field \"visibility\" missing.");
+                }
+                value = new CollectionLinkMetadata(f_url, f_visibility, f_expires);
             }
-            if (visibility == null) {
-                throw new JsonParseException(_p, "Required field \"visibility\" is missing.");
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
             }
-
-            return new CollectionLinkMetadata(url, visibility, expires);
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

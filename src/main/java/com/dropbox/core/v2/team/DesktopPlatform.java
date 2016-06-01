@@ -1,33 +1,19 @@
 /* DO NOT EDIT */
-/* This file was generated from team_devices.babel */
+/* This file was generated from team_devices.stone */
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
-@JsonSerialize(using=DesktopPlatform.Serializer.class)
-@JsonDeserialize(using=DesktopPlatform.Deserializer.class)
 public enum DesktopPlatform {
     // union DesktopPlatform
     /**
@@ -47,55 +33,68 @@ public enum DesktopPlatform {
      */
     OTHER; // *catch_all
 
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
-
-    static final class Serializer extends UnionJsonSerializer<DesktopPlatform> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(DesktopPlatform.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<DesktopPlatform> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(DesktopPlatform value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+        public void serialize(DesktopPlatform value, JsonGenerator g) throws IOException, JsonGenerationException {
             switch (value) {
-                case WINDOWS:
+                case WINDOWS: {
                     g.writeString("windows");
                     break;
-                case MAC:
+                }
+                case MAC: {
                     g.writeString("mac");
                     break;
-                case LINUX:
+                }
+                case LINUX: {
                     g.writeString("linux");
                     break;
-                case OTHER:
+                }
+                default: {
                     g.writeString("other");
-                    break;
+                }
             }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<DesktopPlatform, DesktopPlatform> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(DesktopPlatform.class, getTagMapping(), DesktopPlatform.OTHER);
         }
 
         @Override
-        public DesktopPlatform deserialize(DesktopPlatform _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            return _tag;
-        }
-
-        private static Map<String, DesktopPlatform> getTagMapping() {
-            Map<String, DesktopPlatform> values = new HashMap<String, DesktopPlatform>();
-            values.put("windows", DesktopPlatform.WINDOWS);
-            values.put("mac", DesktopPlatform.MAC);
-            values.put("linux", DesktopPlatform.LINUX);
-            values.put("other", DesktopPlatform.OTHER);
-            return Collections.unmodifiableMap(values);
+        public DesktopPlatform deserialize(JsonParser p) throws IOException, JsonParseException {
+            DesktopPlatform value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
+            }
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("windows".equals(tag)) {
+                value = DesktopPlatform.WINDOWS;
+            }
+            else if ("mac".equals(tag)) {
+                value = DesktopPlatform.MAC;
+            }
+            else if ("linux".equals(tag)) {
+                value = DesktopPlatform.LINUX;
+            }
+            else {
+                value = DesktopPlatform.OTHER;
+                skipFields(p);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

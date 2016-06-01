@@ -1,9 +1,11 @@
 /* DO NOT EDIT */
-/* This file was generated from files.babel */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
+import com.dropbox.core.DbxDownloader;
 import com.dropbox.core.DbxException;
+import com.dropbox.core.v2.DbxDownloadStyleBuilder;
 
 /**
  * The request builder returned by {@link
@@ -12,27 +14,27 @@ import com.dropbox.core.DbxException;
  * <p> Use this class to set optional request parameters and complete the
  * request. </p>
  */
-public class GetThumbnailBuilder extends com.dropbox.core.v2.DbxDownloadStyleBuilder<FileMetadata> {
-    private final DbxUserFilesRequests files;
+public class GetThumbnailBuilder extends DbxDownloadStyleBuilder<FileMetadata> {
+    private final DbxUserFilesRequests files_;
     private final ThumbnailArg.Builder thumbnailArgBuilder;
 
     /**
      * Creates a new instance of this builder.
      *
-     * @param files  Dropbox namespace-specific client used to issue files
+     * @param files_  Dropbox namespace-specific client used to issue files
      *     requests.
      * @param thumbnailArgBuilder  Request argument builder.
      *
      * @return instsance of this builder
      */
-    GetThumbnailBuilder(DbxUserFilesRequests files, ThumbnailArg.Builder thumbnailArgBuilder) {
-        if (files == null) {
-            throw new NullPointerException("files");
+    GetThumbnailBuilder(DbxUserFilesRequests files_, ThumbnailArg.Builder thumbnailArgBuilder) {
+        if (files_ == null) {
+            throw new NullPointerException("files_");
         }
+        this.files_ = files_;
         if (thumbnailArgBuilder == null) {
             throw new NullPointerException("thumbnailArgBuilder");
         }
-        this.files = files;
         this.thumbnailArgBuilder = thumbnailArgBuilder;
     }
 
@@ -71,8 +73,8 @@ public class GetThumbnailBuilder extends com.dropbox.core.v2.DbxDownloadStyleBui
     }
 
     @Override
-    public com.dropbox.core.DbxDownloader<FileMetadata> start() throws ThumbnailErrorException, DbxException {
-        ThumbnailArg arg = this.thumbnailArgBuilder.build();
-        return files.getThumbnail(arg);
+    public DbxDownloader<FileMetadata> start() throws ThumbnailErrorException, DbxException {
+        ThumbnailArg arg_ = this.thumbnailArgBuilder.build();
+        return files_.getThumbnail(arg_, getHeaders());
     }
 }

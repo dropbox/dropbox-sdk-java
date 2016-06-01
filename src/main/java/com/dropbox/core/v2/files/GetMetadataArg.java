@@ -1,38 +1,21 @@
 /* DO NOT EDIT */
-/* This file was generated from files.babel */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
-@JsonSerialize(using=GetMetadataArg.Serializer.class)
-@JsonDeserialize(using=GetMetadataArg.Deserializer.class)
 class GetMetadataArg {
     // struct GetMetadataArg
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final String path;
     protected final boolean includeMediaInfo;
@@ -44,7 +27,8 @@ class GetMetadataArg {
      * specifying values for all optional fields.
      *
      * @param path  The path of a file or folder on Dropbox. Must match pattern
-     *     "{@code ((/|id:).*)|(rev:[0-9a-f]{9,})}" and not be {@code null}.
+     *     "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}" and not be {@code
+     *     null}.
      * @param includeMediaInfo  If true, {@link FileMetadata#getMediaInfo} is
      *     set for photo and video.
      * @param includeDeleted  If true, {@link DeletedMetadata} will be returned
@@ -61,7 +45,7 @@ class GetMetadataArg {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
-        if (!java.util.regex.Pattern.matches("((/|id:).*)|(rev:[0-9a-f]{9,})", path)) {
+        if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})", path)) {
             throw new IllegalArgumentException("String 'path' does not match pattern");
         }
         this.path = path;
@@ -74,7 +58,8 @@ class GetMetadataArg {
      * The default values for unset fields will be used.
      *
      * @param path  The path of a file or folder on Dropbox. Must match pattern
-     *     "{@code ((/|id:).*)|(rev:[0-9a-f]{9,})}" and not be {@code null}.
+     *     "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}" and not be {@code
+     *     null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -128,7 +113,8 @@ class GetMetadataArg {
      * Returns a new builder for creating an instance of this class.
      *
      * @param path  The path of a file or folder on Dropbox. Must match pattern
-     *     "{@code ((/|id:).*)|(rev:[0-9a-f]{9,})}" and not be {@code null}.
+     *     "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}" and not be {@code
+     *     null}.
      *
      * @return builder for this class.
      *
@@ -153,7 +139,7 @@ class GetMetadataArg {
             if (path == null) {
                 throw new IllegalArgumentException("Required value for 'path' is null");
             }
-            if (!java.util.regex.Pattern.matches("((/|id:).*)|(rev:[0-9a-f]{9,})", path)) {
+            if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})", path)) {
                 throw new IllegalArgumentException("String 'path' does not match pattern");
             }
             this.path = path;
@@ -273,7 +259,7 @@ class GetMetadataArg {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -285,96 +271,77 @@ class GetMetadataArg {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<GetMetadataArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(GetMetadataArg.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(GetMetadataArg.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<GetMetadataArg> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected JsonSerializer<GetMetadataArg> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(GetMetadataArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("path", value.path);
-            g.writeObjectField("include_media_info", value.includeMediaInfo);
-            g.writeObjectField("include_deleted", value.includeDeleted);
-            g.writeObjectField("include_has_explicit_shared_members", value.includeHasExplicitSharedMembers);
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<GetMetadataArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(GetMetadataArg.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(GetMetadataArg.class, unwrapping);
-        }
-
-        @Override
-        protected JsonDeserializer<GetMetadataArg> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public GetMetadataArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            String path = null;
-            boolean includeMediaInfo = false;
-            boolean includeDeleted = false;
-            boolean includeHasExplicitSharedMembers = false;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("path".equals(_field)) {
-                    path = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("include_media_info".equals(_field)) {
-                    includeMediaInfo = _p.getValueAsBoolean();
-                    _p.nextToken();
-                }
-                else if ("include_deleted".equals(_field)) {
-                    includeDeleted = _p.getValueAsBoolean();
-                    _p.nextToken();
-                }
-                else if ("include_has_explicit_shared_members".equals(_field)) {
-                    includeHasExplicitSharedMembers = _p.getValueAsBoolean();
-                    _p.nextToken();
-                }
-                else {
-                    skipValue(_p);
-                }
+        public void serialize(GetMetadataArg value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
             }
-
-            if (path == null) {
-                throw new JsonParseException(_p, "Required field \"path\" is missing.");
+            g.writeFieldName("path");
+            StoneSerializers.string().serialize(value.path, g);
+            g.writeFieldName("include_media_info");
+            StoneSerializers.boolean_().serialize(value.includeMediaInfo, g);
+            g.writeFieldName("include_deleted");
+            StoneSerializers.boolean_().serialize(value.includeDeleted, g);
+            g.writeFieldName("include_has_explicit_shared_members");
+            StoneSerializers.boolean_().serialize(value.includeHasExplicitSharedMembers, g);
+            if (!collapse) {
+                g.writeEndObject();
             }
+        }
 
-            return new GetMetadataArg(path, includeMediaInfo, includeDeleted, includeHasExplicitSharedMembers);
+        @Override
+        public GetMetadataArg deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            GetMetadataArg value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                String f_path = null;
+                Boolean f_includeMediaInfo = false;
+                Boolean f_includeDeleted = false;
+                Boolean f_includeHasExplicitSharedMembers = false;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("path".equals(field)) {
+                        f_path = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("include_media_info".equals(field)) {
+                        f_includeMediaInfo = StoneSerializers.boolean_().deserialize(p);
+                    }
+                    else if ("include_deleted".equals(field)) {
+                        f_includeDeleted = StoneSerializers.boolean_().deserialize(p);
+                    }
+                    else if ("include_has_explicit_shared_members".equals(field)) {
+                        f_includeHasExplicitSharedMembers = StoneSerializers.boolean_().deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
+                }
+                if (f_path == null) {
+                    throw new JsonParseException(p, "Required field \"path\" missing.");
+                }
+                value = new GetMetadataArg(f_path, f_includeMediaInfo, f_includeDeleted, f_includeHasExplicitSharedMembers);
+            }
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

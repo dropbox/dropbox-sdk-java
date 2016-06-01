@@ -1,27 +1,16 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.babel */
+/* This file was generated from sharing_folders.stone */
 
 package com.dropbox.core.v2.sharing;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.List;
@@ -29,14 +18,8 @@ import java.util.List;
 /**
  * Information about an invited member of a shared folder.
  */
-@JsonSerialize(using=InviteeMembershipInfo.Serializer.class)
-@JsonDeserialize(using=InviteeMembershipInfo.Deserializer.class)
 public class InviteeMembershipInfo extends MembershipInfo {
     // struct InviteeMembershipInfo
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final InviteeInfo invitee;
     protected final UserInfo user;
@@ -193,7 +176,7 @@ public class InviteeMembershipInfo extends MembershipInfo {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -205,125 +188,98 @@ public class InviteeMembershipInfo extends MembershipInfo {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<InviteeMembershipInfo> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(InviteeMembershipInfo.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(InviteeMembershipInfo.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<InviteeMembershipInfo> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected JsonSerializer<InviteeMembershipInfo> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(InviteeMembershipInfo value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("access_type", value.accessType);
-            g.writeObjectField("invitee", value.invitee);
+        public void serialize(InviteeMembershipInfo value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
+            }
+            g.writeFieldName("access_type");
+            AccessLevel.Serializer.INSTANCE.serialize(value.accessType, g);
+            g.writeFieldName("invitee");
+            InviteeInfo.Serializer.INSTANCE.serialize(value.invitee, g);
             if (value.permissions != null) {
-                g.writeObjectField("permissions", value.permissions);
+                g.writeFieldName("permissions");
+                StoneSerializers.nullable(StoneSerializers.list(MemberPermission.Serializer.INSTANCE)).serialize(value.permissions, g);
             }
             if (value.initials != null) {
-                g.writeObjectField("initials", value.initials);
+                g.writeFieldName("initials");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.initials, g);
             }
-            g.writeObjectField("is_inherited", value.isInherited);
+            g.writeFieldName("is_inherited");
+            StoneSerializers.boolean_().serialize(value.isInherited, g);
             if (value.user != null) {
-                g.writeObjectField("user", value.user);
+                g.writeFieldName("user");
+                StoneSerializers.nullable(UserInfo.Serializer.INSTANCE).serialize(value.user, g);
+            }
+            if (!collapse) {
+                g.writeEndObject();
             }
         }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<InviteeMembershipInfo> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(InviteeMembershipInfo.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(InviteeMembershipInfo.class, unwrapping);
-        }
 
         @Override
-        protected JsonDeserializer<InviteeMembershipInfo> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public InviteeMembershipInfo deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            AccessLevel accessType = null;
-            InviteeInfo invitee = null;
-            List<MemberPermission> permissions = null;
-            String initials = null;
-            boolean isInherited = false;
-            UserInfo user = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("access_type".equals(_field)) {
-                    accessType = _p.readValueAs(AccessLevel.class);
-                    _p.nextToken();
-                }
-                else if ("invitee".equals(_field)) {
-                    invitee = _p.readValueAs(InviteeInfo.class);
-                    _p.nextToken();
-                }
-                else if ("permissions".equals(_field)) {
-                    expectArrayStart(_p);
-                    permissions = new java.util.ArrayList<MemberPermission>();
-                    while (!isArrayEnd(_p)) {
-                        MemberPermission _x = null;
-                        _x = _p.readValueAs(MemberPermission.class);
-                        _p.nextToken();
-                        permissions.add(_x);
+        public InviteeMembershipInfo deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            InviteeMembershipInfo value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                AccessLevel f_accessType = null;
+                InviteeInfo f_invitee = null;
+                List<MemberPermission> f_permissions = null;
+                String f_initials = null;
+                Boolean f_isInherited = false;
+                UserInfo f_user = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("access_type".equals(field)) {
+                        f_accessType = AccessLevel.Serializer.INSTANCE.deserialize(p);
                     }
-                    expectArrayEnd(_p);
-                    _p.nextToken();
+                    else if ("invitee".equals(field)) {
+                        f_invitee = InviteeInfo.Serializer.INSTANCE.deserialize(p);
+                    }
+                    else if ("permissions".equals(field)) {
+                        f_permissions = StoneSerializers.nullable(StoneSerializers.list(MemberPermission.Serializer.INSTANCE)).deserialize(p);
+                    }
+                    else if ("initials".equals(field)) {
+                        f_initials = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                    }
+                    else if ("is_inherited".equals(field)) {
+                        f_isInherited = StoneSerializers.boolean_().deserialize(p);
+                    }
+                    else if ("user".equals(field)) {
+                        f_user = StoneSerializers.nullable(UserInfo.Serializer.INSTANCE).deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
                 }
-                else if ("initials".equals(_field)) {
-                    initials = getStringValue(_p);
-                    _p.nextToken();
+                if (f_accessType == null) {
+                    throw new JsonParseException(p, "Required field \"access_type\" missing.");
                 }
-                else if ("is_inherited".equals(_field)) {
-                    isInherited = _p.getValueAsBoolean();
-                    _p.nextToken();
+                if (f_invitee == null) {
+                    throw new JsonParseException(p, "Required field \"invitee\" missing.");
                 }
-                else if ("user".equals(_field)) {
-                    user = _p.readValueAs(UserInfo.class);
-                    _p.nextToken();
-                }
-                else {
-                    skipValue(_p);
-                }
+                value = new InviteeMembershipInfo(f_accessType, f_invitee, f_permissions, f_initials, f_isInherited, f_user);
             }
-
-            if (accessType == null) {
-                throw new JsonParseException(_p, "Required field \"access_type\" is missing.");
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
             }
-            if (invitee == null) {
-                throw new JsonParseException(_p, "Required field \"invitee\" is missing.");
+            if (!collapsed) {
+                expectEndObject(p);
             }
-
-            return new InviteeMembershipInfo(accessType, invitee, permissions, initials, isInherited, user);
+            return value;
         }
     }
 }

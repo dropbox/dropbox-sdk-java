@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_devices.babel */
+/* This file was generated from team_devices.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -13,26 +13,26 @@ import com.dropbox.core.DbxException;
  * request. </p>
  */
 public class DevicesListTeamDevicesBuilder {
-    private final DbxTeamTeamRequests team;
+    private final DbxTeamTeamRequests team_;
     private final ListTeamDevicesArg.Builder listTeamDevicesArgBuilder;
 
     /**
      * Creates a new instance of this builder.
      *
-     * @param team  Dropbox namespace-specific client used to issue team
+     * @param team_  Dropbox namespace-specific client used to issue team
      *     requests.
      * @param listTeamDevicesArgBuilder  Request argument builder.
      *
      * @return instsance of this builder
      */
-    DevicesListTeamDevicesBuilder(DbxTeamTeamRequests team, ListTeamDevicesArg.Builder listTeamDevicesArgBuilder) {
-        if (team == null) {
-            throw new NullPointerException("team");
+    DevicesListTeamDevicesBuilder(DbxTeamTeamRequests team_, ListTeamDevicesArg.Builder listTeamDevicesArgBuilder) {
+        if (team_ == null) {
+            throw new NullPointerException("team_");
         }
+        this.team_ = team_;
         if (listTeamDevicesArgBuilder == null) {
             throw new NullPointerException("listTeamDevicesArgBuilder");
         }
-        this.team = team;
         this.listTeamDevicesArgBuilder = listTeamDevicesArgBuilder;
     }
 
@@ -100,8 +100,9 @@ public class DevicesListTeamDevicesBuilder {
     /**
      * Issues the request.
      */
+    @SuppressWarnings("deprecation")
     public ListTeamDevicesResult start() throws ListTeamDevicesErrorException, DbxException {
-        ListTeamDevicesArg arg = this.listTeamDevicesArgBuilder.build();
-        return team.devicesListTeamDevices(arg);
+        ListTeamDevicesArg arg_ = this.listTeamDevicesArgBuilder.build();
+        return team_.devicesListTeamDevices(arg_);
     }
 }

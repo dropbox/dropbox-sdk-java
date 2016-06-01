@@ -110,7 +110,7 @@ public class Main {
      */
     private static DbxClientV2 createClient(DbxAuthInfo auth, StandardHttpRequestor.Config config) {
         String clientUserAgentId = "examples-longpoll";
-        String userLocale = Locale.getDefault().toString();
+        String userLocale = Locale.getDefault().toLanguageTag();
         StandardHttpRequestor requestor = new StandardHttpRequestor(config);
         DbxRequestConfig requestConfig = new DbxRequestConfig(clientUserAgentId, userLocale, requestor);
 
@@ -187,7 +187,7 @@ public class Main {
         // Only display important log messages.
         Logger.getLogger("").setLevel(Level.WARNING);
 
-        if (args.length == 0) {
+        if (args.length != 2) {
             System.out.println("");
             System.out.println("Usage: COMMAND <auth-file> <dropbox-path>");
             System.out.println("");
@@ -197,13 +197,8 @@ public class Main {
             System.out.println("");
             System.out.println(" <dropbox-path>: The path on Dropbox to watch for changes.");
             System.out.println("");
+            System.exit(1);
             return;
-        }
-
-        if (args.length != 2) {
-            System.err.println("Expecting exactly 2 arguments, got " + args.length + ".");
-            System.err.println("Run with no arguments for help.");
-            System.exit(1); return;
         }
 
         String authFile = args[0];

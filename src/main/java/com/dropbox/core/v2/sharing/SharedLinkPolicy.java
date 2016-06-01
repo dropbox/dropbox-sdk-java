@@ -1,36 +1,22 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.babel */
+/* This file was generated from sharing_folders.stone */
 
 package com.dropbox.core.v2.sharing;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Policy governing who can view shared links.
  */
-@JsonSerialize(using=SharedLinkPolicy.Serializer.class)
-@JsonDeserialize(using=SharedLinkPolicy.Deserializer.class)
 public enum SharedLinkPolicy {
     // union SharedLinkPolicy
     /**
@@ -46,51 +32,61 @@ public enum SharedLinkPolicy {
      */
     OTHER; // *catch_all
 
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
-
-    static final class Serializer extends UnionJsonSerializer<SharedLinkPolicy> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(SharedLinkPolicy.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<SharedLinkPolicy> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(SharedLinkPolicy value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+        public void serialize(SharedLinkPolicy value, JsonGenerator g) throws IOException, JsonGenerationException {
             switch (value) {
-                case ANYONE:
+                case ANYONE: {
                     g.writeString("anyone");
                     break;
-                case MEMBERS:
+                }
+                case MEMBERS: {
                     g.writeString("members");
                     break;
-                case OTHER:
+                }
+                default: {
                     g.writeString("other");
-                    break;
+                }
             }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<SharedLinkPolicy, SharedLinkPolicy> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(SharedLinkPolicy.class, getTagMapping(), SharedLinkPolicy.OTHER);
         }
 
         @Override
-        public SharedLinkPolicy deserialize(SharedLinkPolicy _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            return _tag;
-        }
-
-        private static Map<String, SharedLinkPolicy> getTagMapping() {
-            Map<String, SharedLinkPolicy> values = new HashMap<String, SharedLinkPolicy>();
-            values.put("anyone", SharedLinkPolicy.ANYONE);
-            values.put("members", SharedLinkPolicy.MEMBERS);
-            values.put("other", SharedLinkPolicy.OTHER);
-            return Collections.unmodifiableMap(values);
+        public SharedLinkPolicy deserialize(JsonParser p) throws IOException, JsonParseException {
+            SharedLinkPolicy value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
+            }
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("anyone".equals(tag)) {
+                value = SharedLinkPolicy.ANYONE;
+            }
+            else if ("members".equals(tag)) {
+                value = SharedLinkPolicy.MEMBERS;
+            }
+            else {
+                value = SharedLinkPolicy.OTHER;
+                skipFields(p);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

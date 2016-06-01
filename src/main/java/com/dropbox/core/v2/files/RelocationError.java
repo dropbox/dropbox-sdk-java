@@ -1,30 +1,18 @@
 /* DO NOT EDIT */
-/* This file was generated from files.babel */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This class is an open tagged union.  Tagged unions instances are always
@@ -36,14 +24,8 @@ import java.util.Map;
  * tag is introduced that this SDK does not recognized, the {@link #OTHER} value
  * will be used. </p>
  */
-@JsonSerialize(using=RelocationError.Serializer.class)
-@JsonDeserialize(using=RelocationError.Deserializer.class)
 public final class RelocationError {
     // union RelocationError
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link RelocationError}.
@@ -367,7 +349,7 @@ public final class RelocationError {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -379,127 +361,120 @@ public final class RelocationError {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends UnionJsonSerializer<RelocationError> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(RelocationError.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<RelocationError> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(RelocationError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            switch (value.tag) {
-                case FROM_LOOKUP:
-                    g.writeStartObject();
-                    g.writeStringField(".tag", "from_lookup");
-                    g.writeObjectField("from_lookup", value.fromLookupValue);
-                    g.writeEndObject();
-                    break;
-                case FROM_WRITE:
-                    g.writeStartObject();
-                    g.writeStringField(".tag", "from_write");
-                    g.writeObjectField("from_write", value.fromWriteValue);
-                    g.writeEndObject();
-                    break;
-                case TO:
-                    g.writeStartObject();
-                    g.writeStringField(".tag", "to");
-                    g.writeObjectField("to", value.toValue);
-                    g.writeEndObject();
-                    break;
-                case CANT_COPY_SHARED_FOLDER:
-                    g.writeString("cant_copy_shared_folder");
-                    break;
-                case CANT_NEST_SHARED_FOLDER:
-                    g.writeString("cant_nest_shared_folder");
-                    break;
-                case CANT_MOVE_FOLDER_INTO_ITSELF:
-                    g.writeString("cant_move_folder_into_itself");
-                    break;
-                case TOO_MANY_FILES:
-                    g.writeString("too_many_files");
-                    break;
-                case OTHER:
-                    g.writeString("other");
-                    break;
-            }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<RelocationError, Tag> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(RelocationError.class, getTagMapping(), Tag.OTHER);
-        }
-
-        @Override
-        public RelocationError deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            switch (_tag) {
+        public void serialize(RelocationError value, JsonGenerator g) throws IOException, JsonGenerationException {
+            switch (value.tag()) {
                 case FROM_LOOKUP: {
-                    LookupError value = null;
-                    expectField(_p, "from_lookup");
-                    value = _p.readValueAs(LookupError.class);
-                    _p.nextToken();
-                    return RelocationError.fromLookup(value);
+                    g.writeStartObject();
+                    writeTag("from_lookup", g);
+                    g.writeFieldName("from_lookup");
+                    LookupError.Serializer.INSTANCE.serialize(value.fromLookupValue, g);
+                    g.writeEndObject();
+                    break;
                 }
                 case FROM_WRITE: {
-                    WriteError value = null;
-                    expectField(_p, "from_write");
-                    value = _p.readValueAs(WriteError.class);
-                    _p.nextToken();
-                    return RelocationError.fromWrite(value);
+                    g.writeStartObject();
+                    writeTag("from_write", g);
+                    g.writeFieldName("from_write");
+                    WriteError.Serializer.INSTANCE.serialize(value.fromWriteValue, g);
+                    g.writeEndObject();
+                    break;
                 }
                 case TO: {
-                    WriteError value = null;
-                    expectField(_p, "to");
-                    value = _p.readValueAs(WriteError.class);
-                    _p.nextToken();
-                    return RelocationError.to(value);
+                    g.writeStartObject();
+                    writeTag("to", g);
+                    g.writeFieldName("to");
+                    WriteError.Serializer.INSTANCE.serialize(value.toValue, g);
+                    g.writeEndObject();
+                    break;
                 }
                 case CANT_COPY_SHARED_FOLDER: {
-                    return RelocationError.CANT_COPY_SHARED_FOLDER;
+                    g.writeString("cant_copy_shared_folder");
+                    break;
                 }
                 case CANT_NEST_SHARED_FOLDER: {
-                    return RelocationError.CANT_NEST_SHARED_FOLDER;
+                    g.writeString("cant_nest_shared_folder");
+                    break;
                 }
                 case CANT_MOVE_FOLDER_INTO_ITSELF: {
-                    return RelocationError.CANT_MOVE_FOLDER_INTO_ITSELF;
+                    g.writeString("cant_move_folder_into_itself");
+                    break;
                 }
                 case TOO_MANY_FILES: {
-                    return RelocationError.TOO_MANY_FILES;
+                    g.writeString("too_many_files");
+                    break;
                 }
-                case OTHER: {
-                    return RelocationError.OTHER;
+                default: {
+                    g.writeString("other");
                 }
             }
-            // should be impossible to get here
-            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
         }
 
-        private static Map<String, RelocationError.Tag> getTagMapping() {
-            Map<String, RelocationError.Tag> values = new HashMap<String, RelocationError.Tag>();
-            values.put("from_lookup", RelocationError.Tag.FROM_LOOKUP);
-            values.put("from_write", RelocationError.Tag.FROM_WRITE);
-            values.put("to", RelocationError.Tag.TO);
-            values.put("cant_copy_shared_folder", RelocationError.Tag.CANT_COPY_SHARED_FOLDER);
-            values.put("cant_nest_shared_folder", RelocationError.Tag.CANT_NEST_SHARED_FOLDER);
-            values.put("cant_move_folder_into_itself", RelocationError.Tag.CANT_MOVE_FOLDER_INTO_ITSELF);
-            values.put("too_many_files", RelocationError.Tag.TOO_MANY_FILES);
-            values.put("other", RelocationError.Tag.OTHER);
-            return Collections.unmodifiableMap(values);
+        @Override
+        public RelocationError deserialize(JsonParser p) throws IOException, JsonParseException {
+            RelocationError value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
+            }
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("from_lookup".equals(tag)) {
+                LookupError fieldValue = null;
+                expectField("from_lookup", p);
+                fieldValue = LookupError.Serializer.INSTANCE.deserialize(p);
+                value = RelocationError.fromLookup(fieldValue);
+            }
+            else if ("from_write".equals(tag)) {
+                WriteError fieldValue = null;
+                expectField("from_write", p);
+                fieldValue = WriteError.Serializer.INSTANCE.deserialize(p);
+                value = RelocationError.fromWrite(fieldValue);
+            }
+            else if ("to".equals(tag)) {
+                WriteError fieldValue = null;
+                expectField("to", p);
+                fieldValue = WriteError.Serializer.INSTANCE.deserialize(p);
+                value = RelocationError.to(fieldValue);
+            }
+            else if ("cant_copy_shared_folder".equals(tag)) {
+                value = RelocationError.CANT_COPY_SHARED_FOLDER;
+            }
+            else if ("cant_nest_shared_folder".equals(tag)) {
+                value = RelocationError.CANT_NEST_SHARED_FOLDER;
+            }
+            else if ("cant_move_folder_into_itself".equals(tag)) {
+                value = RelocationError.CANT_MOVE_FOLDER_INTO_ITSELF;
+            }
+            else if ("too_many_files".equals(tag)) {
+                value = RelocationError.TOO_MANY_FILES;
+            }
+            else {
+                value = RelocationError.OTHER;
+                skipFields(p);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

@@ -1,30 +1,18 @@
 /* DO NOT EDIT */
-/* This file was generated from users.babel */
+/* This file was generated from users.stone */
 
 package com.dropbox.core.v2.users;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Space is allocated differently based on the type of account.
@@ -38,14 +26,8 @@ import java.util.Map;
  * tag is introduced that this SDK does not recognized, the {@link #OTHER} value
  * will be used. </p>
  */
-@JsonSerialize(using=SpaceAllocation.Serializer.class)
-@JsonDeserialize(using=SpaceAllocation.Deserializer.class)
 public final class SpaceAllocation {
     // union SpaceAllocation
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link SpaceAllocation}.
@@ -258,7 +240,7 @@ public final class SpaceAllocation {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -270,81 +252,74 @@ public final class SpaceAllocation {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends UnionJsonSerializer<SpaceAllocation> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(SpaceAllocation.class, IndividualSpaceAllocation.class, TeamSpaceAllocation.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<SpaceAllocation> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(SpaceAllocation value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            switch (value.tag) {
-                case INDIVIDUAL:
-                    g.writeStartObject();
-                    g.writeStringField(".tag", "individual");
-                    getUnwrappingSerializer(IndividualSpaceAllocation.class).serialize(value.individualValue, g, provider);
-                    g.writeEndObject();
-                    break;
-                case TEAM:
-                    g.writeStartObject();
-                    g.writeStringField(".tag", "team");
-                    getUnwrappingSerializer(TeamSpaceAllocation.class).serialize(value.teamValue, g, provider);
-                    g.writeEndObject();
-                    break;
-                case OTHER:
-                    g.writeString("other");
-                    break;
-            }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<SpaceAllocation, Tag> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(SpaceAllocation.class, getTagMapping(), Tag.OTHER, IndividualSpaceAllocation.class, TeamSpaceAllocation.class);
-        }
-
-        @Override
-        public SpaceAllocation deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            switch (_tag) {
+        public void serialize(SpaceAllocation value, JsonGenerator g) throws IOException, JsonGenerationException {
+            switch (value.tag()) {
                 case INDIVIDUAL: {
-                    IndividualSpaceAllocation value = null;
-                    value = readCollapsedStructValue(IndividualSpaceAllocation.class, _p, _ctx);
-                    return SpaceAllocation.individual(value);
+                    g.writeStartObject();
+                    writeTag("individual", g);
+                    IndividualSpaceAllocation.Serializer.INSTANCE.serialize(value.individualValue, g, true);
+                    g.writeEndObject();
+                    break;
                 }
                 case TEAM: {
-                    TeamSpaceAllocation value = null;
-                    value = readCollapsedStructValue(TeamSpaceAllocation.class, _p, _ctx);
-                    return SpaceAllocation.team(value);
+                    g.writeStartObject();
+                    writeTag("team", g);
+                    TeamSpaceAllocation.Serializer.INSTANCE.serialize(value.teamValue, g, true);
+                    g.writeEndObject();
+                    break;
                 }
-                case OTHER: {
-                    return SpaceAllocation.OTHER;
+                default: {
+                    g.writeString("other");
                 }
             }
-            // should be impossible to get here
-            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
         }
 
-        private static Map<String, SpaceAllocation.Tag> getTagMapping() {
-            Map<String, SpaceAllocation.Tag> values = new HashMap<String, SpaceAllocation.Tag>();
-            values.put("individual", SpaceAllocation.Tag.INDIVIDUAL);
-            values.put("team", SpaceAllocation.Tag.TEAM);
-            values.put("other", SpaceAllocation.Tag.OTHER);
-            return Collections.unmodifiableMap(values);
+        @Override
+        public SpaceAllocation deserialize(JsonParser p) throws IOException, JsonParseException {
+            SpaceAllocation value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
+            }
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("individual".equals(tag)) {
+                IndividualSpaceAllocation fieldValue = null;
+                fieldValue = IndividualSpaceAllocation.Serializer.INSTANCE.deserialize(p, true);
+                value = SpaceAllocation.individual(fieldValue);
+            }
+            else if ("team".equals(tag)) {
+                TeamSpaceAllocation fieldValue = null;
+                fieldValue = TeamSpaceAllocation.Serializer.INSTANCE.deserialize(p, true);
+                value = SpaceAllocation.team(fieldValue);
+            }
+            else {
+                value = SpaceAllocation.OTHER;
+                skipFields(p);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

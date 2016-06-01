@@ -1,29 +1,18 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.babel */
+/* This file was generated from sharing_folders.stone */
 
 package com.dropbox.core.v2.sharing;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
-import com.dropbox.core.v2.team.GroupSummary;
-import com.dropbox.core.v2.team.GroupType;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
+import com.dropbox.core.v2.teamcommon.GroupSummary;
+import com.dropbox.core.v2.teamcommon.GroupType;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
@@ -31,16 +20,11 @@ import java.io.IOException;
  * The information about a group. Groups is a way to manage a list of users  who
  * need same access permission to the shared folder.
  */
-@JsonSerialize(using=GroupInfo.Serializer.class)
-@JsonDeserialize(using=GroupInfo.Deserializer.class)
 public class GroupInfo extends GroupSummary {
     // struct GroupInfo
 
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
-
     protected final GroupType groupType;
+    protected final boolean isOwner;
     protected final boolean sameTeam;
 
     /**
@@ -53,6 +37,7 @@ public class GroupInfo extends GroupSummary {
      * @param groupName  Must not be {@code null}.
      * @param groupId  Must not be {@code null}.
      * @param groupType  The type of group. Must not be {@code null}.
+     * @param isOwner  If the current user is an owner of the group.
      * @param sameTeam  If the group is owned by the current user's team.
      * @param groupExternalId  External ID of group. This is an arbitrary ID
      *     that an admin can attach to a group.
@@ -61,12 +46,13 @@ public class GroupInfo extends GroupSummary {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupInfo(String groupName, String groupId, GroupType groupType, boolean sameTeam, String groupExternalId, Long memberCount) {
+    public GroupInfo(String groupName, String groupId, GroupType groupType, boolean isOwner, boolean sameTeam, String groupExternalId, Long memberCount) {
         super(groupName, groupId, groupExternalId, memberCount);
         if (groupType == null) {
             throw new IllegalArgumentException("Required value for 'groupType' is null");
         }
         this.groupType = groupType;
+        this.isOwner = isOwner;
         this.sameTeam = sameTeam;
     }
 
@@ -79,13 +65,14 @@ public class GroupInfo extends GroupSummary {
      * @param groupName  Must not be {@code null}.
      * @param groupId  Must not be {@code null}.
      * @param groupType  The type of group. Must not be {@code null}.
+     * @param isOwner  If the current user is an owner of the group.
      * @param sameTeam  If the group is owned by the current user's team.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupInfo(String groupName, String groupId, GroupType groupType, boolean sameTeam) {
-        this(groupName, groupId, groupType, sameTeam, null, null);
+    public GroupInfo(String groupName, String groupId, GroupType groupType, boolean isOwner, boolean sameTeam) {
+        this(groupName, groupId, groupType, isOwner, sameTeam, null, null);
     }
 
     /**
@@ -95,6 +82,15 @@ public class GroupInfo extends GroupSummary {
      */
     public GroupType getGroupType() {
         return groupType;
+    }
+
+    /**
+     * If the current user is an owner of the group.
+     *
+     * @return value for this field.
+     */
+    public boolean getIsOwner() {
+        return isOwner;
     }
 
     /**
@@ -112,6 +108,7 @@ public class GroupInfo extends GroupSummary {
      * @param groupName  Must not be {@code null}.
      * @param groupId  Must not be {@code null}.
      * @param groupType  The type of group. Must not be {@code null}.
+     * @param isOwner  If the current user is an owner of the group.
      * @param sameTeam  If the group is owned by the current user's team.
      *
      * @return builder for this class.
@@ -119,8 +116,8 @@ public class GroupInfo extends GroupSummary {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public static Builder newBuilder(String groupName, String groupId, GroupType groupType, boolean sameTeam) {
-        return new Builder(groupName, groupId, groupType, sameTeam);
+    public static Builder newBuilder(String groupName, String groupId, GroupType groupType, boolean isOwner, boolean sameTeam) {
+        return new Builder(groupName, groupId, groupType, isOwner, sameTeam);
     }
 
     /**
@@ -128,14 +125,16 @@ public class GroupInfo extends GroupSummary {
      */
     public static class Builder extends GroupSummary.Builder {
         protected final GroupType groupType;
+        protected final boolean isOwner;
         protected final boolean sameTeam;
 
-        protected Builder(String groupName, String groupId, GroupType groupType, boolean sameTeam) {
+        protected Builder(String groupName, String groupId, GroupType groupType, boolean isOwner, boolean sameTeam) {
             super(groupName, groupId);
             if (groupType == null) {
                 throw new IllegalArgumentException("Required value for 'groupType' is null");
             }
             this.groupType = groupType;
+            this.isOwner = isOwner;
             this.sameTeam = sameTeam;
         }
 
@@ -146,7 +145,7 @@ public class GroupInfo extends GroupSummary {
          * @return new instance of {@link GroupInfo}
          */
         public GroupInfo build() {
-            return new GroupInfo(groupName, groupId, groupType, sameTeam, groupExternalId, memberCount);
+            return new GroupInfo(groupName, groupId, groupType, isOwner, sameTeam, groupExternalId, memberCount);
         }
     }
 
@@ -154,6 +153,7 @@ public class GroupInfo extends GroupSummary {
     public int hashCode() {
         int hash = java.util.Arrays.hashCode(new Object [] {
             groupType,
+            isOwner,
             sameTeam
         });
         hash = (31 * super.hashCode()) + hash;
@@ -171,6 +171,7 @@ public class GroupInfo extends GroupSummary {
             return ((this.groupName == other.groupName) || (this.groupName.equals(other.groupName)))
                 && ((this.groupId == other.groupId) || (this.groupId.equals(other.groupId)))
                 && ((this.groupType == other.groupType) || (this.groupType.equals(other.groupType)))
+                && (this.isOwner == other.isOwner)
                 && (this.sameTeam == other.sameTeam)
                 && ((this.groupExternalId == other.groupExternalId) || (this.groupExternalId != null && this.groupExternalId.equals(other.groupExternalId)))
                 && ((this.memberCount == other.memberCount) || (this.memberCount != null && this.memberCount.equals(other.memberCount)))
@@ -183,7 +184,7 @@ public class GroupInfo extends GroupSummary {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -195,125 +196,111 @@ public class GroupInfo extends GroupSummary {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<GroupInfo> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(GroupInfo.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(GroupInfo.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<GroupInfo> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected JsonSerializer<GroupInfo> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(GroupInfo value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("group_name", value.groupName);
-            g.writeObjectField("group_id", value.groupId);
-            g.writeObjectField("group_type", value.groupType);
-            g.writeObjectField("same_team", value.sameTeam);
+        public void serialize(GroupInfo value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
+            }
+            g.writeFieldName("group_name");
+            StoneSerializers.string().serialize(value.groupName, g);
+            g.writeFieldName("group_id");
+            StoneSerializers.string().serialize(value.groupId, g);
+            g.writeFieldName("group_type");
+            GroupType.Serializer.INSTANCE.serialize(value.groupType, g);
+            g.writeFieldName("is_owner");
+            StoneSerializers.boolean_().serialize(value.isOwner, g);
+            g.writeFieldName("same_team");
+            StoneSerializers.boolean_().serialize(value.sameTeam, g);
             if (value.groupExternalId != null) {
-                g.writeObjectField("group_external_id", value.groupExternalId);
+                g.writeFieldName("group_external_id");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.groupExternalId, g);
             }
             if (value.memberCount != null) {
-                g.writeObjectField("member_count", value.memberCount);
+                g.writeFieldName("member_count");
+                StoneSerializers.nullable(StoneSerializers.uInt32()).serialize(value.memberCount, g);
+            }
+            if (!collapse) {
+                g.writeEndObject();
             }
         }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<GroupInfo> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(GroupInfo.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(GroupInfo.class, unwrapping);
-        }
 
         @Override
-        protected JsonDeserializer<GroupInfo> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public GroupInfo deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            String groupName = null;
-            String groupId = null;
-            GroupType groupType = null;
-            Boolean sameTeam = null;
-            String groupExternalId = null;
-            Long memberCount = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("group_name".equals(_field)) {
-                    groupName = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("group_id".equals(_field)) {
-                    groupId = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("group_type".equals(_field)) {
-                    groupType = _p.readValueAs(GroupType.class);
-                    _p.nextToken();
-                }
-                else if ("same_team".equals(_field)) {
-                    sameTeam = _p.getValueAsBoolean();
-                    _p.nextToken();
-                }
-                else if ("group_external_id".equals(_field)) {
-                    groupExternalId = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("member_count".equals(_field)) {
-                    memberCount = _p.getLongValue();
-                    assertUnsigned(_p, memberCount);
-                    if (memberCount > Integer.MAX_VALUE) {
-                        throw new JsonParseException(_p, "expecting a 32-bit unsigned integer, got: " + memberCount);
+        public GroupInfo deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            GroupInfo value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                String f_groupName = null;
+                String f_groupId = null;
+                GroupType f_groupType = null;
+                Boolean f_isOwner = null;
+                Boolean f_sameTeam = null;
+                String f_groupExternalId = null;
+                Long f_memberCount = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("group_name".equals(field)) {
+                        f_groupName = StoneSerializers.string().deserialize(p);
                     }
-                    _p.nextToken();
+                    else if ("group_id".equals(field)) {
+                        f_groupId = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("group_type".equals(field)) {
+                        f_groupType = GroupType.Serializer.INSTANCE.deserialize(p);
+                    }
+                    else if ("is_owner".equals(field)) {
+                        f_isOwner = StoneSerializers.boolean_().deserialize(p);
+                    }
+                    else if ("same_team".equals(field)) {
+                        f_sameTeam = StoneSerializers.boolean_().deserialize(p);
+                    }
+                    else if ("group_external_id".equals(field)) {
+                        f_groupExternalId = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                    }
+                    else if ("member_count".equals(field)) {
+                        f_memberCount = StoneSerializers.nullable(StoneSerializers.uInt32()).deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
                 }
-                else {
-                    skipValue(_p);
+                if (f_groupName == null) {
+                    throw new JsonParseException(p, "Required field \"group_name\" missing.");
                 }
+                if (f_groupId == null) {
+                    throw new JsonParseException(p, "Required field \"group_id\" missing.");
+                }
+                if (f_groupType == null) {
+                    throw new JsonParseException(p, "Required field \"group_type\" missing.");
+                }
+                if (f_isOwner == null) {
+                    throw new JsonParseException(p, "Required field \"is_owner\" missing.");
+                }
+                if (f_sameTeam == null) {
+                    throw new JsonParseException(p, "Required field \"same_team\" missing.");
+                }
+                value = new GroupInfo(f_groupName, f_groupId, f_groupType, f_isOwner, f_sameTeam, f_groupExternalId, f_memberCount);
             }
-
-            if (groupName == null) {
-                throw new JsonParseException(_p, "Required field \"group_name\" is missing.");
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
             }
-            if (groupId == null) {
-                throw new JsonParseException(_p, "Required field \"group_id\" is missing.");
+            if (!collapsed) {
+                expectEndObject(p);
             }
-            if (groupType == null) {
-                throw new JsonParseException(_p, "Required field \"group_type\" is missing.");
-            }
-            if (sameTeam == null) {
-                throw new JsonParseException(_p, "Required field \"same_team\" is missing.");
-            }
-
-            return new GroupInfo(groupName, groupId, groupType, sameTeam, groupExternalId, memberCount);
+            return value;
         }
     }
 }

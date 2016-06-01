@@ -1,24 +1,22 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.babel, shared_links.babel */
+/* This file was generated from sharing_folders.stone, shared_links.stone */
 
 package com.dropbox.core.v2.sharing;
 
 import com.dropbox.core.DbxApiException;
 import com.dropbox.core.DbxDownloader;
 import com.dropbox.core.DbxException;
-import com.dropbox.core.DbxRequestUtil;
+import com.dropbox.core.DbxWrappedException;
 import com.dropbox.core.http.HttpRequestor;
-import com.dropbox.core.json.JsonUtil;
 import com.dropbox.core.v2.DbxDownloadStyleBuilder;
 import com.dropbox.core.v2.DbxRawClientV2;
 import com.dropbox.core.v2.async.LaunchEmptyResult;
 import com.dropbox.core.v2.async.PollArg;
 import com.dropbox.core.v2.async.PollErrorException;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JavaType;
-
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -51,11 +49,12 @@ public final class DbxUserSharingRequests {
                             "2/sharing/add_folder_member",
                             addFolderMemberArg,
                             false,
-                            JsonUtil.createType(Void.class),
-                            JsonUtil.createType(AddFolderMemberError.class));
+                            AddFolderMemberArg.Serializer.INSTANCE,
+                            com.dropbox.core.stone.StoneSerializers.void_(),
+                            AddFolderMemberError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new AddFolderMemberErrorException(ew.getRequestId(), ew.getUserMessage(), (AddFolderMemberError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new AddFolderMemberErrorException(ex.getRequestId(), ex.getUserMessage(), (AddFolderMemberError) ex.getErrorValue());
         }
     }
 
@@ -78,7 +77,7 @@ public final class DbxUserSharingRequests {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public void addFolderMember(String sharedFolderId, java.util.List<AddMember> members) throws AddFolderMemberErrorException, DbxException {
+    public void addFolderMember(String sharedFolderId, List<AddMember> members) throws AddFolderMemberErrorException, DbxException {
         AddFolderMemberArg arg = new AddFolderMemberArg(sharedFolderId, members);
         addFolderMember(arg);
     }
@@ -102,9 +101,9 @@ public final class DbxUserSharingRequests {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AddFolderMemberBuilder addFolderMemberBuilder(String sharedFolderId, java.util.List<AddMember> members) {
-        AddFolderMemberArg.Builder argBuilder = AddFolderMemberArg.newBuilder(sharedFolderId, members);
-        return new AddFolderMemberBuilder(this, argBuilder);
+    public AddFolderMemberBuilder addFolderMemberBuilder(String sharedFolderId, List<AddMember> members) {
+        AddFolderMemberArg.Builder argBuilder_ = AddFolderMemberArg.newBuilder(sharedFolderId, members);
+        return new AddFolderMemberBuilder(this, argBuilder_);
     }
 
     //
@@ -124,11 +123,12 @@ public final class DbxUserSharingRequests {
                                    "2/sharing/check_job_status",
                                    pollArg,
                                    false,
-                                   JsonUtil.createType(JobStatus.class),
-                                   JsonUtil.createType(com.dropbox.core.v2.async.PollError.class));
+                                   PollArg.Serializer.INSTANCE,
+                                   JobStatus.Serializer.INSTANCE,
+                                   com.dropbox.core.v2.async.PollError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new PollErrorException(ew.getRequestId(), ew.getUserMessage(), (com.dropbox.core.v2.async.PollError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new PollErrorException(ex.getRequestId(), ex.getUserMessage(), (com.dropbox.core.v2.async.PollError) ex.getErrorValue());
         }
     }
 
@@ -165,11 +165,12 @@ public final class DbxUserSharingRequests {
                                    "2/sharing/check_share_job_status",
                                    pollArg,
                                    false,
-                                   JsonUtil.createType(ShareFolderJobStatus.class),
-                                   JsonUtil.createType(com.dropbox.core.v2.async.PollError.class));
+                                   PollArg.Serializer.INSTANCE,
+                                   ShareFolderJobStatus.Serializer.INSTANCE,
+                                   com.dropbox.core.v2.async.PollError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new PollErrorException(ew.getRequestId(), ew.getUserMessage(), (com.dropbox.core.v2.async.PollError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new PollErrorException(ex.getRequestId(), ex.getUserMessage(), (com.dropbox.core.v2.async.PollError) ex.getErrorValue());
         }
     }
 
@@ -218,11 +219,12 @@ public final class DbxUserSharingRequests {
                                    "2/sharing/create_shared_link",
                                    createSharedLinkArg,
                                    false,
-                                   JsonUtil.createType(PathLinkMetadata.class),
-                                   JsonUtil.createType(CreateSharedLinkError.class));
+                                   CreateSharedLinkArg.Serializer.INSTANCE,
+                                   PathLinkMetadata.Serializer.INSTANCE,
+                                   CreateSharedLinkError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new CreateSharedLinkErrorException(ew.getRequestId(), ew.getUserMessage(), (CreateSharedLinkError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new CreateSharedLinkErrorException(ex.getRequestId(), ex.getUserMessage(), (CreateSharedLinkError) ex.getErrorValue());
         }
     }
 
@@ -282,8 +284,8 @@ public final class DbxUserSharingRequests {
      */
     @Deprecated
     public CreateSharedLinkBuilder createSharedLinkBuilder(String path) {
-        CreateSharedLinkArg.Builder argBuilder = CreateSharedLinkArg.newBuilder(path);
-        return new CreateSharedLinkBuilder(this, argBuilder);
+        CreateSharedLinkArg.Builder argBuilder_ = CreateSharedLinkArg.newBuilder(path);
+        return new CreateSharedLinkBuilder(this, argBuilder_);
     }
 
     //
@@ -305,11 +307,12 @@ public final class DbxUserSharingRequests {
                                    "2/sharing/create_shared_link_with_settings",
                                    createSharedLinkWithSettingsArg,
                                    false,
-                                   JsonUtil.createType(SharedLinkMetadata.class),
-                                   JsonUtil.createType(CreateSharedLinkWithSettingsError.class));
+                                   CreateSharedLinkWithSettingsArg.Serializer.INSTANCE,
+                                   SharedLinkMetadata.Serializer.INSTANCE,
+                                   CreateSharedLinkWithSettingsError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new CreateSharedLinkWithSettingsErrorException(ew.getRequestId(), ew.getUserMessage(), (CreateSharedLinkWithSettingsError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new CreateSharedLinkWithSettingsErrorException(ex.getRequestId(), ex.getUserMessage(), (CreateSharedLinkWithSettingsError) ex.getErrorValue());
         }
     }
 
@@ -320,7 +323,8 @@ public final class DbxUserSharingRequests {
      * shared folder settings).
      *
      * @param path  The path to be shared by the shared link. Must match pattern
-     *     "{@code ((/|id:).*)|(rev:[0-9a-f]{9,})}" and not be {@code null}.
+     *     "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}" and not be {@code
+     *     null}.
      *
      * @return The metadata of a shared link
      *
@@ -339,7 +343,8 @@ public final class DbxUserSharingRequests {
      * shared folder settings).
      *
      * @param path  The path to be shared by the shared link. Must match pattern
-     *     "{@code ((/|id:).*)|(rev:[0-9a-f]{9,})}" and not be {@code null}.
+     *     "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}" and not be {@code
+     *     null}.
      * @param settings  The requested settings for the newly created shared
      *     link.
      *
@@ -371,11 +376,12 @@ public final class DbxUserSharingRequests {
                                    "2/sharing/get_folder_metadata",
                                    getMetadataArgs,
                                    false,
-                                   JsonUtil.createType(SharedFolderMetadata.class),
-                                   JsonUtil.createType(SharedFolderAccessError.class));
+                                   GetMetadataArgs.Serializer.INSTANCE,
+                                   SharedFolderMetadata.Serializer.INSTANCE,
+                                   SharedFolderAccessError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new SharedFolderAccessErrorException(ew.getRequestId(), ew.getUserMessage(), (SharedFolderAccessError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new SharedFolderAccessErrorException(ex.getRequestId(), ex.getUserMessage(), (SharedFolderAccessError) ex.getErrorValue());
         }
     }
 
@@ -412,7 +418,7 @@ public final class DbxUserSharingRequests {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedFolderMetadata getFolderMetadata(String sharedFolderId, java.util.List<FolderAction> actions) throws SharedFolderAccessErrorException, DbxException {
+    public SharedFolderMetadata getFolderMetadata(String sharedFolderId, List<FolderAction> actions) throws SharedFolderAccessErrorException, DbxException {
         if (actions != null) {
             for (FolderAction x : actions) {
                 if (x == null) {
@@ -435,17 +441,19 @@ public final class DbxUserSharingRequests {
      * @return Downloader used to download the response body and view the server
      *     response.
      */
-    DbxDownloader<SharedLinkMetadata> getSharedLinkFile(GetSharedLinkMetadataArg getSharedLinkMetadataArg) throws GetSharedLinkFileErrorException, DbxException {
+    DbxDownloader<SharedLinkMetadata> getSharedLinkFile(GetSharedLinkMetadataArg getSharedLinkMetadataArg, List<HttpRequestor.Header> headers_) throws GetSharedLinkFileErrorException, DbxException {
         try {
             return client.downloadStyle(client.getHost().getContent(),
                                         "2/sharing/get_shared_link_file",
                                         getSharedLinkMetadataArg,
                                         false,
-                                        JsonUtil.createType(SharedLinkMetadata.class),
-                                        JsonUtil.createType(GetSharedLinkFileError.class));
+                                        headers_,
+                                        GetSharedLinkMetadataArg.Serializer.INSTANCE,
+                                        SharedLinkMetadata.Serializer.INSTANCE,
+                                        GetSharedLinkFileError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new GetSharedLinkFileErrorException(ew.getRequestId(), ew.getUserMessage(), (GetSharedLinkFileError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new GetSharedLinkFileErrorException(ex.getRequestId(), ex.getUserMessage(), (GetSharedLinkFileError) ex.getErrorValue());
         }
     }
 
@@ -462,7 +470,7 @@ public final class DbxUserSharingRequests {
      */
     public DbxDownloader<SharedLinkMetadata> getSharedLinkFile(String url) throws GetSharedLinkFileErrorException, DbxException {
         GetSharedLinkMetadataArg arg = new GetSharedLinkMetadataArg(url);
-        return getSharedLinkFile(arg);
+        return getSharedLinkFile(arg, Collections.<HttpRequestor.Header>emptyList());
     }
 
     /**
@@ -477,8 +485,8 @@ public final class DbxUserSharingRequests {
      *     preconditions.
      */
     public GetSharedLinkFileBuilder getSharedLinkFileBuilder(String url) {
-        GetSharedLinkMetadataArg.Builder argBuilder = GetSharedLinkMetadataArg.newBuilder(url);
-        return new GetSharedLinkFileBuilder(this, argBuilder);
+        GetSharedLinkMetadataArg.Builder argBuilder_ = GetSharedLinkMetadataArg.newBuilder(url);
+        return new GetSharedLinkFileBuilder(this, argBuilder_);
     }
 
     //
@@ -497,11 +505,12 @@ public final class DbxUserSharingRequests {
                                    "2/sharing/get_shared_link_metadata",
                                    getSharedLinkMetadataArg,
                                    false,
-                                   JsonUtil.createType(SharedLinkMetadata.class),
-                                   JsonUtil.createType(SharedLinkError.class));
+                                   GetSharedLinkMetadataArg.Serializer.INSTANCE,
+                                   SharedLinkMetadata.Serializer.INSTANCE,
+                                   SharedLinkError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new SharedLinkErrorException(ew.getRequestId(), ew.getUserMessage(), (SharedLinkError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new SharedLinkErrorException(ex.getRequestId(), ex.getUserMessage(), (SharedLinkError) ex.getErrorValue());
         }
     }
 
@@ -532,8 +541,8 @@ public final class DbxUserSharingRequests {
      *     preconditions.
      */
     public GetSharedLinkMetadataBuilder getSharedLinkMetadataBuilder(String url) {
-        GetSharedLinkMetadataArg.Builder argBuilder = GetSharedLinkMetadataArg.newBuilder(url);
-        return new GetSharedLinkMetadataBuilder(this, argBuilder);
+        GetSharedLinkMetadataArg.Builder argBuilder_ = GetSharedLinkMetadataArg.newBuilder(url);
+        return new GetSharedLinkMetadataBuilder(this, argBuilder_);
     }
 
     //
@@ -559,11 +568,12 @@ public final class DbxUserSharingRequests {
                                    "2/sharing/get_shared_links",
                                    getSharedLinksArg,
                                    false,
-                                   JsonUtil.createType(GetSharedLinksResult.class),
-                                   JsonUtil.createType(GetSharedLinksError.class));
+                                   GetSharedLinksArg.Serializer.INSTANCE,
+                                   GetSharedLinksResult.Serializer.INSTANCE,
+                                   GetSharedLinksError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new GetSharedLinksErrorException(ew.getRequestId(), ew.getUserMessage(), (GetSharedLinksError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new GetSharedLinksErrorException(ex.getRequestId(), ex.getUserMessage(), (GetSharedLinksError) ex.getErrorValue());
         }
     }
 
@@ -621,11 +631,12 @@ public final class DbxUserSharingRequests {
                                    "2/sharing/list_folder_members",
                                    listFolderMembersArgs,
                                    false,
-                                   JsonUtil.createType(SharedFolderMembers.class),
-                                   JsonUtil.createType(SharedFolderAccessError.class));
+                                   ListFolderMembersArgs.Serializer.INSTANCE,
+                                   SharedFolderMembers.Serializer.INSTANCE,
+                                   SharedFolderAccessError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new SharedFolderAccessErrorException(ew.getRequestId(), ew.getUserMessage(), (SharedFolderAccessError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new SharedFolderAccessErrorException(ex.getRequestId(), ex.getUserMessage(), (SharedFolderAccessError) ex.getErrorValue());
         }
     }
 
@@ -663,8 +674,8 @@ public final class DbxUserSharingRequests {
      *     preconditions.
      */
     public ListFolderMembersBuilder listFolderMembersBuilder(String sharedFolderId) {
-        ListFolderMembersArgs.Builder argBuilder = ListFolderMembersArgs.newBuilder(sharedFolderId);
-        return new ListFolderMembersBuilder(this, argBuilder);
+        ListFolderMembersArgs.Builder argBuilder_ = ListFolderMembersArgs.newBuilder(sharedFolderId);
+        return new ListFolderMembersBuilder(this, argBuilder_);
     }
 
     //
@@ -686,11 +697,12 @@ public final class DbxUserSharingRequests {
                                    "2/sharing/list_folder_members/continue",
                                    listFolderMembersContinueArg,
                                    false,
-                                   JsonUtil.createType(SharedFolderMembers.class),
-                                   JsonUtil.createType(ListFolderMembersContinueError.class));
+                                   ListFolderMembersContinueArg.Serializer.INSTANCE,
+                                   SharedFolderMembers.Serializer.INSTANCE,
+                                   ListFolderMembersContinueError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new ListFolderMembersContinueErrorException(ew.getRequestId(), ew.getUserMessage(), (ListFolderMembersContinueError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new ListFolderMembersContinueErrorException(ex.getRequestId(), ex.getUserMessage(), (ListFolderMembersContinueError) ex.getErrorValue());
         }
     }
 
@@ -735,11 +747,12 @@ public final class DbxUserSharingRequests {
                                    "2/sharing/list_folders",
                                    listFoldersArgs,
                                    false,
-                                   JsonUtil.createType(ListFoldersResult.class),
-                                   JsonUtil.createType(Void.class));
+                                   ListFoldersArgs.Serializer.INSTANCE,
+                                   ListFoldersResult.Serializer.INSTANCE,
+                                   com.dropbox.core.stone.StoneSerializers.void_());
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new DbxApiException(ew.getRequestId(), ew.getUserMessage(), "Unexpected error response for \"list_folders\": ew.errValue");
+        catch (DbxWrappedException ex) {
+            throw new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"list_folders\":" + ex.getErrorValue());
         }
     }
 
@@ -768,8 +781,8 @@ public final class DbxUserSharingRequests {
      *     the request.
      */
     public ListFoldersBuilder listFoldersBuilder() {
-        ListFoldersArgs.Builder argBuilder = ListFoldersArgs.newBuilder();
-        return new ListFoldersBuilder(this, argBuilder);
+        ListFoldersArgs.Builder argBuilder_ = ListFoldersArgs.newBuilder();
+        return new ListFoldersBuilder(this, argBuilder_);
     }
 
     //
@@ -796,11 +809,12 @@ public final class DbxUserSharingRequests {
                                    "2/sharing/list_folders/continue",
                                    listFoldersContinueArg,
                                    false,
-                                   JsonUtil.createType(ListFoldersResult.class),
-                                   JsonUtil.createType(ListFoldersContinueError.class));
+                                   ListFoldersContinueArg.Serializer.INSTANCE,
+                                   ListFoldersResult.Serializer.INSTANCE,
+                                   ListFoldersContinueError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new ListFoldersContinueErrorException(ew.getRequestId(), ew.getUserMessage(), (ListFoldersContinueError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new ListFoldersContinueErrorException(ex.getRequestId(), ex.getUserMessage(), (ListFoldersContinueError) ex.getErrorValue());
         }
     }
 
@@ -848,11 +862,12 @@ public final class DbxUserSharingRequests {
                                    "2/sharing/list_mountable_folders",
                                    listFoldersArgs,
                                    false,
-                                   JsonUtil.createType(ListFoldersResult.class),
-                                   JsonUtil.createType(Void.class));
+                                   ListFoldersArgs.Serializer.INSTANCE,
+                                   ListFoldersResult.Serializer.INSTANCE,
+                                   com.dropbox.core.stone.StoneSerializers.void_());
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new DbxApiException(ew.getRequestId(), ew.getUserMessage(), "Unexpected error response for \"list_mountable_folders\": ew.errValue");
+        catch (DbxWrappedException ex) {
+            throw new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"list_mountable_folders\":" + ex.getErrorValue());
         }
     }
 
@@ -881,8 +896,8 @@ public final class DbxUserSharingRequests {
      *     the request.
      */
     public ListMountableFoldersBuilder listMountableFoldersBuilder() {
-        ListFoldersArgs.Builder argBuilder = ListFoldersArgs.newBuilder();
-        return new ListMountableFoldersBuilder(this, argBuilder);
+        ListFoldersArgs.Builder argBuilder_ = ListFoldersArgs.newBuilder();
+        return new ListMountableFoldersBuilder(this, argBuilder_);
     }
 
     //
@@ -909,11 +924,12 @@ public final class DbxUserSharingRequests {
                                    "2/sharing/list_mountable_folders/continue",
                                    listFoldersContinueArg,
                                    false,
-                                   JsonUtil.createType(ListFoldersResult.class),
-                                   JsonUtil.createType(ListFoldersContinueError.class));
+                                   ListFoldersContinueArg.Serializer.INSTANCE,
+                                   ListFoldersResult.Serializer.INSTANCE,
+                                   ListFoldersContinueError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new ListFoldersContinueErrorException(ew.getRequestId(), ew.getUserMessage(), (ListFoldersContinueError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new ListFoldersContinueErrorException(ex.getRequestId(), ex.getUserMessage(), (ListFoldersContinueError) ex.getErrorValue());
         }
     }
 
@@ -960,11 +976,12 @@ public final class DbxUserSharingRequests {
                                    "2/sharing/list_shared_links",
                                    listSharedLinksArg,
                                    false,
-                                   JsonUtil.createType(ListSharedLinksResult.class),
-                                   JsonUtil.createType(ListSharedLinksError.class));
+                                   ListSharedLinksArg.Serializer.INSTANCE,
+                                   ListSharedLinksResult.Serializer.INSTANCE,
+                                   ListSharedLinksError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new ListSharedLinksErrorException(ew.getRequestId(), ew.getUserMessage(), (ListSharedLinksError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new ListSharedLinksErrorException(ex.getRequestId(), ex.getUserMessage(), (ListSharedLinksError) ex.getErrorValue());
         }
     }
 
@@ -993,8 +1010,8 @@ public final class DbxUserSharingRequests {
      *     the request.
      */
     public ListSharedLinksBuilder listSharedLinksBuilder() {
-        ListSharedLinksArg.Builder argBuilder = ListSharedLinksArg.newBuilder();
-        return new ListSharedLinksBuilder(this, argBuilder);
+        ListSharedLinksArg.Builder argBuilder_ = ListSharedLinksArg.newBuilder();
+        return new ListSharedLinksBuilder(this, argBuilder_);
     }
 
     //
@@ -1019,11 +1036,12 @@ public final class DbxUserSharingRequests {
                                    "2/sharing/modify_shared_link_settings",
                                    modifySharedLinkSettingsArgs,
                                    false,
-                                   JsonUtil.createType(SharedLinkMetadata.class),
-                                   JsonUtil.createType(ModifySharedLinkSettingsError.class));
+                                   ModifySharedLinkSettingsArgs.Serializer.INSTANCE,
+                                   SharedLinkMetadata.Serializer.INSTANCE,
+                                   ModifySharedLinkSettingsError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new ModifySharedLinkSettingsErrorException(ew.getRequestId(), ew.getUserMessage(), (ModifySharedLinkSettingsError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new ModifySharedLinkSettingsErrorException(ex.getRequestId(), ex.getUserMessage(), (ModifySharedLinkSettingsError) ex.getErrorValue());
         }
     }
 
@@ -1101,11 +1119,12 @@ public final class DbxUserSharingRequests {
                                    "2/sharing/mount_folder",
                                    mountFolderArg,
                                    false,
-                                   JsonUtil.createType(SharedFolderMetadata.class),
-                                   JsonUtil.createType(MountFolderError.class));
+                                   MountFolderArg.Serializer.INSTANCE,
+                                   SharedFolderMetadata.Serializer.INSTANCE,
+                                   MountFolderError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new MountFolderErrorException(ew.getRequestId(), ew.getUserMessage(), (MountFolderError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new MountFolderErrorException(ex.getRequestId(), ex.getUserMessage(), (MountFolderError) ex.getErrorValue());
         }
     }
 
@@ -1136,39 +1155,80 @@ public final class DbxUserSharingRequests {
     /**
      * The current user relinquishes their membership in the designated shared
      * folder and will no longer have access to the folder.  A folder owner
-     * cannot relinquish membership in their own folder. Apps must have full
-     * Dropbox access to use this endpoint.
+     * cannot relinquish membership in their own folder. This will run
+     * synchronously if leave_a_copy is false, and asynchronously if
+     * leave_a_copy is true. Apps must have full Dropbox access to use this
+     * endpoint.
      *
+     *
+     * @return Result returned by methods that may either launch an asynchronous
+     *     job or complete synchronously. Upon synchronous completion of the
+     *     job, no additional information is returned.
      */
-    void relinquishFolderMembership(RelinquishFolderMembershipArg relinquishFolderMembershipArg) throws RelinquishFolderMembershipErrorException, DbxException {
+    LaunchEmptyResult relinquishFolderMembership(RelinquishFolderMembershipArg relinquishFolderMembershipArg) throws RelinquishFolderMembershipErrorException, DbxException {
         try {
-            client.rpcStyle(client.getHost().getApi(),
-                            "2/sharing/relinquish_folder_membership",
-                            relinquishFolderMembershipArg,
-                            false,
-                            JsonUtil.createType(Void.class),
-                            JsonUtil.createType(RelinquishFolderMembershipError.class));
+            return client.rpcStyle(client.getHost().getApi(),
+                                   "2/sharing/relinquish_folder_membership",
+                                   relinquishFolderMembershipArg,
+                                   false,
+                                   RelinquishFolderMembershipArg.Serializer.INSTANCE,
+                                   LaunchEmptyResult.Serializer.INSTANCE,
+                                   RelinquishFolderMembershipError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new RelinquishFolderMembershipErrorException(ew.getRequestId(), ew.getUserMessage(), (RelinquishFolderMembershipError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new RelinquishFolderMembershipErrorException(ex.getRequestId(), ex.getUserMessage(), (RelinquishFolderMembershipError) ex.getErrorValue());
         }
     }
 
     /**
      * The current user relinquishes their membership in the designated shared
      * folder and will no longer have access to the folder.  A folder owner
-     * cannot relinquish membership in their own folder. Apps must have full
-     * Dropbox access to use this endpoint.
+     * cannot relinquish membership in their own folder. This will run
+     * synchronously if leave_a_copy is false, and asynchronously if
+     * leave_a_copy is true. Apps must have full Dropbox access to use this
+     * endpoint.
+     *
+     * <p> The {@code leaveACopy} request parameter will default to {@code
+     * false} (see {@link #relinquishFolderMembership(String,boolean)}). </p>
      *
      * @param sharedFolderId  The ID for the shared folder. Must match pattern
      *     "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
      *
+     * @return Result returned by methods that may either launch an asynchronous
+     *     job or complete synchronously. Upon synchronous completion of the
+     *     job, no additional information is returned.
+     *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public void relinquishFolderMembership(String sharedFolderId) throws RelinquishFolderMembershipErrorException, DbxException {
+    public LaunchEmptyResult relinquishFolderMembership(String sharedFolderId) throws RelinquishFolderMembershipErrorException, DbxException {
         RelinquishFolderMembershipArg arg = new RelinquishFolderMembershipArg(sharedFolderId);
-        relinquishFolderMembership(arg);
+        return relinquishFolderMembership(arg);
+    }
+
+    /**
+     * The current user relinquishes their membership in the designated shared
+     * folder and will no longer have access to the folder.  A folder owner
+     * cannot relinquish membership in their own folder. This will run
+     * synchronously if leave_a_copy is false, and asynchronously if
+     * leave_a_copy is true. Apps must have full Dropbox access to use this
+     * endpoint.
+     *
+     * @param sharedFolderId  The ID for the shared folder. Must match pattern
+     *     "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
+     * @param leaveACopy  Keep a copy of the folder's contents upon
+     *     relinquishing membership.
+     *
+     * @return Result returned by methods that may either launch an asynchronous
+     *     job or complete synchronously. Upon synchronous completion of the
+     *     job, no additional information is returned.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public LaunchEmptyResult relinquishFolderMembership(String sharedFolderId, boolean leaveACopy) throws RelinquishFolderMembershipErrorException, DbxException {
+        RelinquishFolderMembershipArg arg = new RelinquishFolderMembershipArg(sharedFolderId, leaveACopy);
+        return relinquishFolderMembership(arg);
     }
 
     //
@@ -1191,11 +1251,12 @@ public final class DbxUserSharingRequests {
                                    "2/sharing/remove_folder_member",
                                    removeFolderMemberArg,
                                    false,
-                                   JsonUtil.createType(LaunchEmptyResult.class),
-                                   JsonUtil.createType(RemoveFolderMemberError.class));
+                                   RemoveFolderMemberArg.Serializer.INSTANCE,
+                                   LaunchEmptyResult.Serializer.INSTANCE,
+                                   RemoveFolderMemberError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new RemoveFolderMemberErrorException(ew.getRequestId(), ew.getUserMessage(), (RemoveFolderMemberError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new RemoveFolderMemberErrorException(ex.getRequestId(), ex.getUserMessage(), (RemoveFolderMemberError) ex.getErrorValue());
         }
     }
 
@@ -1245,11 +1306,12 @@ public final class DbxUserSharingRequests {
                             "2/sharing/revoke_shared_link",
                             revokeSharedLinkArg,
                             false,
-                            JsonUtil.createType(Void.class),
-                            JsonUtil.createType(RevokeSharedLinkError.class));
+                            RevokeSharedLinkArg.Serializer.INSTANCE,
+                            com.dropbox.core.stone.StoneSerializers.void_(),
+                            RevokeSharedLinkError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new RevokeSharedLinkErrorException(ew.getRequestId(), ew.getUserMessage(), (RevokeSharedLinkError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new RevokeSharedLinkErrorException(ex.getRequestId(), ex.getUserMessage(), (RevokeSharedLinkError) ex.getErrorValue());
         }
     }
 
@@ -1292,11 +1354,12 @@ public final class DbxUserSharingRequests {
                                    "2/sharing/share_folder",
                                    shareFolderArg,
                                    false,
-                                   JsonUtil.createType(ShareFolderLaunch.class),
-                                   JsonUtil.createType(ShareFolderError.class));
+                                   ShareFolderArg.Serializer.INSTANCE,
+                                   ShareFolderLaunch.Serializer.INSTANCE,
+                                   ShareFolderError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new ShareFolderErrorException(ew.getRequestId(), ew.getUserMessage(), (ShareFolderError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new ShareFolderErrorException(ex.getRequestId(), ex.getUserMessage(), (ShareFolderError) ex.getErrorValue());
         }
     }
 
@@ -1313,8 +1376,8 @@ public final class DbxUserSharingRequests {
      * See {@link ShareFolderBuilder} for more details. </p>
      *
      * @param path  The path to the folder to share. If it does not exist, then
-     *     a new one is created. Must match pattern "{@code /.*}" and not be
-     *     {@code null}.
+     *     a new one is created. Must match pattern "{@code /(.|[\\r\\n])*}" and
+     *     not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -1334,8 +1397,8 @@ public final class DbxUserSharingRequests {
      * Dropbox access to use this endpoint.
      *
      * @param path  The path to the folder to share. If it does not exist, then
-     *     a new one is created. Must match pattern "{@code /.*}" and not be
-     *     {@code null}.
+     *     a new one is created. Must match pattern "{@code /(.|[\\r\\n])*}" and
+     *     not be {@code null}.
      *
      * @return Request builder for configuring request parameters and completing
      *     the request.
@@ -1344,8 +1407,8 @@ public final class DbxUserSharingRequests {
      *     preconditions.
      */
     public ShareFolderBuilder shareFolderBuilder(String path) {
-        ShareFolderArg.Builder argBuilder = ShareFolderArg.newBuilder(path);
-        return new ShareFolderBuilder(this, argBuilder);
+        ShareFolderArg.Builder argBuilder_ = ShareFolderArg.newBuilder(path);
+        return new ShareFolderBuilder(this, argBuilder_);
     }
 
     //
@@ -1365,11 +1428,12 @@ public final class DbxUserSharingRequests {
                             "2/sharing/transfer_folder",
                             transferFolderArg,
                             false,
-                            JsonUtil.createType(Void.class),
-                            JsonUtil.createType(TransferFolderError.class));
+                            TransferFolderArg.Serializer.INSTANCE,
+                            com.dropbox.core.stone.StoneSerializers.void_(),
+                            TransferFolderError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new TransferFolderErrorException(ew.getRequestId(), ew.getUserMessage(), (TransferFolderError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new TransferFolderErrorException(ex.getRequestId(), ex.getUserMessage(), (TransferFolderError) ex.getErrorValue());
         }
     }
 
@@ -1409,11 +1473,12 @@ public final class DbxUserSharingRequests {
                             "2/sharing/unmount_folder",
                             unmountFolderArg,
                             false,
-                            JsonUtil.createType(Void.class),
-                            JsonUtil.createType(UnmountFolderError.class));
+                            UnmountFolderArg.Serializer.INSTANCE,
+                            com.dropbox.core.stone.StoneSerializers.void_(),
+                            UnmountFolderError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new UnmountFolderErrorException(ew.getRequestId(), ew.getUserMessage(), (UnmountFolderError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new UnmountFolderErrorException(ex.getRequestId(), ex.getUserMessage(), (UnmountFolderError) ex.getErrorValue());
         }
     }
 
@@ -1455,11 +1520,12 @@ public final class DbxUserSharingRequests {
                                    "2/sharing/unshare_folder",
                                    unshareFolderArg,
                                    false,
-                                   JsonUtil.createType(LaunchEmptyResult.class),
-                                   JsonUtil.createType(UnshareFolderError.class));
+                                   UnshareFolderArg.Serializer.INSTANCE,
+                                   LaunchEmptyResult.Serializer.INSTANCE,
+                                   UnshareFolderError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new UnshareFolderErrorException(ew.getRequestId(), ew.getUserMessage(), (UnshareFolderError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new UnshareFolderErrorException(ex.getRequestId(), ex.getUserMessage(), (UnshareFolderError) ex.getErrorValue());
         }
     }
 
@@ -1527,11 +1593,12 @@ public final class DbxUserSharingRequests {
                             "2/sharing/update_folder_member",
                             updateFolderMemberArg,
                             false,
-                            JsonUtil.createType(Void.class),
-                            JsonUtil.createType(UpdateFolderMemberError.class));
+                            UpdateFolderMemberArg.Serializer.INSTANCE,
+                            com.dropbox.core.stone.StoneSerializers.void_(),
+                            UpdateFolderMemberError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new UpdateFolderMemberErrorException(ew.getRequestId(), ew.getUserMessage(), (UpdateFolderMemberError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new UpdateFolderMemberErrorException(ex.getRequestId(), ex.getUserMessage(), (UpdateFolderMemberError) ex.getErrorValue());
         }
     }
 
@@ -1578,11 +1645,12 @@ public final class DbxUserSharingRequests {
                                    "2/sharing/update_folder_policy",
                                    updateFolderPolicyArg,
                                    false,
-                                   JsonUtil.createType(SharedFolderMetadata.class),
-                                   JsonUtil.createType(UpdateFolderPolicyError.class));
+                                   UpdateFolderPolicyArg.Serializer.INSTANCE,
+                                   SharedFolderMetadata.Serializer.INSTANCE,
+                                   UpdateFolderPolicyError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new UpdateFolderPolicyErrorException(ew.getRequestId(), ew.getUserMessage(), (UpdateFolderPolicyError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new UpdateFolderPolicyErrorException(ex.getRequestId(), ex.getUserMessage(), (UpdateFolderPolicyError) ex.getErrorValue());
         }
     }
 
@@ -1620,7 +1688,7 @@ public final class DbxUserSharingRequests {
      *     preconditions.
      */
     public UpdateFolderPolicyBuilder updateFolderPolicyBuilder(String sharedFolderId) {
-        UpdateFolderPolicyArg.Builder argBuilder = UpdateFolderPolicyArg.newBuilder(sharedFolderId);
-        return new UpdateFolderPolicyBuilder(this, argBuilder);
+        UpdateFolderPolicyArg.Builder argBuilder_ = UpdateFolderPolicyArg.newBuilder(sharedFolderId);
+        return new UpdateFolderPolicyBuilder(this, argBuilder_);
     }
 }

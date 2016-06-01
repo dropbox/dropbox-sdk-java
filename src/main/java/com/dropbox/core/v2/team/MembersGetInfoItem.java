@@ -1,30 +1,18 @@
 /* DO NOT EDIT */
-/* This file was generated from team_members.babel */
+/* This file was generated from team_members.stone */
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Describes a result obtained for a single user whose id was specified in the
@@ -35,14 +23,8 @@ import java.util.Map;
  * methods will return {@code true}. You can use {@link #tag()} to determine the
  * tag associated with this instance. </p>
  */
-@JsonSerialize(using=MembersGetInfoItem.Serializer.class)
-@JsonDeserialize(using=MembersGetInfoItem.Deserializer.class)
 public final class MembersGetInfoItem {
     // union MembersGetInfoItem
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link MembersGetInfoItem}.
@@ -231,7 +213,7 @@ public final class MembersGetInfoItem {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -243,76 +225,75 @@ public final class MembersGetInfoItem {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends UnionJsonSerializer<MembersGetInfoItem> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(MembersGetInfoItem.class, TeamMemberInfo.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<MembersGetInfoItem> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(MembersGetInfoItem value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            switch (value.tag) {
-                case ID_NOT_FOUND:
-                    g.writeStartObject();
-                    g.writeStringField(".tag", "id_not_found");
-                    g.writeObjectField("id_not_found", value.idNotFoundValue);
-                    g.writeEndObject();
-                    break;
-                case MEMBER_INFO:
-                    g.writeStartObject();
-                    g.writeStringField(".tag", "member_info");
-                    getUnwrappingSerializer(TeamMemberInfo.class).serialize(value.memberInfoValue, g, provider);
-                    g.writeEndObject();
-                    break;
-            }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<MembersGetInfoItem, Tag> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(MembersGetInfoItem.class, getTagMapping(), null, TeamMemberInfo.class);
-        }
-
-        @Override
-        public MembersGetInfoItem deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            switch (_tag) {
+        public void serialize(MembersGetInfoItem value, JsonGenerator g) throws IOException, JsonGenerationException {
+            switch (value.tag()) {
                 case ID_NOT_FOUND: {
-                    String value = null;
-                    expectField(_p, "id_not_found");
-                    value = getStringValue(_p);
-                    _p.nextToken();
-                    return MembersGetInfoItem.idNotFound(value);
+                    g.writeStartObject();
+                    writeTag("id_not_found", g);
+                    g.writeFieldName("id_not_found");
+                    StoneSerializers.string().serialize(value.idNotFoundValue, g);
+                    g.writeEndObject();
+                    break;
                 }
                 case MEMBER_INFO: {
-                    TeamMemberInfo value = null;
-                    value = readCollapsedStructValue(TeamMemberInfo.class, _p, _ctx);
-                    return MembersGetInfoItem.memberInfo(value);
+                    g.writeStartObject();
+                    writeTag("member_info", g);
+                    TeamMemberInfo.Serializer.INSTANCE.serialize(value.memberInfoValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                default: {
+                    throw new IllegalArgumentException("Unrecognized tag: " + value.tag());
                 }
             }
-            // should be impossible to get here
-            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
         }
 
-        private static Map<String, MembersGetInfoItem.Tag> getTagMapping() {
-            Map<String, MembersGetInfoItem.Tag> values = new HashMap<String, MembersGetInfoItem.Tag>();
-            values.put("id_not_found", MembersGetInfoItem.Tag.ID_NOT_FOUND);
-            values.put("member_info", MembersGetInfoItem.Tag.MEMBER_INFO);
-            return Collections.unmodifiableMap(values);
+        @Override
+        public MembersGetInfoItem deserialize(JsonParser p) throws IOException, JsonParseException {
+            MembersGetInfoItem value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
+            }
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("id_not_found".equals(tag)) {
+                String fieldValue = null;
+                expectField("id_not_found", p);
+                fieldValue = StoneSerializers.string().deserialize(p);
+                value = MembersGetInfoItem.idNotFound(fieldValue);
+            }
+            else if ("member_info".equals(tag)) {
+                TeamMemberInfo fieldValue = null;
+                fieldValue = TeamMemberInfo.Serializer.INSTANCE.deserialize(p, true);
+                value = MembersGetInfoItem.memberInfo(fieldValue);
+            }
+            else {
+                throw new JsonParseException(p, "Unknown tag: " + tag);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

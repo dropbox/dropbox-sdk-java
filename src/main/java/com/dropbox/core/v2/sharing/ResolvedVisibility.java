@@ -1,30 +1,18 @@
 /* DO NOT EDIT */
-/* This file was generated from shared_links.babel */
+/* This file was generated from shared_links.stone */
 
 package com.dropbox.core.v2.sharing;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * The actual access permissions values of shared links after taking into
@@ -32,8 +20,6 @@ import java.util.Map;
  * {@link RequestedVisibility} for more info on the possible visibility values
  * that can be set by the shared link's owner.
  */
-@JsonSerialize(using=ResolvedVisibility.Serializer.class)
-@JsonDeserialize(using=ResolvedVisibility.Deserializer.class)
 public enum ResolvedVisibility {
     // union ResolvedVisibility
     /**
@@ -64,60 +50,82 @@ public enum ResolvedVisibility {
      */
     OTHER; // *catch_all
 
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
-
-    static final class Serializer extends UnionJsonSerializer<ResolvedVisibility> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(ResolvedVisibility.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<ResolvedVisibility> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(ResolvedVisibility value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+        public void serialize(ResolvedVisibility value, JsonGenerator g) throws IOException, JsonGenerationException {
             switch (value) {
-                case PUBLIC:
+                case PUBLIC: {
                     g.writeString("public");
                     break;
-                case TEAM_ONLY:
+                }
+                case TEAM_ONLY: {
                     g.writeString("team_only");
                     break;
-                case PASSWORD:
+                }
+                case PASSWORD: {
                     g.writeString("password");
                     break;
-                case TEAM_AND_PASSWORD:
+                }
+                case TEAM_AND_PASSWORD: {
                     g.writeString("team_and_password");
                     break;
-                case SHARED_FOLDER_ONLY:
+                }
+                case SHARED_FOLDER_ONLY: {
                     g.writeString("shared_folder_only");
                     break;
-                case OTHER:
+                }
+                default: {
                     g.writeString("other");
-                    break;
+                }
             }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<ResolvedVisibility, ResolvedVisibility> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(ResolvedVisibility.class, getTagMapping(), ResolvedVisibility.OTHER);
         }
 
         @Override
-        public ResolvedVisibility deserialize(ResolvedVisibility _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            return _tag;
-        }
-
-        private static Map<String, ResolvedVisibility> getTagMapping() {
-            Map<String, ResolvedVisibility> values = new HashMap<String, ResolvedVisibility>();
-            values.put("team_and_password", ResolvedVisibility.TEAM_AND_PASSWORD);
-            values.put("shared_folder_only", ResolvedVisibility.SHARED_FOLDER_ONLY);
-            values.put("other", ResolvedVisibility.OTHER);
-            return Collections.unmodifiableMap(values);
+        public ResolvedVisibility deserialize(JsonParser p) throws IOException, JsonParseException {
+            ResolvedVisibility value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
+            }
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("public".equals(tag)) {
+                value = ResolvedVisibility.PUBLIC;
+            }
+            else if ("team_only".equals(tag)) {
+                value = ResolvedVisibility.TEAM_ONLY;
+            }
+            else if ("password".equals(tag)) {
+                value = ResolvedVisibility.PASSWORD;
+            }
+            else if ("team_and_password".equals(tag)) {
+                value = ResolvedVisibility.TEAM_AND_PASSWORD;
+            }
+            else if ("shared_folder_only".equals(tag)) {
+                value = ResolvedVisibility.SHARED_FOLDER_ONLY;
+            }
+            else {
+                value = ResolvedVisibility.OTHER;
+                skipFields(p);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

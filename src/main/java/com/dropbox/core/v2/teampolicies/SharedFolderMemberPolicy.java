@@ -1,36 +1,22 @@
 /* DO NOT EDIT */
-/* This file was generated from team_policies.babel */
+/* This file was generated from team_policies.stone */
 
 package com.dropbox.core.v2.teampolicies;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Policy governing who can be a member of a folder shared by a team member.
  */
-@JsonSerialize(using=SharedFolderMemberPolicy.Serializer.class)
-@JsonDeserialize(using=SharedFolderMemberPolicy.Deserializer.class)
 public enum SharedFolderMemberPolicy {
     // union SharedFolderMemberPolicy
     /**
@@ -50,51 +36,61 @@ public enum SharedFolderMemberPolicy {
      */
     OTHER; // *catch_all
 
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
-
-    static final class Serializer extends UnionJsonSerializer<SharedFolderMemberPolicy> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(SharedFolderMemberPolicy.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<SharedFolderMemberPolicy> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(SharedFolderMemberPolicy value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+        public void serialize(SharedFolderMemberPolicy value, JsonGenerator g) throws IOException, JsonGenerationException {
             switch (value) {
-                case TEAM:
+                case TEAM: {
                     g.writeString("team");
                     break;
-                case ANYONE:
+                }
+                case ANYONE: {
                     g.writeString("anyone");
                     break;
-                case OTHER:
+                }
+                default: {
                     g.writeString("other");
-                    break;
+                }
             }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<SharedFolderMemberPolicy, SharedFolderMemberPolicy> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(SharedFolderMemberPolicy.class, getTagMapping(), SharedFolderMemberPolicy.OTHER);
         }
 
         @Override
-        public SharedFolderMemberPolicy deserialize(SharedFolderMemberPolicy _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            return _tag;
-        }
-
-        private static Map<String, SharedFolderMemberPolicy> getTagMapping() {
-            Map<String, SharedFolderMemberPolicy> values = new HashMap<String, SharedFolderMemberPolicy>();
-            values.put("team", SharedFolderMemberPolicy.TEAM);
-            values.put("anyone", SharedFolderMemberPolicy.ANYONE);
-            values.put("other", SharedFolderMemberPolicy.OTHER);
-            return Collections.unmodifiableMap(values);
+        public SharedFolderMemberPolicy deserialize(JsonParser p) throws IOException, JsonParseException {
+            SharedFolderMemberPolicy value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
+            }
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("team".equals(tag)) {
+                value = SharedFolderMemberPolicy.TEAM;
+            }
+            else if ("anyone".equals(tag)) {
+                value = SharedFolderMemberPolicy.ANYONE;
+            }
+            else {
+                value = SharedFolderMemberPolicy.OTHER;
+                skipFields(p);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

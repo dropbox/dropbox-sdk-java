@@ -1,41 +1,24 @@
 /* DO NOT EDIT */
-/* This file was generated from files.babel */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 import com.dropbox.core.v2.properties.PropertyGroup;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
-@JsonSerialize(using=FileMetadata.Serializer.class)
-@JsonDeserialize(using=FileMetadata.Deserializer.class)
 public class FileMetadata extends Metadata {
     // struct FileMetadata
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final String id;
     protected final Date clientModified;
@@ -519,7 +502,7 @@ public class FileMetadata extends Metadata {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -531,187 +514,166 @@ public class FileMetadata extends Metadata {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<FileMetadata> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(FileMetadata.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(FileMetadata.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<FileMetadata> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected void serializeFields(FileMetadata value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeStringField(".tag", "file");
-            g.writeObjectField("name", value.name);
-            g.writeObjectField("path_lower", value.pathLower);
-            g.writeObjectField("path_display", value.pathDisplay);
-            g.writeObjectField("id", value.id);
-            g.writeObjectField("client_modified", value.clientModified);
-            g.writeObjectField("server_modified", value.serverModified);
-            g.writeObjectField("rev", value.rev);
-            g.writeObjectField("size", value.size);
+        public void serialize(FileMetadata value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
+            }
+            writeTag("file", g);
+            g.writeFieldName("name");
+            StoneSerializers.string().serialize(value.name, g);
+            g.writeFieldName("path_lower");
+            StoneSerializers.string().serialize(value.pathLower, g);
+            g.writeFieldName("path_display");
+            StoneSerializers.string().serialize(value.pathDisplay, g);
+            g.writeFieldName("id");
+            StoneSerializers.string().serialize(value.id, g);
+            g.writeFieldName("client_modified");
+            StoneSerializers.timestamp().serialize(value.clientModified, g);
+            g.writeFieldName("server_modified");
+            StoneSerializers.timestamp().serialize(value.serverModified, g);
+            g.writeFieldName("rev");
+            StoneSerializers.string().serialize(value.rev, g);
+            g.writeFieldName("size");
+            StoneSerializers.uInt64().serialize(value.size, g);
             if (value.parentSharedFolderId != null) {
-                g.writeObjectField("parent_shared_folder_id", value.parentSharedFolderId);
+                g.writeFieldName("parent_shared_folder_id");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.parentSharedFolderId, g);
             }
             if (value.mediaInfo != null) {
-                g.writeObjectField("media_info", value.mediaInfo);
+                g.writeFieldName("media_info");
+                StoneSerializers.nullable(MediaInfo.Serializer.INSTANCE).serialize(value.mediaInfo, g);
             }
             if (value.sharingInfo != null) {
-                g.writeObjectField("sharing_info", value.sharingInfo);
+                g.writeFieldName("sharing_info");
+                StoneSerializers.nullable(FileSharingInfo.Serializer.INSTANCE).serialize(value.sharingInfo, g);
             }
             if (value.propertyGroups != null) {
-                g.writeObjectField("property_groups", value.propertyGroups);
+                g.writeFieldName("property_groups");
+                StoneSerializers.nullable(StoneSerializers.list(PropertyGroup.Serializer.INSTANCE)).serialize(value.propertyGroups, g);
             }
             if (value.hasExplicitSharedMembers != null) {
-                g.writeObjectField("has_explicit_shared_members", value.hasExplicitSharedMembers);
+                g.writeFieldName("has_explicit_shared_members");
+                StoneSerializers.nullable(StoneSerializers.boolean_()).serialize(value.hasExplicitSharedMembers, g);
+            }
+            if (!collapse) {
+                g.writeEndObject();
             }
         }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<FileMetadata> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(FileMetadata.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(FileMetadata.class, unwrapping);
-        }
 
         @Override
-        protected JsonDeserializer<FileMetadata> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public FileMetadata deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            String _subtype_tag = readEnumeratedSubtypeTag(_p, "file");
-
-            String name = null;
-            String pathLower = null;
-            String pathDisplay = null;
-            String id = null;
-            Date clientModified = null;
-            Date serverModified = null;
-            String rev = null;
-            Long size = null;
-            String parentSharedFolderId = null;
-            MediaInfo mediaInfo = null;
-            FileSharingInfo sharingInfo = null;
-            List<PropertyGroup> propertyGroups = null;
-            Boolean hasExplicitSharedMembers = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("name".equals(_field)) {
-                    name = getStringValue(_p);
-                    _p.nextToken();
+        public FileMetadata deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            FileMetadata value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+                if ("file".equals(tag)) {
+                    tag = null;
                 }
-                else if ("path_lower".equals(_field)) {
-                    pathLower = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("path_display".equals(_field)) {
-                    pathDisplay = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("id".equals(_field)) {
-                    id = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("client_modified".equals(_field)) {
-                    clientModified = _ctx.parseDate(getStringValue(_p));
-                    _p.nextToken();
-                }
-                else if ("server_modified".equals(_field)) {
-                    serverModified = _ctx.parseDate(getStringValue(_p));
-                    _p.nextToken();
-                }
-                else if ("rev".equals(_field)) {
-                    rev = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("size".equals(_field)) {
-                    size = _p.getLongValue();
-                    assertUnsigned(_p, size);
-                    _p.nextToken();
-                }
-                else if ("parent_shared_folder_id".equals(_field)) {
-                    parentSharedFolderId = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("media_info".equals(_field)) {
-                    mediaInfo = _p.readValueAs(MediaInfo.class);
-                    _p.nextToken();
-                }
-                else if ("sharing_info".equals(_field)) {
-                    sharingInfo = _p.readValueAs(FileSharingInfo.class);
-                    _p.nextToken();
-                }
-                else if ("property_groups".equals(_field)) {
-                    expectArrayStart(_p);
-                    propertyGroups = new java.util.ArrayList<PropertyGroup>();
-                    while (!isArrayEnd(_p)) {
-                        PropertyGroup _x = null;
-                        _x = _p.readValueAs(PropertyGroup.class);
-                        _p.nextToken();
-                        propertyGroups.add(_x);
+            }
+            if (tag == null) {
+                String f_name = null;
+                String f_pathLower = null;
+                String f_pathDisplay = null;
+                String f_id = null;
+                Date f_clientModified = null;
+                Date f_serverModified = null;
+                String f_rev = null;
+                Long f_size = null;
+                String f_parentSharedFolderId = null;
+                MediaInfo f_mediaInfo = null;
+                FileSharingInfo f_sharingInfo = null;
+                List<PropertyGroup> f_propertyGroups = null;
+                Boolean f_hasExplicitSharedMembers = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("name".equals(field)) {
+                        f_name = StoneSerializers.string().deserialize(p);
                     }
-                    expectArrayEnd(_p);
-                    _p.nextToken();
+                    else if ("path_lower".equals(field)) {
+                        f_pathLower = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("path_display".equals(field)) {
+                        f_pathDisplay = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("id".equals(field)) {
+                        f_id = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("client_modified".equals(field)) {
+                        f_clientModified = StoneSerializers.timestamp().deserialize(p);
+                    }
+                    else if ("server_modified".equals(field)) {
+                        f_serverModified = StoneSerializers.timestamp().deserialize(p);
+                    }
+                    else if ("rev".equals(field)) {
+                        f_rev = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("size".equals(field)) {
+                        f_size = StoneSerializers.uInt64().deserialize(p);
+                    }
+                    else if ("parent_shared_folder_id".equals(field)) {
+                        f_parentSharedFolderId = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                    }
+                    else if ("media_info".equals(field)) {
+                        f_mediaInfo = StoneSerializers.nullable(MediaInfo.Serializer.INSTANCE).deserialize(p);
+                    }
+                    else if ("sharing_info".equals(field)) {
+                        f_sharingInfo = StoneSerializers.nullable(FileSharingInfo.Serializer.INSTANCE).deserialize(p);
+                    }
+                    else if ("property_groups".equals(field)) {
+                        f_propertyGroups = StoneSerializers.nullable(StoneSerializers.list(PropertyGroup.Serializer.INSTANCE)).deserialize(p);
+                    }
+                    else if ("has_explicit_shared_members".equals(field)) {
+                        f_hasExplicitSharedMembers = StoneSerializers.nullable(StoneSerializers.boolean_()).deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
                 }
-                else if ("has_explicit_shared_members".equals(_field)) {
-                    hasExplicitSharedMembers = _p.getValueAsBoolean();
-                    _p.nextToken();
+                if (f_name == null) {
+                    throw new JsonParseException(p, "Required field \"name\" missing.");
                 }
-                else {
-                    skipValue(_p);
+                if (f_pathLower == null) {
+                    throw new JsonParseException(p, "Required field \"path_lower\" missing.");
                 }
+                if (f_pathDisplay == null) {
+                    throw new JsonParseException(p, "Required field \"path_display\" missing.");
+                }
+                if (f_id == null) {
+                    throw new JsonParseException(p, "Required field \"id\" missing.");
+                }
+                if (f_clientModified == null) {
+                    throw new JsonParseException(p, "Required field \"client_modified\" missing.");
+                }
+                if (f_serverModified == null) {
+                    throw new JsonParseException(p, "Required field \"server_modified\" missing.");
+                }
+                if (f_rev == null) {
+                    throw new JsonParseException(p, "Required field \"rev\" missing.");
+                }
+                if (f_size == null) {
+                    throw new JsonParseException(p, "Required field \"size\" missing.");
+                }
+                value = new FileMetadata(f_name, f_pathLower, f_pathDisplay, f_id, f_clientModified, f_serverModified, f_rev, f_size, f_parentSharedFolderId, f_mediaInfo, f_sharingInfo, f_propertyGroups, f_hasExplicitSharedMembers);
             }
-
-            if (name == null) {
-                throw new JsonParseException(_p, "Required field \"name\" is missing.");
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
             }
-            if (pathLower == null) {
-                throw new JsonParseException(_p, "Required field \"path_lower\" is missing.");
+            if (!collapsed) {
+                expectEndObject(p);
             }
-            if (pathDisplay == null) {
-                throw new JsonParseException(_p, "Required field \"path_display\" is missing.");
-            }
-            if (id == null) {
-                throw new JsonParseException(_p, "Required field \"id\" is missing.");
-            }
-            if (clientModified == null) {
-                throw new JsonParseException(_p, "Required field \"client_modified\" is missing.");
-            }
-            if (serverModified == null) {
-                throw new JsonParseException(_p, "Required field \"server_modified\" is missing.");
-            }
-            if (rev == null) {
-                throw new JsonParseException(_p, "Required field \"rev\" is missing.");
-            }
-            if (size == null) {
-                throw new JsonParseException(_p, "Required field \"size\" is missing.");
-            }
-
-            return new FileMetadata(name, pathLower, pathDisplay, id, clientModified, serverModified, rev, size, parentSharedFolderId, mediaInfo, sharingInfo, propertyGroups, hasExplicitSharedMembers);
+            return value;
         }
     }
 }

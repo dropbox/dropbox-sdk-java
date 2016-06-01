@@ -1,33 +1,19 @@
 /* DO NOT EDIT */
-/* This file was generated from shared_links.babel */
+/* This file was generated from shared_links.stone */
 
 package com.dropbox.core.v2.sharing;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
-@JsonSerialize(using=SharedLinkAccessFailureReason.Serializer.class)
-@JsonDeserialize(using=SharedLinkAccessFailureReason.Deserializer.class)
 public enum SharedLinkAccessFailureReason {
     // union SharedLinkAccessFailureReason
     /**
@@ -55,63 +41,82 @@ public enum SharedLinkAccessFailureReason {
      */
     OTHER; // *catch_all
 
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
-
-    static final class Serializer extends UnionJsonSerializer<SharedLinkAccessFailureReason> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(SharedLinkAccessFailureReason.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<SharedLinkAccessFailureReason> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(SharedLinkAccessFailureReason value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+        public void serialize(SharedLinkAccessFailureReason value, JsonGenerator g) throws IOException, JsonGenerationException {
             switch (value) {
-                case LOGIN_REQUIRED:
+                case LOGIN_REQUIRED: {
                     g.writeString("login_required");
                     break;
-                case EMAIL_VERIFY_REQUIRED:
+                }
+                case EMAIL_VERIFY_REQUIRED: {
                     g.writeString("email_verify_required");
                     break;
-                case PASSWORD_REQUIRED:
+                }
+                case PASSWORD_REQUIRED: {
                     g.writeString("password_required");
                     break;
-                case TEAM_ONLY:
+                }
+                case TEAM_ONLY: {
                     g.writeString("team_only");
                     break;
-                case OWNER_ONLY:
+                }
+                case OWNER_ONLY: {
                     g.writeString("owner_only");
                     break;
-                case OTHER:
+                }
+                default: {
                     g.writeString("other");
-                    break;
+                }
             }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<SharedLinkAccessFailureReason, SharedLinkAccessFailureReason> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(SharedLinkAccessFailureReason.class, getTagMapping(), SharedLinkAccessFailureReason.OTHER);
         }
 
         @Override
-        public SharedLinkAccessFailureReason deserialize(SharedLinkAccessFailureReason _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            return _tag;
-        }
-
-        private static Map<String, SharedLinkAccessFailureReason> getTagMapping() {
-            Map<String, SharedLinkAccessFailureReason> values = new HashMap<String, SharedLinkAccessFailureReason>();
-            values.put("login_required", SharedLinkAccessFailureReason.LOGIN_REQUIRED);
-            values.put("email_verify_required", SharedLinkAccessFailureReason.EMAIL_VERIFY_REQUIRED);
-            values.put("password_required", SharedLinkAccessFailureReason.PASSWORD_REQUIRED);
-            values.put("team_only", SharedLinkAccessFailureReason.TEAM_ONLY);
-            values.put("owner_only", SharedLinkAccessFailureReason.OWNER_ONLY);
-            values.put("other", SharedLinkAccessFailureReason.OTHER);
-            return Collections.unmodifiableMap(values);
+        public SharedLinkAccessFailureReason deserialize(JsonParser p) throws IOException, JsonParseException {
+            SharedLinkAccessFailureReason value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
+            }
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("login_required".equals(tag)) {
+                value = SharedLinkAccessFailureReason.LOGIN_REQUIRED;
+            }
+            else if ("email_verify_required".equals(tag)) {
+                value = SharedLinkAccessFailureReason.EMAIL_VERIFY_REQUIRED;
+            }
+            else if ("password_required".equals(tag)) {
+                value = SharedLinkAccessFailureReason.PASSWORD_REQUIRED;
+            }
+            else if ("team_only".equals(tag)) {
+                value = SharedLinkAccessFailureReason.TEAM_ONLY;
+            }
+            else if ("owner_only".equals(tag)) {
+                value = SharedLinkAccessFailureReason.OWNER_ONLY;
+            }
+            else {
+                value = SharedLinkAccessFailureReason.OTHER;
+                skipFields(p);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

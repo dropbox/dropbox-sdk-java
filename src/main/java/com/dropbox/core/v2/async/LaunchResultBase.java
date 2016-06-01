@@ -1,30 +1,18 @@
 /* DO NOT EDIT */
-/* This file was generated from async.babel */
+/* This file was generated from async.stone */
 
 package com.dropbox.core.v2.async;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Result returned by methods that launch an asynchronous job. A method who may
@@ -37,14 +25,8 @@ import java.util.Map;
  * methods will return {@code true}. You can use {@link #tag()} to determine the
  * tag associated with this instance. </p>
  */
-@JsonSerialize(using=LaunchResultBase.Serializer.class)
-@JsonDeserialize(using=LaunchResultBase.Deserializer.class)
 public final class LaunchResultBase {
     // union LaunchResultBase
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link LaunchResultBase}.
@@ -178,7 +160,7 @@ public final class LaunchResultBase {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -190,64 +172,63 @@ public final class LaunchResultBase {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends UnionJsonSerializer<LaunchResultBase> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(LaunchResultBase.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<LaunchResultBase> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(LaunchResultBase value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            switch (value.tag) {
-                case ASYNC_JOB_ID:
+        public void serialize(LaunchResultBase value, JsonGenerator g) throws IOException, JsonGenerationException {
+            switch (value.tag()) {
+                case ASYNC_JOB_ID: {
                     g.writeStartObject();
-                    g.writeStringField(".tag", "async_job_id");
-                    g.writeObjectField("async_job_id", value.asyncJobIdValue);
+                    writeTag("async_job_id", g);
+                    g.writeFieldName("async_job_id");
+                    StoneSerializers.string().serialize(value.asyncJobIdValue, g);
                     g.writeEndObject();
                     break;
+                }
+                default: {
+                    throw new IllegalArgumentException("Unrecognized tag: " + value.tag());
+                }
             }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<LaunchResultBase, Tag> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(LaunchResultBase.class, getTagMapping(), null);
         }
 
         @Override
-        public LaunchResultBase deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            switch (_tag) {
-                case ASYNC_JOB_ID: {
-                    String value = null;
-                    expectField(_p, "async_job_id");
-                    value = getStringValue(_p);
-                    _p.nextToken();
-                    return LaunchResultBase.asyncJobId(value);
-                }
+        public LaunchResultBase deserialize(JsonParser p) throws IOException, JsonParseException {
+            LaunchResultBase value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
             }
-            // should be impossible to get here
-            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
-        }
-
-        private static Map<String, LaunchResultBase.Tag> getTagMapping() {
-            Map<String, LaunchResultBase.Tag> values = new HashMap<String, LaunchResultBase.Tag>();
-            values.put("async_job_id", LaunchResultBase.Tag.ASYNC_JOB_ID);
-            return Collections.unmodifiableMap(values);
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("async_job_id".equals(tag)) {
+                String fieldValue = null;
+                expectField("async_job_id", p);
+                fieldValue = StoneSerializers.string().deserialize(p);
+                value = LaunchResultBase.asyncJobId(fieldValue);
+            }
+            else {
+                throw new JsonParseException(p, "Unknown tag: " + tag);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

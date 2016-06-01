@@ -1,30 +1,18 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.babel */
+/* This file was generated from sharing_folders.stone */
 
 package com.dropbox.core.v2.sharing;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This class is an open tagged union.  Tagged unions instances are always
@@ -36,14 +24,8 @@ import java.util.Map;
  * tag is introduced that this SDK does not recognized, the {@link #OTHER} value
  * will be used. </p>
  */
-@JsonSerialize(using=UpdateFolderMemberError.Serializer.class)
-@JsonDeserialize(using=UpdateFolderMemberError.Deserializer.class)
 public final class UpdateFolderMemberError {
     // union UpdateFolderMemberError
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link UpdateFolderMemberError}.
@@ -289,7 +271,7 @@ public final class UpdateFolderMemberError {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -301,99 +283,92 @@ public final class UpdateFolderMemberError {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends UnionJsonSerializer<UpdateFolderMemberError> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(UpdateFolderMemberError.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<UpdateFolderMemberError> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(UpdateFolderMemberError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            switch (value.tag) {
-                case ACCESS_ERROR:
-                    g.writeStartObject();
-                    g.writeStringField(".tag", "access_error");
-                    g.writeObjectField("access_error", value.accessErrorValue);
-                    g.writeEndObject();
-                    break;
-                case MEMBER_ERROR:
-                    g.writeStartObject();
-                    g.writeStringField(".tag", "member_error");
-                    g.writeObjectField("member_error", value.memberErrorValue);
-                    g.writeEndObject();
-                    break;
-                case INSUFFICIENT_PLAN:
-                    g.writeString("insufficient_plan");
-                    break;
-                case NO_PERMISSION:
-                    g.writeString("no_permission");
-                    break;
-                case OTHER:
-                    g.writeString("other");
-                    break;
-            }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<UpdateFolderMemberError, Tag> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(UpdateFolderMemberError.class, getTagMapping(), Tag.OTHER);
-        }
-
-        @Override
-        public UpdateFolderMemberError deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            switch (_tag) {
+        public void serialize(UpdateFolderMemberError value, JsonGenerator g) throws IOException, JsonGenerationException {
+            switch (value.tag()) {
                 case ACCESS_ERROR: {
-                    SharedFolderAccessError value = null;
-                    expectField(_p, "access_error");
-                    value = _p.readValueAs(SharedFolderAccessError.class);
-                    _p.nextToken();
-                    return UpdateFolderMemberError.accessError(value);
+                    g.writeStartObject();
+                    writeTag("access_error", g);
+                    g.writeFieldName("access_error");
+                    SharedFolderAccessError.Serializer.INSTANCE.serialize(value.accessErrorValue, g);
+                    g.writeEndObject();
+                    break;
                 }
                 case MEMBER_ERROR: {
-                    SharedFolderMemberError value = null;
-                    expectField(_p, "member_error");
-                    value = _p.readValueAs(SharedFolderMemberError.class);
-                    _p.nextToken();
-                    return UpdateFolderMemberError.memberError(value);
+                    g.writeStartObject();
+                    writeTag("member_error", g);
+                    g.writeFieldName("member_error");
+                    SharedFolderMemberError.Serializer.INSTANCE.serialize(value.memberErrorValue, g);
+                    g.writeEndObject();
+                    break;
                 }
                 case INSUFFICIENT_PLAN: {
-                    return UpdateFolderMemberError.INSUFFICIENT_PLAN;
+                    g.writeString("insufficient_plan");
+                    break;
                 }
                 case NO_PERMISSION: {
-                    return UpdateFolderMemberError.NO_PERMISSION;
+                    g.writeString("no_permission");
+                    break;
                 }
-                case OTHER: {
-                    return UpdateFolderMemberError.OTHER;
+                default: {
+                    g.writeString("other");
                 }
             }
-            // should be impossible to get here
-            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
         }
 
-        private static Map<String, UpdateFolderMemberError.Tag> getTagMapping() {
-            Map<String, UpdateFolderMemberError.Tag> values = new HashMap<String, UpdateFolderMemberError.Tag>();
-            values.put("access_error", UpdateFolderMemberError.Tag.ACCESS_ERROR);
-            values.put("member_error", UpdateFolderMemberError.Tag.MEMBER_ERROR);
-            values.put("insufficient_plan", UpdateFolderMemberError.Tag.INSUFFICIENT_PLAN);
-            values.put("no_permission", UpdateFolderMemberError.Tag.NO_PERMISSION);
-            values.put("other", UpdateFolderMemberError.Tag.OTHER);
-            return Collections.unmodifiableMap(values);
+        @Override
+        public UpdateFolderMemberError deserialize(JsonParser p) throws IOException, JsonParseException {
+            UpdateFolderMemberError value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
+            }
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("access_error".equals(tag)) {
+                SharedFolderAccessError fieldValue = null;
+                expectField("access_error", p);
+                fieldValue = SharedFolderAccessError.Serializer.INSTANCE.deserialize(p);
+                value = UpdateFolderMemberError.accessError(fieldValue);
+            }
+            else if ("member_error".equals(tag)) {
+                SharedFolderMemberError fieldValue = null;
+                expectField("member_error", p);
+                fieldValue = SharedFolderMemberError.Serializer.INSTANCE.deserialize(p);
+                value = UpdateFolderMemberError.memberError(fieldValue);
+            }
+            else if ("insufficient_plan".equals(tag)) {
+                value = UpdateFolderMemberError.INSUFFICIENT_PLAN;
+            }
+            else if ("no_permission".equals(tag)) {
+                value = UpdateFolderMemberError.NO_PERMISSION;
+            }
+            else {
+                value = UpdateFolderMemberError.OTHER;
+                skipFields(p);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

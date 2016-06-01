@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from properties.babel */
+/* This file was generated from properties.stone */
 
 /**
  * This namespace contains helper entities for property and property/template

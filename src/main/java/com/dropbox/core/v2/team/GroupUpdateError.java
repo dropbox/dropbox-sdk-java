@@ -1,33 +1,19 @@
 /* DO NOT EDIT */
-/* This file was generated from team_groups.babel */
+/* This file was generated from team_groups.stone */
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
-@JsonSerialize(using=GroupUpdateError.Serializer.class)
-@JsonDeserialize(using=GroupUpdateError.Deserializer.class)
 public enum GroupUpdateError {
     // union GroupUpdateError
     /**
@@ -40,49 +26,67 @@ public enum GroupUpdateError {
      */
     EXTERNAL_ID_ALREADY_IN_USE;
 
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
-
-    static final class Serializer extends UnionJsonSerializer<GroupUpdateError> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(GroupUpdateError.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<GroupUpdateError> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(GroupUpdateError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+        public void serialize(GroupUpdateError value, JsonGenerator g) throws IOException, JsonGenerationException {
             switch (value) {
-                case GROUP_NOT_FOUND:
+                case GROUP_NOT_FOUND: {
                     g.writeString("group_not_found");
                     break;
-                case OTHER:
+                }
+                case OTHER: {
                     g.writeString("other");
                     break;
-                case EXTERNAL_ID_ALREADY_IN_USE:
+                }
+                case EXTERNAL_ID_ALREADY_IN_USE: {
                     g.writeString("external_id_already_in_use");
                     break;
+                }
+                default: {
+                    throw new IllegalArgumentException("Unrecognized tag: " + value);
+                }
             }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<GroupUpdateError, GroupUpdateError> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(GroupUpdateError.class, getTagMapping(), null);
         }
 
         @Override
-        public GroupUpdateError deserialize(GroupUpdateError _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            return _tag;
-        }
-
-        private static Map<String, GroupUpdateError> getTagMapping() {
-            Map<String, GroupUpdateError> values = new HashMap<String, GroupUpdateError>();
-            values.put("external_id_already_in_use", GroupUpdateError.EXTERNAL_ID_ALREADY_IN_USE);
-            return Collections.unmodifiableMap(values);
+        public GroupUpdateError deserialize(JsonParser p) throws IOException, JsonParseException {
+            GroupUpdateError value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
+            }
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("group_not_found".equals(tag)) {
+                value = GroupUpdateError.GROUP_NOT_FOUND;
+            }
+            else if ("other".equals(tag)) {
+                value = GroupUpdateError.OTHER;
+            }
+            else if ("external_id_already_in_use".equals(tag)) {
+                value = GroupUpdateError.EXTERNAL_ID_ALREADY_IN_USE;
+            }
+            else {
+                throw new JsonParseException(p, "Unknown tag: " + tag);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

@@ -1,28 +1,17 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.babel */
+/* This file was generated from sharing_folders.stone */
 
 package com.dropbox.core.v2.sharing;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 import com.dropbox.core.v2.users.Team;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.Date;
@@ -31,14 +20,8 @@ import java.util.List;
 /**
  * The metadata which includes basic information about the shared folder.
  */
-@JsonSerialize(using=SharedFolderMetadata.Serializer.class)
-@JsonDeserialize(using=SharedFolderMetadata.Deserializer.class)
 public class SharedFolderMetadata extends SharedFolderMetadataBase {
     // struct SharedFolderMetadata
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final String pathLower;
     protected final String name;
@@ -325,7 +308,7 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -337,163 +320,136 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<SharedFolderMetadata> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(SharedFolderMetadata.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(SharedFolderMetadata.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<SharedFolderMetadata> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected JsonSerializer<SharedFolderMetadata> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(SharedFolderMetadata value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("access_type", value.accessType);
-            g.writeObjectField("is_team_folder", value.isTeamFolder);
-            g.writeObjectField("policy", value.policy);
-            g.writeObjectField("name", value.name);
-            g.writeObjectField("shared_folder_id", value.sharedFolderId);
-            g.writeObjectField("time_invited", value.timeInvited);
+        public void serialize(SharedFolderMetadata value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
+            }
+            g.writeFieldName("access_type");
+            AccessLevel.Serializer.INSTANCE.serialize(value.accessType, g);
+            g.writeFieldName("is_team_folder");
+            StoneSerializers.boolean_().serialize(value.isTeamFolder, g);
+            g.writeFieldName("policy");
+            FolderPolicy.Serializer.INSTANCE.serialize(value.policy, g);
+            g.writeFieldName("name");
+            StoneSerializers.string().serialize(value.name, g);
+            g.writeFieldName("shared_folder_id");
+            StoneSerializers.string().serialize(value.sharedFolderId, g);
+            g.writeFieldName("time_invited");
+            StoneSerializers.timestamp().serialize(value.timeInvited, g);
             if (value.ownerTeam != null) {
-                g.writeObjectField("owner_team", value.ownerTeam);
+                g.writeFieldName("owner_team");
+                StoneSerializers.nullable(Team.Serializer.INSTANCE).serialize(value.ownerTeam, g);
             }
             if (value.parentSharedFolderId != null) {
-                g.writeObjectField("parent_shared_folder_id", value.parentSharedFolderId);
+                g.writeFieldName("parent_shared_folder_id");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.parentSharedFolderId, g);
             }
             if (value.pathLower != null) {
-                g.writeObjectField("path_lower", value.pathLower);
+                g.writeFieldName("path_lower");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.pathLower, g);
             }
             if (value.permissions != null) {
-                g.writeObjectField("permissions", value.permissions);
+                g.writeFieldName("permissions");
+                StoneSerializers.nullable(StoneSerializers.list(FolderPermission.Serializer.INSTANCE)).serialize(value.permissions, g);
+            }
+            if (!collapse) {
+                g.writeEndObject();
             }
         }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<SharedFolderMetadata> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(SharedFolderMetadata.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(SharedFolderMetadata.class, unwrapping);
-        }
 
         @Override
-        protected JsonDeserializer<SharedFolderMetadata> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public SharedFolderMetadata deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            AccessLevel accessType = null;
-            Boolean isTeamFolder = null;
-            FolderPolicy policy = null;
-            String name = null;
-            String sharedFolderId = null;
-            Date timeInvited = null;
-            Team ownerTeam = null;
-            String parentSharedFolderId = null;
-            String pathLower = null;
-            List<FolderPermission> permissions = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("access_type".equals(_field)) {
-                    accessType = _p.readValueAs(AccessLevel.class);
-                    _p.nextToken();
-                }
-                else if ("is_team_folder".equals(_field)) {
-                    isTeamFolder = _p.getValueAsBoolean();
-                    _p.nextToken();
-                }
-                else if ("policy".equals(_field)) {
-                    policy = _p.readValueAs(FolderPolicy.class);
-                    _p.nextToken();
-                }
-                else if ("name".equals(_field)) {
-                    name = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("shared_folder_id".equals(_field)) {
-                    sharedFolderId = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("time_invited".equals(_field)) {
-                    timeInvited = _ctx.parseDate(getStringValue(_p));
-                    _p.nextToken();
-                }
-                else if ("owner_team".equals(_field)) {
-                    ownerTeam = _p.readValueAs(Team.class);
-                    _p.nextToken();
-                }
-                else if ("parent_shared_folder_id".equals(_field)) {
-                    parentSharedFolderId = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("path_lower".equals(_field)) {
-                    pathLower = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("permissions".equals(_field)) {
-                    expectArrayStart(_p);
-                    permissions = new java.util.ArrayList<FolderPermission>();
-                    while (!isArrayEnd(_p)) {
-                        FolderPermission _x = null;
-                        _x = _p.readValueAs(FolderPermission.class);
-                        _p.nextToken();
-                        permissions.add(_x);
+        public SharedFolderMetadata deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            SharedFolderMetadata value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                AccessLevel f_accessType = null;
+                Boolean f_isTeamFolder = null;
+                FolderPolicy f_policy = null;
+                String f_name = null;
+                String f_sharedFolderId = null;
+                Date f_timeInvited = null;
+                Team f_ownerTeam = null;
+                String f_parentSharedFolderId = null;
+                String f_pathLower = null;
+                List<FolderPermission> f_permissions = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("access_type".equals(field)) {
+                        f_accessType = AccessLevel.Serializer.INSTANCE.deserialize(p);
                     }
-                    expectArrayEnd(_p);
-                    _p.nextToken();
+                    else if ("is_team_folder".equals(field)) {
+                        f_isTeamFolder = StoneSerializers.boolean_().deserialize(p);
+                    }
+                    else if ("policy".equals(field)) {
+                        f_policy = FolderPolicy.Serializer.INSTANCE.deserialize(p);
+                    }
+                    else if ("name".equals(field)) {
+                        f_name = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("shared_folder_id".equals(field)) {
+                        f_sharedFolderId = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("time_invited".equals(field)) {
+                        f_timeInvited = StoneSerializers.timestamp().deserialize(p);
+                    }
+                    else if ("owner_team".equals(field)) {
+                        f_ownerTeam = StoneSerializers.nullable(Team.Serializer.INSTANCE).deserialize(p);
+                    }
+                    else if ("parent_shared_folder_id".equals(field)) {
+                        f_parentSharedFolderId = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                    }
+                    else if ("path_lower".equals(field)) {
+                        f_pathLower = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                    }
+                    else if ("permissions".equals(field)) {
+                        f_permissions = StoneSerializers.nullable(StoneSerializers.list(FolderPermission.Serializer.INSTANCE)).deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
                 }
-                else {
-                    skipValue(_p);
+                if (f_accessType == null) {
+                    throw new JsonParseException(p, "Required field \"access_type\" missing.");
                 }
+                if (f_isTeamFolder == null) {
+                    throw new JsonParseException(p, "Required field \"is_team_folder\" missing.");
+                }
+                if (f_policy == null) {
+                    throw new JsonParseException(p, "Required field \"policy\" missing.");
+                }
+                if (f_name == null) {
+                    throw new JsonParseException(p, "Required field \"name\" missing.");
+                }
+                if (f_sharedFolderId == null) {
+                    throw new JsonParseException(p, "Required field \"shared_folder_id\" missing.");
+                }
+                if (f_timeInvited == null) {
+                    throw new JsonParseException(p, "Required field \"time_invited\" missing.");
+                }
+                value = new SharedFolderMetadata(f_accessType, f_isTeamFolder, f_policy, f_name, f_sharedFolderId, f_timeInvited, f_ownerTeam, f_parentSharedFolderId, f_pathLower, f_permissions);
             }
-
-            if (accessType == null) {
-                throw new JsonParseException(_p, "Required field \"access_type\" is missing.");
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
             }
-            if (isTeamFolder == null) {
-                throw new JsonParseException(_p, "Required field \"is_team_folder\" is missing.");
+            if (!collapsed) {
+                expectEndObject(p);
             }
-            if (policy == null) {
-                throw new JsonParseException(_p, "Required field \"policy\" is missing.");
-            }
-            if (name == null) {
-                throw new JsonParseException(_p, "Required field \"name\" is missing.");
-            }
-            if (sharedFolderId == null) {
-                throw new JsonParseException(_p, "Required field \"shared_folder_id\" is missing.");
-            }
-            if (timeInvited == null) {
-                throw new JsonParseException(_p, "Required field \"time_invited\" is missing.");
-            }
-
-            return new SharedFolderMetadata(accessType, isTeamFolder, policy, name, sharedFolderId, timeInvited, ownerTeam, parentSharedFolderId, pathLower, permissions);
+            return value;
         }
     }
 }

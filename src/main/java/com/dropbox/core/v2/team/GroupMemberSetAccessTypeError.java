@@ -1,33 +1,19 @@
 /* DO NOT EDIT */
-/* This file was generated from team_groups.babel */
+/* This file was generated from team_groups.stone */
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
-@JsonSerialize(using=GroupMemberSetAccessTypeError.Serializer.class)
-@JsonDeserialize(using=GroupMemberSetAccessTypeError.Deserializer.class)
 public enum GroupMemberSetAccessTypeError {
     // union GroupMemberSetAccessTypeError
     /**
@@ -44,52 +30,74 @@ public enum GroupMemberSetAccessTypeError {
      */
     USER_CANNOT_BE_MANAGER_OF_COMPANY_MANAGED_GROUP;
 
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
-
-    static final class Serializer extends UnionJsonSerializer<GroupMemberSetAccessTypeError> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(GroupMemberSetAccessTypeError.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<GroupMemberSetAccessTypeError> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(GroupMemberSetAccessTypeError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+        public void serialize(GroupMemberSetAccessTypeError value, JsonGenerator g) throws IOException, JsonGenerationException {
             switch (value) {
-                case GROUP_NOT_FOUND:
+                case GROUP_NOT_FOUND: {
                     g.writeString("group_not_found");
                     break;
-                case OTHER:
+                }
+                case OTHER: {
                     g.writeString("other");
                     break;
-                case MEMBER_NOT_IN_GROUP:
+                }
+                case MEMBER_NOT_IN_GROUP: {
                     g.writeString("member_not_in_group");
                     break;
-                case USER_CANNOT_BE_MANAGER_OF_COMPANY_MANAGED_GROUP:
+                }
+                case USER_CANNOT_BE_MANAGER_OF_COMPANY_MANAGED_GROUP: {
                     g.writeString("user_cannot_be_manager_of_company_managed_group");
                     break;
+                }
+                default: {
+                    throw new IllegalArgumentException("Unrecognized tag: " + value);
+                }
             }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<GroupMemberSetAccessTypeError, GroupMemberSetAccessTypeError> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(GroupMemberSetAccessTypeError.class, getTagMapping(), null);
         }
 
         @Override
-        public GroupMemberSetAccessTypeError deserialize(GroupMemberSetAccessTypeError _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            return _tag;
-        }
-
-        private static Map<String, GroupMemberSetAccessTypeError> getTagMapping() {
-            Map<String, GroupMemberSetAccessTypeError> values = new HashMap<String, GroupMemberSetAccessTypeError>();
-            values.put("user_cannot_be_manager_of_company_managed_group", GroupMemberSetAccessTypeError.USER_CANNOT_BE_MANAGER_OF_COMPANY_MANAGED_GROUP);
-            return Collections.unmodifiableMap(values);
+        public GroupMemberSetAccessTypeError deserialize(JsonParser p) throws IOException, JsonParseException {
+            GroupMemberSetAccessTypeError value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
+            }
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("group_not_found".equals(tag)) {
+                value = GroupMemberSetAccessTypeError.GROUP_NOT_FOUND;
+            }
+            else if ("other".equals(tag)) {
+                value = GroupMemberSetAccessTypeError.OTHER;
+            }
+            else if ("member_not_in_group".equals(tag)) {
+                value = GroupMemberSetAccessTypeError.MEMBER_NOT_IN_GROUP;
+            }
+            else if ("user_cannot_be_manager_of_company_managed_group".equals(tag)) {
+                value = GroupMemberSetAccessTypeError.USER_CANNOT_BE_MANAGER_OF_COMPANY_MANAGED_GROUP;
+            }
+            else {
+                throw new JsonParseException(p, "Unknown tag: " + tag);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

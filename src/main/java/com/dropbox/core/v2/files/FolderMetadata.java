@@ -1,40 +1,23 @@
 /* DO NOT EDIT */
-/* This file was generated from files.babel */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 import com.dropbox.core.v2.properties.PropertyGroup;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.List;
 
-@JsonSerialize(using=FolderMetadata.Serializer.class)
-@JsonDeserialize(using=FolderMetadata.Deserializer.class)
 public class FolderMetadata extends Metadata {
     // struct FolderMetadata
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final String id;
     protected final String sharedFolderId;
@@ -355,7 +338,7 @@ public class FolderMetadata extends Metadata {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -367,142 +350,122 @@ public class FolderMetadata extends Metadata {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<FolderMetadata> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(FolderMetadata.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(FolderMetadata.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<FolderMetadata> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected void serializeFields(FolderMetadata value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeStringField(".tag", "folder");
-            g.writeObjectField("name", value.name);
-            g.writeObjectField("path_lower", value.pathLower);
-            g.writeObjectField("path_display", value.pathDisplay);
-            g.writeObjectField("id", value.id);
+        public void serialize(FolderMetadata value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
+            }
+            writeTag("folder", g);
+            g.writeFieldName("name");
+            StoneSerializers.string().serialize(value.name, g);
+            g.writeFieldName("path_lower");
+            StoneSerializers.string().serialize(value.pathLower, g);
+            g.writeFieldName("path_display");
+            StoneSerializers.string().serialize(value.pathDisplay, g);
+            g.writeFieldName("id");
+            StoneSerializers.string().serialize(value.id, g);
             if (value.parentSharedFolderId != null) {
-                g.writeObjectField("parent_shared_folder_id", value.parentSharedFolderId);
+                g.writeFieldName("parent_shared_folder_id");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.parentSharedFolderId, g);
             }
             if (value.sharedFolderId != null) {
-                g.writeObjectField("shared_folder_id", value.sharedFolderId);
+                g.writeFieldName("shared_folder_id");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.sharedFolderId, g);
             }
             if (value.sharingInfo != null) {
-                g.writeObjectField("sharing_info", value.sharingInfo);
+                g.writeFieldName("sharing_info");
+                StoneSerializers.nullable(FolderSharingInfo.Serializer.INSTANCE).serialize(value.sharingInfo, g);
             }
             if (value.propertyGroups != null) {
-                g.writeObjectField("property_groups", value.propertyGroups);
+                g.writeFieldName("property_groups");
+                StoneSerializers.nullable(StoneSerializers.list(PropertyGroup.Serializer.INSTANCE)).serialize(value.propertyGroups, g);
+            }
+            if (!collapse) {
+                g.writeEndObject();
             }
         }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<FolderMetadata> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(FolderMetadata.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(FolderMetadata.class, unwrapping);
-        }
 
         @Override
-        protected JsonDeserializer<FolderMetadata> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public FolderMetadata deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            String _subtype_tag = readEnumeratedSubtypeTag(_p, "folder");
-
-            String name = null;
-            String pathLower = null;
-            String pathDisplay = null;
-            String id = null;
-            String parentSharedFolderId = null;
-            String sharedFolderId = null;
-            FolderSharingInfo sharingInfo = null;
-            List<PropertyGroup> propertyGroups = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("name".equals(_field)) {
-                    name = getStringValue(_p);
-                    _p.nextToken();
+        public FolderMetadata deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            FolderMetadata value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+                if ("folder".equals(tag)) {
+                    tag = null;
                 }
-                else if ("path_lower".equals(_field)) {
-                    pathLower = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("path_display".equals(_field)) {
-                    pathDisplay = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("id".equals(_field)) {
-                    id = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("parent_shared_folder_id".equals(_field)) {
-                    parentSharedFolderId = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("shared_folder_id".equals(_field)) {
-                    sharedFolderId = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("sharing_info".equals(_field)) {
-                    sharingInfo = _p.readValueAs(FolderSharingInfo.class);
-                    _p.nextToken();
-                }
-                else if ("property_groups".equals(_field)) {
-                    expectArrayStart(_p);
-                    propertyGroups = new java.util.ArrayList<PropertyGroup>();
-                    while (!isArrayEnd(_p)) {
-                        PropertyGroup _x = null;
-                        _x = _p.readValueAs(PropertyGroup.class);
-                        _p.nextToken();
-                        propertyGroups.add(_x);
+            }
+            if (tag == null) {
+                String f_name = null;
+                String f_pathLower = null;
+                String f_pathDisplay = null;
+                String f_id = null;
+                String f_parentSharedFolderId = null;
+                String f_sharedFolderId = null;
+                FolderSharingInfo f_sharingInfo = null;
+                List<PropertyGroup> f_propertyGroups = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("name".equals(field)) {
+                        f_name = StoneSerializers.string().deserialize(p);
                     }
-                    expectArrayEnd(_p);
-                    _p.nextToken();
+                    else if ("path_lower".equals(field)) {
+                        f_pathLower = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("path_display".equals(field)) {
+                        f_pathDisplay = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("id".equals(field)) {
+                        f_id = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("parent_shared_folder_id".equals(field)) {
+                        f_parentSharedFolderId = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                    }
+                    else if ("shared_folder_id".equals(field)) {
+                        f_sharedFolderId = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                    }
+                    else if ("sharing_info".equals(field)) {
+                        f_sharingInfo = StoneSerializers.nullable(FolderSharingInfo.Serializer.INSTANCE).deserialize(p);
+                    }
+                    else if ("property_groups".equals(field)) {
+                        f_propertyGroups = StoneSerializers.nullable(StoneSerializers.list(PropertyGroup.Serializer.INSTANCE)).deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
                 }
-                else {
-                    skipValue(_p);
+                if (f_name == null) {
+                    throw new JsonParseException(p, "Required field \"name\" missing.");
                 }
+                if (f_pathLower == null) {
+                    throw new JsonParseException(p, "Required field \"path_lower\" missing.");
+                }
+                if (f_pathDisplay == null) {
+                    throw new JsonParseException(p, "Required field \"path_display\" missing.");
+                }
+                if (f_id == null) {
+                    throw new JsonParseException(p, "Required field \"id\" missing.");
+                }
+                value = new FolderMetadata(f_name, f_pathLower, f_pathDisplay, f_id, f_parentSharedFolderId, f_sharedFolderId, f_sharingInfo, f_propertyGroups);
             }
-
-            if (name == null) {
-                throw new JsonParseException(_p, "Required field \"name\" is missing.");
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
             }
-            if (pathLower == null) {
-                throw new JsonParseException(_p, "Required field \"path_lower\" is missing.");
+            if (!collapsed) {
+                expectEndObject(p);
             }
-            if (pathDisplay == null) {
-                throw new JsonParseException(_p, "Required field \"path_display\" is missing.");
-            }
-            if (id == null) {
-                throw new JsonParseException(_p, "Required field \"id\" is missing.");
-            }
-
-            return new FolderMetadata(name, pathLower, pathDisplay, id, parentSharedFolderId, sharedFolderId, sharingInfo, propertyGroups);
+            return value;
         }
     }
 }

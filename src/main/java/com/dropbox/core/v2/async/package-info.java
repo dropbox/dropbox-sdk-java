@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from async.babel */
+/* This file was generated from async.stone */
 
 /**
  * See None for a list of possible requests for this namespace.

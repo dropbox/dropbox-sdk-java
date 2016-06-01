@@ -1,30 +1,18 @@
 /* DO NOT EDIT */
-/* This file was generated from team_devices.babel */
+/* This file was generated from team_devices.stone */
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This class is a tagged union.  Tagged unions instances are always associated
@@ -32,14 +20,8 @@ import java.util.Map;
  * return {@code true}. You can use {@link #tag()} to determine the tag
  * associated with this instance.
  */
-@JsonSerialize(using=RevokeDeviceSessionArg.Serializer.class)
-@JsonDeserialize(using=RevokeDeviceSessionArg.Deserializer.class)
 public final class RevokeDeviceSessionArg {
     // union RevokeDeviceSessionArg
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link RevokeDeviceSessionArg}.
@@ -275,7 +257,7 @@ public final class RevokeDeviceSessionArg {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -287,86 +269,85 @@ public final class RevokeDeviceSessionArg {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends UnionJsonSerializer<RevokeDeviceSessionArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(RevokeDeviceSessionArg.class, DeviceSessionArg.class, RevokeDesktopClientArg.class, DeviceSessionArg.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<RevokeDeviceSessionArg> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(RevokeDeviceSessionArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            switch (value.tag) {
-                case WEB_SESSION:
-                    g.writeStartObject();
-                    g.writeStringField(".tag", "web_session");
-                    getUnwrappingSerializer(DeviceSessionArg.class).serialize(value.webSessionValue, g, provider);
-                    g.writeEndObject();
-                    break;
-                case DESKTOP_CLIENT:
-                    g.writeStartObject();
-                    g.writeStringField(".tag", "desktop_client");
-                    getUnwrappingSerializer(RevokeDesktopClientArg.class).serialize(value.desktopClientValue, g, provider);
-                    g.writeEndObject();
-                    break;
-                case MOBILE_CLIENT:
-                    g.writeStartObject();
-                    g.writeStringField(".tag", "mobile_client");
-                    getUnwrappingSerializer(DeviceSessionArg.class).serialize(value.mobileClientValue, g, provider);
-                    g.writeEndObject();
-                    break;
-            }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<RevokeDeviceSessionArg, Tag> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(RevokeDeviceSessionArg.class, getTagMapping(), null, DeviceSessionArg.class, RevokeDesktopClientArg.class, DeviceSessionArg.class);
-        }
-
-        @Override
-        public RevokeDeviceSessionArg deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            switch (_tag) {
+        public void serialize(RevokeDeviceSessionArg value, JsonGenerator g) throws IOException, JsonGenerationException {
+            switch (value.tag()) {
                 case WEB_SESSION: {
-                    DeviceSessionArg value = null;
-                    value = readCollapsedStructValue(DeviceSessionArg.class, _p, _ctx);
-                    return RevokeDeviceSessionArg.webSession(value);
+                    g.writeStartObject();
+                    writeTag("web_session", g);
+                    DeviceSessionArg.Serializer.INSTANCE.serialize(value.webSessionValue, g, true);
+                    g.writeEndObject();
+                    break;
                 }
                 case DESKTOP_CLIENT: {
-                    RevokeDesktopClientArg value = null;
-                    value = readCollapsedStructValue(RevokeDesktopClientArg.class, _p, _ctx);
-                    return RevokeDeviceSessionArg.desktopClient(value);
+                    g.writeStartObject();
+                    writeTag("desktop_client", g);
+                    RevokeDesktopClientArg.Serializer.INSTANCE.serialize(value.desktopClientValue, g, true);
+                    g.writeEndObject();
+                    break;
                 }
                 case MOBILE_CLIENT: {
-                    DeviceSessionArg value = null;
-                    value = readCollapsedStructValue(DeviceSessionArg.class, _p, _ctx);
-                    return RevokeDeviceSessionArg.mobileClient(value);
+                    g.writeStartObject();
+                    writeTag("mobile_client", g);
+                    DeviceSessionArg.Serializer.INSTANCE.serialize(value.mobileClientValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                default: {
+                    throw new IllegalArgumentException("Unrecognized tag: " + value.tag());
                 }
             }
-            // should be impossible to get here
-            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
         }
 
-        private static Map<String, RevokeDeviceSessionArg.Tag> getTagMapping() {
-            Map<String, RevokeDeviceSessionArg.Tag> values = new HashMap<String, RevokeDeviceSessionArg.Tag>();
-            values.put("web_session", RevokeDeviceSessionArg.Tag.WEB_SESSION);
-            values.put("desktop_client", RevokeDeviceSessionArg.Tag.DESKTOP_CLIENT);
-            values.put("mobile_client", RevokeDeviceSessionArg.Tag.MOBILE_CLIENT);
-            return Collections.unmodifiableMap(values);
+        @Override
+        public RevokeDeviceSessionArg deserialize(JsonParser p) throws IOException, JsonParseException {
+            RevokeDeviceSessionArg value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
+            }
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("web_session".equals(tag)) {
+                DeviceSessionArg fieldValue = null;
+                fieldValue = DeviceSessionArg.Serializer.INSTANCE.deserialize(p, true);
+                value = RevokeDeviceSessionArg.webSession(fieldValue);
+            }
+            else if ("desktop_client".equals(tag)) {
+                RevokeDesktopClientArg fieldValue = null;
+                fieldValue = RevokeDesktopClientArg.Serializer.INSTANCE.deserialize(p, true);
+                value = RevokeDeviceSessionArg.desktopClient(fieldValue);
+            }
+            else if ("mobile_client".equals(tag)) {
+                DeviceSessionArg fieldValue = null;
+                fieldValue = DeviceSessionArg.Serializer.INSTANCE.deserialize(p, true);
+                value = RevokeDeviceSessionArg.mobileClient(fieldValue);
+            }
+            else {
+                throw new JsonParseException(p, "Unknown tag: " + tag);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

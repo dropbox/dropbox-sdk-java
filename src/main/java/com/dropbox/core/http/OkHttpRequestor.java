@@ -27,8 +27,7 @@ import okio.BufferedSink;
  * To use this, pass {@link #INSTANCE} to the {@link com.dropbox.core.DbxRequestConfig} constructor.
  * </p>
  */
-public class OkHttpRequestor extends HttpRequestor
-{
+public class OkHttpRequestor extends HttpRequestor {
     /**
      * A thread-safe instance of {@code OkHttpRequestor} that connects directly
      * (as opposed to using a proxy).
@@ -37,8 +36,7 @@ public class OkHttpRequestor extends HttpRequestor
 
     private final OkHttpClient client;
 
-    private static OkHttpClient defaultOkHttpClient()
-    {
+    private static OkHttpClient defaultOkHttpClient() {
         OkHttpClient client = new OkHttpClient();
         client.setConnectTimeout(DEFAULT_CONNECT_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
         client.setReadTimeout(DEFAULT_READ_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
@@ -46,15 +44,16 @@ public class OkHttpRequestor extends HttpRequestor
         return client;
     }
 
-    public OkHttpRequestor(OkHttpClient client)
-    {
+    public OkHttpRequestor(OkHttpClient client) {
         this.client = client;
     }
 
+    public OkHttpClient getClient() {
+        return client;
+    }
+
     @Override
-    public Response doGet(String url, Iterable<Header> headers)
-        throws IOException
-    {
+    public Response doGet(String url, Iterable<Header> headers) throws IOException {
         Request.Builder builder = new Request.Builder().get().url(url);
         toOkHttpHeaders(headers, builder);
         com.squareup.okhttp.Response response = client.newCall(builder.build()).execute();
@@ -63,21 +62,16 @@ public class OkHttpRequestor extends HttpRequestor
     }
 
     @Override
-    public BufferUploader startPost(String url, Iterable<Header> headers)
-        throws IOException
-    {
+    public BufferUploader startPost(String url, Iterable<Header> headers) throws IOException {
         return startUpload(url, headers, "POST");
     }
 
     @Override
-    public BufferUploader startPut(String url, Iterable<Header> headers)
-        throws IOException
-    {
+    public BufferUploader startPut(String url, Iterable<Header> headers) throws IOException {
         return startUpload(url, headers, "PUT");
     }
 
-    private BufferUploader startUpload(String url, Iterable<Header> headers, String method)
-    {
+    private BufferUploader startUpload(String url, Iterable<Header> headers, String method) {
         Buffer requestBuffer = new Buffer();
         RequestBody requestBody = new BufferRequestBody(requestBuffer, null);
         Request.Builder builder = new Request.Builder().method(method, requestBody).url(url);
@@ -85,15 +79,13 @@ public class OkHttpRequestor extends HttpRequestor
         return new BufferUploader(client.newCall(builder.build()), requestBuffer);
     }
 
-    private static void toOkHttpHeaders(Iterable<Header> headers, Request.Builder builder)
-    {
+    private static void toOkHttpHeaders(Iterable<Header> headers, Request.Builder builder) {
         for (Header header : headers) {
             builder.addHeader(header.getKey(), header.getValue());
         }
     }
 
-    private static Map<String, List<String>> fromOkHttpHeaders(Headers headers)
-    {
+    private static Map<String, List<String>> fromOkHttpHeaders(Headers headers) {
         Map<String, List<String>> responseHeaders = new HashMap<String, List<String>>(headers.size());
         for (String name : headers.names()) {
             responseHeaders.put(name, headers.values(name));
@@ -106,34 +98,28 @@ public class OkHttpRequestor extends HttpRequestor
      * the {@link java.io.OutputStream} from an Okio {@link Buffer} that is connected to an OkHttp
      * {@link RequestBody}.  Calling {@link #finish()} will execute the request with OkHttp
      */
-    private static class BufferUploader extends HttpRequestor.Uploader
-    {
+    private static class BufferUploader extends HttpRequestor.Uploader {
         private final Call call;
         private final Buffer requestBuffer;
 
-        public BufferUploader(Call call, Buffer requestBuffer)
-        {
+        public BufferUploader(Call call, Buffer requestBuffer) {
             super(requestBuffer.outputStream());
             this.call = call;
             this.requestBuffer = requestBuffer;
         }
 
         @Override
-        public void close()
-        {
+        public void close() {
             requestBuffer.clear();
         }
 
         @Override
-        public void abort()
-        {
+        public void abort() {
             call.cancel();
         }
 
         @Override
-        public Response finish()
-            throws IOException
-        {
+        public Response finish() throws IOException {
             com.squareup.okhttp.Response response = call.execute();
             Map<String, List<String>> responseHeaders = fromOkHttpHeaders(response.headers());
             return new Response(response.code(), response.body().byteStream(), responseHeaders);
@@ -143,33 +129,27 @@ public class OkHttpRequestor extends HttpRequestor
     /**
      * Implementation of {@link RequestBody} that uses a {@link Buffer} for internal storage
      */
-    private static class BufferRequestBody extends RequestBody
-    {
+    private static class BufferRequestBody extends RequestBody {
         private Buffer buffer;
         private /*@Nullable*/MediaType mediaType;
 
-        private BufferRequestBody(final Buffer buffer, /*@Nullable*/MediaType mediaType)
-        {
+        private BufferRequestBody(final Buffer buffer, /*@Nullable*/MediaType mediaType) {
             this.buffer = buffer;
             this.mediaType = mediaType;
         }
 
         @Override
-        public /*@Nullable*/MediaType contentType()
-        {
+        public /*@Nullable*/MediaType contentType() {
             return mediaType;
         }
 
         @Override
-        public long contentLength()
-        {
+        public long contentLength() {
             return buffer.size();
         }
 
         @Override
-        public void writeTo(BufferedSink sink)
-            throws IOException
-        {
+        public void writeTo(BufferedSink sink) throws IOException {
             try {
                 sink.writeAll(buffer);
             } finally {

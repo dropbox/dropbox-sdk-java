@@ -1,27 +1,16 @@
 /* DO NOT EDIT */
-/* This file was generated from team_linked_apps.babel */
+/* This file was generated from team_linked_apps.stone */
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.Date;
@@ -29,14 +18,8 @@ import java.util.Date;
 /**
  * Information on linked third party applications
  */
-@JsonSerialize(using=ApiApp.Serializer.class)
-@JsonDeserialize(using=ApiApp.Deserializer.class)
 public class ApiApp {
     // struct ApiApp
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final String appId;
     protected final String appName;
@@ -275,7 +258,7 @@ public class ApiApp {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -287,120 +270,101 @@ public class ApiApp {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<ApiApp> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(ApiApp.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(ApiApp.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<ApiApp> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected JsonSerializer<ApiApp> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(ApiApp value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("app_id", value.appId);
-            g.writeObjectField("app_name", value.appName);
-            g.writeObjectField("is_app_folder", value.isAppFolder);
+        public void serialize(ApiApp value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
+            }
+            g.writeFieldName("app_id");
+            StoneSerializers.string().serialize(value.appId, g);
+            g.writeFieldName("app_name");
+            StoneSerializers.string().serialize(value.appName, g);
+            g.writeFieldName("is_app_folder");
+            StoneSerializers.boolean_().serialize(value.isAppFolder, g);
             if (value.publisher != null) {
-                g.writeObjectField("publisher", value.publisher);
+                g.writeFieldName("publisher");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.publisher, g);
             }
             if (value.publisherUrl != null) {
-                g.writeObjectField("publisher_url", value.publisherUrl);
+                g.writeFieldName("publisher_url");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.publisherUrl, g);
             }
             if (value.linked != null) {
-                g.writeObjectField("linked", value.linked);
+                g.writeFieldName("linked");
+                StoneSerializers.nullable(StoneSerializers.timestamp()).serialize(value.linked, g);
             }
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<ApiApp> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(ApiApp.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(ApiApp.class, unwrapping);
+            if (!collapse) {
+                g.writeEndObject();
+            }
         }
 
         @Override
-        protected JsonDeserializer<ApiApp> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public ApiApp deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            String appId = null;
-            String appName = null;
-            Boolean isAppFolder = null;
-            String publisher = null;
-            String publisherUrl = null;
-            Date linked = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("app_id".equals(_field)) {
-                    appId = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("app_name".equals(_field)) {
-                    appName = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("is_app_folder".equals(_field)) {
-                    isAppFolder = _p.getValueAsBoolean();
-                    _p.nextToken();
-                }
-                else if ("publisher".equals(_field)) {
-                    publisher = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("publisher_url".equals(_field)) {
-                    publisherUrl = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("linked".equals(_field)) {
-                    linked = _ctx.parseDate(getStringValue(_p));
-                    _p.nextToken();
-                }
-                else {
-                    skipValue(_p);
-                }
+        public ApiApp deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            ApiApp value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
             }
-
-            if (appId == null) {
-                throw new JsonParseException(_p, "Required field \"app_id\" is missing.");
+            if (tag == null) {
+                String f_appId = null;
+                String f_appName = null;
+                Boolean f_isAppFolder = null;
+                String f_publisher = null;
+                String f_publisherUrl = null;
+                Date f_linked = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("app_id".equals(field)) {
+                        f_appId = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("app_name".equals(field)) {
+                        f_appName = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("is_app_folder".equals(field)) {
+                        f_isAppFolder = StoneSerializers.boolean_().deserialize(p);
+                    }
+                    else if ("publisher".equals(field)) {
+                        f_publisher = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                    }
+                    else if ("publisher_url".equals(field)) {
+                        f_publisherUrl = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                    }
+                    else if ("linked".equals(field)) {
+                        f_linked = StoneSerializers.nullable(StoneSerializers.timestamp()).deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
+                }
+                if (f_appId == null) {
+                    throw new JsonParseException(p, "Required field \"app_id\" missing.");
+                }
+                if (f_appName == null) {
+                    throw new JsonParseException(p, "Required field \"app_name\" missing.");
+                }
+                if (f_isAppFolder == null) {
+                    throw new JsonParseException(p, "Required field \"is_app_folder\" missing.");
+                }
+                value = new ApiApp(f_appId, f_appName, f_isAppFolder, f_publisher, f_publisherUrl, f_linked);
             }
-            if (appName == null) {
-                throw new JsonParseException(_p, "Required field \"app_name\" is missing.");
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
             }
-            if (isAppFolder == null) {
-                throw new JsonParseException(_p, "Required field \"is_app_folder\" is missing.");
+            if (!collapsed) {
+                expectEndObject(p);
             }
-
-            return new ApiApp(appId, appName, isAppFolder, publisher, publisherUrl, linked);
+            return value;
         }
     }
 }

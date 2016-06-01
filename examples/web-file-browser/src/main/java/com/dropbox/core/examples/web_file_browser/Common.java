@@ -144,7 +144,7 @@ public class Common
 
     public DbxRequestConfig getRequestConfig(HttpServletRequest request)
     {
-        return new DbxRequestConfig("example-web-file-browser", request.getLocale().toString());
+        return new DbxRequestConfig("example-web-file-browser", request.getLocale().toLanguageTag());
     }
 
     public void handleDbxException(HttpServletResponse response, User user, DbxException ex, String action)

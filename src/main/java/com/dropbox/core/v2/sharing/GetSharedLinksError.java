@@ -1,30 +1,18 @@
 /* DO NOT EDIT */
-/* This file was generated from shared_links.babel */
+/* This file was generated from shared_links.stone */
 
 package com.dropbox.core.v2.sharing;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This class is an open tagged union.  Tagged unions instances are always
@@ -36,14 +24,8 @@ import java.util.Map;
  * tag is introduced that this SDK does not recognized, the {@link #OTHER} value
  * will be used. </p>
  */
-@JsonSerialize(using=GetSharedLinksError.Serializer.class)
-@JsonDeserialize(using=GetSharedLinksError.Deserializer.class)
 public final class GetSharedLinksError {
     // union GetSharedLinksError
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link GetSharedLinksError}.
@@ -196,7 +178,7 @@ public final class GetSharedLinksError {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -208,76 +190,71 @@ public final class GetSharedLinksError {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends UnionJsonSerializer<GetSharedLinksError> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(GetSharedLinksError.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<GetSharedLinksError> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(GetSharedLinksError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            switch (value.tag) {
-                case PATH:
+        public void serialize(GetSharedLinksError value, JsonGenerator g) throws IOException, JsonGenerationException {
+            switch (value.tag()) {
+                case PATH: {
                     g.writeStartObject();
-                    g.writeStringField(".tag", "path");
-                    if (value.pathValue != null) {
-                        g.writeObjectField("path", value.pathValue);
-                    }
+                    writeTag("path", g);
+                    g.writeFieldName("path");
+                    StoneSerializers.nullable(StoneSerializers.string()).serialize(value.pathValue, g);
                     g.writeEndObject();
                     break;
-                case OTHER:
+                }
+                default: {
                     g.writeString("other");
-                    break;
+                }
             }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<GetSharedLinksError, Tag> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(GetSharedLinksError.class, getTagMapping(), Tag.OTHER);
         }
 
         @Override
-        public GetSharedLinksError deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            switch (_tag) {
-                case PATH: {
-                    if (isObjectEnd(_p)) {
-                        return GetSharedLinksError.path();
-                    }
-                    String value = null;
-                    expectField(_p, "path");
-                    value = getStringValue(_p);
-                    _p.nextToken();
-                    return GetSharedLinksError.path(value);
+        public GetSharedLinksError deserialize(JsonParser p) throws IOException, JsonParseException {
+            GetSharedLinksError value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
+            }
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("path".equals(tag)) {
+                String fieldValue = null;
+                if (p.getCurrentToken() != JsonToken.END_OBJECT) {
+                    expectField("path", p);
+                    fieldValue = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
                 }
-                case OTHER: {
-                    return GetSharedLinksError.OTHER;
+                if (fieldValue == null) {
+                    value = GetSharedLinksError.path();
+                }
+                else {
+                    value = GetSharedLinksError.path(fieldValue);
                 }
             }
-            // should be impossible to get here
-            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
-        }
-
-        private static Map<String, GetSharedLinksError.Tag> getTagMapping() {
-            Map<String, GetSharedLinksError.Tag> values = new HashMap<String, GetSharedLinksError.Tag>();
-            values.put("path", GetSharedLinksError.Tag.PATH);
-            values.put("other", GetSharedLinksError.Tag.OTHER);
-            return Collections.unmodifiableMap(values);
+            else {
+                value = GetSharedLinksError.OTHER;
+                skipFields(p);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

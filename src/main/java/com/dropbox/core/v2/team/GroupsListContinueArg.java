@@ -1,38 +1,21 @@
 /* DO NOT EDIT */
-/* This file was generated from team_groups.babel */
+/* This file was generated from team_groups.stone */
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
-@JsonSerialize(using=GroupsListContinueArg.Serializer.class)
-@JsonDeserialize(using=GroupsListContinueArg.Deserializer.class)
 class GroupsListContinueArg {
     // struct GroupsListContinueArg
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final String cursor;
 
@@ -85,7 +68,7 @@ class GroupsListContinueArg {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -97,78 +80,59 @@ class GroupsListContinueArg {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<GroupsListContinueArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(GroupsListContinueArg.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(GroupsListContinueArg.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<GroupsListContinueArg> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected JsonSerializer<GroupsListContinueArg> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(GroupsListContinueArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("cursor", value.cursor);
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<GroupsListContinueArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(GroupsListContinueArg.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(GroupsListContinueArg.class, unwrapping);
-        }
-
-        @Override
-        protected JsonDeserializer<GroupsListContinueArg> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public GroupsListContinueArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            String cursor = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("cursor".equals(_field)) {
-                    cursor = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else {
-                    skipValue(_p);
-                }
+        public void serialize(GroupsListContinueArg value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
             }
-
-            if (cursor == null) {
-                throw new JsonParseException(_p, "Required field \"cursor\" is missing.");
+            g.writeFieldName("cursor");
+            StoneSerializers.string().serialize(value.cursor, g);
+            if (!collapse) {
+                g.writeEndObject();
             }
+        }
 
-            return new GroupsListContinueArg(cursor);
+        @Override
+        public GroupsListContinueArg deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            GroupsListContinueArg value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                String f_cursor = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("cursor".equals(field)) {
+                        f_cursor = StoneSerializers.string().deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
+                }
+                if (f_cursor == null) {
+                    throw new JsonParseException(p, "Required field \"cursor\" missing.");
+                }
+                value = new GroupsListContinueArg(f_cursor);
+            }
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

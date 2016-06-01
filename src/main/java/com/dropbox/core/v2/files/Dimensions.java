@@ -1,41 +1,24 @@
 /* DO NOT EDIT */
-/* This file was generated from files.babel */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
 /**
  * Dimensions for a photo or video.
  */
-@JsonSerialize(using=Dimensions.Serializer.class)
-@JsonDeserialize(using=Dimensions.Deserializer.class)
 public class Dimensions {
     // struct Dimensions
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final long height;
     protected final long width;
@@ -97,7 +80,7 @@ public class Dimensions {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -109,89 +92,68 @@ public class Dimensions {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<Dimensions> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(Dimensions.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(Dimensions.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<Dimensions> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected JsonSerializer<Dimensions> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(Dimensions value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("height", value.height);
-            g.writeObjectField("width", value.width);
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<Dimensions> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(Dimensions.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(Dimensions.class, unwrapping);
-        }
-
-        @Override
-        protected JsonDeserializer<Dimensions> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public Dimensions deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            Long height = null;
-            Long width = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("height".equals(_field)) {
-                    height = _p.getLongValue();
-                    assertUnsigned(_p, height);
-                    _p.nextToken();
-                }
-                else if ("width".equals(_field)) {
-                    width = _p.getLongValue();
-                    assertUnsigned(_p, width);
-                    _p.nextToken();
-                }
-                else {
-                    skipValue(_p);
-                }
+        public void serialize(Dimensions value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
             }
-
-            if (height == null) {
-                throw new JsonParseException(_p, "Required field \"height\" is missing.");
+            g.writeFieldName("height");
+            StoneSerializers.uInt64().serialize(value.height, g);
+            g.writeFieldName("width");
+            StoneSerializers.uInt64().serialize(value.width, g);
+            if (!collapse) {
+                g.writeEndObject();
             }
-            if (width == null) {
-                throw new JsonParseException(_p, "Required field \"width\" is missing.");
-            }
+        }
 
-            return new Dimensions(height, width);
+        @Override
+        public Dimensions deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            Dimensions value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                Long f_height = null;
+                Long f_width = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("height".equals(field)) {
+                        f_height = StoneSerializers.uInt64().deserialize(p);
+                    }
+                    else if ("width".equals(field)) {
+                        f_width = StoneSerializers.uInt64().deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
+                }
+                if (f_height == null) {
+                    throw new JsonParseException(p, "Required field \"height\" missing.");
+                }
+                if (f_width == null) {
+                    throw new JsonParseException(p, "Required field \"width\" missing.");
+                }
+                value = new Dimensions(f_height, f_width);
+            }
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

@@ -1,39 +1,22 @@
 /* DO NOT EDIT */
-/* This file was generated from team.babel */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 import com.dropbox.core.v2.teampolicies.TeamPolicies;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
-@JsonSerialize(using=TeamGetInfoResult.Serializer.class)
-@JsonDeserialize(using=TeamGetInfoResult.Deserializer.class)
 public class TeamGetInfoResult {
     // struct TeamGetInfoResult
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final String name;
     protected final String teamId;
@@ -149,7 +132,7 @@ public class TeamGetInfoResult {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -161,122 +144,95 @@ public class TeamGetInfoResult {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<TeamGetInfoResult> {
+        public static final Serializer INSTANCE = new Serializer();
 
-    static final class Serializer extends StructJsonSerializer<TeamGetInfoResult> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(TeamGetInfoResult.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(TeamGetInfoResult.class, unwrapping);
+        @Override
+        public void serialize(TeamGetInfoResult value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
+            }
+            g.writeFieldName("name");
+            StoneSerializers.string().serialize(value.name, g);
+            g.writeFieldName("team_id");
+            StoneSerializers.string().serialize(value.teamId, g);
+            g.writeFieldName("num_licensed_users");
+            StoneSerializers.uInt32().serialize(value.numLicensedUsers, g);
+            g.writeFieldName("num_provisioned_users");
+            StoneSerializers.uInt32().serialize(value.numProvisionedUsers, g);
+            g.writeFieldName("policies");
+            TeamPolicies.Serializer.INSTANCE.serialize(value.policies, g);
+            if (!collapse) {
+                g.writeEndObject();
+            }
         }
 
         @Override
-        protected JsonSerializer<TeamGetInfoResult> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(TeamGetInfoResult value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("name", value.name);
-            g.writeObjectField("team_id", value.teamId);
-            g.writeObjectField("num_licensed_users", value.numLicensedUsers);
-            g.writeObjectField("num_provisioned_users", value.numProvisionedUsers);
-            g.writeObjectField("policies", value.policies);
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<TeamGetInfoResult> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(TeamGetInfoResult.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(TeamGetInfoResult.class, unwrapping);
-        }
-
-        @Override
-        protected JsonDeserializer<TeamGetInfoResult> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public TeamGetInfoResult deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            String name = null;
-            String teamId = null;
-            Long numLicensedUsers = null;
-            Long numProvisionedUsers = null;
-            TeamPolicies policies = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("name".equals(_field)) {
-                    name = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("team_id".equals(_field)) {
-                    teamId = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("num_licensed_users".equals(_field)) {
-                    numLicensedUsers = _p.getLongValue();
-                    assertUnsigned(_p, numLicensedUsers);
-                    if (numLicensedUsers > Integer.MAX_VALUE) {
-                        throw new JsonParseException(_p, "expecting a 32-bit unsigned integer, got: " + numLicensedUsers);
+        public TeamGetInfoResult deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            TeamGetInfoResult value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                String f_name = null;
+                String f_teamId = null;
+                Long f_numLicensedUsers = null;
+                Long f_numProvisionedUsers = null;
+                TeamPolicies f_policies = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("name".equals(field)) {
+                        f_name = StoneSerializers.string().deserialize(p);
                     }
-                    _p.nextToken();
-                }
-                else if ("num_provisioned_users".equals(_field)) {
-                    numProvisionedUsers = _p.getLongValue();
-                    assertUnsigned(_p, numProvisionedUsers);
-                    if (numProvisionedUsers > Integer.MAX_VALUE) {
-                        throw new JsonParseException(_p, "expecting a 32-bit unsigned integer, got: " + numProvisionedUsers);
+                    else if ("team_id".equals(field)) {
+                        f_teamId = StoneSerializers.string().deserialize(p);
                     }
-                    _p.nextToken();
+                    else if ("num_licensed_users".equals(field)) {
+                        f_numLicensedUsers = StoneSerializers.uInt32().deserialize(p);
+                    }
+                    else if ("num_provisioned_users".equals(field)) {
+                        f_numProvisionedUsers = StoneSerializers.uInt32().deserialize(p);
+                    }
+                    else if ("policies".equals(field)) {
+                        f_policies = TeamPolicies.Serializer.INSTANCE.deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
                 }
-                else if ("policies".equals(_field)) {
-                    policies = _p.readValueAs(TeamPolicies.class);
-                    _p.nextToken();
+                if (f_name == null) {
+                    throw new JsonParseException(p, "Required field \"name\" missing.");
                 }
-                else {
-                    skipValue(_p);
+                if (f_teamId == null) {
+                    throw new JsonParseException(p, "Required field \"team_id\" missing.");
                 }
+                if (f_numLicensedUsers == null) {
+                    throw new JsonParseException(p, "Required field \"num_licensed_users\" missing.");
+                }
+                if (f_numProvisionedUsers == null) {
+                    throw new JsonParseException(p, "Required field \"num_provisioned_users\" missing.");
+                }
+                if (f_policies == null) {
+                    throw new JsonParseException(p, "Required field \"policies\" missing.");
+                }
+                value = new TeamGetInfoResult(f_name, f_teamId, f_numLicensedUsers, f_numProvisionedUsers, f_policies);
             }
-
-            if (name == null) {
-                throw new JsonParseException(_p, "Required field \"name\" is missing.");
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
             }
-            if (teamId == null) {
-                throw new JsonParseException(_p, "Required field \"team_id\" is missing.");
+            if (!collapsed) {
+                expectEndObject(p);
             }
-            if (numLicensedUsers == null) {
-                throw new JsonParseException(_p, "Required field \"num_licensed_users\" is missing.");
-            }
-            if (numProvisionedUsers == null) {
-                throw new JsonParseException(_p, "Required field \"num_provisioned_users\" is missing.");
-            }
-            if (policies == null) {
-                throw new JsonParseException(_p, "Required field \"policies\" is missing.");
-            }
-
-            return new TeamGetInfoResult(name, teamId, numLicensedUsers, numProvisionedUsers, policies);
+            return value;
         }
     }
 }

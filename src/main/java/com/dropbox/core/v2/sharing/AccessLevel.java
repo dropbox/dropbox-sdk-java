@@ -1,36 +1,22 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.babel */
+/* This file was generated from sharing_folders.stone */
 
 package com.dropbox.core.v2.sharing;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Defines the access levels for collaborators.
  */
-@JsonSerialize(using=AccessLevel.Serializer.class)
-@JsonDeserialize(using=AccessLevel.Deserializer.class)
 public enum AccessLevel {
     // union AccessLevel
     /**
@@ -48,6 +34,11 @@ public enum AccessLevel {
      */
     VIEWER,
     /**
+     * The collaborator can only view the shared folder and does not have any
+     * access to comments.
+     */
+    VIEWER_NO_COMMENT,
+    /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *
      * <p> Receiving a catch-all value typically indicates this SDK version is
@@ -56,55 +47,75 @@ public enum AccessLevel {
      */
     OTHER; // *catch_all
 
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
-
-    static final class Serializer extends UnionJsonSerializer<AccessLevel> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(AccessLevel.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<AccessLevel> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(AccessLevel value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+        public void serialize(AccessLevel value, JsonGenerator g) throws IOException, JsonGenerationException {
             switch (value) {
-                case OWNER:
+                case OWNER: {
                     g.writeString("owner");
                     break;
-                case EDITOR:
+                }
+                case EDITOR: {
                     g.writeString("editor");
                     break;
-                case VIEWER:
+                }
+                case VIEWER: {
                     g.writeString("viewer");
                     break;
-                case OTHER:
-                    g.writeString("other");
+                }
+                case VIEWER_NO_COMMENT: {
+                    g.writeString("viewer_no_comment");
                     break;
+                }
+                default: {
+                    g.writeString("other");
+                }
             }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<AccessLevel, AccessLevel> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(AccessLevel.class, getTagMapping(), AccessLevel.OTHER);
         }
 
         @Override
-        public AccessLevel deserialize(AccessLevel _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            return _tag;
-        }
-
-        private static Map<String, AccessLevel> getTagMapping() {
-            Map<String, AccessLevel> values = new HashMap<String, AccessLevel>();
-            values.put("owner", AccessLevel.OWNER);
-            values.put("editor", AccessLevel.EDITOR);
-            values.put("viewer", AccessLevel.VIEWER);
-            values.put("other", AccessLevel.OTHER);
-            return Collections.unmodifiableMap(values);
+        public AccessLevel deserialize(JsonParser p) throws IOException, JsonParseException {
+            AccessLevel value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
+            }
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("owner".equals(tag)) {
+                value = AccessLevel.OWNER;
+            }
+            else if ("editor".equals(tag)) {
+                value = AccessLevel.EDITOR;
+            }
+            else if ("viewer".equals(tag)) {
+                value = AccessLevel.VIEWER;
+            }
+            else if ("viewer_no_comment".equals(tag)) {
+                value = AccessLevel.VIEWER_NO_COMMENT;
+            }
+            else {
+                value = AccessLevel.OTHER;
+                skipFields(p);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

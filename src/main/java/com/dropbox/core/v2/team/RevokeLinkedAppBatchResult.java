@@ -1,39 +1,22 @@
 /* DO NOT EDIT */
-/* This file was generated from team_linked_apps.babel */
+/* This file was generated from team_linked_apps.stone */
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.List;
 
-@JsonSerialize(using=RevokeLinkedAppBatchResult.Serializer.class)
-@JsonDeserialize(using=RevokeLinkedAppBatchResult.Deserializer.class)
 public class RevokeLinkedAppBatchResult {
     // struct RevokeLinkedAppBatchResult
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final List<RevokeLinkedAppStatus> revokeLinkedAppStatus;
 
@@ -90,7 +73,7 @@ public class RevokeLinkedAppBatchResult {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -102,86 +85,59 @@ public class RevokeLinkedAppBatchResult {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<RevokeLinkedAppBatchResult> {
+        public static final Serializer INSTANCE = new Serializer();
 
-    static final class Serializer extends StructJsonSerializer<RevokeLinkedAppBatchResult> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(RevokeLinkedAppBatchResult.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(RevokeLinkedAppBatchResult.class, unwrapping);
+        @Override
+        public void serialize(RevokeLinkedAppBatchResult value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
+            }
+            g.writeFieldName("revoke_linked_app_status");
+            StoneSerializers.list(RevokeLinkedAppStatus.Serializer.INSTANCE).serialize(value.revokeLinkedAppStatus, g);
+            if (!collapse) {
+                g.writeEndObject();
+            }
         }
 
         @Override
-        protected JsonSerializer<RevokeLinkedAppBatchResult> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(RevokeLinkedAppBatchResult value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("revoke_linked_app_status", value.revokeLinkedAppStatus);
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<RevokeLinkedAppBatchResult> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(RevokeLinkedAppBatchResult.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(RevokeLinkedAppBatchResult.class, unwrapping);
-        }
-
-        @Override
-        protected JsonDeserializer<RevokeLinkedAppBatchResult> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public RevokeLinkedAppBatchResult deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            List<RevokeLinkedAppStatus> revokeLinkedAppStatus = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("revoke_linked_app_status".equals(_field)) {
-                    expectArrayStart(_p);
-                    revokeLinkedAppStatus = new java.util.ArrayList<RevokeLinkedAppStatus>();
-                    while (!isArrayEnd(_p)) {
-                        RevokeLinkedAppStatus _x = null;
-                        _x = _p.readValueAs(RevokeLinkedAppStatus.class);
-                        _p.nextToken();
-                        revokeLinkedAppStatus.add(_x);
+        public RevokeLinkedAppBatchResult deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            RevokeLinkedAppBatchResult value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                List<RevokeLinkedAppStatus> f_revokeLinkedAppStatus = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("revoke_linked_app_status".equals(field)) {
+                        f_revokeLinkedAppStatus = StoneSerializers.list(RevokeLinkedAppStatus.Serializer.INSTANCE).deserialize(p);
                     }
-                    expectArrayEnd(_p);
-                    _p.nextToken();
+                    else {
+                        skipValue(p);
+                    }
                 }
-                else {
-                    skipValue(_p);
+                if (f_revokeLinkedAppStatus == null) {
+                    throw new JsonParseException(p, "Required field \"revoke_linked_app_status\" missing.");
                 }
+                value = new RevokeLinkedAppBatchResult(f_revokeLinkedAppStatus);
             }
-
-            if (revokeLinkedAppStatus == null) {
-                throw new JsonParseException(_p, "Required field \"revoke_linked_app_status\" is missing.");
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
             }
-
-            return new RevokeLinkedAppBatchResult(revokeLinkedAppStatus);
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

@@ -1,30 +1,18 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.babel */
+/* This file was generated from sharing_folders.stone */
 
 package com.dropbox.core.v2.sharing;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This class is an open tagged union.  Tagged unions instances are always
@@ -36,14 +24,8 @@ import java.util.Map;
  * tag is introduced that this SDK does not recognized, the {@link #OTHER} value
  * will be used. </p>
  */
-@JsonSerialize(using=MountFolderError.Serializer.class)
-@JsonDeserialize(using=MountFolderError.Deserializer.class)
 public final class MountFolderError {
     // union MountFolderError
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link MountFolderError}.
@@ -303,7 +285,7 @@ public final class MountFolderError {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -315,106 +297,99 @@ public final class MountFolderError {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends UnionJsonSerializer<MountFolderError> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(MountFolderError.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<MountFolderError> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(MountFolderError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            switch (value.tag) {
-                case ACCESS_ERROR:
+        public void serialize(MountFolderError value, JsonGenerator g) throws IOException, JsonGenerationException {
+            switch (value.tag()) {
+                case ACCESS_ERROR: {
                     g.writeStartObject();
-                    g.writeStringField(".tag", "access_error");
-                    g.writeObjectField("access_error", value.accessErrorValue);
+                    writeTag("access_error", g);
+                    g.writeFieldName("access_error");
+                    SharedFolderAccessError.Serializer.INSTANCE.serialize(value.accessErrorValue, g);
                     g.writeEndObject();
                     break;
-                case INSIDE_SHARED_FOLDER:
+                }
+                case INSIDE_SHARED_FOLDER: {
                     g.writeString("inside_shared_folder");
                     break;
-                case INSUFFICIENT_QUOTA:
+                }
+                case INSUFFICIENT_QUOTA: {
                     g.writeString("insufficient_quota");
                     break;
-                case ALREADY_MOUNTED:
+                }
+                case ALREADY_MOUNTED: {
                     g.writeString("already_mounted");
                     break;
-                case NO_PERMISSION:
+                }
+                case NO_PERMISSION: {
                     g.writeString("no_permission");
                     break;
-                case NOT_MOUNTABLE:
+                }
+                case NOT_MOUNTABLE: {
                     g.writeString("not_mountable");
                     break;
-                case OTHER:
+                }
+                default: {
                     g.writeString("other");
-                    break;
+                }
             }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<MountFolderError, Tag> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(MountFolderError.class, getTagMapping(), Tag.OTHER);
         }
 
         @Override
-        public MountFolderError deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            switch (_tag) {
-                case ACCESS_ERROR: {
-                    SharedFolderAccessError value = null;
-                    expectField(_p, "access_error");
-                    value = _p.readValueAs(SharedFolderAccessError.class);
-                    _p.nextToken();
-                    return MountFolderError.accessError(value);
-                }
-                case INSIDE_SHARED_FOLDER: {
-                    return MountFolderError.INSIDE_SHARED_FOLDER;
-                }
-                case INSUFFICIENT_QUOTA: {
-                    return MountFolderError.INSUFFICIENT_QUOTA;
-                }
-                case ALREADY_MOUNTED: {
-                    return MountFolderError.ALREADY_MOUNTED;
-                }
-                case NO_PERMISSION: {
-                    return MountFolderError.NO_PERMISSION;
-                }
-                case NOT_MOUNTABLE: {
-                    return MountFolderError.NOT_MOUNTABLE;
-                }
-                case OTHER: {
-                    return MountFolderError.OTHER;
-                }
+        public MountFolderError deserialize(JsonParser p) throws IOException, JsonParseException {
+            MountFolderError value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
             }
-            // should be impossible to get here
-            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
-        }
-
-        private static Map<String, MountFolderError.Tag> getTagMapping() {
-            Map<String, MountFolderError.Tag> values = new HashMap<String, MountFolderError.Tag>();
-            values.put("access_error", MountFolderError.Tag.ACCESS_ERROR);
-            values.put("inside_shared_folder", MountFolderError.Tag.INSIDE_SHARED_FOLDER);
-            values.put("insufficient_quota", MountFolderError.Tag.INSUFFICIENT_QUOTA);
-            values.put("already_mounted", MountFolderError.Tag.ALREADY_MOUNTED);
-            values.put("no_permission", MountFolderError.Tag.NO_PERMISSION);
-            values.put("not_mountable", MountFolderError.Tag.NOT_MOUNTABLE);
-            values.put("other", MountFolderError.Tag.OTHER);
-            return Collections.unmodifiableMap(values);
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("access_error".equals(tag)) {
+                SharedFolderAccessError fieldValue = null;
+                expectField("access_error", p);
+                fieldValue = SharedFolderAccessError.Serializer.INSTANCE.deserialize(p);
+                value = MountFolderError.accessError(fieldValue);
+            }
+            else if ("inside_shared_folder".equals(tag)) {
+                value = MountFolderError.INSIDE_SHARED_FOLDER;
+            }
+            else if ("insufficient_quota".equals(tag)) {
+                value = MountFolderError.INSUFFICIENT_QUOTA;
+            }
+            else if ("already_mounted".equals(tag)) {
+                value = MountFolderError.ALREADY_MOUNTED;
+            }
+            else if ("no_permission".equals(tag)) {
+                value = MountFolderError.NO_PERMISSION;
+            }
+            else if ("not_mountable".equals(tag)) {
+                value = MountFolderError.NOT_MOUNTABLE;
+            }
+            else {
+                value = MountFolderError.OTHER;
+                skipFields(p);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

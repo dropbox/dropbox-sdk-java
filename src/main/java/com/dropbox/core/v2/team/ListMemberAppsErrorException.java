@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_linked_apps.babel */
+/* This file was generated from team_linked_apps.stone */
 
 package com.dropbox.core.v2.team;
 

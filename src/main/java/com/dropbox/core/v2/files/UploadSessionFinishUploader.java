@@ -1,15 +1,11 @@
 /* DO NOT EDIT */
-/* This file was generated from files.babel */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
-import com.dropbox.core.DbxRequestUtil;
 import com.dropbox.core.DbxUploader;
+import com.dropbox.core.DbxWrappedException;
 import com.dropbox.core.http.HttpRequestor;
-import com.dropbox.core.json.JsonUtil;
-
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JavaType;
 
 import java.io.IOException;
 
@@ -25,8 +21,6 @@ import java.io.IOException;
  * (see {@link DbxUploader} for examples). </p>
  */
 public class UploadSessionFinishUploader extends DbxUploader<FileMetadata, UploadSessionFinishError, UploadSessionFinishErrorException> {
-    private static final JavaType _RESULT_TYPE = JsonUtil.createType(new TypeReference<FileMetadata>() {});
-    private static final JavaType _ERROR_TYPE = JsonUtil.createType(new TypeReference<UploadSessionFinishError>() {});
 
     /**
      * Creates a new instance of this uploader.
@@ -36,9 +30,10 @@ public class UploadSessionFinishUploader extends DbxUploader<FileMetadata, Uploa
      * @throws NullPointerException  if {@code httpUploader} is {@code null}
      */
     public UploadSessionFinishUploader(HttpRequestor.Uploader httpUploader) {
-        super(httpUploader, _RESULT_TYPE, _ERROR_TYPE);
+        super(httpUploader, FileMetadata.Serializer.INSTANCE, UploadSessionFinishError.Serializer.INSTANCE);
     }
-    protected UploadSessionFinishErrorException newException(DbxRequestUtil.ErrorWrapper error) {
+
+    protected UploadSessionFinishErrorException newException(DbxWrappedException error) {
         return new UploadSessionFinishErrorException(error.getRequestId(), error.getUserMessage(), (UploadSessionFinishError) error.getErrorValue());
     }
 }

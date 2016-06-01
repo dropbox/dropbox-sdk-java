@@ -1,27 +1,16 @@
 /* DO NOT EDIT */
-/* This file was generated from team_reports.babel */
+/* This file was generated from team_reports.stone */
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.List;
@@ -31,14 +20,8 @@ import java.util.List;
  * of values, one value per day. If there is no data for a day, then the value
  * will be None.
  */
-@JsonSerialize(using=GetMembershipReport.Serializer.class)
-@JsonDeserialize(using=GetMembershipReport.Deserializer.class)
 public class GetMembershipReport extends BaseDfbReport {
     // struct GetMembershipReport
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final List<Long> teamSize;
     protected final List<Long> pendingInvites;
@@ -78,7 +61,6 @@ public class GetMembershipReport extends BaseDfbReport {
             if (x == null) {
                 throw new IllegalArgumentException("An item in list 'teamSize' is null");
             }
-            throw new RuntimeException("XXX Don't know how to validate an item in list 'teamSize': type Nullable");
         }
         this.teamSize = teamSize;
         if (pendingInvites == null) {
@@ -88,7 +70,6 @@ public class GetMembershipReport extends BaseDfbReport {
             if (x == null) {
                 throw new IllegalArgumentException("An item in list 'pendingInvites' is null");
             }
-            throw new RuntimeException("XXX Don't know how to validate an item in list 'pendingInvites': type Nullable");
         }
         this.pendingInvites = pendingInvites;
         if (membersJoined == null) {
@@ -98,7 +79,6 @@ public class GetMembershipReport extends BaseDfbReport {
             if (x == null) {
                 throw new IllegalArgumentException("An item in list 'membersJoined' is null");
             }
-            throw new RuntimeException("XXX Don't know how to validate an item in list 'membersJoined': type Nullable");
         }
         this.membersJoined = membersJoined;
         if (suspendedMembers == null) {
@@ -108,7 +88,6 @@ public class GetMembershipReport extends BaseDfbReport {
             if (x == null) {
                 throw new IllegalArgumentException("An item in list 'suspendedMembers' is null");
             }
-            throw new RuntimeException("XXX Don't know how to validate an item in list 'suspendedMembers': type Nullable");
         }
         this.suspendedMembers = suspendedMembers;
         if (licenses == null) {
@@ -118,7 +97,6 @@ public class GetMembershipReport extends BaseDfbReport {
             if (x == null) {
                 throw new IllegalArgumentException("An item in list 'licenses' is null");
             }
-            throw new RuntimeException("XXX Don't know how to validate an item in list 'licenses': type Nullable");
         }
         this.licenses = licenses;
     }
@@ -204,7 +182,7 @@ public class GetMembershipReport extends BaseDfbReport {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -216,168 +194,104 @@ public class GetMembershipReport extends BaseDfbReport {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<GetMembershipReport> {
+        public static final Serializer INSTANCE = new Serializer();
 
-    static final class Serializer extends StructJsonSerializer<GetMembershipReport> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(GetMembershipReport.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(GetMembershipReport.class, unwrapping);
+        @Override
+        public void serialize(GetMembershipReport value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
+            }
+            g.writeFieldName("start_date");
+            StoneSerializers.string().serialize(value.startDate, g);
+            g.writeFieldName("team_size");
+            StoneSerializers.list(StoneSerializers.nullable(StoneSerializers.uInt64())).serialize(value.teamSize, g);
+            g.writeFieldName("pending_invites");
+            StoneSerializers.list(StoneSerializers.nullable(StoneSerializers.uInt64())).serialize(value.pendingInvites, g);
+            g.writeFieldName("members_joined");
+            StoneSerializers.list(StoneSerializers.nullable(StoneSerializers.uInt64())).serialize(value.membersJoined, g);
+            g.writeFieldName("suspended_members");
+            StoneSerializers.list(StoneSerializers.nullable(StoneSerializers.uInt64())).serialize(value.suspendedMembers, g);
+            g.writeFieldName("licenses");
+            StoneSerializers.list(StoneSerializers.nullable(StoneSerializers.uInt64())).serialize(value.licenses, g);
+            if (!collapse) {
+                g.writeEndObject();
+            }
         }
 
         @Override
-        protected JsonSerializer<GetMembershipReport> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(GetMembershipReport value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("start_date", value.startDate);
-            g.writeObjectField("team_size", value.teamSize);
-            g.writeObjectField("pending_invites", value.pendingInvites);
-            g.writeObjectField("members_joined", value.membersJoined);
-            g.writeObjectField("suspended_members", value.suspendedMembers);
-            g.writeObjectField("licenses", value.licenses);
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<GetMembershipReport> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(GetMembershipReport.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(GetMembershipReport.class, unwrapping);
-        }
-
-        @Override
-        protected JsonDeserializer<GetMembershipReport> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public GetMembershipReport deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            String startDate = null;
-            List<Long> teamSize = null;
-            List<Long> pendingInvites = null;
-            List<Long> membersJoined = null;
-            List<Long> suspendedMembers = null;
-            List<Long> licenses = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("start_date".equals(_field)) {
-                    startDate = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("team_size".equals(_field)) {
-                    expectArrayStart(_p);
-                    teamSize = new java.util.ArrayList<Long>();
-                    while (!isArrayEnd(_p)) {
-                        Long _x = null;
-                        _x = _p.getLongValue();
-                        assertUnsigned(_p, _x);
-                        _p.nextToken();
-                        teamSize.add(_x);
+        public GetMembershipReport deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            GetMembershipReport value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                String f_startDate = null;
+                List<Long> f_teamSize = null;
+                List<Long> f_pendingInvites = null;
+                List<Long> f_membersJoined = null;
+                List<Long> f_suspendedMembers = null;
+                List<Long> f_licenses = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("start_date".equals(field)) {
+                        f_startDate = StoneSerializers.string().deserialize(p);
                     }
-                    expectArrayEnd(_p);
-                    _p.nextToken();
-                }
-                else if ("pending_invites".equals(_field)) {
-                    expectArrayStart(_p);
-                    pendingInvites = new java.util.ArrayList<Long>();
-                    while (!isArrayEnd(_p)) {
-                        Long _x = null;
-                        _x = _p.getLongValue();
-                        assertUnsigned(_p, _x);
-                        _p.nextToken();
-                        pendingInvites.add(_x);
+                    else if ("team_size".equals(field)) {
+                        f_teamSize = StoneSerializers.list(StoneSerializers.nullable(StoneSerializers.uInt64())).deserialize(p);
                     }
-                    expectArrayEnd(_p);
-                    _p.nextToken();
-                }
-                else if ("members_joined".equals(_field)) {
-                    expectArrayStart(_p);
-                    membersJoined = new java.util.ArrayList<Long>();
-                    while (!isArrayEnd(_p)) {
-                        Long _x = null;
-                        _x = _p.getLongValue();
-                        assertUnsigned(_p, _x);
-                        _p.nextToken();
-                        membersJoined.add(_x);
+                    else if ("pending_invites".equals(field)) {
+                        f_pendingInvites = StoneSerializers.list(StoneSerializers.nullable(StoneSerializers.uInt64())).deserialize(p);
                     }
-                    expectArrayEnd(_p);
-                    _p.nextToken();
-                }
-                else if ("suspended_members".equals(_field)) {
-                    expectArrayStart(_p);
-                    suspendedMembers = new java.util.ArrayList<Long>();
-                    while (!isArrayEnd(_p)) {
-                        Long _x = null;
-                        _x = _p.getLongValue();
-                        assertUnsigned(_p, _x);
-                        _p.nextToken();
-                        suspendedMembers.add(_x);
+                    else if ("members_joined".equals(field)) {
+                        f_membersJoined = StoneSerializers.list(StoneSerializers.nullable(StoneSerializers.uInt64())).deserialize(p);
                     }
-                    expectArrayEnd(_p);
-                    _p.nextToken();
-                }
-                else if ("licenses".equals(_field)) {
-                    expectArrayStart(_p);
-                    licenses = new java.util.ArrayList<Long>();
-                    while (!isArrayEnd(_p)) {
-                        Long _x = null;
-                        _x = _p.getLongValue();
-                        assertUnsigned(_p, _x);
-                        _p.nextToken();
-                        licenses.add(_x);
+                    else if ("suspended_members".equals(field)) {
+                        f_suspendedMembers = StoneSerializers.list(StoneSerializers.nullable(StoneSerializers.uInt64())).deserialize(p);
                     }
-                    expectArrayEnd(_p);
-                    _p.nextToken();
+                    else if ("licenses".equals(field)) {
+                        f_licenses = StoneSerializers.list(StoneSerializers.nullable(StoneSerializers.uInt64())).deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
                 }
-                else {
-                    skipValue(_p);
+                if (f_startDate == null) {
+                    throw new JsonParseException(p, "Required field \"start_date\" missing.");
                 }
+                if (f_teamSize == null) {
+                    throw new JsonParseException(p, "Required field \"team_size\" missing.");
+                }
+                if (f_pendingInvites == null) {
+                    throw new JsonParseException(p, "Required field \"pending_invites\" missing.");
+                }
+                if (f_membersJoined == null) {
+                    throw new JsonParseException(p, "Required field \"members_joined\" missing.");
+                }
+                if (f_suspendedMembers == null) {
+                    throw new JsonParseException(p, "Required field \"suspended_members\" missing.");
+                }
+                if (f_licenses == null) {
+                    throw new JsonParseException(p, "Required field \"licenses\" missing.");
+                }
+                value = new GetMembershipReport(f_startDate, f_teamSize, f_pendingInvites, f_membersJoined, f_suspendedMembers, f_licenses);
             }
-
-            if (startDate == null) {
-                throw new JsonParseException(_p, "Required field \"start_date\" is missing.");
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
             }
-            if (teamSize == null) {
-                throw new JsonParseException(_p, "Required field \"team_size\" is missing.");
+            if (!collapsed) {
+                expectEndObject(p);
             }
-            if (pendingInvites == null) {
-                throw new JsonParseException(_p, "Required field \"pending_invites\" is missing.");
-            }
-            if (membersJoined == null) {
-                throw new JsonParseException(_p, "Required field \"members_joined\" is missing.");
-            }
-            if (suspendedMembers == null) {
-                throw new JsonParseException(_p, "Required field \"suspended_members\" is missing.");
-            }
-            if (licenses == null) {
-                throw new JsonParseException(_p, "Required field \"licenses\" is missing.");
-            }
-
-            return new GetMembershipReport(startDate, teamSize, pendingInvites, membersJoined, suspendedMembers, licenses);
+            return value;
         }
     }
 }

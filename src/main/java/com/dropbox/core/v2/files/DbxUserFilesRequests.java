@@ -1,23 +1,23 @@
 /* DO NOT EDIT */
-/* This file was generated from files.babel */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
 import com.dropbox.core.DbxApiException;
 import com.dropbox.core.DbxDownloader;
 import com.dropbox.core.DbxException;
-import com.dropbox.core.DbxRequestUtil;
 import com.dropbox.core.DbxUploader;
+import com.dropbox.core.DbxWrappedException;
 import com.dropbox.core.http.HttpRequestor;
-import com.dropbox.core.json.JsonUtil;
 import com.dropbox.core.v2.DbxDownloadStyleBuilder;
 import com.dropbox.core.v2.DbxRawClientV2;
 import com.dropbox.core.v2.DbxUploadStyleBuilder;
+import com.dropbox.core.v2.async.PollArg;
+import com.dropbox.core.v2.async.PollErrorException;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JavaType;
-
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -49,11 +49,12 @@ public final class DbxUserFilesRequests {
                                    "2/files/copy",
                                    relocationArg,
                                    false,
-                                   JsonUtil.createType(Metadata.class),
-                                   JsonUtil.createType(RelocationError.class));
+                                   RelocationArg.Serializer.INSTANCE,
+                                   Metadata.Serializer.INSTANCE,
+                                   RelocationError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new RelocationErrorException(ew.getRequestId(), ew.getUserMessage(), (RelocationError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new RelocationErrorException(ex.getRequestId(), ex.getUserMessage(), (RelocationError) ex.getErrorValue());
         }
     }
 
@@ -62,9 +63,9 @@ public final class DbxUserFilesRequests {
      * the source path is a folder all its contents will be copied.
      *
      * @param fromPath  Path in the user's Dropbox to be copied or moved. Must
-     *     match pattern "{@code /.*}" and not be {@code null}.
+     *     match pattern "{@code /(.|[\\r\\n])*}" and not be {@code null}.
      * @param toPath  Path in the user's Dropbox that is the destination. Must
-     *     match pattern "{@code /.*}" and not be {@code null}.
+     *     match pattern "{@code /(.|[\\r\\n])*}" and not be {@code null}.
      *
      * @return Metadata for a file or folder.
      *
@@ -92,11 +93,12 @@ public final class DbxUserFilesRequests {
                                    "2/files/copy_reference/get",
                                    getCopyReferenceArg,
                                    false,
-                                   JsonUtil.createType(GetCopyReferenceResult.class),
-                                   JsonUtil.createType(GetCopyReferenceError.class));
+                                   GetCopyReferenceArg.Serializer.INSTANCE,
+                                   GetCopyReferenceResult.Serializer.INSTANCE,
+                                   GetCopyReferenceError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new GetCopyReferenceErrorException(ew.getRequestId(), ew.getUserMessage(), (GetCopyReferenceError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new GetCopyReferenceErrorException(ex.getRequestId(), ex.getUserMessage(), (GetCopyReferenceError) ex.getErrorValue());
         }
     }
 
@@ -107,7 +109,7 @@ public final class DbxUserFilesRequests {
      *
      * @param path  The path to the file or folder you want to get a copy
      *     reference to. Must match pattern "{@code
-     *     ((/|id:).*)|(rev:[0-9a-f]{9,})}" and not be {@code null}.
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}" and not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -132,11 +134,12 @@ public final class DbxUserFilesRequests {
                                    "2/files/copy_reference/save",
                                    saveCopyReferenceArg,
                                    false,
-                                   JsonUtil.createType(SaveCopyReferenceResult.class),
-                                   JsonUtil.createType(SaveCopyReferenceError.class));
+                                   SaveCopyReferenceArg.Serializer.INSTANCE,
+                                   SaveCopyReferenceResult.Serializer.INSTANCE,
+                                   SaveCopyReferenceError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new SaveCopyReferenceErrorException(ew.getRequestId(), ew.getUserMessage(), (SaveCopyReferenceError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new SaveCopyReferenceErrorException(ex.getRequestId(), ex.getUserMessage(), (SaveCopyReferenceError) ex.getErrorValue());
         }
     }
 
@@ -148,7 +151,7 @@ public final class DbxUserFilesRequests {
      *     DbxUserFilesRequests#copyReferenceGet(String)}. Must not be {@code
      *     null}.
      * @param path  Path in the user's Dropbox that is the destination. Must
-     *     match pattern "{@code /.*}" and not be {@code null}.
+     *     match pattern "{@code /(.|[\\r\\n])*}" and not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -172,11 +175,12 @@ public final class DbxUserFilesRequests {
                                    "2/files/create_folder",
                                    createFolderArg,
                                    false,
-                                   JsonUtil.createType(FolderMetadata.class),
-                                   JsonUtil.createType(CreateFolderError.class));
+                                   CreateFolderArg.Serializer.INSTANCE,
+                                   FolderMetadata.Serializer.INSTANCE,
+                                   CreateFolderError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new CreateFolderErrorException(ew.getRequestId(), ew.getUserMessage(), (CreateFolderError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new CreateFolderErrorException(ex.getRequestId(), ex.getUserMessage(), (CreateFolderError) ex.getErrorValue());
         }
     }
 
@@ -184,7 +188,7 @@ public final class DbxUserFilesRequests {
      * Create a folder at a given path.
      *
      * @param path  Path in the user's Dropbox to create. Must match pattern
-     *     "{@code /.*}" and not be {@code null}.
+     *     "{@code /(.|[\\r\\n])*}" and not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -214,11 +218,12 @@ public final class DbxUserFilesRequests {
                                    "2/files/delete",
                                    deleteArg,
                                    false,
-                                   JsonUtil.createType(Metadata.class),
-                                   JsonUtil.createType(DeleteError.class));
+                                   DeleteArg.Serializer.INSTANCE,
+                                   Metadata.Serializer.INSTANCE,
+                                   DeleteError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new DeleteErrorException(ew.getRequestId(), ew.getUserMessage(), (DeleteError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new DeleteErrorException(ex.getRequestId(), ex.getUserMessage(), (DeleteError) ex.getErrorValue());
         }
     }
 
@@ -230,7 +235,7 @@ public final class DbxUserFilesRequests {
      * at time of deletion, and not a {@link DeletedMetadata} object.
      *
      * @param path  Path in the user's Dropbox to delete. Must match pattern
-     *     "{@code /.*}" and not be {@code null}.
+     *     "{@code /(.|[\\r\\n])*}" and not be {@code null}.
      *
      * @return Metadata for a file or folder.
      *
@@ -253,17 +258,19 @@ public final class DbxUserFilesRequests {
      * @return Downloader used to download the response body and view the server
      *     response.
      */
-    DbxDownloader<FileMetadata> download(DownloadArg downloadArg) throws DownloadErrorException, DbxException {
+    DbxDownloader<FileMetadata> download(DownloadArg downloadArg, List<HttpRequestor.Header> headers_) throws DownloadErrorException, DbxException {
         try {
             return client.downloadStyle(client.getHost().getContent(),
                                         "2/files/download",
                                         downloadArg,
                                         false,
-                                        JsonUtil.createType(FileMetadata.class),
-                                        JsonUtil.createType(DownloadError.class));
+                                        headers_,
+                                        DownloadArg.Serializer.INSTANCE,
+                                        FileMetadata.Serializer.INSTANCE,
+                                        DownloadError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new DownloadErrorException(ew.getRequestId(), ew.getUserMessage(), (DownloadError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new DownloadErrorException(ex.getRequestId(), ex.getUserMessage(), (DownloadError) ex.getErrorValue());
         }
     }
 
@@ -271,7 +278,7 @@ public final class DbxUserFilesRequests {
      * Download a file from a user's Dropbox.
      *
      * @param path  The path of the file to download. Must match pattern "{@code
-     *     ((/|id:).*)|(rev:[0-9a-f]{9,})}" and not be {@code null}.
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}" and not be {@code null}.
      *
      * @return Downloader used to download the response body and view the server
      *     response.
@@ -281,14 +288,14 @@ public final class DbxUserFilesRequests {
      */
     public DbxDownloader<FileMetadata> download(String path) throws DownloadErrorException, DbxException {
         DownloadArg arg = new DownloadArg(path);
-        return download(arg);
+        return download(arg, Collections.<HttpRequestor.Header>emptyList());
     }
 
     /**
      * Download a file from a user's Dropbox.
      *
      * @param path  The path of the file to download. Must match pattern "{@code
-     *     ((/|id:).*)|(rev:[0-9a-f]{9,})}" and not be {@code null}.
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}" and not be {@code null}.
      * @param rev  Deprecated. Please specify revision in the {@code path}
      *     argument to {@link DbxUserFilesRequests#download(String)} instead.
      *     Must have length of at least 9 and match pattern "{@code [0-9a-f]+}".
@@ -309,7 +316,24 @@ public final class DbxUserFilesRequests {
             }
         }
         DownloadArg arg = new DownloadArg(path, rev);
-        return download(arg);
+        return download(arg, Collections.<HttpRequestor.Header>emptyList());
+    }
+
+    /**
+     * Download a file from a user's Dropbox.
+     *
+     * @param path  The path of the file to download. Must match pattern "{@code
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}" and not be {@code null}.
+     *
+     * @return Downloader builder for configuring the request parameters and
+     *     instantiating a downloader.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public DownloadBuilder downloadBuilder(String path) {
+        DownloadArg arg_ = new DownloadArg(path);
+        return new DownloadBuilder(this, path);
     }
 
     //
@@ -329,11 +353,12 @@ public final class DbxUserFilesRequests {
                                    "2/files/get_metadata",
                                    getMetadataArg,
                                    false,
-                                   JsonUtil.createType(Metadata.class),
-                                   JsonUtil.createType(GetMetadataError.class));
+                                   GetMetadataArg.Serializer.INSTANCE,
+                                   Metadata.Serializer.INSTANCE,
+                                   GetMetadataError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new GetMetadataErrorException(ew.getRequestId(), ew.getUserMessage(), (GetMetadataError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new GetMetadataErrorException(ex.getRequestId(), ex.getUserMessage(), (GetMetadataError) ex.getErrorValue());
         }
     }
 
@@ -345,7 +370,8 @@ public final class DbxUserFilesRequests {
      * See {@link GetMetadataBuilder} for more details. </p>
      *
      * @param path  The path of a file or folder on Dropbox. Must match pattern
-     *     "{@code ((/|id:).*)|(rev:[0-9a-f]{9,})}" and not be {@code null}.
+     *     "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}" and not be {@code
+     *     null}.
      *
      * @return Metadata for a file or folder.
      *
@@ -362,7 +388,8 @@ public final class DbxUserFilesRequests {
      * folder is unsupported.
      *
      * @param path  The path of a file or folder on Dropbox. Must match pattern
-     *     "{@code ((/|id:).*)|(rev:[0-9a-f]{9,})}" and not be {@code null}.
+     *     "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}" and not be {@code
+     *     null}.
      *
      * @return Request builder for configuring request parameters and completing
      *     the request.
@@ -371,8 +398,8 @@ public final class DbxUserFilesRequests {
      *     preconditions.
      */
     public GetMetadataBuilder getMetadataBuilder(String path) {
-        GetMetadataArg.Builder argBuilder = GetMetadataArg.newBuilder(path);
-        return new GetMetadataBuilder(this, argBuilder);
+        GetMetadataArg.Builder argBuilder_ = GetMetadataArg.newBuilder(path);
+        return new GetMetadataBuilder(this, argBuilder_);
     }
 
     //
@@ -388,17 +415,19 @@ public final class DbxUserFilesRequests {
      * @return Downloader used to download the response body and view the server
      *     response.
      */
-    DbxDownloader<FileMetadata> getPreview(PreviewArg previewArg) throws PreviewErrorException, DbxException {
+    DbxDownloader<FileMetadata> getPreview(PreviewArg previewArg, List<HttpRequestor.Header> headers_) throws PreviewErrorException, DbxException {
         try {
             return client.downloadStyle(client.getHost().getContent(),
                                         "2/files/get_preview",
                                         previewArg,
                                         false,
-                                        JsonUtil.createType(FileMetadata.class),
-                                        JsonUtil.createType(PreviewError.class));
+                                        headers_,
+                                        PreviewArg.Serializer.INSTANCE,
+                                        FileMetadata.Serializer.INSTANCE,
+                                        PreviewError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new PreviewErrorException(ew.getRequestId(), ew.getUserMessage(), (PreviewError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new PreviewErrorException(ex.getRequestId(), ex.getUserMessage(), (PreviewError) ex.getErrorValue());
         }
     }
 
@@ -408,7 +437,7 @@ public final class DbxUserFilesRequests {
      * .ppsx, .ppsm, .pptx, .pptm,  .xls, .xlsx, .xlsm, .rtf
      *
      * @param path  The path of the file to preview. Must match pattern "{@code
-     *     ((/|id:).*)|(rev:[0-9a-f]{9,})}" and not be {@code null}.
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}" and not be {@code null}.
      *
      * @return Downloader used to download the response body and view the server
      *     response.
@@ -418,7 +447,7 @@ public final class DbxUserFilesRequests {
      */
     public DbxDownloader<FileMetadata> getPreview(String path) throws PreviewErrorException, DbxException {
         PreviewArg arg = new PreviewArg(path);
-        return getPreview(arg);
+        return getPreview(arg, Collections.<HttpRequestor.Header>emptyList());
     }
 
     /**
@@ -427,7 +456,7 @@ public final class DbxUserFilesRequests {
      * .ppsx, .ppsm, .pptx, .pptm,  .xls, .xlsx, .xlsm, .rtf
      *
      * @param path  The path of the file to preview. Must match pattern "{@code
-     *     ((/|id:).*)|(rev:[0-9a-f]{9,})}" and not be {@code null}.
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}" and not be {@code null}.
      * @param rev  Deprecated. Please specify revision in the {@code path}
      *     argument to {@link DbxUserFilesRequests#getPreview(String)} instead.
      *     Must have length of at least 9 and match pattern "{@code [0-9a-f]+}".
@@ -448,7 +477,26 @@ public final class DbxUserFilesRequests {
             }
         }
         PreviewArg arg = new PreviewArg(path, rev);
-        return getPreview(arg);
+        return getPreview(arg, Collections.<HttpRequestor.Header>emptyList());
+    }
+
+    /**
+     * Get a preview for a file. Currently previews are only generated for the
+     * files with  the following extensions: .doc, .docx, .docm, .ppt, .pps,
+     * .ppsx, .ppsm, .pptx, .pptm,  .xls, .xlsx, .xlsm, .rtf
+     *
+     * @param path  The path of the file to preview. Must match pattern "{@code
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}" and not be {@code null}.
+     *
+     * @return Downloader builder for configuring the request parameters and
+     *     instantiating a downloader.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public GetPreviewBuilder getPreviewBuilder(String path) {
+        PreviewArg arg_ = new PreviewArg(path);
+        return new GetPreviewBuilder(this, path);
     }
 
     //
@@ -467,11 +515,12 @@ public final class DbxUserFilesRequests {
                                    "2/files/get_temporary_link",
                                    getTemporaryLinkArg,
                                    false,
-                                   JsonUtil.createType(GetTemporaryLinkResult.class),
-                                   JsonUtil.createType(GetTemporaryLinkError.class));
+                                   GetTemporaryLinkArg.Serializer.INSTANCE,
+                                   GetTemporaryLinkResult.Serializer.INSTANCE,
+                                   GetTemporaryLinkError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new GetTemporaryLinkErrorException(ew.getRequestId(), ew.getUserMessage(), (GetTemporaryLinkError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new GetTemporaryLinkErrorException(ex.getRequestId(), ex.getUserMessage(), (GetTemporaryLinkError) ex.getErrorValue());
         }
     }
 
@@ -481,8 +530,8 @@ public final class DbxUserFilesRequests {
      * link is determined automatically by the file's mime type.
      *
      * @param path  The path to the file you want a temporary link to. Must
-     *     match pattern "{@code ((/|id:).*)|(rev:[0-9a-f]{9,})}" and not be
-     *     {@code null}.
+     *     match pattern "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}" and
+     *     not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -506,17 +555,19 @@ public final class DbxUserFilesRequests {
      * @return Downloader used to download the response body and view the server
      *     response.
      */
-    DbxDownloader<FileMetadata> getThumbnail(ThumbnailArg thumbnailArg) throws ThumbnailErrorException, DbxException {
+    DbxDownloader<FileMetadata> getThumbnail(ThumbnailArg thumbnailArg, List<HttpRequestor.Header> headers_) throws ThumbnailErrorException, DbxException {
         try {
             return client.downloadStyle(client.getHost().getContent(),
                                         "2/files/get_thumbnail",
                                         thumbnailArg,
                                         false,
-                                        JsonUtil.createType(FileMetadata.class),
-                                        JsonUtil.createType(ThumbnailError.class));
+                                        headers_,
+                                        ThumbnailArg.Serializer.INSTANCE,
+                                        FileMetadata.Serializer.INSTANCE,
+                                        ThumbnailError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new ThumbnailErrorException(ew.getRequestId(), ew.getUserMessage(), (ThumbnailError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new ThumbnailErrorException(ex.getRequestId(), ex.getUserMessage(), (ThumbnailError) ex.getErrorValue());
         }
     }
 
@@ -530,8 +581,8 @@ public final class DbxUserFilesRequests {
      * See {@link GetThumbnailBuilder} for more details. </p>
      *
      * @param path  The path to the image file you want to thumbnail. Must match
-     *     pattern "{@code ((/|id:).*)|(rev:[0-9a-f]{9,})}" and not be {@code
-     *     null}.
+     *     pattern "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}" and not
+     *     be {@code null}.
      *
      * @return Downloader used to download the response body and view the server
      *     response.
@@ -541,7 +592,7 @@ public final class DbxUserFilesRequests {
      */
     public DbxDownloader<FileMetadata> getThumbnail(String path) throws ThumbnailErrorException, DbxException {
         ThumbnailArg arg = new ThumbnailArg(path);
-        return getThumbnail(arg);
+        return getThumbnail(arg, Collections.<HttpRequestor.Header>emptyList());
     }
 
     /**
@@ -551,8 +602,8 @@ public final class DbxUserFilesRequests {
      * thumbnail.
      *
      * @param path  The path to the image file you want to thumbnail. Must match
-     *     pattern "{@code ((/|id:).*)|(rev:[0-9a-f]{9,})}" and not be {@code
-     *     null}.
+     *     pattern "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}" and not
+     *     be {@code null}.
      *
      * @return Downloader builder for configuring the request parameters and
      *     instantiating a downloader.
@@ -561,8 +612,8 @@ public final class DbxUserFilesRequests {
      *     preconditions.
      */
     public GetThumbnailBuilder getThumbnailBuilder(String path) {
-        ThumbnailArg.Builder argBuilder = ThumbnailArg.newBuilder(path);
-        return new GetThumbnailBuilder(this, argBuilder);
+        ThumbnailArg.Builder argBuilder_ = ThumbnailArg.newBuilder(path);
+        return new GetThumbnailBuilder(this, argBuilder_);
     }
 
     //
@@ -579,11 +630,12 @@ public final class DbxUserFilesRequests {
                                    "2/files/list_folder",
                                    listFolderArg,
                                    false,
-                                   JsonUtil.createType(ListFolderResult.class),
-                                   JsonUtil.createType(ListFolderError.class));
+                                   ListFolderArg.Serializer.INSTANCE,
+                                   ListFolderResult.Serializer.INSTANCE,
+                                   ListFolderError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new ListFolderErrorException(ew.getRequestId(), ew.getUserMessage(), (ListFolderError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new ListFolderErrorException(ex.getRequestId(), ex.getUserMessage(), (ListFolderError) ex.getErrorValue());
         }
     }
 
@@ -594,7 +646,7 @@ public final class DbxUserFilesRequests {
      * See {@link ListFolderBuilder} for more details. </p>
      *
      * @param path  The path to the folder you want to see the contents of. Must
-     *     match pattern "{@code (/.*)?}" and not be {@code null}.
+     *     match pattern "{@code (/(.|[\\r\\n])*)?}" and not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -608,7 +660,7 @@ public final class DbxUserFilesRequests {
      * Returns the contents of a folder.
      *
      * @param path  The path to the folder you want to see the contents of. Must
-     *     match pattern "{@code (/.*)?}" and not be {@code null}.
+     *     match pattern "{@code (/(.|[\\r\\n])*)?}" and not be {@code null}.
      *
      * @return Request builder for configuring request parameters and completing
      *     the request.
@@ -617,8 +669,8 @@ public final class DbxUserFilesRequests {
      *     preconditions.
      */
     public ListFolderBuilder listFolderBuilder(String path) {
-        ListFolderArg.Builder argBuilder = ListFolderArg.newBuilder(path);
-        return new ListFolderBuilder(this, argBuilder);
+        ListFolderArg.Builder argBuilder_ = ListFolderArg.newBuilder(path);
+        return new ListFolderBuilder(this, argBuilder_);
     }
 
     //
@@ -637,11 +689,12 @@ public final class DbxUserFilesRequests {
                                    "2/files/list_folder/continue",
                                    listFolderContinueArg,
                                    false,
-                                   JsonUtil.createType(ListFolderResult.class),
-                                   JsonUtil.createType(ListFolderContinueError.class));
+                                   ListFolderContinueArg.Serializer.INSTANCE,
+                                   ListFolderResult.Serializer.INSTANCE,
+                                   ListFolderContinueError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new ListFolderContinueErrorException(ew.getRequestId(), ew.getUserMessage(), (ListFolderContinueError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new ListFolderContinueErrorException(ex.getRequestId(), ex.getUserMessage(), (ListFolderContinueError) ex.getErrorValue());
         }
     }
 
@@ -682,11 +735,12 @@ public final class DbxUserFilesRequests {
                                    "2/files/list_folder/get_latest_cursor",
                                    listFolderArg,
                                    false,
-                                   JsonUtil.createType(ListFolderGetLatestCursorResult.class),
-                                   JsonUtil.createType(ListFolderError.class));
+                                   ListFolderArg.Serializer.INSTANCE,
+                                   ListFolderGetLatestCursorResult.Serializer.INSTANCE,
+                                   ListFolderError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new ListFolderErrorException(ew.getRequestId(), ew.getUserMessage(), (ListFolderError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new ListFolderErrorException(ex.getRequestId(), ex.getUserMessage(), (ListFolderError) ex.getErrorValue());
         }
     }
 
@@ -702,7 +756,7 @@ public final class DbxUserFilesRequests {
      * See {@link ListFolderGetLatestCursorBuilder} for more details. </p>
      *
      * @param path  The path to the folder you want to see the contents of. Must
-     *     match pattern "{@code (/.*)?}" and not be {@code null}.
+     *     match pattern "{@code (/(.|[\\r\\n])*)?}" and not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -721,7 +775,7 @@ public final class DbxUserFilesRequests {
      * exist in Dropbox.
      *
      * @param path  The path to the folder you want to see the contents of. Must
-     *     match pattern "{@code (/.*)?}" and not be {@code null}.
+     *     match pattern "{@code (/(.|[\\r\\n])*)?}" and not be {@code null}.
      *
      * @return Request builder for configuring request parameters and completing
      *     the request.
@@ -730,8 +784,8 @@ public final class DbxUserFilesRequests {
      *     preconditions.
      */
     public ListFolderGetLatestCursorBuilder listFolderGetLatestCursorBuilder(String path) {
-        ListFolderArg.Builder argBuilder = ListFolderArg.newBuilder(path);
-        return new ListFolderGetLatestCursorBuilder(this, argBuilder);
+        ListFolderArg.Builder argBuilder_ = ListFolderArg.newBuilder(path);
+        return new ListFolderGetLatestCursorBuilder(this, argBuilder_);
     }
 
     //
@@ -740,11 +794,11 @@ public final class DbxUserFilesRequests {
 
     /**
      * A longpoll endpoint to wait for changes on an account. In conjunction
-     * with {@link DbxUserFilesRequests#listFolder(String)}, this call gives you
-     * a low-latency way to monitor an account for file changes. The connection
-     * will block until there are changes available or a timeout occurs. This
-     * endpoint is useful mostly for client-side apps. If you're looking for
-     * server-side notifications, check out our <a
+     * with {@link DbxUserFilesRequests#listFolderContinue(String)}, this call
+     * gives you a low-latency way to monitor an account for file changes. The
+     * connection will block until there are changes available or a timeout
+     * occurs. This endpoint is useful mostly for client-side apps. If you're
+     * looking for server-side notifications, check out our <a
      * href="https://www.dropbox.com/developers/reference/webhooks">webhooks
      * documentation</a>.
      *
@@ -755,21 +809,22 @@ public final class DbxUserFilesRequests {
                                    "2/files/list_folder/longpoll",
                                    listFolderLongpollArg,
                                    true,
-                                   JsonUtil.createType(ListFolderLongpollResult.class),
-                                   JsonUtil.createType(ListFolderLongpollError.class));
+                                   ListFolderLongpollArg.Serializer.INSTANCE,
+                                   ListFolderLongpollResult.Serializer.INSTANCE,
+                                   ListFolderLongpollError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new ListFolderLongpollErrorException(ew.getRequestId(), ew.getUserMessage(), (ListFolderLongpollError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new ListFolderLongpollErrorException(ex.getRequestId(), ex.getUserMessage(), (ListFolderLongpollError) ex.getErrorValue());
         }
     }
 
     /**
      * A longpoll endpoint to wait for changes on an account. In conjunction
-     * with {@link DbxUserFilesRequests#listFolder(String)}, this call gives you
-     * a low-latency way to monitor an account for file changes. The connection
-     * will block until there are changes available or a timeout occurs. This
-     * endpoint is useful mostly for client-side apps. If you're looking for
-     * server-side notifications, check out our <a
+     * with {@link DbxUserFilesRequests#listFolderContinue(String)}, this call
+     * gives you a low-latency way to monitor an account for file changes. The
+     * connection will block until there are changes available or a timeout
+     * occurs. This endpoint is useful mostly for client-side apps. If you're
+     * looking for server-side notifications, check out our <a
      * href="https://www.dropbox.com/developers/reference/webhooks">webhooks
      * documentation</a>.
      *
@@ -793,11 +848,11 @@ public final class DbxUserFilesRequests {
 
     /**
      * A longpoll endpoint to wait for changes on an account. In conjunction
-     * with {@link DbxUserFilesRequests#listFolder(String)}, this call gives you
-     * a low-latency way to monitor an account for file changes. The connection
-     * will block until there are changes available or a timeout occurs. This
-     * endpoint is useful mostly for client-side apps. If you're looking for
-     * server-side notifications, check out our <a
+     * with {@link DbxUserFilesRequests#listFolderContinue(String)}, this call
+     * gives you a low-latency way to monitor an account for file changes. The
+     * connection will block until there are changes available or a timeout
+     * occurs. This endpoint is useful mostly for client-side apps. If you're
+     * looking for server-side notifications, check out our <a
      * href="https://www.dropbox.com/developers/reference/webhooks">webhooks
      * documentation</a>.
      *
@@ -842,11 +897,12 @@ public final class DbxUserFilesRequests {
                                    "2/files/list_revisions",
                                    listRevisionsArg,
                                    false,
-                                   JsonUtil.createType(ListRevisionsResult.class),
-                                   JsonUtil.createType(ListRevisionsError.class));
+                                   ListRevisionsArg.Serializer.INSTANCE,
+                                   ListRevisionsResult.Serializer.INSTANCE,
+                                   ListRevisionsError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new ListRevisionsErrorException(ew.getRequestId(), ew.getUserMessage(), (ListRevisionsError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new ListRevisionsErrorException(ex.getRequestId(), ex.getUserMessage(), (ListRevisionsError) ex.getErrorValue());
         }
     }
 
@@ -857,7 +913,7 @@ public final class DbxUserFilesRequests {
      * {@link #listRevisions(String,long)}). </p>
      *
      * @param path  The path to the file you want to see the revisions of. Must
-     *     match pattern "{@code /.*}" and not be {@code null}.
+     *     match pattern "{@code /(.|[\\r\\n])*}" and not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -871,7 +927,7 @@ public final class DbxUserFilesRequests {
      * Return revisions of a file
      *
      * @param path  The path to the file you want to see the revisions of. Must
-     *     match pattern "{@code /.*}" and not be {@code null}.
+     *     match pattern "{@code /(.|[\\r\\n])*}" and not be {@code null}.
      * @param limit  The maximum number of revision entries returned. Must be
      *     greater than or equal to 1 and be less than or equal to 100.
      *
@@ -906,11 +962,12 @@ public final class DbxUserFilesRequests {
                                    "2/files/move",
                                    relocationArg,
                                    false,
-                                   JsonUtil.createType(Metadata.class),
-                                   JsonUtil.createType(RelocationError.class));
+                                   RelocationArg.Serializer.INSTANCE,
+                                   Metadata.Serializer.INSTANCE,
+                                   RelocationError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new RelocationErrorException(ew.getRequestId(), ew.getUserMessage(), (RelocationError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new RelocationErrorException(ex.getRequestId(), ex.getUserMessage(), (RelocationError) ex.getErrorValue());
         }
     }
 
@@ -919,9 +976,9 @@ public final class DbxUserFilesRequests {
      * the source path is a folder all its contents will be moved.
      *
      * @param fromPath  Path in the user's Dropbox to be copied or moved. Must
-     *     match pattern "{@code /.*}" and not be {@code null}.
+     *     match pattern "{@code /(.|[\\r\\n])*}" and not be {@code null}.
      * @param toPath  Path in the user's Dropbox that is the destination. Must
-     *     match pattern "{@code /.*}" and not be {@code null}.
+     *     match pattern "{@code /(.|[\\r\\n])*}" and not be {@code null}.
      *
      * @return Metadata for a file or folder.
      *
@@ -949,11 +1006,12 @@ public final class DbxUserFilesRequests {
                             "2/files/permanently_delete",
                             deleteArg,
                             false,
-                            JsonUtil.createType(Void.class),
-                            JsonUtil.createType(DeleteError.class));
+                            DeleteArg.Serializer.INSTANCE,
+                            com.dropbox.core.stone.StoneSerializers.void_(),
+                            DeleteError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new DeleteErrorException(ew.getRequestId(), ew.getUserMessage(), (DeleteError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new DeleteErrorException(ex.getRequestId(), ex.getUserMessage(), (DeleteError) ex.getErrorValue());
         }
     }
 
@@ -963,7 +1021,7 @@ public final class DbxUserFilesRequests {
      * available for Dropbox Business apps.
      *
      * @param path  Path in the user's Dropbox to delete. Must match pattern
-     *     "{@code /.*}" and not be {@code null}.
+     *     "{@code /(.|[\\r\\n])*}" and not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -987,11 +1045,12 @@ public final class DbxUserFilesRequests {
                                    "2/files/restore",
                                    restoreArg,
                                    false,
-                                   JsonUtil.createType(FileMetadata.class),
-                                   JsonUtil.createType(RestoreError.class));
+                                   RestoreArg.Serializer.INSTANCE,
+                                   FileMetadata.Serializer.INSTANCE,
+                                   RestoreError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new RestoreErrorException(ew.getRequestId(), ew.getUserMessage(), (RestoreError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new RestoreErrorException(ex.getRequestId(), ex.getUserMessage(), (RestoreError) ex.getErrorValue());
         }
     }
 
@@ -999,7 +1058,7 @@ public final class DbxUserFilesRequests {
      * Restore a file to a specific revision
      *
      * @param path  The path to the file you want to restore. Must match pattern
-     *     "{@code /.*}" and not be {@code null}.
+     *     "{@code /(.|[\\r\\n])*}" and not be {@code null}.
      * @param rev  The revision to restore for the file. Must have length of at
      *     least 9, match pattern "{@code [0-9a-f]+}", and not be {@code null}.
      *
@@ -1009,6 +1068,90 @@ public final class DbxUserFilesRequests {
     public FileMetadata restore(String path, String rev) throws RestoreErrorException, DbxException {
         RestoreArg arg = new RestoreArg(path, rev);
         return restore(arg);
+    }
+
+    //
+    // route files/save_url
+    //
+
+    /**
+     * Save a specified URL into a file in user's Dropbox. If the given path
+     * already exists, the file will be renamed to avoid the conflict (e.g.
+     * myfile (1).txt).
+     *
+     */
+    SaveUrlResult saveUrl(SaveUrlArg saveUrlArg) throws SaveUrlErrorException, DbxException {
+        try {
+            return client.rpcStyle(client.getHost().getApi(),
+                                   "2/files/save_url",
+                                   saveUrlArg,
+                                   false,
+                                   SaveUrlArg.Serializer.INSTANCE,
+                                   SaveUrlResult.Serializer.INSTANCE,
+                                   SaveUrlError.Serializer.INSTANCE);
+        }
+        catch (DbxWrappedException ex) {
+            throw new SaveUrlErrorException(ex.getRequestId(), ex.getUserMessage(), (SaveUrlError) ex.getErrorValue());
+        }
+    }
+
+    /**
+     * Save a specified URL into a file in user's Dropbox. If the given path
+     * already exists, the file will be renamed to avoid the conflict (e.g.
+     * myfile (1).txt).
+     *
+     * @param path  The path in Dropbox where the URL will be saved to. Must
+     *     match pattern "{@code /(.|[\\r\\n])*}" and not be {@code null}.
+     * @param url  The URL to be saved. Must not be {@code null}.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public SaveUrlResult saveUrl(String path, String url) throws SaveUrlErrorException, DbxException {
+        SaveUrlArg arg = new SaveUrlArg(path, url);
+        return saveUrl(arg);
+    }
+
+    //
+    // route files/save_url/check_job_status
+    //
+
+    /**
+     * Check the status of a {@link DbxUserFilesRequests#saveUrl(String,String)}
+     * job.
+     *
+     * @param pollArg  Arguments for methods that poll the status of an
+     *     asynchronous job.
+     */
+    SaveUrlJobStatus saveUrlCheckJobStatus(PollArg pollArg) throws PollErrorException, DbxException {
+        try {
+            return client.rpcStyle(client.getHost().getApi(),
+                                   "2/files/save_url/check_job_status",
+                                   pollArg,
+                                   false,
+                                   PollArg.Serializer.INSTANCE,
+                                   SaveUrlJobStatus.Serializer.INSTANCE,
+                                   com.dropbox.core.v2.async.PollError.Serializer.INSTANCE);
+        }
+        catch (DbxWrappedException ex) {
+            throw new PollErrorException(ex.getRequestId(), ex.getUserMessage(), (com.dropbox.core.v2.async.PollError) ex.getErrorValue());
+        }
+    }
+
+    /**
+     * Check the status of a {@link DbxUserFilesRequests#saveUrl(String,String)}
+     * job.
+     *
+     * @param asyncJobId  Id of the asynchronous job. This is the value of a
+     *     response returned from the method that launched the job. Must have
+     *     length of at least 1 and not be {@code null}.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public SaveUrlJobStatus saveUrlCheckJobStatus(String asyncJobId) throws PollErrorException, DbxException {
+        PollArg arg = new PollArg(asyncJobId);
+        return saveUrlCheckJobStatus(arg);
     }
 
     //
@@ -1026,11 +1169,12 @@ public final class DbxUserFilesRequests {
                                    "2/files/search",
                                    searchArg,
                                    false,
-                                   JsonUtil.createType(SearchResult.class),
-                                   JsonUtil.createType(SearchError.class));
+                                   SearchArg.Serializer.INSTANCE,
+                                   SearchResult.Serializer.INSTANCE,
+                                   SearchError.Serializer.INSTANCE);
         }
-        catch (DbxRequestUtil.ErrorWrapper ew) {
-            throw new SearchErrorException(ew.getRequestId(), ew.getUserMessage(), (SearchError) ew.getErrorValue());
+        catch (DbxWrappedException ex) {
+            throw new SearchErrorException(ex.getRequestId(), ex.getUserMessage(), (SearchError) ex.getErrorValue());
         }
     }
 
@@ -1042,8 +1186,8 @@ public final class DbxUserFilesRequests {
      * See {@link SearchBuilder} for more details. </p>
      *
      * @param path  The path in the user's Dropbox to search. Should probably be
-     *     a folder. Must match pattern "{@code (/.*)?}" and not be {@code
-     *     null}.
+     *     a folder. Must match pattern "{@code (/(.|[\\r\\n])*)?}" and not be
+     *     {@code null}.
      * @param query  The string to search for. The search string is split on
      *     spaces into multiple tokens. For file name searching, the last token
      *     is used for prefix matching (i.e. "bat c" matches "bat cave" but not
@@ -1062,8 +1206,8 @@ public final class DbxUserFilesRequests {
      * be reflected in search results due to a short delay in indexing.
      *
      * @param path  The path in the user's Dropbox to search. Should probably be
-     *     a folder. Must match pattern "{@code (/.*)?}" and not be {@code
-     *     null}.
+     *     a folder. Must match pattern "{@code (/(.|[\\r\\n])*)?}" and not be
+     *     {@code null}.
      * @param query  The string to search for. The search string is split on
      *     spaces into multiple tokens. For file name searching, the last token
      *     is used for prefix matching (i.e. "bat c" matches "bat cave" but not
@@ -1076,8 +1220,8 @@ public final class DbxUserFilesRequests {
      *     preconditions.
      */
     public SearchBuilder searchBuilder(String path, String query) {
-        SearchArg.Builder argBuilder = SearchArg.newBuilder(path, query);
-        return new SearchBuilder(this, argBuilder);
+        SearchArg.Builder argBuilder_ = SearchArg.newBuilder(path, query);
+        return new SearchBuilder(this, argBuilder_);
     }
 
     //
@@ -1096,7 +1240,8 @@ public final class DbxUserFilesRequests {
         HttpRequestor.Uploader uploader = client.uploadStyle(client.getHost().getContent(),
                                                              "2/files/upload",
                                                              commitInfo,
-                                                             false);
+                                                             false,
+                                                             CommitInfo.Serializer.INSTANCE);
         return new UploadUploader(uploader);
     }
 
@@ -1109,7 +1254,7 @@ public final class DbxUserFilesRequests {
      * See {@link UploadBuilder} for more details. </p>
      *
      * @param path  Path in the user's Dropbox to save the file. Must match
-     *     pattern "{@code /.*}" and not be {@code null}.
+     *     pattern "{@code /(.|[\\r\\n])*}" and not be {@code null}.
      *
      * @return Uploader used to upload the request body and finish request.
      *
@@ -1127,7 +1272,7 @@ public final class DbxUserFilesRequests {
      * session with {@link DbxUserFilesRequests#uploadSessionStart()}.
      *
      * @param path  Path in the user's Dropbox to save the file. Must match
-     *     pattern "{@code /.*}" and not be {@code null}.
+     *     pattern "{@code /(.|[\\r\\n])*}" and not be {@code null}.
      *
      * @return Uploader builder for configuring request parameters and
      *     instantiating an uploader.
@@ -1136,8 +1281,8 @@ public final class DbxUserFilesRequests {
      *     preconditions.
      */
     public UploadBuilder uploadBuilder(String path) {
-        CommitInfo.Builder argBuilder = CommitInfo.newBuilder(path);
-        return new UploadBuilder(this, argBuilder);
+        CommitInfo.Builder argBuilder_ = CommitInfo.newBuilder(path);
+        return new UploadBuilder(this, argBuilder_);
     }
 
     //
@@ -1160,7 +1305,8 @@ public final class DbxUserFilesRequests {
         HttpRequestor.Uploader uploader = client.uploadStyle(client.getHost().getContent(),
                                                              "2/files/upload_session/append",
                                                              uploadSessionCursor,
-                                                             false);
+                                                             false,
+                                                             UploadSessionCursor.Serializer.INSTANCE);
         return new UploadSessionAppendUploader(uploader);
     }
 
@@ -1206,7 +1352,8 @@ public final class DbxUserFilesRequests {
         HttpRequestor.Uploader uploader = client.uploadStyle(client.getHost().getContent(),
                                                              "2/files/upload_session/append_v2",
                                                              uploadSessionAppendArg,
-                                                             false);
+                                                             false,
+                                                             UploadSessionAppendArg.Serializer.INSTANCE);
         return new UploadSessionAppendV2Uploader(uploader);
     }
 
@@ -1268,7 +1415,8 @@ public final class DbxUserFilesRequests {
         HttpRequestor.Uploader uploader = client.uploadStyle(client.getHost().getContent(),
                                                              "2/files/upload_session/finish",
                                                              uploadSessionFinishArg,
-                                                             false);
+                                                             false,
+                                                             UploadSessionFinishArg.Serializer.INSTANCE);
         return new UploadSessionFinishUploader(uploader);
     }
 
@@ -1313,7 +1461,8 @@ public final class DbxUserFilesRequests {
         HttpRequestor.Uploader uploader = client.uploadStyle(client.getHost().getContent(),
                                                              "2/files/upload_session/start",
                                                              uploadSessionStartArg,
-                                                             false);
+                                                             false,
+                                                             UploadSessionStartArg.Serializer.INSTANCE);
         return new UploadSessionStartUploader(uploader);
     }
 

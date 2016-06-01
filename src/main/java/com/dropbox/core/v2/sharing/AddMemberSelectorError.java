@@ -1,30 +1,18 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.babel */
+/* This file was generated from sharing_folders.stone */
 
 package com.dropbox.core.v2.sharing;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This class is an open tagged union.  Tagged unions instances are always
@@ -36,14 +24,8 @@ import java.util.Map;
  * tag is introduced that this SDK does not recognized, the {@link #OTHER} value
  * will be used. </p>
  */
-@JsonSerialize(using=AddMemberSelectorError.Serializer.class)
-@JsonDeserialize(using=AddMemberSelectorError.Deserializer.class)
 public final class AddMemberSelectorError {
     // union AddMemberSelectorError
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link AddMemberSelectorError}.
@@ -387,7 +369,7 @@ public final class AddMemberSelectorError {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -399,113 +381,106 @@ public final class AddMemberSelectorError {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends UnionJsonSerializer<AddMemberSelectorError> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(AddMemberSelectorError.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<AddMemberSelectorError> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(AddMemberSelectorError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            switch (value.tag) {
-                case INVALID_DROPBOX_ID:
-                    g.writeStartObject();
-                    g.writeStringField(".tag", "invalid_dropbox_id");
-                    g.writeObjectField("invalid_dropbox_id", value.invalidDropboxIdValue);
-                    g.writeEndObject();
-                    break;
-                case INVALID_EMAIL:
-                    g.writeStartObject();
-                    g.writeStringField(".tag", "invalid_email");
-                    g.writeObjectField("invalid_email", value.invalidEmailValue);
-                    g.writeEndObject();
-                    break;
-                case UNVERIFIED_DROPBOX_ID:
-                    g.writeStartObject();
-                    g.writeStringField(".tag", "unverified_dropbox_id");
-                    g.writeObjectField("unverified_dropbox_id", value.unverifiedDropboxIdValue);
-                    g.writeEndObject();
-                    break;
-                case GROUP_DELETED:
-                    g.writeString("group_deleted");
-                    break;
-                case GROUP_NOT_ON_TEAM:
-                    g.writeString("group_not_on_team");
-                    break;
-                case OTHER:
-                    g.writeString("other");
-                    break;
-            }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<AddMemberSelectorError, Tag> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(AddMemberSelectorError.class, getTagMapping(), Tag.OTHER);
-        }
-
-        @Override
-        public AddMemberSelectorError deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            switch (_tag) {
+        public void serialize(AddMemberSelectorError value, JsonGenerator g) throws IOException, JsonGenerationException {
+            switch (value.tag()) {
                 case INVALID_DROPBOX_ID: {
-                    String value = null;
-                    expectField(_p, "invalid_dropbox_id");
-                    value = getStringValue(_p);
-                    _p.nextToken();
-                    return AddMemberSelectorError.invalidDropboxId(value);
+                    g.writeStartObject();
+                    writeTag("invalid_dropbox_id", g);
+                    g.writeFieldName("invalid_dropbox_id");
+                    StoneSerializers.string().serialize(value.invalidDropboxIdValue, g);
+                    g.writeEndObject();
+                    break;
                 }
                 case INVALID_EMAIL: {
-                    String value = null;
-                    expectField(_p, "invalid_email");
-                    value = getStringValue(_p);
-                    _p.nextToken();
-                    return AddMemberSelectorError.invalidEmail(value);
+                    g.writeStartObject();
+                    writeTag("invalid_email", g);
+                    g.writeFieldName("invalid_email");
+                    StoneSerializers.string().serialize(value.invalidEmailValue, g);
+                    g.writeEndObject();
+                    break;
                 }
                 case UNVERIFIED_DROPBOX_ID: {
-                    String value = null;
-                    expectField(_p, "unverified_dropbox_id");
-                    value = getStringValue(_p);
-                    _p.nextToken();
-                    return AddMemberSelectorError.unverifiedDropboxId(value);
+                    g.writeStartObject();
+                    writeTag("unverified_dropbox_id", g);
+                    g.writeFieldName("unverified_dropbox_id");
+                    StoneSerializers.string().serialize(value.unverifiedDropboxIdValue, g);
+                    g.writeEndObject();
+                    break;
                 }
                 case GROUP_DELETED: {
-                    return AddMemberSelectorError.GROUP_DELETED;
+                    g.writeString("group_deleted");
+                    break;
                 }
                 case GROUP_NOT_ON_TEAM: {
-                    return AddMemberSelectorError.GROUP_NOT_ON_TEAM;
+                    g.writeString("group_not_on_team");
+                    break;
                 }
-                case OTHER: {
-                    return AddMemberSelectorError.OTHER;
+                default: {
+                    g.writeString("other");
                 }
             }
-            // should be impossible to get here
-            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
         }
 
-        private static Map<String, AddMemberSelectorError.Tag> getTagMapping() {
-            Map<String, AddMemberSelectorError.Tag> values = new HashMap<String, AddMemberSelectorError.Tag>();
-            values.put("invalid_dropbox_id", AddMemberSelectorError.Tag.INVALID_DROPBOX_ID);
-            values.put("invalid_email", AddMemberSelectorError.Tag.INVALID_EMAIL);
-            values.put("unverified_dropbox_id", AddMemberSelectorError.Tag.UNVERIFIED_DROPBOX_ID);
-            values.put("group_deleted", AddMemberSelectorError.Tag.GROUP_DELETED);
-            values.put("group_not_on_team", AddMemberSelectorError.Tag.GROUP_NOT_ON_TEAM);
-            values.put("other", AddMemberSelectorError.Tag.OTHER);
-            return Collections.unmodifiableMap(values);
+        @Override
+        public AddMemberSelectorError deserialize(JsonParser p) throws IOException, JsonParseException {
+            AddMemberSelectorError value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
+            }
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("invalid_dropbox_id".equals(tag)) {
+                String fieldValue = null;
+                expectField("invalid_dropbox_id", p);
+                fieldValue = StoneSerializers.string().deserialize(p);
+                value = AddMemberSelectorError.invalidDropboxId(fieldValue);
+            }
+            else if ("invalid_email".equals(tag)) {
+                String fieldValue = null;
+                expectField("invalid_email", p);
+                fieldValue = StoneSerializers.string().deserialize(p);
+                value = AddMemberSelectorError.invalidEmail(fieldValue);
+            }
+            else if ("unverified_dropbox_id".equals(tag)) {
+                String fieldValue = null;
+                expectField("unverified_dropbox_id", p);
+                fieldValue = StoneSerializers.string().deserialize(p);
+                value = AddMemberSelectorError.unverifiedDropboxId(fieldValue);
+            }
+            else if ("group_deleted".equals(tag)) {
+                value = AddMemberSelectorError.GROUP_DELETED;
+            }
+            else if ("group_not_on_team".equals(tag)) {
+                value = AddMemberSelectorError.GROUP_NOT_ON_TEAM;
+            }
+            else {
+                value = AddMemberSelectorError.OTHER;
+                skipFields(p);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

@@ -1,36 +1,22 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.babel */
+/* This file was generated from sharing_folders.stone */
 
 package com.dropbox.core.v2.sharing;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Actions that may be taken on members of a shared folder.
  */
-@JsonSerialize(using=MemberAction.Serializer.class)
-@JsonDeserialize(using=MemberAction.Deserializer.class)
 public enum MemberAction {
     // union MemberAction
     /**
@@ -58,59 +44,75 @@ public enum MemberAction {
      */
     OTHER; // *catch_all
 
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
-
-    static final class Serializer extends UnionJsonSerializer<MemberAction> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(MemberAction.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<MemberAction> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(MemberAction value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+        public void serialize(MemberAction value, JsonGenerator g) throws IOException, JsonGenerationException {
             switch (value) {
-                case MAKE_EDITOR:
+                case MAKE_EDITOR: {
                     g.writeString("make_editor");
                     break;
-                case MAKE_OWNER:
+                }
+                case MAKE_OWNER: {
                     g.writeString("make_owner");
                     break;
-                case MAKE_VIEWER:
+                }
+                case MAKE_VIEWER: {
                     g.writeString("make_viewer");
                     break;
-                case REMOVE:
+                }
+                case REMOVE: {
                     g.writeString("remove");
                     break;
-                case OTHER:
+                }
+                default: {
                     g.writeString("other");
-                    break;
+                }
             }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<MemberAction, MemberAction> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(MemberAction.class, getTagMapping(), MemberAction.OTHER);
         }
 
         @Override
-        public MemberAction deserialize(MemberAction _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            return _tag;
-        }
-
-        private static Map<String, MemberAction> getTagMapping() {
-            Map<String, MemberAction> values = new HashMap<String, MemberAction>();
-            values.put("make_editor", MemberAction.MAKE_EDITOR);
-            values.put("make_owner", MemberAction.MAKE_OWNER);
-            values.put("make_viewer", MemberAction.MAKE_VIEWER);
-            values.put("remove", MemberAction.REMOVE);
-            values.put("other", MemberAction.OTHER);
-            return Collections.unmodifiableMap(values);
+        public MemberAction deserialize(JsonParser p) throws IOException, JsonParseException {
+            MemberAction value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
+            }
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("make_editor".equals(tag)) {
+                value = MemberAction.MAKE_EDITOR;
+            }
+            else if ("make_owner".equals(tag)) {
+                value = MemberAction.MAKE_OWNER;
+            }
+            else if ("make_viewer".equals(tag)) {
+                value = MemberAction.MAKE_VIEWER;
+            }
+            else if ("remove".equals(tag)) {
+                value = MemberAction.REMOVE;
+            }
+            else {
+                value = MemberAction.OTHER;
+                skipFields(p);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

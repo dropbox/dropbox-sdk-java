@@ -1,31 +1,19 @@
 /* DO NOT EDIT */
-/* This file was generated from team.babel */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Argument for selecting a list of users, either by team_member_ids,
@@ -36,14 +24,8 @@ import java.util.Map;
  * methods will return {@code true}. You can use {@link #tag()} to determine the
  * tag associated with this instance. </p>
  */
-@JsonSerialize(using=UsersSelectorArg.Serializer.class)
-@JsonDeserialize(using=UsersSelectorArg.Deserializer.class)
 public final class UsersSelectorArg {
     // union UsersSelectorArg
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link UsersSelectorArg}.
@@ -308,7 +290,7 @@ public final class UsersSelectorArg {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -320,116 +302,91 @@ public final class UsersSelectorArg {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends UnionJsonSerializer<UsersSelectorArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(UsersSelectorArg.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<UsersSelectorArg> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(UsersSelectorArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            switch (value.tag) {
-                case TEAM_MEMBER_IDS:
-                    g.writeStartObject();
-                    g.writeStringField(".tag", "team_member_ids");
-                    g.writeObjectField("team_member_ids", value.teamMemberIdsValue);
-                    g.writeEndObject();
-                    break;
-                case EXTERNAL_IDS:
-                    g.writeStartObject();
-                    g.writeStringField(".tag", "external_ids");
-                    g.writeObjectField("external_ids", value.externalIdsValue);
-                    g.writeEndObject();
-                    break;
-                case EMAILS:
-                    g.writeStartObject();
-                    g.writeStringField(".tag", "emails");
-                    g.writeObjectField("emails", value.emailsValue);
-                    g.writeEndObject();
-                    break;
-            }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<UsersSelectorArg, Tag> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(UsersSelectorArg.class, getTagMapping(), null);
-        }
-
-        @Override
-        public UsersSelectorArg deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            switch (_tag) {
+        public void serialize(UsersSelectorArg value, JsonGenerator g) throws IOException, JsonGenerationException {
+            switch (value.tag()) {
                 case TEAM_MEMBER_IDS: {
-                    List<String> value = null;
-                    expectField(_p, "team_member_ids");
-                    expectArrayStart(_p);
-                    value = new java.util.ArrayList<String>();
-                    while (!isArrayEnd(_p)) {
-                        String _x = null;
-                        _x = getStringValue(_p);
-                        _p.nextToken();
-                        value.add(_x);
-                    }
-                    expectArrayEnd(_p);
-                    _p.nextToken();
-                    return UsersSelectorArg.teamMemberIds(value);
+                    g.writeStartObject();
+                    writeTag("team_member_ids", g);
+                    g.writeFieldName("team_member_ids");
+                    StoneSerializers.list(StoneSerializers.string()).serialize(value.teamMemberIdsValue, g);
+                    g.writeEndObject();
+                    break;
                 }
                 case EXTERNAL_IDS: {
-                    List<String> value = null;
-                    expectField(_p, "external_ids");
-                    expectArrayStart(_p);
-                    value = new java.util.ArrayList<String>();
-                    while (!isArrayEnd(_p)) {
-                        String _x = null;
-                        _x = getStringValue(_p);
-                        _p.nextToken();
-                        value.add(_x);
-                    }
-                    expectArrayEnd(_p);
-                    _p.nextToken();
-                    return UsersSelectorArg.externalIds(value);
+                    g.writeStartObject();
+                    writeTag("external_ids", g);
+                    g.writeFieldName("external_ids");
+                    StoneSerializers.list(StoneSerializers.string()).serialize(value.externalIdsValue, g);
+                    g.writeEndObject();
+                    break;
                 }
                 case EMAILS: {
-                    List<String> value = null;
-                    expectField(_p, "emails");
-                    expectArrayStart(_p);
-                    value = new java.util.ArrayList<String>();
-                    while (!isArrayEnd(_p)) {
-                        String _x = null;
-                        _x = getStringValue(_p);
-                        _p.nextToken();
-                        value.add(_x);
-                    }
-                    expectArrayEnd(_p);
-                    _p.nextToken();
-                    return UsersSelectorArg.emails(value);
+                    g.writeStartObject();
+                    writeTag("emails", g);
+                    g.writeFieldName("emails");
+                    StoneSerializers.list(StoneSerializers.string()).serialize(value.emailsValue, g);
+                    g.writeEndObject();
+                    break;
+                }
+                default: {
+                    throw new IllegalArgumentException("Unrecognized tag: " + value.tag());
                 }
             }
-            // should be impossible to get here
-            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
         }
 
-        private static Map<String, UsersSelectorArg.Tag> getTagMapping() {
-            Map<String, UsersSelectorArg.Tag> values = new HashMap<String, UsersSelectorArg.Tag>();
-            values.put("team_member_ids", UsersSelectorArg.Tag.TEAM_MEMBER_IDS);
-            values.put("external_ids", UsersSelectorArg.Tag.EXTERNAL_IDS);
-            values.put("emails", UsersSelectorArg.Tag.EMAILS);
-            return Collections.unmodifiableMap(values);
+        @Override
+        public UsersSelectorArg deserialize(JsonParser p) throws IOException, JsonParseException {
+            UsersSelectorArg value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
+            }
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("team_member_ids".equals(tag)) {
+                List<String> fieldValue = null;
+                expectField("team_member_ids", p);
+                fieldValue = StoneSerializers.list(StoneSerializers.string()).deserialize(p);
+                value = UsersSelectorArg.teamMemberIds(fieldValue);
+            }
+            else if ("external_ids".equals(tag)) {
+                List<String> fieldValue = null;
+                expectField("external_ids", p);
+                fieldValue = StoneSerializers.list(StoneSerializers.string()).deserialize(p);
+                value = UsersSelectorArg.externalIds(fieldValue);
+            }
+            else if ("emails".equals(tag)) {
+                List<String> fieldValue = null;
+                expectField("emails", p);
+                fieldValue = StoneSerializers.list(StoneSerializers.string()).deserialize(p);
+                value = UsersSelectorArg.emails(fieldValue);
+            }
+            else {
+                throw new JsonParseException(p, "Unknown tag: " + tag);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

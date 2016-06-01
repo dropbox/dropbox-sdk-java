@@ -1,27 +1,16 @@
 /* DO NOT EDIT */
-/* This file was generated from team_members.babel */
+/* This file was generated from team_members.stone */
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
@@ -30,14 +19,8 @@ import java.io.IOException;
  * identify the user account. At least one of new_email, new_external_id,
  * new_given_name, and/or new_surname must be provided.
  */
-@JsonSerialize(using=MembersSetProfileArg.Serializer.class)
-@JsonDeserialize(using=MembersSetProfileArg.Deserializer.class)
 class MembersSetProfileArg {
     // struct MembersSetProfileArg
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final UserSelectorArg user;
     protected final String newEmail;
@@ -362,7 +345,7 @@ class MembersSetProfileArg {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -374,110 +357,91 @@ class MembersSetProfileArg {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<MembersSetProfileArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(MembersSetProfileArg.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(MembersSetProfileArg.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<MembersSetProfileArg> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected JsonSerializer<MembersSetProfileArg> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(MembersSetProfileArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("user", value.user);
+        public void serialize(MembersSetProfileArg value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
+            }
+            g.writeFieldName("user");
+            UserSelectorArg.Serializer.INSTANCE.serialize(value.user, g);
             if (value.newEmail != null) {
-                g.writeObjectField("new_email", value.newEmail);
+                g.writeFieldName("new_email");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.newEmail, g);
             }
             if (value.newExternalId != null) {
-                g.writeObjectField("new_external_id", value.newExternalId);
+                g.writeFieldName("new_external_id");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.newExternalId, g);
             }
             if (value.newGivenName != null) {
-                g.writeObjectField("new_given_name", value.newGivenName);
+                g.writeFieldName("new_given_name");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.newGivenName, g);
             }
             if (value.newSurname != null) {
-                g.writeObjectField("new_surname", value.newSurname);
+                g.writeFieldName("new_surname");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.newSurname, g);
             }
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<MembersSetProfileArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(MembersSetProfileArg.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(MembersSetProfileArg.class, unwrapping);
+            if (!collapse) {
+                g.writeEndObject();
+            }
         }
 
         @Override
-        protected JsonDeserializer<MembersSetProfileArg> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public MembersSetProfileArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            UserSelectorArg user = null;
-            String newEmail = null;
-            String newExternalId = null;
-            String newGivenName = null;
-            String newSurname = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("user".equals(_field)) {
-                    user = _p.readValueAs(UserSelectorArg.class);
-                    _p.nextToken();
-                }
-                else if ("new_email".equals(_field)) {
-                    newEmail = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("new_external_id".equals(_field)) {
-                    newExternalId = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("new_given_name".equals(_field)) {
-                    newGivenName = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("new_surname".equals(_field)) {
-                    newSurname = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else {
-                    skipValue(_p);
-                }
+        public MembersSetProfileArg deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            MembersSetProfileArg value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
             }
-
-            if (user == null) {
-                throw new JsonParseException(_p, "Required field \"user\" is missing.");
+            if (tag == null) {
+                UserSelectorArg f_user = null;
+                String f_newEmail = null;
+                String f_newExternalId = null;
+                String f_newGivenName = null;
+                String f_newSurname = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("user".equals(field)) {
+                        f_user = UserSelectorArg.Serializer.INSTANCE.deserialize(p);
+                    }
+                    else if ("new_email".equals(field)) {
+                        f_newEmail = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                    }
+                    else if ("new_external_id".equals(field)) {
+                        f_newExternalId = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                    }
+                    else if ("new_given_name".equals(field)) {
+                        f_newGivenName = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                    }
+                    else if ("new_surname".equals(field)) {
+                        f_newSurname = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
+                }
+                if (f_user == null) {
+                    throw new JsonParseException(p, "Required field \"user\" missing.");
+                }
+                value = new MembersSetProfileArg(f_user, f_newEmail, f_newExternalId, f_newGivenName, f_newSurname);
             }
-
-            return new MembersSetProfileArg(user, newEmail, newExternalId, newGivenName, newSurname);
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

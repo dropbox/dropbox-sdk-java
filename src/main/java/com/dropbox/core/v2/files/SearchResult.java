@@ -1,39 +1,22 @@
 /* DO NOT EDIT */
-/* This file was generated from files.babel */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.List;
 
-@JsonSerialize(using=SearchResult.Serializer.class)
-@JsonDeserialize(using=SearchResult.Deserializer.class)
 public class SearchResult {
     // struct SearchResult
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final List<SearchMatch> matches;
     protected final boolean more;
@@ -128,7 +111,7 @@ public class SearchResult {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -140,105 +123,77 @@ public class SearchResult {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<SearchResult> {
+        public static final Serializer INSTANCE = new Serializer();
 
-    static final class Serializer extends StructJsonSerializer<SearchResult> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(SearchResult.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(SearchResult.class, unwrapping);
+        @Override
+        public void serialize(SearchResult value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
+            }
+            g.writeFieldName("matches");
+            StoneSerializers.list(SearchMatch.Serializer.INSTANCE).serialize(value.matches, g);
+            g.writeFieldName("more");
+            StoneSerializers.boolean_().serialize(value.more, g);
+            g.writeFieldName("start");
+            StoneSerializers.uInt64().serialize(value.start, g);
+            if (!collapse) {
+                g.writeEndObject();
+            }
         }
 
         @Override
-        protected JsonSerializer<SearchResult> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(SearchResult value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("matches", value.matches);
-            g.writeObjectField("more", value.more);
-            g.writeObjectField("start", value.start);
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<SearchResult> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(SearchResult.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(SearchResult.class, unwrapping);
-        }
-
-        @Override
-        protected JsonDeserializer<SearchResult> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public SearchResult deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            List<SearchMatch> matches = null;
-            Boolean more = null;
-            Long start = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("matches".equals(_field)) {
-                    expectArrayStart(_p);
-                    matches = new java.util.ArrayList<SearchMatch>();
-                    while (!isArrayEnd(_p)) {
-                        SearchMatch _x = null;
-                        _x = _p.readValueAs(SearchMatch.class);
-                        _p.nextToken();
-                        matches.add(_x);
+        public SearchResult deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            SearchResult value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                List<SearchMatch> f_matches = null;
+                Boolean f_more = null;
+                Long f_start = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("matches".equals(field)) {
+                        f_matches = StoneSerializers.list(SearchMatch.Serializer.INSTANCE).deserialize(p);
                     }
-                    expectArrayEnd(_p);
-                    _p.nextToken();
+                    else if ("more".equals(field)) {
+                        f_more = StoneSerializers.boolean_().deserialize(p);
+                    }
+                    else if ("start".equals(field)) {
+                        f_start = StoneSerializers.uInt64().deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
                 }
-                else if ("more".equals(_field)) {
-                    more = _p.getValueAsBoolean();
-                    _p.nextToken();
+                if (f_matches == null) {
+                    throw new JsonParseException(p, "Required field \"matches\" missing.");
                 }
-                else if ("start".equals(_field)) {
-                    start = _p.getLongValue();
-                    assertUnsigned(_p, start);
-                    _p.nextToken();
+                if (f_more == null) {
+                    throw new JsonParseException(p, "Required field \"more\" missing.");
                 }
-                else {
-                    skipValue(_p);
+                if (f_start == null) {
+                    throw new JsonParseException(p, "Required field \"start\" missing.");
                 }
+                value = new SearchResult(f_matches, f_more, f_start);
             }
-
-            if (matches == null) {
-                throw new JsonParseException(_p, "Required field \"matches\" is missing.");
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
             }
-            if (more == null) {
-                throw new JsonParseException(_p, "Required field \"more\" is missing.");
+            if (!collapsed) {
+                expectEndObject(p);
             }
-            if (start == null) {
-                throw new JsonParseException(_p, "Required field \"start\" is missing.");
-            }
-
-            return new SearchResult(matches, more, start);
+            return value;
         }
     }
 }

@@ -1,27 +1,16 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.babel */
+/* This file was generated from sharing_folders.stone */
 
 package com.dropbox.core.v2.sharing;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.List;
@@ -29,14 +18,8 @@ import java.util.List;
 /**
  * Shared folder user and group membership.
  */
-@JsonSerialize(using=SharedFolderMembers.Serializer.class)
-@JsonDeserialize(using=SharedFolderMembers.Deserializer.class)
 public class SharedFolderMembers {
     // struct SharedFolderMembers
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final List<UserMembershipInfo> users;
     protected final List<GroupMembershipInfo> groups;
@@ -181,7 +164,7 @@ public class SharedFolderMembers {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -193,128 +176,85 @@ public class SharedFolderMembers {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<SharedFolderMembers> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(SharedFolderMembers.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(SharedFolderMembers.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<SharedFolderMembers> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected JsonSerializer<SharedFolderMembers> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(SharedFolderMembers value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("users", value.users);
-            g.writeObjectField("groups", value.groups);
-            g.writeObjectField("invitees", value.invitees);
+        public void serialize(SharedFolderMembers value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
+            }
+            g.writeFieldName("users");
+            StoneSerializers.list(UserMembershipInfo.Serializer.INSTANCE).serialize(value.users, g);
+            g.writeFieldName("groups");
+            StoneSerializers.list(GroupMembershipInfo.Serializer.INSTANCE).serialize(value.groups, g);
+            g.writeFieldName("invitees");
+            StoneSerializers.list(InviteeMembershipInfo.Serializer.INSTANCE).serialize(value.invitees, g);
             if (value.cursor != null) {
-                g.writeObjectField("cursor", value.cursor);
+                g.writeFieldName("cursor");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.cursor, g);
             }
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<SharedFolderMembers> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(SharedFolderMembers.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(SharedFolderMembers.class, unwrapping);
+            if (!collapse) {
+                g.writeEndObject();
+            }
         }
 
         @Override
-        protected JsonDeserializer<SharedFolderMembers> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public SharedFolderMembers deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            List<UserMembershipInfo> users = null;
-            List<GroupMembershipInfo> groups = null;
-            List<InviteeMembershipInfo> invitees = null;
-            String cursor = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("users".equals(_field)) {
-                    expectArrayStart(_p);
-                    users = new java.util.ArrayList<UserMembershipInfo>();
-                    while (!isArrayEnd(_p)) {
-                        UserMembershipInfo _x = null;
-                        _x = _p.readValueAs(UserMembershipInfo.class);
-                        _p.nextToken();
-                        users.add(_x);
+        public SharedFolderMembers deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            SharedFolderMembers value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                List<UserMembershipInfo> f_users = null;
+                List<GroupMembershipInfo> f_groups = null;
+                List<InviteeMembershipInfo> f_invitees = null;
+                String f_cursor = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("users".equals(field)) {
+                        f_users = StoneSerializers.list(UserMembershipInfo.Serializer.INSTANCE).deserialize(p);
                     }
-                    expectArrayEnd(_p);
-                    _p.nextToken();
-                }
-                else if ("groups".equals(_field)) {
-                    expectArrayStart(_p);
-                    groups = new java.util.ArrayList<GroupMembershipInfo>();
-                    while (!isArrayEnd(_p)) {
-                        GroupMembershipInfo _x = null;
-                        _x = _p.readValueAs(GroupMembershipInfo.class);
-                        _p.nextToken();
-                        groups.add(_x);
+                    else if ("groups".equals(field)) {
+                        f_groups = StoneSerializers.list(GroupMembershipInfo.Serializer.INSTANCE).deserialize(p);
                     }
-                    expectArrayEnd(_p);
-                    _p.nextToken();
-                }
-                else if ("invitees".equals(_field)) {
-                    expectArrayStart(_p);
-                    invitees = new java.util.ArrayList<InviteeMembershipInfo>();
-                    while (!isArrayEnd(_p)) {
-                        InviteeMembershipInfo _x = null;
-                        _x = _p.readValueAs(InviteeMembershipInfo.class);
-                        _p.nextToken();
-                        invitees.add(_x);
+                    else if ("invitees".equals(field)) {
+                        f_invitees = StoneSerializers.list(InviteeMembershipInfo.Serializer.INSTANCE).deserialize(p);
                     }
-                    expectArrayEnd(_p);
-                    _p.nextToken();
+                    else if ("cursor".equals(field)) {
+                        f_cursor = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
                 }
-                else if ("cursor".equals(_field)) {
-                    cursor = getStringValue(_p);
-                    _p.nextToken();
+                if (f_users == null) {
+                    throw new JsonParseException(p, "Required field \"users\" missing.");
                 }
-                else {
-                    skipValue(_p);
+                if (f_groups == null) {
+                    throw new JsonParseException(p, "Required field \"groups\" missing.");
                 }
+                if (f_invitees == null) {
+                    throw new JsonParseException(p, "Required field \"invitees\" missing.");
+                }
+                value = new SharedFolderMembers(f_users, f_groups, f_invitees, f_cursor);
             }
-
-            if (users == null) {
-                throw new JsonParseException(_p, "Required field \"users\" is missing.");
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
             }
-            if (groups == null) {
-                throw new JsonParseException(_p, "Required field \"groups\" is missing.");
+            if (!collapsed) {
+                expectEndObject(p);
             }
-            if (invitees == null) {
-                throw new JsonParseException(_p, "Required field \"invitees\" is missing.");
-            }
-
-            return new SharedFolderMembers(users, groups, invitees, cursor);
+            return value;
         }
     }
 }

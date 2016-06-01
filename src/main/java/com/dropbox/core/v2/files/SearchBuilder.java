@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.babel */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -13,26 +13,26 @@ import com.dropbox.core.DbxException;
  * request. </p>
  */
 public class SearchBuilder {
-    private final DbxUserFilesRequests files;
+    private final DbxUserFilesRequests files_;
     private final SearchArg.Builder searchArgBuilder;
 
     /**
      * Creates a new instance of this builder.
      *
-     * @param files  Dropbox namespace-specific client used to issue files
+     * @param files_  Dropbox namespace-specific client used to issue files
      *     requests.
      * @param searchArgBuilder  Request argument builder.
      *
      * @return instsance of this builder
      */
-    SearchBuilder(DbxUserFilesRequests files, SearchArg.Builder searchArgBuilder) {
-        if (files == null) {
-            throw new NullPointerException("files");
+    SearchBuilder(DbxUserFilesRequests files_, SearchArg.Builder searchArgBuilder) {
+        if (files_ == null) {
+            throw new NullPointerException("files_");
         }
+        this.files_ = files_;
         if (searchArgBuilder == null) {
             throw new NullPointerException("searchArgBuilder");
         }
-        this.files = files;
         this.searchArgBuilder = searchArgBuilder;
     }
 
@@ -92,7 +92,7 @@ public class SearchBuilder {
      * Issues the request.
      */
     public SearchResult start() throws SearchErrorException, DbxException {
-        SearchArg arg = this.searchArgBuilder.build();
-        return files.search(arg);
+        SearchArg arg_ = this.searchArgBuilder.build();
+        return files_.search(arg_);
     }
 }

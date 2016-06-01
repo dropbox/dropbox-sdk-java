@@ -1,39 +1,22 @@
 /* DO NOT EDIT */
-/* This file was generated from properties.babel */
+/* This file was generated from properties.stone */
 
 package com.dropbox.core.v2.properties;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.List;
 
-@JsonSerialize(using=ListPropertyTemplateIds.Serializer.class)
-@JsonDeserialize(using=ListPropertyTemplateIds.Deserializer.class)
 public class ListPropertyTemplateIds {
     // struct ListPropertyTemplateIds
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final List<String> templateIds;
 
@@ -98,7 +81,7 @@ public class ListPropertyTemplateIds {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -110,86 +93,59 @@ public class ListPropertyTemplateIds {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<ListPropertyTemplateIds> {
+        public static final Serializer INSTANCE = new Serializer();
 
-    static final class Serializer extends StructJsonSerializer<ListPropertyTemplateIds> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(ListPropertyTemplateIds.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(ListPropertyTemplateIds.class, unwrapping);
+        @Override
+        public void serialize(ListPropertyTemplateIds value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
+            }
+            g.writeFieldName("template_ids");
+            StoneSerializers.list(StoneSerializers.string()).serialize(value.templateIds, g);
+            if (!collapse) {
+                g.writeEndObject();
+            }
         }
 
         @Override
-        protected JsonSerializer<ListPropertyTemplateIds> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(ListPropertyTemplateIds value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("template_ids", value.templateIds);
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<ListPropertyTemplateIds> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(ListPropertyTemplateIds.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(ListPropertyTemplateIds.class, unwrapping);
-        }
-
-        @Override
-        protected JsonDeserializer<ListPropertyTemplateIds> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public ListPropertyTemplateIds deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            List<String> templateIds = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("template_ids".equals(_field)) {
-                    expectArrayStart(_p);
-                    templateIds = new java.util.ArrayList<String>();
-                    while (!isArrayEnd(_p)) {
-                        String _x = null;
-                        _x = getStringValue(_p);
-                        _p.nextToken();
-                        templateIds.add(_x);
+        public ListPropertyTemplateIds deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            ListPropertyTemplateIds value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                List<String> f_templateIds = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("template_ids".equals(field)) {
+                        f_templateIds = StoneSerializers.list(StoneSerializers.string()).deserialize(p);
                     }
-                    expectArrayEnd(_p);
-                    _p.nextToken();
+                    else {
+                        skipValue(p);
+                    }
                 }
-                else {
-                    skipValue(_p);
+                if (f_templateIds == null) {
+                    throw new JsonParseException(p, "Required field \"template_ids\" missing.");
                 }
+                value = new ListPropertyTemplateIds(f_templateIds);
             }
-
-            if (templateIds == null) {
-                throw new JsonParseException(_p, "Required field \"template_ids\" is missing.");
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
             }
-
-            return new ListPropertyTemplateIds(templateIds);
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

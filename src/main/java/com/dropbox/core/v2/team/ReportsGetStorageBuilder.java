@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_reports.babel */
+/* This file was generated from team_reports.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -15,26 +15,26 @@ import java.util.Date;
  * request. </p>
  */
 public class ReportsGetStorageBuilder {
-    private final DbxTeamTeamRequests team;
+    private final DbxTeamTeamRequests team_;
     private final DateRange.Builder dateRangeBuilder;
 
     /**
      * Creates a new instance of this builder.
      *
-     * @param team  Dropbox namespace-specific client used to issue team
+     * @param team_  Dropbox namespace-specific client used to issue team
      *     requests.
      * @param dateRangeBuilder  Request argument builder.
      *
      * @return instsance of this builder
      */
-    ReportsGetStorageBuilder(DbxTeamTeamRequests team, DateRange.Builder dateRangeBuilder) {
-        if (team == null) {
-            throw new NullPointerException("team");
+    ReportsGetStorageBuilder(DbxTeamTeamRequests team_, DateRange.Builder dateRangeBuilder) {
+        if (team_ == null) {
+            throw new NullPointerException("team_");
         }
+        this.team_ = team_;
         if (dateRangeBuilder == null) {
             throw new NullPointerException("dateRangeBuilder");
         }
-        this.team = team;
         this.dateRangeBuilder = dateRangeBuilder;
     }
 
@@ -66,7 +66,7 @@ public class ReportsGetStorageBuilder {
      * Issues the request.
      */
     public GetStorageReport start() throws DateRangeErrorException, DbxException {
-        DateRange arg = this.dateRangeBuilder.build();
-        return team.reportsGetStorage(arg);
+        DateRange arg_ = this.dateRangeBuilder.build();
+        return team_.reportsGetStorage(arg_);
     }
 }

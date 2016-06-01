@@ -1,39 +1,22 @@
 /* DO NOT EDIT */
-/* This file was generated from files.babel */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.Date;
 
-@JsonSerialize(using=CommitInfo.Serializer.class)
-@JsonDeserialize(using=CommitInfo.Deserializer.class)
 public class CommitInfo {
     // struct CommitInfo
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final String path;
     protected final WriteMode mode;
@@ -46,7 +29,7 @@ public class CommitInfo {
      * specifying values for all optional fields.
      *
      * @param path  Path in the user's Dropbox to save the file. Must match
-     *     pattern "{@code /.*}" and not be {@code null}.
+     *     pattern "{@code /(.|[\\r\\n])*}" and not be {@code null}.
      * @param mode  Selects what to do if the file already exists.
      * @param autorename  If there's a conflict, as determined by the {@code
      *     mode} argument to {@link DbxUserFilesRequests#upload(String)}, have
@@ -70,7 +53,7 @@ public class CommitInfo {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
-        if (!java.util.regex.Pattern.matches("/.*", path)) {
+        if (!java.util.regex.Pattern.matches("/(.|[\\r\\n])*", path)) {
             throw new IllegalArgumentException("String 'path' does not match pattern");
         }
         this.path = path;
@@ -87,7 +70,7 @@ public class CommitInfo {
      * The default values for unset fields will be used.
      *
      * @param path  Path in the user's Dropbox to save the file. Must match
-     *     pattern "{@code /.*}" and not be {@code null}.
+     *     pattern "{@code /(.|[\\r\\n])*}" and not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -158,7 +141,7 @@ public class CommitInfo {
      * Returns a new builder for creating an instance of this class.
      *
      * @param path  Path in the user's Dropbox to save the file. Must match
-     *     pattern "{@code /.*}" and not be {@code null}.
+     *     pattern "{@code /(.|[\\r\\n])*}" and not be {@code null}.
      *
      * @return builder for this class.
      *
@@ -184,7 +167,7 @@ public class CommitInfo {
             if (path == null) {
                 throw new IllegalArgumentException("Required value for 'path' is null");
             }
-            if (!java.util.regex.Pattern.matches("/.*", path)) {
+            if (!java.util.regex.Pattern.matches("/(.|[\\r\\n])*", path)) {
                 throw new IllegalArgumentException("String 'path' does not match pattern");
             }
             this.path = path;
@@ -325,7 +308,7 @@ public class CommitInfo {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -337,104 +320,85 @@ public class CommitInfo {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<CommitInfo> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(CommitInfo.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(CommitInfo.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<CommitInfo> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected JsonSerializer<CommitInfo> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(CommitInfo value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("path", value.path);
-            g.writeObjectField("mode", value.mode);
-            g.writeObjectField("autorename", value.autorename);
+        public void serialize(CommitInfo value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
+            }
+            g.writeFieldName("path");
+            StoneSerializers.string().serialize(value.path, g);
+            g.writeFieldName("mode");
+            WriteMode.Serializer.INSTANCE.serialize(value.mode, g);
+            g.writeFieldName("autorename");
+            StoneSerializers.boolean_().serialize(value.autorename, g);
             if (value.clientModified != null) {
-                g.writeObjectField("client_modified", value.clientModified);
+                g.writeFieldName("client_modified");
+                StoneSerializers.nullable(StoneSerializers.timestamp()).serialize(value.clientModified, g);
             }
-            g.writeObjectField("mute", value.mute);
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<CommitInfo> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(CommitInfo.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(CommitInfo.class, unwrapping);
+            g.writeFieldName("mute");
+            StoneSerializers.boolean_().serialize(value.mute, g);
+            if (!collapse) {
+                g.writeEndObject();
+            }
         }
 
         @Override
-        protected JsonDeserializer<CommitInfo> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public CommitInfo deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            String path = null;
-            WriteMode mode = WriteMode.ADD;
-            boolean autorename = false;
-            Date clientModified = null;
-            boolean mute = false;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("path".equals(_field)) {
-                    path = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("mode".equals(_field)) {
-                    mode = _p.readValueAs(WriteMode.class);
-                    _p.nextToken();
-                }
-                else if ("autorename".equals(_field)) {
-                    autorename = _p.getValueAsBoolean();
-                    _p.nextToken();
-                }
-                else if ("client_modified".equals(_field)) {
-                    clientModified = _ctx.parseDate(getStringValue(_p));
-                    _p.nextToken();
-                }
-                else if ("mute".equals(_field)) {
-                    mute = _p.getValueAsBoolean();
-                    _p.nextToken();
-                }
-                else {
-                    skipValue(_p);
-                }
+        public CommitInfo deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            CommitInfo value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
             }
-
-            if (path == null) {
-                throw new JsonParseException(_p, "Required field \"path\" is missing.");
+            if (tag == null) {
+                String f_path = null;
+                WriteMode f_mode = WriteMode.ADD;
+                Boolean f_autorename = false;
+                Date f_clientModified = null;
+                Boolean f_mute = false;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("path".equals(field)) {
+                        f_path = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("mode".equals(field)) {
+                        f_mode = WriteMode.Serializer.INSTANCE.deserialize(p);
+                    }
+                    else if ("autorename".equals(field)) {
+                        f_autorename = StoneSerializers.boolean_().deserialize(p);
+                    }
+                    else if ("client_modified".equals(field)) {
+                        f_clientModified = StoneSerializers.nullable(StoneSerializers.timestamp()).deserialize(p);
+                    }
+                    else if ("mute".equals(field)) {
+                        f_mute = StoneSerializers.boolean_().deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
+                }
+                if (f_path == null) {
+                    throw new JsonParseException(p, "Required field \"path\" missing.");
+                }
+                value = new CommitInfo(f_path, f_mode, f_autorename, f_clientModified, f_mute);
             }
-
-            return new CommitInfo(path, mode, autorename, clientModified, mute);
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

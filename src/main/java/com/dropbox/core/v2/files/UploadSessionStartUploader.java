@@ -1,16 +1,12 @@
 /* DO NOT EDIT */
-/* This file was generated from files.babel */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
 import com.dropbox.core.DbxApiException;
-import com.dropbox.core.DbxRequestUtil;
 import com.dropbox.core.DbxUploader;
+import com.dropbox.core.DbxWrappedException;
 import com.dropbox.core.http.HttpRequestor;
-import com.dropbox.core.json.JsonUtil;
-
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JavaType;
 
 import java.io.IOException;
 
@@ -26,8 +22,6 @@ import java.io.IOException;
  * (see {@link DbxUploader} for examples). </p>
  */
 public class UploadSessionStartUploader extends DbxUploader<UploadSessionStartResult, Void, DbxApiException> {
-    private static final JavaType _RESULT_TYPE = JsonUtil.createType(new TypeReference<UploadSessionStartResult>() {});
-    private static final JavaType _ERROR_TYPE = JsonUtil.createType(new TypeReference<Void>() {});
 
     /**
      * Creates a new instance of this uploader.
@@ -37,9 +31,10 @@ public class UploadSessionStartUploader extends DbxUploader<UploadSessionStartRe
      * @throws NullPointerException  if {@code httpUploader} is {@code null}
      */
     public UploadSessionStartUploader(HttpRequestor.Uploader httpUploader) {
-        super(httpUploader, _RESULT_TYPE, _ERROR_TYPE);
+        super(httpUploader, UploadSessionStartResult.Serializer.INSTANCE, com.dropbox.core.stone.StoneSerializers.void_());
     }
-    protected DbxApiException newException(DbxRequestUtil.ErrorWrapper error) {
-        return new DbxApiException(error.getRequestId(), error.getUserMessage(), "Unexpected error response for \"upload_session/start\": error.errValue");
+
+    protected DbxApiException newException(DbxWrappedException error) {
+        return new DbxApiException(error.getRequestId(), error.getUserMessage(), "Unexpected error response for \"upload_session/start\":" + error.getErrorValue());
     }
 }

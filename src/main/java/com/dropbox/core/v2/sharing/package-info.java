@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.babel, shared_links.babel */
+/* This file was generated from sharing_folders.stone, shared_links.stone */
 
 /**
  * This namespace contains endpoints and data types for creating and managing

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.babel */
+/* This file was generated from files.stone */
 
 /**
  * This namespace contains endpoints and data types for basic file operations.

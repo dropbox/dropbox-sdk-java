@@ -14,7 +14,7 @@ If you're using Maven, then edit your project's "pom.xml" and add this to the `<
 <dependency>
     <groupId>com.dropbox.core</groupId>
     <artifactId>dropbox-core-sdk</artifactId>
-    <version>2.0.3</version>
+    <version>2.0.4</version>
 </dependency>
 ```
 
@@ -23,9 +23,11 @@ If you are using Gradle, then edit your project's "build.gradle" and add this to
 ```groovy
 dependencies {
     // ...
-    compile 'com.dropbox.core:dropbox-core-sdk:2.0.3'
+    compile 'com.dropbox.core:dropbox-core-sdk:2.0.4'
 }
 ```
+
+You can also download the Java SDK JAR and and its dependencies directly from the [latest release page](https://github.com/dropbox/dropbox-sdk-java/releases/latest).
 
 ## Get a Dropbox API key
 
@@ -46,9 +48,9 @@ Save the API key to a JSON file called, say, "test.app":
 ## Using the Dropbox API
 
 Before your app can access a Dropbox user's files, the user must authorize your application using OAuth 2.  Successfully completing this authorization flow gives you an _access token_ for the user's Dropbox account, which grants you the ability to make Dropbox API calls to access their files.
-  * Example for a simple web app: [Web File Browser example](examples/web-file-browser/src/com/dropbox/core/examples/web_file_browser/DropboxAuth.java)
+  * Example for a simple web app: [Web File Browser example](examples/web-file-browser/src/main/java/com/dropbox/core/examples/web_file_browser/DropboxAuth.java)
   * Example for an Android app: [Android example](examples/android/src/main/java/com/dropbox/core/examples/android/UserActivity.java)
-  * Example for a command-line tool: [Command-Line Authorization example](examples/authorize/src/com/dropbox/core/examples/authorize/Main.java)
+  * Example for a command-line tool: [Command-Line Authorization example](examples/authorize/src/main/java/com/dropbox/core/examples/authorize/Main.java)
 
 Once you have an access token, create a [`DbxClientV2`](https://dropbox.github.io/dropbox-sdk-java/api-docs/v2.0.x/com/dropbox/core/v2/DbxClientV2.html) and start making API calls.
 
@@ -56,13 +58,11 @@ You only need to perform the authorization process once per user.  Once you have
 
 ## Running the examples
 
-Prerequisites: Apache Maven
-
 1. Download this repository.
 2. Save your Dropbox API key in a file called "test.app".  See: [Get a Dropbox API key](#get-a-dropbox-api-key), above.
-3. `mvn install`
-4. To compile all the examples: `mvn -f examples/pom.xml compile`
-5. To compile just one example: `mvn -f examples/<example-name>/pom.xml compile`.
+3. Compile and install the SDK into your local maven repo: `./gradlew install`
+4. To compile all the examples: `(cd examples/ && ./gradlew classes`
+5. To compile just one example: `(cd examples/ && ./gradlew :<example-name>:classes`
 
 ### authorize
 
@@ -126,23 +126,12 @@ cd examples
 ## Running the integration tests
 
 1. Run through the `authorize` example above to get a "test.auth" file.
-2. `./run-integration-tests <path-to-test.auth>`
+2. `./gradlew -Pcom.dropbox.test.authInfoFile=<path-to-test.auth> integrationTest`
 
-Run `./run-integration-tests` with no arguments to see how to run individual tests.
-
-## Loading the project in IntelliJ 14
-
-Assume "{sdk}" represents the top-level folder of this SDK.
-
-1. Click *Import Project*, select "{sdk}/pom.xml".
-2. You'll see the *Import Project From Maven* dialog.
-   - Check *Search for projects recursively*
-   - Check *Keep project files in*, set it to "{sdk}/intellij"
-   - Check *Import Maven projects automatically*
-   - Uncheck *Use Maven output directories*
-   - Click *Next*
-3. Clicking *Next* on the rest of the dialogs.
-4. On the last dialog, you can change *Project name* if you want **but make sure** you set *Project file location* back to "{sdk}/intellij".
+To run individual tests, use the `--tests` gradle test filter:
+```
+./gradlew -Pcom.dropbox.test.authInfoFile=<path-to-test.auth> integrationTest --tests '*.DbxClientV1IT.testAccountInfo'
+```
 
 ## FAQ
 
@@ -159,8 +148,8 @@ OSGi containers running on Java 1.6 or above should provide this capability.  Un
 As a workaround, you can build your own version of the JAR that omits the "osgi.ee" capability by running:
 
 ```
-mvn clean
-mvn package -Dosgi.bnd.noee=true
+./gradlew clean
+./gradlew -Posgi.bnd.noee=true jar
 ```
 
 (This is equivalent to passing the "-noee" option to the OSGi "bnd" tool.)
@@ -169,19 +158,6 @@ Another workaround is to tell your OSGi container to provide that requirement: [
 
 ### Does this SDK require any special ProGuard rules for shrink optimizations?
 
-Yes. This SDK uses Jackson JSON libraries for serialization. Specifically:
-
-  * [Jackson Core](https://github.com/FasterXML/jackson-core)
-  * [Jackson Annotations](https://github.com/FasterXML/jackson-annotations)
-  * [Jackson Databind](https://github.com/FasterXML/jackson-databind)
-
-Jackson Databind makes use of reflection and annotations to map Java objects to JSON. Your ProGuard configuration should ensure Jackson annotations and Object mapping classes are kept. An example configuration is shown below:
-
-```
--keepattributes *Annotation*,EnclosingMethod,InnerClasses,Signature
--keepnames class com.fasterxml.jackson.** { *; }
--dontwarn com.fasterxml.jackson.databind.**
--adaptresourcefilenames com/dropbox/core/http/trusted-certs.raw
-```
+Versions 2.0.0-2.0.3 of this SDK require specific ProGuard rules to work with shrinking enabled. However, since version **2.0.4**, the SDK no longer needs special ProGuard directives.
 
 **IMPORTANT: If you are running version 2.0.x before 2.0.3, you should update to the latest Dropbox SDK version to avoid a deserialization bug that can cause Android apps that use ProGuard to crash.**

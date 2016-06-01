@@ -1,39 +1,22 @@
 /* DO NOT EDIT */
-/* This file was generated from users.babel */
+/* This file was generated from users.stone */
 
 package com.dropbox.core.v2.users;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.List;
 
-@JsonSerialize(using=GetAccountBatchArg.Serializer.class)
-@JsonDeserialize(using=GetAccountBatchArg.Deserializer.class)
 class GetAccountBatchArg {
     // struct GetAccountBatchArg
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final List<String> accountIds;
 
@@ -102,7 +85,7 @@ class GetAccountBatchArg {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -114,86 +97,59 @@ class GetAccountBatchArg {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<GetAccountBatchArg> {
+        public static final Serializer INSTANCE = new Serializer();
 
-    static final class Serializer extends StructJsonSerializer<GetAccountBatchArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(GetAccountBatchArg.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(GetAccountBatchArg.class, unwrapping);
+        @Override
+        public void serialize(GetAccountBatchArg value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
+            }
+            g.writeFieldName("account_ids");
+            StoneSerializers.list(StoneSerializers.string()).serialize(value.accountIds, g);
+            if (!collapse) {
+                g.writeEndObject();
+            }
         }
 
         @Override
-        protected JsonSerializer<GetAccountBatchArg> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(GetAccountBatchArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("account_ids", value.accountIds);
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<GetAccountBatchArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(GetAccountBatchArg.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(GetAccountBatchArg.class, unwrapping);
-        }
-
-        @Override
-        protected JsonDeserializer<GetAccountBatchArg> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public GetAccountBatchArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            List<String> accountIds = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("account_ids".equals(_field)) {
-                    expectArrayStart(_p);
-                    accountIds = new java.util.ArrayList<String>();
-                    while (!isArrayEnd(_p)) {
-                        String _x = null;
-                        _x = getStringValue(_p);
-                        _p.nextToken();
-                        accountIds.add(_x);
+        public GetAccountBatchArg deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            GetAccountBatchArg value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                List<String> f_accountIds = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("account_ids".equals(field)) {
+                        f_accountIds = StoneSerializers.list(StoneSerializers.string()).deserialize(p);
                     }
-                    expectArrayEnd(_p);
-                    _p.nextToken();
+                    else {
+                        skipValue(p);
+                    }
                 }
-                else {
-                    skipValue(_p);
+                if (f_accountIds == null) {
+                    throw new JsonParseException(p, "Required field \"account_ids\" missing.");
                 }
+                value = new GetAccountBatchArg(f_accountIds);
             }
-
-            if (accountIds == null) {
-                throw new JsonParseException(_p, "Required field \"account_ids\" is missing.");
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
             }
-
-            return new GetAccountBatchArg(accountIds);
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

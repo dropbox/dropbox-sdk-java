@@ -1,27 +1,16 @@
 /* DO NOT EDIT */
-/* This file was generated from team_reports.babel */
+/* This file was generated from team_reports.stone */
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
@@ -31,14 +20,8 @@ import java.io.IOException;
  * array of values, one value per day. If there is no data for a day, then the
  * value will be None.
  */
-@JsonSerialize(using=GetDevicesReport.Serializer.class)
-@JsonDeserialize(using=GetDevicesReport.Deserializer.class)
 public class GetDevicesReport extends BaseDfbReport {
     // struct GetDevicesReport
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final DevicesActive active1Day;
     protected final DevicesActive active7Day;
@@ -137,7 +120,7 @@ public class GetDevicesReport extends BaseDfbReport {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -149,105 +132,86 @@ public class GetDevicesReport extends BaseDfbReport {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<GetDevicesReport> {
+        public static final Serializer INSTANCE = new Serializer();
 
-    static final class Serializer extends StructJsonSerializer<GetDevicesReport> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(GetDevicesReport.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(GetDevicesReport.class, unwrapping);
+        @Override
+        public void serialize(GetDevicesReport value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
+            }
+            g.writeFieldName("start_date");
+            StoneSerializers.string().serialize(value.startDate, g);
+            g.writeFieldName("active_1_day");
+            DevicesActive.Serializer.INSTANCE.serialize(value.active1Day, g);
+            g.writeFieldName("active_7_day");
+            DevicesActive.Serializer.INSTANCE.serialize(value.active7Day, g);
+            g.writeFieldName("active_28_day");
+            DevicesActive.Serializer.INSTANCE.serialize(value.active28Day, g);
+            if (!collapse) {
+                g.writeEndObject();
+            }
         }
 
         @Override
-        protected JsonSerializer<GetDevicesReport> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(GetDevicesReport value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("start_date", value.startDate);
-            g.writeObjectField("active_1_day", value.active1Day);
-            g.writeObjectField("active_7_day", value.active7Day);
-            g.writeObjectField("active_28_day", value.active28Day);
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<GetDevicesReport> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(GetDevicesReport.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(GetDevicesReport.class, unwrapping);
-        }
-
-        @Override
-        protected JsonDeserializer<GetDevicesReport> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public GetDevicesReport deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            String startDate = null;
-            DevicesActive active1Day = null;
-            DevicesActive active7Day = null;
-            DevicesActive active28Day = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("start_date".equals(_field)) {
-                    startDate = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("active_1_day".equals(_field)) {
-                    active1Day = _p.readValueAs(DevicesActive.class);
-                    _p.nextToken();
-                }
-                else if ("active_7_day".equals(_field)) {
-                    active7Day = _p.readValueAs(DevicesActive.class);
-                    _p.nextToken();
-                }
-                else if ("active_28_day".equals(_field)) {
-                    active28Day = _p.readValueAs(DevicesActive.class);
-                    _p.nextToken();
-                }
-                else {
-                    skipValue(_p);
-                }
+        public GetDevicesReport deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            GetDevicesReport value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
             }
-
-            if (startDate == null) {
-                throw new JsonParseException(_p, "Required field \"start_date\" is missing.");
+            if (tag == null) {
+                String f_startDate = null;
+                DevicesActive f_active1Day = null;
+                DevicesActive f_active7Day = null;
+                DevicesActive f_active28Day = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("start_date".equals(field)) {
+                        f_startDate = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("active_1_day".equals(field)) {
+                        f_active1Day = DevicesActive.Serializer.INSTANCE.deserialize(p);
+                    }
+                    else if ("active_7_day".equals(field)) {
+                        f_active7Day = DevicesActive.Serializer.INSTANCE.deserialize(p);
+                    }
+                    else if ("active_28_day".equals(field)) {
+                        f_active28Day = DevicesActive.Serializer.INSTANCE.deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
+                }
+                if (f_startDate == null) {
+                    throw new JsonParseException(p, "Required field \"start_date\" missing.");
+                }
+                if (f_active1Day == null) {
+                    throw new JsonParseException(p, "Required field \"active_1_day\" missing.");
+                }
+                if (f_active7Day == null) {
+                    throw new JsonParseException(p, "Required field \"active_7_day\" missing.");
+                }
+                if (f_active28Day == null) {
+                    throw new JsonParseException(p, "Required field \"active_28_day\" missing.");
+                }
+                value = new GetDevicesReport(f_startDate, f_active1Day, f_active7Day, f_active28Day);
             }
-            if (active1Day == null) {
-                throw new JsonParseException(_p, "Required field \"active_1_day\" is missing.");
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
             }
-            if (active7Day == null) {
-                throw new JsonParseException(_p, "Required field \"active_7_day\" is missing.");
+            if (!collapsed) {
+                expectEndObject(p);
             }
-            if (active28Day == null) {
-                throw new JsonParseException(_p, "Required field \"active_28_day\" is missing.");
-            }
-
-            return new GetDevicesReport(startDate, active1Day, active7Day, active28Day);
+            return value;
         }
     }
 }

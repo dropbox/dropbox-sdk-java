@@ -1,39 +1,22 @@
 /* DO NOT EDIT */
-/* This file was generated from team_groups.babel */
+/* This file was generated from team_groups.stone */
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.List;
 
-@JsonSerialize(using=GroupMembersRemoveArg.Serializer.class)
-@JsonDeserialize(using=GroupMembersRemoveArg.Deserializer.class)
 class GroupMembersRemoveArg extends IncludeMembersArg {
     // struct GroupMembersRemoveArg
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final GroupSelector group;
     protected final List<UserSelectorArg> users;
@@ -131,7 +114,7 @@ class GroupMembersRemoveArg extends IncludeMembersArg {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -143,101 +126,74 @@ class GroupMembersRemoveArg extends IncludeMembersArg {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<GroupMembersRemoveArg> {
+        public static final Serializer INSTANCE = new Serializer();
 
-    static final class Serializer extends StructJsonSerializer<GroupMembersRemoveArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(GroupMembersRemoveArg.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(GroupMembersRemoveArg.class, unwrapping);
+        @Override
+        public void serialize(GroupMembersRemoveArg value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
+            }
+            g.writeFieldName("group");
+            GroupSelector.Serializer.INSTANCE.serialize(value.group, g);
+            g.writeFieldName("users");
+            StoneSerializers.list(UserSelectorArg.Serializer.INSTANCE).serialize(value.users, g);
+            g.writeFieldName("return_members");
+            StoneSerializers.boolean_().serialize(value.returnMembers, g);
+            if (!collapse) {
+                g.writeEndObject();
+            }
         }
 
         @Override
-        protected JsonSerializer<GroupMembersRemoveArg> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(GroupMembersRemoveArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("group", value.group);
-            g.writeObjectField("users", value.users);
-            g.writeObjectField("return_members", value.returnMembers);
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<GroupMembersRemoveArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(GroupMembersRemoveArg.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(GroupMembersRemoveArg.class, unwrapping);
-        }
-
-        @Override
-        protected JsonDeserializer<GroupMembersRemoveArg> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public GroupMembersRemoveArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            GroupSelector group = null;
-            List<UserSelectorArg> users = null;
-            boolean returnMembers = true;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("group".equals(_field)) {
-                    group = _p.readValueAs(GroupSelector.class);
-                    _p.nextToken();
-                }
-                else if ("users".equals(_field)) {
-                    expectArrayStart(_p);
-                    users = new java.util.ArrayList<UserSelectorArg>();
-                    while (!isArrayEnd(_p)) {
-                        UserSelectorArg _x = null;
-                        _x = _p.readValueAs(UserSelectorArg.class);
-                        _p.nextToken();
-                        users.add(_x);
+        public GroupMembersRemoveArg deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            GroupMembersRemoveArg value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                GroupSelector f_group = null;
+                List<UserSelectorArg> f_users = null;
+                Boolean f_returnMembers = true;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("group".equals(field)) {
+                        f_group = GroupSelector.Serializer.INSTANCE.deserialize(p);
                     }
-                    expectArrayEnd(_p);
-                    _p.nextToken();
+                    else if ("users".equals(field)) {
+                        f_users = StoneSerializers.list(UserSelectorArg.Serializer.INSTANCE).deserialize(p);
+                    }
+                    else if ("return_members".equals(field)) {
+                        f_returnMembers = StoneSerializers.boolean_().deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
                 }
-                else if ("return_members".equals(_field)) {
-                    returnMembers = _p.getValueAsBoolean();
-                    _p.nextToken();
+                if (f_group == null) {
+                    throw new JsonParseException(p, "Required field \"group\" missing.");
                 }
-                else {
-                    skipValue(_p);
+                if (f_users == null) {
+                    throw new JsonParseException(p, "Required field \"users\" missing.");
                 }
+                value = new GroupMembersRemoveArg(f_group, f_users, f_returnMembers);
             }
-
-            if (group == null) {
-                throw new JsonParseException(_p, "Required field \"group\" is missing.");
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
             }
-            if (users == null) {
-                throw new JsonParseException(_p, "Required field \"users\" is missing.");
+            if (!collapsed) {
+                expectEndObject(p);
             }
-
-            return new GroupMembersRemoveArg(group, users, returnMembers);
+            return value;
         }
     }
 }

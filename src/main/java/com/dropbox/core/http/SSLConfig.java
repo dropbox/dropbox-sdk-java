@@ -18,6 +18,7 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -53,25 +54,15 @@ import javax.net.ssl.TrustManagerFactory;
  *
  */
 public class SSLConfig {
-    /**
-     * Apply security settings to an {@link HttpsURLConnection}.  Make sure you
-     * haven't called {@link HttpsURLConnection#connect} yet.
-     */
-    public static void apply(HttpsURLConnection conn) throws SSLException {
-        conn.setSSLSocketFactory(sslSocketFactory);
-    }
+    private static final SSLSocketFactory SSL_SOCKET_FACTORY = createSSLSocketFactory();
 
-    public static SSLSocketFactory getSSLSocketFactory() {
-        return sslSocketFactory;
-    }
-
-    private static final SSLSocketFactory sslSocketFactory = createSSLSocketFactory();
-
-    private static final String[] protocolListTLS_v1_2 = {"TLSv1.2"};
-    private static final String[] protocolListTLS_v1_0 = {"TLSv1.0"};
-    private static final String[] protocolListTLS_v1 = {"TLSv1"};
+    private static final String[] PROTOCOL_LIST_TLS_V1_2 = {"TLSv1.2"};
+    private static final String[] PROTOCOL_LIST_TLS_V1_0 = {"TLSv1.0"};
+    private static final String[] PROTOCOL_LIST_TLS_V1 = {"TLSv1"};
 
     private static /*@MonotonicNonNull*/CipherSuiteFilterationResults CACHED_CIPHER_SUITE_FILTERATION_RESULTS;
+
+    private static final String ROOT_CERTS_RESOURCE = "/trusted-certs.crt";
 
     // All client ciphersuites allowed by Dropbox.
     //
@@ -79,7 +70,7 @@ public class SSLConfig {
     // all Android API levels:
     //  - API Level >= 10 uses the RFC naming convention
     //  - API Level < 10 uses the OpenSSL naming convention
-    private static HashSet<String> allowedCipherSuites = new HashSet<String>(Arrays.asList(new String[] {
+    private static final HashSet<String> ALLOWED_CIPHER_SUITES = new HashSet<String>(Arrays.asList(new String[] {
         "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
         "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384",
         "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA",
@@ -120,21 +111,33 @@ public class SSLConfig {
         "AES128-SHA",
     }));
 
+    /**
+     * Apply security settings to an {@link HttpsURLConnection}.  Make sure you
+     * haven't called {@link HttpsURLConnection#connect} yet.
+     */
+    public static void apply(HttpsURLConnection conn) throws SSLException {
+        conn.setSSLSocketFactory(SSL_SOCKET_FACTORY);
+    }
+
+    public static SSLSocketFactory getSSLSocketFactory() {
+        return SSL_SOCKET_FACTORY;
+    }
+
     private static void limitProtocolsAndCiphers(SSLSocket socket) throws SSLException
     {
         // Set TLS protocol version
         outer: {
             for (String protocol : socket.getSupportedProtocols()) {
                 if (protocol.equals("TLSv1.2")) {
-                    socket.setEnabledProtocols(protocolListTLS_v1_2);
+                    socket.setEnabledProtocols(PROTOCOL_LIST_TLS_V1_2);
                     break outer;
                 }
                 if (protocol.equals("TLSv1.0")) {
-                    socket.setEnabledProtocols(protocolListTLS_v1_0);
+                    socket.setEnabledProtocols(PROTOCOL_LIST_TLS_V1_0);
                     break outer;
                 }
                 if (protocol.equals("TLSv1")) {
-                    socket.setEnabledProtocols(protocolListTLS_v1);
+                    socket.setEnabledProtocols(PROTOCOL_LIST_TLS_V1);
                     break outer;
                 }
             }
@@ -155,9 +158,9 @@ public class SSLConfig {
         }
 
         // Filter the 'supported' list to yield the 'enabled' list.
-        ArrayList<String> enabled = new ArrayList<String>(allowedCipherSuites.size());
+        ArrayList<String> enabled = new ArrayList<String>(ALLOWED_CIPHER_SUITES.size());
         for (String supported : supportedCipherSuites) {
-            if (allowedCipherSuites.contains(supported)) {
+            if (ALLOWED_CIPHER_SUITES.contains(supported)) {
                 enabled.add(supported);
             }
         }
@@ -187,10 +190,8 @@ public class SSLConfig {
         }
     }
 
-    private static final String RootCertsResourceName = "trusted-certs.raw";
-
     private static SSLSocketFactory createSSLSocketFactory() {
-        KeyStore trustedCertKeyStore = loadKeyStore(RootCertsResourceName);
+        KeyStore trustedCertKeyStore = loadKeyStore(ROOT_CERTS_RESOURCE);
         TrustManager[] trustManagers = createTrustManagers(trustedCertKeyStore);
         SSLContext sslContext = createSSLContext(trustManagers);
         return new SSLSocketFactoryWrapper(sslContext.getSocketFactory());
@@ -285,7 +286,7 @@ public class SSLConfig {
         return tmf.getTrustManagers();
     }
 
-    private static KeyStore loadKeyStore(String certFileResourceName) {
+    private static KeyStore loadKeyStore(String certFileResource) {
         KeyStore keyStore;
         try {
             keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
@@ -301,18 +302,18 @@ public class SSLConfig {
             throw mkAssert("Couldn't initialize KeyStore", ex);
         }
 
-        InputStream in = SSLConfig.class.getResourceAsStream(certFileResourceName);
+        InputStream in = SSLConfig.class.getResourceAsStream(certFileResource);
         if (in == null) {
-            throw new AssertionError("Couldn't find resource \"" + certFileResourceName + "\"");
+            throw new AssertionError("Couldn't find resource \"" + certFileResource + "\"");
         }
         try {
             loadKeyStore(keyStore, in);
         } catch (KeyStoreException ex) {
-            throw mkAssert("Error loading from \"" + certFileResourceName + "\"", ex);
+            throw mkAssert("Error loading from \"" + certFileResource + "\"", ex);
         } catch (LoadException ex) {
-            throw mkAssert("Error loading from \"" + certFileResourceName + "\"", ex);
+            throw mkAssert("Error loading from \"" + certFileResource + "\"", ex);
         } catch (IOException ex) {
-            throw mkAssert("Error loading from \"" + certFileResourceName + "\"", ex);
+            throw mkAssert("Error loading from \"" + certFileResource + "\"", ex);
         } finally {
             IOUtil.closeInput(in);
         }
@@ -320,16 +321,15 @@ public class SSLConfig {
         return keyStore;
     }
 
-    public static final int MaxCertLength = 10 * 1024;
-
     public static final class LoadException extends Exception {
         private static final long serialVersionUID = 0L;
 
-        public LoadException(String message) {
-            super(message);
+        public LoadException(String message, Throwable cause) {
+            super(message, cause);
         }
     }
 
+    @SuppressWarnings("unchecked")
     private static void loadKeyStore(KeyStore keyStore, InputStream in)
         throws IOException, LoadException, KeyStoreException {
         CertificateFactory x509CertFactory;
@@ -339,30 +339,20 @@ public class SSLConfig {
             throw mkAssert("Couldn't initialize X.509 CertificateFactory", ex);
         }
 
-        DataInputStream din = new DataInputStream(in);
-        byte[] data = new byte[MaxCertLength];
-        while (true) {
-            int length = din.readUnsignedShort();
-            if (length == 0) break;
-            if (length > MaxCertLength) {
-                throw new LoadException("Invalid length for certificate entry: " + length);
-            }
-            din.readFully(data, 0, length);
-            X509Certificate cert;
-            try {
-                cert = (X509Certificate) x509CertFactory.generateCertificate(new ByteArrayInputStream(data, 0, length));
-            } catch (CertificateException ex) {
-                throw new LoadException("Error loading certificate: " + ex.getMessage());
-            }
+        Collection<X509Certificate> certs;
+        try {
+            certs = (Collection<X509Certificate>) x509CertFactory.generateCertificates(in);
+        } catch (CertificateException ex) {
+            throw new LoadException("Error loading certificate: " + ex.getMessage(), ex);
+        }
+
+        for (X509Certificate cert : certs) {
             String alias = cert.getSubjectX500Principal().getName();
             try {
                 keyStore.setCertificateEntry(alias, cert);
             } catch (KeyStoreException ex) {
-                throw new LoadException("Error loading certificate: " + ex.getMessage());
+                throw new LoadException("Error loading certificate: " + ex.getMessage(), ex);
             }
-        }
-        if (din.read() >= 0) {
-            throw new LoadException("Found data after after zero-length header.");
         }
     }
 }

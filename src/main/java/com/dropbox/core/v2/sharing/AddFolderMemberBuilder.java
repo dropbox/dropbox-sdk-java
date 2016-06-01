@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.babel */
+/* This file was generated from sharing_folders.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -13,26 +13,26 @@ import com.dropbox.core.DbxException;
  * request. </p>
  */
 public class AddFolderMemberBuilder {
-    private final DbxUserSharingRequests sharing;
+    private final DbxUserSharingRequests sharing_;
     private final AddFolderMemberArg.Builder addFolderMemberArgBuilder;
 
     /**
      * Creates a new instance of this builder.
      *
-     * @param sharing  Dropbox namespace-specific client used to issue sharing
+     * @param sharing_  Dropbox namespace-specific client used to issue sharing
      *     requests.
      * @param addFolderMemberArgBuilder  Request argument builder.
      *
      * @return instsance of this builder
      */
-    AddFolderMemberBuilder(DbxUserSharingRequests sharing, AddFolderMemberArg.Builder addFolderMemberArgBuilder) {
-        if (sharing == null) {
-            throw new NullPointerException("sharing");
+    AddFolderMemberBuilder(DbxUserSharingRequests sharing_, AddFolderMemberArg.Builder addFolderMemberArgBuilder) {
+        if (sharing_ == null) {
+            throw new NullPointerException("sharing_");
         }
+        this.sharing_ = sharing_;
         if (addFolderMemberArgBuilder == null) {
             throw new NullPointerException("addFolderMemberArgBuilder");
         }
-        this.sharing = sharing;
         this.addFolderMemberArgBuilder = addFolderMemberArgBuilder;
     }
 
@@ -72,7 +72,7 @@ public class AddFolderMemberBuilder {
      * Issues the request.
      */
     public void start() throws AddFolderMemberErrorException, DbxException {
-        AddFolderMemberArg arg = this.addFolderMemberArgBuilder.build();
-        sharing.addFolderMember(arg);
+        AddFolderMemberArg arg_ = this.addFolderMemberArgBuilder.build();
+        sharing_.addFolderMember(arg_);
     }
 }

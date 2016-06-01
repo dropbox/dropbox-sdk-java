@@ -1,38 +1,21 @@
 /* DO NOT EDIT */
-/* This file was generated from shared_links.babel */
+/* This file was generated from shared_links.stone */
 
 package com.dropbox.core.v2.sharing;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
-@JsonSerialize(using=ListSharedLinksArg.Serializer.class)
-@JsonDeserialize(using=ListSharedLinksArg.Deserializer.class)
 class ListSharedLinksArg {
     // struct ListSharedLinksArg
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final String path;
     protected final String cursor;
@@ -44,7 +27,7 @@ class ListSharedLinksArg {
      *
      * @param path  See {@link DbxUserSharingRequests#listSharedLinks()}
      *     description. Must match pattern "{@code
-     *     ((/|id:).*)|(rev:[0-9a-f]{9,})}".
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}".
      * @param cursor  The cursor returned by your last call to {@link
      *     DbxUserSharingRequests#listSharedLinks()}.
      * @param directOnly  See {@link DbxUserSharingRequests#listSharedLinks()}
@@ -55,7 +38,7 @@ class ListSharedLinksArg {
      */
     public ListSharedLinksArg(String path, String cursor, Boolean directOnly) {
         if (path != null) {
-            if (!java.util.regex.Pattern.matches("((/|id:).*)|(rev:[0-9a-f]{9,})", path)) {
+            if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})", path)) {
                 throw new IllegalArgumentException("String 'path' does not match pattern");
             }
         }
@@ -128,7 +111,7 @@ class ListSharedLinksArg {
          *
          * @param path  See {@link DbxUserSharingRequests#listSharedLinks()}
          *     description. Must match pattern "{@code
-         *     ((/|id:).*)|(rev:[0-9a-f]{9,})}".
+         *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}".
          *
          * @return this builder
          *
@@ -137,7 +120,7 @@ class ListSharedLinksArg {
          */
         public Builder withPath(String path) {
             if (path != null) {
-                if (!java.util.regex.Pattern.matches("((/|id:).*)|(rev:[0-9a-f]{9,})", path)) {
+                if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})", path)) {
                     throw new IllegalArgumentException("String 'path' does not match pattern");
                 }
             }
@@ -212,7 +195,7 @@ class ListSharedLinksArg {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -224,93 +207,74 @@ class ListSharedLinksArg {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<ListSharedLinksArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(ListSharedLinksArg.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(ListSharedLinksArg.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<ListSharedLinksArg> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected JsonSerializer<ListSharedLinksArg> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(ListSharedLinksArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+        public void serialize(ListSharedLinksArg value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
+            }
             if (value.path != null) {
-                g.writeObjectField("path", value.path);
+                g.writeFieldName("path");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.path, g);
             }
             if (value.cursor != null) {
-                g.writeObjectField("cursor", value.cursor);
+                g.writeFieldName("cursor");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.cursor, g);
             }
             if (value.directOnly != null) {
-                g.writeObjectField("direct_only", value.directOnly);
+                g.writeFieldName("direct_only");
+                StoneSerializers.nullable(StoneSerializers.boolean_()).serialize(value.directOnly, g);
             }
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<ListSharedLinksArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(ListSharedLinksArg.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(ListSharedLinksArg.class, unwrapping);
+            if (!collapse) {
+                g.writeEndObject();
+            }
         }
 
         @Override
-        protected JsonDeserializer<ListSharedLinksArg> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public ListSharedLinksArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            String path = null;
-            String cursor = null;
-            Boolean directOnly = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("path".equals(_field)) {
-                    path = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("cursor".equals(_field)) {
-                    cursor = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("direct_only".equals(_field)) {
-                    directOnly = _p.getValueAsBoolean();
-                    _p.nextToken();
-                }
-                else {
-                    skipValue(_p);
-                }
+        public ListSharedLinksArg deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            ListSharedLinksArg value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
             }
-
-
-            return new ListSharedLinksArg(path, cursor, directOnly);
+            if (tag == null) {
+                String f_path = null;
+                String f_cursor = null;
+                Boolean f_directOnly = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("path".equals(field)) {
+                        f_path = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                    }
+                    else if ("cursor".equals(field)) {
+                        f_cursor = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                    }
+                    else if ("direct_only".equals(field)) {
+                        f_directOnly = StoneSerializers.nullable(StoneSerializers.boolean_()).deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
+                }
+                value = new ListSharedLinksArg(f_path, f_cursor, f_directOnly);
+            }
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

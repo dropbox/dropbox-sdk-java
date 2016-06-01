@@ -1,30 +1,18 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.babel */
+/* This file was generated from sharing_folders.stone */
 
 package com.dropbox.core.v2.sharing;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This class is a tagged union.  Tagged unions instances are always associated
@@ -32,14 +20,8 @@ import java.util.Map;
  * return {@code true}. You can use {@link #tag()} to determine the tag
  * associated with this instance.
  */
-@JsonSerialize(using=JobStatus.Serializer.class)
-@JsonDeserialize(using=JobStatus.Deserializer.class)
 public final class JobStatus {
     // union JobStatus
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link JobStatus}.
@@ -203,7 +185,7 @@ public final class JobStatus {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -215,77 +197,77 @@ public final class JobStatus {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends UnionJsonSerializer<JobStatus> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(JobStatus.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<JobStatus> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(JobStatus value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            switch (value.tag) {
-                case IN_PROGRESS:
+        public void serialize(JobStatus value, JsonGenerator g) throws IOException, JsonGenerationException {
+            switch (value.tag()) {
+                case IN_PROGRESS: {
                     g.writeString("in_progress");
                     break;
-                case COMPLETE:
+                }
+                case COMPLETE: {
                     g.writeString("complete");
                     break;
-                case FAILED:
+                }
+                case FAILED: {
                     g.writeStartObject();
-                    g.writeStringField(".tag", "failed");
-                    g.writeObjectField("failed", value.failedValue);
+                    writeTag("failed", g);
+                    g.writeFieldName("failed");
+                    JobError.Serializer.INSTANCE.serialize(value.failedValue, g);
                     g.writeEndObject();
                     break;
+                }
+                default: {
+                    throw new IllegalArgumentException("Unrecognized tag: " + value.tag());
+                }
             }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<JobStatus, Tag> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(JobStatus.class, getTagMapping(), null);
         }
 
         @Override
-        public JobStatus deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            switch (_tag) {
-                case IN_PROGRESS: {
-                    return JobStatus.IN_PROGRESS;
-                }
-                case COMPLETE: {
-                    return JobStatus.COMPLETE;
-                }
-                case FAILED: {
-                    JobError value = null;
-                    expectField(_p, "failed");
-                    value = _p.readValueAs(JobError.class);
-                    _p.nextToken();
-                    return JobStatus.failed(value);
-                }
+        public JobStatus deserialize(JsonParser p) throws IOException, JsonParseException {
+            JobStatus value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
             }
-            // should be impossible to get here
-            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
-        }
-
-        private static Map<String, JobStatus.Tag> getTagMapping() {
-            Map<String, JobStatus.Tag> values = new HashMap<String, JobStatus.Tag>();
-            values.put("complete", JobStatus.Tag.COMPLETE);
-            values.put("failed", JobStatus.Tag.FAILED);
-            return Collections.unmodifiableMap(values);
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("in_progress".equals(tag)) {
+                value = JobStatus.IN_PROGRESS;
+            }
+            else if ("complete".equals(tag)) {
+                value = JobStatus.COMPLETE;
+            }
+            else if ("failed".equals(tag)) {
+                JobError fieldValue = null;
+                expectField("failed", p);
+                fieldValue = JobError.Serializer.INSTANCE.deserialize(p);
+                value = JobStatus.failed(fieldValue);
+            }
+            else {
+                throw new JsonParseException(p, "Unknown tag: " + tag);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

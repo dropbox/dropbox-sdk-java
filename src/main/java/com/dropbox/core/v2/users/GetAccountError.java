@@ -1,33 +1,19 @@
 /* DO NOT EDIT */
-/* This file was generated from users.babel */
+/* This file was generated from users.stone */
 
 package com.dropbox.core.v2.users;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
-@JsonSerialize(using=GetAccountError.Serializer.class)
-@JsonDeserialize(using=GetAccountError.Deserializer.class)
 public enum GetAccountError {
     // union GetAccountError
     /**
@@ -44,47 +30,54 @@ public enum GetAccountError {
      */
     UNKNOWN; // *catch_all
 
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
-
-    static final class Serializer extends UnionJsonSerializer<GetAccountError> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(GetAccountError.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<GetAccountError> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(GetAccountError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+        public void serialize(GetAccountError value, JsonGenerator g) throws IOException, JsonGenerationException {
             switch (value) {
-                case NO_ACCOUNT:
+                case NO_ACCOUNT: {
                     g.writeString("no_account");
                     break;
-                case UNKNOWN:
+                }
+                default: {
                     g.writeString("unknown");
-                    break;
+                }
             }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<GetAccountError, GetAccountError> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(GetAccountError.class, getTagMapping(), GetAccountError.UNKNOWN);
         }
 
         @Override
-        public GetAccountError deserialize(GetAccountError _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            return _tag;
-        }
-
-        private static Map<String, GetAccountError> getTagMapping() {
-            Map<String, GetAccountError> values = new HashMap<String, GetAccountError>();
-            values.put("no_account", GetAccountError.NO_ACCOUNT);
-            values.put("unknown", GetAccountError.UNKNOWN);
-            return Collections.unmodifiableMap(values);
+        public GetAccountError deserialize(JsonParser p) throws IOException, JsonParseException {
+            GetAccountError value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
+            }
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("no_account".equals(tag)) {
+                value = GetAccountError.NO_ACCOUNT;
+            }
+            else {
+                value = GetAccountError.UNKNOWN;
+                skipFields(p);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

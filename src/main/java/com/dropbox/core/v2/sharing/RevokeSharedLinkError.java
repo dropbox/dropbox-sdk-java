@@ -1,33 +1,19 @@
 /* DO NOT EDIT */
-/* This file was generated from shared_links.babel */
+/* This file was generated from shared_links.stone */
 
 package com.dropbox.core.v2.sharing;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
-@JsonSerialize(using=RevokeSharedLinkError.Serializer.class)
-@JsonDeserialize(using=RevokeSharedLinkError.Deserializer.class)
 public enum RevokeSharedLinkError {
     // union RevokeSharedLinkError
     /**
@@ -47,52 +33,74 @@ public enum RevokeSharedLinkError {
      */
     SHARED_LINK_MALFORMED;
 
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
-
-    static final class Serializer extends UnionJsonSerializer<RevokeSharedLinkError> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(RevokeSharedLinkError.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<RevokeSharedLinkError> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(RevokeSharedLinkError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+        public void serialize(RevokeSharedLinkError value, JsonGenerator g) throws IOException, JsonGenerationException {
             switch (value) {
-                case SHARED_LINK_NOT_FOUND:
+                case SHARED_LINK_NOT_FOUND: {
                     g.writeString("shared_link_not_found");
                     break;
-                case SHARED_LINK_ACCESS_DENIED:
+                }
+                case SHARED_LINK_ACCESS_DENIED: {
                     g.writeString("shared_link_access_denied");
                     break;
-                case OTHER:
+                }
+                case OTHER: {
                     g.writeString("other");
                     break;
-                case SHARED_LINK_MALFORMED:
+                }
+                case SHARED_LINK_MALFORMED: {
                     g.writeString("shared_link_malformed");
                     break;
+                }
+                default: {
+                    throw new IllegalArgumentException("Unrecognized tag: " + value);
+                }
             }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<RevokeSharedLinkError, RevokeSharedLinkError> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(RevokeSharedLinkError.class, getTagMapping(), null);
         }
 
         @Override
-        public RevokeSharedLinkError deserialize(RevokeSharedLinkError _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            return _tag;
-        }
-
-        private static Map<String, RevokeSharedLinkError> getTagMapping() {
-            Map<String, RevokeSharedLinkError> values = new HashMap<String, RevokeSharedLinkError>();
-            values.put("shared_link_malformed", RevokeSharedLinkError.SHARED_LINK_MALFORMED);
-            return Collections.unmodifiableMap(values);
+        public RevokeSharedLinkError deserialize(JsonParser p) throws IOException, JsonParseException {
+            RevokeSharedLinkError value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
+            }
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("shared_link_not_found".equals(tag)) {
+                value = RevokeSharedLinkError.SHARED_LINK_NOT_FOUND;
+            }
+            else if ("shared_link_access_denied".equals(tag)) {
+                value = RevokeSharedLinkError.SHARED_LINK_ACCESS_DENIED;
+            }
+            else if ("other".equals(tag)) {
+                value = RevokeSharedLinkError.OTHER;
+            }
+            else if ("shared_link_malformed".equals(tag)) {
+                value = RevokeSharedLinkError.SHARED_LINK_MALFORMED;
+            }
+            else {
+                throw new JsonParseException(p, "Unknown tag: " + tag);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

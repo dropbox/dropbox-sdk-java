@@ -1,42 +1,25 @@
 /* DO NOT EDIT */
-/* This file was generated from team.babel */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 import com.dropbox.core.v2.users.Name;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
 /**
  * Basic member profile.
  */
-@JsonSerialize(using=MemberProfile.Serializer.class)
-@JsonDeserialize(using=MemberProfile.Deserializer.class)
 public class MemberProfile {
     // struct MemberProfile
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final String teamMemberId;
     protected final String externalId;
@@ -44,6 +27,7 @@ public class MemberProfile {
     protected final boolean emailVerified;
     protected final TeamMemberStatus status;
     protected final Name name;
+    protected final TeamMembershipType membershipType;
 
     /**
      * Basic member profile.
@@ -57,6 +41,9 @@ public class MemberProfile {
      *     be {@code null}.
      * @param name  Representations for a person's name. Must not be {@code
      *     null}.
+     * @param membershipType  The user's membership type: full (normal team
+     *     member) vs limited (does not use a license; no access to the team's
+     *     shared quota). Must not be {@code null}.
      * @param externalId  External ID that a team can attach to the user. An
      *     application using the API may find it easier to use their own IDs
      *     instead of Dropbox IDs like account_id or team_member_id.
@@ -64,7 +51,7 @@ public class MemberProfile {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberProfile(String teamMemberId, String email, boolean emailVerified, TeamMemberStatus status, Name name, String externalId) {
+    public MemberProfile(String teamMemberId, String email, boolean emailVerified, TeamMemberStatus status, Name name, TeamMembershipType membershipType, String externalId) {
         if (teamMemberId == null) {
             throw new IllegalArgumentException("Required value for 'teamMemberId' is null");
         }
@@ -83,6 +70,10 @@ public class MemberProfile {
             throw new IllegalArgumentException("Required value for 'name' is null");
         }
         this.name = name;
+        if (membershipType == null) {
+            throw new IllegalArgumentException("Required value for 'membershipType' is null");
+        }
+        this.membershipType = membershipType;
     }
 
     /**
@@ -99,12 +90,15 @@ public class MemberProfile {
      *     be {@code null}.
      * @param name  Representations for a person's name. Must not be {@code
      *     null}.
+     * @param membershipType  The user's membership type: full (normal team
+     *     member) vs limited (does not use a license; no access to the team's
+     *     shared quota). Must not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberProfile(String teamMemberId, String email, boolean emailVerified, TeamMemberStatus status, Name name) {
-        this(teamMemberId, email, emailVerified, status, name, null);
+    public MemberProfile(String teamMemberId, String email, boolean emailVerified, TeamMemberStatus status, Name name, TeamMembershipType membershipType) {
+        this(teamMemberId, email, emailVerified, status, name, membershipType, null);
     }
 
     /**
@@ -163,6 +157,16 @@ public class MemberProfile {
         return name;
     }
 
+    /**
+     * The user's membership type: full (normal team member) vs limited (does
+     * not use a license; no access to the team's shared quota).
+     *
+     * @return value for this field, never {@code null}.
+     */
+    public TeamMembershipType getMembershipType() {
+        return membershipType;
+    }
+
     @Override
     public int hashCode() {
         int hash = java.util.Arrays.hashCode(new Object [] {
@@ -171,7 +175,8 @@ public class MemberProfile {
             email,
             emailVerified,
             status,
-            name
+            name,
+            membershipType
         });
         return hash;
     }
@@ -189,6 +194,7 @@ public class MemberProfile {
                 && (this.emailVerified == other.emailVerified)
                 && ((this.status == other.status) || (this.status.equals(other.status)))
                 && ((this.name == other.name) || (this.name.equals(other.name)))
+                && ((this.membershipType == other.membershipType) || (this.membershipType.equals(other.membershipType)))
                 && ((this.externalId == other.externalId) || (this.externalId != null && this.externalId.equals(other.externalId)))
                 ;
         }
@@ -199,7 +205,7 @@ public class MemberProfile {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -211,122 +217,112 @@ public class MemberProfile {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<MemberProfile> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(MemberProfile.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(MemberProfile.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<MemberProfile> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected JsonSerializer<MemberProfile> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(MemberProfile value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("team_member_id", value.teamMemberId);
-            g.writeObjectField("email", value.email);
-            g.writeObjectField("email_verified", value.emailVerified);
-            g.writeObjectField("status", value.status);
-            g.writeObjectField("name", value.name);
+        public void serialize(MemberProfile value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
+            }
+            g.writeFieldName("team_member_id");
+            StoneSerializers.string().serialize(value.teamMemberId, g);
+            g.writeFieldName("email");
+            StoneSerializers.string().serialize(value.email, g);
+            g.writeFieldName("email_verified");
+            StoneSerializers.boolean_().serialize(value.emailVerified, g);
+            g.writeFieldName("status");
+            TeamMemberStatus.Serializer.INSTANCE.serialize(value.status, g);
+            g.writeFieldName("name");
+            Name.Serializer.INSTANCE.serialize(value.name, g);
+            g.writeFieldName("membership_type");
+            TeamMembershipType.Serializer.INSTANCE.serialize(value.membershipType, g);
             if (value.externalId != null) {
-                g.writeObjectField("external_id", value.externalId);
+                g.writeFieldName("external_id");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.externalId, g);
             }
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<MemberProfile> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(MemberProfile.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(MemberProfile.class, unwrapping);
+            if (!collapse) {
+                g.writeEndObject();
+            }
         }
 
         @Override
-        protected JsonDeserializer<MemberProfile> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public MemberProfile deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            String teamMemberId = null;
-            String email = null;
-            Boolean emailVerified = null;
-            TeamMemberStatus status = null;
-            Name name = null;
-            String externalId = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("team_member_id".equals(_field)) {
-                    teamMemberId = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("email".equals(_field)) {
-                    email = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("email_verified".equals(_field)) {
-                    emailVerified = _p.getValueAsBoolean();
-                    _p.nextToken();
-                }
-                else if ("status".equals(_field)) {
-                    status = _p.readValueAs(TeamMemberStatus.class);
-                    _p.nextToken();
-                }
-                else if ("name".equals(_field)) {
-                    name = _p.readValueAs(Name.class);
-                    _p.nextToken();
-                }
-                else if ("external_id".equals(_field)) {
-                    externalId = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else {
-                    skipValue(_p);
-                }
+        public MemberProfile deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            MemberProfile value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
             }
-
-            if (teamMemberId == null) {
-                throw new JsonParseException(_p, "Required field \"team_member_id\" is missing.");
+            if (tag == null) {
+                String f_teamMemberId = null;
+                String f_email = null;
+                Boolean f_emailVerified = null;
+                TeamMemberStatus f_status = null;
+                Name f_name = null;
+                TeamMembershipType f_membershipType = null;
+                String f_externalId = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("team_member_id".equals(field)) {
+                        f_teamMemberId = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("email".equals(field)) {
+                        f_email = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("email_verified".equals(field)) {
+                        f_emailVerified = StoneSerializers.boolean_().deserialize(p);
+                    }
+                    else if ("status".equals(field)) {
+                        f_status = TeamMemberStatus.Serializer.INSTANCE.deserialize(p);
+                    }
+                    else if ("name".equals(field)) {
+                        f_name = Name.Serializer.INSTANCE.deserialize(p);
+                    }
+                    else if ("membership_type".equals(field)) {
+                        f_membershipType = TeamMembershipType.Serializer.INSTANCE.deserialize(p);
+                    }
+                    else if ("external_id".equals(field)) {
+                        f_externalId = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
+                }
+                if (f_teamMemberId == null) {
+                    throw new JsonParseException(p, "Required field \"team_member_id\" missing.");
+                }
+                if (f_email == null) {
+                    throw new JsonParseException(p, "Required field \"email\" missing.");
+                }
+                if (f_emailVerified == null) {
+                    throw new JsonParseException(p, "Required field \"email_verified\" missing.");
+                }
+                if (f_status == null) {
+                    throw new JsonParseException(p, "Required field \"status\" missing.");
+                }
+                if (f_name == null) {
+                    throw new JsonParseException(p, "Required field \"name\" missing.");
+                }
+                if (f_membershipType == null) {
+                    throw new JsonParseException(p, "Required field \"membership_type\" missing.");
+                }
+                value = new MemberProfile(f_teamMemberId, f_email, f_emailVerified, f_status, f_name, f_membershipType, f_externalId);
             }
-            if (email == null) {
-                throw new JsonParseException(_p, "Required field \"email\" is missing.");
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
             }
-            if (emailVerified == null) {
-                throw new JsonParseException(_p, "Required field \"email_verified\" is missing.");
+            if (!collapsed) {
+                expectEndObject(p);
             }
-            if (status == null) {
-                throw new JsonParseException(_p, "Required field \"status\" is missing.");
-            }
-            if (name == null) {
-                throw new JsonParseException(_p, "Required field \"name\" is missing.");
-            }
-
-            return new MemberProfile(teamMemberId, email, emailVerified, status, name, externalId);
+            return value;
         }
     }
 }

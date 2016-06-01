@@ -1,27 +1,16 @@
 /* DO NOT EDIT */
-/* This file was generated from team_devices.babel */
+/* This file was generated from team_devices.stone */
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.List;
@@ -29,14 +18,8 @@ import java.util.List;
 /**
  * Information on devices of a team's member.
  */
-@JsonSerialize(using=MemberDevices.Serializer.class)
-@JsonDeserialize(using=MemberDevices.Deserializer.class)
 public class MemberDevices {
     // struct MemberDevices
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final String teamMemberId;
     protected final List<ActiveWebSession> webSessions;
@@ -287,7 +270,7 @@ public class MemberDevices {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -299,126 +282,83 @@ public class MemberDevices {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<MemberDevices> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(MemberDevices.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(MemberDevices.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<MemberDevices> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected JsonSerializer<MemberDevices> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(MemberDevices value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("team_member_id", value.teamMemberId);
+        public void serialize(MemberDevices value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
+            }
+            g.writeFieldName("team_member_id");
+            StoneSerializers.string().serialize(value.teamMemberId, g);
             if (value.webSessions != null) {
-                g.writeObjectField("web_sessions", value.webSessions);
+                g.writeFieldName("web_sessions");
+                StoneSerializers.nullable(StoneSerializers.list(ActiveWebSession.Serializer.INSTANCE)).serialize(value.webSessions, g);
             }
             if (value.desktopClients != null) {
-                g.writeObjectField("desktop_clients", value.desktopClients);
+                g.writeFieldName("desktop_clients");
+                StoneSerializers.nullable(StoneSerializers.list(DesktopClientSession.Serializer.INSTANCE)).serialize(value.desktopClients, g);
             }
             if (value.mobileClients != null) {
-                g.writeObjectField("mobile_clients", value.mobileClients);
+                g.writeFieldName("mobile_clients");
+                StoneSerializers.nullable(StoneSerializers.list(MobileClientSession.Serializer.INSTANCE)).serialize(value.mobileClients, g);
             }
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<MemberDevices> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(MemberDevices.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(MemberDevices.class, unwrapping);
+            if (!collapse) {
+                g.writeEndObject();
+            }
         }
 
         @Override
-        protected JsonDeserializer<MemberDevices> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public MemberDevices deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            String teamMemberId = null;
-            List<ActiveWebSession> webSessions = null;
-            List<DesktopClientSession> desktopClients = null;
-            List<MobileClientSession> mobileClients = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("team_member_id".equals(_field)) {
-                    teamMemberId = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else if ("web_sessions".equals(_field)) {
-                    expectArrayStart(_p);
-                    webSessions = new java.util.ArrayList<ActiveWebSession>();
-                    while (!isArrayEnd(_p)) {
-                        ActiveWebSession _x = null;
-                        _x = _p.readValueAs(ActiveWebSession.class);
-                        _p.nextToken();
-                        webSessions.add(_x);
-                    }
-                    expectArrayEnd(_p);
-                    _p.nextToken();
-                }
-                else if ("desktop_clients".equals(_field)) {
-                    expectArrayStart(_p);
-                    desktopClients = new java.util.ArrayList<DesktopClientSession>();
-                    while (!isArrayEnd(_p)) {
-                        DesktopClientSession _x = null;
-                        _x = _p.readValueAs(DesktopClientSession.class);
-                        _p.nextToken();
-                        desktopClients.add(_x);
-                    }
-                    expectArrayEnd(_p);
-                    _p.nextToken();
-                }
-                else if ("mobile_clients".equals(_field)) {
-                    expectArrayStart(_p);
-                    mobileClients = new java.util.ArrayList<MobileClientSession>();
-                    while (!isArrayEnd(_p)) {
-                        MobileClientSession _x = null;
-                        _x = _p.readValueAs(MobileClientSession.class);
-                        _p.nextToken();
-                        mobileClients.add(_x);
-                    }
-                    expectArrayEnd(_p);
-                    _p.nextToken();
-                }
-                else {
-                    skipValue(_p);
-                }
+        public MemberDevices deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            MemberDevices value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
             }
-
-            if (teamMemberId == null) {
-                throw new JsonParseException(_p, "Required field \"team_member_id\" is missing.");
+            if (tag == null) {
+                String f_teamMemberId = null;
+                List<ActiveWebSession> f_webSessions = null;
+                List<DesktopClientSession> f_desktopClients = null;
+                List<MobileClientSession> f_mobileClients = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("team_member_id".equals(field)) {
+                        f_teamMemberId = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("web_sessions".equals(field)) {
+                        f_webSessions = StoneSerializers.nullable(StoneSerializers.list(ActiveWebSession.Serializer.INSTANCE)).deserialize(p);
+                    }
+                    else if ("desktop_clients".equals(field)) {
+                        f_desktopClients = StoneSerializers.nullable(StoneSerializers.list(DesktopClientSession.Serializer.INSTANCE)).deserialize(p);
+                    }
+                    else if ("mobile_clients".equals(field)) {
+                        f_mobileClients = StoneSerializers.nullable(StoneSerializers.list(MobileClientSession.Serializer.INSTANCE)).deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
+                }
+                if (f_teamMemberId == null) {
+                    throw new JsonParseException(p, "Required field \"team_member_id\" missing.");
+                }
+                value = new MemberDevices(f_teamMemberId, f_webSessions, f_desktopClients, f_mobileClients);
             }
-
-            return new MemberDevices(teamMemberId, webSessions, desktopClients, mobileClients);
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

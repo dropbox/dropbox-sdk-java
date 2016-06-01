@@ -3,14 +3,10 @@ package com.dropbox.core.v1;
 import static org.testng.Assert.*;
 import static com.dropbox.core.util.StringUtil.jq;
 
-import com.dropbox.core.DbxAuthInfo;
 import com.dropbox.core.DbxException;
-import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.DbxStreamWriter;
+import com.dropbox.core.ITUtil;
 import com.dropbox.core.RetryException;
-import com.dropbox.core.http.HttpRequestor;
-import com.dropbox.core.http.OkHttpRequestor;
-import com.dropbox.core.json.JsonReader;
 import com.dropbox.core.util.Dumpable;
 import com.dropbox.core.util.IOUtil;
 
@@ -34,51 +30,17 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 // integration test
-public class DbxClientV1IT
-{
+public class DbxClientV1IT {
     private String testFolder;
     private DbxClientV1 client;
-
-    private static DbxRequestConfig.Builder createRequestConfig() {
-        DbxRequestConfig.Builder builder = DbxRequestConfig.newBuilder("sdk-test");
-
-        String okHttp = System.getProperty("okHttp");
-        if (okHttp != null && !okHttp.equals("true") && !okHttp.equals("false")) {
-            throw new RuntimeException("Invalid value for System property \"okHttp\"." +
-                                       " Expected \"true\" or \"false\", got " + jq(okHttp) + ".");
-        }
-
-        if ("true".equals(okHttp)) {
-            builder.withHttpRequestor(OkHttpRequestor.INSTANCE);
-        }
-
-        return builder;
-    }
-
 
     /**
      * Every test must explicitly invoke this function so the reporting.
      */
     // I tried using an @BeforeMethod annotation, but when I did that, any exceptions that this
     // method threw weren't reported in the output.
-    private void init()
-        throws DbxException
-    {
-        String authInfoFile = System.getProperty("dbxAuthInfoFile");
-        if (authInfoFile == null) {
-            throw new RuntimeException("System property \"dbxAuthInfoFile\" not set.");
-        }
-
-        DbxAuthInfo authInfo;
-        try {
-            authInfo = DbxAuthInfo.Reader.readFromFile(authInfoFile);
-        }
-        catch (JsonReader.FileLoadException ex) {
-            throw new RuntimeException("Error reading auth info from \"" + authInfoFile + "\": " + ex.getMessage());
-        }
-
-        DbxRequestConfig requestConfig = createRequestConfig().build();
-        DbxClientV1 client = new DbxClientV1(requestConfig, authInfo.getAccessToken(), authInfo.getHost());
+    private void init() throws DbxException {
+        DbxClientV1 client = ITUtil.newClientV1();
 
         String timestamp = new SimpleDateFormat("yyyy-MM-dd HH.mm.ss").format(new Date());
         String basePath = "/Java SDK Tests/" + timestamp;
@@ -97,9 +59,7 @@ public class DbxClientV1IT
     }
 
     @AfterMethod
-    private void cleanup()
-        throws DbxException
-    {
+    private void cleanup() throws DbxException {
         if (client != null) {
             client.delete(testFolder);
         }
@@ -107,13 +67,11 @@ public class DbxClientV1IT
         testFolder = null;
     }
 
-    private String p(String path)
-    {
+    private String p(String path) {
         return this.testFolder + "/" + path;
     }
 
-    private String p()
-    {
+    private String p() {
         return this.testFolder;
     }
 
@@ -162,8 +120,7 @@ public class DbxClientV1IT
         return client.uploadFile(path, writeMode, length, new ByteArrayInputStream(generateRandomBytes(length)));
     }
 
-    private static byte[] generateRandomBytes(int numBytes)
-    {
+    private static byte[] generateRandomBytes(int numBytes) {
         byte[] data = new byte[numBytes];
         Random random = new Random();
         for (int i = 0; i < numBytes; i++) {
@@ -608,14 +565,12 @@ public class DbxClientV1IT
         }
     }
 
-    private static DbxEntry.File removeMediaInfo(DbxEntry.File e)
-    {
+    private static DbxEntry.File removeMediaInfo(DbxEntry.File e) {
         return new DbxEntry.File(e.path, e.iconName, e.mightHaveThumbnail, e.numBytes, e.humanSize,
                                  e.lastModified, e.clientMtime, e.rev);
     }
 
-    private static ImageReader getImageReaderForFormat(DbxThumbnailFormat format)
-    {
+    private static ImageReader getImageReaderForFormat(DbxThumbnailFormat format) {
         Iterator<ImageReader> readers = ImageIO.getImageReadersByFormatName(format.ident);
 
         if (!readers.hasNext()) {
@@ -629,9 +584,7 @@ public class DbxClientV1IT
     }
 
     @Test
-    public void testChunkedUpload()
-        throws DbxException, IOException
-    {
+    public void testChunkedUpload() throws DbxException, IOException {
         init();
 
         byte[] contents = StringUtil.stringToUtf8("A simple test file");
@@ -689,9 +642,7 @@ public class DbxClientV1IT
     }
 
     @Test
-    public void testCopyFile()
-        throws DbxException, IOException
-    {
+    public void testCopyFile() throws DbxException, IOException {
         init();
 
         String source = p("copy m" + E_ACCENT + ".txt");
@@ -708,9 +659,7 @@ public class DbxClientV1IT
     }
 
     @Test
-    public void testCopyFolder()
-        throws DbxException, IOException
-    {
+    public void testCopyFolder() throws DbxException, IOException {
         init();
 
         String source = p("some folder");
@@ -729,9 +678,7 @@ public class DbxClientV1IT
     }
 
     @Test
-    public void testCopyEmptyFolder()
-        throws DbxException, IOException
-    {
+    public void testCopyEmptyFolder() throws DbxException, IOException {
         init();
 
         String source = p("empty folder");
@@ -748,9 +695,7 @@ public class DbxClientV1IT
     }
 
     @Test
-    public void testCreateFolder()
-        throws DbxException, IOException
-    {
+    public void testCreateFolder() throws DbxException, IOException {
         init();
 
         DbxEntry.WithChildren mwc = client.getMetadataWithChildren(p());
@@ -765,9 +710,7 @@ public class DbxClientV1IT
     }
 
     @Test
-    public void testDelete()
-        throws DbxException, IOException
-    {
+    public void testDelete() throws DbxException, IOException {
         init();
 
         String path = p("delete m" + E_ACCENT + ".txt");
@@ -781,9 +724,7 @@ public class DbxClientV1IT
     }
 
     @Test
-    public void testMoveFile()
-        throws DbxException, IOException
-    {
+    public void testMoveFile() throws DbxException, IOException {
         init();
 
         String source = p("move me.txt");
@@ -802,9 +743,7 @@ public class DbxClientV1IT
     }
 
     @Test
-    public void testMoveFolder()
-        throws DbxException, IOException
-    {
+    public void testMoveFolder() throws DbxException, IOException {
         init();
 
         String source = p("some folder");
@@ -827,9 +766,7 @@ public class DbxClientV1IT
     }
 
     @Test
-    public void testMoveEmptyFolder()
-        throws DbxException, IOException
-    {
+    public void testMoveEmptyFolder() throws DbxException, IOException {
         init();
 
         String source = p("empty folder");

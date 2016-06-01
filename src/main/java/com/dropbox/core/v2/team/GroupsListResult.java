@@ -1,39 +1,23 @@
 /* DO NOT EDIT */
-/* This file was generated from team_groups.babel */
+/* This file was generated from team_groups.stone */
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
+import com.dropbox.core.v2.teamcommon.GroupSummary;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.List;
 
-@JsonSerialize(using=GroupsListResult.Serializer.class)
-@JsonDeserialize(using=GroupsListResult.Deserializer.class)
 public class GroupsListResult {
     // struct GroupsListResult
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final List<GroupSummary> groups;
     protected final String cursor;
@@ -130,7 +114,7 @@ public class GroupsListResult {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -142,104 +126,77 @@ public class GroupsListResult {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<GroupsListResult> {
+        public static final Serializer INSTANCE = new Serializer();
 
-    static final class Serializer extends StructJsonSerializer<GroupsListResult> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(GroupsListResult.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(GroupsListResult.class, unwrapping);
+        @Override
+        public void serialize(GroupsListResult value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
+            }
+            g.writeFieldName("groups");
+            StoneSerializers.list(GroupSummary.Serializer.INSTANCE).serialize(value.groups, g);
+            g.writeFieldName("cursor");
+            StoneSerializers.string().serialize(value.cursor, g);
+            g.writeFieldName("has_more");
+            StoneSerializers.boolean_().serialize(value.hasMore, g);
+            if (!collapse) {
+                g.writeEndObject();
+            }
         }
 
         @Override
-        protected JsonSerializer<GroupsListResult> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(GroupsListResult value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("groups", value.groups);
-            g.writeObjectField("cursor", value.cursor);
-            g.writeObjectField("has_more", value.hasMore);
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<GroupsListResult> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(GroupsListResult.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(GroupsListResult.class, unwrapping);
-        }
-
-        @Override
-        protected JsonDeserializer<GroupsListResult> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public GroupsListResult deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            List<GroupSummary> groups = null;
-            String cursor = null;
-            Boolean hasMore = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("groups".equals(_field)) {
-                    expectArrayStart(_p);
-                    groups = new java.util.ArrayList<GroupSummary>();
-                    while (!isArrayEnd(_p)) {
-                        GroupSummary _x = null;
-                        _x = _p.readValueAs(GroupSummary.class);
-                        _p.nextToken();
-                        groups.add(_x);
+        public GroupsListResult deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            GroupsListResult value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                List<GroupSummary> f_groups = null;
+                String f_cursor = null;
+                Boolean f_hasMore = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("groups".equals(field)) {
+                        f_groups = StoneSerializers.list(GroupSummary.Serializer.INSTANCE).deserialize(p);
                     }
-                    expectArrayEnd(_p);
-                    _p.nextToken();
+                    else if ("cursor".equals(field)) {
+                        f_cursor = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("has_more".equals(field)) {
+                        f_hasMore = StoneSerializers.boolean_().deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
                 }
-                else if ("cursor".equals(_field)) {
-                    cursor = getStringValue(_p);
-                    _p.nextToken();
+                if (f_groups == null) {
+                    throw new JsonParseException(p, "Required field \"groups\" missing.");
                 }
-                else if ("has_more".equals(_field)) {
-                    hasMore = _p.getValueAsBoolean();
-                    _p.nextToken();
+                if (f_cursor == null) {
+                    throw new JsonParseException(p, "Required field \"cursor\" missing.");
                 }
-                else {
-                    skipValue(_p);
+                if (f_hasMore == null) {
+                    throw new JsonParseException(p, "Required field \"has_more\" missing.");
                 }
+                value = new GroupsListResult(f_groups, f_cursor, f_hasMore);
             }
-
-            if (groups == null) {
-                throw new JsonParseException(_p, "Required field \"groups\" is missing.");
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
             }
-            if (cursor == null) {
-                throw new JsonParseException(_p, "Required field \"cursor\" is missing.");
+            if (!collapsed) {
+                expectEndObject(p);
             }
-            if (hasMore == null) {
-                throw new JsonParseException(_p, "Required field \"has_more\" is missing.");
-            }
-
-            return new GroupsListResult(groups, cursor, hasMore);
+            return value;
         }
     }
 }

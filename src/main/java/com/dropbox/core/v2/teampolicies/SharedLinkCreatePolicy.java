@@ -1,36 +1,22 @@
 /* DO NOT EDIT */
-/* This file was generated from team_policies.babel */
+/* This file was generated from team_policies.stone */
 
 package com.dropbox.core.v2.teampolicies;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Policy governing the visibility of newly created shared links.
  */
-@JsonSerialize(using=SharedLinkCreatePolicy.Serializer.class)
-@JsonDeserialize(using=SharedLinkCreatePolicy.Deserializer.class)
 public enum SharedLinkCreatePolicy {
     // union SharedLinkCreatePolicy
     /**
@@ -58,55 +44,68 @@ public enum SharedLinkCreatePolicy {
      */
     OTHER; // *catch_all
 
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
-
-    static final class Serializer extends UnionJsonSerializer<SharedLinkCreatePolicy> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(SharedLinkCreatePolicy.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<SharedLinkCreatePolicy> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(SharedLinkCreatePolicy value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+        public void serialize(SharedLinkCreatePolicy value, JsonGenerator g) throws IOException, JsonGenerationException {
             switch (value) {
-                case DEFAULT_PUBLIC:
+                case DEFAULT_PUBLIC: {
                     g.writeString("default_public");
                     break;
-                case DEFAULT_TEAM_ONLY:
+                }
+                case DEFAULT_TEAM_ONLY: {
                     g.writeString("default_team_only");
                     break;
-                case TEAM_ONLY:
+                }
+                case TEAM_ONLY: {
                     g.writeString("team_only");
                     break;
-                case OTHER:
+                }
+                default: {
                     g.writeString("other");
-                    break;
+                }
             }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<SharedLinkCreatePolicy, SharedLinkCreatePolicy> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(SharedLinkCreatePolicy.class, getTagMapping(), SharedLinkCreatePolicy.OTHER);
         }
 
         @Override
-        public SharedLinkCreatePolicy deserialize(SharedLinkCreatePolicy _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            return _tag;
-        }
-
-        private static Map<String, SharedLinkCreatePolicy> getTagMapping() {
-            Map<String, SharedLinkCreatePolicy> values = new HashMap<String, SharedLinkCreatePolicy>();
-            values.put("default_public", SharedLinkCreatePolicy.DEFAULT_PUBLIC);
-            values.put("default_team_only", SharedLinkCreatePolicy.DEFAULT_TEAM_ONLY);
-            values.put("team_only", SharedLinkCreatePolicy.TEAM_ONLY);
-            values.put("other", SharedLinkCreatePolicy.OTHER);
-            return Collections.unmodifiableMap(values);
+        public SharedLinkCreatePolicy deserialize(JsonParser p) throws IOException, JsonParseException {
+            SharedLinkCreatePolicy value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
+            }
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("default_public".equals(tag)) {
+                value = SharedLinkCreatePolicy.DEFAULT_PUBLIC;
+            }
+            else if ("default_team_only".equals(tag)) {
+                value = SharedLinkCreatePolicy.DEFAULT_TEAM_ONLY;
+            }
+            else if ("team_only".equals(tag)) {
+                value = SharedLinkCreatePolicy.TEAM_ONLY;
+            }
+            else {
+                value = SharedLinkCreatePolicy.OTHER;
+                skipFields(p);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

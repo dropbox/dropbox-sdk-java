@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.babel */
+/* This file was generated from sharing_folders.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -15,26 +15,26 @@ import java.util.List;
  * request. </p>
  */
 public class ListFolderMembersBuilder {
-    private final DbxUserSharingRequests sharing;
+    private final DbxUserSharingRequests sharing_;
     private final ListFolderMembersArgs.Builder listFolderMembersArgsBuilder;
 
     /**
      * Creates a new instance of this builder.
      *
-     * @param sharing  Dropbox namespace-specific client used to issue sharing
+     * @param sharing_  Dropbox namespace-specific client used to issue sharing
      *     requests.
      * @param listFolderMembersArgsBuilder  Request argument builder.
      *
      * @return instsance of this builder
      */
-    ListFolderMembersBuilder(DbxUserSharingRequests sharing, ListFolderMembersArgs.Builder listFolderMembersArgsBuilder) {
-        if (sharing == null) {
-            throw new NullPointerException("sharing");
+    ListFolderMembersBuilder(DbxUserSharingRequests sharing_, ListFolderMembersArgs.Builder listFolderMembersArgsBuilder) {
+        if (sharing_ == null) {
+            throw new NullPointerException("sharing_");
         }
+        this.sharing_ = sharing_;
         if (listFolderMembersArgsBuilder == null) {
             throw new NullPointerException("listFolderMembersArgsBuilder");
         }
-        this.sharing = sharing;
         this.listFolderMembersArgsBuilder = listFolderMembersArgsBuilder;
     }
 
@@ -78,7 +78,7 @@ public class ListFolderMembersBuilder {
      * Issues the request.
      */
     public SharedFolderMembers start() throws SharedFolderAccessErrorException, DbxException {
-        ListFolderMembersArgs arg = this.listFolderMembersArgsBuilder.build();
-        return sharing.listFolderMembers(arg);
+        ListFolderMembersArgs arg_ = this.listFolderMembersArgsBuilder.build();
+        return sharing_.listFolderMembers(arg_);
     }
 }

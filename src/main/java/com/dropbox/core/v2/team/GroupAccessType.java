@@ -1,36 +1,22 @@
 /* DO NOT EDIT */
-/* This file was generated from team_groups.babel */
+/* This file was generated from team_groups.stone */
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Role of a user in group.
  */
-@JsonSerialize(using=GroupAccessType.Serializer.class)
-@JsonDeserialize(using=GroupAccessType.Deserializer.class)
 public enum GroupAccessType {
     // union GroupAccessType
     /**
@@ -38,51 +24,64 @@ public enum GroupAccessType {
      */
     MEMBER,
     /**
-     * A group owner can rename the group, and add/remove members.
+     * User can rename the group, and add/remove members.
      */
     OWNER;
 
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
-
-    static final class Serializer extends UnionJsonSerializer<GroupAccessType> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(GroupAccessType.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<GroupAccessType> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(GroupAccessType value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
+        public void serialize(GroupAccessType value, JsonGenerator g) throws IOException, JsonGenerationException {
             switch (value) {
-                case MEMBER:
+                case MEMBER: {
                     g.writeString("member");
                     break;
-                case OWNER:
+                }
+                case OWNER: {
                     g.writeString("owner");
                     break;
+                }
+                default: {
+                    throw new IllegalArgumentException("Unrecognized tag: " + value);
+                }
             }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<GroupAccessType, GroupAccessType> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(GroupAccessType.class, getTagMapping(), null);
         }
 
         @Override
-        public GroupAccessType deserialize(GroupAccessType _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            return _tag;
-        }
-
-        private static Map<String, GroupAccessType> getTagMapping() {
-            Map<String, GroupAccessType> values = new HashMap<String, GroupAccessType>();
-            values.put("member", GroupAccessType.MEMBER);
-            values.put("owner", GroupAccessType.OWNER);
-            return Collections.unmodifiableMap(values);
+        public GroupAccessType deserialize(JsonParser p) throws IOException, JsonParseException {
+            GroupAccessType value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
+            }
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("member".equals(tag)) {
+                value = GroupAccessType.MEMBER;
+            }
+            else if ("owner".equals(tag)) {
+                value = GroupAccessType.OWNER;
+            }
+            else {
+                throw new JsonParseException(p, "Unknown tag: " + tag);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

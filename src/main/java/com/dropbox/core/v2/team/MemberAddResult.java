@@ -1,30 +1,18 @@
 /* DO NOT EDIT */
-/* This file was generated from team_members.babel */
+/* This file was generated from team_members.stone */
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Describes the result of attempting to add a single user to the team.
@@ -37,14 +25,8 @@ import java.util.Map;
  * methods will return {@code true}. You can use {@link #tag()} to determine the
  * tag associated with this instance. </p>
  */
-@JsonSerialize(using=MemberAddResult.Serializer.class)
-@JsonDeserialize(using=MemberAddResult.Deserializer.class)
 public final class MemberAddResult {
     // union MemberAddResult
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link MemberAddResult}.
@@ -725,7 +707,7 @@ public final class MemberAddResult {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -737,174 +719,173 @@ public final class MemberAddResult {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends UnionJsonSerializer<MemberAddResult> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(MemberAddResult.class, TeamMemberInfo.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<MemberAddResult> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(MemberAddResult value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            switch (value.tag) {
-                case SUCCESS:
-                    g.writeStartObject();
-                    g.writeStringField(".tag", "success");
-                    getUnwrappingSerializer(TeamMemberInfo.class).serialize(value.successValue, g, provider);
-                    g.writeEndObject();
-                    break;
-                case TEAM_LICENSE_LIMIT:
-                    g.writeStartObject();
-                    g.writeStringField(".tag", "team_license_limit");
-                    g.writeObjectField("team_license_limit", value.teamLicenseLimitValue);
-                    g.writeEndObject();
-                    break;
-                case FREE_TEAM_MEMBER_LIMIT_REACHED:
-                    g.writeStartObject();
-                    g.writeStringField(".tag", "free_team_member_limit_reached");
-                    g.writeObjectField("free_team_member_limit_reached", value.freeTeamMemberLimitReachedValue);
-                    g.writeEndObject();
-                    break;
-                case USER_ALREADY_ON_TEAM:
-                    g.writeStartObject();
-                    g.writeStringField(".tag", "user_already_on_team");
-                    g.writeObjectField("user_already_on_team", value.userAlreadyOnTeamValue);
-                    g.writeEndObject();
-                    break;
-                case USER_ON_ANOTHER_TEAM:
-                    g.writeStartObject();
-                    g.writeStringField(".tag", "user_on_another_team");
-                    g.writeObjectField("user_on_another_team", value.userOnAnotherTeamValue);
-                    g.writeEndObject();
-                    break;
-                case USER_ALREADY_PAIRED:
-                    g.writeStartObject();
-                    g.writeStringField(".tag", "user_already_paired");
-                    g.writeObjectField("user_already_paired", value.userAlreadyPairedValue);
-                    g.writeEndObject();
-                    break;
-                case USER_MIGRATION_FAILED:
-                    g.writeStartObject();
-                    g.writeStringField(".tag", "user_migration_failed");
-                    g.writeObjectField("user_migration_failed", value.userMigrationFailedValue);
-                    g.writeEndObject();
-                    break;
-                case DUPLICATE_EXTERNAL_MEMBER_ID:
-                    g.writeStartObject();
-                    g.writeStringField(".tag", "duplicate_external_member_id");
-                    g.writeObjectField("duplicate_external_member_id", value.duplicateExternalMemberIdValue);
-                    g.writeEndObject();
-                    break;
-                case USER_CREATION_FAILED:
-                    g.writeStartObject();
-                    g.writeStringField(".tag", "user_creation_failed");
-                    g.writeObjectField("user_creation_failed", value.userCreationFailedValue);
-                    g.writeEndObject();
-                    break;
-            }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<MemberAddResult, Tag> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(MemberAddResult.class, getTagMapping(), null, TeamMemberInfo.class);
-        }
-
-        @Override
-        public MemberAddResult deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            switch (_tag) {
+        public void serialize(MemberAddResult value, JsonGenerator g) throws IOException, JsonGenerationException {
+            switch (value.tag()) {
                 case SUCCESS: {
-                    TeamMemberInfo value = null;
-                    value = readCollapsedStructValue(TeamMemberInfo.class, _p, _ctx);
-                    return MemberAddResult.success(value);
+                    g.writeStartObject();
+                    writeTag("success", g);
+                    TeamMemberInfo.Serializer.INSTANCE.serialize(value.successValue, g, true);
+                    g.writeEndObject();
+                    break;
                 }
                 case TEAM_LICENSE_LIMIT: {
-                    String value = null;
-                    expectField(_p, "team_license_limit");
-                    value = getStringValue(_p);
-                    _p.nextToken();
-                    return MemberAddResult.teamLicenseLimit(value);
+                    g.writeStartObject();
+                    writeTag("team_license_limit", g);
+                    g.writeFieldName("team_license_limit");
+                    StoneSerializers.string().serialize(value.teamLicenseLimitValue, g);
+                    g.writeEndObject();
+                    break;
                 }
                 case FREE_TEAM_MEMBER_LIMIT_REACHED: {
-                    String value = null;
-                    expectField(_p, "free_team_member_limit_reached");
-                    value = getStringValue(_p);
-                    _p.nextToken();
-                    return MemberAddResult.freeTeamMemberLimitReached(value);
+                    g.writeStartObject();
+                    writeTag("free_team_member_limit_reached", g);
+                    g.writeFieldName("free_team_member_limit_reached");
+                    StoneSerializers.string().serialize(value.freeTeamMemberLimitReachedValue, g);
+                    g.writeEndObject();
+                    break;
                 }
                 case USER_ALREADY_ON_TEAM: {
-                    String value = null;
-                    expectField(_p, "user_already_on_team");
-                    value = getStringValue(_p);
-                    _p.nextToken();
-                    return MemberAddResult.userAlreadyOnTeam(value);
+                    g.writeStartObject();
+                    writeTag("user_already_on_team", g);
+                    g.writeFieldName("user_already_on_team");
+                    StoneSerializers.string().serialize(value.userAlreadyOnTeamValue, g);
+                    g.writeEndObject();
+                    break;
                 }
                 case USER_ON_ANOTHER_TEAM: {
-                    String value = null;
-                    expectField(_p, "user_on_another_team");
-                    value = getStringValue(_p);
-                    _p.nextToken();
-                    return MemberAddResult.userOnAnotherTeam(value);
+                    g.writeStartObject();
+                    writeTag("user_on_another_team", g);
+                    g.writeFieldName("user_on_another_team");
+                    StoneSerializers.string().serialize(value.userOnAnotherTeamValue, g);
+                    g.writeEndObject();
+                    break;
                 }
                 case USER_ALREADY_PAIRED: {
-                    String value = null;
-                    expectField(_p, "user_already_paired");
-                    value = getStringValue(_p);
-                    _p.nextToken();
-                    return MemberAddResult.userAlreadyPaired(value);
+                    g.writeStartObject();
+                    writeTag("user_already_paired", g);
+                    g.writeFieldName("user_already_paired");
+                    StoneSerializers.string().serialize(value.userAlreadyPairedValue, g);
+                    g.writeEndObject();
+                    break;
                 }
                 case USER_MIGRATION_FAILED: {
-                    String value = null;
-                    expectField(_p, "user_migration_failed");
-                    value = getStringValue(_p);
-                    _p.nextToken();
-                    return MemberAddResult.userMigrationFailed(value);
+                    g.writeStartObject();
+                    writeTag("user_migration_failed", g);
+                    g.writeFieldName("user_migration_failed");
+                    StoneSerializers.string().serialize(value.userMigrationFailedValue, g);
+                    g.writeEndObject();
+                    break;
                 }
                 case DUPLICATE_EXTERNAL_MEMBER_ID: {
-                    String value = null;
-                    expectField(_p, "duplicate_external_member_id");
-                    value = getStringValue(_p);
-                    _p.nextToken();
-                    return MemberAddResult.duplicateExternalMemberId(value);
+                    g.writeStartObject();
+                    writeTag("duplicate_external_member_id", g);
+                    g.writeFieldName("duplicate_external_member_id");
+                    StoneSerializers.string().serialize(value.duplicateExternalMemberIdValue, g);
+                    g.writeEndObject();
+                    break;
                 }
                 case USER_CREATION_FAILED: {
-                    String value = null;
-                    expectField(_p, "user_creation_failed");
-                    value = getStringValue(_p);
-                    _p.nextToken();
-                    return MemberAddResult.userCreationFailed(value);
+                    g.writeStartObject();
+                    writeTag("user_creation_failed", g);
+                    g.writeFieldName("user_creation_failed");
+                    StoneSerializers.string().serialize(value.userCreationFailedValue, g);
+                    g.writeEndObject();
+                    break;
+                }
+                default: {
+                    throw new IllegalArgumentException("Unrecognized tag: " + value.tag());
                 }
             }
-            // should be impossible to get here
-            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
         }
 
-        private static Map<String, MemberAddResult.Tag> getTagMapping() {
-            Map<String, MemberAddResult.Tag> values = new HashMap<String, MemberAddResult.Tag>();
-            values.put("success", MemberAddResult.Tag.SUCCESS);
-            values.put("team_license_limit", MemberAddResult.Tag.TEAM_LICENSE_LIMIT);
-            values.put("free_team_member_limit_reached", MemberAddResult.Tag.FREE_TEAM_MEMBER_LIMIT_REACHED);
-            values.put("user_already_on_team", MemberAddResult.Tag.USER_ALREADY_ON_TEAM);
-            values.put("user_on_another_team", MemberAddResult.Tag.USER_ON_ANOTHER_TEAM);
-            values.put("user_already_paired", MemberAddResult.Tag.USER_ALREADY_PAIRED);
-            values.put("user_migration_failed", MemberAddResult.Tag.USER_MIGRATION_FAILED);
-            values.put("duplicate_external_member_id", MemberAddResult.Tag.DUPLICATE_EXTERNAL_MEMBER_ID);
-            values.put("user_creation_failed", MemberAddResult.Tag.USER_CREATION_FAILED);
-            return Collections.unmodifiableMap(values);
+        @Override
+        public MemberAddResult deserialize(JsonParser p) throws IOException, JsonParseException {
+            MemberAddResult value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
+            }
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("success".equals(tag)) {
+                TeamMemberInfo fieldValue = null;
+                fieldValue = TeamMemberInfo.Serializer.INSTANCE.deserialize(p, true);
+                value = MemberAddResult.success(fieldValue);
+            }
+            else if ("team_license_limit".equals(tag)) {
+                String fieldValue = null;
+                expectField("team_license_limit", p);
+                fieldValue = StoneSerializers.string().deserialize(p);
+                value = MemberAddResult.teamLicenseLimit(fieldValue);
+            }
+            else if ("free_team_member_limit_reached".equals(tag)) {
+                String fieldValue = null;
+                expectField("free_team_member_limit_reached", p);
+                fieldValue = StoneSerializers.string().deserialize(p);
+                value = MemberAddResult.freeTeamMemberLimitReached(fieldValue);
+            }
+            else if ("user_already_on_team".equals(tag)) {
+                String fieldValue = null;
+                expectField("user_already_on_team", p);
+                fieldValue = StoneSerializers.string().deserialize(p);
+                value = MemberAddResult.userAlreadyOnTeam(fieldValue);
+            }
+            else if ("user_on_another_team".equals(tag)) {
+                String fieldValue = null;
+                expectField("user_on_another_team", p);
+                fieldValue = StoneSerializers.string().deserialize(p);
+                value = MemberAddResult.userOnAnotherTeam(fieldValue);
+            }
+            else if ("user_already_paired".equals(tag)) {
+                String fieldValue = null;
+                expectField("user_already_paired", p);
+                fieldValue = StoneSerializers.string().deserialize(p);
+                value = MemberAddResult.userAlreadyPaired(fieldValue);
+            }
+            else if ("user_migration_failed".equals(tag)) {
+                String fieldValue = null;
+                expectField("user_migration_failed", p);
+                fieldValue = StoneSerializers.string().deserialize(p);
+                value = MemberAddResult.userMigrationFailed(fieldValue);
+            }
+            else if ("duplicate_external_member_id".equals(tag)) {
+                String fieldValue = null;
+                expectField("duplicate_external_member_id", p);
+                fieldValue = StoneSerializers.string().deserialize(p);
+                value = MemberAddResult.duplicateExternalMemberId(fieldValue);
+            }
+            else if ("user_creation_failed".equals(tag)) {
+                String fieldValue = null;
+                expectField("user_creation_failed", p);
+                fieldValue = StoneSerializers.string().deserialize(p);
+                value = MemberAddResult.userCreationFailed(fieldValue);
+            }
+            else {
+                throw new JsonParseException(p, "Unknown tag: " + tag);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

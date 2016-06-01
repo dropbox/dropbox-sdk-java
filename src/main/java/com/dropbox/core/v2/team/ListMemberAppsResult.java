@@ -1,39 +1,22 @@
 /* DO NOT EDIT */
-/* This file was generated from team_linked_apps.babel */
+/* This file was generated from team_linked_apps.stone */
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.List;
 
-@JsonSerialize(using=ListMemberAppsResult.Serializer.class)
-@JsonDeserialize(using=ListMemberAppsResult.Deserializer.class)
 public class ListMemberAppsResult {
     // struct ListMemberAppsResult
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final List<ApiApp> linkedApiApps;
 
@@ -92,7 +75,7 @@ public class ListMemberAppsResult {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -104,86 +87,59 @@ public class ListMemberAppsResult {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<ListMemberAppsResult> {
+        public static final Serializer INSTANCE = new Serializer();
 
-    static final class Serializer extends StructJsonSerializer<ListMemberAppsResult> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(ListMemberAppsResult.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(ListMemberAppsResult.class, unwrapping);
+        @Override
+        public void serialize(ListMemberAppsResult value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
+            }
+            g.writeFieldName("linked_api_apps");
+            StoneSerializers.list(ApiApp.Serializer.INSTANCE).serialize(value.linkedApiApps, g);
+            if (!collapse) {
+                g.writeEndObject();
+            }
         }
 
         @Override
-        protected JsonSerializer<ListMemberAppsResult> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(ListMemberAppsResult value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("linked_api_apps", value.linkedApiApps);
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<ListMemberAppsResult> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(ListMemberAppsResult.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(ListMemberAppsResult.class, unwrapping);
-        }
-
-        @Override
-        protected JsonDeserializer<ListMemberAppsResult> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public ListMemberAppsResult deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            List<ApiApp> linkedApiApps = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("linked_api_apps".equals(_field)) {
-                    expectArrayStart(_p);
-                    linkedApiApps = new java.util.ArrayList<ApiApp>();
-                    while (!isArrayEnd(_p)) {
-                        ApiApp _x = null;
-                        _x = _p.readValueAs(ApiApp.class);
-                        _p.nextToken();
-                        linkedApiApps.add(_x);
+        public ListMemberAppsResult deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            ListMemberAppsResult value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                List<ApiApp> f_linkedApiApps = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("linked_api_apps".equals(field)) {
+                        f_linkedApiApps = StoneSerializers.list(ApiApp.Serializer.INSTANCE).deserialize(p);
                     }
-                    expectArrayEnd(_p);
-                    _p.nextToken();
+                    else {
+                        skipValue(p);
+                    }
                 }
-                else {
-                    skipValue(_p);
+                if (f_linkedApiApps == null) {
+                    throw new JsonParseException(p, "Required field \"linked_api_apps\" missing.");
                 }
+                value = new ListMemberAppsResult(f_linkedApiApps);
             }
-
-            if (linkedApiApps == null) {
-                throw new JsonParseException(_p, "Required field \"linked_api_apps\" is missing.");
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
             }
-
-            return new ListMemberAppsResult(linkedApiApps);
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

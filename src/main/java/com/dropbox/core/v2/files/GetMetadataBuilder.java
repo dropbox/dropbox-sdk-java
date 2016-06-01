@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.babel */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -13,26 +13,26 @@ import com.dropbox.core.DbxException;
  * request. </p>
  */
 public class GetMetadataBuilder {
-    private final DbxUserFilesRequests files;
+    private final DbxUserFilesRequests files_;
     private final GetMetadataArg.Builder getMetadataArgBuilder;
 
     /**
      * Creates a new instance of this builder.
      *
-     * @param files  Dropbox namespace-specific client used to issue files
+     * @param files_  Dropbox namespace-specific client used to issue files
      *     requests.
      * @param getMetadataArgBuilder  Request argument builder.
      *
      * @return instsance of this builder
      */
-    GetMetadataBuilder(DbxUserFilesRequests files, GetMetadataArg.Builder getMetadataArgBuilder) {
-        if (files == null) {
-            throw new NullPointerException("files");
+    GetMetadataBuilder(DbxUserFilesRequests files_, GetMetadataArg.Builder getMetadataArgBuilder) {
+        if (files_ == null) {
+            throw new NullPointerException("files_");
         }
+        this.files_ = files_;
         if (getMetadataArgBuilder == null) {
             throw new NullPointerException("getMetadataArgBuilder");
         }
-        this.files = files;
         this.getMetadataArgBuilder = getMetadataArgBuilder;
     }
 
@@ -88,7 +88,7 @@ public class GetMetadataBuilder {
      * Issues the request.
      */
     public Metadata start() throws GetMetadataErrorException, DbxException {
-        GetMetadataArg arg = this.getMetadataArgBuilder.build();
-        return files.getMetadata(arg);
+        GetMetadataArg arg_ = this.getMetadataArgBuilder.build();
+        return files_.getMetadata(arg_);
     }
 }

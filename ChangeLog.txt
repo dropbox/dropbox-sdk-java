@@ -1,3 +1,29 @@
+2.0.4 (2016-05-31)
+---------------------------------------------
+- Update to latest API specs:
+  - Files (DbxUserFilesRequests)
+    - Add saveUrl(..) saving online content to your Dropbox.
+  - Shared folders (DbxUserSharingRequests)
+    - Add AccessLevel.VIEWER_NO_COMMENT.
+    - Add GroupInfo.getIsOwner().
+    - Change return type of SharePathError.Tag.ALREADY_SHARED from Void to SharedFolderMetadata.
+    - Add leaveACopy argument to relinquishFolderMembership(..).
+    - Change relinquishFolderMembership(..) to return async job ID when leaving a copy.
+    - Add JobError.Tag.RELINQUISH_FOLDER_MEMBERSHIP_ERROR.
+  - Business endpoints (DbxTeamTeamRequests)
+    - Add MemberProfiler.getMembershipType().
+    - Add keepAccount argument to membersRemove(..).
+    - Add CANNOT_KEEP_ACCOUNT_AND_TRANSFER and CANNOT_KEEP_ACCOUNT_AND_DELETE_DATA to MembersRemoveError.
+- Migrate build from maven to gradle.
+- Improve code shrinking when using ProGuard.
+  - Response/request serialization updated to be better optimized by ProGuard.
+- Properly support multidex builds.
+  - Response/request objects should no longer always be kept in primary dex.
+- Add partial download support through range requests.
+- Fix deserialization bug when handling new server responses that were previously void.
+- Fix bug where user locale is ignored for APIv2 requests.
+- Fix bug where filenames containing line feeds were rejected as bad requests.
+
 ---------------------------------------------
 2.0.3 (2016-05-07)
 - Fix Bad JSON error on ProGuard optimized APKs when deserializing error responses.

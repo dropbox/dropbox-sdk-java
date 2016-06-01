@@ -1,31 +1,19 @@
 /* DO NOT EDIT */
-/* This file was generated from team_groups.babel */
+/* This file was generated from team_groups.stone */
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This class is a tagged union.  Tagged unions instances are always associated
@@ -33,14 +21,8 @@ import java.util.Map;
  * return {@code true}. You can use {@link #tag()} to determine the tag
  * associated with this instance.
  */
-@JsonSerialize(using=GroupMembersAddError.Serializer.class)
-@JsonDeserialize(using=GroupMembersAddError.Deserializer.class)
 public final class GroupMembersAddError {
     // union GroupMembersAddError
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link GroupMembersAddError}.
@@ -74,7 +56,8 @@ public final class GroupMembersAddError {
          */
         USERS_NOT_FOUND, // List<String>
         /**
-         * A suspended user cannot be added to a group as owner.
+         * A suspended user cannot be added to a group as {@link
+         * GroupAccessType#OWNER}.
          */
         USER_MUST_BE_ACTIVE_TO_BE_OWNER,
         /**
@@ -99,7 +82,8 @@ public final class GroupMembersAddError {
      */
     public static final GroupMembersAddError GROUP_NOT_IN_TEAM = new GroupMembersAddError(Tag.GROUP_NOT_IN_TEAM, null, null, null);
     /**
-     * A suspended user cannot be added to a group as owner.
+     * A suspended user cannot be added to a group as {@link
+     * GroupAccessType#OWNER}.
      */
     public static final GroupMembersAddError USER_MUST_BE_ACTIVE_TO_BE_OWNER = new GroupMembersAddError(Tag.USER_MUST_BE_ACTIVE_TO_BE_OWNER, null, null, null);
 
@@ -418,7 +402,7 @@ public final class GroupMembersAddError {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -430,149 +414,126 @@ public final class GroupMembersAddError {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends UnionJsonSerializer<GroupMembersAddError> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(GroupMembersAddError.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<GroupMembersAddError> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(GroupMembersAddError value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            switch (value.tag) {
-                case GROUP_NOT_FOUND:
+        public void serialize(GroupMembersAddError value, JsonGenerator g) throws IOException, JsonGenerationException {
+            switch (value.tag()) {
+                case GROUP_NOT_FOUND: {
                     g.writeString("group_not_found");
                     break;
-                case OTHER:
+                }
+                case OTHER: {
                     g.writeString("other");
                     break;
-                case DUPLICATE_USER:
+                }
+                case DUPLICATE_USER: {
                     g.writeString("duplicate_user");
                     break;
-                case GROUP_NOT_IN_TEAM:
+                }
+                case GROUP_NOT_IN_TEAM: {
                     g.writeString("group_not_in_team");
                     break;
-                case MEMBERS_NOT_IN_TEAM:
+                }
+                case MEMBERS_NOT_IN_TEAM: {
                     g.writeStartObject();
-                    g.writeStringField(".tag", "members_not_in_team");
-                    g.writeObjectField("members_not_in_team", value.membersNotInTeamValue);
+                    writeTag("members_not_in_team", g);
+                    g.writeFieldName("members_not_in_team");
+                    StoneSerializers.list(StoneSerializers.string()).serialize(value.membersNotInTeamValue, g);
                     g.writeEndObject();
                     break;
-                case USERS_NOT_FOUND:
+                }
+                case USERS_NOT_FOUND: {
                     g.writeStartObject();
-                    g.writeStringField(".tag", "users_not_found");
-                    g.writeObjectField("users_not_found", value.usersNotFoundValue);
+                    writeTag("users_not_found", g);
+                    g.writeFieldName("users_not_found");
+                    StoneSerializers.list(StoneSerializers.string()).serialize(value.usersNotFoundValue, g);
                     g.writeEndObject();
                     break;
-                case USER_MUST_BE_ACTIVE_TO_BE_OWNER:
+                }
+                case USER_MUST_BE_ACTIVE_TO_BE_OWNER: {
                     g.writeString("user_must_be_active_to_be_owner");
                     break;
-                case USER_CANNOT_BE_MANAGER_OF_COMPANY_MANAGED_GROUP:
+                }
+                case USER_CANNOT_BE_MANAGER_OF_COMPANY_MANAGED_GROUP: {
                     g.writeStartObject();
-                    g.writeStringField(".tag", "user_cannot_be_manager_of_company_managed_group");
-                    g.writeObjectField("user_cannot_be_manager_of_company_managed_group", value.userCannotBeManagerOfCompanyManagedGroupValue);
+                    writeTag("user_cannot_be_manager_of_company_managed_group", g);
+                    g.writeFieldName("user_cannot_be_manager_of_company_managed_group");
+                    StoneSerializers.list(StoneSerializers.string()).serialize(value.userCannotBeManagerOfCompanyManagedGroupValue, g);
                     g.writeEndObject();
                     break;
+                }
+                default: {
+                    throw new IllegalArgumentException("Unrecognized tag: " + value.tag());
+                }
             }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<GroupMembersAddError, Tag> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(GroupMembersAddError.class, getTagMapping(), null);
         }
 
         @Override
-        public GroupMembersAddError deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            switch (_tag) {
-                case GROUP_NOT_FOUND: {
-                    return GroupMembersAddError.GROUP_NOT_FOUND;
-                }
-                case OTHER: {
-                    return GroupMembersAddError.OTHER;
-                }
-                case DUPLICATE_USER: {
-                    return GroupMembersAddError.DUPLICATE_USER;
-                }
-                case GROUP_NOT_IN_TEAM: {
-                    return GroupMembersAddError.GROUP_NOT_IN_TEAM;
-                }
-                case MEMBERS_NOT_IN_TEAM: {
-                    List<String> value = null;
-                    expectField(_p, "members_not_in_team");
-                    expectArrayStart(_p);
-                    value = new java.util.ArrayList<String>();
-                    while (!isArrayEnd(_p)) {
-                        String _x = null;
-                        _x = getStringValue(_p);
-                        _p.nextToken();
-                        value.add(_x);
-                    }
-                    expectArrayEnd(_p);
-                    _p.nextToken();
-                    return GroupMembersAddError.membersNotInTeam(value);
-                }
-                case USERS_NOT_FOUND: {
-                    List<String> value = null;
-                    expectField(_p, "users_not_found");
-                    expectArrayStart(_p);
-                    value = new java.util.ArrayList<String>();
-                    while (!isArrayEnd(_p)) {
-                        String _x = null;
-                        _x = getStringValue(_p);
-                        _p.nextToken();
-                        value.add(_x);
-                    }
-                    expectArrayEnd(_p);
-                    _p.nextToken();
-                    return GroupMembersAddError.usersNotFound(value);
-                }
-                case USER_MUST_BE_ACTIVE_TO_BE_OWNER: {
-                    return GroupMembersAddError.USER_MUST_BE_ACTIVE_TO_BE_OWNER;
-                }
-                case USER_CANNOT_BE_MANAGER_OF_COMPANY_MANAGED_GROUP: {
-                    List<String> value = null;
-                    expectField(_p, "user_cannot_be_manager_of_company_managed_group");
-                    expectArrayStart(_p);
-                    value = new java.util.ArrayList<String>();
-                    while (!isArrayEnd(_p)) {
-                        String _x = null;
-                        _x = getStringValue(_p);
-                        _p.nextToken();
-                        value.add(_x);
-                    }
-                    expectArrayEnd(_p);
-                    _p.nextToken();
-                    return GroupMembersAddError.userCannotBeManagerOfCompanyManagedGroup(value);
-                }
+        public GroupMembersAddError deserialize(JsonParser p) throws IOException, JsonParseException {
+            GroupMembersAddError value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
             }
-            // should be impossible to get here
-            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
-        }
-
-        private static Map<String, GroupMembersAddError.Tag> getTagMapping() {
-            Map<String, GroupMembersAddError.Tag> values = new HashMap<String, GroupMembersAddError.Tag>();
-            values.put("duplicate_user", GroupMembersAddError.Tag.DUPLICATE_USER);
-            values.put("group_not_in_team", GroupMembersAddError.Tag.GROUP_NOT_IN_TEAM);
-            values.put("members_not_in_team", GroupMembersAddError.Tag.MEMBERS_NOT_IN_TEAM);
-            values.put("users_not_found", GroupMembersAddError.Tag.USERS_NOT_FOUND);
-            values.put("user_must_be_active_to_be_owner", GroupMembersAddError.Tag.USER_MUST_BE_ACTIVE_TO_BE_OWNER);
-            values.put("user_cannot_be_manager_of_company_managed_group", GroupMembersAddError.Tag.USER_CANNOT_BE_MANAGER_OF_COMPANY_MANAGED_GROUP);
-            return Collections.unmodifiableMap(values);
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("group_not_found".equals(tag)) {
+                value = GroupMembersAddError.GROUP_NOT_FOUND;
+            }
+            else if ("other".equals(tag)) {
+                value = GroupMembersAddError.OTHER;
+            }
+            else if ("duplicate_user".equals(tag)) {
+                value = GroupMembersAddError.DUPLICATE_USER;
+            }
+            else if ("group_not_in_team".equals(tag)) {
+                value = GroupMembersAddError.GROUP_NOT_IN_TEAM;
+            }
+            else if ("members_not_in_team".equals(tag)) {
+                List<String> fieldValue = null;
+                expectField("members_not_in_team", p);
+                fieldValue = StoneSerializers.list(StoneSerializers.string()).deserialize(p);
+                value = GroupMembersAddError.membersNotInTeam(fieldValue);
+            }
+            else if ("users_not_found".equals(tag)) {
+                List<String> fieldValue = null;
+                expectField("users_not_found", p);
+                fieldValue = StoneSerializers.list(StoneSerializers.string()).deserialize(p);
+                value = GroupMembersAddError.usersNotFound(fieldValue);
+            }
+            else if ("user_must_be_active_to_be_owner".equals(tag)) {
+                value = GroupMembersAddError.USER_MUST_BE_ACTIVE_TO_BE_OWNER;
+            }
+            else if ("user_cannot_be_manager_of_company_managed_group".equals(tag)) {
+                List<String> fieldValue = null;
+                expectField("user_cannot_be_manager_of_company_managed_group", p);
+                fieldValue = StoneSerializers.list(StoneSerializers.string()).deserialize(p);
+                value = GroupMembersAddError.userCannotBeManagerOfCompanyManagedGroup(fieldValue);
+            }
+            else {
+                throw new JsonParseException(p, "Unknown tag: " + tag);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

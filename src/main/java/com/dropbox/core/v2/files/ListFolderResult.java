@@ -1,39 +1,22 @@
 /* DO NOT EDIT */
-/* This file was generated from files.babel */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.List;
 
-@JsonSerialize(using=ListFolderResult.Serializer.class)
-@JsonDeserialize(using=ListFolderResult.Deserializer.class)
 public class ListFolderResult {
     // struct ListFolderResult
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final List<Metadata> entries;
     protected final String cursor;
@@ -134,7 +117,7 @@ public class ListFolderResult {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -146,104 +129,77 @@ public class ListFolderResult {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<ListFolderResult> {
+        public static final Serializer INSTANCE = new Serializer();
 
-    static final class Serializer extends StructJsonSerializer<ListFolderResult> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(ListFolderResult.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(ListFolderResult.class, unwrapping);
+        @Override
+        public void serialize(ListFolderResult value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
+            }
+            g.writeFieldName("entries");
+            StoneSerializers.list(Metadata.Serializer.INSTANCE).serialize(value.entries, g);
+            g.writeFieldName("cursor");
+            StoneSerializers.string().serialize(value.cursor, g);
+            g.writeFieldName("has_more");
+            StoneSerializers.boolean_().serialize(value.hasMore, g);
+            if (!collapse) {
+                g.writeEndObject();
+            }
         }
 
         @Override
-        protected JsonSerializer<ListFolderResult> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(ListFolderResult value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("entries", value.entries);
-            g.writeObjectField("cursor", value.cursor);
-            g.writeObjectField("has_more", value.hasMore);
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<ListFolderResult> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(ListFolderResult.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(ListFolderResult.class, unwrapping);
-        }
-
-        @Override
-        protected JsonDeserializer<ListFolderResult> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public ListFolderResult deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            List<Metadata> entries = null;
-            String cursor = null;
-            Boolean hasMore = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("entries".equals(_field)) {
-                    expectArrayStart(_p);
-                    entries = new java.util.ArrayList<Metadata>();
-                    while (!isArrayEnd(_p)) {
-                        Metadata _x = null;
-                        _x = _p.readValueAs(Metadata.class);
-                        _p.nextToken();
-                        entries.add(_x);
+        public ListFolderResult deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            ListFolderResult value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                List<Metadata> f_entries = null;
+                String f_cursor = null;
+                Boolean f_hasMore = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("entries".equals(field)) {
+                        f_entries = StoneSerializers.list(Metadata.Serializer.INSTANCE).deserialize(p);
                     }
-                    expectArrayEnd(_p);
-                    _p.nextToken();
+                    else if ("cursor".equals(field)) {
+                        f_cursor = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("has_more".equals(field)) {
+                        f_hasMore = StoneSerializers.boolean_().deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
                 }
-                else if ("cursor".equals(_field)) {
-                    cursor = getStringValue(_p);
-                    _p.nextToken();
+                if (f_entries == null) {
+                    throw new JsonParseException(p, "Required field \"entries\" missing.");
                 }
-                else if ("has_more".equals(_field)) {
-                    hasMore = _p.getValueAsBoolean();
-                    _p.nextToken();
+                if (f_cursor == null) {
+                    throw new JsonParseException(p, "Required field \"cursor\" missing.");
                 }
-                else {
-                    skipValue(_p);
+                if (f_hasMore == null) {
+                    throw new JsonParseException(p, "Required field \"has_more\" missing.");
                 }
+                value = new ListFolderResult(f_entries, f_cursor, f_hasMore);
             }
-
-            if (entries == null) {
-                throw new JsonParseException(_p, "Required field \"entries\" is missing.");
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
             }
-            if (cursor == null) {
-                throw new JsonParseException(_p, "Required field \"cursor\" is missing.");
+            if (!collapsed) {
+                expectEndObject(p);
             }
-            if (hasMore == null) {
-                throw new JsonParseException(_p, "Required field \"has_more\" is missing.");
-            }
-
-            return new ListFolderResult(entries, cursor, hasMore);
+            return value;
         }
     }
 }

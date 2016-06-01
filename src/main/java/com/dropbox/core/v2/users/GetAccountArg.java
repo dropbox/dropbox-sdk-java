@@ -1,38 +1,21 @@
 /* DO NOT EDIT */
-/* This file was generated from users.babel */
+/* This file was generated from users.stone */
 
 package com.dropbox.core.v2.users;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
-@JsonSerialize(using=GetAccountArg.Serializer.class)
-@JsonDeserialize(using=GetAccountArg.Deserializer.class)
 class GetAccountArg {
     // struct GetAccountArg
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final String accountId;
 
@@ -91,7 +74,7 @@ class GetAccountArg {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -103,78 +86,59 @@ class GetAccountArg {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends StructJsonSerializer<GetAccountArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(GetAccountArg.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(GetAccountArg.class, unwrapping);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<GetAccountArg> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        protected JsonSerializer<GetAccountArg> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(GetAccountArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("account_id", value.accountId);
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<GetAccountArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(GetAccountArg.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(GetAccountArg.class, unwrapping);
-        }
-
-        @Override
-        protected JsonDeserializer<GetAccountArg> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public GetAccountArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            String accountId = null;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("account_id".equals(_field)) {
-                    accountId = getStringValue(_p);
-                    _p.nextToken();
-                }
-                else {
-                    skipValue(_p);
-                }
+        public void serialize(GetAccountArg value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
             }
-
-            if (accountId == null) {
-                throw new JsonParseException(_p, "Required field \"account_id\" is missing.");
+            g.writeFieldName("account_id");
+            StoneSerializers.string().serialize(value.accountId, g);
+            if (!collapse) {
+                g.writeEndObject();
             }
+        }
 
-            return new GetAccountArg(accountId);
+        @Override
+        public GetAccountArg deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            GetAccountArg value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                String f_accountId = null;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("account_id".equals(field)) {
+                        f_accountId = StoneSerializers.string().deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
+                }
+                if (f_accountId == null) {
+                    throw new JsonParseException(p, "Required field \"account_id\" missing.");
+                }
+                value = new GetAccountArg(f_accountId);
+            }
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }

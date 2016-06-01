@@ -1,38 +1,21 @@
 /* DO NOT EDIT */
-/* This file was generated from team_groups.babel */
+/* This file was generated from team_groups.stone */
 
 package com.dropbox.core.v2.team;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.StructJsonDeserializer;
-import com.dropbox.core.json.StructJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.StructSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 
-@JsonSerialize(using=GroupMembersSetAccessTypeArg.Serializer.class)
-@JsonDeserialize(using=GroupMembersSetAccessTypeArg.Deserializer.class)
 class GroupMembersSetAccessTypeArg extends GroupMemberSelector {
     // struct GroupMembersSetAccessTypeArg
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     protected final GroupAccessType accessType;
     protected final boolean returnMembers;
@@ -128,7 +111,7 @@ class GroupMembersSetAccessTypeArg extends GroupMemberSelector {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -140,102 +123,83 @@ class GroupMembersSetAccessTypeArg extends GroupMemberSelector {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends StructSerializer<GroupMembersSetAccessTypeArg> {
+        public static final Serializer INSTANCE = new Serializer();
 
-    static final class Serializer extends StructJsonSerializer<GroupMembersSetAccessTypeArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(GroupMembersSetAccessTypeArg.class);
-        }
-
-        public Serializer(boolean unwrapping) {
-            super(GroupMembersSetAccessTypeArg.class, unwrapping);
+        @Override
+        public void serialize(GroupMembersSetAccessTypeArg value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (!collapse) {
+                g.writeStartObject();
+            }
+            g.writeFieldName("group");
+            GroupSelector.Serializer.INSTANCE.serialize(value.group, g);
+            g.writeFieldName("user");
+            UserSelectorArg.Serializer.INSTANCE.serialize(value.user, g);
+            g.writeFieldName("access_type");
+            GroupAccessType.Serializer.INSTANCE.serialize(value.accessType, g);
+            g.writeFieldName("return_members");
+            StoneSerializers.boolean_().serialize(value.returnMembers, g);
+            if (!collapse) {
+                g.writeEndObject();
+            }
         }
 
         @Override
-        protected JsonSerializer<GroupMembersSetAccessTypeArg> asUnwrapping() {
-            return new Serializer(true);
-        }
-
-        @Override
-        protected void serializeFields(GroupMembersSetAccessTypeArg value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            g.writeObjectField("group", value.group);
-            g.writeObjectField("user", value.user);
-            g.writeObjectField("access_type", value.accessType);
-            g.writeObjectField("return_members", value.returnMembers);
-        }
-    }
-
-    static final class Deserializer extends StructJsonDeserializer<GroupMembersSetAccessTypeArg> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(GroupMembersSetAccessTypeArg.class);
-        }
-
-        public Deserializer(boolean unwrapping) {
-            super(GroupMembersSetAccessTypeArg.class, unwrapping);
-        }
-
-        @Override
-        protected JsonDeserializer<GroupMembersSetAccessTypeArg> asUnwrapping() {
-            return new Deserializer(true);
-        }
-
-        @Override
-        public GroupMembersSetAccessTypeArg deserializeFields(JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-
-            GroupSelector group = null;
-            UserSelectorArg user = null;
-            GroupAccessType accessType = null;
-            boolean returnMembers = true;
-
-            while (_p.getCurrentToken() == JsonToken.FIELD_NAME) {
-                String _field = _p.getCurrentName();
-                _p.nextToken();
-                if ("group".equals(_field)) {
-                    group = _p.readValueAs(GroupSelector.class);
-                    _p.nextToken();
-                }
-                else if ("user".equals(_field)) {
-                    user = _p.readValueAs(UserSelectorArg.class);
-                    _p.nextToken();
-                }
-                else if ("access_type".equals(_field)) {
-                    accessType = _p.readValueAs(GroupAccessType.class);
-                    _p.nextToken();
-                }
-                else if ("return_members".equals(_field)) {
-                    returnMembers = _p.getValueAsBoolean();
-                    _p.nextToken();
-                }
-                else {
-                    skipValue(_p);
-                }
+        public GroupMembersSetAccessTypeArg deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            GroupMembersSetAccessTypeArg value;
+            String tag = null;
+            if (!collapsed) {
+                expectStartObject(p);
+                tag = readTag(p);
             }
-
-            if (group == null) {
-                throw new JsonParseException(_p, "Required field \"group\" is missing.");
+            if (tag == null) {
+                GroupSelector f_group = null;
+                UserSelectorArg f_user = null;
+                GroupAccessType f_accessType = null;
+                Boolean f_returnMembers = true;
+                while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    String field = p.getCurrentName();
+                    p.nextToken();
+                    if ("group".equals(field)) {
+                        f_group = GroupSelector.Serializer.INSTANCE.deserialize(p);
+                    }
+                    else if ("user".equals(field)) {
+                        f_user = UserSelectorArg.Serializer.INSTANCE.deserialize(p);
+                    }
+                    else if ("access_type".equals(field)) {
+                        f_accessType = GroupAccessType.Serializer.INSTANCE.deserialize(p);
+                    }
+                    else if ("return_members".equals(field)) {
+                        f_returnMembers = StoneSerializers.boolean_().deserialize(p);
+                    }
+                    else {
+                        skipValue(p);
+                    }
+                }
+                if (f_group == null) {
+                    throw new JsonParseException(p, "Required field \"group\" missing.");
+                }
+                if (f_user == null) {
+                    throw new JsonParseException(p, "Required field \"user\" missing.");
+                }
+                if (f_accessType == null) {
+                    throw new JsonParseException(p, "Required field \"access_type\" missing.");
+                }
+                value = new GroupMembersSetAccessTypeArg(f_group, f_user, f_accessType, f_returnMembers);
             }
-            if (user == null) {
-                throw new JsonParseException(_p, "Required field \"user\" is missing.");
+            else {
+                throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
             }
-            if (accessType == null) {
-                throw new JsonParseException(_p, "Required field \"access_type\" is missing.");
+            if (!collapsed) {
+                expectEndObject(p);
             }
-
-            return new GroupMembersSetAccessTypeArg(group, user, accessType, returnMembers);
+            return value;
         }
     }
 }

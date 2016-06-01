@@ -1,30 +1,18 @@
 /* DO NOT EDIT */
-/* This file was generated from files.babel */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
-import com.dropbox.core.json.JsonReadException;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.json.JsonUtil;
-import com.dropbox.core.json.UnionJsonDeserializer;
-import com.dropbox.core.json.UnionJsonSerializer;
+import com.dropbox.core.stone.StoneSerializers;
+import com.dropbox.core.stone.UnionSerializer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This class is a tagged union.  Tagged unions instances are always associated
@@ -32,14 +20,8 @@ import java.util.Map;
  * return {@code true}. You can use {@link #tag()} to determine the tag
  * associated with this instance.
  */
-@JsonSerialize(using=MediaInfo.Serializer.class)
-@JsonDeserialize(using=MediaInfo.Deserializer.class)
 public final class MediaInfo {
     // union MediaInfo
-
-    // ProGuard work-around since we declare serializers in annotation
-    static final Serializer SERIALIZER = new Serializer();
-    static final Deserializer DESERIALIZER = new Deserializer();
 
     /**
      * Discriminating tag type for {@link MediaInfo}.
@@ -183,7 +165,7 @@ public final class MediaInfo {
 
     @Override
     public String toString() {
-        return serialize(false);
+        return Serializer.INSTANCE.serialize(this, false);
     }
 
     /**
@@ -195,71 +177,70 @@ public final class MediaInfo {
      * @return Formatted, multiline String representation of this object
      */
     public String toStringMultiline() {
-        return serialize(true);
+        return Serializer.INSTANCE.serialize(this, true);
     }
 
-    private String serialize(boolean longForm) {
-        try {
-            return JsonUtil.getMapper(longForm).writeValueAsString(this);
-        }
-        catch (JsonProcessingException ex) {
-            throw new RuntimeException("Failed to serialize object", ex);
-        }
-    }
-
-    static final class Serializer extends UnionJsonSerializer<MediaInfo> {
-        private static final long serialVersionUID = 0L;
-
-        public Serializer() {
-            super(MediaInfo.class);
-        }
+    /**
+     * For internal use only.
+     */
+    static final class Serializer extends UnionSerializer<MediaInfo> {
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(MediaInfo value, JsonGenerator g, SerializerProvider provider) throws IOException, JsonProcessingException {
-            switch (value.tag) {
-                case PENDING:
+        public void serialize(MediaInfo value, JsonGenerator g) throws IOException, JsonGenerationException {
+            switch (value.tag()) {
+                case PENDING: {
                     g.writeString("pending");
                     break;
-                case METADATA:
+                }
+                case METADATA: {
                     g.writeStartObject();
-                    g.writeStringField(".tag", "metadata");
-                    g.writeObjectField("metadata", value.metadataValue);
+                    writeTag("metadata", g);
+                    g.writeFieldName("metadata");
+                    MediaMetadata.Serializer.INSTANCE.serialize(value.metadataValue, g);
                     g.writeEndObject();
                     break;
+                }
+                default: {
+                    throw new IllegalArgumentException("Unrecognized tag: " + value.tag());
+                }
             }
-        }
-    }
-
-    static final class Deserializer extends UnionJsonDeserializer<MediaInfo, Tag> {
-        private static final long serialVersionUID = 0L;
-
-        public Deserializer() {
-            super(MediaInfo.class, getTagMapping(), null);
         }
 
         @Override
-        public MediaInfo deserialize(Tag _tag, JsonParser _p, DeserializationContext _ctx) throws IOException, JsonParseException {
-            switch (_tag) {
-                case PENDING: {
-                    return MediaInfo.PENDING;
-                }
-                case METADATA: {
-                    MediaMetadata value = null;
-                    expectField(_p, "metadata");
-                    value = _p.readValueAs(MediaMetadata.class);
-                    _p.nextToken();
-                    return MediaInfo.metadata(value);
-                }
+        public MediaInfo deserialize(JsonParser p) throws IOException, JsonParseException {
+            MediaInfo value;
+            boolean collapsed;
+            String tag;
+            if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
+                collapsed = true;
+                tag = getStringValue(p);
+                p.nextToken();
             }
-            // should be impossible to get here
-            throw new IllegalStateException("Unparsed tag: \"" + _tag + "\"");
-        }
-
-        private static Map<String, MediaInfo.Tag> getTagMapping() {
-            Map<String, MediaInfo.Tag> values = new HashMap<String, MediaInfo.Tag>();
-            values.put("pending", MediaInfo.Tag.PENDING);
-            values.put("metadata", MediaInfo.Tag.METADATA);
-            return Collections.unmodifiableMap(values);
+            else {
+                collapsed = false;
+                expectStartObject(p);
+                tag = readTag(p);
+            }
+            if (tag == null) {
+                throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("pending".equals(tag)) {
+                value = MediaInfo.PENDING;
+            }
+            else if ("metadata".equals(tag)) {
+                MediaMetadata fieldValue = null;
+                expectField("metadata", p);
+                fieldValue = MediaMetadata.Serializer.INSTANCE.deserialize(p);
+                value = MediaInfo.metadata(fieldValue);
+            }
+            else {
+                throw new JsonParseException(p, "Unknown tag: " + tag);
+            }
+            if (!collapsed) {
+                expectEndObject(p);
+            }
+            return value;
         }
     }
 }
