@@ -5,8 +5,6 @@ import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.DbxHost;
 import com.dropbox.core.DbxRequestConfig;
 
-import java.util.Locale;
-
 /**
  * Singleton instance of {@link DbxClientV2} and friends
  */
@@ -16,11 +14,9 @@ public class DropboxClientFactory {
 
     public static void init(String accessToken) {
         if (sDbxClient == null) {
-            String userLocale = Locale.getDefault().toLanguageTag();
-            DbxRequestConfig requestConfig = new DbxRequestConfig(
-                    "examples-v2-demo",
-                    userLocale,
-                    OkHttpRequestor.INSTANCE);
+            DbxRequestConfig requestConfig = DbxRequestConfig.newBuilder("examples-v2-demo")
+                .withHttpRequestor(OkHttpRequestor.INSTANCE)
+                .build();
 
             sDbxClient = new DbxClientV2(requestConfig, accessToken);
         }

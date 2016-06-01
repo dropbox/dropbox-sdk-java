@@ -11,7 +11,6 @@ import com.dropbox.core.json.JsonReader;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -47,8 +46,7 @@ public class Main
                 new DbxOAuth1AccessToken(cfg.accessTokenKey, cfg.accessTokenSecret);
 
         // Get an OAuth 2 access token.
-        String userLocale = Locale.getDefault().toLanguageTag();
-        DbxRequestConfig requestConfig = new DbxRequestConfig("examples-authorize", userLocale);
+        DbxRequestConfig requestConfig = new DbxRequestConfig("examples-authorize");
         DbxOAuth1Upgrader upgrader = new DbxOAuth1Upgrader(requestConfig, appInfo);
 
         String oauth2AccessToken ;

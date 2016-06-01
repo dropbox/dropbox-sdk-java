@@ -19,7 +19,6 @@ import com.dropbox.core.v2.files.Metadata;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
-import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -110,9 +109,10 @@ public class Main {
      */
     private static DbxClientV2 createClient(DbxAuthInfo auth, StandardHttpRequestor.Config config) {
         String clientUserAgentId = "examples-longpoll";
-        String userLocale = Locale.getDefault().toLanguageTag();
         StandardHttpRequestor requestor = new StandardHttpRequestor(config);
-        DbxRequestConfig requestConfig = new DbxRequestConfig(clientUserAgentId, userLocale, requestor);
+        DbxRequestConfig requestConfig = DbxRequestConfig.newBuilder(clientUserAgentId)
+            .withHttpRequestor(requestor)
+            .build();
 
         return new DbxClientV2(requestConfig, auth.getAccessToken(), auth.getHost());
     }

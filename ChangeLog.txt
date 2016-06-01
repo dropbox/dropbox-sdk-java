@@ -1,3 +1,7 @@
+2.0.5
+---------------------------------------------
+- Allow old locale formats for APIv2 requests.
+
 2.0.4 (2016-05-31)
 ---------------------------------------------
 - Update to latest API specs:
