@@ -2121,36 +2121,47 @@ class JavadocGenerator(object):
         if namespace: assert data_type, "Cannot specify namespace name without data_type name"
 
         stone_namespace = self._lookup_stone_namespace(namespace, context)
+        data_type_ref = None
 
         if stone_namespace and data_type:
             stone_data_type = stone_namespace.data_type_by_name.get(data_type)
             if stone_data_type:
-                return DataTypeWrapper(self._ctx, stone_data_type)
+                data_type_ref = DataTypeWrapper(self._ctx, stone_data_type)
         elif context and not data_type:
             if isinstance(context, FieldWrapper):
                 # we might be within a field, which has a containing data type
-                return context.containing_data_type
+                data_type_ref = context.containing_data_type
             elif isinstance(context, DataTypeWrapper):
-                return context
+                data_type_ref = context
 
-        return None
+        # Do not return references to orphaned types we intend to remove
+        if data_type_ref and is_data_type_referenced(data_type_ref):
+            return data_type_ref
+        else:
+            return None
 
     def _lookup_field(self, namespace, data_type, field, context):
         assert isinstance(field, str) or field is None, repr(data_type)
         if data_type: assert field, "Cannot specify data_type name without field name"
 
         data_type = self._lookup_data_type(namespace, data_type, context)
+        field_ref = None
 
         if data_type and field:
             for data_type_field in data_type.all_fields:
                 if data_type_field.stone_name == field:
-                    return data_type_field
+                    field_ref = data_type_field
         elif context and not field:
             if isinstance(context, FieldWrapper):
-                return context
+                field_ref = context
 
         # Field is the lowest you can go. No way to use context to derive field
-        return None
+
+        # Do not return references to orphaned types we intend to remove
+        if field_ref and is_data_type_referenced(field_ref.containing_data_type):
+            return field_ref
+        else:
+            return None
 
     def _javadoc_route_ref(self, route, builder=False):
         assert isinstance(route, RouteWrapper), repr(route)
@@ -2952,8 +2963,8 @@ class JavaCodeGenerationInstance(object):
 
         # some data types get orphaned by route filtering
         # TODO(krieb): enable this when the bugs are worked out
-        #if not is_data_type_referenced(data_type):
-        #    return
+        if not is_data_type_referenced(data_type):
+            return
 
         with self.new_file(data_type):
             self.importer.add_imports_for_data_type(data_type)
