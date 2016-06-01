@@ -13,16 +13,16 @@ import sys
 # the patterns in this script, in addition to
 # the files excluded by the repo's main .gitignore
 IGNORE_PATTERNS = [
-    '/babel',
+    '/stone',
     '/spec',
     '/.arcconfig',
-    '/run-babel-codegen',
+    '/run-stone-codegen',
     '/export-generated',
     '/generator',
     '.gitmodules',
     '/diff-generated-sources',
     '/release.gradle', # public repo should not include signing and release information
-    '/babel.gradle',
+    '/stone.gradle',
     '/proguard', # ProGuard tests are mostly for release testing
 ]
 
@@ -100,9 +100,9 @@ def strip_private_sections(path):
     if level != 0:
         error('Unmatched \"BEGIN PRIVATE REPO ONLY\" tag in %s' % filename)
     if not modified:
-        print('%s not modified.' % filename, file=sys.stdout)
+        print('%s not modified.' % path, file=sys.stdout)
 
-    with open(filename, 'w+') as f:
+    with open(path, 'w+') as f:
         f.writelines(lines)
 
 def list_build_files(root):
@@ -159,12 +159,12 @@ def main():
     # Generate source files and copy across to the public repo.
     log('Regenerating source files')
     subprocess.check_call(['rm', '-rf', 'build/generated-sources'])
-    subprocess.check_output(['./run-babel-codegen'])
+    subprocess.check_output(['./run-stone-codegen'])
 
     target_path = os.path.join(repo_path, 'src/main/java/com/')
     log('Copying generated sources to ' + target_path)
     subprocess.check_call(['rsync', '-r',
-                           'build/generated-sources/babel/com/',
+                           'build/generated-sources/stone/com/',
                            target_path])
 
     # Modify the gradle.build for the public repo
