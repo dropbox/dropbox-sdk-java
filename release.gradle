@@ -2,25 +2,10 @@ apply plugin: 'java'
 apply plugin: 'java-library-distribution'
 apply plugin: 'signing'
 apply plugin: 'maven'
-apply plugin: 'com.github.ben-manes.versions' // dependencyUpdates task
-
-task releaseTest() {
-    dependsOn ':proguard:testProguard'
-    dependsOn test
-    dependsOn integrationTest
-}
-
-signing {
-    required {
-        // don't sign for installing in local maven
-        gradle.taskGraph.hasTask("uploadArchives") && !project.version.contains("SNAPSHOT")
-    }
-    sign configurations.archives
-}
 
 def getPassword(prop, description) {
     if (project.hasProperty(prop)) {
-        return prop
+        return project.getProperty(prop)
     }
 
     def console = System.console()
@@ -37,10 +22,23 @@ def getPassword(prop, description) {
     )
 }
 
-gradle.taskGraph.whenReady { graph ->
-    if (graph.hasTask(signArchives) && signArchives.required) {
-        ['signing.keyId', 'signing.secretKeyRingFile'].each { prop ->
-            def dropboxProp = "com.dropbox.api.${prop}"
+task releaseTest() {
+    dependsOn ':proguard:proguardTest'
+    dependsOn test
+    dependsOn integrationTest
+}
+
+task signingCredentials() {
+    ext {
+        dbxPropPrefix = 'com.dropbox.api'
+        keyIdProp = 'signing.keyId'
+        keyRingProp = 'signing.secretKeyRingFile'
+        passwordProp = 'signing.password'
+    }
+
+    doLast {
+        [keyIdProp, keyRingProp].each { prop ->
+            def dropboxProp = "${dbxPropPrefix}.${prop}"
             if (!project.hasProperty(dropboxProp)) {
                 throw new GradleException(
                     "Missing required property for signing: ${dropboxProp}. " +
@@ -50,12 +48,22 @@ gradle.taskGraph.whenReady { graph ->
             project.ext.set(prop, project.getProperty(dropboxProp))
         }
 
-        project.ext."signing.password" = getPassword(
-            'com.dropbox.api.signing.password',
+        project.ext."${passwordProp}" = getPassword(
+            "${dbxPropPrefix}.${passwordProp}",
             'PGP Private Key Password'
         )
     }
 }
+
+signing {
+    required {
+        // don't sign for installing in local maven
+        gradle.taskGraph.hasTask("uploadArchives") && !project.version.contains("SNAPSHOT")
+    }
+    sign configurations.archives
+}
+
+tasks.signArchives.dependsOn signingCredentials
 
 // Remember to upload binary with releases on GitHub. Some 3rd party developers still rely on
 // manually downloading and managing their dependencies.
@@ -106,19 +114,5 @@ uploadArchives {
             }
         }
     }
-}
-
-// reject dependencyUpdates candidates with alpha or beta in their names:
-dependencyUpdates.resolutionStrategy = {
-  componentSelection { rules ->
-    rules.all { ComponentSelection selection ->
-      boolean rejected = ['alpha', 'beta', 'rc'].any { qualifier ->
-        selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
-      }
-      if (rejected) {
-        selection.reject('Release candidate')
-      }
-    }
-  }
 }
 

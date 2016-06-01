@@ -1,6 +1,7 @@
 apply plugin: 'java'
 apply plugin: 'osgi'
 apply plugin: 'maven'
+apply plugin: 'com.github.ben-manes.versions' // dependencyUpdates task
 
 description = 'Official Java client library for the Dropbox API.'
 group = 'com.dropbox.core'
@@ -13,13 +14,15 @@ targetCompatibility = JavaVersion.VERSION_1_6
 conf2ScopeMappings.addMapping(1, configurations.compileOnly, 'provided')
 
 ext {
+    mavenName = 'Official Dropbox Java SDK'
     generatedSources = file("$buildDir/generated-sources")
     generatedResources = file("$buildDir/generated-resources")
     authInfoPropertyName = 'com.dropbox.test.authInfoFile'
     basePom = pom {
-        name = 'Official Dropbox Java SDK'
+        name = mavenName
         artifactId = archivesBaseName
         project {
+            description = description
             packaging 'jar'
             url 'https://www.dropbox.com/developers/core'
 
@@ -54,6 +57,7 @@ buildscript {
         jcenter()
         mavenCentral()
     }
+
     dependencies {
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.12.0'
     }
@@ -72,7 +76,7 @@ dependencies {
     compileOnly 'com.squareup.okhttp:okhttp:2.7.5'
     compileOnly 'com.google.android:android:4.1.1.4'
 
-    testCompile 'org.testng:testng:6.9.10'
+    testCompile 'org.testng:testng:6.9.11'
     testCompile 'org.mockito:mockito-core:1.10.19'
     testCompile 'org.openjdk.jmh:jmh-core:1.12'
     testCompile 'org.openjdk.jmh:jmh-generator-annprocess:1.12'
@@ -174,7 +178,7 @@ task integrationTest(type: Test) {
 }
 
 javadoc {
-    title "${project.name} ${project.version} API"
+    title "${project.mavenName} ${project.version} API"
     failOnError true
 
     // JDK 8's javadoc has an on-by-default lint called "missing", which requires that everything
@@ -234,6 +238,20 @@ if (project.sourceCompatibility == JavaVersion.VERSION_1_6) {
             options.bootClasspath = "${jdkHome}/jre/lib/rt.jar"
             options.bootClasspath += "${sep}${jdkHome}/jre/lib/jsse.jar"
             options.bootClasspath += "${sep}${jdkHome}/jre/lib/jce.jar"
+        }
+    }
+}
+
+// reject dependencyUpdates candidates with alpha or beta in their names:
+dependencyUpdates.resolutionStrategy = {
+    componentSelection { rules ->
+        rules.all { ComponentSelection selection ->
+            boolean rejected = ['alpha', 'beta', 'rc'].any { qualifier ->
+                selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
+            }
+            if (rejected) {
+                selection.reject('Release candidate')
+            }
         }
     }
 }
