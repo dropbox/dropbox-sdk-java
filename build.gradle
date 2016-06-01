@@ -34,7 +34,7 @@ ext {
                     id 'dropbox-api-team'
                     name 'Dropbox API Team'
                     email 'api-support@dropbox.com'
-                    organization 'Dropbox'
+                    organization = 'Dropbox'
                 }
             }
 

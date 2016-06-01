@@ -13,7 +13,7 @@ task releaseTest() {
 signing {
     required {
         // don't sign for installing in local maven
-        !project.version.contains("SNAPSHOT") && gradle.taskGraph.hasTask("uploadArchives")
+        gradle.taskGraph.hasTask("uploadArchives") && !project.version.contains("SNAPSHOT")
     }
     sign configurations.archives
 }
