@@ -63,7 +63,7 @@ public final class LocalizedText {
     /**
      * For internal use only.
      */
-    static final StoneSerializer<LocalizedText> BABEL_SERIALIZER = new StoneSerializer<LocalizedText>() {
+    static final StoneSerializer<LocalizedText> STONE_SERIALIZER = new StoneSerializer<LocalizedText>() {
         @Override
         public void serialize(LocalizedText value, JsonGenerator g) throws IOException, JsonGenerationException {
             throw new UnsupportedOperationException("Error wrapper serialization not supported.");

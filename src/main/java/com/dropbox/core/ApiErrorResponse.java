@@ -57,7 +57,7 @@ final class ApiErrorResponse<T> {
                 if ("error".equals(field)) {
                     error = errSerializer.deserialize(p);
                 } else if ("user_message".equals(field)) {
-                    userMessage = LocalizedText.BABEL_SERIALIZER.deserialize(p);
+                    userMessage = LocalizedText.STONE_SERIALIZER.deserialize(p);
                 } else {
                     skipValue(p);
                 }
