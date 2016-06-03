@@ -75,11 +75,16 @@ dependencies {
     compileOnly 'javax.servlet:servlet-api:2.5'
     compileOnly 'com.squareup.okhttp3:okhttp:3.3.1'
     compileOnly 'com.google.android:android:4.1.1.4'
+    compileOnly 'com.google.appengine:appengine-api-1.0-sdk:1.9.38'
 
     testCompile 'org.testng:testng:6.9.10'
     testCompile 'org.mockito:mockito-core:1.10.19'
     testCompile 'org.openjdk.jmh:jmh-core:1.12'
     testCompile 'org.openjdk.jmh:jmh-generator-annprocess:1.12'
+    testCompile 'com.google.appengine:appengine-api-1.0-sdk:1.9.38'
+    testCompile 'com.google.appengine:appengine-api-labs:1.9.38'
+    testCompile 'com.google.appengine:appengine-api-stubs:1.9.38'
+    testCompile 'com.google.appengine:appengine-testing:1.9.38'
     testCompile 'com.squareup.okhttp3:okhttp:3.3.1'
 }
 
@@ -166,13 +171,13 @@ task integrationTest(type: Test) {
 
     ext {
         authInfoPropertyName = 'com.dropbox.test.authInfoFile'
-        okHttpPropertyName = 'com.dropbox.test.okHttp'
+        httpRequestorPropertyName = 'com.dropbox.test.httpRequestor'
     }
 
     doFirst {
         systemProperty authInfoPropertyName, getAuthInfoFile().absolutePath
-        if (project.hasProperty(okHttpPropertyName)) {
-            systemProperty okHttpPropertyName, project.property(okHttpPropertyName)
+        if (project.hasProperty(httpRequestorPropertyName)) {
+            systemProperty httpRequestorPropertyName, project.property(httpRequestorPropertyName)
         }
     }
 }

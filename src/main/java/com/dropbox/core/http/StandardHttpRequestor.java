@@ -3,9 +3,11 @@ package com.dropbox.core.http;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
 import java.net.Proxy;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -23,27 +25,27 @@ import com.dropbox.core.util.IOUtil;
  * subclass that overrides {@link #configureConnection}.
  * </p>
  */
-public class StandardHttpRequestor extends HttpRequestor
-{
+public class StandardHttpRequestor extends HttpRequestor {
+    private static final Logger LOGGER = Logger.getLogger(StandardHttpRequestor.class.getCanonicalName());
+
     /**
      * A thread-safe instance of {@code StandardHttpRequestor} that connects directly
      * (as opposed to using a proxy).
      */
     public static final StandardHttpRequestor INSTANCE = new StandardHttpRequestor(Config.DEFAULT_INSTANCE);
 
+    private static volatile boolean certPinningWarningLogged = false;
+
     private final Config config;
 
     /**
      * Creates an instance that connects through the given proxy.
      */
-    public StandardHttpRequestor(Config config)
-    {
+    public StandardHttpRequestor(Config config) {
         this.config = config;
     }
 
-    private static Response toResponse(HttpsURLConnection conn)
-        throws IOException
-    {
+    private static Response toResponse(HttpURLConnection conn) throws IOException {
         int responseCode = conn.getResponseCode();
         InputStream bodyStream;
         if (responseCode >= 400 || responseCode == -1) {
@@ -55,26 +57,23 @@ public class StandardHttpRequestor extends HttpRequestor
     }
 
     @Override
-    public Response doGet(String url, Iterable<Header> headers) throws IOException
-    {
-        HttpsURLConnection conn = prepRequest(url, headers);
+    public Response doGet(String url, Iterable<Header> headers) throws IOException {
+        HttpURLConnection conn = prepRequest(url, headers);
         conn.setRequestMethod("GET");
         conn.connect();
         return toResponse(conn);
     }
 
     @Override
-    public Uploader startPost(String url, Iterable<Header> headers) throws IOException
-    {
-        HttpsURLConnection conn = prepRequest(url, headers);
+    public Uploader startPost(String url, Iterable<Header> headers) throws IOException {
+        HttpURLConnection conn = prepRequest(url, headers);
         conn.setRequestMethod("POST");
         return new Uploader(conn);
     }
 
     @Override
-    public Uploader startPut(String url, Iterable<Header> headers) throws IOException
-    {
-        HttpsURLConnection conn = prepRequest(url, headers);
+    public Uploader startPut(String url, Iterable<Header> headers) throws IOException {
+        HttpURLConnection conn = prepRequest(url, headers);
         conn.setRequestMethod("PUT");
         return new Uploader(conn);
     }
@@ -83,34 +82,45 @@ public class StandardHttpRequestor extends HttpRequestor
      * Can be overridden to configure the underlying {@link HttpsURLConnection} used to make
      * network requests.  If you override this method, you should probably call
      * {@code super.configureConnection(conn)} in your overridden method.
+     *
+     * @deprecated use {@link #configure} instead.
      */
-    protected void configureConnection(HttpsURLConnection conn)
-        throws IOException
-    {
-    }
+    @Deprecated
+    protected void configureConnection(HttpsURLConnection conn) throws IOException { }
 
-    private static class Uploader extends HttpRequestor.Uploader
-    {
-        private /*@Nullable*/ HttpsURLConnection conn;
+    /**
+     * Can be overriden to configure the underlying {@link HttpURLConnection} used to make network
+     * requests using https. Typically the connection will be a {@link
+     * javax.net.ssl.HttpsURLConnection}, but that is dependent on the Java runtime. Care should be
+     * taken when casting the connection (check your JRE).
+     *
+     * <p> If you are using Google App Engine, configure your {@link DbxRequestConfig} to use {@link
+     * GoogleAppEngineRequestor} as its default {@code HttpRequestor}. If you use {@link
+     * StandardHttpRequestor} in Google App Engine, SSL certificates may not be validated and your
+     * app will susceptible to Man-in-the-Middle attacks.
+     *
+     * @param conn URL connection object returned after creating an https network request.
+     */
+    protected void configure(HttpURLConnection conn) throws IOException { }
 
-        public Uploader(HttpsURLConnection conn)
-            throws IOException
-        {
+    private static class Uploader extends HttpRequestor.Uploader {
+        private /*@Nullable*/ HttpURLConnection conn;
+
+        public Uploader(HttpURLConnection conn)
+            throws IOException {
             super(getOutputStream(conn));
             conn.connect();
             this.conn = conn;
         }
 
-        private static OutputStream getOutputStream(HttpsURLConnection conn)
-            throws IOException
-        {
+        private static OutputStream getOutputStream(HttpURLConnection conn)
+            throws IOException {
             conn.setDoOutput(true);
             return conn.getOutputStream();
         }
 
         @Override
-        public void abort()
-        {
+        public void abort() {
             if (conn == null) {
                 throw new IllegalStateException("Can't abort().  Uploader already closed.");
             }
@@ -121,8 +131,7 @@ public class StandardHttpRequestor extends HttpRequestor
         }
 
         @Override
-        public void close()
-        {
+        public void close() {
             if (conn == null) return;
 
             // close input and output streams to allow for connection re-use.
@@ -139,8 +148,7 @@ public class StandardHttpRequestor extends HttpRequestor
         }
 
         @Override
-        public Response finish() throws IOException
-        {
+        public Response finish() throws IOException {
             if (conn == null) {
                 throw new IllegalStateException("Can't finish().  Uploader already closed.");
             }
@@ -153,24 +161,41 @@ public class StandardHttpRequestor extends HttpRequestor
         }
     }
 
-    private HttpsURLConnection prepRequest(String url, Iterable<Header> headers) throws IOException
-    {
+    private HttpURLConnection prepRequest(String url, Iterable<Header> headers) throws IOException {
         URL urlObject = new URL(url);
-        HttpsURLConnection conn = (HttpsURLConnection) urlObject.openConnection(config.getProxy());
+        HttpURLConnection conn = (HttpURLConnection) urlObject.openConnection(config.getProxy());
 
-        SSLConfig.apply(conn);
         conn.setConnectTimeout((int) config.getConnectTimeoutMillis());
         conn.setReadTimeout((int) config.getReadTimeoutMillis());
         conn.setUseCaches(false);
         conn.setAllowUserInteraction(false);
 
-        configureConnection(conn);
+        // Some JREs (like the one provided by Google AppEngine) will return HttpURLConnection
+        // instead of HttpsURLConnection. So we have to check here.
+        if (conn instanceof HttpsURLConnection) {
+            SSLConfig.apply((HttpsURLConnection) conn);
+            configureConnection((HttpsURLConnection) conn);
+        } else {
+            logCertificatePinningWarning();
+        }
+
+        configure(conn);
 
         for (Header header : headers) {
             conn.addRequestProperty(header.getKey(), header.getValue());
         }
 
         return conn;
+    }
+
+    private static void logCertificatePinningWarning() {
+        if (!certPinningWarningLogged) {
+            certPinningWarningLogged = true;
+            LOGGER.warning("Certificate pinning disabled for HTTPS connections. This is likely because your JRE does not " +
+                           "return javax.net.ssl.HttpsURLConnection objects for https network connections. Be aware your app " +
+                           "may be prone to man-in-the-middle attacks without proper SSL certificate validation. If you are " +
+                           "using Google App Engine, please configure DbxRequestConfig to use GoogleAppEngineRequestor.");
+        }
     }
 
     /**

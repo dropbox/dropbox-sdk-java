@@ -11,6 +11,9 @@ import java.util.Random;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
+import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
+import com.google.appengine.tools.development.testing.LocalURLFetchServiceTestConfig;
+
 import okhttp3.OkHttpClient;
 
 import org.testng.annotations.AfterSuite;
@@ -18,6 +21,7 @@ import org.testng.annotations.BeforeSuite;
 
 import com.dropbox.core.DbxAuthInfo;
 import com.dropbox.core.DbxRequestConfig;
+import com.dropbox.core.http.GoogleAppEngineRequestor;
 import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.http.OkHttpRequestor;
 import com.dropbox.core.http.StandardHttpRequestor;
@@ -29,7 +33,8 @@ import com.dropbox.core.v2.files.DeleteErrorException;
 // integration test utility class
 public final class ITUtil {
     private static final String AUTH_INFO_FILE_PROPERTY = "com.dropbox.test.authInfoFile";
-    private static final String AUTH_INFO_FILE = System.getProperty(AUTH_INFO_FILE_PROPERTY);
+    private static final String HTTP_REQUESTOR_PROPERTY = "com.dropbox.test.httpRequestor";
+
     private static final Random RAND = new Random(0L);
     private static final long READ_TIMEOUT = TimeUnit.SECONDS.toMillis(20);
     private static final int MAX_RETRIES = 3;
@@ -37,52 +42,73 @@ public final class ITUtil {
     private static final String DATE_FORMAT = "yyyy-MM-dd'T'HH.mm.ss";
     private static final TimeZone UTC = TimeZone.getTimeZone("UTC");
 
+    // required if we use a GoogleAppEngine HttpRequestor
+    private static final LocalServiceTestHelper GAE_TEST_HELPER = new LocalServiceTestHelper(
+        new LocalURLFetchServiceTestConfig());
+
     public static DbxRequestConfig.Builder newRequestConfig() {
-        DbxRequestConfig.Builder builder = DbxRequestConfig.newBuilder("sdk-test")
+        return DbxRequestConfig.newBuilder("sdk-integration-test")
             // enable auto-retry to avoid flakiness
             .withAutoRetryEnabled(MAX_RETRIES)
-            .withUserLocaleFrom(Locale.US);
-
-        String okHttp = System.getProperty("com.dropbox.test.okHttp");
-        if (okHttp != null && !okHttp.equals("true") && !okHttp.equals("false")) {
-            fail("Invalid value for System property \"okHttp\"." +
-                 " Expected \"true\" or \"false\", got \"" + okHttp + "\".");
-        }
-
-        if ("true".equals(okHttp)) {
-            builder.withHttpRequestor(newOkHttpRequestor());
-        } else {
-            builder.withHttpRequestor(newStandardHttpRequestor());
-        }
-
-        return builder;
+            .withUserLocaleFrom(Locale.US)
+            .withHttpRequestor(newHttpRequestor());
     }
 
-    public static HttpRequestor newOkHttpRequestor() {
+    /**
+     * Gets the default HttpRequestor implementation configurable by
+     * System property.
+     */
+    public static HttpRequestor newHttpRequestor() {
+        String val = System.getProperty(HTTP_REQUESTOR_PROPERTY);
+        if (val == null || val.equals("Standard")) {
+            return newStandardHttpRequestor();
+        } else if(val.equals("OkHttp")) {
+            return newOkHttpRequestor();
+        } else if(val.equals("GoogleAppEngine")) {
+            return newGoogleAppEngineRequestor();
+        } else {
+            fail("Invalid value for System property \"" + HTTP_REQUESTOR_PROPERTY + "\". " +
+                 "Expected \"Standard\", \"OkHttp\", or \"GoogleAppEngine\", but was: \"" + val + "\".");
+            return null;
+        }
+    }
+
+    public static OkHttpRequestor newOkHttpRequestor() {
         OkHttpClient httpClient = OkHttpRequestor.INSTANCE.getClient().newBuilder()
             .readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS)
             .build();
         return new OkHttpRequestor(httpClient);
     }
 
-    public static HttpRequestor newStandardHttpRequestor() {
+    public static StandardHttpRequestor newStandardHttpRequestor() {
         StandardHttpRequestor.Config config = StandardHttpRequestor.Config.builder()
             .withReadTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS)
             .build();
         return new StandardHttpRequestor(config);
     }
 
+    public static GoogleAppEngineRequestor newGoogleAppEngineRequestor() {
+        GoogleAppEngineRequestor requestor = new GoogleAppEngineRequestor();
+        requestor.getOptions()
+            // seconds
+            .setDeadline((HttpRequestor.DEFAULT_CONNECT_TIMEOUT_MILLIS + READ_TIMEOUT) / 1000.0);
+        return requestor;
+    }
+
     private static class AuthContainer {
         public static final DbxAuthInfo AUTH = loadAuth();
 
         private static DbxAuthInfo loadAuth() {
-            if (AUTH_INFO_FILE == null) {
+            String path = System.getProperty(AUTH_INFO_FILE_PROPERTY);
+
+
+            if (path == null) {
                 fail("System property \"" + AUTH_INFO_FILE_PROPERTY + "\" not set.");
             }
             try {
-                return DbxAuthInfo.Reader.readFromFile(AUTH_INFO_FILE);
+                return DbxAuthInfo.Reader.readFromFile(path);
             } catch (JsonReader.FileLoadException ex) {
-                fail("Error reading auth info from \"" + AUTH_INFO_FILE + "\"", ex);
+                fail("Error reading auth info from \"" + path + "\"", ex);
                 throw new RuntimeException(ex);
             }
         }
@@ -158,10 +184,29 @@ public final class ITUtil {
     }
 
     @BeforeSuite
+    public static void setUpGoogleAppEngine() {
+        if ("GoogleAppEngine".equals(System.getProperty(HTTP_REQUESTOR_PROPERTY))) {
+            GAE_TEST_HELPER.setUp();
+        }
+    }
+
+    @AfterSuite(alwaysRun=true)
+    public static void tearDownGoogleAppEngine() {
+        if ("GoogleAppEngine".equals(System.getProperty(HTTP_REQUESTOR_PROPERTY))) {
+            GAE_TEST_HELPER.tearDown();
+        }
+    }
+
+    @BeforeSuite
     @AfterSuite(alwaysRun=true)
     public static void deleteRoot() throws Exception {
+        // always use standard HTTP requestor for delete root
+        DbxClientV2 client = newClientV2(
+            newRequestConfig()
+                .withHttpRequestor(newStandardHttpRequestor())
+        );
         try {
-            newClientV2().files().delete(RootContainer.ROOT);
+            client.files().delete(RootContainer.ROOT);
         } catch (DeleteErrorException ex) {
             if (ex.errorValue.isPathLookup() &&
                 ex.errorValue.getPathLookupValue().isNotFound()) {
