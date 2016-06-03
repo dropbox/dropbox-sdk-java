@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.appengine.tools.development.testing.LocalURLFetchServiceTestConfig;
 
-import okhttp3.OkHttpClient;
+import com.squareup.okhttp.OkHttpClient;
 
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
@@ -24,6 +24,7 @@ import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.http.GoogleAppEngineRequestor;
 import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.http.OkHttpRequestor;
+import com.dropbox.core.http.OkHttp3Requestor;
 import com.dropbox.core.http.StandardHttpRequestor;
 import com.dropbox.core.json.JsonReader;
 import com.dropbox.core.v1.DbxClientV1;
@@ -64,6 +65,8 @@ public final class ITUtil {
             return newStandardHttpRequestor();
         } else if(val.equals("OkHttp")) {
             return newOkHttpRequestor();
+        } else if(val.equals("OkHttp3")) {
+            return newOkHttp3Requestor();
         } else if(val.equals("GoogleAppEngine")) {
             return newGoogleAppEngineRequestor();
         } else {
@@ -74,10 +77,16 @@ public final class ITUtil {
     }
 
     public static OkHttpRequestor newOkHttpRequestor() {
-        OkHttpClient httpClient = OkHttpRequestor.INSTANCE.getClient().newBuilder()
+        OkHttpClient httpClient = OkHttpRequestor.INSTANCE.getClient().clone();
+        httpClient.setReadTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS);
+        return new OkHttpRequestor(httpClient);
+    }
+
+    public static OkHttp3Requestor newOkHttp3Requestor() {
+        okhttp3.OkHttpClient httpClient = OkHttp3Requestor.INSTANCE.getClient().newBuilder()
             .readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS)
             .build();
-        return new OkHttpRequestor(httpClient);
+        return new OkHttp3Requestor(httpClient);
     }
 
     public static StandardHttpRequestor newStandardHttpRequestor() {
