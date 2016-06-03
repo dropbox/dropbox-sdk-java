@@ -2,7 +2,8 @@
 ---------------------------------------------
 - Allow old locale formats for APIv2 requests.
 - Fix ExceptionInInitializationError caused by CertificateParsingException when using Java 6 JREs.
-- Update OkHttp dependency to OkHttp3
+- Add support for OkHttp3.
+- Add support for Google App Engine with new GoogleAppEngineRequestor.
 
 2.0.4 (2016-05-31)
 ---------------------------------------------

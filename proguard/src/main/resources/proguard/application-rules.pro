@@ -2,6 +2,8 @@
 -keepattributes SourceFile,LineNumberTable
 
 -dontwarn okhttp3.**
+-dontwarn com.squareup.okhttp.**
+-dontwarn com.google.appengine.**
 -dontwarn com.dropbox**.android.**
 -dontwarn org.testng.**
 -dontwarn bsh.**
