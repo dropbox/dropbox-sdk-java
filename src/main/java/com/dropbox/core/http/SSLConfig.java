@@ -363,6 +363,17 @@ public class SSLConfig {
      * Strips '#' comments from DER-encoded cert file. Java 7+ handles skipping comments that aren't
      * within certificate blocks. Java 6, however, will fail to parse the cert file if it contains
      * anything other than certificate blocks.
+     *
+     * <b> NOTE: Android will incorrectly parse DER files containing comments.</b> When comments are
+     * left in the file, some of the certificates may not be loaded properly. This results in
+     * exceptions like the one below:
+     * <pre>
+     *    Caused by: javax.net.ssl.SSLHandshakeException: java.security.cert.CertPathValidatorException: Trust anchor for certification path not found.
+     *        at com.android.org.conscrypt.OpenSSLSocketImpl.startHandshake(OpenSSLSocketImpl.java:328)
+     *        at com.android.okhttp.internal.http.SocketConnector.connectTls(SocketConnector.java:103)
+     *        at com.android.okhttp.Connection.connect(Connection.java:143)
+     *        ...
+     * </pre>
      */
     private static final class CommentFilterInputStream extends FilterInputStream {
         private boolean isLineStart;

@@ -1,6 +1,5 @@
 package com.dropbox.core.examples.android;
 
-import com.dropbox.core.http.OkHttpRequestor;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.DbxHost;
 import com.dropbox.core.DbxRequestConfig;
@@ -15,7 +14,8 @@ public class DropboxClientFactory {
     public static void init(String accessToken) {
         if (sDbxClient == null) {
             DbxRequestConfig requestConfig = DbxRequestConfig.newBuilder("examples-v2-demo")
-                .withHttpRequestor(OkHttpRequestor.INSTANCE)
+                // don't use OkHttpRequestor so we can verify cert pinning on Android works (since
+                // Dalvik implementation is slightly different)
                 .build();
 
             sDbxClient = new DbxClientV2(requestConfig, accessToken);
