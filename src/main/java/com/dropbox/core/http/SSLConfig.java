@@ -360,13 +360,14 @@ public class SSLConfig {
 
 
     /**
-     * Strips '#' comments from DER-encoded cert file. Java 7+ handles skipping comments that aren't
+     * Strips '#' comments from PEM encoded cert file. Java 7+ handles skipping comments that aren't
      * within certificate blocks. Java 6, however, will fail to parse the cert file if it contains
      * anything other than certificate blocks.
      *
-     * <b> NOTE: Android will incorrectly parse DER files containing comments.</b> When comments are
-     * left in the file, some of the certificates may not be loaded properly. This results in
-     * exceptions like the one below:
+     * <p><b> NOTE: Android will incorrectly parse PEM encoded files containing comments.</b> When
+     * comments are left in the file, some of the certificates may not be loaded properly. This
+     * results in exceptions like the one below:
+     *
      * <pre>
      *    Caused by: javax.net.ssl.SSLHandshakeException: java.security.cert.CertPathValidatorException: Trust anchor for certification path not found.
      *        at com.android.org.conscrypt.OpenSSLSocketImpl.startHandshake(OpenSSLSocketImpl.java:328)
