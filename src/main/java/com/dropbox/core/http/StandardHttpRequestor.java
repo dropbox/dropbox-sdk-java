@@ -94,10 +94,10 @@ public class StandardHttpRequestor extends HttpRequestor {
      * javax.net.ssl.HttpsURLConnection}, but that is dependent on the Java runtime. Care should be
      * taken when casting the connection (check your JRE).
      *
-     * <p> If you are using Google App Engine, configure your {@link DbxRequestConfig} to use {@link
-     * GoogleAppEngineRequestor} as its default {@code HttpRequestor}. If you use {@link
-     * StandardHttpRequestor} in Google App Engine, SSL certificates may not be validated and your
-     * app will susceptible to Man-in-the-Middle attacks.
+     * <p> If you are using Google App Engine, configure your {@link
+     * com.dropbox.core.DbxRequestConfig} to use {@link GoogleAppEngineRequestor} as its default
+     * {@code HttpRequestor}. If you use {@link StandardHttpRequestor} in Google App Engine, SSL
+     * certificates may not be validated and your app will susceptible to Man-in-the-Middle attacks.
      *
      * @param conn URL connection object returned after creating an https network request.
      */

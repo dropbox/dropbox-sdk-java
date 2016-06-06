@@ -1,3 +1,5 @@
+import org.gradle.internal.os.OperatingSystem;
+
 apply plugin: 'java'
 apply plugin: 'osgi'
 apply plugin: 'maven'
@@ -242,9 +244,15 @@ if (project.sourceCompatibility == JavaVersion.VERSION_1_6) {
 
         logger.info("Setting JVM boot classpath to use ${jdkHome}")
         project.tasks.withType(JavaCompile) {
-            options.bootClasspath = "${jdkHome}/jre/lib/rt.jar"
-            options.bootClasspath += "${sep}${jdkHome}/jre/lib/jsse.jar"
-            options.bootClasspath += "${sep}${jdkHome}/jre/lib/jce.jar"
+            def jdkLibs = "${jdkHome}/jre/lib"
+            def runtimeClasses = "rt.jar"
+            if (OperatingSystem.current().isMacOsX()) {
+                jdkLibs = "${jdkHome}/Classes"
+                runtimeClasses = "classes.jar"
+            }
+            options.bootClasspath = "${jdkLibs}/${runtimeClasses}"
+            options.bootClasspath += "${sep}${jdkLibs}/jsse.jar"
+            options.bootClasspath += "${sep}${jdkLibs}/jce.jar"
         }
     }
 }

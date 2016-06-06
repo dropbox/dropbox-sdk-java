@@ -6,13 +6,11 @@ import com.dropbox.core.DbxAuthInfo;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.DbxWebAuth;
-import com.dropbox.core.DbxWebAuthNoRedirect;
 import com.dropbox.core.json.JsonReader;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintStream;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -61,9 +59,12 @@ public class Main {
 
         // Run through Dropbox API authorization process
         DbxRequestConfig requestConfig = new DbxRequestConfig("examples-authorize");
-        DbxWebAuthNoRedirect webAuth = new DbxWebAuthNoRedirect(requestConfig, appInfo);
+        DbxWebAuth webAuth = new DbxWebAuth(requestConfig, appInfo);
+        DbxWebAuth.Request webAuthRequest = DbxWebAuth.newRequestBuilder()
+            .withNoRedirect()
+            .build();
 
-        String authorizeUrl = webAuth.start();
+        String authorizeUrl = webAuth.authorize(webAuthRequest);
         System.out.println("1. Go to " + authorizeUrl);
         System.out.println("2. Click \"Allow\" (you might have to log in first).");
         System.out.println("3. Copy the authorization code.");
@@ -77,9 +78,9 @@ public class Main {
 
         DbxAuthFinish authFinish;
         try {
-            authFinish = webAuth.finish(code);
+            authFinish = webAuth.finishFromCode(code);
         } catch (DbxException ex) {
-            System.err.println("Error in DbxWebAuth.start: " + ex.getMessage());
+            System.err.println("Error in DbxWebAuth.authorize: " + ex.getMessage());
             System.exit(1); return;
         }
 

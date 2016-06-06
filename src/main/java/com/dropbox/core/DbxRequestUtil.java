@@ -12,6 +12,7 @@ import java.nio.charset.CharacterCodingException;
 import java.util.concurrent.TimeUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.dropbox.core.stone.StoneSerializer;
 import com.dropbox.core.http.HttpRequestor;
@@ -30,8 +31,7 @@ public final class DbxRequestUtil {
     public static String encodeUrlParam(String s) {
         try {
             return URLEncoder.encode(s, "UTF-8");
-        }
-        catch (UnsupportedEncodingException ex) {
+        } catch (UnsupportedEncodingException ex) {
             throw mkAssert("UTF-8 should always be supported", ex);
         }
     }
@@ -41,6 +41,17 @@ public final class DbxRequestUtil {
                                             String path,
                                             /*@Nullable*/String/*@Nullable*/[] params) {
         return buildUri(host, path) + "?" + encodeUrlParams(userLocale, params);
+    }
+
+    static String [] toParamsArray(Map<String, String> params) {
+        String [] arr = new String[2 * params.size()];
+        int i = 0;
+        for (Map.Entry<String, String> entry : params.entrySet()) {
+            arr[i] = entry.getKey();
+            arr[i + 1] = entry.getValue();
+            i += 2;
+        }
+        return arr;
     }
 
     public static String buildUri(String host, String path) {

@@ -1,51 +1,57 @@
 package com.dropbox.core;
 
-import com.dropbox.core.util.StringUtil;
-import com.dropbox.core.v2.DbxClientV2;
-
 import static com.dropbox.core.util.StringUtil.jq;
 
+import java.nio.charset.Charset;
 import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import com.dropbox.core.http.HttpRequestor;
+import com.dropbox.core.util.StringUtil;
+import com.dropbox.core.v2.DbxRawClientV2;
 
 /*>>> import checkers.nullness.quals.Nullable; */
 
 /**
  * Does the OAuth 2 "authorization code" flow.  (This SDK does not support the "token" flow.)
  *
- * <p>
- * Eventually yields an access token, which
- * can be used with {@link DbxClientV2} to make Dropbox API calls.  You typically only need
- * to do this for a user when they first use your application.  Once you have an access token
- * for that user, it remains valid for years.
- * </p>
+ * <p> Eventually yields an access token, which can be used with {@link
+ * com.dropbox.core.v2.DbxClientV2} to make Dropbox API calls.  You typically only need to do this
+ * for a user when they first use your application.  Once you have an access token for that user, it
+ * remains valid for years.
  *
- * <p>
- * Setup:
- * </p>
+ * <h2> Redirect example </h2>
+ * <p> Setup: </p>
  * <pre>
- * String userLocale = ...
- * {@link DbxRequestConfig} requestConfig = new DbxRequestConfig("text-edit/0.1", userLocale);
+ * {@link DbxRequestConfig} requestConfig = new DbxRequestConfig("text-edit/0.1");
  * {@link DbxAppInfo} appInfo = DbxAppInfo.Reader.readFromFile("api.app");
+ * DbxWebAuth auth = new DbxWebAuth(requestConfig, appInfo);
  *
  * <b>// Select a spot in the session for DbxWebAuth to store the CSRF token.</b>
- * javax.servlet.http.HttpServletRequest request = ...
- * javax.servlet.http.HttpSession session = request.getSession(true);
+ * {@link javax.servlet.http.HttpServletRequest} request = ...
+ * {@link javax.servlet.http.HttpSession} session = request.getSession(true);
  * String sessionKey = "dropbox-auth-csrf-token";
- * DbxSessionStore csrfTokenStore = new DbxStandardSessionStore(session, sessionKey);
+ * {@link DbxSessionStore} csrfTokenStore = new DbxStandardSessionStore(session, sessionKey);
  *
- * String redirectUri = "http://my-server.com/dropbox-auth-finish"
- * DbxWebAuth auth = new DbxWebAuth(requestConfig, appInfo, redirectUri, csrfTokenStore);
+ * String redirectUri = "http://my-server.com/dropbox-auth-finish";
  * </pre>
  *
  * <p>
  * Part 1 (handler for "http://my-server.com/dropbox-auth-start").
  * </p>
  * <pre>
- * javax.servlet.http.HttpServletResponse response = ...
+ * {@link javax.servlet.http.HttpServletResponse} response = ...
+ *
+ * <b>// Build an auth request</b>
+ * {@link DbxWebAuth.Request} authRequest = DbxWebAuth.newRequestBuilder()
+ *     .withRedirectUri(redirectUri, csrfTokenStore)
+ *     .build();
  *
  * <b>// Start authorization.</b>
- * String authorizePageUrl = auth.{@link #start start}();
+ * String authorizePageUrl = auth.{@link #authorize authorize}(authRequest);
  *
  * <b>// Redirect the user to the Dropbox website so they can approve our application.</b>
  * <b>// The Dropbox website will send them back to "http://my-server.com/dropbox-auth-finish"</b>
@@ -57,207 +63,447 @@ import java.util.Map;
  * Part 2 (handler for "http://my-server.com/dropbox-auth-finish").
  * </p>
  * <pre>
- * javax.servlet.http.HttpServletResponse response = ...
+ * {@link javax.servlet.http.HttpServletRequest} request = ...
+ * {@link javax.servlet.http.HttpServletResponse} response = ...
+ *
+ * <b>// Fetch the session to verify our CSRF token</b>
+ * {@link javax.servlet.http.HttpSession} session = request.getSession(true);
+ * String sessionKey = "dropbox-auth-csrf-token";
+ * {@link DbxSessionStore} csrfTokenStore = new DbxStandardSessionStore(session, sessionKey);
+ * String redirectUri = "http://my-server.com/dropbox-auth-finish";
  *
  * {@link DbxAuthFinish} authFinish;
  * try {
- *     authFinish = auth.{@link #finish finish}(request.getParameterMap());
- * }
- * catch (DbxWebAuth.BadRequestException ex) {
+ *     authFinish = auth.{@link #finishFromRedirect finishFromRedirect}(redirectUri, csrfTokenStore, request.getParameterMap());
+ * } catch (DbxWebAuth.BadRequestException ex) {
  *     log("On /dropbox-auth-finish: Bad request: " + ex.getMessage());
  *     response.sendError(400);
  *     return;
- * }
- * catch (DbxWebAuth.BadStateException ex) {
+ * } catch (DbxWebAuth.BadStateException ex) {
  *     // Send them back to the start of the auth flow.
  *     response.sendRedirect("http://my-server.com/dropbox-auth-start");
  *     return;
- * }
- * catch (DbxWebAuth.CsrfException ex) {
+ * } catch (DbxWebAuth.CsrfException ex) {
  *     log("On /dropbox-auth-finish: CSRF mismatch: " + ex.getMessage());
+ *     response.sendError(403, "Forbidden.");
  *     return;
- * }
- * catch (DbxWebAuth.NotApprovedException ex) {
+ * } catch (DbxWebAuth.NotApprovedException ex) {
  *     <b>// When Dropbox asked "Do you want to allow this app to access your</b>
  *     <b>// Dropbox account?", the user clicked "No".</b>
  *     ...
  *     return;
- * }
- * catch (DbxWebAuth.ProviderException ex) {
+ * } catch (DbxWebAuth.ProviderException ex) {
  *     log("On /dropbox-auth-finish: Auth failed: " + ex.getMessage());
  *     response.sendError(503, "Error communicating with Dropbox.");
  *     return;
- * }
- * catch (DbxException ex) {
+ * } catch (DbxException ex) {
  *     log("On /dropbox-auth-finish: Error getting token: " + ex.getMessage());
  *     response.sendError(503, "Error communicating with Dropbox.");
  *     return;
  * }
- * String accessToken = authResponse.accessToken;
+ * String accessToken = authFinish.getAccessToken();
  *
  * <b>// Save the access token somewhere (probably in your database) so you</b>
  * <b>// don't need to send the user through the authorization process again.</b>
  * ...
  *
  * <b>// Now use the access token to make Dropbox API calls.</b>
- * {@link DbxClientV2} client = new DbxClientV2(requestConfig, accessToken);
+ * {@link com.dropbox.core.v2.DbxClientV2} client = new DbxClientV2(requestConfig, accessToken);
  * ...
  * </pre>
+ *
+ * <h2> No Redirect Example </h2>
+ * <p> Setup: </p>
+ * <pre>
+ * {@link DbxRequestConfig} requestConfig = new DbxRequestConfig("text-edit/0.1");
+ * {@link DbxAppInfo} appInfo = DbxAppInfo.Reader.readFromFile("api.app");
+ * DbxWebAuth auth = new DbxWebAuth(requestConfig, appInfo);
+ *
+ * {@link DbxWebAuth.Request} authRequest = DbxWebAuth.newRequestBuilder()
+ *     .withNoRedirect()
+ *     .build();
+ * String authorizeUrl = auth.authorize(authRequest);
+ * System.out.println("1. Go to " + authorizeUrl);
+ * System.out.println("2. Click \"Allow\" (you might have to log in first).");
+ * System.out.println("3. Copy the authorization code.");
+ * System.out.print("Enter the authorization code here: ");
+ *
+ * String code = System.console().readLine();
+ * if (code != null) {
+ *     code = code.trim();
+ *
+ *     {@link DbxAuthFinish} authFinish = webAuth.finish(code);
+ *
+ *     {@link com.dropbox.core.v2.DbxClientV2} client = new DbxClientV2(requestConfig, authFinish.getAccessToken());
+ * }
+ * </pre>
  */
-public class DbxWebAuth
-{
+public class DbxWebAuth {
+    private static final SecureRandom RAND = new SecureRandom();
+    private static final int CSRF_BYTES_SIZE = 16;
+    private static final int CSRF_STRING_SIZE = StringUtil.urlSafeBase64Encode(new byte[CSRF_BYTES_SIZE]).length();
+
+    /** Role representing the team account associated with a user. Used by {@link Request.Builder#withRequireRole}. */
+    public static final String ROLE_WORK = "work";
+    /** Role representing the personal account associated with a user. Used by {@link Request.Builder#withRequireRole}. */
+    public static final String ROLE_PERSONAL = "personal";
+
     private final DbxRequestConfig requestConfig;
     private final DbxAppInfo appInfo;
-    private final String redirectUri;
-    private final DbxSessionStore csrfTokenStore;
+    private final Request deprecatedRequest;
 
     /**
-     * @param appInfo
-     *     Your application's Dropbox API information (the app key and secret).
+     * Creates a new instance that will perform the OAuth2 authorization flow using a redirect URI.
+     *
+     * @param requestConfig HTTP request configuration, never {@code null}.
+     * @param appInfo Your application's Dropbox API information (the app key and secret), never
+     * {@code nulL}.
+     * @param redirectUri Where to redirect the user after authorization has completed, never {@code null}.
+     * @param sessionStore Session store to use for storing CSRF nonces across requests, never {@code null}.
+     *
+     * @deprecated use {@link #DbxWebAuth(DbxRequestConfig,DbxAppInfo)} and {@link #authorize}
+     * instead
      */
-    public DbxWebAuth(DbxRequestConfig requestConfig, DbxAppInfo appInfo, String redirectUri, DbxSessionStore csrfTokenStore)
-    {
-        if (requestConfig == null) throw new IllegalArgumentException("'requestConfig' is null");
-        if (appInfo == null) throw new IllegalArgumentException("'appInfo' is null");
-        if (redirectUri == null) throw new IllegalArgumentException("'redirectUri' is null");
-        if (csrfTokenStore == null) throw new IllegalArgumentException("'csrfTokenStore' is null");
+    @Deprecated
+    public DbxWebAuth(DbxRequestConfig requestConfig, DbxAppInfo appInfo, String redirectUri, DbxSessionStore sessionStore) {
+        if (requestConfig == null) throw new NullPointerException("requestConfig");
+        if (appInfo == null) throw new NullPointerException("appInfo");
 
         this.requestConfig = requestConfig;
         this.appInfo = appInfo;
-        this.redirectUri = redirectUri;
-        this.csrfTokenStore = csrfTokenStore;
+        this.deprecatedRequest = newRequestBuilder()
+            .withRedirectUri(redirectUri, sessionStore)
+            .build();
     }
 
     /**
-     * Start authorization.  Returns a "authorization URL" on the Dropbox website that gives the
+     * Creates a new instance that will perform the OAuth2 authorization flow using the given OAuth
+     * request configuration.
+     *
+     * @param requestConfig HTTP request configuration, never {@code null}.
+     * @param appInfo Your application's Dropbox API information (the app key and secret), never
+     * {@code null}.
+     */
+    public DbxWebAuth(DbxRequestConfig requestConfig, DbxAppInfo appInfo) {
+        if (requestConfig == null) throw new NullPointerException("requestConfig");
+        if (appInfo == null) throw new NullPointerException("appInfo");
+
+        this.requestConfig = requestConfig;
+        this.appInfo = appInfo;
+        this.deprecatedRequest = null;
+    }
+
+    /**
+     * Starts authorization and returns a "authorization URL" on the Dropbox website that gives the
      * lets the user grant your app access to their Dropbox account.
      *
-     * <p>
-     * If they choose to grant access, they will be shown an "authorization code", which they
-     * need to copy/paste back into your app, at which point you can call {@link #finish} to get an
-     * access token.
-     * </p>
+     * <p> If a redirect URI was specified, then users will be redirected to the redirect URI after
+     * completing the authorization flow. Call {@link #finishFromRedirect finishFromRedirect(..)} with the query parameters
+     * received from the redirect.
+     *
+     * <p> If no redirect URI was specified, then users who grant access will be shown an
+     * "authorization code". The user must copy/paste the authorization code back into your app, at
+     * which point you can call {@link #finishFromCode(String)} to get an access token.
+     *
+     * @param urlState additional state to add to the flow that will be returned upon redirect
+     *
+     * @throws IllegalArgumentException if urlState exceeds maximum size of 476 bytes
+     * @throws IllegalStateException if this instance was not created using the deprecated {@link #DbxWebAuth(DbxRequestConfig,DbxAppInfo,String,DbxSessionStore)} constructor
+     *
+     * @return Authorization URL of website user can use to authorize your app.
+     *
+     * @deprecated use {@link #DbxWebAuth(DbxRequestConfig,DbxAppInfo)} and {@link #authorize}
+     * instead.
      */
-    public String start(/*@Nullable*/String urlState)
-    {
-        SecureRandom r = new SecureRandom();
-        byte[] csrfRaw = new byte[16];
-        r.nextBytes(csrfRaw);
-        String csrfAscii = StringUtil.urlSafeBase64Encode(csrfRaw);
-
-        String state = csrfAscii;
-        if (urlState != null) {
-            state += "|" + urlState;
+    @Deprecated
+    public String start(/*@Nullable*/String urlState) {
+        if (deprecatedRequest == null) {
+            throw new IllegalStateException("Must use DbxWebAuth.authorize instead.");
         }
 
-        this.csrfTokenStore.set(csrfAscii);
-
-        return DbxWebAuthHelper.getAuthorizeUrl(this.appInfo, this.requestConfig.getUserLocale(), redirectUri, state);
+        return authorizeImpl(
+            deprecatedRequest.copy()
+                .withState(urlState)
+                .build()
+        );
     }
 
     /**
-     * Start authorization.  Returns a "authorization URL" on the Dropbox website that gives the
+     * Starts authorization and returns a "authorization URL" on the Dropbox website that gives the
      * lets the user grant your app access to their Dropbox account.
      *
-     * <p>
-     * If they choose to grant access, they will be shown an "authorization code", which they
-     * need to copy/paste back into your app, at which point you can call {@link #finish} to get an
-     * access token.
-     * </p>
+     * <p> If a redirect URI was specified ({@link Request.Builder#withRedirectUri}), then users
+     * will be redirected to the redirect URI after completing the authorization flow. Call {@link
+     * #finishFromRedirect} with the query parameters received from the redirect.
+     *
+     * <p> If no redirect URI was specified ({@link Request.Builder#withNoRedirect}), then users who
+     * grant access will be shown an "authorization code". The user must copy/paste the
+     * authorization code back into your app, at which point you can call {@link
+     * #finishFromCode(String)} to get an access token.
+     *
+     * @param request OAuth 2.0 web-based authorization flow request configuration
+     *
+     * @return Authorization URL of website user can use to authorize your app.
+     *
+     * @throws IllegalStateException if this {@link DbxWebAuth} instance was created using the
+     * deprecated {@link #DbxWebAuth(DbxRequestConfig,DbxAppInfo,String,DbxSessionStore)}
+     * constructor.
      */
-    public String start()
-    {
-        return start(null);
+    public String authorize(Request request) {
+        if (deprecatedRequest != null) {
+            throw new IllegalStateException("Must create this instance using DbxWebAuth(DbxRequestConfig,DbxAppInfo) to call this method.");
+        }
+
+        return authorizeImpl(request);
+    }
+
+    private String authorizeImpl(Request request) {
+        Map<String, String> params = new HashMap<String, String>();
+
+        params.put("client_id", appInfo.getKey());
+        params.put("response_type", "code");
+
+        if (request.redirectUri != null) {
+            params.put("redirect_uri", request.redirectUri);
+            params.put("state", appendCsrfToken(request));
+        }
+
+        if (request.requireRole != null) {
+            params.put("require_role", request.requireRole);
+        }
+        if (request.forceReapprove != null) {
+            params.put("force_reapprove", Boolean.toString(request.forceReapprove).toLowerCase());
+        }
+        if (request.disableSignup != null) {
+            params.put("disable_signup", Boolean.toString(request.disableSignup).toLowerCase());
+        }
+
+        return DbxRequestUtil.buildUrlWithParams(
+            requestConfig.getUserLocale(),
+            appInfo.getHost().getWeb(),
+            "oauth2/authorize",
+            DbxRequestUtil.toParamsArray(params)
+        );
+    }
+
+    /**
+     * Call this after the user has visited the authorizaton URL and copy/pasted the authorization
+     * code that Dropbox gave them.
+     *
+     * @param code The authorization code shown to the user when they clicked "Allow" on the
+     *    authorization, page on the Dropbox website, never {@code null}.
+     *
+     * @throws DbxException if an error occurs communicating with Dropbox.
+     */
+    public DbxAuthFinish finishFromCode(String code) throws DbxException {
+        return finish(code);
+    }
+
+    /**
+     * Call this after the user has visited the authorizaton URL and Dropbox has redirected them
+     * back to you at the redirect URI.
+     *
+     * @param redirectUri The original redirect URI used by {@link #authorize}, never {@code null}.
+     * @param sessionStore Session store used by {@link #authorize} to store CSRF tokens, never
+     * {@code null}.
+     * @param params The query parameters on the GET request to your redirect URI, never {@code
+     * null}.
+     *
+     * @throws BadRequestException If the redirect request is missing required query parameters,
+     * contains duplicate parameters, or includes mutually exclusive parameters (e.g. {@code
+     * "error"} and {@code "code"}).
+     * @throws BadStateException If the CSRF token retrieved from {@code sessionStore} is {@code
+     * null} or malformed.
+     * @throws CsrfException If the CSRF token passed in {@code params} does not match the CSRF
+     * token from {@code sessionStore}. This implies the redirect request may be forged.
+     * @throws NotApprovedException If the user chose to deny the authorization request.
+     * @throws ProviderException If an OAuth2 error response besides {@code "access_denied"} is
+     * set.
+     * @throws DbxException If an error occurs communicating with Dropbox.
+     */
+    public DbxAuthFinish finishFromRedirect(String redirectUri,
+                                            DbxSessionStore sessionStore,
+                                            Map<String, String[]> params)
+        throws DbxException, BadRequestException, BadStateException, CsrfException, NotApprovedException, ProviderException {
+        if (redirectUri == null) throw new NullPointerException("redirectUri");
+        if (sessionStore == null) throw new NullPointerException("sessionStore");
+        if (params == null) throw new NullPointerException("params");
+
+        String state = getParam(params, "state");
+        if (state == null) {
+            throw new BadRequestException("Missing required parameter: \"state\".");
+        }
+
+        String error = getParam(params, "error");
+        String code = getParam(params, "code");
+        String errorDescription = getParam(params, "error_description");
+
+        if (code == null && error == null) {
+            throw new BadRequestException("Missing both \"code\" and \"error\".");
+        }
+        if (code != null && error != null) {
+            throw new BadRequestException("Both \"code\" and \"error\" are set.");
+        }
+        if (code != null && errorDescription != null) {
+            throw new BadRequestException("Both \"code\" and \"error_description\" are set.");
+        }
+
+        state = verifyAndStripCsrfToken(state, sessionStore);
+
+        if (error != null) {
+            if (error.equals("access_denied")) {
+                // User clicked "Deny"
+                String exceptionMessage = errorDescription == null ?
+                    "No additional description from Dropbox" :
+                    "Additional description from Dropbox: " + errorDescription;
+                throw new NotApprovedException(exceptionMessage);
+            } else {
+                // All other errors
+                String exceptionMessage = errorDescription == null ?
+                    error :
+                    String.format("%s: %s", error, errorDescription);
+                throw new ProviderException(exceptionMessage);
+            }
+        }
+
+        return finish(code, redirectUri, state);
+    }
+
+    private DbxAuthFinish finish(String code) throws DbxException {
+        return finish(code, null, null);
+    }
+
+    private DbxAuthFinish finish(String code, String redirectUri, String state) throws DbxException {
+        if (code == null) throw new NullPointerException("code");
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("grant_type", "authorization_code");
+        params.put("code", code);
+        params.put("locale", requestConfig.getUserLocale());
+
+        if (redirectUri != null) {
+            params.put("redirect_uri", redirectUri);
+            params.put("state", state);
+        }
+
+        List<HttpRequestor.Header> headers = new ArrayList<HttpRequestor.Header>();
+        DbxRequestUtil.addBasicAuthHeader(headers, appInfo.getKey(), appInfo.getSecret());
+
+        return DbxRequestUtil.doPostNoAuth(
+            requestConfig,
+            DbxRawClientV2.USER_AGENT_ID,
+            appInfo.getHost().getApi(),
+            "oauth2/token",
+            DbxRequestUtil.toParamsArray(params),
+            headers,
+            new DbxRequestUtil.ResponseHandler<DbxAuthFinish>() {
+                @Override
+                public DbxAuthFinish handle(HttpRequestor.Response response) throws DbxException {
+                    if (response.getStatusCode() != 200) {
+                        throw DbxRequestUtil.unexpectedStatus(response);
+                    }
+                    return DbxRequestUtil.readJsonFromResponse(DbxAuthFinish.Reader, response);
+                }
+            }
+        );
     }
 
     /**
      * Call this after the user has visited the authorizaton URL and Dropbox has redirected them
      * back to you (using the {@code redirectUri} you passed in to {@link #start}.
      *
-     * @param queryParams
-     *    The query parameters on the GET request to your {@code redirectUri}.
+     * @param queryParams The query parameters on the GET request to your {@code redirectUri}.
+     *
+     * @throws IllegalStateException if this instance was not created using the deprecated {@link #DbxWebAuth(DbxRequestConfig,DbxAppInfo,String,DbxSessionStore)} constructor
+     * @throws BadRequestException If the redirect request is missing required query parameters,
+     * contains duplicate parameters, or includes mutually exclusive parameters (e.g. {@code
+     * "error"} and {@code "code"})
+     * @throws BadStateException If the CSRF token retrieved from {@code sessionStore} is missing or
+     * malformed. Missing tokens often imply the user session has expired.
+     * @throws CsrfException If the CSRF token passed in {@code params} does not match the CSRF
+     * token from {@code sessionStore}. This implies the redirect request may be forged.
+     * @throws NotApprovedException If the user chose to deny the authorization request
+     * @throws ProviderException If an OAuth 2.0 error response besides {@code "access_denied"} is
+     * set.
+     * @throws DbxException If an error occurs communicating with Dropbox
+     *
+     * @deprecated use {@link #finishFromRedirect finishFromRedirect(..)} instead.
      */
+    @Deprecated
     public DbxAuthFinish finish(Map<String, String[]> queryParams)
-            throws DbxException, BadRequestException, BadStateException, CsrfException, NotApprovedException, ProviderException
-    {
-        if (queryParams == null) throw new IllegalArgumentException("'queryParams' is null");
-
-        // Check well-formedness of request.
-
-        String state = getParam(queryParams, "state");
-        if (state == null) throw new BadRequestException("missing 'state' parameter");
-
-        String error = getParam(queryParams, "error");
-        String code = getParam(queryParams, "code");
-        String errorDescription = getParam(queryParams, "error_description");
-
-        if (code == null && error == null) throw new BadRequestException("missing both 'code' and 'error'; one must be present");
-        if (code != null && error != null) throw new BadRequestException("both 'code' and 'error' are set; only one must be present");
-        if (code != null && errorDescription != null) throw new BadRequestException("both 'code' and 'error_description' are set");
-
-        // Check CSRF token
-
-        String csrfTokenFromSession = this.csrfTokenStore.get();
-        if (csrfTokenFromSession == null) throw new BadStateException();
-        if (csrfTokenFromSession.length() <= 20) throw new AssertionError("CSRF token too short: " + jq(csrfTokenFromSession));
-
-        int divPos = state.indexOf('|');
-        String givenCsrfToken;
-        String givenUrlState;
-        if (divPos < 0) {
-            givenCsrfToken = state;
-            givenUrlState = null;
-        } else {
-            givenCsrfToken = state.substring(0, divPos);
-            givenUrlState = state.substring(divPos + 1);
+        throws DbxException, BadRequestException, BadStateException, CsrfException, NotApprovedException, ProviderException {
+        if (deprecatedRequest == null) {
+            throw new IllegalStateException("Must use DbxWebAuth.finishFromRedirect(..) instead.");
         }
-        if (!StringUtil.secureStringEquals(csrfTokenFromSession, givenCsrfToken)) {
-            throw new CsrfException("expecting " + jq(csrfTokenFromSession) + ", got " + jq(givenCsrfToken));
-        }
-
-        this.csrfTokenStore.clear();
-
-        // Check for error identifier
-
-        if (error != null) {
-            if (error.equals("access_denied")) {
-                // When the user clicks "Deny"
-                String exceptionMessage;
-                if (errorDescription == null) {
-                    exceptionMessage = "No additional description from Dropbox";
-                } else {
-                    exceptionMessage = "Additional description from Dropbox: " + errorDescription;
-                }
-                throw new NotApprovedException(exceptionMessage);
-            }
-            else {
-                // All other errors.
-                String exceptionMessage = error;
-                if (errorDescription != null) {
-                    exceptionMessage += ": " + errorDescription;
-                }
-                throw new ProviderException(exceptionMessage);
-            }
-        }
-
-        assert code != null : "@AssumeAssertion(nullness)";
-
-        DbxAuthFinish finish = DbxWebAuthHelper.finish(this.appInfo, this.requestConfig, code, this.redirectUri);
-        return new DbxAuthFinish(finish.getAccessToken(), finish.getUserId(), givenUrlState);
+        return finishFromRedirect(
+            deprecatedRequest.redirectUri,
+            deprecatedRequest.sessionStore,
+            queryParams
+        );
     }
 
-    private static /*@Nullable*/String getParam(Map<String,String[]> params, String name)
-        throws BadRequestException
-    {
-        String[] v = params.get(name);
-        if (v == null) return null;
-        assert v.length != 0;
+    private static String appendCsrfToken(Request request) {
+        // add a CSRF nonce for security
+        byte[] csrf = new byte[CSRF_BYTES_SIZE];
+        RAND.nextBytes(csrf);
+        String prefix = StringUtil.urlSafeBase64Encode(csrf);
 
-        if (v.length == 1) {
-            return v[0];
+        if (prefix.length() != CSRF_STRING_SIZE) {
+            throw new AssertionError("unexpected CSRF token length: " + prefix.length());
         }
-        else {
-            throw new BadRequestException("multiple occurrences of '" + name + "' parameter");
+
+        if (request.sessionStore != null) {
+            request.sessionStore.set(prefix);
+        }
+
+        if (request.state == null) {
+            return prefix;
+        } else {
+            String combined = prefix + request.state;
+            if (combined.length() > Request.MAX_STATE_SIZE) {
+                throw new AssertionError("unexpected combined state length: " + combined.length());
+            }
+            return combined;
+        }
+    }
+
+    private static String verifyAndStripCsrfToken(String state, DbxSessionStore sessionStore)
+        throws CsrfException, BadStateException {
+        String expected = sessionStore.get();
+        if (expected == null) {
+            throw new BadStateException("No CSRF Token loaded from session store.");
+        }
+        if (expected.length() < CSRF_STRING_SIZE) {
+            throw new BadStateException("Token retrieved from session store is too small: " + expected);
+        }
+
+        if (state.length() < CSRF_STRING_SIZE) {
+            throw new CsrfException("Token too small: " + state);
+        }
+
+        String actual = state.substring(0, CSRF_STRING_SIZE);
+        if (!StringUtil.secureStringEquals(expected, actual)) {
+            throw new CsrfException("expecting " + jq(expected) + ", got " + jq(actual));
+        }
+
+        String stripped = state.substring(CSRF_STRING_SIZE, state.length());
+
+        sessionStore.clear();
+
+        return stripped.isEmpty() ? null : stripped;
+    }
+
+    private static /*@Nullable*/String getParam(Map<String,String[]> params, String name) throws BadRequestException {
+        String[] v = params.get(name);
+
+        if (v == null) {
+            return null;
+        } else if (v.length == 0) {
+            throw new IllegalArgumentException("Parameter \"" + name + "\" missing value.");
+        } else if (v.length == 1) {
+            return v[0];
+        } else {
+            throw new BadRequestException("multiple occurrences of \"" + name + "\" parameter");
         }
     }
 
@@ -301,7 +547,7 @@ public class DbxWebAuth
      */
     public static final class BadStateException extends Exception {
         private static final long serialVersionUID = 0L;
-        public BadStateException() { super("Not expecting Dropbox auth redirect (session doesn't have CSRF token)"); }
+        public BadStateException(String message) { super(message); }
     }
 
     /**
@@ -344,5 +590,249 @@ public class DbxWebAuth
     public static final class ProviderException extends Exception {
         private static final long serialVersionUID = 0L;
         public ProviderException(String message) { super(message); }
+    }
+
+    /**
+     * Returns a new request builder with default values (e.g. no redirect).
+     *
+     * @return new request builder with default values
+     */
+    public static Request.Builder newRequestBuilder() {
+        return Request.newBuilder();
+    }
+
+    /**
+     * OAuth web-based authorization flow request.
+     *
+     * Used by {@link #authorize} for initiating OAuth web-based authorization flows.
+     */
+    public static final class Request {
+        private static final Charset UTF8 = Charset.forName("UTF-8");
+        private static final int MAX_STATE_SIZE = 500;
+
+        private final String redirectUri;
+        private final String state;
+        private final String requireRole;
+        private final Boolean forceReapprove;
+        private final Boolean disableSignup;
+        private final DbxSessionStore sessionStore;
+
+        private Request(String redirectUri,
+                        String state,
+                        String requireRole,
+                        Boolean forceReapprove,
+                        Boolean disableSignup,
+                        DbxSessionStore sessionStore) {
+            this.redirectUri = redirectUri;
+            this.state = state;
+            this.requireRole = requireRole;
+            this.forceReapprove = forceReapprove;
+            this.disableSignup = disableSignup;
+            this.sessionStore = sessionStore;
+        }
+
+        /**
+         * Returns a copy of this request.
+         *
+         * @return copy of this request
+         */
+        public Builder copy() {
+            return new Builder(redirectUri,
+                               state,
+                               requireRole,
+                               forceReapprove,
+                               disableSignup,
+                               sessionStore);
+        }
+
+        /**
+         * Returns a new request builder with default values (e.g. no redirect).
+         *
+         * @return new request builder with default values
+         */
+        public static Builder newBuilder() {
+            return new Builder();
+        }
+
+        /**
+         * Builder for OAuth2 requests. Use this builder to configure the OAuth authorization flow.
+         */
+        public static final class Builder {
+            private String redirectUri;
+            private String state;
+            private String requireRole;
+            private Boolean forceReapprove;
+            private Boolean disableSignup;
+            private DbxSessionStore sessionStore;
+
+            private Builder() {
+                this(null, null, null, null, null, null);
+            }
+
+            private Builder(String redirectUri,
+                            String state,
+                            String requireRole,
+                            Boolean forceReapprove,
+                            Boolean disableSignup,
+                            DbxSessionStore sessionStore) {
+                this.redirectUri = redirectUri;
+                this.state = state;
+                this.requireRole = requireRole;
+                this.forceReapprove = forceReapprove;
+                this.disableSignup = disableSignup;
+                this.sessionStore = sessionStore;
+            }
+
+            /**
+             * Do not redirect the user after authorization has completed (default).
+             *
+             * <p> After a user authorizes the app using the authorization URL, a code will be
+             * displayed that they must copy and paste into your app. If you want users to be
+             * redirected after authorization back to your app, use {@link #withRedirectUri}
+             * instead. Websites should always provide a redirect URI.
+             *
+             * @return this builder
+             */
+            public Builder withNoRedirect() {
+                this.redirectUri = null;
+                this.sessionStore = null;
+                return this;
+            }
+
+            /**
+             * Where to redirect the user after authorization has completed.
+             *
+             * <p> This must be the exact URI registered in the <a href="https://www.dropbox.com/developers/apps">App Console</a>;
+             * even {@code "localhost"} must be listed if it is used for testing. All redirect URIs must be
+             * HTTPS except for localhost URIs. If the redirect URI is omitted, the code will be
+             * presented directly to the user and they will be invited to enter the information in
+             * your app.
+             *
+             * <p> The given session store will be used for storing the Cross-Site Request Forgery
+             * (CSRF) nonce generated during the authorization flow. To prevent CSRF attacks, {@link
+             * DbxWebAuth} appends a nonce to each authorization request. When the authorization
+             * flow is complete, the returned nonce is compared with the one in the store to ensure
+             * the response is valid. A session store <b>must</b> be specified if a redirect URI is
+             * set.
+             *
+             * @param redirectUri URI to redirect authorization response, never {@code null}.
+             * @param sessionStore Session store to use for storing CSRF nonces across requests, never {@code null}.
+             *
+             * @return this builder
+             *
+             * @throws NullPointerException if either redirectUri or sessionStore is {@code null}
+             */
+            public Builder withRedirectUri(String redirectUri, DbxSessionStore sessionStore) {
+                if (redirectUri == null) throw new NullPointerException("redirectUri");
+                if (sessionStore == null) throw new NullPointerException("sessionStore");
+
+                this.redirectUri = redirectUri;
+                this.sessionStore = sessionStore;
+
+                return this;
+            }
+
+            /**
+             * Up to 476 bytes of arbitrary data that will be passed back to your redirect URI.
+             *
+             * <p> Note that {@link DbxWebAuth} will always automatically append a nonce to the
+             * state to protect against cross-site request forgery. This is true even if no state is
+             * provided.
+             *
+             * <p> State should only be provided if a redirect URI is provided as well, otherwise
+             * {@link #build} will throw an {@link IllegalStateException}.
+             *
+             * @param state additional state to pass back to the redirect URI, or {@code null} to
+             * pass back no additional state.
+             *
+             * @return this builder
+             *
+             * @throws IllegalArgumentException if state is greater than 476 bytes
+             */
+            public Builder withState(String state) {
+                if (state != null && (state.getBytes(UTF8).length + CSRF_STRING_SIZE) > MAX_STATE_SIZE) {
+                    throw new IllegalArgumentException("UTF-8 encoded state cannot be greater than " + (MAX_STATE_SIZE - CSRF_STRING_SIZE) + " bytes.");
+                }
+                this.state = state;
+                return this;
+            }
+
+            /**
+             * Request the user authorize with the particular type of Dropbox account.
+             *
+             * If specified, the user will be asked to authorize with a particular type of Dropbox
+             * account (e.g. a team account or personal account).
+             *
+             * @param requireRole which role should authorize this app, or {@code null} for any
+             * role.
+             *
+             * @return this builder
+             *
+             * @see DbxWebAuth#ROLE_WORK
+             * @see DbxWebAuth#ROLE_PERSONAL
+             */
+            public Builder withRequireRole(String requireRole) {
+                this.requireRole = requireRole;
+                return this;
+            }
+
+            /**
+             * Whether or not to force the user to approve the app again if they've already done so.
+             *
+             * <p> If {@code false} (default), a user who has already approved the application may
+             * be automatically redirected to the URI specified by {@link #withRedirectUri}. If
+             * {@code true}, the user will not be automatically redirected and will have to approve
+             * the app again.
+             *
+             * @return this builder
+             *
+             * @param forceReapprove whether to force a user to re-approve this app, or {@code null}
+             * for default behavior
+             */
+            public Builder withForceReapprove(Boolean forceReapprove) {
+                this.forceReapprove = forceReapprove;
+                return this;
+            }
+
+            /**
+             * Whether or not to allow non-users to sign up for a Dropbox account via the authorization page.
+             *
+             * <p> When {@code true} (default is {@code false}) users will not be able to sign up
+             * for a Dropbox account via the authorization page. Instead, the authorization page
+             * will show a link to install Dropbox (typically through a mobile app store). This is
+             * only intended for use when necessary for compliance with App Store policies.
+             *
+             * @param disableSignup whether or not to allow users to sign up in the authorization
+             * flow, or {@code null} for default behavior
+             *
+             * @return this builder
+             */
+            public Builder withDisableSignup(Boolean disableSignup) {
+                this.disableSignup = disableSignup;
+                return this;
+            }
+
+            /**
+             * Returns a new OAuth {@link Request} that can be used in
+             * {@link DbxWebAuth#DbxWebAuth(DbxRequestConfig,DbxAppInfo)} to authorize a user.
+             *
+             * @return new OAuth {@link Request} configuration.
+             *
+             * @throws IllegalStateException if {@link #withState} was called with a non-{@code
+             * null} value, but no redirect URI was specified.
+             */
+            public Request build() {
+                if (redirectUri == null && state != null) {
+                    throw new IllegalStateException("Cannot specify a state without a redirect URI.");
+                }
+
+                return new Request(redirectUri,
+                                   state,
+                                   requireRole,
+                                   forceReapprove,
+                                   disableSignup,
+                                   sessionStore);
+            }
+        }
     }
 }

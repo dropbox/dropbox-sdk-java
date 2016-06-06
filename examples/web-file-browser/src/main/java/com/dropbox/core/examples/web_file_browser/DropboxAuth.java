@@ -16,12 +16,10 @@ import java.io.IOException;
  * Handles the endpoints related to authorizing this app with the Dropbox API
  * via OAuth 2.
  */
-public class DropboxAuth
-{
+public class DropboxAuth {
     private final Common common;
 
-    public DropboxAuth(Common common)
-    {
+    public DropboxAuth(Common common) {
         this.common = common;
     }
 
@@ -31,14 +29,18 @@ public class DropboxAuth
     // Start the process of getting a Dropbox API access token for the user's Dropbox account.
 
     public void doStart(HttpServletRequest request, HttpServletResponse response)
-            throws IOException, ServletException
-    {
+            throws IOException, ServletException {
         if (!common.checkPost(request, response)) return;
         User user = common.requireLoggedInUser(request, response);
         if (user == null) return;
 
         // Start the authorization process with Dropbox.
-        String authorizeUrl = getWebAuth(request).start();
+        DbxWebAuth.Request authRequest = DbxWebAuth.newRequestBuilder()
+            // After we redirect the user to the Dropbox website for authorization,
+            // Dropbox will redirect them back here.
+            .withRedirectUri(getRedirectUri(request), getSessionStore(request))
+            .build();
+        String authorizeUrl = getWebAuth(request).authorize(authRequest);
 
         // Redirect the user to the Dropbox website so they can approve our application.
         // The Dropbox website will send them back to /dropbox-auth-finish when they're done.
@@ -55,8 +57,7 @@ public class DropboxAuth
     // an HTTP POST.
 
     public void doFinish(HttpServletRequest request, HttpServletResponse response)
-            throws IOException, ServletException
-    {
+            throws IOException, ServletException {
         if (!common.checkGet(request, response)) return;
 
         User user = common.requireLoggedInUser(request, response);
@@ -67,33 +68,31 @@ public class DropboxAuth
 
         DbxAuthFinish authFinish;
         try {
-            authFinish = getWebAuth(request).finish(request.getParameterMap());
-        }
-        catch (DbxWebAuth.BadRequestException e) {
+            authFinish = getWebAuth(request).finishFromRedirect(
+                getRedirectUri(request),
+                getSessionStore(request),
+                request.getParameterMap()
+            );
+        } catch (DbxWebAuth.BadRequestException e) {
             common.log.println("On /dropbox-auth-finish: Bad request: " + e.getMessage());
             response.sendError(400);
             return;
-        }
-        catch (DbxWebAuth.BadStateException e) {
+        } catch (DbxWebAuth.BadStateException e) {
             // Send them back to the start of the auth flow.
             response.sendRedirect(common.getUrl(request, "/dropbox-auth-start"));
             return;
-        }
-        catch (DbxWebAuth.CsrfException e) {
+        } catch (DbxWebAuth.CsrfException e) {
             common.log.println("On /dropbox-auth-finish: CSRF mismatch: " + e.getMessage());
             response.sendError(403);
             return;
-        }
-        catch (DbxWebAuth.NotApprovedException e) {
+        } catch (DbxWebAuth.NotApprovedException e) {
             common.page(response, 200, "Not approved?", "Why not, bro?");
             return;
-        }
-        catch (DbxWebAuth.ProviderException e) {
+        } catch (DbxWebAuth.ProviderException e) {
             common.log.println("On /dropbox-auth-finish: Auth failed: " + e.getMessage());
             response.sendError(503, "Error communicating with Dropbox.");
             return;
-        }
-        catch (DbxException e) {
+        } catch (DbxException e) {
             common.log.println("On /dropbox-auth-finish: Error getting token: " + e);
             response.sendError(503, "Error communicating with Dropbox.");
             return;
@@ -112,8 +111,7 @@ public class DropboxAuth
     // -------------------------------------------------------------------------------------------
 
     public void doUnlink(HttpServletRequest request, HttpServletResponse response)
-            throws IOException, ServletException
-    {
+            throws IOException, ServletException {
         if (!common.checkPost(request, response)) return;
         User user = common.requireLoggedInUser(request, response);
         if (user == null) return;
@@ -127,17 +125,18 @@ public class DropboxAuth
 
     // -------------------------------------------------------------------------------------------
 
-    private DbxWebAuth getWebAuth(final HttpServletRequest request)
-    {
-        // After we redirect the user to the Dropbox website for authorization,
-        // Dropbox will redirect them back here.
-        String redirectUrl = common.getUrl(request, "/dropbox-auth-finish");
-
+    private DbxSessionStore getSessionStore(final HttpServletRequest request) {
         // Select a spot in the session for DbxWebAuth to store the CSRF token.
         HttpSession session = request.getSession(true);
         String sessionKey = "dropbox-auth-csrf-token";
-        DbxSessionStore csrfTokenStore = new DbxStandardSessionStore(session, sessionKey);
+        return new DbxStandardSessionStore(session, sessionKey);
+    }
 
-        return new DbxWebAuth(common.getRequestConfig(request), common.dbxAppInfo, redirectUrl, csrfTokenStore);
+    private DbxWebAuth getWebAuth(final HttpServletRequest request) {
+        return new DbxWebAuth(common.getRequestConfig(request), common.dbxAppInfo);
+    }
+
+    private String getRedirectUri(final HttpServletRequest request) {
+        return common.getUrl(request, "/dropbox-auth-finish");
     }
 }

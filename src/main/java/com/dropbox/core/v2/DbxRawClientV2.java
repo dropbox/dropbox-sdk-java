@@ -44,9 +44,10 @@ import java.util.List;
  * </p>
  */
 public abstract class DbxRawClientV2 {
+    public static final String USER_AGENT_ID = "OfficialDropboxJavaSDKv2";
+
     // The HTTP status codes returned for errors specific to particular API calls.
     private static final List<Integer> FUNCTION_SPECIFIC_ERROR_CODES = Arrays.asList(403, 404, 409);
-    private static final String USER_AGENT_ID = "OfficialDropboxJavaSDKv2";
     private static final JsonFactory JSON = new JsonFactory();
 
     private final DbxRequestConfig requestConfig;
