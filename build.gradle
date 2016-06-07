@@ -195,7 +195,9 @@ javadoc {
     //
     // NOTE: ugly hack to set our doclint settings due to strange handling of string options by the
     // javadoc task.
-    options.addBooleanOption "Xdoclint:all,-missing", true
+    if (JavaVersion.current().isJava8Compatible()) {
+        options.addBooleanOption "Xdoclint:all,-missing", true
+    }
     options.addStringOption "link", "http://docs.oracle.com/javase/6/docs/api/"
 }
 
