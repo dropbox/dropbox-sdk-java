@@ -23,119 +23,115 @@ import com.dropbox.core.v2.DbxRawClientV2;
  * for a user when they first use your application.  Once you have an access token for that user, it
  * remains valid for years.
  *
- * <h2> Redirect example </h2>
- * <p> Setup: </p>
+ * <h1> Redirect example </h1>
+ * <p> One-time setup typically done on server initialization: </p>
  * <pre>
- * {@link DbxRequestConfig} requestConfig = new DbxRequestConfig("text-edit/0.1");
- * {@link DbxAppInfo} appInfo = DbxAppInfo.Reader.readFromFile("api.app");
- * DbxWebAuth auth = new DbxWebAuth(requestConfig, appInfo);
+ *     {@link DbxRequestConfig} requestConfig = new DbxRequestConfig("text-edit/0.1");
+ *     {@link DbxAppInfo} appInfo = DbxAppInfo.Reader.readFromFile("api.app");
+ *     DbxWebAuth auth = new DbxWebAuth(requestConfig, appInfo);
  *
- * <b>// Select a spot in the session for DbxWebAuth to store the CSRF token.</b>
- * {@link javax.servlet.http.HttpServletRequest} request = ...
- * {@link javax.servlet.http.HttpSession} session = request.getSession(true);
- * String sessionKey = "dropbox-auth-csrf-token";
- * {@link DbxSessionStore} csrfTokenStore = new DbxStandardSessionStore(session, sessionKey);
- *
- * String redirectUri = "http://my-server.com/dropbox-auth-finish";
+ *     String redirectUri = "http://my-server.com/dropbox-auth-finish";
  * </pre>
  *
- * <p>
- * Part 1 (handler for "http://my-server.com/dropbox-auth-start").
- * </p>
+ * <h2> Part 1 </h2>
+ * <p> Handler for "http://my-server.com/dropbox-auth-start": </p>
  * <pre>
- * {@link javax.servlet.http.HttpServletResponse} response = ...
+ *     {@link javax.servlet.http.HttpServletRequest} request = ...
+ *     {@link javax.servlet.http.HttpServletResponse} response = ...
  *
- * <b>// Build an auth request</b>
- * {@link DbxWebAuth.Request} authRequest = DbxWebAuth.newRequestBuilder()
- *     .withRedirectUri(redirectUri, csrfTokenStore)
- *     .build();
+ *     <b>// Select a spot in the session for DbxWebAuth to store the CSRF token.</b>
+ *     {@link javax.servlet.http.HttpSession} session = request.getSession(true);
+ *     String sessionKey = "dropbox-auth-csrf-token";
+ *     {@link DbxSessionStore} csrfTokenStore = new DbxStandardSessionStore(session, sessionKey);
  *
- * <b>// Start authorization.</b>
- * String authorizePageUrl = auth.{@link #authorize authorize}(authRequest);
+ *     <b>// Build an auth request</b>
+ *     {@link DbxWebAuth.Request} authRequest = DbxWebAuth.newRequestBuilder()
+ *         .withRedirectUri(redirectUri, csrfTokenStore)
+ *         .build();
  *
- * <b>// Redirect the user to the Dropbox website so they can approve our application.</b>
- * <b>// The Dropbox website will send them back to "http://my-server.com/dropbox-auth-finish"</b>
- * <b>// when they're done.</b>
- * response.sendRedirect(authorizePageUrl);
+ *     <b>// Start authorization.</b>
+ *     String authorizePageUrl = auth.{@link #authorize authorize}(authRequest);
+ *
+ *     <b>// Redirect the user to the Dropbox website so they can approve our application.</b>
+ *     <b>// The Dropbox website will send them back to "http://my-server.com/dropbox-auth-finish"</b>
+ *     <b>// when they're done.</b>
+ *     response.sendRedirect(authorizePageUrl);
  * </pre>
  *
- * <p>
- * Part 2 (handler for "http://my-server.com/dropbox-auth-finish").
- * </p>
+ * <h2> Part 2 </h2>
+ * <p> Handler for "http://my-server.com/dropbox-auth-finish": </p>
  * <pre>
- * {@link javax.servlet.http.HttpServletRequest} request = ...
- * {@link javax.servlet.http.HttpServletResponse} response = ...
+ *     {@link javax.servlet.http.HttpServletRequest} request = ...
+ *     {@link javax.servlet.http.HttpServletResponse} response = ...
  *
- * <b>// Fetch the session to verify our CSRF token</b>
- * {@link javax.servlet.http.HttpSession} session = request.getSession(true);
- * String sessionKey = "dropbox-auth-csrf-token";
- * {@link DbxSessionStore} csrfTokenStore = new DbxStandardSessionStore(session, sessionKey);
- * String redirectUri = "http://my-server.com/dropbox-auth-finish";
+ *     <b>// Fetch the session to verify our CSRF token</b>
+ *     {@link javax.servlet.http.HttpSession} session = request.getSession(true);
+ *     String sessionKey = "dropbox-auth-csrf-token";
+ *     {@link DbxSessionStore} csrfTokenStore = new DbxStandardSessionStore(session, sessionKey);
+ *     String redirectUri = "http://my-server.com/dropbox-auth-finish";
  *
- * {@link DbxAuthFinish} authFinish;
- * try {
- *     authFinish = auth.{@link #finishFromRedirect finishFromRedirect}(redirectUri, csrfTokenStore, request.getParameterMap());
- * } catch (DbxWebAuth.BadRequestException ex) {
- *     log("On /dropbox-auth-finish: Bad request: " + ex.getMessage());
- *     response.sendError(400);
- *     return;
- * } catch (DbxWebAuth.BadStateException ex) {
- *     // Send them back to the start of the auth flow.
- *     response.sendRedirect("http://my-server.com/dropbox-auth-start");
- *     return;
- * } catch (DbxWebAuth.CsrfException ex) {
- *     log("On /dropbox-auth-finish: CSRF mismatch: " + ex.getMessage());
- *     response.sendError(403, "Forbidden.");
- *     return;
- * } catch (DbxWebAuth.NotApprovedException ex) {
- *     <b>// When Dropbox asked "Do you want to allow this app to access your</b>
- *     <b>// Dropbox account?", the user clicked "No".</b>
+ *     {@link DbxAuthFinish} authFinish;
+ *     try {
+ *         authFinish = auth.{@link #finishFromRedirect finishFromRedirect}(redirectUri, csrfTokenStore, request.getParameterMap());
+ *     } catch (DbxWebAuth.BadRequestException ex) {
+ *         log("On /dropbox-auth-finish: Bad request: " + ex.getMessage());
+ *         response.sendError(400);
+ *         return;
+ *     } catch (DbxWebAuth.BadStateException ex) {
+ *         // Send them back to the start of the auth flow.
+ *         response.sendRedirect("http://my-server.com/dropbox-auth-start");
+ *         return;
+ *     } catch (DbxWebAuth.CsrfException ex) {
+ *         log("On /dropbox-auth-finish: CSRF mismatch: " + ex.getMessage());
+ *         response.sendError(403, "Forbidden.");
+ *         return;
+ *     } catch (DbxWebAuth.NotApprovedException ex) {
+ *         <b>// When Dropbox asked "Do you want to allow this app to access your</b>
+ *         <b>// Dropbox account?", the user clicked "No".</b>
+ *         ...
+ *         return;
+ *     } catch (DbxWebAuth.ProviderException ex) {
+ *         log("On /dropbox-auth-finish: Auth failed: " + ex.getMessage());
+ *         response.sendError(503, "Error communicating with Dropbox.");
+ *         return;
+ *     } catch (DbxException ex) {
+ *         log("On /dropbox-auth-finish: Error getting token: " + ex.getMessage());
+ *         response.sendError(503, "Error communicating with Dropbox.");
+ *         return;
+ *     }
+ *     String accessToken = authFinish.getAccessToken();
+ *
+ *     <b>// Save the access token somewhere (probably in your database) so you</b>
+ *     <b>// don't need to send the user through the authorization process again.</b>
  *     ...
- *     return;
- * } catch (DbxWebAuth.ProviderException ex) {
- *     log("On /dropbox-auth-finish: Auth failed: " + ex.getMessage());
- *     response.sendError(503, "Error communicating with Dropbox.");
- *     return;
- * } catch (DbxException ex) {
- *     log("On /dropbox-auth-finish: Error getting token: " + ex.getMessage());
- *     response.sendError(503, "Error communicating with Dropbox.");
- *     return;
- * }
- * String accessToken = authFinish.getAccessToken();
  *
- * <b>// Save the access token somewhere (probably in your database) so you</b>
- * <b>// don't need to send the user through the authorization process again.</b>
- * ...
- *
- * <b>// Now use the access token to make Dropbox API calls.</b>
- * {@link com.dropbox.core.v2.DbxClientV2} client = new DbxClientV2(requestConfig, accessToken);
- * ...
+ *     <b>// Now use the access token to make Dropbox API calls.</b>
+ *     {@link com.dropbox.core.v2.DbxClientV2} client = new DbxClientV2(requestConfig, accessToken);
+ *     ...
  * </pre>
  *
- * <h2> No Redirect Example </h2>
- * <p> Setup: </p>
+ * <h1> No Redirect Example </h1>
+ *
  * <pre>
- * {@link DbxRequestConfig} requestConfig = new DbxRequestConfig("text-edit/0.1");
- * {@link DbxAppInfo} appInfo = DbxAppInfo.Reader.readFromFile("api.app");
- * DbxWebAuth auth = new DbxWebAuth(requestConfig, appInfo);
+ *     {@link DbxRequestConfig} requestConfig = new DbxRequestConfig("text-edit/0.1");
+ *     {@link DbxAppInfo} appInfo = DbxAppInfo.Reader.readFromFile("api.app");
+ *     DbxWebAuth auth = new DbxWebAuth(requestConfig, appInfo);
  *
- * {@link DbxWebAuth.Request} authRequest = DbxWebAuth.newRequestBuilder()
- *     .withNoRedirect()
- *     .build();
- * String authorizeUrl = auth.authorize(authRequest);
- * System.out.println("1. Go to " + authorizeUrl);
- * System.out.println("2. Click \"Allow\" (you might have to log in first).");
- * System.out.println("3. Copy the authorization code.");
- * System.out.print("Enter the authorization code here: ");
+ *     {@link DbxWebAuth.Request} authRequest = DbxWebAuth.newRequestBuilder()
+ *         .withNoRedirect()
+ *         .build();
+ *     String authorizeUrl = auth.authorize(authRequest);
+ *     System.out.println("1. Go to " + authorizeUrl);
+ *     System.out.println("2. Click \"Allow\" (you might have to log in first).");
+ *     System.out.println("3. Copy the authorization code.");
+ *     System.out.print("Enter the authorization code here: ");
  *
- * String code = System.console().readLine();
- * if (code != null) {
- *     code = code.trim();
- *
- *     {@link DbxAuthFinish} authFinish = webAuth.finish(code);
- *
- *     {@link com.dropbox.core.v2.DbxClientV2} client = new DbxClientV2(requestConfig, authFinish.getAccessToken());
- * }
+ *     String code = System.console().readLine();
+ *     if (code != null) {
+ *         code = code.trim();
+ *         {@link DbxAuthFinish} authFinish = webAuth.{@link #finishFromCode finishFromCode}(code);
+ *         {@link com.dropbox.core.v2.DbxClientV2} client = new DbxClientV2(requestConfig, authFinish.getAccessToken());
+ *     }
  * </pre>
  */
 public class DbxWebAuth {
