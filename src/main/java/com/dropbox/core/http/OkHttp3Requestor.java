@@ -41,13 +41,41 @@ public class OkHttp3Requestor extends HttpRequestor {
             .connectTimeout(DEFAULT_CONNECT_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)
             .readTimeout(DEFAULT_READ_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)
             .writeTimeout(DEFAULT_READ_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)
+            // enables certificate pinning
+            .sslSocketFactory(SSLConfig.getSSLSocketFactory(), SSLConfig.getTrustManager())
             .build();
     }
 
+    /**
+     * Creates a new instance of this requestor that uses {@code client} for its requests.
+     *
+     * <p> NOTE: This constructor will not enable certificate pinning on the client. If you want
+     * certificate pinning, use the default instance, {@link #INSTANCE}, or clone the default client
+     * and modify it accordingly:
+     *
+     * <pre>
+     *     OkHttpClient client = OkHttpRequestor.INSTANCE.getClient()
+     *         .readTimeout(2, TimeUnit.MINUTES)
+     *         // ... other modifications
+     *         .build();
+     *     HttpRequestor requestor = new OkHttpRequestor(client);
+     * </pre>
+     *
+     * @param client {@code OkHttpClient} to use for requests, never {@code null}
+     */
     public OkHttp3Requestor(OkHttpClient client) {
+        if (client == null) throw new NullPointerException("client");
         this.client = client;
     }
 
+    /**
+     * Returns the underlying {@code OkHttpClient} used to make requests.
+     *
+     * If you want to modify the client for a particular request, create a new instance of this
+     * requestor with the modified client.
+     *
+     * @return underlying {@code OkHttpClient} used by this requestor.
+     */
     public OkHttpClient getClient() {
         return client;
     }

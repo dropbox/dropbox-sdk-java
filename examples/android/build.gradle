@@ -62,10 +62,11 @@ dependencies {
     compile 'com.android.support:design:23.1.1'
     compile 'com.android.support:recyclerview-v7:23.1.1'
     compile 'com.fasterxml.jackson.core:jackson-core:2.7.4'
-    // picasso 2.5.2 doesn't have OkHttp3 support (although it exists on master). Must use OkHttp v2
-    // until new picasso release
+    // picasso 2.5.2 doesn't have OkHttp3 support (although it exists
+    // on master). Must use OkHttp v2 and v3 until new picasso release
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.squareup.okhttp:okhttp:2.7.5'
+    compile 'com.squareup.okhttp3:okhttp:3.3.1'
 }
 
 apply plugin: 'com.getkeepsafe.dexcount'

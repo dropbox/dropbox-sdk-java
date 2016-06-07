@@ -29,6 +29,7 @@ import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.X509TrustManager;
 
 /*>>> import checkers.nullness.quals.Nullable; */
 /*>>> import checkers.nullness.quals.MonotonicNonNull; */
@@ -55,6 +56,7 @@ import javax.net.ssl.TrustManagerFactory;
  *
  */
 public class SSLConfig {
+    private static final X509TrustManager TRUST_MANAGER = createTrustManager();
     private static final SSLSocketFactory SSL_SOCKET_FACTORY = createSSLSocketFactory();
 
     private static final String[] PROTOCOL_LIST_TLS_V1_2 = {"TLSv1.2"};
@@ -118,6 +120,10 @@ public class SSLConfig {
      */
     public static void apply(HttpsURLConnection conn) throws SSLException {
         conn.setSSLSocketFactory(SSL_SOCKET_FACTORY);
+    }
+
+    public static X509TrustManager getTrustManager() {
+        return TRUST_MANAGER;
     }
 
     public static SSLSocketFactory getSSLSocketFactory() {
@@ -191,10 +197,13 @@ public class SSLConfig {
         }
     }
 
-    private static SSLSocketFactory createSSLSocketFactory() {
+    private static X509TrustManager createTrustManager() {
         KeyStore trustedCertKeyStore = loadKeyStore(ROOT_CERTS_RESOURCE);
-        TrustManager[] trustManagers = createTrustManagers(trustedCertKeyStore);
-        SSLContext sslContext = createSSLContext(trustManagers);
+        return createTrustManager(trustedCertKeyStore);
+    }
+
+    private static SSLSocketFactory createSSLSocketFactory() {
+        SSLContext sslContext = createSSLContext(new TrustManager[] { TRUST_MANAGER });
         return new SSLSocketFactoryWrapper(sslContext.getSocketFactory());
     }
 
@@ -270,7 +279,7 @@ public class SSLConfig {
         return sslContext;
     }
 
-    private static TrustManager[] createTrustManagers(KeyStore trustedCertKeyStore) {
+    private static X509TrustManager createTrustManager(KeyStore trustedCertKeyStore) {
         TrustManagerFactory tmf;
         try {
             tmf = TrustManagerFactory.getInstance("X509");
@@ -284,7 +293,15 @@ public class SSLConfig {
             throw mkAssert("Unable to initialize TrustManagerFactory with key store", ex);
         }
 
-        return tmf.getTrustManagers();
+        TrustManager[] trustManagers = tmf.getTrustManagers();
+        if (trustManagers.length != 1) {
+            throw new AssertionError("More than 1 TrustManager created.");
+        }
+        if (!(trustManagers[0] instanceof X509TrustManager)) {
+            throw new AssertionError("TrustManager not of type X509: " + trustManagers[0].getClass());
+        }
+
+        return (X509TrustManager) trustManagers[0];
     }
 
     private static KeyStore loadKeyStore(String certFileResource) {
