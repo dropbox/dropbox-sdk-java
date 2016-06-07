@@ -6,6 +6,7 @@
 - Add support for OkHttp3.
 - Add support for Google App Engine with new GoogleAppEngineRequestor.
 - Add support for require_role, force_reapprove, state, and disable_signup parameters in the OAuth 2 web-based authorization flow (DbxWebAuth).
+- Enable certificate pinning for OkHttpRequestor and OkHttp3Requestor by default.
 
 2.0.4 (2016-05-31)
 ---------------------------------------------
