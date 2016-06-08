@@ -9,6 +9,7 @@ import com.dropbox.core.DbxWebAuth;
 import com.dropbox.core.json.JsonReader;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -90,9 +91,10 @@ public class Main {
 
         // Save auth information to output file.
         DbxAuthInfo authInfo = new DbxAuthInfo(authFinish.getAccessToken(), appInfo.getHost());
+        File output = new File(argAuthFileOutput);
         try {
-            DbxAuthInfo.Writer.writeToFile(authInfo, argAuthFileOutput);
-            System.out.println("Saved authorization information to \"" + argAuthFileOutput + "\".");
+            DbxAuthInfo.Writer.writeToFile(authInfo, output);
+            System.out.println("Saved authorization information to \"" + output.getCanonicalPath() + "\".");
         } catch (IOException ex) {
             System.err.println("Error saving to <auth-file-out>: " + ex.getMessage());
             System.err.println("Dumping to stderr instead:");
