@@ -6,7 +6,9 @@ import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Random;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
@@ -61,17 +63,36 @@ public final class ITUtil {
      */
     public static HttpRequestor newHttpRequestor() {
         String val = System.getProperty(HTTP_REQUESTOR_PROPERTY);
-        if (val == null || val.equals("Standard")) {
+	Class [] classes = new Class [] {
+	    StandardHttpRequestor.class,
+	    OkHttpRequestor.class,
+	    OkHttp3Requestor.class,
+	    GoogleAppEngineRequestor.class
+	};
+	Map<String, Class<?>> validNames = new HashMap<String, Class<?>>();
+	for (Class<?> clazz : classes) {
+	    validNames.put(clazz.getSimpleName(), clazz);
+	}
+
+	Class<?> type = validNames.get(val);
+        if (type == null || type.equals(StandardHttpRequestor.class)) {
             return newStandardHttpRequestor();
-        } else if(val.equals("OkHttp")) {
+        } else if(type.equals(OkHttpRequestor.class)) {
             return newOkHttpRequestor();
-        } else if(val.equals("OkHttp3")) {
+        } else if(type.equals(OkHttp3Requestor.class)) {
             return newOkHttp3Requestor();
-        } else if(val.equals("GoogleAppEngine")) {
+        } else if(type.equals(GoogleAppEngineRequestor.class)) {
             return newGoogleAppEngineRequestor();
         } else {
-            fail("Invalid value for System property \"" + HTTP_REQUESTOR_PROPERTY + "\". " +
-                 "Expected \"Standard\", \"OkHttp\", or \"GoogleAppEngine\", but was: \"" + val + "\".");
+	    StringBuilder message = new StringBuilder()
+		.append("Invalid value for System property \"")
+		.append(HTTP_REQUESTOR_PROPERTY)
+		.append("\". Expected ");
+	    for (String validName : validNames.keySet()) {
+		message.append("\"").append(validName).append("\", ");
+	    }
+	    message.append("but was: \"").append(val).append("\".");
+            fail(message.toString());
             return null;
         }
     }
