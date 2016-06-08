@@ -1,12 +1,12 @@
 package com.dropbox.core.http;
 
-import com.squareup.okhttp.Call;
-import com.squareup.okhttp.Headers;
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.internal.Util;
+import okhttp3.Call;
+import okhttp3.Headers;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.internal.Util;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -21,63 +21,60 @@ import okio.BufferedSink;
 
 /**
  * {@link HttpRequestor} implementation that uses <a href="http://square.github.io/okhttp/">OkHttp
- * v2</a>.  You can only use this if your project includes the OkHttp v2 library.
+ * v3</a>.  You can only use this if your project includes the OkHttp v3 library.
  *
- * <p> To use OkHttp v3, see {@link OkHttp3Requestor}.
- *
- * <p> To use this, pass {@link #INSTANCE} to the {@link com.dropbox.core.DbxRequestConfig} constructor.
- *
- * @see OkHttp3Requestor
+ * <p>
+ * To use this, pass {@link #INSTANCE} to the {@link com.dropbox.core.DbxRequestConfig} constructor.
+ * </p>
  */
-public class OkHttpRequestor extends HttpRequestor {
+public class OkHttp3Requestor extends HttpRequestor {
     /**
-     * A thread-safe instance of {@code OkHttpRequestor} that connects directly
+     * A thread-safe instance of {@code OkHttp3Requestor} that connects directly
      * (as opposed to using a proxy).
      */
-    public static final OkHttpRequestor INSTANCE = new OkHttpRequestor(defaultOkHttpClient());
+    public static final OkHttp3Requestor INSTANCE = new OkHttp3Requestor(defaultOkHttpClient());
 
     private final OkHttpClient client;
 
     private static OkHttpClient defaultOkHttpClient() {
-        OkHttpClient client = new OkHttpClient();
-        client.setConnectTimeout(DEFAULT_CONNECT_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
-        client.setReadTimeout(DEFAULT_READ_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
-        client.setWriteTimeout(DEFAULT_READ_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
-        // enables certificate pinning
-        client.setSslSocketFactory(SSLConfig.getSSLSocketFactory());
-        return client;
+        return new OkHttpClient.Builder()
+            .connectTimeout(DEFAULT_CONNECT_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)
+            .readTimeout(DEFAULT_READ_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)
+            .writeTimeout(DEFAULT_READ_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)
+            // enables certificate pinning
+            .sslSocketFactory(SSLConfig.getSSLSocketFactory(), SSLConfig.getTrustManager())
+            .build();
     }
 
     /**
      * Creates a new instance of this requestor that uses {@code client} for its requests.
-     *
-     * <p> The {@code OkHttpClient} will be cloned to prevent further modification.
      *
      * <p> NOTE: This constructor will not enable certificate pinning on the client. If you want
      * certificate pinning, use the default instance, {@link #INSTANCE}, or clone the default client
      * and modify it accordingly:
      *
      * <pre>
-     *     OkHttpClient client = OkHttpRequestor.INSTANCE.getClient(); // returns a clone
-     *     client.setReadTimeout(2, TimeUnit.MINUTES);
-     *     // ... other modifications
+     *     OkHttpClient client = OkHttpRequestor.INSTANCE.getClient()
+     *         .readTimeout(2, TimeUnit.MINUTES)
+     *         // ... other modifications
+     *         .build();
      *     HttpRequestor requestor = new OkHttpRequestor(client);
      * </pre>
      *
-     * @param client {@code OkHttpClient} to use for requests (will be cloned), never {@code null}
+     * @param client {@code OkHttpClient} to use for requests, never {@code null}
      */
-    public OkHttpRequestor(OkHttpClient client) {
+    public OkHttp3Requestor(OkHttpClient client) {
         if (client == null) throw new NullPointerException("client");
-        this.client = client.clone();
+        this.client = client;
     }
 
     /**
-     * Returns a clone of the underlying {@code OkHttpClient} used to make requests.
+     * Returns the underlying {@code OkHttpClient} used to make requests.
      *
      * If you want to modify the client for a particular request, create a new instance of this
      * requestor with the modified client.
      *
-     * @return clone of the underlying {@code OkHttpClient} used by this requestor.
+     * @return underlying {@code OkHttpClient} used by this requestor.
      */
     public OkHttpClient getClient() {
         return client;
@@ -87,7 +84,7 @@ public class OkHttpRequestor extends HttpRequestor {
     public Response doGet(String url, Iterable<Header> headers) throws IOException {
         Request.Builder builder = new Request.Builder().get().url(url);
         toOkHttpHeaders(headers, builder);
-        com.squareup.okhttp.Response response = client.newCall(builder.build()).execute();
+        okhttp3.Response response = client.newCall(builder.build()).execute();
         Map<String, List<String>> responseHeaders = fromOkHttpHeaders(response.headers());
         return new Response(response.code(), response.body().byteStream(), responseHeaders);
     }
@@ -151,7 +148,7 @@ public class OkHttpRequestor extends HttpRequestor {
 
         @Override
         public Response finish() throws IOException {
-            com.squareup.okhttp.Response response = call.execute();
+            okhttp3.Response response = call.execute();
             Map<String, List<String>> responseHeaders = fromOkHttpHeaders(response.headers());
             return new Response(response.code(), response.body().byteStream(), responseHeaders);
         }

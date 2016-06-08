@@ -1,6 +1,9 @@
+import org.gradle.internal.os.OperatingSystem;
+
 apply plugin: 'java'
 apply plugin: 'osgi'
 apply plugin: 'maven'
+apply plugin: 'com.github.ben-manes.versions' // dependencyUpdates task
 
 description = 'Official Java client library for the Dropbox API.'
 group = 'com.dropbox.core'
@@ -13,13 +16,15 @@ targetCompatibility = JavaVersion.VERSION_1_6
 conf2ScopeMappings.addMapping(1, configurations.compileOnly, 'provided')
 
 ext {
+    mavenName = 'Official Dropbox Java SDK'
     generatedSources = file("$buildDir/generated-sources")
     generatedResources = file("$buildDir/generated-resources")
     authInfoPropertyName = 'com.dropbox.test.authInfoFile'
     basePom = pom {
-        name = 'Official Dropbox Java SDK'
+        name = mavenName
         artifactId = archivesBaseName
         project {
+            description = description
             packaging 'jar'
             url 'https://www.dropbox.com/developers/core'
 
@@ -54,6 +59,7 @@ buildscript {
         jcenter()
         mavenCentral()
     }
+
     dependencies {
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.12.0'
     }
@@ -69,14 +75,21 @@ dependencies {
     compile 'com.fasterxml.jackson.core:jackson-core:2.7.4'
 
     compileOnly 'javax.servlet:servlet-api:2.5'
-    compileOnly 'com.squareup.okhttp:okhttp:2.7.5'
+    compileOnly 'com.squareup.okhttp:okhttp:2.7.5'  // support both v2 and v3 to avoid
+    compileOnly 'com.squareup.okhttp3:okhttp:3.3.1' // method count bloat
     compileOnly 'com.google.android:android:4.1.1.4'
+    compileOnly 'com.google.appengine:appengine-api-1.0-sdk:1.9.38'
 
     testCompile 'org.testng:testng:6.9.10'
     testCompile 'org.mockito:mockito-core:1.10.19'
     testCompile 'org.openjdk.jmh:jmh-core:1.12'
     testCompile 'org.openjdk.jmh:jmh-generator-annprocess:1.12'
+    testCompile 'com.google.appengine:appengine-api-1.0-sdk:1.9.38'
+    testCompile 'com.google.appengine:appengine-api-labs:1.9.38'
+    testCompile 'com.google.appengine:appengine-api-stubs:1.9.38'
+    testCompile 'com.google.appengine:appengine-testing:1.9.38'
     testCompile 'com.squareup.okhttp:okhttp:2.7.5'
+    testCompile 'com.squareup.okhttp3:okhttp:3.3.1'
 }
 
 processResources {
@@ -162,19 +175,19 @@ task integrationTest(type: Test) {
 
     ext {
         authInfoPropertyName = 'com.dropbox.test.authInfoFile'
-        okHttpPropertyName = 'com.dropbox.test.okHttp'
+        httpRequestorPropertyName = 'com.dropbox.test.httpRequestor'
     }
 
     doFirst {
         systemProperty authInfoPropertyName, getAuthInfoFile().absolutePath
-        if (project.hasProperty(okHttpPropertyName)) {
-            systemProperty okHttpPropertyName, project.property(okHttpPropertyName)
+        if (project.hasProperty(httpRequestorPropertyName)) {
+            systemProperty httpRequestorPropertyName, project.property(httpRequestorPropertyName)
         }
     }
 }
 
 javadoc {
-    title "${project.name} ${project.version} API"
+    title "${project.mavenName} ${project.version} API"
     failOnError true
 
     // JDK 8's javadoc has an on-by-default lint called "missing", which requires that everything
@@ -182,7 +195,9 @@ javadoc {
     //
     // NOTE: ugly hack to set our doclint settings due to strange handling of string options by the
     // javadoc task.
-    options.addBooleanOption "Xdoclint:all,-missing", true
+    if (JavaVersion.current().isJava8Compatible()) {
+        options.addBooleanOption "Xdoclint:all,-missing", true
+    }
     options.addStringOption "link", "http://docs.oracle.com/javase/6/docs/api/"
 }
 
@@ -231,9 +246,29 @@ if (project.sourceCompatibility == JavaVersion.VERSION_1_6) {
 
         logger.info("Setting JVM boot classpath to use ${jdkHome}")
         project.tasks.withType(JavaCompile) {
-            options.bootClasspath = "${jdkHome}/jre/lib/rt.jar"
-            options.bootClasspath += "${sep}${jdkHome}/jre/lib/jsse.jar"
-            options.bootClasspath += "${sep}${jdkHome}/jre/lib/jce.jar"
+            def jdkLibs = "${jdkHome}/jre/lib"
+            def runtimeClasses = "rt.jar"
+            if (OperatingSystem.current().isMacOsX()) {
+                jdkLibs = "${jdkHome}/Classes"
+                runtimeClasses = "classes.jar"
+            }
+            options.bootClasspath = "${jdkLibs}/${runtimeClasses}"
+            options.bootClasspath += "${sep}${jdkLibs}/jsse.jar"
+            options.bootClasspath += "${sep}${jdkLibs}/jce.jar"
+        }
+    }
+}
+
+// reject dependencyUpdates candidates with alpha or beta in their names:
+dependencyUpdates.resolutionStrategy = {
+    componentSelection { rules ->
+        rules.all { ComponentSelection selection ->
+            boolean rejected = ['alpha', 'beta', 'rc'].any { qualifier ->
+                selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
+            }
+            if (rejected) {
+                selection.reject('Release candidate')
+            }
         }
     }
 }

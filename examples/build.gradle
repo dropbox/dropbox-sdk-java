@@ -36,6 +36,7 @@ subprojects {
     //
     // This is intended to be used by the ./run script and not through gradle directly
     task run(type: JavaExec) {
+        standardInput = System.in
         classpath = sourceSets.main.runtimeClasspath
         main = "com.dropbox.core.examples.${project.name.replace('-','_')}.Main"
         ignoreExitValue true

@@ -6,14 +6,12 @@ import com.dropbox.core.DbxAuthInfo;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.DbxWebAuth;
-import com.dropbox.core.DbxWebAuthNoRedirect;
 import com.dropbox.core.json.JsonReader;
 
 import java.io.BufferedReader;
-import java.io.IOException;
+import java.io.File;
 import java.io.InputStreamReader;
-import java.io.PrintStream;
-import java.util.Locale;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -61,11 +59,13 @@ public class Main {
         }
 
         // Run through Dropbox API authorization process
-        String userLocale = Locale.getDefault().toLanguageTag();
-        DbxRequestConfig requestConfig = new DbxRequestConfig("examples-authorize", userLocale);
-        DbxWebAuthNoRedirect webAuth = new DbxWebAuthNoRedirect(requestConfig, appInfo);
+        DbxRequestConfig requestConfig = new DbxRequestConfig("examples-authorize");
+        DbxWebAuth webAuth = new DbxWebAuth(requestConfig, appInfo);
+        DbxWebAuth.Request webAuthRequest = DbxWebAuth.newRequestBuilder()
+            .withNoRedirect()
+            .build();
 
-        String authorizeUrl = webAuth.start();
+        String authorizeUrl = webAuth.authorize(webAuthRequest);
         System.out.println("1. Go to " + authorizeUrl);
         System.out.println("2. Click \"Allow\" (you might have to log in first).");
         System.out.println("3. Copy the authorization code.");
@@ -79,9 +79,9 @@ public class Main {
 
         DbxAuthFinish authFinish;
         try {
-            authFinish = webAuth.finish(code);
+            authFinish = webAuth.finishFromCode(code);
         } catch (DbxException ex) {
-            System.err.println("Error in DbxWebAuth.start: " + ex.getMessage());
+            System.err.println("Error in DbxWebAuth.authorize: " + ex.getMessage());
             System.exit(1); return;
         }
 
@@ -91,9 +91,10 @@ public class Main {
 
         // Save auth information to output file.
         DbxAuthInfo authInfo = new DbxAuthInfo(authFinish.getAccessToken(), appInfo.getHost());
+        File output = new File(argAuthFileOutput);
         try {
-            DbxAuthInfo.Writer.writeToFile(authInfo, argAuthFileOutput);
-            System.out.println("Saved authorization information to \"" + argAuthFileOutput + "\".");
+            DbxAuthInfo.Writer.writeToFile(authInfo, output);
+            System.out.println("Saved authorization information to \"" + output.getCanonicalPath() + "\".");
         } catch (IOException ex) {
             System.err.println("Error saving to <auth-file-out>: " + ex.getMessage());
             System.err.println("Dumping to stderr instead:");

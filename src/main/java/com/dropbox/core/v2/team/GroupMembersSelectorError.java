@@ -15,7 +15,7 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 
 /**
- * Error that can be raised when {@link GroupMembersSelector} is used, and the
+ * Error that can be raised when {@code GroupMembersSelector} is used, and the
  * users are required to be members of the specified group.
  */
 public enum GroupMembersSelectorError {

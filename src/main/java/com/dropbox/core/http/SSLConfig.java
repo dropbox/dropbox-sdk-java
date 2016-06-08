@@ -5,6 +5,7 @@ import static com.dropbox.core.util.LangUtil.mkAssert;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
+import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
@@ -28,6 +29,7 @@ import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.X509TrustManager;
 
 /*>>> import checkers.nullness.quals.Nullable; */
 /*>>> import checkers.nullness.quals.MonotonicNonNull; */
@@ -54,6 +56,7 @@ import javax.net.ssl.TrustManagerFactory;
  *
  */
 public class SSLConfig {
+    private static final X509TrustManager TRUST_MANAGER = createTrustManager();
     private static final SSLSocketFactory SSL_SOCKET_FACTORY = createSSLSocketFactory();
 
     private static final String[] PROTOCOL_LIST_TLS_V1_2 = {"TLSv1.2"};
@@ -117,6 +120,10 @@ public class SSLConfig {
      */
     public static void apply(HttpsURLConnection conn) throws SSLException {
         conn.setSSLSocketFactory(SSL_SOCKET_FACTORY);
+    }
+
+    public static X509TrustManager getTrustManager() {
+        return TRUST_MANAGER;
     }
 
     public static SSLSocketFactory getSSLSocketFactory() {
@@ -190,10 +197,13 @@ public class SSLConfig {
         }
     }
 
-    private static SSLSocketFactory createSSLSocketFactory() {
+    private static X509TrustManager createTrustManager() {
         KeyStore trustedCertKeyStore = loadKeyStore(ROOT_CERTS_RESOURCE);
-        TrustManager[] trustManagers = createTrustManagers(trustedCertKeyStore);
-        SSLContext sslContext = createSSLContext(trustManagers);
+        return createTrustManager(trustedCertKeyStore);
+    }
+
+    private static SSLSocketFactory createSSLSocketFactory() {
+        SSLContext sslContext = createSSLContext(new TrustManager[] { TRUST_MANAGER });
         return new SSLSocketFactoryWrapper(sslContext.getSocketFactory());
     }
 
@@ -269,7 +279,7 @@ public class SSLConfig {
         return sslContext;
     }
 
-    private static TrustManager[] createTrustManagers(KeyStore trustedCertKeyStore) {
+    private static X509TrustManager createTrustManager(KeyStore trustedCertKeyStore) {
         TrustManagerFactory tmf;
         try {
             tmf = TrustManagerFactory.getInstance("X509");
@@ -283,7 +293,15 @@ public class SSLConfig {
             throw mkAssert("Unable to initialize TrustManagerFactory with key store", ex);
         }
 
-        return tmf.getTrustManagers();
+        TrustManager[] trustManagers = tmf.getTrustManagers();
+        if (trustManagers.length != 1) {
+            throw new AssertionError("More than 1 TrustManager created.");
+        }
+        if (!(trustManagers[0] instanceof X509TrustManager)) {
+            throw new AssertionError("TrustManager not of type X509: " + trustManagers[0].getClass());
+        }
+
+        return (X509TrustManager) trustManagers[0];
     }
 
     private static KeyStore loadKeyStore(String certFileResource) {
@@ -341,7 +359,8 @@ public class SSLConfig {
 
         Collection<X509Certificate> certs;
         try {
-            certs = (Collection<X509Certificate>) x509CertFactory.generateCertificates(in);
+            certs = (Collection<X509Certificate>) x509CertFactory
+                .generateCertificates(new CommentFilterInputStream(in));
         } catch (CertificateException ex) {
             throw new LoadException("Error loading certificate: " + ex.getMessage(), ex);
         }
@@ -353,6 +372,90 @@ public class SSLConfig {
             } catch (KeyStoreException ex) {
                 throw new LoadException("Error loading certificate: " + ex.getMessage(), ex);
             }
+        }
+    }
+
+
+    /**
+     * Strips '#' comments from PEM encoded cert file. Java 7+ handles skipping comments that aren't
+     * within certificate blocks. Java 6, however, will fail to parse the cert file if it contains
+     * anything other than certificate blocks.
+     *
+     * <p><b> NOTE: Android will incorrectly parse PEM encoded files containing comments.</b> When
+     * comments are left in the file, some of the certificates may not be loaded properly. This
+     * results in exceptions like the one below:
+     *
+     * <pre>
+     *    Caused by: javax.net.ssl.SSLHandshakeException: java.security.cert.CertPathValidatorException: Trust anchor for certification path not found.
+     *        at com.android.org.conscrypt.OpenSSLSocketImpl.startHandshake(OpenSSLSocketImpl.java:328)
+     *        at com.android.okhttp.internal.http.SocketConnector.connectTls(SocketConnector.java:103)
+     *        at com.android.okhttp.Connection.connect(Connection.java:143)
+     *        ...
+     * </pre>
+     */
+    private static final class CommentFilterInputStream extends FilterInputStream {
+        private boolean isLineStart;
+
+        public CommentFilterInputStream(InputStream in) {
+            super(in);
+            this.isLineStart = true;
+        }
+
+        @Override
+        public int read() throws IOException {
+            int ord = super.read();
+
+            // only filter at start of line
+            if (!isLineStart) {
+                return ord;
+            }
+
+            while (ord == '#') {
+                // chomp the comment
+                do {
+                    ord = super.read();
+                } while (!isLineFeed(ord) && ord != -1);
+
+                // now chomp the line feeds
+                while (isLineFeed(ord) && ord != -1) {
+                    ord = super.read();
+                }
+                isLineStart = true;
+            }
+
+            return ord;
+        }
+
+        @Override
+        public int read(byte [] b) throws IOException {
+            return read(b, 0, b.length);
+        }
+
+        @Override
+        public int read(byte [] b, int off, int len) throws IOException {
+            if (b == null) {
+                throw new NullPointerException("b");
+            }
+            if (off < 0 || len < 0 || len > (b.length - off)) {
+                throw new IndexOutOfBoundsException();
+            }
+
+            int count = 0;
+            for (int i = 0; i < len; ++i) {
+                int ord = read();
+                if (ord == -1) {
+                    break;
+                }
+
+                b[off + i] = (byte) ord;
+                ++count;
+            }
+
+            return count == 0 ? -1 : count;
+        }
+
+        private static boolean isLineFeed(int ord) {
+            return ord == '\n' || ord == '\r';
         }
     }
 }

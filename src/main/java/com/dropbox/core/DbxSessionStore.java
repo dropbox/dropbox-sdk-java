@@ -11,8 +11,7 @@ package com.dropbox.core;
  * {@link DbxStandardSessionStore}.
  * </pre>
  */
-public interface DbxSessionStore
-{
+public interface DbxSessionStore {
     public /*@Nullable*/String get();
     public void set(String value);
     public void clear();

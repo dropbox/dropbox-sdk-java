@@ -23,7 +23,7 @@ public class DbxRequestConfig {
         if (maxRetries < 0) throw new IllegalArgumentException("maxRetries");
 
         this.clientIdentifier = clientIdentifier;
-        this.userLocale = userLocale;
+        this.userLocale = toLanguageTag(userLocale);
         this.httpRequestor = httpRequestor;
         this.maxRetries = maxRetries;
     }
@@ -45,7 +45,10 @@ public class DbxRequestConfig {
      *                         the User-Agent header (see {@link #getClientIdentifier}).
      * @param userLocale IETF BCP 47 language tag of locale to use for user-visible text in responses, or
      *                   {@code null} to use the user's Dropbox locale preference.
+     *
+     * @deprecated Use {@link #newBuilder} to customize configuration
      */
+    @Deprecated
     public DbxRequestConfig(String clientIdentifier, /*@Nullable*/ String userLocale) {
         this(clientIdentifier, userLocale, StandardHttpRequestor.INSTANCE);
     }
@@ -58,7 +61,10 @@ public class DbxRequestConfig {
      * @param userLocale IETF BCP 47 language tag of locale to use for user-visible text in responses, or
      *                   {@code null} to use the user's Dropbox locale preference.
      * @param httpRequestor HTTP client to use for issuing requests.
+     *
+     * @deprecated Use {@link #newBuilder} to customize configuration
      */
+    @Deprecated
     public DbxRequestConfig(String clientIdentifier, /*@Nullable*/ String userLocale, HttpRequestor httpRequestor) {
         this(clientIdentifier, userLocale, httpRequestor, 0);
     }
@@ -198,6 +204,34 @@ public class DbxRequestConfig {
         }
 
         return tag.toString();
+    }
+
+    // APIv1 accepts Locale.toString() formatted locales (e.g. 'en_US'), but APIv2 will return an
+    // error if the locale is not in proper Language Tag format. Attempt to convert old locale
+    // formats to the new one.
+    private static String toLanguageTag(String locale) {
+        if (locale == null) {
+            return null;
+        }
+        // assume we are already a language tag
+        if (!locale.contains("_")) {
+            return locale;
+        }
+
+        // language can be missing, in which case we don't even bother
+        if (locale.startsWith("_")) {
+            return locale;
+        }
+
+        // Java 6 does "lang_country_variant". If country is missing, then "lang__variant". If no
+        // variant, then just "lang_country".
+        String [] parts = locale.split("_", 3);
+
+        String lang = parts[0];
+        String country = parts[1];
+        String variant = parts.length == 3 ? parts[2] : "";
+
+        return toLanguageTag(new Locale(lang, country, variant));
     }
 
     /**

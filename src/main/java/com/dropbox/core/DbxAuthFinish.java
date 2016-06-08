@@ -76,6 +76,7 @@ public final class DbxAuthFinish {
             String accessToken = null;
             String tokenType = null;
             String userId = null;
+            String state = null;
 
             while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
                 String fieldName = parser.getCurrentName();
@@ -90,6 +91,9 @@ public final class DbxAuthFinish {
                     }
                     else if (fieldName.equals("uid")) {
                         userId = JsonReader.StringReader.readField(parser, fieldName, userId);
+                    }
+                    else if (fieldName.equals("state")) {
+                        state = JsonReader.StringReader.readField(parser, fieldName, state);
                     }
                     else {
                         // Unknown field.  Skip over it.
@@ -107,7 +111,7 @@ public final class DbxAuthFinish {
             if (accessToken == null) throw new JsonReadException("missing field \"access_token\"", top);
             if (userId == null) throw new JsonReadException("missing field \"uid\"", top);
 
-            return new DbxAuthFinish(accessToken, userId, null);
+            return new DbxAuthFinish(accessToken, userId, state);
         }
     };
 

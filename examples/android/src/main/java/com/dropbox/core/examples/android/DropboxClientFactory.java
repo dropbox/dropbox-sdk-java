@@ -1,11 +1,9 @@
 package com.dropbox.core.examples.android;
 
-import com.dropbox.core.http.OkHttpRequestor;
-import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.DbxHost;
 import com.dropbox.core.DbxRequestConfig;
-
-import java.util.Locale;
+import com.dropbox.core.http.OkHttp3Requestor;
+import com.dropbox.core.v2.DbxClientV2;
 
 /**
  * Singleton instance of {@link DbxClientV2} and friends
@@ -16,11 +14,9 @@ public class DropboxClientFactory {
 
     public static void init(String accessToken) {
         if (sDbxClient == null) {
-            String userLocale = Locale.getDefault().toLanguageTag();
-            DbxRequestConfig requestConfig = new DbxRequestConfig(
-                    "examples-v2-demo",
-                    userLocale,
-                    OkHttpRequestor.INSTANCE);
+            DbxRequestConfig requestConfig = DbxRequestConfig.newBuilder("examples-v2-demo")
+                .withHttpRequestor(OkHttp3Requestor.INSTANCE)
+                .build();
 
             sDbxClient = new DbxClientV2(requestConfig, accessToken);
         }

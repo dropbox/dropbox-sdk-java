@@ -6,10 +6,15 @@ import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Random;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
+
+import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
+import com.google.appengine.tools.development.testing.LocalURLFetchServiceTestConfig;
 
 import com.squareup.okhttp.OkHttpClient;
 
@@ -18,8 +23,10 @@ import org.testng.annotations.BeforeSuite;
 
 import com.dropbox.core.DbxAuthInfo;
 import com.dropbox.core.DbxRequestConfig;
+import com.dropbox.core.http.GoogleAppEngineRequestor;
 import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.http.OkHttpRequestor;
+import com.dropbox.core.http.OkHttp3Requestor;
 import com.dropbox.core.http.StandardHttpRequestor;
 import com.dropbox.core.json.JsonReader;
 import com.dropbox.core.v1.DbxClientV1;
@@ -29,7 +36,8 @@ import com.dropbox.core.v2.files.DeleteErrorException;
 // integration test utility class
 public final class ITUtil {
     private static final String AUTH_INFO_FILE_PROPERTY = "com.dropbox.test.authInfoFile";
-    private static final String AUTH_INFO_FILE = System.getProperty(AUTH_INFO_FILE_PROPERTY);
+    private static final String HTTP_REQUESTOR_PROPERTY = "com.dropbox.test.httpRequestor";
+
     private static final Random RAND = new Random(0L);
     private static final long READ_TIMEOUT = TimeUnit.SECONDS.toMillis(20);
     private static final int MAX_RETRIES = 3;
@@ -37,51 +45,100 @@ public final class ITUtil {
     private static final String DATE_FORMAT = "yyyy-MM-dd'T'HH.mm.ss";
     private static final TimeZone UTC = TimeZone.getTimeZone("UTC");
 
+    // required if we use a GoogleAppEngine HttpRequestor
+    private static final LocalServiceTestHelper GAE_TEST_HELPER = new LocalServiceTestHelper(
+        new LocalURLFetchServiceTestConfig());
+
     public static DbxRequestConfig.Builder newRequestConfig() {
-        DbxRequestConfig.Builder builder = DbxRequestConfig.newBuilder("sdk-test")
+        return DbxRequestConfig.newBuilder("sdk-integration-test")
             // enable auto-retry to avoid flakiness
             .withAutoRetryEnabled(MAX_RETRIES)
-            .withUserLocaleFrom(Locale.US);
-
-        String okHttp = System.getProperty("com.dropbox.test.okHttp");
-        if (okHttp != null && !okHttp.equals("true") && !okHttp.equals("false")) {
-            fail("Invalid value for System property \"okHttp\"." +
-                 " Expected \"true\" or \"false\", got \"" + okHttp + "\".");
-        }
-
-        if ("true".equals(okHttp)) {
-            builder.withHttpRequestor(newOkHttpRequestor());
-        } else {
-            builder.withHttpRequestor(newStandardHttpRequestor());
-        }
-
-        return builder;
+            .withUserLocaleFrom(Locale.US)
+            .withHttpRequestor(newHttpRequestor());
     }
 
-    public static HttpRequestor newOkHttpRequestor() {
+    /**
+     * Gets the default HttpRequestor implementation configurable by
+     * System property.
+     */
+    public static HttpRequestor newHttpRequestor() {
+        String val = System.getProperty(HTTP_REQUESTOR_PROPERTY);
+	Class [] classes = new Class [] {
+	    StandardHttpRequestor.class,
+	    OkHttpRequestor.class,
+	    OkHttp3Requestor.class,
+	    GoogleAppEngineRequestor.class
+	};
+	Map<String, Class<?>> validNames = new HashMap<String, Class<?>>();
+	for (Class<?> clazz : classes) {
+	    validNames.put(clazz.getSimpleName(), clazz);
+	}
+
+	Class<?> type = validNames.get(val);
+        if (type == null || type.equals(StandardHttpRequestor.class)) {
+            return newStandardHttpRequestor();
+        } else if(type.equals(OkHttpRequestor.class)) {
+            return newOkHttpRequestor();
+        } else if(type.equals(OkHttp3Requestor.class)) {
+            return newOkHttp3Requestor();
+        } else if(type.equals(GoogleAppEngineRequestor.class)) {
+            return newGoogleAppEngineRequestor();
+        } else {
+	    StringBuilder message = new StringBuilder()
+		.append("Invalid value for System property \"")
+		.append(HTTP_REQUESTOR_PROPERTY)
+		.append("\". Expected ");
+	    for (String validName : validNames.keySet()) {
+		message.append("\"").append(validName).append("\", ");
+	    }
+	    message.append("but was: \"").append(val).append("\".");
+            fail(message.toString());
+            return null;
+        }
+    }
+
+    public static OkHttpRequestor newOkHttpRequestor() {
         OkHttpClient httpClient = OkHttpRequestor.INSTANCE.getClient().clone();
         httpClient.setReadTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS);
         return new OkHttpRequestor(httpClient);
     }
 
-    public static HttpRequestor newStandardHttpRequestor() {
+    public static OkHttp3Requestor newOkHttp3Requestor() {
+        okhttp3.OkHttpClient httpClient = OkHttp3Requestor.INSTANCE.getClient().newBuilder()
+            .readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS)
+            .build();
+        return new OkHttp3Requestor(httpClient);
+    }
+
+    public static StandardHttpRequestor newStandardHttpRequestor() {
         StandardHttpRequestor.Config config = StandardHttpRequestor.Config.builder()
             .withReadTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS)
             .build();
         return new StandardHttpRequestor(config);
     }
 
+    public static GoogleAppEngineRequestor newGoogleAppEngineRequestor() {
+        GoogleAppEngineRequestor requestor = new GoogleAppEngineRequestor();
+        requestor.getOptions()
+            // seconds
+            .setDeadline((HttpRequestor.DEFAULT_CONNECT_TIMEOUT_MILLIS + READ_TIMEOUT) / 1000.0);
+        return requestor;
+    }
+
     private static class AuthContainer {
         public static final DbxAuthInfo AUTH = loadAuth();
 
         private static DbxAuthInfo loadAuth() {
-            if (AUTH_INFO_FILE == null) {
+            String path = System.getProperty(AUTH_INFO_FILE_PROPERTY);
+
+
+            if (path == null) {
                 fail("System property \"" + AUTH_INFO_FILE_PROPERTY + "\" not set.");
             }
             try {
-                return DbxAuthInfo.Reader.readFromFile(AUTH_INFO_FILE);
+                return DbxAuthInfo.Reader.readFromFile(path);
             } catch (JsonReader.FileLoadException ex) {
-                fail("Error reading auth info from \"" + AUTH_INFO_FILE + "\"", ex);
+                fail("Error reading auth info from \"" + path + "\"", ex);
                 throw new RuntimeException(ex);
             }
         }
@@ -157,10 +214,29 @@ public final class ITUtil {
     }
 
     @BeforeSuite
+    public static void setUpGoogleAppEngine() {
+        if ("GoogleAppEngine".equals(System.getProperty(HTTP_REQUESTOR_PROPERTY))) {
+            GAE_TEST_HELPER.setUp();
+        }
+    }
+
+    @AfterSuite(alwaysRun=true)
+    public static void tearDownGoogleAppEngine() {
+        if ("GoogleAppEngine".equals(System.getProperty(HTTP_REQUESTOR_PROPERTY))) {
+            GAE_TEST_HELPER.tearDown();
+        }
+    }
+
+    @BeforeSuite
     @AfterSuite(alwaysRun=true)
     public static void deleteRoot() throws Exception {
+        // always use standard HTTP requestor for delete root
+        DbxClientV2 client = newClientV2(
+            newRequestConfig()
+                .withHttpRequestor(newStandardHttpRequestor())
+        );
         try {
-            newClientV2().files().delete(RootContainer.ROOT);
+            client.files().delete(RootContainer.ROOT);
         } catch (DeleteErrorException ex) {
             if (ex.errorValue.isPathLookup() &&
                 ex.errorValue.getPathLookupValue().isNotFound()) {

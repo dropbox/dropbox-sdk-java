@@ -25,7 +25,6 @@ import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.Date;
-import java.util.Locale;
 
 /**
  * An example command-line application that runs through the web-based OAuth
@@ -265,8 +264,7 @@ public class Main {
 
 
         // Create a DbxClientV2, which is what you use to make API calls.
-        String userLocale = Locale.getDefault().toLanguageTag();
-        DbxRequestConfig requestConfig = new DbxRequestConfig("examples-upload-file", userLocale);
+        DbxRequestConfig requestConfig = new DbxRequestConfig("examples-upload-file");
         DbxClientV2 dbxClient = new DbxClientV2(requestConfig, authInfo.getAccessToken(), authInfo.getHost());
 
         // upload the file with simple upload API if it is small enough, otherwise use chunked

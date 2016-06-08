@@ -3,9 +3,14 @@ package com.dropbox.core;
 import com.dropbox.core.v2.DbxClientV2;
 
 /**
- * Does the OAuth web-based authorization flow for apps that can't provide a redirect URI (such
- * as the command-line example apps that come with this SDK).  If you're a normal website, use
- * the {@link DbxWebAuth} class instead.
+ * Does the OAuth web-based authorization flow for apps that can't provide a redirect URI (such as
+ * the command-line example apps that come with this SDK).  If you're a normal website, use the
+ * {@link DbxWebAuth} class instead with a {@link DbxWebAuth.Request} configured to use a redirect
+ * URI.
+ *
+ * <p><b>This class is deprecated and should no longer be used.</b> Instead use {@link DbxWebAuth}
+ * and {@link DbxWebAuth.Request.Builder#withNoRedirect} to start an OAuth web-based authorization
+ * flow without redirects.
  *
  * <p>
  * Eventually yields an access token that can be used with {@link DbxClientV2} to make
@@ -36,23 +41,20 @@ import com.dropbox.core.v2.DbxClientV2;
  *
  * {@link DbxClientV2} client = new DbxClientV2(requestConfig, authFinish.accessToken);
  * </pre>
+ *
+ * @deprecated use {@link DbxWebAuth} instead with a {@link DbxWebAuth.Request} configured with no
+ * redirect URI (see {@link DbxWebAuth.Request.Builder#withNoRedirect}).
  */
-public class DbxWebAuthNoRedirect
-{
-    private final DbxRequestConfig requestConfig;
-    private final DbxAppInfo appInfo;
+@Deprecated
+public class DbxWebAuthNoRedirect {
+    private final DbxWebAuth auth;
 
     /**
      * @param appInfo
      *     Your application's Dropbox API information (the app key and secret).
      */
-    public DbxWebAuthNoRedirect(DbxRequestConfig requestConfig, DbxAppInfo appInfo)
-    {
-        if (requestConfig == null) throw new IllegalArgumentException("'requestConfig' is null");
-        if (appInfo == null) throw new IllegalArgumentException("'appInfo' is null");
-
-        this.requestConfig = requestConfig;
-        this.appInfo = appInfo;
+    public DbxWebAuthNoRedirect(DbxRequestConfig requestConfig, DbxAppInfo appInfo) {
+        this.auth = new DbxWebAuth(requestConfig, appInfo);
     }
 
     /**
@@ -65,9 +67,11 @@ public class DbxWebAuthNoRedirect
      * access token.
      * </p>
      */
-    public String start()
-    {
-        return DbxWebAuthHelper.getAuthorizeUrl(this.appInfo, this.requestConfig.getUserLocale(), null, null);
+    public String start() {
+        DbxWebAuth.Request request = DbxWebAuth.newRequestBuilder()
+            .withNoRedirect()
+            .build();
+        return auth.authorize(request);
     }
 
     /**
@@ -78,11 +82,7 @@ public class DbxWebAuthNoRedirect
      *    The authorization code shown to the user when they clicked "Allow" on the authorization
      *    page on the Dropbox website.
      */
-    public DbxAuthFinish finish(String code)
-        throws DbxException
-    {
-        if (code == null) throw new IllegalArgumentException("'code' can't be null");
-
-        return DbxWebAuthHelper.finish(this.appInfo, this.requestConfig, code, null);
+    public DbxAuthFinish finish(String code) throws DbxException {
+        return auth.finishFromCode(code);
     }
 }
