@@ -14,7 +14,7 @@ If you're using Maven, then edit your project's "pom.xml" and add this to the `<
 <dependency>
     <groupId>com.dropbox.core</groupId>
     <artifactId>dropbox-core-sdk</artifactId>
-    <version>2.0.4</version>
+    <version>2.0.5</version>
 </dependency>
 ```
 
@@ -23,7 +23,7 @@ If you are using Gradle, then edit your project's "build.gradle" and add this to
 ```groovy
 dependencies {
     // ...
-    compile 'com.dropbox.core:dropbox-core-sdk:2.0.4'
+    compile 'com.dropbox.core:dropbox-core-sdk:2.0.5'
 }
 ```
 
@@ -158,6 +158,13 @@ Another workaround is to tell your OSGi container to provide that requirement: [
 
 ### Does this SDK require any special ProGuard rules for shrink optimizations?
 
-Versions 2.0.0-2.0.3 of this SDK require specific ProGuard rules to work with shrinking enabled. However, since version **2.0.4**, the SDK no longer needs special ProGuard directives.
+Versions 2.0.0-2.0.3 of this SDK require specific ProGuard rules to work with shrinking enabled. However, since version **2.0.4**, the SDK no longer needs special ProGuard directives. However, you may want to consider adding "-dontwarn" directives for unused optional dependencies:
+
+```
+-dontwarn okhttp3.**
+-dontwarn com.squareup.okhttp.**
+-dontwarn com.google.appengine.**
+-dontwarn javax.servlet.**
+```
 
 **IMPORTANT: If you are running version 2.0.x before 2.0.3, you should update to the latest Dropbox SDK version to avoid a deserialization bug that can cause Android apps that use ProGuard to crash.**
