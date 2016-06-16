@@ -1,10 +1,5 @@
 package com.dropbox.core.android;
 
-import java.security.SecureRandom;
-import java.security.SecureRandomSpi;
-import java.util.List;
-import java.util.Locale;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
@@ -24,6 +19,11 @@ import android.os.Looper;
 import android.util.Log;
 
 import com.dropbox.core.DbxRequestUtil;
+
+import java.security.SecureRandom;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
 
 //Note: This class's code is duplicated between Core SDK and Sync SDK.  For now,
 //it has to be manually copied, but the code is set up so that it can be used in both
@@ -515,15 +515,13 @@ public class AuthActivity extends Activity {
             }
 
             for (Signature signature : packageInfo.signatures) {
-                for (String dbSignature : DROPBOX_APP_SIGNATURES) {
-                    if (dbSignature.equals(signature.toCharsString())) {
-                        return true;
-                    }
-                }
+              if (!DROPBOX_APP_SIGNATURES.contains(signature.toCharsString())) {
+                return false;
+              }
             }
         }
 
-        return false;
+        return true;
     }
 
     private void startWebAuth(String state) {
@@ -547,7 +545,7 @@ public class AuthActivity extends Activity {
         startActivity(intent);
     }
 
-    private static final String[] DROPBOX_APP_SIGNATURES = {
+    private static final List<String> DROPBOX_APP_SIGNATURES = Arrays.asList(
             "308202223082018b02044bd207bd300d06092a864886f70d01010405003058310b3" +
                     "009060355040613025553310b300906035504081302434131163014060355040713" +
                     "0d53616e204672616e636973636f3110300e060355040a130744726f70626f78311" +
@@ -579,7 +577,7 @@ public class AuthActivity extends Activity {
                     "7bac97ae6d878064d47b3f9f8da654995b8ef4c385bc4fbfbb7a987f60783ef0348" +
                     "760c0708acd4b7e63f0235c35a4fbcd5ec41b3b4cb295feaa7d5c27fa562a02562b" +
                     "7e1f4776b85147be3e295714986c4a9a07183f48ea09ae4d3ea31b88d0016c65b93" +
-                    "526b9c45f2967c3d28dee1aff5a5b29b9c2c8639"};
+                    "526b9c45f2967c3d28dee1aff5a5b29b9c2c8639");
 
     private String createStateNonce() {
         final int NONCE_BYTES = 16; // 128 bits of randomness.
