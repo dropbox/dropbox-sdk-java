@@ -17,8 +17,8 @@ import java.io.IOException;
 /**
  * Policies governing team members.
  */
-public class TeamPolicies {
-    // struct TeamPolicies
+public class TeamMemberPolicies {
+    // struct TeamMemberPolicies
 
     protected final TeamSharingPolicies sharing;
     protected final EmmState emmState;
@@ -37,7 +37,7 @@ public class TeamPolicies {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamPolicies(TeamSharingPolicies sharing, EmmState emmState) {
+    public TeamMemberPolicies(TeamSharingPolicies sharing, EmmState emmState) {
         if (sharing == null) {
             throw new IllegalArgumentException("Required value for 'sharing' is null");
         }
@@ -87,7 +87,7 @@ public class TeamPolicies {
         }
         // be careful with inheritance
         else if (obj.getClass().equals(this.getClass())) {
-            TeamPolicies other = (TeamPolicies) obj;
+            TeamMemberPolicies other = (TeamMemberPolicies) obj;
             return ((this.sharing == other.sharing) || (this.sharing.equals(other.sharing)))
                 && ((this.emmState == other.emmState) || (this.emmState.equals(other.emmState)))
                 ;
@@ -117,11 +117,11 @@ public class TeamPolicies {
     /**
      * For internal use only.
      */
-    public static final class Serializer extends StructSerializer<TeamPolicies> {
+    public static final class Serializer extends StructSerializer<TeamMemberPolicies> {
         public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(TeamPolicies value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+        public void serialize(TeamMemberPolicies value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
             if (!collapse) {
                 g.writeStartObject();
             }
@@ -135,8 +135,8 @@ public class TeamPolicies {
         }
 
         @Override
-        public TeamPolicies deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
-            TeamPolicies value;
+        public TeamMemberPolicies deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            TeamMemberPolicies value;
             String tag = null;
             if (!collapsed) {
                 expectStartObject(p);
@@ -164,7 +164,7 @@ public class TeamPolicies {
                 if (f_emmState == null) {
                     throw new JsonParseException(p, "Required field \"emm_state\" missing.");
                 }
-                value = new TeamPolicies(f_sharing, f_emmState);
+                value = new TeamMemberPolicies(f_sharing, f_emmState);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

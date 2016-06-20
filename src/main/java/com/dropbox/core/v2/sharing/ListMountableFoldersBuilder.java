@@ -61,8 +61,11 @@ public class ListMountableFoldersBuilder {
     /**
      * Set value for optional field.
      *
-     * @param actions  Folder actions to query. Must not contain a {@code null}
-     *     item.
+     * @param actions  This is a list indicating whether each returned folder
+     *     data entry will include a boolean field {@link
+     *     FolderPermission#getAllow} that describes whether the current user
+     *     can perform the `FolderAction` on the folder. Must not contain a
+     *     {@code null} item.
      *
      * @return this builder
      *

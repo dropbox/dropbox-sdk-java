@@ -5,7 +5,7 @@ package com.dropbox.core.v2.team;
 
 import com.dropbox.core.stone.StoneSerializers;
 import com.dropbox.core.stone.StructSerializer;
-import com.dropbox.core.v2.teampolicies.TeamPolicies;
+import com.dropbox.core.v2.teampolicies.TeamMemberPolicies;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -22,7 +22,7 @@ public class TeamGetInfoResult {
     protected final String teamId;
     protected final long numLicensedUsers;
     protected final long numProvisionedUsers;
-    protected final TeamPolicies policies;
+    protected final TeamMemberPolicies policies;
 
     /**
      *
@@ -36,7 +36,7 @@ public class TeamGetInfoResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamGetInfoResult(String name, String teamId, long numLicensedUsers, long numProvisionedUsers, TeamPolicies policies) {
+    public TeamGetInfoResult(String name, String teamId, long numLicensedUsers, long numProvisionedUsers, TeamMemberPolicies policies) {
         if (name == null) {
             throw new IllegalArgumentException("Required value for 'name' is null");
         }
@@ -94,7 +94,7 @@ public class TeamGetInfoResult {
      *
      * @return value for this field, never {@code null}.
      */
-    public TeamPolicies getPolicies() {
+    public TeamMemberPolicies getPolicies() {
         return policies;
     }
 
@@ -167,7 +167,7 @@ public class TeamGetInfoResult {
             g.writeFieldName("num_provisioned_users");
             StoneSerializers.uInt32().serialize(value.numProvisionedUsers, g);
             g.writeFieldName("policies");
-            TeamPolicies.Serializer.INSTANCE.serialize(value.policies, g);
+            TeamMemberPolicies.Serializer.INSTANCE.serialize(value.policies, g);
             if (!collapse) {
                 g.writeEndObject();
             }
@@ -186,7 +186,7 @@ public class TeamGetInfoResult {
                 String f_teamId = null;
                 Long f_numLicensedUsers = null;
                 Long f_numProvisionedUsers = null;
-                TeamPolicies f_policies = null;
+                TeamMemberPolicies f_policies = null;
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String field = p.getCurrentName();
                     p.nextToken();
@@ -203,7 +203,7 @@ public class TeamGetInfoResult {
                         f_numProvisionedUsers = StoneSerializers.uInt32().deserialize(p);
                     }
                     else if ("policies".equals(field)) {
-                        f_policies = TeamPolicies.Serializer.INSTANCE.deserialize(p);
+                        f_policies = TeamMemberPolicies.Serializer.INSTANCE.deserialize(p);
                     }
                     else {
                         skipValue(p);

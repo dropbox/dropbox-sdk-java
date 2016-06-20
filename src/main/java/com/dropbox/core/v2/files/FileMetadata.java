@@ -36,14 +36,6 @@ public class FileMetadata extends Metadata {
      *
      * @param name  The last component of the path (including extension). This
      *     never contains a slash. Must not be {@code null}.
-     * @param pathLower  The lowercased full path in the user's Dropbox. This
-     *     always starts with a slash. Must not be {@code null}.
-     * @param pathDisplay  The cased path to be used for display purposes only.
-     *     In rare instances the casing will not correctly match the user's
-     *     filesystem, but this behavior will match the path provided in the
-     *     Core API v1. Changes to the casing of paths won't be returned by
-     *     {@link DbxUserFilesRequests#listFolderContinue(String)}. Must not be
-     *     {@code null}.
      * @param id  A unique identifier for the file. Must have length of at least
      *     1 and not be {@code null}.
      * @param clientModified  For files, this is the modification time set by
@@ -59,6 +51,15 @@ public class FileMetadata extends Metadata {
      *     detect changes and avoid conflicts. Must have length of at least 9,
      *     match pattern "{@code [0-9a-f]+}", and not be {@code null}.
      * @param size  The file size in bytes.
+     * @param pathLower  The lowercased full path in the user's Dropbox. This
+     *     always starts with a slash. This field will be null if the file or
+     *     folder is not mounted.
+     * @param pathDisplay  The cased path to be used for display purposes only.
+     *     In rare instances the casing will not correctly match the user's
+     *     filesystem, but this behavior will match the path provided in the
+     *     Core API v1. Changes to the casing of paths won't be returned by
+     *     {@link DbxUserFilesRequests#listFolderContinue(String)}. This field
+     *     will be null if the file or folder is not mounted.
      * @param parentSharedFolderId  Deprecated. Please use {@link
      *     FileSharingInfo#getParentSharedFolderId} or {@link
      *     FolderSharingInfo#getParentSharedFolderId} instead. Must match
@@ -80,7 +81,7 @@ public class FileMetadata extends Metadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileMetadata(String name, String pathLower, String pathDisplay, String id, Date clientModified, Date serverModified, String rev, long size, String parentSharedFolderId, MediaInfo mediaInfo, FileSharingInfo sharingInfo, List<PropertyGroup> propertyGroups, Boolean hasExplicitSharedMembers) {
+    public FileMetadata(String name, String id, Date clientModified, Date serverModified, String rev, long size, String pathLower, String pathDisplay, String parentSharedFolderId, MediaInfo mediaInfo, FileSharingInfo sharingInfo, List<PropertyGroup> propertyGroups, Boolean hasExplicitSharedMembers) {
         super(name, pathLower, pathDisplay, parentSharedFolderId);
         if (id == null) {
             throw new IllegalArgumentException("Required value for 'id' is null");
@@ -126,14 +127,6 @@ public class FileMetadata extends Metadata {
      *
      * @param name  The last component of the path (including extension). This
      *     never contains a slash. Must not be {@code null}.
-     * @param pathLower  The lowercased full path in the user's Dropbox. This
-     *     always starts with a slash. Must not be {@code null}.
-     * @param pathDisplay  The cased path to be used for display purposes only.
-     *     In rare instances the casing will not correctly match the user's
-     *     filesystem, but this behavior will match the path provided in the
-     *     Core API v1. Changes to the casing of paths won't be returned by
-     *     {@link DbxUserFilesRequests#listFolderContinue(String)}. Must not be
-     *     {@code null}.
      * @param id  A unique identifier for the file. Must have length of at least
      *     1 and not be {@code null}.
      * @param clientModified  For files, this is the modification time set by
@@ -153,8 +146,8 @@ public class FileMetadata extends Metadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileMetadata(String name, String pathLower, String pathDisplay, String id, Date clientModified, Date serverModified, String rev, long size) {
-        this(name, pathLower, pathDisplay, id, clientModified, serverModified, rev, size, null, null, null, null, null);
+    public FileMetadata(String name, String id, Date clientModified, Date serverModified, String rev, long size) {
+        this(name, id, clientModified, serverModified, rev, size, null, null, null, null, null, null, null);
     }
 
     /**
@@ -255,14 +248,6 @@ public class FileMetadata extends Metadata {
      *
      * @param name  The last component of the path (including extension). This
      *     never contains a slash. Must not be {@code null}.
-     * @param pathLower  The lowercased full path in the user's Dropbox. This
-     *     always starts with a slash. Must not be {@code null}.
-     * @param pathDisplay  The cased path to be used for display purposes only.
-     *     In rare instances the casing will not correctly match the user's
-     *     filesystem, but this behavior will match the path provided in the
-     *     Core API v1. Changes to the casing of paths won't be returned by
-     *     {@link DbxUserFilesRequests#listFolderContinue(String)}. Must not be
-     *     {@code null}.
      * @param id  A unique identifier for the file. Must have length of at least
      *     1 and not be {@code null}.
      * @param clientModified  For files, this is the modification time set by
@@ -284,42 +269,27 @@ public class FileMetadata extends Metadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public static Builder newBuilder(String name, String pathLower, String pathDisplay, String id, Date clientModified, Date serverModified, String rev, long size) {
-        return new Builder(name, pathLower, pathDisplay, id, clientModified, serverModified, rev, size);
+    public static Builder newBuilder(String name, String id, Date clientModified, Date serverModified, String rev, long size) {
+        return new Builder(name, id, clientModified, serverModified, rev, size);
     }
 
     /**
      * Builder for {@link FileMetadata}.
      */
-    public static class Builder {
-        protected final String name;
-        protected final String pathLower;
-        protected final String pathDisplay;
+    public static class Builder extends Metadata.Builder {
         protected final String id;
         protected final Date clientModified;
         protected final Date serverModified;
         protected final String rev;
         protected final long size;
 
-        protected String parentSharedFolderId;
         protected MediaInfo mediaInfo;
         protected FileSharingInfo sharingInfo;
         protected List<PropertyGroup> propertyGroups;
         protected Boolean hasExplicitSharedMembers;
 
-        protected Builder(String name, String pathLower, String pathDisplay, String id, Date clientModified, Date serverModified, String rev, long size) {
-            if (name == null) {
-                throw new IllegalArgumentException("Required value for 'name' is null");
-            }
-            this.name = name;
-            if (pathLower == null) {
-                throw new IllegalArgumentException("Required value for 'pathLower' is null");
-            }
-            this.pathLower = pathLower;
-            if (pathDisplay == null) {
-                throw new IllegalArgumentException("Required value for 'pathDisplay' is null");
-            }
-            this.pathDisplay = pathDisplay;
+        protected Builder(String name, String id, Date clientModified, Date serverModified, String rev, long size) {
+            super(name);
             if (id == null) {
                 throw new IllegalArgumentException("Required value for 'id' is null");
             }
@@ -346,34 +316,10 @@ public class FileMetadata extends Metadata {
             }
             this.rev = rev;
             this.size = size;
-            this.parentSharedFolderId = null;
             this.mediaInfo = null;
             this.sharingInfo = null;
             this.propertyGroups = null;
             this.hasExplicitSharedMembers = null;
-        }
-
-        /**
-         * Set value for optional field.
-         *
-         * @param parentSharedFolderId  Deprecated. Please use {@link
-         *     FileSharingInfo#getParentSharedFolderId} or {@link
-         *     FolderSharingInfo#getParentSharedFolderId} instead. Must match
-         *     pattern "{@code [-_0-9a-zA-Z:]+}".
-         *
-         * @return this builder
-         *
-         * @throws IllegalArgumentException  If any argument does not meet its
-         *     preconditions.
-         */
-        public Builder withParentSharedFolderId(String parentSharedFolderId) {
-            if (parentSharedFolderId != null) {
-                if (!java.util.regex.Pattern.matches("[-_0-9a-zA-Z:]+", parentSharedFolderId)) {
-                    throw new IllegalArgumentException("String 'parentSharedFolderId' does not match pattern");
-                }
-            }
-            this.parentSharedFolderId = parentSharedFolderId;
-            return this;
         }
 
         /**
@@ -445,13 +391,63 @@ public class FileMetadata extends Metadata {
         }
 
         /**
+         * Set value for optional field.
+         *
+         * @param pathLower  The lowercased full path in the user's Dropbox.
+         *     This always starts with a slash. This field will be null if the
+         *     file or folder is not mounted.
+         *
+         * @return this builder
+         */
+        public Builder withPathLower(String pathLower) {
+            super.withPathLower(pathLower);
+            return this;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param pathDisplay  The cased path to be used for display purposes
+         *     only. In rare instances the casing will not correctly match the
+         *     user's filesystem, but this behavior will match the path provided
+         *     in the Core API v1. Changes to the casing of paths won't be
+         *     returned by {@link
+         *     DbxUserFilesRequests#listFolderContinue(String)}. This field will
+         *     be null if the file or folder is not mounted.
+         *
+         * @return this builder
+         */
+        public Builder withPathDisplay(String pathDisplay) {
+            super.withPathDisplay(pathDisplay);
+            return this;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param parentSharedFolderId  Deprecated. Please use {@link
+         *     FileSharingInfo#getParentSharedFolderId} or {@link
+         *     FolderSharingInfo#getParentSharedFolderId} instead. Must match
+         *     pattern "{@code [-_0-9a-zA-Z:]+}".
+         *
+         * @return this builder
+         *
+         * @throws IllegalArgumentException  If any argument does not meet its
+         *     preconditions.
+         */
+        public Builder withParentSharedFolderId(String parentSharedFolderId) {
+            super.withParentSharedFolderId(parentSharedFolderId);
+            return this;
+        }
+
+        /**
          * Builds an instance of {@link FileMetadata} configured with this
          * builder's values
          *
          * @return new instance of {@link FileMetadata}
          */
         public FileMetadata build() {
-            return new FileMetadata(name, pathLower, pathDisplay, id, clientModified, serverModified, rev, size, parentSharedFolderId, mediaInfo, sharingInfo, propertyGroups, hasExplicitSharedMembers);
+            return new FileMetadata(name, id, clientModified, serverModified, rev, size, pathLower, pathDisplay, parentSharedFolderId, mediaInfo, sharingInfo, propertyGroups, hasExplicitSharedMembers);
         }
     }
 
@@ -481,13 +477,13 @@ public class FileMetadata extends Metadata {
         else if (obj.getClass().equals(this.getClass())) {
             FileMetadata other = (FileMetadata) obj;
             return ((this.name == other.name) || (this.name.equals(other.name)))
-                && ((this.pathLower == other.pathLower) || (this.pathLower.equals(other.pathLower)))
-                && ((this.pathDisplay == other.pathDisplay) || (this.pathDisplay.equals(other.pathDisplay)))
                 && ((this.id == other.id) || (this.id.equals(other.id)))
                 && ((this.clientModified == other.clientModified) || (this.clientModified.equals(other.clientModified)))
                 && ((this.serverModified == other.serverModified) || (this.serverModified.equals(other.serverModified)))
                 && ((this.rev == other.rev) || (this.rev.equals(other.rev)))
                 && (this.size == other.size)
+                && ((this.pathLower == other.pathLower) || (this.pathLower != null && this.pathLower.equals(other.pathLower)))
+                && ((this.pathDisplay == other.pathDisplay) || (this.pathDisplay != null && this.pathDisplay.equals(other.pathDisplay)))
                 && ((this.parentSharedFolderId == other.parentSharedFolderId) || (this.parentSharedFolderId != null && this.parentSharedFolderId.equals(other.parentSharedFolderId)))
                 && ((this.mediaInfo == other.mediaInfo) || (this.mediaInfo != null && this.mediaInfo.equals(other.mediaInfo)))
                 && ((this.sharingInfo == other.sharingInfo) || (this.sharingInfo != null && this.sharingInfo.equals(other.sharingInfo)))
@@ -531,10 +527,6 @@ public class FileMetadata extends Metadata {
             writeTag("file", g);
             g.writeFieldName("name");
             StoneSerializers.string().serialize(value.name, g);
-            g.writeFieldName("path_lower");
-            StoneSerializers.string().serialize(value.pathLower, g);
-            g.writeFieldName("path_display");
-            StoneSerializers.string().serialize(value.pathDisplay, g);
             g.writeFieldName("id");
             StoneSerializers.string().serialize(value.id, g);
             g.writeFieldName("client_modified");
@@ -545,6 +537,14 @@ public class FileMetadata extends Metadata {
             StoneSerializers.string().serialize(value.rev, g);
             g.writeFieldName("size");
             StoneSerializers.uInt64().serialize(value.size, g);
+            if (value.pathLower != null) {
+                g.writeFieldName("path_lower");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.pathLower, g);
+            }
+            if (value.pathDisplay != null) {
+                g.writeFieldName("path_display");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.pathDisplay, g);
+            }
             if (value.parentSharedFolderId != null) {
                 g.writeFieldName("parent_shared_folder_id");
                 StoneSerializers.nullable(StoneSerializers.string()).serialize(value.parentSharedFolderId, g);
@@ -583,13 +583,13 @@ public class FileMetadata extends Metadata {
             }
             if (tag == null) {
                 String f_name = null;
-                String f_pathLower = null;
-                String f_pathDisplay = null;
                 String f_id = null;
                 Date f_clientModified = null;
                 Date f_serverModified = null;
                 String f_rev = null;
                 Long f_size = null;
+                String f_pathLower = null;
+                String f_pathDisplay = null;
                 String f_parentSharedFolderId = null;
                 MediaInfo f_mediaInfo = null;
                 FileSharingInfo f_sharingInfo = null;
@@ -600,12 +600,6 @@ public class FileMetadata extends Metadata {
                     p.nextToken();
                     if ("name".equals(field)) {
                         f_name = StoneSerializers.string().deserialize(p);
-                    }
-                    else if ("path_lower".equals(field)) {
-                        f_pathLower = StoneSerializers.string().deserialize(p);
-                    }
-                    else if ("path_display".equals(field)) {
-                        f_pathDisplay = StoneSerializers.string().deserialize(p);
                     }
                     else if ("id".equals(field)) {
                         f_id = StoneSerializers.string().deserialize(p);
@@ -621,6 +615,12 @@ public class FileMetadata extends Metadata {
                     }
                     else if ("size".equals(field)) {
                         f_size = StoneSerializers.uInt64().deserialize(p);
+                    }
+                    else if ("path_lower".equals(field)) {
+                        f_pathLower = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                    }
+                    else if ("path_display".equals(field)) {
+                        f_pathDisplay = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
                     }
                     else if ("parent_shared_folder_id".equals(field)) {
                         f_parentSharedFolderId = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
@@ -644,12 +644,6 @@ public class FileMetadata extends Metadata {
                 if (f_name == null) {
                     throw new JsonParseException(p, "Required field \"name\" missing.");
                 }
-                if (f_pathLower == null) {
-                    throw new JsonParseException(p, "Required field \"path_lower\" missing.");
-                }
-                if (f_pathDisplay == null) {
-                    throw new JsonParseException(p, "Required field \"path_display\" missing.");
-                }
                 if (f_id == null) {
                     throw new JsonParseException(p, "Required field \"id\" missing.");
                 }
@@ -665,7 +659,7 @@ public class FileMetadata extends Metadata {
                 if (f_size == null) {
                     throw new JsonParseException(p, "Required field \"size\" missing.");
                 }
-                value = new FileMetadata(f_name, f_pathLower, f_pathDisplay, f_id, f_clientModified, f_serverModified, f_rev, f_size, f_parentSharedFolderId, f_mediaInfo, f_sharingInfo, f_propertyGroups, f_hasExplicitSharedMembers);
+                value = new FileMetadata(f_name, f_id, f_clientModified, f_serverModified, f_rev, f_size, f_pathLower, f_pathDisplay, f_parentSharedFolderId, f_mediaInfo, f_sharingInfo, f_propertyGroups, f_hasExplicitSharedMembers);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

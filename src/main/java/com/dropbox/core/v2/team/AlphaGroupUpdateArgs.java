@@ -106,6 +106,53 @@ public class AlphaGroupUpdateArgs extends GroupUpdateArgs {
         }
 
         /**
+         * Set value for optional field.
+         *
+         * <p> If left unset or set to {@code null}, defaults to {@code true}.
+         * </p>
+         *
+         * @param returnMembers  Whether to return the list of members in the
+         *     group.  Note that the default value will cause all the group
+         *     members  to be returned in the response. This may take a long
+         *     time for large groups. Defaults to {@code true} when set to
+         *     {@code null}.
+         *
+         * @return this builder
+         */
+        public Builder withReturnMembers(Boolean returnMembers) {
+            super.withReturnMembers(returnMembers);
+            return this;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param newGroupName  Optional argument. Set group name to this if
+         *     provided.
+         *
+         * @return this builder
+         */
+        public Builder withNewGroupName(String newGroupName) {
+            super.withNewGroupName(newGroupName);
+            return this;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param newGroupExternalId  Optional argument. New group external ID.
+         *     If the argument is None, the group's external_id won't be
+         *     updated. If the argument is empty string, the group's external id
+         *     will be cleared.
+         *
+         * @return this builder
+         */
+        public Builder withNewGroupExternalId(String newGroupExternalId) {
+            super.withNewGroupExternalId(newGroupExternalId);
+            return this;
+        }
+
+        /**
          * Builds an instance of {@link AlphaGroupUpdateArgs} configured with
          * this builder's values
          *

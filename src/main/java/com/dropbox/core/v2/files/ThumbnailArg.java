@@ -26,7 +26,8 @@ class ThumbnailArg {
      * specifying values for all optional fields.
      *
      * @param path  The path to the image file you want to thumbnail. Must match
-     *     pattern "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}" and not
+     *     pattern "{@code
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}" and not
      *     be {@code null}.
      * @param format  The format for the thumbnail image, jpeg (default) or png.
      *     For  images that are photos, jpeg should be preferred, while png is
@@ -40,7 +41,7 @@ class ThumbnailArg {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
-        if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})", path)) {
+        if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)", path)) {
             throw new IllegalArgumentException("String 'path' does not match pattern");
         }
         this.path = path;
@@ -58,7 +59,8 @@ class ThumbnailArg {
      * The default values for unset fields will be used.
      *
      * @param path  The path to the image file you want to thumbnail. Must match
-     *     pattern "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}" and not
+     *     pattern "{@code
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}" and not
      *     be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
@@ -103,7 +105,8 @@ class ThumbnailArg {
      * Returns a new builder for creating an instance of this class.
      *
      * @param path  The path to the image file you want to thumbnail. Must match
-     *     pattern "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}" and not
+     *     pattern "{@code
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}" and not
      *     be {@code null}.
      *
      * @return builder for this class.
@@ -128,7 +131,7 @@ class ThumbnailArg {
             if (path == null) {
                 throw new IllegalArgumentException("Required value for 'path' is null");
             }
-            if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})", path)) {
+            if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)", path)) {
                 throw new IllegalArgumentException("String 'path' does not match pattern");
             }
             this.path = path;

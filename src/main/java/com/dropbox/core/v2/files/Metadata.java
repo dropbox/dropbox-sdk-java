@@ -28,16 +28,20 @@ public class Metadata {
     /**
      * Metadata for a file or folder.
      *
+     * <p> Use {@link newBuilder} to create instances of this class without
+     * specifying values for all optional fields. </p>
+     *
      * @param name  The last component of the path (including extension). This
      *     never contains a slash. Must not be {@code null}.
      * @param pathLower  The lowercased full path in the user's Dropbox. This
-     *     always starts with a slash. Must not be {@code null}.
+     *     always starts with a slash. This field will be null if the file or
+     *     folder is not mounted.
      * @param pathDisplay  The cased path to be used for display purposes only.
      *     In rare instances the casing will not correctly match the user's
      *     filesystem, but this behavior will match the path provided in the
      *     Core API v1. Changes to the casing of paths won't be returned by
-     *     {@link DbxUserFilesRequests#listFolderContinue(String)}. Must not be
-     *     {@code null}.
+     *     {@link DbxUserFilesRequests#listFolderContinue(String)}. This field
+     *     will be null if the file or folder is not mounted.
      * @param parentSharedFolderId  Deprecated. Please use {@link
      *     FileSharingInfo#getParentSharedFolderId} or {@link
      *     FolderSharingInfo#getParentSharedFolderId} instead. Must match
@@ -51,13 +55,7 @@ public class Metadata {
             throw new IllegalArgumentException("Required value for 'name' is null");
         }
         this.name = name;
-        if (pathLower == null) {
-            throw new IllegalArgumentException("Required value for 'pathLower' is null");
-        }
         this.pathLower = pathLower;
-        if (pathDisplay == null) {
-            throw new IllegalArgumentException("Required value for 'pathDisplay' is null");
-        }
         this.pathDisplay = pathDisplay;
         if (parentSharedFolderId != null) {
             if (!java.util.regex.Pattern.matches("[-_0-9a-zA-Z:]+", parentSharedFolderId)) {
@@ -74,20 +72,12 @@ public class Metadata {
      *
      * @param name  The last component of the path (including extension). This
      *     never contains a slash. Must not be {@code null}.
-     * @param pathLower  The lowercased full path in the user's Dropbox. This
-     *     always starts with a slash. Must not be {@code null}.
-     * @param pathDisplay  The cased path to be used for display purposes only.
-     *     In rare instances the casing will not correctly match the user's
-     *     filesystem, but this behavior will match the path provided in the
-     *     Core API v1. Changes to the casing of paths won't be returned by
-     *     {@link DbxUserFilesRequests#listFolderContinue(String)}. Must not be
-     *     {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public Metadata(String name, String pathLower, String pathDisplay) {
-        this(name, pathLower, pathDisplay, null);
+    public Metadata(String name) {
+        this(name, null, null, null);
     }
 
     /**
@@ -102,9 +92,9 @@ public class Metadata {
 
     /**
      * The lowercased full path in the user's Dropbox. This always starts with a
-     * slash.
+     * slash. This field will be null if the file or folder is not mounted.
      *
-     * @return value for this field, never {@code null}.
+     * @return value for this field, or {@code null} if not present.
      */
     public String getPathLower() {
         return pathLower;
@@ -115,9 +105,10 @@ public class Metadata {
      * the casing will not correctly match the user's filesystem, but this
      * behavior will match the path provided in the Core API v1. Changes to the
      * casing of paths won't be returned by {@link
-     * DbxUserFilesRequests#listFolderContinue(String)}
+     * DbxUserFilesRequests#listFolderContinue(String)}. This field will be null
+     * if the file or folder is not mounted.
      *
-     * @return value for this field, never {@code null}.
+     * @return value for this field, or {@code null} if not present.
      */
     public String getPathDisplay() {
         return pathDisplay;
@@ -131,6 +122,107 @@ public class Metadata {
      */
     public String getParentSharedFolderId() {
         return parentSharedFolderId;
+    }
+
+    /**
+     * Returns a new builder for creating an instance of this class.
+     *
+     * @param name  The last component of the path (including extension). This
+     *     never contains a slash. Must not be {@code null}.
+     *
+     * @return builder for this class.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public static Builder newBuilder(String name) {
+        return new Builder(name);
+    }
+
+    /**
+     * Builder for {@link Metadata}.
+     */
+    public static class Builder {
+        protected final String name;
+
+        protected String pathLower;
+        protected String pathDisplay;
+        protected String parentSharedFolderId;
+
+        protected Builder(String name) {
+            if (name == null) {
+                throw new IllegalArgumentException("Required value for 'name' is null");
+            }
+            this.name = name;
+            this.pathLower = null;
+            this.pathDisplay = null;
+            this.parentSharedFolderId = null;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param pathLower  The lowercased full path in the user's Dropbox.
+         *     This always starts with a slash. This field will be null if the
+         *     file or folder is not mounted.
+         *
+         * @return this builder
+         */
+        public Builder withPathLower(String pathLower) {
+            this.pathLower = pathLower;
+            return this;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param pathDisplay  The cased path to be used for display purposes
+         *     only. In rare instances the casing will not correctly match the
+         *     user's filesystem, but this behavior will match the path provided
+         *     in the Core API v1. Changes to the casing of paths won't be
+         *     returned by {@link
+         *     DbxUserFilesRequests#listFolderContinue(String)}. This field will
+         *     be null if the file or folder is not mounted.
+         *
+         * @return this builder
+         */
+        public Builder withPathDisplay(String pathDisplay) {
+            this.pathDisplay = pathDisplay;
+            return this;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param parentSharedFolderId  Deprecated. Please use {@link
+         *     FileSharingInfo#getParentSharedFolderId} or {@link
+         *     FolderSharingInfo#getParentSharedFolderId} instead. Must match
+         *     pattern "{@code [-_0-9a-zA-Z:]+}".
+         *
+         * @return this builder
+         *
+         * @throws IllegalArgumentException  If any argument does not meet its
+         *     preconditions.
+         */
+        public Builder withParentSharedFolderId(String parentSharedFolderId) {
+            if (parentSharedFolderId != null) {
+                if (!java.util.regex.Pattern.matches("[-_0-9a-zA-Z:]+", parentSharedFolderId)) {
+                    throw new IllegalArgumentException("String 'parentSharedFolderId' does not match pattern");
+                }
+            }
+            this.parentSharedFolderId = parentSharedFolderId;
+            return this;
+        }
+
+        /**
+         * Builds an instance of {@link Metadata} configured with this builder's
+         * values
+         *
+         * @return new instance of {@link Metadata}
+         */
+        public Metadata build() {
+            return new Metadata(name, pathLower, pathDisplay, parentSharedFolderId);
+        }
     }
 
     @Override
@@ -153,8 +245,8 @@ public class Metadata {
         else if (obj.getClass().equals(this.getClass())) {
             Metadata other = (Metadata) obj;
             return ((this.name == other.name) || (this.name.equals(other.name)))
-                && ((this.pathLower == other.pathLower) || (this.pathLower.equals(other.pathLower)))
-                && ((this.pathDisplay == other.pathDisplay) || (this.pathDisplay.equals(other.pathDisplay)))
+                && ((this.pathLower == other.pathLower) || (this.pathLower != null && this.pathLower.equals(other.pathLower)))
+                && ((this.pathDisplay == other.pathDisplay) || (this.pathDisplay != null && this.pathDisplay.equals(other.pathDisplay)))
                 && ((this.parentSharedFolderId == other.parentSharedFolderId) || (this.parentSharedFolderId != null && this.parentSharedFolderId.equals(other.parentSharedFolderId)))
                 ;
         }
@@ -205,10 +297,14 @@ public class Metadata {
             }
             g.writeFieldName("name");
             StoneSerializers.string().serialize(value.name, g);
-            g.writeFieldName("path_lower");
-            StoneSerializers.string().serialize(value.pathLower, g);
-            g.writeFieldName("path_display");
-            StoneSerializers.string().serialize(value.pathDisplay, g);
+            if (value.pathLower != null) {
+                g.writeFieldName("path_lower");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.pathLower, g);
+            }
+            if (value.pathDisplay != null) {
+                g.writeFieldName("path_display");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.pathDisplay, g);
+            }
             if (value.parentSharedFolderId != null) {
                 g.writeFieldName("parent_shared_folder_id");
                 StoneSerializers.nullable(StoneSerializers.string()).serialize(value.parentSharedFolderId, g);
@@ -241,10 +337,10 @@ public class Metadata {
                         f_name = StoneSerializers.string().deserialize(p);
                     }
                     else if ("path_lower".equals(field)) {
-                        f_pathLower = StoneSerializers.string().deserialize(p);
+                        f_pathLower = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
                     }
                     else if ("path_display".equals(field)) {
-                        f_pathDisplay = StoneSerializers.string().deserialize(p);
+                        f_pathDisplay = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
                     }
                     else if ("parent_shared_folder_id".equals(field)) {
                         f_parentSharedFolderId = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
@@ -255,12 +351,6 @@ public class Metadata {
                 }
                 if (f_name == null) {
                     throw new JsonParseException(p, "Required field \"name\" missing.");
-                }
-                if (f_pathLower == null) {
-                    throw new JsonParseException(p, "Required field \"path_lower\" missing.");
-                }
-                if (f_pathDisplay == null) {
-                    throw new JsonParseException(p, "Required field \"path_display\" missing.");
                 }
                 value = new Metadata(f_name, f_pathLower, f_pathDisplay, f_parentSharedFolderId);
             }

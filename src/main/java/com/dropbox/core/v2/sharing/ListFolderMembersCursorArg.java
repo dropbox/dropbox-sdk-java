@@ -25,8 +25,10 @@ public class ListFolderMembersCursorArg {
      * Use {@link newBuilder} to create instances of this class without
      * specifying values for all optional fields.
      *
-     * @param actions  Member actions to query. Must not contain a {@code null}
-     *     item.
+     * @param actions  This is a list indicating whether each returned member
+     *     will include a boolean value {@link MemberPermission#getAllow} that
+     *     describes whether the current user can perform the MemberAction on
+     *     the member. Must not contain a {@code null} item.
      * @param limit  The maximum number of results that include members, groups
      *     and invitees to return per request. Must be greater than or equal to
      *     1 and be less than or equal to 1000.
@@ -60,7 +62,9 @@ public class ListFolderMembersCursorArg {
     }
 
     /**
-     * Member actions to query.
+     * This is a list indicating whether each returned member will include a
+     * boolean value {@link MemberPermission#getAllow} that describes whether
+     * the current user can perform the MemberAction on the member.
      *
      * @return value for this field, or {@code null} if not present.
      */
@@ -104,8 +108,11 @@ public class ListFolderMembersCursorArg {
         /**
          * Set value for optional field.
          *
-         * @param actions  Member actions to query. Must not contain a {@code
-         *     null} item.
+         * @param actions  This is a list indicating whether each returned
+         *     member will include a boolean value {@link
+         *     MemberPermission#getAllow} that describes whether the current
+         *     user can perform the MemberAction on the member. Must not contain
+         *     a {@code null} item.
          *
          * @return this builder
          *

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_properties.stone, files.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -109,7 +109,8 @@ public final class DbxUserFilesRequests {
      *
      * @param path  The path to the file or folder you want to get a copy
      *     reference to. Must match pattern "{@code
-     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}" and not be {@code null}.
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}" and not
+     *     be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -278,7 +279,8 @@ public final class DbxUserFilesRequests {
      * Download a file from a user's Dropbox.
      *
      * @param path  The path of the file to download. Must match pattern "{@code
-     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}" and not be {@code null}.
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}" and not
+     *     be {@code null}.
      *
      * @return Downloader used to download the response body and view the server
      *     response.
@@ -295,7 +297,8 @@ public final class DbxUserFilesRequests {
      * Download a file from a user's Dropbox.
      *
      * @param path  The path of the file to download. Must match pattern "{@code
-     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}" and not be {@code null}.
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}" and not
+     *     be {@code null}.
      * @param rev  Deprecated. Please specify revision in the {@code path}
      *     argument to {@link DbxUserFilesRequests#download(String)} instead.
      *     Must have length of at least 9 and match pattern "{@code [0-9a-f]+}".
@@ -323,7 +326,8 @@ public final class DbxUserFilesRequests {
      * Download a file from a user's Dropbox.
      *
      * @param path  The path of the file to download. Must match pattern "{@code
-     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}" and not be {@code null}.
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}" and not
+     *     be {@code null}.
      *
      * @return Downloader builder for configuring the request parameters and
      *     instantiating a downloader.
@@ -370,8 +374,8 @@ public final class DbxUserFilesRequests {
      * See {@link GetMetadataBuilder} for more details. </p>
      *
      * @param path  The path of a file or folder on Dropbox. Must match pattern
-     *     "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}" and not be {@code
-     *     null}.
+     *     "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}"
+     *     and not be {@code null}.
      *
      * @return Metadata for a file or folder.
      *
@@ -388,8 +392,8 @@ public final class DbxUserFilesRequests {
      * folder is unsupported.
      *
      * @param path  The path of a file or folder on Dropbox. Must match pattern
-     *     "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}" and not be {@code
-     *     null}.
+     *     "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}"
+     *     and not be {@code null}.
      *
      * @return Request builder for configuring request parameters and completing
      *     the request.
@@ -437,7 +441,8 @@ public final class DbxUserFilesRequests {
      * .ppsx, .ppsm, .pptx, .pptm,  .xls, .xlsx, .xlsm, .rtf
      *
      * @param path  The path of the file to preview. Must match pattern "{@code
-     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}" and not be {@code null}.
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}" and not
+     *     be {@code null}.
      *
      * @return Downloader used to download the response body and view the server
      *     response.
@@ -456,7 +461,8 @@ public final class DbxUserFilesRequests {
      * .ppsx, .ppsm, .pptx, .pptm,  .xls, .xlsx, .xlsm, .rtf
      *
      * @param path  The path of the file to preview. Must match pattern "{@code
-     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}" and not be {@code null}.
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}" and not
+     *     be {@code null}.
      * @param rev  Deprecated. Please specify revision in the {@code path}
      *     argument to {@link DbxUserFilesRequests#getPreview(String)} instead.
      *     Must have length of at least 9 and match pattern "{@code [0-9a-f]+}".
@@ -486,7 +492,8 @@ public final class DbxUserFilesRequests {
      * .ppsx, .ppsm, .pptx, .pptm,  .xls, .xlsx, .xlsm, .rtf
      *
      * @param path  The path of the file to preview. Must match pattern "{@code
-     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}" and not be {@code null}.
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}" and not
+     *     be {@code null}.
      *
      * @return Downloader builder for configuring the request parameters and
      *     instantiating a downloader.
@@ -530,8 +537,9 @@ public final class DbxUserFilesRequests {
      * link is determined automatically by the file's mime type.
      *
      * @param path  The path to the file you want a temporary link to. Must
-     *     match pattern "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}" and
-     *     not be {@code null}.
+     *     match pattern "{@code
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}" and not
+     *     be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -581,7 +589,8 @@ public final class DbxUserFilesRequests {
      * See {@link GetThumbnailBuilder} for more details. </p>
      *
      * @param path  The path to the image file you want to thumbnail. Must match
-     *     pattern "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}" and not
+     *     pattern "{@code
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}" and not
      *     be {@code null}.
      *
      * @return Downloader used to download the response body and view the server
@@ -602,7 +611,8 @@ public final class DbxUserFilesRequests {
      * thumbnail.
      *
      * @param path  The path to the image file you want to thumbnail. Must match
-     *     pattern "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}" and not
+     *     pattern "{@code
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}" and not
      *     be {@code null}.
      *
      * @return Downloader builder for configuring the request parameters and
@@ -1385,9 +1395,10 @@ public final class DbxUserFilesRequests {
      *
      * @param cursor  Contains the upload session ID and the offset. Must not be
      *     {@code null}.
-     * @param close  If true, current session will be closed. You cannot do
-     *     {@link DbxUserFilesRequests#uploadSessionAppend(String,long)} any
-     *     more to current session.
+     * @param close  If true, the current session will be closed, at which point
+     *     you won't be able to call {@link
+     *     DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)}
+     *     anymore with the current session.
      *
      * @return Uploader used to upload the request body and finish request.
      *
@@ -1448,8 +1459,8 @@ public final class DbxUserFilesRequests {
      * Upload sessions allow you to upload a single file using multiple
      * requests. This call starts a new upload session with the given data.  You
      * can then use {@link
-     * DbxUserFilesRequests#uploadSessionAppend(String,long)} to add more data
-     * and {@link
+     * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)} to add
+     * more data and {@link
      * DbxUserFilesRequests#uploadSessionFinish(UploadSessionCursor,CommitInfo)}
      * to save all the data to a file in Dropbox. A single request should not
      * upload more than 150 MB of file contents.
@@ -1470,8 +1481,8 @@ public final class DbxUserFilesRequests {
      * Upload sessions allow you to upload a single file using multiple
      * requests. This call starts a new upload session with the given data.  You
      * can then use {@link
-     * DbxUserFilesRequests#uploadSessionAppend(String,long)} to add more data
-     * and {@link
+     * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)} to add
+     * more data and {@link
      * DbxUserFilesRequests#uploadSessionFinish(UploadSessionCursor,CommitInfo)}
      * to save all the data to a file in Dropbox. A single request should not
      * upload more than 150 MB of file contents.
@@ -1490,15 +1501,16 @@ public final class DbxUserFilesRequests {
      * Upload sessions allow you to upload a single file using multiple
      * requests. This call starts a new upload session with the given data.  You
      * can then use {@link
-     * DbxUserFilesRequests#uploadSessionAppend(String,long)} to add more data
-     * and {@link
+     * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)} to add
+     * more data and {@link
      * DbxUserFilesRequests#uploadSessionFinish(UploadSessionCursor,CommitInfo)}
      * to save all the data to a file in Dropbox. A single request should not
      * upload more than 150 MB of file contents.
      *
-     * @param close  If true, current session will be closed. You cannot do
-     *     {@link DbxUserFilesRequests#uploadSessionAppend(String,long)} any
-     *     more to current session.
+     * @param close  If true, the current session will be closed, at which point
+     *     you won't be able to call {@link
+     *     DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)}
+     *     anymore with the current session.
      *
      * @return Uploader used to upload the request body and finish request.
      */

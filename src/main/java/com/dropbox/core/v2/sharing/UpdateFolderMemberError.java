@@ -34,6 +34,11 @@ public final class UpdateFolderMemberError {
         ACCESS_ERROR, // SharedFolderAccessError
         MEMBER_ERROR, // SharedFolderMemberError
         /**
+         * If updating the access type required the member to be added to the
+         * shared folder and there was an error when adding the member.
+         */
+        NO_EXPLICIT_ACCESS, // AddFolderMemberError
+        /**
          * The current user's account doesn't support this action. An example of
          * this is when downgrading a member from editor to viewer. This action
          * can only be performed by users that have upgraded to a Pro or
@@ -60,11 +65,11 @@ public final class UpdateFolderMemberError {
      * this is when downgrading a member from editor to viewer. This action can
      * only be performed by users that have upgraded to a Pro or Business plan.
      */
-    public static final UpdateFolderMemberError INSUFFICIENT_PLAN = new UpdateFolderMemberError(Tag.INSUFFICIENT_PLAN, null, null);
+    public static final UpdateFolderMemberError INSUFFICIENT_PLAN = new UpdateFolderMemberError(Tag.INSUFFICIENT_PLAN, null, null, null);
     /**
      * The current user does not have permission to perform this action.
      */
-    public static final UpdateFolderMemberError NO_PERMISSION = new UpdateFolderMemberError(Tag.NO_PERMISSION, null, null);
+    public static final UpdateFolderMemberError NO_PERMISSION = new UpdateFolderMemberError(Tag.NO_PERMISSION, null, null, null);
     /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *
@@ -72,20 +77,22 @@ public final class UpdateFolderMemberError {
      * not up to date. Consider updating your SDK version to handle the new
      * tags. </p>
      */
-    public static final UpdateFolderMemberError OTHER = new UpdateFolderMemberError(Tag.OTHER, null, null);
+    public static final UpdateFolderMemberError OTHER = new UpdateFolderMemberError(Tag.OTHER, null, null, null);
 
     private final Tag tag;
     private final SharedFolderAccessError accessErrorValue;
     private final SharedFolderMemberError memberErrorValue;
+    private final AddFolderMemberError noExplicitAccessValue;
 
     /**
      *
      * @param tag  Discriminating tag for this instance.
      */
-    private UpdateFolderMemberError(Tag tag, SharedFolderAccessError accessErrorValue, SharedFolderMemberError memberErrorValue) {
+    private UpdateFolderMemberError(Tag tag, SharedFolderAccessError accessErrorValue, SharedFolderMemberError memberErrorValue, AddFolderMemberError noExplicitAccessValue) {
         this.tag = tag;
         this.accessErrorValue = accessErrorValue;
         this.memberErrorValue = memberErrorValue;
+        this.noExplicitAccessValue = noExplicitAccessValue;
     }
 
     /**
@@ -132,7 +139,7 @@ public final class UpdateFolderMemberError {
         if (value == null) {
             throw new IllegalArgumentException("Value is null");
         }
-        return new UpdateFolderMemberError(Tag.ACCESS_ERROR, value, null);
+        return new UpdateFolderMemberError(Tag.ACCESS_ERROR, value, null, null);
     }
 
     /**
@@ -177,7 +184,7 @@ public final class UpdateFolderMemberError {
         if (value == null) {
             throw new IllegalArgumentException("Value is null");
         }
-        return new UpdateFolderMemberError(Tag.MEMBER_ERROR, null, value);
+        return new UpdateFolderMemberError(Tag.MEMBER_ERROR, null, value, null);
     }
 
     /**
@@ -194,6 +201,58 @@ public final class UpdateFolderMemberError {
             throw new IllegalStateException("Invalid tag: required Tag.MEMBER_ERROR, but was Tag." + tag.name());
         }
         return memberErrorValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#NO_EXPLICIT_ACCESS}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#NO_EXPLICIT_ACCESS}, {@code false} otherwise.
+     */
+    public boolean isNoExplicitAccess() {
+        return this.tag == Tag.NO_EXPLICIT_ACCESS;
+    }
+
+    /**
+     * Returns an instance of {@code UpdateFolderMemberError} that has its tag
+     * set to {@link Tag#NO_EXPLICIT_ACCESS}.
+     *
+     * <p> If updating the access type required the member to be added to the
+     * shared folder and there was an error when adding the member. </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code UpdateFolderMemberError} with its tag set to
+     *     {@link Tag#NO_EXPLICIT_ACCESS}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static UpdateFolderMemberError noExplicitAccess(AddFolderMemberError value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new UpdateFolderMemberError(Tag.NO_EXPLICIT_ACCESS, null, null, value);
+    }
+
+    /**
+     * If updating the access type required the member to be added to the shared
+     * folder and there was an error when adding the member.
+     *
+     * <p> This instance must be tagged as {@link Tag#NO_EXPLICIT_ACCESS}. </p>
+     *
+     * @return The {@link UpdateFolderMemberError#noExplicitAccess} value
+     *     associated with this instance if {@link #isNoExplicitAccess} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isNoExplicitAccess} is {@code
+     *     false}.
+     */
+    public AddFolderMemberError getNoExplicitAccessValue() {
+        if (this.tag != Tag.NO_EXPLICIT_ACCESS) {
+            throw new IllegalStateException("Invalid tag: required Tag.NO_EXPLICIT_ACCESS, but was Tag." + tag.name());
+        }
+        return noExplicitAccessValue;
     }
 
     /**
@@ -234,7 +293,8 @@ public final class UpdateFolderMemberError {
         int hash = java.util.Arrays.hashCode(new Object [] {
             tag,
             accessErrorValue,
-            memberErrorValue
+            memberErrorValue,
+            noExplicitAccessValue
         });
         return hash;
     }
@@ -254,6 +314,8 @@ public final class UpdateFolderMemberError {
                     return (this.accessErrorValue == other.accessErrorValue) || (this.accessErrorValue.equals(other.accessErrorValue));
                 case MEMBER_ERROR:
                     return (this.memberErrorValue == other.memberErrorValue) || (this.memberErrorValue.equals(other.memberErrorValue));
+                case NO_EXPLICIT_ACCESS:
+                    return (this.noExplicitAccessValue == other.noExplicitAccessValue) || (this.noExplicitAccessValue.equals(other.noExplicitAccessValue));
                 case INSUFFICIENT_PLAN:
                     return true;
                 case NO_PERMISSION:
@@ -311,6 +373,14 @@ public final class UpdateFolderMemberError {
                     g.writeEndObject();
                     break;
                 }
+                case NO_EXPLICIT_ACCESS: {
+                    g.writeStartObject();
+                    writeTag("no_explicit_access", g);
+                    g.writeFieldName("no_explicit_access");
+                    AddFolderMemberError.Serializer.INSTANCE.serialize(value.noExplicitAccessValue, g);
+                    g.writeEndObject();
+                    break;
+                }
                 case INSUFFICIENT_PLAN: {
                     g.writeString("insufficient_plan");
                     break;
@@ -354,6 +424,12 @@ public final class UpdateFolderMemberError {
                 expectField("member_error", p);
                 fieldValue = SharedFolderMemberError.Serializer.INSTANCE.deserialize(p);
                 value = UpdateFolderMemberError.memberError(fieldValue);
+            }
+            else if ("no_explicit_access".equals(tag)) {
+                AddFolderMemberError fieldValue = null;
+                expectField("no_explicit_access", p);
+                fieldValue = AddFolderMemberError.Serializer.INSTANCE.deserialize(p);
+                value = UpdateFolderMemberError.noExplicitAccess(fieldValue);
             }
             else if ("insufficient_plan".equals(tag)) {
                 value = UpdateFolderMemberError.INSUFFICIENT_PLAN;

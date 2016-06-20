@@ -178,7 +178,7 @@ public final class LaunchResultBase {
     /**
      * For internal use only.
      */
-    static final class Serializer extends UnionSerializer<LaunchResultBase> {
+    public static final class Serializer extends UnionSerializer<LaunchResultBase> {
         public static final Serializer INSTANCE = new Serializer();
 
         @Override

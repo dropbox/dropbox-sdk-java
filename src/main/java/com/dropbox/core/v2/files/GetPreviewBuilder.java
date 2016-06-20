@@ -23,7 +23,8 @@ public class GetPreviewBuilder extends DbxDownloadStyleBuilder<FileMetadata> {
      * Creates a new instance of this builder.
      *
      * @param path  The path of the file to preview. Must match pattern "{@code
-     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}" and not be {@code null}.
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}" and not
+     *     be {@code null}.
      * @param files_  Dropbox namespace-specific client used to issue files
      *     requests.
      *

@@ -258,6 +258,36 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
         }
 
         /**
+         * Set value for optional field.
+         *
+         * @param ownerTeam  The team that owns the folder. This field is not
+         *     present if the folder is not owned by a team.
+         *
+         * @return this builder
+         */
+        public Builder withOwnerTeam(Team ownerTeam) {
+            super.withOwnerTeam(ownerTeam);
+            return this;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param parentSharedFolderId  The ID of the parent shared folder. This
+         *     field is present only if the folder is contained within another
+         *     shared folder. Must match pattern "{@code [-_0-9a-zA-Z:]+}".
+         *
+         * @return this builder
+         *
+         * @throws IllegalArgumentException  If any argument does not meet its
+         *     preconditions.
+         */
+        public Builder withParentSharedFolderId(String parentSharedFolderId) {
+            super.withParentSharedFolderId(parentSharedFolderId);
+            return this;
+        }
+
+        /**
          * Builds an instance of {@link SharedFolderMetadata} configured with
          * this builder's values
          *

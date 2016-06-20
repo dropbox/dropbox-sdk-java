@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The information about a member of the shared folder.
+ * The information about a member of the shared content.
  */
 public class MembershipInfo {
     // struct MembershipInfo
@@ -27,7 +27,7 @@ public class MembershipInfo {
     protected final boolean isInherited;
 
     /**
-     * The information about a member of the shared folder.
+     * The information about a member of the shared content.
      *
      * <p> Use {@link newBuilder} to create instances of this class without
      * specifying values for all optional fields. </p>
@@ -38,8 +38,7 @@ public class MembershipInfo {
      *     member. The set of permissions corresponds to the MemberActions in
      *     the request. Must not contain a {@code null} item.
      * @param initials  Suggested name initials for a member.
-     * @param isInherited  True if the member's access to the file is inherited
-     *     from a parent folder.
+     * @param isInherited  True if the member has access from a parent folder.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -62,7 +61,7 @@ public class MembershipInfo {
     }
 
     /**
-     * The information about a member of the shared folder.
+     * The information about a member of the shared content.
      *
      * <p> The default values for unset fields will be used. </p>
      *
@@ -105,8 +104,7 @@ public class MembershipInfo {
     }
 
     /**
-     * True if the member's access to the file is inherited from a parent
-     * folder.
+     * True if the member has access from a parent folder.
      *
      * @return value for this field, or {@code null} if not present. Defaults to
      *     false.
@@ -192,9 +190,8 @@ public class MembershipInfo {
          * <p> If left unset or set to {@code null}, defaults to {@code false}.
          * </p>
          *
-         * @param isInherited  True if the member's access to the file is
-         *     inherited from a parent folder. Defaults to {@code false} when
-         *     set to {@code null}.
+         * @param isInherited  True if the member has access from a parent
+         *     folder. Defaults to {@code false} when set to {@code null}.
          *
          * @return this builder
          */

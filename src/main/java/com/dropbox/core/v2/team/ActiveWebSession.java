@@ -155,6 +155,56 @@ public class ActiveWebSession extends DeviceSession {
         }
 
         /**
+         * Set value for optional field.
+         *
+         * @param ipAddress  The IP address of the last activity from this
+         *     session.
+         *
+         * @return this builder
+         */
+        public Builder withIpAddress(String ipAddress) {
+            super.withIpAddress(ipAddress);
+            return this;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param country  The country from which the last activity from this
+         *     session was made.
+         *
+         * @return this builder
+         */
+        public Builder withCountry(String country) {
+            super.withCountry(country);
+            return this;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param created  The time this session was created.
+         *
+         * @return this builder
+         */
+        public Builder withCreated(Date created) {
+            super.withCreated(created);
+            return this;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param updated  The time of the last activity from this session.
+         *
+         * @return this builder
+         */
+        public Builder withUpdated(Date updated) {
+            super.withUpdated(updated);
+            return this;
+        }
+
+        /**
          * Builds an instance of {@link ActiveWebSession} configured with this
          * builder's values
          *

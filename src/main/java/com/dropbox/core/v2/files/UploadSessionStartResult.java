@@ -22,7 +22,8 @@ public class UploadSessionStartResult {
     /**
      *
      * @param sessionId  A unique identifier for the upload session. Pass this
-     *     to {@link DbxUserFilesRequests#uploadSessionAppend(String,long)} and
+     *     to {@link
+     *     DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)} and
      *     {@link
      *     DbxUserFilesRequests#uploadSessionFinish(UploadSessionCursor,CommitInfo)}.
      *     Must not be {@code null}.
@@ -39,7 +40,8 @@ public class UploadSessionStartResult {
 
     /**
      * A unique identifier for the upload session. Pass this to {@link
-     * DbxUserFilesRequests#uploadSessionAppend(String,long)} and {@link
+     * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)} and
+     * {@link
      * DbxUserFilesRequests#uploadSessionFinish(UploadSessionCursor,CommitInfo)}.
      *
      * @return value for this field, never {@code null}.

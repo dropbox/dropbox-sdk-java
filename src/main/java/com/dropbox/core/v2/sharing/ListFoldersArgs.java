@@ -27,8 +27,11 @@ public class ListFoldersArgs {
      *
      * @param limit  The maximum number of results to return per request. Must
      *     be greater than or equal to 1 and be less than or equal to 1000.
-     * @param actions  Folder actions to query. Must not contain a {@code null}
-     *     item.
+     * @param actions  This is a list indicating whether each returned folder
+     *     data entry will include a boolean field {@link
+     *     FolderPermission#getAllow} that describes whether the current user
+     *     can perform the `FolderAction` on the folder. Must not contain a
+     *     {@code null} item.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -69,7 +72,9 @@ public class ListFoldersArgs {
     }
 
     /**
-     * Folder actions to query.
+     * This is a list indicating whether each returned folder data entry will
+     * include a boolean field {@link FolderPermission#getAllow} that describes
+     * whether the current user can perform the `FolderAction` on the folder.
      *
      * @return value for this field, or {@code null} if not present.
      */
@@ -133,8 +138,11 @@ public class ListFoldersArgs {
         /**
          * Set value for optional field.
          *
-         * @param actions  Folder actions to query. Must not contain a {@code
-         *     null} item.
+         * @param actions  This is a list indicating whether each returned
+         *     folder data entry will include a boolean field {@link
+         *     FolderPermission#getAllow} that describes whether the current
+         *     user can perform the `FolderAction` on the folder. Must not
+         *     contain a {@code null} item.
          *
          * @return this builder
          *

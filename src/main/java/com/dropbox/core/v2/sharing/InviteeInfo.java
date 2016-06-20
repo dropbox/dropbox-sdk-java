@@ -15,7 +15,7 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 
 /**
- * Information about the recipient of a shared folder invitation.
+ * Information about the recipient of a shared content invitation.
  *
  * <p> This class is an open tagged union.  Tagged unions instances are always
  * associated to a specific tag.  This means only one of the {@code isAbc()}
@@ -61,7 +61,7 @@ public final class InviteeInfo {
     private final String emailValue;
 
     /**
-     * Information about the recipient of a shared folder invitation.
+     * Information about the recipient of a shared content invitation.
      *
      * @param tag  Discriminating tag for this instance.
      */

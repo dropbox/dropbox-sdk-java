@@ -14,7 +14,7 @@ import com.fasterxml.jackson.core.JsonToken;
 
 import java.io.IOException;
 
-class GetMetadataArg {
+public class GetMetadataArg {
     // struct GetMetadataArg
 
     protected final String path;
@@ -27,8 +27,8 @@ class GetMetadataArg {
      * specifying values for all optional fields.
      *
      * @param path  The path of a file or folder on Dropbox. Must match pattern
-     *     "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}" and not be {@code
-     *     null}.
+     *     "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}"
+     *     and not be {@code null}.
      * @param includeMediaInfo  If true, {@link FileMetadata#getMediaInfo} is
      *     set for photo and video.
      * @param includeDeleted  If true, {@link DeletedMetadata} will be returned
@@ -45,7 +45,7 @@ class GetMetadataArg {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
-        if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})", path)) {
+        if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)", path)) {
             throw new IllegalArgumentException("String 'path' does not match pattern");
         }
         this.path = path;
@@ -58,8 +58,8 @@ class GetMetadataArg {
      * The default values for unset fields will be used.
      *
      * @param path  The path of a file or folder on Dropbox. Must match pattern
-     *     "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}" and not be {@code
-     *     null}.
+     *     "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}"
+     *     and not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -113,8 +113,8 @@ class GetMetadataArg {
      * Returns a new builder for creating an instance of this class.
      *
      * @param path  The path of a file or folder on Dropbox. Must match pattern
-     *     "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}" and not be {@code
-     *     null}.
+     *     "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}"
+     *     and not be {@code null}.
      *
      * @return builder for this class.
      *
@@ -139,7 +139,7 @@ class GetMetadataArg {
             if (path == null) {
                 throw new IllegalArgumentException("Required value for 'path' is null");
             }
-            if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})", path)) {
+            if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)", path)) {
                 throw new IllegalArgumentException("String 'path' does not match pattern");
             }
             this.path = path;

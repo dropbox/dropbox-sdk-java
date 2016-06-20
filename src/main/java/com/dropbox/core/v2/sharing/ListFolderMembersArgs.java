@@ -26,8 +26,10 @@ class ListFolderMembersArgs extends ListFolderMembersCursorArg {
      *
      * @param sharedFolderId  The ID for the shared folder. Must match pattern
      *     "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
-     * @param actions  Member actions to query. Must not contain a {@code null}
-     *     item.
+     * @param actions  This is a list indicating whether each returned member
+     *     will include a boolean value {@link MemberPermission#getAllow} that
+     *     describes whether the current user can perform the MemberAction on
+     *     the member. Must not contain a {@code null} item.
      * @param limit  The maximum number of results that include members, groups
      *     and invitees to return per request. Must be greater than or equal to
      *     1 and be less than or equal to 1000.
@@ -97,6 +99,46 @@ class ListFolderMembersArgs extends ListFolderMembersCursorArg {
                 throw new IllegalArgumentException("String 'sharedFolderId' does not match pattern");
             }
             this.sharedFolderId = sharedFolderId;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param actions  This is a list indicating whether each returned
+         *     member will include a boolean value {@link
+         *     MemberPermission#getAllow} that describes whether the current
+         *     user can perform the MemberAction on the member. Must not contain
+         *     a {@code null} item.
+         *
+         * @return this builder
+         *
+         * @throws IllegalArgumentException  If any argument does not meet its
+         *     preconditions.
+         */
+        public Builder withActions(List<MemberAction> actions) {
+            super.withActions(actions);
+            return this;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * <p> If left unset or set to {@code null}, defaults to {@code 1000L}.
+         * </p>
+         *
+         * @param limit  The maximum number of results that include members,
+         *     groups and invitees to return per request. Must be greater than
+         *     or equal to 1 and be less than or equal to 1000. Defaults to
+         *     {@code 1000L} when set to {@code null}.
+         *
+         * @return this builder
+         *
+         * @throws IllegalArgumentException  If any argument does not meet its
+         *     preconditions.
+         */
+        public Builder withLimit(Long limit) {
+            super.withLimit(limit);
+            return this;
         }
 
         /**

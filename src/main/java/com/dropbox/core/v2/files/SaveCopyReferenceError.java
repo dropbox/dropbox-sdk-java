@@ -37,7 +37,9 @@ public final class SaveCopyReferenceError {
          */
         INVALID_COPY_REFERENCE,
         /**
-         * The app has no permission to access another user's Dropbox.
+         * You don't have permission to save the given copy reference. Please
+         * make sure this app is same app which created the copy reference and
+         * the source user is still linked to the app.
          */
         NO_PERMISSION,
         /**
@@ -64,7 +66,9 @@ public final class SaveCopyReferenceError {
      */
     public static final SaveCopyReferenceError INVALID_COPY_REFERENCE = new SaveCopyReferenceError(Tag.INVALID_COPY_REFERENCE, null);
     /**
-     * The app has no permission to access another user's Dropbox.
+     * You don't have permission to save the given copy reference. Please make
+     * sure this app is same app which created the copy reference and the source
+     * user is still linked to the app.
      */
     public static final SaveCopyReferenceError NO_PERMISSION = new SaveCopyReferenceError(Tag.NO_PERMISSION, null);
     /**

@@ -24,9 +24,10 @@ class UploadSessionAppendArg {
      *
      * @param cursor  Contains the upload session ID and the offset. Must not be
      *     {@code null}.
-     * @param close  If true, current session will be closed. You cannot do
-     *     {@link DbxUserFilesRequests#uploadSessionAppend(String,long)} any
-     *     more to current session.
+     * @param close  If true, the current session will be closed, at which point
+     *     you won't be able to call {@link
+     *     DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)}
+     *     anymore with the current session.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -62,9 +63,10 @@ class UploadSessionAppendArg {
     }
 
     /**
-     * If true, current session will be closed. You cannot do {@link
-     * DbxUserFilesRequests#uploadSessionAppend(String,long)} any more to
-     * current session
+     * If true, the current session will be closed, at which point you won't be
+     * able to call {@link
+     * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)} anymore
+     * with the current session.
      *
      * @return value for this field, or {@code null} if not present. Defaults to
      *     false.

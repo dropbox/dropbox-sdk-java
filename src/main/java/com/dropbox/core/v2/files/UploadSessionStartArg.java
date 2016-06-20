@@ -21,9 +21,10 @@ class UploadSessionStartArg {
 
     /**
      *
-     * @param close  If true, current session will be closed. You cannot do
-     *     {@link DbxUserFilesRequests#uploadSessionAppend(String,long)} any
-     *     more to current session.
+     * @param close  If true, the current session will be closed, at which point
+     *     you won't be able to call {@link
+     *     DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)}
+     *     anymore with the current session.
      */
     public UploadSessionStartArg(boolean close) {
         this.close = close;
@@ -37,9 +38,10 @@ class UploadSessionStartArg {
     }
 
     /**
-     * If true, current session will be closed. You cannot do {@link
-     * DbxUserFilesRequests#uploadSessionAppend(String,long)} any more to
-     * current session
+     * If true, the current session will be closed, at which point you won't be
+     * able to call {@link
+     * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)} anymore
+     * with the current session.
      *
      * @return value for this field, or {@code null} if not present. Defaults to
      *     false.

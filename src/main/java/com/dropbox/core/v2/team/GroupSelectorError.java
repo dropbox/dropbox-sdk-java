@@ -15,7 +15,7 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 
 /**
- * Error that can be raised when {@link GroupSelector}is used.
+ * Error that can be raised when {@link GroupSelector} is used.
  */
 public enum GroupSelectorError {
     // union GroupSelectorError

@@ -108,7 +108,7 @@ public class PropertyField {
     /**
      * For internal use only.
      */
-    static final class Serializer extends StructSerializer<PropertyField> {
+    public static final class Serializer extends StructSerializer<PropertyField> {
         public static final Serializer INSTANCE = new Serializer();
 
         @Override

@@ -20,6 +20,10 @@ import java.io.IOException;
 public enum MemberAction {
     // union MemberAction
     /**
+     * Allow the member to keep a copy of the folder when removing.
+     */
+    LEAVE_A_COPY,
+    /**
      * Make the member an editor of the folder.
      */
     MAKE_EDITOR,
@@ -53,6 +57,10 @@ public enum MemberAction {
         @Override
         public void serialize(MemberAction value, JsonGenerator g) throws IOException, JsonGenerationException {
             switch (value) {
+                case LEAVE_A_COPY: {
+                    g.writeString("leave_a_copy");
+                    break;
+                }
                 case MAKE_EDITOR: {
                     g.writeString("make_editor");
                     break;
@@ -92,6 +100,9 @@ public enum MemberAction {
             }
             if (tag == null) {
                 throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("leave_a_copy".equals(tag)) {
+                value = MemberAction.LEAVE_A_COPY;
             }
             else if ("make_editor".equals(tag)) {
                 value = MemberAction.MAKE_EDITOR;

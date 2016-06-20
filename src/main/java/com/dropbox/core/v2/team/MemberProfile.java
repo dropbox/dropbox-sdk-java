@@ -23,6 +23,7 @@ public class MemberProfile {
 
     protected final String teamMemberId;
     protected final String externalId;
+    protected final String accountId;
     protected final String email;
     protected final boolean emailVerified;
     protected final TeamMemberStatus status;
@@ -31,6 +32,9 @@ public class MemberProfile {
 
     /**
      * Basic member profile.
+     *
+     * <p> Use {@link newBuilder} to create instances of this class without
+     * specifying values for all optional fields. </p>
      *
      * @param teamMemberId  ID of user as a member of a team. Must not be {@code
      *     null}.
@@ -47,16 +51,27 @@ public class MemberProfile {
      * @param externalId  External ID that a team can attach to the user. An
      *     application using the API may find it easier to use their own IDs
      *     instead of Dropbox IDs like account_id or team_member_id.
+     * @param accountId  A user's account identifier. Must have length of at
+     *     least 40 and have length of at most 40.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberProfile(String teamMemberId, String email, boolean emailVerified, TeamMemberStatus status, Name name, TeamMembershipType membershipType, String externalId) {
+    public MemberProfile(String teamMemberId, String email, boolean emailVerified, TeamMemberStatus status, Name name, TeamMembershipType membershipType, String externalId, String accountId) {
         if (teamMemberId == null) {
             throw new IllegalArgumentException("Required value for 'teamMemberId' is null");
         }
         this.teamMemberId = teamMemberId;
         this.externalId = externalId;
+        if (accountId != null) {
+            if (accountId.length() < 40) {
+                throw new IllegalArgumentException("String 'accountId' is shorter than 40");
+            }
+            if (accountId.length() > 40) {
+                throw new IllegalArgumentException("String 'accountId' is longer than 40");
+            }
+        }
+        this.accountId = accountId;
         if (email == null) {
             throw new IllegalArgumentException("Required value for 'email' is null");
         }
@@ -98,7 +113,7 @@ public class MemberProfile {
      *     preconditions.
      */
     public MemberProfile(String teamMemberId, String email, boolean emailVerified, TeamMemberStatus status, Name name, TeamMembershipType membershipType) {
-        this(teamMemberId, email, emailVerified, status, name, membershipType, null);
+        this(teamMemberId, email, emailVerified, status, name, membershipType, null, null);
     }
 
     /**
@@ -119,6 +134,15 @@ public class MemberProfile {
      */
     public String getExternalId() {
         return externalId;
+    }
+
+    /**
+     * A user's account identifier.
+     *
+     * @return value for this field, or {@code null} if not present.
+     */
+    public String getAccountId() {
+        return accountId;
     }
 
     /**
@@ -167,11 +191,126 @@ public class MemberProfile {
         return membershipType;
     }
 
+    /**
+     * Returns a new builder for creating an instance of this class.
+     *
+     * @param teamMemberId  ID of user as a member of a team. Must not be {@code
+     *     null}.
+     * @param email  Email address of user. Must not be {@code null}.
+     * @param emailVerified  Is true if the user's email is verified to be owned
+     *     by the user.
+     * @param status  The user's status as a member of a specific team. Must not
+     *     be {@code null}.
+     * @param name  Representations for a person's name. Must not be {@code
+     *     null}.
+     * @param membershipType  The user's membership type: full (normal team
+     *     member) vs limited (does not use a license; no access to the team's
+     *     shared quota). Must not be {@code null}.
+     *
+     * @return builder for this class.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public static Builder newBuilder(String teamMemberId, String email, boolean emailVerified, TeamMemberStatus status, Name name, TeamMembershipType membershipType) {
+        return new Builder(teamMemberId, email, emailVerified, status, name, membershipType);
+    }
+
+    /**
+     * Builder for {@link MemberProfile}.
+     */
+    public static class Builder {
+        protected final String teamMemberId;
+        protected final String email;
+        protected final boolean emailVerified;
+        protected final TeamMemberStatus status;
+        protected final Name name;
+        protected final TeamMembershipType membershipType;
+
+        protected String externalId;
+        protected String accountId;
+
+        protected Builder(String teamMemberId, String email, boolean emailVerified, TeamMemberStatus status, Name name, TeamMembershipType membershipType) {
+            if (teamMemberId == null) {
+                throw new IllegalArgumentException("Required value for 'teamMemberId' is null");
+            }
+            this.teamMemberId = teamMemberId;
+            if (email == null) {
+                throw new IllegalArgumentException("Required value for 'email' is null");
+            }
+            this.email = email;
+            this.emailVerified = emailVerified;
+            if (status == null) {
+                throw new IllegalArgumentException("Required value for 'status' is null");
+            }
+            this.status = status;
+            if (name == null) {
+                throw new IllegalArgumentException("Required value for 'name' is null");
+            }
+            this.name = name;
+            if (membershipType == null) {
+                throw new IllegalArgumentException("Required value for 'membershipType' is null");
+            }
+            this.membershipType = membershipType;
+            this.externalId = null;
+            this.accountId = null;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param externalId  External ID that a team can attach to the user. An
+         *     application using the API may find it easier to use their own IDs
+         *     instead of Dropbox IDs like account_id or team_member_id.
+         *
+         * @return this builder
+         */
+        public Builder withExternalId(String externalId) {
+            this.externalId = externalId;
+            return this;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param accountId  A user's account identifier. Must have length of at
+         *     least 40 and have length of at most 40.
+         *
+         * @return this builder
+         *
+         * @throws IllegalArgumentException  If any argument does not meet its
+         *     preconditions.
+         */
+        public Builder withAccountId(String accountId) {
+            if (accountId != null) {
+                if (accountId.length() < 40) {
+                    throw new IllegalArgumentException("String 'accountId' is shorter than 40");
+                }
+                if (accountId.length() > 40) {
+                    throw new IllegalArgumentException("String 'accountId' is longer than 40");
+                }
+            }
+            this.accountId = accountId;
+            return this;
+        }
+
+        /**
+         * Builds an instance of {@link MemberProfile} configured with this
+         * builder's values
+         *
+         * @return new instance of {@link MemberProfile}
+         */
+        public MemberProfile build() {
+            return new MemberProfile(teamMemberId, email, emailVerified, status, name, membershipType, externalId, accountId);
+        }
+    }
+
     @Override
     public int hashCode() {
         int hash = java.util.Arrays.hashCode(new Object [] {
             teamMemberId,
             externalId,
+            accountId,
             email,
             emailVerified,
             status,
@@ -196,6 +335,7 @@ public class MemberProfile {
                 && ((this.name == other.name) || (this.name.equals(other.name)))
                 && ((this.membershipType == other.membershipType) || (this.membershipType.equals(other.membershipType)))
                 && ((this.externalId == other.externalId) || (this.externalId != null && this.externalId.equals(other.externalId)))
+                && ((this.accountId == other.accountId) || (this.accountId != null && this.accountId.equals(other.accountId)))
                 ;
         }
         else {
@@ -247,6 +387,10 @@ public class MemberProfile {
                 g.writeFieldName("external_id");
                 StoneSerializers.nullable(StoneSerializers.string()).serialize(value.externalId, g);
             }
+            if (value.accountId != null) {
+                g.writeFieldName("account_id");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.accountId, g);
+            }
             if (!collapse) {
                 g.writeEndObject();
             }
@@ -268,6 +412,7 @@ public class MemberProfile {
                 Name f_name = null;
                 TeamMembershipType f_membershipType = null;
                 String f_externalId = null;
+                String f_accountId = null;
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String field = p.getCurrentName();
                     p.nextToken();
@@ -292,6 +437,9 @@ public class MemberProfile {
                     else if ("external_id".equals(field)) {
                         f_externalId = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
                     }
+                    else if ("account_id".equals(field)) {
+                        f_accountId = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                    }
                     else {
                         skipValue(p);
                     }
@@ -314,7 +462,7 @@ public class MemberProfile {
                 if (f_membershipType == null) {
                     throw new JsonParseException(p, "Required field \"membership_type\" missing.");
                 }
-                value = new MemberProfile(f_teamMemberId, f_email, f_emailVerified, f_status, f_name, f_membershipType, f_externalId);
+                value = new MemberProfile(f_teamMemberId, f_email, f_emailVerified, f_status, f_name, f_membershipType, f_externalId, f_accountId);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

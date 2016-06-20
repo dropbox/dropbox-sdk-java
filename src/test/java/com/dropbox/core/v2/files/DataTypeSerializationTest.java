@@ -98,14 +98,14 @@ public class DataTypeSerializationTest {
     public void testEnumeratedSubtypes() throws Exception {
         FileMetadata file = FileMetadata.newBuilder(
             "foo.PNG",
-            "/path/foo.png",
-            "/path/foo.PNG",
             "id:fyte8AYWx_AAAAAAAAAfgg",
             new Date(1457477907029L),
             new Date(1457479027750L),
             "3cee38735597",
             18480
         )
+            .withPathLower("/path/foo.png")
+            .withPathDisplay("/path/foo.PNG")
             .withParentSharedFolderId("2")
             .withSharingInfo(new FileSharingInfo(false, "2"))
             .withMediaInfo(
@@ -120,21 +120,15 @@ public class DataTypeSerializationTest {
 
         FolderMetadata folder = new FolderMetadata(
             "/Photos",
-            "/photos",
-            "/Photos",
             "id:fyte8AYWx_AAAAAAAAAf8w"
         );
 
         DeletedMetadata deleted = new DeletedMetadata(
-            "Old.log",
-            "/logs/old.log",
-            "/logs/Old.log"
+            "Old.log"
         );
 
         Metadata metadata = new Metadata(
-            "generic",
-            "/generic",
-            "/generic"
+            "generic"
         );
 
         String json = FileMetadata.Serializer.INSTANCE.serialize(file);

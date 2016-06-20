@@ -27,7 +27,16 @@ import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
  * <p> If your app runs in Google App Engine, it is strongly recommended to use this Requestor to
  * ensure certificate validation is performed on all requests.
  *
- * <p> To use this, pass an instance to the {@link com.dropbox.core.DbxRequestConfig} constructor.
+ * <p> To use this, pass an instance to the {@link com.dropbox.core.DbxRequestConfig} constructor:
+ *
+ * <pre>
+ *     DbxRequestConfig config = DbxRequestConfig.newBuilder("MyAppEngineApp/1.0")
+ *         .withHttpRequestor(new GoogleAppEngineRequestor())
+ *         .build();
+ *
+ *     String accessToken = ...;
+ *     DbxClientV2 client = new DbxClientV2(config, accessToken);
+ * </pre>
  */
 public class GoogleAppEngineRequestor extends HttpRequestor {
     private final URLFetchService service;

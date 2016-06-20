@@ -41,8 +41,10 @@ public class ListFolderMembersBuilder {
     /**
      * Set value for optional field.
      *
-     * @param actions  Member actions to query. Must not contain a {@code null}
-     *     item.
+     * @param actions  This is a list indicating whether each returned member
+     *     will include a boolean value {@link MemberPermission#getAllow} that
+     *     describes whether the current user can perform the MemberAction on
+     *     the member. Must not contain a {@code null} item.
      *
      * @return this builder
      *

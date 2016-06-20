@@ -229,6 +229,78 @@ public class FileLinkMetadata extends SharedLinkMetadata {
         }
 
         /**
+         * Set value for optional field.
+         *
+         * @param id  A unique identifier for the linked file. Must have length
+         *     of at least 1.
+         *
+         * @return this builder
+         *
+         * @throws IllegalArgumentException  If any argument does not meet its
+         *     preconditions.
+         */
+        public Builder withId(String id) {
+            super.withId(id);
+            return this;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param expires  Expiration time, if set. By default the link won't
+         *     expire.
+         *
+         * @return this builder
+         */
+        public Builder withExpires(Date expires) {
+            super.withExpires(expires);
+            return this;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param pathLower  The lowercased full path in the user's Dropbox.
+         *     This always starts with a slash. This field will only be present
+         *     only if the linked file is in the authenticated user's  dropbox.
+         *
+         * @return this builder
+         */
+        public Builder withPathLower(String pathLower) {
+            super.withPathLower(pathLower);
+            return this;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param teamMemberInfo  The team membership information of the link's
+         *     owner.  This field will only be present  if the link's owner is a
+         *     team member.
+         *
+         * @return this builder
+         */
+        public Builder withTeamMemberInfo(TeamMemberInfo teamMemberInfo) {
+            super.withTeamMemberInfo(teamMemberInfo);
+            return this;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param contentOwnerTeamInfo  The team information of the content's
+         *     owner. This field will only be present if the content's owner is
+         *     a team member and the content's owner team is different from the
+         *     link's owner team.
+         *
+         * @return this builder
+         */
+        public Builder withContentOwnerTeamInfo(Team contentOwnerTeamInfo) {
+            super.withContentOwnerTeamInfo(contentOwnerTeamInfo);
+            return this;
+        }
+
+        /**
          * Builds an instance of {@link FileLinkMetadata} configured with this
          * builder's values
          *

@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The information about a user member of the shared folder.
+ * The information about a user member of the shared content.
  */
 public class UserMembershipInfo extends MembershipInfo {
     // struct UserMembershipInfo
@@ -24,7 +24,7 @@ public class UserMembershipInfo extends MembershipInfo {
     protected final UserInfo user;
 
     /**
-     * The information about a user member of the shared folder.
+     * The information about a user member of the shared content.
      *
      * <p> Use {@link newBuilder} to create instances of this class without
      * specifying values for all optional fields. </p>
@@ -37,8 +37,7 @@ public class UserMembershipInfo extends MembershipInfo {
      *     member. The set of permissions corresponds to the MemberActions in
      *     the request. Must not contain a {@code null} item.
      * @param initials  Suggested name initials for a member.
-     * @param isInherited  True if the member's access to the file is inherited
-     *     from a parent folder.
+     * @param isInherited  True if the member has access from a parent folder.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -52,7 +51,7 @@ public class UserMembershipInfo extends MembershipInfo {
     }
 
     /**
-     * The information about a user member of the shared folder.
+     * The information about a user member of the shared content.
      *
      * <p> The default values for unset fields will be used. </p>
      *
@@ -106,6 +105,51 @@ public class UserMembershipInfo extends MembershipInfo {
                 throw new IllegalArgumentException("Required value for 'user' is null");
             }
             this.user = user;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param permissions  The permissions that requesting user has on this
+         *     member. The set of permissions corresponds to the MemberActions
+         *     in the request. Must not contain a {@code null} item.
+         *
+         * @return this builder
+         *
+         * @throws IllegalArgumentException  If any argument does not meet its
+         *     preconditions.
+         */
+        public Builder withPermissions(List<MemberPermission> permissions) {
+            super.withPermissions(permissions);
+            return this;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param initials  Suggested name initials for a member.
+         *
+         * @return this builder
+         */
+        public Builder withInitials(String initials) {
+            super.withInitials(initials);
+            return this;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * <p> If left unset or set to {@code null}, defaults to {@code false}.
+         * </p>
+         *
+         * @param isInherited  True if the member has access from a parent
+         *     folder. Defaults to {@code false} when set to {@code null}.
+         *
+         * @return this builder
+         */
+        public Builder withIsInherited(Boolean isInherited) {
+            super.withIsInherited(isInherited);
+            return this;
         }
 
         /**

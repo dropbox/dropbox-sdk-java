@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.stone, shared_links.stone */
+/* This file was generated from sharing_folders.stone, sharing_files.stone, shared_links.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -11,6 +11,7 @@ import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.v2.DbxDownloadStyleBuilder;
 import com.dropbox.core.v2.DbxRawClientV2;
 import com.dropbox.core.v2.async.LaunchEmptyResult;
+import com.dropbox.core.v2.async.LaunchResultBase;
 import com.dropbox.core.v2.async.PollArg;
 import com.dropbox.core.v2.async.PollErrorException;
 
@@ -29,6 +30,75 @@ public final class DbxUserSharingRequests {
 
     public DbxUserSharingRequests(DbxRawClientV2 client) {
         this.client = client;
+    }
+
+    //
+    // route sharing/add_file_member
+    //
+
+    /**
+     * Adds specified members to a file.
+     *
+     * @param addFileMemberArgs  Arguments for {@link
+     *     DbxUserSharingRequests#addFileMember(String,List)}.
+     */
+    List<FileMemberActionResult> addFileMember(AddFileMemberArgs addFileMemberArgs) throws AddFileMemberErrorException, DbxException {
+        try {
+            return client.rpcStyle(client.getHost().getApi(),
+                                   "2/sharing/add_file_member",
+                                   addFileMemberArgs,
+                                   false,
+                                   AddFileMemberArgs.Serializer.INSTANCE,
+                                   com.dropbox.core.stone.StoneSerializers.list(FileMemberActionResult.Serializer.INSTANCE),
+                                   AddFileMemberError.Serializer.INSTANCE);
+        }
+        catch (DbxWrappedException ex) {
+            throw new AddFileMemberErrorException(ex.getRequestId(), ex.getUserMessage(), (AddFileMemberError) ex.getErrorValue());
+        }
+    }
+
+    /**
+     * Adds specified members to a file.
+     *
+     * <p> The default values for the optional request parameters will be used.
+     * See {@link AddFileMemberBuilder} for more details. </p>
+     *
+     * @param file  File to which to add members. Must have length of at least
+     *     1, match pattern "{@code ((/|id:).*|nspath:[^:]*:[^:]*)}", and not be
+     *     {@code null}.
+     * @param members  Members to add. Note that even an email address is given,
+     *     this may result in a user being directy added to the membership if
+     *     that email is the user's main account email. Must not contain a
+     *     {@code null} item and not be {@code null}.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public List<FileMemberActionResult> addFileMember(String file, List<MemberSelector> members) throws AddFileMemberErrorException, DbxException {
+        AddFileMemberArgs arg = new AddFileMemberArgs(file, members);
+        return addFileMember(arg);
+    }
+
+    /**
+     * Adds specified members to a file.
+     *
+     * @param file  File to which to add members. Must have length of at least
+     *     1, match pattern "{@code ((/|id:).*|nspath:[^:]*:[^:]*)}", and not be
+     *     {@code null}.
+     * @param members  Members to add. Note that even an email address is given,
+     *     this may result in a user being directy added to the membership if
+     *     that email is the user's main account email. Must not contain a
+     *     {@code null} item and not be {@code null}.
+     *
+     * @return Request builder for configuring request parameters and completing
+     *     the request.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public AddFileMemberBuilder addFileMemberBuilder(String file, List<MemberSelector> members) {
+        AddFileMemberArgs.Builder argBuilder_ = AddFileMemberArgs.newBuilder(file, members);
+        return new AddFileMemberBuilder(this, argBuilder_);
     }
 
     //
@@ -146,6 +216,48 @@ public final class DbxUserSharingRequests {
     public JobStatus checkJobStatus(String asyncJobId) throws PollErrorException, DbxException {
         PollArg arg = new PollArg(asyncJobId);
         return checkJobStatus(arg);
+    }
+
+    //
+    // route sharing/check_remove_member_job_status
+    //
+
+    /**
+     * Returns the status of an asynchronous job for sharing a folder. Apps must
+     * have full Dropbox access to use this endpoint.
+     *
+     * @param pollArg  Arguments for methods that poll the status of an
+     *     asynchronous job.
+     */
+    RemoveMemberJobStatus checkRemoveMemberJobStatus(PollArg pollArg) throws PollErrorException, DbxException {
+        try {
+            return client.rpcStyle(client.getHost().getApi(),
+                                   "2/sharing/check_remove_member_job_status",
+                                   pollArg,
+                                   false,
+                                   PollArg.Serializer.INSTANCE,
+                                   RemoveMemberJobStatus.Serializer.INSTANCE,
+                                   com.dropbox.core.v2.async.PollError.Serializer.INSTANCE);
+        }
+        catch (DbxWrappedException ex) {
+            throw new PollErrorException(ex.getRequestId(), ex.getUserMessage(), (com.dropbox.core.v2.async.PollError) ex.getErrorValue());
+        }
+    }
+
+    /**
+     * Returns the status of an asynchronous job for sharing a folder. Apps must
+     * have full Dropbox access to use this endpoint.
+     *
+     * @param asyncJobId  Id of the asynchronous job. This is the value of a
+     *     response returned from the method that launched the job. Must have
+     *     length of at least 1 and not be {@code null}.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public RemoveMemberJobStatus checkRemoveMemberJobStatus(String asyncJobId) throws PollErrorException, DbxException {
+        PollArg arg = new PollArg(asyncJobId);
+        return checkRemoveMemberJobStatus(arg);
     }
 
     //
@@ -323,8 +435,8 @@ public final class DbxUserSharingRequests {
      * shared folder settings).
      *
      * @param path  The path to be shared by the shared link. Must match pattern
-     *     "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}" and not be {@code
-     *     null}.
+     *     "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}"
+     *     and not be {@code null}.
      *
      * @return The metadata of a shared link
      *
@@ -343,8 +455,8 @@ public final class DbxUserSharingRequests {
      * shared folder settings).
      *
      * @param path  The path to be shared by the shared link. Must match pattern
-     *     "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}" and not be {@code
-     *     null}.
+     *     "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}"
+     *     and not be {@code null}.
      * @param settings  The requested settings for the newly created shared
      *     link.
      *
@@ -356,6 +468,138 @@ public final class DbxUserSharingRequests {
     public SharedLinkMetadata createSharedLinkWithSettings(String path, SharedLinkSettings settings) throws CreateSharedLinkWithSettingsErrorException, DbxException {
         CreateSharedLinkWithSettingsArg arg = new CreateSharedLinkWithSettingsArg(path, settings);
         return createSharedLinkWithSettings(arg);
+    }
+
+    //
+    // route sharing/get_file_metadata
+    //
+
+    /**
+     * Returns shared file metadata.
+     *
+     * @param getFileMetadataArg  Arguments of {@link
+     *     DbxUserSharingRequests#getFileMetadata(String)}
+     *
+     * @return Properties of the shared file.
+     */
+    SharedFileMetadata getFileMetadata(GetFileMetadataArg getFileMetadataArg) throws GetFileMetadataErrorException, DbxException {
+        try {
+            return client.rpcStyle(client.getHost().getApi(),
+                                   "2/sharing/get_file_metadata",
+                                   getFileMetadataArg,
+                                   false,
+                                   GetFileMetadataArg.Serializer.INSTANCE,
+                                   SharedFileMetadata.Serializer.INSTANCE,
+                                   GetFileMetadataError.Serializer.INSTANCE);
+        }
+        catch (DbxWrappedException ex) {
+            throw new GetFileMetadataErrorException(ex.getRequestId(), ex.getUserMessage(), (GetFileMetadataError) ex.getErrorValue());
+        }
+    }
+
+    /**
+     * Returns shared file metadata.
+     *
+     * @param file  The file to query. Must have length of at least 1, match
+     *     pattern "{@code ((/|id:).*|nspath:[^:]*:[^:]*)}", and not be {@code
+     *     null}.
+     *
+     * @return Properties of the shared file.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public SharedFileMetadata getFileMetadata(String file) throws GetFileMetadataErrorException, DbxException {
+        GetFileMetadataArg arg = new GetFileMetadataArg(file);
+        return getFileMetadata(arg);
+    }
+
+    /**
+     * Returns shared file metadata.
+     *
+     * @param file  The file to query. Must have length of at least 1, match
+     *     pattern "{@code ((/|id:).*|nspath:[^:]*:[^:]*)}", and not be {@code
+     *     null}.
+     * @param actions  File actions to query. Must not contain a {@code null}
+     *     item.
+     *
+     * @return Properties of the shared file.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public SharedFileMetadata getFileMetadata(String file, List<FileAction> actions) throws GetFileMetadataErrorException, DbxException {
+        if (actions != null) {
+            for (FileAction x : actions) {
+                if (x == null) {
+                    throw new IllegalArgumentException("An item in list 'actions' is null");
+                }
+            }
+        }
+        GetFileMetadataArg arg = new GetFileMetadataArg(file, actions);
+        return getFileMetadata(arg);
+    }
+
+    //
+    // route sharing/get_file_metadata/batch
+    //
+
+    /**
+     * Returns shared file metadata.
+     *
+     * @param getFileMetadataBatchArg  Arguments of {@link
+     *     DbxUserSharingRequests#getFileMetadataBatch(List)}
+     */
+    List<GetFileMetadataBatchResult> getFileMetadataBatch(GetFileMetadataBatchArg getFileMetadataBatchArg) throws SharingUserErrorException, DbxException {
+        try {
+            return client.rpcStyle(client.getHost().getApi(),
+                                   "2/sharing/get_file_metadata/batch",
+                                   getFileMetadataBatchArg,
+                                   false,
+                                   GetFileMetadataBatchArg.Serializer.INSTANCE,
+                                   com.dropbox.core.stone.StoneSerializers.list(GetFileMetadataBatchResult.Serializer.INSTANCE),
+                                   SharingUserError.Serializer.INSTANCE);
+        }
+        catch (DbxWrappedException ex) {
+            throw new SharingUserErrorException(ex.getRequestId(), ex.getUserMessage(), (SharingUserError) ex.getErrorValue());
+        }
+    }
+
+    /**
+     * Returns shared file metadata.
+     *
+     * @param files  The files to query. Must contain at most 100 items, not
+     *     contain a {@code null} item, and not be {@code null}.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public List<GetFileMetadataBatchResult> getFileMetadataBatch(List<String> files) throws SharingUserErrorException, DbxException {
+        GetFileMetadataBatchArg arg = new GetFileMetadataBatchArg(files);
+        return getFileMetadataBatch(arg);
+    }
+
+    /**
+     * Returns shared file metadata.
+     *
+     * @param files  The files to query. Must contain at most 100 items, not
+     *     contain a {@code null} item, and not be {@code null}.
+     * @param actions  File actions to query. Must not contain a {@code null}
+     *     item.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public List<GetFileMetadataBatchResult> getFileMetadataBatch(List<String> files, List<FileAction> actions) throws SharingUserErrorException, DbxException {
+        if (actions != null) {
+            for (FileAction x : actions) {
+                if (x == null) {
+                    throw new IllegalArgumentException("An item in list 'actions' is null");
+                }
+            }
+        }
+        GetFileMetadataBatchArg arg = new GetFileMetadataBatchArg(files, actions);
+        return getFileMetadataBatch(arg);
     }
 
     //
@@ -409,8 +653,10 @@ public final class DbxUserSharingRequests {
      *
      * @param sharedFolderId  The ID for the shared folder. Must match pattern
      *     "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
-     * @param actions  Folder actions to query. Must not contain a {@code null}
-     *     item.
+     * @param actions  This is a list indicating whether the returned folder
+     *     data will include a boolean value  {@link FolderPermission#getAllow}
+     *     that describes whether the current user can perform the  FolderAction
+     *     on the folder. Must not contain a {@code null} item.
      *
      * @return The metadata which includes basic information about the shared
      *     folder.
@@ -612,6 +858,215 @@ public final class DbxUserSharingRequests {
     public GetSharedLinksResult getSharedLinks(String path) throws GetSharedLinksErrorException, DbxException {
         GetSharedLinksArg arg = new GetSharedLinksArg(path);
         return getSharedLinks(arg);
+    }
+
+    //
+    // route sharing/list_file_members
+    //
+
+    /**
+     * Use to obtain the members who have been invited to a file, both inherited
+     * and uninherited members.
+     *
+     * @param listFileMembersArg  Arguments for {@link
+     *     DbxUserSharingRequests#listFileMembers(String)}.
+     *
+     * @return Shared file user, group, and invitee membership. Used for the
+     *     results of {@link DbxUserSharingRequests#listFileMembers(String)} and
+     *     {@link DbxUserSharingRequests#listFileMembersContinue(String)}, and
+     *     used as part of the results for {@link
+     *     DbxUserSharingRequests#listFileMembersBatch(List)}.
+     */
+    SharedFileMembers listFileMembers(ListFileMembersArg listFileMembersArg) throws ListFileMembersErrorException, DbxException {
+        try {
+            return client.rpcStyle(client.getHost().getApi(),
+                                   "2/sharing/list_file_members",
+                                   listFileMembersArg,
+                                   false,
+                                   ListFileMembersArg.Serializer.INSTANCE,
+                                   SharedFileMembers.Serializer.INSTANCE,
+                                   ListFileMembersError.Serializer.INSTANCE);
+        }
+        catch (DbxWrappedException ex) {
+            throw new ListFileMembersErrorException(ex.getRequestId(), ex.getUserMessage(), (ListFileMembersError) ex.getErrorValue());
+        }
+    }
+
+    /**
+     * Use to obtain the members who have been invited to a file, both inherited
+     * and uninherited members.
+     *
+     * <p> The default values for the optional request parameters will be used.
+     * See {@link ListFileMembersBuilder} for more details. </p>
+     *
+     * @param file  The file for which you want to see members. Must have length
+     *     of at least 1, match pattern "{@code
+     *     ((/|id:).*|nspath:[^:]*:[^:]*)}", and not be {@code null}.
+     *
+     * @return Shared file user, group, and invitee membership. Used for the
+     *     results of {@link DbxUserSharingRequests#listFileMembers(String)} and
+     *     {@link DbxUserSharingRequests#listFileMembersContinue(String)}, and
+     *     used as part of the results for {@link
+     *     DbxUserSharingRequests#listFileMembersBatch(List)}.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public SharedFileMembers listFileMembers(String file) throws ListFileMembersErrorException, DbxException {
+        ListFileMembersArg arg = new ListFileMembersArg(file);
+        return listFileMembers(arg);
+    }
+
+    /**
+     * Use to obtain the members who have been invited to a file, both inherited
+     * and uninherited members.
+     *
+     * @param file  The file for which you want to see members. Must have length
+     *     of at least 1, match pattern "{@code
+     *     ((/|id:).*|nspath:[^:]*:[^:]*)}", and not be {@code null}.
+     *
+     * @return Request builder for configuring request parameters and completing
+     *     the request.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public ListFileMembersBuilder listFileMembersBuilder(String file) {
+        ListFileMembersArg.Builder argBuilder_ = ListFileMembersArg.newBuilder(file);
+        return new ListFileMembersBuilder(this, argBuilder_);
+    }
+
+    //
+    // route sharing/list_file_members/batch
+    //
+
+    /**
+     * Get members of multiple files at once. The arguments to this route are
+     * more limited, and the limit on query result size per file is more strict.
+     * To customize the results more, use the individual file endpoint.
+     * Inherited users are not included in the result, and permissions are not
+     * returned for this endpoint.
+     *
+     * @param listFileMembersBatchArg  Arguments for {@link
+     *     DbxUserSharingRequests#listFileMembersBatch(List)}.
+     */
+    List<ListFileMembersBatchResult> listFileMembersBatch(ListFileMembersBatchArg listFileMembersBatchArg) throws SharingUserErrorException, DbxException {
+        try {
+            return client.rpcStyle(client.getHost().getApi(),
+                                   "2/sharing/list_file_members/batch",
+                                   listFileMembersBatchArg,
+                                   false,
+                                   ListFileMembersBatchArg.Serializer.INSTANCE,
+                                   com.dropbox.core.stone.StoneSerializers.list(ListFileMembersBatchResult.Serializer.INSTANCE),
+                                   SharingUserError.Serializer.INSTANCE);
+        }
+        catch (DbxWrappedException ex) {
+            throw new SharingUserErrorException(ex.getRequestId(), ex.getUserMessage(), (SharingUserError) ex.getErrorValue());
+        }
+    }
+
+    /**
+     * Get members of multiple files at once. The arguments to this route are
+     * more limited, and the limit on query result size per file is more strict.
+     * To customize the results more, use the individual file endpoint.
+     * Inherited users are not included in the result, and permissions are not
+     * returned for this endpoint.
+     *
+     * <p> The {@code limit} request parameter will default to {@code 10L} (see
+     * {@link #listFileMembersBatch(List,long)}). </p>
+     *
+     * @param files  Files for which to return members. Must contain at most 100
+     *     items, not contain a {@code null} item, and not be {@code null}.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public List<ListFileMembersBatchResult> listFileMembersBatch(List<String> files) throws SharingUserErrorException, DbxException {
+        ListFileMembersBatchArg arg = new ListFileMembersBatchArg(files);
+        return listFileMembersBatch(arg);
+    }
+
+    /**
+     * Get members of multiple files at once. The arguments to this route are
+     * more limited, and the limit on query result size per file is more strict.
+     * To customize the results more, use the individual file endpoint.
+     * Inherited users are not included in the result, and permissions are not
+     * returned for this endpoint.
+     *
+     * @param files  Files for which to return members. Must contain at most 100
+     *     items, not contain a {@code null} item, and not be {@code null}.
+     * @param limit  Number of members to return max per query. Defaults to 10
+     *     if no limit is specified. Must be less than or equal to 20.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public List<ListFileMembersBatchResult> listFileMembersBatch(List<String> files, long limit) throws SharingUserErrorException, DbxException {
+        if (limit > 20L) {
+            throw new IllegalArgumentException("Number 'limit' is larger than 20L");
+        }
+        ListFileMembersBatchArg arg = new ListFileMembersBatchArg(files, limit);
+        return listFileMembersBatch(arg);
+    }
+
+    //
+    // route sharing/list_file_members/continue
+    //
+
+    /**
+     * Once a cursor has been retrieved from {@link
+     * DbxUserSharingRequests#listFileMembers(String)} or {@link
+     * DbxUserSharingRequests#listFileMembersBatch(List)}, use this to paginate
+     * through all shared file members.
+     *
+     * @param listFileMembersContinueArg  Arguments for {@link
+     *     DbxUserSharingRequests#listFileMembersContinue(String)}.
+     *
+     * @return Shared file user, group, and invitee membership. Used for the
+     *     results of {@link DbxUserSharingRequests#listFileMembers(String)} and
+     *     {@link DbxUserSharingRequests#listFileMembersContinue(String)}, and
+     *     used as part of the results for {@link
+     *     DbxUserSharingRequests#listFileMembersBatch(List)}.
+     */
+    SharedFileMembers listFileMembersContinue(ListFileMembersContinueArg listFileMembersContinueArg) throws ListFileMembersContinueErrorException, DbxException {
+        try {
+            return client.rpcStyle(client.getHost().getApi(),
+                                   "2/sharing/list_file_members/continue",
+                                   listFileMembersContinueArg,
+                                   false,
+                                   ListFileMembersContinueArg.Serializer.INSTANCE,
+                                   SharedFileMembers.Serializer.INSTANCE,
+                                   ListFileMembersContinueError.Serializer.INSTANCE);
+        }
+        catch (DbxWrappedException ex) {
+            throw new ListFileMembersContinueErrorException(ex.getRequestId(), ex.getUserMessage(), (ListFileMembersContinueError) ex.getErrorValue());
+        }
+    }
+
+    /**
+     * Once a cursor has been retrieved from {@link
+     * DbxUserSharingRequests#listFileMembers(String)} or {@link
+     * DbxUserSharingRequests#listFileMembersBatch(List)}, use this to paginate
+     * through all shared file members.
+     *
+     * @param cursor  The cursor returned by your last call to {@link
+     *     DbxUserSharingRequests#listFileMembers(String)}, {@link
+     *     DbxUserSharingRequests#listFileMembersContinue(String)}, or {@link
+     *     DbxUserSharingRequests#listFileMembersBatch(List)}. Must not be
+     *     {@code null}.
+     *
+     * @return Shared file user, group, and invitee membership. Used for the
+     *     results of {@link DbxUserSharingRequests#listFileMembers(String)} and
+     *     {@link DbxUserSharingRequests#listFileMembersContinue(String)}, and
+     *     used as part of the results for {@link
+     *     DbxUserSharingRequests#listFileMembersBatch(List)}.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public SharedFileMembers listFileMembersContinue(String cursor) throws ListFileMembersContinueErrorException, DbxException {
+        ListFileMembersContinueArg arg = new ListFileMembersContinueArg(cursor);
+        return listFileMembersContinue(arg);
     }
 
     //
@@ -958,6 +1413,112 @@ public final class DbxUserSharingRequests {
     }
 
     //
+    // route sharing/list_received_files
+    //
+
+    /**
+     * Returns a list of all files shared with current user. Does not include
+     * files the user has received via shared folders, and does  not include
+     * unclaimed invitations.
+     *
+     * @param listFilesArg  Arguments for {@link
+     *     DbxUserSharingRequests#listReceivedFiles()}.
+     *
+     * @return Success results for {@link
+     *     DbxUserSharingRequests#listReceivedFiles()}.
+     */
+    ListFilesResult listReceivedFiles(ListFilesArg listFilesArg) throws SharingUserErrorException, DbxException {
+        try {
+            return client.rpcStyle(client.getHost().getApi(),
+                                   "2/sharing/list_received_files",
+                                   listFilesArg,
+                                   false,
+                                   ListFilesArg.Serializer.INSTANCE,
+                                   ListFilesResult.Serializer.INSTANCE,
+                                   SharingUserError.Serializer.INSTANCE);
+        }
+        catch (DbxWrappedException ex) {
+            throw new SharingUserErrorException(ex.getRequestId(), ex.getUserMessage(), (SharingUserError) ex.getErrorValue());
+        }
+    }
+
+    /**
+     * Returns a list of all files shared with current user. Does not include
+     * files the user has received via shared folders, and does  not include
+     * unclaimed invitations.
+     *
+     * <p> The default values for the optional request parameters will be used.
+     * See {@link ListReceivedFilesBuilder} for more details. </p>
+     *
+     * @return Success results for {@link
+     *     DbxUserSharingRequests#listReceivedFiles()}.
+     */
+    public ListFilesResult listReceivedFiles() throws SharingUserErrorException, DbxException {
+        ListFilesArg arg = new ListFilesArg();
+        return listReceivedFiles(arg);
+    }
+
+    /**
+     * Returns a list of all files shared with current user. Does not include
+     * files the user has received via shared folders, and does  not include
+     * unclaimed invitations.
+     *
+     * @return Request builder for configuring request parameters and completing
+     *     the request.
+     */
+    public ListReceivedFilesBuilder listReceivedFilesBuilder() {
+        ListFilesArg.Builder argBuilder_ = ListFilesArg.newBuilder();
+        return new ListReceivedFilesBuilder(this, argBuilder_);
+    }
+
+    //
+    // route sharing/list_received_files/continue
+    //
+
+    /**
+     * Get more results with a cursor from {@link
+     * DbxUserSharingRequests#listReceivedFiles()}.
+     *
+     * @param listFilesContinueArg  Arguments for {@link
+     *     DbxUserSharingRequests#listReceivedFilesContinue(String)}.
+     *
+     * @return Success results for {@link
+     *     DbxUserSharingRequests#listReceivedFiles()}.
+     */
+    ListFilesResult listReceivedFilesContinue(ListFilesContinueArg listFilesContinueArg) throws ListFilesContinueErrorException, DbxException {
+        try {
+            return client.rpcStyle(client.getHost().getApi(),
+                                   "2/sharing/list_received_files/continue",
+                                   listFilesContinueArg,
+                                   false,
+                                   ListFilesContinueArg.Serializer.INSTANCE,
+                                   ListFilesResult.Serializer.INSTANCE,
+                                   ListFilesContinueError.Serializer.INSTANCE);
+        }
+        catch (DbxWrappedException ex) {
+            throw new ListFilesContinueErrorException(ex.getRequestId(), ex.getUserMessage(), (ListFilesContinueError) ex.getErrorValue());
+        }
+    }
+
+    /**
+     * Get more results with a cursor from {@link
+     * DbxUserSharingRequests#listReceivedFiles()}.
+     *
+     * @param cursor  Cursor in {@link ListFilesResult#getCursor}. Must not be
+     *     {@code null}.
+     *
+     * @return Success results for {@link
+     *     DbxUserSharingRequests#listReceivedFiles()}.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public ListFilesResult listReceivedFilesContinue(String cursor) throws ListFilesContinueErrorException, DbxException {
+        ListFilesContinueArg arg = new ListFilesContinueArg(cursor);
+        return listReceivedFilesContinue(arg);
+    }
+
+    //
     // route sharing/list_shared_links
     //
 
@@ -1149,6 +1710,50 @@ public final class DbxUserSharingRequests {
     }
 
     //
+    // route sharing/relinquish_file_membership
+    //
+
+    /**
+     * The current user relinquishes their membership in the designated file.
+     * Note that the current user may still have inherited access to this file
+     * through the parent folder. Apps must have full Dropbox access to use this
+     * endpoint.
+     *
+     */
+    void relinquishFileMembership(RelinquishFileMembershipArg relinquishFileMembershipArg) throws RelinquishFileMembershipErrorException, DbxException {
+        try {
+            client.rpcStyle(client.getHost().getApi(),
+                            "2/sharing/relinquish_file_membership",
+                            relinquishFileMembershipArg,
+                            false,
+                            RelinquishFileMembershipArg.Serializer.INSTANCE,
+                            com.dropbox.core.stone.StoneSerializers.void_(),
+                            RelinquishFileMembershipError.Serializer.INSTANCE);
+        }
+        catch (DbxWrappedException ex) {
+            throw new RelinquishFileMembershipErrorException(ex.getRequestId(), ex.getUserMessage(), (RelinquishFileMembershipError) ex.getErrorValue());
+        }
+    }
+
+    /**
+     * The current user relinquishes their membership in the designated file.
+     * Note that the current user may still have inherited access to this file
+     * through the parent folder. Apps must have full Dropbox access to use this
+     * endpoint.
+     *
+     * @param file  The path or id for the file. Must have length of at least 1,
+     *     match pattern "{@code ((/|id:).*|nspath:[^:]*:[^:]*)}", and not be
+     *     {@code null}.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public void relinquishFileMembership(String file) throws RelinquishFileMembershipErrorException, DbxException {
+        RelinquishFileMembershipArg arg = new RelinquishFileMembershipArg(file);
+        relinquishFileMembership(arg);
+    }
+
+    //
     // route sharing/relinquish_folder_membership
     //
 
@@ -1232,6 +1837,104 @@ public final class DbxUserSharingRequests {
     }
 
     //
+    // route sharing/remove_file_member
+    //
+
+    /**
+     * Identical to remove_file_member_2 but with less information returned.
+     *
+     * @param removeFileMemberArg  Arguments for {@link
+     *     DbxUserSharingRequests#removeFileMember2(String,MemberSelector)}.
+     *
+     * @deprecated use {@link
+     *     DbxUserSharingRequests#removeFileMember2(String,MemberSelector)}
+     *     instead.
+     */
+    @Deprecated
+    FileMemberActionIndividualResult removeFileMember(RemoveFileMemberArg removeFileMemberArg) throws RemoveFileMemberErrorException, DbxException {
+        try {
+            return client.rpcStyle(client.getHost().getApi(),
+                                   "2/sharing/remove_file_member",
+                                   removeFileMemberArg,
+                                   false,
+                                   RemoveFileMemberArg.Serializer.INSTANCE,
+                                   FileMemberActionIndividualResult.Serializer.INSTANCE,
+                                   RemoveFileMemberError.Serializer.INSTANCE);
+        }
+        catch (DbxWrappedException ex) {
+            throw new RemoveFileMemberErrorException(ex.getRequestId(), ex.getUserMessage(), (RemoveFileMemberError) ex.getErrorValue());
+        }
+    }
+
+    /**
+     * Identical to remove_file_member_2 but with less information returned.
+     *
+     * @param file  File from which to remove members. Must have length of at
+     *     least 1, match pattern "{@code ((/|id:).*|nspath:[^:]*:[^:]*)}", and
+     *     not be {@code null}.
+     * @param member  Member to remove from this file. Note that even if an
+     *     email is specified, it may result in the removal of a user (not an
+     *     invitee) if the user's main account corresponds to that email
+     *     address. Must not be {@code null}.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     *
+     * @deprecated use {@link
+     *     DbxUserSharingRequests#removeFileMember2(String,MemberSelector)}
+     *     instead.
+     */
+    @Deprecated
+    public FileMemberActionIndividualResult removeFileMember(String file, MemberSelector member) throws RemoveFileMemberErrorException, DbxException {
+        RemoveFileMemberArg arg = new RemoveFileMemberArg(file, member);
+        return removeFileMember(arg);
+    }
+
+    //
+    // route sharing/remove_file_member_2
+    //
+
+    /**
+     * Removes a specified member from the file.
+     *
+     * @param removeFileMemberArg  Arguments for {@link
+     *     DbxUserSharingRequests#removeFileMember2(String,MemberSelector)}.
+     */
+    FileMemberRemoveActionResult removeFileMember2(RemoveFileMemberArg removeFileMemberArg) throws RemoveFileMemberErrorException, DbxException {
+        try {
+            return client.rpcStyle(client.getHost().getApi(),
+                                   "2/sharing/remove_file_member_2",
+                                   removeFileMemberArg,
+                                   false,
+                                   RemoveFileMemberArg.Serializer.INSTANCE,
+                                   FileMemberRemoveActionResult.Serializer.INSTANCE,
+                                   RemoveFileMemberError.Serializer.INSTANCE);
+        }
+        catch (DbxWrappedException ex) {
+            throw new RemoveFileMemberErrorException(ex.getRequestId(), ex.getUserMessage(), (RemoveFileMemberError) ex.getErrorValue());
+        }
+    }
+
+    /**
+     * Removes a specified member from the file.
+     *
+     * @param file  File from which to remove members. Must have length of at
+     *     least 1, match pattern "{@code ((/|id:).*|nspath:[^:]*:[^:]*)}", and
+     *     not be {@code null}.
+     * @param member  Member to remove from this file. Note that even if an
+     *     email is specified, it may result in the removal of a user (not an
+     *     invitee) if the user's main account corresponds to that email
+     *     address. Must not be {@code null}.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public FileMemberRemoveActionResult removeFileMember2(String file, MemberSelector member) throws RemoveFileMemberErrorException, DbxException {
+        RemoveFileMemberArg arg = new RemoveFileMemberArg(file, member);
+        return removeFileMember2(arg);
+    }
+
+    //
     // route sharing/remove_folder_member
     //
 
@@ -1241,18 +1944,20 @@ public final class DbxUserSharingRequests {
      * use this endpoint.
      *
      *
-     * @return Result returned by methods that may either launch an asynchronous
-     *     job or complete synchronously. Upon synchronous completion of the
-     *     job, no additional information is returned.
+     * @return Result returned by methods that launch an asynchronous job. A
+     *     method who may either launch an asynchronous job, or complete the
+     *     request synchronously, can use this union by extending it, and adding
+     *     a 'complete' field with the type of the synchronous response. See
+     *     {@link LaunchEmptyResult} for an example.
      */
-    LaunchEmptyResult removeFolderMember(RemoveFolderMemberArg removeFolderMemberArg) throws RemoveFolderMemberErrorException, DbxException {
+    LaunchResultBase removeFolderMember(RemoveFolderMemberArg removeFolderMemberArg) throws RemoveFolderMemberErrorException, DbxException {
         try {
             return client.rpcStyle(client.getHost().getApi(),
                                    "2/sharing/remove_folder_member",
                                    removeFolderMemberArg,
                                    false,
                                    RemoveFolderMemberArg.Serializer.INSTANCE,
-                                   LaunchEmptyResult.Serializer.INSTANCE,
+                                   LaunchResultBase.Serializer.INSTANCE,
                                    RemoveFolderMemberError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
@@ -1274,14 +1979,16 @@ public final class DbxUserSharingRequests {
      *     will be removed from their Dropbox. Also, this must be set to false
      *     when kicking a group.
      *
-     * @return Result returned by methods that may either launch an asynchronous
-     *     job or complete synchronously. Upon synchronous completion of the
-     *     job, no additional information is returned.
+     * @return Result returned by methods that launch an asynchronous job. A
+     *     method who may either launch an asynchronous job, or complete the
+     *     request synchronously, can use this union by extending it, and adding
+     *     a 'complete' field with the type of the synchronous response. See
+     *     {@link LaunchEmptyResult} for an example.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LaunchEmptyResult removeFolderMember(String sharedFolderId, MemberSelector member, boolean leaveACopy) throws RemoveFolderMemberErrorException, DbxException {
+    public LaunchResultBase removeFolderMember(String sharedFolderId, MemberSelector member, boolean leaveACopy) throws RemoveFolderMemberErrorException, DbxException {
         RemoveFolderMemberArg arg = new RemoveFolderMemberArg(sharedFolderId, member, leaveACopy);
         return removeFolderMember(arg);
     }
@@ -1500,6 +2207,46 @@ public final class DbxUserSharingRequests {
     }
 
     //
+    // route sharing/unshare_file
+    //
+
+    /**
+     * Remove all members from this file. Does not remove inherited members.
+     *
+     * @param unshareFileArg  Arguments for {@link
+     *     DbxUserSharingRequests#unshareFile(String)}.
+     */
+    void unshareFile(UnshareFileArg unshareFileArg) throws UnshareFileErrorException, DbxException {
+        try {
+            client.rpcStyle(client.getHost().getApi(),
+                            "2/sharing/unshare_file",
+                            unshareFileArg,
+                            false,
+                            UnshareFileArg.Serializer.INSTANCE,
+                            com.dropbox.core.stone.StoneSerializers.void_(),
+                            UnshareFileError.Serializer.INSTANCE);
+        }
+        catch (DbxWrappedException ex) {
+            throw new UnshareFileErrorException(ex.getRequestId(), ex.getUserMessage(), (UnshareFileError) ex.getErrorValue());
+        }
+    }
+
+    /**
+     * Remove all members from this file. Does not remove inherited members.
+     *
+     * @param file  The file to unshare. Must have length of at least 1, match
+     *     pattern "{@code ((/|id:).*|nspath:[^:]*:[^:]*)}", and not be {@code
+     *     null}.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public void unshareFile(String file) throws UnshareFileErrorException, DbxException {
+        UnshareFileArg arg = new UnshareFileArg(file);
+        unshareFile(arg);
+    }
+
+    //
     // route sharing/unshare_folder
     //
 
@@ -1586,16 +2333,19 @@ public final class DbxUserSharingRequests {
      * Allows an owner or editor of a shared folder to update another member's
      * permissions. Apps must have full Dropbox access to use this endpoint.
      *
+     *
+     * @return Contains information about a member's access level to content
+     *     after an operation.
      */
-    void updateFolderMember(UpdateFolderMemberArg updateFolderMemberArg) throws UpdateFolderMemberErrorException, DbxException {
+    MemberAccessLevelResult updateFolderMember(UpdateFolderMemberArg updateFolderMemberArg) throws UpdateFolderMemberErrorException, DbxException {
         try {
-            client.rpcStyle(client.getHost().getApi(),
-                            "2/sharing/update_folder_member",
-                            updateFolderMemberArg,
-                            false,
-                            UpdateFolderMemberArg.Serializer.INSTANCE,
-                            com.dropbox.core.stone.StoneSerializers.void_(),
-                            UpdateFolderMemberError.Serializer.INSTANCE);
+            return client.rpcStyle(client.getHost().getApi(),
+                                   "2/sharing/update_folder_member",
+                                   updateFolderMemberArg,
+                                   false,
+                                   UpdateFolderMemberArg.Serializer.INSTANCE,
+                                   MemberAccessLevelResult.Serializer.INSTANCE,
+                                   UpdateFolderMemberError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
             throw new UpdateFolderMemberErrorException(ex.getRequestId(), ex.getUserMessage(), (UpdateFolderMemberError) ex.getErrorValue());
@@ -1616,12 +2366,15 @@ public final class DbxUserSharingRequests {
      *     DbxUserSharingRequests#updateFolderMember(String,MemberSelector,AccessLevel)}.
      *     {@link AccessLevel#OWNER} is disallowed. Must not be {@code null}.
      *
+     * @return Contains information about a member's access level to content
+     *     after an operation.
+     *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public void updateFolderMember(String sharedFolderId, MemberSelector member, AccessLevel accessLevel) throws UpdateFolderMemberErrorException, DbxException {
+    public MemberAccessLevelResult updateFolderMember(String sharedFolderId, MemberSelector member, AccessLevel accessLevel) throws UpdateFolderMemberErrorException, DbxException {
         UpdateFolderMemberArg arg = new UpdateFolderMemberArg(sharedFolderId, member, accessLevel);
-        updateFolderMember(arg);
+        return updateFolderMember(arg);
     }
 
     //

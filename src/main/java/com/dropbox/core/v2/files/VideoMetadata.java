@@ -90,6 +90,42 @@ public class VideoMetadata extends MediaMetadata {
         }
 
         /**
+         * Set value for optional field.
+         *
+         * @param dimensions  Dimension of the photo/video.
+         *
+         * @return this builder
+         */
+        public Builder withDimensions(Dimensions dimensions) {
+            super.withDimensions(dimensions);
+            return this;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param location  The GPS coordinate of the photo/video.
+         *
+         * @return this builder
+         */
+        public Builder withLocation(GpsCoordinates location) {
+            super.withLocation(location);
+            return this;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param timeTaken  The timestamp when the photo/video is taken.
+         *
+         * @return this builder
+         */
+        public Builder withTimeTaken(Date timeTaken) {
+            super.withTimeTaken(timeTaken);
+            return this;
+        }
+
+        /**
          * Builds an instance of {@link VideoMetadata} configured with this
          * builder's values
          *

@@ -15,14 +15,10 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 
 /**
- * This class is an open tagged union.  Tagged unions instances are always
- * associated to a specific tag.  This means only one of the {@code isAbc()}
- * methods will return {@code true}. You can use {@link #tag()} to determine the
- * tag associated with this instance.
- *
- * <p> Open unions may be extended in the future with additional tags. If a new
- * tag is introduced that this SDK does not recognized, the {@link #OTHER} value
- * will be used. </p>
+ * This class is a tagged union.  Tagged unions instances are always associated
+ * to a specific tag.  This means only one of the {@code isAbc()} methods will
+ * return {@code true}. You can use {@link #tag()} to determine the tag
+ * associated with this instance.
  */
 public final class ShareFolderError {
     // union ShareFolderError
@@ -51,19 +47,11 @@ public final class ShareFolderError {
          * DbxUserSharingRequests#shareFolder(String)}.
          */
         DISALLOWED_SHARED_LINK_POLICY,
+        OTHER,
         /**
          * The current user does not have permission to perform this action.
          */
-        NO_PERMISSION,
-        /**
-         * Catch-all used for unknown tag values returned by the Dropbox
-         * servers.
-         *
-         * <p> Receiving a catch-all value typically indicates this SDK version
-         * is not up to date. Consider updating your SDK version to handle the
-         * new tags. </p>
-         */
-        OTHER; // *catch_all
+        NO_PERMISSION;
     }
 
     /**
@@ -81,18 +69,11 @@ public final class ShareFolderError {
      * DbxUserSharingRequests#shareFolder(String)}.
      */
     public static final ShareFolderError DISALLOWED_SHARED_LINK_POLICY = new ShareFolderError(Tag.DISALLOWED_SHARED_LINK_POLICY, null);
+    public static final ShareFolderError OTHER = new ShareFolderError(Tag.OTHER, null);
     /**
      * The current user does not have permission to perform this action.
      */
     public static final ShareFolderError NO_PERMISSION = new ShareFolderError(Tag.NO_PERMISSION, null);
-    /**
-     * Catch-all used for unknown tag values returned by the Dropbox servers.
-     *
-     * <p> Receiving a catch-all value typically indicates this SDK version is
-     * not up to date. Consider updating your SDK version to handle the new
-     * tags. </p>
-     */
-    public static final ShareFolderError OTHER = new ShareFolderError(Tag.OTHER, null);
 
     private final Tag tag;
     private final SharePathError badPathValue;
@@ -114,9 +95,6 @@ public final class ShareFolderError {
      * methods will return {@code true}. Callers are recommended to use the tag
      * value in a {@code switch} statement to properly handle the different
      * values for this {@code ShareFolderError}. </p>
-     *
-     * <p> If a tag returned by the server is unrecognized by this SDK, the
-     * {@link Tag#OTHER} value will be used. </p>
      *
      * @return the tag for this instance.
      */
@@ -208,17 +186,6 @@ public final class ShareFolderError {
     }
 
     /**
-     * Returns {@code true} if this instance has the tag {@link
-     * Tag#NO_PERMISSION}, {@code false} otherwise.
-     *
-     * @return {@code true} if this instance is tagged as {@link
-     *     Tag#NO_PERMISSION}, {@code false} otherwise.
-     */
-    public boolean isNoPermission() {
-        return this.tag == Tag.NO_PERMISSION;
-    }
-
-    /**
      * Returns {@code true} if this instance has the tag {@link Tag#OTHER},
      * {@code false} otherwise.
      *
@@ -229,12 +196,24 @@ public final class ShareFolderError {
         return this.tag == Tag.OTHER;
     }
 
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#NO_PERMISSION}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#NO_PERMISSION}, {@code false} otherwise.
+     */
+    public boolean isNoPermission() {
+        return this.tag == Tag.NO_PERMISSION;
+    }
+
     @Override
     public int hashCode() {
         int hash = java.util.Arrays.hashCode(new Object [] {
             tag,
             badPathValue
         });
+        hash = (31 * super.hashCode()) + hash;
         return hash;
     }
 
@@ -257,9 +236,9 @@ public final class ShareFolderError {
                     return true;
                 case DISALLOWED_SHARED_LINK_POLICY:
                     return true;
-                case NO_PERMISSION:
-                    return true;
                 case OTHER:
+                    return true;
+                case NO_PERMISSION:
                     return true;
                 default:
                     return false;
@@ -316,12 +295,16 @@ public final class ShareFolderError {
                     g.writeString("disallowed_shared_link_policy");
                     break;
                 }
+                case OTHER: {
+                    g.writeString("other");
+                    break;
+                }
                 case NO_PERMISSION: {
                     g.writeString("no_permission");
                     break;
                 }
                 default: {
-                    g.writeString("other");
+                    throw new IllegalArgumentException("Unrecognized tag: " + value.tag());
                 }
             }
         }
@@ -359,12 +342,14 @@ public final class ShareFolderError {
             else if ("disallowed_shared_link_policy".equals(tag)) {
                 value = ShareFolderError.DISALLOWED_SHARED_LINK_POLICY;
             }
+            else if ("other".equals(tag)) {
+                value = ShareFolderError.OTHER;
+            }
             else if ("no_permission".equals(tag)) {
                 value = ShareFolderError.NO_PERMISSION;
             }
             else {
-                value = ShareFolderError.OTHER;
-                skipFields(p);
+                throw new JsonParseException(p, "Unknown tag: " + tag);
             }
             if (!collapsed) {
                 expectEndObject(p);

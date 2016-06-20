@@ -27,7 +27,7 @@ class ListSharedLinksArg {
      *
      * @param path  See {@link DbxUserSharingRequests#listSharedLinks()}
      *     description. Must match pattern "{@code
-     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}".
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}".
      * @param cursor  The cursor returned by your last call to {@link
      *     DbxUserSharingRequests#listSharedLinks()}.
      * @param directOnly  See {@link DbxUserSharingRequests#listSharedLinks()}
@@ -38,7 +38,7 @@ class ListSharedLinksArg {
      */
     public ListSharedLinksArg(String path, String cursor, Boolean directOnly) {
         if (path != null) {
-            if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})", path)) {
+            if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)", path)) {
                 throw new IllegalArgumentException("String 'path' does not match pattern");
             }
         }
@@ -111,7 +111,7 @@ class ListSharedLinksArg {
          *
          * @param path  See {@link DbxUserSharingRequests#listSharedLinks()}
          *     description. Must match pattern "{@code
-         *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}".
+         *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}".
          *
          * @return this builder
          *
@@ -120,7 +120,7 @@ class ListSharedLinksArg {
          */
         public Builder withPath(String path) {
             if (path != null) {
-                if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})", path)) {
+                if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)", path)) {
                     throw new IllegalArgumentException("String 'path' does not match pattern");
                 }
             }

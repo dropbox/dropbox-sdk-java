@@ -41,7 +41,7 @@ public class ListSharedLinksBuilder {
      *
      * @param path  See {@link DbxUserSharingRequests#listSharedLinks()}
      *     description. Must match pattern "{@code
-     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}".
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}".
      *
      * @return this builder
      *

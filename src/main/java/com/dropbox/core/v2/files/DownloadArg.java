@@ -23,7 +23,8 @@ class DownloadArg {
     /**
      *
      * @param path  The path of the file to download. Must match pattern "{@code
-     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}" and not be {@code null}.
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}" and not
+     *     be {@code null}.
      * @param rev  Deprecated. Please specify revision in the {@code path}
      *     argument to {@link DbxUserFilesRequests#download(String)} instead.
      *     Must have length of at least 9 and match pattern "{@code [0-9a-f]+}".
@@ -35,7 +36,7 @@ class DownloadArg {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
-        if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})", path)) {
+        if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)", path)) {
             throw new IllegalArgumentException("String 'path' does not match pattern");
         }
         this.path = path;
@@ -54,7 +55,8 @@ class DownloadArg {
      * The default values for unset fields will be used.
      *
      * @param path  The path of the file to download. Must match pattern "{@code
-     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})}" and not be {@code null}.
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}" and not
+     *     be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.

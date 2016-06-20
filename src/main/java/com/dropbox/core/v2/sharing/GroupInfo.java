@@ -139,6 +139,31 @@ public class GroupInfo extends GroupSummary {
         }
 
         /**
+         * Set value for optional field.
+         *
+         * @param groupExternalId  External ID of group. This is an arbitrary ID
+         *     that an admin can attach to a group.
+         *
+         * @return this builder
+         */
+        public Builder withGroupExternalId(String groupExternalId) {
+            super.withGroupExternalId(groupExternalId);
+            return this;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param memberCount  The number of members in the group.
+         *
+         * @return this builder
+         */
+        public Builder withMemberCount(Long memberCount) {
+            super.withMemberCount(memberCount);
+            return this;
+        }
+
+        /**
          * Builds an instance of {@link GroupInfo} configured with this
          * builder's values
          *

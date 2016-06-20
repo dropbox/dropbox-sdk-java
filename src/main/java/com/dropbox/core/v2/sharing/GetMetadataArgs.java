@@ -25,8 +25,10 @@ class GetMetadataArgs {
      *
      * @param sharedFolderId  The ID for the shared folder. Must match pattern
      *     "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
-     * @param actions  Folder actions to query. Must not contain a {@code null}
-     *     item.
+     * @param actions  This is a list indicating whether the returned folder
+     *     data will include a boolean value  {@link FolderPermission#getAllow}
+     *     that describes whether the current user can perform the  FolderAction
+     *     on the folder. Must not contain a {@code null} item.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -72,7 +74,9 @@ class GetMetadataArgs {
     }
 
     /**
-     * Folder actions to query.
+     * This is a list indicating whether the returned folder data will include a
+     * boolean value  {@link FolderPermission#getAllow} that describes whether
+     * the current user can perform the  FolderAction on the folder.
      *
      * @return value for this field, or {@code null} if not present.
      */
