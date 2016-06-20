@@ -3,57 +3,12 @@ apply plugin: 'java-library-distribution'
 apply plugin: 'signing'
 apply plugin: 'maven'
 
-def getPassword(prop, description) {
-    if (project.hasProperty(prop)) {
-        return project.getProperty(prop)
-    }
-
-    def console = System.console()
-    if (console != null) {
-        println "Please enter ${description}:"
-        return new String(console.readPassword())
-    }
-
-    // If gradle is run as a daemon or through an IDE, then we won't have a console
-    throw new GradleException(
-        "Missing password property: ${prop}. " +
-        "Run with --no-daemon option, specify the property with the -P flag, or add it to " +
-        "~/.gradle/gradle.properties."
-    )
-}
-
 task releaseTest() {
     dependsOn ':proguard:proguardTest'
     dependsOn test
     dependsOn integrationTest
 }
 
-task signingCredentials() {
-    ext {
-        dbxPropPrefix = 'com.dropbox.api'
-        keyIdProp = 'signing.keyId'
-        keyRingProp = 'signing.secretKeyRingFile'
-        passwordProp = 'signing.password'
-    }
-
-    doLast {
-        [keyIdProp, keyRingProp].each { prop ->
-            def dropboxProp = "${dbxPropPrefix}.${prop}"
-            if (!project.hasProperty(dropboxProp)) {
-                throw new GradleException(
-                    "Missing required property for signing: ${dropboxProp}. " +
-                    "Add the property to ~/.gradle/gradle.properties or specify it with the -P flag."
-                )
-            }
-            project.ext.set(prop, project.getProperty(dropboxProp))
-        }
-
-        project.ext."${passwordProp}" = getPassword(
-            "${dbxPropPrefix}.${passwordProp}",
-            'PGP Private Key Password'
-        )
-    }
-}
 
 signing {
     required {
@@ -62,8 +17,6 @@ signing {
     }
     sign configurations.archives
 }
-
-tasks.signArchives.dependsOn signingCredentials
 
 // Remember to upload binary with releases on GitHub. Some 3rd party developers still rely on
 // manually downloading and managing their dependencies.
@@ -78,26 +31,7 @@ distributions {
     }
 }
 
-task sonatypeCredentials () {
-    ext {
-        usernameProp = "com.dropbox.api.release.sonatypeUser"
-        passwordProp = "com.dropbox.api.release.sonatypePassword"
-        username = "dropbox-api-team"
-        password = null
-    }
-
-    doLast {
-        if (project.hasProperty(usernameProp)) {
-            username = getProperty(usernameProp)
-        }
-
-        password = getPassword(passwordProp, 'OSS Sonatype password')
-    }
-}
-
 uploadArchives {
-    dependsOn sonatypeCredentials
-
     repositories {
         mavenDeployer {
             beforeDeployment { deployment ->
@@ -108,8 +42,8 @@ uploadArchives {
 
             repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
                 authentication(
-                    userName: sonatypeCredentials.username,
-                    password: sonatypeCredentials.password
+                    userName: ossrhUsername,
+                    password: ossrhPassword
                 )
             }
         }

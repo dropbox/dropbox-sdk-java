@@ -32,7 +32,7 @@ task generateStoneSources(type: Exec) {
 sourceSets {
     main {
         java {
-            srcDir "${generatedSources}"
+            srcDir generateStoneSources.outputDir
         }
     }
 }

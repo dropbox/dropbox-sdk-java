@@ -75,8 +75,6 @@ public class DbxClientV2Test {
         DbxClientV2 client = new DbxClientV2(config, "fakeAccessToken");
         FileMetadata expected = new FileMetadata(
             "bar.txt",
-            "/foo/bar.txt",
-            "/foo/bar.txt",
             "id:1HkLjqifwMAAAAAAAAAAAQ",
             new Date(1456169040985L),
             new Date(1456169040985L),
@@ -94,13 +92,14 @@ public class DbxClientV2Test {
         when(mockRequestor.startPost(anyString(), anyHeaders()))
             .thenReturn(mockUploader);
 
-        Metadata actual = client.files().getMetadata(expected.getPathLower());
+        Metadata actual = client.files().getMetadata(expected.getId());
 
         // should have only been called 3 times: initial call + 2 retries
         verify(mockRequestor, times(3)).startPost(anyString(), anyHeaders());
 
-        assertEquals(actual.getPathLower(), expected.getPathLower());
+        assertEquals(actual.getName(), expected.getName());
         assertTrue(actual instanceof FileMetadata, actual.getClass().toString());
+        assertEquals(((FileMetadata) actual).getId(), expected.getId());
     }
 
     @Test(expectedExceptions = RetryException.class)
@@ -166,8 +165,6 @@ public class DbxClientV2Test {
 
         FileMetadata expectedMetadata = new FileMetadata(
             "download_me.txt",
-            "/download_me.txt",
-            "/download_me.txt",
             "id:KLavC4viCDAAAAAAAAAAAQ",
             new Date(1456169692501L),
             new Date(1456169692501L),
@@ -184,7 +181,7 @@ public class DbxClientV2Test {
         when(mockRequestor.startPost(anyString(), anyHeaders()))
             .thenReturn(mockUploader);
 
-        DbxDownloader<FileMetadata> downloader = client.files().download(expectedMetadata.getPathLower());
+        DbxDownloader<FileMetadata> downloader = client.files().download(expectedMetadata.getId());
 
         // should have been attempted twice
         verify(mockRequestor, times(2)).startPost(anyString(), anyHeaders());
@@ -208,8 +205,6 @@ public class DbxClientV2Test {
         DbxClientV2 client = new DbxClientV2(config, "fakeAccessToken");
         FileMetadata expected = new FileMetadata(
             "banana.png",
-            "/banana.png",
-            "/banana.png",
             "id:eRsVsAya9YAAAAAAAAAAAQ",
             new Date(1456173312172L),
             new Date(1456173312172L),
@@ -229,7 +224,7 @@ public class DbxClientV2Test {
             .thenReturn(mockUploader);
 
         long start = System.currentTimeMillis();
-        Metadata actual = client.files().getMetadata(expected.getPathLower());
+        Metadata actual = client.files().getMetadata(expected.getId());
         long end = System.currentTimeMillis();
 
         // no way easy way to properly test this, but request should
@@ -239,7 +234,7 @@ public class DbxClientV2Test {
         // should have been called 4 times: initial call + 3 retries
         verify(mockRequestor, times(4)).startPost(anyString(), anyHeaders());
 
-        assertEquals(actual.getPathLower(), expected.getPathLower());
+        assertEquals(actual.getName(), expected.getName());
         assertTrue(actual instanceof FileMetadata, actual.getClass().toString());
     }
 

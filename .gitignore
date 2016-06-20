@@ -9,7 +9,7 @@ build/
 intellij/
 .idea/
 *.iml
-local.properties
+gradle.properties
 
 # Output file when rendering ReadMe.md locally.
 /ReadMe.html

@@ -3404,6 +3404,9 @@ class JavaCodeGenerationInstance(object):
             # Setter/Adder methods
             #
             self.generate_builder_methods(data_type.java_builder_class, fields)
+            # delegate to parent builder, but make sure we return ourselves for proper chaining
+            if parent_supports_builder:
+                self.generate_builder_methods(data_type.java_builder_class, data_type.all_parent_fields, wrapped_builder_name="super")
 
             #
             # Build method
@@ -3420,6 +3423,10 @@ class JavaCodeGenerationInstance(object):
     def generate_builder_methods(self, builder_class, fields, wrapped_builder_name=None):
         out = self.g.emit
         javadoc = self.doc.generate_javadoc
+
+        # qualify builder name if necessary to avoid name conflicts
+        if wrapped_builder_name and wrapped_builder_name != 'super':
+            wrapped_builder_name = 'this.' + wrapped_builder_name
 
         for field in fields:
             if not field.is_optional:
@@ -3445,7 +3452,7 @@ class JavaCodeGenerationInstance(object):
                     field.java_name,
             )):
                 if wrapped_builder_name:
-                    out('this.%s.%s(%s);' % (wrapped_builder_name, field.java_builder_setter, field.java_name))
+                    out('%s.%s(%s);' % (wrapped_builder_name, field.java_builder_setter, field.java_name))
                 else:
                     self.generate_field_validation(field)
                     self.generate_field_assignment(field)
