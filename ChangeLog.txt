@@ -1,3 +1,17 @@
+2.0.6
+---------------------------------------------
+- Update to latest API specs:
+  - Files (DbxUserFilesRequests)
+    - Add file properties endpoints.
+  - Sharing (DbxUserSharingRequests)
+    - Add endpoints for sharing files and managing shared file membership.
+    - Change return type of removeFolderMember(..) endpoint to always be an async Job ID (LaunchEmptyResult.isAsyncJobId() will be true).
+    - Add checkRemoveMemberJobStatus(..) for checking asynchronous removeFolderMember(..) requests.
+      - Returns additional information compared to checkJobStatus(..)
+    - Change return type of updateFolderMember(..) to return a MemberAccessLevelResult instead of void.
+    - Add NO_EXPLICIT_ACCESS to UpdateFolderMemberError.
+- Fix Android Fake ID exploit where app certificate chains aren't properly validated.
+
 2.0.5 (2016-06-08)
 ---------------------------------------------
 - Allow old locale formats for APIv2 requests.
