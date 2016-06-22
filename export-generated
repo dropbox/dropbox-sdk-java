@@ -13,10 +13,10 @@ import sys
 # the patterns in this script, in addition to
 # the files excluded by the repo's main .gitignore
 IGNORE_PATTERNS = [
+    '/buildSrc', # stone gradle plugin
     '/stone',
     '/spec',
     '/.arcconfig',
-    '/run-stone-codegen',
     '/export-generated',
     '/generator',
     '.gitmodules',

@@ -110,7 +110,6 @@ test {
 
     // TestNG specific options
     options.parallel 'classesAndMethods'
-    options.preserveOrder true
     options.threadCount 4
 
     // exclude integration tests
@@ -274,7 +273,6 @@ dependencyUpdates.resolutionStrategy = {
 }
 
 /* BEGIN PRIVATE REPO ONLY */
-
 apply from: 'stone.gradle'
 
 // load release configuration

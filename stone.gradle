@@ -1,42 +1,40 @@
-apply plugin: 'java'
+apply plugin: 'stone'
 
-task generateStoneSources(type: Exec) {
-    description 'Runs Stone generation script to generate API spec Java source files.'
-
-    ext {
-        generateScriptFile = file('run-stone-codegen')
-        generatorDir = file('generator')
-        specDir = file(project.properties.get('com.dropbox.api.specDir','spec'))
-        outputDir = file("${generatedSources}/stone")
-        logDir = file("${buildDir}")
-        logFile = file("${logDir}/stone.log")
-    }
-
-    logDir.mkdirs()
-    outputDir.mkdirs()
-
-    if (!specDir.exists()) {
-        throw new GradleException("Dropbox API Stone spec directory does not exist: ${specDir.absolutePath}")
-    }
-
-    inputs.file generateScriptFile
-    inputs.dir fileTree(dir: generatorDir, exclude: '**/*.pyc')
-    inputs.sourceDir fileTree(dir: specDir, include: '**/*.stone')
-    outputs.dir outputDir
-
-    standardOutput = new FileOutputStream(logFile)
-
-    commandLine generateScriptFile.absolutePath, specDir.absolutePath, outputDir.absolutePath
+stone {
+    stoneDir "stone"
+    generatorDir "generator"
 }
 
-sourceSets {
-    main {
-        java {
-            srcDir generateStoneSources.outputDir
+generateStone {
+    packageName "com.dropbox.core.v2"
+    routeFilter "alpha_group=null and beta_group=null"
+
+    clients {
+        DbxClientV2Base {
+            javadoc 'Base class for user auth clients.'
+            routesClassNameFormat "DbxUser%sRequests"
+            routeFilter 'auth="user" or auth="noauth"'
+        }
+        DbxTeamClientV2Base {
+            javadoc 'Base class for team auth clients.'
+            routesClassNameFormat "DbxTeam%sRequests"
+            routeFilter 'auth="team"'
+        }
+        DbxAppClientV2Base {
+            javadoc 'Base class for app auth clients.'
+            routesClassNameFormat "DbxApp%sRequests"
+            routeFilter 'auth="app"'
         }
     }
 }
 
-compileJava {
-    dependsOn generateStoneSources
+generateTestStone {
+    packageName "com.dropbox.core.stone"
+
+    clients {
+        StoneTestClient {
+            keepUnused true
+        }
+    }
 }
+

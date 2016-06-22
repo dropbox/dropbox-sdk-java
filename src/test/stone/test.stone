@@ -1,0 +1,76 @@
+namespace test
+
+union ParentUnion
+    alpha
+    beta
+
+union ChildUnion extends ParentUnion
+    delta
+    gamma
+    omega
+
+struct Uninitialized
+    reason UninitializedReason
+    session_id String
+
+union UninitializedReason
+    bad_request
+    bad_header String
+    bad_feels BadFeel
+
+union BadFeel
+    meh
+    blah
+
+union CatchAllUnion extends ParentUnion
+    one
+    two
+    other*
+
+union ValueUnion extends ParentUnion
+    too_much Int32
+    too_little Int32
+    just_right
+
+union NestingUnion
+    simple ChildUnion
+    value ValueUnion
+    catch_all CatchAllUnion
+    other*
+
+struct Pet
+    union
+        dog Dog
+        cat Cat
+        fish Fish
+
+    name String
+    born Timestamp("%Y-%m-%dT%H:%M:%SZ")?
+
+struct Dog extends Pet
+    breed String
+    size DogSize?
+
+struct Cat extends Pet
+    breed String?
+    indoor Boolean?
+
+struct Fish extends Pet
+    species String
+    tank_size TankSize
+
+union DogSize
+    lap
+    small
+    medium
+    large
+
+union TankSize
+    bowl
+    medium Dimensions
+    aquarium String?
+    other*
+
+struct Dimensions
+    width UInt32
+    height UInt32

@@ -1,6 +1,6 @@
-[submodule "spec"]
-	path = spec
-	url = git@github.com:dropbox/dropbox-api-spec.git
+[submodule "src/main/stone"]
+	path = src/main/stone
+	url = git@github.com:dropbox/dropbox-api-spec
 [submodule "stone"]
 	path = stone
-	url = https://github.com/dropbox/stone.git
+	url = git@github.com:dropbox/stone

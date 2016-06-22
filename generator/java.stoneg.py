@@ -2,6 +2,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import os
 import argparse
+import re
+import six
 import types
 
 from collections import defaultdict, OrderedDict, Sequence
@@ -147,16 +149,6 @@ def get_auth_types_set(namespace, noauth_as_user=False):
     }
 
 
-def get_namespaces_by_auth_types(api, auth_types):
-    auth_types_set = set(auth_types)
-    return [
-        ns for ns, ns_auth_types in
-        ((ns, get_auth_types_set(ns)) for ns in api.namespaces.values())
-        # filter out empty or non-matching auth types
-        if ns_auth_types and ns_auth_types.issubset(auth_types)
-    ]
-
-
 def get_ancestors(data_type):
     """Return list of (tag, data_type) pairs.
 
@@ -269,7 +261,7 @@ def get_underlying_type(data_type, allow_lists=True):
         else:
             return data_type
 
-def get_routes_with_arg_type(data_type, allow_lists=True):
+def get_routes_with_arg_type(data_type, allow_lists=True, filtered=True):
     assert isinstance(data_type, DataTypeWrapper), repr(data_type)
 
     ctx = data_type._ctx
@@ -277,15 +269,16 @@ def get_routes_with_arg_type(data_type, allow_lists=True):
     routes = []
     for stone_namespace in ctx.api.namespaces.values():
         for stone_route in stone_namespace.routes:
-            arg_type = get_underlying_type(stone_route.arg_data_type, allow_lists)
+            if not filtered or ctx.include_route(stone_route):
+                arg_type = get_underlying_type(stone_route.arg_data_type, allow_lists)
 
-            if arg_type == data_type.as_stone:
-                routes.append(RouteWrapper(ctx, stone_namespace, stone_route))
+                if arg_type == data_type.as_stone:
+                    routes.append(RouteWrapper(ctx, stone_namespace, stone_route))
 
     return routes
 
 
-def get_routes_with_result_type(data_type, allow_lists=True):
+def get_routes_with_result_type(data_type, allow_lists=True, filtered=True):
     assert isinstance(data_type, DataTypeWrapper), repr(data_type)
 
     ctx = data_type._ctx
@@ -293,15 +286,16 @@ def get_routes_with_result_type(data_type, allow_lists=True):
     routes = []
     for stone_namespace in ctx.api.namespaces.values():
         for stone_route in stone_namespace.routes:
-            result_type = get_underlying_type(stone_route.result_data_type, allow_lists)
+            if not filtered or ctx.include_route(stone_route):
+                result_type = get_underlying_type(stone_route.result_data_type, allow_lists)
 
-            if result_type == data_type.as_stone:
-                routes.append(RouteWrapper(ctx, stone_namespace, stone_route))
+                if result_type == data_type.as_stone:
+                    routes.append(RouteWrapper(ctx, stone_namespace, stone_route))
 
     return routes
 
 
-def get_routes_with_error_type(data_type, allow_lists=True):
+def get_routes_with_error_type(data_type, allow_lists=True, filtered=True):
     assert isinstance(data_type, DataTypeWrapper), repr(data_type)
 
     ctx = data_type._ctx
@@ -309,10 +303,11 @@ def get_routes_with_error_type(data_type, allow_lists=True):
     routes = []
     for stone_namespace in ctx.api.namespaces.values():
         for stone_route in stone_namespace.routes:
-            err_type = get_underlying_type(stone_route.error_data_type, allow_lists)
+            if not filtered or ctx.include_route(stone_route):
+                err_type = get_underlying_type(stone_route.error_data_type, allow_lists)
 
-            if err_type == data_type.as_stone:
-                routes.append(RouteWrapper(ctx, stone_namespace, stone_route))
+                if err_type == data_type.as_stone:
+                    routes.append(RouteWrapper(ctx, stone_namespace, stone_route))
 
     return routes
 
@@ -356,13 +351,13 @@ def is_data_type_serializer_required_outside_package(data_type):
     def has_other_namespace(wrappers):
         return any(w.namespace != data_type.namespace for w in wrappers)
 
-    if has_other_namespace(get_routes_with_arg_type(data_type)):
+    if has_other_namespace(get_routes_with_arg_type(data_type, filtered=False)):
         return True
 
-    if has_other_namespace(get_routes_with_result_type(data_type)):
+    if has_other_namespace(get_routes_with_result_type(data_type, filtered=False)):
         return True
 
-    if has_other_namespace(get_routes_with_error_type(data_type)):
+    if has_other_namespace(get_routes_with_error_type(data_type, filtered=False)):
         return True
 
     if has_other_namespace(get_fields_with_data_type(data_type)):
@@ -387,7 +382,7 @@ def is_data_type_required_outside_package(data_type):
     #
     # Note, if no routes use this data type, then it may be used elsewhere and we will have to make
     # it public for references. This only works when exactly 1 routes uses it as an argument.
-    routes_with_arg = get_routes_with_arg_type(data_type)
+    routes_with_arg = get_routes_with_arg_type(data_type, filtered=False)
     if len(routes_with_arg) != 1:
         return True
 
@@ -396,7 +391,7 @@ def is_data_type_required_outside_package(data_type):
         return True
 
     # if we return this type in any of our routes, it must be made available outside the package
-    if get_routes_with_result_type(data_type):
+    if get_routes_with_result_type(data_type, filtered=False):
         return True
 
     # Routes will flatten struct fields so callers don't have to pass in an instance of the
@@ -413,7 +408,10 @@ def is_data_type_required_outside_package(data_type):
     return False
 
 
-def is_data_type_referenced(data_type, seen=None):
+def is_data_type_referenced(data_type, seen=None, filtered=True):
+    if data_type is None:
+        return False
+
     seen = seen or set()
     if data_type in seen:
         return False
@@ -421,13 +419,13 @@ def is_data_type_referenced(data_type, seen=None):
         seen.add(data_type)
 
     # due to filtering, we can encounter data types that are never referenced. Don't generate these.
-    if get_routes_with_arg_type(data_type):
+    if get_routes_with_arg_type(data_type, filtered=filtered):
         return True
 
-    if get_routes_with_result_type(data_type):
+    if get_routes_with_result_type(data_type, filtered=filtered):
         return True
 
-    if get_routes_with_error_type(data_type):
+    if get_routes_with_error_type(data_type, filtered=filtered):
         return True
 
     if any(is_data_type_referenced(f.containing_data_type, seen) for f in get_fields_with_data_type(data_type)):
@@ -438,7 +436,7 @@ def is_data_type_referenced(data_type, seen=None):
 
     if data_type.is_struct and data_type.has_enumerated_subtypes:
         subtypes = get_enumerated_subtypes_recursively(data_type)
-        if any(is_data_type_referenced(subtype, seen) for subtype in subtypes):
+        if any(is_data_type_referenced(subtype, seen) for _, subtype in subtypes):
             return True
 
     if (data_type.is_struct or data_type.is_union) and data_type.parent:
@@ -473,6 +471,71 @@ def get_all_required_data_types_for_namespace(namespace):
     return data_types
 
 
+class ClientSpec(object):
+    def __init__(self, client_name, client_javadoc, routes_class_name_format, route_filter):
+        self._client_name = client_name
+        self._client_javadoc = client_javadoc or None
+        self._routes_class_name_format = routes_class_name_format or 'Stone%sRequests'
+        self._route_filter = RouteFilter.from_expression(route_filter)
+
+        try:
+            self._routes_class_name_format % 'test'
+        except TypeError:
+            raise ValueError('Error in client-spec:RoutesClassNameFormat: '
+                             'not a proper format string with a single "%s"')
+
+    @classmethod
+    def from_spec_str(cls, spec_str):
+        spec_parts = spec_str.split(':', 3)
+        if len(spec_parts) != 4:
+            raise ValueError('Malformed client spec: %s' % spec_str)
+        return cls(*spec_parts)
+
+    @property
+    def client_name(self):
+        return self._client_name
+
+    @property
+    def client_javadoc(self):
+        return self._client_javadoc
+
+    def class_name_for_namespace(self, namespace):
+        assert isinstance(namespace, NamespaceWrapper), repr(namespace)
+        return classname(self._routes_class_name_format % ('_' + namespace.stone_name + '_'))
+
+    def contains_route(self, route):
+        return self._route_filter.apply(route)
+
+    def __repr__(self):
+        return '%s:%s:%s:%s' % (
+            self._client_name,
+            self._client_javadoc or '',
+            self._routes_class_name_format,
+            self._route_filter or ''
+        )
+
+class RouteFilter(object):
+    def __init__(self, parser):
+        self._parser = parser
+
+    def apply(self, route):
+        if isinstance(route, RouteWrapper):
+            route = route.as_stone
+
+        assert isinstance(route, ApiRoute), repr(route)
+        return self._parser is None or self._parser.eval(route)
+
+    @classmethod
+    def from_expression(cls, expr):
+        if expr:
+            from stone.cli_helpers import parse_route_attr_filter
+            route_filter, errs = parse_route_attr_filter(expr)
+            if errs:
+                raise ValueError("Malformed route filter: %s" % expr)
+            return cls(route_filter)
+        else:
+            return cls(None)
+
 class GeneratorContext(object):
     """
     Context for a single execution of the JavaCodeGenerator.
@@ -484,12 +547,15 @@ class GeneratorContext(object):
     :ivar :class:`stone.api.Api` api: Stone tree to generate into Java
     """
 
-    def __init__(self, code_generator, api):
+    def __init__(self, code_generator, api, client_specs):
         assert isinstance(code_generator, CodeGenerator), repr(code_generator)
         assert isinstance(api, Api), repr(api)
+        assert isinstance(client_specs, Sequence), repr(client_specs)
 
         self._g = code_generator
         self._api = api
+        self._client_specs = client_specs
+        self._current_client_spec = None
         self._current_class = None
         self._current_imports = set()
 
@@ -512,6 +578,10 @@ class GeneratorContext(object):
         return self._g
 
     @property
+    def client_specs(self):
+        return self._client_specs
+
+    @property
     def base_package(self):
         """
         The base Java package where generated classes should reside (configured by commandline
@@ -520,6 +590,84 @@ class GeneratorContext(object):
         :rtype: str
         """
         return self._g.args.package
+
+    @property
+    def keep_unused(self):
+        """
+        Whether to keep data types that are unsed by any routes. Generally you want to filter unused
+        data types since they can cause warnings and errors with Javadoc generation, and can leak
+        details of filtered routes.
+        """
+        return self._g.args.keep_unused
+
+    @property
+    def client_java_class(self):
+        """
+        Returns the Java class for the client being generated by this generation run.
+        """
+        assert self._current_client_spec
+
+        return JavaClass(self, self.base_package + '.' + self._current_client_spec.client_name)
+
+    @property
+    def client_javadoc(self):
+        """
+        Returns the Javadoc to use for the generated client java class.
+        """
+        assert self._current_client_spec
+
+        return self._current_client_spec.client_javadoc
+
+    def class_name_for_namespace(self, namespace, client_spec=None):
+        """
+        Returns the Java class name for the given namespace based on any route filtering and client specs.
+        """
+        if client_spec is None:
+            assert self._current_client_spec
+            client_spec = self._current_client_spec
+
+        return client_spec.class_name_for_namespace(namespace)
+
+    def class_name_for_route(self, route, client_spec=None):
+        """
+        Returns the Java class name for the given route based on any route filtering and client specs.
+        """
+        if client_spec is None:
+            client_spec = self._current_client_spec
+
+        if client_spec and client_spec.contains_route(route):
+            return self.class_name_for_namespace(route.namespace)
+
+        # look for first client spec that matches this route
+        for client_spec in self._client_specs:
+            if client_spec.contains_route(route):
+                return client_spec.class_name_for_namespace(route.namespace)
+
+        raise ValueError("No client contains route: %s" % repr(route))
+
+    def include_route(self, route, client_spec=None):
+        """
+        Returns whether the route should be included in this generation run for the current client.
+        """
+        if client_spec is None:
+            assert self._current_client_spec
+            client_spec = self._current_client_spec
+
+        return client_spec.contains_route(route)
+
+    def has_routes_for_client(self, namespace, client_spec=None):
+        """
+        Returns whether the given namespace contains any routes that should be generated for the
+        current client.
+        """
+        if client_spec is None:
+            assert self._current_client_spec
+            client_spec = self._current_client_spec
+
+        if isinstance(namespace, NamespaceWrapper):
+            namespace = namespace.as_stone
+
+        return any(self.include_route(r, client_spec) for r in namespace.routes)
 
     @property
     def current_java_class(self):
@@ -632,6 +780,18 @@ class GeneratorContext(object):
         finally:
             self._current_class = prev_class
             self._current_imports = prev_imports
+
+    @contextmanager
+    def for_client(self, client_spec):
+        assert isinstance(client_spec, ClientSpec), repr(client_spec)
+        assert client_spec in self._client_specs
+
+        prev_client_spec = self._current_client_spec
+        try:
+            self._current_client_spec = client_spec
+            yield
+        finally:
+            self._current_client_spec = prev_client_spec
 
 
 @total_ordering
@@ -1003,8 +1163,9 @@ class NamespaceWrapper(StoneWrapper):
             for route in self.as_stone.routes
         )
 
-    def java_class(self, auth):
-        return self._as_java_class(classname('dbx_' + auth + '_' + self.stone_name + '_requests'))
+    @property
+    def java_class(self):
+        return self._as_java_class(self._ctx.class_name_for_namespace(self))
 
     @property
     def java_serializers_class(self):
@@ -1029,8 +1190,7 @@ class RouteWrapper(StoneWrapper):
 
     @property
     def java_class(self):
-        auth = self.auth_style if self.auth_style != 'noauth' else 'user'
-        return self.namespace.java_class(auth)
+        return self._as_java_class(self._ctx.class_name_for_route(self))
 
     @property
     def arg(self):
@@ -2135,7 +2295,7 @@ class JavadocGenerator(object):
                 data_type_ref = context
 
         # Do not return references to orphaned types we intend to remove
-        if data_type_ref and is_data_type_referenced(data_type_ref):
+        if self._ctx.keep_unused or is_data_type_referenced(data_type_ref, filtered=False):
             return data_type_ref
         else:
             return None
@@ -2158,7 +2318,7 @@ class JavadocGenerator(object):
         # Field is the lowest you can go. No way to use context to derive field
 
         # Do not return references to orphaned types we intend to remove
-        if field_ref and is_data_type_referenced(field_ref.containing_data_type):
+        if self._ctx.keep_unused or (field_ref and is_data_type_referenced(field_ref.containing_data_type, filtered=False)):
             return field_ref
         else:
             return None
@@ -2208,7 +2368,7 @@ class JavadocGenerator(object):
         # instead of the struct class.
         containing_data_type = field.containing_data_type
         if containing_data_type.is_struct:
-            routes = get_routes_with_arg_type(containing_data_type)
+            routes = get_routes_with_arg_type(containing_data_type, filtered=False)
 
             # we only handle cases where the struct appears as the argument to a single route
             if len(routes) == 1:
@@ -2285,7 +2445,7 @@ class JavaImportGenerator(object):
                 for import_ in sorted(imports):
                     out('import %s;' % import_)
 
-    def add_imports_for_namespace(self, namespace, auth):
+    def add_imports_for_namespace(self, namespace):
         assert isinstance(namespace, NamespaceWrapper), repr(namespace)
 
         self._ctx.add_imports(
@@ -2297,8 +2457,7 @@ class JavaImportGenerator(object):
             'java.util.Map',
         )
         for route in namespace.routes:
-            route_auth = route.auth_style if route.auth_style != 'noauth' else 'user'
-            if route_auth == auth:
+            if self._ctx.include_route(route):
                 self.add_imports_for_route(route)
 
     def add_imports_for_route(self, route):
@@ -2325,7 +2484,7 @@ class JavaImportGenerator(object):
     def add_imports_for_route_builder(self, route):
         route_auth = route.auth_style if route.auth_style != 'noauth' else 'user'
         self._ctx.add_imports(
-            route.namespace.java_class(route_auth),
+            route.namespace.java_class,
             route.arg.java_builder_class,
             'com.dropbox.core.DbxException',
         )
@@ -2423,7 +2582,21 @@ class JavaImportGenerator(object):
 
 
 _CMDLINE_PARSER = argparse.ArgumentParser(prog='java-generator')
-_CMDLINE_PARSER.add_argument('--package', type=str, help='base package name', required=True)
+_CMDLINE_PARSER.add_argument('--package', type=six.text_type, required=True,
+                             help='base package name')
+_CMDLINE_PARSER.add_argument('--client-spec', action='append', type=six.text_type, default=[],
+                             help=('Client class to generate and its configuration. '
+                                   'Spec lines should be a colon-separated list, in the format '
+                                   '"ClientClassName:ClientJavadoc:RequestsClassNameFormat:RouteFilter". '
+                                   'ClientClassName: Name of the generated client class. '
+                                   'RequestsClassNameFormat: Python format string containing exactly '
+                                   'one replacement string ("%%s"), which will be substituted with the '
+                                   'namespace name for the requests. The resulting name will be used '
+                                   'for the class containing all routes within the given namespace. '
+                                   'RouteFilter: Same as --filter-by-route-attr, filter which routes '
+                                   'should be included into the generated client.'))
+_CMDLINE_PARSER.add_argument('--keep-unused', action="store_true", default=False,
+                             help='Keep data types that are not used by any routes')
 
 class JavaCodeGenerator(CodeGenerator):
     cmdline_parser = _CMDLINE_PARSER
@@ -2434,9 +2607,11 @@ class JavaCodeGenerator(CodeGenerator):
 
         This is called by stone.cli.
         """
-        ctx = GeneratorContext(self, api)
-        JavaCodeGenerationInstance(ctx).generate()
-
+        print(self.args)
+        client_specs = [ClientSpec.from_spec_str(s) for s in self.args.client_spec]
+        ctx = GeneratorContext(self, api, client_specs)
+        for client_spec in client_specs:
+            JavaCodeGenerationInstance(ctx).generate(client_spec)
 
 class JavaCodeGenerationInstance(object):
     """
@@ -2502,12 +2677,13 @@ class JavaCodeGenerationInstance(object):
 
                 yield
 
-    def generate(self):
-        self.generate_dbx_clients()
+    def generate(self, client_spec):
+        with self.ctx.for_client(client_spec):
+            self.generate_client()
 
-        for stone_namespace in self.ctx.api.namespaces.values():
-            namespace = NamespaceWrapper(self.ctx, stone_namespace)
-            self.generate_namespace(namespace)
+            for stone_namespace in self.ctx.api.namespaces.values():
+                namespace = NamespaceWrapper(self.ctx, stone_namespace)
+                self.generate_namespace(namespace)
 
     def generate_file_header(self, element=None):
         out = self.g.emit
@@ -2536,49 +2712,35 @@ class JavaCodeGenerationInstance(object):
             os.makedirs(package_fullpath)
         return package_relpath
 
-    def generate_dbx_clients(self):
+    def generate_client(self):
         out = self.g.emit
-
-        self.generate_dbx_client(self.ctx.base_package, 'DbxClientV2Base', 'user')
-        self.generate_dbx_client(self.ctx.base_package, 'DbxTeamClientV2Base', 'team')
-        self.generate_dbx_client(self.ctx.base_package, 'DbxAppClientV2Base', 'app')
-
-    def generate_dbx_client(self, package_name, class_name, auth):
-        out = self.g.emit
-
-        if auth == 'user':
-            auth_types_filter = (auth, 'noauth')
-        else:
-            auth_types_filter = (auth,)
+        client_class = self.ctx.client_java_class
 
         namespaces = [
             NamespaceWrapper(self.ctx, ns)
-            for ns in get_namespaces_by_auth_types(self.ctx.api, auth_types_filter)
+            for ns in self.ctx.api.namespaces.values()
+            if self.ctx.has_routes_for_client(ns)
         ]
 
-        package_relpath = self.create_package_path(package_name)
-        file_name = os.path.join(package_relpath, class_name + '.java')
-        fq_class_name = package_name + '.' + class_name
-        with self.g.output_to_relative_path(file_name), self.ctx.scoped(fq_class_name):
+        package_relpath = self.create_package_path(client_class.package)
+        file_name = os.path.join(package_relpath, client_class.name + '.java')
+        with self.g.output_to_relative_path(file_name), self.ctx.scoped(client_class.fq):
             self.generate_file_header()
-            out('package %s;' % package_name)
+            out('package %s;' % client_class.package)
 
             for namespace in namespaces:
-                self.ctx.add_imports(namespace.java_class(auth))
+                self.ctx.add_imports(namespace.java_class)
+            self.ctx.add_imports('com.dropbox.core.v2.DbxRawClientV2')
 
             self.importer.generate_imports()
 
             out('')
-            self.doc.generate_javadoc(
-                """
-                Base class for %s auth clients.
-                """ % auth
-            )
-            with self.g.block('public class %s' % class_name):
+            self.doc.generate_javadoc(self.ctx.client_javadoc)
+            with self.g.block('public class %s' % client_class.name):
                 out('protected final DbxRawClientV2 _client;')
                 out('')
                 for namespace in namespaces:
-                    out('private final %s %s;' % (namespace.java_class(auth), namespace.java_field))
+                    out('private final %s %s;' % (namespace.java_class, namespace.java_field))
 
                 out('')
                 self.doc.generate_javadoc(
@@ -2587,11 +2749,11 @@ class JavaCodeGenerationInstance(object):
                     """,
                     params=(('_client', 'Raw v2 client to use for issuing requests'),)
                 )
-                with self.g.block('protected %s(DbxRawClientV2 _client)' % class_name):
+                with self.g.block('protected %s(DbxRawClientV2 _client)' % client_class.name):
                     out('this._client = _client;')
                     for namespace in namespaces:
                         out('this.%s = new %s(_client);' % (
-                            namespace.java_field, namespace.java_class(auth)
+                            namespace.java_field, namespace.java_class
                         ))
 
                 for namespace in namespaces:
@@ -2602,7 +2764,7 @@ class JavaCodeGenerationInstance(object):
                         """ % namespace.stone_name,
                         returns="Dropbox %s client" % namespace.stone_name
                     )
-                    with self.g.block("public %s %s()" % (namespace.java_class(auth), namespace.java_getter)):
+                    with self.g.block("public %s %s()" % (namespace.java_class, namespace.java_getter)):
                         out('return %s;' % namespace.java_field)
 
     def generate_namespace(self, namespace):
@@ -2611,6 +2773,10 @@ class JavaCodeGenerationInstance(object):
             self.generate_data_type(data_type)
 
         for route in namespace.routes:
+            # filter out unwanted routes
+            if not self.ctx.include_route(route):
+                continue
+
             # generate exception classes for routes
             self.generate_exception_type(route)
 
@@ -2623,31 +2789,31 @@ class JavaCodeGenerationInstance(object):
         # add documentation to our packages
         self.generate_package_javadoc(namespace)
 
-        for auth in get_auth_types_set(namespace, noauth_as_user=True):
-            self.generate_namespace_for_auth(namespace, auth)
+        if self.ctx.has_routes_for_client(namespace):
+            self.generate_namespace_routes(namespace)
 
-    def generate_namespace_for_auth(self, namespace, auth):
+    def generate_namespace_routes(self, namespace):
         out = self.g.emit
         javadoc = self.doc.generate_javadoc
 
-        with self.new_file(namespace, class_name=namespace.java_class(auth).fq):
-            self.importer.add_imports_for_namespace(namespace, auth)
+        with self.new_file(namespace, class_name=namespace.java_class.fq):
+            self.importer.add_imports_for_namespace(namespace)
             self.importer.generate_imports()
 
             out('')
-            javadoc('Routes in namespace "%s" that support %s auth.' % (namespace.stone_name, auth))
-            with self.g.block('public final class %s' % namespace.java_class(auth)):
+            javadoc('Routes in namespace "%s".' % (namespace.stone_name,))
+            with self.g.block('public final class %s' % namespace.java_class):
                 out('// namespace %s' % namespace.stone_name)
                 out('')
                 out('private final DbxRawClientV2 client;')
 
                 out('')
-                with self.g.block('public %s(DbxRawClientV2 client)' % namespace.java_class(auth)):
+                with self.g.block('public %s(DbxRawClientV2 client)' % namespace.java_class):
                     out('this.client = client;')
 
                 for route in namespace.routes:
-                    route_auth = route.auth_style if route.auth_style != 'noauth' else 'user'
-                    if route_auth != auth:
+                    # filter out unwanted routes
+                    if not self.ctx.include_route(route):
                         continue
 
                     out('')
@@ -2664,16 +2830,24 @@ class JavaCodeGenerationInstance(object):
                     self.generate_route_builder(route)
 
     def generate_package_javadoc(self, namespace):
-        classes = oxford_comma_list(tuple(
-            "{@link %s}" % namespace.java_class(auth)
-            for auth in get_auth_types_set(namespace, noauth_as_user=True)
-        ), conjunction='and')
+        requests_reference_doc = ''
+        request_classes = [
+            self.ctx.class_name_for_namespace(namespace, spec)
+            for spec in self.ctx.client_specs
+            if self.ctx.has_routes_for_client(namespace, spec)
+        ]
+
+        if request_classes:
+            requests_reference_doc += 'See %s for a list of possible requests for this namespace.' % (
+                ', '.join('{@link %s}' % request_class for request_class in request_classes)
+            )
+
         package_doc = (
             """
             %s
 
-            See %s for a list of possible requests for this namespace.
-            """ % (namespace.stone_doc, classes)
+            %s
+            """ % (namespace.stone_doc, requests_reference_doc)
         )
 
         with self.new_file(namespace, 'package-info', package_doc=package_doc):
@@ -2961,9 +3135,7 @@ class JavaCodeGenerationInstance(object):
         """Generate a class definition for a datatype (a struct or a union)."""
         out = self.g.emit
 
-        # some data types get orphaned by route filtering
-        # TODO(krieb): enable this when the bugs are worked out
-        if not is_data_type_referenced(data_type):
+        if not (self.ctx.keep_unused or is_data_type_referenced(data_type)):
             return
 
         with self.new_file(data_type):
@@ -3556,7 +3728,6 @@ class JavaCodeGenerationInstance(object):
                 builder_arg_class = arg_type.java_builder_class
                 builder_arg_name = arg_type.java_builder_field
             client_name = route.namespace.java_field + '_'
-            route_auth = route.auth_style if route.auth_style != 'noauth' else 'user'
 
             out('')
             javadoc(
@@ -3567,7 +3738,7 @@ class JavaCodeGenerationInstance(object):
                 """ % self.doc.javadoc_ref(route, builder=True)
             )
             with self.g.block('public class %s' % route.java_builder_class_with_inheritance):
-                out('private final %s %s;' % (route.namespace.java_class(route_auth), client_name))
+                out('private final %s %s;' % (route.namespace.java_class, client_name))
                 if arg_type.supports_builder:
                     out('private final %s %s;' % (builder_arg_class, builder_arg_name))
                 else:
@@ -3585,13 +3756,13 @@ class JavaCodeGenerationInstance(object):
                 ]
                 if arg_type.supports_builder:
                     args = ', '.join('%s %s' % pair for pair in (
-                        (route.namespace.java_class(route_auth), client_name),
+                        (route.namespace.java_class, client_name),
                         (builder_arg_class, builder_arg_name),
                     ))
                     params.append((builder_arg_name, 'Request argument builder.'))
                 else:
                     args = '%s %s, %s' % (
-                        route.namespace.java_class(route_auth),
+                        route.namespace.java_class,
                         client_name,
                         ', '.join(f.java_type_and_name() for f in arg_type.all_required_fields)
                     )
