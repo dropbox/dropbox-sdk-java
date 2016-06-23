@@ -15,7 +15,7 @@ import sys
 IGNORE_PATTERNS = [
     '/buildSrc', # stone gradle plugin
     '/stone',
-    '/spec',
+    '/src/main/stone',
     '/.arcconfig',
     '/export-generated',
     '/generator',
@@ -99,8 +99,8 @@ def strip_private_sections(path):
 
     if level != 0:
         error('Unmatched \"BEGIN PRIVATE REPO ONLY\" tag in %s' % filename)
-    if not modified:
-        print('%s not modified.' % path, file=sys.stdout)
+    if modified:
+        print('%s modified.' % path, file=sys.stdout)
 
     with open(path, 'w+') as f:
         f.writelines(lines)
