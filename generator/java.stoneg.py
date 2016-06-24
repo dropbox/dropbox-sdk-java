@@ -2607,8 +2607,9 @@ class JavaCodeGenerator(CodeGenerator):
 
         This is called by stone.cli.
         """
-        print(self.args)
         client_specs = [ClientSpec.from_spec_str(s) for s in self.args.client_spec]
+        if not client_specs:
+            raise Exception("Must specify at least one client to generate")
         ctx = GeneratorContext(self, api, client_specs)
         for client_spec in client_specs:
             JavaCodeGenerationInstance(ctx).generate(client_spec)
@@ -2735,7 +2736,7 @@ class JavaCodeGenerationInstance(object):
             self.importer.generate_imports()
 
             out('')
-            self.doc.generate_javadoc(self.ctx.client_javadoc)
+            self.doc.generate_javadoc(self.ctx.client_javadoc or "")
             with self.g.block('public class %s' % client_class.name):
                 out('protected final DbxRawClientV2 _client;')
                 out('')

@@ -243,9 +243,9 @@ public class StoneTask extends DefaultTask {
 
     void generateStoneSourcesForSpecs(Iterable<ClientSpec> specs, OutputStream log) {
         project.exec {
-            environment([PYTHONPATH: getStoneDir().absolutePath])
+            environment PYTHONPATH: getStoneDir().absolutePath
             standardOutput = log
-            commandLine("python3", "-m", "stone.cli")
+            commandLine "python3", "-m", "stone.cli"
             args "--clean-build"
 
             for (String namespace : getWhitelistedNamespaces()) {

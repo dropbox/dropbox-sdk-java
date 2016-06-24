@@ -23,6 +23,7 @@ IGNORE_PATTERNS = [
     '/diff-generated-sources',
     '/release.gradle', # public repo should not include signing and release information
     '/stone.gradle',
+    '/stone_legacy.gradle', # required by dbapp-android integration until stone-gradle-plugin is public
     '/proguard', # ProGuard tests are mostly for release testing
 ]
 

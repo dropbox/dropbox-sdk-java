@@ -1,40 +1,50 @@
-apply plugin: 'stone'
+/*
+ * Disabled until plugin can be stand-alone and used by dbapp-android.
+ *
+ * Gradle does not allow nested buildSrc directories for multi-project builds. This means we lose our plugin in the dbapp-android integration.
+ */
+apply plugin: 'java'
 
-stone {
-    stoneDir "stone"
-    generatorDir "generator"
-}
+if (rootProject.equals(project)) {
+    apply plugin: 'stone'
 
-generateStone {
-    packageName "com.dropbox.core.v2"
-    routeFilter "alpha_group=null and beta_group=null"
+    stone {
+        stoneDir "stone"
+        generatorDir "generator"
+    }
 
-    clients {
-        DbxClientV2Base {
-            javadoc 'Base class for user auth clients.'
-            routesClassNameFormat "DbxUser%sRequests"
-            routeFilter 'auth="user" or auth="noauth"'
-        }
-        DbxTeamClientV2Base {
-            javadoc 'Base class for team auth clients.'
-            routesClassNameFormat "DbxTeam%sRequests"
-            routeFilter 'auth="team"'
-        }
-        DbxAppClientV2Base {
-            javadoc 'Base class for app auth clients.'
-            routesClassNameFormat "DbxApp%sRequests"
-            routeFilter 'auth="app"'
+    generateStone {
+        packageName "com.dropbox.core.v2"
+        routeFilter "alpha_group=null and beta_group=null"
+
+        clients {
+            DbxClientV2Base {
+                javadoc 'Base class for user auth clients.'
+                routesClassNameFormat "DbxUser%sRequests"
+                routeFilter 'auth="user" or auth="noauth"'
+            }
+            DbxTeamClientV2Base {
+                javadoc 'Base class for team auth clients.'
+                routesClassNameFormat "DbxTeam%sRequests"
+                routeFilter 'auth="team"'
+            }
+            DbxAppClientV2Base {
+                javadoc 'Base class for app auth clients.'
+                routesClassNameFormat "DbxApp%sRequests"
+                routeFilter 'auth="app"'
+            }
         }
     }
-}
 
-generateTestStone {
-    packageName "com.dropbox.core.stone"
+    generateTestStone {
+        packageName "com.dropbox.core.stone"
+        keepUnused true
 
-    clients {
-        StoneTestClient {
-            keepUnused true
+        clients {
+            StoneTestClient {}
         }
     }
-}
 
+} else {
+    apply from: "stone_legacy.gradle"
+}
