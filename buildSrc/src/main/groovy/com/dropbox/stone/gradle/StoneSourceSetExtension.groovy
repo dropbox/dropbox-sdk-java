@@ -53,9 +53,9 @@ public class StoneSourceSetExtension {
     }
 
     public StoneSourceSetExtension setSrcDirs(Iterable<String> dirs) {
-        this.folders.clear()
-        dirs.each { dir ->
-            this.folders.add(dir)
+        this.srcDirs.clear()
+        for (String dir : dirs) {
+            this.srcDirs.add(dir)
         }
         return this
     }
