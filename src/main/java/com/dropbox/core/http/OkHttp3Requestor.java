@@ -80,10 +80,21 @@ public class OkHttp3Requestor extends HttpRequestor {
         return client;
     }
 
+    /**
+     * Called beforing building the request and executing it.
+     *
+     * <p> This method should be used by subclasses to make any changes or additions to the request
+     * before it is issued.
+     *
+     * @param request Builder of request to be executed
+     */
+    protected void configureRequest(Request.Builder request) { }
+
     @Override
     public Response doGet(String url, Iterable<Header> headers) throws IOException {
         Request.Builder builder = new Request.Builder().get().url(url);
         toOkHttpHeaders(headers, builder);
+        configureRequest(builder);
         okhttp3.Response response = client.newCall(builder.build()).execute();
         Map<String, List<String>> responseHeaders = fromOkHttpHeaders(response.headers());
         return new Response(response.code(), response.body().byteStream(), responseHeaders);
@@ -104,6 +115,7 @@ public class OkHttp3Requestor extends HttpRequestor {
         RequestBody requestBody = new BufferRequestBody(requestBuffer, null);
         Request.Builder builder = new Request.Builder().method(method, requestBody).url(url);
         toOkHttpHeaders(headers, builder);
+        configureRequest(builder);
         return new BufferUploader(client.newCall(builder.build()), requestBuffer);
     }
 
