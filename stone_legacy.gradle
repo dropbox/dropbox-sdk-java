@@ -30,10 +30,10 @@ project.sourceSets.all { SourceSet sourceSet ->
             outputDir = "${project.buildDir}/generated/source/stone/${sourceSet.name}"
         }
 
-        def specFiles = fileTree(dir: specDir, include: '**/*.stone')
+        def getSpecFiles = { fileTree(dir: specDir, include: '**/*.stone') }
 
         inputs.dir { project.fileTree(dir: generatorDir, exclude: '**/*.pyc') }
-        inputs.sourceDir { specFiles }
+        inputs.sourceDir getSpecFiles
         inputs.property "config", { new groovy.json.JsonBuilder(config).toString() }
         outputs.dir { outputDir }
 
@@ -56,7 +56,7 @@ project.sourceSets.all { SourceSet sourceSet ->
                 }
                 args generatorFile.absolutePath
                 args new File(outputDir, "src").absolutePath
-                args specFiles.getFiles()
+                args getSpecFiles().getFiles()
                 args "--"
                 args "--package", config.packageName
                 if (config.keepUnused) {
