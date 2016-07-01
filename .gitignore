@@ -16,3 +16,6 @@ gradle.properties
 
 # editor temp files
 *~
+
+# pyc files from generator
+*.pyc

@@ -47,7 +47,7 @@ project.sourceSets.all { SourceSet sourceSet ->
 
             project.exec {
                 standardOutput = new FileOutputStream(logFile)
-                commandLine "python3", "-m", "stone.cli"
+                commandLine "python", "-m", "stone.cli"
 
                 environment PYTHONPATH: file(stoneDir).absolutePath
                 args "--clean-build"

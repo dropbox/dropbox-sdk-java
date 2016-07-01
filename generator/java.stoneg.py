@@ -1068,7 +1068,7 @@ class StoneWrapper(object):
 
         :rtype: :class:`JavaClass`
         """
-        assert isinstance(name, str), repr(name)
+        assert isinstance(name, six.text_type), repr(name)
         package = self.java_package
         # only add package if we don't have one already. use
         # upper-casing of class names as indicator of whether this is
@@ -1939,8 +1939,8 @@ class JavadocGenerator(object):
         self._ctx = ctx
 
     def lookup_stone_ref(self, tag, val, context=None):
-        assert isinstance(tag, str), repr(tag)
-        assert isinstance(val, str), repr(val)
+        assert isinstance(tag, six.text_type), repr(tag)
+        assert isinstance(val, six.text_type), repr(val)
         assert context is None or isinstance(context, StoneWrapper), repr(context)
 
         if tag == 'route':
@@ -2028,11 +2028,11 @@ class JavadocGenerator(object):
             doc = wrapper.stone_doc
             context = context or wrapper
 
-        assert isinstance(doc, str), repr(doc)
+        assert isinstance(doc, six.text_type), repr(doc)
         assert isinstance(context, StoneWrapper) or context is None, repr(context)
         assert isinstance(fields, (Sequence, types.GeneratorType)), repr(fields)
         assert isinstance(params, (Sequence, types.GeneratorType, OrderedDict)), repr(params)
-        assert isinstance(returns, (str, StoneWrapper)) or returns is None, repr(returns)
+        assert isinstance(returns, (six.text_type, StoneWrapper)) or returns is None, repr(returns)
         assert isinstance(throws, (Sequence, types.GeneratorType, OrderedDict)), repr(throws)
         assert isinstance(deprecated, (RouteWrapper, bool)) or deprecated is None, repr(deprecated)
 
@@ -2068,7 +2068,7 @@ class JavadocGenerator(object):
         )
 
     def generate_javadoc_raw(self, doc, params=None, returns=None, throws=None, deprecated=None):
-        # deprecated can be an empty str, which means no doc
+        # deprecated can be an empty six.text_type, which means no doc
         if not any((doc, params, returns, throws, deprecated is not None)):
             return
 
@@ -2157,7 +2157,7 @@ class JavadocGenerator(object):
 
     def javadoc_throws(self, field, value_name=None):
         assert isinstance(field, FieldWrapper), repr(field)
-        assert value_name is None or isinstance(value_name, str), repr(value_name)
+        assert value_name is None or isinstance(value_name, six.text_type), repr(value_name)
 
         reasons = self._field_validation_requirements(field, as_failure_reasons=True)
         throws = OrderedDict()
@@ -2233,7 +2233,7 @@ class JavadocGenerator(object):
         return requirements
 
     def _split_id(self, stone_id, max_parts):
-        assert isinstance(stone_id, str), repr(stone_id)
+        assert isinstance(stone_id, six.text_type), repr(stone_id)
         assert max_parts > 0, "max_parts must be positive"
 
         parts = stone_id.split('.')
@@ -2246,7 +2246,7 @@ class JavadocGenerator(object):
             return filler + tuple(parts)
 
     def _lookup_stone_namespace(self, namespace, context):
-        assert isinstance(namespace, str) or namespace is None, repr(namespace)
+        assert isinstance(namespace, six.text_type) or namespace is None, repr(namespace)
         assert isinstance(context, StoneWrapper) or context is None, repr(context)
 
         if namespace:
@@ -2259,7 +2259,7 @@ class JavadocGenerator(object):
         return None
 
     def _lookup_route(self, namespace, route, context):
-        assert isinstance(route, str) or route is None, repr(route)
+        assert isinstance(route, six.text_type) or route is None, repr(route)
         if namespace: assert route, "Cannot specify namespace name without route name"
 
         stone_namespace = self._lookup_stone_namespace(namespace, context)
@@ -2277,7 +2277,7 @@ class JavadocGenerator(object):
         return None
 
     def _lookup_data_type(self, namespace, data_type, context):
-        assert isinstance(data_type, str) or data_type is None, repr(data_type)
+        assert isinstance(data_type, six.text_type) or data_type is None, repr(data_type)
         if namespace: assert data_type, "Cannot specify namespace name without data_type name"
 
         stone_namespace = self._lookup_stone_namespace(namespace, context)
@@ -2301,7 +2301,7 @@ class JavadocGenerator(object):
             return None
 
     def _lookup_field(self, namespace, data_type, field, context):
-        assert isinstance(field, str) or field is None, repr(data_type)
+        assert isinstance(field, six.text_type) or field is None, repr(data_type)
         if data_type: assert field, "Cannot specify data_type name without field name"
 
         data_type = self._lookup_data_type(namespace, data_type, context)
@@ -2872,7 +2872,7 @@ class JavaCodeGenerationInstance(object):
             returns=None
 
         return_type = route.java_return_type
-        throws = ', '.join(map(str, route.java_throws))
+        throws = ', '.join(map(six.text_type, route.java_throws))
         if route.has_arg:
             method_arg_type = arg_type.java_type()
             method_arg_name = arg_type.java_name
@@ -2935,7 +2935,7 @@ class JavaCodeGenerationInstance(object):
         arg_type = route.arg
         result_type = route.result
         return_type = route.java_return_type
-        throws = ', '.join(map(str, route.java_throws))
+        throws = ', '.join(map(six.text_type, route.java_throws))
 
         assert arg_type.is_struct, repr(arg_type)
 
@@ -3074,7 +3074,7 @@ class JavaCodeGenerationInstance(object):
                 ew=error_wrapper_var,
             )
 
-    def generate_route_simple_call(self, route, arg_var, *other_args, before=''):
+    def generate_route_simple_call(self, route, arg_var, before, *other_args):
         out = self.g.emit
 
         with self.g.block('try'):
@@ -3100,20 +3100,22 @@ class JavaCodeGenerationInstance(object):
             out('throw %s' % self.translate_error_wrapper(route, 'ex'))
 
     def generate_route_rpc_call(self, route, arg_var):
+        # return value is optional
+        before = ('return ' if route.has_result else '') + 'client.rpcStyle'
         self.generate_route_simple_call(
             route,
             arg_var,
-            # return value is optional
-            before=('return ' if route.has_result else '') + 'client.rpcStyle',
+            before,
         )
 
     def generate_route_download_call(self, route, arg_var, headers_var):
+        # always need to return a downloader
+        before = 'return client.downloadStyle'
         self.generate_route_simple_call(
             route,
             arg_var,
+            before,
             headers_var,
-            # always need to return a downloader
-            before='return client.downloadStyle',
         )
 
     def generate_route_upload_call(self, route, arg_var):

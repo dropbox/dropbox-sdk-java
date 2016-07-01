@@ -245,7 +245,7 @@ public class StoneTask extends DefaultTask {
         project.exec {
             environment PYTHONPATH: getStoneDir().absolutePath
             standardOutput = log
-            commandLine "python3", "-m", "stone.cli"
+            commandLine "python", "-m", "stone.cli"
             args "--clean-build"
 
             for (String namespace : getWhitelistedNamespaces()) {
