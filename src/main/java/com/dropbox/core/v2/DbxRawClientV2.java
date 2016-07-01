@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 /*>>> import checkers.nullness.quals.NonNull; */
 /*>>> import checkers.nullness.quals.Nullable; */
@@ -49,6 +50,7 @@ public abstract class DbxRawClientV2 {
     // The HTTP status codes returned for errors specific to particular API calls.
     private static final List<Integer> FUNCTION_SPECIFIC_ERROR_CODES = Arrays.asList(403, 404, 409);
     private static final JsonFactory JSON = new JsonFactory();
+    private static final Random RAND = new Random();
 
     private final DbxRequestConfig requestConfig;
     private final DbxHost host;
@@ -259,7 +261,7 @@ public abstract class DbxRawClientV2 {
             } catch (RetryException ex) {
                 if (retries < maxRetries) {
                     ++retries;
-                    sleepQuietly(ex.getBackoffMillis());
+                    sleepQuietlyWithJitter(ex.getBackoffMillis());
                 } else {
                     throw ex;
                 }
@@ -267,13 +269,18 @@ public abstract class DbxRawClientV2 {
         }
     }
 
-    private static void sleepQuietly(long millis) {
-        if (millis <= 0) {
+    private static void sleepQuietlyWithJitter(long millis) {
+        // add a small jitter to the sleep to avoid stampeding herd problem, especially when millis
+        // is 0.
+        long jitter = RAND.nextInt(1000);
+        long sleepMillis = millis + jitter;
+
+        if (sleepMillis <= 0) {
             return;
         }
 
         try {
-            Thread.sleep(millis);
+            Thread.sleep(sleepMillis);
         } catch (InterruptedException ex) {
             // preserve interrupt
             Thread.currentThread().interrupt();

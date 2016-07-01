@@ -13,6 +13,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import com.dropbox.core.stone.StoneSerializer;
 import com.dropbox.core.http.HttpRequestor;
@@ -27,6 +28,7 @@ import static com.dropbox.core.util.LangUtil.mkAssert;
 /*>>> import checkers.nullness.quals.Nullable; */
 
 public final class DbxRequestUtil {
+    private static final Random RAND = new Random();
 
     public static String encodeUrlParam(String s) {
         try {
@@ -441,6 +443,10 @@ public final class DbxRequestUtil {
             if (numRetries >= maxRetries) {
                 throw thrown;
             }
+
+            // add a random jitter to the backoff to avoid stampeding herd. This is especially
+            // useful for ServerExceptions, where backoff is 0.
+            backoff += RAND.nextInt(1000);
 
             if (backoff > 0L) {
                 try {
