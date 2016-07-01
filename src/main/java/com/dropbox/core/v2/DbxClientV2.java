@@ -16,7 +16,7 @@ import java.util.List;
  * <p> This class has no mutable state, so it's thread safe as long as you pass
  * in a thread safe {@link HttpRequestor} implementation. </p>
  */
-public final class DbxClientV2 extends DbxClientV2Base {
+public class DbxClientV2 extends DbxClientV2Base {
 
     /**
      * Creates a client that uses the given OAuth 2 access token as

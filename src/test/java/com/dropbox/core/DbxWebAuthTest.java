@@ -158,7 +158,6 @@ public class DbxWebAuthTest {
              "\"token_type\":\"Bearer\"" +
              ",\"access_token\":\"" + expected.getAccessToken() + "\"" +
              ",\"uid\":\"" + expected.getUserId() + "\"" +
-             ",\"state\":\"" + expected.getUrlState() + "\"" +
              "}"
             ).getBytes("UTF-8")
         );
@@ -186,9 +185,9 @@ public class DbxWebAuthTest {
                    "state", extractQueryParam(authorizationUrl, "state"))
         );
 
-        // verify the CRSF nonce was properly stripped from the finish request
+        // verify the state param isn't send to the 'oauth2/token' endpoint
         String finishParams = new String(body.toByteArray(), "UTF-8");
-        assertEquals(extractQueryParam(finishParams, "state"), state);
+        assertNull(toParamsMap(finishParams).get("state"));
 
         assertNotNull(actual);
         assertEquals(actual.getAccessToken(), expected.getAccessToken());

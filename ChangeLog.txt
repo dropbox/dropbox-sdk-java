@@ -2,6 +2,7 @@
 ---------------------------------------------
 - Add configureRequest(..) method for simpler subclassing of OkHttpRequestor and OkHttp3Requestor.
 - Fix BadRequest error when adding custom state to a DbxWebAuth.Request object.
+- Remove final modifier from DbxClientV2 and DbxTeamClientV2 class declarations for easier mocking in tests.
 
 2.0.6 (2016-06-20)
 ---------------------------------------------
