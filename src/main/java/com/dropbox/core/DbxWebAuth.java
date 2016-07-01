@@ -369,7 +369,7 @@ public class DbxWebAuth {
         return finish(code, null, null);
     }
 
-    private DbxAuthFinish finish(String code, String redirectUri, String state) throws DbxException {
+    private DbxAuthFinish finish(String code, String redirectUri, final String state) throws DbxException {
         if (code == null) throw new NullPointerException("code");
 
         Map<String, String> params = new HashMap<String, String>();
@@ -379,7 +379,6 @@ public class DbxWebAuth {
 
         if (redirectUri != null) {
             params.put("redirect_uri", redirectUri);
-            params.put("state", state);
         }
 
         List<HttpRequestor.Header> headers = new ArrayList<HttpRequestor.Header>();
@@ -398,7 +397,8 @@ public class DbxWebAuth {
                     if (response.getStatusCode() != 200) {
                         throw DbxRequestUtil.unexpectedStatus(response);
                     }
-                    return DbxRequestUtil.readJsonFromResponse(DbxAuthFinish.Reader, response);
+                    return DbxRequestUtil.readJsonFromResponse(DbxAuthFinish.Reader, response)
+                        .withUrlState(state);
                 }
             }
         );
