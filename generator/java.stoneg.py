@@ -8,7 +8,11 @@ import types
 
 from collections import defaultdict, OrderedDict, Sequence
 from contextlib import contextmanager
-from functools import partial, total_ordering
+from functools import (
+    partial,
+    total_ordering,
+    wraps,
+)
 from itertools import chain
 
 from stone.api import (
@@ -37,6 +41,24 @@ from stone.data_type import (
     unwrap_nullable,
     Void,
 )
+
+
+class cached_property(object):
+    """
+    Decorator similar to @property, but which caches the results permanently.
+    """
+    def __init__(self, func):
+        self._func = func
+        self._attr_name = func.__name__
+
+    def __get__(self, instance, owner):
+        if instance is None:
+            return self
+        else:
+            val = self._func(instance)
+            instance.__dict__[self._attr_name] = val
+            return val
+
 
 def _fixreserved(s):
     if s in _RESERVED_KEYWORDS:
@@ -253,13 +275,26 @@ def get_enumerated_subtypes_recursively(data_type):
 
 
 def get_underlying_type(data_type, allow_lists=True):
+    if isinstance(data_type, DataTypeWrapper):
+        ctx = data_type._ctx
+        stone_data_type = data_type.as_stone
+    else:
+        assert isinstance(data_type, DataType), repr(data_type)
+        stone_data_type = data_type
+
     while True:
-        if allow_lists and is_list_type(data_type):
-            data_type = data_type.data_type
-        elif is_nullable_type(data_type):
-            data_type = data_type.data_type
+        if allow_lists and is_list_type(stone_data_type):
+            stone_data_type = stone_data_type.data_type
+        elif is_nullable_type(stone_data_type):
+            stone_data_type = stone_data_type.data_type
         else:
-            return data_type
+            break
+
+    if isinstance(data_type, DataTypeWrapper):
+        return DataTypeWrapper(ctx, stone_data_type)
+    else:
+        return stone_data_type
+
 
 def get_routes_with_arg_type(data_type, allow_lists=True, filtered=True):
     assert isinstance(data_type, DataTypeWrapper), repr(data_type)
@@ -318,31 +353,28 @@ def get_fields_with_data_type(data_type):
     ctx = data_type._ctx
 
     fields = []
-    for stone_namespace in ctx.api.namespaces.values():
-        for stone_data_type in stone_namespace.data_types:
-            if is_composite_type(stone_data_type):
-                for stone_field in stone_data_type.all_fields:
-                    field_type = stone_field.data_type
-                    while is_list_type(field_type) or is_nullable_type(field_type):
-                        field_type = field_type.data_type
-
-                    if field_type == data_type.as_stone:
-                        fields.append(FieldWrapper(ctx, stone_data_type, stone_field))
+    data_types_with_ref = ctx.get_data_types_that_depend_on(data_type)
+    for data_type_with_ref in data_types_with_ref:
+        if data_type_with_ref == data_type:
+            continue
+        for field in data_type_with_ref.fields:
+            field_data_type = get_underlying_type(field.data_type)
+            if field_data_type == data_type:
+                fields.append(field)
 
     return fields
+
 
 def get_data_types_with_parent_type(data_type):
     assert isinstance(data_type, DataTypeWrapper), repr(data_type)
 
     ctx = data_type._ctx
 
-    stone_parent_type = data_type.as_stone
-
     data_types = []
-    for stone_namespace in ctx.api.namespaces.values():
-        for stone_data_type in stone_namespace.data_types:
-            if stone_data_type.parent_type == stone_parent_type:
-                data_types.append(DataTypeWrapper(ctx, stone_data_type))
+    data_types_with_ref = ctx.get_data_types_that_depend_on(data_type)
+    for data_type_with_ref in data_types_with_ref:
+        if data_type_with_ref.parent == data_type:
+            data_types.append(data_type_with_ref)
 
     return data_types
 
@@ -351,22 +383,26 @@ def is_data_type_serializer_required_outside_package(data_type):
     def has_other_namespace(wrappers):
         return any(w.namespace != data_type.namespace for w in wrappers)
 
-    if has_other_namespace(get_routes_with_arg_type(data_type, filtered=False)):
+    ctx = data_type._ctx
+
+    # Serializers never inherit from their parents. Only parent serializers will need to be aware
+    # of their children (for enumerated subtypes).
+    if has_other_namespace(ctx.get_data_types_that_depend_on(data_type, exclude_subclasses=True)):
         return True
 
-    if has_other_namespace(get_routes_with_result_type(data_type, filtered=False)):
-        return True
+    stone_data_type = data_type.as_stone
+    for stone_namespace in ctx.api.namespaces.values():
+        # skip ourselves
+        if stone_namespace == data_type.namespace.as_stone:
+            continue
 
-    if has_other_namespace(get_routes_with_error_type(data_type, filtered=False)):
-        return True
-
-    if has_other_namespace(get_fields_with_data_type(data_type)):
-        return True
-
-    if data_type.is_struct and data_type.has_enumerated_subtypes:
-        subtypes = get_enumerated_subtypes_recursively(data_type)
-        if has_other_namespace(st for _, st in subtypes):
-            return True
+        # namespace must be another namespace
+        for stone_route in stone_namespace.routes:
+            # no filtering
+            if (stone_route.arg_data_type == stone_data_type or
+                stone_route.result_data_type == stone_data_type or
+                stone_route.error_data_type == stone_data_type):
+                return True
 
     return False
 
@@ -408,65 +444,40 @@ def is_data_type_required_outside_package(data_type):
     return False
 
 
-def is_data_type_referenced(data_type, seen=None, filtered=True):
-    if data_type is None:
-        return False
+def is_data_type_referenced(data_type, filtered=True):
+    ctx = data_type._ctx
 
-    seen = seen or set()
-    if data_type in seen:
-        return False
-    else:
-        seen.add(data_type)
+    data_types_with_ref = set(
+        dt.as_stone for dt in ctx.get_data_types_that_depend_on(data_type)
+    )
 
-    # due to filtering, we can encounter data types that are never referenced. Don't generate these.
-    if get_routes_with_arg_type(data_type, filtered=filtered):
-        return True
+    # search our current namespace first since it is more likely to contain a route using this data
+    # type
+    stone_namespaces = ctx.api.namespaces.values()
+    stone_namespaces.remove(data_type.namespace.as_stone)
+    stone_namespaces.insert(0, data_type.namespace.as_stone)
 
-    if get_routes_with_result_type(data_type, filtered=filtered):
-        return True
+    for stone_namespace in stone_namespaces:
+        for stone_route in stone_namespace.routes:
+            if filtered and not ctx.include_route(stone_route):
+                continue
 
-    if get_routes_with_error_type(data_type, filtered=filtered):
-        return True
-
-    if any(is_data_type_referenced(f.containing_data_type, seen) for f in get_fields_with_data_type(data_type)):
-        return True
-
-    if any(is_data_type_referenced(subtype, seen) for subtype in get_data_types_with_parent_type(data_type)):
-        return True
-
-    if data_type.is_struct and data_type.has_enumerated_subtypes:
-        subtypes = get_enumerated_subtypes_recursively(data_type)
-        if any(is_data_type_referenced(subtype, seen) for _, subtype in subtypes):
-            return True
-
-    if (data_type.is_struct or data_type.is_union) and data_type.parent:
-        if is_data_type_referenced(data_type.parent, seen):
-            return True
+            if get_underlying_type(stone_route.arg_data_type) in data_types_with_ref:
+                return True
+            if get_underlying_type(stone_route.result_data_type) in data_types_with_ref:
+                return True
+            if get_underlying_type(stone_route.error_data_type) in data_types_with_ref:
+                return True
 
     return False
 
 
 def get_all_required_data_types_for_namespace(namespace):
-    data_types = []
-    seen_types = set()
+    ctx = namespace._ctx
 
-    def add_data_type(data_type):
-        if not data_type:
-            return
-        if data_type in seen_types:
-            return
-        if not (data_type.is_union or data_type.is_struct):
-            return
-
-        data_types.append(data_type)
-        seen_types.add(data_type)
-
-        add_data_type(data_type.parent)
-        for field in data_type.all_fields:
-            add_data_type(field.data_type)
-
+    data_types = set()
     for data_type in namespace.data_types:
-        add_data_type(data_type)
+        data_types.update(ctx.get_data_type_dependencies(data_type))
 
     return data_types
 
@@ -558,6 +569,8 @@ class GeneratorContext(object):
         self._current_client_spec = None
         self._current_class = None
         self._current_imports = set()
+        self._data_type_dependencies = self._get_data_type_dependency_graph()
+        self._reverse_data_type_dependencies = self._reverse_dependencies(self._data_type_dependencies)
 
     @property
     def api(self):
@@ -668,6 +681,38 @@ class GeneratorContext(object):
             namespace = namespace.as_stone
 
         return any(self.include_route(r, client_spec) for r in namespace.routes)
+
+    def get_data_type_dependencies(self, data_type):
+        if isinstance(data_type, DataType):
+            data_type = DataTypeWrapper(self, data_type)
+        assert isinstance(data_type, DataTypeWrapper), repr(data_type)
+
+        data_type = get_underlying_type(data_type)
+        return self._data_type_dependencies.get(data_type, set())
+
+    def get_data_types_that_depend_on(self, data_type, exclude_subclasses=False):
+        if isinstance(data_type, DataType):
+            data_type = DataTypeWrapper(self, data_type)
+        assert isinstance(data_type, DataTypeWrapper), repr(data_type)
+
+        data_type = get_underlying_type(data_type)
+        reverse_deps = self._reverse_data_type_dependencies.get(data_type, set())
+
+        if not exclude_subclasses:
+            return reverse_deps
+
+        def is_subclass(dt):
+            if not dt.is_struct:
+                return False
+
+            parent = dt.parent
+            while parent:
+                if parent == data_type:
+                    return True
+                else:
+                    parent = parent.parent
+
+        return set(dep for dep in reverse_deps if not is_subclass(dep))
 
     @property
     def current_java_class(self):
@@ -792,6 +837,63 @@ class GeneratorContext(object):
             yield
         finally:
             self._current_client_spec = prev_client_spec
+
+    def _get_data_type_dependency_graph(self):
+        dependencies = defaultdict(set)
+
+        def get_dependencies(root_data_type):
+            seen = set()
+            queue = [root_data_type]
+            while queue:
+                data_type = get_underlying_type(queue.pop(), allow_lists=True)
+                if data_type in seen:
+                    continue
+
+                if data_type is None or not (data_type.is_union or data_type.is_struct):
+                    continue
+
+                seen.add(data_type)
+
+                if data_type.is_union:
+                    # union inheritance is "fake" in that we just copy and paste, so use all fields
+                    # here since we won't build a dependency on the parent.
+                    fields = data_type.all_fields
+                else:
+                    fields = data_type.fields
+
+                for field in fields:
+                    queue.append(field.data_type)
+
+                if data_type.is_struct:
+                    # union inheritence is implemented by copying definitions, so no hard
+                    # dependencies between child-parent
+                    parent = data_type.parent
+                    if parent:
+                        queue.append(parent)
+
+                    if data_type.has_enumerated_subtypes:
+                        for field in data_type.enumerated_subtypes:
+                            queue.append(field.data_type)
+
+            return seen
+
+
+        dependencies = {}
+        for stone_namespace in self._api.namespaces.values():
+            namespace = NamespaceWrapper(self, stone_namespace)
+            for data_type in namespace.data_types:
+                dependencies[data_type] = get_dependencies(data_type)
+
+        return dependencies
+
+    @staticmethod
+    def _reverse_dependencies(dependencies):
+        reverse = defaultdict(set)
+        for data_type, data_type_deps in dependencies.iteritems():
+            for data_type_dep in data_type_deps:
+                reverse[data_type_dep].add(data_type)
+
+        return reverse
 
 
 @total_ordering
@@ -933,8 +1035,11 @@ class JavaClass(object):
     def __hash__(self):
         return hash(self._fq_name)
 
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
     def __eq__(self, other):
-        if isinstance(other, type(self)):
+        if isinstance(other, JavaClass):
             return self._fq_name == other._fq_name
         return False
 
@@ -964,7 +1069,7 @@ class StoneWrapper(object):
         self._stone_namespace = namespace
         self._stone_ent = stone_ent
 
-    @property
+    @cached_property
     def namespace(self):
         """
         Namespace of the wrapped Stone entity, or ``None`` if entity has no namespace (e.g. primitive data type)
@@ -1089,6 +1194,9 @@ class StoneWrapper(object):
     def __repr__(self):
         return '%s(%s)' % (type(self), repr(self.as_stone))
 
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
     def __eq__(self, other):
         if isinstance(other, type(self)):
             return self._stone_ent == other._stone_ent
@@ -1109,7 +1217,7 @@ class NamespaceWrapper(StoneWrapper):
     def __init__(self, ctx, namespace):
         super(NamespaceWrapper, self).__init__(ctx, namespace, namespace)
 
-    @property
+    @cached_property
     def stone_filenames(self):
         """
         List of Stone spec base file names defining this namespace.
@@ -1139,7 +1247,7 @@ class NamespaceWrapper(StoneWrapper):
     def fq_stone_name(self):
         return self.stone_name
 
-    @property
+    @cached_property
     def data_types(self):
         """
         Data types defined in this namespace.
@@ -1151,7 +1259,7 @@ class NamespaceWrapper(StoneWrapper):
             for dt in self.as_stone.linearize_data_types()
         )
 
-    @property
+    @cached_property
     def routes(self):
         """
         Routes defined in this namespace.
@@ -1192,7 +1300,7 @@ class RouteWrapper(StoneWrapper):
     def java_class(self):
         return self._as_java_class(self._ctx.class_name_for_route(self))
 
-    @property
+    @cached_property
     def arg(self):
         """
         Arg data type.
@@ -1201,7 +1309,7 @@ class RouteWrapper(StoneWrapper):
         """
         return DataTypeWrapper(self._ctx, self.as_stone.arg_data_type)
 
-    @property
+    @cached_property
     def result(self):
         """
         Result data type.
@@ -1210,7 +1318,7 @@ class RouteWrapper(StoneWrapper):
         """
         return DataTypeWrapper(self._ctx, self.as_stone.result_data_type)
 
-    @property
+    @cached_property
     def error(self):
         """
         Error data type.
@@ -1259,7 +1367,7 @@ class RouteWrapper(StoneWrapper):
     def is_deprecated(self):
         return self.as_stone.deprecated is not None
 
-    @property
+    @cached_property
     def deprecated_by(self):
         info = self.as_stone.deprecated
         if info is None:
@@ -1484,14 +1592,14 @@ class DataTypeWrapper(StoneWrapper):
         namespace = getattr(ns_data_type, "namespace", None)
         super(DataTypeWrapper, self).__init__(ctx, namespace, data_type)
 
-    @property
+    @cached_property
     def parent(self):
         if (self.is_struct or self.is_union) and self.as_stone.parent_type:
             return DataTypeWrapper(self._ctx, self.as_stone.parent_type)
         else:
             return None
 
-    @property
+    @cached_property
     def subtypes(self):
         if self.is_union or self.is_struct:
             return tuple(
@@ -1500,7 +1608,7 @@ class DataTypeWrapper(StoneWrapper):
             )
         return ()
 
-    @property
+    @cached_property
     def all_fields(self):
         if self.is_union:
             return tuple(FieldWrapper(self._ctx, self.as_stone, f) for f in self.as_stone.all_fields)
@@ -1525,26 +1633,26 @@ class DataTypeWrapper(StoneWrapper):
         else:
             return ()
 
-    @property
+    @cached_property
     def all_required_fields(self):
         return tuple(f for f in self.all_fields if f.is_required)
 
-    @property
+    @cached_property
     def all_optional_fields(self):
         return tuple(f for f in self.all_fields if f.is_optional)
 
-    @property
+    @cached_property
     def fields(self):
         if self.is_union or self.is_struct:
             return tuple(FieldWrapper(self._ctx, self.as_stone, f) for f in self.as_stone.fields)
         else:
             return ()
 
-    @property
+    @cached_property
     def required_fields(self):
         return tuple(f for f in self.fields if f.is_required)
 
-    @property
+    @cached_property
     def optional_fields(self):
         return tuple(f for f in self.fields if f.is_optional)
 
@@ -1556,30 +1664,30 @@ class DataTypeWrapper(StoneWrapper):
         else:
             return ()
 
-    @property
+    @cached_property
     def all_required_parent_fields(self):
         return tuple(f for f in self.all_parent_fields if f.is_required)
 
-    @property
+    @cached_property
     def catch_all_field(self):
         if self.is_union and self.as_stone.catch_all_field is not None:
             return FieldWrapper(self._ctx, self.as_stone, self.as_stone.catch_all_field)
         else:
             return None
 
-    @property
+    @cached_property
     def has_optional_fields(self):
         if self.is_struct:
             return any(f.is_optional for f in self.all_fields)
         else:
             return False
 
-    @property
+    @cached_property
     def list_data_type(self):
         assert self.is_list
         return DataTypeWrapper(self._ctx, self.as_stone.data_type)
 
-    @property
+    @cached_property
     def nullable_data_type(self):
         assert self.is_nullable
         return DataTypeWrapper(self._ctx, self.as_stone.data_type)
@@ -1587,7 +1695,7 @@ class DataTypeWrapper(StoneWrapper):
     @property
     def supports_builder(self):
         if self.is_struct:
-            n_optional = len(self.as_stone.all_optional_fields)
+            n_optional = len(self.all_optional_fields)
             return n_optional > 1
         else:
             return False
@@ -1638,7 +1746,7 @@ class DataTypeWrapper(StoneWrapper):
     def has_enumerated_subtypes(self):
         return self.as_stone.has_enumerated_subtypes()
 
-    @property
+    @cached_property
     def enumerated_subtypes(self):
         assert self.has_enumerated_subtypes
         return tuple(
@@ -1805,11 +1913,11 @@ class FieldWrapper(StoneWrapper):
 
         return doc
 
-    @property
+    @cached_property
     def containing_data_type(self):
         return DataTypeWrapper(self._ctx, self._containing_stone_data_type)
 
-    @property
+    @cached_property
     def data_type(self):
         return DataTypeWrapper(self._ctx, self.as_stone.data_type)
 
@@ -1826,13 +1934,13 @@ class FieldWrapper(StoneWrapper):
     @property
     def is_catch_all(self):
         catch_all_field = self.containing_data_type.catch_all_field
-        return catch_all_field is not None and self.as_stone is catch_all_field.as_stone
+        return self == catch_all_field
 
     @property
     def is_enumerated_subtype(self):
         containing_dt = self.containing_data_type
         if containing_dt.has_enumerated_subtypes:
-            return self.as_stone in tuple(subtype.as_stone for subtype in containing_dt.enumerated_subtypes)
+            return self in containing_dt.enumerated_subtypes
         return False
 
     @property
