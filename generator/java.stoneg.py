@@ -275,7 +275,9 @@ def get_enumerated_subtypes_recursively(data_type):
 
 
 def get_underlying_type(data_type, allow_lists=True):
-    if isinstance(data_type, DataTypeWrapper):
+    is_wrapper = isinstance(data_type, DataTypeWrapper)
+
+    if is_wrapper:
         ctx = data_type._ctx
         stone_data_type = data_type.as_stone
     else:
@@ -290,7 +292,7 @@ def get_underlying_type(data_type, allow_lists=True):
         else:
             break
 
-    if isinstance(data_type, DataTypeWrapper):
+    if is_wrapper:
         return DataTypeWrapper(ctx, stone_data_type)
     else:
         return stone_data_type
@@ -399,9 +401,9 @@ def is_data_type_serializer_required_outside_package(data_type):
         # namespace must be another namespace
         for stone_route in stone_namespace.routes:
             # no filtering
-            if (stone_route.arg_data_type == stone_data_type or
-                stone_route.result_data_type == stone_data_type or
-                stone_route.error_data_type == stone_data_type):
+            if (get_underlying_type(stone_route.arg_data_type) == stone_data_type or
+                get_underlying_type(stone_route.result_data_type) == stone_data_type or
+                get_underlying_type(stone_route.error_data_type) == stone_data_type):
                 return True
 
     return False
@@ -2721,6 +2723,7 @@ class JavaCodeGenerator(CodeGenerator):
         ctx = GeneratorContext(self, api, client_specs)
         for client_spec in client_specs:
             JavaCodeGenerationInstance(ctx).generate(client_spec)
+
 
 class JavaCodeGenerationInstance(object):
     """
