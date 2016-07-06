@@ -1,7 +1,0 @@
-rootProject.name = 'dropbox-sdk-java'
-
-/* BEGIN PRIVATE REPO ONLY */
-include ':proguard'
-/* END PRIVATE REPO ONLY */
-
-

@@ -8,6 +8,10 @@ version = '0-SNAPSHOT'
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
+ext {
+    authInfoPropertyName = 'com.dropbox.test.authInfoFile'
+}
+
 buildscript {
     repositories {
         jcenter()
@@ -27,8 +31,7 @@ repositories {
 }
 
 dependencies {
-    //compile group: 'com.dropbox.core', name: 'dropbox-core-sdk', version: '0-SNAPSHOT', changing: true
-    compile rootProject
+    compile group: 'com.dropbox.core', name: 'dropbox-core-sdk', version: '0-SNAPSHOT', changing: true
     compile 'org.testng:testng:6.9.10'
 }
 
@@ -37,6 +40,28 @@ compileJava {
     options.warnings = true
     options.deprecation = true
     options.encoding = 'utf-8'
+}
+
+// copied from rootProject's build.gradle. We avoid using subprojects due to Android Studio bug and
+// dbapp-android integration.
+def getAuthInfoFile() {
+    if (!project.hasProperty(authInfoPropertyName)) {
+        throw new GradleException('' +
+            "These tests require the \"${authInfoPropertyName}\" " +
+            "project property be set to point to an authorization JSON file " +
+            "(e.g. ./gradlew proguardTest -P${authInfoPropertyName}=auth.json)."
+        )
+    }
+
+    def authInfoFile = file(project.property(authInfoPropertyName))
+    if (!authInfoFile.exists()) {
+        throw new GradleException('' +
+            "The test auth info file does not exist: \"${authInfoFile.absolutePath}\". " +
+            "Please ensure the \"${authInfoPropertyName}\" project property is set to point to " +
+            "the correct authorization JSON file."
+        )
+    }
+    return authInfoFile
 }
 
 task proguard(type: proguard.gradle.ProGuardTask) {

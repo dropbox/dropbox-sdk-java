@@ -1,0 +1,25 @@
+/*
+ * Due to a bug in Android Studio, this SDK's integration with dbapp-android will cause build
+ * failures in Android Studio. Android Studio will complain with the following message (as of
+ * Android Studio v1.5.1):
+ *
+ *     Unable to find module with Gradle path ':dropbox-sdk-java' (needed by module 'Dropbox'.)
+ *
+ * This has to do with the way Android Studio handles subprojects that contain a settings.gradle
+ * file. See bug details here:
+ *
+ *     https://code.google.com/p/android/issues/detail?can=2&start=0&num=100&q=&colspec=ID%20Status%20Priority%20Owner%20Summary%20Stars%20Reporter%20Opened&groupby=&sort=&id=65915
+ *
+ * The work-around is to delete the settings.gradle file from all subprojects to get Android Studio
+ * to properly detect the module. Note that building from the commandline works fine, only Android
+ * Studio fails at life.
+ *
+ * Since this project depends on a consistent project name and is a multi-project build, we provide
+ * the settings.gradle file in a non-default location and expect callers to build using:
+ *
+ *     $ ./gradlew -c standalone-settings.gradle
+ *
+ */
+include ':proguard'
+
+
