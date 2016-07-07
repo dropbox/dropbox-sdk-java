@@ -96,11 +96,15 @@ public class OkHttp3Requestor extends HttpRequestor {
      * <p> This method should be used by subclasses to add any logging, analytics, or cleanup
      * necessary.
      *
-     * <p> Do not consume the response body in this method.
+     * <p> If the response body is consumed, it should be replaced.
      *
      * @param response OkHttp response
+     *
+     * @return OkHttp response
      */
-    protected void interceptResponse(okhttp3.Response response) { }
+    protected okhttp3.Response interceptResponse(okhttp3.Response response) {
+        return response;
+    }
 
     @Override
     public Response doGet(String url, Iterable<Header> headers) throws IOException {
@@ -108,7 +112,7 @@ public class OkHttp3Requestor extends HttpRequestor {
         toOkHttpHeaders(headers, builder);
         configureRequest(builder);
         okhttp3.Response response = client.newCall(builder.build()).execute();
-        interceptResponse(response);
+        response = interceptResponse(response);
         Map<String, List<String>> responseHeaders = fromOkHttpHeaders(response.headers());
         return new Response(response.code(), response.body().byteStream(), responseHeaders);
     }
@@ -174,7 +178,7 @@ public class OkHttp3Requestor extends HttpRequestor {
         @Override
         public Response finish() throws IOException {
             okhttp3.Response response = call.execute();
-            interceptResponse(response);
+            response = interceptResponse(response);
             Map<String, List<String>> responseHeaders = fromOkHttpHeaders(response.headers());
             return new Response(response.code(), response.body().byteStream(), responseHeaders);
         }

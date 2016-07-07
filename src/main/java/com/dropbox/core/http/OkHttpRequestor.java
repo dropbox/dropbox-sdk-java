@@ -99,11 +99,15 @@ public class OkHttpRequestor extends HttpRequestor {
      * <p> This method should be used by subclasses to add any logging, analytics, or cleanup
      * necessary.
      *
-     * <p> Do not consume the response body in this method.
+     * <p> If the response body is consumed, it should be replaced.
      *
      * @param response OkHttp response
+     *
+     * @return OkHttp response
      */
-    protected void interceptResponse(com.squareup.okhttp.Response response) { }
+    protected com.squareup.okhttp.Response interceptResponse(com.squareup.okhttp.Response response) {
+        return response;
+    }
 
     @Override
     public Response doGet(String url, Iterable<Header> headers) throws IOException {
@@ -111,7 +115,7 @@ public class OkHttpRequestor extends HttpRequestor {
         toOkHttpHeaders(headers, builder);
         configureRequest(builder);
         com.squareup.okhttp.Response response = client.newCall(builder.build()).execute();
-        interceptResponse(response);
+        response = interceptResponse(response);
         Map<String, List<String>> responseHeaders = fromOkHttpHeaders(response.headers());
         return new Response(response.code(), response.body().byteStream(), responseHeaders);
     }
@@ -177,7 +181,7 @@ public class OkHttpRequestor extends HttpRequestor {
         @Override
         public Response finish() throws IOException {
             com.squareup.okhttp.Response response = call.execute();
-            interceptResponse(response);
+            response = interceptResponse(response);
             Map<String, List<String>> responseHeaders = fromOkHttpHeaders(response.headers());
             return new Response(response.code(), response.body().byteStream(), responseHeaders);
         }
