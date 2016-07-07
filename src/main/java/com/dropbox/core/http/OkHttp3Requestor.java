@@ -90,12 +90,25 @@ public class OkHttp3Requestor extends HttpRequestor {
      */
     protected void configureRequest(Request.Builder request) { }
 
+    /**
+     * Called before returning {@link Response} from a request.
+     *
+     * <p> This method should be used by subclasses to add any logging, analytics, or cleanup
+     * necessary.
+     *
+     * <p> Do not consume the response body in this method.
+     *
+     * @param response OkHttp response
+     */
+    protected void interceptResponse(okhttp3.Response response) { }
+
     @Override
     public Response doGet(String url, Iterable<Header> headers) throws IOException {
         Request.Builder builder = new Request.Builder().get().url(url);
         toOkHttpHeaders(headers, builder);
         configureRequest(builder);
         okhttp3.Response response = client.newCall(builder.build()).execute();
+        interceptResponse(response);
         Map<String, List<String>> responseHeaders = fromOkHttpHeaders(response.headers());
         return new Response(response.code(), response.body().byteStream(), responseHeaders);
     }
@@ -138,7 +151,7 @@ public class OkHttp3Requestor extends HttpRequestor {
      * the {@link java.io.OutputStream} from an Okio {@link Buffer} that is connected to an OkHttp
      * {@link RequestBody}.  Calling {@link #finish()} will execute the request with OkHttp
      */
-    private static class BufferUploader extends HttpRequestor.Uploader {
+    private class BufferUploader extends HttpRequestor.Uploader {
         private final Call call;
         private final Buffer requestBuffer;
 
@@ -161,6 +174,7 @@ public class OkHttp3Requestor extends HttpRequestor {
         @Override
         public Response finish() throws IOException {
             okhttp3.Response response = call.execute();
+            interceptResponse(response);
             Map<String, List<String>> responseHeaders = fromOkHttpHeaders(response.headers());
             return new Response(response.code(), response.body().byteStream(), responseHeaders);
         }

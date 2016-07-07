@@ -45,7 +45,7 @@ public class StandardHttpRequestor extends HttpRequestor {
         this.config = config;
     }
 
-    private static Response toResponse(HttpURLConnection conn) throws IOException {
+    private Response toResponse(HttpURLConnection conn) throws IOException {
         int responseCode = conn.getResponseCode();
         InputStream bodyStream;
         if (responseCode >= 400 || responseCode == -1) {
@@ -53,6 +53,7 @@ public class StandardHttpRequestor extends HttpRequestor {
         } else {
             bodyStream = conn.getInputStream();
         }
+        interceptResponse(conn);
         return new Response(responseCode, bodyStream, conn.getHeaderFields());
     }
 
@@ -103,7 +104,26 @@ public class StandardHttpRequestor extends HttpRequestor {
      */
     protected void configure(HttpURLConnection conn) throws IOException { }
 
-    private static class Uploader extends HttpRequestor.Uploader {
+    /**
+     * Called before returning {@link Response} from a request.
+     *
+     * <p> This method should be used by subclasses to add any logging, analytics, or cleanup
+     * necessary. Note that the connection response code and response streams will already be
+     * fetched before calling this method. This means any {@link IOException} from reading the
+     * response should already have occurred before this method is called.
+     *
+     * <p> Do not consume the response or error streams in this method.
+     *
+     * @param response OkHttp response
+     */
+    protected void interceptResponse(HttpURLConnection conn) throws IOException { }
+
+    private static OutputStream getOutputStream(HttpURLConnection conn) throws IOException {
+        conn.setDoOutput(true);
+        return conn.getOutputStream();
+    }
+
+    private class Uploader extends HttpRequestor.Uploader {
         private /*@Nullable*/ HttpURLConnection conn;
 
         public Uploader(HttpURLConnection conn)
@@ -111,12 +131,6 @@ public class StandardHttpRequestor extends HttpRequestor {
             super(getOutputStream(conn));
             conn.connect();
             this.conn = conn;
-        }
-
-        private static OutputStream getOutputStream(HttpURLConnection conn)
-            throws IOException {
-            conn.setDoOutput(true);
-            return conn.getOutputStream();
         }
 
         @Override
