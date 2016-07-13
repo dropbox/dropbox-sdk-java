@@ -209,11 +209,9 @@ public class OkHttp3Requestor extends HttpRequestor {
 
         @Override
         public void writeTo(BufferedSink sink) throws IOException {
-            try {
-                sink.writeAll(buffer);
-            } finally {
-                Util.closeQuietly(buffer);
-            }
+            // keep a copy of the request body for interceptors like Facebook's StethoInterceptor
+            // that consume the entire request body contents.
+            buffer.copyTo(sink.buffer(), 0, buffer.size());
         }
     }
 }
