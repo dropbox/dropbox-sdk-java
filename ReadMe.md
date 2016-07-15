@@ -27,7 +27,7 @@ dependencies {
 }
 ```
 
-You can also download the Java SDK JAR and and its dependencies directly from the [latest release page](https://github.com/dropbox/dropbox-sdk-java/releases/latest).
+You can also download the Java SDK JAR and and its required dependencies directly from the [latest release page](https://github.com/dropbox/dropbox-sdk-java/releases/latest). Note that the distribution artifacts on the releases pages do not contain optional dependencies.
 
 ## Get a Dropbox API key
 
@@ -158,9 +158,10 @@ Another workaround is to tell your OSGi container to provide that requirement: [
 
 ### Does this SDK require any special ProGuard rules for shrink optimizations?
 
-Versions 2.0.0-2.0.3 of this SDK require specific ProGuard rules to work with shrinking enabled. However, since version **2.0.4**, the SDK no longer needs special ProGuard directives. However, you may want to consider adding "-dontwarn" directives for unused optional dependencies:
+Versions 2.0.0-2.0.3 of this SDK require SDK-specific ProGuard rules when shrinking is enabled. However, since version **2.0.4**, the only ProGuard rules necessary are for the SDK's required and optional dependencies. If you encounter ProGuard warnings, consider adding the following "-dontwarn" directives to your ProGuard configuration file:
 
 ```
+-dontwarn okio.**
 -dontwarn okhttp3.**
 -dontwarn com.squareup.okhttp.**
 -dontwarn com.google.appengine.**
