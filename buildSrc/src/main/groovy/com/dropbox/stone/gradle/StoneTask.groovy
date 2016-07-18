@@ -247,6 +247,7 @@ public class StoneTask extends DefaultTask {
             standardOutput = log
             commandLine "python", "-m", "stone.cli"
             args "--clean-build"
+            args "--attribute", ":all"
 
             for (String namespace : getWhitelistedNamespaces()) {
                 args "--whitelist-namespace-routes", namespace

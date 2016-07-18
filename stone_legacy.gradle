@@ -51,6 +51,7 @@ project.sourceSets.all { SourceSet sourceSet ->
 
                 environment PYTHONPATH: file(stoneDir).absolutePath
                 args "--clean-build"
+                args "--attribute", ":all"
                 if (config.routeFilter != null) {
                     args "--filter-by-route-attr", config.routeFilter
                 }
