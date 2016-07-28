@@ -90,6 +90,7 @@ dependencies {
     testCompile 'com.google.appengine:appengine-testing:1.9.38'
     testCompile 'com.squareup.okhttp:okhttp:2.7.5'
     testCompile 'com.squareup.okhttp3:okhttp:3.3.1'
+    testCompile 'com.google.guava:guava:19.0'
 }
 
 processResources {
@@ -109,7 +110,7 @@ test {
     useTestNG()
 
     // TestNG specific options
-    options.parallel 'classesAndMethods'
+    options.parallel 'methods'
     options.threadCount 4
 
     // exclude integration tests

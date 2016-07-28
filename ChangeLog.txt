@@ -1,6 +1,9 @@
 2.0.8
 ---------------------------------------------
-- Fix OkHttpRequestor and OkHttp3Requestor to support interceptors that consume request bodies, like Stetho.
+- Fix OkHttpRequestor/OkHttp3Requestor to support interceptors that consume request bodies, like Stetho.
+  - Fix does not apply to streaming uploads.
+- Fix OkHttpRequestor/OkHttp3Requestor to properly handle streaming uploads.
+  - The requestors no longer buffer entire request body in memory for streams.
 
 2.0.7 (2016-06-20)
 ---------------------------------------------

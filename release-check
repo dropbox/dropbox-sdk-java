@@ -1,0 +1,83 @@
+#!/bin/bash
+
+DIR=`dirname "${BASE_SOURCE[0]}"`
+
+die() {
+    echo >&2 "error: release checks failed"
+    exit 1
+}
+
+run() {
+    echo "================================================================================"
+    echo "    CMD: $@"
+    echo " OUTPUT:"
+    $@ || die
+    echo "================================================================================"
+}
+
+gradle() {
+    run "${DIR}/gradlew" \
+        -b "${DIR}/build.gradle" \
+        -c "${DIR}/standalone-settings.gradle" \
+        "$@"
+}
+
+examples_gradle() {
+    run "${DIR}/examples/gradlew" \
+        -b "${DIR}/examples/build.gradle" \
+        "$@"
+}
+
+android_gradle() {
+    run "${DIR}/examples/android/gradlew" \
+        -b "${DIR}/examples/android/build.gradle" \
+        "$@"
+}
+
+run_example() {
+    run "${DIR}/examples/run" "$@"
+}
+
+if [ $# -ne 1 ] ; then
+    script=`basename "${0}"`
+    echo >&2 "usage: $script production-user-auth.json"
+    exit 1
+fi
+
+AUTH_FILE="${1}"
+
+if [ ! -f "${AUTH_FILE}" ] ; then
+    echo >&2 "error: no such file: ${AUTH_FILE}"
+    exit 1
+fi
+
+trap 'die' ERR
+trap 'die' SIGTERM
+
+echo "Running release checks..."
+echo ""
+echo "A series of tests will be performed to verify package is ready for release."
+echo "These tests may take a while to complete."
+echo ""
+
+gradle clean
+gradle check
+
+# test major HTTP requestor implementations
+for requestor in "StandardHttpRequestor" "OkHttpRequestor" "OkHttp3Requestor" ; do
+    gradle -Pcom.dropbox.test.httpRequestor="${requestor}" integrationTest proguardTest
+done
+
+# prepare examples to be run
+gradle install
+examples_gradle clean
+examples_gradle classes
+
+# run examples
+run_example account-info "${AUTH_FILE}"
+run_example upload-file "${AUTH_FILE}" <(cat /dev/urandom | head -c 1024) /test/dropbox-sdk-java/examples/upload-file/small-1KiB.dat
+run_example upload-file "${AUTH_FILE}" <(cat /dev/urandom | head -c $(( 32 << 20 ))) /test/dropbox-sdk-java/examples/upload-file/large-32MiB.dat
+
+# build android
+android_gradle clean
+android_gradle assemble

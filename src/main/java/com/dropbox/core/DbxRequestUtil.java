@@ -231,7 +231,7 @@ public final class DbxRequestUtil {
         try {
             HttpRequestor.Uploader uploader = requestConfig.getHttpRequestor().startPost(uri, headers);
             try {
-                uploader.getBody().write(body);
+                uploader.upload(body);
                 return uploader.finish();
             } finally {
                 uploader.close();

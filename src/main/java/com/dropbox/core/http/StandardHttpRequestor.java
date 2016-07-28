@@ -114,7 +114,7 @@ public class StandardHttpRequestor extends HttpRequestor {
      *
      * <p> Do not consume the response or error streams in this method.
      *
-     * @param response OkHttp response
+     * @param conn HTTP URL connection
      */
     protected void interceptResponse(HttpURLConnection conn) throws IOException { }
 
@@ -124,13 +124,20 @@ public class StandardHttpRequestor extends HttpRequestor {
     }
 
     private class Uploader extends HttpRequestor.Uploader {
-        private /*@Nullable*/ HttpURLConnection conn;
+        private final OutputStream out;
 
-        public Uploader(HttpURLConnection conn)
-            throws IOException {
-            super(getOutputStream(conn));
-            conn.connect();
+        private HttpURLConnection conn;
+
+        public Uploader(HttpURLConnection conn) throws IOException {
             this.conn = conn;
+            this.out = getOutputStream(conn);
+
+            conn.connect();
+        }
+
+        @Override
+        public OutputStream getBody() {
+            return out;
         }
 
         @Override
