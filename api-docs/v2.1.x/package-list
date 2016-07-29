@@ -1,0 +1,17 @@
+com.dropbox.core
+com.dropbox.core.android
+com.dropbox.core.http
+com.dropbox.core.json
+com.dropbox.core.stone
+com.dropbox.core.util
+com.dropbox.core.v1
+com.dropbox.core.v2
+com.dropbox.core.v2.async
+com.dropbox.core.v2.auth
+com.dropbox.core.v2.files
+com.dropbox.core.v2.properties
+com.dropbox.core.v2.sharing
+com.dropbox.core.v2.team
+com.dropbox.core.v2.teamcommon
+com.dropbox.core.v2.teampolicies
+com.dropbox.core.v2.users
