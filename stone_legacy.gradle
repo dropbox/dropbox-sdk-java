@@ -27,7 +27,7 @@ project.sourceSets.all { SourceSet sourceSet ->
             generatorDir = 'generator'
             stoneDir = 'stone'
             specDir = project.properties.get('com.dropbox.api.specDir', "src/${sourceSet.name}/stone")
-            outputDir = "${project.buildDir}/generated/source/stone/${sourceSet.name}"
+            outputDir = "${project.buildDir}/generated/stone"
         }
 
         def getSpecFiles = { fileTree(dir: specDir, include: '**/*.stone') }
@@ -39,7 +39,7 @@ project.sourceSets.all { SourceSet sourceSet ->
 
         doLast {
             def generatorFile = fileTree(dir: generatorDir, include: '**/*stoneg.py').getSingleFile()
-            def srcOutputDir = new File(outputDir, "src")
+            def srcOutputDir = new File(outputDir, "src/${sourceSet.name}/java")
             def logFile = new File(outputDir, "log/stone.log")
 
             srcOutputDir.mkdirs()

@@ -16,11 +16,11 @@ IGNORE_PATTERNS = [
     '/buildSrc', # stone gradle plugin
     '/stone',
     '/src/main/stone',
+    '/src/test/stone',
     '/.arcconfig',
-    '/export-generated',
+    '/scripts',
     '/generator',
     '.gitmodules',
-    '/diff-generated-sources',
     '/release.gradle', # public repo should not include signing and release information
     '/stone.gradle',
     '/stone_legacy.gradle', # required by dbapp-android integration until stone-gradle-plugin is public
@@ -161,13 +161,13 @@ def main():
 
     # Generate source files and copy across to the public repo.
     log('Regenerating source files')
-    subprocess.check_call(['rm', '-rf', 'build/generated-sources'], cwd=cwd)
-    subprocess.check_output(['./run-stone-codegen'])
+    subprocess.check_call(['rm', '-rf', 'build/generated'], cwd=cwd)
+    subprocess.check_output(['./gradlew', 'generateStone', 'generateTestStone'], cwd=cwd)
 
-    target_path = os.path.join(repo_path, 'src/main/java/com/')
+    target_path = os.path.join(repo_path, 'src/')
     log('Copying generated sources to ' + target_path)
     subprocess.check_call(['rsync', '-r',
-                           'build/generated-sources/stone/com/',
+                           'build/generated/stone/src/',
                            target_path], cwd=cwd)
 
     # Modify the gradle.build for the public repo
@@ -179,7 +179,7 @@ def main():
         # Check that the project compiles
         example_folder = os.path.join(repo_path, 'examples')
         log('Compiling the SDK.')
-        subprocess.check_output(['./gradlew', 'install',], cwd=repo_path)
+        subprocess.check_output(['./gradlew', 'check', 'install',], cwd=repo_path)
         log('Compiling the examples.')
         subprocess.check_output(['./gradlew', 'classes'], cwd=example_folder)
         log('Cleaning up')

@@ -215,7 +215,7 @@ public class StoneTask extends DefaultTask {
 
     @OutputDirectory
     public File getOutputDir() {
-        return new File(getOutputBaseDir(), "src")
+        return new File(getOutputBaseDir(), "src/${getSourceSet().name}/java")
     }
 
     public File getLogFile() {

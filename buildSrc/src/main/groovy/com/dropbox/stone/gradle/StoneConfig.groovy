@@ -22,7 +22,7 @@ class StoneConfig {
     /**
      * The base directory of generated files.
      *
-     * Default: "${project.buildDir}/generated/source/stone"
+     * Default: "${project.buildDir}/generated/stone"
      */
     private String generatedFilesBaseDir
 
@@ -53,7 +53,7 @@ class StoneConfig {
 
     public StoneConfig(Project project) {
         this.project = project
-        this.generatedFilesBaseDir = "${project.buildDir}/generated/source/stone"
+        this.generatedFilesBaseDir = "${project.buildDir}/generated/stone"
         this.stoneDir = "stone"
         this.generatorDir = "generator"
         this.keepUnused = false

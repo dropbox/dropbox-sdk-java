@@ -39,7 +39,7 @@ public class StonePlugin implements Plugin<Project> {
                 t.sourceSet sourceSet
                 t.stoneDir project.stone.stoneDir
                 t.generatorDir project.stone.generatorDir
-                t.outputBaseDir  "${project.stone.generatedFilesBaseDir}/${sourceSet.name}"
+                t.outputBaseDir  "${project.stone.generatedFilesBaseDir}"
             }
 
             sourceSet.java.srcDir task.outputDir
