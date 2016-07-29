@@ -121,7 +121,7 @@ def main():
     """The entry point for the program."""
 
     args = _cmdline_parser.parse_args()
-    cwd = os.path.dirname(__file__)
+    cwd = os.path.dirname(os.path.dirname(__file__))
     repo_path = args.repo_path
     def log(msg):
         if args.verbose:

@@ -1,10 +1,10 @@
 namespace test
 
-union ParentUnion
+union_closed ParentUnion
     alpha
     beta
 
-union ChildUnion extends ParentUnion
+union_closed ChildUnion extends ParentUnion
     delta
     gamma
     omega
@@ -13,21 +13,20 @@ struct Uninitialized
     reason UninitializedReason
     session_id String
 
-union UninitializedReason
+union_closed UninitializedReason
     bad_request
     bad_header String
     bad_feels BadFeel
 
-union BadFeel
+union_closed BadFeel
     meh
     blah
 
 union CatchAllUnion extends ParentUnion
     one
     two
-    other*
 
-union ValueUnion extends ParentUnion
+union_closed ValueUnion extends ParentUnion
     too_much Int32
     too_little Int32
     just_right
@@ -36,7 +35,6 @@ union NestingUnion
     simple ChildUnion
     value ValueUnion
     catch_all CatchAllUnion
-    other*
 
 struct Pet
     union
@@ -59,7 +57,7 @@ struct Fish extends Pet
     species String
     tank_size TankSize
 
-union DogSize
+union_closed DogSize
     lap
     small
     medium
@@ -69,7 +67,6 @@ union TankSize
     bowl
     medium Dimensions
     aquarium String?
-    other*
 
 struct Dimensions
     width UInt32

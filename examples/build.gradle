@@ -39,13 +39,15 @@ subprojects {
         standardInput = System.in
         classpath = sourceSets.main.runtimeClasspath
         main = "com.dropbox.core.examples.${project.name.replace('-','_')}.Main"
-        ignoreExitValue true
 
         // convenience for not having to always specify the auth file
         def useAuthInfoFileProp = project.properties.get('useAuthInfoFileProp', 'false') == 'true'
         if (useAuthInfoFileProp && project.hasProperty('com.dropbox.test.authInfoFile')) {
             args project.property('com.dropbox.test.authInfoFile')
         }
+
+        def failOnError = project.properties.get('failOnError', 'false') == 'true'
+        ignoreExitValue !failOnError
 
         def argi = 0
         while (true) {

@@ -6,10 +6,10 @@ die() {
 }
 
 # Exit immediately on any error.
-set -eufo pipefail
+set -euf
 trap die SIGTERM
 
-DIR=`dirname "${BASE_SOURCE[0]}"`
+DIR=`dirname $(dirname "${BASH_SOURCE[0]}")`
 
 run() {
     echo "================================================================================"
@@ -20,26 +20,19 @@ run() {
 }
 
 gradle() {
-    run "${DIR}/gradlew" \
-        -b "${DIR}/build.gradle" \
-        -c "${DIR}/standalone-settings.gradle" \
-        "$@"
+    (cd "${DIR}" && run ./gradlew -c standalone-settings.gradle "$@")
 }
 
 examples_gradle() {
-    run "${DIR}/examples/gradlew" \
-        -b "${DIR}/examples/build.gradle" \
-        "$@"
+    (cd "${DIR}/examples" && run ./gradlew "$@")
 }
 
 android_gradle() {
-    run "${DIR}/examples/android/gradlew" \
-        -b "${DIR}/examples/android/build.gradle" \
-        "$@"
+    (cd "${DIR}/examples/android" && run ./gradlew "$@")
 }
 
 run_example() {
-    run "${DIR}/examples/run" "$@"
+    (cd "${DIR}/examples" && run ./run --fail-on-error "$@")
 }
 
 if [ $# -ne 1 ] ; then
@@ -55,6 +48,12 @@ if [ ! -f "${AUTH_FILE}" ] ; then
     exit 1
 fi
 
+tempfile=$(mktemp -t `basename "${BASH_SOURCE[0]}"`.XXXXXXXXXX)
+function cleanup() {
+    [ ! -e "${tempfile}" ] || rm -f "${tempfile}"
+}
+trap cleanup EXIT
+
 echo "Running release checks..."
 echo ""
 echo "A series of tests will be performed to verify package is ready for release."
@@ -64,11 +63,6 @@ echo ""
 gradle clean
 gradle check
 
-# test major HTTP requestor implementations
-for requestor in "StandardHttpRequestor" "OkHttpRequestor" "OkHttp3Requestor" ; do
-    gradle -Pcom.dropbox.test.httpRequestor="${requestor}" integrationTest proguardTest
-done
-
 # prepare examples to be run
 gradle install
 examples_gradle clean
@@ -76,9 +70,17 @@ examples_gradle classes
 
 # run examples
 run_example account-info "${AUTH_FILE}"
-run_example upload-file "${AUTH_FILE}" <(cat /dev/urandom | head -c 1024) /test/dropbox-sdk-java/examples/upload-file/small-1KiB.dat
-run_example upload-file "${AUTH_FILE}" <(cat /dev/urandom | head -c $(( 32 << 20 ))) /test/dropbox-sdk-java/examples/upload-file/large-32MiB.dat
+cat /dev/urandom | head -c 1024 > "${tempfile}"
+run_example upload-file "${AUTH_FILE}" "${tempfile}" /test/dropbox-sdk-java/examples/upload-file/small-1KiB.dat
+cat /dev/urandom | head -c $(( 32 << 20 )) > "${tempfile}"
+run_example upload-file "${AUTH_FILE}" "${tempfile}" /test/dropbox-sdk-java/examples/upload-file/large-32MiB.dat
 
 # build android
 android_gradle clean
 android_gradle assemble
+
+# Run integration tests against major HTTP requestor implementations
+for requestor in "StandardHttpRequestor" "OkHttpRequestor" "OkHttp3Requestor" ; do
+    gradle -Pcom.dropbox.test.httpRequestor="${requestor}" integrationTest proguardTest
+done
+

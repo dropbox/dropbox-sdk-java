@@ -153,6 +153,8 @@ task integrationTest(type: Test) {
     useTestNG()
 
     // TestNG specific options
+    options.parallel 'classes'
+    options.threadCount 4
     options.preserveOrder true
 
     // only select integration tests (similar to maven-failsafe-plugin rules)
