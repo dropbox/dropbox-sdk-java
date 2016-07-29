@@ -121,6 +121,7 @@ def main():
     """The entry point for the program."""
 
     args = _cmdline_parser.parse_args()
+    cwd = os.path.dirname(__file__)
     repo_path = args.repo_path
     def log(msg):
         if args.verbose:
@@ -156,18 +157,18 @@ def main():
     for filename in get_files_in_repo('.', exclude_ignored_files=True):
         target = os.path.join(repo_path, filename)
         log('Copying %s to %s' % (filename, target))
-        subprocess.check_call(['rsync', '-R', filename, repo_path])
+        subprocess.check_call(['rsync', '-R', filename, repo_path], cwd=cwd)
 
     # Generate source files and copy across to the public repo.
     log('Regenerating source files')
-    subprocess.check_call(['rm', '-rf', 'build/generated-sources'])
+    subprocess.check_call(['rm', '-rf', 'build/generated-sources'], cwd=cwd)
     subprocess.check_output(['./run-stone-codegen'])
 
     target_path = os.path.join(repo_path, 'src/main/java/com/')
     log('Copying generated sources to ' + target_path)
     subprocess.check_call(['rsync', '-r',
                            'build/generated-sources/stone/com/',
-                           target_path])
+                           target_path], cwd=cwd)
 
     # Modify the gradle.build for the public repo
     log('Modifying gradle.build for the public repo.')

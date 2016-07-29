@@ -1,11 +1,15 @@
-#!/bin/bash
-
-DIR=`dirname "${BASE_SOURCE[0]}"`
+#!/usr/bin/env bash
 
 die() {
     echo >&2 "error: release checks failed"
     exit 1
 }
+
+# Exit immediately on any error.
+set -eufo pipefail
+trap die SIGTERM
+
+DIR=`dirname "${BASE_SOURCE[0]}"`
 
 run() {
     echo "================================================================================"
@@ -50,9 +54,6 @@ if [ ! -f "${AUTH_FILE}" ] ; then
     echo >&2 "error: no such file: ${AUTH_FILE}"
     exit 1
 fi
-
-trap 'die' ERR
-trap 'die' SIGTERM
 
 echo "Running release checks..."
 echo ""
