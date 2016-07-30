@@ -4,6 +4,7 @@
 package com.dropbox.core.v2.team;
 
 import com.dropbox.core.DbxException;
+import com.dropbox.core.v2.teamcommon.GroupManagementType;
 
 /**
  * The request builder returned by {@link
@@ -78,6 +79,19 @@ public class GroupsUpdateBuilder {
      */
     public GroupsUpdateBuilder withNewGroupExternalId(String newGroupExternalId) {
         this.groupUpdateArgsBuilder.withNewGroupExternalId(newGroupExternalId);
+        return this;
+    }
+
+    /**
+     * Set value for optional field.
+     *
+     * @param newGroupManagementType  Set new group management type, if
+     *     provided.
+     *
+     * @return this builder
+     */
+    public GroupsUpdateBuilder withNewGroupManagementType(GroupManagementType newGroupManagementType) {
+        this.groupUpdateArgsBuilder.withNewGroupManagementType(newGroupManagementType);
         return this;
     }
 

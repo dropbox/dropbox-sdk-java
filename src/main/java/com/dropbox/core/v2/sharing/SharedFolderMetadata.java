@@ -28,6 +28,7 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
     protected final String sharedFolderId;
     protected final List<FolderPermission> permissions;
     protected final Date timeInvited;
+    protected final String previewUrl;
 
     /**
      * The metadata which includes basic information about the shared folder.
@@ -47,6 +48,8 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
      *     "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
      * @param timeInvited  Timestamp indicating when the current user was
      *     invited to this shared folder. Must not be {@code null}.
+     * @param previewUrl  URL for displaying a web preview of the shared folder.
+     *     Must not be {@code null}.
      * @param ownerTeam  The team that owns the folder. This field is not
      *     present if the folder is not owned by a team.
      * @param parentSharedFolderId  The ID of the parent shared folder. This
@@ -61,7 +64,7 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedFolderMetadata(AccessLevel accessType, boolean isTeamFolder, FolderPolicy policy, String name, String sharedFolderId, Date timeInvited, Team ownerTeam, String parentSharedFolderId, String pathLower, List<FolderPermission> permissions) {
+    public SharedFolderMetadata(AccessLevel accessType, boolean isTeamFolder, FolderPolicy policy, String name, String sharedFolderId, Date timeInvited, String previewUrl, Team ownerTeam, String parentSharedFolderId, String pathLower, List<FolderPermission> permissions) {
         super(accessType, isTeamFolder, policy, ownerTeam, parentSharedFolderId);
         this.pathLower = pathLower;
         if (name == null) {
@@ -87,6 +90,10 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
             throw new IllegalArgumentException("Required value for 'timeInvited' is null");
         }
         this.timeInvited = com.dropbox.core.util.LangUtil.truncateMillis(timeInvited);
+        if (previewUrl == null) {
+            throw new IllegalArgumentException("Required value for 'previewUrl' is null");
+        }
+        this.previewUrl = previewUrl;
     }
 
     /**
@@ -106,12 +113,14 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
      *     "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
      * @param timeInvited  Timestamp indicating when the current user was
      *     invited to this shared folder. Must not be {@code null}.
+     * @param previewUrl  URL for displaying a web preview of the shared folder.
+     *     Must not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedFolderMetadata(AccessLevel accessType, boolean isTeamFolder, FolderPolicy policy, String name, String sharedFolderId, Date timeInvited) {
-        this(accessType, isTeamFolder, policy, name, sharedFolderId, timeInvited, null, null, null, null);
+    public SharedFolderMetadata(AccessLevel accessType, boolean isTeamFolder, FolderPolicy policy, String name, String sharedFolderId, Date timeInvited, String previewUrl) {
+        this(accessType, isTeamFolder, policy, name, sharedFolderId, timeInvited, previewUrl, null, null, null, null);
     }
 
     /**
@@ -163,6 +172,15 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
     }
 
     /**
+     * URL for displaying a web preview of the shared folder.
+     *
+     * @return value for this field, never {@code null}.
+     */
+    public String getPreviewUrl() {
+        return previewUrl;
+    }
+
+    /**
      * Returns a new builder for creating an instance of this class.
      *
      * @param accessType  The current user's access level for this shared
@@ -177,14 +195,16 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
      *     "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
      * @param timeInvited  Timestamp indicating when the current user was
      *     invited to this shared folder. Must not be {@code null}.
+     * @param previewUrl  URL for displaying a web preview of the shared folder.
+     *     Must not be {@code null}.
      *
      * @return builder for this class.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public static Builder newBuilder(AccessLevel accessType, boolean isTeamFolder, FolderPolicy policy, String name, String sharedFolderId, Date timeInvited) {
-        return new Builder(accessType, isTeamFolder, policy, name, sharedFolderId, timeInvited);
+    public static Builder newBuilder(AccessLevel accessType, boolean isTeamFolder, FolderPolicy policy, String name, String sharedFolderId, Date timeInvited, String previewUrl) {
+        return new Builder(accessType, isTeamFolder, policy, name, sharedFolderId, timeInvited, previewUrl);
     }
 
     /**
@@ -194,11 +214,12 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
         protected final String name;
         protected final String sharedFolderId;
         protected final Date timeInvited;
+        protected final String previewUrl;
 
         protected String pathLower;
         protected List<FolderPermission> permissions;
 
-        protected Builder(AccessLevel accessType, boolean isTeamFolder, FolderPolicy policy, String name, String sharedFolderId, Date timeInvited) {
+        protected Builder(AccessLevel accessType, boolean isTeamFolder, FolderPolicy policy, String name, String sharedFolderId, Date timeInvited, String previewUrl) {
             super(accessType, isTeamFolder, policy);
             if (name == null) {
                 throw new IllegalArgumentException("Required value for 'name' is null");
@@ -215,6 +236,10 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
                 throw new IllegalArgumentException("Required value for 'timeInvited' is null");
             }
             this.timeInvited = com.dropbox.core.util.LangUtil.truncateMillis(timeInvited);
+            if (previewUrl == null) {
+                throw new IllegalArgumentException("Required value for 'previewUrl' is null");
+            }
+            this.previewUrl = previewUrl;
             this.pathLower = null;
             this.permissions = null;
         }
@@ -294,7 +319,7 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
          * @return new instance of {@link SharedFolderMetadata}
          */
         public SharedFolderMetadata build() {
-            return new SharedFolderMetadata(accessType, isTeamFolder, policy, name, sharedFolderId, timeInvited, ownerTeam, parentSharedFolderId, pathLower, permissions);
+            return new SharedFolderMetadata(accessType, isTeamFolder, policy, name, sharedFolderId, timeInvited, previewUrl, ownerTeam, parentSharedFolderId, pathLower, permissions);
         }
     }
 
@@ -305,7 +330,8 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
             name,
             sharedFolderId,
             permissions,
-            timeInvited
+            timeInvited,
+            previewUrl
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;
@@ -325,6 +351,7 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
                 && ((this.name == other.name) || (this.name.equals(other.name)))
                 && ((this.sharedFolderId == other.sharedFolderId) || (this.sharedFolderId.equals(other.sharedFolderId)))
                 && ((this.timeInvited == other.timeInvited) || (this.timeInvited.equals(other.timeInvited)))
+                && ((this.previewUrl == other.previewUrl) || (this.previewUrl.equals(other.previewUrl)))
                 && ((this.ownerTeam == other.ownerTeam) || (this.ownerTeam != null && this.ownerTeam.equals(other.ownerTeam)))
                 && ((this.parentSharedFolderId == other.parentSharedFolderId) || (this.parentSharedFolderId != null && this.parentSharedFolderId.equals(other.parentSharedFolderId)))
                 && ((this.pathLower == other.pathLower) || (this.pathLower != null && this.pathLower.equals(other.pathLower)))
@@ -376,6 +403,8 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
             StoneSerializers.string().serialize(value.sharedFolderId, g);
             g.writeFieldName("time_invited");
             StoneSerializers.timestamp().serialize(value.timeInvited, g);
+            g.writeFieldName("preview_url");
+            StoneSerializers.string().serialize(value.previewUrl, g);
             if (value.ownerTeam != null) {
                 g.writeFieldName("owner_team");
                 StoneSerializers.nullable(Team.Serializer.INSTANCE).serialize(value.ownerTeam, g);
@@ -412,6 +441,7 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
                 String f_name = null;
                 String f_sharedFolderId = null;
                 Date f_timeInvited = null;
+                String f_previewUrl = null;
                 Team f_ownerTeam = null;
                 String f_parentSharedFolderId = null;
                 String f_pathLower = null;
@@ -436,6 +466,9 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
                     }
                     else if ("time_invited".equals(field)) {
                         f_timeInvited = StoneSerializers.timestamp().deserialize(p);
+                    }
+                    else if ("preview_url".equals(field)) {
+                        f_previewUrl = StoneSerializers.string().deserialize(p);
                     }
                     else if ("owner_team".equals(field)) {
                         f_ownerTeam = StoneSerializers.nullable(Team.Serializer.INSTANCE).deserialize(p);
@@ -471,7 +504,10 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
                 if (f_timeInvited == null) {
                     throw new JsonParseException(p, "Required field \"time_invited\" missing.");
                 }
-                value = new SharedFolderMetadata(f_accessType, f_isTeamFolder, f_policy, f_name, f_sharedFolderId, f_timeInvited, f_ownerTeam, f_parentSharedFolderId, f_pathLower, f_permissions);
+                if (f_previewUrl == null) {
+                    throw new JsonParseException(p, "Required field \"preview_url\" missing.");
+                }
+                value = new SharedFolderMetadata(f_accessType, f_isTeamFolder, f_policy, f_name, f_sharedFolderId, f_timeInvited, f_previewUrl, f_ownerTeam, f_parentSharedFolderId, f_pathLower, f_permissions);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

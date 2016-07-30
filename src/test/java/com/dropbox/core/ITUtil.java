@@ -63,18 +63,18 @@ public final class ITUtil {
      */
     public static HttpRequestor newHttpRequestor() {
         String val = System.getProperty(HTTP_REQUESTOR_PROPERTY);
-	Class [] classes = new Class [] {
-	    StandardHttpRequestor.class,
-	    OkHttpRequestor.class,
-	    OkHttp3Requestor.class,
-	    GoogleAppEngineRequestor.class
-	};
-	Map<String, Class<?>> validNames = new HashMap<String, Class<?>>();
-	for (Class<?> clazz : classes) {
-	    validNames.put(clazz.getSimpleName(), clazz);
-	}
+        Class [] classes = new Class [] {
+            StandardHttpRequestor.class,
+            OkHttpRequestor.class,
+            OkHttp3Requestor.class,
+            GoogleAppEngineRequestor.class
+        };
+        Map<String, Class<?>> validNames = new HashMap<String, Class<?>>();
+        for (Class<?> clazz : classes) {
+            validNames.put(clazz.getSimpleName(), clazz);
+        }
 
-	Class<?> type = validNames.get(val);
+        Class<?> type = validNames.get(val);
         if (type == null || type.equals(StandardHttpRequestor.class)) {
             return newStandardHttpRequestor();
         } else if(type.equals(OkHttpRequestor.class)) {
@@ -84,14 +84,14 @@ public final class ITUtil {
         } else if(type.equals(GoogleAppEngineRequestor.class)) {
             return newGoogleAppEngineRequestor();
         } else {
-	    StringBuilder message = new StringBuilder()
-		.append("Invalid value for System property \"")
-		.append(HTTP_REQUESTOR_PROPERTY)
-		.append("\". Expected ");
-	    for (String validName : validNames.keySet()) {
-		message.append("\"").append(validName).append("\", ");
-	    }
-	    message.append("but was: \"").append(val).append("\".");
+            StringBuilder message = new StringBuilder()
+                .append("Invalid value for System property \"")
+                .append(HTTP_REQUESTOR_PROPERTY)
+                .append("\". Expected ");
+            for (String validName : validNames.keySet()) {
+                message.append("\"").append(validName).append("\", ");
+            }
+            message.append("but was: \"").append(val).append("\".");
             fail(message.toString());
             return null;
         }

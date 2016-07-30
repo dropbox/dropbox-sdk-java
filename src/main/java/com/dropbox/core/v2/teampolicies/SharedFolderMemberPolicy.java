@@ -39,7 +39,7 @@ public enum SharedFolderMemberPolicy {
     /**
      * For internal use only.
      */
-    static final class Serializer extends UnionSerializer<SharedFolderMemberPolicy> {
+    public static final class Serializer extends UnionSerializer<SharedFolderMemberPolicy> {
         public static final Serializer INSTANCE = new Serializer();
 
         @Override

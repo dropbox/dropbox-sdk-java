@@ -5,6 +5,7 @@ package com.dropbox.core.v2.team;
 
 import com.dropbox.core.stone.StoneSerializers;
 import com.dropbox.core.stone.StructSerializer;
+import com.dropbox.core.v2.teamcommon.GroupManagementType;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -14,27 +15,33 @@ import com.fasterxml.jackson.core.JsonToken;
 
 import java.io.IOException;
 
-public class GroupCreateArg {
+class GroupCreateArg {
     // struct GroupCreateArg
 
     protected final String groupName;
     protected final String groupExternalId;
+    protected final GroupManagementType groupManagementType;
 
     /**
+     * Use {@link newBuilder} to create instances of this class without
+     * specifying values for all optional fields.
      *
      * @param groupName  Group name. Must not be {@code null}.
      * @param groupExternalId  The creator of a team can associate an arbitrary
      *     external ID to the group.
+     * @param groupManagementType  Whether the team can be managed by selected
+     *     users, or only by team admins.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupCreateArg(String groupName, String groupExternalId) {
+    public GroupCreateArg(String groupName, String groupExternalId, GroupManagementType groupManagementType) {
         if (groupName == null) {
             throw new IllegalArgumentException("Required value for 'groupName' is null");
         }
         this.groupName = groupName;
         this.groupExternalId = groupExternalId;
+        this.groupManagementType = groupManagementType;
     }
 
     /**
@@ -46,7 +53,7 @@ public class GroupCreateArg {
      *     preconditions.
      */
     public GroupCreateArg(String groupName) {
-        this(groupName, null);
+        this(groupName, null, null);
     }
 
     /**
@@ -68,11 +75,90 @@ public class GroupCreateArg {
         return groupExternalId;
     }
 
+    /**
+     * Whether the team can be managed by selected users, or only by team admins
+     *
+     * @return value for this field, or {@code null} if not present.
+     */
+    public GroupManagementType getGroupManagementType() {
+        return groupManagementType;
+    }
+
+    /**
+     * Returns a new builder for creating an instance of this class.
+     *
+     * @param groupName  Group name. Must not be {@code null}.
+     *
+     * @return builder for this class.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public static Builder newBuilder(String groupName) {
+        return new Builder(groupName);
+    }
+
+    /**
+     * Builder for {@link GroupCreateArg}.
+     */
+    public static class Builder {
+        protected final String groupName;
+
+        protected String groupExternalId;
+        protected GroupManagementType groupManagementType;
+
+        protected Builder(String groupName) {
+            if (groupName == null) {
+                throw new IllegalArgumentException("Required value for 'groupName' is null");
+            }
+            this.groupName = groupName;
+            this.groupExternalId = null;
+            this.groupManagementType = null;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param groupExternalId  The creator of a team can associate an
+         *     arbitrary external ID to the group.
+         *
+         * @return this builder
+         */
+        public Builder withGroupExternalId(String groupExternalId) {
+            this.groupExternalId = groupExternalId;
+            return this;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param groupManagementType  Whether the team can be managed by
+         *     selected users, or only by team admins.
+         *
+         * @return this builder
+         */
+        public Builder withGroupManagementType(GroupManagementType groupManagementType) {
+            this.groupManagementType = groupManagementType;
+            return this;
+        }
+
+        /**
+         * Builds an instance of {@link GroupCreateArg} configured with this
+         * builder's values
+         *
+         * @return new instance of {@link GroupCreateArg}
+         */
+        public GroupCreateArg build() {
+            return new GroupCreateArg(groupName, groupExternalId, groupManagementType);
+        }
+    }
+
     @Override
     public int hashCode() {
         int hash = java.util.Arrays.hashCode(new Object [] {
             groupName,
-            groupExternalId
+            groupExternalId,
+            groupManagementType
         });
         return hash;
     }
@@ -87,6 +173,7 @@ public class GroupCreateArg {
             GroupCreateArg other = (GroupCreateArg) obj;
             return ((this.groupName == other.groupName) || (this.groupName.equals(other.groupName)))
                 && ((this.groupExternalId == other.groupExternalId) || (this.groupExternalId != null && this.groupExternalId.equals(other.groupExternalId)))
+                && ((this.groupManagementType == other.groupManagementType) || (this.groupManagementType != null && this.groupManagementType.equals(other.groupManagementType)))
                 ;
         }
         else {
@@ -128,6 +215,10 @@ public class GroupCreateArg {
                 g.writeFieldName("group_external_id");
                 StoneSerializers.nullable(StoneSerializers.string()).serialize(value.groupExternalId, g);
             }
+            if (value.groupManagementType != null) {
+                g.writeFieldName("group_management_type");
+                StoneSerializers.nullable(GroupManagementType.Serializer.INSTANCE).serialize(value.groupManagementType, g);
+            }
             if (!collapse) {
                 g.writeEndObject();
             }
@@ -144,6 +235,7 @@ public class GroupCreateArg {
             if (tag == null) {
                 String f_groupName = null;
                 String f_groupExternalId = null;
+                GroupManagementType f_groupManagementType = null;
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String field = p.getCurrentName();
                     p.nextToken();
@@ -153,6 +245,9 @@ public class GroupCreateArg {
                     else if ("group_external_id".equals(field)) {
                         f_groupExternalId = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
                     }
+                    else if ("group_management_type".equals(field)) {
+                        f_groupManagementType = StoneSerializers.nullable(GroupManagementType.Serializer.INSTANCE).deserialize(p);
+                    }
                     else {
                         skipValue(p);
                     }
@@ -160,7 +255,7 @@ public class GroupCreateArg {
                 if (f_groupName == null) {
                     throw new JsonParseException(p, "Required field \"group_name\" missing.");
                 }
-                value = new GroupCreateArg(f_groupName, f_groupExternalId);
+                value = new GroupCreateArg(f_groupName, f_groupExternalId, f_groupManagementType);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

@@ -1,3 +1,30 @@
+2.1.0 (2016-07-29)
+---------------------------------------------
+- Update to latest API specs:
+  - Files
+    - Add uploadSessionFinishBatch(..) endpoint for batch uploads.
+  - Sharing:
+    - Add changeFileMemberAccess(..) for changing a member's access to a shared file.
+    - Add INVITE_VIEWER_NO_COMMENT and SHARE_LINK to FolderAction.
+    - Add MemberAction.MAKE_VIEWER_NO_COMMENT.
+    - Add preview URL to SharedFolderMetadata.
+    - Add parent folder access information to MemberAccessLevelResult.
+    - Add AddFolderMemberError.TOO_MANY_INVITEES.
+    - Add AddMemberSelectorError.AUTOMATIC_GROUP.
+    - Add MountFolderError.INSUFFICIENT_QUOTA.
+  - Team:
+    - Add TeamMemberStatus.Tag.REMOVED.
+    - Add ability to update group management type for a group.
+    - Add ability to include removed members when listing members of a team.
+    - Add membersRecover(..) endpoint for recovering team members.
+- Fix OkHttpRequestor/OkHttp3Requestor to support interceptors that consume request bodies, like Stetho.
+  - Fix does not apply to streaming uploads.
+- Fix OkHttpRequestor/OkHttp3Requestor to properly handle streaming uploads.
+  - The requestors no longer buffer entire request body in memory for streams.
+- Add configureRequest(..) method for simpler subclassing of OkHttpRequestor and OkHttp3Requestor.
+- Fix BadRequest error when adding custom state to a DbxWebAuth.Request object.
+- Remove final modifier from DbxClientV2 and DbxTeamClientV2 class declarations for easier mocking in tests.
+
 2.0.6 (2016-06-20)
 ---------------------------------------------
 - Update to latest API specs:

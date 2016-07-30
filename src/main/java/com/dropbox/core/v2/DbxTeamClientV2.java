@@ -21,7 +21,7 @@ import java.util.List;
  * <p> This class has no mutable state, so it's thread safe as long as you pass
  * in a thread safe {@link HttpRequestor} implementation. </p>
  */
-public final class DbxTeamClientV2 extends DbxTeamClientV2Base {
+public class DbxTeamClientV2 extends DbxTeamClientV2Base {
     private final String accessToken;
 
     /**

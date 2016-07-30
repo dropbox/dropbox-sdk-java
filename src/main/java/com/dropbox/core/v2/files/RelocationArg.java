@@ -23,9 +23,11 @@ public class RelocationArg {
     /**
      *
      * @param fromPath  Path in the user's Dropbox to be copied or moved. Must
-     *     match pattern "{@code /(.|[\\r\\n])*}" and not be {@code null}.
+     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)}" and not be
+     *     {@code null}.
      * @param toPath  Path in the user's Dropbox that is the destination. Must
-     *     match pattern "{@code /(.|[\\r\\n])*}" and not be {@code null}.
+     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)}" and not be
+     *     {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -34,14 +36,14 @@ public class RelocationArg {
         if (fromPath == null) {
             throw new IllegalArgumentException("Required value for 'fromPath' is null");
         }
-        if (!java.util.regex.Pattern.matches("/(.|[\\r\\n])*", fromPath)) {
+        if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)", fromPath)) {
             throw new IllegalArgumentException("String 'fromPath' does not match pattern");
         }
         this.fromPath = fromPath;
         if (toPath == null) {
             throw new IllegalArgumentException("Required value for 'toPath' is null");
         }
-        if (!java.util.regex.Pattern.matches("/(.|[\\r\\n])*", toPath)) {
+        if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)", toPath)) {
             throw new IllegalArgumentException("String 'toPath' does not match pattern");
         }
         this.toPath = toPath;

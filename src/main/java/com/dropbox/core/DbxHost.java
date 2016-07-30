@@ -23,10 +23,10 @@ public final class DbxHost {
      * and "www.dropbox.com"
      */
     public static final DbxHost DEFAULT = new DbxHost(
-        "api.dropbox.com",
-        "api-content.dropbox.com",
+        "api.dropboxapi.com",
+        "content.dropboxapi.com",
         "www.dropbox.com",
-        "api-notify.dropbox.com"
+        "notify.dropboxapi.com"
     );
 
     private final String api;

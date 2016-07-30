@@ -58,9 +58,14 @@ public final class AddFolderMemberError {
          */
         TOO_MANY_PENDING_INVITES, // Long
         /**
-         * The user has reached the rate limit for invitations.
+         * The current user has hit the limit of invites they can send per day.
+         * Try again in 24 hours.
          */
         RATE_LIMIT,
+        /**
+         * The current user is trying to share with too many people at once.
+         */
+        TOO_MANY_INVITEES,
         /**
          * The current user's account doesn't support this action. An example of
          * this is when adding a read-only member. This action can only be
@@ -95,9 +100,14 @@ public final class AddFolderMemberError {
      */
     public static final AddFolderMemberError CANT_SHARE_OUTSIDE_TEAM = new AddFolderMemberError(Tag.CANT_SHARE_OUTSIDE_TEAM, null, null, null, null);
     /**
-     * The user has reached the rate limit for invitations.
+     * The current user has hit the limit of invites they can send per day. Try
+     * again in 24 hours.
      */
     public static final AddFolderMemberError RATE_LIMIT = new AddFolderMemberError(Tag.RATE_LIMIT, null, null, null, null);
+    /**
+     * The current user is trying to share with too many people at once.
+     */
+    public static final AddFolderMemberError TOO_MANY_INVITEES = new AddFolderMemberError(Tag.TOO_MANY_INVITEES, null, null, null, null);
     /**
      * The current user's account doesn't support this action. An example of
      * this is when adding a read-only member. This action can only be performed
@@ -383,6 +393,17 @@ public final class AddFolderMemberError {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#TOO_MANY_INVITEES}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#TOO_MANY_INVITEES}, {@code false} otherwise.
+     */
+    public boolean isTooManyInvitees() {
+        return this.tag == Tag.TOO_MANY_INVITEES;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#INSUFFICIENT_PLAN}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -461,6 +482,8 @@ public final class AddFolderMemberError {
                 case TOO_MANY_PENDING_INVITES:
                     return this.tooManyPendingInvitesValue == other.tooManyPendingInvitesValue;
                 case RATE_LIMIT:
+                    return true;
+                case TOO_MANY_INVITEES:
                     return true;
                 case INSUFFICIENT_PLAN:
                     return true;
@@ -549,6 +572,10 @@ public final class AddFolderMemberError {
                     g.writeString("rate_limit");
                     break;
                 }
+                case TOO_MANY_INVITEES: {
+                    g.writeString("too_many_invitees");
+                    break;
+                }
                 case INSUFFICIENT_PLAN: {
                     g.writeString("insufficient_plan");
                     break;
@@ -617,6 +644,9 @@ public final class AddFolderMemberError {
             }
             else if ("rate_limit".equals(tag)) {
                 value = AddFolderMemberError.RATE_LIMIT;
+            }
+            else if ("too_many_invitees".equals(tag)) {
+                value = AddFolderMemberError.TOO_MANY_INVITEES;
             }
             else if ("insufficient_plan".equals(tag)) {
                 value = AddFolderMemberError.INSUFFICIENT_PLAN;

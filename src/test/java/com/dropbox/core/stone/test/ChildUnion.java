@@ -1,7 +1,7 @@
 /* DO NOT EDIT */
-/* This file was generated from async.stone */
+/* This file was generated from test.stone */
 
-package com.dropbox.core.v2.async;
+package com.dropbox.core.stone.test;
 
 import com.dropbox.core.stone.StoneSerializers;
 import com.dropbox.core.stone.UnionSerializer;
@@ -14,30 +14,41 @@ import com.fasterxml.jackson.core.JsonToken;
 
 import java.io.IOException;
 
-/**
- * Result returned by methods that poll for the status of an asynchronous job.
- * Unions that extend this union should add a 'complete' field with a type of
- * the information returned upon job completion. See {@link PollEmptyResult} for
- * an example.
- */
-public enum PollResultBase {
-    // union PollResultBase
-    /**
-     * The asynchronous job is still in progress.
-     */
-    IN_PROGRESS;
+public enum ChildUnion {
+    // union ChildUnion
+    ALPHA,
+    BETA,
+    DELTA,
+    GAMMA,
+    OMEGA;
 
     /**
      * For internal use only.
      */
-    static final class Serializer extends UnionSerializer<PollResultBase> {
+    static final class Serializer extends UnionSerializer<ChildUnion> {
         public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(PollResultBase value, JsonGenerator g) throws IOException, JsonGenerationException {
+        public void serialize(ChildUnion value, JsonGenerator g) throws IOException, JsonGenerationException {
             switch (value) {
-                case IN_PROGRESS: {
-                    g.writeString("in_progress");
+                case ALPHA: {
+                    g.writeString("alpha");
+                    break;
+                }
+                case BETA: {
+                    g.writeString("beta");
+                    break;
+                }
+                case DELTA: {
+                    g.writeString("delta");
+                    break;
+                }
+                case GAMMA: {
+                    g.writeString("gamma");
+                    break;
+                }
+                case OMEGA: {
+                    g.writeString("omega");
                     break;
                 }
                 default: {
@@ -47,8 +58,8 @@ public enum PollResultBase {
         }
 
         @Override
-        public PollResultBase deserialize(JsonParser p) throws IOException, JsonParseException {
-            PollResultBase value;
+        public ChildUnion deserialize(JsonParser p) throws IOException, JsonParseException {
+            ChildUnion value;
             boolean collapsed;
             String tag;
             if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
@@ -64,8 +75,20 @@ public enum PollResultBase {
             if (tag == null) {
                 throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
             }
-            else if ("in_progress".equals(tag)) {
-                value = PollResultBase.IN_PROGRESS;
+            else if ("alpha".equals(tag)) {
+                value = ChildUnion.ALPHA;
+            }
+            else if ("beta".equals(tag)) {
+                value = ChildUnion.BETA;
+            }
+            else if ("delta".equals(tag)) {
+                value = ChildUnion.DELTA;
+            }
+            else if ("gamma".equals(tag)) {
+                value = ChildUnion.GAMMA;
+            }
+            else if ("omega".equals(tag)) {
+                value = ChildUnion.OMEGA;
             }
             else {
                 throw new JsonParseException(p, "Unknown tag: " + tag);

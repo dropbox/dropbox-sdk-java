@@ -25,9 +25,6 @@ public enum MembersUnsuspendError {
      * The user is not a member of the team.
      */
     USER_NOT_IN_TEAM,
-    /**
-     * An unspecified error.
-     */
     OTHER,
     /**
      * The user is unsuspended, so it cannot be unsuspended again.

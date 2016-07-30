@@ -38,7 +38,11 @@ public enum MembersSetPermissionsError {
      */
     TEAM_LICENSE_LIMIT,
     /**
-     * An unspecified error.
+     * Catch-all used for unknown tag values returned by the Dropbox servers.
+     *
+     * <p> Receiving a catch-all value typically indicates this SDK version is
+     * not up to date. Consider updating your SDK version to handle the new
+     * tags. </p>
      */
     OTHER; // *catch_all
 

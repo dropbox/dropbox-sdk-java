@@ -17,9 +17,13 @@ import java.io.IOException;
 public enum RevokeDeviceSessionBatchError {
     // union RevokeDeviceSessionBatchError
     /**
-     * An unspecified error.
+     * Catch-all used for unknown tag values returned by the Dropbox servers.
+     *
+     * <p> Receiving a catch-all value typically indicates this SDK version is
+     * not up to date. Consider updating your SDK version to handle the new
+     * tags. </p>
      */
-    UNSPECIFIED; // *catch_all
+    OTHER; // *catch_all
 
     /**
      * For internal use only.
@@ -31,7 +35,7 @@ public enum RevokeDeviceSessionBatchError {
         public void serialize(RevokeDeviceSessionBatchError value, JsonGenerator g) throws IOException, JsonGenerationException {
             switch (value) {
                 default: {
-                    g.writeString("unspecified");
+                    g.writeString("other");
                 }
             }
         }
@@ -55,7 +59,7 @@ public enum RevokeDeviceSessionBatchError {
                 throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
             }
             else {
-                value = RevokeDeviceSessionBatchError.UNSPECIFIED;
+                value = RevokeDeviceSessionBatchError.OTHER;
                 skipFields(p);
             }
             if (!collapsed) {

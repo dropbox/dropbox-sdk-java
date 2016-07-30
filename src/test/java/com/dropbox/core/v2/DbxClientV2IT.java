@@ -40,8 +40,28 @@ public class DbxClientV2IT {
 
     @Test
     public void testUploadAndDownload() throws Exception {
-        DbxClientV2 client = ITUtil.newClientV2();
+        testUploadAndDownload(ITUtil.newClientV2());
+    }
 
+    @Test
+    public void testOkHttpClientStreamingUpload() throws Exception {
+        DbxClientV2 client = ITUtil.newClientV2(ITUtil.newRequestConfig()
+            .withHttpRequestor(ITUtil.newOkHttpRequestor())
+            .build()
+        );
+        testUploadAndDownload(client);
+    }
+
+    @Test
+    public void testOkHttp3ClientStreamingUpload() throws Exception {
+        DbxClientV2 client = ITUtil.newClientV2(ITUtil.newRequestConfig()
+            .withHttpRequestor(ITUtil.newOkHttp3Requestor())
+            .build()
+        );
+        testUploadAndDownload(client);
+    }
+
+    private void testUploadAndDownload(DbxClientV2 client) throws Exception {
         byte [] contents = ITUtil.randomBytes(1024);
         String filename = "testUploadAndDownload.dat";
         String path = ITUtil.path(getClass(), "/" + filename);

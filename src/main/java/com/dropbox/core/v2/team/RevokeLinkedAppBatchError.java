@@ -21,9 +21,13 @@ import java.io.IOException;
 public enum RevokeLinkedAppBatchError {
     // union RevokeLinkedAppBatchError
     /**
-     * An unspecified error.
+     * Catch-all used for unknown tag values returned by the Dropbox servers.
+     *
+     * <p> Receiving a catch-all value typically indicates this SDK version is
+     * not up to date. Consider updating your SDK version to handle the new
+     * tags. </p>
      */
-    UNSPECIFIED; // *catch_all
+    OTHER; // *catch_all
 
     /**
      * For internal use only.
@@ -35,7 +39,7 @@ public enum RevokeLinkedAppBatchError {
         public void serialize(RevokeLinkedAppBatchError value, JsonGenerator g) throws IOException, JsonGenerationException {
             switch (value) {
                 default: {
-                    g.writeString("unspecified");
+                    g.writeString("other");
                 }
             }
         }
@@ -59,7 +63,7 @@ public enum RevokeLinkedAppBatchError {
                 throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
             }
             else {
-                value = RevokeLinkedAppBatchError.UNSPECIFIED;
+                value = RevokeLinkedAppBatchError.OTHER;
                 skipFields(p);
             }
             if (!collapsed) {

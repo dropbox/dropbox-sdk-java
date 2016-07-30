@@ -5,6 +5,7 @@ package com.dropbox.core.v2.team;
 
 import com.dropbox.core.stone.StoneSerializers;
 import com.dropbox.core.stone.StructSerializer;
+import com.dropbox.core.v2.teamcommon.GroupManagementType;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -14,12 +15,13 @@ import com.fasterxml.jackson.core.JsonToken;
 
 import java.io.IOException;
 
-public class GroupUpdateArgs extends IncludeMembersArg {
+class GroupUpdateArgs extends IncludeMembersArg {
     // struct GroupUpdateArgs
 
     protected final GroupSelector group;
     protected final String newGroupName;
     protected final String newGroupExternalId;
+    protected final GroupManagementType newGroupManagementType;
 
     /**
      * Use {@link newBuilder} to create instances of this class without
@@ -35,11 +37,13 @@ public class GroupUpdateArgs extends IncludeMembersArg {
      *     the argument is None, the group's external_id won't be updated. If
      *     the argument is empty string, the group's external id will be
      *     cleared.
+     * @param newGroupManagementType  Set new group management type, if
+     *     provided.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupUpdateArgs(GroupSelector group, boolean returnMembers, String newGroupName, String newGroupExternalId) {
+    public GroupUpdateArgs(GroupSelector group, boolean returnMembers, String newGroupName, String newGroupExternalId, GroupManagementType newGroupManagementType) {
         super(returnMembers);
         if (group == null) {
             throw new IllegalArgumentException("Required value for 'group' is null");
@@ -47,6 +51,7 @@ public class GroupUpdateArgs extends IncludeMembersArg {
         this.group = group;
         this.newGroupName = newGroupName;
         this.newGroupExternalId = newGroupExternalId;
+        this.newGroupManagementType = newGroupManagementType;
     }
 
     /**
@@ -58,7 +63,7 @@ public class GroupUpdateArgs extends IncludeMembersArg {
      *     preconditions.
      */
     public GroupUpdateArgs(GroupSelector group) {
-        this(group, true, null, null);
+        this(group, true, null, null, null);
     }
 
     /**
@@ -91,6 +96,15 @@ public class GroupUpdateArgs extends IncludeMembersArg {
     }
 
     /**
+     * Set new group management type, if provided.
+     *
+     * @return value for this field, or {@code null} if not present.
+     */
+    public GroupManagementType getNewGroupManagementType() {
+        return newGroupManagementType;
+    }
+
+    /**
      * Returns a new builder for creating an instance of this class.
      *
      * @param group  Specify a group. Must not be {@code null}.
@@ -113,6 +127,7 @@ public class GroupUpdateArgs extends IncludeMembersArg {
         protected boolean returnMembers;
         protected String newGroupName;
         protected String newGroupExternalId;
+        protected GroupManagementType newGroupManagementType;
 
         protected Builder(GroupSelector group) {
             if (group == null) {
@@ -122,6 +137,7 @@ public class GroupUpdateArgs extends IncludeMembersArg {
             this.returnMembers = true;
             this.newGroupName = null;
             this.newGroupExternalId = null;
+            this.newGroupManagementType = null;
         }
 
         /**
@@ -177,13 +193,26 @@ public class GroupUpdateArgs extends IncludeMembersArg {
         }
 
         /**
+         * Set value for optional field.
+         *
+         * @param newGroupManagementType  Set new group management type, if
+         *     provided.
+         *
+         * @return this builder
+         */
+        public Builder withNewGroupManagementType(GroupManagementType newGroupManagementType) {
+            this.newGroupManagementType = newGroupManagementType;
+            return this;
+        }
+
+        /**
          * Builds an instance of {@link GroupUpdateArgs} configured with this
          * builder's values
          *
          * @return new instance of {@link GroupUpdateArgs}
          */
         public GroupUpdateArgs build() {
-            return new GroupUpdateArgs(group, returnMembers, newGroupName, newGroupExternalId);
+            return new GroupUpdateArgs(group, returnMembers, newGroupName, newGroupExternalId, newGroupManagementType);
         }
     }
 
@@ -192,7 +221,8 @@ public class GroupUpdateArgs extends IncludeMembersArg {
         int hash = java.util.Arrays.hashCode(new Object [] {
             group,
             newGroupName,
-            newGroupExternalId
+            newGroupExternalId,
+            newGroupManagementType
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;
@@ -210,6 +240,7 @@ public class GroupUpdateArgs extends IncludeMembersArg {
                 && (this.returnMembers == other.returnMembers)
                 && ((this.newGroupName == other.newGroupName) || (this.newGroupName != null && this.newGroupName.equals(other.newGroupName)))
                 && ((this.newGroupExternalId == other.newGroupExternalId) || (this.newGroupExternalId != null && this.newGroupExternalId.equals(other.newGroupExternalId)))
+                && ((this.newGroupManagementType == other.newGroupManagementType) || (this.newGroupManagementType != null && this.newGroupManagementType.equals(other.newGroupManagementType)))
                 ;
         }
         else {
@@ -257,6 +288,10 @@ public class GroupUpdateArgs extends IncludeMembersArg {
                 g.writeFieldName("new_group_external_id");
                 StoneSerializers.nullable(StoneSerializers.string()).serialize(value.newGroupExternalId, g);
             }
+            if (value.newGroupManagementType != null) {
+                g.writeFieldName("new_group_management_type");
+                StoneSerializers.nullable(GroupManagementType.Serializer.INSTANCE).serialize(value.newGroupManagementType, g);
+            }
             if (!collapse) {
                 g.writeEndObject();
             }
@@ -275,6 +310,7 @@ public class GroupUpdateArgs extends IncludeMembersArg {
                 Boolean f_returnMembers = true;
                 String f_newGroupName = null;
                 String f_newGroupExternalId = null;
+                GroupManagementType f_newGroupManagementType = null;
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String field = p.getCurrentName();
                     p.nextToken();
@@ -290,6 +326,9 @@ public class GroupUpdateArgs extends IncludeMembersArg {
                     else if ("new_group_external_id".equals(field)) {
                         f_newGroupExternalId = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
                     }
+                    else if ("new_group_management_type".equals(field)) {
+                        f_newGroupManagementType = StoneSerializers.nullable(GroupManagementType.Serializer.INSTANCE).deserialize(p);
+                    }
                     else {
                         skipValue(p);
                     }
@@ -297,7 +336,7 @@ public class GroupUpdateArgs extends IncludeMembersArg {
                 if (f_group == null) {
                     throw new JsonParseException(p, "Required field \"group\" missing.");
                 }
-                value = new GroupUpdateArgs(f_group, f_returnMembers, f_newGroupName, f_newGroupExternalId);
+                value = new GroupUpdateArgs(f_group, f_returnMembers, f_newGroupName, f_newGroupExternalId, f_newGroupManagementType);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

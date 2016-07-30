@@ -5,6 +5,7 @@ package com.dropbox.core.v2.sharing;
 
 import com.dropbox.core.stone.StoneSerializers;
 import com.dropbox.core.stone.StructSerializer;
+import com.dropbox.core.v2.teamcommon.GroupManagementType;
 import com.dropbox.core.v2.teamcommon.GroupSummary;
 import com.dropbox.core.v2.teamcommon.GroupType;
 
@@ -36,6 +37,8 @@ public class GroupInfo extends GroupSummary {
      *
      * @param groupName  Must not be {@code null}.
      * @param groupId  Must not be {@code null}.
+     * @param groupManagementType  Who is allowed to manage the group. Must not
+     *     be {@code null}.
      * @param groupType  The type of group. Must not be {@code null}.
      * @param isOwner  If the current user is an owner of the group.
      * @param sameTeam  If the group is owned by the current user's team.
@@ -46,8 +49,8 @@ public class GroupInfo extends GroupSummary {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupInfo(String groupName, String groupId, GroupType groupType, boolean isOwner, boolean sameTeam, String groupExternalId, Long memberCount) {
-        super(groupName, groupId, groupExternalId, memberCount);
+    public GroupInfo(String groupName, String groupId, GroupManagementType groupManagementType, GroupType groupType, boolean isOwner, boolean sameTeam, String groupExternalId, Long memberCount) {
+        super(groupName, groupId, groupManagementType, groupExternalId, memberCount);
         if (groupType == null) {
             throw new IllegalArgumentException("Required value for 'groupType' is null");
         }
@@ -64,6 +67,8 @@ public class GroupInfo extends GroupSummary {
      *
      * @param groupName  Must not be {@code null}.
      * @param groupId  Must not be {@code null}.
+     * @param groupManagementType  Who is allowed to manage the group. Must not
+     *     be {@code null}.
      * @param groupType  The type of group. Must not be {@code null}.
      * @param isOwner  If the current user is an owner of the group.
      * @param sameTeam  If the group is owned by the current user's team.
@@ -71,8 +76,8 @@ public class GroupInfo extends GroupSummary {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupInfo(String groupName, String groupId, GroupType groupType, boolean isOwner, boolean sameTeam) {
-        this(groupName, groupId, groupType, isOwner, sameTeam, null, null);
+    public GroupInfo(String groupName, String groupId, GroupManagementType groupManagementType, GroupType groupType, boolean isOwner, boolean sameTeam) {
+        this(groupName, groupId, groupManagementType, groupType, isOwner, sameTeam, null, null);
     }
 
     /**
@@ -107,6 +112,8 @@ public class GroupInfo extends GroupSummary {
      *
      * @param groupName  Must not be {@code null}.
      * @param groupId  Must not be {@code null}.
+     * @param groupManagementType  Who is allowed to manage the group. Must not
+     *     be {@code null}.
      * @param groupType  The type of group. Must not be {@code null}.
      * @param isOwner  If the current user is an owner of the group.
      * @param sameTeam  If the group is owned by the current user's team.
@@ -116,8 +123,8 @@ public class GroupInfo extends GroupSummary {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public static Builder newBuilder(String groupName, String groupId, GroupType groupType, boolean isOwner, boolean sameTeam) {
-        return new Builder(groupName, groupId, groupType, isOwner, sameTeam);
+    public static Builder newBuilder(String groupName, String groupId, GroupManagementType groupManagementType, GroupType groupType, boolean isOwner, boolean sameTeam) {
+        return new Builder(groupName, groupId, groupManagementType, groupType, isOwner, sameTeam);
     }
 
     /**
@@ -128,8 +135,8 @@ public class GroupInfo extends GroupSummary {
         protected final boolean isOwner;
         protected final boolean sameTeam;
 
-        protected Builder(String groupName, String groupId, GroupType groupType, boolean isOwner, boolean sameTeam) {
-            super(groupName, groupId);
+        protected Builder(String groupName, String groupId, GroupManagementType groupManagementType, GroupType groupType, boolean isOwner, boolean sameTeam) {
+            super(groupName, groupId, groupManagementType);
             if (groupType == null) {
                 throw new IllegalArgumentException("Required value for 'groupType' is null");
             }
@@ -170,7 +177,7 @@ public class GroupInfo extends GroupSummary {
          * @return new instance of {@link GroupInfo}
          */
         public GroupInfo build() {
-            return new GroupInfo(groupName, groupId, groupType, isOwner, sameTeam, groupExternalId, memberCount);
+            return new GroupInfo(groupName, groupId, groupManagementType, groupType, isOwner, sameTeam, groupExternalId, memberCount);
         }
     }
 
@@ -195,6 +202,7 @@ public class GroupInfo extends GroupSummary {
             GroupInfo other = (GroupInfo) obj;
             return ((this.groupName == other.groupName) || (this.groupName.equals(other.groupName)))
                 && ((this.groupId == other.groupId) || (this.groupId.equals(other.groupId)))
+                && ((this.groupManagementType == other.groupManagementType) || (this.groupManagementType.equals(other.groupManagementType)))
                 && ((this.groupType == other.groupType) || (this.groupType.equals(other.groupType)))
                 && (this.isOwner == other.isOwner)
                 && (this.sameTeam == other.sameTeam)
@@ -239,6 +247,8 @@ public class GroupInfo extends GroupSummary {
             StoneSerializers.string().serialize(value.groupName, g);
             g.writeFieldName("group_id");
             StoneSerializers.string().serialize(value.groupId, g);
+            g.writeFieldName("group_management_type");
+            GroupManagementType.Serializer.INSTANCE.serialize(value.groupManagementType, g);
             g.writeFieldName("group_type");
             GroupType.Serializer.INSTANCE.serialize(value.groupType, g);
             g.writeFieldName("is_owner");
@@ -269,6 +279,7 @@ public class GroupInfo extends GroupSummary {
             if (tag == null) {
                 String f_groupName = null;
                 String f_groupId = null;
+                GroupManagementType f_groupManagementType = null;
                 GroupType f_groupType = null;
                 Boolean f_isOwner = null;
                 Boolean f_sameTeam = null;
@@ -282,6 +293,9 @@ public class GroupInfo extends GroupSummary {
                     }
                     else if ("group_id".equals(field)) {
                         f_groupId = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("group_management_type".equals(field)) {
+                        f_groupManagementType = GroupManagementType.Serializer.INSTANCE.deserialize(p);
                     }
                     else if ("group_type".equals(field)) {
                         f_groupType = GroupType.Serializer.INSTANCE.deserialize(p);
@@ -308,6 +322,9 @@ public class GroupInfo extends GroupSummary {
                 if (f_groupId == null) {
                     throw new JsonParseException(p, "Required field \"group_id\" missing.");
                 }
+                if (f_groupManagementType == null) {
+                    throw new JsonParseException(p, "Required field \"group_management_type\" missing.");
+                }
                 if (f_groupType == null) {
                     throw new JsonParseException(p, "Required field \"group_type\" missing.");
                 }
@@ -317,7 +334,7 @@ public class GroupInfo extends GroupSummary {
                 if (f_sameTeam == null) {
                     throw new JsonParseException(p, "Required field \"same_team\" missing.");
                 }
-                value = new GroupInfo(f_groupName, f_groupId, f_groupType, f_isOwner, f_sameTeam, f_groupExternalId, f_memberCount);
+                value = new GroupInfo(f_groupName, f_groupId, f_groupManagementType, f_groupType, f_isOwner, f_sameTeam, f_groupExternalId, f_memberCount);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

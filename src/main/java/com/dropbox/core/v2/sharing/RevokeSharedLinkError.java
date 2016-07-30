@@ -24,9 +24,6 @@ public enum RevokeSharedLinkError {
      * The caller is not allowed to access this shared link
      */
     SHARED_LINK_ACCESS_DENIED,
-    /**
-     * An unspecified error
-     */
     OTHER,
     /**
      * Shared link is malformed.

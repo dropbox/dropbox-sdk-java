@@ -50,6 +50,10 @@ public final class UpdateFolderPolicyError {
          */
         DISALLOWED_SHARED_LINK_POLICY,
         /**
+         * The current user does not have permission to perform this action.
+         */
+        NO_PERMISSION,
+        /**
          * Catch-all used for unknown tag values returned by the Dropbox
          * servers.
          *
@@ -77,6 +81,10 @@ public final class UpdateFolderPolicyError {
      * DbxUserSharingRequests#shareFolder(String)}.
      */
     public static final UpdateFolderPolicyError DISALLOWED_SHARED_LINK_POLICY = new UpdateFolderPolicyError(Tag.DISALLOWED_SHARED_LINK_POLICY, null);
+    /**
+     * The current user does not have permission to perform this action.
+     */
+    public static final UpdateFolderPolicyError NO_PERMISSION = new UpdateFolderPolicyError(Tag.NO_PERMISSION, null);
     /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *
@@ -195,6 +203,17 @@ public final class UpdateFolderPolicyError {
     }
 
     /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#NO_PERMISSION}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#NO_PERMISSION}, {@code false} otherwise.
+     */
+    public boolean isNoPermission() {
+        return this.tag == Tag.NO_PERMISSION;
+    }
+
+    /**
      * Returns {@code true} if this instance has the tag {@link Tag#OTHER},
      * {@code false} otherwise.
      *
@@ -232,6 +251,8 @@ public final class UpdateFolderPolicyError {
                 case TEAM_POLICY_DISALLOWS_MEMBER_POLICY:
                     return true;
                 case DISALLOWED_SHARED_LINK_POLICY:
+                    return true;
+                case NO_PERMISSION:
                     return true;
                 case OTHER:
                     return true;
@@ -290,6 +311,10 @@ public final class UpdateFolderPolicyError {
                     g.writeString("disallowed_shared_link_policy");
                     break;
                 }
+                case NO_PERMISSION: {
+                    g.writeString("no_permission");
+                    break;
+                }
                 default: {
                     g.writeString("other");
                 }
@@ -328,6 +353,9 @@ public final class UpdateFolderPolicyError {
             }
             else if ("disallowed_shared_link_policy".equals(tag)) {
                 value = UpdateFolderPolicyError.DISALLOWED_SHARED_LINK_POLICY;
+            }
+            else if ("no_permission".equals(tag)) {
+                value = UpdateFolderPolicyError.NO_PERMISSION;
             }
             else {
                 value = UpdateFolderPolicyError.OTHER;

@@ -36,6 +36,11 @@ public enum FolderAction {
      */
     INVITE_VIEWER,
     /**
+     * Invite a user or group to join the folder with read permission but no
+     * comment permissions.
+     */
+    INVITE_VIEWER_NO_COMMENT,
+    /**
      * Relinquish one's own membership in the folder.
      */
     RELINQUISH_MEMBERSHIP,
@@ -51,6 +56,10 @@ public enum FolderAction {
      * Keep a copy of the contents upon leaving or being kicked from the folder.
      */
     LEAVE_A_COPY,
+    /**
+     * Create a shared link for folder.
+     */
+    SHARE_LINK,
     /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *
@@ -85,6 +94,10 @@ public enum FolderAction {
                     g.writeString("invite_viewer");
                     break;
                 }
+                case INVITE_VIEWER_NO_COMMENT: {
+                    g.writeString("invite_viewer_no_comment");
+                    break;
+                }
                 case RELINQUISH_MEMBERSHIP: {
                     g.writeString("relinquish_membership");
                     break;
@@ -99,6 +112,10 @@ public enum FolderAction {
                 }
                 case LEAVE_A_COPY: {
                     g.writeString("leave_a_copy");
+                    break;
+                }
+                case SHARE_LINK: {
+                    g.writeString("share_link");
                     break;
                 }
                 default: {
@@ -137,6 +154,9 @@ public enum FolderAction {
             else if ("invite_viewer".equals(tag)) {
                 value = FolderAction.INVITE_VIEWER;
             }
+            else if ("invite_viewer_no_comment".equals(tag)) {
+                value = FolderAction.INVITE_VIEWER_NO_COMMENT;
+            }
             else if ("relinquish_membership".equals(tag)) {
                 value = FolderAction.RELINQUISH_MEMBERSHIP;
             }
@@ -148,6 +168,9 @@ public enum FolderAction {
             }
             else if ("leave_a_copy".equals(tag)) {
                 value = FolderAction.LEAVE_A_COPY;
+            }
+            else if ("share_link".equals(tag)) {
+                value = FolderAction.SHARE_LINK;
             }
             else {
                 value = FolderAction.OTHER;

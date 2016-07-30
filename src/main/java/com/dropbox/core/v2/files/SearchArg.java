@@ -28,8 +28,8 @@ class SearchArg {
      * specifying values for all optional fields.
      *
      * @param path  The path in the user's Dropbox to search. Should probably be
-     *     a folder. Must match pattern "{@code (/(.|[\\r\\n])*)?}" and not be
-     *     {@code null}.
+     *     a folder. Must match pattern "{@code
+     *     (/(.|[\\r\\n])*)?|(ns:[0-9]+(/.*)?)}" and not be {@code null}.
      * @param query  The string to search for. The search string is split on
      *     spaces into multiple tokens. For file name searching, the last token
      *     is used for prefix matching (i.e. "bat c" matches "bat cave" but not
@@ -49,7 +49,7 @@ class SearchArg {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
-        if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*)?", path)) {
+        if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*)?|(ns:[0-9]+(/.*)?)", path)) {
             throw new IllegalArgumentException("String 'path' does not match pattern");
         }
         this.path = path;
@@ -75,8 +75,8 @@ class SearchArg {
      * The default values for unset fields will be used.
      *
      * @param path  The path in the user's Dropbox to search. Should probably be
-     *     a folder. Must match pattern "{@code (/(.|[\\r\\n])*)?}" and not be
-     *     {@code null}.
+     *     a folder. Must match pattern "{@code
+     *     (/(.|[\\r\\n])*)?|(ns:[0-9]+(/.*)?)}" and not be {@code null}.
      * @param query  The string to search for. The search string is split on
      *     spaces into multiple tokens. For file name searching, the last token
      *     is used for prefix matching (i.e. "bat c" matches "bat cave" but not
@@ -145,8 +145,8 @@ class SearchArg {
      * Returns a new builder for creating an instance of this class.
      *
      * @param path  The path in the user's Dropbox to search. Should probably be
-     *     a folder. Must match pattern "{@code (/(.|[\\r\\n])*)?}" and not be
-     *     {@code null}.
+     *     a folder. Must match pattern "{@code
+     *     (/(.|[\\r\\n])*)?|(ns:[0-9]+(/.*)?)}" and not be {@code null}.
      * @param query  The string to search for. The search string is split on
      *     spaces into multiple tokens. For file name searching, the last token
      *     is used for prefix matching (i.e. "bat c" matches "bat cave" but not
@@ -176,7 +176,7 @@ class SearchArg {
             if (path == null) {
                 throw new IllegalArgumentException("Required value for 'path' is null");
             }
-            if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*)?", path)) {
+            if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*)?|(ns:[0-9]+(/.*)?)", path)) {
                 throw new IllegalArgumentException("String 'path' does not match pattern");
             }
             this.path = path;

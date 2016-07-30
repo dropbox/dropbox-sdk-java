@@ -41,7 +41,7 @@ public final class MountFolderError {
          * The current user does not have enough space to mount the shared
          * folder.
          */
-        INSUFFICIENT_QUOTA,
+        INSUFFICIENT_QUOTA, // InsufficientQuotaAmounts
         /**
          * The shared folder is already mounted.
          */
@@ -71,25 +71,21 @@ public final class MountFolderError {
      * Mounting would cause a shared folder to be inside another, which is
      * disallowed.
      */
-    public static final MountFolderError INSIDE_SHARED_FOLDER = new MountFolderError(Tag.INSIDE_SHARED_FOLDER, null);
-    /**
-     * The current user does not have enough space to mount the shared folder.
-     */
-    public static final MountFolderError INSUFFICIENT_QUOTA = new MountFolderError(Tag.INSUFFICIENT_QUOTA, null);
+    public static final MountFolderError INSIDE_SHARED_FOLDER = new MountFolderError(Tag.INSIDE_SHARED_FOLDER, null, null);
     /**
      * The shared folder is already mounted.
      */
-    public static final MountFolderError ALREADY_MOUNTED = new MountFolderError(Tag.ALREADY_MOUNTED, null);
+    public static final MountFolderError ALREADY_MOUNTED = new MountFolderError(Tag.ALREADY_MOUNTED, null, null);
     /**
      * The current user does not have permission to perform this action.
      */
-    public static final MountFolderError NO_PERMISSION = new MountFolderError(Tag.NO_PERMISSION, null);
+    public static final MountFolderError NO_PERMISSION = new MountFolderError(Tag.NO_PERMISSION, null, null);
     /**
      * The shared folder is not mountable. One example where this can occur is
      * when the shared folder belongs within a team folder in the user's
      * Dropbox.
      */
-    public static final MountFolderError NOT_MOUNTABLE = new MountFolderError(Tag.NOT_MOUNTABLE, null);
+    public static final MountFolderError NOT_MOUNTABLE = new MountFolderError(Tag.NOT_MOUNTABLE, null, null);
     /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *
@@ -97,18 +93,20 @@ public final class MountFolderError {
      * not up to date. Consider updating your SDK version to handle the new
      * tags. </p>
      */
-    public static final MountFolderError OTHER = new MountFolderError(Tag.OTHER, null);
+    public static final MountFolderError OTHER = new MountFolderError(Tag.OTHER, null, null);
 
     private final Tag tag;
     private final SharedFolderAccessError accessErrorValue;
+    private final InsufficientQuotaAmounts insufficientQuotaValue;
 
     /**
      *
      * @param tag  Discriminating tag for this instance.
      */
-    private MountFolderError(Tag tag, SharedFolderAccessError accessErrorValue) {
+    private MountFolderError(Tag tag, SharedFolderAccessError accessErrorValue, InsufficientQuotaAmounts insufficientQuotaValue) {
         this.tag = tag;
         this.accessErrorValue = accessErrorValue;
+        this.insufficientQuotaValue = insufficientQuotaValue;
     }
 
     /**
@@ -155,7 +153,7 @@ public final class MountFolderError {
         if (value == null) {
             throw new IllegalArgumentException("Value is null");
         }
-        return new MountFolderError(Tag.ACCESS_ERROR, value);
+        return new MountFolderError(Tag.ACCESS_ERROR, value, null);
     }
 
     /**
@@ -194,6 +192,45 @@ public final class MountFolderError {
      */
     public boolean isInsufficientQuota() {
         return this.tag == Tag.INSUFFICIENT_QUOTA;
+    }
+
+    /**
+     * Returns an instance of {@code MountFolderError} that has its tag set to
+     * {@link Tag#INSUFFICIENT_QUOTA}.
+     *
+     * <p> The current user does not have enough space to mount the shared
+     * folder. </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code MountFolderError} with its tag set to {@link
+     *     Tag#INSUFFICIENT_QUOTA}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static MountFolderError insufficientQuota(InsufficientQuotaAmounts value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new MountFolderError(Tag.INSUFFICIENT_QUOTA, null, value);
+    }
+
+    /**
+     * The current user does not have enough space to mount the shared folder.
+     *
+     * <p> This instance must be tagged as {@link Tag#INSUFFICIENT_QUOTA}. </p>
+     *
+     * @return The {@link MountFolderError#insufficientQuota} value associated
+     *     with this instance if {@link #isInsufficientQuota} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isInsufficientQuota} is {@code
+     *     false}.
+     */
+    public InsufficientQuotaAmounts getInsufficientQuotaValue() {
+        if (this.tag != Tag.INSUFFICIENT_QUOTA) {
+            throw new IllegalStateException("Invalid tag: required Tag.INSUFFICIENT_QUOTA, but was Tag." + tag.name());
+        }
+        return insufficientQuotaValue;
     }
 
     /**
@@ -244,7 +281,8 @@ public final class MountFolderError {
     public int hashCode() {
         int hash = java.util.Arrays.hashCode(new Object [] {
             tag,
-            accessErrorValue
+            accessErrorValue,
+            insufficientQuotaValue
         });
         return hash;
     }
@@ -265,7 +303,7 @@ public final class MountFolderError {
                 case INSIDE_SHARED_FOLDER:
                     return true;
                 case INSUFFICIENT_QUOTA:
-                    return true;
+                    return (this.insufficientQuotaValue == other.insufficientQuotaValue) || (this.insufficientQuotaValue.equals(other.insufficientQuotaValue));
                 case ALREADY_MOUNTED:
                     return true;
                 case NO_PERMISSION:
@@ -322,7 +360,10 @@ public final class MountFolderError {
                     break;
                 }
                 case INSUFFICIENT_QUOTA: {
-                    g.writeString("insufficient_quota");
+                    g.writeStartObject();
+                    writeTag("insufficient_quota", g);
+                    InsufficientQuotaAmounts.Serializer.INSTANCE.serialize(value.insufficientQuotaValue, g, true);
+                    g.writeEndObject();
                     break;
                 }
                 case ALREADY_MOUNTED: {
@@ -371,7 +412,9 @@ public final class MountFolderError {
                 value = MountFolderError.INSIDE_SHARED_FOLDER;
             }
             else if ("insufficient_quota".equals(tag)) {
-                value = MountFolderError.INSUFFICIENT_QUOTA;
+                InsufficientQuotaAmounts fieldValue = null;
+                fieldValue = InsufficientQuotaAmounts.Serializer.INSTANCE.deserialize(p, true);
+                value = MountFolderError.insufficientQuota(fieldValue);
             }
             else if ("already_mounted".equals(tag)) {
                 value = MountFolderError.ALREADY_MOUNTED;

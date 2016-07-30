@@ -47,7 +47,7 @@ public enum SharedLinkCreatePolicy {
     /**
      * For internal use only.
      */
-    static final class Serializer extends UnionSerializer<SharedLinkCreatePolicy> {
+    public static final class Serializer extends UnionSerializer<SharedLinkCreatePolicy> {
         public static final Serializer INSTANCE = new Serializer();
 
         @Override

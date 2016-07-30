@@ -33,7 +33,7 @@ public final class FileMemberActionIndividualResult {
          */
         SUCCESS, // AccessLevel
         /**
-         * User was not able to remove this member.
+         * User was not able to perform this action.
          */
         MEMBER_ERROR; // FileMemberActionError
     }
@@ -141,7 +141,7 @@ public final class FileMemberActionIndividualResult {
      * Returns an instance of {@code FileMemberActionIndividualResult} that has
      * its tag set to {@link Tag#MEMBER_ERROR}.
      *
-     * <p> User was not able to remove this member. </p>
+     * <p> User was not able to perform this action. </p>
      *
      * @param value  value to assign to this instance.
      *
@@ -158,7 +158,7 @@ public final class FileMemberActionIndividualResult {
     }
 
     /**
-     * User was not able to remove this member.
+     * User was not able to perform this action.
      *
      * <p> This instance must be tagged as {@link Tag#MEMBER_ERROR}. </p>
      *

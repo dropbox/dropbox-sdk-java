@@ -61,7 +61,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
     compile 'com.android.support:recyclerview-v7:23.1.1'
-    compile 'com.fasterxml.jackson.core:jackson-core:2.7.4'
     // picasso 2.5.2 doesn't have OkHttp3 support (although it exists
     // on master). Must use OkHttp v2 and v3 until new picasso release
     compile 'com.squareup.picasso:picasso:2.5.2'

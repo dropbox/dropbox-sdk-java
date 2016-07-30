@@ -3,10 +3,8 @@ package com.dropbox.core.v1;
 import static org.testng.Assert.*;
 import static com.dropbox.core.util.StringUtil.jq;
 
-import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxStreamWriter;
 import com.dropbox.core.ITUtil;
-import com.dropbox.core.RetryException;
 import com.dropbox.core.util.Dumpable;
 import com.dropbox.core.util.IOUtil;
 
@@ -14,6 +12,7 @@ import com.dropbox.core.util.Maybe;
 import com.dropbox.core.util.StringUtil;
 
 import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import javax.imageio.ImageIO;
@@ -22,7 +21,6 @@ import javax.imageio.stream.MemoryCacheImageInputStream;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
@@ -34,32 +32,15 @@ public class DbxClientV1IT {
     private String testFolder;
     private DbxClientV1 client;
 
-    /**
-     * Every test must explicitly invoke this function so the reporting.
-     */
-    // I tried using an @BeforeMethod annotation, but when I did that, any exceptions that this
-    // method threw weren't reported in the output.
-    private void init() throws DbxException {
-        DbxClientV1 client = ITUtil.newClientV1();
-
-        String timestamp = new SimpleDateFormat("yyyy-MM-dd HH.mm.ss").format(new Date());
-        String basePath = "/Java SDK Tests/" + timestamp;
-
-        DbxEntry entry = client.createFolder(basePath);
-        int i = 2;
-        while (entry == null) {
-            String tryPath = basePath + "(" + i + ")";
-            i++;
-            if (i > 100) throw new RuntimeException("Unable to create folder " + jq(basePath));
-            entry = client.createFolder(tryPath);
-        }
-
-        this.testFolder = entry.path;
-        this.client = client;
+    @BeforeMethod
+    private void setup() throws Exception {
+        this.client = ITUtil.newClientV1();
+        this.testFolder = ITUtil.root(DbxClientV1IT.class);
+        assertNotNull(client.createFolder(testFolder));
     }
 
     @AfterMethod
-    private void cleanup() throws DbxException {
+    private void cleanup() throws Exception {
         if (client != null) {
             client.delete(testFolder);
         }
@@ -78,20 +59,12 @@ public class DbxClientV1IT {
     private static final String E_ACCENT = "\u00e9";
 
     @Test
-    public void testAccountInfo()
-        throws DbxException, IOException
-    {
-        init();
-
+    public void testAccountInfo() throws Exception {
         client.getAccountInfo();
     }
 
     @Test
-    public void testUploadAndDownload()
-        throws DbxException, IOException
-    {
-        init();
-
+    public void testUploadAndDownload() throws Exception {
         byte[] contents = StringUtil.stringToUtf8("A simple test file");
 
         String remotePath = p("test-fil" + E_ACCENT + ".txt");
@@ -108,15 +81,11 @@ public class DbxClientV1IT {
         assertEquals(up.numBytes, downBody.length);
     }
 
-    private DbxEntry.File addFile(String path, int length)
-        throws DbxException, IOException
-    {
+    private DbxEntry.File addFile(String path, int length) throws Exception {
         return uploadFile(path, length, DbxWriteMode.add());
     }
 
-    private DbxEntry.File uploadFile(String path, int length, DbxWriteMode writeMode)
-        throws DbxException, IOException
-    {
+    private DbxEntry.File uploadFile(String path, int length, DbxWriteMode writeMode) throws Exception {
         return client.uploadFile(path, writeMode, length, new ByteArrayInputStream(generateRandomBytes(length)));
     }
 
@@ -131,11 +100,7 @@ public class DbxClientV1IT {
     }
 
     @Test
-    public void testMetadata()
-        throws DbxException, IOException
-    {
-        init();
-
+    public void testMetadata() throws Exception {
         addFile(p("a.txt"), 100);
 
         {
@@ -169,12 +134,9 @@ public class DbxClientV1IT {
         }
     }
 
-    @Test
-    public void testDelta()
-        throws DbxException, IOException
-    {
-        init();
-
+    // too flaky, enable once fixed
+    @Test(enabled=false)
+    public void testDelta() throws Exception {
         // NOTE: In these tests, we never actually perform a non-path-prefix /delta call.  This is so that
         // you can run these tests against a Dropbox account that is having modifications performed on it
         // by other clients.  This is unfortunate, so maybe we should switch to requiring that the test
@@ -289,11 +251,7 @@ public class DbxClientV1IT {
     }
 
     @Test
-    public void testRevisionsAndRestore()
-        throws DbxException, IOException
-    {
-        init();
-
+    public void testRevisionsAndRestore() throws Exception {
         String path = p("r"+E_ACCENT+"visions.txt");
 
         DbxEntry.File e2 = uploadFile(path, 100, DbxWriteMode.force());
@@ -317,11 +275,7 @@ public class DbxClientV1IT {
     }
 
     @Test
-    public void testSearch()
-        throws DbxException, IOException
-    {
-        init();
-
+    public void testSearch() throws Exception {
         addFile(p("search - a.txt"), 100);
         client.createFolder(p("sub"));
         addFile(p("sub/search - b.txt"), 200);
@@ -341,9 +295,7 @@ public class DbxClientV1IT {
         assertEquals(results.get(0).name, "search - a.txt");
     }
 
-    private static byte[] downloadUrl(String urlS)
-        throws IOException
-    {
+    private static byte[] downloadUrl(String urlS) throws Exception {
         URL url = new URL(urlS);
         InputStream in = url.openStream();
         try {
@@ -355,11 +307,7 @@ public class DbxClientV1IT {
     }
 
     @Test
-    public void testSharableUrl()
-        throws DbxException, IOException
-    {
-        init();
-
+    public void testSharableUrl() throws Exception {
         byte[] contents = StringUtil.stringToUtf8("A shared text file");
         String path = p("share-me.txt");
         client.uploadFile(path, DbxWriteMode.add(), contents.length, new ByteArrayInputStream(contents));
@@ -382,11 +330,7 @@ public class DbxClientV1IT {
     }
 
     @Test
-    public void testTemporaryDirectUrl()
-        throws DbxException, IOException
-    {
-        init();
-
+    public void testTemporaryDirectUrl() throws Exception {
         byte[] contents = StringUtil.stringToUtf8("A media text file");
         String path = p("media-me.txt");
         client.uploadFile(path, DbxWriteMode.add(), contents.length, new ByteArrayInputStream(contents));
@@ -398,11 +342,7 @@ public class DbxClientV1IT {
     }
 
     @Test
-    public void testCopyRefFile()
-        throws DbxException, IOException
-    {
-        init();
-
+    public void testCopyRefFile() throws Exception {
         String source = p("copy-ref me.txt");
         String dest = p("done!.txt");
         int size = 1024;
@@ -418,11 +358,7 @@ public class DbxClientV1IT {
     }
 
     @Test
-    public void testCopyRefFolder()
-        throws DbxException, IOException
-    {
-        init();
-
+    public void testCopyRefFolder() throws Exception {
         String source = p("some folder");
         client.createFolder(source);
         addFile(source + "/a.txt", 10);
@@ -440,11 +376,7 @@ public class DbxClientV1IT {
     }
 
     @Test
-    public void testCopyRefEmptyFolder()
-        throws DbxException, IOException
-    {
-        init();
-
+    public void testCopyRefEmptyFolder() throws Exception {
         String source = p("empty folder");
         client.createFolder(source);
 
@@ -460,11 +392,7 @@ public class DbxClientV1IT {
     }
 
     @Test
-    public void testPhotoInfo()
-        throws DbxException, IOException, InterruptedException
-    {
-        init();
-
+    public void testPhotoInfo() throws Exception {
         final String folder = p("photo-info-folder");
         final String orig = folder + "/test-imag"+E_ACCENT+".jpeg";
 
@@ -505,11 +433,7 @@ public class DbxClientV1IT {
     }
 
     @Test
-    public void testThumbnail()
-        throws DbxException, IOException
-    {
-        init();
-
+    public void testThumbnail() throws Exception {
         String orig = p("test-imag" + E_ACCENT + ".jpeg");
 
         // Upload an image.
@@ -584,9 +508,7 @@ public class DbxClientV1IT {
     }
 
     @Test
-    public void testChunkedUpload() throws DbxException, IOException {
-        init();
-
+    public void testChunkedUpload() throws Exception {
         byte[] contents = StringUtil.stringToUtf8("A simple test file");
         int chunkSize = 7;
         assertNotEquals(contents.length % chunkSize, 0);  // Make sure the last chunk is not full-sized.
@@ -642,9 +564,7 @@ public class DbxClientV1IT {
     }
 
     @Test
-    public void testCopyFile() throws DbxException, IOException {
-        init();
-
+    public void testCopyFile() throws Exception {
         String source = p("copy m" + E_ACCENT + ".txt");
         String dest = p("ok - copi" + E_ACCENT + "d.txt");
         int size = 1024;
@@ -659,9 +579,7 @@ public class DbxClientV1IT {
     }
 
     @Test
-    public void testCopyFolder() throws DbxException, IOException {
-        init();
-
+    public void testCopyFolder() throws Exception {
         String source = p("some folder");
         client.createFolder(source);
         addFile(source + "/a.txt", 10);
@@ -678,9 +596,7 @@ public class DbxClientV1IT {
     }
 
     @Test
-    public void testCopyEmptyFolder() throws DbxException, IOException {
-        init();
-
+    public void testCopyEmptyFolder() throws Exception {
         String source = p("empty folder");
         client.createFolder(source);
 
@@ -695,9 +611,7 @@ public class DbxClientV1IT {
     }
 
     @Test
-    public void testCreateFolder() throws DbxException, IOException {
-        init();
-
+    public void testCreateFolder() throws Exception {
         DbxEntry.WithChildren mwc = client.getMetadataWithChildren(p());
         assertEquals(mwc.children.size(), 0);
 
@@ -710,9 +624,7 @@ public class DbxClientV1IT {
     }
 
     @Test
-    public void testDelete() throws DbxException, IOException {
-        init();
-
+    public void testDelete() throws Exception {
         String path = p("delete m" + E_ACCENT + ".txt");
         int size = 1024;
 
@@ -724,9 +636,7 @@ public class DbxClientV1IT {
     }
 
     @Test
-    public void testMoveFile() throws DbxException, IOException {
-        init();
-
+    public void testMoveFile() throws Exception {
         String source = p("move me.txt");
         String dest = p("ok - moved.txt");
         int size = 1024;
@@ -743,9 +653,7 @@ public class DbxClientV1IT {
     }
 
     @Test
-    public void testMoveFolder() throws DbxException, IOException {
-        init();
-
+    public void testMoveFolder() throws Exception {
         String source = p("some folder");
         client.createFolder(source);
         addFile(source + "/a.txt", 10);
@@ -766,9 +674,7 @@ public class DbxClientV1IT {
     }
 
     @Test
-    public void testMoveEmptyFolder() throws DbxException, IOException {
-        init();
-
+    public void testMoveEmptyFolder() throws Exception {
         String source = p("empty folder");
         client.createFolder(source);
 

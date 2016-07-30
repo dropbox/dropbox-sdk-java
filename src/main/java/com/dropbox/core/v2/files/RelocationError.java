@@ -52,7 +52,12 @@ public final class RelocationError {
          */
         TOO_MANY_FILES,
         /**
-         * An unspecified error.
+         * Catch-all used for unknown tag values returned by the Dropbox
+         * servers.
+         *
+         * <p> Receiving a catch-all value typically indicates this SDK version
+         * is not up to date. Consider updating your SDK version to handle the
+         * new tags. </p>
          */
         OTHER; // *catch_all
     }
@@ -75,7 +80,11 @@ public final class RelocationError {
      */
     public static final RelocationError TOO_MANY_FILES = new RelocationError(Tag.TOO_MANY_FILES, null, null, null);
     /**
-     * An unspecified error.
+     * Catch-all used for unknown tag values returned by the Dropbox servers.
+     *
+     * <p> Receiving a catch-all value typically indicates this SDK version is
+     * not up to date. Consider updating your SDK version to handle the new
+     * tags. </p>
      */
     public static final RelocationError OTHER = new RelocationError(Tag.OTHER, null, null, null);
 

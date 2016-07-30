@@ -25,9 +25,6 @@ public enum MembersSuspendError {
      * The user is not a member of the team.
      */
     USER_NOT_IN_TEAM,
-    /**
-     * An unspecified error.
-     */
     OTHER,
     /**
      * The user is not active, so it cannot be suspended.

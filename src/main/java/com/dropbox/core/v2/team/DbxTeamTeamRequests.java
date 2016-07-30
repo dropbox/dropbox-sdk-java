@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_devices.stone, team_property_templates.stone, team_members.stone, team_groups.stone, team_linked_apps.stone, team_reports.stone, team.stone */
+/* This file was generated from team_devices.stone, team_property_templates.stone, team_members.stone, team_linked_apps.stone, team_reports.stone, team_groups.stone, team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Routes in namespace "team" that support team auth.
+ * Routes in namespace "team".
  */
 public final class DbxTeamTeamRequests {
     // namespace team
@@ -315,17 +315,16 @@ public final class DbxTeamTeamRequests {
      * member management
      *
      * @param groupName  Group name. Must not be {@code null}.
-     * @param groupExternalId  The creator of a team can associate an arbitrary
-     *     external ID to the group.
      *
-     * @return Full description of a group.
+     * @return Request builder for configuring request parameters and completing
+     *     the request.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupFullInfo groupsCreate(String groupName, String groupExternalId) throws GroupCreateErrorException, DbxException {
-        GroupCreateArg arg = new GroupCreateArg(groupName, groupExternalId);
-        return groupsCreate(arg);
+    public GroupsCreateBuilder groupsCreateBuilder(String groupName) {
+        GroupCreateArg.Builder argBuilder_ = GroupCreateArg.newBuilder(groupName);
+        return new GroupsCreateBuilder(this, argBuilder_);
     }
 
     //
@@ -732,8 +731,9 @@ public final class DbxTeamTeamRequests {
      * Removes members from a group. The members are removed immediately.
      * However the revoking of group-owned resources may take additional time.
      * Use the {@link DbxTeamTeamRequests#groupsJobStatusGet(String)} to
-     * determine whether this process has completed. Permission : Team member
-     * management
+     * determine whether this process has completed. This method permits
+     * removing the only owner of a group, even in cases where this is not
+     * possible via the web client. Permission : Team member management
      *
      *
      * @return Result returned by {@link
@@ -759,8 +759,9 @@ public final class DbxTeamTeamRequests {
      * Removes members from a group. The members are removed immediately.
      * However the revoking of group-owned resources may take additional time.
      * Use the {@link DbxTeamTeamRequests#groupsJobStatusGet(String)} to
-     * determine whether this process has completed. Permission : Team member
-     * management
+     * determine whether this process has completed. This method permits
+     * removing the only owner of a group, even in cases where this is not
+     * possible via the web client. Permission : Team member management
      *
      * <p> The {@code returnMembers} request parameter will default to {@code
      * true} (see {@link #groupsMembersRemove(GroupSelector,List,boolean)}).
@@ -787,8 +788,9 @@ public final class DbxTeamTeamRequests {
      * Removes members from a group. The members are removed immediately.
      * However the revoking of group-owned resources may take additional time.
      * Use the {@link DbxTeamTeamRequests#groupsJobStatusGet(String)} to
-     * determine whether this process has completed. Permission : Team member
-     * management
+     * determine whether this process has completed. This method permits
+     * removing the only owner of a group, even in cases where this is not
+     * possible via the web client. Permission : Team member management
      *
      * @param group  Group from which users will be removed. Must not be {@code
      *     null}.
@@ -1402,8 +1404,8 @@ public final class DbxTeamTeamRequests {
     /**
      * Lists members of a team. Permission : Team information
      *
-     * <p> The {@code limit} request parameter will default to {@code 1000L}
-     * (see {@link #membersList(long)}). </p>
+     * <p> The default values for the optional request parameters will be used.
+     * See {@link MembersListBuilder} for more details. </p>
      */
     public MembersListResult membersList() throws MembersListErrorException, DbxException {
         MembersListArg arg = new MembersListArg();
@@ -1413,21 +1415,12 @@ public final class DbxTeamTeamRequests {
     /**
      * Lists members of a team. Permission : Team information
      *
-     * @param limit  Number of results to return per call. Must be greater than
-     *     or equal to 1 and be less than or equal to 1000.
-     *
-     * @throws IllegalArgumentException  If any argument does not meet its
-     *     preconditions.
+     * @return Request builder for configuring request parameters and completing
+     *     the request.
      */
-    public MembersListResult membersList(long limit) throws MembersListErrorException, DbxException {
-        if (limit < 1L) {
-            throw new IllegalArgumentException("Number 'limit' is smaller than 1L");
-        }
-        if (limit > 1000L) {
-            throw new IllegalArgumentException("Number 'limit' is larger than 1000L");
-        }
-        MembersListArg arg = new MembersListArg(limit);
-        return membersList(arg);
+    public MembersListBuilder membersListBuilder() {
+        MembersListArg.Builder argBuilder_ = MembersListArg.newBuilder();
+        return new MembersListBuilder(this, argBuilder_);
     }
 
     //

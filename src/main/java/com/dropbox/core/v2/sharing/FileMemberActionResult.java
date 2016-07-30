@@ -17,7 +17,8 @@ import java.io.IOException;
 /**
  * Per-member result for {@link
  * DbxUserSharingRequests#removeFileMember2(String,MemberSelector)} or {@link
- * DbxUserSharingRequests#addFileMember(String,java.util.List)}.
+ * DbxUserSharingRequests#addFileMember(String,java.util.List)} or {@link
+ * DbxUserSharingRequests#changeFileMemberAccess(String,MemberSelector,AccessLevel)}.
  */
 public class FileMemberActionResult {
     // struct FileMemberActionResult
@@ -28,7 +29,9 @@ public class FileMemberActionResult {
     /**
      * Per-member result for {@link
      * DbxUserSharingRequests#removeFileMember2(String,MemberSelector)} or
-     * {@link DbxUserSharingRequests#addFileMember(String,java.util.List)}.
+     * {@link DbxUserSharingRequests#addFileMember(String,java.util.List)} or
+     * {@link
+     * DbxUserSharingRequests#changeFileMemberAccess(String,MemberSelector,AccessLevel)}.
      *
      * @param member  One of specified input members. Must not be {@code null}.
      * @param result  The outcome of the action on this member. Must not be

@@ -38,9 +38,10 @@ public final class RemoveFileMemberError {
         ACCESS_ERROR, // SharingFileAccessError
         /**
          * This member does not have explicit access to the file and therefore
-         * cannot be removed.
+         * cannot be removed. The return value is the access that a user might
+         * have to the file from a parent folder.
          */
-        NO_EXPLICIT_ACCESS,
+        NO_EXPLICIT_ACCESS, // MemberAccessLevelResult
         /**
          * Catch-all used for unknown tag values returned by the Dropbox
          * servers.
@@ -53,22 +54,18 @@ public final class RemoveFileMemberError {
     }
 
     /**
-     * This member does not have explicit access to the file and therefore
-     * cannot be removed.
-     */
-    public static final RemoveFileMemberError NO_EXPLICIT_ACCESS = new RemoveFileMemberError(Tag.NO_EXPLICIT_ACCESS, null, null);
-    /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *
      * <p> Receiving a catch-all value typically indicates this SDK version is
      * not up to date. Consider updating your SDK version to handle the new
      * tags. </p>
      */
-    public static final RemoveFileMemberError OTHER = new RemoveFileMemberError(Tag.OTHER, null, null);
+    public static final RemoveFileMemberError OTHER = new RemoveFileMemberError(Tag.OTHER, null, null, null);
 
     private final Tag tag;
     private final SharingUserError userErrorValue;
     private final SharingFileAccessError accessErrorValue;
+    private final MemberAccessLevelResult noExplicitAccessValue;
 
     /**
      * Errors for {@link
@@ -76,10 +73,11 @@ public final class RemoveFileMemberError {
      *
      * @param tag  Discriminating tag for this instance.
      */
-    private RemoveFileMemberError(Tag tag, SharingUserError userErrorValue, SharingFileAccessError accessErrorValue) {
+    private RemoveFileMemberError(Tag tag, SharingUserError userErrorValue, SharingFileAccessError accessErrorValue, MemberAccessLevelResult noExplicitAccessValue) {
         this.tag = tag;
         this.userErrorValue = userErrorValue;
         this.accessErrorValue = accessErrorValue;
+        this.noExplicitAccessValue = noExplicitAccessValue;
     }
 
     /**
@@ -126,7 +124,7 @@ public final class RemoveFileMemberError {
         if (value == null) {
             throw new IllegalArgumentException("Value is null");
         }
-        return new RemoveFileMemberError(Tag.USER_ERROR, value, null);
+        return new RemoveFileMemberError(Tag.USER_ERROR, value, null, null);
     }
 
     /**
@@ -170,7 +168,7 @@ public final class RemoveFileMemberError {
         if (value == null) {
             throw new IllegalArgumentException("Value is null");
         }
-        return new RemoveFileMemberError(Tag.ACCESS_ERROR, null, value);
+        return new RemoveFileMemberError(Tag.ACCESS_ERROR, null, value, null);
     }
 
     /**
@@ -201,6 +199,49 @@ public final class RemoveFileMemberError {
     }
 
     /**
+     * Returns an instance of {@code RemoveFileMemberError} that has its tag set
+     * to {@link Tag#NO_EXPLICIT_ACCESS}.
+     *
+     * <p> This member does not have explicit access to the file and therefore
+     * cannot be removed. The return value is the access that a user might have
+     * to the file from a parent folder. </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code RemoveFileMemberError} with its tag set to
+     *     {@link Tag#NO_EXPLICIT_ACCESS}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static RemoveFileMemberError noExplicitAccess(MemberAccessLevelResult value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new RemoveFileMemberError(Tag.NO_EXPLICIT_ACCESS, null, null, value);
+    }
+
+    /**
+     * This member does not have explicit access to the file and therefore
+     * cannot be removed. The return value is the access that a user might have
+     * to the file from a parent folder.
+     *
+     * <p> This instance must be tagged as {@link Tag#NO_EXPLICIT_ACCESS}. </p>
+     *
+     * @return The {@link RemoveFileMemberError#noExplicitAccess} value
+     *     associated with this instance if {@link #isNoExplicitAccess} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isNoExplicitAccess} is {@code
+     *     false}.
+     */
+    public MemberAccessLevelResult getNoExplicitAccessValue() {
+        if (this.tag != Tag.NO_EXPLICIT_ACCESS) {
+            throw new IllegalStateException("Invalid tag: required Tag.NO_EXPLICIT_ACCESS, but was Tag." + tag.name());
+        }
+        return noExplicitAccessValue;
+    }
+
+    /**
      * Returns {@code true} if this instance has the tag {@link Tag#OTHER},
      * {@code false} otherwise.
      *
@@ -216,7 +257,8 @@ public final class RemoveFileMemberError {
         int hash = java.util.Arrays.hashCode(new Object [] {
             tag,
             userErrorValue,
-            accessErrorValue
+            accessErrorValue,
+            noExplicitAccessValue
         });
         return hash;
     }
@@ -237,7 +279,7 @@ public final class RemoveFileMemberError {
                 case ACCESS_ERROR:
                     return (this.accessErrorValue == other.accessErrorValue) || (this.accessErrorValue.equals(other.accessErrorValue));
                 case NO_EXPLICIT_ACCESS:
-                    return true;
+                    return (this.noExplicitAccessValue == other.noExplicitAccessValue) || (this.noExplicitAccessValue.equals(other.noExplicitAccessValue));
                 case OTHER:
                     return true;
                 default:
@@ -292,7 +334,10 @@ public final class RemoveFileMemberError {
                     break;
                 }
                 case NO_EXPLICIT_ACCESS: {
-                    g.writeString("no_explicit_access");
+                    g.writeStartObject();
+                    writeTag("no_explicit_access", g);
+                    MemberAccessLevelResult.Serializer.INSTANCE.serialize(value.noExplicitAccessValue, g, true);
+                    g.writeEndObject();
                     break;
                 }
                 default: {
@@ -332,7 +377,9 @@ public final class RemoveFileMemberError {
                 value = RemoveFileMemberError.accessError(fieldValue);
             }
             else if ("no_explicit_access".equals(tag)) {
-                value = RemoveFileMemberError.NO_EXPLICIT_ACCESS;
+                MemberAccessLevelResult fieldValue = null;
+                fieldValue = MemberAccessLevelResult.Serializer.INSTANCE.deserialize(p, true);
+                value = RemoveFileMemberError.noExplicitAccess(fieldValue);
             }
             else {
                 value = RemoveFileMemberError.OTHER;

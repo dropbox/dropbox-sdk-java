@@ -1,7 +1,7 @@
 /* DO NOT EDIT */
-/* This file was generated from files_properties.stone */
+/* This file was generated from test.stone */
 
-package com.dropbox.core.v2.files;
+package com.dropbox.core.stone.test;
 
 import com.dropbox.core.stone.StoneSerializers;
 import com.dropbox.core.stone.UnionSerializer;
@@ -14,24 +14,36 @@ import com.fasterxml.jackson.core.JsonToken;
 
 import java.io.IOException;
 
-public enum LookUpPropertiesError {
-    // union LookUpPropertiesError
-    /**
-     * This property group does not exist for this file.
-     */
-    PROPERTY_GROUP_NOT_FOUND;
+public enum DogSize {
+    // union DogSize
+    LAP,
+    SMALL,
+    MEDIUM,
+    LARGE;
 
     /**
      * For internal use only.
      */
-    static final class Serializer extends UnionSerializer<LookUpPropertiesError> {
+    static final class Serializer extends UnionSerializer<DogSize> {
         public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(LookUpPropertiesError value, JsonGenerator g) throws IOException, JsonGenerationException {
+        public void serialize(DogSize value, JsonGenerator g) throws IOException, JsonGenerationException {
             switch (value) {
-                case PROPERTY_GROUP_NOT_FOUND: {
-                    g.writeString("property_group_not_found");
+                case LAP: {
+                    g.writeString("lap");
+                    break;
+                }
+                case SMALL: {
+                    g.writeString("small");
+                    break;
+                }
+                case MEDIUM: {
+                    g.writeString("medium");
+                    break;
+                }
+                case LARGE: {
+                    g.writeString("large");
                     break;
                 }
                 default: {
@@ -41,8 +53,8 @@ public enum LookUpPropertiesError {
         }
 
         @Override
-        public LookUpPropertiesError deserialize(JsonParser p) throws IOException, JsonParseException {
-            LookUpPropertiesError value;
+        public DogSize deserialize(JsonParser p) throws IOException, JsonParseException {
+            DogSize value;
             boolean collapsed;
             String tag;
             if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
@@ -58,8 +70,17 @@ public enum LookUpPropertiesError {
             if (tag == null) {
                 throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
             }
-            else if ("property_group_not_found".equals(tag)) {
-                value = LookUpPropertiesError.PROPERTY_GROUP_NOT_FOUND;
+            else if ("lap".equals(tag)) {
+                value = DogSize.LAP;
+            }
+            else if ("small".equals(tag)) {
+                value = DogSize.SMALL;
+            }
+            else if ("medium".equals(tag)) {
+                value = DogSize.MEDIUM;
+            }
+            else if ("large".equals(tag)) {
+                value = DogSize.LARGE;
             }
             else {
                 throw new JsonParseException(p, "Unknown tag: " + tag);

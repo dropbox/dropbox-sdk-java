@@ -25,9 +25,6 @@ public enum MembersRemoveError {
      * The user is not a member of the team.
      */
     USER_NOT_IN_TEAM,
-    /**
-     * An unspecified error.
-     */
     OTHER,
     /**
      * The user is the last admin of the team, so it cannot be removed from it.
@@ -74,7 +71,11 @@ public enum MembersRemoveError {
     /**
      * Cannot keep account and delete the data at the same time.
      */
-    CANNOT_KEEP_ACCOUNT_AND_DELETE_DATA;
+    CANNOT_KEEP_ACCOUNT_AND_DELETE_DATA,
+    /**
+     * The email address of the user is too long to be disabled.
+     */
+    EMAIL_ADDRESS_TOO_LONG_TO_BE_DISABLED;
 
     /**
      * For internal use only.
@@ -139,6 +140,10 @@ public enum MembersRemoveError {
                 }
                 case CANNOT_KEEP_ACCOUNT_AND_DELETE_DATA: {
                     g.writeString("cannot_keep_account_and_delete_data");
+                    break;
+                }
+                case EMAIL_ADDRESS_TOO_LONG_TO_BE_DISABLED: {
+                    g.writeString("email_address_too_long_to_be_disabled");
                     break;
                 }
                 default: {
@@ -206,6 +211,9 @@ public enum MembersRemoveError {
             }
             else if ("cannot_keep_account_and_delete_data".equals(tag)) {
                 value = MembersRemoveError.CANNOT_KEEP_ACCOUNT_AND_DELETE_DATA;
+            }
+            else if ("email_address_too_long_to_be_disabled".equals(tag)) {
+                value = MembersRemoveError.EMAIL_ADDRESS_TOO_LONG_TO_BE_DISABLED;
             }
             else {
                 throw new JsonParseException(p, "Unknown tag: " + tag);

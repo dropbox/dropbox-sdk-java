@@ -1,7 +1,7 @@
 /* DO NOT EDIT */
-/* This file was generated from team.stone */
+/* This file was generated from test.stone */
 
-package com.dropbox.core.v2.team;
+package com.dropbox.core.stone.test;
 
 import com.dropbox.core.stone.StoneSerializers;
 import com.dropbox.core.stone.UnionSerializer;
@@ -14,29 +14,26 @@ import com.fasterxml.jackson.core.JsonToken;
 
 import java.io.IOException;
 
-/**
- * Error that can be returned whenever a struct derived from {@link
- * UserSelectorArg} is used.
- */
-public enum UserSelectorError {
-    // union UserSelectorError
-    /**
-     * No matching user found. The provided team_member_id, email, or
-     * external_id does not exist on this team.
-     */
-    USER_NOT_FOUND;
+public enum ParentUnion {
+    // union ParentUnion
+    ALPHA,
+    BETA;
 
     /**
      * For internal use only.
      */
-    static final class Serializer extends UnionSerializer<UserSelectorError> {
+    static final class Serializer extends UnionSerializer<ParentUnion> {
         public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(UserSelectorError value, JsonGenerator g) throws IOException, JsonGenerationException {
+        public void serialize(ParentUnion value, JsonGenerator g) throws IOException, JsonGenerationException {
             switch (value) {
-                case USER_NOT_FOUND: {
-                    g.writeString("user_not_found");
+                case ALPHA: {
+                    g.writeString("alpha");
+                    break;
+                }
+                case BETA: {
+                    g.writeString("beta");
                     break;
                 }
                 default: {
@@ -46,8 +43,8 @@ public enum UserSelectorError {
         }
 
         @Override
-        public UserSelectorError deserialize(JsonParser p) throws IOException, JsonParseException {
-            UserSelectorError value;
+        public ParentUnion deserialize(JsonParser p) throws IOException, JsonParseException {
+            ParentUnion value;
             boolean collapsed;
             String tag;
             if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
@@ -63,8 +60,11 @@ public enum UserSelectorError {
             if (tag == null) {
                 throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
             }
-            else if ("user_not_found".equals(tag)) {
-                value = UserSelectorError.USER_NOT_FOUND;
+            else if ("alpha".equals(tag)) {
+                value = ParentUnion.ALPHA;
+            }
+            else if ("beta".equals(tag)) {
+                value = ParentUnion.BETA;
             }
             else {
                 throw new JsonParseException(p, "Unknown tag: " + tag);

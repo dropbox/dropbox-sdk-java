@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 /*>>> import checkers.nullness.quals.NonNull; */
 /*>>> import checkers.nullness.quals.Nullable; */
@@ -46,9 +47,8 @@ import java.util.List;
 public abstract class DbxRawClientV2 {
     public static final String USER_AGENT_ID = "OfficialDropboxJavaSDKv2";
 
-    // The HTTP status codes returned for errors specific to particular API calls.
-    private static final List<Integer> FUNCTION_SPECIFIC_ERROR_CODES = Arrays.asList(403, 404, 409);
     private static final JsonFactory JSON = new JsonFactory();
+    private static final Random RAND = new Random();
 
     private final DbxRequestConfig requestConfig;
     private final DbxHost host;
@@ -99,12 +99,13 @@ public abstract class DbxRawClientV2 {
             public ResT execute() throws DbxWrappedException, DbxException {
                 HttpRequestor.Response response = DbxRequestUtil.startPostRaw(requestConfig, USER_AGENT_ID, host, path, body, headers);
                 try {
-                    if (response.getStatusCode() == 200) {
-                        return responseSerializer.deserialize(response.getBody());
-                    } else if (FUNCTION_SPECIFIC_ERROR_CODES.contains(response.getStatusCode())) {
-                        throw DbxWrappedException.fromResponse(errorSerializer, response);
-                    } else {
-                        throw DbxRequestUtil.unexpectedStatus(response);
+                    switch (response.getStatusCode()) {
+                        case 200:
+                            return responseSerializer.deserialize(response.getBody());
+                        case 409:
+                            throw DbxWrappedException.fromResponse(errorSerializer, response);
+                        default:
+                            throw DbxRequestUtil.unexpectedStatus(response);
                     }
                 } catch (JsonProcessingException ex) {
                     String requestId = DbxRequestUtil.getRequestId(response);
@@ -143,25 +144,28 @@ public abstract class DbxRawClientV2 {
                 String requestId = DbxRequestUtil.getRequestId(response);
 
                 try {
-                    if (response.getStatusCode() == 200 || response.getStatusCode() == 206) {
-                        List<String> resultHeaders = response.getHeaders().get("dropbox-api-result");
-                        if (resultHeaders == null) {
-                            throw new BadResponseException(requestId, "Missing Dropbox-API-Result header; " + response.getHeaders());
-                        }
-                        if (resultHeaders.size() == 0) {
-                            throw new BadResponseException(requestId, "No Dropbox-API-Result header; " + response.getHeaders());
-                        }
-                        String resultHeader = resultHeaders.get(0);
-                        if (resultHeader == null) {
-                            throw new BadResponseException(requestId, "Null Dropbox-API-Result header; " + response.getHeaders());
-                        }
+                    switch (response.getStatusCode()) {
+                        case 200:
+                            // fall-through
+                        case 206:
+                            List<String> resultHeaders = response.getHeaders().get("dropbox-api-result");
+                            if (resultHeaders == null) {
+                                throw new BadResponseException(requestId, "Missing Dropbox-API-Result header; " + response.getHeaders());
+                            }
+                            if (resultHeaders.size() == 0) {
+                                throw new BadResponseException(requestId, "No Dropbox-API-Result header; " + response.getHeaders());
+                            }
+                            String resultHeader = resultHeaders.get(0);
+                            if (resultHeader == null) {
+                                throw new BadResponseException(requestId, "Null Dropbox-API-Result header; " + response.getHeaders());
+                            }
 
-                        ResT result = responseSerializer.deserialize(resultHeader);
-                        return new DbxDownloader<ResT>(result, response.getBody());
-                    } else if (FUNCTION_SPECIFIC_ERROR_CODES.contains(response.getStatusCode())) {
-                        throw DbxWrappedException.fromResponse(errorSerializer, response);
-                    } else {
-                        throw DbxRequestUtil.unexpectedStatus(response);
+                            ResT result = responseSerializer.deserialize(resultHeader);
+                            return new DbxDownloader<ResT>(result, response.getBody());
+                        case 409:
+                            throw DbxWrappedException.fromResponse(errorSerializer, response);
+                        default:
+                            throw DbxRequestUtil.unexpectedStatus(response);
                     }
                 } catch(JsonProcessingException ex) {
                     throw new BadResponseException(requestId, "Bad JSON: " + ex.getMessage(), ex);
@@ -259,7 +263,7 @@ public abstract class DbxRawClientV2 {
             } catch (RetryException ex) {
                 if (retries < maxRetries) {
                     ++retries;
-                    sleepQuietly(ex.getBackoffMillis());
+                    sleepQuietlyWithJitter(ex.getBackoffMillis());
                 } else {
                     throw ex;
                 }
@@ -267,13 +271,18 @@ public abstract class DbxRawClientV2 {
         }
     }
 
-    private static void sleepQuietly(long millis) {
-        if (millis <= 0) {
+    private static void sleepQuietlyWithJitter(long millis) {
+        // add a small jitter to the sleep to avoid stampeding herd problem, especially when millis
+        // is 0.
+        long jitter = RAND.nextInt(1000);
+        long sleepMillis = millis + jitter;
+
+        if (sleepMillis <= 0) {
             return;
         }
 
         try {
-            Thread.sleep(millis);
+            Thread.sleep(sleepMillis);
         } catch (InterruptedException ex) {
             // preserve interrupt
             Thread.currentThread().interrupt();

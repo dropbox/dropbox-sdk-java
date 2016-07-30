@@ -28,7 +28,8 @@ public class ListFolderArg {
      * specifying values for all optional fields.
      *
      * @param path  The path to the folder you want to see the contents of. Must
-     *     match pattern "{@code (/(.|[\\r\\n])*)?}" and not be {@code null}.
+     *     match pattern "{@code (/(.|[\\r\\n])*)?|(ns:[0-9]+(/.*)?)}" and not
+     *     be {@code null}.
      * @param recursive  If true, the list folder operation will be applied
      *     recursively to all subfolders and the response will contain contents
      *     of all subfolders.
@@ -47,7 +48,7 @@ public class ListFolderArg {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
-        if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*)?", path)) {
+        if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*)?|(ns:[0-9]+(/.*)?)", path)) {
             throw new IllegalArgumentException("String 'path' does not match pattern");
         }
         this.path = path;
@@ -61,7 +62,8 @@ public class ListFolderArg {
      * The default values for unset fields will be used.
      *
      * @param path  The path to the folder you want to see the contents of. Must
-     *     match pattern "{@code (/(.|[\\r\\n])*)?}" and not be {@code null}.
+     *     match pattern "{@code (/(.|[\\r\\n])*)?|(ns:[0-9]+(/.*)?)}" and not
+     *     be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -126,7 +128,8 @@ public class ListFolderArg {
      * Returns a new builder for creating an instance of this class.
      *
      * @param path  The path to the folder you want to see the contents of. Must
-     *     match pattern "{@code (/(.|[\\r\\n])*)?}" and not be {@code null}.
+     *     match pattern "{@code (/(.|[\\r\\n])*)?|(ns:[0-9]+(/.*)?)}" and not
+     *     be {@code null}.
      *
      * @return builder for this class.
      *
@@ -152,7 +155,7 @@ public class ListFolderArg {
             if (path == null) {
                 throw new IllegalArgumentException("Required value for 'path' is null");
             }
-            if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*)?", path)) {
+            if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*)?|(ns:[0-9]+(/.*)?)", path)) {
                 throw new IllegalArgumentException("String 'path' does not match pattern");
             }
             this.path = path;

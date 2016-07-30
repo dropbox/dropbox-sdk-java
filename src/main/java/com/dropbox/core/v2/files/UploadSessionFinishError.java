@@ -46,7 +46,12 @@ public final class UploadSessionFinishError {
          */
         TOO_MANY_SHARED_FOLDER_TARGETS,
         /**
-         * An unspecified error.
+         * Catch-all used for unknown tag values returned by the Dropbox
+         * servers.
+         *
+         * <p> Receiving a catch-all value typically indicates this SDK version
+         * is not up to date. Consider updating your SDK version to handle the
+         * new tags. </p>
          */
         OTHER; // *catch_all
     }
@@ -58,7 +63,11 @@ public final class UploadSessionFinishError {
      */
     public static final UploadSessionFinishError TOO_MANY_SHARED_FOLDER_TARGETS = new UploadSessionFinishError(Tag.TOO_MANY_SHARED_FOLDER_TARGETS, null, null);
     /**
-     * An unspecified error.
+     * Catch-all used for unknown tag values returned by the Dropbox servers.
+     *
+     * <p> Receiving a catch-all value typically indicates this SDK version is
+     * not up to date. Consider updating your SDK version to handle the new
+     * tags. </p>
      */
     public static final UploadSessionFinishError OTHER = new UploadSessionFinishError(Tag.OTHER, null, null);
 

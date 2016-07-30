@@ -13,6 +13,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Contains information about a member's access level to content after an
@@ -23,6 +24,7 @@ public class MemberAccessLevelResult {
 
     protected final AccessLevel accessLevel;
     protected final String warning;
+    protected final List<ParentFolderAccessInfo> accessDetails;
 
     /**
      * Contains information about a member's access level to content after an
@@ -35,10 +37,24 @@ public class MemberAccessLevelResult {
      *     content through a parent folder.
      * @param warning  A localized string with additional information about why
      *     the user has this access level to the content.
+     * @param accessDetails  The parent folders that a member has access to. The
+     *     field is present if the user has access to the first parent folder
+     *     where the member gains access. Must not contain a {@code null} item.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
      */
-    public MemberAccessLevelResult(AccessLevel accessLevel, String warning) {
+    public MemberAccessLevelResult(AccessLevel accessLevel, String warning, List<ParentFolderAccessInfo> accessDetails) {
         this.accessLevel = accessLevel;
         this.warning = warning;
+        if (accessDetails != null) {
+            for (ParentFolderAccessInfo x : accessDetails) {
+                if (x == null) {
+                    throw new IllegalArgumentException("An item in list 'accessDetails' is null");
+                }
+            }
+        }
+        this.accessDetails = accessDetails;
     }
 
     /**
@@ -48,7 +64,7 @@ public class MemberAccessLevelResult {
      * <p> The default values for unset fields will be used. </p>
      */
     public MemberAccessLevelResult() {
-        this(null, null);
+        this(null, null, null);
     }
 
     /**
@@ -72,6 +88,17 @@ public class MemberAccessLevelResult {
     }
 
     /**
+     * The parent folders that a member has access to. The field is present if
+     * the user has access to the first parent folder where the member gains
+     * access.
+     *
+     * @return value for this field, or {@code null} if not present.
+     */
+    public List<ParentFolderAccessInfo> getAccessDetails() {
+        return accessDetails;
+    }
+
+    /**
      * Returns a new builder for creating an instance of this class.
      *
      * @return builder for this class.
@@ -87,10 +114,12 @@ public class MemberAccessLevelResult {
 
         protected AccessLevel accessLevel;
         protected String warning;
+        protected List<ParentFolderAccessInfo> accessDetails;
 
         protected Builder() {
             this.accessLevel = null;
             this.warning = null;
+            this.accessDetails = null;
         }
 
         /**
@@ -120,13 +149,38 @@ public class MemberAccessLevelResult {
         }
 
         /**
+         * Set value for optional field.
+         *
+         * @param accessDetails  The parent folders that a member has access to.
+         *     The field is present if the user has access to the first parent
+         *     folder where the member gains access. Must not contain a {@code
+         *     null} item.
+         *
+         * @return this builder
+         *
+         * @throws IllegalArgumentException  If any argument does not meet its
+         *     preconditions.
+         */
+        public Builder withAccessDetails(List<ParentFolderAccessInfo> accessDetails) {
+            if (accessDetails != null) {
+                for (ParentFolderAccessInfo x : accessDetails) {
+                    if (x == null) {
+                        throw new IllegalArgumentException("An item in list 'accessDetails' is null");
+                    }
+                }
+            }
+            this.accessDetails = accessDetails;
+            return this;
+        }
+
+        /**
          * Builds an instance of {@link MemberAccessLevelResult} configured with
          * this builder's values
          *
          * @return new instance of {@link MemberAccessLevelResult}
          */
         public MemberAccessLevelResult build() {
-            return new MemberAccessLevelResult(accessLevel, warning);
+            return new MemberAccessLevelResult(accessLevel, warning, accessDetails);
         }
     }
 
@@ -134,7 +188,8 @@ public class MemberAccessLevelResult {
     public int hashCode() {
         int hash = java.util.Arrays.hashCode(new Object [] {
             accessLevel,
-            warning
+            warning,
+            accessDetails
         });
         return hash;
     }
@@ -149,6 +204,7 @@ public class MemberAccessLevelResult {
             MemberAccessLevelResult other = (MemberAccessLevelResult) obj;
             return ((this.accessLevel == other.accessLevel) || (this.accessLevel != null && this.accessLevel.equals(other.accessLevel)))
                 && ((this.warning == other.warning) || (this.warning != null && this.warning.equals(other.warning)))
+                && ((this.accessDetails == other.accessDetails) || (this.accessDetails != null && this.accessDetails.equals(other.accessDetails)))
                 ;
         }
         else {
@@ -192,6 +248,10 @@ public class MemberAccessLevelResult {
                 g.writeFieldName("warning");
                 StoneSerializers.nullable(StoneSerializers.string()).serialize(value.warning, g);
             }
+            if (value.accessDetails != null) {
+                g.writeFieldName("access_details");
+                StoneSerializers.nullable(StoneSerializers.list(ParentFolderAccessInfo.Serializer.INSTANCE)).serialize(value.accessDetails, g);
+            }
             if (!collapse) {
                 g.writeEndObject();
             }
@@ -208,6 +268,7 @@ public class MemberAccessLevelResult {
             if (tag == null) {
                 AccessLevel f_accessLevel = null;
                 String f_warning = null;
+                List<ParentFolderAccessInfo> f_accessDetails = null;
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String field = p.getCurrentName();
                     p.nextToken();
@@ -217,11 +278,14 @@ public class MemberAccessLevelResult {
                     else if ("warning".equals(field)) {
                         f_warning = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
                     }
+                    else if ("access_details".equals(field)) {
+                        f_accessDetails = StoneSerializers.nullable(StoneSerializers.list(ParentFolderAccessInfo.Serializer.INSTANCE)).deserialize(p);
+                    }
                     else {
                         skipValue(p);
                     }
                 }
-                value = new MemberAccessLevelResult(f_accessLevel, f_warning);
+                value = new MemberAccessLevelResult(f_accessLevel, f_warning, f_accessDetails);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Routes in namespace "sharing" that support user auth.
+ * Routes in namespace "sharing".
  */
 public final class DbxUserSharingRequests {
     // namespace sharing
@@ -174,6 +174,60 @@ public final class DbxUserSharingRequests {
     public AddFolderMemberBuilder addFolderMemberBuilder(String sharedFolderId, List<AddMember> members) {
         AddFolderMemberArg.Builder argBuilder_ = AddFolderMemberArg.newBuilder(sharedFolderId, members);
         return new AddFolderMemberBuilder(this, argBuilder_);
+    }
+
+    //
+    // route sharing/change_file_member_access
+    //
+
+    /**
+     * Changes a member's access on a shared file.
+     *
+     * @param changeFileMemberAccessArgs  Arguments for {@link
+     *     DbxUserSharingRequests#changeFileMemberAccess(String,MemberSelector,AccessLevel)}.
+     *
+     * @return Per-member result for {@link
+     *     DbxUserSharingRequests#removeFileMember2(String,MemberSelector)} or
+     *     {@link DbxUserSharingRequests#addFileMember(String,List)} or {@link
+     *     DbxUserSharingRequests#changeFileMemberAccess(String,MemberSelector,AccessLevel)}.
+     */
+    FileMemberActionResult changeFileMemberAccess(ChangeFileMemberAccessArgs changeFileMemberAccessArgs) throws FileMemberActionErrorException, DbxException {
+        try {
+            return client.rpcStyle(client.getHost().getApi(),
+                                   "2/sharing/change_file_member_access",
+                                   changeFileMemberAccessArgs,
+                                   false,
+                                   ChangeFileMemberAccessArgs.Serializer.INSTANCE,
+                                   FileMemberActionResult.Serializer.INSTANCE,
+                                   FileMemberActionError.Serializer.INSTANCE);
+        }
+        catch (DbxWrappedException ex) {
+            throw new FileMemberActionErrorException(ex.getRequestId(), ex.getUserMessage(), (FileMemberActionError) ex.getErrorValue());
+        }
+    }
+
+    /**
+     * Changes a member's access on a shared file.
+     *
+     * @param file  File for which we are changing a member's access. Must have
+     *     length of at least 1, match pattern "{@code
+     *     ((/|id:).*|nspath:[^:]*:[^:]*)}", and not be {@code null}.
+     * @param member  The member whose access we are changing. Must not be
+     *     {@code null}.
+     * @param accessLevel  The new access level for the member. Must not be
+     *     {@code null}.
+     *
+     * @return Per-member result for {@link
+     *     DbxUserSharingRequests#removeFileMember2(String,MemberSelector)} or
+     *     {@link DbxUserSharingRequests#addFileMember(String,List)} or {@link
+     *     DbxUserSharingRequests#changeFileMemberAccess(String,MemberSelector,AccessLevel)}.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public FileMemberActionResult changeFileMemberAccess(String file, MemberSelector member, AccessLevel accessLevel) throws FileMemberActionErrorException, DbxException {
+        ChangeFileMemberAccessArgs arg = new ChangeFileMemberAccessArgs(file, member, accessLevel);
+        return changeFileMemberAccess(arg);
     }
 
     //

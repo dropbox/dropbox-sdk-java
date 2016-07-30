@@ -5,7 +5,7 @@
  * This namespace contains endpoints and data types for creating and managing
  * shared links and shared folders.
  *
- * <p> See {@link com.dropbox.core.v2.sharing.DbxUserSharingRequests} for a list
- * of possible requests for this namespace. </p>
+ * <p> See {@link DbxUserSharingRequests} for a list of possible requests for
+ * this namespace. </p>
  */
 package com.dropbox.core.v2.sharing;

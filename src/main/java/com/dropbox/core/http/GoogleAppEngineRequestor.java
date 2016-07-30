@@ -3,6 +3,7 @@ package com.dropbox.core.http;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -75,13 +76,13 @@ public class GoogleAppEngineRequestor extends HttpRequestor {
     @Override
     public Uploader startPost(String url, Iterable<Header> headers) throws IOException {
         HTTPRequest request = newRequest(url, HTTPMethod.POST, headers);
-        return new Uploader(service, request, new ByteArrayOutputStream());
+        return new FetchServiceUploader(service, request, new ByteArrayOutputStream());
     }
 
     @Override
     public Uploader startPut(String url, Iterable<Header> headers) throws IOException {
         HTTPRequest request = newRequest(url, HTTPMethod.POST, headers);
-        return new Uploader(service, request, new ByteArrayOutputStream());
+        return new FetchServiceUploader(service, request, new ByteArrayOutputStream());
     }
 
     private HTTPRequest newRequest(String url, HTTPMethod method, Iterable<Header> headers) throws IOException {
@@ -123,17 +124,21 @@ public class GoogleAppEngineRequestor extends HttpRequestor {
                             headers);
     }
 
-    private static class Uploader extends HttpRequestor.Uploader {
+    private static class FetchServiceUploader extends Uploader {
         private final URLFetchService service;
         private final ByteArrayOutputStream body;
 
         private HTTPRequest request;
 
-        public Uploader(URLFetchService service, HTTPRequest request, ByteArrayOutputStream body) {
-            super(body);
+        public FetchServiceUploader(URLFetchService service, HTTPRequest request, ByteArrayOutputStream body) {
             this.service = service;
             this.request = request;
             this.body = body;
+        }
+
+        @Override
+        public OutputStream getBody() {
+            return body;
         }
 
         @Override

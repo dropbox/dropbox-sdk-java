@@ -45,6 +45,10 @@ public enum PermissionDeniedReason {
      */
     TARGET_NOT_ACTIVE,
     /**
+     * Folder is team folder for a limited team.
+     */
+    FOLDER_IS_LIMITED_TEAM_FOLDER,
+    /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *
      * <p> Receiving a catch-all value typically indicates this SDK version is
@@ -84,6 +88,10 @@ public enum PermissionDeniedReason {
                 }
                 case TARGET_NOT_ACTIVE: {
                     g.writeString("target_not_active");
+                    break;
+                }
+                case FOLDER_IS_LIMITED_TEAM_FOLDER: {
+                    g.writeString("folder_is_limited_team_folder");
                     break;
                 }
                 default: {
@@ -127,6 +135,9 @@ public enum PermissionDeniedReason {
             }
             else if ("target_not_active".equals(tag)) {
                 value = PermissionDeniedReason.TARGET_NOT_ACTIVE;
+            }
+            else if ("folder_is_limited_team_folder".equals(tag)) {
+                value = PermissionDeniedReason.FOLDER_IS_LIMITED_TEAM_FOLDER;
             }
             else {
                 value = PermissionDeniedReason.OTHER;

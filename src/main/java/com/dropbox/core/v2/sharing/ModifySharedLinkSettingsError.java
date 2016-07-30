@@ -35,9 +35,6 @@ public final class ModifySharedLinkSettingsError {
          * The caller is not allowed to access this shared link
          */
         SHARED_LINK_ACCESS_DENIED,
-        /**
-         * An unspecified error
-         */
         OTHER,
         /**
          * There is an error with the given settings
@@ -57,9 +54,6 @@ public final class ModifySharedLinkSettingsError {
      * The caller is not allowed to access this shared link
      */
     public static final ModifySharedLinkSettingsError SHARED_LINK_ACCESS_DENIED = new ModifySharedLinkSettingsError(Tag.SHARED_LINK_ACCESS_DENIED, null);
-    /**
-     * An unspecified error
-     */
     public static final ModifySharedLinkSettingsError OTHER = new ModifySharedLinkSettingsError(Tag.OTHER, null);
     /**
      * The caller's email should be verified

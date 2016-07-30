@@ -24,6 +24,7 @@ public class GroupSummary {
     protected final String groupId;
     protected final String groupExternalId;
     protected final Long memberCount;
+    protected final GroupManagementType groupManagementType;
 
     /**
      * Information about a group.
@@ -33,6 +34,8 @@ public class GroupSummary {
      *
      * @param groupName  Must not be {@code null}.
      * @param groupId  Must not be {@code null}.
+     * @param groupManagementType  Who is allowed to manage the group. Must not
+     *     be {@code null}.
      * @param groupExternalId  External ID of group. This is an arbitrary ID
      *     that an admin can attach to a group.
      * @param memberCount  The number of members in the group.
@@ -40,7 +43,7 @@ public class GroupSummary {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupSummary(String groupName, String groupId, String groupExternalId, Long memberCount) {
+    public GroupSummary(String groupName, String groupId, GroupManagementType groupManagementType, String groupExternalId, Long memberCount) {
         if (groupName == null) {
             throw new IllegalArgumentException("Required value for 'groupName' is null");
         }
@@ -51,6 +54,10 @@ public class GroupSummary {
         this.groupId = groupId;
         this.groupExternalId = groupExternalId;
         this.memberCount = memberCount;
+        if (groupManagementType == null) {
+            throw new IllegalArgumentException("Required value for 'groupManagementType' is null");
+        }
+        this.groupManagementType = groupManagementType;
     }
 
     /**
@@ -60,12 +67,14 @@ public class GroupSummary {
      *
      * @param groupName  Must not be {@code null}.
      * @param groupId  Must not be {@code null}.
+     * @param groupManagementType  Who is allowed to manage the group. Must not
+     *     be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupSummary(String groupName, String groupId) {
-        this(groupName, groupId, null, null);
+    public GroupSummary(String groupName, String groupId, GroupManagementType groupManagementType) {
+        this(groupName, groupId, groupManagementType, null, null);
     }
 
     /**
@@ -104,18 +113,29 @@ public class GroupSummary {
     }
 
     /**
+     * Who is allowed to manage the group.
+     *
+     * @return value for this field, never {@code null}.
+     */
+    public GroupManagementType getGroupManagementType() {
+        return groupManagementType;
+    }
+
+    /**
      * Returns a new builder for creating an instance of this class.
      *
      * @param groupName  Must not be {@code null}.
      * @param groupId  Must not be {@code null}.
+     * @param groupManagementType  Who is allowed to manage the group. Must not
+     *     be {@code null}.
      *
      * @return builder for this class.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public static Builder newBuilder(String groupName, String groupId) {
-        return new Builder(groupName, groupId);
+    public static Builder newBuilder(String groupName, String groupId, GroupManagementType groupManagementType) {
+        return new Builder(groupName, groupId, groupManagementType);
     }
 
     /**
@@ -124,11 +144,12 @@ public class GroupSummary {
     public static class Builder {
         protected final String groupName;
         protected final String groupId;
+        protected final GroupManagementType groupManagementType;
 
         protected String groupExternalId;
         protected Long memberCount;
 
-        protected Builder(String groupName, String groupId) {
+        protected Builder(String groupName, String groupId, GroupManagementType groupManagementType) {
             if (groupName == null) {
                 throw new IllegalArgumentException("Required value for 'groupName' is null");
             }
@@ -137,6 +158,10 @@ public class GroupSummary {
                 throw new IllegalArgumentException("Required value for 'groupId' is null");
             }
             this.groupId = groupId;
+            if (groupManagementType == null) {
+                throw new IllegalArgumentException("Required value for 'groupManagementType' is null");
+            }
+            this.groupManagementType = groupManagementType;
             this.groupExternalId = null;
             this.memberCount = null;
         }
@@ -173,7 +198,7 @@ public class GroupSummary {
          * @return new instance of {@link GroupSummary}
          */
         public GroupSummary build() {
-            return new GroupSummary(groupName, groupId, groupExternalId, memberCount);
+            return new GroupSummary(groupName, groupId, groupManagementType, groupExternalId, memberCount);
         }
     }
 
@@ -183,7 +208,8 @@ public class GroupSummary {
             groupName,
             groupId,
             groupExternalId,
-            memberCount
+            memberCount,
+            groupManagementType
         });
         return hash;
     }
@@ -198,6 +224,7 @@ public class GroupSummary {
             GroupSummary other = (GroupSummary) obj;
             return ((this.groupName == other.groupName) || (this.groupName.equals(other.groupName)))
                 && ((this.groupId == other.groupId) || (this.groupId.equals(other.groupId)))
+                && ((this.groupManagementType == other.groupManagementType) || (this.groupManagementType.equals(other.groupManagementType)))
                 && ((this.groupExternalId == other.groupExternalId) || (this.groupExternalId != null && this.groupExternalId.equals(other.groupExternalId)))
                 && ((this.memberCount == other.memberCount) || (this.memberCount != null && this.memberCount.equals(other.memberCount)))
                 ;
@@ -239,6 +266,8 @@ public class GroupSummary {
             StoneSerializers.string().serialize(value.groupName, g);
             g.writeFieldName("group_id");
             StoneSerializers.string().serialize(value.groupId, g);
+            g.writeFieldName("group_management_type");
+            GroupManagementType.Serializer.INSTANCE.serialize(value.groupManagementType, g);
             if (value.groupExternalId != null) {
                 g.writeFieldName("group_external_id");
                 StoneSerializers.nullable(StoneSerializers.string()).serialize(value.groupExternalId, g);
@@ -263,6 +292,7 @@ public class GroupSummary {
             if (tag == null) {
                 String f_groupName = null;
                 String f_groupId = null;
+                GroupManagementType f_groupManagementType = null;
                 String f_groupExternalId = null;
                 Long f_memberCount = null;
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
@@ -273,6 +303,9 @@ public class GroupSummary {
                     }
                     else if ("group_id".equals(field)) {
                         f_groupId = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("group_management_type".equals(field)) {
+                        f_groupManagementType = GroupManagementType.Serializer.INSTANCE.deserialize(p);
                     }
                     else if ("group_external_id".equals(field)) {
                         f_groupExternalId = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
@@ -290,7 +323,10 @@ public class GroupSummary {
                 if (f_groupId == null) {
                     throw new JsonParseException(p, "Required field \"group_id\" missing.");
                 }
-                value = new GroupSummary(f_groupName, f_groupId, f_groupExternalId, f_memberCount);
+                if (f_groupManagementType == null) {
+                    throw new JsonParseException(p, "Required field \"group_management_type\" missing.");
+                }
+                value = new GroupSummary(f_groupName, f_groupId, f_groupManagementType, f_groupExternalId, f_memberCount);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

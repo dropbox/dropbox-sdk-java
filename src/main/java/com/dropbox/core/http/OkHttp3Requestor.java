@@ -1,6 +1,7 @@
 package com.dropbox.core.http;
 
 import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.Headers;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -8,7 +9,12 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.internal.Util;
 
+import java.io.Closeable;
+import java.io.File;
+import java.io.InputStream;
+import java.io.InterruptedIOException;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,6 +59,10 @@ public class OkHttp3Requestor extends HttpRequestor {
      * certificate pinning, use the default instance, {@link #INSTANCE}, or clone the default client
      * and modify it accordingly:
      *
+     * <p> NOTE: This SDK requires that OkHttp clients do not use same-thread executors for issuing
+     * calls. The SDK relies on the assumption that all asynchronous calls will actually be executed
+     * asynchronously. Using a same-thread executor for your OkHttp client may result in dead-locks.
+     *
      * <pre>
      *     OkHttpClient client = OkHttpRequestor.INSTANCE.getClient()
      *         .readTimeout(2, TimeUnit.MINUTES)
@@ -62,9 +72,12 @@ public class OkHttp3Requestor extends HttpRequestor {
      * </pre>
      *
      * @param client {@code OkHttpClient} to use for requests, never {@code null}
+     *
+     * @throws IllegalArgumentException if client uses a same-thread executor for its dispatcher
      */
     public OkHttp3Requestor(OkHttpClient client) {
         if (client == null) throw new NullPointerException("client");
+        OkHttpUtil.assertNotSameThreadExecutor(client.dispatcher().executorService());
         this.client = client;
     }
 
@@ -80,11 +93,39 @@ public class OkHttp3Requestor extends HttpRequestor {
         return client;
     }
 
+    /**
+     * Called beforing building the request and executing it.
+     *
+     * <p> This method should be used by subclasses to make any changes or additions to the request
+     * before it is issued.
+     *
+     * @param request Builder of request to be executed
+     */
+    protected void configureRequest(Request.Builder request) { }
+
+    /**
+     * Called before returning {@link Response} from a request.
+     *
+     * <p> This method should be used by subclasses to add any logging, analytics, or cleanup
+     * necessary.
+     *
+     * <p> If the response body is consumed, it should be replaced.
+     *
+     * @param response OkHttp response
+     *
+     * @return OkHttp response
+     */
+    protected okhttp3.Response interceptResponse(okhttp3.Response response) {
+        return response;
+    }
+
     @Override
     public Response doGet(String url, Iterable<Header> headers) throws IOException {
         Request.Builder builder = new Request.Builder().get().url(url);
         toOkHttpHeaders(headers, builder);
+        configureRequest(builder);
         okhttp3.Response response = client.newCall(builder.build()).execute();
+        response = interceptResponse(response);
         Map<String, List<String>> responseHeaders = fromOkHttpHeaders(response.headers());
         return new Response(response.code(), response.body().byteStream(), responseHeaders);
     }
@@ -99,12 +140,11 @@ public class OkHttp3Requestor extends HttpRequestor {
         return startUpload(url, headers, "PUT");
     }
 
-    private BufferUploader startUpload(String url, Iterable<Header> headers, String method) {
-        Buffer requestBuffer = new Buffer();
-        RequestBody requestBody = new BufferRequestBody(requestBuffer, null);
-        Request.Builder builder = new Request.Builder().method(method, requestBody).url(url);
+    private BufferedUploader startUpload(String url, Iterable<Header> headers, String method) {
+        Request.Builder builder = new Request.Builder()
+            .url(url);
         toOkHttpHeaders(headers, builder);
-        return new BufferUploader(client.newCall(builder.build()), requestBuffer);
+        return new BufferedUploader(method, builder);
     }
 
     private static void toOkHttpHeaders(Iterable<Header> headers, Request.Builder builder) {
@@ -122,68 +162,194 @@ public class OkHttp3Requestor extends HttpRequestor {
     }
 
     /**
-     * Implementation of {@link com.dropbox.core.http.HttpRequestor.Uploader} that exposes
-     * the {@link java.io.OutputStream} from an Okio {@link Buffer} that is connected to an OkHttp
-     * {@link RequestBody}.  Calling {@link #finish()} will execute the request with OkHttp
+     * OkHttp streaming upload interface is a bit awkard to use and expose.
+     *
+     * <p> OkHttp expects you to create a custom RequestBody class that produces the streaming
+     * request body. The class must be defined and passed in before issuing the request.
+     *
+     * <p> To handle this, we try to avoid streaming if possible. If we must stream, then we create
+     * a pipe and issue the request asynchronously in the background, attached to the pipe. We then
+     * expose the other end of the pipe to the caller for streaming.
      */
-    private static class BufferUploader extends HttpRequestor.Uploader {
-        private final Call call;
-        private final Buffer requestBuffer;
+    private class BufferedUploader extends HttpRequestor.Uploader {
+        private final String method;
+        private final Request.Builder request;
 
-        public BufferUploader(Call call, Buffer requestBuffer) {
-            super(requestBuffer.outputStream());
-            this.call = call;
-            this.requestBuffer = requestBuffer;
+        private RequestBody body;
+        private Call call;
+        private AsyncCallback callback;
+
+        private boolean closed;
+        private boolean cancelled;
+
+        public BufferedUploader(String method, Request.Builder request) {
+            this.method = method;
+            this.request = request;
+
+            this.body = null;
+            this.call = null;
+            this.callback = null;
+
+            this.closed = false;
+            this.cancelled = false;
+        }
+
+        private void assertNoBody() {
+            if (body != null) {
+                throw new IllegalStateException("Request body already set.");
+            }
+        }
+
+        @Override
+        public OutputStream getBody() {
+            // getBody() can be called multiple times to get access to the output stream. Don't
+            // error if this is the case.
+            if (body instanceof PipedRequestBody) {
+                return ((PipedRequestBody) body).getOutputStream();
+            } else {
+                PipedRequestBody pipedBody = new PipedRequestBody();
+                setBody(pipedBody);
+
+                this.callback = new AsyncCallback();
+                this.call = client.newCall(request.build());
+                // enqueue the call (async call execution). This allows us to provide streaming uploads.
+                call.enqueue(callback);
+                return pipedBody.getOutputStream();
+            }
+        }
+
+        private void setBody(RequestBody body) {
+            assertNoBody();
+            this.body = body;
+            this.request.method(method, body);
+            configureRequest(request);
+        }
+
+        @Override
+        public void upload(File file) {
+            setBody(RequestBody.create(null, file));
+        }
+
+        @Override
+        public void upload(byte [] body) {
+            setBody(RequestBody.create(null, body));
         }
 
         @Override
         public void close() {
-            requestBuffer.clear();
+            if (body != null && (body instanceof Closeable)) {
+                try {
+                    ((Closeable) body).close();
+                } catch (IOException ex) {
+                    // ignore
+                }
+            }
+            closed = true;
         }
 
         @Override
         public void abort() {
-            call.cancel();
+            if (call != null) {
+                call.cancel();
+            }
+            cancelled = true;
+            close();
         }
 
         @Override
         public Response finish() throws IOException {
-            okhttp3.Response response = call.execute();
+            if (cancelled) {
+                throw new IllegalStateException("Already aborted");
+            }
+            if (body == null) {
+                upload(new byte[0]);
+            }
+            okhttp3.Response response;
+            if (callback != null) {
+                // ensure our request body is closed or we could deadlock
+                try {
+                    getBody().close();
+                } catch (IOException ex) {
+                    //ignore
+                }
+                response = callback.getResponse();
+            } else {
+                call = client.newCall(request.build());
+                response = call.execute();
+            }
+            response = interceptResponse(response);
             Map<String, List<String>> responseHeaders = fromOkHttpHeaders(response.headers());
             return new Response(response.code(), response.body().byteStream(), responseHeaders);
         }
     }
 
-    /**
-     * Implementation of {@link RequestBody} that uses a {@link Buffer}
-     * for internal storage.
-     */
-    private static class BufferRequestBody extends RequestBody {
-        private Buffer buffer;
-        private /*@Nullable*/MediaType mediaType;
+    public static final class AsyncCallback implements Callback {
+        private IOException error;
+        private okhttp3.Response response;
 
-        public BufferRequestBody(final Buffer buffer, /*@Nullable*/MediaType mediaType) {
-            this.buffer = buffer;
-            this.mediaType = mediaType;
+        private AsyncCallback() {
+            this.error = null;
+            this.response = null;
+        }
+
+        public synchronized okhttp3.Response getResponse() throws IOException {
+            while (error == null && response == null) {
+                try {
+                    wait();
+                } catch (InterruptedException ex) {
+                    Thread.currentThread().interrupt();
+                    throw new InterruptedIOException();
+                }
+            }
+            if (error != null) {
+                throw error;
+            }
+            return response;
         }
 
         @Override
-        public /*@Nullable*/MediaType contentType() {
-            return mediaType;
+        public synchronized void onFailure(Call call, IOException ex) {
+            this.error = ex;
+            notifyAll();
+        }
+
+        @Override
+        public synchronized void onResponse(Call call, okhttp3.Response response) throws IOException {
+            this.response = response;
+            notifyAll();
+        }
+    }
+
+    private static class PipedRequestBody extends RequestBody implements Closeable {
+        private final OkHttpUtil.PipedStream stream;
+
+        public PipedRequestBody() {
+            this.stream = new OkHttpUtil.PipedStream();
+        }
+
+        public OutputStream getOutputStream() {
+            return stream.getOutputStream();
+        }
+
+        @Override
+        public void close() {
+            stream.close();
+        }
+
+        @Override
+        public MediaType contentType() {
+            return null;
         }
 
         @Override
         public long contentLength() {
-            return buffer.size();
+            return -1;
         }
 
         @Override
         public void writeTo(BufferedSink sink) throws IOException {
-            try {
-                sink.writeAll(buffer);
-            } finally {
-                Util.closeQuietly(buffer);
-            }
+            stream.writeTo(sink);
+            close();
         }
     }
 }

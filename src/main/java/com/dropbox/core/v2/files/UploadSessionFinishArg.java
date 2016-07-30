@@ -14,7 +14,7 @@ import com.fasterxml.jackson.core.JsonToken;
 
 import java.io.IOException;
 
-class UploadSessionFinishArg {
+public class UploadSessionFinishArg {
     // struct UploadSessionFinishArg
 
     protected final UploadSessionCursor cursor;

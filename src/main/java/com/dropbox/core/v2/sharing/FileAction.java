@@ -28,6 +28,10 @@ public enum FileAction {
      */
     INVITE_VIEWER,
     /**
+     * Add a member with view permissions but no comment permissions.
+     */
+    INVITE_VIEWER_NO_COMMENT,
+    /**
      * Stop sharing this file.
      */
     UNSHARE,
@@ -35,6 +39,10 @@ public enum FileAction {
      * Relinquish one's own membership to the file.
      */
     RELINQUISH_MEMBERSHIP,
+    /**
+     * Create a shared link to the file.
+     */
+    SHARE_LINK,
     /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *
@@ -61,12 +69,20 @@ public enum FileAction {
                     g.writeString("invite_viewer");
                     break;
                 }
+                case INVITE_VIEWER_NO_COMMENT: {
+                    g.writeString("invite_viewer_no_comment");
+                    break;
+                }
                 case UNSHARE: {
                     g.writeString("unshare");
                     break;
                 }
                 case RELINQUISH_MEMBERSHIP: {
                     g.writeString("relinquish_membership");
+                    break;
+                }
+                case SHARE_LINK: {
+                    g.writeString("share_link");
                     break;
                 }
                 default: {
@@ -99,11 +115,17 @@ public enum FileAction {
             else if ("invite_viewer".equals(tag)) {
                 value = FileAction.INVITE_VIEWER;
             }
+            else if ("invite_viewer_no_comment".equals(tag)) {
+                value = FileAction.INVITE_VIEWER_NO_COMMENT;
+            }
             else if ("unshare".equals(tag)) {
                 value = FileAction.UNSHARE;
             }
             else if ("relinquish_membership".equals(tag)) {
                 value = FileAction.RELINQUISH_MEMBERSHIP;
+            }
+            else if ("share_link".equals(tag)) {
+                value = FileAction.SHARE_LINK;
             }
             else {
                 value = FileAction.OTHER;

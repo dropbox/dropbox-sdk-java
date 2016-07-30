@@ -28,7 +28,7 @@ public enum GetAccountError {
      * not up to date. Consider updating your SDK version to handle the new
      * tags. </p>
      */
-    UNKNOWN; // *catch_all
+    OTHER; // *catch_all
 
     /**
      * For internal use only.
@@ -44,7 +44,7 @@ public enum GetAccountError {
                     break;
                 }
                 default: {
-                    g.writeString("unknown");
+                    g.writeString("other");
                 }
             }
         }
@@ -71,7 +71,7 @@ public enum GetAccountError {
                 value = GetAccountError.NO_ACCOUNT;
             }
             else {
-                value = GetAccountError.UNKNOWN;
+                value = GetAccountError.OTHER;
                 skipFields(p);
             }
             if (!collapsed) {

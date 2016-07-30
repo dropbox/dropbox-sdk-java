@@ -40,7 +40,7 @@ public enum EmmState {
     /**
      * For internal use only.
      */
-    static final class Serializer extends UnionSerializer<EmmState> {
+    public static final class Serializer extends UnionSerializer<EmmState> {
         public static final Serializer INSTANCE = new Serializer();
 
         @Override

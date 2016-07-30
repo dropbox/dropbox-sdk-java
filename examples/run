@@ -38,10 +38,23 @@ if [ $# -eq 0 ]; then
 fi
 
 declare -a project_properties
-if [ "${1}" == '--use-auth-prop' ] ; then
-    project_properties+=("-PuseAuthInfoFileProp=true")
+while [[ $# -gt 0 ]]; do
+    case "${1}" in
+        --use-auth-prop)
+            project_properties+=("-PuseAuthInfoFileProp=true")
+            ;;
+        --fail-on-error)
+            project_properties+=("-PfailOnError=true")
+            ;;
+        --*)
+            die "unrecognized argument: ${1}"
+            ;;
+        *)
+            break
+            ;;
+    esac
     shift
-fi
+done
 
 example_name="$1" ; shift
 example_name="$(echo "$example_name" | sed 's|/*$||')"

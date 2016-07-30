@@ -23,7 +23,7 @@ class RestoreArg {
     /**
      *
      * @param path  The path to the file you want to restore. Must match pattern
-     *     "{@code /(.|[\\r\\n])*}" and not be {@code null}.
+     *     "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)}" and not be {@code null}.
      * @param rev  The revision to restore for the file. Must have length of at
      *     least 9, match pattern "{@code [0-9a-f]+}", and not be {@code null}.
      *
@@ -34,7 +34,7 @@ class RestoreArg {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
-        if (!java.util.regex.Pattern.matches("/(.|[\\r\\n])*", path)) {
+        if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)", path)) {
             throw new IllegalArgumentException("String 'path' does not match pattern");
         }
         this.path = path;

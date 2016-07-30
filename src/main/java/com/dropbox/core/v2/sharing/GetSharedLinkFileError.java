@@ -24,9 +24,6 @@ public enum GetSharedLinkFileError {
      * The caller is not allowed to access this shared link
      */
     SHARED_LINK_ACCESS_DENIED,
-    /**
-     * An unspecified error
-     */
     OTHER,
     /**
      * Directories cannot be retrieved by this endpoint.

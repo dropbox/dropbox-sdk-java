@@ -1,5 +1,7 @@
 package com.dropbox.core.http;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -9,6 +11,8 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import java.util.concurrent.TimeUnit;
+
+import com.dropbox.core.util.IOUtil;
 
 /**
  * An interface that the Dropbox client library uses to make HTTP requests.
@@ -69,14 +73,38 @@ public abstract class HttpRequestor
     }
 
     public static abstract class Uploader {
-        private final OutputStream body;
-
-        protected Uploader(OutputStream body) { this.body = body; }
-
-        public OutputStream getBody() { return body; }
+        public abstract OutputStream getBody();
         public abstract void close();
         public abstract void abort();
         public abstract Response finish() throws IOException;
+
+        public void upload(File file) throws IOException {
+            upload(new FileInputStream(file));
+        }
+
+        public void upload(InputStream in, long limit) throws IOException {
+            upload(IOUtil.limit(in, limit));
+        }
+
+        public void upload(InputStream in) throws IOException {
+            OutputStream out = getBody();
+            try {
+                IOUtil.copyStreamToStream(in, out);
+            } catch (IOUtil.ReadException ex) {
+                throw ex.getCause();
+            } finally {
+                out.close();
+            }
+        }
+
+        public void upload(byte [] body) throws IOException {
+            OutputStream out = getBody();
+            try {
+                out.write(body);
+            } finally {
+                out.close();
+            }
+        }
     }
 
     public static final class Response {

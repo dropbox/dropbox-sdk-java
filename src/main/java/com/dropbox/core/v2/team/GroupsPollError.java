@@ -26,9 +26,6 @@ public enum GroupsPollError {
      * should happen very rarely.
      */
     INTERNAL_ERROR,
-    /**
-     * An unspecified error.
-     */
     OTHER,
     /**
      * You are not allowed to poll this job.

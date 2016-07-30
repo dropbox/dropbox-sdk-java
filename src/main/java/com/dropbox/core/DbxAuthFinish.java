@@ -67,6 +67,19 @@ public final class DbxAuthFinish {
     }
 
     /**
+     * State is not returned from /oauth2/token call, so we must
+     * append it after the JSON parsing.
+     *
+     * @param urlState Custom state passed into /oauth2/authorize
+     */
+    DbxAuthFinish withUrlState(/*@Nullable*/ String urlState) {
+        if (this.urlState != null) {
+            throw new IllegalStateException("Already have URL state.");
+        }
+        return new DbxAuthFinish(accessToken, userId, urlState);
+    }
+
+    /**
      * For JSON parsing.
      */
     public static final JsonReader<DbxAuthFinish> Reader = new JsonReader<DbxAuthFinish>() {

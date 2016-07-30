@@ -23,7 +23,8 @@ class ListRevisionsArg {
     /**
      *
      * @param path  The path to the file you want to see the revisions of. Must
-     *     match pattern "{@code /(.|[\\r\\n])*}" and not be {@code null}.
+     *     match pattern "{@code /(.|[\\r\\n])*|id:.*|(ns:[0-9]+(/.*)?)}" and
+     *     not be {@code null}.
      * @param limit  The maximum number of revision entries returned. Must be
      *     greater than or equal to 1 and be less than or equal to 100.
      *
@@ -34,7 +35,7 @@ class ListRevisionsArg {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
-        if (!java.util.regex.Pattern.matches("/(.|[\\r\\n])*", path)) {
+        if (!java.util.regex.Pattern.matches("/(.|[\\r\\n])*|id:.*|(ns:[0-9]+(/.*)?)", path)) {
             throw new IllegalArgumentException("String 'path' does not match pattern");
         }
         this.path = path;
@@ -51,7 +52,8 @@ class ListRevisionsArg {
      * The default values for unset fields will be used.
      *
      * @param path  The path to the file you want to see the revisions of. Must
-     *     match pattern "{@code /(.|[\\r\\n])*}" and not be {@code null}.
+     *     match pattern "{@code /(.|[\\r\\n])*|id:.*|(ns:[0-9]+(/.*)?)}" and
+     *     not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.

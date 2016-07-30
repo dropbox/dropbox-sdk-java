@@ -32,6 +32,10 @@ public final class AddMemberSelectorError {
      */
     public enum Tag {
         /**
+         * Automatically created groups can only be added to team folders.
+         */
+        AUTOMATIC_GROUP,
+        /**
          * The value is the ID that could not be identified.
          */
         INVALID_DROPBOX_ID, // String
@@ -67,6 +71,10 @@ public final class AddMemberSelectorError {
         OTHER; // *catch_all
     }
 
+    /**
+     * Automatically created groups can only be added to team folders.
+     */
+    public static final AddMemberSelectorError AUTOMATIC_GROUP = new AddMemberSelectorError(Tag.AUTOMATIC_GROUP, null, null, null);
     /**
      * At least one of the specified groups in the {@code members} argument to
      * {@link DbxUserSharingRequests#addFolderMember(String,java.util.List)} is
@@ -118,6 +126,17 @@ public final class AddMemberSelectorError {
      */
     public Tag tag() {
         return tag;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#AUTOMATIC_GROUP}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#AUTOMATIC_GROUP}, {@code false} otherwise.
+     */
+    public boolean isAutomaticGroup() {
+        return this.tag == Tag.AUTOMATIC_GROUP;
     }
 
     /**
@@ -346,6 +365,8 @@ public final class AddMemberSelectorError {
                 return false;
             }
             switch (tag) {
+                case AUTOMATIC_GROUP:
+                    return true;
                 case INVALID_DROPBOX_ID:
                     return (this.invalidDropboxIdValue == other.invalidDropboxIdValue) || (this.invalidDropboxIdValue.equals(other.invalidDropboxIdValue));
                 case INVALID_EMAIL:
@@ -393,6 +414,10 @@ public final class AddMemberSelectorError {
         @Override
         public void serialize(AddMemberSelectorError value, JsonGenerator g) throws IOException, JsonGenerationException {
             switch (value.tag()) {
+                case AUTOMATIC_GROUP: {
+                    g.writeString("automatic_group");
+                    break;
+                }
                 case INVALID_DROPBOX_ID: {
                     g.writeStartObject();
                     writeTag("invalid_dropbox_id", g);
@@ -448,6 +473,9 @@ public final class AddMemberSelectorError {
             }
             if (tag == null) {
                 throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
+            }
+            else if ("automatic_group".equals(tag)) {
+                value = AddMemberSelectorError.AUTOMATIC_GROUP;
             }
             else if ("invalid_dropbox_id".equals(tag)) {
                 String fieldValue = null;

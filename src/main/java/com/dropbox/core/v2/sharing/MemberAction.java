@@ -36,6 +36,10 @@ public enum MemberAction {
      */
     MAKE_VIEWER,
     /**
+     * Make the member a viewer of the folder without commenting permissions.
+     */
+    MAKE_VIEWER_NO_COMMENT,
+    /**
      * Remove the member from the folder.
      */
     REMOVE,
@@ -71,6 +75,10 @@ public enum MemberAction {
                 }
                 case MAKE_VIEWER: {
                     g.writeString("make_viewer");
+                    break;
+                }
+                case MAKE_VIEWER_NO_COMMENT: {
+                    g.writeString("make_viewer_no_comment");
                     break;
                 }
                 case REMOVE: {
@@ -112,6 +120,9 @@ public enum MemberAction {
             }
             else if ("make_viewer".equals(tag)) {
                 value = MemberAction.MAKE_VIEWER;
+            }
+            else if ("make_viewer_no_comment".equals(tag)) {
+                value = MemberAction.MAKE_VIEWER_NO_COMMENT;
             }
             else if ("remove".equals(tag)) {
                 value = MemberAction.REMOVE;

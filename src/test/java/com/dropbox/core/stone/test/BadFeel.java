@@ -1,7 +1,7 @@
 /* DO NOT EDIT */
-/* This file was generated from team_members.stone */
+/* This file was generated from test.stone */
 
-package com.dropbox.core.v2.team;
+package com.dropbox.core.stone.test;
 
 import com.dropbox.core.stone.StoneSerializers;
 import com.dropbox.core.stone.UnionSerializer;
@@ -14,33 +14,26 @@ import com.fasterxml.jackson.core.JsonToken;
 
 import java.io.IOException;
 
-public enum MemberSelectorError {
-    // union MemberSelectorError
-    /**
-     * No matching user found. The provided team_member_id, email, or
-     * external_id does not exist on this team.
-     */
-    USER_NOT_FOUND,
-    /**
-     * The user is not a member of the team.
-     */
-    USER_NOT_IN_TEAM;
+public enum BadFeel {
+    // union BadFeel
+    MEH,
+    BLAH;
 
     /**
      * For internal use only.
      */
-    static final class Serializer extends UnionSerializer<MemberSelectorError> {
+    static final class Serializer extends UnionSerializer<BadFeel> {
         public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(MemberSelectorError value, JsonGenerator g) throws IOException, JsonGenerationException {
+        public void serialize(BadFeel value, JsonGenerator g) throws IOException, JsonGenerationException {
             switch (value) {
-                case USER_NOT_FOUND: {
-                    g.writeString("user_not_found");
+                case MEH: {
+                    g.writeString("meh");
                     break;
                 }
-                case USER_NOT_IN_TEAM: {
-                    g.writeString("user_not_in_team");
+                case BLAH: {
+                    g.writeString("blah");
                     break;
                 }
                 default: {
@@ -50,8 +43,8 @@ public enum MemberSelectorError {
         }
 
         @Override
-        public MemberSelectorError deserialize(JsonParser p) throws IOException, JsonParseException {
-            MemberSelectorError value;
+        public BadFeel deserialize(JsonParser p) throws IOException, JsonParseException {
+            BadFeel value;
             boolean collapsed;
             String tag;
             if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
@@ -67,11 +60,11 @@ public enum MemberSelectorError {
             if (tag == null) {
                 throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
             }
-            else if ("user_not_found".equals(tag)) {
-                value = MemberSelectorError.USER_NOT_FOUND;
+            else if ("meh".equals(tag)) {
+                value = BadFeel.MEH;
             }
-            else if ("user_not_in_team".equals(tag)) {
-                value = MemberSelectorError.USER_NOT_IN_TEAM;
+            else if ("blah".equals(tag)) {
+                value = BadFeel.BLAH;
             }
             else {
                 throw new JsonParseException(p, "Unknown tag: " + tag);

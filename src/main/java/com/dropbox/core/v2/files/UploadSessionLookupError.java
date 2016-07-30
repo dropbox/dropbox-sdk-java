@@ -53,7 +53,12 @@ public final class UploadSessionLookupError {
          */
         NOT_CLOSED,
         /**
-         * An unspecified error.
+         * Catch-all used for unknown tag values returned by the Dropbox
+         * servers.
+         *
+         * <p> Receiving a catch-all value typically indicates this SDK version
+         * is not up to date. Consider updating your SDK version to handle the
+         * new tags. </p>
          */
         OTHER; // *catch_all
     }
@@ -72,7 +77,11 @@ public final class UploadSessionLookupError {
      */
     public static final UploadSessionLookupError NOT_CLOSED = new UploadSessionLookupError(Tag.NOT_CLOSED, null);
     /**
-     * An unspecified error.
+     * Catch-all used for unknown tag values returned by the Dropbox servers.
+     *
+     * <p> Receiving a catch-all value typically indicates this SDK version is
+     * not up to date. Consider updating your SDK version to handle the new
+     * tags. </p>
      */
     public static final UploadSessionLookupError OTHER = new UploadSessionLookupError(Tag.OTHER, null);
 

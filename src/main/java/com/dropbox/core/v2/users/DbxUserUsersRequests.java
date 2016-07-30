@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Routes in namespace "users" that support user auth.
+ * Routes in namespace "users".
  */
 public final class DbxUserUsersRequests {
     // namespace users

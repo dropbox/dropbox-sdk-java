@@ -5,6 +5,7 @@ package com.dropbox.core.v2.team;
 
 import com.dropbox.core.stone.StoneSerializers;
 import com.dropbox.core.stone.StructSerializer;
+import com.dropbox.core.v2.teamcommon.GroupManagementType;
 import com.dropbox.core.v2.teamcommon.GroupSummary;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
@@ -33,6 +34,8 @@ public class GroupFullInfo extends GroupSummary {
      *
      * @param groupName  Must not be {@code null}.
      * @param groupId  Must not be {@code null}.
+     * @param groupManagementType  Who is allowed to manage the group. Must not
+     *     be {@code null}.
      * @param created  The group creation time as a UTC timestamp in
      *     milliseconds since the Unix epoch.
      * @param groupExternalId  External ID of group. This is an arbitrary ID
@@ -44,8 +47,8 @@ public class GroupFullInfo extends GroupSummary {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupFullInfo(String groupName, String groupId, long created, String groupExternalId, Long memberCount, List<GroupMemberInfo> members) {
-        super(groupName, groupId, groupExternalId, memberCount);
+    public GroupFullInfo(String groupName, String groupId, GroupManagementType groupManagementType, long created, String groupExternalId, Long memberCount, List<GroupMemberInfo> members) {
+        super(groupName, groupId, groupManagementType, groupExternalId, memberCount);
         if (members != null) {
             for (GroupMemberInfo x : members) {
                 if (x == null) {
@@ -64,14 +67,16 @@ public class GroupFullInfo extends GroupSummary {
      *
      * @param groupName  Must not be {@code null}.
      * @param groupId  Must not be {@code null}.
+     * @param groupManagementType  Who is allowed to manage the group. Must not
+     *     be {@code null}.
      * @param created  The group creation time as a UTC timestamp in
      *     milliseconds since the Unix epoch.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupFullInfo(String groupName, String groupId, long created) {
-        this(groupName, groupId, created, null, null, null);
+    public GroupFullInfo(String groupName, String groupId, GroupManagementType groupManagementType, long created) {
+        this(groupName, groupId, groupManagementType, created, null, null, null);
     }
 
     /**
@@ -98,6 +103,8 @@ public class GroupFullInfo extends GroupSummary {
      *
      * @param groupName  Must not be {@code null}.
      * @param groupId  Must not be {@code null}.
+     * @param groupManagementType  Who is allowed to manage the group. Must not
+     *     be {@code null}.
      * @param created  The group creation time as a UTC timestamp in
      *     milliseconds since the Unix epoch.
      *
@@ -106,8 +113,8 @@ public class GroupFullInfo extends GroupSummary {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public static Builder newBuilder(String groupName, String groupId, long created) {
-        return new Builder(groupName, groupId, created);
+    public static Builder newBuilder(String groupName, String groupId, GroupManagementType groupManagementType, long created) {
+        return new Builder(groupName, groupId, groupManagementType, created);
     }
 
     /**
@@ -118,8 +125,8 @@ public class GroupFullInfo extends GroupSummary {
 
         protected List<GroupMemberInfo> members;
 
-        protected Builder(String groupName, String groupId, long created) {
-            super(groupName, groupId);
+        protected Builder(String groupName, String groupId, GroupManagementType groupManagementType, long created) {
+            super(groupName, groupId, groupManagementType);
             this.created = created;
             this.members = null;
         }
@@ -179,7 +186,7 @@ public class GroupFullInfo extends GroupSummary {
          * @return new instance of {@link GroupFullInfo}
          */
         public GroupFullInfo build() {
-            return new GroupFullInfo(groupName, groupId, created, groupExternalId, memberCount, members);
+            return new GroupFullInfo(groupName, groupId, groupManagementType, created, groupExternalId, memberCount, members);
         }
     }
 
@@ -203,6 +210,7 @@ public class GroupFullInfo extends GroupSummary {
             GroupFullInfo other = (GroupFullInfo) obj;
             return ((this.groupName == other.groupName) || (this.groupName.equals(other.groupName)))
                 && ((this.groupId == other.groupId) || (this.groupId.equals(other.groupId)))
+                && ((this.groupManagementType == other.groupManagementType) || (this.groupManagementType.equals(other.groupManagementType)))
                 && (this.created == other.created)
                 && ((this.groupExternalId == other.groupExternalId) || (this.groupExternalId != null && this.groupExternalId.equals(other.groupExternalId)))
                 && ((this.memberCount == other.memberCount) || (this.memberCount != null && this.memberCount.equals(other.memberCount)))
@@ -246,6 +254,8 @@ public class GroupFullInfo extends GroupSummary {
             StoneSerializers.string().serialize(value.groupName, g);
             g.writeFieldName("group_id");
             StoneSerializers.string().serialize(value.groupId, g);
+            g.writeFieldName("group_management_type");
+            GroupManagementType.Serializer.INSTANCE.serialize(value.groupManagementType, g);
             g.writeFieldName("created");
             StoneSerializers.uInt64().serialize(value.created, g);
             if (value.groupExternalId != null) {
@@ -276,6 +286,7 @@ public class GroupFullInfo extends GroupSummary {
             if (tag == null) {
                 String f_groupName = null;
                 String f_groupId = null;
+                GroupManagementType f_groupManagementType = null;
                 Long f_created = null;
                 String f_groupExternalId = null;
                 Long f_memberCount = null;
@@ -288,6 +299,9 @@ public class GroupFullInfo extends GroupSummary {
                     }
                     else if ("group_id".equals(field)) {
                         f_groupId = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("group_management_type".equals(field)) {
+                        f_groupManagementType = GroupManagementType.Serializer.INSTANCE.deserialize(p);
                     }
                     else if ("created".equals(field)) {
                         f_created = StoneSerializers.uInt64().deserialize(p);
@@ -311,10 +325,13 @@ public class GroupFullInfo extends GroupSummary {
                 if (f_groupId == null) {
                     throw new JsonParseException(p, "Required field \"group_id\" missing.");
                 }
+                if (f_groupManagementType == null) {
+                    throw new JsonParseException(p, "Required field \"group_management_type\" missing.");
+                }
                 if (f_created == null) {
                     throw new JsonParseException(p, "Required field \"created\" missing.");
                 }
-                value = new GroupFullInfo(f_groupName, f_groupId, f_created, f_groupExternalId, f_memberCount, f_members);
+                value = new GroupFullInfo(f_groupName, f_groupId, f_groupManagementType, f_created, f_groupExternalId, f_memberCount, f_members);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

@@ -12,6 +12,7 @@ import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.v2.DbxDownloadStyleBuilder;
 import com.dropbox.core.v2.DbxRawClientV2;
 import com.dropbox.core.v2.DbxUploadStyleBuilder;
+import com.dropbox.core.v2.async.LaunchEmptyResult;
 import com.dropbox.core.v2.async.PollArg;
 import com.dropbox.core.v2.async.PollErrorException;
 
@@ -21,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Routes in namespace "files" that support user auth.
+ * Routes in namespace "files".
  */
 public final class DbxUserFilesRequests {
     // namespace files
@@ -63,9 +64,11 @@ public final class DbxUserFilesRequests {
      * the source path is a folder all its contents will be copied.
      *
      * @param fromPath  Path in the user's Dropbox to be copied or moved. Must
-     *     match pattern "{@code /(.|[\\r\\n])*}" and not be {@code null}.
+     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)}" and not be
+     *     {@code null}.
      * @param toPath  Path in the user's Dropbox that is the destination. Must
-     *     match pattern "{@code /(.|[\\r\\n])*}" and not be {@code null}.
+     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)}" and not be
+     *     {@code null}.
      *
      * @return Metadata for a file or folder.
      *
@@ -189,7 +192,7 @@ public final class DbxUserFilesRequests {
      * Create a folder at a given path.
      *
      * @param path  Path in the user's Dropbox to create. Must match pattern
-     *     "{@code /(.|[\\r\\n])*}" and not be {@code null}.
+     *     "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)}" and not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -236,7 +239,7 @@ public final class DbxUserFilesRequests {
      * at time of deletion, and not a {@link DeletedMetadata} object.
      *
      * @param path  Path in the user's Dropbox to delete. Must match pattern
-     *     "{@code /(.|[\\r\\n])*}" and not be {@code null}.
+     *     "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)}" and not be {@code null}.
      *
      * @return Metadata for a file or folder.
      *
@@ -656,7 +659,8 @@ public final class DbxUserFilesRequests {
      * See {@link ListFolderBuilder} for more details. </p>
      *
      * @param path  The path to the folder you want to see the contents of. Must
-     *     match pattern "{@code (/(.|[\\r\\n])*)?}" and not be {@code null}.
+     *     match pattern "{@code (/(.|[\\r\\n])*)?|(ns:[0-9]+(/.*)?)}" and not
+     *     be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -670,7 +674,8 @@ public final class DbxUserFilesRequests {
      * Returns the contents of a folder.
      *
      * @param path  The path to the folder you want to see the contents of. Must
-     *     match pattern "{@code (/(.|[\\r\\n])*)?}" and not be {@code null}.
+     *     match pattern "{@code (/(.|[\\r\\n])*)?|(ns:[0-9]+(/.*)?)}" and not
+     *     be {@code null}.
      *
      * @return Request builder for configuring request parameters and completing
      *     the request.
@@ -766,7 +771,8 @@ public final class DbxUserFilesRequests {
      * See {@link ListFolderGetLatestCursorBuilder} for more details. </p>
      *
      * @param path  The path to the folder you want to see the contents of. Must
-     *     match pattern "{@code (/(.|[\\r\\n])*)?}" and not be {@code null}.
+     *     match pattern "{@code (/(.|[\\r\\n])*)?|(ns:[0-9]+(/.*)?)}" and not
+     *     be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -785,7 +791,8 @@ public final class DbxUserFilesRequests {
      * exist in Dropbox.
      *
      * @param path  The path to the folder you want to see the contents of. Must
-     *     match pattern "{@code (/(.|[\\r\\n])*)?}" and not be {@code null}.
+     *     match pattern "{@code (/(.|[\\r\\n])*)?|(ns:[0-9]+(/.*)?)}" and not
+     *     be {@code null}.
      *
      * @return Request builder for configuring request parameters and completing
      *     the request.
@@ -923,7 +930,8 @@ public final class DbxUserFilesRequests {
      * {@link #listRevisions(String,long)}). </p>
      *
      * @param path  The path to the file you want to see the revisions of. Must
-     *     match pattern "{@code /(.|[\\r\\n])*}" and not be {@code null}.
+     *     match pattern "{@code /(.|[\\r\\n])*|id:.*|(ns:[0-9]+(/.*)?)}" and
+     *     not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -937,7 +945,8 @@ public final class DbxUserFilesRequests {
      * Return revisions of a file
      *
      * @param path  The path to the file you want to see the revisions of. Must
-     *     match pattern "{@code /(.|[\\r\\n])*}" and not be {@code null}.
+     *     match pattern "{@code /(.|[\\r\\n])*|id:.*|(ns:[0-9]+(/.*)?)}" and
+     *     not be {@code null}.
      * @param limit  The maximum number of revision entries returned. Must be
      *     greater than or equal to 1 and be less than or equal to 100.
      *
@@ -986,9 +995,11 @@ public final class DbxUserFilesRequests {
      * the source path is a folder all its contents will be moved.
      *
      * @param fromPath  Path in the user's Dropbox to be copied or moved. Must
-     *     match pattern "{@code /(.|[\\r\\n])*}" and not be {@code null}.
+     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)}" and not be
+     *     {@code null}.
      * @param toPath  Path in the user's Dropbox that is the destination. Must
-     *     match pattern "{@code /(.|[\\r\\n])*}" and not be {@code null}.
+     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)}" and not be
+     *     {@code null}.
      *
      * @return Metadata for a file or folder.
      *
@@ -1031,7 +1042,7 @@ public final class DbxUserFilesRequests {
      * available for Dropbox Business apps.
      *
      * @param path  Path in the user's Dropbox to delete. Must match pattern
-     *     "{@code /(.|[\\r\\n])*}" and not be {@code null}.
+     *     "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)}" and not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -1068,7 +1079,7 @@ public final class DbxUserFilesRequests {
      * Restore a file to a specific revision
      *
      * @param path  The path to the file you want to restore. Must match pattern
-     *     "{@code /(.|[\\r\\n])*}" and not be {@code null}.
+     *     "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)}" and not be {@code null}.
      * @param rev  The revision to restore for the file. Must have length of at
      *     least 9, match pattern "{@code [0-9a-f]+}", and not be {@code null}.
      *
@@ -1196,8 +1207,8 @@ public final class DbxUserFilesRequests {
      * See {@link SearchBuilder} for more details. </p>
      *
      * @param path  The path in the user's Dropbox to search. Should probably be
-     *     a folder. Must match pattern "{@code (/(.|[\\r\\n])*)?}" and not be
-     *     {@code null}.
+     *     a folder. Must match pattern "{@code
+     *     (/(.|[\\r\\n])*)?|(ns:[0-9]+(/.*)?)}" and not be {@code null}.
      * @param query  The string to search for. The search string is split on
      *     spaces into multiple tokens. For file name searching, the last token
      *     is used for prefix matching (i.e. "bat c" matches "bat cave" but not
@@ -1216,8 +1227,8 @@ public final class DbxUserFilesRequests {
      * be reflected in search results due to a short delay in indexing.
      *
      * @param path  The path in the user's Dropbox to search. Should probably be
-     *     a folder. Must match pattern "{@code (/(.|[\\r\\n])*)?}" and not be
-     *     {@code null}.
+     *     a folder. Must match pattern "{@code
+     *     (/(.|[\\r\\n])*)?|(ns:[0-9]+(/.*)?)}" and not be {@code null}.
      * @param query  The string to search for. The search string is split on
      *     spaces into multiple tokens. For file name searching, the last token
      *     is used for prefix matching (i.e. "bat c" matches "bat cave" but not
@@ -1264,7 +1275,8 @@ public final class DbxUserFilesRequests {
      * See {@link UploadBuilder} for more details. </p>
      *
      * @param path  Path in the user's Dropbox to save the file. Must match
-     *     pattern "{@code /(.|[\\r\\n])*}" and not be {@code null}.
+     *     pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)}" and not be
+     *     {@code null}.
      *
      * @return Uploader used to upload the request body and finish request.
      *
@@ -1282,7 +1294,8 @@ public final class DbxUserFilesRequests {
      * session with {@link DbxUserFilesRequests#uploadSessionStart()}.
      *
      * @param path  Path in the user's Dropbox to save the file. Must match
-     *     pattern "{@code /(.|[\\r\\n])*}" and not be {@code null}.
+     *     pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)}" and not be
+     *     {@code null}.
      *
      * @return Uploader builder for configuring request parameters and
      *     instantiating an uploader.
@@ -1449,6 +1462,134 @@ public final class DbxUserFilesRequests {
     public UploadSessionFinishUploader uploadSessionFinish(UploadSessionCursor cursor, CommitInfo commit) throws DbxException {
         UploadSessionFinishArg arg = new UploadSessionFinishArg(cursor, commit);
         return uploadSessionFinish(arg);
+    }
+
+    //
+    // route files/upload_session/finish_batch
+    //
+
+    /**
+     * This route helps you commit many files at once into a user's Dropbox. Use
+     * {@link DbxUserFilesRequests#uploadSessionStart()} and {@link
+     * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)} to
+     * upload file contents. We recommend uploading many files in parallel to
+     * increase throughput. Once the file contents have been uploaded, rather
+     * than calling {@link
+     * DbxUserFilesRequests#uploadSessionFinish(UploadSessionCursor,CommitInfo)},
+     * use this route to finish all your upload sessions in a single request.
+     * the {@code close} argument to {@link
+     * DbxUserFilesRequests#uploadSessionStart()} or the {@code close} argument
+     * to {@link
+     * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)} needs to
+     * be true for last {@link DbxUserFilesRequests#uploadSessionStart()} or
+     * {@link DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)}
+     * call. This route will return job_id immediately and do the async commit
+     * job in background. We have another route {@link
+     * DbxUserFilesRequests#uploadSessionFinishBatchCheck(String)} to check the
+     * job status. For the same account, this route should be executed serially.
+     * That means you should not start next job before current job finishes.
+     * Also we only allow up to 1000 entries in a single request
+     *
+     *
+     * @return Result returned by methods that may either launch an asynchronous
+     *     job or complete synchronously. Upon synchronous completion of the
+     *     job, no additional information is returned.
+     */
+    LaunchEmptyResult uploadSessionFinishBatch(UploadSessionFinishBatchArg uploadSessionFinishBatchArg) throws DbxException {
+        try {
+            return client.rpcStyle(client.getHost().getApi(),
+                                   "2/files/upload_session/finish_batch",
+                                   uploadSessionFinishBatchArg,
+                                   false,
+                                   UploadSessionFinishBatchArg.Serializer.INSTANCE,
+                                   LaunchEmptyResult.Serializer.INSTANCE,
+                                   com.dropbox.core.stone.StoneSerializers.void_());
+        }
+        catch (DbxWrappedException ex) {
+            throw new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"upload_session/finish_batch\":" + ex.getErrorValue());
+        }
+    }
+
+    /**
+     * This route helps you commit many files at once into a user's Dropbox. Use
+     * {@link DbxUserFilesRequests#uploadSessionStart()} and {@link
+     * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)} to
+     * upload file contents. We recommend uploading many files in parallel to
+     * increase throughput. Once the file contents have been uploaded, rather
+     * than calling {@link
+     * DbxUserFilesRequests#uploadSessionFinish(UploadSessionCursor,CommitInfo)},
+     * use this route to finish all your upload sessions in a single request.
+     * the {@code close} argument to {@link
+     * DbxUserFilesRequests#uploadSessionStart()} or the {@code close} argument
+     * to {@link
+     * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)} needs to
+     * be true for last {@link DbxUserFilesRequests#uploadSessionStart()} or
+     * {@link DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)}
+     * call. This route will return job_id immediately and do the async commit
+     * job in background. We have another route {@link
+     * DbxUserFilesRequests#uploadSessionFinishBatchCheck(String)} to check the
+     * job status. For the same account, this route should be executed serially.
+     * That means you should not start next job before current job finishes.
+     * Also we only allow up to 1000 entries in a single request
+     *
+     * @param entries  Commit information for each file in the batch. Must
+     *     contain at most 1000 items, not contain a {@code null} item, and not
+     *     be {@code null}.
+     *
+     * @return Result returned by methods that may either launch an asynchronous
+     *     job or complete synchronously. Upon synchronous completion of the
+     *     job, no additional information is returned.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public LaunchEmptyResult uploadSessionFinishBatch(List<UploadSessionFinishArg> entries) throws DbxException {
+        UploadSessionFinishBatchArg arg = new UploadSessionFinishBatchArg(entries);
+        return uploadSessionFinishBatch(arg);
+    }
+
+    //
+    // route files/upload_session/finish_batch/check
+    //
+
+    /**
+     * Returns the status of an asynchronous job for {@link
+     * DbxUserFilesRequests#uploadSessionFinishBatch(List)}. If success, it
+     * returns list of result for each entry
+     *
+     * @param pollArg  Arguments for methods that poll the status of an
+     *     asynchronous job.
+     */
+    UploadSessionFinishBatchJobStatus uploadSessionFinishBatchCheck(PollArg pollArg) throws PollErrorException, DbxException {
+        try {
+            return client.rpcStyle(client.getHost().getApi(),
+                                   "2/files/upload_session/finish_batch/check",
+                                   pollArg,
+                                   false,
+                                   PollArg.Serializer.INSTANCE,
+                                   UploadSessionFinishBatchJobStatus.Serializer.INSTANCE,
+                                   com.dropbox.core.v2.async.PollError.Serializer.INSTANCE);
+        }
+        catch (DbxWrappedException ex) {
+            throw new PollErrorException(ex.getRequestId(), ex.getUserMessage(), (com.dropbox.core.v2.async.PollError) ex.getErrorValue());
+        }
+    }
+
+    /**
+     * Returns the status of an asynchronous job for {@link
+     * DbxUserFilesRequests#uploadSessionFinishBatch(List)}. If success, it
+     * returns list of result for each entry
+     *
+     * @param asyncJobId  Id of the asynchronous job. This is the value of a
+     *     response returned from the method that launched the job. Must have
+     *     length of at least 1 and not be {@code null}.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public UploadSessionFinishBatchJobStatus uploadSessionFinishBatchCheck(String asyncJobId) throws PollErrorException, DbxException {
+        PollArg arg = new PollArg(asyncJobId);
+        return uploadSessionFinishBatchCheck(arg);
     }
 
     //

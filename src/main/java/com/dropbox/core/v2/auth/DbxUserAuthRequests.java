@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Routes in namespace "auth" that support user auth.
+ * Routes in namespace "auth".
  */
 public final class DbxUserAuthRequests {
     // namespace auth
