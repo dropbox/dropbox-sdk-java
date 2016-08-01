@@ -43,7 +43,8 @@ def verifySdkVersion(deployment) {
             if (entry.getName().equals("sdk-version.txt")) {
                 def version = jar.text.trim();
                 if (!(version ==~ /\d+\.\d+\.\d+/)) {
-                    throw new GradleException("SDK version not in semantic versioning format: " + version);
+                    throw new GradleException("SDK version not in semantic versioning format: " + version +
+                                              ". Try running './gradlew clean' before uploading archives.");
                 }
                 return
             }
