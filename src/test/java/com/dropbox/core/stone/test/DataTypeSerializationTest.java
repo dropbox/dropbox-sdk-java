@@ -67,6 +67,13 @@ public class DataTypeSerializationTest {
         Dimensions actual = Dimensions.Serializer.INSTANCE.deserialize(json);
 
         assertEquals(actual, expected);
+
+        // sometimes the order can matter. Add an unknown struct field early to see if we skip it properly
+        json = "{\"height\":768,\"foo\":{\"bar\":[1, 2, 3],\"baz\":false},\"alpha\":0.5,\"width\":1024}";
+        expected = new Dimensions(1024, 768);
+        actual = Dimensions.Serializer.INSTANCE.deserialize(json);
+
+        assertEquals(actual, expected);
     }
 
     @Test

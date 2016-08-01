@@ -1,3 +1,7 @@
+2.1.1
+---------------------------------------------
+- Fix "Required field ... missing" deserialization bug caused by certain backwards-compatible response changes from the server.
+
 2.1.0 (2016-07-29)
 ---------------------------------------------
 - Update to latest API specs:
