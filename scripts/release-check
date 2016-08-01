@@ -69,11 +69,12 @@ examples_gradle clean
 examples_gradle classes
 
 # run examples
+DATE=$(date -u '+%Y%m%d%H%M%S')
 run_example account-info "${AUTH_FILE}"
 cat /dev/urandom | head -c 1024 > "${tempfile}"
-run_example upload-file "${AUTH_FILE}" "${tempfile}" /test/dropbox-sdk-java/examples/upload-file/small-1KiB.dat
+run_example upload-file "${AUTH_FILE}" "${tempfile}" /test/dropbox-sdk-java/${DATE}/examples/upload-file/small-1KiB.dat
 cat /dev/urandom | head -c $(( 32 << 20 )) > "${tempfile}"
-run_example upload-file "${AUTH_FILE}" "${tempfile}" /test/dropbox-sdk-java/examples/upload-file/large-32MiB.dat
+run_example upload-file "${AUTH_FILE}" "${tempfile}" /test/dropbox-sdk-java/${DATE}/examples/upload-file/large-32MiB.dat
 
 # build android
 android_gradle clean
