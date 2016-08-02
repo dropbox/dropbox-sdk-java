@@ -67,6 +67,13 @@ public class DataTypeSerializationTest {
         Dimensions actual = Dimensions.Serializer.INSTANCE.deserialize(json);
 
         assertEquals(actual, expected);
+
+        // change order of fields to ensure we parse valid fields at end of response
+        json = "{\"height\":768,\"alpha\":0.5,\"foo\":{\"bar\":[1, 2, 3],\"baz\":false},\"width\":1024}";
+        expected = new Dimensions(768, 1024);
+        actual = Dimensions.Serializer.INSTANCE.deserialize(json);
+
+        assertEquals(actual, expected);
     }
 
     @Test

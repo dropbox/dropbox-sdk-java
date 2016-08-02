@@ -117,6 +117,7 @@ public abstract class StoneSerializer<T> {
     protected static void skipValue(JsonParser p) throws IOException, JsonParseException {
         if (p.getCurrentToken().isStructStart()) {
             p.skipChildren();
+            p.nextToken();
         } else if (p.getCurrentToken().isScalarValue()) {
             p.nextToken();
         } else {
