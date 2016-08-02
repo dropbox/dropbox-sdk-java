@@ -9,6 +9,7 @@ build/
 intellij/
 .idea/
 *.iml
+gradle.properties
 local.properties
 
 # Output file when rendering ReadMe.md locally.
@@ -16,3 +17,6 @@ local.properties
 
 # editor temp files
 *~
+
+# pyc files from generator
+*.pyc
