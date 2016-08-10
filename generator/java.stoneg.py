@@ -1,9 +1,12 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import os
+import abc
 import argparse
+import json
+import os
 import re
 import six
+import sys
 import types
 
 from collections import defaultdict, OrderedDict, Sequence
@@ -27,21 +30,46 @@ from stone.data_type import (
     is_boolean_type,
     is_bytes_type,
     is_composite_type,
-    is_numeric_type,
-    is_nullable_type,
     is_list_type,
+    is_nullable_type,
+    is_numeric_type,
+    is_primitive_type,
     is_string_type,
     is_struct_type,
     is_timestamp_type,
     is_union_type,
+    is_user_defined_type,
     is_void_type,
     StructField,
     TagRef,
     Union,
+    UnionField,
     unwrap_nullable,
     Void,
 )
 
+class StoneType:
+    __metaclass__ = abc.ABCMeta
+
+StoneType.register(ApiNamespace)
+StoneType.register(ApiRoute)
+StoneType.register(DataType)
+StoneType.register(Field)
+
+def cached(f):
+    cache = {}
+
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        key = tuple(args) + tuple(entry for entry in sorted(kwargs.items()))
+        if key in cache:
+            return cache[key]
+        else:
+            val = f(*args, **kwargs)
+            cache[key] = val
+            return val
+
+    return wrapper
 
 class cached_property(object):
     """
@@ -113,6 +141,18 @@ def split_paragraphs(s):
         yield "\n".join(paragraph)
 
 
+def split_stone_name(stone_fq_name, max_parts):
+    assert isinstance(stone_fq_name, six.text_type), repr(stone_fq_name)
+    assert max_parts > 0, "max_parts must be positive"
+
+    parts = stone_fq_name.split('.')
+    if len(parts) > max_parts:
+        raise ValueError('Malformed Stone reference: %s' % stone_fq_name)
+    else:
+        filler = (None,) * (max_parts - len(parts))
+        return filler + tuple(parts)
+
+
 def sanitize_pattern(pattern):
     return pattern.replace('\\', '\\\\').replace('"', '\\"')
 
@@ -150,27 +190,6 @@ def classname(s):
     return capwords(s)
 
 
-def get_auth_types_set(namespace, noauth_as_user=False):
-    if isinstance(namespace, NamespaceWrapper):
-        namespace = namespace.as_stone
-
-    routes = namespace.routes
-    if not routes:
-        return set()
-
-    def auth_replace_noauth(route):
-        auth_type = route.attrs.get('auth', 'user')
-        if noauth_as_user and auth_type == 'noauth':
-            return 'user'
-        else:
-            return auth_type
-
-    return {
-        auth_replace_noauth(route)
-        for route in routes
-    }
-
-
 def get_ancestors(data_type):
     """Return list of (tag, data_type) pairs.
 
@@ -206,6 +225,7 @@ def get_ancestors(data_type):
     - get_ancestors(B) returns [(None, A), ('b', B)]
     - get_ancestors(A) returns [(None, A)]
     """
+    assert isinstance(data_type, DataType), repr(data_type)
     ancestors = []
     while data_type is not None:
         parent_type = data_type.parent_type
@@ -226,7 +246,7 @@ def get_ancestors(data_type):
 
 def get_enumerated_subtypes_recursively(data_type):
     """
-    Returns a list of (tag, DataTypeWrapper) pairs.
+    Returns a list of (tag, DataType) pairs.
 
     This method searches for all possible enumerated subtypes of the given data type. In the
     example:
@@ -252,650 +272,40 @@ def get_enumerated_subtypes_recursively(data_type):
     - get_enumerated_subtypes_recursively(C): [('c.f', F)]
     - get_enumerated_subtypes_recursively(D): []
     """
-    assert isinstance(data_type, DataTypeWrapper), repr(data_type)
+    assert isinstance(data_type, DataType), repr(data_type)
 
-    if not data_type.has_enumerated_subtypes:
+    if not data_type.has_enumerated_subtypes():
         return []
 
     subtypes = []
     def add_subtype(data_type):
         subtypes.append(data_type)
-        if data_type.has_enumerated_subtypes:
-            for subtype in data_type.enumerated_subtypes:
+        if data_type.has_enumerated_subtypes():
+            for subtype in data_type.get_enumerated_subtypes():
                 add_subtype(subtype.data_type)
 
     add_subtype(data_type)
 
     result = []
     for subtype in subtypes:
-        tag = '.'.join(name for name, _ in get_ancestors(subtype.as_stone) if name)
+        tag = '.'.join(name for name, _ in get_ancestors(subtype) if name)
         result.append((tag, subtype))
 
     return result
 
 
 def get_underlying_type(data_type, allow_lists=True):
-    is_wrapper = isinstance(data_type, DataTypeWrapper)
-
-    if is_wrapper:
-        ctx = data_type._ctx
-        stone_data_type = data_type.as_stone
-    else:
-        assert isinstance(data_type, DataType), repr(data_type)
-        stone_data_type = data_type
+    assert isinstance(data_type, DataType), repr(data_type)
 
     while True:
-        if allow_lists and is_list_type(stone_data_type):
-            stone_data_type = stone_data_type.data_type
-        elif is_nullable_type(stone_data_type):
-            stone_data_type = stone_data_type.data_type
+        if allow_lists and is_list_type(data_type):
+            data_type = data_type.data_type
+        elif is_nullable_type(data_type):
+            data_type = data_type.data_type
         else:
             break
 
-    if is_wrapper:
-        return DataTypeWrapper(ctx, stone_data_type)
-    else:
-        return stone_data_type
-
-
-def get_routes_with_arg_type(data_type, allow_lists=True, filtered=True):
-    assert isinstance(data_type, DataTypeWrapper), repr(data_type)
-
-    ctx = data_type._ctx
-
-    routes = []
-    for stone_namespace in ctx.api.namespaces.values():
-        for stone_route in stone_namespace.routes:
-            if not filtered or ctx.include_route(stone_route):
-                arg_type = get_underlying_type(stone_route.arg_data_type, allow_lists)
-
-                if arg_type == data_type.as_stone:
-                    routes.append(RouteWrapper(ctx, stone_namespace, stone_route))
-
-    return routes
-
-
-def get_routes_with_result_type(data_type, allow_lists=True, filtered=True):
-    assert isinstance(data_type, DataTypeWrapper), repr(data_type)
-
-    ctx = data_type._ctx
-
-    routes = []
-    for stone_namespace in ctx.api.namespaces.values():
-        for stone_route in stone_namespace.routes:
-            if not filtered or ctx.include_route(stone_route):
-                result_type = get_underlying_type(stone_route.result_data_type, allow_lists)
-
-                if result_type == data_type.as_stone:
-                    routes.append(RouteWrapper(ctx, stone_namespace, stone_route))
-
-    return routes
-
-
-def get_routes_with_error_type(data_type, allow_lists=True, filtered=True):
-    assert isinstance(data_type, DataTypeWrapper), repr(data_type)
-
-    ctx = data_type._ctx
-
-    routes = []
-    for stone_namespace in ctx.api.namespaces.values():
-        for stone_route in stone_namespace.routes:
-            if not filtered or ctx.include_route(stone_route):
-                err_type = get_underlying_type(stone_route.error_data_type, allow_lists)
-
-                if err_type == data_type.as_stone:
-                    routes.append(RouteWrapper(ctx, stone_namespace, stone_route))
-
-    return routes
-
-
-def get_fields_with_data_type(data_type):
-    assert isinstance(data_type, DataTypeWrapper), repr(data_type)
-
-    ctx = data_type._ctx
-
-    fields = []
-    data_types_with_ref = ctx.get_data_types_that_depend_on(data_type)
-    for data_type_with_ref in data_types_with_ref:
-        if data_type_with_ref == data_type:
-            continue
-        for field in data_type_with_ref.fields:
-            field_data_type = get_underlying_type(field.data_type)
-            if field_data_type == data_type:
-                fields.append(field)
-
-    return fields
-
-
-def get_data_types_with_parent_type(data_type):
-    assert isinstance(data_type, DataTypeWrapper), repr(data_type)
-
-    ctx = data_type._ctx
-
-    data_types = []
-    data_types_with_ref = ctx.get_data_types_that_depend_on(data_type)
-    for data_type_with_ref in data_types_with_ref:
-        if data_type_with_ref.parent == data_type:
-            data_types.append(data_type_with_ref)
-
-    return data_types
-
-
-def is_data_type_serializer_required_outside_package(data_type):
-    def has_other_namespace(wrappers):
-        return any(w.namespace != data_type.namespace for w in wrappers)
-
-    ctx = data_type._ctx
-
-    # Serializers never inherit from their parents. Only parent serializers will need to be aware
-    # of their children (for enumerated subtypes).
-    if has_other_namespace(ctx.get_data_types_that_depend_on(data_type, exclude_subclasses=True)):
-        return True
-
-    stone_data_type = data_type.as_stone
-    for stone_namespace in ctx.api.namespaces.values():
-        # skip ourselves
-        if stone_namespace == data_type.namespace.as_stone:
-            continue
-
-        # namespace must be another namespace
-        for stone_route in stone_namespace.routes:
-            # no filtering
-            if (get_underlying_type(stone_route.arg_data_type) == stone_data_type or
-                get_underlying_type(stone_route.result_data_type) == stone_data_type or
-                get_underlying_type(stone_route.error_data_type) == stone_data_type):
-                return True
-
-    return False
-
-
-def is_data_type_required_outside_package(data_type):
-    # only structs can be flattened by routes. Unions must be passed explicitly as arguments.
-    if not data_type.is_struct:
-        return True
-
-    # we can hide structs if they are only used by a single route. In these cases, we make all
-    # references to the struct point to the route instead. Since we flatten the struct fields into
-    # the route method call, the users don't have to be aware that we use a POJO in the background.
-    #
-    # Note, if no routes use this data type, then it may be used elsewhere and we will have to make
-    # it public for references. This only works when exactly 1 routes uses it as an argument.
-    routes_with_arg = get_routes_with_arg_type(data_type, filtered=False)
-    if len(routes_with_arg) != 1:
-        return True
-
-    # make sure single route is in same namespace
-    if routes_with_arg[0].namespace != data_type.namespace:
-        return True
-
-    # if we return this type in any of our routes, it must be made available outside the package
-    if get_routes_with_result_type(data_type, filtered=False):
-        return True
-
-    # Routes will flatten struct fields so callers don't have to pass in an instance of the
-    # struct. However, we must verify the struct is not a field of some other struct.
-    fields_with_type = get_fields_with_data_type(data_type)
-    if fields_with_type:
-        return True
-
-    # if any data types inherit form this data types, then make it public
-    sub_data_types = get_data_types_with_parent_type(data_type)
-    if sub_data_types:
-        return True
-
-    return False
-
-
-def is_data_type_referenced(data_type, filtered=True):
-    ctx = data_type._ctx
-
-    data_types_with_ref = set(
-        dt.as_stone for dt in ctx.get_data_types_that_depend_on(data_type)
-    )
-
-    # search our current namespace first since it is more likely to contain a route using this data
-    # type
-    stone_namespaces = ctx.api.namespaces.values()
-    stone_namespaces.remove(data_type.namespace.as_stone)
-    stone_namespaces.insert(0, data_type.namespace.as_stone)
-
-    for stone_namespace in stone_namespaces:
-        for stone_route in stone_namespace.routes:
-            if filtered and not ctx.include_route(stone_route):
-                continue
-
-            if get_underlying_type(stone_route.arg_data_type) in data_types_with_ref:
-                return True
-            if get_underlying_type(stone_route.result_data_type) in data_types_with_ref:
-                return True
-            if get_underlying_type(stone_route.error_data_type) in data_types_with_ref:
-                return True
-
-    return False
-
-
-def get_all_required_data_types_for_namespace(namespace):
-    ctx = namespace._ctx
-
-    data_types = set()
-    for data_type in namespace.data_types:
-        data_types.update(ctx.get_data_type_dependencies(data_type))
-
-    return data_types
-
-
-class ClientSpec(object):
-    def __init__(self, client_name, client_javadoc, routes_class_name_format, route_filter):
-        self._client_name = client_name
-        self._client_javadoc = client_javadoc or None
-        self._routes_class_name_format = routes_class_name_format or 'Stone%sRequests'
-        self._route_filter = RouteFilter.from_expression(route_filter)
-
-        try:
-            self._routes_class_name_format % 'test'
-        except TypeError:
-            raise ValueError('Error in client-spec:RoutesClassNameFormat: '
-                             'not a proper format string with a single "%s"')
-
-    @classmethod
-    def from_spec_str(cls, spec_str):
-        spec_parts = spec_str.split(':', 3)
-        if len(spec_parts) != 4:
-            raise ValueError('Malformed client spec: %s' % spec_str)
-        return cls(*spec_parts)
-
-    @property
-    def client_name(self):
-        return self._client_name
-
-    @property
-    def client_javadoc(self):
-        return self._client_javadoc
-
-    def class_name_for_namespace(self, namespace):
-        assert isinstance(namespace, NamespaceWrapper), repr(namespace)
-        return classname(self._routes_class_name_format % ('_' + namespace.stone_name + '_'))
-
-    def contains_route(self, route):
-        return self._route_filter.apply(route)
-
-    def __repr__(self):
-        return '%s:%s:%s:%s' % (
-            self._client_name,
-            self._client_javadoc or '',
-            self._routes_class_name_format,
-            self._route_filter or ''
-        )
-
-class RouteFilter(object):
-    def __init__(self, parser):
-        self._parser = parser
-
-    def apply(self, route):
-        if isinstance(route, RouteWrapper):
-            route = route.as_stone
-
-        assert isinstance(route, ApiRoute), repr(route)
-        return self._parser is None or self._parser.eval(route)
-
-    @classmethod
-    def from_expression(cls, expr):
-        if expr:
-            from stone.cli_helpers import parse_route_attr_filter
-            route_filter, errs = parse_route_attr_filter(expr)
-            if errs:
-                raise ValueError("Malformed route filter: %s" % expr)
-            return cls(route_filter)
-        else:
-            return cls(None)
-
-class GeneratorContext(object):
-    """
-    Context for a single execution of the JavaCodeGenerator.
-
-    This class is used to reference the Stone tree being generated, along with information about the
-    Java package of the currently open file and existing Java imports.
-
-    :ivar :class:`stone.generator.CodeGenerator` code_generator: code generator instance created by Stone for generating the Java code
-    :ivar :class:`stone.api.Api` api: Stone tree to generate into Java
-    """
-
-    def __init__(self, code_generator, api, client_specs):
-        assert isinstance(code_generator, CodeGenerator), repr(code_generator)
-        assert isinstance(api, Api), repr(api)
-        assert isinstance(client_specs, Sequence), repr(client_specs)
-
-        self._g = code_generator
-        self._api = api
-        self._client_specs = client_specs
-        self._current_client_spec = None
-        self._current_class = None
-        self._current_imports = set()
-        self._data_type_dependencies = self._get_data_type_dependency_graph()
-        self._reverse_data_type_dependencies = self._reverse_dependencies(self._data_type_dependencies)
-
-    @property
-    def api(self):
-        """
-        The Stone Api tree being generated.
-
-        :rtype: stone.api.Api
-        """
-        return self._api
-
-    @property
-    def g(self):
-        """
-        Reference to the JavaCodeGenerator instance. Useful for calling CodeGenerator methods like emit().
-
-        :rtype: JavaCodeGenerator
-        """
-        return self._g
-
-    @property
-    def client_specs(self):
-        return self._client_specs
-
-    @property
-    def base_package(self):
-        """
-        The base Java package where generated classes should reside (configured by commandline
-        argument). Note that classes may reside within subpackages of this base package.
-
-        :rtype: str
-        """
-        return self._g.args.package
-
-    @property
-    def keep_unused(self):
-        """
-        Whether to keep data types that are unsed by any routes. Generally you want to filter unused
-        data types since they can cause warnings and errors with Javadoc generation, and can leak
-        details of filtered routes.
-        """
-        return self._g.args.keep_unused
-
-    @property
-    def client_java_class(self):
-        """
-        Returns the Java class for the client being generated by this generation run.
-        """
-        assert self._current_client_spec
-
-        return JavaClass(self, self.base_package + '.' + self._current_client_spec.client_name)
-
-    @property
-    def client_javadoc(self):
-        """
-        Returns the Javadoc to use for the generated client java class.
-        """
-        assert self._current_client_spec
-
-        return self._current_client_spec.client_javadoc
-
-    def class_name_for_namespace(self, namespace, client_spec=None):
-        """
-        Returns the Java class name for the given namespace based on any route filtering and client specs.
-        """
-        if client_spec is None:
-            assert self._current_client_spec
-            client_spec = self._current_client_spec
-
-        return client_spec.class_name_for_namespace(namespace)
-
-    def class_name_for_route(self, route, client_spec=None):
-        """
-        Returns the Java class name for the given route based on any route filtering and client specs.
-        """
-        if client_spec is None:
-            client_spec = self._current_client_spec
-
-        if client_spec and client_spec.contains_route(route):
-            return self.class_name_for_namespace(route.namespace)
-
-        # look for first client spec that matches this route
-        for client_spec in self._client_specs:
-            if client_spec.contains_route(route):
-                return client_spec.class_name_for_namespace(route.namespace)
-
-        raise ValueError("No client contains route: %s" % repr(route))
-
-    def include_route(self, route, client_spec=None):
-        """
-        Returns whether the route should be included in this generation run for the current client.
-        """
-        if client_spec is None:
-            assert self._current_client_spec
-            client_spec = self._current_client_spec
-
-        return client_spec.contains_route(route)
-
-    def has_routes_for_client(self, namespace, client_spec=None):
-        """
-        Returns whether the given namespace contains any routes that should be generated for the
-        current client.
-        """
-        if client_spec is None:
-            assert self._current_client_spec
-            client_spec = self._current_client_spec
-
-        if isinstance(namespace, NamespaceWrapper):
-            namespace = namespace.as_stone
-
-        return any(self.include_route(r, client_spec) for r in namespace.routes)
-
-    def get_data_type_dependencies(self, data_type):
-        if isinstance(data_type, DataType):
-            data_type = DataTypeWrapper(self, data_type)
-        assert isinstance(data_type, DataTypeWrapper), repr(data_type)
-
-        data_type = get_underlying_type(data_type)
-        return self._data_type_dependencies.get(data_type, set())
-
-    def get_data_types_that_depend_on(self, data_type, exclude_subclasses=False):
-        if isinstance(data_type, DataType):
-            data_type = DataTypeWrapper(self, data_type)
-        assert isinstance(data_type, DataTypeWrapper), repr(data_type)
-
-        data_type = get_underlying_type(data_type)
-        reverse_deps = self._reverse_data_type_dependencies.get(data_type, set())
-
-        if not exclude_subclasses:
-            return reverse_deps
-
-        def is_subclass(dt):
-            if not dt.is_struct:
-                return False
-
-            parent = dt.parent
-            while parent:
-                if parent == data_type:
-                    return True
-                else:
-                    parent = parent.parent
-
-        return set(dep for dep in reverse_deps if not is_subclass(dep))
-
-    @property
-    def current_java_class(self):
-        """
-        Fully-qualified name of the Java class currently being generated, or ``None`` if no class
-        file is open for generation.
-
-        :rtype: str
-
-        """
-        return self._current_class
-
-    @property
-    def current_java_package(self):
-        """
-        Java package of the Java class currently being generated, or ``None`` if no class file is
-        open for generation.
-
-        :rtype: str
-
-        """
-        if self._current_class:
-            return self._current_class.rsplit('.', 1)[0]
-        else:
-            return None
-
-    @property
-    def current_imports(self):
-        """
-        Set of fully-qualified Java class names imported by the class currently being generated.
-
-        The set will never contain package-local imports since those classes do not require import
-        statements.
-
-        This set is empty if :field:`current_java_class` is ``None``.
-
-        :rtype: set[str]
-
-        """
-        # filter out package-local imports
-        local_package = self.current_java_package
-        if local_package:
-            local_prefix = local_package + '.'
-            def is_local(import_):
-                return import_.startswith(local_prefix) and '.' not in import_[len(local_prefix):]
-            return frozenset(i for i in self._current_imports if not is_local(i))
-        else:
-            return frozenset(self._current_imports)
-
-    def add_imports(self, *imports):
-        """
-        Adds the fully-qualified Java class names to the set of imports for the currently generated
-        class.
-
-        Imports may be fully-qualified class name strings (e.g. ``"com.foo.Bar"``) or :class:`JavaClass`
-        instances.
-
-        :field:`current_java_class` must not be ``None``. Use :meth:`scoped` to specify a current
-        class if necessary.
-
-        """
-        assert self._current_class, "No Java class scoped for generation."
-
-        get_name = lambda v: v.rsplit('.', 1)[-1]
-
-        current_class_prefix = self._current_class + '.'
-
-        existing_names = set(get_name(import_) for import_ in self._current_imports)
-
-        # avoid issues where we import a class with the same name as us
-        existing_names.add(get_name(self._current_class))
-
-        for import_ in imports:
-            if not isinstance(import_, JavaClass):
-                java_class = JavaClass(self, import_)
-            else:
-                java_class = import_
-
-            # already imported or local name (not fully qualified)
-            if java_class.import_name in self._current_imports or not java_class.package:
-                continue
-
-            # ignore nested classes inside our current class
-            if java_class.import_name == self._current_class:
-                continue
-
-            name = get_name(java_class.import_name)
-            if name not in existing_names:
-                existing_names.add(name)
-                self._current_imports.add(java_class.import_name)
-
-    @contextmanager
-    def scoped(self, fq_class):
-        """
-        Scopes this context to the specified, fully-qualified Java class name. While within this
-        context manager, calls to :field:`current_java_class` will return this class name.
-
-        Use this method when generating a new class file to help organize imports.
-
-        """
-        assert fq_class
-        assert '.' in fq_class, "Class must be fully qualified: %r" % fq_class
-
-        prev_class = self._current_class
-        prev_imports = self._current_imports
-        try:
-            self._current_class = fq_class
-            self._current_imports = set()
-            yield
-        finally:
-            self._current_class = prev_class
-            self._current_imports = prev_imports
-
-    @contextmanager
-    def for_client(self, client_spec):
-        assert isinstance(client_spec, ClientSpec), repr(client_spec)
-        assert client_spec in self._client_specs
-
-        prev_client_spec = self._current_client_spec
-        try:
-            self._current_client_spec = client_spec
-            yield
-        finally:
-            self._current_client_spec = prev_client_spec
-
-    def _get_data_type_dependency_graph(self):
-        dependencies = defaultdict(set)
-
-        def get_dependencies(root_data_type):
-            seen = set()
-            queue = [root_data_type]
-            while queue:
-                data_type = get_underlying_type(queue.pop(), allow_lists=True)
-                if data_type in seen:
-                    continue
-
-                if data_type is None or not (data_type.is_union or data_type.is_struct):
-                    continue
-
-                seen.add(data_type)
-
-                if data_type.is_union:
-                    # union inheritance is "fake" in that we just copy and paste, so use all fields
-                    # here since we won't build a dependency on the parent.
-                    fields = data_type.all_fields
-                else:
-                    fields = data_type.fields
-
-                for field in fields:
-                    queue.append(field.data_type)
-
-                if data_type.is_struct:
-                    # union inheritence is implemented by copying definitions, so no hard
-                    # dependencies between child-parent
-                    parent = data_type.parent
-                    if parent:
-                        queue.append(parent)
-
-                    if data_type.has_enumerated_subtypes:
-                        for field in data_type.enumerated_subtypes:
-                            queue.append(field.data_type)
-
-            return seen
-
-
-        dependencies = {}
-        for stone_namespace in self._api.namespaces.values():
-            namespace = NamespaceWrapper(self, stone_namespace)
-            for data_type in namespace.data_types:
-                dependencies[data_type] = get_dependencies(data_type)
-
-        return dependencies
-
-    @staticmethod
-    def _reverse_dependencies(dependencies):
-        reverse = defaultdict(set)
-        for data_type, data_type_deps in dependencies.iteritems():
-            for data_type_dep in data_type_deps:
-                reverse[data_type_dep].add(data_type)
-
-        return reverse
+    return data_type
 
 
 @total_ordering
@@ -904,29 +314,22 @@ class JavaClass(object):
     Represents a Java class name.
 
     This class is a convenience for handling Java classes. This class lets you reference a Java
-    class explicitly by its fully-qualified name or its short-name. You can also let the correct
-    reference be automatically determined based on the current context and imports.
+    class explicitly by its fully-qualified name or its short-name.
 
-    Examples:
-
-        ctx = # ... GeneratorContext
-        ctx.current_imports => {"com.dropbox.common.A", "java.util.B"}
-        ctx.current_java_class => "com.dropbox.files.C"
-        ctx.current_java_package => "com.dropbox.files"
-
-        str(JavaClass(ctx, "com.dropbox.files.D"))   => "D"                    # package local
-        str(JavaClass(ctx, "com.dropbox.common.E"))  => "com.dropbox.common.E" # not imported
-        str(JavaClass(ctx, "com.dropbox.common.A"))  => "Other"                # already imported
-        str(JavaClass(ctx, "com.dropbox.files.C.X")) => "X"                    # nested inner class
-        str(JavaClass(ctx, "java.util.B.Y"))         => "B.Y"                  # nested class outside current class
-
-    :ivar :class:`GeneratorContext` ctx: context for current generation
     :ivar str fq_name: Fully-qualified Java class name
     """
 
-    def __init__(self, ctx, fq_name):
-        self._ctx = ctx
+    def __init__(self, fq_name, generics=()):
+        assert isinstance(fq_name, six.text_type), repr(fq_name)
+        assert isinstance(generics, Sequence), repr(generics)
+
         self._fq_name = fq_name
+        self._generics = generics
+
+        for g in generics:
+            assert isinstance(g, (JavaClass, six.text_type)), repr(generics)
+            if isinstance(g, six.text_type):
+                assert '.' not in g, repr(generics)
 
         package_parts = fq_name.split('.')
 
@@ -949,6 +352,30 @@ class JavaClass(object):
                 self._static_name = '.'.join(package_parts[i:])
                 self._import_name = '.'.join(package_parts[:i+1])
                 break
+
+    @classmethod
+    def from_str(cls, val):
+        """
+        Returns an instance of JavaClass from its string representation produced using str(..).
+        """
+        matcher = re.match(r'^(?P<fq_name>[^< ]+)(?:<(?P<generics>.*)>)?$', val)
+        if matcher is None:
+            raise ValueError("Malformed Java class: %s" % val)
+        fq_name = matcher.group('fq_name')
+        generics_group = matcher.group('generics')
+
+        generics = []
+        if generics_group is not None:
+            for gtype in generics_group.split(','):
+                gtype = gtype.strip()
+                if not gtype:
+                    raise ValueError("Malformed Java class: %s" % val)
+                if '.' in gtype:
+                    generics.append(cls.from_str(gtype))
+                else:
+                    generics.append(gtype)
+
+        return JavaClass(fq_name, generics=generics)
 
     @property
     def fq(self):
@@ -973,6 +400,66 @@ class JavaClass(object):
         return self._name
 
     @property
+    def name_with_generics(self):
+        if self._generics and all('.' in g for g in self._generics):
+            return '%s<%s>' % (self._name, ', '.join(self._generics))
+        else:
+            return self._name
+
+    def resolved_name(self, current_class, imports, generics=False):
+        """
+        Returns the appropriate name to use when referencing this class from within the given class.
+
+        Examples:
+            current_class => JavaClass("com.dropbox.files.C")
+            imports => {JavaClass("com.dropbox.common.A"), JavaClass("java.util.B")}
+
+            "com.dropbox.files.D"   => "D"                    # package local
+            "com.dropbox.common.E"  => "com.dropbox.common.E" # not imported
+            "com.dropbox.common.A"  => "A"                    # already imported
+            "com.dropbox.files.C.X" => "X"                    # nested inner class
+            "java.util.B.Y"         => "B.Y"                  # nested class outside current class
+
+        Args:
+            current_class(JavaClass): class that will reference this class
+            imports(set[JavaClass]): set of full-qualified classes that have been imported
+
+        :rtype: str
+        """
+        resolved = self._resolved_name(current_class, imports)
+        if generics and self._generics:
+            resolved_generics = ', '.join(
+                g.resolved_name(current_class, imports, generics) if isinstance(g, JavaClass) else g
+                for g in self._generics
+            )
+            return '%s<%s>' % (resolved, resolved_generics)
+        else:
+            return resolved
+
+    def _resolved_name(self, current_class, imports):
+        # no package, so just return the name
+        if not self._package:
+            return self._name
+
+        assert isinstance(current_class, JavaClass), repr(current_class)
+        assert imports is not None
+
+        # inner class? (e.g. com.foo.CommitInfo.Builder)
+        if self._fq_name.startswith(current_class._fq_name + '.'):
+            return self._fq_name[len(current_class._fq_name) + 1:]
+
+        # package-local class? we don't need to import these
+        if self._package == current_class.package:
+            return self._static_name
+
+        # check if we already imported this name into our current context
+        if self.import_class in imports:
+            return self._static_name
+
+        # last resort, display fully-qualified name
+        return self._fq_name
+
+    @property
     def package(self):
         """
         Name of package containing this Java class.
@@ -984,19 +471,6 @@ class JavaClass(object):
         return self._package
 
     @property
-    def import_name(self):
-        """
-        Fully-qualified Java class name that should be imported to use this class. Note that this
-        value will equal :field:`fq` unless this class is a nested class.
-
-        Example: com.foo.Bar.Wop => com.foo.Bar
-                 org.baz.Der => org.baz.Der
-
-        :rtype: str
-        """
-        return self._import_name
-
-    @property
     def is_nested(self):
         """
         Whether or not this class is nested within another Java class.
@@ -1005,34 +479,29 @@ class JavaClass(object):
         """
         return self._static_name != self._name
 
+    @property
+    def import_class(self):
+        """
+        Returns the root class containing this nested class. Example:
+
+            com.foo.Bar     => com.foo.Bar
+            com.foo.Bar.A   => com.foo.Bar
+            com.foo.Bar.A.B => com.foo.Bar
+
+        The returned class is the class you would import if you needed access to this class.
+
+        :rtype: JavaClass
+        """
+        return JavaClass(self._import_name)
+
     def __repr__(self):
-        return '%s(%s)' % (type(self), self._fq_name)
+        return '%s(%s)' % (type(self), str(self))
 
     def __str__(self):
-        """
-        Produces the appropriate string representation of this class depending on the current
-        context (e.g. current imports and name of class currently being generated).
-        """
-        # no package, so just return the name
-        if not self._package:
-            return self._name
-
-        # inner class? (e.g. com.foo.CommitInfo.Builder)
-        current_class = self._ctx.current_java_class
-        if current_class and self._fq_name.startswith(current_class + '.'):
-            return self._fq_name[len(current_class) + 1:]
-
-        # package-local class? we don't need to import these
-        local_package = self._ctx.current_java_package
-        if local_package == self._package:
-            return self._static_name
-
-        # check if we already imported this name into our current context
-        if self._import_name in self._ctx.current_imports:
-            return self._static_name
-
-        # last resort, display fully-qualified name
-        return self._fq_name
+        if self._generics:
+            return '%s<%s>' % (self._fq_name, ', '.join(str(g) for g in self._generics))
+        else:
+            return self._fq_name
 
     def __hash__(self):
         return hash(self._fq_name)
@@ -1050,1116 +519,612 @@ class JavaClass(object):
         return self._fq_name < other._fq_name
 
 
-class StoneWrapper(object):
-    """
-    Wrapper around a Stone object (e.g. ApiNamespace, ApiRoute, DataType, Field, etc).
-
-    This wrapper provides convenience methods for converting Stone names and references to Java
-    package, class, types, and methods names.
-
-    :ivar :class:`GeneratorContext` ctx: context for current generation
-    :ivar :class:`stone.api.ApiNamespace` namespace: Stone namespace of ``stone_ent``
-    :ivar stone_ent: Stone entity to wrap (e.g. ApiNamespace, ApiRoute, etc)
-    """
-
-    def __init__(self, ctx, namespace, stone_ent):
-        assert isinstance(ctx, GeneratorContext), repr(ctx)
-        assert stone_ent is not None
-        assert namespace is None or isinstance(namespace, ApiNamespace), repr(namespace)
-
-        self._ctx = ctx
-        self._stone_namespace = namespace
-        self._stone_ent = stone_ent
-
-    @cached_property
-    def namespace(self):
-        """
-        Namespace of the wrapped Stone entity, or ``None`` if entity has no namespace (e.g. primitive data type)
-
-        :rtype: NamespaceWrapper
-        """
-        if self._stone_namespace:
-            return NamespaceWrapper(self._ctx, self._stone_namespace)
-        else:
-            return None
+@total_ordering
+class Visibility(object):
+    def __init__(self, rank, name, modifier):
+        self._rank = rank
+        self._name = name
+        self._modifier = modifier
 
     @property
-    def stone_doc(self):
-        """
-        Stone documentation for wrapped Stone entity or empty string if entity has no documentation.
-
-        :rtype: str
-        """
-        assert hasattr(self._stone_ent, "doc"), repr(self) + " has no doc"
-        return self._stone_ent.doc or ""
+    def name(self):
+        return self._name
 
     @property
-    def stone_filename(self):
-        """
-        Base file name of stone spec file containing wrapped Stone entity definition.
-
-        :rtype: str
-        """
-        assert hasattr(self._stone_ent, "_token"), repr(self) + " has no Stone token"
-        return os.path.basename(self._stone_ent._token.path)
+    def is_visible(self):
+        return self._modifier is not None
 
     @property
-    def as_stone(self):
-        """
-        Wrapped Stone entity.
-        """
-        return self._stone_ent
+    def modifier(self):
+        if not self.is_visible:
+            raise ValueError("Not visible")
+        return self._modifier
 
-    @property
-    def stone_name(self):
-        """
-        Name of Stone entity.
-
-        :rtype: str
-        """
-        return self._stone_ent.name
-
-    @property
-    def fq_stone_name(self):
-        """
-        Fully-qualified Stone entity name.
-
-        :rtype: str
-        """
-        return '.'.join((self.namespace.stone_name, self.stone_name))
-
-    @property
-    def java_class(self):
-        """
-        Generated Java class that maps to the wrapped Stone entity. May not be implemented for
-        entities that do not map to classes (e.g. fields).
-
-        :rtype: :class:`JavaClass`
-        """
-        raise NotImplementedError("element has no Java class name")
-
-    @property
-    def java_field(self):
-        """
-        Java variable name to use for referencing this Stone entity in generated code.
-
-        :rtype: str
-        """
-        return camelcase(self.stone_name)
-
-    @property
-    def java_package(self):
-        """
-        Java package that should contain the generated class for the wrapped Stone entity.
-
-        May be ``None`` if the wrapped entity has no namespace (e.g. primitive type).
-
-        :rtype: str
-        """
-        assert self._ctx.base_package, "No base package in context"
-        if self._stone_namespace:
-            name = self._stone_namespace.name.lower().replace('_', '')
-            return '.'.join((self._ctx.base_package.rstrip('.'), name))
-        else:
-            return None
-
-    def _as_java_class(self, name):
-        """
-        Converts a fully-qualified or short Java class name into a :class:`JavaClass` object using the
-        current generator context.
-
-        Methods returning Java class names should use this method to ensure they always return the
-        correct :class:`JavaClass`.
-
-        :param str name: fully-qualified or short Java class name
-
-        :rtype: :class:`JavaClass`
-        """
-        assert isinstance(name, six.text_type), repr(name)
-        package = self.java_package
-        # only add package if we don't have one already. use
-        # upper-casing of class names as indicator of whether this is
-        # a class name like 'Foo.Builder' or a fq name like
-        # 'com.foo.Bar'
-        if package and name and name[0].isupper():
-            fq_name = package + '.' + name
-        else:
-            fq_name = name
-        return JavaClass(self._ctx, fq_name)
-
-    def __str__(self):
-        if self._stone_namespace:
-            return '%s(%s.%s)' % (type(self).__name__, self._stone_namespace.name, self.stone_name)
-        else:
-            return '%s(%s)' % (type(self).__name__, self.stone_name)
+    @classmethod
+    def from_name(cls, name):
+        for value in cls._VALUES:
+            if value.name == name:
+                return value
+        raise ValueError("Unrecognized name: %s" % name)
 
     def __repr__(self):
-        return '%s(%s)' % (type(self), repr(self.as_stone))
+        return self._name
+
+    def __hash__(self):
+        return self._rank
 
     def __ne__(self, other):
         return not self.__eq__(other)
 
     def __eq__(self, other):
         if isinstance(other, type(self)):
-            return self._stone_ent == other._stone_ent
+            return self._rank == other._rank
         return False
 
-    def __hash__(self):
-        return hash(self._stone_ent)
+    def __lt__(self, other):
+        assert isinstance(other, type(self)), repr(other)
+        return self._rank < other._rank
+
+Visibility.NONE = Visibility(0, 'NONE', None)
+Visibility.PRIVATE = Visibility(1, 'PRIVATE', 'private')
+Visibility.PACKAGE = Visibility(2, 'PACKAGE', '')
+Visibility.PUBLIC = Visibility(3, 'PUBLIC', 'public')
+Visibility._VALUES = (Visibility.NONE, Visibility.PRIVATE, Visibility.PACKAGE, Visibility.PUBLIC)
 
 
-class NamespaceWrapper(StoneWrapper):
-    """
-    Wrapper around a Stone namespace.
+_CMDLINE_PARSER = argparse.ArgumentParser(prog='java-generator')
+_CMDLINE_PARSER.add_argument('--package', type=six.text_type, required=True,
+                             help='base package name')
+_CMDLINE_PARSER.add_argument('--client-class', type=six.text_type, default='StoneClient',
+                             help='Name of client class to generate.')
+_CMDLINE_PARSER.add_argument('--client-javadoc', type=six.text_type,
+                             default='Auto-generated Stone client',
+                             help='Class Javadoc to use for auto-generated client.')
+_CMDLINE_PARSER.add_argument('--requests-classname-prefix', type=six.text_type, default=None,
+                             help=('Prefix to prepend to the per-namespace requests classes. '
+                                   'Defaults to using the name of the client class.'))
+_CMDLINE_PARSER.add_argument('--data-types-only', action="store_true", default=False,
+                             help='Generate all data types but no routes or clients.')
+_CMDLINE_PARSER.add_argument('--javadoc-refs', type=six.text_type, default=None,
+                             help='Path to Javadoc references file. If a file exists at this ' +
+                             'path, it will be loaded and used for generating correct Javadoc ' +
+                             'references based off previous generator runs. This is useful when ' +
+                             'generating multiple clients for a single project. ' +
+                             'If this argument is specified, an update Javadoc references file ' +
+                             'will be saved to the given location. It is OK if this file does not ' +
+                             'exist.')
 
-    :ivar :class:`GeneratorContext` ctx: context for current generation
-    :ivar :class:`stone.api.ApiNamespace` namespace: Stone namespace
-    """
+class JavaCodeGenerator(CodeGenerator):
+    cmdline_parser = _CMDLINE_PARSER
 
-    def __init__(self, ctx, namespace):
-        super(NamespaceWrapper, self).__init__(ctx, namespace, namespace)
-
-    @cached_property
-    def stone_filenames(self):
+    def generate(self, api):
         """
-        List of Stone spec base file names defining this namespace.
+        Toplevel code generation method.
 
-        :rtype: list[str]
+        This is called by stone.cli.
         """
-        filenames = OrderedDict() # use as ordered set
-        # use first data type
-        for data_type in self.data_types:
-            filenames[data_type.stone_filename] = None
-        # fallback to first route
-        for route in self.routes:
-            filenames[route.stone_filename] = None
-        # TODO: fallback to aliases. enable assert after doing this
-        #assert filenames, "namespace not associated with any stone files: %s" % self.stone_name
+        generator = JavaCodeGenerationInstance(self, api)
+        if self.args.data_types_only:
+            assert self.args.javadoc_refs is None, "Cannot specify --javadoc-refs with --data-types-only"
+            generator.generate_data_types()
+        else:
+            generator.generate_all()
 
-        return filenames.keys()
+
+class JavaImporter(object):
+    def __init__(self, current_class, j):
+        assert isinstance(current_class, JavaClass), repr(current_class)
+        assert isinstance(j, JavaApi), repr(j)
+
+        self._class = current_class
+        self._j = j
+        self._imports = set()
 
     @property
-    def stone_filename(self):
-        """
-        Please use :field:`stone_filenames` for namespaces.
-        """
-        raise AssertionError("use stone_filenames for namespaces")
+    def imports(self):
+        return frozenset(self._imports)
 
-    @property
-    def fq_stone_name(self):
-        return self.stone_name
-
-    @cached_property
-    def data_types(self):
+    def add_imports(self, *imports):
         """
-        Data types defined in this namespace.
+        Adds the fully-qualified Java class names to the set of imports for the currently generated
+        class.
 
-        :rtype: tuple[:class:`DataTypeWrapper`]
+        Imports must be fully-qualified class name strings (e.g. ``"com.foo.Bar"``) or JavaClass
+        instances.
         """
-        return tuple(
-            DataTypeWrapper(self._ctx, dt)
-            for dt in self.as_stone.linearize_data_types()
+        assert all(isinstance(i, (six.text_type, JavaClass)) for i in imports), repr(imports)
+
+        def convert(val):
+            if isinstance(val, JavaClass):
+                return val
+            elif isinstance(val, six.string_types):
+                return JavaClass(val)
+            else:
+                raise AssertionError(repr(type(val)))
+
+        # convert all imports to JavaClass instances
+        imports = [convert(i) for i in imports]
+        # remove imports that are missing package (e.g. long, Integer,
+        # etc) and imports from java.lang
+        imports = [
+            i for i in imports
+            if i.package and i.package != 'java.lang'
+        ]
+
+        current_class_prefix = self._class.fq + '.'
+
+        existing_names = {i.name: i for i in self._imports}
+        # avoid issues where we import a class with the same name as us
+        existing_names[self._class.name] = self._class
+
+        for import_ in imports:
+            # resolve nested classes to their root containing class
+            import_ = import_.import_class
+
+            # already imported or local name (not fully qualified)
+            if import_ in self._imports or not import_.package:
+                continue
+
+            # ignore nested classes inside our current class
+            if import_ == self._class:
+                continue
+
+            # is this import in our existing names? make sure we choose the most "valid" import
+            # between the two:
+            if import_.name in existing_names:
+                # we always prefer package-local imports, otherwise we can't determine at name
+                # resolution time whether a package-local class needs to be fully-qualified or
+                # not. This means we essentially block all imports that clash with package-local
+                # class names.
+                if import_.package == self._class.package:
+                    existing_import = existing_names[import_.name]
+                    self._imports.remove(existing_import)
+                    existing_names[import_.name] = import_
+                    self._imports.add(import_)
+                else:
+                    # leave the existing import alone
+                    pass
+            else:
+                # new import
+                existing_names[import_.name] = import_
+                self._imports.add(import_)
+
+    def add_imports_for_namespace(self, namespace):
+        assert isinstance(namespace, ApiNamespace), repr(namespace)
+
+        self.add_imports(
+            'com.dropbox.core.DbxException',
+            'com.dropbox.core.DbxWrappedException',
+            'com.dropbox.core.http.HttpRequestor',
+            'com.dropbox.core.v2.DbxRawClientV2',
+            'java.util.HashMap',
+            'java.util.Map',
         )
+        for route in namespace.routes:
+            self.add_imports_for_route(route)
 
-    @cached_property
-    def routes(self):
-        """
-        Routes defined in this namespace.
-
-        :rtype: tuple[:class:`RouteWrapper`]
-        """
-        return tuple(
-            RouteWrapper(self._ctx, self.as_stone, route)
-            for route in self.as_stone.routes
-        )
-
-    @property
-    def java_class(self):
-        return self._as_java_class(self._ctx.class_name_for_namespace(self))
-
-    @property
-    def java_serializers_class(self):
-        return self._as_java_class(classname('dbx_' + self.stone_name + '_serializers'))
-
-    @property
-    def java_getter(self):
-        return camelcase(self.stone_name)
-
-class RouteWrapper(StoneWrapper):
-    """
-    Wrapper around a Stone route.
-
-    :ivar :class:`GeneratorContext` ctx: context for current generation
-    :ivar :class:`stone.api.ApiNamespace` namespace: Stone namespace containing route
-    :ivar :class:`stone.api.ApiRoute` route: Stone route to wrap
-    """
-
-    def __init__(self, ctx, namespace, route):
+    def add_imports_for_route(self, route):
         assert isinstance(route, ApiRoute), repr(route)
-        super(RouteWrapper, self).__init__(ctx, namespace, route)
 
-    @property
-    def java_class(self):
-        return self._as_java_class(self._ctx.class_name_for_route(self))
+        j = self._j
 
-    @cached_property
-    def arg(self):
-        """
-        Arg data type.
+        self._add_imports_for_data_type(route.arg_data_type)
+        self._add_imports_for_data_type(route.result_data_type)
+        self._add_imports_for_data_type_exception(route.error_data_type)
 
-        :rtype: :class:`DataTypeWrapper`
-        """
-        return DataTypeWrapper(self._ctx, self.as_stone.arg_data_type)
+        if j.has_builder(route) and j.has_arg(route) and j.has_builder(route.arg_data_type):
+            self._add_imports_for_data_type_builder(route.arg_data_type)
 
-    @cached_property
-    def result(self):
-        """
-        Result data type.
-
-        :rtype: :class:`DataTypeWrapper`
-        """
-        return DataTypeWrapper(self._ctx, self.as_stone.result_data_type)
-
-    @cached_property
-    def error(self):
-        """
-        Error data type.
-
-        :rtype: :class:`DataTypeWrapper`
-        """
-        return DataTypeWrapper(self._ctx, self.as_stone.error_data_type)
-
-    @property
-    def has_arg(self):
-        """
-        Whether this route has a arg type.
-
-        :rtype: bool
-        """
-        return not self.arg.is_void
-
-    @property
-    def has_result(self):
-        """
-        Whether this route has a result type.
-
-        :rtype: bool
-        """
-        return not self.result.is_void
-
-    @property
-    def has_error(self):
-        """
-        Whether this route has an error type.
-
-        :rtype: bool
-        """
-        return not self.error.is_void
-
-    @property
-    def has_optional_arg_fields(self):
-        """
-        Whether this route has a arg type containing optional fields.
-
-        :rtype: bool
-        """
-        return self.arg.has_optional_fields
-
-    @property
-    def is_deprecated(self):
-        return self.as_stone.deprecated is not None
-
-    @cached_property
-    def deprecated_by(self):
-        info = self.as_stone.deprecated
-        if info is None:
-            return None
-
-        stone_route = info.by
-        if stone_route is None:
-            return None
-
-        # must find namespace for this route
-        for stone_namespace in self._ctx.api.namespaces.values():
-            namespace_route = stone_namespace.route_by_name.get(stone_route.name, None)
-            if namespace_route == stone_route:
-                return RouteWrapper(self._ctx, stone_namespace, stone_route)
-
-        assert False, "Failed to find namespace for route: %r" % stone_route
-
-    @property
-    def java_method(self):
-        """
-        Name of Java method that maps to this route.
-
-        :rtype: str
-        """
-        return camelcase(self.stone_name)
-
-    @property
-    def supports_builder(self):
-        """
-        Whether this route supports using a builder pattern for building the request.
-
-        :rtype: bool
-        """
-        return self.arg.supports_builder
-
-    @property
-    def java_builder_class(self):
-        """
-        Java class mapping to this route's request builder.
-
-        :rtype: :class:`JavaClass`
-        """
-        assert self.supports_builder or self.request_style == 'download'
-        return self._as_java_class(classname(self.stone_name + '_builder'))
-
-    @property
-    def java_builder_class_with_inheritance(self):
-        """
-        Java class name mapping to this route's request builder, including inheritance
-        (e.g. "FooBuilder extends BarBuilder").
-
-        Class names will be formatted based on the current context (see :class:`JavaClass`)
-
-        :rtype: str
-        """
-        class_name = self.java_builder_class
-        request_style = self.request_style
-        result_type = self.result.java_type()
-        error_type = self.error.java_type()
-        if self.has_error:
-            exc_type = self.error.java_exception_class
-        else:
-            exc_type = JavaClass(self._ctx, 'com.dropbox.core.DbxException')
-
-        if request_style == 'upload':
-            return '%s extends %s<%s,%s,%s>' % (
-                class_name,
-                self._as_java_class('com.dropbox.core.v2.DbxUploadStyleBuilder'),
-                result_type,
-                error_type,
-                exc_type,
-            )
-        elif request_style == 'download':
-            return '%s extends %s<%s>' % (
-                class_name,
-                self._as_java_class('com.dropbox.core.v2.DbxDownloadStyleBuilder'),
-                result_type,
-            )
-        else:
-            return class_name
-
-    @property
-    def java_builder_method(self):
-        """
-        Name of Java method that maps to creating a request builder for this route.
-
-        :rtype: str
-        """
-        assert self.supports_builder or self.request_style == 'download'
-        return camelcase(self.stone_name + '_builder')
-
-    @property
-    def java_uploader_class(self):
-        """
-        Java class mapping to this route's uploader, if the route is an `upload` style route.
-
-        :rtype: :class:`JavaClass`
-        """
-        assert self.request_style == 'upload'
-        return self._as_java_class(classname(self.stone_name + '_uploader'))
-
-    @property
-    def java_downloader_class(self):
-        """
-        Java class mapping to this route's downloader, if the route is an `download` style route.
-
-        :rtype: :class:`JavaClass`
-        """
-        assert self.request_style == 'download'
-        return self._as_java_class('com.dropbox.core.DbxDownloader')
-
-    @property
-    def request_style(self):
-        """
-        Route request style.
-
-        :rtype: str
-        """
-        return self.as_stone.attrs.get('style', 'rpc')
-
-    @property
-    def auth_style(self):
-        """
-        Route auth style.
-
-        :rtype: str
-        """
-        return self.as_stone.attrs.get('auth', 'user')
-
-    @property
-    def host(self):
-        """
-        Route host.
-
-        :rtype: str
-        """
-        return self.as_stone.attrs.get('host', 'api')
-
-    @property
-    def url_path(self):
-        """
-        Server URL path associated with this route.
-
-        :rtype: str
-        """
-        return '2/%s/%s' % (self.namespace.stone_name, self.stone_name)
-
-    @property
-    def java_exception_class(self):
-        """
-        Java class mapping to this route's error type, if the route has an error type.
-
-        :rtype: :class:`JavaClass`
-        """
-        assert self.has_error, "This route has no error type"
-        return self.error.java_exception_class
-
-    @property
-    def java_return_type(self):
-        """
-        Return type of Java method that issues this route (see :field:`java_method`).
-
-        The return type classes will be formatted according to the current context (see
-        :class:`JavaClass`)
-
-        :rtype: str
-        """
-        style = self.request_style
-        if style == 'upload':
-            return str(self.java_uploader_class)
-        elif style == 'download':
-            return '%s<%s>' % (self.java_downloader_class, self.result.java_type())
-        else:
-            if self.has_result:
-                return str(self.result.java_type())
+        if is_struct_type(route.arg_data_type):
+            if j.has_builder(route):
+                fields = route.arg_data_type.all_required_fields
             else:
-                return 'void'
+                fields = route.arg_data_type.all_fields
 
-    @property
-    def java_builder_return_type(self):
-        """
-        Return type of Java method that creates a builder for issuing requests for this route (see
-        :field:`java_builder_method`).
+            for field in fields:
+                self.add_imports_for_field(field)
 
-        The return type classes will be formatted according to the current context (see
-        :class:`JavaClass`)
-
-        :rtype: str
-        """
-        assert self.supports_builder or self.request_style == 'download', "Route doesn't support builder-style requests"
-        return str(self.java_builder_class)
-
-    @property
-    def java_throws(self):
-        """
-        List of exceptions thrown by issuing requests for this route.
-
-        :rtype: tuple[:class:`JavaClass`]
-        """
-        dbx_exc = JavaClass(self._ctx, 'com.dropbox.core.DbxException')
-        if self.has_error and self.request_style != 'upload':
-            # upload routes don't receive the server response in this method call. The request is
-            # completed with the uploader
-            return (self.error.java_exception_class, dbx_exc)
-        else:
-            return (dbx_exc,)
-
-class DataTypeWrapper(StoneWrapper):
-    """
-    Wrapper around a Stone data type.
-
-    :ivar :class:`GeneratorContext` ctx: context for current generation
-    :ivar :class:`stone.data_type.DataType` data_type: Stone data type to wrap
-    """
-
-    def __init__(self, ctx, data_type):
-        assert isinstance(data_type, DataType)
-        if is_nullable_type(data_type):
-            ns_data_type = data_type.data_type
-        else:
-            ns_data_type = data_type
-        namespace = getattr(ns_data_type, "namespace", None)
-        super(DataTypeWrapper, self).__init__(ctx, namespace, data_type)
-
-    @cached_property
-    def parent(self):
-        if (self.is_struct or self.is_union) and self.as_stone.parent_type:
-            return DataTypeWrapper(self._ctx, self.as_stone.parent_type)
-        else:
-            return None
-
-    @cached_property
-    def subtypes(self):
-        if self.is_union or self.is_struct:
-            return tuple(
-                DataTypeWrapper(self._ctx, subtype)
-                for subtype in self.as_stone.subtypes
-            )
-        return ()
-
-    @cached_property
-    def all_fields(self):
-        if self.is_union:
-            return tuple(FieldWrapper(self._ctx, self.as_stone, f) for f in self.as_stone.all_fields)
-        elif self.is_struct:
-            # properly handle inheritence of fields
-            fields_by_name = {
-                f.stone_name: f
-                for f in self.all_parent_fields
-            }
-            fields_by_name.update(
-                (f.name, FieldWrapper(self._ctx, self.as_stone, f))
-                for f in self.as_stone.fields
+        if j.request_style(route) == 'upload':
+            self.add_imports('com.dropbox.core.DbxUploader')
+            if j.has_builder(route):
+                self.add_imports('com.dropbox.core.v2.DbxUploadStyleBuilder')
+        elif j.request_style(route) == 'download':
+            self.add_imports(
+                'com.dropbox.core.DbxDownloader',
+                'com.dropbox.core.v2.DbxDownloadStyleBuilder',
+                'java.util.Collections',
+                'java.util.List',
             )
 
-            # sanity check
-            field_names = set(fields_by_name.keys())
-            all_field_names = {f.name for f in self.as_stone.all_fields}
-            missing_fields = field_names.symmetric_difference(all_field_names)
-            assert not missing_fields, "Missing fields for %s: %s" % (self, missing_fields)
+    def add_imports_for_route_builder(self, route):
+        assert isinstance(route, ApiRoute), repr(route)
 
-            return tuple(fields_by_name[f.name] for f in self.as_stone.all_fields)
-        else:
-            return ()
+        j = self._j
 
-    @cached_property
-    def all_required_fields(self):
-        return tuple(f for f in self.all_fields if f.is_required)
+        assert j.has_builder(route), repr(route)
 
-    @cached_property
-    def all_optional_fields(self):
-        return tuple(f for f in self.all_fields if f.is_optional)
+        if j.has_arg(route) and j.has_builder(route.arg_data_type):
+            self._add_imports_for_data_type_builder(route.arg_data_type)
+        self._add_imports_for_data_type(route.result_data_type)
+        self._add_imports_for_data_type_exception(route.error_data_type)
 
-    @cached_property
-    def fields(self):
-        if self.is_union or self.is_struct:
-            return tuple(FieldWrapper(self._ctx, self.as_stone, f) for f in self.as_stone.fields)
-        else:
-            return ()
-
-    @cached_property
-    def required_fields(self):
-        return tuple(f for f in self.fields if f.is_required)
-
-    @cached_property
-    def optional_fields(self):
-        return tuple(f for f in self.fields if f.is_optional)
-
-    @property
-    def all_parent_fields(self):
-        parent = self.parent
-        if parent:
-            return parent.all_fields
-        else:
-            return ()
-
-    @cached_property
-    def all_required_parent_fields(self):
-        return tuple(f for f in self.all_parent_fields if f.is_required)
-
-    @cached_property
-    def catch_all_field(self):
-        if self.is_union and self.as_stone.catch_all_field is not None:
-            return FieldWrapper(self._ctx, self.as_stone, self.as_stone.catch_all_field)
-        else:
-            return None
-
-    @cached_property
-    def has_optional_fields(self):
-        if self.is_struct:
-            return any(f.is_optional for f in self.all_fields)
-        else:
-            return False
-
-    @cached_property
-    def list_data_type(self):
-        assert self.is_list
-        return DataTypeWrapper(self._ctx, self.as_stone.data_type)
-
-    @cached_property
-    def nullable_data_type(self):
-        assert self.is_nullable
-        return DataTypeWrapper(self._ctx, self.as_stone.data_type)
-
-    @property
-    def supports_builder(self):
-        if self.is_struct:
-            n_optional = len(self.all_optional_fields)
-            return n_optional > 1
-        else:
-            return False
-
-    @property
-    def is_enum(self):
-        if self.is_union:
-            has_value_fields = any(f.has_value for f in self.all_fields)
-            return not has_value_fields
-        else:
-            return False
-
-    @property
-    def is_union(self):
-        return is_union_type(self.as_stone)
-
-    @property
-    def is_struct(self):
-        return is_struct_type(self.as_stone)
-
-    @property
-    def is_list(self):
-        return is_list_type(self.as_stone)
-
-    @property
-    def is_nullable(self):
-        return is_nullable_type(self.as_stone)
-
-    @property
-    def is_primitive(self):
-        if not self.is_nullable:
-            return (
-                is_boolean_type(self.as_stone) or
-                is_numeric_type(self.as_stone) or
-                is_void_type(self.as_stone)
-            )
-        return False
-
-    @property
-    def is_void(self):
-        return is_void_type(self.as_stone)
-
-    @property
-    def is_enumerated_subtype(self):
-        return self.as_stone.is_member_of_enumerated_subtypes_tree()
-
-    @property
-    def has_enumerated_subtypes(self):
-        return self.as_stone.has_enumerated_subtypes()
-
-    @cached_property
-    def enumerated_subtypes(self):
-        assert self.has_enumerated_subtypes
-        return tuple(
-            FieldWrapper(self._ctx, self.as_stone, f)
-            for f in self.as_stone.get_enumerated_subtypes()
+        namespace = j.route_namespace(route)
+        route_auth = j.auth_style(route) if j.auth_style(route) != 'noauth' else 'user'
+        self.add_imports(
+            j.java_class(namespace),
+            'com.dropbox.core.DbxException',
         )
 
-    @property
-    def is_collapsible(self):
-        if self.is_nullable:
-            return self.nullable_data_type.is_collapsible
+        for field in route.arg_data_type.all_optional_fields:
+            self.add_imports_for_field(field)
+
+        if j.request_style(route) == 'download':
+            self.add_imports(
+                'com.dropbox.core.v2.DbxDownloadStyleBuilder',
+                'com.dropbox.core.DbxDownloader',
+            )
+        elif j.request_style(route) == 'upload':
+            self.add_imports('com.dropbox.core.v2.DbxUploadStyleBuilder')
+
+    def add_imports_for_route_uploader(self, route):
+        self.add_imports(
+            'com.dropbox.core.DbxWrappedException',
+            'com.dropbox.core.DbxUploader',
+            'com.dropbox.core.http.HttpRequestor',
+            'java.io.IOException',
+        )
+        self._add_imports_for_data_type(route.result_data_type)
+        self._add_imports_for_data_type_exception(route.error_data_type)
+
+    def add_imports_for_data_type(self, data_type, include_serialization=True):
+        assert isinstance(data_type, DataType), repr(data_type)
+        assert is_user_defined_type(data_type), repr(data_type)
+
+        j = self._j
+
+        # for hash code computation
+        if data_type.fields or (is_union_type(data_type) and not j.is_enum(data_type)):
+            self.add_imports('java.util.Arrays')
+
+        self._add_imports_for_data_type(data_type)
+
+        if include_serialization:
+            self._add_imports_for_data_type_serializers(data_type)
+
+        for field in data_type.all_fields:
+            self.add_imports_for_field(field)
+            # for regex pattern validation
+            if is_string_type(field.data_type) and field.data_type.pattern is not None:
+                self.add_imports('java.util.regex.Pattern')
+
+        # check if we need to import parent type
+        if is_struct_type(data_type) and data_type.parent_type:
+            self._add_imports_for_data_type(data_type.parent_type)
+
+    def add_imports_for_exception_type(self, data_type):
+        j = self._j
+        self.add_imports(
+            'com.dropbox.core.DbxApiException',
+            'com.dropbox.core.LocalizedText',
+            j.java_class(data_type),
+        )
+
+    def add_imports_for_field(self, field):
+        self._add_imports_for_data_type(field.data_type)
+
+    def _add_imports_for_data_type(self, data_type):
+        j = self._j
+
+        if is_user_defined_type(data_type):
+            self.add_imports(j.java_class(data_type))
         else:
-            return self.is_struct and not self.is_enumerated_subtype
+            java_type = _TYPE_MAP_UNBOXED.get(data_type.name)
+            if java_type and '.' in java_type:
+                self.add_imports(java_type)
 
-    @property
-    def requires_validation(self):
-        stone_dt = self.as_stone
-        if is_list_type(stone_dt):
-            return True
-        elif is_numeric_type(stone_dt):
-            return any(r is not None for r in (
-                stone_dt.min_value,
-                stone_dt.max_value,
-            ))
-        elif is_string_type(stone_dt):
-            return any(r is not None for r in (
-                stone_dt.min_length,
-                stone_dt.max_length,
-                stone_dt.pattern,
-            ))
+            if is_list_type(data_type) or is_nullable_type(data_type):
+                self._add_imports_for_data_type(data_type.data_type)
+            elif is_timestamp_type(data_type):
+                self.add_imports('com.dropbox.core.util.LangUtil')
+
+    def _add_imports_for_data_type_builder(self, data_type):
+        assert isinstance(data_type, DataType), repr(data_type)
+        j = self._j
+        self.add_imports(j.builder_class(data_type))
+
+    def _add_imports_for_data_type_exception(self, data_type):
+        j = self._j
+
+        if is_void_type(data_type):
+            self.add_imports('com.dropbox.core.DbxApiException')
         else:
-            return False
+            self.add_imports(
+                j.java_class(data_type),
+                j.exception_class(data_type),
+            )
 
-    @property
-    def java_class(self):
-        assert not self.is_primitive, "primitive data types do not have custom classes"
-        if self.is_struct or self.is_union:
-            return self._as_java_class(classname(self.stone_name))
+    def _add_imports_for_data_type_serializers(self, data_type):
+        self.add_imports(
+            'java.io.IOException',
+            'com.fasterxml.jackson.core.JsonGenerationException',
+            'com.fasterxml.jackson.core.JsonGenerator',
+            'com.fasterxml.jackson.core.JsonParseException',
+            'com.fasterxml.jackson.core.JsonParser',
+            'com.fasterxml.jackson.core.JsonToken',
+            'com.dropbox.core.stone.StoneSerializers',
+        )
+        if is_struct_type(data_type):
+            self.add_imports('com.dropbox.core.stone.StructSerializer')
+        elif is_union_type(data_type):
+            self.add_imports('com.dropbox.core.stone.UnionSerializer')
+
+    def __repr__(self):
+        return '%s(class=%s,imports=%s)' % (type(self).__name__, self._class, self._imports)
+
+
+class JavaClassWriter(object):
+    def __init__(self, g, j, refs, java_class, stone_element=None, package_doc=None):
+        assert isinstance(java_class, JavaClass), repr(java_class)
+        assert java_class.package, repr(java_class)
+
+        self.importer = JavaImporter(java_class, j)
+
+        self._g = g
+        self._j = j
+        self._refs = refs
+        self._class = java_class
+        self._stone_element = stone_element
+        self._package_doc = package_doc
+
+        if package_doc:
+            assert java_class.name == 'package-info', "Only package-info.java files can contain package Javadoc"
+
+    def _mkdirs(self, path):
+        if not os.path.isdir(path):
+            self._g.logger.info('Creating directory %s', path)
+            os.makedirs(path)
+
+    def __enter__(self):
+        components = self._class.import_class.fq.split('.')
+        path = os.path.join(*components)
+        self._mkdirs(os.path.dirname(path))
+
+        self._enter_ctx = self._g.output_to_relative_path(path + '.java')
+        self._enter_ctx.__enter__()
+        self._emit_header()
+        if self._package_doc:
+            self.javadoc(self._package_doc)
+        self.out('package %s;', self._class.package)
+        self.out('')
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        ret = self._enter_ctx.__exit__(exc_type, exc_value, traceback)
+        self._enter_ctx = None
+        return ret
+
+    def fmt(self, fmt_str, *args, **kwargs):
+        assert isinstance(fmt_str, six.text_type), repr(fmt_str)
+        generics = kwargs.get('generics', True)
+        # resolve JavaClass to appropriate names based on our current imports
+        resolved_args = tuple(
+            self.resolved_class(a, generics=generics) if isinstance(a, JavaClass) else a
+            for a in args
+        )
+        return fmt_str % resolved_args
+
+    def out(self, fmt_str, *args, **kwargs):
+        self._g.emit(self.fmt(fmt_str, *args), **kwargs)
+
+    def block(self, fmt_str, *args, **kwargs):
+        return self._g.block(self.fmt(fmt_str, *args).strip(), **kwargs)
+
+    @contextmanager
+    def conditional_block(self, predicate, fmt_str, *args):
+        if predicate:
+            with self.block(fmt_str, *args):
+                yield
         else:
-            return self.java_type(boxed=True, generics=False)
+            yield
 
-    @property
-    def java_class_with_inheritance(self):
-        if self.parent:
-            return '%s extends %s' % (self.java_class, self.parent.java_class)
+    def class_block(self, element, visibility=Visibility.PUBLIC, parent_class=None):
+        assert isinstance(element, (JavaClass, StoneType)), repr(element)
+        assert visibility.is_visible, repr((element, visibility))
+
+        j = self._j
+
+        java_class = j.java_class(element) if isinstance(element, StoneType) else element
+
+        modifiers = [visibility.modifier]
+        class_type = 'class'
+        class_name = java_class.name_with_generics
+        inheritance = parent_class
+
+        if java_class.is_nested:
+            modifiers.append('static')
+
+        if isinstance(element, DataType):
+            data_type = element
+            if j.is_enum(data_type):
+                class_type = 'enum'
+            elif is_union_type(data_type):
+                modifiers.append('final')
+            elif is_struct_type(data_type) and data_type.parent_type:
+                assert parent_class is None, repr((data_type, parent_class))
+                inheritance = j.java_class(data_type.parent_type)
+
+        if inheritance:
+            return self.block('%s %s %s extends %s', ' '.join(modifiers), class_type, class_name, inheritance)
         else:
-            return str(self.java_class)
+            return self.block('%s %s %s', ' '.join(modifiers), class_type, class_name)
 
-    @property
-    def java_builder_class(self):
-        assert self.is_struct, "only structs have builder classes: %r" % self
-        # builders are nested in their class (e.g. CommitInfo.Builder)
-        return self._as_java_class(classname(self.stone_name) + '.Builder')
-
-    @property
-    def java_builder_class_with_inheritance(self):
-        if self.parent and self.parent.supports_builder:
-            return '%s extends %s' % (self.java_builder_class, self.parent.java_builder_class)
+    def resolved_class(self, val, generics=True):
+        if isinstance(val, six.text_type):
+            val = JavaClass(val)
         else:
-            return str(self.java_builder_class)
+            assert isinstance(val, JavaClass), repr(val)
+        return val.resolved_name(self._class, self.importer.imports, generics=generics)
 
-    @property
-    def java_builder_field(self):
-        return camelcase(self.stone_name + '_builder')
-
-    @property
-    def java_exception_class(self):
-        assert not self.is_primitive, "primitive data types cannot have exception classes: %r" % self
-        return self._as_java_class(classname(self.stone_name + '_exception'))
-
-    @property
-    def java_serializer_singleton(self):
-        assert self.is_struct or self.is_union, repr(self)
-        return _fixreserved('_' + self.stone_name + '_SERIALIZER');
-
-    @property
-    def java_serializer(self):
-        core_serializers_class = JavaClass(self._ctx, 'com.dropbox.core.stone.StoneSerializers')
-        if self.is_nullable:
-            return '%s.nullable(%s)' % (core_serializers_class, self.nullable_data_type.java_serializer)
-        elif self.is_list:
-            return '%s.list(%s)' % (core_serializers_class, self.list_data_type.java_serializer)
-        elif self.is_struct or self.is_union:
-            return '%s.Serializer.INSTANCE' % self.java_class
+    def _emit_header(self):
+        j = self._j
+        filenames = j.get_spec_filenames(self._stone_element) if self._stone_element else None
+        self.out('/* DO NOT EDIT */')
+        if filenames:
+            self.out('/* This file was generated from %s */' % ', '.join(filenames))
         else:
-            return '%s.%s()' % (core_serializers_class, camelcase(self.stone_name))
+            self.out('/* This file was generated by Stone */')
+        self.out('')
 
-    def java_type(self, boxed=True, generics=True):
-        if self.is_nullable:
-            return self.nullable_data_type.java_type(boxed=True, generics=generics)
+    def write_imports(self):
+        # start off will all imports, then group into categories
+        imports = self.importer.imports
 
-        elif self.is_list:
-            java_list_class = JavaClass(self._ctx, 'java.util.List')
-            if generics:
-                return '%s<%s>' % (java_list_class, self.list_data_type.java_type())
-            else:
-                return java_list_class
+        # remove package-local imports
+        imports = {
+            import_ for import_ in imports
+            if import_.package != self._class.package
+        }
 
-        else:
-            type_map = _TYPE_MAP_BOXED if boxed else _TYPE_MAP_UNBOXED
-            if self.stone_name in type_map:
-                return JavaClass(self._ctx, type_map[self.stone_name])
-            else:
-                assert is_composite_type(self.as_stone), repr(self)
-                return self.java_class
+        # group all our project imports into one spot. use the first two package parts for root corp
+        # package (e.g. com.foo.core.v2 -> com.foo)
+        project_package_prefix = '.'.join(self._class.package.split('.', 2)[:2])
+        project_imports = {
+            import_ for import_ in imports
+            if import_.package.startswith(project_package_prefix)
+        }
+        imports = imports - project_imports
 
-    def java_value(self, stone_value):
-        if isinstance(stone_value, bool):
-            return 'true' if stone_value else 'false'
-        if isinstance(stone_value, float):
-            return repr(stone_value)  # Because str() drops the last few digits.
-        if self.stone_name in ('Int64', 'UInt64', 'UInt32'):
-            return str(stone_value) + 'L'  # Need exact type match for boxed values.
-        if self.is_union:
-            assert isinstance(stone_value, TagRef), (self, stone_value)
-            assert self.as_stone is stone_value.union_data_type, (self, stone_value)
-            for field in self.all_fields:
-                if field.stone_name == stone_value.tag_name:
-                    if self.is_enum:
-                        return '%s.%s' % (field.containing_data_type.java_class, field.java_enum)
-                    elif field.has_value:
-                        return '%s.%s()' % (field.containing_data_type.java_class, field.java_factory_method)
-                    else:
-                        return '%s.%s' % (field.containing_data_type.java_class, field.java_singleton)
-            else:
-                assert False, "Could not find tag '%s' in '%s'" % (stone_value.tag_name, self)
-        return str(stone_value)
+        # now group the rest by the first package part
+        grouped = defaultdict(set)
+        for import_ in imports:
+            root = import_.package.split('.', 1)[0]
+            grouped[root].add(import_)
 
-    @property
-    def java_name(self):
-        return camelcase(self.stone_name)
+        # now write out the groups in this order:
+        #
+        #    project packages
+        #    3rd party packages
+        #    java
+        #    javax
 
+        if project_imports:
+            for import_ in sorted(project_imports):
+                self.out('import %s;', import_.import_class.fq)
 
-class FieldWrapper(StoneWrapper):
-    """
-    Wrapper around a Stone field.
+        java_imports = grouped.pop('java', set())
+        javax_imports = grouped.pop('javax', set())
 
-    :ivar :class:`GeneratorContext` ctx: context for current generation
-    :ivar :class:`stone.data_type.DataType` data_type: Stone data type containing this field
-    :ivar :class:`stone.data_type.Field` field: Stone field to wrap
-    """
+        needs_newline = bool(project_imports)
+        for _, imports in chain(sorted(grouped.items()), [
+                ('java', java_imports),
+                ('javax', javax_imports)
+        ]):
+            if imports:
+                if needs_newline:
+                    self.out('')
+                needs_newline = True
+                for import_ in sorted(imports):
+                    self.out('import %s;', import_.import_class.fq)
 
-    def __init__(self, ctx, containing_data_type, field):
-        assert isinstance(containing_data_type, DataType), repr(containing_data_type)
-        assert hasattr(containing_data_type, "namespace"), repr(containing_data_type)
+    def java_default_value(self, field):
         assert isinstance(field, Field), repr(field)
-        super(FieldWrapper, self).__init__(ctx, containing_data_type.namespace, field)
-        self._containing_stone_data_type = containing_data_type
+        assert field.has_default, repr(field)
+        return self.java_value(field.data_type, field.default)
 
-    @property
-    def fq_stone_name(self):
-        return '.'.join((self.namespace.stone_name, self.containing_data_type.stone_name, self.stone_name))
+    def java_value(self, data_type, stone_value):
+        assert isinstance(data_type, DataType), repr(data_type)
 
-    @property
-    def stone_doc(self):
-        doc = super(FieldWrapper, self).stone_doc
-        if self.is_catch_all and not doc:
-            return """
-            Catch-all used for unknown tag values returned by the Dropbox servers.
+        j = self._j
 
-            Receiving a catch-all value typically indicates this SDK version is not up to
-            date. Consider updating your SDK version to handle the new tags.
-            """
+        if data_type.name == 'Boolean':
+            return 'true' if stone_value else 'false'
+        elif data_type.name in ('Float32', 'Float64'):
+            return repr(stone_value) # Because str() drops the last few digits.
+        elif data_type.name in ('Int64', 'UInt64', 'UInt32'):
+            return str(stone_value) + 'L'  # Need exact type match for boxed values.
+        elif is_union_type(data_type):
+            assert isinstance(stone_value, TagRef), (data_type, stone_value)
+            assert data_type == stone_value.union_data_type, (data_type, stone_value)
 
-        return doc
-
-    @cached_property
-    def containing_data_type(self):
-        return DataTypeWrapper(self._ctx, self._containing_stone_data_type)
-
-    @cached_property
-    def data_type(self):
-        return DataTypeWrapper(self._ctx, self.as_stone.data_type)
-
-    @property
-    def is_required(self):
-        assert not self.containing_data_type.is_union, "unions don't have required fields"
-        return self.as_stone in self.containing_data_type.as_stone.all_required_fields
-
-    @property
-    def is_optional(self):
-        assert self.containing_data_type.is_struct, repr(self.containing_data_type)
-        return self.as_stone in self.containing_data_type.as_stone.all_optional_fields
-
-    @property
-    def is_catch_all(self):
-        catch_all_field = self.containing_data_type.catch_all_field
-        return self == catch_all_field
-
-    @property
-    def is_enumerated_subtype(self):
-        containing_dt = self.containing_data_type
-        if containing_dt.has_enumerated_subtypes:
-            return self in containing_dt.enumerated_subtypes
-        return False
-
-    @property
-    def is_deprecated(self):
-        return getattr(self.as_stone, "deprecated", False)
-
-    @property
-    def has_default(self):
-        return self.containing_data_type.is_struct and self.as_stone.has_default
-
-    @property
-    def has_value(self):
-        return not self.data_type.is_void
-
-    @property
-    def is_collapsible(self):
-        return self.containing_data_type.is_union and self.data_type.is_collapsible
-
-    @property
-    def default_value(self):
-        assert self.containing_data_type.is_struct, "only structs have default values"
-        assert self.has_default, "value has no default"
-        return self.data_type.java_value(self.as_stone.default)
-
-    def java_type(self, generics=True):
-        return self.data_type.java_type(boxed=self.data_type.is_nullable, generics=generics)
-
-    @property
-    def java_name(self):
-        stone_name = self.stone_name
-        if self.containing_data_type.is_enum:
-            return self.java_enum
-        elif self.containing_data_type.is_union:
-            return camelcase(stone_name + '_value')
-        else:
-            return camelcase(stone_name)
-
-    @property
-    def java_enum(self):
-        return self.tag_name
-
-    @property
-    def tag_name(self):
-        return allcaps(self.stone_name)
-
-    @property
-    def java_singleton(self):
-        return allcaps(self.stone_name)
-
-    def java_type_and_name(self, generics=True):
-        return '%s %s' % (self.java_type(generics=generics), self.java_name)
-
-    @property
-    def java_is_union_type_method(self):
-        assert not self.containing_data_type.is_enum, "enum fields don't have isType() methods: %s" % self.containing_data_type
-        return camelcase('is_' + self.stone_name)
-
-    @property
-    def java_getter(self):
-        assert not self.containing_data_type.is_enum, "enum fields don't have getter methods"
-        return camelcase('get_' + self.java_name)
-
-    @property
-    def java_builder_setter(self):
-        assert not self.containing_data_type.is_enum, "enum fields don't have setter methods"
-        assert not self.data_type.is_list, "list fields use adders, not setters"
-        return camelcase('with_' + self.java_name)
-
-    @property
-    def java_builder_list_add(self):
-        assert not self.containing_data_type.is_enum, "enum fields don't have setter methods"
-        assert self.data_type.is_list, "only list fields use adders, use setter instead."
-        return camelcase('add_' + self.java_name)
-
-    @property
-    def java_builder_list_add_all(self):
-        assert not self.containing_data_type.is_enum, "enum fields don't have setter methods"
-        assert self.data_type.is_list, "only list fields use adders, use setter instead."
-        return camelcase('add_all_' + self.java_name)
-
-    @property
-    def java_factory_method(self):
-        assert not self.containing_data_type.is_enum, "enum fields don't have factory methods"
-        assert self.has_value, "field does not have a value, so does not require a factory method"
-        return camelcase(self.stone_name)
-
-    def __str__(self):
-        namespace = self.namespace.stone_name if self.namespace else ''
-        data_type = self.containing_data_type.stone_name
-        name = self.stone_name
-        return '%s(%s)' % (type(self).__name__, '.'.join(filter(None, (namespace, data_type, name))))
-
-
-class JavadocGenerator(object):
-    """
-    Javadoc generator that intelligently inspects Stone items to product appropriate Javadoc
-    annotations.
-
-    :ivar :class:`GeneratorContext` ctx: context for current generation
-    """
-
-    def __init__(self, ctx):
-        assert isinstance(ctx, GeneratorContext), repr(ctx)
-        self._ctx = ctx
-
-    def lookup_stone_ref(self, tag, val, context=None):
-        assert isinstance(tag, six.text_type), repr(tag)
-        assert isinstance(val, six.text_type), repr(val)
-        assert context is None or isinstance(context, StoneWrapper), repr(context)
-
-        if tag == 'route':
-            namespace, route = self._split_id(val, 2)
-            return self._lookup_route(namespace, route, context)
-        elif tag == 'type':
-            namespace, data_type = self._split_id(val, 2)
-            return self._lookup_data_type(namespace, data_type, context)
-        elif tag == 'field':
-            namespace, data_type, field = self._split_id(val, 3)
-            return self._lookup_field(namespace, data_type, field, context)
-        elif tag == 'link':
-            return None
-        elif tag == 'val':
-            return None
-        else:
-            assert False, 'Unsupported tag (:%s:`%s`)' % (tag, val)
-
-    def javadoc_ref(self, element, builder=False):
-        assert isinstance(element, StoneWrapper), repr(element)
-
-        if isinstance(element, RouteWrapper):
-            ref = self._javadoc_route_ref(element, builder=builder)
-        elif isinstance(element, DataTypeWrapper):
-            ref = self._javadoc_data_type_ref(element, builder=builder)
-        elif isinstance(element, FieldWrapper):
-            ref = self._javadoc_field_ref(element)
-        else:
-            assert False, "Unsupported element type: %s" % repr(element)
-
-        return sanitize_javadoc(ref)
-
-    def javadoc_ref_handler(self, tag, val, context=None):
-        element = self.lookup_stone_ref(tag, val, context)
-
-        # use {@code ...} tag for unresolved references so we don't have broken links in our Javadoc
-        if tag == 'route':
-            if element:
-                ref = self._javadoc_route_ref(element)
+            for field in data_type.all_fields:
+                if field.name == stone_value.tag_name:
+                    if j.field_static_instance(field):
+                        value = self.fmt('%s.%s', j.java_class(data_type), j.field_static_instance(field))
+                    else:
+                        assert j.field_factory_method(field)
+                        value = self.fmt('%s.%s()', j.java_class(data_type), j.field_factory_method(field))
+                    return value
             else:
-                self._ctx.g.logger.warn('Unable to resolve Stone reference (:%s:`%s`) [ctx=%s]' % (tag, val, context))
-                ref = '{@code %s}' % camelcase(val)
-        elif tag == 'type':
-            if element:
-                ref = self._javadoc_data_type_ref(element)
-            else:
-                self._ctx.g.logger.warn('Unable to resolve Stone reference (:%s:`%s`) [ctx=%s]' % (tag, val, context))
-                ref = '{@code %s}' % classname(val)
-        elif tag == 'field':
-            if element:
-                ref = self._javadoc_field_ref(element)
-            else:
-                self._ctx.g.logger.warn('Unable to resolve Stone reference (:%s:`%s`) [ctx=%s]' % (tag, val, context))
-                ref = '{@code %s}' % camelcase(val)
-        elif tag == 'link':
-            anchor, link = val.rsplit(' ', 1)
-            # unsanitize from previous sanitize calls
-            anchor = unsanitize_javadoc(anchor)
-            # do not sanitize this HTML
-            return '<a href="%s">%s</a>' % (link, anchor)
-        elif tag == 'val':
-            # Note that all valid Stone literals happen to be valid Java literals.
-            ref = '{@code %s}' % val
+                assert False, "Could not find tag '%s' in '%s'" % (stone_value.tag_name, data_type)
         else:
-            assert False, 'Unsupported tag (:%s:`%s`)' % (tag, val)
+            return str(stone_value)
 
-        return sanitize_javadoc(ref)
+    def java_serializer(self, data_type):
+        assert isinstance(data_type, DataType), repr(data_type)
 
-    def translate_stone_doc(self, doc, context=None):
-        if isinstance(doc, StoneWrapper):
-            wrapper = doc
-            doc = wrapper.stone_doc
-            context = wrapper
-
-        if doc:
-            handler = lambda tag, val: self.javadoc_ref_handler(tag, val, context=context)
-            return self._ctx.g.process_doc(sanitize_javadoc(doc), handler)
+        if is_user_defined_type(data_type):
+            serializer_class = self._j.serializer_class(data_type)
+            return self.fmt('%s.INSTANCE', serializer_class)
         else:
-            return doc
-
-    def generate_javadoc(self, doc, context=None, fields=(), params=(), returns=None, throws=(), deprecated=None, allow_defaults=True):
-        # convenience for inferring various arguments from our wrapper objects
-        if isinstance(doc, StoneWrapper):
-            wrapper = doc
-            doc = wrapper.stone_doc
-            context = context or wrapper
-
-        assert isinstance(doc, six.text_type), repr(doc)
-        assert isinstance(context, StoneWrapper) or context is None, repr(context)
-        assert isinstance(fields, (Sequence, types.GeneratorType)), repr(fields)
-        assert isinstance(params, (Sequence, types.GeneratorType, OrderedDict)), repr(params)
-        assert isinstance(returns, (six.text_type, StoneWrapper)) or returns is None, repr(returns)
-        assert isinstance(throws, (Sequence, types.GeneratorType, OrderedDict)), repr(throws)
-        assert isinstance(deprecated, (RouteWrapper, bool)) or deprecated is None, repr(deprecated)
-
-        # look at context to determine if we are deprecated, unless explicitly specified
-        if deprecated is None and context is not None:
-            if isinstance(context, RouteWrapper):
-                deprecated = context.deprecated_by or context.is_deprecated
-            elif isinstance(context, FieldWrapper):
-                deprecated = context.is_deprecated
+            serializers_class = JavaClass('com.dropbox.core.stone.StoneSerializers')
+            if is_nullable_type(data_type):
+                return self.fmt('%s.nullable(%s)',
+                                serializers_class, self.java_serializer(data_type.data_type))
+            elif is_list_type(data_type):
+                return self.fmt('%s.list(%s)',
+                                serializers_class, self.java_serializer(data_type.data_type))
             else:
-                assert not hasattr(context, "is_deprecated"), repr(context)
+                return self.fmt('%s.%s()', serializers_class, camelcase(data_type.name))
 
-        params_doc = self.javadoc_params(fields, allow_defaults=allow_defaults)
-        params_doc.update(self._translate_ordered_collection(params, context))
-        returns_doc = self.translate_stone_doc(returns, context)
-        throws_doc = self._translate_ordered_collection(throws, context)
-        deprecated_doc = self.javadoc_deprecated(deprecated)
+    def javadoc(self, doc,
+                stone_elem=None,
+                fields=(),
+                params=(),
+                returns=None,
+                throws=(),
+                deprecated=None,
+                allow_defaults=True):
+        # convenience so we can do "javadoc(field)"
+        if isinstance(doc, StoneType):
+            assert stone_elem is None, repr(stone_elem)
+            stone_elem = doc
+            assert hasattr(stone_elem, "doc"), repr(stone_elem)
+            doc = stone_elem.doc
+            # apply default catch-all documentation to all fields
+            if not doc and isinstance(stone_elem, UnionField):
+                if stone_elem == self._j.field_containing_data_type(stone_elem).catch_all_field:
+                    doc = _CATCH_ALL_DOC
+
+        doc = doc or ''
+
+        assert isinstance(doc, six.text_type), repr((doc, stone_elem))
+        assert isinstance(stone_elem, StoneType) or stone_elem is None, repr(stone_elem)
+        assert isinstance(fields, Sequence), repr(fields)
+        assert all(isinstance(f, Field) for f in fields), repr(fields)
+        assert isinstance(params, (Sequence, OrderedDict)), repr(params)
+        assert isinstance(returns, (six.text_type, StoneType)) or returns is None, repr(returns)
+        assert isinstance(throws, (Sequence, OrderedDict)), repr(throws)
+        assert isinstance(deprecated, (ApiRoute, bool)) or deprecated is None, repr(deprecated)
+
+        # auto-detect deprecated values
+        if deprecated is None and stone_elem is not None:
+            if isinstance(stone_elem, ApiRoute):
+                deprecation_info = stone_elem.deprecated
+                if deprecation_info is not None:
+                    deprecated = deprecation_info.by or True
+            elif isinstance(stone_elem, StructField):
+                deprecated = stone_elem.deprecated
+            else:
+                assert not hasattr(stone_elem, "is_deprecated"), repr(stone_elem)
+
+        params_doc = self._javadoc_fields(fields, stone_elem, allow_defaults=allow_defaults)
+        params_doc.update(self._translate_ordered_collection(params, stone_elem))
+        if isinstance(returns, StoneType):
+            returns_doc = self._translate_stone_doc(returns.doc, returns) if hasattr(returns, 'doc') else ''
+        else:
+            returns_doc = self._translate_stone_doc(returns, stone_elem)
+        throws_doc = self._translate_ordered_collection(throws, stone_elem)
+        deprecated_doc = self._javadoc_deprecated(deprecated)
 
         requires_validation = any(self._field_validation_requirements(f) for f in fields)
         if requires_validation:
@@ -2169,104 +1134,16 @@ class JavadocGenerator(object):
             else:
                 throws_doc[exception] = "If any argument does not meet its preconditions."
 
-        return self.generate_javadoc_raw(
-            self.translate_stone_doc(doc, context),
+        return self._generate_javadoc_raw(
+            self._translate_stone_doc(doc, stone_elem),
             params=params_doc,
             returns=returns_doc,
             throws=throws_doc,
             deprecated=deprecated_doc,
         )
 
-    def generate_javadoc_raw(self, doc, params=None, returns=None, throws=None, deprecated=None):
-        # deprecated can be an empty six.text_type, which means no doc
-        if not any((doc, params, returns, throws, deprecated is not None)):
-            return
-
-        out = self._ctx.g.emit
-        prefix = ' * '
-        attr_doc_prefix = prefix + (' ' * 4)
-
-        def emit_attrs(tag, attrs):
-            if attrs:
-                out(prefix.rstrip())
-                attr_prefix = ''.join((prefix, tag, ' '))
-
-                for attr_name, attr_doc in attrs.items():
-                    # Javadoc complains about tags that are missing documentation, except for
-                    # @deprecated
-                    if not attr_doc.strip():
-                        if tag == '@deprecated':
-                            self._ctx.g.emit_wrapped_text(
-                                tag,
-                                initial_prefix=prefix,
-                                subsequent_prefix=attr_doc_prefix)
-                        continue
-
-                    if attr_name:
-                        doc_text = '  '.join((attr_name, attr_doc))
-                    else:
-                        doc_text = attr_doc
-                    self._ctx.g.emit_wrapped_text(
-                        collapse_whitespace(doc_text),
-                        initial_prefix=attr_prefix,
-                        subsequent_prefix=attr_doc_prefix
-                    )
-
-        out('/**')
-
-        if doc:
-            first_paragraph = True
-            for paragraph in split_paragraphs(doc.strip()):
-                if not first_paragraph:
-                    out(prefix.rstrip())
-                    if paragraph:
-                        paragraph = ''.join(('<p> ', paragraph, ' </p>'))
-                else:
-                    first_paragraph = False
-                self._ctx.g.emit_wrapped_text(paragraph, initial_prefix=prefix, subsequent_prefix=prefix)
-
-        emit_attrs('@param', params)
-        emit_attrs('@return', { "": returns } if returns else None)
-        emit_attrs('@throws', throws)
-        # deprecated can be empty string, which still means we should emit
-        emit_attrs('@deprecated', { "": deprecated } if deprecated is not None else None)
-
-        out(' */')
-        # compiler requires a separate annotation outside the javadoc to display warnings about
-        # using obsolete APIs.
-        if deprecated is not None:
-            out('@Deprecated')
-
-    def javadoc_params(self, fields, allow_defaults=True):
-        assert isinstance(fields, (Sequence, types.GeneratorType)), repr(fields)
-        for f in fields:
-            assert isinstance(f, FieldWrapper), "fields must contain FieldWrapper instances, found: " + repr(f)
-
-        params = OrderedDict()
-        for field in fields:
-            param_name = field.java_name
-            param_stone_doc = field.stone_doc
-            param_doc = self.translate_stone_doc(param_stone_doc, field)
-
-            # add '.' at end of doc if we have a doc and its missing.
-            if param_doc.strip() and not param_doc.endswith('.'):
-                param_doc += '.'
-
-            preconditions = self._field_validation_requirements(field)
-            if preconditions:
-                param_doc += " Must %s." % oxford_comma_list(preconditions, conjunction='and')
-
-            if allow_defaults and field.has_default:
-                param_doc += " Defaults to {@code %s} when set to {@code null}." % field.default_value
-
-            param_doc = param_doc.strip()
-            if param_doc:
-                params[param_name] = param_doc
-
-        return params
-
-    def javadoc_throws(self, field, value_name=None):
-        assert isinstance(field, FieldWrapper), repr(field)
+    def throws(self, field, value_name=None):
+        assert isinstance(field, Field), repr(field)
         assert value_name is None or isinstance(value_name, six.text_type), repr(value_name)
 
         reasons = self._field_validation_requirements(field, as_failure_reasons=True)
@@ -2278,39 +1155,166 @@ class JavadocGenerator(object):
 
         return throws
 
-    def javadoc_deprecated(self, deprecated):
-        assert isinstance(deprecated, (RouteWrapper, bool)) or deprecated is None, repr(deprecated)
+    def javadoc_ref(self, element, context=None, builder=False):
+        assert isinstance(element, (JavaClass, StoneType, JavaReference)), repr(element)
+        assert isinstance(context, StoneType) or context is None, repr(context)
 
-        if isinstance(deprecated, RouteWrapper):
+        j = self._j
+
+        if isinstance(element, JavaClass):
+            ref = self.fmt("{@link %s}", element)
+        elif isinstance(element, (ApiRoute, RouteReference)):
+            route_ref = self._refs.route(element) if isinstance(element, ApiRoute) else element
+            ref = self._javadoc_route_ref(route_ref, builder=builder)
+        elif isinstance(element, (DataType, DataTypeReference)):
+            if isinstance(element, DataType):
+                if is_user_defined_type(element):
+                    data_type_ref = self._refs.data_type(element)
+                    ref = self._javadoc_data_type_ref(data_type_ref, builder=builder)
+                else:
+                    ref = self.fmt("{@link %s}", j.java_class(element, generics=False))
+            else:
+                data_type_ref = element
+                ref = self._javadoc_data_type_ref(data_type_ref, builder=builder)
+        elif isinstance(element, (Field, FieldReference)):
+            # we need a context for union fields since we copy fields from parents into their
+            # subclasses. Otherwise, we may make a reference to a field in a non-existing class or
+            # incorrectly assume the field is an enum constant when it isn't.
+            field_ref = self._refs.field(element, context) if isinstance(element, Field) else element
+            ref = self._javadoc_field_ref(field_ref)
+        else:
+            raise AssertionError(repr(element))
+
+        return sanitize_javadoc(ref)
+
+    def _generate_javadoc_raw(self, doc, params=None, returns=None, throws=None, deprecated=None):
+        # deprecated can be an empty six.text_type, which means no doc
+        if not any((doc, params, returns, throws, deprecated is not None)):
+            return
+
+        prefix = ' * '
+        attr_doc_prefix = prefix + (' ' * 4)
+
+        def emit_attrs(tag, attrs):
+            if attrs:
+                self.out(prefix.rstrip())
+                attr_prefix = ''.join((prefix, tag, ' '))
+
+                for attr_name, attr_doc in attrs.items():
+                    # Javadoc complains about tags that are missing documentation, except for
+                    # @deprecated
+                    if not attr_doc.strip():
+                        if tag == '@deprecated':
+                            self._g.emit_wrapped_text(
+                                tag,
+                                initial_prefix=prefix,
+                                subsequent_prefix=attr_doc_prefix)
+                        continue
+
+                    if attr_name:
+                        doc_text = '  '.join((attr_name, attr_doc))
+                    else:
+                        doc_text = attr_doc
+                    self._g.emit_wrapped_text(
+                        collapse_whitespace(doc_text),
+                        initial_prefix=attr_prefix,
+                        subsequent_prefix=attr_doc_prefix
+                    )
+
+        self.out('/**')
+
+        if doc:
+            first_paragraph = True
+            for paragraph in split_paragraphs(doc.strip()):
+                if not first_paragraph:
+                    self.out(prefix.rstrip())
+                    if paragraph:
+                        paragraph = ''.join(('<p> ', paragraph, ' </p>'))
+                else:
+                    first_paragraph = False
+                self._g.emit_wrapped_text(paragraph, initial_prefix=prefix, subsequent_prefix=prefix)
+
+        emit_attrs('@param', params)
+        emit_attrs('@return', { "": returns } if returns else None)
+        emit_attrs('@throws', throws)
+        # deprecated can be empty string, which still means we should emit
+        emit_attrs('@deprecated', { "": deprecated } if deprecated is not None else None)
+
+        self.out(' */')
+        # compiler requires a separate annotation outside the javadoc to display warnings about
+        # using obsolete APIs.
+        if deprecated is not None:
+            self.out('@Deprecated')
+
+    def _javadoc_fields(self, fields, stone_elem, allow_defaults=True):
+        j = self._j
+
+        params = OrderedDict()
+        for field in fields:
+            assert isinstance(field, Field), repr(field)
+
+            containing_data_type = j.field_containing_data_type(field)
+            param_name = j.param_name(field)
+            param_stone_doc = field.doc or ''
+            is_catch_all = is_union_type(containing_data_type) and field == containing_data_type.catch_all_field
+            if not param_stone_doc and is_catch_all:
+                param_stone_doc = _CATCH_ALL_DOC
+
+            context = stone_elem if isinstance(stone_elem, DataType) and field in stone_elem.all_fields else field
+            param_doc = self._translate_stone_doc(param_stone_doc, field)
+
+            # add '.' at end of doc if we have a doc and its missing.
+            if param_doc.strip() and not param_doc.endswith('.'):
+                param_doc += '.'
+
+            preconditions = self._field_validation_requirements(field)
+            if preconditions:
+                param_doc += " Must %s." % oxford_comma_list(preconditions, conjunction='and')
+
+            if allow_defaults and isinstance(field, StructField) and field.has_default:
+                param_doc += " Defaults to {@code %s} when set to {@code null}." % (
+                    self.java_default_value(field)
+                )
+
+            param_doc = param_doc.strip()
+            if param_doc:
+                params[param_name] = param_doc
+
+        return params
+
+    def _javadoc_deprecated(self, deprecated):
+        assert isinstance(deprecated, (ApiRoute, bool)) or deprecated is None, repr(deprecated)
+
+        if isinstance(deprecated, ApiRoute):
             return 'use %s instead.' % self.javadoc_ref(deprecated)
         elif isinstance(deprecated, bool) and deprecated:
             return ''
         else:
             return None
 
-    def _translate_ordered_collection(self, collection, context):
+    def _translate_ordered_collection(self, collection, stone_elem):
         assert isinstance(collection, (Sequence, types.GeneratorType, OrderedDict)), repr(collection)
 
         if isinstance(collection, OrderedDict):
             collection = collection.items()
 
         return OrderedDict(
-            (k, self.translate_stone_doc(v, context))
-            for k, v in collection
+            (param_name, self._translate_stone_doc(doc, stone_elem))
+            for param_name, doc in collection
         )
 
     def _field_validation_requirements(self, field, as_failure_reasons=False):
-        assert isinstance(field, FieldWrapper), repr(field)
+        assert isinstance(field, Field), repr(field)
 
-        if not field.has_value:
+        # field has no value
+        if is_void_type(field.data_type):
             return None
 
         data_type = field.data_type
-        nullable = data_type.is_nullable
+        nullable = is_nullable_type(data_type)
         if nullable:
-            data_type = data_type.nullable_data_type
+            data_type = data_type.data_type
 
-        stone_dt = data_type.as_stone
         requirements = []
         def add_req(precondition, failure_reason):
             if as_failure_reasons:
@@ -2326,142 +1330,139 @@ class JavadocGenerator(object):
                 ('min_length', ('have length of at least %s', 'is shorter than %s')),
                 ('max_length', ('have length of at most %s', 'is longer than %s'))
         ):
-            if hasattr(stone_dt, condition):
-                val = getattr(stone_dt, condition)
+            if hasattr(data_type, condition):
+                val = getattr(data_type, condition)
                 if val is not None:
                     add_req(precondition % val, failure_reason % val)
 
-        if is_list_type(stone_dt):
+        if is_list_type(data_type):
             add_req('not contain a {@code null} item', 'contains a {@code null} item')
-        elif is_string_type(stone_dt) and stone_dt.pattern is not None:
-            pattern = sanitize_pattern(stone_dt.pattern)
+        elif is_string_type(data_type) and data_type.pattern is not None:
+            pattern = sanitize_pattern(data_type.pattern)
             add_req('match pattern "{@code %s}"' % pattern, 'does not match pattern "{@code %s}"' % pattern)
 
-        if not (nullable or data_type.is_primitive or field.has_default):
+        if not (nullable or self._j.is_java_primitive(data_type) or is_void_type(data_type)):
             add_req('not be {@code null}', 'is {@code null}')
 
         return requirements
 
-    def _split_id(self, stone_id, max_parts):
-        assert isinstance(stone_id, six.text_type), repr(stone_id)
-        assert max_parts > 0, "max_parts must be positive"
-
-        parts = stone_id.split('.')
-        if len(parts) > max_parts:
-            # mark tag as invalid... can't raise exception here since we don't validate stone docs
-            self._ctx.g.logger.warn('Malformed Stone reference value: `%s`' % stone_id)
-            return (None,) * max_parts
+    def _translate_stone_doc(self, doc, stone_elem=None):
+        assert isinstance(doc, six.text_type) or doc is None, repr(doc)
+        if doc:
+            handler = lambda tag, val: self._javadoc_ref_handler(tag, val, stone_elem=stone_elem)
+            return self._g.process_doc(sanitize_javadoc(doc), handler)
         else:
-            filler = (None,) * (max_parts - len(parts))
-            return filler + tuple(parts)
+            return doc or ''
 
-    def _lookup_stone_namespace(self, namespace, context):
-        assert isinstance(namespace, six.text_type) or namespace is None, repr(namespace)
-        assert isinstance(context, StoneWrapper) or context is None, repr(context)
+    def _javadoc_ref_handler(self, tag, val, stone_elem=None):
+        """
+        Args:
+            tag(str): Type of Stone doc reference being made
+            val(str): The Stone element reference
+            stone_elem(StoneType): The stone element where this doc is appearing. This
+                is the context for looking up references. For example, if we are handling
+                the doc of a struct field, the Field object would be `stone_elem`.
+                This allows us to look up relative references (e.g. reference another
+                field within the same containing struct).
+        """
+        element = self._lookup_stone_ref(tag, val, stone_elem)
+        if element is None and tag in ('route', 'type', 'field'):
+            self._g.logger.warn('Unable to resolve Stone reference (:%s:`%s`) [ctx=%s]' % (tag, val, stone_elem))
+            return sanitize_javadoc('{@code %s}' % camelcase(val))
 
-        if namespace:
-            return self._ctx.api.namespaces.get(namespace)
-        elif context:
-            namespace_element = context.namespace
-            if namespace_element:
-                return namespace_element.as_stone
-
-        return None
-
-    def _lookup_route(self, namespace, route, context):
-        assert isinstance(route, six.text_type) or route is None, repr(route)
-        if namespace: assert route, "Cannot specify namespace name without route name"
-
-        stone_namespace = self._lookup_stone_namespace(namespace, context)
-
-        if stone_namespace and route:
-            stone_route = stone_namespace.route_by_name.get(route)
-            if stone_route:
-                return RouteWrapper(self._ctx, stone_namespace, stone_route)
-        elif context and not route:
-            if isinstance(context, RouteWrapper):
-                return context
-
-        # we don't keep track of datatype hierarchy within a route since a datatype may be used by
-        # multiple routes.
-        return None
-
-    def _lookup_data_type(self, namespace, data_type, context):
-        assert isinstance(data_type, six.text_type) or data_type is None, repr(data_type)
-        if namespace: assert data_type, "Cannot specify namespace name without data_type name"
-
-        stone_namespace = self._lookup_stone_namespace(namespace, context)
-        data_type_ref = None
-
-        if stone_namespace and data_type:
-            stone_data_type = stone_namespace.data_type_by_name.get(data_type)
-            if stone_data_type:
-                data_type_ref = DataTypeWrapper(self._ctx, stone_data_type)
-        elif context and not data_type:
-            if isinstance(context, FieldWrapper):
-                # we might be within a field, which has a containing data type
-                data_type_ref = context.containing_data_type
-            elif isinstance(context, DataTypeWrapper):
-                data_type_ref = context
-
-        # Do not return references to orphaned types we intend to remove
-        if self._ctx.keep_unused or is_data_type_referenced(data_type_ref, filtered=False):
-            return data_type_ref
+        # use {@code ...} tag for unresolved references so we don't have broken links in our Javadoc
+        if tag == 'route':
+            ref = self._javadoc_route_ref(element)
+        elif tag == 'type':
+            ref = self._javadoc_data_type_ref(element)
+        elif tag == 'field':
+            ref = self._javadoc_field_ref(element)
+        elif tag == 'link':
+            anchor, link = val.rsplit(' ', 1)
+            # unsanitize from previous sanitize calls
+            anchor = unsanitize_javadoc(anchor)
+            # do not sanitize this HTML
+            return '<a href="%s">%s</a>' % (link, anchor)
+        elif tag == 'val':
+            # Note that all valid Stone literals happen to be valid Java literals.
+            ref = '{@code %s}' % val
         else:
+            assert False, 'Unsupported tag (:%s:`%s`)' % (tag, val)
+
+        return sanitize_javadoc(ref)
+
+    def _lookup_stone_ref(self, tag, val, stone_elem):
+        assert isinstance(tag, six.text_type), repr(tag)
+        assert isinstance(val, six.text_type), repr(val)
+        assert isinstance(stone_elem, StoneType) or stone_elem is None, repr(stone_elem)
+        assert val, repr(val)
+
+        j = self._j
+
+        def resolve_fq_name(val, max_parts):
+            try:
+                parts = split_stone_name(val, max_parts)
+            except ValueError as e:
+                # mark tag as invalid... can't raise exception here since we don't validate stone docs
+                self._g.logger.warn('Malformed Stone reference value: `%s`. %s' % (val, str(e)))
+                return None
+            else:
+                if stone_elem and None in parts:
+                    context_parts = j.stone_fq_name(stone_elem).split('.')
+                    # pad the end with None's
+                    context_parts += [None,] * (max_parts - len(context_parts))
+                    parts = [(orig or context) for orig, context in zip(parts, context_parts)]
+                if None in parts:
+                    return None
+                else:
+                    return '.'.join(parts)
+
+        if tag == 'route':
+            fq_name = resolve_fq_name(val, 2)
+            return self._refs.route(fq_name) if fq_name else None
+        elif tag == 'type':
+            fq_name = resolve_fq_name(val, 2)
+            return self._refs.data_type(fq_name) if fq_name else None
+        elif tag == 'field':
+            fq_name = resolve_fq_name(val, 3)
+            return self._refs.field(fq_name) if fq_name else None
+        elif tag == 'link':
             return None
-
-    def _lookup_field(self, namespace, data_type, field, context):
-        assert isinstance(field, six.text_type) or field is None, repr(data_type)
-        if data_type: assert field, "Cannot specify data_type name without field name"
-
-        data_type = self._lookup_data_type(namespace, data_type, context)
-        field_ref = None
-
-        if data_type and field:
-            for data_type_field in data_type.all_fields:
-                if data_type_field.stone_name == field:
-                    field_ref = data_type_field
-        elif context and not field:
-            if isinstance(context, FieldWrapper):
-                field_ref = context
-
-        # Field is the lowest you can go. No way to use context to derive field
-
-        # Do not return references to orphaned types we intend to remove
-        if self._ctx.keep_unused or (field_ref and is_data_type_referenced(field_ref.containing_data_type, filtered=False)):
-            return field_ref
-        else:
+        elif tag == 'val':
             return None
-
-    def _javadoc_route_ref(self, route, builder=False):
-        assert isinstance(route, RouteWrapper), repr(route)
-
-        class_name = route.java_class
-        method_name = route.java_method
-        arg_data_type = route.arg
-
-        if not route.has_arg:
-            args = ''
-        elif arg_data_type.is_struct:
-            if builder and route.supports_builder:
-                method_name = route.java_builder_method
-            types = (str(f.java_type(generics=False)) for f in arg_data_type.all_required_fields)
-            args = ','.join(types)
         else:
-            args = arg_data_type.java_type(generics=False)
-        return '{@link %s#%s(%s)}' % (class_name, method_name, args)
+            assert False, 'Unsupported tag (:%s:`%s`)' % (tag, val)
 
-    def _javadoc_data_type_ref(self, data_type, builder=False):
-        assert isinstance(data_type, DataTypeWrapper), repr(data_type)
-        if data_type.is_primitive:
-            return '{@code %s}' % data_type.java_type(boxed=False, generics=False)
-        elif builder and data_type.supports_builder:
-            return '{@link %s}' % data_type.java_builder_class
+    def _javadoc_route_ref(self, route_ref, builder=False):
+        assert isinstance(route_ref, RouteReference), repr(route_ref)
+
+        if self._g.args.data_types_only:
+            return '{@code %s}' % route_ref.url_path
+
+        if builder and route_ref.has_builder:
+            method_name = route_ref.builder_method
+            method_args = []
         else:
-            return '{@link %s}' % data_type.java_class
+            method_name = route_ref.method
+            method_args = [
+                self.resolved_class(c, generics=False) for c in route_ref.method_arg_classes
+            ]
 
-    def _javadoc_field_ref(self, field):
-        assert isinstance(field, FieldWrapper), repr(field)
+        if method_args:
+            return self.fmt('{@link %s#%s(%s)}', route_ref.java_class, method_name, ','.join(method_args))
+        else:
+            return self.fmt('{@link %s#%s}', route_ref.java_class, method_name)
+
+    def _javadoc_data_type_ref(self, data_type_ref, builder=False):
+        assert isinstance(data_type_ref, DataTypeReference), repr(data_type_ref)
+        if builder and data_type_ref.has_builder:
+            java_class = data_type_ref.builder_class
+        else:
+            java_class = data_type_ref.java_class
+        return self.fmt('{@link %s}', java_class)
+
+    def _javadoc_field_ref(self, field_ref):
+        assert isinstance(field_ref, FieldReference), repr(field_ref)
 
         # Address issue T76930:
         #
@@ -2473,256 +1474,893 @@ class JavadocGenerator(object):
         #   public RouteResult routeName(field1, field2, field3);
         #   public RouteResultBuilder routeNameBuilder(field1, field2, field3);
         #
-        # So if the field's containing data type is a struct, try to find out if that struct is
-        # uniqued used as a route argument and make the Javadoc reference point to the route method
-        # instead of the struct class.
-        containing_data_type = field.containing_data_type
-        if containing_data_type.is_struct:
-            routes = get_routes_with_arg_type(containing_data_type, filtered=False)
+        # So if the field's containing data type is a struct, makre sure the struct is
+        # public. Otherwise, try to find out if that struct is uniqued used as a route argument and
+        # make the Javadoc reference point to the route method instead of the struct class.
+        if field_ref.route_refs and not self._g.args.data_types_only:
+            # the struct should not appear anywhere else besides as a route argument
+            return 'the {@code %s} argument to %s' % (
+                field_ref.param_name,
+                oxford_comma_list([
+                    self._javadoc_route_ref(route_ref)
+                    for route_ref in field_ref.route_refs
+                ], conjunction='or'),
+            )
 
-            # we only handle cases where the struct appears as the argument to a single route
-            if len(routes) == 1:
-                # the struct should not appear anywhere else besides as a route argument
-                return 'the {@code %s} argument to %s' % (field.java_name, self._javadoc_route_ref(routes[0]))
+        containing_data_type_ref = field_ref.containing_data_type_ref
 
         # can't reference a package-private data type.
-        assert is_data_type_required_outside_package(containing_data_type), field.fq_stone_name
+        assert containing_data_type_ref.visibility.is_visible, repr(field_ref)
 
         # fallback to standard ref
-        if field.containing_data_type.is_enum:
-            field_name = field.java_enum
-        elif field.containing_data_type.is_union:
-            if field.has_value:
-                field_name = field.java_factory_method
+        return self.fmt(
+            '{@link %s#%s}',
+            containing_data_type_ref.java_class,
+            field_ref.static_instance or field_ref.getter_method
+        )
+
+
+class JavaApi(object):
+    def __init__(self, api, generator_args):
+        self.stone_api = api
+        self._args = generator_args
+        self._containing_data_types = self._get_containing_data_types(api)
+        self._namespaces_by_route = self._get_namespaces_by_route(api)
+        self._data_types_with_exception = self._get_data_types_with_exception(api)
+        if generator_args.data_types_only:
+            self._data_type_visibility = defaultdict(lambda: Visibility.PUBLIC)
+            self._serializer_visibility = defaultdict(lambda: Visibility.PUBLIC)
+            self._client_data_types = {
+                data_type
+                for namespace in api.namespaces.values()
+                for data_type in namespace.data_types
+            }
+        else:
+            self._data_type_visibility = self._resolve_data_type_visibility(api)
+            self._serializer_visibility = self._resolve_serializer_visibility(api)
+            # data types required for this specific client. We avoid generating data types that aren't
+            # required by the client.
+            self._client_data_types = {
+                data_type for data_type, visibility in self._data_type_visibility.items()
+                if visibility.is_visible
+            }
+
+    @staticmethod
+    def _get_containing_data_types(api):
+        mapping = {}
+        for namespace in api.namespaces.values():
+            for data_type in namespace.data_types:
+                for field in data_type.fields:
+                    mapping[field] = data_type
+        return mapping
+
+    @staticmethod
+    def _get_namespaces_by_route(api):
+        mapping = {}
+        for namespace in api.namespaces.values():
+            for route in namespace.routes:
+                mapping[route] = namespace
+        return mapping
+
+    @staticmethod
+    def _get_data_types_with_exception(api):
+        data_types = set()
+        for namespace in api.namespaces.values():
+            for route in namespace.routes:
+                if is_user_defined_type(route.error_data_type):
+                    data_types.add(route.error_data_type)
+        return data_types
+
+    @staticmethod
+    def _resolve_data_type_visibility(api):
+        visibility = defaultdict(lambda: Visibility.NONE)
+
+        def update(data_type, new_visibility):
+            visibility[data_type] = max(visibility[data_type], new_visibility)
+
+        def update_by_reference(data_type, namespace):
+            if data_type.namespace == namespace:
+                update(data_type, Visibility.PACKAGE)
             else:
-                field_name = field.java_singleton
+                update(data_type, Visibility.PUBLIC)
+
+        # Calculate initial visibility state based on routes that use our data types.
+        for namespace in api.namespaces.values():
+            for route in namespace.routes:
+                arg = get_underlying_type(route.arg_data_type)
+                result = get_underlying_type(route.result_data_type)
+                error = get_underlying_type(route.error_data_type)
+
+                if is_user_defined_type(result):
+                    update(result, Visibility.PUBLIC)
+                if is_user_defined_type(error):
+                    update(error, Visibility.PUBLIC)
+                if is_user_defined_type(arg):
+                    # Could be something like List(FooArg), in which case, we just make FooArg public.
+                    if arg != route.arg_data_type:
+                        update(arg, Visibility.PUBLIC)
+                    elif is_union_type(arg):
+                        update(arg, Visibility.PUBLIC)
+                    elif is_struct_type(arg):
+                        # We explode structs so that their fields are the arguments to the route
+                        # method.  We have to construct an instead of the arg object from our route
+                        # method, so we might be able to make the arg class package-private if it
+                        # isn't referenced anywhere else.
+                        update_by_reference(arg, namespace)
+                        for field in arg.all_fields:
+                            field_data_type = get_underlying_type(field.data_type)
+                            if is_user_defined_type(field_data_type):
+                                update(field_data_type, Visibility.PUBLIC)
+
+        # Not iterate repeatedly, cascading the visibility out to other required data types as necessary
+        prev_state = None
+        cur_state = visibility.copy()
+        while prev_state != cur_state:
+            for namespace in api.namespaces.values():
+                for data_type in namespace.data_types:
+                    if not visibility[data_type].is_visible:
+                        continue
+
+                    for field in data_type.all_fields:
+                        field_data_type = get_underlying_type(field.data_type)
+                        # if this data type is public, then all its fields must be public as well
+                        # to ensure they are properly exposed to the user
+                        if is_user_defined_type(field_data_type):
+                            if visibility[data_type] == Visibility.PUBLIC:
+                                update(field_data_type, Visibility.PUBLIC)
+                            else:
+                                # otherwise, just update visibility so this class can properly reference
+                                # the field data type
+                                update_by_reference(field_data_type, namespace)
+
+                    if is_struct_type(data_type):
+                        if data_type.parent_type:
+                            if visibility[data_type] == Visibility.PUBLIC:
+                                update(data_type.parent_type, Visibility.PUBLIC)
+                            else:
+                                # subclasses need access to their parent class
+                                update_by_reference(data_type.parent_type, namespace)
+
+                        # parents need access to their enumerated subtype classes. If the parent is
+                        # public, then make the sublcasses public too for casting.
+                        if data_type.has_enumerated_subtypes():
+                            for subtype in data_type.get_enumerated_subtypes():
+                                if visibility[data_type] == Visibility.PUBLIC:
+                                    update(subtype.data_type, Visibility.PUBLIC)
+                                else:
+                                    update_by_reference(subtype.data_type, namespace)
+
+            prev_state = cur_state
+            cur_state = visibility.copy()
+
+        return visibility
+
+    @staticmethod
+    def _resolve_serializer_visibility(api):
+        visibility = defaultdict(lambda: Visibility.NONE)
+
+        def update(data_type, new_visibility):
+            visibility[data_type] = max(visibility[data_type], new_visibility)
+
+        def update_by_reference(data_type, namespace):
+            if data_type.namespace == namespace:
+                update(data_type, Visibility.PACKAGE)
+            else:
+                update(data_type, Visibility.PUBLIC)
+
+        # Calculate initial visibility state based on routes that use our data types.
+        for namespace in api.namespaces.values():
+            for route in namespace.routes:
+                for data_type in (route.arg_data_type, route.result_data_type, route.error_data_type):
+                    data_type = get_underlying_type(data_type)
+                    if is_user_defined_type(data_type):
+                        update_by_reference(data_type, namespace)
+
+        # Not iterate repeatedly, cascading the visibility out to other required data types as necessary
+        prev_state = None
+        cur_state = visibility.copy()
+        while prev_state != cur_state:
+            for namespace in api.namespaces.values():
+                for data_type in namespace.data_types:
+                    if not visibility[data_type].is_visible:
+                        continue
+
+                    for field in data_type.all_fields:
+                        field_data_type = get_underlying_type(field.data_type)
+                        if is_user_defined_type(field_data_type):
+                            update_by_reference(field_data_type, namespace)
+
+                    # parents need access to their enumerated subtype serializers
+                    if is_struct_type(data_type) and data_type.has_enumerated_subtypes():
+                        for subtype in data_type.get_enumerated_subtypes():
+                            update_by_reference(subtype.data_type, namespace)
+
+            prev_state = cur_state
+            cur_state = visibility.copy()
+
+        return visibility
+
+    @staticmethod
+    def get_spec_filename(element):
+        assert isinstance(element, StoneType), repr(element)
+        assert hasattr(element, '_token'), repr(element)
+        return os.path.basename(element._token.path)
+
+    def get_spec_filenames(self, element):
+        assert isinstance(element, StoneType), repr(element)
+        filenames = OrderedDict() # ordered set
+        if isinstance(element, ApiNamespace):
+            for child in chain(element.data_types, element.routes):
+                filenames[self.get_spec_filename(child)] = None
         else:
-            field_name = field.java_getter
+            filenames[self.get_spec_filename(element)] = None
+        return filenames.keys()
 
-        return '{@link %s#%s}' % (field.containing_data_type.java_class, field_name)
-
-
-class JavaImportGenerator(object):
-    def __init__(self, ctx):
-        assert isinstance(ctx, GeneratorContext), repr(ctx)
-        self._ctx = ctx
-        # take first 2 components of base package as our corp prefix (e.g. com.dropbox.core -> com.dropbox)
-        self._corp_package_prefix = '.'.join(self._ctx.base_package.split('.', 2)[:2])
-
-    def generate_imports(self):
-        out = self._ctx.g.emit
-
-        imports = self._ctx.current_imports
-
-        # group all our corp imports into one spot. use the first two package parts for root corp
-        # package (e.g. com.dropbox.core.v2 -> com.dropbox)
-        if self._corp_package_prefix:
-            corp_imports = set(import_ for import_ in imports if import_.startswith(self._corp_package_prefix))
+    @staticmethod
+    def requires_validation(data_type):
+        assert isinstance(data_type, DataType), repr(data_type)
+        if is_list_type(data_type):
+            return True
+        elif is_numeric_type(data_type):
+            return any(r is not None for r in (
+                data_type.min_value,
+                data_type.max_value,
+            ))
+        elif is_string_type(data_type):
+            return any(r is not None for r in (
+                data_type.min_length,
+                data_type.max_length,
+                data_type.pattern,
+            ))
         else:
-            corp_imports = set()
-        imports = imports - corp_imports
+            return False
 
-        # now group the rest by the first package part
-        grouped = defaultdict(set)
-        for import_ in imports:
-            root = import_.split('.', 1)[0]
-            grouped[root].add(import_)
+    def is_collapsible(self, data_type):
+        assert isinstance(data_type, DataType), repr(data_type)
+        return is_struct_type(data_type) and not data_type.is_member_of_enumerated_subtypes_tree()
 
-        # now write out the groups in this order:
-        #
-        #    corp packages
-        #    3rd party packages
-        #    java
-        #    javax
-
-        if corp_imports:
-            out('')
-            for import_ in sorted(corp_imports):
-                out('import %s;' % import_)
-
-        for root, imports in sorted(grouped.items(), key=lambda e: e[0]):
-            if root in ('java', 'javax'):
-                continue
-
-            out('')
-            for import_ in sorted(imports):
-                out('import %s;' % import_)
-
-        for root in ('java', 'javax'):
-            imports = grouped.get(root)
-            if imports:
-                out('')
-                for import_ in sorted(imports):
-                    out('import %s;' % import_)
-
-    def add_imports_for_namespace(self, namespace):
-        assert isinstance(namespace, NamespaceWrapper), repr(namespace)
-
-        self._ctx.add_imports(
-            'com.dropbox.core.DbxException',
-            'com.dropbox.core.DbxWrappedException',
-            'com.dropbox.core.http.HttpRequestor',
-            'com.dropbox.core.v2.DbxRawClientV2',
-            'java.util.HashMap',
-            'java.util.Map',
-        )
-        for route in namespace.routes:
-            if self._ctx.include_route(route):
-                self.add_imports_for_route(route)
-
-    def add_imports_for_route(self, route):
-        self._add_imports_for_data_type(route.arg)
-        self._add_imports_for_data_type(route.result)
-
-        if route.has_error:
-            self._ctx.add_imports(route.error.java_exception_class)
+    @staticmethod
+    def param_name(stone_elem):
+        assert isinstance(stone_elem, (ApiNamespace, Field)), repr(stone_elem)
+        if isinstance(stone_elem, UnionField):
+            return camelcase(stone_elem.name + '_value')
         else:
-            self._ctx.add_imports('com.dropbox.core.DbxApiException')
+            return camelcase(stone_elem.name)
 
-        if route.request_style == 'upload':
-            self._ctx.add_imports('com.dropbox.core.DbxUploader')
-            if route.supports_builder:
-                self._ctx.add_imports('com.dropbox.core.v2.DbxUploadStyleBuilder')
-        elif route.request_style == 'download':
-            self._ctx.add_imports(
-                'com.dropbox.core.DbxDownloader',
-                'com.dropbox.core.v2.DbxDownloadStyleBuilder',
-                'java.util.Collections',
-                'java.util.List',
+    def stone_fq_name(self, stone_elem, containing_data_type=None):
+        assert isinstance(stone_elem, StoneType), repr(stone_elem)
+        # When the containing data type of a field is a member of inheritance, field references
+        # can be ambiguous. This is big problem with Unions since we copy all the parent fields
+        # into the child union in Java. So the same field may appear multiple times, but in
+        # different classes along the Stone chain of inheritance.
+        assert isinstance(containing_data_type, DataType) or containing_data_type is None, repr(containing_data_type)
+
+        if isinstance(stone_elem, ApiNamespace):
+            parts = [stone_elem]
+        elif isinstance(stone_elem, DataType):
+            if is_user_defined_type(stone_elem):
+                parts = [stone_elem.namespace, stone_elem]
+            else:
+                parts = [stone_elem]
+        elif isinstance(stone_elem, ApiRoute):
+            namespace = self.route_namespace(stone_elem)
+            parts = [namespace, stone_elem]
+        elif isinstance(stone_elem, Field):
+            containing_data_type = containing_data_type or self.field_containing_data_type(stone_elem)
+            namespace = containing_data_type.namespace
+            parts = [namespace, containing_data_type, stone_elem]
+        else:
+            raise ValueError("Unsupported Stone type: %s" % type(stone_elem))
+
+        return '.'.join(p.name for p in parts)
+
+    def namespace_getter_method(self, namespace):
+        assert isinstance(namespace, ApiNamespace), repr(namespace)
+        return camelcase(namespace.name)
+
+    def field_getter_method(self, field):
+        assert isinstance(field, Field), repr(field)
+        containing_data_type = self._containing_data_types[field]
+        if is_struct_type(containing_data_type):
+            return camelcase('get_' + field.name)
+        elif is_union_type(containing_data_type) and self.has_value(field):
+            return camelcase('get_' + field.name + '_value')
+        else:
+            return None
+
+    def field_enum_name(self, field):
+        assert isinstance(field, Field), repr(field)
+        containing_data_type = self._containing_data_types[field]
+        if self.is_enum(containing_data_type):
+            return allcaps(field.name)
+        return None
+
+    def field_tag_enum_name(self, field):
+        assert isinstance(field, Field), repr(field)
+        containing_data_type = self._containing_data_types[field]
+        if is_union_type(containing_data_type):
+            return allcaps(field.name)
+        return None
+
+    def field_tag_match_method_name(self, field):
+        assert isinstance(field, Field), repr(field)
+        containing_data_type = self._containing_data_types[field]
+        assert is_union_type(containing_data_type), repr(field)
+        return camelcase('is_' + field.name)
+
+    def field_static_instance(self, field):
+        assert isinstance(field, Field), repr(field)
+        containing_data_type = self._containing_data_types[field]
+        if is_union_type(containing_data_type):
+            if self.is_enum(containing_data_type):
+                return self.field_enum_name(field)
+            elif not self.has_value(field):
+                return allcaps(field.name)
+        return None
+
+    def field_factory_method(self, field):
+        assert isinstance(field, Field), repr(field)
+        containing_data_type = self._containing_data_types[field]
+        if is_union_type(containing_data_type) and self.has_value(field):
+            return camelcase(field.name)
+        return None
+
+    def field_builder_method(self, field):
+        assert isinstance(field, Field), repr(field)
+        containing_data_type = self._containing_data_types[field]
+
+        if field in containing_data_type.all_optional_fields:
+            return camelcase('with_' + field.name)
+        return None
+
+    def is_java_primitive(self, data_type):
+        return self.java_class(data_type, generics=False).name[0].islower()
+
+    @staticmethod
+    def is_enum(data_type):
+        assert isinstance(data_type, DataType), repr(data_type)
+        if is_union_type(data_type):
+            return all(is_void_type(f.data_type) for f in data_type.all_fields)
+        else:
+            return False
+
+    @staticmethod
+    def has_value(field):
+        assert isinstance(field, Field), repr(field)
+        return not is_void_type(field.data_type)
+
+    def field_is_optional(self, field):
+        assert isinstance(field, Field), repr(field)
+        containing_data_type = self._containing_data_type(field)
+        return field in containing_data_type.all_optional_fields
+
+    def field_is_required(self, field):
+        assert isinstance(field, Field), repr(field)
+        containing_data_type = self._containing_data_type(field)
+        return field in containing_data_type.all_required_fields
+
+    def url_path(self, route):
+        """
+        Server URL path associated with this route.
+        """
+        assert isinstance(route, ApiRoute), repr(route)
+        return '2/%s/%s' % (self._namespaces_by_route[route].name, route.name)
+
+    @staticmethod
+    def has_arg(route):
+        assert isinstance(route, ApiRoute), repr(route)
+        return not is_void_type(route.arg_data_type)
+
+    @staticmethod
+    def has_result(route):
+        assert isinstance(route, ApiRoute), repr(route)
+        return not is_void_type(route.result_data_type)
+
+    @staticmethod
+    def has_error(route):
+        assert isinstance(route, ApiRoute), repr(route)
+        if is_void_type(route.error_data_type):
+            return False
+        else:
+            # we only support user-defined error types
+            assert is_user_defined_type(route.error_data_type), repr(route)
+            return True
+
+    @staticmethod
+    def request_style(route):
+        assert isinstance(route, ApiRoute), repr(route)
+        return route.attrs.get('style', 'rpc')
+
+    @staticmethod
+    def auth_style(route):
+        assert isinstance(route, ApiRoute), repr(route)
+        return route.attrs.get('auth', 'user')
+
+    @staticmethod
+    def route_host(route):
+        assert isinstance(route, ApiRoute), repr(route)
+        return route.attrs.get('host', 'api')
+
+    def has_builder(self, stone_elem):
+        assert isinstance(stone_elem, (ApiRoute, DataType)), repr(stone_elem)
+        if isinstance(stone_elem, DataType):
+            data_type = stone_elem
+            return is_struct_type(data_type) and len(data_type.all_optional_fields) > 1
+        else:
+            route = stone_elem
+            return self.request_style(route) == 'download' or self.has_builder(route.arg_data_type)
+
+    @staticmethod
+    def route_method(route):
+        assert isinstance(route, ApiRoute), repr(route)
+        return camelcase(route.name)
+
+    @staticmethod
+    def route_builder_method(route):
+        assert isinstance(route, ApiRoute), repr(route)
+        return camelcase(route.name + '_builder')
+
+    @staticmethod
+    def namespace_package(namespace, base_package):
+        return base_package + '.' + namespace.name.replace('_', '').lower()
+
+    def java_class(self, stone_elem, boxed=False, generics=True):
+        assert isinstance(stone_elem, (ApiNamespace, ApiRoute, DataType, Field)), repr(stone_elem)
+
+        base_package = self._args.package
+
+        if isinstance(stone_elem, ApiNamespace):
+            namespace = stone_elem
+            package = self.namespace_package(namespace, base_package)
+            prefix = self._args.requests_classname_prefix or self._args.client_class
+            return JavaClass(package + '.' + classname('%s_%s_Requests' % (prefix, namespace.name)))
+        elif isinstance(stone_elem, ApiRoute):
+            route = stone_elem
+            return self.java_class(self._namespaces_by_route[route])
+        elif isinstance(stone_elem, Field):
+            field = stone_elem
+            return self.java_class(field.data_type, boxed=boxed, generics=generics)
+        else:
+            data_type = stone_elem
+
+            if is_nullable_type(data_type):
+                return self.java_class(data_type.data_type, boxed=True, generics=generics)
+            elif is_user_defined_type(data_type):
+                package = self.namespace_package(data_type.namespace, base_package)
+                return JavaClass(package + '.' + classname(data_type.name))
+            else:
+                generic_classes = []
+                if generics and is_list_type(data_type):
+                    generic_classes = [self.java_class(data_type.data_type, boxed=True, generics=True)]
+
+                type_map = _TYPE_MAP_BOXED if boxed else _TYPE_MAP_UNBOXED
+                return JavaClass(type_map[data_type.name], generics=generic_classes)
+
+    def builder_class(self, stone_elem):
+        assert isinstance(stone_elem, (ApiRoute, DataType)), repr(stone_elem)
+        assert self.has_builder(stone_elem), repr(stone_elem)
+
+        if isinstance(stone_elem, ApiRoute):
+            route = stone_elem
+            package = self.java_class(route).package
+            return JavaClass(package + '.' + classname(route.name + '_builder'))
+        else:
+            data_type = stone_elem
+            assert is_user_defined_type(data_type), repr(data_type)
+            data_type_class = self.java_class(data_type)
+            # nested static class
+            return JavaClass(data_type_class.fq + '.Builder')
+
+    def serializer_class(self, data_type):
+        assert isinstance(data_type, DataType), repr(data_type)
+
+        data_type_class = self.java_class(data_type)
+        return JavaClass(data_type_class.fq + '.Serializer')
+
+    def exception_class(self, element):
+        assert isinstance(element, (DataType, ApiRoute)), repr(element)
+
+        if isinstance(element, DataType):
+            data_type = element
+            assert self.data_type_has_exception(data_type), repr(data_type)
+            return JavaClass(self.java_class(element).fq + 'Exception')
+        else:
+            route = element
+            if self.has_error(route):
+                return self.exception_class(route.error_data_type)
+            else:
+                return JavaClass('com.dropbox.core.DbxApiException')
+
+    def route_exception_class(self, route):
+        assert isinstance(route, ApiRoute), repr(route)
+
+        if self.has_error(route):
+            error = route.error_data_type
+            error_class = self.java_class(error)
+            return JavaClass(error_class.fq + 'Exception')
+        else:
+            return JavaClass('com.dropbox.core.DbxApiException')
+
+    def route_throws_classes(self, route):
+        assert isinstance(route, ApiRoute), repr(route)
+
+        exc_classes = []
+        if self.request_style(route) != 'upload':
+            # upload routes don't receive the server response in the method call. The request is
+            # issued later through the Uploader class
+            route_specific_exc_class = self.route_exception_class(route)
+            exc_classes.append(route_specific_exc_class)
+        exc_classes.append(JavaClass('com.dropbox.core.DbxException'))
+        return exc_classes
+
+    def route_uploader_class(self, route):
+        assert isinstance(route, ApiRoute), repr(route)
+        return JavaClass(self.java_class(route).package + '.' + classname(route.name + '_Uploader'))
+
+    def route_downloader_class(self, route):
+        assert isinstance(route, ApiRoute), repr(route)
+        assert self.request_style(route) == 'download', repr(route)
+
+        return JavaClass('com.dropbox.core.DbxDownloader', generics=(
+            self.java_class(route.result_data_type),
+        ))
+
+    def is_used_by_client(self, data_type):
+        assert isinstance(data_type, DataType), repr(data_type)
+        return data_type in self._client_data_types
+
+    def data_type_has_exception(self, data_type):
+        assert isinstance(data_type, DataType), repr(data_type)
+        assert is_user_defined_type(data_type), repr(data_type)
+        return data_type in self._data_types_with_exception
+
+    def field_containing_data_type(self, field):
+        assert isinstance(field, Field), repr(field)
+        assert field in self._containing_data_types, repr(field)
+        return self._containing_data_types[field]
+
+    def route_namespace(self, route):
+        assert isinstance(route, ApiRoute), repr(route)
+        assert route in self._namespaces_by_route, repr(route)
+        return self._namespaces_by_route[route]
+
+    def _lookup_data_type(self, fq_name):
+        assert isinstance(fq_name, six.text_type), repr(fq_name)
+        assert '.' in fq_name, repr(fq_name)
+        namespace_name, data_type_name = split_stone_name(fq_name, max_parts=2)
+        namespace = self.stone_api.namespaces.get(namespace_name)
+        if namespace:
+            for data_type in namespace.data_types:
+                if data_type.name == data_type_name:
+                    return data_type
+
+    def data_type_visibility(self, data_type):
+        assert isinstance(data_type, DataType), repr(data_type)
+        return self._data_type_visibility[data_type]
+
+    def update_data_type_visibility(self, data_type_fq_name, visibility):
+        data_type = self._lookup_data_type(data_type_fq_name)
+        if data_type:
+            self._data_type_visibility[data_type] = max(
+                self._data_type_visibility[data_type], visibility
             )
 
-    def add_imports_for_route_builder(self, route):
-        route_auth = route.auth_style if route.auth_style != 'noauth' else 'user'
-        self._ctx.add_imports(
-            route.namespace.java_class,
-            route.arg.java_builder_class,
-            'com.dropbox.core.DbxException',
-        )
-        for field in route.arg.all_optional_fields:
-            self.add_imports_for_field(field)
+    def serializer_visibility(self, data_type):
+        assert isinstance(data_type, DataType), repr(data_type)
+        visibility = self._serializer_visibility[data_type]
+        if not visibility.is_visible and self.data_type_visibility(data_type).is_visible:
+            # if the containing data type is visible, force the serialize to be visible since
+            # toString(..) depends on its serializer
+            return Visibility.PRIVATE
+        return visibility
 
-        if route.has_error:
-            self._ctx.add_imports(route.error.java_exception_class)
-        else:
-            self._ctx.add_imports('com.dropbox.core.DbxApiException')
-
-        if route.request_style == 'download':
-            self._ctx.add_imports(
-                'com.dropbox.core.v2.DbxDownloadStyleBuilder',
-                'com.dropbox.core.DbxDownloader',
+    def update_serializer_visibility(self, data_type_fq_name, visibility):
+        data_type = self._lookup_data_type(data_type_fq_name)
+        if data_type:
+            self._serializer_visibility[data_type] = max(
+                self._serializer_visibility[data_type], visibility
             )
-        elif route.request_style == 'upload':
-            self._ctx.add_imports('com.dropbox.core.DbxUploader')
 
-    def add_imports_for_route_uploader(self, route):
-        self._ctx.add_imports(
-            'com.dropbox.core.DbxWrappedException',
-            'com.dropbox.core.DbxUploader',
-            'com.dropbox.core.http.HttpRequestor',
-            'java.io.IOException',
-        )
-        if route.has_result:
-            self._ctx.add_imports(route.result.java_class)
-        if route.has_error:
-            self._ctx.add_imports(
-                route.error.java_class,
-                route.error.java_exception_class,
+
+class JavaReferences(object):
+
+    def __init__(self, j):
+        self.j = j
+
+        self.data_types = {}
+        self.routes = {}
+        self.fields = {}
+
+        self._initialize()
+
+    def load(self, f):
+        data = json.load(f, object_hook=JavaReference.from_json)
+
+        # resolve all name references
+        for route in data['routes'].values():
+            if route.error_ref:
+                route.error_ref = data['data_types'][route.error_ref]
+        for field in data['fields'].values():
+            field.containing_data_type_ref = data['data_types'][field.containing_data_type_ref]
+            field.route_refs = tuple(
+                data['routes'][route_ref]
+                for route_ref in field.route_refs
             )
+
+        # now update our existing state
+        self._update(data)
+
+    def _update(self, data):
+
+        # do data types first, since they are referenced by other types
+        for key, data_type in data['data_types'].items():
+            if key not in self.data_types:
+                self.data_types[key] = data_type
+            else:
+                self.data_types[key].update_visibility(data_type.visibility)
+                self.data_types[key].update_serializer_visibility(data_type.serializer_visibility)
+
+        # routes reference their error types
+        for key, route in data['routes'].items():
+            if key not in self.routes:
+                # update error_ref
+                if route.error_ref:
+                    route.error_ref = self.data_types[route.error_ref.fq_name]
+                self.routes[key] = route
+
+        # fields have data type and route refs
+        for key, field in data['fields'].items():
+            if key not in self.fields:
+                # update refs
+                field.containing_data_type_ref = self.data_types[field.containing_data_type_ref.fq_name]
+                field.route_refs = tuple(
+                    self.routes[route_ref.fq_name]
+                    for route_ref in field.route_refs
+                )
+                self.fields[key] = field
+            else:
+                # update existing route refs
+                merged_route_refs = list(self.fields[key].route_refs)
+                for route_ref in field.route_refs:
+                    route_ref = self.routes[route_ref.fq_name]
+                    if route_ref not in merged_route_refs:
+                        merged_route_refs.append(route_ref)
+                self.fields[key].route_refs = tuple(merged_route_refs)
+
+        # need to update our JavaApi with the new visibilities
+        for key in data['data_types']:
+            # get merged data type ref for our loaded data types
+            data_type_ref = self.data_types[key]
+            self.j.update_data_type_visibility(data_type_ref.fq_name, data_type_ref.visibility)
+            self.j.update_serializer_visibility(data_type_ref.fq_name, data_type_ref.serializer_visibility)
+
+    def serialize(self, f):
+        return json.dump({
+            'data_types': self.data_types,
+            'routes': self.routes,
+            'fields': self.fields,
+        }, f, default=self._as_json)
+
+    @staticmethod
+    def _as_json(obj):
+        if isinstance(obj, JavaReference):
+            return obj._as_json()
+        elif isinstance(obj, Visibility):
+            return obj.name
+        elif isinstance(obj, JavaClass):
+            return str(obj)
         else:
-            self._ctx.add_imports('com.dropbox.core.DbxApiException')
+            raise TypeError(repr(obj) + " is not JSON serializable")
 
-    def add_imports_for_data_type(self, data_type, include_serialization=True):
-        assert isinstance(data_type, DataTypeWrapper), repr(data_type)
-        assert data_type.is_struct or data_type.is_union, repr(data_type)
-
-        self._add_imports_for_data_type(data_type)
-
-        if include_serialization:
-            self._add_imports_for_data_type_serializers(data_type)
-
-        for field in data_type.all_fields:
-            self.add_imports_for_field(field)
-
-        # check if we need to import parent type
-        if data_type.is_struct and data_type.parent:
-            self._ctx.add_imports(data_type.parent.java_class)
-
-    def add_imports_for_exception_type(self, data_type):
-        error_type_class = data_type.java_class
-        self._ctx.add_imports(
-            'com.dropbox.core.DbxApiException',
-            'com.dropbox.core.LocalizedText',
-            error_type_class,
-        )
-
-    def add_imports_for_field(self, field):
-        self._add_imports_for_data_type(field.data_type)
-
-    def _add_imports_for_data_type(self, data_type):
-        if data_type.is_primitive:
-            return
-
-        elif data_type.is_list:
-            self._ctx.add_imports(data_type.java_class)
-            self._add_imports_for_data_type(data_type.list_data_type)
-
-        elif data_type.is_nullable:
-            self._add_imports_for_data_type(data_type.nullable_data_type)
-
+    def data_type(self, data_type):
+        j = self.j
+        if isinstance(data_type, DataType):
+            name = j.stone_fq_name(data_type)
         else:
-            self._ctx.add_imports(data_type.java_class)
+            assert isinstance(data_type, six.text_type), repr(data_type)
+            name = data_type
+        assert '.' in name, "Must use fully-qualified stone name: %s" % name
+        return self.data_types.get(name)
 
-    def _add_imports_for_data_type_serializers(self, data_type):
-        self._ctx.add_imports(
-            'java.io.IOException',
-            'com.fasterxml.jackson.core.JsonGenerationException',
-            'com.fasterxml.jackson.core.JsonGenerator',
-            'com.fasterxml.jackson.core.JsonParseException',
-            'com.fasterxml.jackson.core.JsonParser',
-            'com.fasterxml.jackson.core.JsonToken',
-            'com.dropbox.core.stone.StoneSerializers',
-        )
-        if data_type.is_struct:
-            self._ctx.add_imports('com.dropbox.core.stone.StructSerializer')
-        elif data_type.is_union:
-            self._ctx.add_imports('com.dropbox.core.stone.UnionSerializer')
+    def field(self, field, containing_data_type=None):
+        j = self.j
+        if isinstance(field, Field):
+            name = j.stone_fq_name(field, containing_data_type)
+        else:
+            # we expect fully-qualified names for string field references
+            assert containing_data_type is None, repr(field)
+            assert isinstance(field, six.text_type), repr(field)
+            name = field
+        assert '.' in name, "Must use fully-qualified stone name: %s" % name
+        return self.fields.get(name)
+
+    def route(self, route):
+        j = self.j
+        if isinstance(route, ApiRoute):
+            name = j.stone_fq_name(route)
+        else:
+            assert isinstance(route, six.text_type), repr(route)
+            name = route
+        assert '.' in name, "Must use fully-qualified stone name: %s" % name
+        return self.routes.get(name)
+
+    def _initialize(self):
+        j = self.j
+
+        # Data types
+        for namespace in j.stone_api.namespaces.values():
+            for data_type in namespace.data_types:
+                self.data_types[j.stone_fq_name(data_type)] = DataTypeReference(j, data_type)
+
+        # Routes
+        route_refs_by_field = defaultdict(list)
+        for namespace in j.stone_api.namespaces.values():
+            for route in namespace.routes:
+                error_ref = None
+                if is_user_defined_type(route.error_data_type):
+                    error_ref = self.data_types[j.stone_fq_name(route.error_data_type)]
+                route_ref = RouteReference(j, route, error_ref)
+                self.routes[j.stone_fq_name(route)] = route_ref
+
+                # keep track of fields referenced by routes (required by Javadoc for overloaded methods)
+                if route_ref.is_method_overloaded:
+                    for field in route.arg_data_type.all_fields:
+                        route_refs_by_field[field].append(route_ref)
+
+        # Fields
+        for namespace in j.stone_api.namespaces.values():
+            for data_type in namespace.data_types:
+                data_type_ref = self.data_types[j.stone_fq_name(data_type)]
+                # Note that we may have duplicate references for the same field. This happens when
+                # there is inheritance in the struct or union. We want to make sure that both
+                # :field:`Child.field` and :field:`Parent.field` references work in Stone doc.
+                for field in data_type.all_fields:
+                    field_fq_name = j.stone_fq_name(field, data_type)
+                    self.fields[field_fq_name] = FieldReference(
+                        j, field, field_fq_name, data_type_ref, route_refs_by_field.get(field, ())
+                    )
+
+
+class JavaReference(object):
+    def __init__(self, fq_name):
+        assert isinstance(fq_name, six.text_type), repr(fq_name)
+        self.fq_name = fq_name
 
     def __repr__(self):
-        return '%s(imports=%s)' % (self.__class__.__name__, self._ctx.current_imports)
+        return '%s(%s)' % (type(self).__name__, self.__dict__)
+
+    def __str__(self):
+        return '%s(%s)' % (type(self).__name__, self.fq_name)
+
+    def _as_json(self):
+        dct = {}
+        for k, v in self.__dict__.iteritems():
+            # avoid cyclic references issue
+            if isinstance(v, JavaReference):
+                dct[k] = v.fq_name
+            elif isinstance(v, Sequence) and all(isinstance(e, JavaReference) for e in v):
+                dct[k] = [
+                    e.fq_name if isinstance(e, JavaReference) else e
+                    for e in v
+                ]
+            elif isinstance(v, JavaClass):
+                dct[k] = str(v)
+            elif isinstance(v, Sequence) and all(isinstance(e, JavaClass) for e in v):
+                dct[k] = [str(c) for c in v]
+            else:
+                dct[k] = v
+
+        dct['_type'] = type(self).__name__
+        return dct
+
+    def _from_json(self, obj):
+        obj.pop('_type')
+        self.__dict__.update(obj)
+
+    @classmethod
+    def from_json(cls, obj):
+        if '_type' in obj:
+            ref_type = obj['_type']
+            module = sys.modules[__name__]
+            assert hasattr(module, ref_type), repr(ref_type)
+            ref_cls = getattr(module, ref_type)
+            assert issubclass(ref_cls, cls), repr(ref_cls)
+            ref = cls.__new__(ref_cls)
+            ref._from_json(obj)
+            return ref
+        return obj
 
 
-_CMDLINE_PARSER = argparse.ArgumentParser(prog='java-generator')
-_CMDLINE_PARSER.add_argument('--package', type=six.text_type, required=True,
-                             help='base package name')
-_CMDLINE_PARSER.add_argument('--client-spec', action='append', type=six.text_type, default=[],
-                             help=('Client class to generate and its configuration. '
-                                   'Spec lines should be a colon-separated list, in the format '
-                                   '"ClientClassName:ClientJavadoc:RequestsClassNameFormat:RouteFilter". '
-                                   'ClientClassName: Name of the generated client class. '
-                                   'RequestsClassNameFormat: Python format string containing exactly '
-                                   'one replacement string ("%%s"), which will be substituted with the '
-                                   'namespace name for the requests. The resulting name will be used '
-                                   'for the class containing all routes within the given namespace. '
-                                   'RouteFilter: Same as --filter-by-route-attr, filter which routes '
-                                   'should be included into the generated client.'))
-_CMDLINE_PARSER.add_argument('--keep-unused', action="store_true", default=False,
-                             help='Keep data types that are not used by any routes')
+class JavaClassReference(JavaReference):
+    def __init__(self, name, java_class, visibility=Visibility.NONE):
+        assert isinstance(java_class, JavaClass), repr(java_class)
+        assert isinstance(visibility, Visibility), repr(visibility)
+        super(JavaClassReference, self).__init__(name)
+        self.java_class = java_class
+        self.visibility = visibility
 
-class JavaCodeGenerator(CodeGenerator):
-    cmdline_parser = _CMDLINE_PARSER
+    def update_visibility(self, visibility):
+        self.visibility = max(visibility, self.visibility)
 
-    def generate(self, api):
-        """
-        Toplevel code generation method.
+    def _from_json(self, obj):
+        self.java_class = JavaClass.from_str(obj.pop('java_class'))
+        self.visibility = Visibility.from_name(obj.pop('visibility'))
+        super(JavaClassReference, self)._from_json(obj)
 
-        This is called by stone.cli.
-        """
-        client_specs = [ClientSpec.from_spec_str(s) for s in self.args.client_spec]
-        if not client_specs:
-            raise Exception("Must specify at least one client to generate")
-        ctx = GeneratorContext(self, api, client_specs)
-        for client_spec in client_specs:
-            JavaCodeGenerationInstance(ctx).generate(client_spec)
+
+class RouteReference(JavaClassReference):
+    def __init__(self, j, route, error_ref):
+        assert isinstance(route, ApiRoute), repr(route)
+        super(RouteReference, self).__init__(
+            j.stone_fq_name(route),
+            j.java_class(route),
+            Visibility.PUBLIC
+        )
+
+        self.namespace_name = j.route_namespace(route).name
+        self.method = j.route_method(route)
+        self.has_builder = j.has_builder(route)
+        self.builder_method = j.route_builder_method(route) if self.has_builder else None
+        self.error_ref = error_ref
+        self.url_path = j.url_path(route)
+
+        if is_struct_type(route.arg_data_type):
+            self.is_method_overloaded = (
+                any(route.arg_data_type.all_optional_fields) and not j.has_builder(route.arg_data_type)
+            )
+            if self.is_method_overloaded:
+                fields = route.arg_data_type.all_fields
+            else:
+                fields = route.arg_data_type.all_required_fields
+            self.method_arg_classes = tuple(j.java_class(field) for field in fields)
+        else:
+            self.method_arg_classes = ()
+            self.is_method_overloaded = False
+
+    def _from_json(self, obj):
+        self.method_arg_classes = tuple(
+            JavaClass.from_str(c) for c in obj.pop('method_arg_classes')
+        )
+        super(RouteReference, self)._from_json(obj)
+
+
+class DataTypeReference(JavaClassReference):
+    def __init__(self, j, data_type):
+        assert isinstance(data_type, DataType), repr(data_type)
+        super(DataTypeReference, self).__init__(
+            j.stone_fq_name(data_type),
+            j.java_class(data_type),
+            visibility=j.data_type_visibility(data_type)
+        )
+
+        self.has_builder = j.has_builder(data_type)
+        self.builder_class = j.builder_class(data_type) if self.has_builder else None
+        self.serializer_visibility = j.serializer_visibility(data_type)
+
+    def update_serializer_visibility(self, visibility):
+        self.serializer_visibility = max(self.serializer_visibility, visibility)
+
+    def _from_json(self, obj):
+        self.builder_class = JavaClass.from_str(obj.pop('builder_class')) if obj['builder_class'] else None
+        self.serializer_visibility = Visibility.from_name(obj.pop('serializer_visibility'))
+        super(DataTypeReference, self)._from_json(obj)
+
+
+class FieldReference(JavaReference):
+    def __init__(self, j, field, fq_name, containing_data_type_ref, route_refs):
+        assert isinstance(field, Field), repr(field)
+        assert isinstance(containing_data_type_ref, DataTypeReference), repr(containing_data_type_ref)
+        assert isinstance(route_refs, Sequence), repr(route_refs)
+        assert all(isinstance(r, RouteReference) for r in route_refs), repr(route_refs)
+
+        super(FieldReference, self).__init__(fq_name)
+
+        self.param_name = j.param_name(field)
+        self.static_instance = j.field_static_instance(field)
+        self.getter_method = j.field_getter_method(field)
+
+        self.containing_data_type_ref = containing_data_type_ref
+        self.route_refs = route_refs
 
 
 class JavaCodeGenerationInstance(object):
@@ -2732,226 +2370,189 @@ class JavaCodeGenerationInstance(object):
     :ivar :class:`GeneratorContext` ctx: context for current generation
     """
 
-    def __init__(self, ctx):
-        assert isinstance(ctx, GeneratorContext), repr(ctx)
-        self.ctx = ctx
-        self.doc = JavadocGenerator(self.ctx)
-        self.importer = JavaImportGenerator(self.ctx)
-
-    @property
-    def g(self):
-        """
-        Reference to the JavaCodeGenerator instance. Useful for calling CodeGenerator methods like emit().
-
-        :rtype: JavaCodeGenerator
-        """
-        return self.ctx.g
+    def __init__(self, g, api):
+        self.api = api
+        self.g = g
+        self.j = JavaApi(api, self.g.args)
+        self.refs = JavaReferences(self.j)
+        # JavaClassWriter, created with self.class_writer(..)
+        self.w = None
 
     @contextmanager
-    def new_file(self, element, class_name=None, package_doc=None):
-        """
-        Opens a new Java class file for writing and scopes the current generator context to that file.
+    def class_writer(self, stone_type_or_class, package_doc=None):
+        assert isinstance(stone_type_or_class, (StoneType, JavaClass)), repr(stone_type_or_class)
 
-        All generated Java classes should call this method to ensure imports are properly handled
-        and Javadoc annotation references are correct.
-
-        :param :class:`StoneWrapper` element: Stone wrapped element that maps to the new Java class file.
-        :param str class_name: Name of new Java class, defaults to ``element.java_class.name``
-        :param str package_doc: Documentation for package (if generating a ``package-info.java`` class file).
-        """
-        out = self.g.emit
-
-        if package_doc:
-            assert class_name == 'package-info', "Only package-info.java files can contain package Javadoc"
-
-        # create a fully-qualified java class reference
-        if isinstance(class_name, JavaClass):
-            java_class = class_name
-        elif class_name:
-            if '.' in class_name:
-                java_class = JavaClass(self.ctx, class_name)
-            else:
-                java_class = JavaClass(self.ctx, '.'.join((element.java_package, class_name)))
+        if isinstance(stone_type_or_class, JavaClass):
+            java_class = stone_type_or_class
+            stone_element = None
         else:
-            java_class = element.java_class
+            java_class = self.j.java_class(stone_type_or_class)
+            stone_element = stone_type_or_class
 
-        with self.ctx.scoped(java_class.fq):
-            package_relpath = self.create_package_path(java_class.package)
-            file_name = java_class.name + '.java'
-            file_path = os.path.join(package_relpath, file_name)
-            stone_filenames = element.stone_filenames if isinstance(element, NamespaceWrapper) else [element.stone_filename]
+        with JavaClassWriter(self.g, self.j, self.refs, java_class, stone_element=stone_element, package_doc=package_doc) as w:
+            assert self.w is None, self.w
+            self.w = w
+            yield w
+            self.w = None
 
-            with self.g.output_to_relative_path(file_path):
-                self.generate_file_header(element)
-                if package_doc:
-                    self.doc.generate_javadoc(package_doc)
-                out('package %s;' % java_class.package)
+    def generate_all(self):
+        self.update_javadoc_refs()
 
-                yield
+        self.generate_client()
 
-    def generate(self, client_spec):
-        with self.ctx.for_client(client_spec):
-            self.generate_client()
+        for namespace in self.api.namespaces.values():
+            self.generate_namespace(namespace)
 
-            for stone_namespace in self.ctx.api.namespaces.values():
-                namespace = NamespaceWrapper(self.ctx, stone_namespace)
-                self.generate_namespace(namespace)
+    def generate_data_types(self):
+        for namespace in self.api.namespaces.values():
+            for data_type in namespace.data_types:
+                self.generate_data_type(data_type)
 
-    def generate_file_header(self, element=None):
-        out = self.g.emit
+    def update_javadoc_refs(self):
+        javadoc_refs_path = self.g.args.javadoc_refs
 
-        if isinstance(element, NamespaceWrapper):
-            stone_filenames = element.stone_filenames
-        elif isinstance(element, StoneWrapper):
-            stone_filenames = (element.stone_filename,)
-        else:
-            assert element is None, repr(element)
-            stone_filenames = None
+        if javadoc_refs_path is None:
+            return
 
-        out('/* DO NOT EDIT */')
-        if stone_filenames:
-            out('/* This file was generated from %s */' % ', '.join(stone_filenames))
-        else:
-            out('/* This file was generated by Stone */')
-        out('')
+        # load existing file and merge it with our current state
+        if os.path.exists(javadoc_refs_path):
+            with open(javadoc_refs_path, 'r') as f:
+                self.refs.load(f)
 
-    def create_package_path(self, package_name):
-        components = package_name.split('.')
-        package_relpath = os.path.join(*components)
-        package_fullpath = os.path.join(self.g.target_folder_path, package_relpath)
-        if not os.path.isdir(package_fullpath):
-            self.g.logger.info('Creating directory %s', package_fullpath)
-            os.makedirs(package_fullpath)
-        return package_relpath
+        # save our updated state back to the file
+        with open(javadoc_refs_path, 'w') as f:
+            self.refs.serialize(f)
 
     def generate_client(self):
-        out = self.g.emit
-        client_class = self.ctx.client_java_class
+        j = self.j
 
         namespaces = [
-            NamespaceWrapper(self.ctx, ns)
-            for ns in self.ctx.api.namespaces.values()
-            if self.ctx.has_routes_for_client(ns)
+            ns for ns in self.api.namespaces.values()
+            if ns.routes
         ]
 
-        package_relpath = self.create_package_path(client_class.package)
-        file_name = os.path.join(package_relpath, client_class.name + '.java')
-        with self.g.output_to_relative_path(file_name), self.ctx.scoped(client_class.fq):
-            self.generate_file_header()
-            out('package %s;' % client_class.package)
+        client_class = JavaClass(self.g.args.package + '.' + self.g.args.client_class)
+        with self.class_writer(client_class) as w:
+            w.importer.add_imports(*[
+                j.java_class(namespace) for namespace in namespaces
+            ])
+            w.importer.add_imports('com.dropbox.core.v2.DbxRawClientV2')
 
-            for namespace in namespaces:
-                self.ctx.add_imports(namespace.java_class)
-            self.ctx.add_imports('com.dropbox.core.v2.DbxRawClientV2')
+            w.write_imports()
 
-            self.importer.generate_imports()
-
-            out('')
-            self.doc.generate_javadoc(self.ctx.client_javadoc or "")
-            with self.g.block('public class %s' % client_class.name):
-                out('protected final DbxRawClientV2 _client;')
-                out('')
+            w.out('')
+            w.javadoc(self.g.args.client_javadoc or "")
+            with w.class_block(client_class):
+                w.out('protected final DbxRawClientV2 _client;')
+                w.out('')
                 for namespace in namespaces:
-                    out('private final %s %s;' % (namespace.java_class, namespace.java_field))
+                    w.out('private final %s %s;', j.java_class(namespace), j.param_name(namespace))
 
-                out('')
-                self.doc.generate_javadoc(
+                w.out('')
+                w.javadoc(
                     """
                     For internal use only.
                     """,
                     params=(('_client', 'Raw v2 client to use for issuing requests'),)
                 )
-                with self.g.block('protected %s(DbxRawClientV2 _client)' % client_class.name):
-                    out('this._client = _client;')
+                with w.block('protected %s(DbxRawClientV2 _client)', client_class.name):
+                    w.out('this._client = _client;')
                     for namespace in namespaces:
-                        out('this.%s = new %s(_client);' % (
-                            namespace.java_field, namespace.java_class
-                        ))
+                        w.out('this.%s = new %s(_client);', j.param_name(namespace), j.java_class(namespace))
 
                 for namespace in namespaces:
-                    out('')
-                    self.doc.generate_javadoc(
+                    w.out('')
+                    w.javadoc(
                         """
                         Returns client for issuing requests in the {@code "%s"} namespace.
-                        """ % namespace.stone_name,
-                        returns="Dropbox %s client" % namespace.stone_name
+                        """ % namespace.name,
+                        returns="Dropbox %s client" % namespace.name
                     )
-                    with self.g.block("public %s %s()" % (namespace.java_class, namespace.java_getter)):
-                        out('return %s;' % namespace.java_field)
+                    with w.block("public %s %s()", j.java_class(namespace), j.namespace_getter_method(namespace)):
+                        w.out('return %s;' % j.param_name(namespace))
 
     def generate_namespace(self, namespace):
+        assert isinstance(namespace, ApiNamespace), repr(namespace)
+
+        j = self.j
+
+        # add documentation to our packages
+        self.generate_package_javadoc(namespace)
+
         # create class files for all namespace data types in this package
         for data_type in namespace.data_types:
             self.generate_data_type(data_type)
 
         for route in namespace.routes:
-            # filter out unwanted routes
-            if not self.ctx.include_route(route):
-                continue
-
-            # generate exception classes for routes
-            self.generate_exception_type(route)
-
             # generate per-route uploader helpers
-            self.generate_uploader_type(route)
+            if j.request_style(route) == 'upload':
+                self.generate_route_uploader(route)
 
             # generate all necessary builder classes for routes that support it
-            self.generate_builder_type(route)
+            if j.has_builder(route):
+                self.generate_route_builder(route)
 
-        # add documentation to our packages
-        self.generate_package_javadoc(namespace)
-
-        if self.ctx.has_routes_for_client(namespace):
+        if namespace.routes:
             self.generate_namespace_routes(namespace)
 
     def generate_namespace_routes(self, namespace):
-        out = self.g.emit
-        javadoc = self.doc.generate_javadoc
+        assert isinstance(namespace, ApiNamespace), repr(namespace)
 
-        with self.new_file(namespace, class_name=namespace.java_class.fq):
-            self.importer.add_imports_for_namespace(namespace)
-            self.importer.generate_imports()
+        j = self.j
 
-            out('')
-            javadoc('Routes in namespace "%s".' % (namespace.stone_name,))
-            with self.g.block('public final class %s' % namespace.java_class):
-                out('// namespace %s' % namespace.stone_name)
-                out('')
-                out('private final DbxRawClientV2 client;')
+        with self.class_writer(namespace) as w:
+            w.importer.add_imports_for_namespace(namespace)
+            w.write_imports()
 
-                out('')
-                with self.g.block('public %s(DbxRawClientV2 client)' % namespace.java_class):
-                    out('this.client = client;')
+            w.out('')
+            w.javadoc('Routes in namespace "%s".' % namespace.name)
+            with w.class_block(namespace):
+                w.out('// namespace %s (%s)', namespace.name, ', '.join(j.get_spec_filenames(namespace)))
+                w.out('')
+                w.out('private final DbxRawClientV2 client;')
+
+                w.out('')
+                with w.block('public %s(DbxRawClientV2 client)', j.java_class(namespace)):
+                    w.out('this.client = client;')
 
                 for route in namespace.routes:
-                    # filter out unwanted routes
-                    if not self.ctx.include_route(route):
-                        continue
-
-                    out('')
-                    out('//')
-                    out('// route %s/%s' % (route.namespace.stone_name, route.stone_name))
-                    out('//')
+                    w.out('')
+                    w.out('//')
+                    w.out('// route %s', j.url_path(route))
+                    w.out('//')
                     self.generate_route_base(route)
-                    self.generate_route(route, required_only=True)
+                    if j.has_arg(route):
+                        self.generate_route(route, required_only=True)
                     # we don't use builders if we have too few optional fields. Instead we just
                     # create another method call. We have an exception for download endpoints, which
                     # recently added builders for previous routes that had no builders
-                    if route.has_optional_arg_fields and not route.supports_builder:
+                    has_optional_fields = is_struct_type(route.arg_data_type) and route.arg_data_type.all_optional_fields
+                    if has_optional_fields and not j.has_builder(route.arg_data_type):
                         self.generate_route(route, required_only=False)
-                    self.generate_route_builder(route)
+
+                    # route can have builder if arg does or if route has a particular request
+                    # style. So check route for builder instead of arg here:
+                    if j.has_builder(route):
+                        self.generate_route_builder_method(route)
 
     def generate_package_javadoc(self, namespace):
+        assert isinstance(namespace, ApiNamespace), repr(namespace)
+
+        w = self.w
+        j = self.j
+
         requests_reference_doc = ''
-        request_classes = [
-            self.ctx.class_name_for_namespace(namespace, spec)
-            for spec in self.ctx.client_specs
-            if self.ctx.has_routes_for_client(namespace, spec)
-        ]
+        # different routes may have different namespace classes based on the client configuration we
+        # used. Go through all the routes references in a namespace to figure out all the requests
+        # classes we have available.
+        request_classes = OrderedDict()
+        for route_ref in self.refs.routes.values():
+            if route_ref.namespace_name == namespace.name:
+                request_classes[route_ref.java_class] = None
 
         if request_classes:
             requests_reference_doc += 'See %s for a list of possible requests for this namespace.' % (
-                ', '.join('{@link %s}' % request_class for request_class in request_classes)
+                ', '.join("{@link %s}" % c for c in request_classes)
             )
 
         package_doc = (
@@ -2959,247 +2560,279 @@ class JavaCodeGenerationInstance(object):
             %s
 
             %s
-            """ % (namespace.stone_doc, requests_reference_doc)
+            """ % (namespace.doc or '', requests_reference_doc)
         )
 
-        with self.new_file(namespace, 'package-info', package_doc=package_doc):
+        package_info_class = JavaClass(j.java_class(namespace).package + '.' + 'package-info')
+        with self.class_writer(package_info_class, package_doc=package_doc):
             pass
 
     def generate_route_base(self, route, force_public=False):
-        out = self.g.emit
-        javadoc = self.doc.generate_javadoc
+        assert isinstance(route, ApiRoute), repr(route)
 
-        arg_type = route.arg
-        result_type = route.result
-        error_type = route.error
+        w = self.w
+        j = self.j
 
-        if route.request_style == 'upload':
-            returns="Uploader used to upload the request body and finish request."
-        elif route.request_style == 'download':
-            returns="Downloader used to download the response body and view the server response."
-        elif route.has_result and (result_type.is_struct or result_type.is_union):
-            returns=result_type
+        is_download = j.request_style(route) == 'download'
+        is_public = force_public or (
+            not (is_struct_type(route.arg_data_type) or is_download)
+        )
+
+        if j.request_style(route) == 'upload':
+            returns = "Uploader used to upload the request body and finish request."
+            return_class = j.route_uploader_class(route)
+        elif j.request_style(route) == 'download':
+            returns = "Downloader used to download the response body and view the server response."
+            return_class = j.route_downloader_class(route)
+        elif j.has_result(route):
+            returns = route.result_data_type
+            return_class = j.java_class(route.result_data_type)
         else:
-            returns=None
+            returns = None
+            return_class = JavaClass('void')
 
-        return_type = route.java_return_type
-        throws = ', '.join(map(six.text_type, route.java_throws))
-        if route.has_arg:
-            method_arg_type = arg_type.java_type()
-            method_arg_name = arg_type.java_name
-            args = [(method_arg_type, method_arg_name)]
-            if route.request_style == 'download' and not force_public:
-                headers_var = 'headers_'
-                args.extend([
-                    ('List<HttpRequestor.Header>', headers_var),
-                ])
-            else:
-                headers_var = 'Collections.<HttpRequestor.Header>emptyList()'
-
-            if arg_type.is_union and (force_public or route.request_style != 'download'):
-                deprecated = route.deprecated_by
-                visibility = 'public'
-            else:
-                deprecated = None # Don't mark private methods deprecated since we don't care
-                visibility = ''   # package private
-
-            signature = '%s %s %s(%s) throws %s' % (
-                visibility,
-                return_type,
-                route.java_method,
-                ', '.join('%s %s' % (k, v) for k, v in args),
-                throws,
-            )
+        if is_public:
+            deprecated = None # automatically determine from route
+            visibility = 'public'
         else:
-            method_arg_name = None
-            deprecated = route.deprecated_by
-            signature = 'public %s %s() throws %s' % (return_type, route.java_method, throws)
+            deprecated = False # Don't mark private methods deprecated since we don't care
+            visibility = ''    # package private
 
-        out('')
-        javadoc(route, returns=returns, deprecated=deprecated,
-                params=((method_arg_name, arg_type),) if not route.arg.is_void else ())
-        with self.g.block(signature.strip()):
-            if route.request_style == 'rpc':
-                self.generate_route_rpc_call(route, method_arg_name)
-            elif route.request_style == 'upload':
-                self.generate_route_upload_call(route, method_arg_name)
-            elif route.request_style == 'download':
-                if arg_type.is_union and force_public:
-                    self.generate_route_download_call(route, method_arg_name, headers_var)
-                else:
-                    self.generate_route_download_call(route, method_arg_name, headers_var)
+        throws_classes = j.route_throws_classes(route)
+        throws = ', '.join(w.resolved_class(c) for c in throws_classes)
+
+        args = []
+        params = []
+        if j.has_arg(route):
+            arg_class = j.java_class(route.arg_data_type)
+            args.append(w.fmt('%s arg', arg_class))
+            params.append(('arg', route.arg_data_type.doc))
+
+        if is_download:
+            if is_public:
+                headers_var = w.fmt('%s.<%s>emptyList()',
+                                    JavaClass('java.util.Collections'),
+                                    JavaClass('com.dropbox.core.http.HttpRequestor.Header'))
             else:
-                assert False, "unrecognized route request style: %s" % route.request_style
+                headers_var = '_headers'
+                headers_class = JavaClass.from_str('java.util.List<com.dropbox.core.http.HttpRequestor.Header>')
+                args.append(w.fmt('%s %s', headers_class, headers_var))
+                params.append((headers_var, 'Extra headers to send with request.'))
+
+        w.out('')
+        w.javadoc(route, returns=returns, deprecated=deprecated, params=params)
+        with w.block('%s %s %s(%s) throws %s',
+                     visibility,
+                     return_class,
+                     j.route_method(route),
+                     ', '.join(args),
+                     throws):
+            if j.request_style(route) == 'rpc':
+                self.generate_route_rpc_call(route, 'arg')
+            elif j.request_style(route) == 'upload':
+                self.generate_route_upload_call(route, 'arg')
+            elif j.request_style(route) == 'download':
+                self.generate_route_download_call(route, 'arg', headers_var)
+            else:
+                assert False, "unrecognized route request style: %s" % j.request_style(route)
 
     def generate_route(self, route, required_only=True):
-        if not route.has_arg:
+        assert isinstance(route, ApiRoute), repr(route)
+
+        w = self.w
+        j = self.j
+
+        assert j.has_arg(route), repr(route)
+
+        # routes with union or builtin args (e.g. UInt32, List) are always made public and should
+        # already be generated by generate_route_base(..).
+        if not is_struct_type(route.arg_data_type):
+            # One exception is if the route is a download style endpoint. We may have extra headers
+            # we need to pass up for download endpoints, so those routes are made private. So just
+            # generate the base route again, but force it to generate the public version without the
+            # extra headers argument:
+            if j.request_style(route) == 'download':
+                self.generate_route_base(route, force_public=True)
             return
 
-        if route.arg.is_union:
-            if route.request_style == 'download':
-                generate_route_base(route, force_public=True)
-            return
+        # should only be left with struct args
+        assert is_struct_type(route.arg_data_type), repr(route.arg_data_type)
 
-        out = self.g.emit
-        javadoc = self.doc.generate_javadoc
-
-        arg_type = route.arg
-        result_type = route.result
-        return_type = route.java_return_type
-        throws = ', '.join(map(six.text_type, route.java_throws))
-
-        assert arg_type.is_struct, repr(arg_type)
+        arg = route.arg_data_type
+        result = route.result_data_type
+        error = route.error_data_type
 
         if not required_only:
-            assert not route.supports_builder, "Route has builder, so unpacked method unnecessary."
-            n_optional = len(arg_type.all_optional_fields)
+            assert not j.has_builder(arg), "Arg %s has builder, so unpacked method unnecessary." % repr(route)
+            n_optional = len(arg.all_optional_fields)
             # we disable boxing for this method, which can be dangerous if we have more than one
             # optional argument. It will essentially prevent users from being able to use
             # default values for part of their request arguments. Consider updating code if
             # you want to support this.
-            assert n_optional == 1, "More than one optional field should permit boxing!"
+            assert n_optional == 1, "More than one optional field should permit boxing! %s" % repr(route)
 
 
-        if route.request_style == 'upload':
-            returns="Uploader used to upload the request body and finish request."
-        elif route.request_style == 'download':
-            returns="Downloader used to download the response body and view the server response."
-        elif route.has_result and (result_type.is_struct or result_type.is_union):
-            returns=result_type
+        if j.request_style(route) == 'upload':
+            returns = "Uploader used to upload the request body and finish request."
+            return_class = j.route_uploader_class(route)
+        elif j.request_style(route) == 'download':
+            returns = "Downloader used to download the response body and view the server response."
+            return_class = j.route_downloader_class(route)
+        elif j.has_result(route):
+            returns = result
+            return_class = j.java_class(route.result_data_type)
         else:
             returns=None
+            return_class = JavaClass('void')
 
         if required_only:
-            fields = arg_type.all_required_fields
+            fields = arg.all_required_fields
         else:
-            fields = arg_type.all_fields
-        args = ', '.join(f.java_type_and_name() for f in fields)
+            fields = arg.all_fields
+        args = ', '.join(
+            w.fmt('%s %s', j.java_class(f), j.param_name(f)) for f in fields
+        )
 
-        default_fields = tuple(f for f in arg_type.all_optional_fields if f.has_default)
-        doc = route.stone_doc
+        default_fields = tuple(f for f in arg.all_optional_fields if f.has_default)
+        doc = route.doc or ''
         if required_only and default_fields:
-            if route.supports_builder:
+            if j.has_builder(route):
                 doc += """
 
-                The default values for the optional request parameters will be used. See {@link %s}
-                for more details.""" % route.java_builder_class
+                The default values for the optional request parameters will be used. See %s
+                for more details.""" % w.javadoc_ref(j.builder_class(route))
             else:
                 assert len(default_fields) == 1, default_fields
                 default_field = default_fields[0]
                 doc += """
 
                 The {@code %s} request parameter will default to {@code %s} (see {@link #%s(%s)}).""" % (
-                    default_field.java_name,
-                    default_field.default_value,
-                    route.java_method,
-                    ','.join(str(f.data_type.java_type(boxed=False, generics=False)) for f in arg_type.all_fields),
+                    j.param_name(default_field),
+                    w.java_default_value(default_field),
+                    j.route_method(route),
+                    ','.join(w.resolved_class(j.java_class(f, generics=False)) for f in arg.all_fields),
                 )
+        throws_classes = j.route_throws_classes(route)
+        throws = ', '.join(w.resolved_class(c) for c in throws_classes)
 
-        out('')
-        javadoc(doc, fields=fields, returns=returns, context=route, allow_defaults=False)
-        with self.g.block('public %s %s(%s) throws %s' % (return_type, route.java_method, args, throws)):
-            arg_class = arg_type.java_type()
-            required_args = ', '.join(f.java_name for f in arg_type.all_required_fields)
+        w.out('')
+        w.javadoc(doc, stone_elem=route, fields=fields, returns=returns, allow_defaults=False)
+        with w.block('public %s %s(%s) throws %s', return_class, j.route_method(route), args, throws):
+            arg_class = j.java_class(arg)
+            required_args = ', '.join(j.param_name(f) for f in arg.all_required_fields)
             if required_only:
-                out('%(cls)s arg = new %(cls)s(%(args)s);' % dict(cls=arg_class, args=required_args))
+                w.out('%s _arg = new %s(%s);', arg_class, arg_class, required_args)
             else:
-                optional_fields = arg_type.all_optional_fields
+                optional_fields = arg.all_optional_fields
                 for field in optional_fields:
                     # disable translation of nulls to default
                     self.generate_field_validation(field, allow_default=False)
 
-                if arg_type.supports_builder:
+                if j.has_builder(arg):
                     # use builder to build with optional fields
-                    out('%(cls)s arg = %(cls)s.newBuilder(%(args)s)' % dict(cls=arg_class, args=required_args))
+                    w.out('%s _arg = %s.newBuilder(%s)', arg_class, required_args)
                     with self.g.indent():
                         for field in optional_fields:
-                            out('.%s(%s)' % (field.java_builder_setter, field.java_name))
-                        out('.build();')
+                            w.out('.%s(%s)', j.field_builder_method(field), j.param_name(field))
+                        w.out('.build();')
                 else:
                     # use full constructor
-                    all_args = ', '.join(f.java_name for f in arg_type.all_fields)
-                    out('%(cls)s arg = new %(cls)s(%(args)s);' % dict(cls=arg_class, args=all_args))
+                    all_args = ', '.join(j.param_name(f) for f in arg.all_fields)
+                    w.out('%s _arg = new %s(%s);', arg_class, arg_class, all_args)
 
-            if route.has_result or route.request_style in ('upload', 'download'):
-                args = ('arg',)
-                if route.request_style == 'download':
-                    args += ('Collections.<HttpRequestor.Header>emptyList()',) # headers
-                out('return %s(%s);' % (route.java_method, ', '.join(args)))
+            if j.has_result(route) or j.request_style(route) in ('upload', 'download'):
+                args = ['_arg']
+                if j.request_style(route) == 'download':
+                    # extra request headers
+                    args.append(w.fmt('%s.<%s>emptyList()',
+                                      JavaClass('java.util.Collections'),
+                                      JavaClass('com.dropbox.core.http.HttpRequestor.Header')))
+                w.out('return %s(%s);', j.route_method(route), ', '.join(args))
             else:
-                out('%s(arg);' % route.java_method)
+                w.out('%s(_arg);', j.route_method(route))
 
-    def generate_route_builder(self, route):
-        if not (route.request_style == 'download' or route.supports_builder):
-            return
+    def generate_route_builder_method(self, route):
+        assert isinstance(route, ApiRoute), repr(route)
 
-        out = self.g.emit
-        javadoc = self.doc.generate_javadoc
+        w = self.w
+        j = self.j
 
-        arg_type = route.arg
-        result_type = route.result
-        return_type = route.java_builder_return_type
+        assert j.has_builder(route), repr(route)
 
-        if route.request_style == 'upload':
+        arg = route.arg_data_type
+        result = route.result_data_type
+        return_class = j.builder_class(route)
+
+        if j.request_style(route) == 'upload':
             returns="Uploader builder for configuring request parameters and instantiating an uploader."
-        elif route.request_style == 'download':
+        elif j.request_style(route) == 'download':
             returns="Downloader builder for configuring the request parameters and instantiating a downloader."
         else:
             returns="Request builder for configuring request parameters and completing the request."
 
-        required_fields = arg_type.all_required_fields
-        args = ', '.join(f.java_type_and_name() for f in required_fields)
+        required_fields = arg.all_required_fields
+        args = ', '.join(
+            w.fmt('%s %s', j.java_class(f), j.param_name(f))
+            for f in required_fields
+        )
 
-        out('')
-        javadoc(route, fields=required_fields, returns=returns)
-        with self.g.block('public %s %s(%s)' % (return_type, route.java_builder_method, args)):
-            builder_args = ', '.join(f.java_name for f in required_fields)
-            if arg_type.supports_builder:
-                out('%s argBuilder_ = %s.newBuilder(%s);' % (
-                    arg_type.java_builder_class,
-                    arg_type.java_class,
-                    builder_args,
-                ))
-                out('return new %s(this, argBuilder_);' % return_type)
+        w.out('')
+        w.javadoc(route, fields=required_fields, returns=returns)
+        with w.block('public %s %s(%s)', j.builder_class(route), j.route_builder_method(route), args):
+            builder_args = ', '.join(j.param_name(f) for f in required_fields)
+            if j.has_builder(arg):
+                w.out('%s argBuilder_ = %s.newBuilder(%s);',
+                      j.builder_class(arg),
+                      j.java_class(arg),
+                      builder_args,
+                )
+                w.out('return new %s(this, argBuilder_);', return_class)
             else:
-                out('%s arg_ = new %s(%s);' % (
-                    arg_type.java_class,
-                    arg_type.java_class,
-                    ', '.join(f.java_name for f in required_fields)
-                ))
-                out('return new %s(this, %s);' % (return_type, builder_args))
+                w.out('return new %s(this, %s);', return_class, builder_args)
 
     def translate_error_wrapper(self, route, error_wrapper_var):
-        if route.has_error:
-            return 'new %(exc)s(%(ew)s.getRequestId(), %(ew)s.getUserMessage(), (%(err)s) %(ew)s.getErrorValue());' % dict(
-                exc=route.java_exception_class,
-                err=route.error.java_type(),
-                ew=error_wrapper_var,
-            )
+        assert isinstance(route, ApiRoute), repr(route)
+        assert isinstance(error_wrapper_var, six.text_type), repr(error_wrapper_var)
+
+        w = self.w
+        j = self.j
+
+        if j.has_error(route):
+            return w.fmt('new %s("%s", %s.getRequestId(), %s.getUserMessage(), (%s) %s.getErrorValue());',
+                         j.route_exception_class(route),
+                         j.url_path(route),
+                         error_wrapper_var,
+                         error_wrapper_var,
+                         j.java_class(route.error_data_type),
+                         error_wrapper_var)
         else:
-            message = '"Unexpected error response for \\"%(route)s\\":" + %(ew)s.getErrorValue()' % dict(
-                route=route.stone_name,
-                ew=error_wrapper_var,
+            message = '"Unexpected error response for \\"%s\\":" + %s.getErrorValue()' % (
+                route.name,
+                error_wrapper_var,
             )
-            return 'new DbxApiException(%(ew)s.getRequestId(), %(ew)s.getUserMessage(), %(msg)s);' % dict(
-                msg=message,
-                ew=error_wrapper_var,
-            )
+            return 'new DbxApiException(%s.getRequestId(), %s.getUserMessage(), %s);' % (
+                error_wrapper_var,
+                error_wrapper_var,
+                message)
 
     def generate_route_simple_call(self, route, arg_var, before, *other_args):
-        out = self.g.emit
+        assert isinstance(route, ApiRoute), repr(route)
 
-        with self.g.block('try'):
+        w = self.w
+        j = self.j
+
+        with w.block('try'):
             multiline_args = [
-                'client.getHost().%s()' % camelcase('get_' + route.host),
-                '"%s"' % route.url_path,
-                arg_var if route.has_arg else 'null',
-                'true' if route.auth_style == 'noauth' else 'false',
+                'this.client.getHost().%s()' % camelcase('get_' + j.route_host(route)),
+                '"%s"' % j.url_path(route),
+                arg_var if j.has_arg(route) else 'null',
+                'true' if j.auth_style(route) == 'noauth' else 'false',
             ]
             multiline_args.extend(other_args)
             multiline_args.extend([
-                route.arg.java_serializer,
-                route.result.java_serializer,
-                route.error.java_serializer,
+                w.java_serializer(route.arg_data_type),
+                w.java_serializer(route.result_data_type),
+                w.java_serializer(route.error_data_type),
             ])
 
             self.g.generate_multiline_list(
@@ -3208,11 +2841,15 @@ class JavaCodeGenerationInstance(object):
                 after=';',
             )
         with self.g.block('catch (DbxWrappedException ex)'):
-            out('throw %s' % self.translate_error_wrapper(route, 'ex'))
+            w.out('throw %s' % self.translate_error_wrapper(route, 'ex'))
 
     def generate_route_rpc_call(self, route, arg_var):
+        assert isinstance(route, ApiRoute), repr(route)
+
+        j = self.j
+
         # return value is optional
-        before = ('return ' if route.has_result else '') + 'client.rpcStyle'
+        before = ('return ' if j.has_result(route) else '') + 'this.client.rpcStyle'
         self.generate_route_simple_call(
             route,
             arg_var,
@@ -3220,8 +2857,10 @@ class JavaCodeGenerationInstance(object):
         )
 
     def generate_route_download_call(self, route, arg_var, headers_var):
+        assert isinstance(route, ApiRoute), repr(route)
+
         # always need to return a downloader
-        before = 'return client.downloadStyle'
+        before = 'return this.client.downloadStyle'
         self.generate_route_simple_call(
             route,
             arg_var,
@@ -3230,47 +2869,65 @@ class JavaCodeGenerationInstance(object):
         )
 
     def generate_route_upload_call(self, route, arg_var):
-        out = self.g.emit
+        assert isinstance(route, ApiRoute), repr(route)
+
+        w = self.w
+        j = self.j
 
         self.g.generate_multiline_list(
             (
-                'client.getHost().%s()' % camelcase('get_' + route.host),
-                '"%s"' % route.url_path,
-                arg_var if route.has_arg else 'null',
-                'true' if route.auth_style == 'noauth' else 'false',
-                route.arg.java_serializer,
+                'this.client.getHost().%s()' % camelcase('get_' + j.route_host(route)),
+                '"%s"' % j.url_path(route),
+                arg_var if j.has_arg(route) else 'null',
+                'true' if j.auth_style(route) == 'noauth' else 'false',
+                w.java_serializer(route.arg_data_type),
             ),
-            before='HttpRequestor.Uploader uploader = client.uploadStyle',
+            before=w.fmt('%s _uploader = this.client.uploadStyle',
+                         JavaClass('com.dropbox.core.http.HttpRequestor.Uploader')),
             after=';',
         )
-        out('return new %s(uploader);' % route.java_uploader_class)
+        w.out('return new %s(_uploader);', j.route_uploader_class(route))
 
     def generate_data_type(self, data_type):
         """Generate a class definition for a datatype (a struct or a union)."""
-        out = self.g.emit
+        assert is_user_defined_type(data_type), repr(data_type)
 
-        if not (self.ctx.keep_unused or is_data_type_referenced(data_type)):
+        j = self.j
+
+        if not (self.g.args.data_types_only or j.is_used_by_client(data_type)):
             return
 
-        with self.new_file(data_type):
-            self.importer.add_imports_for_data_type(data_type)
-            self.importer.generate_imports()
+        with self.class_writer(data_type) as w:
+            w.importer.add_imports_for_data_type(data_type)
+            w.write_imports()
 
-            if data_type.is_enum:
+            if j.is_enum(data_type):
                 self.generate_data_type_enum(data_type)
-            elif data_type.is_union:
+            elif is_union_type(data_type):
                 self.generate_data_type_union(data_type)
-            else:
+            elif is_struct_type(data_type):
                 self.generate_data_type_struct(data_type)
+            else:
+                raise AssertionError(repr(data_type))
+
+        # generate exception classes for routes if the data type is used as an error response
+        if j.data_type_has_exception(data_type):
+            self.generate_exception_type(data_type)
 
     def generate_data_type_enum(self, data_type):
-        out = self.g.emit
-        javadoc = self.doc.generate_javadoc
+        assert is_union_type(data_type), repr(data_type)
 
-        out('')
-        javadoc(data_type)
-        with self.g.block('public enum %s' % data_type.java_class):
-            out('// union %s' % data_type.stone_name)
+        w = self.w
+        j = self.j
+
+        assert j.is_enum(data_type), repr(data_type)
+
+        visibility = j.data_type_visibility(data_type)
+
+        w.out('')
+        w.javadoc(data_type)
+        with w.class_block(data_type, visibility=visibility):
+            w.out('// union %s (%s)', j.stone_fq_name(data_type), j.get_spec_filename(data_type))
             self.generate_enum_values(data_type)
 
             #
@@ -3280,108 +2937,125 @@ class JavaCodeGenerationInstance(object):
 
     def generate_enum_values(self, data_type):
         """Generate enum values for simple unions or tags."""
-        out = self.g.emit
-        javadoc = self.doc.generate_javadoc
+        assert is_union_type(data_type), repr(data_type)
 
-        all_fields = data_type.all_fields
-        for i, field in enumerate(all_fields):
-            javadoc(field)
+        w = self.w
+        j = self.j
+
+        last_index = len(data_type.all_fields) - 1
+        for i, field in enumerate(data_type.all_fields):
+            w.javadoc(field)
             comment = ''
-            if field.is_catch_all:
-                assert field.data_type.is_void, field.data_type
+            if field == data_type.catch_all_field:
+                assert is_void_type(field.data_type), repr(field)
                 comment = ' // *catch_all'
-            elif not field.data_type.is_void:
-                comment += ' // %s' % field.data_type.java_type()
+            elif j.has_value(field):
+                comment = w.fmt(' // %s', j.java_class(field))
 
-            sep = ',' if i < (len(all_fields) - 1) else ';'
-            out(field.java_enum + sep + comment)
+            sep = ';' if i == last_index else ','
+            enum_value = j.field_enum_name(field) or j.field_tag_enum_name(field)
+            assert enum_value, repr(field)
+            w.out(enum_value + sep + comment)
 
     def generate_data_type_union(self, data_type):
-        out = self.g.emit
-        javadoc = self.doc.generate_javadoc
+        assert is_union_type(data_type), repr(data_type)
+
+        w = self.w
+        j = self.j
 
         class_doc = """%s
 
             This class is %s union.  Tagged unions instances are always associated to a
             specific tag.  This means only one of the {@code isAbc()} methods will return {@code
             true}. You can use {@link #tag()} to determine the tag associated with this instance.
-            """ % (data_type.stone_doc, 'an open tagged' if data_type.catch_all_field else 'a tagged')
+            """ % (data_type.doc or '', 'an open tagged' if data_type.catch_all_field else 'a tagged')
         if data_type.catch_all_field:
                 class_doc += """
 
                 Open unions may be extended in the future with additional tags. If a new tag is
                 introduced that this SDK does not recognized, the {@link #%s} value will be used.
-                """ % data_type.catch_all_field.java_singleton
+                """ % j.field_static_instance(data_type.catch_all_field)
 
 
-        out('')
-        javadoc(class_doc, context=data_type)
-        with self.g.block('public final class %s' % data_type.java_class):
-            out('// union %s' % data_type.java_class)
+        visibility = j.data_type_visibility(data_type)
+
+        w.out('')
+        w.javadoc(class_doc, stone_elem=data_type)
+        with w.class_block(data_type, visibility=visibility):
+            w.out('// union %s (%s)', j.stone_fq_name(data_type), j.get_spec_filename(data_type))
 
             #
             # Tag
             #
-            out('')
-            javadoc('Discriminating tag type for {@link %s}.' % data_type.java_class)
-            with self.g.block('public enum Tag'):
+            w.out('')
+            w.javadoc('Discriminating tag type for {@link %s}.' % j.java_class(data_type).name)
+            with w.block('public enum Tag'):
                 self.generate_enum_values(data_type)
 
             #
             # Simple field singletons
             #
-            nulls = tuple("null" for f in data_type.all_fields if f.has_value)
-            if any(not f.has_value for f in data_type.all_fields):
-                out('')
-            for field in data_type.all_fields:
-                if not field.has_value:
-                    singleton_args = ', '.join(chain(("Tag.%s" % field.tag_name,), nulls))
-                    javadoc(field)
-                    out('public static final %s %s = new %s(%s);' % (
-                        data_type.java_class,
-                        field.java_singleton, data_type.java_class,
-                        singleton_args,
-                    ))
+            all_fields = data_type.all_fields
+            static_fields = [f for f in all_fields if is_void_type(f.data_type)]
+            value_fields = [f for f in all_fields if not is_void_type(f.data_type)]
+            nulls = ["null" for f in value_fields]
+
+            if static_fields:
+                w.out('')
+            for field in static_fields:
+                singleton_args = ', '.join(["Tag.%s" % j.field_tag_enum_name(field)] + nulls)
+                w.javadoc(field)
+                w.out('public static final %s %s = new %s(%s);',
+                      j.java_class(data_type),
+                      j.field_static_instance(field),
+                      j.java_class(data_type),
+                      singleton_args,
+                )
 
             #
             # Instance fields
             #
-            out('')
-            out('private final Tag tag;')
-            for field in data_type.all_fields:
-                if field.has_value:
-                    out('private final %s %s;' % (field.data_type.java_type(boxed=True), field.java_name))
+            w.out('')
+            w.out('private final Tag _tag;')
+            for field in all_fields:
+                if j.has_value(field):
+                    w.out('private final %s %s;', j.java_class(field), j.param_name(field))
 
             #
             # Constructor
             #
             args = ', '.join(chain(
-                (('Tag tag'),),
-                ('%s %s' % (field.data_type.java_type(boxed=True), field.java_name)
-                 for field in data_type.all_fields if field.has_value),
+                ['Tag _tag'],
+                [
+                    w.fmt('%s %s', j.java_class(f, boxed=True), j.param_name(f))
+                    for f in value_fields
+                ],
             ))
-            out('')
-            javadoc(data_type,
-                    fields=(f for f in data_type.all_fields if f.has_value),
-                    params=OrderedDict(tag="Discriminating tag for this instance."))
-            with self.g.block('private %s(%s)' % (data_type.java_class, args)):
-                out('this.tag = tag;')
-                for field in data_type.all_fields:
-                    if field.has_value:
-                        # don't perform validation in the private constructor
-                        out('this.%s = %s;' % (field.java_name, field.java_name))
+            w.out('')
+            w.javadoc(data_type,
+                      fields=value_fields,
+                      params=OrderedDict(_tag="Discriminating tag for this instance."))
+            with w.block('private %s(%s)', j.java_class(data_type), args):
+                w.out('this._tag = _tag;')
+                for field in value_fields:
+                    # don't perform validation in the private constructor
+                    w.out('this.%s = %s;', j.param_name(field), j.param_name(field))
 
 
             #
             # Field getters/constructors
             #
-            out('')
+            w.out('')
             if data_type.catch_all_field:
-                catch_all_doc = "If a tag returned by the server is unrecognized by this SDK, the {@link Tag#%s} value will be used." % (
-                    data_type.catch_all_field.tag_name)
+                catch_all_doc = (
+                    """
+                    If a tag returned by the server is unrecognized by this SDK,
+                    the {@link Tag#%s} value will be used.
+                    """ % j.field_tag_enum_name(data_type.catch_all_field)
+                )
             else:
                 catch_all_doc = ""
-            javadoc(
+            w.javadoc(
                 """
                 Returns the tag for this instance.
 
@@ -3390,12 +3064,12 @@ class JavaCodeGenerationInstance(object):
                 true}. Callers are recommended to use the tag value in a {@code switch} statement to
                 properly handle the different values for this {@code %s}.
 
-                %s""" % (data_type.java_class, catch_all_doc),
-                context=data_type,
+                %s""" % (j.java_class(data_type).name, catch_all_doc),
+                stone_elem=data_type,
                 returns="the tag for this instance."
             )
-            with self.g.block('public Tag tag()'):
-                out('return tag;')
+            with w.block('public Tag tag()'):
+                w.out('return _tag;')
             self.generate_data_type_union_field_methods(data_type)
 
             #
@@ -3411,122 +3085,121 @@ class JavaCodeGenerationInstance(object):
             self.generate_union_serializer(data_type)
 
     def generate_data_type_union_field_methods(self, data_type):
-        out = self.g.emit
-        javadoc = self.doc.generate_javadoc
+        assert is_union_type(data_type), repr(data_type)
+
+        w = self.w
+        j = self.j
+
+        value_fields = [f for f in data_type.all_fields if not is_void_type(f.data_type)]
 
         for field in data_type.all_fields:
             #
             # isFieldName()
             #
-            out('')
-            javadoc(
+            w.out('')
+            w.javadoc(
                 """
                 Returns {@code true} if this instance has the tag {@link Tag#%s}, {@code false}
                 otherwise.
-                """ % field.tag_name,
+                """ % j.field_tag_enum_name(field),
                 returns=(
                     """
                     {@code true} if this instance is tagged as {@link Tag#%s},
                     {@code false} otherwise.
                     """
-                ) % field.tag_name
+                ) % j.field_tag_enum_name(field)
             )
-            with self.g.block('public boolean %s()' % field.java_is_union_type_method):
-                out('return this.tag == Tag.%s;' % field.tag_name)
+            with w.block('public boolean %s()' % j.field_tag_match_method_name(field)):
+                w.out('return this._tag == Tag.%s;', j.field_tag_enum_name(field))
 
-            if field.has_value:
+            if j.has_value(field):
                 #
                 # Union fieldName() [factory method]
                 #
-                out('')
+                w.out('')
                 doc = (
                     """
                     Returns an instance of {@code %s} that has its tag set to {@link Tag#%s}.
 
                     %s
-                    """ % (data_type.java_class, field.tag_name, field.stone_doc)
+                    """ % (j.java_class(data_type).name, j.field_tag_enum_name(field), field.doc)
                 )
-                returns = "Instance of {@code %s} with its tag set to {@link Tag#%s}." % (data_type.java_class, field.tag_name)
-                javadoc(
+                returns = "Instance of {@code %s} with its tag set to {@link Tag#%s}." % (
+                    j.java_class(data_type).name, j.field_tag_enum_name(field))
+                w.javadoc(
                     doc,
-                    context=field,
-                    params=OrderedDict(value="value to assign to this instance.") if field.has_value else (),
+                    stone_elem=field,
+                    params=OrderedDict(value="value to assign to this instance.") if j.has_value(field) else (),
                     returns=returns,
-                    throws=self.doc.javadoc_throws(field, "value"),
+                    throws=w.throws(field, "value"),
                 )
-                if field.has_value:
-                    with self.g.block('public static %s %s(%s value)' % (
-                            data_type.java_class,
-                            field.java_factory_method,
-                            field.java_type(),
-                    )):
+                if j.has_value(field):
+                    with w.block('public static %s %s(%s value)',
+                                 j.java_class(data_type),
+                                 j.field_factory_method(field),
+                                 j.java_class(field),
+                    ):
                         self.generate_field_validation(field, value_name="value", omit_arg_name=True, allow_default=False)
                         args = ", ".join(
-                            "value" if f.as_stone is field.as_stone else "null"
-                            for f in data_type.all_fields if f.has_value
+                            "value" if f is field else "null"
+                            for f in value_fields
                         )
-                        out('return new %s(Tag.%s, %s);' % (data_type.java_class, field.tag_name, args))
+                        w.out('return new %s(Tag.%s, %s);',
+                              j.java_class(data_type),
+                              j.field_tag_enum_name(field),
+                              args)
 
-                    if field.data_type.is_nullable:
-                        out('')
-                        javadoc(doc, context=field, returns=returns)
-                        with self.g.block('public static %s %s()' % (data_type.java_class, field.java_factory_method)):
-                            out('return %s(null);' % field.java_factory_method)
+                    if is_nullable_type(field.data_type):
+                        w.out('')
+                        w.javadoc(doc, stone_elem=field, returns=returns)
+                        with w.block('public static %s %s()', j.java_class(data_type), j.field_factory_method(field)):
+                            w.out('return %s(null);', j.field_factory_method(field))
 
                 #
                 # getFieldNameValue()
                 #
-                out('')
-                javadoc(
+                w.out('')
+                w.javadoc(
                     """
                     %s
 
                     This instance must be tagged as {@link Tag#%s}.
-                    """ % (field.stone_doc, field.tag_name),
-                    context=field,
+                    """ % (field.doc or '', j.field_tag_enum_name(field)),
+                    stone_elem=field,
                     returns="""
                     The %s value associated with this instance if {@link #%s} is
                     {@code true}.
-                    """ % (self.doc.javadoc_ref(field), field.java_is_union_type_method),
+                    """ % (w.javadoc_ref(field.data_type), j.field_tag_match_method_name(field)),
                     throws=OrderedDict(
-                        IllegalStateException="If {@link #%s} is {@code false}." % field.java_is_union_type_method,
+                        IllegalStateException="If {@link #%s} is {@code false}." % j.field_tag_match_method_name(field),
                     )
                 )
-                with self.g.block('public %s %s()' % (field.java_type(), field.java_getter)):
-                    with self.g.block('if (this.tag != Tag.%s)' % field.tag_name):
-                        out('throw new IllegalStateException("Invalid tag: required Tag.%s, but was Tag." + tag.name());' % field.tag_name)
-                    out('return %s;' % field.java_name)
+                with w.block('public %s %s()', j.java_class(field), j.field_getter_method(field)):
+                    with w.block('if (this._tag != Tag.%s)', j.field_tag_enum_name(field)):
+                        w.out('throw new IllegalStateException("Invalid tag: required Tag.%s, but was Tag." + this._tag.name());', j.field_tag_enum_name(field))
+                    w.out('return %s;', j.param_name(field))
 
 
     def generate_data_type_struct(self, data_type):
-        out = self.g.emit
-        javadoc = self.doc.generate_javadoc
+        assert is_struct_type(data_type), repr(data_type)
 
-        # we want to hide classes that aren't usable by developers. This include helper classes we
-        # use internally for building the request. If a struct is only ever used as the argument to
-        # a route request, then developers will never have to create an instance themselves. Mark
-        # the class as package-private.
-        #
-        # The exception to this rule are struct classes located in namespaces outside the route
-        # namespace. To be able to import these classes, they will have to remain public.
-        if is_data_type_required_outside_package(data_type):
-            visibility = 'public'
-        else:
-            # package private since this struct only gets used privately as a route arg.
-            visibility = ''
+        w = self.w
+        j = self.j
 
-        out('')
-        javadoc(data_type)
-        with self.g.block(('%s class %s' % (visibility, data_type.java_class_with_inheritance)).strip()):
-            out('// struct %s' % data_type.stone_name)
+        visibility = j.data_type_visibility(data_type)
+
+        w.out('')
+        w.javadoc(data_type)
+        with w.class_block(data_type, visibility=visibility):
+            w.out('// struct %s (%s)', j.stone_fq_name(data_type), j.get_spec_filename(data_type))
 
             #
             # instance fields
             #
-            out('')
+            w.out('')
             for field in data_type.fields:
                 # fields marked as protected since structs allow inheritance
-                out('protected final %s;' % field.java_type_and_name())
+                w.out('protected final %s %s;', j.java_class(field), j.param_name(field))
 
             #
             # constructor.
@@ -3534,80 +3207,81 @@ class JavaCodeGenerationInstance(object):
 
             # use builder or required-only constructor for default values
             args = ', '.join(
-                field.java_type_and_name() for field in data_type.all_fields
+                w.fmt('%s %s', j.java_class(f), j.param_name(f))
+                for f in data_type.all_fields
             )
-            doc = data_type.stone_doc
-            if data_type.supports_builder:
+            doc = data_type.doc or ''
+            if j.has_builder(data_type):
                 doc += """
 
                 Use {@link newBuilder} to create instances of this class without specifying values for all optional fields.
                 """
-            out('')
-            javadoc(doc, context=data_type, fields=data_type.all_fields, allow_defaults=False)
-            with self.g.block('public %s(%s)' % (data_type.java_class, args)):
-                parent_fields = data_type.parent.all_fields if data_type.parent else ()
+            w.out('')
+            w.javadoc(doc, stone_elem=data_type, fields=data_type.all_fields, allow_defaults=False)
+            with w.block('public %s(%s)', j.java_class(data_type), args):
+                parent_fields = data_type.parent_type.all_fields if data_type.parent_type else ()
 
                 if parent_fields:
-                    parent_args = ', '.join(f.java_name for f in parent_fields)
-                    out('super(%s);' % parent_args)
+                    parent_args = ', '.join(j.param_name(f) for f in parent_fields)
+                    w.out('super(%s);', parent_args)
 
                 for field in data_type.fields:
                     self.generate_field_validation(field, allow_default=False)
                     self.generate_field_assignment(field, allow_default=False)
 
             # required-only constructor
-            if data_type.has_optional_fields:
+            if data_type.all_optional_fields:
                 # create a constructor with just required fields (for convenience)
                 required_fields = data_type.all_required_fields
                 required_args = ', '.join(
-                    field.java_type_and_name()
-                    for field in required_fields
+                    w.fmt('%s %s', j.java_class(f), j.param_name(f))
+                    for f in required_fields
                 )
-                out('')
-                javadoc(
+                w.out('')
+                w.javadoc(
                     """
                     %s
 
                     The default values for unset fields will be used.
-                    """ % data_type.stone_doc,
-                    context=data_type,
-                    fields=required_fields
+                    """ % data_type.doc or '',
+                    stone_elem=data_type,
+                    fields=required_fields,
                 )
-                with self.g.block('public %s(%s)' % (data_type.java_class, required_args)):
+                with w.block('public %s(%s)', j.java_class(data_type), required_args):
                     this_args = []
                     for field in data_type.all_fields:
-                        if field.data_type.is_nullable:
+                        if is_nullable_type(field.data_type):
                             this_args.append('null')
                         elif field.has_default:
-                            this_args.append(field.default_value)
+                            this_args.append(w.java_default_value(field))
                         else:
-                            this_args.append(field.java_name)
-                    out('this(%s);' % ', '.join(this_args))
+                            this_args.append(j.param_name(field))
+                    w.out('this(%s);', ', '.join(this_args))
 
             #
             # getter methods
             #
-            for field in data_type.fields:
-                out('')
-                if field.is_optional:
+            for field in data_type.all_fields:
+                w.out('')
+                if field in data_type.all_optional_fields:
                     returns = 'value for this field, or {@code null} if not present.'
-                elif not field.data_type.is_primitive:
-                    returns = 'value for this field, never {@code null}.'
-                else:
+                elif j.is_java_primitive(field.data_type):
                     returns = 'value for this field.'
+                else:
+                    returns = 'value for this field, never {@code null}.'
 
                 if field.has_default:
-                    returns += ' Defaults to %s.' % field.default_value
+                    returns += ' Defaults to %s.' % w.java_default_value(field)
 
-                javadoc(field, returns=returns)
-                with self.g.block('public %s %s()' % (field.java_type(), field.java_getter)):
-                    out('return %s;' % field.java_name)
+                w.javadoc(field.doc or '', stone_elem=field, returns=returns)
+                with w.block('public %s %s()', j.java_class(field), j.field_getter_method(field)):
+                    w.out('return %s;' % j.param_name(field))
 
 
             #
             # builder
             #
-            if data_type.supports_builder:
+            if j.has_builder(data_type):
                 self.generate_struct_builder(data_type)
 
             #
@@ -3623,99 +3297,120 @@ class JavaCodeGenerationInstance(object):
             self.generate_struct_serializer(data_type)
 
     def generate_struct_builder(self, data_type):
-        out = self.g.emit
-        javadoc = self.doc.generate_javadoc
+        assert is_struct_type(data_type), repr(data_type)
 
-        assert data_type.supports_builder, repr(data_type)
+        w = self.w
+        j = self.j
 
-        parent_supports_builder = data_type.parent and data_type.parent.supports_builder
+        assert j.has_builder(data_type), repr(data_type)
+
+        parent_has_builder = data_type.parent_type and j.has_builder(data_type.parent_type)
         all_required_fields = data_type.all_required_fields
-        fields = data_type.fields if parent_supports_builder else data_type.all_fields
-        required_fields = tuple(f for f in fields if f.is_required)
-        optional_fields = tuple(f for f in fields if f.is_optional)
-        ancestors = get_ancestors(data_type.as_stone)
+        fields = data_type.fields if parent_has_builder else data_type.all_fields
+        required_fields = [f for f in fields if f in all_required_fields]
+        optional_fields = [f for f in fields if f not in all_required_fields]
+        ancestors = get_ancestors(data_type)
 
-        all_required_args = ', '.join(f.java_type_and_name() for f in all_required_fields)
-        required_args = ', '.join(f.java_type_and_name() for f in required_fields)
+        all_required_args = ', '.join(
+            w.fmt('%s %s', j.java_class(f), j.param_name(f)) for f in all_required_fields
+        )
+        required_args = ', '.join(
+            w.fmt('%s %s', j.java_class(f), j.param_name(f)) for f in required_fields
+        )
 
-        out('')
-        javadoc(
+        w.out('')
+        w.javadoc(
             'Returns a new builder for creating an instance of this class.',
-            context=data_type,
+            stone_elem=data_type,
             fields=all_required_fields,
             returns='builder for this class.',
         )
-        with self.g.block('public static %s newBuilder(%s)' % (data_type.java_builder_class, all_required_args)):
-            builder_args = ', '.join(f.java_name for f in all_required_fields)
-            out('return new %s(%s);' % (data_type.java_builder_class, builder_args))
+        with w.block('public static %s newBuilder(%s)', j.builder_class(data_type), all_required_args):
+            builder_args = ', '.join(j.param_name(f) for f in all_required_fields)
+            w.out('return new %s(%s);', j.builder_class(data_type), builder_args)
 
-        out('')
-        javadoc('Builder for %s.' % self.doc.javadoc_ref(data_type))
-        with self.g.block('public static class %s' % data_type.java_builder_class_with_inheritance):
+        parent_class = None
+        if data_type.parent_type and j.has_builder(data_type.parent_type):
+            parent_class = j.builder_class(data_type.parent_type)
+
+        w.out('')
+        w.javadoc('Builder for %s.' % w.javadoc_ref(data_type))
+        with w.class_block(j.builder_class(data_type), parent_class=parent_class):
             #
             # Instance fields
             #
 
             for field in required_fields:
-                out('protected final %s;' % field.java_type_and_name())
+                w.out('protected final %s %s;', j.java_class(field), j.param_name(field))
 
             if optional_fields:
-                out('')
+                w.out('')
             for field in optional_fields:
-                out('protected %s;' % field.java_type_and_name())
+                w.out('protected %s %s;', j.java_class(field), j.param_name(field))
 
             #
             # Constructor
             #
-            out('')
-            with self.g.block('protected %s(%s)' % (data_type.java_builder_class, all_required_args)):
-                if parent_supports_builder:
-                    parent_required_fields = tuple(f for f in data_type.all_parent_fields if f.is_required)
+            w.out('')
+            with w.block('protected %s(%s)', j.builder_class(data_type), all_required_args):
+                if parent_has_builder:
+                    parent_required_fields = [
+                        f for f in data_type.parent_type.all_fields if f in all_required_fields
+                    ]
                     if parent_required_fields:
-                        parent_args = ', '.join(f.java_name for f in parent_required_fields)
-                        out('super(%s);' % parent_args)
+                        parent_args = ', '.join(j.param_name(f) for f in parent_required_fields)
+                        w.out('super(%s);', parent_args)
 
                 for field in required_fields:
                     self.generate_field_validation(field)
                     self.generate_field_assignment(field)
 
                 for field in optional_fields:
-                    if field.data_type.is_nullable:
-                        out('this.%s = null;' % field.java_name)
+                    if is_nullable_type(field.data_type):
+                        w.out('this.%s = null;', j.param_name(field))
                     else:
                         assert field.has_default, repr(field)
-                        out('this.%s = %s;' % (field.java_name, field.default_value))
+                        w.out('this.%s = %s;', j.param_name(field), w.java_default_value(field))
 
             #
             # Setter/Adder methods
             #
-            self.generate_builder_methods(data_type.java_builder_class, fields)
+            self.generate_builder_methods(j.builder_class(data_type), fields)
             # delegate to parent builder, but make sure we return ourselves for proper chaining
-            if parent_supports_builder:
-                self.generate_builder_methods(data_type.java_builder_class, data_type.all_parent_fields, wrapped_builder_name="super")
+            if parent_has_builder:
+                self.generate_builder_methods(j.builder_class(data_type),
+                                              data_type.parent_type.all_fields,
+                                              wrapped_builder_name="super")
 
             #
             # Build method
             #
-            out('')
-            javadoc(
-                "Builds an instance of %s configured with this builder's values" % self.doc.javadoc_ref(data_type),
-                returns='new instance of %s' % self.doc.javadoc_ref(data_type)
+            w.out('')
+            w.javadoc(
+                """
+                Builds an instance of %s configured with this builder's values
+                """ % w.javadoc_ref(data_type),
+                returns='new instance of %s' % w.javadoc_ref(data_type)
             )
-            with self.g.block('public %s build()' % data_type.java_class):
-                build_args = ', '.join(f.java_name for f in data_type.all_fields)
-                out('return new %s(%s);' % (data_type.java_class, build_args))
+            with w.block('public %s build()', j.java_class(data_type)):
+                build_args = ', '.join(j.param_name(f) for f in data_type.all_fields)
+                w.out('return new %s(%s);', j.java_class(data_type), build_args)
 
     def generate_builder_methods(self, builder_class, fields, wrapped_builder_name=None):
-        out = self.g.emit
-        javadoc = self.doc.generate_javadoc
+        assert isinstance(builder_class, JavaClass), repr(builder_class)
+        assert isinstance(fields, Sequence), repr(fields)
+        assert all(isinstance(f, StructField) for f in fields), repr(fields)
+
+        w = self.w
+        j = self.j
 
         # qualify builder name if necessary to avoid name conflicts
         if wrapped_builder_name and wrapped_builder_name != 'super':
             wrapped_builder_name = 'this.' + wrapped_builder_name
 
         for field in fields:
-            if not field.is_optional:
+            containing_data_type = j.field_containing_data_type(field)
+            if not field in containing_data_type.all_optional_fields:
                 continue
 
             doc = 'Set value for optional field.'
@@ -3723,320 +3418,309 @@ class JavaCodeGenerationInstance(object):
                 doc += """
 
                 If left unset or set to {@code null}, defaults to {@code %s}.
-                """ % field.default_value
+                """ % w.java_default_value(field)
 
 
             #
             # withFieldName(FieldType fieldValue);
             #
-            out('')
-            javadoc(doc, context=field, fields=(field,), returns='this builder')
-            with self.g.block('public %s %s(%s %s)' % (
-                    builder_class,
-                    field.java_builder_setter,
-                    field.data_type.java_type(boxed=True), # null treated as default
-                    field.java_name,
-            )):
+            w.out('')
+            w.javadoc(doc, stone_elem=field, fields=(field,), returns='this builder')
+            with w.block('public %s %s(%s %s)',
+                         builder_class,
+                         j.field_builder_method(field),
+                         j.java_class(field, boxed=True), # null treated as default
+                         j.param_name(field)):
                 if wrapped_builder_name:
-                    out('%s.%s(%s);' % (wrapped_builder_name, field.java_builder_setter, field.java_name))
+                    w.out('%s.%s(%s);',
+                          wrapped_builder_name,
+                          j.field_builder_method(field),
+                          j.param_name(field))
                 else:
                     self.generate_field_validation(field)
                     self.generate_field_assignment(field)
-                out('return this;')
+                w.out('return this;')
 
-    def generate_exception_type(self, route):
-        if not route.has_error:
-            return
+    def generate_exception_type(self, data_type):
+        assert isinstance(data_type, DataType), repr(data_type)
 
-        out = self.g.emit
-        javadoc = self.doc.generate_javadoc
+        j = self.j
 
-        data_type = route.error
-        class_name = data_type.java_exception_class
-        error_type = data_type.java_type()
+        exception_class = j.exception_class(data_type)
 
-        with self.new_file(data_type, class_name):
-            self.importer.add_imports_for_exception_type(data_type)
-            self.importer.generate_imports()
+        data_type_ref = self.refs.data_type(data_type)
+        route_refs = [
+            ref for ref in self.refs.routes.values()
+            if ref.error_ref == data_type_ref
+        ]
 
-            out('')
-            javadoc('Exception thrown when the server responds with a %s error.' % self.doc.javadoc_ref(data_type))
-            with self.g.block('public class %s extends DbxApiException' % class_name):
-                out('private static final long serialVersionUID = 0L;')
-                out('')
-                javadoc('The error reported by %s.' % self.doc.javadoc_ref(route))
-                out('public final %s errorValue;' % error_type)
+        with self.class_writer(exception_class) as w:
+            w.importer.add_imports_for_exception_type(data_type)
+            w.write_imports()
 
-                out('')
-                with self.g.block('public %s(String requestId, LocalizedText userMessage, %s errorValue)' % (class_name, error_type)):
-                    out('super(requestId, userMessage, buildMessage("%s", userMessage, errorValue));' % route.stone_name)
-                    with self.g.block('if (errorValue == null)'):
-                        out('throw new NullPointerException("errorValue");')
-                    out('this.errorValue = errorValue;')
+            route_javadoc_refs = oxford_comma_list([w.javadoc_ref(r) for r in route_refs])
 
-    def generate_uploader_type(self, route):
-        if route.request_style != 'upload':
-            return
+            w.out('')
+            w.javadoc(
+                """
+                Exception thrown when the server responds with a %s error.
 
-        out = self.g.emit
-        javadoc = self.doc.generate_javadoc
+                This exception is raised by %s.
+                """ % (w.javadoc_ref(data_type), route_javadoc_refs)
+            )
+            with w.class_block(exception_class, parent_class=JavaClass('com.dropbox.core.DbxApiException')):
+                w.out('// exception for routes:')
+                for route_ref in route_refs:
+                    w.out('//     %s', route_ref.url_path)
+                w.out('')
+                w.out('private static final long serialVersionUID = 0L;')
+                w.out('')
 
-        class_name = route.java_uploader_class.name
-        with self.new_file(route, class_name):
-            self.importer.add_imports_for_route_uploader(route)
-            self.importer.generate_imports()
+                w.javadoc('The error reported by %s.' % route_javadoc_refs)
+                w.out('public final %s errorValue;', j.java_class(data_type))
 
-            result_type = route.result.java_type()
-            error_type = route.error.java_type()
-            if route.has_error:
-                exception_type = route.java_exception_class
-            else:
-                exception_type = 'DbxApiException'
+                w.out('')
+                with w.block('public %s(String routeName, String requestId, LocalizedText userMessage, %s errorValue)',
+                             exception_class, j.java_class(data_type)):
+                    w.out('super(requestId, userMessage, buildMessage(routeName, userMessage, errorValue));')
+                    with w.block('if (errorValue == null)'):
+                        w.out('throw new NullPointerException("errorValue");')
+                    w.out('this.errorValue = errorValue;')
 
-            out('')
-            javadoc(
+    def generate_route_uploader(self, route):
+        assert isinstance(route, ApiRoute), repr(route)
+
+        j = self.j
+
+        assert j.request_style(route) == 'upload'
+
+        with self.class_writer(j.route_uploader_class(route)) as w:
+            w.importer.add_imports_for_route_uploader(route)
+            w.write_imports()
+
+            result_class = j.java_class(route.result_data_type, boxed=True)
+            error_class = j.java_class(route.error_data_type, boxed=True)
+            exception_class = j.route_exception_class(route)
+
+            parent_class = JavaClass('com.dropbox.core.DbxUploader',
+                                     generics=(result_class, error_class, exception_class))
+
+            w.out('')
+            w.javadoc(
                 """
                 The {@link DbxUploader} returned by %s.
 
                 Use this class to upload data to the server and complete the request.
 
                 This class should be properly closed after use to prevent resource leaks and allow
-                network connection reuse. Always call {@link #close} when complete (see {@link
-                DbxUploader} for examples).
-                """ % self.doc.javadoc_ref(route)
+                network connection reuse. Always call {@link #close} when complete (see %s
+                for examples).
+                """ % (w.javadoc_ref(route), w.javadoc_ref(JavaClass('com.dropbox.core.DbxUploader')))
             )
-            with self.g.block('public class %s extends DbxUploader<%s, %s, %s>' % (class_name, result_type, error_type, exception_type)):
-                out('')
-                javadoc(
+            with w.class_block(j.route_uploader_class(route), parent_class=parent_class):
+                w.out('')
+                w.javadoc(
                     'Creates a new instance of this uploader.',
                     params=(('httpUploader', 'Initiated HTTP upload request'),),
                     throws=(('NullPointerException', 'if {@code httpUploader} is {@code null}'),)
                 )
-                with self.g.block('public %s(HttpRequestor.Uploader httpUploader)' % class_name):
-                    out('super(httpUploader, %s, %s);' % (route.result.java_serializer, route.error.java_serializer))
+                with w.block('public %s(HttpRequestor.Uploader httpUploader)', j.route_uploader_class(route)):
+                    w.out('super(httpUploader, %s, %s);',
+                          w.java_serializer(route.result_data_type),
+                          w.java_serializer(route.error_data_type))
 
-                out('')
-                with self.g.block('protected %s newException(DbxWrappedException error)' % exception_type):
-                    out('return %s' % self.translate_error_wrapper(route, 'error'))
+                w.out('')
+                with w.block('protected %s newException(DbxWrappedException error)', exception_class):
+                    w.out('return %s', self.translate_error_wrapper(route, 'error'))
 
-    def generate_builder_type(self, route):
-        if not (route.request_style == 'download' or route.supports_builder):
-            return
+    def generate_route_builder(self, route):
+        assert isinstance(route, ApiRoute), repr(route)
 
-        out = self.g.emit
-        javadoc = self.doc.generate_javadoc
+        j = self.j
 
-        assert route.arg.is_struct, "Can only create builders for struct arg types."
+        assert j.has_builder(route), repr(route)
 
-        class_name = route.java_builder_class.name
-        with self.new_file(route, class_name):
-            self.importer.add_imports_for_route_builder(route)
-            self.importer.generate_imports()
+        arg = route.arg_data_type
 
-            arg_type = route.arg
-            if route.has_error:
-                exception_class = route.java_exception_class
+        with self.class_writer(j.builder_class(route)) as w:
+            result_class = j.java_class(route.result_data_type, boxed=True)
+            error_class = j.java_class(route.error_data_type, boxed=True)
+            exception_class = j.route_exception_class(route)
+
+            if j.request_style(route) == 'upload':
+                parent_class = JavaClass('com.dropbox.core.v2.DbxUploadStyleBuilder',
+                                         generics=(result_class, error_class, exception_class))
+                return_class = j.route_uploader_class(route)
+            elif j.request_style(route) == 'download':
+                parent_class = JavaClass('com.dropbox.core.v2.DbxDownloadStyleBuilder',
+                                         generics=(result_class,))
+                return_class = j.route_downloader_class(route)
+            elif j.has_result(route):
+                parent_class = None
+                return_class = j.java_class(route.result_data_type)
             else:
-                exception_class = 'DbxApiException'
-            if arg_type.supports_builder:
-                builder_arg_class = arg_type.java_builder_class
-                builder_arg_name = arg_type.java_builder_field
-            client_name = route.namespace.java_field + '_'
+                parent_class = None
+                return_class = JavaClass('void')
 
-            out('')
-            javadoc(
+            w.importer.add_imports_for_route_builder(route)
+            w.write_imports()
+
+            w.out('')
+            w.javadoc(
                 """
                 The request builder returned by %s.
 
                 Use this class to set optional request parameters and complete the request.
-                """ % self.doc.javadoc_ref(route, builder=True)
+                """ % w.javadoc_ref(route, builder=True)
             )
-            with self.g.block('public class %s' % route.java_builder_class_with_inheritance):
-                out('private final %s %s;' % (route.namespace.java_class, client_name))
-                if arg_type.supports_builder:
-                    out('private final %s %s;' % (builder_arg_class, builder_arg_name))
+            with w.class_block(j.builder_class(route), parent_class=parent_class):
+                w.out('private final %s _client;', j.java_class(route))
+                if j.has_builder(arg):
+                    w.out('private final %s _builder;', j.builder_class(arg))
                 else:
-                    for field in arg_type.all_required_fields:
-                        out('private final %s;' % field.java_type_and_name())
-                    for field in arg_type.all_optional_fields:
-                        out('private %s;' % field.java_type_and_name())
+                    for f in arg.all_required_fields:
+                        w.out('private final %s %s;', j.java_class(f), j.param_name(f))
+                    for f in arg.all_optional_fields:
+                        w.out('private %s %s;', j.java_class(f), j.param_name(f))
 
                 #
                 # CONSTRUCTOR
                 #
 
                 params=[
-                    (client_name, 'Dropbox namespace-specific client used to issue %s requests.' % route.namespace.stone_name)
+                    ('_client', 'Dropbox namespace-specific client used to issue %s requests.' % j.route_namespace(route).name)
                 ]
-                if arg_type.supports_builder:
-                    args = ', '.join('%s %s' % pair for pair in (
-                        (route.namespace.java_class, client_name),
-                        (builder_arg_class, builder_arg_name),
-                    ))
-                    params.append((builder_arg_name, 'Request argument builder.'))
+                if j.has_builder(arg):
+                    fields = ()
+                    args = w.fmt('%s _client, %s _builder', j.java_class(route), j.builder_class(arg))
+                    params.append(('_builder', 'Request argument builder.'))
                 else:
-                    args = '%s %s, %s' % (
-                        route.namespace.java_class,
-                        client_name,
-                        ', '.join(f.java_type_and_name() for f in arg_type.all_required_fields)
-                    )
+                    fields = arg.all_required_fields
+                    args = w.fmt('%s _client, %s',
+                                 j.java_class(route),
+                                 ', '.join(
+                                     w.fmt('%s %s', j.java_class(f), j.param_name(f)) for f in fields
+                                 ))
 
-
-                out('')
-                javadoc(
+                w.out('')
+                w.javadoc(
                     'Creates a new instance of this builder.',
                     params=params,
-                    fields=() if arg_type.supports_builder else arg_type.all_required_fields,
+                    fields=fields,
                     returns='instsance of this builder',
                 )
                 # package private
-                with self.g.block('%s(%s)' % (class_name, args)):
-                    with self.g.block('if (%s == null)' % client_name):
-                        out('throw new NullPointerException("%s");' % client_name)
-                    out('this.%(nf)s = %(nf)s;' % dict(nf=client_name));
+                with w.block('%s(%s)', j.builder_class(route), args):
+                    with w.block('if (_client == null)'):
+                        w.out('throw new NullPointerException("_client");')
+                    w.out('this._client = _client;')
 
-                    if arg_type.supports_builder:
-                        with self.g.block('if (%s == null)' % builder_arg_name):
-                            out('throw new NullPointerException("%s");' % builder_arg_name)
-                        out('this.%(nf)s = %(nf)s;' % dict(nf=builder_arg_name));
+                    if j.has_builder(arg):
+                        with w.block('if (_builder == null)'):
+                            w.out('throw new NullPointerException("_builder");')
+                        w.out('this._builder = _builder;')
                     else:
-                        for field in arg_type.all_required_fields:
-                            out('this.%(nf)s = %(nf)s;' % dict(nf=field.java_name))
-                        for field in arg_type.all_optional_fields:
+                        for field in fields:
+                            w.out('this.%s = %s;', j.param_name(field), j.param_name(field))
+                        for field in arg.all_optional_fields:
                             if field.has_default:
-                                out('this.%s = %s;' % (field.java_name, field.default_value))
+                                w.out('this.%s = %s;', j.param_name(field), w.java_default_value(field))
                             else:
-                                out('this.%s = null;' % field.java_name)
+                                w.out('this.%s = null;', j.param_name(field))
 
                 #
                 # SETTERS/ADDERs for optional/list fields
                 #
 
-                wrapped_builder_name = builder_arg_name if arg_type.supports_builder else None
-                self.generate_builder_methods(class_name, arg_type.all_fields, wrapped_builder_name=wrapped_builder_name)
+                wrapped_builder_name = '_builder' if j.has_builder(arg) else None
+                self.generate_builder_methods(j.builder_class(route), arg.all_fields, wrapped_builder_name=wrapped_builder_name)
 
                 #
                 # BUILD method to start request
                 #
 
-                out('')
-                if route.request_style in ('upload', 'download'):
-                    out('@Override')
+                w.out('')
+                if j.request_style(route) in ('download', 'upload'):
+                    w.out('@Override')
                     # inehrit doc from parent
                 else:
-                    javadoc('Issues the request.')
-                if route.is_deprecated:
-                    out('@SuppressWarnings("deprecation")')
-                with self.g.block('public %s start() throws %s, DbxException' % (route.java_return_type, exception_class)):
-                    if arg_type.supports_builder:
-                        out('%s arg_ = this.%s.build();' % (arg_type.java_type(), builder_arg_name))
+                    w.javadoc('Issues the request.')
+                if route.deprecated is not None:
+                    w.out('@SuppressWarnings("deprecation")')
+                with w.block('public %s start() throws %s, DbxException',
+                             return_class, exception_class):
+                    if j.has_builder(arg):
+                        w.out('%s arg_ = this._builder.build();', j.java_class(arg))
                     else:
-                        out('%s arg_ = new %s(%s);' % (
-                            arg_type.java_type(),
-                            arg_type.java_class,
-                            ', '.join(f.java_name for f in arg_type.all_fields)
-                        ))
-                    args = ('arg_',)
-                    if route.request_style == 'download':
-                        args += ('getHeaders()',)
-                    if route.has_result:
-                        out('return %s.%s(%s);' % (client_name, route.java_method, ', '.join(args)))
+                        w.out('%s arg_ = new %s(%s);',
+                              j.java_class(arg),
+                              j.java_class(arg),
+                              ', '.join(j.param_name(f) for f in arg.all_fields))
+                    args = ['arg_']
+                    if j.request_style(route) == 'download':
+                        args.append('getHeaders()')
+                    if j.has_result(route):
+                        w.out('return _client.%s(%s);', j.route_method(route), ', '.join(args))
                     else:
-                        out('%s.%s(%s);' % (client_name, route.java_method, ', '.join(args)))
+                        w.out('_client.%s(%s);', j.route_method(route), ', '.join(args))
 
     def generate_field_assignment(self, field, lhs=None, rhs=None, allow_default=True):
-        out = self.g.emit
+        assert isinstance(field, Field), repr(field)
 
-        lhs = lhs or ('this.%s' % field.java_name)
-        rhs = rhs or field.java_name
+        w = self.w
+        j = self.j
 
-        underlying_data_type = field.data_type
-        if underlying_data_type.is_nullable:
-            underlying_data_type = underlying_data_type.nullable_data_type
-        if underlying_data_type.is_list:
-            underlying_data_type = underlying_data_type.list_data_type
+        lhs = lhs or ('this.%s' % j.param_name(field))
+        rhs = rhs or j.param_name(field)
 
+        underlying_data_type = get_underlying_type(field.data_type)
         # our timestamp format only allows for second-level granularity (no millis).
         # enforce this.
         #
         # TODO: gotta be a better way than this...
-        if is_timestamp_type(underlying_data_type.as_stone) and rhs != 'null':
-            rhs = 'com.dropbox.core.util.LangUtil.truncateMillis(%s)' % rhs
+        if is_timestamp_type(underlying_data_type) and rhs != 'null':
+            rhs = w.fmt('%s.truncateMillis(%s)', JavaClass('com.dropbox.core.util.LangUtil'), rhs)
 
         if allow_default and field.has_default:
+            java_default_value = w.java_default_value(field)
             if rhs == 'null':
-                out('%s = %s;' % (lhs, field.default_value))
+                w.out('%s = %s;', lhs, java_default_value)
             else:
-                with self.g.block('if (%s != null)' % rhs):
-                    out('%s = %s;' % (lhs, rhs))
-                with self.g.block('else'):
+                with w.block('if (%s != null)', rhs):
+                    w.out('%s = %s;', lhs, rhs)
+                with w.block('else'):
                     # set default
-                    out('%s = %s;' % (lhs, field.default_value))
+                    w.out('%s = %s;', lhs, java_default_value)
         else:
-            out('%s = %s;' % (lhs, rhs))
+            w.out('%s = %s;', lhs, rhs)
 
     def generate_field_validation(self, field, value_name=None, omit_arg_name=False, allow_default=True):
         """Generate validation code for one field.
         """
-        out = self.g.emit
-        data_type = field.data_type
-        value_name = value_name or field.java_name
+        assert isinstance(field, Field), repr(field)
 
-        if data_type.is_nullable:
-            data_type =  data_type.nullable_data_type
-            if data_type.requires_validation:
-                with self.g.block('if (%s != null)' % field.java_name):
+        w = self.w
+        j = self.j
+
+        data_type = field.data_type
+        value_name = value_name or j.param_name(field)
+
+        if is_void_type(field.data_type):
+            return
+        elif is_nullable_type(field.data_type):
+            data_type = data_type.data_type
+            if j.requires_validation(data_type):
+                with w.block('if (%s != null)', j.param_name(field)):
                     self.generate_data_type_validation(data_type, value_name, omit_arg_name=omit_arg_name)
         else:
             # Don't need to check primitive/default types for null.
-            if not (data_type.is_primitive or (allow_default and field.has_default)):
-                with self.g.block('if (%s == null)' % value_name):
+            if not (j.is_java_primitive(field.data_type) or (allow_default and field.has_default)):
+                with w.block('if (%s == null)' % value_name):
                     if omit_arg_name:
-                        out('throw new IllegalArgumentException("Value is null");')
+                        w.out('throw new IllegalArgumentException("Value is null");')
                     else:
-                        out('throw new IllegalArgumentException("Required value for \'%s\' is null");' % value_name)
+                        w.out('throw new IllegalArgumentException("Required value for \'%s\' is null");', value_name)
             self.generate_data_type_validation(data_type, value_name, omit_arg_name=omit_arg_name)
-
-    def generate_namespace_serializers(self, namespace):
-        out = self.g.emit
-        javadoc = self.doc.generate_javadoc
-
-        serializers_class = namespace.java_serializers_class
-        package_relpath = self.create_package_path(serializers_class.package)
-        file_name = os.path.join(package_relpath, serializers_class.name + '.java')
-
-        # resolve all required data types
-        required_data_types = get_all_required_data_types_for_namespace(namespace)
-
-        with self.g.output_to_relative_path(file_name), self.ctx.scoped(serializers_class.fq):
-            self.generate_file_header()
-            out('package %s;' % serializers_class.package)
-
-            if any(dt.is_struct for dt in namespace.data_types):
-                self.ctx.add_imports('com.dropbox.core.stone.StructSerializer')
-            if any(dt.is_union for dt in namespace.data_types):
-                self.ctx.add_imports('com.dropbox.core.stone.UnionSerializer')
-
-            # import every data type...
-            self.ctx.add_imports(*(data_type.java_class for data_type in required_data_types))
-            self.importer.generate_imports()
-
-            out('')
-            javadoc(
-                """
-                Internal class used for Stone serialization. This class is subject to change at any
-                time. No fields within this class should be accessed outside of this library.
-                """
-            )
-            with self.g.block('public final class %s' % serializers_class.name):
-                for data_type in namespace.data_types:
-                    serializer_type = 'Struct' if data_type.is_struct else 'Union'
-                    javadoc("For internal use only.")
-                    out('public static final %s.Serializer %s = new %s.Serializer();' % (
-                        data_type.java_class,
-                        data_type.java_serializer_singleton,
-                        data_type.java_class,
-                    ))
 
     # T95586: Because Android has a bug that forces all classes with RUNTIME annotations into the
     # primary dex, we cannot use annotation-based serialization. If we do, then every POJO will be
@@ -4047,359 +3731,320 @@ class JavaCodeGenerationInstance(object):
     #
     # The dalvik bug is tracked here: https://code.google.com/p/android/issues/detail?id=78144
     def generate_struct_serializer(self, data_type):
-        assert isinstance(data_type, DataTypeWrapper), repr(data_type)
-        assert data_type.is_struct, repr(data_type)
+        assert isinstance(data_type, DataType), repr(data_type)
+        assert is_struct_type(data_type), repr(data_type)
 
-        out = self.g.emit
-        javadoc = self.doc.generate_javadoc
+        w = self.w
+        j = self.j
 
-        # attempt to limit scope to avoid polluting the Javadoc
-        if is_data_type_serializer_required_outside_package(data_type):
-            scope = 'public '
-        else:
-            scope = ''
+        visibility = j.serializer_visibility(data_type)
+        parent_class = JavaClass('com.dropbox.core.stone.StructSerializer',
+                                 generics=[j.java_class(data_type)])
 
-        out('')
-        javadoc("For internal use only.")
-        with self.g.block('%sstatic final class Serializer extends StructSerializer<%s>' % (scope, data_type.java_class)):
-            out('public static final Serializer INSTANCE = new Serializer();')
+        w.out('')
+        w.javadoc("For internal use only.")
+        with w.class_block(j.serializer_class(data_type), visibility=visibility, parent_class=parent_class):
+            w.out('public static final %s INSTANCE = new %s();',
+                  j.serializer_class(data_type),
+                  j.serializer_class(data_type))
             self.generate_struct_serialize(data_type)
             self.generate_struct_deserialize(data_type)
 
     def generate_union_serializer(self, data_type):
-        assert isinstance(data_type, DataTypeWrapper), repr(data_type)
-        assert data_type.is_union, repr(data_type)
+        assert isinstance(data_type, DataType), repr(data_type)
+        assert is_union_type(data_type), repr(data_type)
 
-        out = self.g.emit
-        javadoc = self.doc.generate_javadoc
+        w = self.w
+        j = self.j
 
-        # attempt to limit the scope to avoid polluting the Javadoc
-        if is_data_type_serializer_required_outside_package(data_type):
-            scope = 'public '
-        else:
-            scope = ''
+        visibility = j.serializer_visibility(data_type)
+        parent_class = JavaClass('com.dropbox.core.stone.UnionSerializer',
+                                 generics=[j.java_class(data_type)])
 
-        out('')
-        javadoc("For internal use only.")
-        with self.g.block('%sstatic final class Serializer extends UnionSerializer<%s>' % (scope, data_type.java_class)):
-            out('public static final Serializer INSTANCE = new Serializer();')
+        w.out('')
+        w.javadoc("For internal use only.")
+        with w.class_block(j.serializer_class(data_type), visibility=visibility, parent_class=parent_class):
+            w.out('public static final %s INSTANCE = new %s();',
+                  j.serializer_class(data_type),
+                  j.serializer_class(data_type))
             self.generate_union_serialize(data_type)
             self.generate_union_deserialize(data_type)
 
     def generate_struct_serialize(self, data_type):
-        assert data_type.is_struct, repr(data_type)
+        assert is_struct_type(data_type), repr(data_type)
 
-        out = self.g.emit
+        w = self.w
+        j = self.j
 
-        out('')
-        out('@Override')
-        with self.g.block('public void serialize(%s value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException' % data_type.java_type()):
+        w.out('')
+        w.out('@Override')
+        with w.block('public void serialize(%s value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException', j.java_class(data_type)):
 
-            if data_type.has_enumerated_subtypes:
-                for subtype in data_type.enumerated_subtypes:
-                    subtype_class = subtype.data_type.java_class
-                    serializer = subtype.data_type.java_serializer
-                    with self.g.block('if (value instanceof %s)' % subtype_class):
-                        out('%s.serialize((%s) value, g, collapse);' % (serializer, subtype_class))
-                        out('return;')
+            if data_type.has_enumerated_subtypes():
+                for subtype in data_type.get_enumerated_subtypes():
+                    subtype_serializer = w.java_serializer(subtype.data_type)
+                    with w.block('if (value instanceof %s)', j.java_class(subtype)):
+                        w.out('%s.serialize((%s) value, g, collapse);',
+                              subtype_serializer,
+                              j.java_class(subtype))
+                        w.out('return;')
 
-            with self.g.block('if (!collapse)'):
-                out('g.writeStartObject();')
+            with w.block('if (!collapse)'):
+                w.out('g.writeStartObject();')
 
-            ancestors = get_ancestors(data_type.as_stone)
+            ancestors = get_ancestors(data_type)
             tag = '.'.join(name for name, _ in ancestors[1:] if name)
             if tag:
-                out('writeTag("%s", g);' % tag)
+                w.out('writeTag("%s", g);' % tag)
 
             for field in data_type.all_fields:
-                field_dt = field.data_type
-                field_value = 'value.%s' % field.java_name
-                with self.conditional_block('if (%s != null)' % field_value, field_dt.is_nullable):
-                    out('g.writeFieldName("%s");' % field.stone_name)
-                    out('%s.serialize(%s, g);' % (field_dt.java_serializer, field_value))
+                field_serializer = w.java_serializer(field.data_type)
+                field_value = 'value.%s' % j.param_name(field)
+                with w.conditional_block(is_nullable_type(field.data_type), 'if (%s != null)', field_value):
+                    w.out('g.writeFieldName("%s");', field.name)
+                    w.out('%s.serialize(%s, g);', field_serializer, field_value)
 
-            with self.g.block('if (!collapse)'):
-                out('g.writeEndObject();')
+            with w.block('if (!collapse)'):
+                w.out('g.writeEndObject();')
 
     def generate_struct_deserialize(self, data_type):
-        assert data_type.is_struct, repr(data_type)
+        assert is_struct_type(data_type), repr(data_type)
 
-        out = self.g.emit
+        w = self.w
+        j = self.j
 
-        out('')
-        out('@Override')
-        with self.g.block('public %s deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException' % data_type.java_type()):
-            out('%s value;' % data_type.java_type())
-            out('String tag = null;')
+        w.out('')
+        w.out('@Override')
+        with w.block('public %s deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException', j.java_class(data_type)):
+            w.out('%s value;', j.java_class(data_type))
+            w.out('String tag = null;')
 
-            with self.g.block('if (!collapsed)'):
-                out('expectStartObject(p);')
-                out('tag = readTag(p);')
-                if data_type.is_enumerated_subtype:
-                    ancestors = get_ancestors(data_type.as_stone)
+            with w.block('if (!collapsed)'):
+                w.out('expectStartObject(p);')
+                w.out('tag = readTag(p);')
+                if data_type.is_member_of_enumerated_subtypes_tree():
+                    ancestors = get_ancestors(data_type)
                     expected_tag = '.'.join(name for name, _ in ancestors if name)
-                    with self.g.block('if ("%s".equals(tag))' % expected_tag):
-                        out('tag = null;')
+                    with w.block('if ("%s".equals(tag))' % expected_tag):
+                        w.out('tag = null;')
 
-            with self.g.block('if (tag == null)'):
+            with w.block('if (tag == null)'):
                 for field in data_type.all_fields:
-                    default_value = field.default_value if field.has_default else 'null'
-                    out('%s f_%s = %s;' % (
-                        field.data_type.java_type(boxed=True), field.java_name, default_value
-                    ))
-                with self.g.block('while (p.getCurrentToken() == JsonToken.FIELD_NAME)'):
-                    out('String field = p.getCurrentName();')
-                    out('p.nextToken();')
+                    default_value = w.java_default_value(field) if field.has_default else 'null'
+                    w.out('%s f_%s = %s;',
+                          j.java_class(field, boxed=True), j.param_name(field), default_value)
+                with w.block('while (p.getCurrentToken() == JsonToken.FIELD_NAME)'):
+                    w.out('String field = p.getCurrentName();')
+                    w.out('p.nextToken();')
 
                     for i, field in enumerate(data_type.all_fields):
                         conditional = 'if' if i == 0 else 'else if'
-                        serializer = field.data_type.java_serializer
-                        with self.g.block('%s ("%s".equals(field))' % (conditional, field.stone_name)):
-                            out('f_%s = %s.deserialize(p);' % (field.java_name, serializer))
-                    with self.g.block('else'):
-                        out('skipValue(p);')
+                        serializer = w.java_serializer(field.data_type)
+                        with w.block('%s ("%s".equals(field))', conditional, field.name):
+                            w.out('f_%s = %s.deserialize(p);', j.param_name(field), serializer)
+                    with w.block('else'):
+                        w.out('skipValue(p);')
 
                 for field in data_type.all_fields:
-                    if not field.is_optional:
-                        with self.g.block('if (f_%s == null)' % field.java_name):
-                            out('throw new JsonParseException(p, "Required field \\"%s\\" missing.");' % field.stone_name)
-                args = ['f_%s' % f.java_name for f in data_type.all_fields]
-                out('value = new %s(%s);' % (data_type.java_class, ', '.join(args)))
+                    if field not in data_type.all_optional_fields:
+                        with w.block('if (f_%s == null)', j.param_name(field)):
+                            w.out('throw new JsonParseException(p, "Required field \\"%s\\" missing.");' , field.name)
+                args = ['f_%s' % j.param_name(f) for f in data_type.all_fields]
+                w.out('value = new %s(%s);', j.java_class(data_type), ', '.join(args))
 
             for tag, subtype_dt in get_enumerated_subtypes_recursively(data_type):
-                with self.g.block('else if ("%s".equals(tag))' % tag):
-                    out('value = %s.deserialize(p, true);' % subtype_dt.java_serializer)
+                with w.block('else if ("%s".equals(tag))', tag):
+                    w.out('value = %s.deserialize(p, true);', w.java_serializer(subtype_dt))
 
-            with self.g.block('else'):
-                out('throw new JsonParseException(p, "No subtype found that matches tag: \\"" + tag + "\\"");')
+            with w.block('else'):
+                w.out('throw new JsonParseException(p, "No subtype found that matches tag: \\"" + tag + "\\"");')
 
-            with self.g.block('if (!collapsed)'):
-                out('expectEndObject(p);')
+            with w.block('if (!collapsed)'):
+                w.out('expectEndObject(p);')
 
-            out('return value;')
+            w.out('return value;')
 
     def generate_union_serialize(self, data_type):
-        assert data_type.is_union, repr(data_type)
+        assert is_union_type(data_type), repr(data_type)
 
-        out = self.g.emit
+        w = self.w
+        j = self.j
 
-        out('')
-        out('@Override')
-        with self.g.block('public void serialize(%s value, JsonGenerator g) throws IOException, JsonGenerationException' % data_type.java_type()):
-            tag = 'value' if data_type.is_enum else 'value.tag()'
-            with self.g.block('switch (%s)' % tag):
+        w.out('')
+        w.out('@Override')
+        with w.block('public void serialize(%s value, JsonGenerator g) throws IOException, JsonGenerationException', j.java_class(data_type)):
+            tag = 'value' if j.is_enum(data_type) else 'value.tag()'
+            with w.block('switch (%s)' % tag):
                 for field in data_type.all_fields:
-                    if field.is_catch_all:
+                    if field == data_type.catch_all_field:
                         continue
-                    with self.g.block('case %s:' % field.tag_name):
-                        if field.data_type.is_void:
-                            out('g.writeString("%s");' % field.stone_name)
+                    with w.block('case %s:', j.field_tag_enum_name(field)):
+                        if is_void_type(field.data_type):
+                            w.out('g.writeString("%s");', field.name)
                         else:
-                            out('g.writeStartObject();')
-                            out('writeTag("%s", g);' % field.stone_name)
-                            serializer = field.data_type.java_serializer
-                            value = 'value.%s' % field.java_name
-                            if field.data_type.is_struct and field.data_type.is_collapsible:
-                                out('%s.serialize(%s, g, true);' % (serializer, value))
+                            w.out('g.writeStartObject();')
+                            w.out('writeTag("%s", g);', field.name)
+                            serializer = w.java_serializer(field.data_type)
+                            value = 'value.%s' % j.param_name(field)
+                            if j.is_collapsible(field.data_type):
+                                w.out('%s.serialize(%s, g, true);', serializer, value)
                             else:
-                                out('g.writeFieldName("%s");' % field.stone_name)
-                                out('%s.serialize(%s, g);' % (serializer, value))
-                            out('g.writeEndObject();')
-                        out('break;')
+                                w.out('g.writeFieldName("%s");', field.name)
+                                w.out('%s.serialize(%s, g);', serializer, value)
+                            w.out('g.writeEndObject();')
+                        w.out('break;')
 
-                with self.g.block('default:'):
+                with w.block('default:'):
                     if data_type.catch_all_field:
-                        out('g.writeString("%s");' % data_type.catch_all_field.stone_name)
+                        w.out('g.writeString("%s");', data_type.catch_all_field.name)
                     else:
-                        out('throw new IllegalArgumentException("Unrecognized tag: " + %s);' % tag)
+                        w.out('throw new IllegalArgumentException("Unrecognized tag: " + %s);', tag)
 
     def generate_union_deserialize(self, data_type):
-        assert data_type.is_union, repr(data_type)
+        assert is_union_type(data_type), repr(data_type)
 
-        out = self.g.emit
+        w = self.w
+        j = self.j
 
-        out('')
-        out('@Override')
-        with self.g.block('public %s deserialize(JsonParser p) throws IOException, JsonParseException' % data_type.java_type()):
-            out('%s value;' % data_type.java_type())
-            out('boolean collapsed;')
-            out('String tag;')
+        w.out('')
+        w.out('@Override')
+        with w.block('public %s deserialize(JsonParser p) throws IOException, JsonParseException', j.java_class(data_type)):
+            w.out('%s value;', j.java_class(data_type))
+            w.out('boolean collapsed;')
+            w.out('String tag;')
 
-            with self.g.block('if (p.getCurrentToken() == JsonToken.VALUE_STRING)'):
-                out('collapsed = true;')
-                out('tag = getStringValue(p);')
-                out('p.nextToken();')
-            with self.g.block('else'):
-                out('collapsed = false;')
-                out('expectStartObject(p);')
-                out('tag = readTag(p);')
+            with w.block('if (p.getCurrentToken() == JsonToken.VALUE_STRING)'):
+                w.out('collapsed = true;')
+                w.out('tag = getStringValue(p);')
+                w.out('p.nextToken();')
+            with w.block('else'):
+                w.out('collapsed = false;')
+                w.out('expectStartObject(p);')
+                w.out('tag = readTag(p);')
 
-            with self.g.block('if (tag == null)'):
-                out('throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);')
+            with w.block('if (tag == null)'):
+                w.out('throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);')
 
             for field in data_type.all_fields:
-                if field.is_catch_all:
+                if field == data_type.catch_all_field:
                     continue
 
                 field_dt = field.data_type
-                with self.g.block('else if ("%s".equals(tag))' % field.stone_name):
-                    if not field.has_value:
-                        out('value = %s.%s;' % (data_type.java_class, field.java_singleton))
+                with w.block('else if ("%s".equals(tag))', field.name):
+                    if is_void_type(field.data_type):
+                        w.out('value = %s.%s;', j.java_class(data_type), j.field_static_instance(field))
                     else:
-                        out('%s fieldValue = null;' % field_dt.java_type())
-                        with self.conditional_block('if (p.getCurrentToken() != JsonToken.END_OBJECT)', field_dt.is_nullable):
-                            if field_dt.is_struct and field_dt.is_collapsible:
-                                out('fieldValue = %s.deserialize(p, true);' % field_dt.java_serializer)
+                        w.out('%s fieldValue = null;', j.java_class(field_dt, boxed=True, generics=True))
+                        with w.conditional_block(is_nullable_type(field.data_type), 'if (p.getCurrentToken() != JsonToken.END_OBJECT)'):
+                            field_serializer = w.java_serializer(field_dt)
+                            if j.is_collapsible(field_dt):
+                                w.out('fieldValue = %s.deserialize(p, true);', field_serializer)
                             else:
-                                out('expectField("%s", p);' % field.stone_name)
-                                out('fieldValue = %s.deserialize(p);' % field_dt.java_serializer)
+                                w.out('expectField("%s", p);', field.name)
+                                w.out('fieldValue = %s.deserialize(p);', field_serializer)
 
-                        if field_dt.is_nullable:
-                            with self.g.block('if (fieldValue == null)'):
-                                out('value = %s.%s();' % (data_type.java_class, field.java_factory_method))
-                            with self.g.block('else'):
-                                out('value = %s.%s(fieldValue);' % (data_type.java_class, field.java_factory_method))
+                        if is_nullable_type(field.data_type):
+                            with w.block('if (fieldValue == null)'):
+                                w.out('value = %s.%s();', j.java_class(data_type), j.field_factory_method(field))
+                            with w.block('else'):
+                                w.out('value = %s.%s(fieldValue);', j.java_class(data_type), j.field_factory_method(field))
                         else:
-                            out('value = %s.%s(fieldValue);' % (data_type.java_class, field.java_factory_method))
-            with self.g.block('else'):
+                            w.out('value = %s.%s(fieldValue);', j.java_class(data_type), j.field_factory_method(field))
+            with w.block('else'):
                 if data_type.catch_all_field:
-                    out('value = %s.%s;' % (data_type.java_class, data_type.catch_all_field.java_singleton))
-                    out('skipFields(p);')
+                    w.out('value = %s.%s;', j.java_class(data_type), j.field_static_instance(data_type.catch_all_field))
+                    w.out('skipFields(p);')
                 else:
-                    out('throw new JsonParseException(p, "Unknown tag: " + tag);')
+                    w.out('throw new JsonParseException(p, "Unknown tag: " + tag);')
 
-            with self.g.block('if (!collapsed)'):
-                out('expectEndObject(p);')
+            with w.block('if (!collapsed)'):
+                w.out('expectEndObject(p);')
 
-            out('return value;')
+            w.out('return value;')
 
     def generate_data_type_validation(self, data_type, value_name, description=None, omit_arg_name=False, level=0):
-        out = self.g.emit
+        assert isinstance(data_type, DataType), repr(data_type)
+
+        w = self.w
+        j = self.j
 
         if omit_arg_name:
             description = ""
         else:
             description = description or (" '%s'" % value_name)
 
-        stone_dt = data_type.as_stone
-
-        if is_list_type(stone_dt):
-            if stone_dt.min_items is not None:
-                with self.g.block('if (%s.size() < %s)' % (value_name, data_type.java_value(stone_dt.min_items))):
-                    out('throw new IllegalArgumentException("List%s has fewer than %s items");' % (
-                        description, data_type.java_value(stone_dt.min_items)))
-            if stone_dt.max_items is not None:
-                with self.g.block('if (%s.size() > %s)' % (value_name, data_type.java_value(stone_dt.max_items))):
-                    out('throw new IllegalArgumentException("List%s has more than %s items");' %
-                        (description, data_type.java_value(stone_dt.max_items)))
+        if is_list_type(data_type):
+            if data_type.min_items is not None:
+                java_value = w.java_value(data_type, data_type.min_items)
+                with w.block('if (%s.size() < %s)', value_name, java_value):
+                    w.out('throw new IllegalArgumentException("List%s has fewer than %s items");',
+                          description, java_value)
+            if data_type.max_items is not None:
+                java_value = w.java_value(data_type, data_type.max_items)
+                with w.block('if (%s.size() > %s)', value_name, java_value):
+                    w.out('throw new IllegalArgumentException("List%s has more than %s items");',
+                          description, java_value)
             xn = 'x' if level == 0 else 'x%d' % level
-            with self.g.block('for (%s %s : %s)' % (data_type.list_data_type.java_type(), xn, value_name)):
-                with self.g.block('if (%s == null)' % xn):
-                    out('throw new IllegalArgumentException("An item in list%s is null");' % description)
-                self.generate_data_type_validation(data_type.list_data_type, xn, 'an item in list%s' % description, level=level+1)
+            list_item_type = j.java_class(data_type.data_type, boxed=True, generics=True)
+            with w.block('for (%s %s : %s)', list_item_type, xn, value_name):
+                with w.block('if (%s == null)', xn):
+                    w.out('throw new IllegalArgumentException("An item in list%s is null");', description)
+                self.generate_data_type_validation(data_type.data_type, xn, 'an item in list%s' % description, level=level+1)
 
-        elif is_numeric_type(data_type.as_stone):
-            if stone_dt.min_value is not None:
-                with self.g.block('if (%s < %s)' % (value_name, data_type.java_value(stone_dt.min_value))):
-                    out('throw new IllegalArgumentException("Number%s is smaller than %s");' %
-                        (description, data_type.java_value(stone_dt.min_value)))
-            if stone_dt.max_value is not None:
-                with self.g.block('if (%s > %s)' % (value_name, data_type.java_value(stone_dt.max_value))):
-                    out('throw new IllegalArgumentException("Number%s is larger than %s");' %
-                        (description, data_type.java_value(stone_dt.max_value)))
+        elif is_numeric_type(data_type):
+            if data_type.min_value is not None:
+                java_value = w.java_value(data_type, data_type.min_value)
+                with w.block('if (%s < %s)', value_name, java_value):
+                    w.out('throw new IllegalArgumentException("Number%s is smaller than %s");',
+                          description, java_value)
+            if data_type.max_value is not None:
+                java_value = w.java_value(data_type, data_type.max_value)
+                with w.block('if (%s > %s)', value_name, java_value):
+                    w.out('throw new IllegalArgumentException("Number%s is larger than %s");',
+                          description, java_value)
 
-        elif is_string_type(stone_dt):
-            if stone_dt.min_length is not None:
-                with self.g.block('if (%s.length() < %d)' % (value_name, stone_dt.min_length)):
-                    out('throw new IllegalArgumentException("String%s is shorter than %s");' %
-                        (description, data_type.java_value(stone_dt.min_length)))
-            if stone_dt.max_length is not None:
-                with self.g.block('if (%s.length() > %d)' % (value_name, stone_dt.max_length)):
-                    out('throw new IllegalArgumentException("String%s is longer than %s");' %
-                        (description, data_type.java_value(stone_dt.max_length)))
-            if stone_dt.pattern is not None:
+        elif is_string_type(data_type):
+            if data_type.min_length is not None:
+                java_value = w.java_value(data_type, data_type.min_length)
+                with w.block('if (%s.length() < %s)', value_name, java_value):
+                    w.out('throw new IllegalArgumentException("String%s is shorter than %s");',
+                          description, java_value)
+            if data_type.max_length is not None:
+                java_value = w.java_value(data_type, data_type.max_length)
+                with w.block('if (%s.length() > %s)', value_name, java_value):
+                    w.out('throw new IllegalArgumentException("String%s is longer than %s");',
+                          description, java_value)
+            if data_type.pattern is not None:
                 # TODO: Save the pattern as a static variable.
                 # NOTE: pattern should match against entire input sequence
-                with self.g.block('if (!java.util.regex.Pattern.matches("%s", %s))' % (
-                        sanitize_pattern(stone_dt.pattern), value_name)):
-                    out('throw new IllegalArgumentException("String%s does not match pattern");' % description)
+                pattern_class = JavaClass("java.util.regex.Pattern")
+                pattern = sanitize_pattern(data_type.pattern)
+                with w.block('if (!%s.matches("%s", %s))', pattern_class, pattern, value_name):
+                    w.out('throw new IllegalArgumentException("String%s does not match pattern");', description)
 
         elif any((
-                is_composite_type(stone_dt),
-                is_boolean_type(stone_dt),
-                is_timestamp_type(stone_dt),
-                is_bytes_type(stone_dt),
+                is_composite_type(data_type),
+                is_boolean_type(data_type),
+                is_timestamp_type(data_type),
+                is_bytes_type(data_type),
         )):
             pass  # Nothing to do for these
 
         else:
-            out('throw new RuntimeException("XXX Don\'t know how to validate %s: type %s");' %
-                (description, data_type.stone_name))
-
-    def generate_list_builder_ensure_mutable(self, field):
-        assert field.data_type.is_list, "field must be a list type: %r" % field.data_type
-
-        out = self.g.emit
-
-        value_name = field.java_name
-        data_type = field.data_type.list_data_type
-        # We use a variable, valueName_isMutable, to keep track of our
-        # internal list mutability. This allows us to repeatedly call
-        # build() with different list values:
-        #
-        # builder = Foo.newBuilder()
-        #     .addBars(new Bar(1),
-        #              new Bar(2));
-        #
-        # Foo foo1 = builder.build();
-        # Foo foo2 = builder.addBars(new Bar(3)).build();
-        #
-        # foo1.equals(foo2) == false;
-        #
-        if field.is_optional:
-            with self.g.block('if (this.%s == null)' % value_name):
-                out('this.%s = new java.util.ArrayList<%s>();' % (value_name, data_type.java_type()))
-
-        with self.g.block('if (!this.%s_isMutable)' % value_name):
-            out('this.%s = new java.util.ArrayList<%s>(this.%s);' % (value_name, data_type.java_type(), value_name))
-            out('this.%s_isMutable = true;' % value_name)
-
-    def generate_list_builder_validation_and_assignment(self, field, boxed=False):
-        assert field.data_type.is_list, "field must be a list type: %r" % field.data_type
-
-        out = self.g.emit
-
-        value_name = field.java_name
-        description = "'%s'" % value_name
-        data_type = field.data_type.list_data_type
-
-        with self.g.block('if (%s == null)' % value_name):
-            out('throw new IllegalArgumentException("%s must not be null");' % description)
-
-        with self.g.block('for (%s x_ : %s)' % (data_type.java_type(boxed=boxed), value_name)):
-            with self.g.block('if (x_ == null)'):
-                out('throw new IllegalArgumentException("An item in %s is null");' % description)
-
-            self.generate_data_type_validation(data_type, 'x_', 'an item in %s' % description)
-
-            max_items = field.data_type.as_stone.max_items
-            if max_items is not None:
-                with self.g.block('if (this.%s.size() >= %s)' % (value_name, max_items)):
-                    out('throw new IllegalArgumentException("List at capacity with %s item");' % max_items)
-
-            out('this.%s.add(x_);' % value_name)
+            raise AssertionError(repr(data_type))
 
     def generate_to_string(self, data_type):
-        out = self.g.emit
-        javadoc = self.doc.generate_javadoc
+        assert is_user_defined_type(data_type), repr(data_type)
 
-        out('')
-        out('@Override')
-        with self.g.block('public String toString()'):
-            out('return Serializer.INSTANCE.serialize(this, false);')
+        w = self.w
 
-        out('')
-        javadoc(
+        w.out('')
+        w.out('@Override')
+        with w.block('public String toString()'):
+            w.out('return Serializer.INSTANCE.serialize(this, false);')
+
+        w.out('')
+        w.javadoc(
             """
             Returns a String representation of this object formatted for easier readability.
 
@@ -4407,120 +4052,119 @@ class JavaCodeGenerationInstance(object):
             """,
             returns="Formatted, multiline String representation of this object"
         )
-        with self.g.block('public String toStringMultiline()'):
-            out('return Serializer.INSTANCE.serialize(this, true);')
+        with w.block('public String toStringMultiline()'):
+            w.out('return Serializer.INSTANCE.serialize(this, true);')
 
     def generate_hash_code(self, data_type):
-        out = self.g.emit
-        javadoc = self.doc.generate_javadoc
+        assert isinstance(data_type, DataType), repr(data_type)
+        assert is_user_defined_type(data_type), repr(data_type)
 
-        assert isinstance(data_type, DataTypeWrapper), repr(data_type)
-        assert data_type.is_struct or data_type.is_union, repr(data_type)
-        assert not data_type.is_enum, "enum types don't require equals() methods"
+        w = self.w
+        j = self.j
 
-        if data_type.is_struct:
-            fields = [f.java_name for f in data_type.fields]
+        assert not j.is_enum(data_type), "enum types don't require equals() methods"
+
+        if is_struct_type(data_type):
+            fields = [j.param_name(f) for f in data_type.fields]
         else:
-            fields = ['tag'] + [f.java_name for f in data_type.all_fields if f.has_value]
+            fields = ['_tag'] + [j.param_name(f) for f in data_type.all_fields if j.has_value(f)]
 
-        out('')
-        out('@Override')
-        with self.g.block('public int hashCode()'):
+        w.out('')
+        w.out('@Override')
+        with w.block('public int hashCode()'):
             if not fields:
-                out('// attempt to deal with inheritance')
-                out('return getClass().toString().hashCode();')
+                w.out('// attempt to deal with inheritance')
+                w.out('return getClass().toString().hashCode();')
             else:
-                with self.g.block('int hash = java.util.Arrays.hashCode(new Object []', after=');'):
+                arrays_class = JavaClass('java.util.Arrays')
+                with w.block('int hash = %s.hashCode(new Object []', arrays_class, after=');'):
                     self.g.generate_multiline_list(fields, delim=('', ''))
-                if data_type.parent:
-                    out('hash = (31 * super.hashCode()) + hash;')
-                out('return hash;')
+                if data_type.parent_type:
+                    w.out('hash = (31 * super.hashCode()) + hash;')
+                w.out('return hash;')
 
-    @staticmethod
-    def _java_eq(field, name):
-        if field.data_type.is_primitive:
+    def _java_eq(self, field, name=None):
+        assert isinstance(field, Field), repr(field)
+
+        j = self.j
+
+        name = name or j.param_name(field)
+
+        if j.is_java_primitive(field.data_type):
             return 'this.%(f)s == other.%(f)s' % dict(f=name)
-        elif not field.data_type.is_nullable:
+        elif not is_nullable_type(field.data_type):
             return '(this.%(f)s == other.%(f)s) || (this.%(f)s.equals(other.%(f)s))' % dict(f=name)
         else:
             return '(this.%(f)s == other.%(f)s) || (this.%(f)s != null && this.%(f)s.equals(other.%(f)s))' % dict(f=name)
 
     def generate_equals(self, data_type):
-        assert isinstance(data_type, DataTypeWrapper), repr(data_type)
-        assert data_type.is_struct or data_type.is_union, repr(data_type)
+        assert isinstance(data_type, DataType), repr(data_type)
+        assert is_user_defined_type(data_type), repr(data_type)
 
-        if data_type.is_struct:
+        if is_struct_type(data_type):
             self.generate_struct_equals(data_type)
         else:
             self.generate_union_equals(data_type)
 
     def generate_union_equals(self, data_type):
-        out = self.g.emit
+        assert is_union_type(data_type), repr(data_type)
 
-        assert data_type.is_union, repr(data_type)
-        assert not data_type.is_enum, "enum types don't require equals() methods"
+        w = self.w
+        j = self.j
 
-        out('')
-        out('@Override')
-        with self.g.block('public boolean equals(Object obj)'):
-            with self.g.block('if (obj == this)'):
-                out('return true;')
-            with self.g.block('else if (obj instanceof %s)' % data_type.java_class):
-                out('%(cn)s other = (%(cn)s) obj;' % dict(cn=data_type.java_class))
-                with self.g.block('if (this.tag != other.tag)'):
-                    out('return false;')
+        assert not j.is_enum(data_type), "enum types don't require equals() methods"
 
-                with self.g.block('switch (tag)'):
+        w.out('')
+        w.out('@Override')
+        with w.block('public boolean equals(Object obj)'):
+            with w.block('if (obj == this)'):
+                w.out('return true;')
+            with w.block('else if (obj instanceof %s)', j.java_class(data_type)):
+                w.out('%s other = (%s) obj;', j.java_class(data_type), j.java_class(data_type))
+                with w.block('if (this._tag != other._tag)'):
+                    w.out('return false;')
+
+                with w.block('switch (_tag)'):
                     for field in data_type.all_fields:
-                        out('case %s:' % field.tag_name)
+                        w.out('case %s:', j.field_tag_enum_name(field))
                         with self.g.indent():
-                            if field.has_value:
-                                out('return %s;' % self._java_eq(field, field.java_name))
+                            if j.has_value(field):
+                                w.out('return %s;', self._java_eq(field))
                             else:
-                                out('return true;')
-                    out('default:')
+                                w.out('return true;')
+                    w.out('default:')
                     with self.g.indent():
-                        out('return false;')
-            with self.g.block('else'):
-                out('return false;')
+                        w.out('return false;')
+            with w.block('else'):
+                w.out('return false;')
 
     def generate_struct_equals(self, data_type):
-        out = self.g.emit
+        assert is_struct_type(data_type), repr(data_type)
 
-        assert data_type.is_struct, repr(data_type)
+        w = self.w
+        j = self.j
 
-        parent_fields = data_type.parent.fields if data_type.parent else ()
-        field_tuples = tuple((f, f.java_name) for f in data_type.all_fields)
+        w.out('')
+        w.out('@Override')
+        with w.block('public boolean equals(Object obj)'):
+            with w.block('if (obj == this)'):
+                w.out('return true;')
+            w.out('// be careful with inheritance')
+            with w.block('else if (obj.getClass().equals(this.getClass()))'):
+                w.out('%s other = (%s) obj;', j.java_class(data_type), j.java_class(data_type))
 
-        out('')
-        out('@Override')
-        with self.g.block('public boolean equals(Object obj)'):
-            with self.g.block('if (obj == this)'):
-                out('return true;')
-            out('// be careful with inheritance')
-            with self.g.block('else if (obj.getClass().equals(this.getClass()))'):
-                out('%(cn)s other = (%(cn)s) obj;' % dict(cn=data_type.java_class))
-
-                if not field_tuples:
-                    out('return true;')
-                elif len(field_tuples) == 1:
-                    out('return %s;' % self._java_eq(*field_tuples[0]))
+                if not data_type.all_fields:
+                    w.out('return true;')
+                elif len(data_type.all_fields) == 1:
+                    w.out('return %s;', self._java_eq(data_type.all_fields[0]))
                 else:
-                    out('return (%s)' % self._java_eq(*field_tuples[0]))
+                    w.out('return (%s)', self._java_eq(data_type.all_fields[0]))
                     with self.g.indent():
-                        for field, name in field_tuples[1:]:
-                            out('&& (%s)' % self._java_eq(field, name))
-                        out(';')
-            with self.g.block('else'):
-                out('return false;')
-
-    @contextmanager
-    def conditional_block(self, text, predicate):
-        if predicate:
-            with self.g.block(text):
-                yield
-        else:
-            yield
+                        for field in data_type.all_fields[1:]:
+                            w.out('&& (%s)', self._java_eq(field))
+                        w.out(';')
+            with w.block('else'):
+                w.out('return false;')
 
 
 # TODO: Add all Java reserved words.
@@ -4593,6 +4237,7 @@ _TYPE_MAP_UNBOXED = {
     'String': 'String',
     'Timestamp': 'java.util.Date',
     'Void': 'void',
+    'List': 'java.util.List',
 }
 
 
@@ -4608,4 +4253,12 @@ _TYPE_MAP_BOXED = {
     'String': 'String',
     'Timestamp': 'java.util.Date',
     'Void': 'Void',
+    'List': 'java.util.List',
 }
+
+_CATCH_ALL_DOC = """
+Catch-all used for unknown tag values returned by the Dropbox servers.
+
+Receiving a catch-all value typically indicates this SDK version is not up to
+date. Consider updating your SDK version to handle the new tags.
+"""
