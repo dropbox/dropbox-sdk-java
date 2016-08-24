@@ -1,4 +1,4 @@
-import org.gradle.internal.os.OperatingSystem;
+import org.gradle.internal.os.OperatingSystem
 
 apply plugin: 'java'
 apply plugin: 'osgi'
@@ -91,6 +91,10 @@ dependencies {
     testCompile 'com.squareup.okhttp:okhttp:2.7.5'
     testCompile 'com.squareup.okhttp3:okhttp:3.3.1'
     testCompile 'com.google.guava:guava:19.0'
+}
+
+configurations {
+    withoutOsgi.extendsFrom compile
 }
 
 processResources {
@@ -216,6 +220,11 @@ jar {
     }
 }
 
+task jarWithoutOsgi(type: Jar, dependsOn: classes) {
+    classifier 'withoutOsgi'
+    from sourceSets.main.output
+}
+
 task sourcesJar(type: Jar, dependsOn: classes) {
     classifier = 'sources'
     from sourceSets.main.allSource
@@ -229,6 +238,7 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 artifacts {
     archives sourcesJar
     archives javadocJar
+    withoutOsgi jarWithoutOsgi
 }
 
 install {
