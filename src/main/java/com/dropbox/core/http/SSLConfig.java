@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -65,7 +66,8 @@ public class SSLConfig {
 
     private static /*@MonotonicNonNull*/CipherSuiteFilterationResults CACHED_CIPHER_SUITE_FILTERATION_RESULTS;
 
-    private static final String ROOT_CERTS_RESOURCE = "/trusted-certs.crt";
+    private static final String ROOT_CERTS_RESOURCE = "/trusted-certs.raw";
+    private static final int MAX_CERT_LENGTH = 10 * 1024;
 
     // All client ciphersuites allowed by Dropbox.
     //
@@ -359,8 +361,7 @@ public class SSLConfig {
 
         Collection<X509Certificate> certs;
         try {
-            certs = (Collection<X509Certificate>) x509CertFactory
-                .generateCertificates(new CommentFilterInputStream(in));
+            certs = deserializeCertificates(x509CertFactory, in);
         } catch (CertificateException ex) {
             throw new LoadException("Error loading certificate: " + ex.getMessage(), ex);
         }
@@ -375,87 +376,25 @@ public class SSLConfig {
         }
     }
 
+    private static List<X509Certificate> deserializeCertificates(CertificateFactory x509CertFactory, InputStream in) throws IOException, LoadException, CertificateException {
+        List<X509Certificate> certs = new ArrayList<X509Certificate>();
 
-    /**
-     * Strips '#' comments from PEM encoded cert file. Java 7+ handles skipping comments that aren't
-     * within certificate blocks. Java 6, however, will fail to parse the cert file if it contains
-     * anything other than certificate blocks.
-     *
-     * <p><b> NOTE: Android will incorrectly parse PEM encoded files containing comments.</b> When
-     * comments are left in the file, some of the certificates may not be loaded properly. This
-     * results in exceptions like the one below:
-     *
-     * <pre>
-     *    Caused by: javax.net.ssl.SSLHandshakeException: java.security.cert.CertPathValidatorException: Trust anchor for certification path not found.
-     *        at com.android.org.conscrypt.OpenSSLSocketImpl.startHandshake(OpenSSLSocketImpl.java:328)
-     *        at com.android.okhttp.internal.http.SocketConnector.connectTls(SocketConnector.java:103)
-     *        at com.android.okhttp.Connection.connect(Connection.java:143)
-     *        ...
-     * </pre>
-     */
-    private static final class CommentFilterInputStream extends FilterInputStream {
-        private boolean isLineStart;
-
-        public CommentFilterInputStream(InputStream in) {
-            super(in);
-            this.isLineStart = true;
+        DataInputStream din = new DataInputStream(in);
+        byte[] data = new byte[MAX_CERT_LENGTH];
+        while (true) {
+            int length = din.readUnsignedShort();
+            if (length == 0) break;
+            if (length > MAX_CERT_LENGTH) {
+                throw new LoadException("Invalid length for certificate entry: " + length, null);
+            }
+            din.readFully(data, 0, length);
+            certs.add((X509Certificate) x509CertFactory.generateCertificate(new ByteArrayInputStream(data, 0, length)));
         }
 
-        @Override
-        public int read() throws IOException {
-            int ord = super.read();
-
-            // only filter at start of line
-            if (!isLineStart) {
-                return ord;
-            }
-
-            while (ord == '#') {
-                // chomp the comment
-                do {
-                    ord = super.read();
-                } while (!isLineFeed(ord) && ord != -1);
-
-                // now chomp the line feeds
-                while (isLineFeed(ord) && ord != -1) {
-                    ord = super.read();
-                }
-                isLineStart = true;
-            }
-
-            return ord;
+        if (din.read() >= 0) {
+            throw new LoadException("Found data after after zero-length header.", null);
         }
 
-        @Override
-        public int read(byte [] b) throws IOException {
-            return read(b, 0, b.length);
-        }
-
-        @Override
-        public int read(byte [] b, int off, int len) throws IOException {
-            if (b == null) {
-                throw new NullPointerException("b");
-            }
-            if (off < 0 || len < 0 || len > (b.length - off)) {
-                throw new IndexOutOfBoundsException();
-            }
-
-            int count = 0;
-            for (int i = 0; i < len; ++i) {
-                int ord = read();
-                if (ord == -1) {
-                    break;
-                }
-
-                b[off + i] = (byte) ord;
-                ++count;
-            }
-
-            return count == 0 ? -1 : count;
-        }
-
-        private static boolean isLineFeed(int ord) {
-            return ord == '\n' || ord == '\r';
-        }
+        return certs;
     }
 }

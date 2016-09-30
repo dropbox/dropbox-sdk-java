@@ -62,6 +62,7 @@ buildscript {
 
     dependencies {
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.12.0'
+        classpath 'com.dropbox.maven:pem-converter-maven-plugin:1.0'
     }
 }
 
@@ -100,6 +101,22 @@ configurations {
 processResources {
     filesMatching('**/sdk-version.txt') {
         expand project.properties
+    }
+
+    filesMatching('**/*.crt') { fcd ->
+        def inputstream = fcd.open()
+        def certDatas = com.dropbox.maven.pem_converter.PemLoader.load(
+                new InputStreamReader(inputstream, "UTF-8")
+        )
+        inputstream.close()
+
+        def out = new DataOutputStream(new FileOutputStream(new File(
+                getDestinationDir(), fcd.name.substring(0, fcd.name.length()-4) + ".raw"
+        )))
+        com.dropbox.maven.pem_converter.RawLoader.store(certDatas, out)
+        out.close()
+
+        fcd.exclude()
     }
 }
 
