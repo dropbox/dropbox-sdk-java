@@ -20,3 +20,9 @@ local.properties
 
 # pyc files from generator
 *.pyc
+
+# ClassyShark
+classyshark*
+
+# macOS
+*.DS_Store
