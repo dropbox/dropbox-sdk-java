@@ -56,9 +56,20 @@ Once you have an access token, create a [`DbxClientV2`](https://dropbox.github.i
 
 You only need to perform the authorization process once per user.  Once you have an access token for a user, save it somewhere persistent, like in a database.  The next time that user visits your app's, you can skip the authorization process and go straight to creating a `DbxClientV2` and making API calls.
 
+## Building from source
+
+```
+git clone https://github.com/dropbox/dropbox-sdk-java.git
+cd dropbox-sdk-java
+./update-submodules    # also do this after every "git checkout"
+./gradlew build
+```
+
+The output will be in "build/".
+
 ## Running the examples
 
-1. Download this repository.
+1. Follow the instructions in the "Build from source" section above.
 2. Save your Dropbox API key in a file called "test.app".  See: [Get a Dropbox API key](#get-a-dropbox-api-key), above.
 3. Compile and install the SDK into your local maven repo: `./gradlew install`
 4. To compile all the examples: `(cd examples/ && ./gradlew classes`
