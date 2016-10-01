@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+git submodule sync
+git submodule update --init
+git submodule foreach --recursive "git submodule sync ; git submodule update --init"
