@@ -1717,7 +1717,7 @@ class JavaApi(object):
 
     def is_collapsible(self, data_type):
         assert isinstance(data_type, DataType), repr(data_type)
-        return is_struct_type(data_type) and not data_type.is_member_of_enumerated_subtypes_tree()
+        return is_struct_type(data_type) and not data_type.has_enumerated_subtypes()
 
     @staticmethod
     def param_name(stone_elem):
