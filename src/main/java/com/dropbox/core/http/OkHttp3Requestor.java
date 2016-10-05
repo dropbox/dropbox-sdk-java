@@ -7,11 +7,9 @@ import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
-import okhttp3.internal.Util;
 
 import java.io.Closeable;
 import java.io.File;
-import java.io.InputStream;
 import java.io.InterruptedIOException;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -20,7 +18,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import okio.Buffer;
 import okio.BufferedSink;
 
 /*>>> import checkers.nullness.quals.Nullable; */
@@ -28,52 +25,65 @@ import okio.BufferedSink;
 /**
  * {@link HttpRequestor} implementation that uses <a href="http://square.github.io/okhttp/">OkHttp
  * v3</a>.  You can only use this if your project includes the OkHttp v3 library.
- *
- * <p>
- * To use this, pass {@link #INSTANCE} to the {@link com.dropbox.core.DbxRequestConfig} constructor.
- * </p>
  */
 public class OkHttp3Requestor extends HttpRequestor {
     /**
-     * A thread-safe instance of {@code OkHttp3Requestor} that connects directly
-     * (as opposed to using a proxy).
+     * @deprecated This field will be removed.  Instead, do:
+     *     {@code new OkHttp3Requestor(OkHttp3Requestor.defaultOkHttpClient())}
      */
+    @Deprecated
     public static final OkHttp3Requestor INSTANCE = new OkHttp3Requestor(defaultOkHttpClient());
 
-    private final OkHttpClient client;
+    /**
+     * Returns an {@code OkHttpClient} instance with the default settings for this SDK.
+     */
+    public static OkHttpClient defaultOkHttpClient() {
+        return defaultOkHttpClientBuilder().build();
+    }
 
-    private static OkHttpClient defaultOkHttpClient() {
+    /**
+     * Returns an {@code OkHttpClient.Builder} instance with the default settings for this SDK.
+     */
+    public static OkHttpClient.Builder defaultOkHttpClientBuilder() {
         return new OkHttpClient.Builder()
             .connectTimeout(DEFAULT_CONNECT_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)
             .readTimeout(DEFAULT_READ_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)
             .writeTimeout(DEFAULT_READ_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)
             // enables certificate pinning
-            .sslSocketFactory(SSLConfig.getSSLSocketFactory(), SSLConfig.getTrustManager())
-            .build();
+            .sslSocketFactory(SSLConfig.getSSLSocketFactory(), SSLConfig.getTrustManager());
     }
+
+    private final OkHttpClient client;
 
     /**
      * Creates a new instance of this requestor that uses {@code client} for its requests.
      *
-     * <p> NOTE: This constructor will not enable certificate pinning on the client. If you want
-     * certificate pinning, use the default instance, {@link #INSTANCE}, or clone the default client
-     * and modify it accordingly:
-     *
-     * <p> NOTE: This SDK requires that OkHttp clients do not use same-thread executors for issuing
-     * calls. The SDK relies on the assumption that all asynchronous calls will actually be executed
-     * asynchronously. Using a same-thread executor for your OkHttp client may result in dead-locks.
-     *
      * <pre>
-     *     OkHttpClient client = OkHttpRequestor.INSTANCE.getClient()
-     *         .readTimeout(2, TimeUnit.MINUTES)
-     *         // ... other modifications
-     *         .build();
-     *     HttpRequestor requestor = new OkHttpRequestor(client);
+     * OkHttpClient client = OkHttp3Requestor.defaultOkHttpClient();
+     * HttpRequestor requestor = new OkHttp3Requestor(client);
      * </pre>
      *
-     * @param client {@code OkHttpClient} to use for requests, never {@code null}
+     * <p>
+     * If you need to make modifications to the {@link OkHttpClient} settings:
+     * </p>
      *
-     * @throws IllegalArgumentException if client uses a same-thread executor for its dispatcher
+     * <pre>
+     * OkHttpClient client = OkHttp3Requestor.defaultOkHttpClientBuilder()
+     *     .readTimeout(2, TimeUnit.MINUTES)
+     *     ...
+     *     .build();
+     * </pre>
+     *
+     * If you don't use {@link #defaultOkHttpClient()} or {@link #defaultOkHttpClientBuilder()},
+     * make sure to use Dropbox's hardened SSL settings from {@link SSLConfig}:
+     * </p>
+     *
+     * <pre>
+     * OkHttpClient client = OkHttpClient.Builder()
+     *     ...
+     *     .sslSocketFactory(SSLConfig.getSSLSocketFactory(), SSLConfig.getTrustManager())
+     *     .build();
+     * </pre>
      */
     public OkHttp3Requestor(OkHttpClient client) {
         if (client == null) throw new NullPointerException("client");
@@ -82,13 +92,10 @@ public class OkHttp3Requestor extends HttpRequestor {
     }
 
     /**
-     * Returns the underlying {@code OkHttpClient} used to make requests.
-     *
-     * If you want to modify the client for a particular request, create a new instance of this
-     * requestor with the modified client.
-     *
-     * @return underlying {@code OkHttpClient} used by this requestor.
+     * @deprecated If you need access to the {@link OkHttpClient} instance you passed
+     *     into the constructor, keep track of it yourself.
      */
+    @Deprecated
     public OkHttpClient getClient() {
         return client;
     }

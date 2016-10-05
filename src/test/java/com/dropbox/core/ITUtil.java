@@ -21,8 +21,6 @@ import com.squareup.okhttp.OkHttpClient;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 
-import com.dropbox.core.DbxAuthInfo;
-import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.http.GoogleAppEngineRequestor;
 import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.http.OkHttpRequestor;
@@ -98,13 +96,13 @@ public final class ITUtil {
     }
 
     public static OkHttpRequestor newOkHttpRequestor() {
-        OkHttpClient httpClient = OkHttpRequestor.INSTANCE.getClient().clone();
+        OkHttpClient httpClient = OkHttpRequestor.defaultOkHttpClient().clone();
         httpClient.setReadTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS);
         return new OkHttpRequestor(httpClient);
     }
 
     public static OkHttp3Requestor newOkHttp3Requestor() {
-        okhttp3.OkHttpClient httpClient = OkHttp3Requestor.INSTANCE.getClient().newBuilder()
+        okhttp3.OkHttpClient httpClient = OkHttp3Requestor.defaultOkHttpClient().newBuilder()
             .readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS)
             .build();
         return new OkHttp3Requestor(httpClient);
