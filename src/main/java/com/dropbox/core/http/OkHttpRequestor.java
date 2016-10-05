@@ -82,12 +82,15 @@ public class OkHttpRequestor extends HttpRequestor {
     }
 
     /**
-     * @deprecated If you need access to the {@link OkHttpClient} instance you passed
-     *     into the constructor, keep track of it yourself.
+     * Returns a clone of the underlying {@code OkHttpClient} used to make requests.
+     *
+     * If you want to modify the client for a particular request, create a new instance of this
+     * requestor with the modified client.
+     *
+     * @return clone of the underlying {@code OkHttpClient} used by this requestor.
      */
-    @Deprecated
     public OkHttpClient getClient() {
-        return client.clone();
+        return client;
     }
 
     /**
