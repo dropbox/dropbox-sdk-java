@@ -7,11 +7,9 @@ import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.internal.Util;
 
 import java.io.Closeable;
 import java.io.File;
-import java.io.InputStream;
 import java.io.InterruptedIOException;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -21,7 +19,6 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import okio.BufferedSink;
-import okio.Okio;
 
 /*>>> import checkers.nullness.quals.Nullable; */
 
@@ -29,22 +26,22 @@ import okio.Okio;
  * {@link HttpRequestor} implementation that uses <a href="http://square.github.io/okhttp/">OkHttp
  * v2</a>.  You can only use this if your project includes the OkHttp v2 library.
  *
- * <p> To use OkHttp v3, see {@link OkHttp3Requestor}.
- *
- * <p> To use this, pass {@link #INSTANCE} to the {@link com.dropbox.core.DbxRequestConfig} constructor.
- *
- * @see OkHttp3Requestor
+ * <p>
+ * To use OkHttp v3, see {@link OkHttp3Requestor}.
+ * </p>
  */
 public class OkHttpRequestor extends HttpRequestor {
     /**
-     * A thread-safe instance of {@code OkHttpRequestor} that connects directly
-     * (as opposed to using a proxy).
+     * @deprecated This field will be removed.  Instead, do:
+     *     {@code new OkHttpRequestor(OkHttpRequestor.defaultOkHttpClient())}
      */
+    @Deprecated
     public static final OkHttpRequestor INSTANCE = new OkHttpRequestor(defaultOkHttpClient());
 
-    private final OkHttpClient client;
-
-    private static OkHttpClient defaultOkHttpClient() {
+    /**
+     * Returns an {@code OkHttpClient} instance with the default settings for this SDK.
+     */
+    public static OkHttpClient defaultOkHttpClient() {
         OkHttpClient client = new OkHttpClient();
         client.setConnectTimeout(DEFAULT_CONNECT_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
         client.setReadTimeout(DEFAULT_READ_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
@@ -54,29 +51,29 @@ public class OkHttpRequestor extends HttpRequestor {
         return client;
     }
 
+    private final OkHttpClient client;
+
     /**
      * Creates a new instance of this requestor that uses {@code client} for its requests.
-     *
-     * <p> The {@code OkHttpClient} will be cloned to prevent further modification.
-     *
-     * <p> NOTE: This constructor will not enable certificate pinning on the client. If you want
-     * certificate pinning, use the default instance, {@link #INSTANCE}, or clone the default client
-     * and modify it accordingly:
-     *
-     * <p> NOTE: This SDK requires that OkHttp clients do not use same-thread executors for issuing
-     * calls. The SDK relies on the assumption that all asynchronous calls will actually be executed
-     * asynchronously. Using a same-thread executor for your OkHttp client may result in dead-locks.
+     * The client will be cloned to prevent further modification.
      *
      * <pre>
-     *     OkHttpClient client = OkHttpRequestor.INSTANCE.getClient(); // returns a clone
-     *     client.setReadTimeout(2, TimeUnit.MINUTES);
-     *     // ... other modifications
-     *     HttpRequestor requestor = new OkHttpRequestor(client);
+     * OkHttpClient client = OkHttpRequestor.defaultOkHttpClient();
+     *
+     * // Make modifications, if necessary
+     * client.setReadTimeout(2, TimeUnit.MINUTES);
+     * ...
+     *
+     * HttpRequestor requestor = new OkHttpRequestor(client);
      * </pre>
      *
-     * @param client {@code OkHttpClient} to use for requests (will be cloned), never {@code null}
+     * If you don't use {@link #defaultOkHttpClient()}, make sure to use Dropbox's
+     * hardened SSL settings from {@link SSLConfig}:
+     * </p>
      *
-     * @throws IllegalArgumentException if client uses a same-thread executor for its dispatcher
+     * <pre>
+     * client.setSslSocketFactory(SSLConfig.getSSLSocketFactory())
+     * </pre>
      */
     public OkHttpRequestor(OkHttpClient client) {
         if (client == null) throw new NullPointerException("client");
@@ -85,10 +82,13 @@ public class OkHttpRequestor extends HttpRequestor {
     }
 
     /**
-     * @deprecated If you need access to the {@link OkHttpClient} instance you passed
-     *     into the constructor, keep track of it yourself.
+     * Returns a clone of the underlying {@code OkHttpClient} used to make requests.
+     *
+     * If you want to modify the client for a particular request, create a new instance of this
+     * requestor with the modified client.
+     *
+     * @return clone of the underlying {@code OkHttpClient} used by this requestor.
      */
-    @Deprecated
     public OkHttpClient getClient() {
         return client;
     }
