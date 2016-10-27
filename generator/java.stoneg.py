@@ -3019,7 +3019,7 @@ class JavaCodeGenerationInstance(object):
             w.out('private final Tag _tag;')
             for field in all_fields:
                 if j.has_value(field):
-                    w.out('private final %s %s;', j.java_class(field), j.param_name(field))
+                    w.out('private final %s %s;', j.java_class(field, boxed=True), j.param_name(field))
 
             #
             # Constructor
