@@ -176,7 +176,7 @@ public abstract class DbxUploader<R, E, X extends DbxApiException> implements Cl
      * Returns an {@link OutputStream} that writes to the request body. Remember to call {@link
      * #finish} to complete the request and retrieve the response.
      *
-     * Data writen to this stream will be uploaded.
+     * Data written to this stream will be uploaded.
      *
      * Typically you will not need this method and can use the more convenient {@link
      * #uploadAndFinish(InputStream)}.
