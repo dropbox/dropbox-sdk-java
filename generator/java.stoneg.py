@@ -1029,7 +1029,8 @@ class JavaClassWriter(object):
     def java_default_value(self, field):
         assert isinstance(field, Field), repr(field)
         assert field.has_default, repr(field)
-        return self.java_value(field.data_type, field.default)
+        default_value = '\"\"' if field.default == '' else field.default
+        return self.java_value(field.data_type, default_value)
 
     def java_value(self, data_type, stone_value):
         assert isinstance(data_type, DataType), repr(data_type)
@@ -3833,17 +3834,19 @@ class JavaCodeGenerationInstance(object):
                     default_value = w.java_default_value(field) if field.has_default else 'null'
                     w.out('%s f_%s = %s;',
                           j.java_class(field, boxed=True), j.param_name(field), default_value)
-                with w.block('while (p.getCurrentToken() == JsonToken.FIELD_NAME)'):
-                    w.out('String field = p.getCurrentName();')
-                    w.out('p.nextToken();')
 
-                    for i, field in enumerate(data_type.all_fields):
-                        conditional = 'if' if i == 0 else 'else if'
-                        serializer = w.java_serializer(field.data_type)
-                        with w.block('%s ("%s".equals(field))', conditional, field.name):
-                            w.out('f_%s = %s.deserialize(p);', j.param_name(field), serializer)
-                    with w.block('else'):
-                        w.out('skipValue(p);')
+                if data_type.all_fields:
+                    with w.block('while (p.getCurrentToken() == JsonToken.FIELD_NAME)'):
+                        w.out('String field = p.getCurrentName();')
+                        w.out('p.nextToken();')
+
+                        for i, field in enumerate(data_type.all_fields):
+                            conditional = 'if' if i == 0 else 'else if'
+                            serializer = w.java_serializer(field.data_type)
+                            with w.block('%s ("%s".equals(field))', conditional, field.name):
+                                w.out('f_%s = %s.deserialize(p);', j.param_name(field), serializer)
+                        with w.block('else'):
+                            w.out('skipValue(p);')
 
                 for field in data_type.all_fields:
                     if field not in data_type.all_optional_fields:
