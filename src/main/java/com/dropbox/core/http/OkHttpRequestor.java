@@ -67,6 +67,7 @@ public class OkHttpRequestor extends HttpRequestor {
      * HttpRequestor requestor = new OkHttpRequestor(client);
      * </pre>
      *
+     * <p>
      * If you don't use {@link #defaultOkHttpClient()}, make sure to use Dropbox's
      * hardened SSL settings from {@link SSLConfig}:
      * </p>
