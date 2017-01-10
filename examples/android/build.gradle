@@ -65,7 +65,7 @@ dependencies {
     // on master). Must use OkHttp v2 and v3 until new picasso release
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.squareup.okhttp:okhttp:2.7.5'
-    compile 'com.squareup.okhttp3:okhttp:3.3.1'
+    compile 'com.squareup.okhttp3:okhttp:3.5.0'
 }
 
 apply plugin: 'com.getkeepsafe.dexcount'
