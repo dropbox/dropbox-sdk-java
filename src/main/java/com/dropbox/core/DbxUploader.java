@@ -93,6 +93,8 @@ public abstract class DbxUploader<R, E, X extends DbxApiException> implements Cl
         try {
             try {
                 httpUploader.upload(in);
+            } catch (IOUtil.ReadException ex) {
+                throw ex.getCause();
             } catch (IOException ex) {
                 // write exceptions and everything else is a Network I/O problem
                 throw new NetworkIOException(ex);

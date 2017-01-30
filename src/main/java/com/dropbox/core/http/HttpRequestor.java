@@ -79,7 +79,13 @@ public abstract class HttpRequestor
         public abstract Response finish() throws IOException;
 
         public void upload(File file) throws IOException {
-            upload(new FileInputStream(file));
+            try {
+                upload(new FileInputStream(file));
+            } catch (IOUtil.ReadException ex) {
+                throw ex.getCause();
+            } catch (IOUtil.WriteException ex) {
+                throw ex.getCause();
+            }
         }
 
         public void upload(InputStream in, long limit) throws IOException {
@@ -90,8 +96,6 @@ public abstract class HttpRequestor
             OutputStream out = getBody();
             try {
                 IOUtil.copyStreamToStream(in, out);
-            } catch (IOUtil.ReadException ex) {
-                throw ex.getCause();
             } finally {
                 out.close();
             }
