@@ -18,6 +18,7 @@ import com.dropbox.core.v2.files.ListFolderResult;
 import com.dropbox.core.v2.files.LookupError;
 import com.dropbox.core.v2.files.Metadata;
 
+import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -240,6 +241,8 @@ public class DropboxBrowse
     public void doUpload(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException
     {
+        MultipartConfigElement multipartConfigElement = new MultipartConfigElement("/tmp");
+        request.setAttribute("org.eclipse.multipartConfig", multipartConfigElement);
         if (!common.checkPost(request, response)) return;
         User user = common.requireLoggedInUser(request, response);
         if (user == null) return;
@@ -323,7 +326,13 @@ public class DropboxBrowse
         byte[] bytes = new byte[maxLength];
         InputStream in = part.getInputStream();
         int bytesRead = in.read(bytes);
+
+        if (in.read() == -1) {
+            return "";
+        }
+
         String s = StringUtil.utf8ToString(bytes, 0, bytesRead);
+
         if (in.read() != -1) {
             response.sendError(400, "Field " + jq(name) + " is too long (the limit is " + maxLength + " bytes): " + jq(s));
             return null;

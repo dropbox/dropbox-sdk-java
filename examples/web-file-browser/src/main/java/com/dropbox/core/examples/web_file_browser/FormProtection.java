@@ -1,8 +1,11 @@
 package com.dropbox.core.examples.web_file_browser;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
 
@@ -54,10 +57,12 @@ public class FormProtection
     // Call this when handling any form POST request.  If it returns
     // null, the CSRF token is ok.  If it returns some other string,
     // display that error message to the user.
-    public static String checkAntiCsrfToken(HttpServletRequest request)
+    public static String checkAntiCsrfToken(HttpServletRequest request) throws IOException, ServletException
     {
-        String antiCsrfToken = request.getParameter("anti-csrf-token");
-        if (antiCsrfToken == null) {
+        if (request.getContentType() != null &&
+            request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 &&
+            request.getPart("anti-csrf-token") == null ||
+            request.getParameter("anti-csrf-token") == null) {
             return "missing \"" + antiCsrfTokenName + "\" POST parameter";
         }
 
