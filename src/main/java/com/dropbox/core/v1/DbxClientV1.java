@@ -718,10 +718,8 @@ public final class DbxClientV1
             return uploader.finish();
         }
         catch (NoThrowOutputStream.HiddenException ex) {
-            // We hid our OutputStream's IOException from their writer.write() function so that
-            // we could properly raise a NetworkIOException if something went wrong with the
-            // network stream.
-            throw new NetworkIOException(ex.underlying);
+            if (ex.owner == streamWrapper) throw new NetworkIOException(ex.getCause());
+            throw ex;
         }
         finally {
             uploader.close();
@@ -940,20 +938,28 @@ public final class DbxClientV1
 
         HttpRequestor.Uploader uploader = DbxRequestUtil.startPut(requestConfig, accessToken, USER_AGENT_ID, host.getContent(), apiPath, params, headers);
         try {
+            NoThrowOutputStream nt = new NoThrowOutputStream(uploader.getBody());
             try {
-                NoThrowOutputStream nt = new NoThrowOutputStream(uploader.getBody());
+                // Any exceptions thrown by writer.write (e.g. IOException) are "owned" by
+                // the caller so let them propagate.  We should only handle exceptions caused
+                // by our uploader OutputStream.
                 writer.write(nt);
-                long bytesWritten = nt.getBytesWritten();
-                if (bytesWritten != chunkSize) {
-                    throw new IllegalStateException("'chunkSize' is " + chunkSize + ", but 'writer' only wrote " + bytesWritten + " bytes");
-                }
+            }
+            catch (NoThrowOutputStream.HiddenException ex) {
+                if (ex.owner == nt) throw new NetworkIOException(ex.getCause());
+                throw ex;
+            }
+
+            long bytesWritten = nt.getBytesWritten();
+            if (bytesWritten != chunkSize) {
+                throw new IllegalStateException("'chunkSize' is " + chunkSize + ", but 'writer' only wrote " + bytesWritten + " bytes");
+            }
+
+            try {
                 return uploader.finish();
             }
             catch (IOException ex) {
                 throw new NetworkIOException(ex);
-            }
-            catch (NoThrowOutputStream.HiddenException ex) {
-                throw new NetworkIOException(ex.underlying);
             }
         }
         finally {

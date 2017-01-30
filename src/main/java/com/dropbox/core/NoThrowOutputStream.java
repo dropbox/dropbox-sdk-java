@@ -42,7 +42,7 @@ public final class NoThrowOutputStream extends OutputStream
             underlying.flush();
         }
         catch (IOException ex) {
-            throw new HiddenException(ex);
+            throw new HiddenException(this, ex);
         }
     }
 
@@ -54,7 +54,7 @@ public final class NoThrowOutputStream extends OutputStream
             underlying.write(b, off, len);
         }
         catch (IOException ex) {
-            throw new HiddenException(ex);
+            throw new HiddenException(this, ex);
         }
     }
 
@@ -66,7 +66,7 @@ public final class NoThrowOutputStream extends OutputStream
             underlying.write(b);
         }
         catch (IOException ex) {
-            throw new HiddenException(ex);
+            throw new HiddenException(this, ex);
         }
     }
 
@@ -78,18 +78,24 @@ public final class NoThrowOutputStream extends OutputStream
             underlying.write(b);
         }
         catch (IOException ex) {
-            throw new HiddenException(ex);
+            throw new HiddenException(this, ex);
         }
     }
 
     public static final class HiddenException extends RuntimeException
     {
-        public final IOException underlying;
+        public final NoThrowOutputStream owner;
 
-        public HiddenException(IOException underlying)
+        public HiddenException(NoThrowOutputStream owner, IOException underlying)
         {
             super(underlying);
-            this.underlying = underlying;
+            this.owner = owner;
+        }
+
+        @Override
+        public IOException getCause()
+        {
+            return (IOException) super.getCause();
         }
 
         public static final long serialVersionUID = 0;
