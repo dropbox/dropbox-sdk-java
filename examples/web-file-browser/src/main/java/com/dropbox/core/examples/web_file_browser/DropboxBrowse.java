@@ -327,7 +327,7 @@ public class DropboxBrowse
         InputStream in = part.getInputStream();
         int bytesRead = in.read(bytes);
 
-        if (in.read() == -1) {
+        if (bytesRead == -1) {
             return "";
         }
 
