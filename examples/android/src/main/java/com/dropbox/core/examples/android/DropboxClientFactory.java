@@ -15,7 +15,7 @@ public class DropboxClientFactory {
     public static void init(String accessToken) {
         if (sDbxClient == null) {
             DbxRequestConfig requestConfig = DbxRequestConfig.newBuilder("examples-v2-demo")
-                .withHttpRequestor(OkHttp3Requestor.INSTANCE)
+                .withHttpRequestor(new OkHttp3Requestor(OkHttp3Requestor.defaultOkHttpClient()))
                 .build();
 
             sDbxClient = new DbxClientV2(requestConfig, accessToken);

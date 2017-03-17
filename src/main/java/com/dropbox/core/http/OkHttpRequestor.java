@@ -32,13 +32,6 @@ import okio.BufferedSink;
  */
 public class OkHttpRequestor extends HttpRequestor {
     /**
-     * @deprecated This field will be removed.  Instead, do:
-     *     {@code new OkHttpRequestor(OkHttpRequestor.defaultOkHttpClient())}
-     */
-    @Deprecated
-    public static final OkHttpRequestor INSTANCE = new OkHttpRequestor(defaultOkHttpClient());
-
-    /**
      * Returns an {@code OkHttpClient} instance with the default settings for this SDK.
      */
     public static OkHttpClient defaultOkHttpClient() {
