@@ -296,6 +296,20 @@ public class DbxWebAuth {
     }
 
     /**
+     * Call this after the user has visited the authorizaton URL with a redirectUrl and copy/pasted
+     * the authorization code that Dropbox gave them.
+     *
+     * @param code The authorization code shown to the user when they clicked "Allow" on the
+     *    authorization, page on the Dropbox website, never {@code null}.
+     * @param redirectUri The original redirect URI used by {@link #authorize}, never {@code null}.
+     *
+     * @throws DbxException if an error occurs communicating with Dropbox.
+     */
+    public DbxAuthFinish finishFromCode(String code, String redirectUri) throws DbxException {
+        return finish(code, redirectUri, null);
+    }
+
+    /**
      * Call this after the user has visited the authorizaton URL and Dropbox has redirected them
      * back to you at the redirect URI.
      *
