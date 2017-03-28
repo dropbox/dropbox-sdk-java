@@ -3,4 +3,5 @@
     <!-- Change this to your app key -->
     <string name="app_key">YOUR_APP_KEY_HERE</string>
     <string name="title_activity_files">Files</string>
+    <string name="title_activity_openwith">Open With</string>
 </resources>

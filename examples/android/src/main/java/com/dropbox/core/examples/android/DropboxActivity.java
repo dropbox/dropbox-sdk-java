@@ -27,6 +27,12 @@ public abstract class DropboxActivity extends AppCompatActivity {
         } else {
             initAndLoadData(accessToken);
         }
+
+        String uid = Auth.getUid();
+        String storedUid = prefs.getString("user-id", null);
+        if (uid != null && !uid.equals(storedUid)) {
+            prefs.edit().putString("user-id", uid).apply();
+        }
     }
 
     private void initAndLoadData(String accessToken) {

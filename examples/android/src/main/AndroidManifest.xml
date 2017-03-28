@@ -12,24 +12,21 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         android:supportsRtl="false">
-
         <activity
-            android:name="com.dropbox.core.examples.android.UserActivity"
-            android:label="@string/app_name" >
+            android:name=".UserActivity"
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.dropbox.core.examples.android.FilesActivity"
-            android:label="@string/title_activity_files" >
-        </activity>
-
+            android:name=".FilesActivity"
+            android:label="@string/title_activity_files" />
         <activity
             android:name="com.dropbox.core.android.AuthActivity"
             android:configChanges="orientation|keyboard"
-            android:launchMode="singleTask" >
+            android:launchMode="singleTask">
             <intent-filter>
 
                 <!-- Change this to be db- followed by your app key -->
@@ -39,6 +36,15 @@
 
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".internal.OpenWithActivity"
+            android:label="@string/title_activity_openwith">
+            <intent-filter>
+                <action android:name="com.dropbox.android.intent.action.DBXC_EDIT"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="text/plain"/>
             </intent-filter>
         </activity>
     </application>
