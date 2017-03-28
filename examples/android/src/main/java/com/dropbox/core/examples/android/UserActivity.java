@@ -1,5 +1,7 @@
 package com.dropbox.core.examples.android;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -8,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.dropbox.core.android.Auth;
+import com.dropbox.core.examples.android.internal.OpenWithActivity;
 import com.dropbox.core.v2.users.FullAccount;
 
 
@@ -41,6 +44,15 @@ public class UserActivity extends DropboxActivity {
                 startActivity(FilesActivity.getIntent(UserActivity.this, ""));
             }
         });
+
+        Button openWithButton = (Button)findViewById(R.id.open_with);
+        openWithButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent openWithIntent = new Intent(UserActivity.this, OpenWithActivity.class);
+                startActivity(openWithIntent);
+            }
+        });
     }
 
     @Override
@@ -53,12 +65,14 @@ public class UserActivity extends DropboxActivity {
             findViewById(R.id.name_text).setVisibility(View.VISIBLE);
             findViewById(R.id.type_text).setVisibility(View.VISIBLE);
             findViewById(R.id.files_button).setEnabled(true);
+            findViewById(R.id.open_with).setEnabled(true);
         } else {
             findViewById(R.id.login_button).setVisibility(View.VISIBLE);
             findViewById(R.id.email_text).setVisibility(View.GONE);
             findViewById(R.id.name_text).setVisibility(View.GONE);
             findViewById(R.id.type_text).setVisibility(View.GONE);
             findViewById(R.id.files_button).setEnabled(false);
+            findViewById(R.id.open_with).setEnabled(false);
         }
     }
 

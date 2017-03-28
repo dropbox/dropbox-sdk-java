@@ -45,5 +45,11 @@
             android:layout_height="wrap_content"
             android:text="View Files"/>
 
+        <Button
+            style="@style/ButtonStyle"
+            android:id="@+id/open_with"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Test Open With (Internal)"/>
     </LinearLayout>
 </LinearLayout>

@@ -1,7 +1,6 @@
 package com.dropbox.core.android;
 
 import java.security.SecureRandom;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -12,11 +11,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
-import android.content.pm.Signature;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -98,6 +94,12 @@ public class AuthActivity extends Activity {
     public static final String EXTRA_ALREADY_AUTHED_UIDS = "ALREADY_AUTHED_UIDS";
 
     /**
+     * Used for internal authentication. Allows app to transfer session info to/from DbApp
+     * You won't ever have to use this.
+     */
+    public static final String EXTRA_SESSION_ID = "SESSION_ID";
+
+    /**
      * The Android action which the official Dropbox app will accept to
      * authenticate a user. You won't ever have to use this.
      */
@@ -158,6 +160,7 @@ public class AuthActivity extends Activity {
     private static String sApiType;
     private static String sDesiredUid;
     private static String[] sAlreadyAuthedUids;
+    private static String sSessionId;
 
     // These instance variables need not be stored in savedInstanceState as onNewIntent()
     // does not read them.
@@ -166,6 +169,7 @@ public class AuthActivity extends Activity {
     private String mApiType;
     private String mDesiredUid;
     private String[] mAlreadyAuthedUids;
+    private String mSessionId;
 
     // Stored in savedInstanceState to track an ongoing auth attempt, which
     // must include a locally-generated nonce in the response.
@@ -178,17 +182,36 @@ public class AuthActivity extends Activity {
      */
     static void setAuthParams(String appKey, String desiredUid,
                               String[] alreadyAuthedUids) {
-        setAuthParams(appKey, desiredUid, alreadyAuthedUids, null, null);
+        setAuthParams(appKey, desiredUid, alreadyAuthedUids, null);
     }
+
+
 
     /**
      * Set static authentication parameters
      */
     static void setAuthParams(String appKey, String desiredUid,
                               String[] alreadyAuthedUids, String webHost, String apiType) {
+        setAuthParams(appKey, desiredUid, alreadyAuthedUids, null, null, null);
+    }
+
+    /**
+     * Set static authentication parameters
+     */
+    static void setAuthParams(String appKey, String desiredUid,
+                              String[] alreadyAuthedUids, String sessionId) {
+        setAuthParams(appKey, desiredUid, alreadyAuthedUids, sessionId, null, null);
+    }
+
+    /**
+     * Set static authentication parameters
+     */
+    static void setAuthParams(String appKey, String desiredUid,
+                              String[] alreadyAuthedUids, String sessionId, String webHost, String apiType) {
         sAppKey = appKey;
         sDesiredUid = desiredUid;
         sAlreadyAuthedUids = (alreadyAuthedUids != null) ? alreadyAuthedUids : new String[0];
+        sSessionId = sessionId;
         sWebHost = (webHost != null) ? webHost : DEFAULT_WEB_HOST;
         sApiType = apiType;
     }
@@ -321,6 +344,7 @@ public class AuthActivity extends Activity {
         mApiType = sApiType;
         mDesiredUid = sDesiredUid;
         mAlreadyAuthedUids = sAlreadyAuthedUids;
+        mSessionId = sSessionId;
 
         if (savedInstanceState == null) {
             result = null;
@@ -344,7 +368,7 @@ public class AuthActivity extends Activity {
      * @return Intent to auth with official app
      * Extras should be filled in by callee
      */
-    private static Intent getOfficialAuthIntent() {
+    static Intent getOfficialAuthIntent() {
         Intent authIntent = new Intent(ACTION_AUTHENTICATE_V2);
         authIntent.setPackage("com.dropbox.android");
         return authIntent;
@@ -387,6 +411,7 @@ public class AuthActivity extends Activity {
         officialAuthIntent.putExtra(EXTRA_CONSUMER_SIG, "");
         officialAuthIntent.putExtra(EXTRA_DESIRED_UID, mDesiredUid);
         officialAuthIntent.putExtra(EXTRA_ALREADY_AUTHED_UIDS, mAlreadyAuthedUids);
+        officialAuthIntent.putExtra(EXTRA_SESSION_ID, mSessionId);
         officialAuthIntent.putExtra(EXTRA_CALLING_PACKAGE, getPackageName());
         officialAuthIntent.putExtra(EXTRA_CALLING_CLASS, getClass().getName());
         officialAuthIntent.putExtra(EXTRA_AUTH_STATE, state);
@@ -404,7 +429,7 @@ public class AuthActivity extends Activity {
                 Log.d(TAG, "running startActivity in handler");
                 try {
                     // Auth with official app, or fall back to web.
-                    if (hasDropboxApp(officialAuthIntent)) {
+                    if (DbxOfficialAppConnector.getDropboxAppPackage(AuthActivity.this, officialAuthIntent) != null) {
                         startActivity(officialAuthIntent);
                     } else {
                         startWebAuth(state);
@@ -489,41 +514,6 @@ public class AuthActivity extends Activity {
         finish();
     }
 
-    private boolean hasDropboxApp(Intent intent) {
-        PackageManager manager = getPackageManager();
-
-        List<ResolveInfo> infos = manager.queryIntentActivities(intent, 0);
-        if (null == infos || 1 != infos.size()) {
-            // The official app doesn't exist, or only an older version
-            // is available, or multiple activities are confusing us.
-            return false;
-        } else {
-            // The official app exists. Make sure it's the correct one by
-            // checking signing keys.
-            ResolveInfo resolveInfo = manager.resolveActivity(intent, 0);
-            if (resolveInfo == null) {
-                return false;
-            }
-
-            final PackageInfo packageInfo;
-            try {
-                packageInfo = manager.getPackageInfo(
-                        resolveInfo.activityInfo.packageName,
-                        PackageManager.GET_SIGNATURES);
-            } catch (NameNotFoundException e) {
-                return false;
-            }
-
-            for (Signature signature : packageInfo.signatures) {
-                if (!DROPBOX_APP_SIGNATURES.contains(signature.toCharsString())) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
-    }
-
     private void startWebAuth(String state) {
         String path = "1/connect";
         Locale locale = Locale.getDefault();
@@ -544,40 +534,6 @@ public class AuthActivity extends Activity {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         startActivity(intent);
     }
-
-    private static final List<String> DROPBOX_APP_SIGNATURES = Arrays.asList(
-            "308202223082018b02044bd207bd300d06092a864886f70d01010405003058310b3" +
-                    "009060355040613025553310b300906035504081302434131163014060355040713" +
-                    "0d53616e204672616e636973636f3110300e060355040a130744726f70626f78311" +
-                    "2301006035504031309546f6d204d65796572301e170d3130303432333230343930" +
-                    "315a170d3430303431353230343930315a3058310b3009060355040613025553310" +
-                    "b3009060355040813024341311630140603550407130d53616e204672616e636973" +
-                    "636f3110300e060355040a130744726f70626f783112301006035504031309546f6" +
-                    "d204d6579657230819f300d06092a864886f70d010101050003818d003081890281" +
-                    "8100ac1595d0ab278a9577f0ca5a14144f96eccde75f5616f36172c562fab0e98c4" +
-                    "8ad7d64f1091c6cc11ce084a4313d522f899378d312e112a748827545146a779def" +
-                    "a7c31d8c00c2ed73135802f6952f59798579859e0214d4e9c0554b53b26032a4d2d" +
-                    "fc2f62540d776df2ea70e2a6152945fb53fef5bac5344251595b729d48102030100" +
-                    "01300d06092a864886f70d01010405000381810055c425d94d036153203dc0bbeb3" +
-                    "516f94563b102fff39c3d4ed91278db24fc4424a244c2e59f03bbfea59404512b8b" +
-                    "f74662f2a32e37eafa2ac904c31f99cfc21c9ff375c977c432d3b6ec22776f28767" +
-                    "d0f292144884538c3d5669b568e4254e4ed75d9054f75229ac9d4ccd0b7c3c74a34" +
-                    "f07b7657083b2aa76225c0c56ffc",
-            "308201e53082014ea00302010202044e17e115300d06092a864886f70d010105050" +
-                    "03037310b30090603550406130255533110300e060355040a1307416e64726f6964" +
-                    "311630140603550403130d416e64726f6964204465627567301e170d31313037303" +
-                    "93035303331375a170d3431303730313035303331375a3037310b30090603550406" +
-                    "130255533110300e060355040a1307416e64726f6964311630140603550403130d4" +
-                    "16e64726f696420446562756730819f300d06092a864886f70d010101050003818d" +
-                    "003081890281810096759fe5abea6a0757039b92adc68d672efa84732c3f959408e" +
-                    "12efa264545c61f23141026a6d01eceeeaa13ec7087087e5894a3363da8bf5c69ed" +
-                    "93657a6890738a80998e4ca22dc94848f30e2d0e1890000ae2cddf543b20c0c3828" +
-                    "deca6c7944b5ecd21a9d18c988b2b3e54517dafbc34b48e801bb1321e0fa49e4d57" +
-                    "5d7f0203010001300d06092a864886f70d0101050500038181002b6d4b65bcfa6ec" +
-                    "7bac97ae6d878064d47b3f9f8da654995b8ef4c385bc4fbfbb7a987f60783ef0348" +
-                    "760c0708acd4b7e63f0235c35a4fbcd5ec41b3b4cb295feaa7d5c27fa562a02562b" +
-                    "7e1f4776b85147be3e295714986c4a9a07183f48ea09ae4d3ea31b88d0016c65b93" +
-                    "526b9c45f2967c3d28dee1aff5a5b29b9c2c8639");
 
     private String createStateNonce() {
         final int NONCE_BYTES = 16; // 128 bits of randomness.
