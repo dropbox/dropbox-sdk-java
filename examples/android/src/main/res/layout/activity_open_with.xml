@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_open_with"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.dropbox.core.examples.android.internal.OpenWithActivity">
+
+    <include layout="@layout/app_bar" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/app_bar"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin">
+
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Path"
+            android:layout_centerInParent="true"/>
+
+
+        <Button
+            style="@style/ButtonStyle"
+            android:id="@+id/generate_intent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Test Generating Openwith Intent"/>
+
+        <Button
+            style="@style/ButtonStyle"
+            android:id="@+id/is_installed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Test Is Installed"/>
+
+        <Button
+            style="@style/ButtonStyle"
+            android:id="@+id/is_linked_any_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Test Is Linked Any"/>
+
+        <Button
+            style="@style/ButtonStyle"
+            android:id="@+id/is_linked_spec_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Test Is Linked Spec"/>
+
+        <Button
+            style="@style/ButtonStyle"
+            android:id="@+id/preview_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Test Preview"/>
+
+        <Button
+            style="@style/ButtonStyle"
+            android:id="@+id/upgrade_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Test Upgrade"/>
+
+    </LinearLayout>
+
+</RelativeLayout>
