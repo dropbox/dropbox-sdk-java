@@ -279,8 +279,6 @@ public class DbxClientV1IT {
         addFile(p("search - a.txt"), 100);
         client.createFolder(p("sub"));
         addFile(p("sub/search - b.txt"), 200);
-        addFile(p("search - c.txt"), 300);
-        client.delete(p("search - c.txt"));
 
         List<DbxEntry> results;
 
@@ -411,7 +409,7 @@ public class DbxClientV1IT {
         assertEquals(uploadEntry.path.toLowerCase(), orig.toLowerCase());
 
         // Get metadata with photo info (keep trying until photo info is available)
-        int maxTries = 20;
+        int maxTries = 30;
         int delaySeconds = 2;
         DbxEntry.File origEntry;
         for (int tries = 0; ; tries++) {

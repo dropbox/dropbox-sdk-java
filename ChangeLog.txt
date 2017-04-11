@@ -1,33 +1,12 @@
-3.0.1 (2017-03-29)
+3.0.2 (2017-04-11)
 ---------------------------------------------
-- Add OpenWith support for official partners.
-
-3.0.0 (2017-03-17)
----------------------------------------------
-- Breaking changes:
-  - static INSTANCE is removed from OkHttp3Requestor and OkHttpRequestor
-  - copyBatch/moveBatch now takes RelocationBatchArg instead of List<RelocationPath>
 - Update to latest API specs:
   - Auth namespace:
-    - Added user_suspended to AuthError.
     - Added TokenFromOAuth1Arg, TokenFromOAuth1Result and TokenFromOAuth1Error.
     - Added token/from_oauth1 rote.
     - Added AccessError and PaperAccessError.
     - Added InvalidAccountTypeError.
   - Files namespace:
-    - Added PathRootError.
-    - Added invalid_path_root to LookupError.
-    - Added autorename to CreateFolderArg.
-    - Added DeleteBatchArg, DeleteBatchResultEntry, DeleteResult, DeleteBatchResult, DeleteBatchError, DeleteBatchJobStatus and DeleteBatchLaunch.
-    - Added delete_batch and delete_batch/check routes.
-    - Added RelocationPath.
-    - Added to allow_shared_folder and autorename to RelocationArg.
-    - Added RelocationBatchArg, RelocationBatchResult, RelocationBatchJobStatus, RelocationResult,RelocationBatchError and RelocationBatchLaunch.
-    - Added copy_batch and copy_batch/check routes.
-    - Added move_batch and move_batch/check routes.
-    - Sharing namespace:	  - Changed PathOrId validation pattern.
-    - Changed path in ShareFolderArg from type files.Path to files.WritePath.
-    - Added contains_app_folder, contains_team_folder and invalid_path_root to ShareFolderArg.
     - Added UploadSessionFinishBatchLaunch and made it new return type for upload_session/finish_batch.
     - Added Sha256HexHash alias.
     - Added content_hash to FileMetadata.
@@ -51,13 +30,10 @@
     - Added actions, link_settings, viewer_info_policy to ShareFolderArg and removed default values from policies in ShareFolderArg.
     - Added viewer_info_policy, link_settings to UpdateFolderPolicyArg.
   - Stone Cfg namespace:
-    - Changed validation pattern for owner in Route.
     - Added feature route attribute.
     - Added attribute api_group, is_preview.
     - Removed attributes alpha_group, beta_group.
   - Team namespace:
-    - Added team_license_limit to MembersRecoverError.
-    - Removed beta_group attribute from members/recover.
     - Added group_name_already_used and group_name_invalid to GroupUpdateError.
     - Added joined_on, persistent_id to MemberProfile.
     - Added team_member_id, external_id to UserSelectorArg.
@@ -75,6 +51,39 @@
     - Added members_not_in_team, users_not_found to GroupMembersAddError.
     - Added joined_on to TeamMemberProfile.
     - Added member_persistent_id, duplicate_member_persistent_id, persistent_id_disabled, new_persistent_id, persistent_id_disabled, persistent_id_used_by_other_user to MemberSelectorError.
+3.0.1 (2017-03-29)
+---------------------------------------------
+- Add OpenWith support for official partners.
+
+3.0.0 (2017-03-17)
+---------------------------------------------
+- Breaking changes:
+  - static INSTANCE is removed from OkHttp3Requestor and OkHttpRequestor
+  - copyBatch/moveBatch now takes RelocationBatchArg instead of List<RelocationPath>
+- Update to latest API specs:
+  - Auth namespace:
+    - Added user_suspended to AuthError.
+  - Files namespace:
+    - Added PathRootError.
+    - Added invalid_path_root to LookupError.
+    - Added autorename to CreateFolderArg.
+    - Added DeleteBatchArg, DeleteBatchResultEntry, DeleteResult, DeleteBatchResult, DeleteBatchError, DeleteBatchJobStatus and DeleteBatchLaunch.
+    - Added delete_batch and delete_batch/check routes.
+    - Added RelocationPath.
+    - Added to allow_shared_folder and autorename to RelocationArg.
+    - Added RelocationBatchArg, RelocationBatchResult, RelocationBatchJobStatus, RelocationResult,RelocationBatchError and RelocationBatchLaunch.
+    - Added copy_batch and copy_batch/check routes.
+    - Added move_batch and move_batch/check routes.
+  - Sharing namespace:
+    - Changed PathOrId validation pattern.
+    - Changed path in ShareFolderArg from type files.Path to files.WritePath.
+    - Added contains_app_folder, contains_team_folder and invalid_path_root to ShareFolderArg.
+  - Stone Cfg namespace:
+    - Changed validation pattern for owner in Route.
+    - Added feature route attribute.
+  - Team namespace:
+    - Added team_license_limit to MembersRecoverError.
+    - Removed beta_group attribute from members/recover.
 - Fix the bug that when InputStream throws IOException, DbxUploader#uploadAndFinish() throws NetworkIOException
 
 2.1.1 (2016-08-01)
