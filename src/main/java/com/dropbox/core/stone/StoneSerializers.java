@@ -62,6 +62,10 @@ public final class StoneSerializers {
         return new NullableSerializer<T>(underlying);
     }
 
+    public static <T> StructSerializer<T> nullableStruct(StructSerializer<T> underlying) {
+        return new NullableStructSerializer<T>(underlying);
+    }
+
     public static <T> StoneSerializer<List<T>> list(StoneSerializer<T> underlying) {
         return new ListSerializer<T>(underlying);
     }
@@ -237,6 +241,52 @@ public final class StoneSerializers {
                 return null;
             } else {
                 return underlying.deserialize(p);
+            }
+        }
+    }
+
+    private static final class NullableStructSerializer<T> extends StructSerializer<T> {
+        private final StructSerializer<T> underlying;
+
+        public NullableStructSerializer(StructSerializer<T> underlying) {
+            this.underlying = underlying;
+        }
+
+        @Override
+        public void serialize(T value, JsonGenerator g) throws IOException {
+            if (value == null) {
+                g.writeNull();
+            } else {
+                underlying.serialize(value, g);
+            }
+        }
+
+        @Override
+        public void serialize(T value, JsonGenerator g, boolean collapsed) throws IOException {
+            if (value == null) {
+                g.writeNull();
+            } else {
+                underlying.serialize(value, g, collapsed);
+            }
+        }
+
+        @Override
+        public T deserialize(JsonParser p) throws IOException {
+            if (p.getCurrentToken() == JsonToken.VALUE_NULL) {
+                p.nextToken();
+                return null;
+            } else {
+                return underlying.deserialize(p);
+            }
+        }
+
+        @Override
+        public T deserialize(JsonParser p, boolean collapsed) throws IOException {
+            if (p.getCurrentToken() == JsonToken.VALUE_NULL) {
+                p.nextToken();
+                return null;
+            } else {
+                return underlying.deserialize(p, collapsed);
             }
         }
     }

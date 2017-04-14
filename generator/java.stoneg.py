@@ -1068,10 +1068,14 @@ class JavaClassWriter(object):
             return self.fmt('%s.INSTANCE', serializer_class)
         else:
             serializers_class = JavaClass('com.dropbox.core.stone.StoneSerializers')
-            if is_nullable_type(data_type):
+            if is_nullable_type(data_type) and is_struct_type(data_type.data_type):
+                return self.fmt('%s.nullableStruct(%s)',
+                                serializers_class, self.java_serializer(data_type.data_type))
+            elif is_nullable_type(data_type):
                 return self.fmt('%s.nullable(%s)',
                                 serializers_class, self.java_serializer(data_type.data_type))
             elif is_list_type(data_type):
+                # TODO: also support passing collapsed to list serializer
                 return self.fmt('%s.list(%s)',
                                 serializers_class, self.java_serializer(data_type.data_type))
             else:
@@ -3889,7 +3893,7 @@ class JavaCodeGenerationInstance(object):
                             w.out('writeTag("%s", g);', field.name)
                             serializer = w.java_serializer(field.data_type)
                             value = 'value.%s' % j.param_name(field)
-                            if j.is_collapsible(field.data_type):
+                            if j.is_collapsible(field.data_type) or is_nullable_type(field.data_type) and j.is_collapsible(field.data_type.data_type):
                                 w.out('%s.serialize(%s, g, true);', serializer, value)
                             else:
                                 w.out('g.writeFieldName("%s");', field.name)
@@ -3940,7 +3944,7 @@ class JavaCodeGenerationInstance(object):
                         w.out('%s fieldValue = null;', j.java_class(field_dt, boxed=True, generics=True))
                         with w.conditional_block(is_nullable_type(field.data_type), 'if (p.getCurrentToken() != JsonToken.END_OBJECT)'):
                             field_serializer = w.java_serializer(field_dt)
-                            if j.is_collapsible(field_dt):
+                            if j.is_collapsible(field_dt) or is_nullable_type(field_dt) and j.is_collapsible(field_dt.data_type):
                                 w.out('fieldValue = %s.deserialize(p, true);', field_serializer)
                             else:
                                 w.out('expectField("%s", p);', field.name)
