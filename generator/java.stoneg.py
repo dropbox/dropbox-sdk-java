@@ -3960,11 +3960,11 @@ class JavaCodeGenerationInstance(object):
             with w.block('else'):
                 if data_type.catch_all_field:
                     w.out('value = %s.%s;', j.java_class(data_type), j.field_static_instance(data_type.catch_all_field))
-                    w.out('skipFields(p);')
                 else:
                     w.out('throw new JsonParseException(p, "Unknown tag: " + tag);')
 
             with w.block('if (!collapsed)'):
+                w.out('skipFields(p);')
                 w.out('expectEndObject(p);')
 
             w.out('return value;')
