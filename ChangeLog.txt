@@ -1,3 +1,7 @@
+3.0.3 (2017-05-02)
+---------------------------------------------
+Fix the compatibility bug that cause sharing/get_file_metadata to crash.
+
 3.0.2 (2017-04-11)
 ---------------------------------------------
 - Update to latest API specs:
