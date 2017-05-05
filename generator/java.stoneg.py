@@ -1642,48 +1642,7 @@ class JavaApi(object):
 
     @staticmethod
     def _resolve_serializer_visibility(api):
-        visibility = defaultdict(lambda: Visibility.NONE)
-
-        def update(data_type, new_visibility):
-            visibility[data_type] = max(visibility[data_type], new_visibility)
-
-        def update_by_reference(data_type, namespace):
-            if data_type.namespace == namespace:
-                update(data_type, Visibility.PACKAGE)
-            else:
-                update(data_type, Visibility.PUBLIC)
-
-        # Calculate initial visibility state based on routes that use our data types.
-        for namespace in api.namespaces.values():
-            for route in namespace.routes:
-                for data_type in (route.arg_data_type, route.result_data_type, route.error_data_type):
-                    data_type = get_underlying_type(data_type)
-                    if is_user_defined_type(data_type):
-                        update_by_reference(data_type, namespace)
-
-        # Not iterate repeatedly, cascading the visibility out to other required data types as necessary
-        prev_state = None
-        cur_state = visibility.copy()
-        while prev_state != cur_state:
-            for namespace in api.namespaces.values():
-                for data_type in namespace.data_types:
-                    if not visibility[data_type].is_visible:
-                        continue
-
-                    for field in data_type.all_fields:
-                        field_data_type = get_underlying_type(field.data_type)
-                        if is_user_defined_type(field_data_type):
-                            update_by_reference(field_data_type, namespace)
-
-                    # parents need access to their enumerated subtype serializers
-                    if is_struct_type(data_type) and data_type.has_enumerated_subtypes():
-                        for subtype in data_type.get_enumerated_subtypes():
-                            update_by_reference(subtype.data_type, namespace)
-
-            prev_state = cur_state
-            cur_state = visibility.copy()
-
-        return visibility
+        return defaultdict(lambda: Visibility.PUBLIC)
 
     @staticmethod
     def get_spec_filename(element):
@@ -3747,7 +3706,6 @@ class JavaCodeGenerationInstance(object):
                                  generics=[j.java_class(data_type)])
 
         w.out('')
-        w.javadoc("For internal use only.")
         with w.class_block(j.serializer_class(data_type), visibility=visibility, parent_class=parent_class):
             w.out('public static final %s INSTANCE = new %s();',
                   j.serializer_class(data_type),
