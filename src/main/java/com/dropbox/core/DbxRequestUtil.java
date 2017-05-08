@@ -1,10 +1,7 @@
 package com.dropbox.core;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
@@ -15,12 +12,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import com.dropbox.core.stone.StoneSerializer;
 import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
 import com.dropbox.core.util.IOUtil;
 import com.dropbox.core.util.StringUtil;
+import com.dropbox.core.v2.callbacks.DbxGlobalCallbackFactory;
+import com.dropbox.core.v2.callbacks.DbxNetworkErrorCallback;
 
 import static com.dropbox.core.util.StringUtil.jq;
 import static com.dropbox.core.util.LangUtil.mkAssert;
@@ -29,6 +27,8 @@ import static com.dropbox.core.util.LangUtil.mkAssert;
 
 public final class DbxRequestUtil {
     private static final Random RAND = new Random();
+
+    public static DbxGlobalCallbackFactory sharedCallbackFactory;
 
     public static String encodeUrlParam(String s) {
         try {
@@ -278,44 +278,63 @@ public final class DbxRequestUtil {
 
     public static DbxException unexpectedStatus(HttpRequestor.Response response)
         throws NetworkIOException, BadResponseException {
+        DbxException networkError;
+
         String requestId = getRequestId(response);
         byte[] body = loadErrorBody(response);
         String message = parseErrorBody(requestId, response.getStatusCode(), body);
 
         switch (response.getStatusCode()) {
             case 400:
-                return new BadRequestException(requestId, message);
+                networkError = new BadRequestException(requestId, message);
+                break;
             case 401:
-                return new InvalidAccessTokenException(requestId, message);
+                networkError = new InvalidAccessTokenException(requestId, message);
+                break;
             case 429:
                 try {
                     int backoffSecs = Integer.parseInt(getFirstHeader(response, "Retry-After"));
-                    return new RateLimitException(requestId, message, backoffSecs, TimeUnit.SECONDS);
+                    networkError = new RateLimitException(requestId, message, backoffSecs, TimeUnit.SECONDS);
+                    break;
                 } catch (NumberFormatException ex) {
-                    return new BadResponseException(requestId, "Invalid value for HTTP header: \"Retry-After\"");
+                    networkError = new BadResponseException(requestId, "Invalid value for HTTP header: \"Retry-After\"");
+                    break;
                 }
             case 500:
-                return new ServerException(requestId, message);
+                networkError = new ServerException(requestId, message);
+                break;
             case 503:
                 // API v1 may include Retry-After in 503 responses, v2 does not
                 String retryAfter = getFirstHeaderMaybe(response, "Retry-After");
                 try {
                     if (retryAfter != null && !retryAfter.trim().isEmpty()) {
                         int backoffSecs = Integer.parseInt(retryAfter);
-                        return new RetryException(requestId, message, backoffSecs, TimeUnit.SECONDS);
+                        networkError = new RetryException(requestId, message, backoffSecs, TimeUnit.SECONDS);
+                        break;
                     } else {
-                        return new RetryException(requestId, message);
+                        networkError = new RetryException(requestId, message);
+                        break;
                     }
                 } catch (NumberFormatException ex) {
-                    return new BadResponseException(requestId, "Invalid value for HTTP header: \"Retry-After\"");
+                    networkError = new BadResponseException(requestId, "Invalid value for HTTP header: \"Retry-After\"");
+                    break;
                 }
             default:
-                return new BadResponseCodeException(
+                networkError = new BadResponseCodeException(
                     requestId,
                     "unexpected HTTP status code: " + response.getStatusCode() + ": " + message,
                     response.getStatusCode()
                 );
         }
+
+        DbxGlobalCallbackFactory factory = DbxRequestUtil.sharedCallbackFactory;
+        if (factory != null) {
+            DbxNetworkErrorCallback callback = factory.createNetworkErrorCallback();
+            callback.setNetworkError(networkError);
+            callback.run();
+        }
+
+        return networkError;
     }
 
     public static <T> T readJsonFromResponse(JsonReader<T> reader, HttpRequestor.Response response)

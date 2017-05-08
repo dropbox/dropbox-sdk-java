@@ -1,6 +1,7 @@
 rootProject.name = 'examples'
 include ':account-info'
 include ':authorize'
+include ':global-callbacks'
 include ':longpoll'
 include ':tutorial'
 include ':upgrade-oauth1-token'
