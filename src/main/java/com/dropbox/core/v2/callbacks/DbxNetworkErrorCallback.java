@@ -5,14 +5,6 @@ import com.dropbox.core.DbxException;
 /**
  * Abstract class for network error callback.
  */
-public abstract class DbxNetworkErrorCallback implements Runnable {
-    private DbxException networkError = null;
-
-    public DbxException getNetworkError() {
-        return networkError;
-    }
-
-    public void setNetworkError(DbxException networkError) {
-        this.networkError = networkError;
-    }
+public abstract class DbxNetworkErrorCallback {
+    public abstract void onNetworkError(DbxException networkError);
 }

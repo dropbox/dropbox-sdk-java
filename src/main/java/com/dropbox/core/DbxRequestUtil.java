@@ -330,8 +330,7 @@ public final class DbxRequestUtil {
         DbxGlobalCallbackFactory factory = DbxRequestUtil.sharedCallbackFactory;
         if (factory != null) {
             DbxNetworkErrorCallback callback = factory.createNetworkErrorCallback();
-            callback.setNetworkError(networkError);
-            callback.run();
+            callback.onNetworkError(networkError);
         }
 
         return networkError;

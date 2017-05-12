@@ -21,7 +21,7 @@ import java.io.InputStream;
 import java.io.IOException;
 
 public class Main {
-    private static final String ACCESS_TOKEN = "<ACCESS TOKEN>";
+    private static final String ACCESS_TOKEN = "<ACCESS_TOKEN>";
 
     public static void main(String args[]) throws DbxException, IOException {
         // Create Dropbox client
@@ -33,7 +33,7 @@ public class Main {
 
         try {
             // Get files and folder metadata from Dropbox root directory
-            client.files().listFolder("/does/not/exist");
+            client.files().listFolder("/does/not/exist/folder/");
         }
         catch (ListFolderErrorException ex) {
             System.err.println("STANDARD ROUTE ERROR HANDLER: " + ex.errorValue + "\n");
@@ -42,16 +42,16 @@ public class Main {
             System.err.println("STANDARD NETWORK ERROR HANDLER: " + ex + "\n");
         }
 
-//        try {
-//            // Get files and folder metadata from Dropbox root directory
-//            client.auth().tokenRevoke();
-//            client.files().listFolder("/does/not/exist");
-//        }
-//        catch (ListFolderErrorException ex) {
-//            System.err.println("STANDARD ROUTE ERROR HANDLER2: " + ex.errorValue + "\n");
-//        }
-//        catch (DbxException ex) {
-//            System.err.println("STANDARD NETWORK ERROR HANDLER2: " + ex + "\n");
-//        }
+        try {
+            // Get files and folder metadata from Dropbox root directory
+            client.auth().tokenRevoke();
+            client.files().listFolder("/does/not/exist");
+        }
+        catch (ListFolderErrorException ex) {
+            System.err.println("STANDARD ROUTE ERROR HANDLER2: " + ex.errorValue + "\n");
+        }
+        catch (DbxException ex) {
+            System.err.println("STANDARD NETWORK ERROR HANDLER2: " + ex + "\n");
+        }
     }
 }
