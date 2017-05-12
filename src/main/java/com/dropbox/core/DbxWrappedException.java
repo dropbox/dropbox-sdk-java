@@ -1,11 +1,15 @@
 package com.dropbox.core;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 import com.fasterxml.jackson.core.JsonParseException;
 
 import com.dropbox.core.stone.StoneSerializer;
 import com.dropbox.core.http.HttpRequestor;
+import com.dropbox.core.v2.callbacks.DbxGlobalCallbackFactory;
+import com.dropbox.core.v2.callbacks.DbxRouteErrorCallback;
 
 /**
  * For internal use only.
@@ -42,6 +46,42 @@ public final class DbxWrappedException extends Exception {
         ApiErrorResponse<T> apiResponse = new ApiErrorResponse.Serializer<T>(errSerializer)
             .deserialize(response.getBody());
 
-        return new DbxWrappedException(apiResponse.getError(), requestId, apiResponse.getUserMessage());
+        T routeError = apiResponse.getError();
+
+        DbxGlobalCallbackFactory factory = DbxRequestUtil.sharedCallbackFactory;
+        DbxWrappedException.executeBlockForObject(factory, routeError);
+        DbxWrappedException.executeOtherBlocks(factory, routeError);
+
+        return new DbxWrappedException(routeError, requestId, apiResponse.getUserMessage());
+    }
+
+    public static void executeOtherBlocks(DbxGlobalCallbackFactory factory, Object routeError) {
+        try {
+            // Recursively looks at union errors and the union's current tag type. If there is a handler
+            // for the current tag type, it is executed.
+            Method m = routeError.getClass().getMethod("tag");
+            Object result = m.invoke(routeError);
+            String fName = result.toString().toLowerCase() + "value";
+            for(Field f : routeError.getClass().getDeclaredFields() ) {
+                if (f.getName().equalsIgnoreCase(fName) ) {
+                    f.setAccessible(true);
+                    Object fieldValue = f.get(routeError);
+                    DbxWrappedException.executeBlockForObject(factory, fieldValue);
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            // No handling
+        }
+    }
+
+    public static <T> void executeBlockForObject(DbxGlobalCallbackFactory factory, T routeError) {
+        if (factory != null) {
+            DbxRouteErrorCallback<T> callback = factory.createRouteErrorCallback(routeError);
+            if (callback != null) {
+                callback.setRouteError(routeError);
+                callback.run();
+            }
+        }
     }
 }

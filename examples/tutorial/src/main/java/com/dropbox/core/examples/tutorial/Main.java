@@ -2,6 +2,9 @@ package com.dropbox.core.examples.tutorial;
 
 import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
+import com.dropbox.core.v2.callbacks.DbxGlobalCallbackFactory;
+import com.dropbox.core.v2.callbacks.DbxRouteErrorCallback;
+import com.dropbox.core.v2.callbacks.DbxNetworkErrorCallback;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.files.FileMetadata;
 import com.dropbox.core.v2.files.ListFolderResult;
