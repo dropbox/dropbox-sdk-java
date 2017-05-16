@@ -4098,6 +4098,8 @@ class JavaCodeGenerationInstance(object):
         with w.block('public boolean equals(Object obj)'):
             with w.block('if (obj == this)'):
                 w.out('return true;')
+            with w.block('if (obj == null)'):
+                w.out('return false;')
             with w.block('else if (obj instanceof %s)', j.java_class(data_type)):
                 w.out('%s other = (%s) obj;', j.java_class(data_type), j.java_class(data_type))
                 with w.block('if (this._tag != other._tag)'):
@@ -4128,6 +4130,8 @@ class JavaCodeGenerationInstance(object):
         with w.block('public boolean equals(Object obj)'):
             with w.block('if (obj == this)'):
                 w.out('return true;')
+            with w.block('if (obj == null)'):
+                w.out('return false;')
             w.out('// be careful with inheritance')
             with w.block('else if (obj.getClass().equals(this.getClass()))'):
                 w.out('%s other = (%s) obj;', j.java_class(data_type), j.java_class(data_type))
