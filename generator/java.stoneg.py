@@ -308,6 +308,14 @@ def get_underlying_type(data_type, allow_lists=True):
     return data_type
 
 
+def union_factory_create_method_name(data_type, value_fields_subset):
+    if len(value_fields_subset) > 0:
+        method_suffix = 'And%s' % _capwords(value_fields_subset[0].name)
+    else:
+        method_suffix = ''
+    return 'withTag%s' % method_suffix
+
+
 @total_ordering
 class JavaClass(object):
     """
@@ -2962,17 +2970,18 @@ class JavaCodeGenerationInstance(object):
             all_fields = data_type.all_fields
             static_fields = [f for f in all_fields if is_void_type(f.data_type)]
             value_fields = [f for f in all_fields if not is_void_type(f.data_type)]
-            nulls = ["null" for f in value_fields]
 
             if static_fields:
                 w.out('')
             for field in static_fields:
-                singleton_args = ', '.join(["Tag.%s" % j.field_tag_enum_name(field)] + nulls)
+                singleton_args = ', '.join(["Tag.%s" % j.field_tag_enum_name(field)])
                 w.javadoc(field)
-                w.out('public static final %s %s = new %s(%s);',
+                method_name = union_factory_create_method_name(data_type, [])
+                w.out('public static final %s %s = %s.%s(%s);',
                       j.java_class(data_type),
                       j.field_static_instance(field),
                       j.java_class(data_type),
+                      method_name,
                       singleton_args,
                 )
 
@@ -2980,31 +2989,38 @@ class JavaCodeGenerationInstance(object):
             # Instance fields
             #
             w.out('')
-            w.out('private final Tag _tag;')
+            w.out('private Tag _tag;')
             for field in all_fields:
                 if j.has_value(field):
-                    w.out('private final %s %s;', j.java_class(field, boxed=True), j.param_name(field))
+                    w.out('private %s %s;', j.java_class(field, boxed=True), j.param_name(field))
 
             #
-            # Constructor
+            # Constructors
             #
-            args = ', '.join(chain(
-                ['Tag _tag'],
-                [
-                    w.fmt('%s %s', j.java_class(f, boxed=True), j.param_name(f))
-                    for f in value_fields
-                ],
-            ))
-            w.out('')
-            w.javadoc(data_type,
-                      fields=value_fields,
-                      params=OrderedDict(_tag="Discriminating tag for this instance."))
-            with w.block('private %s(%s)', j.java_class(data_type), args):
-                w.out('this._tag = _tag;')
-                for field in value_fields:
-                    # don't perform validation in the private constructor
-                    w.out('this.%s = %s;', j.param_name(field), j.param_name(field))
+            def _gen_factory_method(data_type, value_fields_subset):
+                w.out('')
+                w.javadoc(data_type,
+                          fields=value_fields_subset,
+                          params=OrderedDict(_tag="Discriminating tag for this instance."))
+                formatted_args = ', '.join(chain(
+                    ['Tag _tag'],
+                    [
+                        w.fmt('%s %s', j.java_class(f, boxed=True), j.param_name(f))
+                        for f in value_fields_subset
+                    ],
+                ))
+                method_name = union_factory_create_method_name(data_type, value_fields_subset)
+                with w.block('private static %s %s(%s)', j.java_class(data_type), method_name, formatted_args):
+                    w.out('final %s result = new %s();', j.java_class(data_type), j.java_class(data_type))
+                    w.out('result._tag = _tag;')
+                    for field in value_fields_subset:
+                        # don't perform validation in the private constructor
+                        w.out('result.%s = %s;', j.param_name(field), j.param_name(field))
+                    w.out('return result;')
 
+            _gen_factory_method(data_type, [])
+            for f in value_fields:
+                _gen_factory_method(data_type, [f])
 
             #
             # Field getters/constructors
@@ -3104,14 +3120,12 @@ class JavaCodeGenerationInstance(object):
                                  j.java_class(field),
                     ):
                         self.generate_field_validation(field, value_name="value", omit_arg_name=True, allow_default=False)
-                        args = ", ".join(
-                            "value" if f is field else "null"
-                            for f in value_fields
-                        )
-                        w.out('return new %s(Tag.%s, %s);',
+                        method_name = union_factory_create_method_name(data_type, [field])
+                        w.out('return %s.%s(Tag.%s, %s);',
                               j.java_class(data_type),
+                              method_name,
                               j.field_tag_enum_name(field),
-                              args)
+                              "value")
 
                     if is_nullable_type(field.data_type):
                         w.out('')
