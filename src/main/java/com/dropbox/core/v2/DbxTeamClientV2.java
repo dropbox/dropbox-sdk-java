@@ -50,7 +50,25 @@ public class DbxTeamClientV2 extends DbxTeamClientV2Base {
      *     testing)
      */
     public DbxTeamClientV2(DbxRequestConfig requestConfig, String accessToken, DbxHost host) {
-        super(new DbxTeamRawClientV2(requestConfig, host, accessToken));
+        super(new DbxTeamRawClientV2(requestConfig, host, accessToken, null, null));
+        this.accessToken = accessToken;
+    }
+
+    /**
+     * Same as {@link #DbxTeamClientV2(DbxRequestConfig, String)} except you can
+     * also set the hostnames of the Dropbox API servers. This is used in
+     * testing. You don't normally need to call this.
+     *
+     * @param requestConfig  Default attributes to use for each request
+     * @param accessToken  OAuth 2 access token (that you got from Dropbox) that
+     *     gives your app the ability to make Dropbox API calls. Typically
+     *     acquired through {@link com.dropbox.core.DbxWebAuth}
+     * @param host  Dropbox hosts to send requests to (used for mocking and
+     *     testing)
+     * @param userId The user ID of the current Dropbox account. Used for multi-Dropbox account use-case.
+     */
+    public DbxTeamClientV2(DbxRequestConfig requestConfig, String accessToken, DbxHost host, String userId) {
+        super(new DbxTeamRawClientV2(requestConfig, host, accessToken, userId, null));
         this.accessToken = accessToken;
     }
 
@@ -77,7 +95,8 @@ public class DbxTeamClientV2 extends DbxTeamClientV2Base {
             _client.getRequestConfig(),
             _client.getHost(),
             accessToken,
-            memberId
+                _client.getUserId(),
+                memberId
         );
         return new DbxClientV2(asMemberClient);
     }
@@ -92,11 +111,11 @@ public class DbxTeamClientV2 extends DbxTeamClientV2Base {
         private final String memberId;
 
         private DbxTeamRawClientV2(DbxRequestConfig requestConfig, DbxHost host, String accessToken) {
-            this(requestConfig, host, accessToken, null);
+            this(requestConfig, host, accessToken, null, null);
         }
 
-        private DbxTeamRawClientV2(DbxRequestConfig requestConfig, DbxHost host, String accessToken, String memberId) {
-            super(requestConfig, host);
+        private DbxTeamRawClientV2(DbxRequestConfig requestConfig, DbxHost host, String accessToken, String userId, String memberId) {
+            super(requestConfig, host, userId);
 
             if (accessToken == null) throw new NullPointerException("accessToken");
 

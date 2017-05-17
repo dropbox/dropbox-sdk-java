@@ -2915,7 +2915,7 @@ class JavaCodeGenerationInstance(object):
                          JavaClass('com.dropbox.core.http.HttpRequestor.Uploader')),
             after=';',
         )
-        w.out('return new %s(_uploader);', j.route_uploader_class(route))
+        w.out('return new %s(_uploader, this.client.getUserId());', j.route_uploader_class(route))
 
     def generate_data_type(self, data_type):
         """Generate a class definition for a datatype (a struct or a union)."""
@@ -3566,8 +3566,8 @@ class JavaCodeGenerationInstance(object):
                     params=(('httpUploader', 'Initiated HTTP upload request'),),
                     throws=(('NullPointerException', 'if {@code httpUploader} is {@code null}'),)
                 )
-                with w.block('public %s(HttpRequestor.Uploader httpUploader)', j.route_uploader_class(route)):
-                    w.out('super(httpUploader, %s, %s);',
+                with w.block('public %s(HttpRequestor.Uploader httpUploader, String userId)', j.route_uploader_class(route)):
+                    w.out('super(httpUploader, %s, %s, userId);',
                           w.java_serializer(route.result_data_type),
                           w.java_serializer(route.error_data_type))
 

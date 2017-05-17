@@ -104,6 +104,8 @@ public final class DbxRequestUtil {
         if (headers == null) headers = new ArrayList<HttpRequestor.Header>();
 
         headers.add(new HttpRequestor.Header("Authorization", "Bearer " + accessToken));
+        String pathRootMsg = "lalallala";
+        headers.add(new HttpRequestor.Header("X-Dropbox-Path-Root", pathRootMsg));
         return headers;
     }
 
@@ -280,7 +282,11 @@ public final class DbxRequestUtil {
         }
     }
 
-    public static DbxException unexpectedStatus(HttpRequestor.Response response)
+    public static DbxException unexpectedStatus(HttpRequestor.Response response) throws NetworkIOException, BadResponseException {
+        return DbxRequestUtil.unexpectedStatus(response, null);
+    }
+
+    public static DbxException unexpectedStatus(HttpRequestor.Response response, String userId)
         throws NetworkIOException, BadResponseException {
 
         String requestId = getRequestId(response);
@@ -364,7 +370,7 @@ public final class DbxRequestUtil {
 
         DbxGlobalCallbackFactory factory = DbxRequestUtil.sharedCallbackFactory;
         if (factory != null) {
-            DbxNetworkErrorCallback callback = factory.createNetworkErrorCallback();
+            DbxNetworkErrorCallback callback = factory.createNetworkErrorCallback(userId);
             callback.onNetworkError(networkError);
         }
 

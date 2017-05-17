@@ -8,7 +8,7 @@ import com.dropbox.core.v2.files.LookupError;
 
 public class DbxExampleGlobalCallbackFactory implements DbxGlobalCallbackFactory {
     @Override
-    public <T> DbxRouteErrorCallback<T> createRouteErrorCallback(T routeError) {
+    public <T> DbxRouteErrorCallback<T> createRouteErrorCallback(String userId, T routeError) {
         if (routeError instanceof ListFolderError) {
             return new DbxExampleListFolderErrorCallback<T>();
         } else if (routeError instanceof LookupError) {
@@ -19,7 +19,7 @@ public class DbxExampleGlobalCallbackFactory implements DbxGlobalCallbackFactory
     }
 
     @Override
-    public DbxExampleNetworkErrorCallback createNetworkErrorCallback() {
+    public DbxExampleNetworkErrorCallback createNetworkErrorCallback(String userId) {
         return new DbxExampleNetworkErrorCallback();
     }
 }

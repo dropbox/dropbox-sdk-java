@@ -39,7 +39,7 @@ public final class DbxWrappedException extends Exception {
         return userMessage;
     }
 
-    public static <T> DbxWrappedException fromResponse(StoneSerializer<T> errSerializer, HttpRequestor.Response response)
+    public static <T> DbxWrappedException fromResponse(StoneSerializer<T> errSerializer, HttpRequestor.Response response, String userId)
         throws IOException, JsonParseException {
         String requestId = DbxRequestUtil.getRequestId(response);
 
@@ -49,13 +49,13 @@ public final class DbxWrappedException extends Exception {
         T routeError = apiResponse.getError();
 
         DbxGlobalCallbackFactory factory = DbxRequestUtil.sharedCallbackFactory;
-        DbxWrappedException.executeBlockForObject(factory, routeError);
-        DbxWrappedException.executeOtherBlocks(factory, routeError);
+        DbxWrappedException.executeBlockForObject(factory, userId, routeError);
+        DbxWrappedException.executeOtherBlocks(factory, userId, routeError);
 
         return new DbxWrappedException(routeError, requestId, apiResponse.getUserMessage());
     }
 
-    public static void executeOtherBlocks(DbxGlobalCallbackFactory factory, Object routeError) {
+    public static void executeOtherBlocks(DbxGlobalCallbackFactory factory, String userId, Object routeError) {
         try {
             // Recursively looks at union errors and the union's current tag type. If there is a handler
             // for the current tag type, it is executed.
@@ -66,7 +66,7 @@ public final class DbxWrappedException extends Exception {
                 if (f.getName().equalsIgnoreCase(fName) ) {
                     f.setAccessible(true);
                     Object fieldValue = f.get(routeError);
-                    DbxWrappedException.executeBlockForObject(factory, fieldValue);
+                    DbxWrappedException.executeBlockForObject(factory, userId, fieldValue);
                     break;
                 }
             }
@@ -75,9 +75,9 @@ public final class DbxWrappedException extends Exception {
         }
     }
 
-    public static <T> void executeBlockForObject(DbxGlobalCallbackFactory factory, T routeError) {
+    public static <T> void executeBlockForObject(DbxGlobalCallbackFactory factory, String userId, T routeError) {
         if (factory != null) {
-            DbxRouteErrorCallback<T> callback = factory.createRouteErrorCallback(routeError);
+            DbxRouteErrorCallback<T> callback = factory.createRouteErrorCallback(userId, routeError);
             if (callback != null) {
                 callback.setRouteError(routeError);
                 callback.run();
