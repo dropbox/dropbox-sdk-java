@@ -601,6 +601,8 @@ _CMDLINE_PARSER.add_argument('--javadoc-refs', type=six.text_type, default=None,
                              'If this argument is specified, an update Javadoc references file ' +
                              'will be saved to the given location. It is OK if this file does not ' +
                              'exist.')
+_CMDLINE_PARSER.add_argument('--unused-classes-to-generate', default=None, help='Specify types ' +
+                             'that we want to generate regardless of whether they are used.')
 
 class JavaCodeGenerator(CodeGenerator):
     cmdline_parser = _CMDLINE_PARSER
@@ -2033,6 +2035,9 @@ class JavaApi(object):
                 self._serializer_visibility[data_type], visibility
             )
 
+    def mark_data_type_as_used(self, data_type):
+        self._client_data_types.add(data_type)
+
 
 class JavaReferences(object):
 
@@ -2372,6 +2377,9 @@ class JavaCodeGenerationInstance(object):
 
         self.generate_client()
 
+        # some classes are unused, but we still want them to be generated
+        self._mark_special_unused_classes()
+
         for namespace in self.api.namespaces.values():
             self.generate_namespace(namespace)
 
@@ -2466,6 +2474,55 @@ class JavaCodeGenerationInstance(object):
 
         if namespace.routes:
             self.generate_namespace_routes(namespace)
+
+    def _mark_special_unused_classes(self):
+        j = self.j
+
+        if not self.g.args.unused_classes_to_generate:
+            return
+
+        special_class_names = self.g.args.unused_classes_to_generate.split(', ')
+
+        if not special_class_names:
+            return
+
+        special_data_types = [
+            unwrap_nullable(data_type)[0]
+            for namespace in j.stone_api.namespaces.values()
+            for data_type in namespace.data_types
+            if data_type.name in special_class_names
+        ]
+
+        all_special_data_types = set()
+
+        # mark all special types public and used, and likewise mark all of their
+        # referenced types as public and used
+
+        def _propagate_changes(data_type):
+            all_special_data_types.add(data_type)
+
+            if is_void_type(data_type) or not is_user_defined_type(data_type):
+                return
+
+            field_types = [unwrap_nullable(f.data_type)[0] for f in data_type.all_fields]
+            for field_type in field_types:
+                if field_type not in all_special_data_types:
+                    _propagate_changes(field_type)
+            if data_type.parent_type:
+                if data_type.parent_type not in all_special_data_types:
+                    _propagate_changes(data_type.parent_type)
+
+        for data_type in special_data_types:
+            _propagate_changes(data_type)
+
+        for data_type in all_special_data_types:
+            if is_user_defined_type(data_type) and not is_void_type(data_type):
+                data_type_fq_name = j.stone_fq_name(data_type)
+
+                # mark public
+                j.update_data_type_visibility(data_type_fq_name, Visibility.PUBLIC)
+                # mark as being referenced somewhere so that we generate
+                j.mark_data_type_as_used(data_type)
 
     def generate_namespace_routes(self, namespace):
         assert isinstance(namespace, ApiNamespace), repr(namespace)
@@ -2866,7 +2923,7 @@ class JavaCodeGenerationInstance(object):
 
         j = self.j
 
-        if not (self.g.args.data_types_only or j.is_used_by_client(data_type)):
+        if not self.g.args.data_types_only and not j.is_used_by_client(data_type):
             return
 
         with self.class_writer(data_type) as w:
