@@ -65,7 +65,8 @@ public class DbxTeamClientV2 extends DbxTeamClientV2Base {
      *     acquired through {@link com.dropbox.core.DbxWebAuth}
      * @param host  Dropbox hosts to send requests to (used for mocking and
      *     testing)
-     * @param userId The user ID of the current Dropbox account. Used for multi-Dropbox account use-case.
+     * @param userId The user ID of the current Dropbox account. Used for
+     *               multi-Dropbox account use-case.
      */
     public DbxTeamClientV2(DbxRequestConfig requestConfig, String accessToken, DbxHost host, String userId) {
         super(new DbxTeamRawClientV2(requestConfig, host, accessToken, userId, null));
@@ -95,8 +96,8 @@ public class DbxTeamClientV2 extends DbxTeamClientV2Base {
             _client.getRequestConfig(),
             _client.getHost(),
             accessToken,
-                _client.getUserId(),
-                memberId
+            _client.getUserId(),
+            memberId
         );
         return new DbxClientV2(asMemberClient);
     }

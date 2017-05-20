@@ -1,6 +1,5 @@
 package com.dropbox.core;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -12,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.json.JsonReadException;
@@ -104,8 +105,6 @@ public final class DbxRequestUtil {
         if (headers == null) headers = new ArrayList<HttpRequestor.Header>();
 
         headers.add(new HttpRequestor.Header("Authorization", "Bearer " + accessToken));
-        String pathRootMsg = "lalallala";
-        headers.add(new HttpRequestor.Header("X-Dropbox-Path-Root", pathRootMsg));
         return headers;
     }
 

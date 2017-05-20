@@ -56,7 +56,8 @@ class DbxAppClientV2 extends DbxAppClientV2Base {
      * @param secret Dropbox app secret (e.g. consumer secret in OAuth)
      * @param host  Dropbox hosts to send requests to (used for mocking and
      *     testing)
-     * @param userId The user ID of the current Dropbox account. Used for multi-Dropbox account use-case.
+     * @param userId The user ID of the current Dropbox account. Used for
+     *               multi-Dropbox account use-case.
      */
     public DbxAppClientV2(DbxRequestConfig requestConfig, String key, String secret, DbxHost host, String userId) {
         super(new DbxAppRawClientV2(requestConfig, key, secret, host, userId));

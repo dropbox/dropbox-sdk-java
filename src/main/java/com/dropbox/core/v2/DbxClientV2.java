@@ -39,7 +39,8 @@ public class DbxClientV2 extends DbxClientV2Base {
      * @param accessToken  OAuth 2 access token (that you got from Dropbox) that
      *     gives your app the ability to make Dropbox API calls. Typically
      *     acquired through {@link com.dropbox.core.DbxWebAuth}
-     * @param userId The user ID of the current Dropbox account. Used for multi-Dropbox account use-case.
+     * @param userId The user ID of the current Dropbox account. Used for
+     *               multi-Dropbox account use-case.
      */
     public DbxClientV2(DbxRequestConfig requestConfig, String accessToken, String userId) {
         this(requestConfig, accessToken, DbxHost.DEFAULT, userId);
@@ -72,7 +73,8 @@ public class DbxClientV2 extends DbxClientV2Base {
      *     acquired through {@link com.dropbox.core.DbxWebAuth}
      * @param host  Dropbox hosts to send requests to (used for mocking and
      *     testing)
-     * @param userId The user ID of the current Dropbox account. Used for multi-Dropbox account use-case.
+     * @param userId The user ID of the current Dropbox account. Used for multi-Dropbox
+     *               account use-case.
      */
     public DbxClientV2(DbxRequestConfig requestConfig, String accessToken, DbxHost host, String userId) {
         super(new DbxUserRawClientV2(requestConfig, accessToken, host, userId));
