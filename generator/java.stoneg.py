@@ -308,7 +308,7 @@ def get_underlying_type(data_type, allow_lists=True):
     return data_type
 
 
-def union_factory_create_method_name(data_type, value_fields_subset):
+def union_create_with_method_name(data_type, value_fields_subset):
     if len(value_fields_subset) > 0:
         method_suffix = 'And%s' % _capwords(value_fields_subset[0].name)
     else:
@@ -601,6 +601,8 @@ _CMDLINE_PARSER.add_argument('--javadoc-refs', type=six.text_type, default=None,
                              'If this argument is specified, an update Javadoc references file ' +
                              'will be saved to the given location. It is OK if this file does not ' +
                              'exist.')
+_CMDLINE_PARSER.add_argument('--unused-classes-to-generate', default=None, help='Specify types ' +
+                             'that we want to generate regardless of whether they are used.')
 
 class JavaCodeGenerator(CodeGenerator):
     cmdline_parser = _CMDLINE_PARSER
@@ -2033,6 +2035,9 @@ class JavaApi(object):
                 self._serializer_visibility[data_type], visibility
             )
 
+    def mark_data_type_as_used(self, data_type):
+        self._client_data_types.add(data_type)
+
 
 class JavaReferences(object):
 
@@ -2372,6 +2377,9 @@ class JavaCodeGenerationInstance(object):
 
         self.generate_client()
 
+        # some classes are unused, but we still want them to be generated
+        self._mark_special_unused_classes()
+
         for namespace in self.api.namespaces.values():
             self.generate_namespace(namespace)
 
@@ -2466,6 +2474,55 @@ class JavaCodeGenerationInstance(object):
 
         if namespace.routes:
             self.generate_namespace_routes(namespace)
+
+    def _mark_special_unused_classes(self):
+        j = self.j
+
+        if not self.g.args.unused_classes_to_generate:
+            return
+
+        special_class_names = self.g.args.unused_classes_to_generate.split(', ')
+
+        if not special_class_names:
+            return
+
+        special_data_types = [
+            unwrap_nullable(data_type)[0]
+            for namespace in j.stone_api.namespaces.values()
+            for data_type in namespace.data_types
+            if data_type.name in special_class_names
+        ]
+
+        all_special_data_types = set()
+
+        # mark all special types public and used, and likewise mark all of their
+        # referenced types as public and used
+
+        def _propagate_changes(data_type):
+            all_special_data_types.add(data_type)
+
+            if is_void_type(data_type) or not is_user_defined_type(data_type):
+                return
+
+            field_types = [unwrap_nullable(f.data_type)[0] for f in data_type.all_fields]
+            for field_type in field_types:
+                if field_type not in all_special_data_types:
+                    _propagate_changes(field_type)
+            if data_type.parent_type:
+                if data_type.parent_type not in all_special_data_types:
+                    _propagate_changes(data_type.parent_type)
+
+        for data_type in special_data_types:
+            _propagate_changes(data_type)
+
+        for data_type in all_special_data_types:
+            if is_user_defined_type(data_type) and not is_void_type(data_type):
+                data_type_fq_name = j.stone_fq_name(data_type)
+
+                # mark public
+                j.update_data_type_visibility(data_type_fq_name, Visibility.PUBLIC)
+                # mark as being referenced somewhere so that we generate
+                j.mark_data_type_as_used(data_type)
 
     def generate_namespace_routes(self, namespace):
         assert isinstance(namespace, ApiNamespace), repr(namespace)
@@ -2858,7 +2915,7 @@ class JavaCodeGenerationInstance(object):
                          JavaClass('com.dropbox.core.http.HttpRequestor.Uploader')),
             after=';',
         )
-        w.out('return new %s(_uploader);', j.route_uploader_class(route))
+        w.out('return new %s(_uploader, this.client.getUserId());', j.route_uploader_class(route))
 
     def generate_data_type(self, data_type):
         """Generate a class definition for a datatype (a struct or a union)."""
@@ -2866,7 +2923,7 @@ class JavaCodeGenerationInstance(object):
 
         j = self.j
 
-        if not (self.g.args.data_types_only or j.is_used_by_client(data_type)):
+        if not self.g.args.data_types_only and not j.is_used_by_client(data_type):
             return
 
         with self.class_writer(data_type) as w:
@@ -2976,8 +3033,8 @@ class JavaCodeGenerationInstance(object):
             for field in static_fields:
                 singleton_args = ', '.join(["Tag.%s" % j.field_tag_enum_name(field)])
                 w.javadoc(field)
-                method_name = union_factory_create_method_name(data_type, [])
-                w.out('public static final %s %s = %s.%s(%s);',
+                method_name = union_create_with_method_name(data_type, [])
+                w.out('public static final %s %s = new %s().%s(%s);',
                       j.java_class(data_type),
                       j.field_static_instance(field),
                       j.java_class(data_type),
@@ -2997,7 +3054,14 @@ class JavaCodeGenerationInstance(object):
             #
             # Constructors
             #
-            def _gen_factory_method(data_type, value_fields_subset):
+
+            w.out('')
+            w.javadoc('Private default constructor, so that object is uninitializable publicly.')
+            with w.block('private %s()', j.java_class(data_type)):
+                pass
+            w.out('')
+
+            def _gen_create_with_method(data_type, value_fields_subset):
                 w.out('')
                 w.javadoc(data_type,
                           fields=value_fields_subset,
@@ -3009,18 +3073,18 @@ class JavaCodeGenerationInstance(object):
                         for f in value_fields_subset
                     ],
                 ))
-                method_name = union_factory_create_method_name(data_type, value_fields_subset)
-                with w.block('private static %s %s(%s)', j.java_class(data_type), method_name, formatted_args):
-                    w.out('final %s result = new %s();', j.java_class(data_type), j.java_class(data_type))
+                method_name = union_create_with_method_name(data_type, value_fields_subset)
+                with w.block('private %s %s(%s)', j.java_class(data_type), method_name, formatted_args):
+                    w.out('%s result = new %s();', j.java_class(data_type), j.java_class(data_type))
                     w.out('result._tag = _tag;')
                     for field in value_fields_subset:
                         # don't perform validation in the private constructor
                         w.out('result.%s = %s;', j.param_name(field), j.param_name(field))
                     w.out('return result;')
 
-            _gen_factory_method(data_type, [])
+            _gen_create_with_method(data_type, [])
             for f in value_fields:
-                _gen_factory_method(data_type, [f])
+                _gen_create_with_method(data_type, [f])
 
             #
             # Field getters/constructors
@@ -3120,8 +3184,8 @@ class JavaCodeGenerationInstance(object):
                                  j.java_class(field),
                     ):
                         self.generate_field_validation(field, value_name="value", omit_arg_name=True, allow_default=False)
-                        method_name = union_factory_create_method_name(data_type, [field])
-                        w.out('return %s.%s(Tag.%s, %s);',
+                        method_name = union_create_with_method_name(data_type, [field])
+                        w.out('return new %s().%s(Tag.%s, %s);',
                               j.java_class(data_type),
                               method_name,
                               j.field_tag_enum_name(field),
@@ -3502,8 +3566,8 @@ class JavaCodeGenerationInstance(object):
                     params=(('httpUploader', 'Initiated HTTP upload request'),),
                     throws=(('NullPointerException', 'if {@code httpUploader} is {@code null}'),)
                 )
-                with w.block('public %s(HttpRequestor.Uploader httpUploader)', j.route_uploader_class(route)):
-                    w.out('super(httpUploader, %s, %s);',
+                with w.block('public %s(HttpRequestor.Uploader httpUploader, String userId)', j.route_uploader_class(route)):
+                    w.out('super(httpUploader, %s, %s, userId);',
                           w.java_serializer(route.result_data_type),
                           w.java_serializer(route.error_data_type))
 

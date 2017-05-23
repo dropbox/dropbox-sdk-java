@@ -13,6 +13,7 @@ class ClientSpec {
     String javadoc = null
     String routeFilter = null
     String requestsClassnamePrefix = null
+    String unusedClassesToGenerate = null
 }
 
 def runStoneGenerator(StoneConfig config,
@@ -57,7 +58,6 @@ def runStoneGenerator(StoneConfig config,
         return
     }
 
-    def firstClient = true;
     for (int i = 0; i < config.clients.size; ++i) {
         def client = config.clients[i]
         def isFirst = i == 0
@@ -96,6 +96,9 @@ def runStoneGenerator(StoneConfig config,
             }
             if (client.requestsClassnamePrefix != null) {
                 args "--requests-classname-prefix", client.requestsClassnamePrefix
+            }
+            if (client.unusedClassesToGenerate != null) {
+                args "--unused-classes-to-generate", client.unusedClassesToGenerate
             }
         }
     }
@@ -140,6 +143,7 @@ project.sourceSets.all { SourceSet sourceSet ->
 
 
 generateStone {
+    String unusedClassesToGenerate = 'PathRootError, AccessError, RateLimitError'
     config = new StoneConfig(
         packageName: 'com.dropbox.core.v2',
         globalRouteFilter: 'alpha_group=null and beta_group=null',
@@ -150,6 +154,7 @@ generateStone {
                 javadoc: 'Base class for user auth clients.',
                 requestsClassnamePrefix: "DbxUser",
                 routeFilter: 'auth="user" or auth="noauth"',
+                unusedClassesToGenerate: unusedClassesToGenerate,
             ),
             new ClientSpec(
                 name: 'DbxTeamClientV2Base',

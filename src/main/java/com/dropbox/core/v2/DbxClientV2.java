@@ -28,7 +28,22 @@ public class DbxClientV2 extends DbxClientV2Base {
      *     acquired through {@link com.dropbox.core.DbxWebAuth}
      */
     public DbxClientV2(DbxRequestConfig requestConfig, String accessToken) {
-        this(requestConfig, accessToken, DbxHost.DEFAULT);
+        this(requestConfig, accessToken, DbxHost.DEFAULT, null);
+    }
+
+    /**
+     * Creates a client that uses the given OAuth 2 access token as
+     * authorization when performing requests against the default Dropbox hosts.
+     *
+     * @param requestConfig  Default attributes to use for each request
+     * @param accessToken  OAuth 2 access token (that you got from Dropbox) that
+     *     gives your app the ability to make Dropbox API calls. Typically
+     *     acquired through {@link com.dropbox.core.DbxWebAuth}
+     * @param userId The user ID of the current Dropbox account. Used for
+     *               multi-Dropbox account use-case.
+     */
+    public DbxClientV2(DbxRequestConfig requestConfig, String accessToken, String userId) {
+        this(requestConfig, accessToken, DbxHost.DEFAULT, userId);
     }
 
     /**
@@ -44,7 +59,25 @@ public class DbxClientV2 extends DbxClientV2Base {
      *     testing)
      */
     public DbxClientV2(DbxRequestConfig requestConfig, String accessToken, DbxHost host) {
-        super(new DbxUserRawClientV2(requestConfig, accessToken, host));
+        super(new DbxUserRawClientV2(requestConfig, accessToken, host, null));
+    }
+
+    /**
+     * Same as {@link #DbxClientV2(DbxRequestConfig, String)} except you can
+     * also set the hostnames of the Dropbox API servers. This is used in
+     * testing. You don't normally need to call this.
+     *
+     * @param requestConfig  Default attributes to use for each request
+     * @param accessToken  OAuth 2 access token (that you got from Dropbox) that
+     *     gives your app the ability to make Dropbox API calls. Typically
+     *     acquired through {@link com.dropbox.core.DbxWebAuth}
+     * @param host  Dropbox hosts to send requests to (used for mocking and
+     *     testing)
+     * @param userId The user ID of the current Dropbox account. Used for multi-Dropbox
+     *               account use-case.
+     */
+    public DbxClientV2(DbxRequestConfig requestConfig, String accessToken, DbxHost host, String userId) {
+        super(new DbxUserRawClientV2(requestConfig, accessToken, host, userId));
     }
 
     /**
@@ -64,8 +97,8 @@ public class DbxClientV2 extends DbxClientV2Base {
     private static final class DbxUserRawClientV2 extends DbxRawClientV2 {
         private final String accessToken;
 
-        public DbxUserRawClientV2(DbxRequestConfig requestConfig, String accessToken, DbxHost host) {
-            super(requestConfig, host);
+        public DbxUserRawClientV2(DbxRequestConfig requestConfig, String accessToken, DbxHost host, String userId) {
+            super(requestConfig, host, userId);
 
             if (accessToken == null) throw new NullPointerException("accessToken");
 

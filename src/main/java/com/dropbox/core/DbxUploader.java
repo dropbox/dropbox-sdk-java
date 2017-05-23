@@ -50,13 +50,16 @@ public abstract class DbxUploader<R, E, X extends DbxApiException> implements Cl
     private boolean closed;
     private boolean finished;
 
-    protected DbxUploader(HttpRequestor.Uploader httpUploader, StoneSerializer<R> responseSerializer, StoneSerializer<E> errorSerializer) {
+    private final String userId;
+
+    protected DbxUploader(HttpRequestor.Uploader httpUploader, StoneSerializer<R> responseSerializer, StoneSerializer<E> errorSerializer, String userId) {
         this.httpUploader = httpUploader;
         this.responseSerializer = responseSerializer;
         this.errorSerializer = errorSerializer;
 
         this.closed = false;
         this.finished = false;
+        this.userId = userId;
     }
 
     protected abstract X newException(DbxWrappedException error);
@@ -218,7 +221,7 @@ public abstract class DbxUploader<R, E, X extends DbxApiException> implements Cl
                     return responseSerializer.deserialize(response.getBody());
                 }
                 else if (response.getStatusCode() == 409) {
-                    DbxWrappedException wrapped =  DbxWrappedException.fromResponse(errorSerializer, response);
+                    DbxWrappedException wrapped =  DbxWrappedException.fromResponse(errorSerializer, response, this.userId);
                     throw newException(wrapped);
                 }
                 else {

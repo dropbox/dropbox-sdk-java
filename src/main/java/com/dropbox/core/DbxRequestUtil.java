@@ -12,11 +12,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
 import com.dropbox.core.util.IOUtil;
 import com.dropbox.core.util.StringUtil;
+import com.dropbox.core.v2.auth.AccessError;
+import com.dropbox.core.v2.common.PathRootError;
+import com.dropbox.core.v2.common.PathRootError.Serializer;
 import com.dropbox.core.v2.callbacks.DbxGlobalCallbackFactory;
 import com.dropbox.core.v2.callbacks.DbxNetworkErrorCallback;
 
@@ -276,20 +281,55 @@ public final class DbxRequestUtil {
         }
     }
 
-    public static DbxException unexpectedStatus(HttpRequestor.Response response)
+    public static DbxException unexpectedStatus(HttpRequestor.Response response) throws NetworkIOException, BadResponseException {
+        return DbxRequestUtil.unexpectedStatus(response, null);
+    }
+
+    public static DbxException unexpectedStatus(HttpRequestor.Response response, String userId)
         throws NetworkIOException, BadResponseException {
-        DbxException networkError;
 
         String requestId = getRequestId(response);
-        byte[] body = loadErrorBody(response);
-        String message = parseErrorBody(requestId, response.getStatusCode(), body);
+        String message = null;
+        DbxException networkError;
 
         switch (response.getStatusCode()) {
             case 400:
+                message = DbxRequestUtil.messageFromResponse(response, requestId);
                 networkError = new BadRequestException(requestId, message);
                 break;
             case 401:
+                message = DbxRequestUtil.messageFromResponse(response, requestId);
                 networkError = new InvalidAccessTokenException(requestId, message);
+                break;
+            case 403:
+                try {
+                    ApiErrorResponse<AccessError> accessErrorResponse = new ApiErrorResponse.Serializer<AccessError>(AccessError.Serializer.INSTANCE)
+                            .deserialize(response.getBody());
+                    if (accessErrorResponse.getUserMessage() != null) {
+                        message = accessErrorResponse.getUserMessage().toString();
+                    }
+                    AccessError accessError = accessErrorResponse.getError();
+                    networkError = new AccessErrorException(requestId, message, accessError);
+                } catch (JsonProcessingException ex) {
+                    throw new BadResponseException(requestId, "Bad JSON: " + ex.getMessage(), ex);
+                } catch (IOException ex) {
+                    throw new NetworkIOException(ex);
+                }
+                break;
+            case 422:
+                try {
+                    ApiErrorResponse<PathRootError> pathRootErrorResponse = new ApiErrorResponse.Serializer<PathRootError>(Serializer.INSTANCE)
+                            .deserialize(response.getBody());
+                    if (pathRootErrorResponse.getUserMessage() != null) {
+                        message = pathRootErrorResponse.getUserMessage().toString();
+                    }
+                    PathRootError pathRootError = pathRootErrorResponse.getError();
+                    networkError = new PathRootErrorException(requestId, message, pathRootError);
+                } catch (JsonProcessingException ex) {
+                    throw new BadResponseException(requestId, "Bad JSON: " + ex.getMessage(), ex);
+                } catch (IOException ex) {
+                    throw new NetworkIOException(ex);
+                }
                 break;
             case 429:
                 try {
@@ -329,11 +369,17 @@ public final class DbxRequestUtil {
 
         DbxGlobalCallbackFactory factory = DbxRequestUtil.sharedCallbackFactory;
         if (factory != null) {
-            DbxNetworkErrorCallback callback = factory.createNetworkErrorCallback();
+            DbxNetworkErrorCallback callback = factory.createNetworkErrorCallback(userId);
             callback.onNetworkError(networkError);
         }
 
         return networkError;
+    }
+
+    private static String messageFromResponse(HttpRequestor.Response response, String requestId) throws NetworkIOException, BadResponseException {
+        byte[] body = loadErrorBody(response);
+        String message = parseErrorBody(requestId, response.getStatusCode(), body);
+        return message;
     }
 
     public static <T> T readJsonFromResponse(JsonReader<T> reader, HttpRequestor.Response response)

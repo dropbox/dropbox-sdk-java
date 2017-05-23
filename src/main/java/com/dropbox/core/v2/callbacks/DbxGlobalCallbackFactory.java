@@ -10,8 +10,8 @@ package com.dropbox.core.v2.callbacks;
  */
 public interface DbxGlobalCallbackFactory {
     // Should instantiate separate callback object on each method invocation
-    <T> DbxRouteErrorCallback<T> createRouteErrorCallback(T routeError);
+    <T> DbxRouteErrorCallback<T> createRouteErrorCallback(String userId, T routeError);
 
     // Should instantiate separate callback object on each method invocation
-    DbxNetworkErrorCallback createNetworkErrorCallback();
+    DbxNetworkErrorCallback createNetworkErrorCallback(String userId);
 }

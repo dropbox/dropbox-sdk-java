@@ -43,7 +43,24 @@ class DbxAppClientV2 extends DbxAppClientV2Base {
      *     testing)
      */
     public DbxAppClientV2(DbxRequestConfig requestConfig, String key, String secret, DbxHost host) {
-        super(new DbxAppRawClientV2(requestConfig, key, secret, host));
+        super(new DbxAppRawClientV2(requestConfig, key, secret, host, null));
+    }
+
+    /**
+     * Same as {@link #DbxAppClientV2(DbxRequestConfig, String, String)} except you can also set the
+     * hostnames of the Dropbox API servers. This is used in testing. You don't normally need to
+     * call this.
+     *
+     * @param requestConfig  Default attributes to use for each request
+     * @param key Dropbox app key (e.g. consumer key in OAuth)
+     * @param secret Dropbox app secret (e.g. consumer secret in OAuth)
+     * @param host  Dropbox hosts to send requests to (used for mocking and
+     *     testing)
+     * @param userId The user ID of the current Dropbox account. Used for
+     *               multi-Dropbox account use-case.
+     */
+    public DbxAppClientV2(DbxRequestConfig requestConfig, String key, String secret, DbxHost host, String userId) {
+        super(new DbxAppRawClientV2(requestConfig, key, secret, host, userId));
     }
 
     /**
@@ -53,8 +70,8 @@ class DbxAppClientV2 extends DbxAppClientV2Base {
         private final String key;
         private final String secret;
 
-        private DbxAppRawClientV2(DbxRequestConfig requestConfig, String key, String secret, DbxHost host) {
-            super(requestConfig, host);
+        private DbxAppRawClientV2(DbxRequestConfig requestConfig, String key, String secret, DbxHost host, String userId) {
+            super(requestConfig, host, userId);
             this.key = key;
             this.secret = secret;
         }

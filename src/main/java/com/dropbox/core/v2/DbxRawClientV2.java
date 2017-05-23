@@ -53,17 +53,22 @@ public abstract class DbxRawClientV2 {
     private final DbxRequestConfig requestConfig;
     private final DbxHost host;
 
+    /* for multiple Dropbox account use-case */
+    private final String userId;
+
     /**
      * @param requestConfig Configuration controlling How requests should be issued to Dropbox
      * servers.
      * @param host Dropbox server hostnames (primarily for internal use)
+     * @param userId The user ID of the current Dropbox account. Used for multi-Dropbox account use-case.
      */
-    protected DbxRawClientV2(DbxRequestConfig requestConfig, DbxHost host) {
+    protected DbxRawClientV2(DbxRequestConfig requestConfig, DbxHost host, String userId) {
         if (requestConfig == null) throw new NullPointerException("requestConfig");
         if (host == null) throw new NullPointerException("host");
 
         this.requestConfig = requestConfig;
         this.host = host;
+        this.userId = userId;
     }
 
     /**
@@ -95,6 +100,8 @@ public abstract class DbxRawClientV2 {
         headers.add(new HttpRequestor.Header("Content-Type", "application/json; charset=utf-8"));
 
         return executeRetriable(requestConfig.getMaxRetries(), new RetriableExecution<ResT> () {
+            private String userIdAnon;
+
             @Override
             public ResT execute() throws DbxWrappedException, DbxException {
                 HttpRequestor.Response response = DbxRequestUtil.startPostRaw(requestConfig, USER_AGENT_ID, host, path, body, headers);
@@ -103,9 +110,9 @@ public abstract class DbxRawClientV2 {
                         case 200:
                             return responseSerializer.deserialize(response.getBody());
                         case 409:
-                            throw DbxWrappedException.fromResponse(errorSerializer, response);
+                            throw DbxWrappedException.fromResponse(errorSerializer, response, userIdAnon);
                         default:
-                            throw DbxRequestUtil.unexpectedStatus(response);
+                            throw DbxRequestUtil.unexpectedStatus(response, userIdAnon);
                     }
                 } catch (JsonProcessingException ex) {
                     String requestId = DbxRequestUtil.getRequestId(response);
@@ -114,7 +121,12 @@ public abstract class DbxRawClientV2 {
                     throw new NetworkIOException(ex);
                 }
             }
-        });
+
+            private RetriableExecution<ResT> init(String userId){
+                this.userIdAnon = userId;
+                return this;
+            }
+        }.init(this.userId));
     }
 
     public <ArgT,ResT,ErrT> DbxDownloader<ResT> downloadStyle(final String host,
@@ -138,6 +150,8 @@ public abstract class DbxRawClientV2 {
         final byte[] body = new byte[0];
 
         return executeRetriable(requestConfig.getMaxRetries(), new RetriableExecution<DbxDownloader<ResT>>() {
+            private String userIdAnon;
+
             @Override
             public DbxDownloader<ResT> execute() throws DbxWrappedException, DbxException {
                 HttpRequestor.Response response = DbxRequestUtil.startPostRaw(requestConfig, USER_AGENT_ID, host, path, body, headers);
@@ -163,9 +177,9 @@ public abstract class DbxRawClientV2 {
                             ResT result = responseSerializer.deserialize(resultHeader);
                             return new DbxDownloader<ResT>(result, response.getBody());
                         case 409:
-                            throw DbxWrappedException.fromResponse(errorSerializer, response);
+                            throw DbxWrappedException.fromResponse(errorSerializer, response, userIdAnon);
                         default:
-                            throw DbxRequestUtil.unexpectedStatus(response);
+                            throw DbxRequestUtil.unexpectedStatus(response, userIdAnon);
                     }
                 } catch(JsonProcessingException ex) {
                     throw new BadResponseException(requestId, "Bad JSON: " + ex.getMessage(), ex);
@@ -173,7 +187,12 @@ public abstract class DbxRawClientV2 {
                     throw new NetworkIOException(ex);
                 }
             }
-        });
+
+            private RetriableExecution<DbxDownloader<ResT>> init(String userId){
+                this.userIdAnon = userId;
+                return this;
+            }
+        }.init(this.userId));
     }
 
     private static <T> byte [] writeAsBytes(StoneSerializer<T> serializer, T arg) throws DbxException {
@@ -241,6 +260,15 @@ public abstract class DbxRawClientV2 {
      */
     public DbxHost getHost() {
         return host;
+    }
+
+    /**
+     * Returns the {@code userId} that was passed in to the constructor.
+     *
+     * @return The user ID of the current Dropbox account.
+     */
+    public String getUserId() {
+        return userId;
     }
 
     /**
