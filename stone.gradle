@@ -125,7 +125,7 @@ project.sourceSets.all { SourceSet sourceSet ->
         def getSpecFiles = { fileTree(dir: specDir, include: '**/*.stone') }
 
         inputs.dir { project.fileTree(dir: generatorDir, exclude: '**/*.pyc') }
-        inputs.sourceDir getSpecFiles
+        inputs.dir(getSpecFiles).skipWhenEmpty = true
         inputs.property "config", { new groovy.json.JsonBuilder(config).toString() }
         outputs.dir { outputDir }
 
