@@ -2562,6 +2562,7 @@ class JavaCodeGenerationInstance(object):
 
                 # mark public
                 j.update_data_type_visibility(data_type_fq_name, Visibility.PUBLIC)
+                j.update_serializer_visibility(data_type_fq_name, Visibility.PUBLIC)
                 # mark as being referenced somewhere so that we generate
                 j.mark_data_type_as_used(data_type)
 
