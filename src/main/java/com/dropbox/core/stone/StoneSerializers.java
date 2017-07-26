@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -70,6 +72,9 @@ public final class StoneSerializers {
         return new ListSerializer<T>(underlying);
     }
 
+    public static <T> StoneSerializer<Map<String, T>> map(StoneSerializer<T> underlying) {
+        return new MapSerializer<T>(underlying);
+    }
 
     private static final class LongSerializer extends StoneSerializer<Long> {
         public static final LongSerializer INSTANCE = new LongSerializer();
@@ -317,6 +322,35 @@ public final class StoneSerializers {
             }
             expectEndArray(p);
             return list;
+        }
+    }
+
+    private static final class MapSerializer<T> extends StoneSerializer<Map<String, T>> {
+        private final StoneSerializer<T> underlying;
+
+        public MapSerializer(StoneSerializer<T> underlying) {
+            this.underlying = underlying;
+        }
+
+        @Override
+        public void serialize(Map<String, T> value, JsonGenerator g) throws IOException, JsonGenerationException {
+            g.writeString(value.toString());
+        }
+
+        @Override
+        public Map<String, T> deserialize(JsonParser p) throws IOException, JsonParseException {
+            Map<String, T> map = new HashMap<String, T>();
+
+            expectStartObject(p);
+            while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+                String key = p.getCurrentName();
+                p.nextToken();
+                T val = underlying.deserialize(p);
+                map.put(key, val);
+            }
+            expectEndObject(p);
+
+            return map;
         }
     }
 }

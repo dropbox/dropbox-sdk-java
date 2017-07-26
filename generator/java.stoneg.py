@@ -31,6 +31,7 @@ from stone.data_type import (
     is_bytes_type,
     is_composite_type,
     is_list_type,
+    is_map_type,
     is_nullable_type,
     is_numeric_type,
     is_primitive_type,
@@ -294,12 +295,14 @@ def get_enumerated_subtypes_recursively(data_type):
     return result
 
 
-def get_underlying_type(data_type, allow_lists=True):
+def get_underlying_type(data_type, allow_data_structures=True):
     assert isinstance(data_type, DataType), repr(data_type)
 
     while True:
-        if allow_lists and is_list_type(data_type):
+        if allow_data_structures and is_list_type(data_type):
             data_type = data_type.data_type
+        elif allow_data_structures and is_map_type(data_type):
+            data_type = data_type.value_data_type
         elif is_nullable_type(data_type):
             data_type = data_type.data_type
         else:
@@ -744,6 +747,7 @@ class JavaImporter(object):
                 'com.dropbox.core.v2.DbxDownloadStyleBuilder',
                 'java.util.Collections',
                 'java.util.List',
+                'java.util.Map',
             )
 
     def add_imports_for_route_builder(self, route):
@@ -834,6 +838,8 @@ class JavaImporter(object):
 
             if is_list_type(data_type) or is_nullable_type(data_type):
                 self._add_imports_for_data_type(data_type.data_type)
+            elif is_map_type(data_type):
+                self._add_imports_for_data_type(data_type.value_data_type)
             elif is_timestamp_type(data_type):
                 self.add_imports('com.dropbox.core.util.LangUtil')
 
@@ -1088,6 +1094,9 @@ class JavaClassWriter(object):
                 # TODO: also support passing collapsed to list serializer
                 return self.fmt('%s.list(%s)',
                                 serializers_class, self.java_serializer(data_type.data_type))
+            elif is_map_type(data_type):
+                return self.fmt('%s.map(%s)',
+                                serializers_class, self.java_serializer(data_type.value_data_type))
             else:
                 return self.fmt('%s.%s()', serializers_class, camelcase(data_type.name))
 
@@ -1350,7 +1359,7 @@ class JavaClassWriter(object):
                 if val is not None:
                     add_req(precondition % val, failure_reason % val)
 
-        if is_list_type(data_type):
+        if is_list_type(data_type) or is_map_type(data_type):
             add_req('not contain a {@code null} item', 'contains a {@code null} item')
         elif is_string_type(data_type) and data_type.pattern is not None:
             pattern = sanitize_pattern(data_type.pattern)
@@ -1714,7 +1723,7 @@ class JavaApi(object):
     @staticmethod
     def requires_validation(data_type):
         assert isinstance(data_type, DataType), repr(data_type)
-        if is_list_type(data_type):
+        if is_list_type(data_type) or is_map_type(data_type):
             return True
         elif is_numeric_type(data_type):
             return any(r is not None for r in (
@@ -1947,6 +1956,9 @@ class JavaApi(object):
                 generic_classes = []
                 if generics and is_list_type(data_type):
                     generic_classes = [self.java_class(data_type.data_type, boxed=True, generics=True)]
+                elif generics and is_map_type(data_type):
+                    generic_classes = [self.java_class(data_type.key_data_type, boxed=True), self.java_class(
+                        data_type.value_data_type, boxed=True, generics=True)]
 
                 type_map = _TYPE_MAP_BOXED if boxed else _TYPE_MAP_UNBOXED
                 return JavaClass(type_map[data_type.name], generics=generic_classes)
@@ -4077,6 +4089,14 @@ class JavaCodeGenerationInstance(object):
                     w.out('throw new IllegalArgumentException("An item in list%s is null");', description)
                 self.generate_data_type_validation(data_type.data_type, xn, 'an item in list%s' % description, level=level+1)
 
+        elif is_map_type(data_type):
+            xn = 'x' if level == 0 else 'x%d' % level
+            map_item_type = j.java_class(data_type.value_data_type, boxed=True, generics=True)
+            with w.block('for (%s %s : %s.values())', map_item_type, xn, value_name):
+                with w.block('if (%s == null)', xn):
+                    w.out('throw new IllegalArgumentException("An item in map%s is null");', description)
+                self.generate_data_type_validation(data_type.value_data_type, xn, 'an item in map%s' % description, level=level+1)
+
         elif is_numeric_type(data_type):
             if data_type.min_value is not None:
                 java_value = w.java_value(data_type, data_type.min_value)
@@ -4328,6 +4348,7 @@ _TYPE_MAP_UNBOXED = {
     'Timestamp': 'java.util.Date',
     'Void': 'void',
     'List': 'java.util.List',
+    'Map': 'java.util.Map',
 }
 
 
@@ -4344,6 +4365,7 @@ _TYPE_MAP_BOXED = {
     'Timestamp': 'java.util.Date',
     'Void': 'Void',
     'List': 'java.util.List',
+    'Map': 'java.util.Map',
 }
 
 _CATCH_ALL_DOC = """
