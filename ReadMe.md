@@ -4,7 +4,7 @@ A Java library to access [Dropbox's HTTP-based Core API v2](https://www.dropbox.
 
 License: [MIT](License.txt)
 
-[Javadoc.](https://dropbox.github.io/dropbox-sdk-java/api-docs/v3.0.x/)
+Documentation: [Javadocs](https://dropbox.github.io/dropbox-sdk-java/api-docs/v3.0.x/)
 
 ## Setup
 
@@ -29,14 +29,135 @@ dependencies {
 
 You can also download the Java SDK JAR and and its required dependencies directly from the [latest release page](https://github.com/dropbox/dropbox-sdk-java/releases/latest). Note that the distribution artifacts on the releases pages do not contain optional dependencies.
 
-## Get a Dropbox API key
+## Dropbox for Java tutorial
 
-You need a Dropbox API key to make API requests.
-  * Go to: [https://www.dropbox.com/developers/apps](https://www.dropbox.com/developers/apps)
-  * If you've already registered an app, click on the "Options" link to see the app's API key and secret.
-  * Otherwise, click "Create an app" to register an app.  Choose "Dropbox API app", then "Files and datastores", then "Yes" or "No" [depending on your needs](https://www.dropbox.com/developers/reference#permissions).
+A good way to start using the Java SDK is to follow this quick tutorial. Just make sure you have the the Java SDK [installed](/developers/documentation/java#install) first!
 
-Save the API key to a JSON file called, say, "test.app":
+### Register a Dropbox API app
+
+To use the Dropbox API, you'll need to register a new app in the [App Console](/developers/apps). Select Dropbox API app and choose your app's permission. You'll need to use the app key created with this app to access API v2.
+
+### Link an account
+
+In order to make calls to the API, you'll need an instance of the Dropbox object. To instantiate, pass in the access token for the account you want to link. (Tip: You can [generate an access token](https://blogs.dropbox.com/developers/2014/05/generate-an-access-token-for-your-own-account/) for your own account through the [App Console](https://www.dropbox.com/developers/apps)).
+
+```java
+import com.dropbox.core.DbxRequestConfig;
+import com.dropbox.core.v2.DbxClientV2;
+
+public class Main {
+    private static final String ACCESS_TOKEN = "<ACCESS TOKEN>";
+
+    public static void main(String args[]) throws DbxException {
+        // Create Dropbox client
+        DbxRequestConfig config = new DbxRequestConfig("dropbox/java-tutorial", "en_US");
+        DbxClientV2 client = new DbxClientV2(config, ACCESS_TOKEN);
+    }
+}
+```
+
+Test it out to make sure you've linked the right account:
+
+```java
+// Get current account info
+FullAccount account = client.users().getCurrentAccount();
+System.out.println(account.getName().getDisplayName());
+```
+
+### Try some API requests
+
+You can use the Dropbox object you instantiated above to make API calls. Try out a request to list the contents of a folder.
+
+```java
+// Get files and folder metadata from Dropbox root directory
+ListFolderResult result = client.files().listFolder("");
+while (true) {
+    for (Metadata metadata : result.getEntries()) {
+        System.out.println(metadata.getPathLower());
+    }
+
+    if (!result.getHasMore()) {
+        break;
+    }
+
+    result = client.files().listFolderContinue(result.getCursor());
+}
+```
+
+Try uploading a file to your Dropbox.
+
+```java
+// Upload "test.txt" to Dropbox
+try (InputStream in = new FileInputStream("test.txt")) {
+    FileMetadata metadata = client.files().uploadBuilder("/test.txt")
+        .uploadAndFinish(in);
+}
+```
+
+### Full Example Snippet
+
+```java
+import com.dropbox.core.DbxException;
+import com.dropbox.core.DbxRequestConfig;
+import com.dropbox.core.v2.DbxClientV2;
+import com.dropbox.core.v2.files.FileMetadata;
+import com.dropbox.core.v2.files.ListFolderResult;
+import com.dropbox.core.v2.files.Metadata;
+import com.dropbox.core.v2.users.FullAccount;
+
+import java.util.List;
+
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.IOException;
+
+public class Main {
+    private static final String ACCESS_TOKEN = "<ACCESS TOKEN>";
+
+    public static void main(String args[]) throws DbxException, IOException {
+        // Create Dropbox client
+        DbxRequestConfig config = new DbxRequestConfig("dropbox/java-tutorial", "en_US");
+        DbxClientV2 client = new DbxClientV2(config, ACCESS_TOKEN);
+
+        // Get current account info
+        FullAccount account = client.users().getCurrentAccount();
+        System.out.println(account.getName().getDisplayName());
+
+        // Get files and folder metadata from Dropbox root directory
+        ListFolderResult result = client.files().listFolder("");
+        while (true) {
+            for (Metadata metadata : result.getEntries()) {
+                System.out.println(metadata.getPathLower());
+            }
+
+            if (!result.getHasMore()) {
+                break;
+            }
+
+            result = client.files().listFolderContinue(result.getCursor());
+        }
+
+        // Upload "test.txt" to Dropbox
+        try (InputStream in = new FileInputStream("test.txt")) {
+            FileMetadata metadata = client.files().uploadBuilder("/test.txt")
+                .uploadAndFinish(in);
+        }
+    }
+}
+```
+
+## Full examples
+
+Some more complete examples can be found here:
+  * Example for a simple web app: [Web File Browser example](examples/web-file-browser/src/main/java/com/dropbox/core/examples/web_file_browser/DropboxAuth.java)
+  * Example for an Android app: [Android example](examples/android/src/main/java/com/dropbox/core/examples/android/UserActivity.java)
+  * Example for a command-line tool: [Command-Line Authorization example](examples/authorize/src/main/java/com/dropbox/core/examples/authorize/Main.java)
+
+To try out running this examples, please follow the instructions below.
+
+### Save your Dropbox API key
+
+Save your Dropbox API key to a JSON file called, say, "test.app":
 
 ```
 {
@@ -45,18 +166,7 @@ Save the API key to a JSON file called, say, "test.app":
 }
 ```
 
-## Using the Dropbox API
-
-Before your app can access a Dropbox user's files, the user must authorize your application using OAuth 2.  Successfully completing this authorization flow gives you an _access token_ for the user's Dropbox account, which grants you the ability to make Dropbox API calls to access their files.
-  * Example for a simple web app: [Web File Browser example](examples/web-file-browser/src/main/java/com/dropbox/core/examples/web_file_browser/DropboxAuth.java)
-  * Example for an Android app: [Android example](examples/android/src/main/java/com/dropbox/core/examples/android/UserActivity.java)
-  * Example for a command-line tool: [Command-Line Authorization example](examples/authorize/src/main/java/com/dropbox/core/examples/authorize/Main.java)
-
-Once you have an access token, create a [`DbxClientV2`](https://dropbox.github.io/dropbox-sdk-java/api-docs/v2.1.x/com/dropbox/core/v2/DbxClientV2.html) and start making API calls.
-
-You only need to perform the authorization process once per user.  Once you have an access token for a user, save it somewhere persistent, like in a database.  The next time that user visits your app's, you can skip the authorization process and go straight to creating a `DbxClientV2` and making API calls.
-
-## Building from source
+### Building from source
 
 ```
 git clone https://github.com/dropbox/dropbox-sdk-java.git
@@ -67,7 +177,7 @@ cd dropbox-sdk-java
 
 The output will be in "build/".
 
-## Running the examples
+### Running the examples
 
 1. Follow the instructions in the "Build from source" section above.
 2. Save your Dropbox API key in a file called "test.app".  See: [Get a Dropbox API key](#get-a-dropbox-api-key), above.
@@ -75,7 +185,7 @@ The output will be in "build/".
 4. To compile all the examples: `(cd examples/ && ./gradlew classes`
 5. To compile just one example: `(cd examples/ && ./gradlew :<example-name>:classes`
 
-### authorize
+#### authorize
 
 This examples runs through the OAuth 2 authorization flow.
 
@@ -86,7 +196,7 @@ cd examples
 
 This produces a file named "test.auth" that has the access token.  This file can be passed in to the other examples.
 
-### account-info
+#### account-info
 
 A simple example that fetches and displays information about the account associated with the access token.
 
@@ -97,7 +207,7 @@ cd examples
 
 (You must first generate "test.auth" using the "authorize" example above.)
 
-### longpoll
+#### longpoll
 
 An example of how to watch for changes in a Dropbox directory.
 
@@ -108,11 +218,11 @@ cd examples
 
 (You must first generate "test.auth" using the "authorize" example above.)
 
-### tutorial
+#### tutorial
 
 The example from our [online tutorial](https://www.dropbox.com/developers/documentation/java#tutorial). Unlike the other examples, this example is not meant to be run without modification.
 
-### upload-file
+#### upload-file
 
 Uploads a file to Dropbox. The example includes regular and chunked file uploads.
 
@@ -123,7 +233,7 @@ cd examples
 
 (You must first generate "test.auth" using the "authorize" example above.)
 
-### web-file-browser
+#### web-file-browser
 
 A tiny web app that runs through the OAuth 2 authorization flow and then uses Dropbox API calls to let the user browse their Dropbox files.
 
