@@ -214,7 +214,7 @@ public class OkHttp3Requestor extends HttpRequestor {
                 PipedRequestBody pipedBody = new PipedRequestBody();
                 setBody(pipedBody);
 
-                this.callback = new AsyncCallback();
+                this.callback = new AsyncCallback(pipedBody);
                 this.call = client.newCall(request.build());
                 // enqueue the call (async call execution). This allows us to provide streaming uploads.
                 call.enqueue(callback);
@@ -288,10 +288,12 @@ public class OkHttp3Requestor extends HttpRequestor {
     }
 
     public static final class AsyncCallback implements Callback {
+        private PipedRequestBody body;
         private IOException error;
         private okhttp3.Response response;
 
-        private AsyncCallback() {
+        private AsyncCallback(PipedRequestBody body) {
+            this.body = body;
             this.error = null;
             this.response = null;
         }
@@ -314,6 +316,7 @@ public class OkHttp3Requestor extends HttpRequestor {
         @Override
         public synchronized void onFailure(Call call, IOException ex) {
             this.error = ex;
+            this.body.close();
             notifyAll();
         }
 
