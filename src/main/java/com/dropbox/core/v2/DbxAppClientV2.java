@@ -16,8 +16,7 @@ import java.util.List;
  * <p> This class has no mutable state, so it's thread safe as long as you pass
  * in a thread safe {@link HttpRequestor} implementation. </p>
  */
-// package private to hide from documentation for now until we have a route that requires it.
-class DbxAppClientV2 extends DbxAppClientV2Base {
+public class DbxAppClientV2 extends DbxAppClientV2Base {
 
     /**
      * Creates a client that uses the given app key and secret when performing requests against the
