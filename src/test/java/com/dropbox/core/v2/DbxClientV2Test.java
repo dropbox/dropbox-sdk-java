@@ -79,7 +79,10 @@ public class DbxClientV2Test {
             new Date(1456169040985L),
             new Date(1456169040985L),
             "2e0c38735597",
-            2091603
+            2091603,
+                "20MB",
+                "text.png",
+                "text/plain"
         );
 
         // 503 twice, then return result
@@ -169,7 +172,10 @@ public class DbxClientV2Test {
             new Date(1456169692501L),
             new Date(1456169692501L),
             "341438735597",
-            2626
+            2626,
+                "20MB",
+                "text.png",
+                "text/plain"
         );
         byte [] expectedBytes = new byte [] { 1, 2, 3, 4 };
 
@@ -209,7 +215,10 @@ public class DbxClientV2Test {
             new Date(1456173312172L),
             new Date(1456173312172L),
             "89df885732c38",
-            12345L
+            12345L,
+                "20MB",
+                "text.png",
+                "text/plain"
         );
 
         // 503 twice, then return result
