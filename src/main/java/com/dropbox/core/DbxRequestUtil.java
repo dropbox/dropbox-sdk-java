@@ -75,7 +75,7 @@ public final class DbxRequestUtil {
         StringBuilder buf = new StringBuilder();
         String sep = "";
         if (userLocale != null) {
-            buf.append("locale=").append(userLocale);
+            buf.append("locale=").append(encodeUrlParam(userLocale));
             sep = "&";
         }
 
