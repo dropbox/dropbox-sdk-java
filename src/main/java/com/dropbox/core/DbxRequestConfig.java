@@ -120,7 +120,7 @@ public class DbxRequestConfig {
 
     /**
      * Returns whether or not the client should automatically retry RPC and download requests after
-     * recieving a {@link RetryException}.
+     * receiving a {@link RetryException}.
      *
      * <p> If enabled, the client will retry the request a max number of times (specified by {@link
      * #getMaxRetries}) before propagating the {@link RetryException}.</p>
