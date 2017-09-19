@@ -7,7 +7,6 @@ import static com.dropbox.core.v2.files.FilesSerializers.serializer;
 import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.v2.files.FileMetadata;
 import com.dropbox.core.v2.files.Metadata;
-import com.dropbox.core.util.IOUtil;
 import com.dropbox.core.BadRequestException;
 import com.dropbox.core.DbxDownloader;
 import com.dropbox.core.DbxException;
@@ -22,10 +21,11 @@ import org.testng.annotations.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -64,8 +64,31 @@ public class DbxClientV2Test {
         }
     }
 
+    private FileMetadata constructFileMetadate() throws Exception {
+        Class builderClass = FileMetadata.Builder.class;
+        Constructor constructor = builderClass.getDeclaredConstructors()[0];
+        constructor.setAccessible(true);
+
+        List<Object> arguments = new ArrayList<Object>(Arrays.asList(
+                "bar.txt",
+                "id:1HkLjqifwMAAAAAAAAAAAQ",
+                new Date(1456169040985L),
+                new Date(1456169040985L),
+                "2e0c38735597",
+                2091603
+        ));
+
+        // hack for internal version of SDK
+        if (constructor.getParameterTypes().length > 6) {
+            arguments.addAll(Arrays.asList("20MB", "text.png", "text/plain"));
+        }
+
+        FileMetadata.Builder builder = (FileMetadata.Builder) constructor.newInstance(arguments.toArray());
+        return builder.build();
+    }
+
     @Test
-    public void testRetrySuccess() throws DbxException, IOException {
+    public void testRetrySuccess() throws Exception {
         HttpRequestor mockRequestor = mock(HttpRequestor.class);
         DbxRequestConfig config = createRequestConfig()
             .withAutoRetryEnabled(3)
@@ -73,17 +96,7 @@ public class DbxClientV2Test {
             .build();
 
         DbxClientV2 client = new DbxClientV2(config, "fakeAccessToken");
-        FileMetadata expected = new FileMetadata(
-            "bar.txt",
-            "id:1HkLjqifwMAAAAAAAAAAAQ",
-            new Date(1456169040985L),
-            new Date(1456169040985L),
-            "2e0c38735597",
-            2091603,
-                "20MB",
-                "text.png",
-                "text/plain"
-        );
+        FileMetadata expected = constructFileMetadate();
 
         // 503 twice, then return result
         HttpRequestor.Uploader mockUploader = mockUploader();
@@ -157,7 +170,7 @@ public class DbxClientV2Test {
     }
 
     @Test
-    public void testRetryDownload() throws DbxException, IOException {
+    public void testRetryDownload() throws Exception {
         HttpRequestor mockRequestor = mock(HttpRequestor.class);
         DbxRequestConfig config = createRequestConfig()
             .withAutoRetryEnabled(3)
@@ -165,18 +178,7 @@ public class DbxClientV2Test {
             .build();
 
         DbxClientV2 client = new DbxClientV2(config, "fakeAccessToken");
-
-        FileMetadata expectedMetadata = new FileMetadata(
-            "download_me.txt",
-            "id:KLavC4viCDAAAAAAAAAAAQ",
-            new Date(1456169692501L),
-            new Date(1456169692501L),
-            "341438735597",
-            2626,
-                "20MB",
-                "text.png",
-                "text/plain"
-        );
+        FileMetadata expectedMetadata = constructFileMetadate();
         byte [] expectedBytes = new byte [] { 1, 2, 3, 4 };
 
         // 503 once, then return 200
@@ -201,7 +203,7 @@ public class DbxClientV2Test {
     }
 
     @Test
-    public void testRetrySuccessWithBackoff() throws DbxException, IOException {
+    public void testRetrySuccessWithBackoff() throws Exception {
         HttpRequestor mockRequestor = mock(HttpRequestor.class);
         DbxRequestConfig config = createRequestConfig()
             .withAutoRetryEnabled(3)
@@ -209,17 +211,7 @@ public class DbxClientV2Test {
             .build();
 
         DbxClientV2 client = new DbxClientV2(config, "fakeAccessToken");
-        FileMetadata expected = new FileMetadata(
-            "banana.png",
-            "id:eRsVsAya9YAAAAAAAAAAAQ",
-            new Date(1456173312172L),
-            new Date(1456173312172L),
-            "89df885732c38",
-            12345L,
-                "20MB",
-                "text.png",
-                "text/plain"
-        );
+        FileMetadata expected = constructFileMetadate();
 
         // 503 twice, then return result
         HttpRequestor.Uploader mockUploader = mockUploader();
