@@ -1,3 +1,103 @@
+3.0.4 (2017-09-19)
+---------------------------------------------
+- Update to Latest API specs:
+  - General:
+    - Numerous updates to docstrings across all namespaces.
+    - Updated general route configuration to support select_admin_mode.
+  - Auth, Users, TeamReports, TeamPropertyTemplates, TeamDevices, TeamGroups, TeamLinkedApps Namespaces:
+    - Update route ownership.
+  - Common Namespace:
+    - Fix regular expression for DisplayName.
+    - Rename shared_folder to namespace_id for path root header.
+    - New aliases for OptionalNamePart and DisplayNameLegacy.
+  - Files Namespace:
+    - Clarify `WriteMode` documentation.
+    - Add Select-Admin badge to docs, remove list from business page.
+    - Support fileId for move api v2 endpoints.
+    - API_V2 delete_batch should grab one ns_lock when processing one namespace instead of holding all locks at beginning.
+    - Add FileId support to list_folder.
+    - Added changeset support for fileops and /rollback endpoint.
+    - Change default of allow_ownership_transfer to false.
+    - Get double the limit in list_revisions to include deleted and truncate later in controller.
+    - Add server_deleted timestamp to list_revisions.
+    - Revert changes to api delta that aren't backwards compatible.
+    - Add deleted_at to DeletedMetadata in list_folders, get_metadata. Add deleted_at to toplevel response,
+      add include_deleted as param in list_revisions.
+    - Update ownership.
+    - New attributes for ListFolderArg: included_mounted_folders, limit.
+    - New get_thumbnail_batch route and corresponding interfaces.
+  - SharedContentLinks Namespace:
+    - API changes for child exceptions.
+  - SharedLinks Namespace:
+    - Add max results limit of 1000 for /2/sharing/get_shared_links.
+    - Update sharing route ownership.
+    - Add link to list_shared_links in shared_link_already_exists error.
+  - SharingFiles Namespace:
+    - Add owner name as a new field to alpha sharing file metadata.
+  - SharingFolders Namespace:
+    - Make the internal endpoint take internal folder actions.
+    - Update route ownership.
+    - Added owner_display_names to SharedFolderMetadataBase.
+    - Updated PermissionDeniedReason union.
+  - StoneCfg Namespace:
+    - Add Select-Admin badge to docs, remove list from business page.
+    - Update route ownership.
+  - Team Namespace:
+    - Enable looking up if a team is in CDM.
+    - Update route generator to pass through team endpoint ownership.
+    - Update route ownership.
+    - Add route member_space_limits/set_custom_quota.
+    - Add route member_space_limits/remove_cusom_quota.
+    - Add route member_space_limits/get_custom_quota.
+    - Deprecate beta properites routes.
+  - TeamFolders Namespace:
+    - Update team folder APIs with some extra fields.
+    - Update route ownership.
+  - TeamLog Namespace:
+    - Start using v2 category index.
+    - Reduced strictness of pattern matching for IpAddress.
+    - New FileCommentNotificationPolicy union
+    - Multiple updated attribute names in unions.
+    - New Structs for new team_log objects
+  - TeamLogGenerated Namespace:
+    - Variable scheme for team events.
+    - Mark ACCOUNT_CAPTURE_NOTIFICATION_EMAILS_SENT event as under development.
+    - Make sure team policies event expose their own union (for API future proofing).
+    - Add device_info as data_gap for 2 event types.
+    - Save group info into participants field.
+    - Account capture pro-active email notifications - audit log.
+    - Fix schema of member_change_membershipe_type and member_space_limits_change_status.
+    - Make team_folder_change_status conform to previous_value/new_value convention.
+    - Fixes the variable schema of domain verification and account capture event types.
+    - Use common.Data stone type for the variable schema fields of team_activity_create_report.
+    - Introduce a new struct for team name.
+    - Fix comments related to sso events.
+  - TeamMembers Namespace:
+    - Return root ns_id on some call.
+    - Update ownership.
+    - Update NamePart? to be OptionalNamePart?.
+  - TeamNamespaces Namespace:
+    - Implement API V2 route team/namespaces/list.
+  - TeamPolicies Namespace:
+    - Add Office Add-In Policy to `get_current_account` return.
+    - Add new team policies for SSO Paper, RolloutMethod and PasswordStrength.
+  - Paper Namespace:
+    - New "docs/create" and "docs/update" routes and corresponding interfaces.
+  - File_properties Namespace:
+    - New routes and structs for the file properties and templates API functionality.
+  - File_requests Namespace:
+    - New routes and structs for the file_requests API functionality.
+  - Files_properties Namespace:
+    - removed in favor of file_properties.
+  - Properties Namespace:
+    - removed in favor of file_properties.
+  - Team_property_templates Namespace:
+    - removed in favor of file_properties.
+- Add global response handlers.
+- Add PathRootErrorException and AccessErrorException corresponding to 422 and 403 status codes.
+- Add support for map data type in stone.
+- Fix upload hanging in OKHttp3 when internet is cut off.
+
 3.0.3 (2017-05-02)
 ---------------------------------------------
 Fix the compatibility bug that cause sharing/get_file_metadata to crash.

@@ -14,7 +14,7 @@ If you're using Maven, then edit your project's "pom.xml" and add this to the `<
 <dependency>
     <groupId>com.dropbox.core</groupId>
     <artifactId>dropbox-core-sdk</artifactId>
-    <version>3.0.3</version>
+    <version>3.0.4</version>
 </dependency>
 ```
 
@@ -23,7 +23,7 @@ If you are using Gradle, then edit your project's "build.gradle" and add this to
 ```groovy
 dependencies {
     // ...
-    compile 'com.dropbox.core:dropbox-core-sdk:3.0.3'
+    compile 'com.dropbox.core:dropbox-core-sdk:3.0.4'
 }
 ```
 
