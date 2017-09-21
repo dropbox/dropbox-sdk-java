@@ -542,6 +542,7 @@ public class AuthActivity extends Activity {
     private void startWebAuth(String state) {
         String path = "1/connect";
         Locale locale = Locale.getDefault();
+        locale = new Locale(locale.getLanguage(), locale.getCountry());
 
         // Web Auth currently does not support desiredUid and only one alreadyAuthUid (param n).
         // We use first alreadyAuthUid arbitrarily.
