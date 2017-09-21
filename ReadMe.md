@@ -31,11 +31,11 @@ You can also download the Java SDK JAR and and its required dependencies directl
 
 ## Dropbox for Java tutorial
 
-A good way to start using the Java SDK is to follow this quick tutorial. Just make sure you have the the Java SDK [installed](/developers/documentation/java#install) first!
+A good way to start using the Java SDK is to follow this quick tutorial. Just make sure you have the the Java SDK [installed](#setup) first!
 
 ### Register a Dropbox API app
 
-To use the Dropbox API, you'll need to register a new app in the [App Console](/developers/apps). Select Dropbox API app and choose your app's permission. You'll need to use the app key created with this app to access API v2.
+To use the Dropbox API, you'll need to register a new app in the [App Console](https://www.dropbox.com/developers/apps). Select Dropbox API app and choose your app's permission. You'll need to use the app key created with this app to access API v2.
 
 ### Link an account
 
@@ -166,6 +166,8 @@ Save your Dropbox API key to a JSON file called, say, "test.app":
 }
 ```
 
+App key and secret can be found in you app page in [App Console](https://www.dropbox.com/developers/apps).
+
 ### Building from source
 
 ```
@@ -180,7 +182,7 @@ The output will be in "build/".
 ### Running the examples
 
 1. Follow the instructions in the "Build from source" section above.
-2. Save your Dropbox API key in a file called "test.app".  See: [Get a Dropbox API key](#get-a-dropbox-api-key), above.
+2. Save your Dropbox API key in a file called "test.app".  See: [Save your Dropbox API key](#save-your-dropbox-api-key), above.
 3. Compile and install the SDK into your local maven repo: `./gradlew install`
 4. To compile all the examples: `(cd examples/ && ./gradlew classes`
 5. To compile just one example: `(cd examples/ && ./gradlew :<example-name>:classes`
@@ -217,10 +219,6 @@ cd examples
 ```
 
 (You must first generate "test.auth" using the "authorize" example above.)
-
-#### tutorial
-
-The example from our [online tutorial](https://www.dropbox.com/developers/documentation/java#tutorial). Unlike the other examples, this example is not meant to be run without modification.
 
 #### upload-file
 
