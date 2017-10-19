@@ -10,11 +10,23 @@ import java.util.Arrays;
  * Helper class for integrating with {@link AuthActivity}
  */
 public class Auth {
-
+    
+    
+    /**
+     * @see Auth#startOAuth2Authentication(Context, String, String, String[], String, String)
+     */
     public static void startOAuth2Authentication(Context context, String appKey) {
         startOAuth2Authentication(context, appKey, null, null, null);
     }
 
+    /**
+     * @see Auth#startOAuth2Authentication(Context, String, String, String[], String, String)
+     */
+    public static void startOAuth2Authentication(Context context, String appKey, String desiredUid,
+                                                 String[] alreadyAuthedUids, String sessionId) {
+        startOAuth2Authentication(context, appKey, desiredUid, alreadyAuthedUids, sessionId, "www.dropbox.com");
+    }
+    
     /**
      * Starts the Dropbox authentication process by launching an external app
      * (either the Dropbox app if available or a web browser) where the user
@@ -41,12 +53,17 @@ public class Auth {
      *                          user accounts. (note that user may still authorize the accounts).
      * @param sessionId         The SESSION_ID Extra on an OpenWith intent. null if dAuth
      *                          is being launched outside of OpenWith flow
+     * @param webHost           Server host used for oauth
      * @throws IllegalStateException if you have not correctly set up the AuthActivity in your
      *                               manifest, meaning that the Dropbox app will
      *                               not be able to redirect back to your app after auth.
      */
-    public static void startOAuth2Authentication(Context context, String appKey, String desiredUid,
-                                                 String[] alreadyAuthedUids, String sessionId) {
+    public static void startOAuth2Authentication(Context context,
+                                                 String appKey,
+                                                 String desiredUid,
+                                                 String[] alreadyAuthedUids,
+                                                 String sessionId,
+                                                 String webHost) {
         if (!AuthActivity.checkAppBeforeAuth(context, appKey, true /*alertUser*/)) {
             return;
         }
@@ -57,9 +74,8 @@ public class Auth {
 
         // Start Dropbox auth activity.
         String apiType = "1";
-        String webHost = "www.dropbox.com";
         Intent intent =  AuthActivity.makeIntent(
-            context, appKey, desiredUid, alreadyAuthedUids, sessionId, webHost, apiType
+                context, appKey, desiredUid, alreadyAuthedUids, sessionId, webHost, apiType
         );
         if (!(context instanceof Activity)) {
             // If starting the intent outside of an Activity, must include
