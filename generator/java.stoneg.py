@@ -18,13 +18,10 @@ from functools import (
 )
 from itertools import chain
 
-from stone.api import (
+from stone.ir import (
     Api,
     ApiNamespace,
     ApiRoute,
-)
-from stone.generator import CodeGenerator
-from stone.data_type import (
     DataType,
     Field,
     is_boolean_type,
@@ -48,6 +45,7 @@ from stone.data_type import (
     unwrap_nullable,
     Void,
 )
+from stone.backend import CodeBackend
 
 class StoneType:
     __metaclass__ = abc.ABCMeta
@@ -607,7 +605,7 @@ _CMDLINE_PARSER.add_argument('--javadoc-refs', type=six.text_type, default=None,
 _CMDLINE_PARSER.add_argument('--unused-classes-to-generate', default=None, help='Specify types ' +
                              'that we want to generate regardless of whether they are used.')
 
-class JavaCodeGenerator(CodeGenerator):
+class JavaCodeGenerator(CodeBackend):
     cmdline_parser = _CMDLINE_PARSER
 
     def generate(self, api):
@@ -1707,8 +1705,8 @@ class JavaApi(object):
     @staticmethod
     def get_spec_filename(element):
         assert isinstance(element, StoneType), repr(element)
-        assert hasattr(element, '_token'), repr(element)
-        return os.path.basename(element._token.path)
+        assert hasattr(element, '_ast_node'), repr(element)
+        return os.path.basename(element._ast_node.path)
 
     def get_spec_filenames(self, element):
         assert isinstance(element, StoneType), repr(element)
