@@ -1055,7 +1055,7 @@ class JavaClassWriter(object):
         if data_type.name == 'Boolean':
             return 'true' if stone_value else 'false'
         elif data_type.name == 'String':
-            return self.fmt('"%s"', stone_value)
+            return self.fmt('"%s"', stone_value.replace('\\', '\\\\').replace('"', '\\"'))
         elif data_type.name in ('Float32', 'Float64'):
             return repr(stone_value) # Because str() drops the last few digits.
         elif data_type.name in ('Int64', 'UInt64', 'UInt32'):
