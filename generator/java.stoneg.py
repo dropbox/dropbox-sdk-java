@@ -24,6 +24,7 @@ from stone.ir import (
     ApiRoute,
     DataType,
     Field,
+    Int32,
     is_boolean_type,
     is_bytes_type,
     is_composite_type,
@@ -1053,6 +1054,8 @@ class JavaClassWriter(object):
 
         if data_type.name == 'Boolean':
             return 'true' if stone_value else 'false'
+        elif data_type.name == 'String':
+            return self.fmt('"%s"', stone_value.replace('\\', '\\\\').replace('"', '\\"'))
         elif data_type.name in ('Float32', 'Float64'):
             return repr(stone_value) # Because str() drops the last few digits.
         elif data_type.name in ('Int64', 'UInt64', 'UInt32'):
@@ -4071,12 +4074,12 @@ class JavaCodeGenerationInstance(object):
 
         if is_list_type(data_type):
             if data_type.min_items is not None:
-                java_value = w.java_value(data_type, data_type.min_items)
+                java_value = w.java_value(Int32(), data_type.min_items)
                 with w.block('if (%s.size() < %s)', value_name, java_value):
                     w.out('throw new IllegalArgumentException("List%s has fewer than %s items");',
                           description, java_value)
             if data_type.max_items is not None:
-                java_value = w.java_value(data_type, data_type.max_items)
+                java_value = w.java_value(Int32(), data_type.max_items)
                 with w.block('if (%s.size() > %s)', value_name, java_value):
                     w.out('throw new IllegalArgumentException("List%s has more than %s items");',
                           description, java_value)
@@ -4109,12 +4112,12 @@ class JavaCodeGenerationInstance(object):
 
         elif is_string_type(data_type):
             if data_type.min_length is not None:
-                java_value = w.java_value(data_type, data_type.min_length)
+                java_value = w.java_value(Int32(), data_type.min_length)
                 with w.block('if (%s.length() < %s)', value_name, java_value):
                     w.out('throw new IllegalArgumentException("String%s is shorter than %s");',
                           description, java_value)
             if data_type.max_length is not None:
-                java_value = w.java_value(data_type, data_type.max_length)
+                java_value = w.java_value(Int32(), data_type.max_length)
                 with w.block('if (%s.length() > %s)', value_name, java_value):
                     w.out('throw new IllegalArgumentException("String%s is longer than %s");',
                           description, java_value)
