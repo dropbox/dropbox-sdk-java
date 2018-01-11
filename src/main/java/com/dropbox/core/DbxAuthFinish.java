@@ -21,6 +21,7 @@ import java.io.IOException;
 public final class DbxAuthFinish {
     private final String accessToken;
     private final String userId;
+    private final String accountId;
     private final /*@Nullable*/String urlState;
 
     /**
@@ -29,9 +30,10 @@ public final class DbxAuthFinish {
      * @param urlState State data passed in to {@link DbxWebAuth#start} or {@code null} if no state
      * was passed
      */
-    public DbxAuthFinish(String accessToken, String userId, /*@Nullable*/String urlState) {
+    public DbxAuthFinish(String accessToken, String userId, String accountId, /*@Nullable*/String urlState) {
         this.accessToken = accessToken;
         this.userId = userId;
+        this.accountId = accountId;
         this.urlState = urlState;
     }
 
@@ -47,12 +49,22 @@ public final class DbxAuthFinish {
 
     /**
      * Returns the Dropbox user ID of the user who just approved your app for access to their
-     * Dropbox account.
+     * Dropbox account. We use user ID to identify user in API V1.
      *
      * @return Dropbox user ID of user that approved your app for access to their account
      */
     public String getUserId() {
         return userId;
+    }
+
+    /**
+     * Returns the Dropbox account ID of the user who just approved your app for access to their
+     * Dropbox account. We use account ID to identify user in API V2.
+     *
+     * @return Dropbox account ID of user that approved your app for access to their account
+     */
+    public String getAccountId() {
+        return accountId;
     }
 
     /**
@@ -76,7 +88,7 @@ public final class DbxAuthFinish {
         if (this.urlState != null) {
             throw new IllegalStateException("Already have URL state.");
         }
-        return new DbxAuthFinish(accessToken, userId, urlState);
+        return new DbxAuthFinish(accessToken, userId, accountId, urlState);
     }
 
     /**
@@ -89,6 +101,7 @@ public final class DbxAuthFinish {
             String accessToken = null;
             String tokenType = null;
             String userId = null;
+            String accountId = null;
             String state = null;
 
             while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
@@ -104,6 +117,9 @@ public final class DbxAuthFinish {
                     }
                     else if (fieldName.equals("uid")) {
                         userId = JsonReader.StringReader.readField(parser, fieldName, userId);
+                    }
+                    else if (fieldName.equals("account_id")) {
+                        accountId = JsonReader.StringReader.readField(parser, fieldName, accountId);
                     }
                     else if (fieldName.equals("state")) {
                         state = JsonReader.StringReader.readField(parser, fieldName, state);
@@ -123,8 +139,9 @@ public final class DbxAuthFinish {
             if (tokenType == null) throw new JsonReadException("missing field \"token_type\"", top);
             if (accessToken == null) throw new JsonReadException("missing field \"access_token\"", top);
             if (userId == null) throw new JsonReadException("missing field \"uid\"", top);
+            if (accountId == null) throw new JsonReadException("missing field \"account_id\"", top);
 
-            return new DbxAuthFinish(accessToken, userId, state);
+            return new DbxAuthFinish(accessToken, userId, accountId, state);
         }
     };
 

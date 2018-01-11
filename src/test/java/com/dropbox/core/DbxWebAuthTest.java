@@ -150,7 +150,9 @@ public class DbxWebAuthTest {
 
         assertNotNull(sessionStore.get());
 
-        DbxAuthFinish expected = new DbxAuthFinish("test-access-token", "test-user-id", state);
+        DbxAuthFinish expected = new DbxAuthFinish(
+                "test-access-token", "test-user-id", "test", state
+        );
         ByteArrayOutputStream body = new ByteArrayOutputStream();
         ByteArrayInputStream responseStream = new ByteArrayInputStream(
             (
@@ -158,6 +160,7 @@ public class DbxWebAuthTest {
              "\"token_type\":\"Bearer\"" +
              ",\"access_token\":\"" + expected.getAccessToken() + "\"" +
              ",\"uid\":\"" + expected.getUserId() + "\"" +
+             ",\"account_id\":\"" + expected.getAccountId() + "\"" +
              "}"
             ).getBytes("UTF-8")
         );

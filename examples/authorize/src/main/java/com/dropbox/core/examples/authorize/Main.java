@@ -87,6 +87,7 @@ public class Main {
 
         System.out.println("Authorization complete.");
         System.out.println("- User ID: " + authFinish.getUserId());
+        System.out.println("- Account ID: " + authFinish.getAccountId());
         System.out.println("- Access Token: " + authFinish.getAccessToken());
 
         // Save auth information to output file.
