@@ -1,5 +1,6 @@
 package com.dropbox.core.examples.tutorial;
 
+import com.dropbox.core.DbxDownloader;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.v2.callbacks.DbxGlobalCallbackFactory;
@@ -14,6 +15,7 @@ import com.dropbox.core.v2.users.FullAccount;
 import java.util.List;
 
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.IOException;
 
@@ -47,6 +49,15 @@ public class Main {
         try (InputStream in = new FileInputStream("test.txt")) {
             FileMetadata metadata = client.files().uploadBuilder("/test.txt")
                 .uploadAndFinish(in);
+        }
+
+        DbxDownloader<FileMetadata> downloader = client.files().download("/test.txt");
+        try {
+            FileOutputStream out = new FileOutputStream("test.txt");
+            downloader.download(out);
+            out.close();
+        } catch (DbxException ex) {
+            System.out.println(ex.getMessage());
         }
     }
 }
