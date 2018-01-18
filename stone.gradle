@@ -136,7 +136,7 @@ project.sourceSets.all { SourceSet sourceSet ->
         }
     }
 
-    sourceSet.java.srcDir project.tasks."${taskName}".outputDir
+    sourceSet.java.srcDir project.tasks."${taskName}".outputDir + "/src"
     Task compile = project.tasks.getByName(sourceSet.getCompileTaskName("java"))
     compile.dependsOn project.tasks."${taskName}"
 }
