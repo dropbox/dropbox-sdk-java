@@ -48,8 +48,9 @@ from stone.ir import (
 )
 from stone.backend import CodeBackend
 
+@six.add_metaclass(abc.ABCMeta)
 class StoneType:
-    __metaclass__ = abc.ABCMeta
+    pass
 
 StoneType.register(ApiNamespace)
 StoneType.register(ApiRoute)
@@ -2265,7 +2266,7 @@ class JavaReference(object):
 
     def _as_json(self):
         dct = {}
-        for k, v in self.__dict__.iteritems():
+        for k, v in self.__dict__.items():
             # avoid cyclic references issue
             if isinstance(v, JavaReference):
                 dct[k] = v.fq_name
