@@ -44,7 +44,7 @@ def runStoneGenerator(StoneConfig config,
     if (config.dataTypesOnly) {
         project.exec {
             standardOutput = new FileOutputStream(logFile)
-            commandLine "python", "-m", "stone.cli"
+            commandLine "python2.7", "-m", "stone.cli"
 
             environment PYTHONPATH: stoneDir.absolutePath
             args "--clean-build"
@@ -71,7 +71,7 @@ def runStoneGenerator(StoneConfig config,
 
         project.exec {
             standardOutput = new FileOutputStream(logFile, append)
-            commandLine "python", "-m", "stone.cli"
+            commandLine "python2.7", "-m", "stone.cli"
 
             environment PYTHONPATH: stoneDir.absolutePath
             if (isFirst) {
