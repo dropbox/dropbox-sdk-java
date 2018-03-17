@@ -1736,7 +1736,7 @@ class JavaApi(object):
         return visibility
 
     @staticmethod
-    def _get_data_types_from_doc_ref(api, doc, namespace_context, dummy):
+    def _get_data_types_from_doc_ref(api, doc, namespace_context):
         """
         Given a documentation string, parse it and return all references to other
         data types. If there are references to routes, include also the data types of
@@ -1749,7 +1749,7 @@ class JavaApi(object):
         """
         output = []
         data_types, routes_by_ns = JavaApi._get_data_types_and_routes_from_doc_ref(
-            api, doc, namespace_context, dummy)
+            api, doc, namespace_context)
         for d in data_types:
             output.append(d)
         for ns_name, routes in routes_by_ns.items():
@@ -1760,7 +1760,7 @@ class JavaApi(object):
         return output
 
     @staticmethod
-    def _get_data_types_and_routes_from_doc_ref(api, doc, namespace_context, dummy):
+    def _get_data_types_and_routes_from_doc_ref(api, doc, namespace_context):
         """
         Given a documentation string, parse it and return all references to other
         data types and routes.
