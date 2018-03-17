@@ -1625,7 +1625,7 @@ class JavaApi(object):
         while prev_state != cur_state:
             for namespace in api.namespaces.values():
                 if namespace.doc is not None:
-                    data_types = JavaApi._get_data_types_from_doc_ref(api, namespace.doc, namespace.name, data_type)
+                    data_types = JavaApi._get_data_types_from_doc_ref(api, namespace.doc, namespace.name)
                     for d in data_types:
                         update_by_reference(d, namespace)
                 for data_type in namespace.data_types:
@@ -1633,7 +1633,7 @@ class JavaApi(object):
                         continue
 
                     if data_type.doc is not None:
-                        data_types = JavaApi._get_data_types_from_doc_ref(api, data_type.doc, namespace.name, data_type)
+                        data_types = JavaApi._get_data_types_from_doc_ref(api, data_type.doc, namespace.name)
                         for d in data_types:
                             update_by_reference(d, namespace)
 
@@ -1650,7 +1650,7 @@ class JavaApi(object):
                                 update_by_reference(field_data_type, namespace)
 
                         if field.doc is not None:
-                            data_types = JavaApi._get_data_types_from_doc_ref(api, field.doc, namespace.name, data_type)
+                            data_types = JavaApi._get_data_types_from_doc_ref(api, field.doc, namespace.name)
                         for d in data_types:
                             update_by_reference(d, namespace)
 
@@ -1703,7 +1703,7 @@ class JavaApi(object):
         while prev_state != cur_state:
             for namespace in api.namespaces.values():
                 if namespace.doc is not None:
-                    data_types = JavaApi._get_data_types_from_doc_ref(api, namespace.doc, namespace.name, data_type)
+                    data_types = JavaApi._get_data_types_from_doc_ref(api, namespace.doc, namespace.name)
                     for d in data_types:
                         update_by_reference(d, namespace)
                 for data_type in namespace.data_types:
@@ -1711,7 +1711,7 @@ class JavaApi(object):
                         continue
 
                     if data_type.doc is not None:
-                        data_types = JavaApi._get_data_types_from_doc_ref(api, data_type.doc, namespace.name, data_type)
+                        data_types = JavaApi._get_data_types_from_doc_ref(api, data_type.doc, namespace.name)
                         for d in data_types:
                             update_by_reference(d, namespace)
 
@@ -1721,7 +1721,7 @@ class JavaApi(object):
                             update_by_reference(field_data_type, namespace)
 
                         if field.doc is not None:
-                            data_types = JavaApi._get_data_types_from_doc_ref(api, field.doc, namespace.name, data_type)
+                            data_types = JavaApi._get_data_types_from_doc_ref(api, field.doc, namespace.name)
                         for d in data_types:
                             update_by_reference(d, namespace)
 
