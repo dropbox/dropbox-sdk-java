@@ -1775,33 +1775,39 @@ class JavaApi(object):
         routes = defaultdict(set)
 
         for match in doc_ref_re.finditer(doc):
-            tag = match.group('tag')
-            val = match.group('val')
-            supplied_namespace = api.namespaces[namespace_context]
-            if tag == 'field':
-                if '.' in val:
-                    type_name, __ = val.split('.', 1)
-                    doc_type = supplied_namespace.data_type_by_name[type_name]
-                    data_types.add(doc_type)
-                else:
-                    pass  # no action required, because we must be referencing the same object
-            elif tag == 'route':
-                if '.' in val:
-                    namespace_name, val = val.split('.', 1)
-                    namespace = api.namespaces[namespace_name]
-                    route = namespace.route_by_name[val]
-                    routes[namespace_name].add(route)
-                else:
-                    route = supplied_namespace.route_by_name[val]
-                    routes[supplied_namespace.name].add(route)
-            elif tag == 'type':
-                if '.' in val:
-                    namespace_name, val = val.split('.', 1)
-                    doc_type = api.namespaces[namespace_name].data_type_by_name[val]
-                    data_types.add(doc_type)
-                else:
-                    doc_type = supplied_namespace.data_type_by_name[val]
-                    data_types.add(doc_type)
+            try:
+                tag = match.group('tag')
+                val = match.group('val')
+                supplied_namespace = api.namespaces[namespace_context]
+                if tag == 'field':
+                    if '.' in val:
+                        type_name, __ = val.split('.', 1)
+                        doc_type = supplied_namespace.data_type_by_name[type_name]
+                        data_types.add(doc_type)
+                    else:
+                        pass  # no action required, because we must be referencing the same object
+                elif tag == 'route':
+                    if '.' in val:
+                        namespace_name, val = val.split('.', 1)
+                        namespace = api.namespaces[namespace_name]
+                        route = namespace.route_by_name[val]
+                        routes[namespace_name].add(route)
+                    else:
+                        route = supplied_namespace.route_by_name[val]
+                        routes[supplied_namespace.name].add(route)
+                elif tag == 'type':
+                    if '.' in val:
+                        namespace_name, val = val.split('.', 1)
+                        doc_type = api.namespaces[namespace_name].data_type_by_name[val]
+                        data_types.add(doc_type)
+                    else:
+                        doc_type = supplied_namespace.data_type_by_name[val]
+                        data_types.add(doc_type)
+            except KeyError:
+                # We may reference a datatype or route that was filtered out, in which
+                # case just skip it and continue. We rely on the Stone layer to ensure
+                # that all these docrefs are valid to begin with.
+                continue
         return data_types, routes
 
     @staticmethod
