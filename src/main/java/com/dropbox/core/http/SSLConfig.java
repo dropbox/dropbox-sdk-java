@@ -71,11 +71,30 @@ public class SSLConfig {
 
     // All client ciphersuites allowed by Dropbox.
     //
-    // Including both RFC and OpenSSL ciphersuite naming conventions to support
+    // Including IBM, RFC and OpenSSL ciphersuite naming conventions to support
     // all Android API levels:
     //  - API Level >= 10 uses the RFC naming convention
     //  - API Level < 10 uses the OpenSSL naming convention
     private static final HashSet<String> ALLOWED_CIPHER_SUITES = new HashSet<String>(Arrays.asList(new String[] {
+        "SSL_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
+        "SSL_ECDHE_RSA_WITH_AES_256_CBC_SHA384",
+        "SSL_ECDHE_RSA_WITH_AES_256_CBC_SHA",
+        "SSL_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
+        "SSL_ECDHE_RSA_WITH_AES_128_CBC_SHA256",
+        "SSL_ECDHE_RSA_WITH_AES_128_CBC_SHA",
+        "SSL_ECDHE_RSA_WITH_RC4_128_SHA",
+        "SSL_DHE_RSA_WITH_AES_256_GCM_SHA384",
+        "SSL_DHE_RSA_WITH_AES_256_CBC_SHA256",
+        "SSL_DHE_RSA_WITH_AES_256_CBC_SHA",
+        "SSL_DHE_RSA_WITH_AES_128_GCM_SHA256",
+        "SSL_DHE_RSA_WITH_AES_128_CBC_SHA256",
+        "SSL_DHE_RSA_WITH_AES_128_CBC_SHA",
+        "SSL_RSA_WITH_AES_256_GCM_SHA384",
+        "SSL_RSA_WITH_AES_256_CBC_SHA256",
+        "SSL_RSA_WITH_AES_256_CBC_SHA",
+        "SSL_RSA_WITH_AES_128_GCM_SHA256",
+        "SSL_RSA_WITH_AES_128_CBC_SHA256",
+        "SSL_RSA_WITH_AES_128_CBC_SHA",
         "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
         "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384",
         "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA",
