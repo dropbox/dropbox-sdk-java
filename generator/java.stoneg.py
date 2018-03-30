@@ -47,6 +47,7 @@ from stone.ir import (
     Void,
 )
 from stone.backend import CodeBackend
+from stone.frontend.ir_generator import doc_ref_re
 
 @six.add_metaclass(abc.ABCMeta)
 class StoneType:
@@ -1623,9 +1624,18 @@ class JavaApi(object):
         cur_state = visibility.copy()
         while prev_state != cur_state:
             for namespace in api.namespaces.values():
+                if namespace.doc is not None:
+                    data_types = JavaApi._get_data_types_from_doc_ref(api, namespace.doc, namespace.name)
+                    for d in data_types:
+                        update_by_reference(d, namespace)
                 for data_type in namespace.data_types:
                     if not visibility[data_type].is_visible:
                         continue
+
+                    if data_type.doc is not None:
+                        data_types = JavaApi._get_data_types_from_doc_ref(api, data_type.doc, namespace.name)
+                        for d in data_types:
+                            update_by_reference(d, namespace)
 
                     for field in data_type.all_fields:
                         field_data_type = get_underlying_type(field.data_type)
@@ -1638,6 +1648,11 @@ class JavaApi(object):
                                 # otherwise, just update visibility so this class can properly reference
                                 # the field data type
                                 update_by_reference(field_data_type, namespace)
+
+                        if field.doc is not None:
+                            data_types = JavaApi._get_data_types_from_doc_ref(api, field.doc, namespace.name)
+                        for d in data_types:
+                            update_by_reference(d, namespace)
 
                     if is_struct_type(data_type):
                         if data_type.parent_type:
@@ -1687,14 +1702,28 @@ class JavaApi(object):
         cur_state = visibility.copy()
         while prev_state != cur_state:
             for namespace in api.namespaces.values():
+                if namespace.doc is not None:
+                    data_types = JavaApi._get_data_types_from_doc_ref(api, namespace.doc, namespace.name)
+                    for d in data_types:
+                        update_by_reference(d, namespace)
                 for data_type in namespace.data_types:
                     if not visibility[data_type].is_visible:
                         continue
+
+                    if data_type.doc is not None:
+                        data_types = JavaApi._get_data_types_from_doc_ref(api, data_type.doc, namespace.name)
+                        for d in data_types:
+                            update_by_reference(d, namespace)
 
                     for field in data_type.all_fields:
                         field_data_type = get_underlying_type(field.data_type)
                         if is_user_defined_type(field_data_type):
                             update_by_reference(field_data_type, namespace)
+
+                        if field.doc is not None:
+                            data_types = JavaApi._get_data_types_from_doc_ref(api, field.doc, namespace.name)
+                        for d in data_types:
+                            update_by_reference(d, namespace)
 
                     # parents need access to their enumerated subtype serializers
                     if is_struct_type(data_type) and data_type.has_enumerated_subtypes():
@@ -1705,6 +1734,81 @@ class JavaApi(object):
             cur_state = visibility.copy()
 
         return visibility
+
+    @staticmethod
+    def _get_data_types_from_doc_ref(api, doc, namespace_context):
+        """
+        Given a documentation string, parse it and return all references to other
+        data types. If there are references to routes, include also the data types of
+        those routes.
+        Args:
+        - doc: The documentation string to parse.
+        - namespace_context: The namespace name relative to this documentation.
+        Returns:
+        - a list of referenced data types
+        """
+        output = []
+        data_types, routes_by_ns = JavaApi._get_data_types_and_routes_from_doc_ref(
+            api, doc, namespace_context)
+        for d in data_types:
+            output.append(d)
+        for ns_name, routes in routes_by_ns.items():
+            ns = api.namespaces[ns_name]
+            for r in routes:
+                for d in ns.get_route_io_data_types_for_route(r):
+                    output.append(d)
+        return output
+
+    @staticmethod
+    def _get_data_types_and_routes_from_doc_ref(api, doc, namespace_context):
+        """
+        Given a documentation string, parse it and return all references to other
+        data types and routes.
+        Args:
+        - doc: The documentation string to parse.
+        - namespace_context: The namespace name relative to this documentation.
+        Returns:
+        - a tuple of referenced data types and routes
+        """
+        assert doc is not None
+        data_types = set()
+        routes = defaultdict(set)
+
+        for match in doc_ref_re.finditer(doc):
+            try:
+                tag = match.group('tag')
+                val = match.group('val')
+                supplied_namespace = api.namespaces[namespace_context]
+                if tag == 'field':
+                    if '.' in val:
+                        type_name, __ = val.split('.', 1)
+                        doc_type = supplied_namespace.data_type_by_name[type_name]
+                        data_types.add(doc_type)
+                    else:
+                        pass  # no action required, because we must be referencing the same object
+                elif tag == 'route':
+                    if '.' in val:
+                        namespace_name, val = val.split('.', 1)
+                        namespace = api.namespaces[namespace_name]
+                        route = namespace.route_by_name[val]
+                        routes[namespace_name].add(route)
+                    else:
+                        route = supplied_namespace.route_by_name[val]
+                        routes[supplied_namespace.name].add(route)
+                elif tag == 'type':
+                    if '.' in val:
+                        namespace_name, val = val.split('.', 1)
+                        doc_type = api.namespaces[namespace_name].data_type_by_name[val]
+                        data_types.add(doc_type)
+                    else:
+                        doc_type = supplied_namespace.data_type_by_name[val]
+                        data_types.add(doc_type)
+            except KeyError:
+                # We may reference a datatype or route that was filtered out, in which
+                # case just skip it and continue. We rely on the Stone layer to ensure
+                # that all these docrefs are valid to begin with.
+                continue
+        return data_types, routes
 
     @staticmethod
     def get_spec_filename(element):
