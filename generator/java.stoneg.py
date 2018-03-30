@@ -2406,6 +2406,8 @@ class JavaCodeGenerationInstance(object):
         self.api = api
         self.g = g
         self.j = JavaApi(api, self.g.args)
+        # some classes are unused, but we still want them to be generated
+        self._mark_special_unused_classes()
         self.refs = JavaReferences(self.j)
         # JavaClassWriter, created with self.class_writer(..)
         self.w = None
@@ -2431,9 +2433,6 @@ class JavaCodeGenerationInstance(object):
         self.update_javadoc_refs()
 
         self.generate_client()
-
-        # some classes are unused, but we still want them to be generated
-        self._mark_special_unused_classes()
 
         for namespace in self.api.namespaces.values():
             self.generate_namespace(namespace)

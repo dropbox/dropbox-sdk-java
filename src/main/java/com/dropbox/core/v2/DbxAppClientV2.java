@@ -4,6 +4,7 @@ import com.dropbox.core.DbxHost;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.DbxRequestUtil;
 import com.dropbox.core.http.HttpRequestor;
+import com.dropbox.core.v2.common.PathRoot;
 
 import java.util.List;
 
@@ -70,7 +71,7 @@ public class DbxAppClientV2 extends DbxAppClientV2Base {
         private final String secret;
 
         private DbxAppRawClientV2(DbxRequestConfig requestConfig, String key, String secret, DbxHost host, String userId) {
-            super(requestConfig, host, userId);
+            super(requestConfig, host, userId, null);
             this.key = key;
             this.secret = secret;
         }
@@ -78,6 +79,11 @@ public class DbxAppClientV2 extends DbxAppClientV2Base {
         @Override
         protected void addAuthHeaders(List<HttpRequestor.Header> headers) {
             DbxRequestUtil.addBasicAuthHeader(headers, key, secret);
+        }
+
+        @Override
+        protected DbxRawClientV2 withPathRoot(PathRoot pathRoot) {
+            throw new UnsupportedOperationException("App endpoints don't support Dropbox-API-Path-Root header.");
         }
     }
 }

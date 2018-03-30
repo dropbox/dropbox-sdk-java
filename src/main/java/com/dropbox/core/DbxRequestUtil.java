@@ -20,10 +20,11 @@ import com.dropbox.core.json.JsonReader;
 import com.dropbox.core.util.IOUtil;
 import com.dropbox.core.util.StringUtil;
 import com.dropbox.core.v2.auth.AccessError;
-import com.dropbox.core.v2.common.PathRootError;
-import com.dropbox.core.v2.common.PathRootError.Serializer;
 import com.dropbox.core.v2.callbacks.DbxGlobalCallbackFactory;
 import com.dropbox.core.v2.callbacks.DbxNetworkErrorCallback;
+import com.dropbox.core.v2.common.PathRoot;
+import com.dropbox.core.v2.common.PathRootError;
+import com.dropbox.core.v2.common.PathRootError.Serializer;
 
 import static com.dropbox.core.util.StringUtil.jq;
 import static com.dropbox.core.util.LangUtil.mkAssert;
@@ -149,6 +150,16 @@ public final class DbxRequestUtil {
 
     public static HttpRequestor.Header buildUserAgentHeader(DbxRequestConfig requestConfig, String sdkUserAgentIdentifier) {
         return new HttpRequestor.Header("User-Agent",  requestConfig.getClientIdentifier() + " " + sdkUserAgentIdentifier + "/" + DbxSdkVersion.Version);
+    }
+
+    public static List<HttpRequestor.Header> addPathRootHeader(/*@Nullable*/List<HttpRequestor.Header> headers, PathRoot pathRoot) {
+        if (pathRoot == null) {
+            return headers;
+        }
+
+        if (headers == null) headers = new ArrayList<HttpRequestor.Header>();
+        headers.add(new HttpRequestor.Header("Dropbox-API-Path-Root",  pathRoot.toString()));
+        return headers;
     }
 
     /**

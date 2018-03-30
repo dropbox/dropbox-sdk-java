@@ -4,6 +4,7 @@ import com.dropbox.core.DbxHost;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.DbxRequestUtil;
 import com.dropbox.core.http.HttpRequestor;
+import com.dropbox.core.v2.common.PathRoot;
 
 import java.util.List;
 
@@ -59,13 +60,12 @@ public class DbxClientV2 extends DbxClientV2Base {
      *     testing)
      */
     public DbxClientV2(DbxRequestConfig requestConfig, String accessToken, DbxHost host) {
-        super(new DbxUserRawClientV2(requestConfig, accessToken, host, null));
+        this(requestConfig, accessToken, host, null);
     }
 
     /**
-     * Same as {@link #DbxClientV2(DbxRequestConfig, String)} except you can
-     * also set the hostnames of the Dropbox API servers. This is used in
-     * testing. You don't normally need to call this.
+     * Same as {@link #DbxClientV2(DbxRequestConfig, String, DbxHost)} except you can
+     * also set the userId for multiple Dropbox accounts.
      *
      * @param requestConfig  Default attributes to use for each request
      * @param accessToken  OAuth 2 access token (that you got from Dropbox) that
@@ -77,7 +77,7 @@ public class DbxClientV2 extends DbxClientV2Base {
      *               account use-case.
      */
     public DbxClientV2(DbxRequestConfig requestConfig, String accessToken, DbxHost host, String userId) {
-        super(new DbxUserRawClientV2(requestConfig, accessToken, host, userId));
+        super(new DbxUserRawClientV2(requestConfig, accessToken, host, userId, null));
     }
 
     /**
@@ -92,13 +92,34 @@ public class DbxClientV2 extends DbxClientV2Base {
     }
 
     /**
+     * Returns a new {@link DbxClientV2} that performs requests against Dropbox API
+     * user endpoints relative to a namespace without including the namespace as
+     * part of the path variable for every request.
+     * (<a href="https://www.dropbox.com/developers/reference/namespace-guide#pathrootmodes">https://www.dropbox.com/developers/reference/namespace-guide#pathrootmodes</a>).
+     *
+     * <p> This method performs no validation of the namespace ID. </p>
+     *
+     * @param pathRoot  the path root for this client, never {@code null}.
+     *
+     * @return Dropbox client that issues requests with Dropbox-API-Path-Root header.
+     *
+     * @throws IllegalArgumentException  If {@code pathRoot} is {@code null}
+     */
+    public DbxClientV2 withPathRoot(PathRoot pathRoot) {
+        if (pathRoot == null) {
+            throw new IllegalArgumentException("'pathRoot' should not be null");
+        }
+        return new DbxClientV2(_client.withPathRoot(pathRoot));
+    }
+
+    /**
      * {@link DbxRawClientV2} raw client that adds user OAuth2 auth headers to all requests.
      */
     private static final class DbxUserRawClientV2 extends DbxRawClientV2 {
         private final String accessToken;
 
-        public DbxUserRawClientV2(DbxRequestConfig requestConfig, String accessToken, DbxHost host, String userId) {
-            super(requestConfig, host, userId);
+        public DbxUserRawClientV2(DbxRequestConfig requestConfig, String accessToken, DbxHost host, String userId, PathRoot pathRoot) {
+            super(requestConfig, host, userId, pathRoot);
 
             if (accessToken == null) throw new NullPointerException("accessToken");
 
@@ -108,6 +129,17 @@ public class DbxClientV2 extends DbxClientV2Base {
         @Override
         protected void addAuthHeaders(List<HttpRequestor.Header> headers) {
             DbxRequestUtil.addAuthHeader(headers, accessToken);
+        }
+
+        @Override
+        protected DbxRawClientV2 withPathRoot(PathRoot pathRoot) {
+            return new DbxUserRawClientV2(
+                this.getRequestConfig(),
+                this.accessToken,
+                this.getHost(),
+                this.getUserId(),
+                pathRoot
+            );
         }
     }
 }

@@ -143,7 +143,7 @@ project.sourceSets.all { SourceSet sourceSet ->
 
 
 generateStone {
-    String unusedClassesToGenerate = 'PathRootError, AccessError, RateLimitError'
+    String unusedClassesToGenerate = 'PathRoot, PathRootError, AccessError, RateLimitError'
     config = new StoneConfig(
         packageName: 'com.dropbox.core.v2',
         globalRouteFilter: 'alpha_group=null and beta_group=null',

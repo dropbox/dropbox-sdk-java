@@ -1,6 +1,7 @@
 package com.dropbox.core.v2;
 
 import static com.dropbox.core.DbxRequestUtil.addUserLocaleHeader;
+import static com.dropbox.core.DbxRequestUtil.addPathRootHeader;
 
 import com.dropbox.core.BadResponseException;
 import com.dropbox.core.DbxDownloader;
@@ -16,6 +17,7 @@ import com.dropbox.core.RetryException;
 import com.dropbox.core.stone.StoneSerializer;
 import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.util.LangUtil;
+import com.dropbox.core.v2.common.PathRoot;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -56,19 +58,23 @@ public abstract class DbxRawClientV2 {
     /* for multiple Dropbox account use-case */
     private final String userId;
 
+    private final PathRoot pathRoot;
+
     /**
      * @param requestConfig Configuration controlling How requests should be issued to Dropbox
      * servers.
      * @param host Dropbox server hostnames (primarily for internal use)
      * @param userId The user ID of the current Dropbox account. Used for multi-Dropbox account use-case.
+     * @param pathRoot We will send this value in Dropbox-API-Path-Root header if it presents.
      */
-    protected DbxRawClientV2(DbxRequestConfig requestConfig, DbxHost host, String userId) {
+    protected DbxRawClientV2(DbxRequestConfig requestConfig, DbxHost host, String userId, PathRoot pathRoot) {
         if (requestConfig == null) throw new NullPointerException("requestConfig");
         if (host == null) throw new NullPointerException("host");
 
         this.requestConfig = requestConfig;
         this.host = host;
         this.userId = userId;
+        this.pathRoot = pathRoot;
     }
 
     /**
@@ -77,6 +83,13 @@ public abstract class DbxRawClientV2 {
      * @param headers List of request headers. Add authentication headers to this list.
      */
     protected abstract void addAuthHeaders(List<HttpRequestor.Header> headers);
+
+    /**
+     * Clone a new DbxRawClientV2 with Dropbox-API-Path-Root header.
+     *
+     * @param pathRoot {@code pathRoot} object containing the content for Dropbox-API-Path-Root header.
+     */
+    protected abstract DbxRawClientV2 withPathRoot(PathRoot pathRoot);
 
     public <ArgT,ResT,ErrT> ResT rpcStyle(final String host,
                                           final String path,
@@ -95,6 +108,7 @@ public abstract class DbxRawClientV2 {
         if (!this.host.getNotify().equals(host)) {
             // TODO(krieb): fix this ugliness
             addUserLocaleHeader(headers, requestConfig);
+            addPathRootHeader(headers, this.pathRoot);
         }
 
         headers.add(new HttpRequestor.Header("Content-Type", "application/json; charset=utf-8"));
@@ -144,6 +158,7 @@ public abstract class DbxRawClientV2 {
             addAuthHeaders(headers);
         }
         addUserLocaleHeader(headers, requestConfig);
+        addPathRootHeader(headers, this.pathRoot);
         headers.add(new HttpRequestor.Header("Dropbox-API-Arg", headerSafeJson(argSerializer, arg)));
         headers.add(new HttpRequestor.Header("Content-Type", ""));
 
@@ -233,6 +248,7 @@ public abstract class DbxRawClientV2 {
             addAuthHeaders(headers);
         }
         addUserLocaleHeader(headers, requestConfig);
+        addPathRootHeader(headers, this.pathRoot);
         headers.add(new HttpRequestor.Header("Content-Type", "application/octet-stream"));
         headers = DbxRequestUtil.addUserAgentHeader(headers, requestConfig, USER_AGENT_ID);
         headers.add(new HttpRequestor.Header("Dropbox-API-Arg", headerSafeJson(argSerializer, arg)));

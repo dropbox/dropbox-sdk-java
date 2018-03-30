@@ -4,6 +4,7 @@ import com.dropbox.core.DbxHost;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.DbxRequestUtil;
 import com.dropbox.core.http.HttpRequestor;
+import com.dropbox.core.v2.common.PathRoot;
 
 import java.util.List;
 
@@ -50,14 +51,12 @@ public class DbxTeamClientV2 extends DbxTeamClientV2Base {
      *     testing)
      */
     public DbxTeamClientV2(DbxRequestConfig requestConfig, String accessToken, DbxHost host) {
-        super(new DbxTeamRawClientV2(requestConfig, host, accessToken, null, null));
-        this.accessToken = accessToken;
+        this(requestConfig, accessToken, host, null);
     }
 
     /**
-     * Same as {@link #DbxTeamClientV2(DbxRequestConfig, String)} except you can
-     * also set the hostnames of the Dropbox API servers. This is used in
-     * testing. You don't normally need to call this.
+     * Same as {@link #DbxTeamClientV2(DbxRequestConfig, String, DbxHost)} except you can
+     * also set the userId for multiple Dropbox accounts.
      *
      * @param requestConfig  Default attributes to use for each request
      * @param accessToken  OAuth 2 access token (that you got from Dropbox) that
@@ -69,7 +68,7 @@ public class DbxTeamClientV2 extends DbxTeamClientV2Base {
      *               multi-Dropbox account use-case.
      */
     public DbxTeamClientV2(DbxRequestConfig requestConfig, String accessToken, DbxHost host, String userId) {
-        super(new DbxTeamRawClientV2(requestConfig, host, accessToken, userId, null));
+        super(new DbxTeamRawClientV2(requestConfig, host, accessToken, userId, null, null));
         this.accessToken = accessToken;
     }
 
@@ -97,7 +96,8 @@ public class DbxTeamClientV2 extends DbxTeamClientV2Base {
             _client.getHost(),
             accessToken,
             _client.getUserId(),
-            memberId
+            memberId,
+            null
         );
         return new DbxClientV2(asMemberClient);
     }
@@ -112,11 +112,11 @@ public class DbxTeamClientV2 extends DbxTeamClientV2Base {
         private final String memberId;
 
         private DbxTeamRawClientV2(DbxRequestConfig requestConfig, DbxHost host, String accessToken) {
-            this(requestConfig, host, accessToken, null, null);
+            this(requestConfig, host, accessToken, null, null, null);
         }
 
-        private DbxTeamRawClientV2(DbxRequestConfig requestConfig, DbxHost host, String accessToken, String userId, String memberId) {
-            super(requestConfig, host, userId);
+        private DbxTeamRawClientV2(DbxRequestConfig requestConfig, DbxHost host, String accessToken, String userId, String memberId, PathRoot pathRoot) {
+            super(requestConfig, host, userId, pathRoot);
 
             if (accessToken == null) throw new NullPointerException("accessToken");
 
@@ -130,6 +130,18 @@ public class DbxTeamClientV2 extends DbxTeamClientV2Base {
             if (memberId != null) {
                 DbxRequestUtil.addSelectUserHeader(headers, memberId);
             }
+        }
+
+        @Override
+        protected DbxRawClientV2 withPathRoot(PathRoot pathRoot) {
+            return new DbxTeamRawClientV2(
+                this.getRequestConfig(),
+                this.getHost(),
+                this.accessToken,
+                this.getUserId(),
+                this.memberId,
+                pathRoot
+            );
         }
     }
 }
