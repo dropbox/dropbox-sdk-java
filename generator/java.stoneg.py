@@ -47,7 +47,7 @@ from stone.ir import (
     Void,
 )
 from stone.backend import CodeBackend
-from stone.frontend.ir_generator import doc_ref_re, parse_data_types_from_doc_ref
+from stone.frontend.ir_generator import parse_data_types_from_doc_ref
 
 @six.add_metaclass(abc.ABCMeta)
 class StoneType:
