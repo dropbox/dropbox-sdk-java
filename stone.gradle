@@ -6,6 +6,7 @@ class StoneConfig {
     String globalRouteFilter = null
     boolean dataTypesOnly = false
     List<ClientSpec> clients = []
+    String routeWhitelistFilter = null
 }
 
 class ClientSpec {
@@ -48,6 +49,9 @@ def runStoneGenerator(StoneConfig config,
 
             environment PYTHONPATH: stoneDir.absolutePath
             args "--clean-build"
+            if (config.routeWhitelistFilter) {
+                args "--route-whitelist-filter", config.routeWhitelistFilter
+            }
             args generatorFile.absolutePath
             args srcOutputDir.absolutePath
             args specFiles.collect({ f -> f.absolutePath })
@@ -81,6 +85,9 @@ def runStoneGenerator(StoneConfig config,
             if (routeFilter) {
                 args "--filter-by-route-attr", routeFilter
             }
+            if (config.routeWhitelistFilter) {
+                args "--route-whitelist-filter", config.routeWhitelistFilter
+            }
             args generatorFile.absolutePath
             args srcOutputDir.absolutePath
             args specFiles.collect({ f -> f.absolutePath })
@@ -113,6 +120,7 @@ project.sourceSets.all { SourceSet sourceSet ->
         description "Generate Stone Java source files for ${sourceSet.name}."
 
         def specDirPropName = "com.dropbox.api.${sourceSet.name}.specDir".toString()
+        def routeWhitelistFilterPropName = "com.dropbox.api.${sourceSet.name}.routeWhitelistFilter".toString()
 
         ext {
             config = new StoneConfig()
@@ -120,6 +128,7 @@ project.sourceSets.all { SourceSet sourceSet ->
             stoneDir = 'stone'
             specDir = project.properties.get(specDirPropName, "src/${sourceSet.name}/stone")
             outputDir = "${project.buildDir}/generated/source/stone/${sourceSet.name}"
+            routeWhitelistFilter = project.properties.get(routeWhitelistFilterPropName, null)
         }
 
         def getSpecFiles = { fileTree(dir: specDir, include: '**/*.stone') }
@@ -132,6 +141,7 @@ project.sourceSets.all { SourceSet sourceSet ->
         doLast {
             def generatorFile = fileTree(dir: generatorDir, include: '**/*stoneg.py').getSingleFile()
             def specFiles = getSpecFiles().getFiles()
+            config.routeWhitelistFilter = routeWhitelistFilter
             runStoneGenerator config, file(stoneDir), generatorFile, specFiles, file(outputDir)
         }
     }

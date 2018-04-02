@@ -47,6 +47,7 @@ from stone.ir import (
     Void,
 )
 from stone.backend import CodeBackend
+from stone.frontend.ir_generator import parse_data_types_from_doc_ref
 
 @six.add_metaclass(abc.ABCMeta)
 class StoneType:
@@ -1623,9 +1624,20 @@ class JavaApi(object):
         cur_state = visibility.copy()
         while prev_state != cur_state:
             for namespace in api.namespaces.values():
+                if namespace.doc is not None:
+                    data_types = parse_data_types_from_doc_ref(api, namespace.doc, namespace.name,
+                                                               ignore_missing_entries=True)
+                    for d in data_types:
+                        update_by_reference(d, namespace)
                 for data_type in namespace.data_types:
                     if not visibility[data_type].is_visible:
                         continue
+
+                    if data_type.doc is not None:
+                        data_types = parse_data_types_from_doc_ref(api, data_type.doc, namespace.name,
+                                                                   ignore_missing_entries=True)
+                        for d in data_types:
+                            update_by_reference(d, namespace)
 
                     for field in data_type.all_fields:
                         field_data_type = get_underlying_type(field.data_type)
@@ -1638,6 +1650,12 @@ class JavaApi(object):
                                 # otherwise, just update visibility so this class can properly reference
                                 # the field data type
                                 update_by_reference(field_data_type, namespace)
+
+                        if field.doc is not None:
+                            data_types = parse_data_types_from_doc_ref(api, field.doc, namespace.name,
+                                                                       ignore_missing_entries=True)
+                            for d in data_types:
+                                update_by_reference(d, namespace)
 
                     if is_struct_type(data_type):
                         if data_type.parent_type:
@@ -1687,14 +1705,31 @@ class JavaApi(object):
         cur_state = visibility.copy()
         while prev_state != cur_state:
             for namespace in api.namespaces.values():
+                if namespace.doc is not None:
+                    data_types = parse_data_types_from_doc_ref(api, namespace.doc, namespace.name,
+                                                               ignore_missing_entries=True)
+                    for d in data_types:
+                        update_by_reference(d, namespace)
                 for data_type in namespace.data_types:
                     if not visibility[data_type].is_visible:
                         continue
+
+                    if data_type.doc is not None:
+                        data_types = parse_data_types_from_doc_ref(api, data_type.doc, namespace.name,
+                                                                   ignore_missing_entries=True)
+                        for d in data_types:
+                            update_by_reference(d, namespace)
 
                     for field in data_type.all_fields:
                         field_data_type = get_underlying_type(field.data_type)
                         if is_user_defined_type(field_data_type):
                             update_by_reference(field_data_type, namespace)
+
+                        if field.doc is not None:
+                            data_types = parse_data_types_from_doc_ref(api, field.doc, namespace.name,
+                                                                       ignore_missing_entries=True)
+                            for d in data_types:
+                                update_by_reference(d, namespace)
 
                     # parents need access to their enumerated subtype serializers
                     if is_struct_type(data_type) and data_type.has_enumerated_subtypes():
