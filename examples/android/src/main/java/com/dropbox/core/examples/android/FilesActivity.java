@@ -70,7 +70,8 @@ public class FilesActivity extends DropboxActivity {
                 performWithPermissions(FileAction.UPLOAD);
             }
         });
-
+        //init picaso client
+        PicassoClient.init(this,DropboxClientFactory.getClient());
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.files_list);
         mFilesAdapter = new FilesAdapter(PicassoClient.getPicasso(), new FilesAdapter.Callback() {
             @Override
