@@ -1,4 +1,6 @@
 import org.gradle.internal.os.OperatingSystem
+import aQute.bnd.gradle.Baseline
+
 
 apply plugin: 'java'
 apply plugin: 'osgi'
@@ -8,7 +10,7 @@ apply plugin: 'com.github.ben-manes.versions' // dependencyUpdates task
 description = 'Official Java client library for the Dropbox API.'
 group = 'com.dropbox.core'
 archivesBaseName = 'dropbox-core-sdk'
-version = '0-SNAPSHOT'
+version = '3.0.6-SNAPSHOT'
 sourceCompatibility = JavaVersion.VERSION_1_6
 targetCompatibility = JavaVersion.VERSION_1_6
 
@@ -63,11 +65,17 @@ buildscript {
     dependencies {
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.12.0'
         classpath 'com.dropbox.maven:pem-converter-maven-plugin:1.0'
+        classpath 'biz.aQute.bnd:biz.aQute.bnd.gradle:3.5.0'
     }
 }
 
 repositories {
     mavenCentral()
+}
+
+configurations {
+    withoutOsgi.extendsFrom compile
+    baseline
 }
 
 dependencies {
@@ -92,10 +100,11 @@ dependencies {
     testCompile 'com.squareup.okhttp:okhttp:2.7.5'
     testCompile 'com.squareup.okhttp3:okhttp:3.5.0'
     testCompile 'com.google.guava:guava:19.0'
-}
 
-configurations {
-    withoutOsgi.extendsFrom compile
+    baseline('group': group, 'name': jar.baseName, 'version': 'latest.release') {
+        force = true
+        transitive = false
+      }
 }
 
 processResources {
@@ -127,7 +136,13 @@ compileJava {
     options.encoding = 'utf-8'
 }
 
+task baseline(type: Baseline) {
+  bundle jar
+  baseline configurations.baseline
+}
+
 test {
+    dependsOn baseline
     useTestNG()
 
     // TestNG specific options
@@ -230,6 +245,37 @@ jar {
         name project.name
         description project.description
         license project.basePom.getModel().getLicenses()[0].url
+        instruction 'Import-Package',
+            'android.*;resolution:=optional',
+            'com.google.appengine.*;resolution:=optional',
+            'com.squareup.okhttp;resolution:=optional',
+            'okhttp3;resolution:=optional',
+            'okio;resolution:=optional',
+            '*'
+        instruction 'Export-Package',
+            'com.dropbox.core;version=3.0.5',
+            'com.dropbox.core.android;version=3.0.5',
+            'com.dropbox.core.http;version=3.0.5',
+            'com.dropbox.core.json;version=3.0.5',
+            'com.dropbox.core.stone;version=3.0.5',
+            'com.dropbox.core.util;version=3.0.5',
+            'com.dropbox.core.v1;version=3.0.5',
+            'com.dropbox.core.v2;version=3.0.5',
+            'com.dropbox.core.v2.async;version=3.0.5',
+            'com.dropbox.core.v2.auth;version=3.0.5',
+            'com.dropbox.core.v2.callbacks;version=3.0.5',
+            'com.dropbox.core.v2.common;version=3.0.5',
+            'com.dropbox.core.v2.fileproperties;version=3.0.5',
+            'com.dropbox.core.v2.filerequests;version=3.0.5',
+            'com.dropbox.core.v2.files;version=3.0.5',
+            'com.dropbox.core.v2.paper;version=3.0.5',
+            'com.dropbox.core.v2.sharing;version=3.0.5',
+            'com.dropbox.core.v2.team;version=3.0.5',
+            'com.dropbox.core.v2.teamcommon;version=3.0.5',
+            'com.dropbox.core.v2.teamlog;version=3.0.5',
+            'com.dropbox.core.v2.teampolicies;version=3.0.5',
+            'com.dropbox.core.v2.users;version=3.0.5',
+            'com.dropbox.core.v2.userscommon;version=3.0.5'
 
         def noeeProp = 'osgi.bnd.noee'
         def noee = project.properties.get(noeeProp, System.properties.get(noeeProp, 'false'))
