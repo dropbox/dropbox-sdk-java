@@ -14,6 +14,7 @@ com.dropbox.core.v2.fileproperties
 com.dropbox.core.v2.filerequests
 com.dropbox.core.v2.files
 com.dropbox.core.v2.paper
+com.dropbox.core.v2.seenstate
 com.dropbox.core.v2.sharing
 com.dropbox.core.v2.team
 com.dropbox.core.v2.teamcommon
