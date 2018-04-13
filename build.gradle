@@ -233,6 +233,9 @@ jar {
         instruction 'Import-Package',
             'android.*;resolution:=optional',
             'com.google.appengine.*;resolution:=optional',
+            'com.squareup.okhttp;resolution:=optional',
+            'okhttp3;resolution:=optional',
+            'okio;resolution:=optional',
             '*'
 
         def noeeProp = 'osgi.bnd.noee'
