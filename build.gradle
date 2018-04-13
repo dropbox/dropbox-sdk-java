@@ -230,6 +230,10 @@ jar {
         name project.name
         description project.description
         license project.basePom.getModel().getLicenses()[0].url
+        instruction 'Import-Package',
+            'android.*;resolution:=optional',
+            'com.google.appengine.*;resolution:=optional',
+            '*'
 
         def noeeProp = 'osgi.bnd.noee'
         def noee = project.properties.get(noeeProp, System.properties.get(noeeProp, 'false'))
