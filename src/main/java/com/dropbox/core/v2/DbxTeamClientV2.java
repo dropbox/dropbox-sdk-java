@@ -68,7 +68,7 @@ public class DbxTeamClientV2 extends DbxTeamClientV2Base {
      *               multi-Dropbox account use-case.
      */
     public DbxTeamClientV2(DbxRequestConfig requestConfig, String accessToken, DbxHost host, String userId) {
-        super(new DbxTeamRawClientV2(requestConfig, host, accessToken, userId, null, null));
+        super(new DbxTeamRawClientV2(requestConfig, host, accessToken, userId, null, null, null));
         this.accessToken = accessToken;
     }
 
@@ -97,9 +97,41 @@ public class DbxTeamClientV2 extends DbxTeamClientV2Base {
             accessToken,
             _client.getUserId(),
             memberId,
+            null,
             null
         );
         return new DbxClientV2(asMemberClient);
+    }
+
+    /**
+     * Returns a {@link DbxClientV2} that performs requests against Dropbox API
+     * user endpoints as the given team admin.
+     *
+     * <p> This method performs no validation of the team admin ID. </p>
+     *
+     * @param adminId  Team member ID of the admin in client's team, never
+     *     {@code null}.
+     *
+     * @return Dropbox client that issues requests to user endpoints as the
+     *     given team Admin.
+     *
+     * @throws IllegalArgumentException  If {@code adminId} is {@code null}
+     */
+    public DbxClientV2 asAdmin(String adminId) {
+        if (adminId == null) {
+            throw new IllegalArgumentException("'adminId' should not be null");
+        }
+
+        DbxRawClientV2 asAdminClient = new DbxTeamRawClientV2(
+            _client.getRequestConfig(),
+            _client.getHost(),
+            accessToken,
+            _client.getUserId(),
+            null,
+            adminId,
+            null
+        );
+        return new DbxClientV2(asAdminClient);
     }
 
     /**
@@ -110,18 +142,22 @@ public class DbxTeamClientV2 extends DbxTeamClientV2Base {
     private static final class DbxTeamRawClientV2 extends DbxRawClientV2 {
         private final String accessToken;
         private final String memberId;
+        private final String adminId;
 
         private DbxTeamRawClientV2(DbxRequestConfig requestConfig, DbxHost host, String accessToken) {
-            this(requestConfig, host, accessToken, null, null, null);
+            this(requestConfig, host, accessToken, null, null, null, null);
         }
 
-        private DbxTeamRawClientV2(DbxRequestConfig requestConfig, DbxHost host, String accessToken, String userId, String memberId, PathRoot pathRoot) {
+        private DbxTeamRawClientV2(
+            DbxRequestConfig requestConfig, DbxHost host, String accessToken, String userId, String memberId,
+            String adminId, PathRoot pathRoot) {
             super(requestConfig, host, userId, pathRoot);
 
             if (accessToken == null) throw new NullPointerException("accessToken");
 
             this.accessToken = accessToken;
             this.memberId = memberId;
+            this.adminId = adminId;
         }
 
         @Override
@@ -129,6 +165,9 @@ public class DbxTeamClientV2 extends DbxTeamClientV2Base {
             DbxRequestUtil.addAuthHeader(headers, accessToken);
             if (memberId != null) {
                 DbxRequestUtil.addSelectUserHeader(headers, memberId);
+            }
+            if (adminId != null) {
+                DbxRequestUtil.addSelectAdminHeader(headers, adminId);
             }
         }
 
@@ -140,6 +179,7 @@ public class DbxTeamClientV2 extends DbxTeamClientV2Base {
                 this.accessToken,
                 this.getUserId(),
                 this.memberId,
+                this.adminId,
                 pathRoot
             );
         }

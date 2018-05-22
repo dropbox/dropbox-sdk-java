@@ -117,6 +117,14 @@ public final class DbxRequestUtil {
         return headers;
     }
 
+    public static List<HttpRequestor.Header> addSelectAdminHeader(/*@Nullable*/List<HttpRequestor.Header> headers, String adminId) {
+        if (adminId == null) throw new NullPointerException("adminId");
+        if (headers == null) headers = new ArrayList<HttpRequestor.Header>();
+
+        headers.add(new HttpRequestor.Header("Dropbox-API-Select-Admin", adminId));
+        return headers;
+    }
+
     public static List<HttpRequestor.Header> addBasicAuthHeader(/*@Nullable*/List<HttpRequestor.Header> headers, String username, String password) {
         if (username == null) throw new NullPointerException("username");
         if (password == null) throw new NullPointerException("password");
