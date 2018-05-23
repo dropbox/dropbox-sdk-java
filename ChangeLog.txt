@@ -10,6 +10,7 @@
   - Namespace Team_log:
     - Additional documentation.
 - Add asAdmin to DbxTeamClientV2.
+- Support SSL_* ciphers in ALLOWED_CIPHER_SUITES.
 
 3.0.7 (2018-04-13)
 ---------------------------------------------
