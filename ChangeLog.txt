@@ -1,3 +1,16 @@
+3.0.8 (2018-05-22)
+---------------------------------------------
+- Update to Latest API specs:
+  - Namespace Files:
+    - Added new too_large error type for uploads.
+    - New documentation.
+  - Namespace Team:
+    - Add is_directory_restricted attribute to memberprofile, memberaddarg.
+    - Add new_is_directory_restricted to membersetprofilearg.
+  - Namespace Team_log:
+    - Additional documentation.
+- Add asAdmin to DbxTeamClientV2.
+
 3.0.7 (2018-04-13)
 ---------------------------------------------
 - Update to Latest API specs:
@@ -44,7 +57,6 @@
     - Updated routes with select_admin_mode attribute.
 - Add withPathRoot to DbxClientV2.
 - Make Android and GAE optional in OSGI Import-Package statements.
-
 
 3.0.6 (2018-01-14)
 ---------------------------------------------
