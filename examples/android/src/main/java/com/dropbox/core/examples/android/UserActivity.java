@@ -1,7 +1,6 @@
 package com.dropbox.core.examples.android;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;

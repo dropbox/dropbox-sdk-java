@@ -3,10 +3,11 @@
 buildscript {
     repositories {
         jcenter()
+        google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.0'
-        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.5.2'
+        classpath 'com.android.tools.build:gradle:3.2.0-beta01'
+        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.8.3'
     }
 }
 
@@ -14,19 +15,19 @@ allprojects {
     repositories {
         jcenter()
         mavenLocal()
+        google()
     }
 }
 
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+    compileSdkVersion 28
 
     defaultConfig {
         applicationId "com.dropbox.core.examples.android"
         minSdkVersion 19
-        targetSdkVersion 26
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
     }
@@ -58,15 +59,12 @@ android {
 }
 
 dependencies {
-    compile group: 'com.dropbox.core', name: 'dropbox-core-sdk', version: '0-SNAPSHOT', changing: true
-    compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'com.android.support:design:23.1.1'
-    compile 'com.android.support:recyclerview-v7:23.1.1'
-    // picasso 2.5.2 doesn't have OkHttp3 support (although it exists
-    // on master). Must use OkHttp v2 and v3 until new picasso release
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.squareup.okhttp:okhttp:2.7.5'
-    compile 'com.squareup.okhttp3:okhttp:3.5.0'
+    implementation group: 'com.dropbox.core', name: 'dropbox-core-sdk', version: '0-SNAPSHOT', changing: true
+    implementation 'com.android.support:appcompat-v7:28.0.0-alpha3'
+    implementation 'com.android.support:design:28.0.0-alpha3'
+    implementation 'com.android.support:recyclerview-v7:28.0.0-alpha3'
+    implementation 'com.squareup.picasso:picasso:2.71828'
+    api 'com.squareup.okhttp3:okhttp:3.10.0'
 }
 
 apply plugin: 'com.getkeepsafe.dexcount'
