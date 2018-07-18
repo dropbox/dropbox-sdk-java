@@ -109,6 +109,14 @@ public abstract class DbxUploader<R, E, X extends DbxApiException> implements Cl
         }
     }
 
+    public HttpRequestor.Uploader getHttpUploader() {
+        return httpUploader;
+    }
+
+    public boolean getFinished() {
+        return finished;
+    }
+
     /**
      * Uploads up to {@code limit} bytes read from the given {@link InputStream} and returns the
      * response.

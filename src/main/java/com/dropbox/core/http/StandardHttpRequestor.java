@@ -124,13 +124,13 @@ public class StandardHttpRequestor extends HttpRequestor {
     }
 
     private class Uploader extends HttpRequestor.Uploader {
-        private final OutputStream out;
+        private final ProgressOutputStream out;
 
         private HttpURLConnection conn;
 
         public Uploader(HttpURLConnection conn) throws IOException {
             this.conn = conn;
-            this.out = getOutputStream(conn);
+            this.out = new ProgressOutputStream(getOutputStream(conn));
 
             conn.connect();
         }
@@ -138,6 +138,11 @@ public class StandardHttpRequestor extends HttpRequestor {
         @Override
         public OutputStream getBody() {
             return out;
+        }
+
+        @Override
+        public int getCompleted() {
+            return this.out.getCompleted();
         }
 
         @Override
@@ -180,7 +185,54 @@ public class StandardHttpRequestor extends HttpRequestor {
                 conn = null;
             }
         }
+
+        public class ProgressOutputStream extends OutputStream {
+            private int completed;
+            private OutputStream underlying;
+
+            public ProgressOutputStream(OutputStream underlying) {
+                this.underlying = underlying;
+                this.completed = 0;
+            }
+
+            @Override
+            public void write(byte[] data, int off, int len) throws IOException {
+                this.underlying.write(data, off, len);
+                track(len);
+            }
+
+            @Override
+            public void write(byte[] data) throws IOException {
+                this.underlying.write(data);
+                track(data.length);
+            }
+
+            @Override
+            public void write(int c) throws IOException {
+                this.underlying.write(c);
+                track(1);
+            }
+
+            @Override
+            public void flush() throws IOException {
+                this.underlying.flush();
+            }
+
+            public void close() throws IOException {
+                this.underlying.close();
+            }
+
+
+            private void track(int len) {
+                this.completed += len;
+            }
+
+            public int getCompleted() {
+                return this.completed;
+            }
+        }
     }
+
 
     private HttpURLConnection prepRequest(String url, Iterable<Header> headers) throws IOException {
         URL urlObject = new URL(url);
@@ -190,6 +242,7 @@ public class StandardHttpRequestor extends HttpRequestor {
         conn.setReadTimeout((int) config.getReadTimeoutMillis());
         conn.setUseCaches(false);
         conn.setAllowUserInteraction(false);
+        conn.setChunkedStreamingMode(1000);
 
         // Some JREs (like the one provided by Google AppEngine) will return HttpURLConnection
         // instead of HttpsURLConnection. So we have to check here.

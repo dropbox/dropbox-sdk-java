@@ -109,6 +109,10 @@ public abstract class HttpRequestor
                 out.close();
             }
         }
+
+        public int getCompleted() {
+            return 0;
+        }
     }
 
     public static final class Response {

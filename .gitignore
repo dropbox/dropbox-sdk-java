@@ -26,3 +26,6 @@ classyshark*
 
 # macOS
 *.DS_Store
+
+# generated javaclass
+out/

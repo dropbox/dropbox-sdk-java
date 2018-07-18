@@ -9,14 +9,7 @@ import com.dropbox.core.RetryException;
 import com.dropbox.core.json.JsonReader;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.DbxPathV2;
-import com.dropbox.core.v2.files.CommitInfo;
-import com.dropbox.core.v2.files.FileMetadata;
-import com.dropbox.core.v2.files.UploadErrorException;
-import com.dropbox.core.v2.files.UploadSessionCursor;
-import com.dropbox.core.v2.files.UploadSessionFinishErrorException;
-import com.dropbox.core.v2.files.UploadSessionLookupErrorException;
-import com.dropbox.core.v2.files.UploadSessionOffsetError;
-import com.dropbox.core.v2.files.WriteMode;
+import com.dropbox.core.v2.files.*;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -34,7 +27,7 @@ public class Main {
     // Adjust the chunk size based on your network speed and reliability. Larger chunk sizes will
     // result in fewer network requests, which will be faster. But if an error occurs, the entire
     // chunk will be lost and have to be re-uploaded. Use a multiple of 4MiB for your chunk size.
-    private static final long CHUNKED_UPLOAD_CHUNK_SIZE = 8L << 20; // 8MiB
+    private static final long CHUNKED_UPLOAD_CHUNK_SIZE = 8L << 30; // 8MiB
     private static final int CHUNKED_UPLOAD_MAX_ATTEMPTS = 5;
 
     /**
@@ -47,12 +40,26 @@ public class Main {
      */
     private static void uploadFile(DbxClientV2 dbxClient, File localFile, String dropboxPath) {
         try (InputStream in = new FileInputStream(localFile)) {
-            FileMetadata metadata = dbxClient.files().uploadBuilder(dropboxPath)
+            UploadUploader uploadUploader = dbxClient.files().uploadBuilder(dropboxPath)
                 .withMode(WriteMode.ADD)
                 .withClientModified(new Date(localFile.lastModified()))
-                .uploadAndFinish(in);
+                .start();
 
+            new Thread(() -> {
+                while (uploadUploader.getHttpUploader().getCompleted() < localFile.length()) {
+                    int c = uploadUploader.getHttpUploader().getCompleted();
+                    System.out.println("Uploaded " + c + " bytes.");
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+
+            Metadata metadata = uploadUploader.uploadAndFinish(in);
             System.out.println(metadata.toStringMultiline());
+            System.out.println(uploadUploader.getHttpUploader().getCompleted());
         } catch (UploadErrorException ex) {
             System.err.println("Error uploading to Dropbox: " + ex.getMessage());
             System.exit(1);
