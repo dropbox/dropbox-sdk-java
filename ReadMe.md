@@ -42,6 +42,7 @@ To use the Dropbox API, you'll need to register a new app in the [App Console](h
 In order to make calls to the API, you'll need an instance of the Dropbox object. To instantiate, pass in the access token for the account you want to link. (Tip: You can [generate an access token](https://blogs.dropbox.com/developers/2014/05/generate-an-access-token-for-your-own-account/) for your own account through the [App Console](https://www.dropbox.com/developers/apps)).
 
 ```java
+import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.v2.DbxClientV2;
 
@@ -50,7 +51,7 @@ public class Main {
 
     public static void main(String args[]) throws DbxException {
         // Create Dropbox client
-        DbxRequestConfig config = new DbxRequestConfig("dropbox/java-tutorial", "en_US");
+        DbxRequestConfig config = DbxRequestConfig.newBuilder("dropbox/java-tutorial").build();
         DbxClientV2 client = new DbxClientV2(config, ACCESS_TOKEN);
     }
 }
@@ -104,8 +105,6 @@ import com.dropbox.core.v2.files.FileMetadata;
 import com.dropbox.core.v2.files.ListFolderResult;
 import com.dropbox.core.v2.files.Metadata;
 import com.dropbox.core.v2.users.FullAccount;
-
-import java.util.List;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
