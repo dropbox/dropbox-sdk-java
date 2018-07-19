@@ -1,5 +1,6 @@
 package com.dropbox.core.http;
 
+import com.dropbox.core.util.IOUtil;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Headers;
@@ -18,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import okio.BufferedSink;
+import okio.*;
 
 /*>>> import checkers.nullness.quals.Nullable; */
 
@@ -211,7 +212,7 @@ public class OkHttp3Requestor extends HttpRequestor {
             if (body instanceof PipedRequestBody) {
                 return ((PipedRequestBody) body).getOutputStream();
             } else {
-                PipedRequestBody pipedBody = new PipedRequestBody();
+                PipedRequestBody pipedBody = new CountingPipedRequstBody();
                 setBody(pipedBody);
 
                 this.callback = new AsyncCallback(pipedBody);
@@ -328,7 +329,7 @@ public class OkHttp3Requestor extends HttpRequestor {
     }
 
     private static class PipedRequestBody extends RequestBody implements Closeable {
-        private final OkHttpUtil.PipedStream stream;
+        protected final OkHttpUtil.PipedStream stream;
 
         public PipedRequestBody() {
             this.stream = new OkHttpUtil.PipedStream();
@@ -357,6 +358,47 @@ public class OkHttp3Requestor extends HttpRequestor {
         public void writeTo(BufferedSink sink) throws IOException {
             stream.writeTo(sink);
             close();
+        }
+    }
+
+    private static class CountingPipedRequstBody extends PipedRequestBody {
+        private IOUtil.ProgressListener listener;
+
+        public CountingPipedRequstBody() {
+            super();
+        }
+
+        public CountingPipedRequstBody(IOUtil.ProgressListener listener) {
+            super();
+            this.listener = listener;
+        }
+
+        @Override
+        public void writeTo(BufferedSink sink) throws IOException {
+            CountingSink countingSink = new CountingSink(sink);
+            BufferedSink bufferedSink = Okio.buffer(countingSink);
+            super.stream.writeTo(bufferedSink);
+            bufferedSink.flush();
+        }
+
+        private final class CountingSink extends ForwardingSink {
+
+            private long bytesWritten = 0;
+
+            public CountingSink(Sink delegate) {
+                super(delegate);
+            }
+
+            @Override
+            public void write(Buffer source, long byteCount) throws IOException {
+                super.write(source, byteCount);
+
+                bytesWritten += byteCount;
+
+                if (listener != null) {
+                    listener.onProgress(bytesWritten);
+                }
+            }
         }
     }
 }

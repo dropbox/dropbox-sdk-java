@@ -27,5 +27,5 @@ classyshark*
 # macOS
 *.DS_Store
 
-# generated javaclass
-out/
+# API key info
+*.app
