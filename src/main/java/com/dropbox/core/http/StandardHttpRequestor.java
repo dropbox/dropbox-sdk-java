@@ -125,12 +125,13 @@ public class StandardHttpRequestor extends HttpRequestor {
 
     private class Uploader extends HttpRequestor.Uploader {
         private final ProgressOutputStream out;
-
         private HttpURLConnection conn;
+        private IOUtil.ProgressListener progressListener;
 
         public Uploader(HttpURLConnection conn) throws IOException {
             this.conn = conn;
             this.out = new ProgressOutputStream(getOutputStream(conn));
+            this.progressListener = null;
 
             conn.connect();
         }
@@ -138,11 +139,6 @@ public class StandardHttpRequestor extends HttpRequestor {
         @Override
         public OutputStream getBody() {
             return out;
-        }
-
-        @Override
-        public int getCompleted() {
-            return this.out.getCompleted();
         }
 
         @Override
@@ -186,6 +182,10 @@ public class StandardHttpRequestor extends HttpRequestor {
             }
         }
 
+        public void setProgressListener(IOUtil.ProgressListener progressListener) {
+            this.progressListener = progressListener;
+        }
+
         public class ProgressOutputStream extends OutputStream {
             private int completed;
             private OutputStream underlying;
@@ -225,10 +225,9 @@ public class StandardHttpRequestor extends HttpRequestor {
 
             private void track(int len) {
                 this.completed += len;
-            }
-
-            public int getCompleted() {
-                return this.completed;
+                if (Uploader.this.progressListener != null) {
+                    Uploader.this.progressListener.onProgress(completed);
+                }
             }
         }
     }

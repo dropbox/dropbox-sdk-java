@@ -1,7 +1,7 @@
 package com.dropbox.core.v2;
 
 import com.dropbox.core.*;
-import com.dropbox.core.util.IOUtil;
+import com.dropbox.core.util.IOUtil.ProgressListener;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -111,5 +111,49 @@ public abstract class DbxUploadStyleBuilder<R,E, X extends DbxApiException> {
     public R uploadAndFinish(InputStream in, long limit) throws X, DbxException, IOException
     {
         return start().uploadAndFinish(in, limit);
+    }
+
+    /**
+     * Convenience method for {@link DbxUploader#uploadAndFinish(InputStream, long, ProgressListener)}:
+     *
+     * <pre><code>
+     *    builder.start().uploadAndFinish(in, limit, progressListener);
+     * </code></pre>
+     *
+     * @param in    {@code InputStream} containing data to upload
+     * @param limit Maximum number of bytes to read from the given {@code InputStream}
+     * @param progressListener {@code ProgressListener} to track the upload progress.
+     *
+     * @return Response from server
+     *
+     * @throws X if the server sent an error response for the request
+     * @throws DbxException if an error occurs uploading the data or reading the response
+     * @throws IOException if an error occurs reading the input stream.
+     */
+    public R uploadAndFinish(InputStream in, long limit, ProgressListener progressListener)
+            throws X, DbxException, IOException
+    {
+        return start().uploadAndFinish(in, limit, progressListener);
+    }
+
+    /**
+     * Convenience method for {@link DbxUploader#uploadAndFinish(InputStream, ProgressListener)}:
+     *
+     * <pre><code>
+     *    builder.start().uploadAndFinish(in, progressListener);
+     * </code></pre>
+     *
+     * @param in {@code InputStream} containing data to upload
+     * @param progressListener {@code ProgressListener} to track the upload progress.
+     *
+     * @return Response from server
+     *
+     * @throws X if the server sent an error response for the request
+     * @throws DbxException if an error occurs uploading the data or reading the response
+     * @throws IOException if an error occurs reading the input stream.
+     */
+    public R uploadAndFinish(InputStream in, ProgressListener progressListener) throws X, DbxException, IOException
+    {
+        return start().uploadAndFinish(in, progressListener);
     }
 }

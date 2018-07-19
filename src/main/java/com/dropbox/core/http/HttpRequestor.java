@@ -110,9 +110,7 @@ public abstract class HttpRequestor
             }
         }
 
-        public int getCompleted() {
-            return 0;
-        }
+        public void setProgressListener(IOUtil.ProgressListener progressListener) {}
     }
 
     public static final class Response {
