@@ -7,6 +7,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.Date;
 import java.util.Locale;
 
+import com.dropbox.core.util.IOUtil.ProgressListener;
 import org.testng.annotations.Test;
 
 import com.dropbox.core.BadRequestException;
@@ -40,7 +41,13 @@ public class DbxClientV2IT {
 
     @Test
     public void testUploadAndDownload() throws Exception {
-        testUploadAndDownload(ITUtil.newClientV2());
+        testUploadAndDownload(ITUtil.newClientV2(), false);
+    }
+
+    @Test
+    public void testUploadAndDownloadWithProgress() throws Exception {
+
+        testUploadAndDownload(ITUtil.newClientV2(), true);
     }
 
     @Test
@@ -49,7 +56,7 @@ public class DbxClientV2IT {
             .withHttpRequestor(ITUtil.newOkHttpRequestor())
             .build()
         );
-        testUploadAndDownload(client);
+        testUploadAndDownload(client, false);
     }
 
     @Test
@@ -58,19 +65,32 @@ public class DbxClientV2IT {
             .withHttpRequestor(ITUtil.newOkHttp3Requestor())
             .build()
         );
-        testUploadAndDownload(client);
+        testUploadAndDownload(client, false);
     }
 
-    private void testUploadAndDownload(DbxClientV2 client) throws Exception {
-        byte [] contents = ITUtil.randomBytes(1024);
+    private void testUploadAndDownload(DbxClientV2 client, boolean trackProgress) throws Exception {
+        final byte [] contents = ITUtil.randomBytes(1024);
         String filename = "testUploadAndDownload.dat";
         String path = ITUtil.path(getClass(), "/" + filename);
 
+        ProgressListener progressListener = null;
+            if (trackProgress) {
+            progressListener = new ProgressListener() {
+                private long lastBytesWritten = 0;
+                @Override
+                public void onProgress(long bytesWritten) {
+                    assertTrue(bytesWritten > lastBytesWritten);
+                    assertTrue(bytesWritten <= contents.length);
+                    lastBytesWritten = bytesWritten;
+                }
+            };
+        }
+
         FileMetadata metadata = client.files().uploadBuilder(path)
-            .withAutorename(false)
-            .withMode(WriteMode.ADD)
-            .withMute(true)
-            .uploadAndFinish(new ByteArrayInputStream(contents));
+                .withAutorename(false)
+                .withMode(WriteMode.ADD)
+                .withMute(true)
+                .uploadAndFinish(new ByteArrayInputStream(contents), progressListener);
 
         assertEquals(metadata.getName(), filename);
         assertEquals(metadata.getPathLower(), path.toLowerCase());

@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import javax.net.ssl.HttpsURLConnection;
 
 import com.dropbox.core.util.IOUtil;
+import com.dropbox.core.util.ProgressOutputStream;
 
 /*>>> import checkers.nullness.quals.Nullable; */
 
@@ -124,13 +125,12 @@ public class StandardHttpRequestor extends HttpRequestor {
     }
 
     private class Uploader extends HttpRequestor.Uploader {
-        private final OutputStream out;
-
+        private final ProgressOutputStream out;
         private HttpURLConnection conn;
 
         public Uploader(HttpURLConnection conn) throws IOException {
             this.conn = conn;
-            this.out = getOutputStream(conn);
+            this.out = new ProgressOutputStream(getOutputStream(conn));
 
             conn.connect();
         }
@@ -180,7 +180,12 @@ public class StandardHttpRequestor extends HttpRequestor {
                 conn = null;
             }
         }
+
+        public void setProgressListener(IOUtil.ProgressListener progressListener) {
+            out.setListener(progressListener);
+        }
     }
+
 
     private HttpURLConnection prepRequest(String url, Iterable<Header> headers) throws IOException {
         URL urlObject = new URL(url);
@@ -190,6 +195,7 @@ public class StandardHttpRequestor extends HttpRequestor {
         conn.setReadTimeout((int) config.getReadTimeoutMillis());
         conn.setUseCaches(false);
         conn.setAllowUserInteraction(false);
+        conn.setChunkedStreamingMode(IOUtil.DEFAULT_COPY_BUFFER_SIZE);
 
         // Some JREs (like the one provided by Google AppEngine) will return HttpURLConnection
         // instead of HttpsURLConnection. So we have to check here.

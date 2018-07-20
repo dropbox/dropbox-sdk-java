@@ -1,5 +1,6 @@
 package com.dropbox.core.http;
 
+import com.dropbox.core.util.IOUtil;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Headers;
@@ -18,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import okio.BufferedSink;
+import okio.*;
 
 /*>>> import checkers.nullness.quals.Nullable; */
 
@@ -212,6 +213,10 @@ public class OkHttp3Requestor extends HttpRequestor {
                 return ((PipedRequestBody) body).getOutputStream();
             } else {
                 PipedRequestBody pipedBody = new PipedRequestBody();
+                if (progressListener != null) {
+                    pipedBody.setListener(progressListener);
+                }
+
                 setBody(pipedBody);
 
                 this.callback = new AsyncCallback(pipedBody);
@@ -330,9 +335,13 @@ public class OkHttp3Requestor extends HttpRequestor {
     private static class PipedRequestBody extends RequestBody implements Closeable {
         private final OkHttpUtil.PipedStream stream;
 
+        private IOUtil.ProgressListener listener;
+
         public PipedRequestBody() {
             this.stream = new OkHttpUtil.PipedStream();
         }
+
+        public void setListener(IOUtil.ProgressListener listener) { this.listener = listener; }
 
         public OutputStream getOutputStream() {
             return stream.getOutputStream();
@@ -355,8 +364,30 @@ public class OkHttp3Requestor extends HttpRequestor {
 
         @Override
         public void writeTo(BufferedSink sink) throws IOException {
-            stream.writeTo(sink);
+            CountingSink countingSink = new CountingSink(sink);
+            BufferedSink bufferedSink = Okio.buffer(countingSink);
+            stream.writeTo(bufferedSink);
+            bufferedSink.flush();
             close();
+        }
+
+        private final class CountingSink extends ForwardingSink {
+            private long bytesWritten = 0;
+
+            public CountingSink(Sink delegate) {
+                super(delegate);
+            }
+
+            @Override
+            public void write(Buffer source, long byteCount) throws IOException {
+                super.write(source, byteCount);
+
+                bytesWritten += byteCount;
+
+                if (listener != null) {
+                    listener.onProgress(bytesWritten);
+                }
+            }
         }
     }
 }
