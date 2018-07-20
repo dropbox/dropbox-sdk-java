@@ -1,7 +1,7 @@
 package com.dropbox.core.v2;
 
 import com.dropbox.core.*;
-import com.dropbox.core.util.IOUtil.ProgressListener;
+import com.dropbox.core.util.IOUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -114,7 +114,7 @@ public abstract class DbxUploadStyleBuilder<R,E, X extends DbxApiException> {
     }
 
     /**
-     * Convenience method for {@link DbxUploader#uploadAndFinish(InputStream, long, ProgressListener)}:
+     * Convenience method for {@link DbxUploader#uploadAndFinish(InputStream, long, IOUtil.ProgressListener)}:
      *
      * <pre><code>
      *    builder.start().uploadAndFinish(in, limit, progressListener);
@@ -130,14 +130,14 @@ public abstract class DbxUploadStyleBuilder<R,E, X extends DbxApiException> {
      * @throws DbxException if an error occurs uploading the data or reading the response
      * @throws IOException if an error occurs reading the input stream.
      */
-    public R uploadAndFinish(InputStream in, long limit, ProgressListener progressListener)
+    public R uploadAndFinish(InputStream in, long limit, IOUtil.ProgressListener progressListener)
             throws X, DbxException, IOException
     {
         return start().uploadAndFinish(in, limit, progressListener);
     }
 
     /**
-     * Convenience method for {@link DbxUploader#uploadAndFinish(InputStream, ProgressListener)}:
+     * Convenience method for {@link DbxUploader#uploadAndFinish(InputStream, IOUtil.ProgressListener)}:
      *
      * <pre><code>
      *    builder.start().uploadAndFinish(in, progressListener);
@@ -152,7 +152,8 @@ public abstract class DbxUploadStyleBuilder<R,E, X extends DbxApiException> {
      * @throws DbxException if an error occurs uploading the data or reading the response
      * @throws IOException if an error occurs reading the input stream.
      */
-    public R uploadAndFinish(InputStream in, ProgressListener progressListener) throws X, DbxException, IOException
+    public R uploadAndFinish(InputStream in, IOUtil.ProgressListener progressListener)
+            throws X, DbxException, IOException
     {
         return start().uploadAndFinish(in, progressListener);
     }

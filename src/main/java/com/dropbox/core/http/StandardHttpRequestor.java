@@ -241,7 +241,7 @@ public class StandardHttpRequestor extends HttpRequestor {
         conn.setReadTimeout((int) config.getReadTimeoutMillis());
         conn.setUseCaches(false);
         conn.setAllowUserInteraction(false);
-        conn.setChunkedStreamingMode(1000);
+        conn.setChunkedStreamingMode(IOUtil.DEFAULT_COPY_BUFFER_SIZE);
 
         // Some JREs (like the one provided by Google AppEngine) will return HttpURLConnection
         // instead of HttpsURLConnection. So we have to check here.
