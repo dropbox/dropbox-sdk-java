@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import javax.net.ssl.HttpsURLConnection;
 
 import com.dropbox.core.util.IOUtil;
+import com.dropbox.core.util.ProgressOutputStream;
 
 /*>>> import checkers.nullness.quals.Nullable; */
 
@@ -126,12 +127,10 @@ public class StandardHttpRequestor extends HttpRequestor {
     private class Uploader extends HttpRequestor.Uploader {
         private final ProgressOutputStream out;
         private HttpURLConnection conn;
-        private IOUtil.ProgressListener progressListener;
 
         public Uploader(HttpURLConnection conn) throws IOException {
             this.conn = conn;
             this.out = new ProgressOutputStream(getOutputStream(conn));
-            this.progressListener = null;
 
             conn.connect();
         }
@@ -183,52 +182,7 @@ public class StandardHttpRequestor extends HttpRequestor {
         }
 
         public void setProgressListener(IOUtil.ProgressListener progressListener) {
-            this.progressListener = progressListener;
-        }
-
-        public class ProgressOutputStream extends OutputStream {
-            private int completed;
-            private OutputStream underlying;
-
-            public ProgressOutputStream(OutputStream underlying) {
-                this.underlying = underlying;
-                this.completed = 0;
-            }
-
-            @Override
-            public void write(byte[] data, int off, int len) throws IOException {
-                this.underlying.write(data, off, len);
-                track(len);
-            }
-
-            @Override
-            public void write(byte[] data) throws IOException {
-                this.underlying.write(data);
-                track(data.length);
-            }
-
-            @Override
-            public void write(int c) throws IOException {
-                this.underlying.write(c);
-                track(1);
-            }
-
-            @Override
-            public void flush() throws IOException {
-                this.underlying.flush();
-            }
-
-            public void close() throws IOException {
-                this.underlying.close();
-            }
-
-
-            private void track(int len) {
-                this.completed += len;
-                if (Uploader.this.progressListener != null) {
-                    Uploader.this.progressListener.onProgress(completed);
-                }
-            }
+            out.setListener(progressListener);
         }
     }
 

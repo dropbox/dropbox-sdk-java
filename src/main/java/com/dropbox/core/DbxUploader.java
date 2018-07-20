@@ -167,7 +167,7 @@ public abstract class DbxUploader<R, E, X extends DbxApiException> implements Cl
     }
 
     /**
-     * This method is the same as {@link #uploadAndFinish(InputStream, long)} except for it allow
+     * This method is the same as {@link #uploadAndFinish(InputStream, long)} except for it allows
      * tracking the upload progress.
      *
      * @param in    {@code InputStream} containing data to upload
