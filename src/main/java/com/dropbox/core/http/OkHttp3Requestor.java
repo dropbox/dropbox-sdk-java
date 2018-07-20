@@ -212,7 +212,11 @@ public class OkHttp3Requestor extends HttpRequestor {
             if (body instanceof PipedRequestBody) {
                 return ((PipedRequestBody) body).getOutputStream();
             } else {
-                PipedRequestBody pipedBody = new CountingPipedRequstBody();
+                PipedRequestBody pipedBody = new PipedRequestBody();
+                if (progressListener != null) {
+                    pipedBody.setListener(progressListener);
+                }
+
                 setBody(pipedBody);
 
                 this.callback = new AsyncCallback(pipedBody);
@@ -329,11 +333,15 @@ public class OkHttp3Requestor extends HttpRequestor {
     }
 
     private static class PipedRequestBody extends RequestBody implements Closeable {
-        protected final OkHttpUtil.PipedStream stream;
+        private final OkHttpUtil.PipedStream stream;
+
+        private IOUtil.ProgressListener listener;
 
         public PipedRequestBody() {
             this.stream = new OkHttpUtil.PipedStream();
         }
+
+        public void setListener(IOUtil.ProgressListener listener) { this.listener = listener; }
 
         public OutputStream getOutputStream() {
             return stream.getOutputStream();
@@ -356,33 +364,14 @@ public class OkHttp3Requestor extends HttpRequestor {
 
         @Override
         public void writeTo(BufferedSink sink) throws IOException {
-            stream.writeTo(sink);
-            close();
-        }
-    }
-
-    private static class CountingPipedRequstBody extends PipedRequestBody {
-        private IOUtil.ProgressListener listener;
-
-        public CountingPipedRequstBody() {
-            super();
-        }
-
-        public CountingPipedRequstBody(IOUtil.ProgressListener listener) {
-            super();
-            this.listener = listener;
-        }
-
-        @Override
-        public void writeTo(BufferedSink sink) throws IOException {
             CountingSink countingSink = new CountingSink(sink);
             BufferedSink bufferedSink = Okio.buffer(countingSink);
-            super.stream.writeTo(bufferedSink);
+            stream.writeTo(bufferedSink);
             bufferedSink.flush();
+            close();
         }
 
         private final class CountingSink extends ForwardingSink {
-
             private long bytesWritten = 0;
 
             public CountingSink(Sink delegate) {
