@@ -173,6 +173,9 @@ public class GoogleAppEngineRequestor extends HttpRequestor {
             HTTPResponse response = service.fetch(request);
             Response requestorResponse = toRequestorResponse(response);
             close();
+            if (progressListener != null) {
+                progressListener.onProgress(request.getPayload().length);
+            }
             return requestorResponse;
         }
     }

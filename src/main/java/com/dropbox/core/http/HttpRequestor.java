@@ -73,6 +73,8 @@ public abstract class HttpRequestor
     }
 
     public static abstract class Uploader {
+        protected IOUtil.ProgressListener progressListener;
+
         public abstract OutputStream getBody();
         public abstract void close();
         public abstract void abort();
@@ -108,6 +110,10 @@ public abstract class HttpRequestor
             } finally {
                 out.close();
             }
+        }
+
+        public void setProgressListener(IOUtil.ProgressListener progressListener) {
+            this.progressListener = progressListener;
         }
     }
 

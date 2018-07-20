@@ -183,6 +183,9 @@ task integrationTest(type: Test) {
     include '**/*IT.class'
     include '**/*IT$*.class'
 
+    exclude '**/*V1IT.class'
+    exclude '**/*V1IT$*.class'
+
     testLogging {
         events "skipped", "failed"
         info {
