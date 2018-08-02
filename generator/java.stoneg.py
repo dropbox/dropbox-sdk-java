@@ -320,6 +320,10 @@ def union_create_with_method_name(data_type, value_fields_subset):
     return 'withTag%s' % method_suffix
 
 
+def format_func_name(route):
+    return '{}_v{}'.format(route.name, route.version) if route.version > 1 else route.name
+
+
 @total_ordering
 class JavaClass(object):
     """
@@ -1445,7 +1449,7 @@ class JavaClassWriter(object):
                     return '.'.join(parts)
 
         if tag == 'route':
-            fq_name = resolve_fq_name(val, 2)
+            fq_name = resolve_fq_name(val.replace(":", "_v"), 2)
             return self._refs.route(fq_name) if fq_name else None
         elif tag == 'type':
             fq_name = resolve_fq_name(val, 2)
@@ -1797,23 +1801,23 @@ class JavaApi(object):
         assert isinstance(containing_data_type, DataType) or containing_data_type is None, repr(containing_data_type)
 
         if isinstance(stone_elem, ApiNamespace):
-            parts = [stone_elem]
+            parts = [stone_elem.name]
         elif isinstance(stone_elem, DataType):
             if is_user_defined_type(stone_elem):
-                parts = [stone_elem.namespace, stone_elem]
+                parts = [stone_elem.namespace.name, stone_elem.name]
             else:
-                parts = [stone_elem]
+                parts = [stone_elem.name]
         elif isinstance(stone_elem, ApiRoute):
             namespace = self.route_namespace(stone_elem)
-            parts = [namespace, stone_elem]
+            parts = [namespace.name, format_func_name(stone_elem)]
         elif isinstance(stone_elem, Field):
             containing_data_type = containing_data_type or self.field_containing_data_type(stone_elem)
             namespace = containing_data_type.namespace
-            parts = [namespace, containing_data_type, stone_elem]
+            parts = [namespace.name, containing_data_type.name, stone_elem.name]
         else:
             raise ValueError("Unsupported Stone type: %s" % type(stone_elem))
 
-        return '.'.join(p.name for p in parts)
+        return '.'.join(p for p in parts)
 
     def namespace_getter_method(self, namespace):
         assert isinstance(namespace, ApiNamespace), repr(namespace)
@@ -1905,7 +1909,7 @@ class JavaApi(object):
         Server URL path associated with this route.
         """
         assert isinstance(route, ApiRoute), repr(route)
-        return '2/%s/%s' % (self._namespaces_by_route[route].name, route.name)
+        return '2/%s/%s' % (self._namespaces_by_route[route].name, format_func_name(route))
 
     @staticmethod
     def has_arg(route):
@@ -1954,12 +1958,12 @@ class JavaApi(object):
     @staticmethod
     def route_method(route):
         assert isinstance(route, ApiRoute), repr(route)
-        return camelcase(route.name)
+        return camelcase(format_func_name(route))
 
     @staticmethod
     def route_builder_method(route):
         assert isinstance(route, ApiRoute), repr(route)
-        return camelcase(route.name + '_builder')
+        return camelcase(format_func_name(route) + '_builder')
 
     @staticmethod
     def namespace_package(namespace, base_package):
@@ -2007,7 +2011,7 @@ class JavaApi(object):
         if isinstance(stone_elem, ApiRoute):
             route = stone_elem
             package = self.java_class(route).package
-            return JavaClass(package + '.' + classname(route.name + '_builder'))
+            return JavaClass(package + '.' + classname(format_func_name(route) + '_builder'))
         else:
             data_type = stone_elem
             assert is_user_defined_type(data_type), repr(data_type)
@@ -2059,7 +2063,9 @@ class JavaApi(object):
 
     def route_uploader_class(self, route):
         assert isinstance(route, ApiRoute), repr(route)
-        return JavaClass(self.java_class(route).package + '.' + classname(route.name + '_Uploader'))
+        return JavaClass(
+            self.java_class(route).package + '.' + classname(format_func_name(route) + '_Uploader')
+        )
 
     def route_downloader_class(self, route):
         assert isinstance(route, ApiRoute), repr(route)
@@ -2926,7 +2932,7 @@ class JavaCodeGenerationInstance(object):
                          error_wrapper_var)
         else:
             message = '"Unexpected error response for \\"%s\\":" + %s.getErrorValue()' % (
-                route.name,
+                format_func_name(route),
                 error_wrapper_var,
             )
             return 'new DbxApiException(%s.getRequestId(), %s.getUserMessage(), %s);' % (
@@ -3791,7 +3797,7 @@ class JavaCodeGenerationInstance(object):
                     args = ['arg_']
                     if j.request_style(route) == 'download':
                         args.append('getHeaders()')
-                    if j.has_result(route):
+                    if j.has_result(route) or j.request_style(route) == 'upload':
                         w.out('return _client.%s(%s);', j.route_method(route), ', '.join(args))
                     else:
                         w.out('_client.%s(%s);', j.route_method(route), ', '.join(args))
@@ -4311,6 +4317,8 @@ class JavaCodeGenerationInstance(object):
                         w.out(';')
             with w.block('else'):
                 w.out('return false;')
+
+
 
 
 # TODO: Add all Java reserved words.
