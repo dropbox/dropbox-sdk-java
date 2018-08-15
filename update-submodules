@@ -4,3 +4,4 @@ set -euo pipefail
 git submodule sync
 git submodule update --init
 git submodule foreach --recursive "git submodule sync ; git submodule update --init"
+git submodule foreach git pull origin master
