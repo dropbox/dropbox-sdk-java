@@ -2,14 +2,14 @@ package com.dropbox.core;
 
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
-import static com.dropbox.core.util.StringUtil.jq;
-
 import com.fasterxml.jackson.core.JsonLocation;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 
 import java.io.IOException;
+
+import static com.dropbox.core.util.StringUtil.jq;
 
 /*>>> import checkers.nullness.quals.Nullable; */
 /*>>> import com.dropbox.core.v2.DbxClientV2; */
@@ -22,6 +22,7 @@ public final class DbxAuthFinish {
     private final String accessToken;
     private final String userId;
     private final String accountId;
+    private final String teamId;
     private final /*@Nullable*/String urlState;
 
     /**
@@ -30,10 +31,11 @@ public final class DbxAuthFinish {
      * @param urlState State data passed in to {@link DbxWebAuth#start} or {@code null} if no state
      * was passed
      */
-    public DbxAuthFinish(String accessToken, String userId, String accountId, /*@Nullable*/String urlState) {
+    public DbxAuthFinish(String accessToken, String userId, String accountId, String teamId, /*@Nullable*/String urlState) {
         this.accessToken = accessToken;
         this.userId = userId;
         this.accountId = accountId;
+        this.teamId = teamId;
         this.urlState = urlState;
     }
 
@@ -68,6 +70,16 @@ public final class DbxAuthFinish {
     }
 
     /**
+     * Returns the Dropbox team ID of the team's user who just approved your app for access to their
+     * Dropbox account. We use team ID to identify team in API V2.
+     *
+     * @return Dropbox team ID of team's that approved your app for access to their account
+     */
+    public String getTeamId() {
+        return teamId;
+    }
+
+    /**
      * Returns the state data you passed in to {@link DbxWebAuth#start}.  If you didn't pass
      * anything in, or you used {@link DbxWebAuthNoRedirect}, this will be {@code null}.
      *
@@ -88,7 +100,7 @@ public final class DbxAuthFinish {
         if (this.urlState != null) {
             throw new IllegalStateException("Already have URL state.");
         }
-        return new DbxAuthFinish(accessToken, userId, accountId, urlState);
+        return new DbxAuthFinish(accessToken, userId, accountId, teamId, urlState);
     }
 
     /**
@@ -102,6 +114,7 @@ public final class DbxAuthFinish {
             String tokenType = null;
             String userId = null;
             String accountId = null;
+            String teamId = null;
             String state = null;
 
             while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
@@ -121,6 +134,9 @@ public final class DbxAuthFinish {
                     else if (fieldName.equals("account_id")) {
                         accountId = JsonReader.StringReader.readField(parser, fieldName, accountId);
                     }
+                    else if (fieldName.equals("team_id")) {
+                        teamId = JsonReader.StringReader.readField(parser, fieldName, teamId);
+                    }
                     else if (fieldName.equals("state")) {
                         state = JsonReader.StringReader.readField(parser, fieldName, state);
                     }
@@ -139,9 +155,12 @@ public final class DbxAuthFinish {
             if (tokenType == null) throw new JsonReadException("missing field \"token_type\"", top);
             if (accessToken == null) throw new JsonReadException("missing field \"access_token\"", top);
             if (userId == null) throw new JsonReadException("missing field \"uid\"", top);
-            if (accountId == null) throw new JsonReadException("missing field \"account_id\"", top);
+            //We want one of these two to be populated and we want the error to be include both if they're both null
+            if (accountId == null && teamId == null) {
+                throw new JsonReadException("missing field \"account_id\" and missing field \"team_id\"", top);
+            }
 
-            return new DbxAuthFinish(accessToken, userId, accountId, state);
+            return new DbxAuthFinish(accessToken, userId, accountId, teamId, state);
         }
     };
 

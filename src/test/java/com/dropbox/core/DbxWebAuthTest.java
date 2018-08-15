@@ -1,24 +1,18 @@
 package com.dropbox.core;
 
-import static org.mockito.Mockito.*;
-import static org.testng.Assert.*;
+import com.dropbox.core.http.HttpRequestor;
+import com.dropbox.core.util.StringUtil;
+import org.mockito.ArgumentCaptor;
+import org.testng.annotations.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.net.URL;
 import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
-import org.mockito.ArgumentCaptor;
-
-import org.testng.annotations.Test;
-
-import com.dropbox.core.http.HttpRequestor;
-import com.dropbox.core.util.StringUtil;
+import static org.mockito.Mockito.*;
+import static org.testng.Assert.*;
 
 public class DbxWebAuthTest {
     private static final DbxRequestConfig CONFIG = DbxRequestConfig.newBuilder("DbxWebAuthTest/1.0")
@@ -151,7 +145,7 @@ public class DbxWebAuthTest {
         assertNotNull(sessionStore.get());
 
         DbxAuthFinish expected = new DbxAuthFinish(
-                "test-access-token", "test-user-id", "test", state
+                "test-access-token", "test-user-id", "test", null, state
         );
         ByteArrayOutputStream body = new ByteArrayOutputStream();
         ByteArrayInputStream responseStream = new ByteArrayInputStream(
