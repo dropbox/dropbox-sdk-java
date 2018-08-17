@@ -98,3 +98,6 @@ route test_download:2 (Uninitialized, Fish, ParentUnion)
 
 struct DefaultFloat
     duration Float64(min_value=60, max_value=14400) = 14400
+
+struct WithByte
+    field1 Bytes

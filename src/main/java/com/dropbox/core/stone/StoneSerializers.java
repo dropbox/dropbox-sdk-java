@@ -44,7 +44,7 @@ public final class StoneSerializers {
         return BooleanSerializer.INSTANCE;
     }
 
-    public static StoneSerializer<byte []> binary() {
+    public static StoneSerializer<byte []> bytes() {
         return ByteArraySerializer.INSTANCE;
     }
 
