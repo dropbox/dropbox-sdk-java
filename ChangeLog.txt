@@ -1,3 +1,21 @@
+3.0.9 (2018-09-15)
+---------------------------------------------
+- Update to Latest API specs:
+  - files namespace:
+    - Increased size limit for download_zip endpoint.
+    - Update documentation for data transport call limit.
+    - Added get_temporary_upload_link endpoint.
+  - paper namespace:
+    - Added invite_editor to FileAction.
+    - Added access_inheritance to MembershipInfo.
+  - team_log namespace:
+    - Added more event types and details.
+  - team:
+    - Added members/move_former_member_files endpoint.
+    - Added members/move_former_member_files/job_status/check endpoint.
+- Add ProgressListener to upload and download.
+- Change to include team_id field in auth finish class
+
 3.0.8 (2018-05-22)
 ---------------------------------------------
 - Update to Latest API specs:
