@@ -873,6 +873,7 @@ class JavaImporter(object):
             'com.fasterxml.jackson.core.JsonParser',
             'com.fasterxml.jackson.core.JsonToken',
             'com.dropbox.core.stone.StoneSerializers',
+            'com.dropbox.core.stone.StoneDeserializerLogger',
         )
         if is_struct_type(data_type):
             self.add_imports('com.dropbox.core.stone.StructSerializer')
@@ -4002,6 +4003,7 @@ class JavaCodeGenerationInstance(object):
             with w.block('if (!collapsed)'):
                 w.out('expectEndObject(p);')
 
+            w.out('StoneDeserializerLogger.log(value, value.toStringMultiline());')
             w.out('return value;')
 
     def generate_union_serialize(self, data_type):
