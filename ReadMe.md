@@ -253,6 +253,20 @@ To run individual tests, use the `--tests` gradle test filter:
 
 ## FAQ
 
+### When I use `OkHttp3Requestor` in `DbxRequestConfig`, I get errors like 'class file for okhttp3.OkHttpClient not found'.
+
+The dependency of OKHttp/OKHttp3 is optional. You should add them, only if you explicitly want to use it as the http requestor. 
+
+Example in Gradle:
+
+```
+dependencies {
+	.... // previous dependencies
+    api 'com.squareup.okhttp3:okhttp:3.11.0'
+}
+```
+
+
 ### When I use the bundle JAR with some OSGi containers within an OSGi subsystem, I get a "Missing required capability" error.
 
 The JAR's manifest has the following line:
