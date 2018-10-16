@@ -1,3 +1,15 @@
+3.0.10 (2018-10-11)
+---------------------------------------------
+- Update to Latest API specs:
+  - Files Namespace:
+    - Updated doc strings.
+  - Team_log Namespace:
+    - Updated event docstrings.
+    - New reset field for loading events with a cursor.
+    - New event types added.
+  - Team_policies Namespace:
+    - New CameraUploadsPolicyState union.
+
 3.0.9 (2018-09-15)
 ---------------------------------------------
 - Update to Latest API specs:

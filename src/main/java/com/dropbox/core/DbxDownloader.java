@@ -40,14 +40,20 @@ import java.io.OutputStream;
 public class DbxDownloader<R> implements Closeable {
     private final R result;
     private final InputStream body;
+    private final String contentType;
 
     private boolean closed;
 
-    public DbxDownloader(R result, InputStream body) {
+    public DbxDownloader(R result, InputStream body, String contentType) {
         this.result = result;
         this.body = body;
+        this.contentType = contentType;
 
         this.closed = false;
+    }
+
+    public DbxDownloader(R result, InputStream body) {
+        this(result, body, null);
     }
 
     /**
@@ -60,6 +66,15 @@ public class DbxDownloader<R> implements Closeable {
      */
     public R getResult() {
         return result;
+    }
+
+    /**
+     * Returns the value of the content-type header field.
+     *
+     * @return the content type, or null if not known.
+     */
+    public String getContentType() {
+        return contentType;
     }
 
     /**
