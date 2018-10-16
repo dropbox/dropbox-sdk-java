@@ -503,6 +503,10 @@ public final class DbxRequestUtil {
         return DbxRequestUtil.getFirstHeaderMaybe(response, "X-Dropbox-Request-Id");
     }
 
+    public static /*@Nullable*/ String getContentType(HttpRequestor.Response response) {
+        return DbxRequestUtil.getFirstHeaderMaybe(response, "Content-Type");
+    }
+
     public static abstract class RequestMaker<T, E extends Throwable> {
         public abstract T run() throws DbxException, E;
     }

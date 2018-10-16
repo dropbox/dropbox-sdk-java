@@ -114,6 +114,7 @@ public class DbxClientV2IT {
 
         assertEquals(actualResult, metadata);
         assertEquals(actualContents, contents);
+        assertEquals(downloader.getContentType(), "application/octet-stream");
 
         Metadata deleted = client.files().delete(path);
         assertEquals(deleted, metadata);
