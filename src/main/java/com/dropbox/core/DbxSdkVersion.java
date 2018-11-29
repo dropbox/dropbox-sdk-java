@@ -2,6 +2,7 @@ package com.dropbox.core;
 
 import com.dropbox.core.util.IOUtil;
 import com.dropbox.core.util.StringUtil;
+import com.sun.tools.corba.se.idl.constExpr.Not;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -32,7 +33,7 @@ public class DbxSdkVersion
     {
         try {
             InputStream in = DbxSdkVersion.class.getResourceAsStream(ResourceName);
-            if (in == null) throw new LoadException("Not found.");
+            if (in == null) return "3.0.10"; // <-- needs to instead be auto generated and inserted into code by the build system // throw new LoadException(" Not found.");
             try {
                 BufferedReader bin = new BufferedReader(IOUtil.utf8Reader(in));
                 String version = bin.readLine();
