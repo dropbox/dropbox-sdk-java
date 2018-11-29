@@ -66,7 +66,7 @@ public class SSLConfig {
 
     private static /*@MonotonicNonNull*/CipherSuiteFilterationResults CACHED_CIPHER_SUITE_FILTERATION_RESULTS;
 
-    private static final String ROOT_CERTS_RESOURCE = "/trusted-certs.raw";
+    private static final String ROOT_CERTS_RESOURCE = "/com/dropbox/core/trusted-certs.raw";
     private static final int MAX_CERT_LENGTH = 10 * 1024;
 
     // All client ciphersuites allowed by Dropbox.

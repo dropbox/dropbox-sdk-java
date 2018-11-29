@@ -110,9 +110,11 @@ processResources {
         )
         inputstream.close()
 
-        def out = new DataOutputStream(new FileOutputStream(new File(
-                getDestinationDir(), fcd.name.substring(0, fcd.name.length()-4) + ".raw"
-        )))
+        def crtPath = fcd.getPath()
+        def rawPath = crtPath.substring(0, crtPath.length() - 4) + ".raw"
+        def rawFile = new File(getDestinationDir(), rawPath);
+        rawFile.getParentFile().mkdirs();
+        def out = new DataOutputStream(new FileOutputStream(rawFile))
         com.dropbox.maven.pem_converter.RawLoader.store(certDatas, out)
         out.close()
 

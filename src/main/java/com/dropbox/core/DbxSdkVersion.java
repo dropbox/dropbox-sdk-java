@@ -17,7 +17,7 @@ public class DbxSdkVersion
         Version = loadVersion();
     }
 
-    private static final String ResourceName = "/sdk-version.txt";
+    private static final String ResourceName = "/com/dropbox/core/sdk-version.txt";
 
     private static final class LoadException extends Exception {
         private static final long serialVersionUID = 0L;
