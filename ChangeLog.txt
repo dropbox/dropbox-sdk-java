@@ -1,3 +1,28 @@
+3.0.11 (2018-12-12)
+---------------------------------------------
+- Update to Latest API specs:
+  - Common Namespace:
+    - Allow DisplayNameLegacy to support a name of zero chars
+    - Force matching dot character in alias EmailAddress
+  - File_properties namespace:
+    - Doesn’t allow app folder app to access file property endpoints.
+  - Files namespace:
+    - Create copy_batch:2 and move_batch:2 endpoints. Deprecate existing copy_batch and move_batch.
+  - Contacts namespace:
+    - New namespace
+    - New routes: delete_manual_contacts and delete_manual_contacts_batch
+    - New argument structs for new routes
+  - Sharing namespace:
+    - Add no_one option to LinkAudience union
+  - Sharing_files namespace:
+    - Doesn’t allow app folder app to access sharing files endpoints.
+  - Teams namespace:
+    - Add is_disconnected boolean to RemovedStatus struct
+    - Add error response type to namespace/list route
+    - Only Team apps with Team member file access can access team/properties endpoints.
+  - Team_log namespace:
+    - New event types added
+
 3.0.10 (2018-10-11)
 ---------------------------------------------
 - Update to Latest API specs:
