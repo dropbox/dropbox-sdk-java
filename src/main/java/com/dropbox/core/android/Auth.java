@@ -34,11 +34,11 @@ public class Auth {
      * <p>
      * This variant should be used when authentication is being done due to an OpenWith request through action
      * {@value DbxOfficialAppConnector#ACTION_DBXC_EDIT} and {@value DbxOfficialAppConnector#ACTION_DBXC_VIEW}.
-     * You won't need to use this unless you are an partner who registered your app with openwith feature in our official
+     * You won't need to use this unless you are a partner who registered your app with openwith feature in our official
      * Dropbox app.
      * </p>
      *
-     * @param context           the {@link Context} which to use to launch the
+     * @param context           the {@link Context} to use to launch the
      *                          Dropbox authentication activity. This will typically be an
      *                          {@link Activity} and the user will be taken back to that
      *                          activity after authentication is complete (i.e., your activity
