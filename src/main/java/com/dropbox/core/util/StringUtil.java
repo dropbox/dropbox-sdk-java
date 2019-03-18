@@ -9,6 +9,7 @@ import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CharsetEncoder;
+import java.util.Arrays;
 
 public class StringUtil
 {
@@ -83,8 +84,27 @@ public class StringUtil
         return b.toString();
     }
 
+    public static String javaQuotedLiterals(String[] value) {
+        return javaQuotedLiterals(Arrays.asList(value));
+    }
+
+    public static String javaQuotedLiterals(Iterable<String> value) {
+        StringBuilder b = new StringBuilder();
+        String sep = "";
+        for (String element : value) {
+            b.append(sep);
+            sep = ", ";
+            b.append(javaQuotedLiteral(element));
+        }
+        return b.toString();
+    }
+
     /** Shorthand for {@link #javaQuotedLiteral}. */
     public static String jq(String value) { return javaQuotedLiteral(value); }
+    /** Shorthand for {@link #javaQuotedLiterals}. */
+    public static String jq(String[] value) { return javaQuotedLiterals(value); }
+    /** Shorthand for {@link #javaQuotedLiterals}. */
+    public static String jq(Iterable<String> value) { return javaQuotedLiterals(value); }
 
     public static String binaryToHex(byte[] data)
     {
