@@ -334,7 +334,12 @@ public final class StoneSerializers {
 
         @Override
         public void serialize(Map<String, T> value, JsonGenerator g) throws IOException, JsonGenerationException {
-            g.writeString(value.toString());
+            g.writeStartObject();
+            for (Map.Entry<String, T> e : value.entrySet()) {
+                g.writeFieldName(e.getKey());
+                g.writeRawValue(underlying.serialize(e.getValue()));
+            }
+            g.writeEndObject();
         }
 
         @Override
