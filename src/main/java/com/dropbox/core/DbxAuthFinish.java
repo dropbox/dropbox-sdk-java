@@ -11,19 +11,19 @@ import java.io.IOException;
 
 import static com.dropbox.core.util.StringUtil.jq;
 
-/*>>> import checkers.nullness.quals.Nullable; */
-/*>>> import com.dropbox.core.v2.DbxClientV2; */
-
 /**
  * When you successfully complete the authorization process, the Dropbox server returns
  * this information to you.
  */
 public final class DbxAuthFinish {
     private final String accessToken;
+    private final Long expiresIn;
+    private final String refreshToken;
     private final String userId;
     private final String accountId;
     private final String teamId;
     private final /*@Nullable*/String urlState;
+    private long issueTime;
 
     /**
      * @param accessToken OAuth access token
@@ -31,12 +31,31 @@ public final class DbxAuthFinish {
      * @param urlState State data passed in to {@link DbxWebAuth#start} or {@code null} if no state
      * was passed
      */
+    @Deprecated
     public DbxAuthFinish(String accessToken, String userId, String accountId, String teamId, /*@Nullable*/String urlState) {
+        this(accessToken, null, null, userId, teamId, accountId, urlState);
+    }
+
+    /**
+     * @param accessToken OAuth access token.
+     * @param expiresIn Duration time of accessToken in second.
+     * @param refreshToken A token used to obtain new accessToken.
+     * @param userId Dropbox user ID of user that authorized this app.
+     * @param teamId Dropbox team ID of team that authorized this app.
+     * @param accountId Obfusticated user or team id. Keep it safe.
+     * @param urlState State data passed in to {@link DbxWebAuth#start} or {@code null} if no state
+     * was passed
+     */
+    public DbxAuthFinish(String accessToken, Long expiresIn, String refreshToken, String userId,
+                         String teamId, String accountId, /*@Nullable*/String urlState) {
         this.accessToken = accessToken;
+        this.expiresIn = expiresIn;
+        this.refreshToken = refreshToken;
         this.userId = userId;
         this.accountId = accountId;
         this.teamId = teamId;
         this.urlState = urlState;
+        this.issueTime = System.currentTimeMillis();
     }
 
     /**
@@ -47,6 +66,30 @@ public final class DbxAuthFinish {
      */
     public String getAccessToken() {
         return accessToken;
+    }
+
+    /**
+     * Returns the time when {@link DbxAuthFinish#accessToken} expires in millisecond. If null then
+     * it won't expire. Pass this in to the {@link com.dropbox.core.v2.DbxClientV2} constructor.
+     *
+     * @return OAuth access token used for authorization with Dropbox servers
+     */
+    public Long getExpiresAt() {
+        if (expiresIn == null) {
+            return null;
+        }
+        return issueTime + expiresIn * 1000;
+    }
+
+    /**
+     * Returns an <em>refresh token</em> which can be used to obtain new
+     * {@link DbxAuthFinish#accessToken} . Pass this in to the
+     * {@link com.dropbox.core.v2.DbxClientV2} constructor.
+     *
+     * @return OAuth access token used for authorization with Dropbox servers
+     */
+    public String getRefreshToken() {
+        return refreshToken;
     }
 
     /**
@@ -91,6 +134,13 @@ public final class DbxAuthFinish {
     }
 
     /**
+    *  Setting issue time should only be used to copy current object.
+    * */
+    void setIssueTime(long issueTime) {
+        this.issueTime = issueTime;
+    }
+
+    /**
      * State is not returned from /oauth2/token call, so we must
      * append it after the JSON parsing.
      *
@@ -100,7 +150,12 @@ public final class DbxAuthFinish {
         if (this.urlState != null) {
             throw new IllegalStateException("Already have URL state.");
         }
-        return new DbxAuthFinish(accessToken, userId, accountId, teamId, urlState);
+
+        DbxAuthFinish result =  new DbxAuthFinish(accessToken, expiresIn, refreshToken, userId,
+                teamId, accountId, urlState);
+        result.setIssueTime(issueTime);
+
+        return result;
     }
 
     /**
@@ -111,6 +166,8 @@ public final class DbxAuthFinish {
             JsonLocation top = JsonReader.expectObjectStart(parser);
 
             String accessToken = null;
+            Long expiresIn = null;
+            String refreshToken = null;
             String tokenType = null;
             String userId = null;
             String accountId = null;
@@ -127,6 +184,12 @@ public final class DbxAuthFinish {
                     }
                     else if (fieldName.equals("access_token")) {
                         accessToken = AccessTokenReader.readField(parser, fieldName, accessToken);
+                    }
+                    else if (fieldName.equals("expires_in")) {
+                        expiresIn = JsonReader.UInt64Reader.readField(parser, fieldName, expiresIn);
+                    }
+                    else if (fieldName.equals("refresh_token")) {
+                        refreshToken = JsonReader.StringReader.readField(parser, fieldName, refreshToken);
                     }
                     else if (fieldName.equals("uid")) {
                         userId = JsonReader.StringReader.readField(parser, fieldName, userId);
@@ -159,8 +222,12 @@ public final class DbxAuthFinish {
             if (accountId == null && teamId == null) {
                 throw new JsonReadException("missing field \"account_id\" and missing field \"team_id\"", top);
             }
+            if (refreshToken != null&& expiresIn == null) {
+                throw new JsonReadException("missing field \"expires_in\"", top);
+            }
 
-            return new DbxAuthFinish(accessToken, userId, accountId, teamId, state);
+            return new DbxAuthFinish(accessToken, expiresIn, refreshToken, userId, teamId,
+                    accountId, state);
         }
     };
 

@@ -6,6 +6,7 @@ import com.dropbox.core.DbxAuthInfo;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.DbxWebAuth;
+import com.dropbox.core.TokenAccessType;
 import com.dropbox.core.json.JsonReader;
 
 import java.io.BufferedReader;
@@ -25,8 +26,9 @@ public class Main {
         // Only display important log messages.
         Logger.getLogger("").setLevel(Level.WARNING);
 
-        if (args.length != 2) {
-            System.out.println("Usage: COMMAND <app-info-file> <auth-file-output>");
+        if (args.length != 3) {
+            System.out.println("Usage: COMMAND <app-info-file> <auth-file-output> " +
+                    "<token-access-type>");
             System.out.println("");
             System.out.println("<app-info-file>: a JSON file with information about your API app.  Example:");
             System.out.println("");
@@ -42,12 +44,17 @@ public class Main {
             System.out.println("  access token will be saved to this file, which can then be used with");
             System.out.println("  other example programs, such as the one in \"examples/account-info\".");
             System.out.println("");
+            System.out.println("<token-access-type>: String of legacy, online or offline.");
+            System.out.println("  Legacy means long-live access token. Online means short-live");
+            System.out.println("  token. Offline means short-live token with refresh token.");
+            System.out.println("");
             System.exit(1);
             return;
         }
 
         String argAppInfoFile = args[0];
         String argAuthFileOutput = args[1];
+        String tokenAccessType = args[2];
 
         // Read app info file (contains app key and app secret)
         DbxAppInfo appInfo;
@@ -61,9 +68,19 @@ public class Main {
         // Run through Dropbox API authorization process
         DbxRequestConfig requestConfig = new DbxRequestConfig("examples-authorize");
         DbxWebAuth webAuth = new DbxWebAuth(requestConfig, appInfo);
-        DbxWebAuth.Request webAuthRequest = DbxWebAuth.newRequestBuilder()
-            .withNoRedirect()
-            .build();
+        DbxWebAuth.Request.Builder builder = DbxWebAuth.newRequestBuilder()
+                .withNoRedirect();
+
+        if ("online".equals(tokenAccessType)) {
+            builder.withTokenAccessType(TokenAccessType.ONLINE);
+        } else if ("offline".equals(tokenAccessType)) {
+            builder.withTokenAccessType(TokenAccessType.OFFLINE);
+        } else if (!"legacy".equals(tokenAccessType)) {
+            System.out.println("Invalid token access type: " + tokenAccessType);
+            System.exit(1);
+            return;
+        }
+        DbxWebAuth.Request webAuthRequest = builder.build();
 
         String authorizeUrl = webAuth.authorize(webAuthRequest);
         System.out.println("1. Go to " + authorizeUrl);
@@ -89,9 +106,16 @@ public class Main {
         System.out.println("- User ID: " + authFinish.getUserId());
         System.out.println("- Account ID: " + authFinish.getAccountId());
         System.out.println("- Access Token: " + authFinish.getAccessToken());
+        if (authFinish.getExpiresAt() != null) {
+            System.out.println("- Expires At: " + authFinish.getExpiresAt());
+        }
+        if (authFinish.getRefreshToken() != null) {
+            System.out.println("- Refresh Token: " + authFinish.getRefreshToken());
+        }
 
         // Save auth information to output file.
-        DbxAuthInfo authInfo = new DbxAuthInfo(authFinish.getAccessToken(), appInfo.getHost());
+        DbxAuthInfo authInfo = new DbxAuthInfo(authFinish.getAccessToken(), authFinish
+                .getExpiresAt(), authFinish.getRefreshToken(), appInfo .getHost());
         File output = new File(argAuthFileOutput);
         try {
             DbxAuthInfo.Writer.writeToFile(authInfo, output);

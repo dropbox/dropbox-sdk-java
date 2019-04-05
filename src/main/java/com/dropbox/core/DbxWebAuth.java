@@ -273,6 +273,9 @@ public class DbxWebAuth {
         if (request.disableSignup != null) {
             params.put("disable_signup", Boolean.toString(request.disableSignup).toLowerCase());
         }
+        if (request.tokenAccessType != null) {
+            params.put("token_access_type", request.tokenAccessType.toString());
+        }
 
         return DbxRequestUtil.buildUrlWithParams(
             requestConfig.getUserLocale(),
@@ -626,19 +629,23 @@ public class DbxWebAuth {
         private final Boolean forceReapprove;
         private final Boolean disableSignup;
         private final DbxSessionStore sessionStore;
+        private final TokenAccessType tokenAccessType;
+
 
         private Request(String redirectUri,
                         String state,
                         String requireRole,
                         Boolean forceReapprove,
                         Boolean disableSignup,
-                        DbxSessionStore sessionStore) {
+                        DbxSessionStore sessionStore,
+                        TokenAccessType tokenAccessType) {
             this.redirectUri = redirectUri;
             this.state = state;
             this.requireRole = requireRole;
             this.forceReapprove = forceReapprove;
             this.disableSignup = disableSignup;
             this.sessionStore = sessionStore;
+            this.tokenAccessType = tokenAccessType;
         }
 
         /**
@@ -647,12 +654,14 @@ public class DbxWebAuth {
          * @return copy of this request
          */
         public Builder copy() {
-            return new Builder(redirectUri,
-                               state,
-                               requireRole,
-                               forceReapprove,
-                               disableSignup,
-                               sessionStore);
+            return new Builder(
+                    redirectUri,
+                    state,
+                    requireRole,
+                    forceReapprove,
+                    disableSignup,
+                    sessionStore,
+                    tokenAccessType);
         }
 
         /**
@@ -674,9 +683,10 @@ public class DbxWebAuth {
             private Boolean forceReapprove;
             private Boolean disableSignup;
             private DbxSessionStore sessionStore;
+            private TokenAccessType tokenAccessType;
 
             private Builder() {
-                this(null, null, null, null, null, null);
+                this(null, null, null, null, null, null, null);
             }
 
             private Builder(String redirectUri,
@@ -684,13 +694,15 @@ public class DbxWebAuth {
                             String requireRole,
                             Boolean forceReapprove,
                             Boolean disableSignup,
-                            DbxSessionStore sessionStore) {
+                            DbxSessionStore sessionStore,
+                            TokenAccessType tokenAccessType) {
                 this.redirectUri = redirectUri;
                 this.state = state;
                 this.requireRole = requireRole;
                 this.forceReapprove = forceReapprove;
                 this.disableSignup = disableSignup;
                 this.sessionStore = sessionStore;
+                this.tokenAccessType = tokenAccessType;
             }
 
             /**
@@ -823,6 +835,25 @@ public class DbxWebAuth {
             }
 
             /**
+             * Whether or not to include refresh token in {@link DbxAuthFinish}
+             *
+             * For {@link TokenAccessType#ONLINE}, auth result only contains short live token.
+             * For {@link TokenAccessType#OFFLINE}, auth result includes both short live token
+             * and refresh token.
+             * For {@code null}, auth result is either legacy long live token or short live token
+             * only, depending on the app setting.
+             *
+             * @param tokenAccessType Whether or not to include refresh token in
+             * {@link DbxAuthFinish}
+             *
+             * @return this builder
+             */
+            public Builder withTokenAccessType(TokenAccessType tokenAccessType) {
+                this.tokenAccessType = tokenAccessType;
+                return this;
+            }
+
+            /**
              * Returns a new OAuth {@link Request} that can be used in
              * {@link DbxWebAuth#DbxWebAuth(DbxRequestConfig,DbxAppInfo)} to authorize a user.
              *
@@ -836,12 +867,14 @@ public class DbxWebAuth {
                     throw new IllegalStateException("Cannot specify a state without a redirect URI.");
                 }
 
-                return new Request(redirectUri,
-                                   state,
-                                   requireRole,
-                                   forceReapprove,
-                                   disableSignup,
-                                   sessionStore);
+                return new Request(
+                        redirectUri,
+                        state,
+                        requireRole,
+                        forceReapprove,
+                        disableSignup,
+                        sessionStore,
+                        tokenAccessType);
             }
         }
     }
