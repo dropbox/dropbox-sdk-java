@@ -601,6 +601,8 @@ _CMDLINE_PARSER.add_argument('--requests-classname-prefix', type=six.text_type, 
                                    'Defaults to using the name of the client class.'))
 _CMDLINE_PARSER.add_argument('--data-types-only', action="store_true", default=False,
                              help='Generate all data types but no routes or clients.')
+_CMDLINE_PARSER.add_argument('--observable-routes', action='store_true', default=False,
+                             help='Generate observable routes in addition to synchronous ones.')
 _CMDLINE_PARSER.add_argument('--javadoc-refs', type=six.text_type, default=None,
                              help='Path to Javadoc references file. If a file exists at this ' +
                              'path, it will be loaded and used for generating correct Javadoc ' +
@@ -707,7 +709,7 @@ class JavaImporter(object):
                 existing_names[import_.name] = import_
                 self._imports.add(import_)
 
-    def add_imports_for_namespace(self, namespace):
+    def add_imports_for_namespace(self, namespace, observable_routes):
         assert isinstance(namespace, ApiNamespace), repr(namespace)
 
         self.add_imports(
@@ -718,6 +720,17 @@ class JavaImporter(object):
             'java.util.HashMap',
             'java.util.Map',
         )
+
+        if observable_routes:
+            self.add_imports(
+                'io.reactivex.Single',
+                'io.reactivex.Completable',
+                'io.reactivex.SingleEmitter',
+                'io.reactivex.SingleOnSubscribe',
+                'io.reactivex.CompletableEmitter',
+                'io.reactivex.CompletableOnSubscribe'
+            )
+
         for route in namespace.routes:
             self.add_imports_for_route(route)
 
@@ -1962,6 +1975,11 @@ class JavaApi(object):
         return camelcase(format_func_name(route))
 
     @staticmethod
+    def observable_route_method(route):
+        assert isinstance(route, ApiRoute), repr(route)
+        return camelcase(format_func_name(route) + '_async')
+
+    @staticmethod
     def route_builder_method(route):
         assert isinstance(route, ApiRoute), repr(route)
         return camelcase(format_func_name(route) + '_builder')
@@ -2566,7 +2584,7 @@ class JavaCodeGenerationInstance(object):
 
             # generate all necessary builder classes for routes that support it
             if j.has_builder(route):
-                self.generate_route_builder(route)
+                self.generate_route_builder(route, self.g.args.observable_routes)
 
         if namespace.routes:
             self.generate_namespace_routes(namespace)
@@ -2625,9 +2643,10 @@ class JavaCodeGenerationInstance(object):
         assert isinstance(namespace, ApiNamespace), repr(namespace)
 
         j = self.j
+        g = self.g
 
         with self.class_writer(namespace) as w:
-            w.importer.add_imports_for_namespace(namespace)
+            w.importer.add_imports_for_namespace(namespace, g.args.observable_routes)
             w.write_imports()
 
             w.out('')
@@ -2647,14 +2666,20 @@ class JavaCodeGenerationInstance(object):
                     w.out('// route %s', j.url_path(route))
                     w.out('//')
                     self.generate_route_base(route)
+                    if g.args.observable_routes:
+                        self.generate_observable_route_base(route)
                     if j.has_arg(route):
                         self.generate_route(route, required_only=True)
+                        if g.args.observable_routes:
+                            self.generate_observable_route(route, required_only=True)
                     # we don't use builders if we have too few optional fields. Instead we just
                     # create another method call. We have an exception for download endpoints, which
                     # recently added builders for previous routes that had no builders
                     has_optional_fields = is_struct_type(route.arg_data_type) and route.arg_data_type.all_optional_fields
                     if has_optional_fields and not j.has_builder(route.arg_data_type):
                         self.generate_route(route, required_only=False)
+                        if g.args.observable_routes:
+                            self.generate_observable_route(route, required_only=False)
 
                     # route can have builder if arg does or if route has a particular request
                     # style. So check route for builder instead of arg here:
@@ -2877,6 +2902,149 @@ class JavaCodeGenerationInstance(object):
             else:
                 w.out('%s(_arg);', j.route_method(route))
 
+    def generate_observable_route_base(self, route, force_public=False):
+        assert isinstance(route, ApiRoute), repr(route)
+
+        w = self.w
+        j = self.j
+
+        if j.request_style(route) != 'rpc':
+            # TODO: Support other request styles.
+            return
+
+        if j.has_result(route):
+            returns = route.result_data_type
+            return_class = j.java_class(route.result_data_type)
+            observable_return_class = JavaClass("Single", [return_class])
+        else:
+            returns = None
+            return_class = None
+            observable_return_class = JavaClass('Completable')
+
+        is_public = force_public or not is_struct_type(route.arg_data_type)
+        if is_public:
+            deprecated = None # automatically determine from route
+            visibility = 'public'
+        else:
+            deprecated = False # Don't mark private methods deprecated since we don't care
+            visibility = ''    # package private
+
+        param = ''
+        param_docs = []
+        if j.has_arg(route):
+            param = 'final %s arg' % j.java_class(route.arg_data_type)
+            param_docs.append(('arg', route.arg_data_type.doc))
+
+        # TODO: Add javadoc for errors.
+        w.out('')
+        w.javadoc(route, returns=returns, deprecated=deprecated, params=param_docs)
+
+        with w.block('%s %s %s(%s)',
+                     visibility,
+                     observable_return_class,
+                     j.observable_route_method(route),
+                     param):
+            if j.has_result(route):
+                with w.block('return Single.create(new SingleOnSubscribe<%s>()' % return_class, after=');'):
+                    w.out('@Override')
+                    with w.block('public void subscribe(SingleEmitter<%s> emitter) throws Exception' % return_class):
+                        if j.has_arg(route):
+                            w.out('emitter.onSuccess(%s(arg));', j.route_method(route))
+                        else:
+                            w.out('emitter.onSuccess(%s());', j.route_method(route))
+            else:
+                with w.block('return Completable.create(new CompletableOnSubscribe()', after=");"):
+                    w.out("@Override")
+                    with w.block('public void subscribe(CompletableEmitter emitter) throws Exception'):
+                        if j.has_arg(route):
+                            w.out('%s(arg);', j.route_method(route))
+                        else:
+                            w.out('%s();', j.route_method(route))
+                        w.out("emitter.onComplete();")
+
+    def generate_observable_route(self, route, required_only=True):
+        assert isinstance(route, ApiRoute), repr(route)
+
+        w = self.w
+        j = self.j
+
+        assert j.has_arg(route), repr(route)
+
+        if not is_struct_type(route.arg_data_type) or j.request_style(route) != 'rpc':
+            # TODO: Support other request styles.
+            return
+
+        arg = route.arg_data_type
+
+        if j.has_result(route):
+            returns = route.result_data_type
+            return_class = j.java_class(route.result_data_type)
+            observable_return_class = JavaClass("Single", [return_class])
+        else:
+            returns = None
+            return_class = None
+            observable_return_class = JavaClass('Completable')
+
+        if required_only:
+            fields = arg.all_required_fields
+        else:
+            fields = arg.all_fields
+
+        params = ', '.join(
+            w.fmt('final %s %s', j.java_class(f), j.param_name(f)) for f in fields
+        )
+
+        args = ', '.join(
+            w.fmt('%s', j.param_name(f)) for f in fields
+        )
+
+        default_fields = tuple(f for f in arg.all_optional_fields if f.has_default)
+        # TODO: This doc can include a throws clause that does not apply
+        doc = route.doc or ''
+        if required_only and default_fields:
+            if j.has_builder(route):
+                doc += """
+
+                The default values for the optional request parameters will be used. See %s
+                for more details.""" % w.javadoc_ref(j.builder_class(route))
+            else:
+                assert len(default_fields) == 1, default_fields
+                default_field = default_fields[0]
+                doc += """
+
+                The {@code %s} request parameter will default to {@code %s} (see {@link #%s(%s)}).""" % (
+                    j.param_name(default_field),
+                    w.java_default_value(default_field),
+                    j.route_method(route),
+                    ','.join(w.resolved_class(j.java_class(f, generics=False)) for f in arg.all_fields),
+                )
+
+        w.out('')
+        w.javadoc(doc, stone_elem=route, fields=fields, returns=returns, allow_defaults=False)
+
+        with w.block('public %s %s(%s)',
+                     observable_return_class,
+                     j.observable_route_method(route),
+                     params):
+            if j.has_result(route):
+                with w.block('return Single.create(new SingleOnSubscribe<%s>()', return_class, after=');'):
+                    w.out('@Override')
+                    with w.block('public void subscribe(SingleEmitter<%s> emitter) throws Exception', return_class):
+                        if j.has_arg(route):
+                            w.out('emitter.onSuccess(%s(%s));', j.route_method(route), args)
+                        else:
+                            w.out('emitter.onSuccess(%s());', j.route_method(route))
+            else:
+                with w.block('return Completable.create(new CompletableOnSubscribe()', after=");"):
+                    w.out("@Override")
+                    with w.block('public void subscribe(CompletableEmitter emitter) throws Exception'):
+                        if j.has_arg(route):
+                            w.out('%s(%s);', j.route_method(route), args)
+                        else:
+                            w.out('%s();', j.route_method(route))
+                        w.out("emitter.onComplete();")
+
+
     def generate_route_builder_method(self, route):
         assert isinstance(route, ApiRoute), repr(route)
 
@@ -2915,6 +3083,7 @@ class JavaCodeGenerationInstance(object):
                 w.out('return new %s(this, argBuilder_);', return_class)
             else:
                 w.out('return new %s(this, %s);', return_class, builder_args)
+
 
     def translate_error_wrapper(self, route, error_wrapper_var):
         assert isinstance(route, ApiRoute), repr(route)
@@ -3672,7 +3841,7 @@ class JavaCodeGenerationInstance(object):
                 with w.block('protected %s newException(DbxWrappedException error)', exception_class):
                     w.out('return %s', self.translate_error_wrapper(route, 'error'))
 
-    def generate_route_builder(self, route):
+    def generate_route_builder(self, route, observable_routes):
         assert isinstance(route, ApiRoute), repr(route)
 
         j = self.j
@@ -3697,9 +3866,11 @@ class JavaCodeGenerationInstance(object):
             elif j.has_result(route):
                 parent_class = None
                 return_class = j.java_class(route.result_data_type)
+                observable_return_class = JavaClass('io.reactivex.Single', [return_class])
             else:
                 parent_class = None
                 return_class = JavaClass('void')
+                observable_return_class = JavaClass('io.reactivex.Completable')
 
             w.importer.add_imports_for_route_builder(route)
             w.write_imports()
@@ -3802,6 +3973,32 @@ class JavaCodeGenerationInstance(object):
                         w.out('return _client.%s(%s);', j.route_method(route), ', '.join(args))
                     else:
                         w.out('_client.%s(%s);', j.route_method(route), ', '.join(args))
+
+                #
+                # BUILD method to start request asynchronously
+                #
+
+                # TODO: Support other route types
+                if observable_routes and j.request_style(route) == 'rpc':
+                    w.out('')
+                    w.javadoc('Issues the request.')
+                    if route.deprecated is not None:
+                        w.out('@SuppressWarnings("deprecation")')
+                    with w.block('public %s startAsync()', observable_return_class):
+                        if j.has_builder(arg):
+                            w.out('%s arg_ = this._builder.build();', j.java_class(arg))
+                        else:
+                            w.out('%s arg_ = new %s(%s);',
+                                  j.java_class(arg),
+                                  j.java_class(arg),
+                                  ', '.join(j.param_name(f) for f in arg.all_fields))
+                        args = ['arg_']
+                        if j.has_result(route) or j.request_style(route) == 'upload':
+                            w.out('return _client.%s(%s);', j.observable_route_method(route), ', '.join(args))
+                        else:
+                            w.out('return _client.%s(%s);', j.observable_route_method(route), ', '.join(args))
+
+
 
     def generate_field_assignment(self, field, lhs=None, rhs=None, allow_default=True):
         assert isinstance(field, Field), repr(field)
