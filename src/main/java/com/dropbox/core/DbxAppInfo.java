@@ -24,6 +24,20 @@ public class DbxAppInfo extends Dumpable {
     private final DbxHost host;
 
     /**
+     * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless
+     * you are early access partner of this feature. The function signature is subjected to change
+     * in next minor version release.
+     *
+     * DbxAppInfo without secret. Should only be used in PKCE flow.
+     *
+     * @param key Dropbox app key (see {@link #getKey})
+     * @see com.dropbox.core.DbxPKCEWebAuth
+     */
+    public DbxAppInfo(String key) {
+        this(key, null);
+    }
+
+    /**
      * @param key Dropbox app key (see {@link #getKey})
      * @param secret Dropbox app secret (see {@link #getSecret})
      */
@@ -86,6 +100,16 @@ public class DbxAppInfo extends Dumpable {
      */
     public DbxHost getHost() {
         return host;
+    }
+
+    /**
+     * Return if this DbxAppInfo contains app secret. DbxAppInfo without secret should only be
+     * used in {@link com.dropbox.core.DbxPKCEWebAuth}.
+     *
+     * @return If this DbxAppInfo contains app secret.
+     */
+    public boolean hasSecret() {
+        return secret != null;
     }
 
     @Override
@@ -164,7 +188,6 @@ public class DbxAppInfo extends Dumpable {
             JsonReader.expectObjectEnd(parser);
 
             if (key == null) throw new JsonReadException("missing field \"key\"", top);
-            if (secret == null) throw new JsonReadException("missing field \"secret\"", top);
             if (host == null) host = DbxHost.DEFAULT;
 
             return new DbxAppInfo(key, secret, host);
@@ -214,7 +237,7 @@ public class DbxAppInfo extends Dumpable {
 
     public static /*@Nullable*/String getTokenPartError(String s)
     {
-        if (s == null) return "can't be null";
+        if (s == null) return null;
         if (s.length() == 0) return "can't be empty";
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
@@ -228,7 +251,14 @@ public class DbxAppInfo extends Dumpable {
 
     public static void checkKeyArg(String key)
     {
-        String error = getTokenPartError(key);
+        String error;
+
+        if (key == null) {
+            error = "can't be null";
+        } else {
+            error = getTokenPartError(key);
+        }
+
         if (error == null) return;
         throw new IllegalArgumentException("Bad 'key': " + error);
     }

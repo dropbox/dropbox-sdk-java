@@ -143,4 +143,15 @@ public class DbxWebAuthTest extends DbxOAuthTestBase {
                    "state", "_no_csrf_available_or_bad_token_|test-state")
         );
     }
+
+    @Test(expectedExceptions={IllegalStateException.class})
+    public void testDbxWebAuthWithoutSecret() {
+        DbxAppInfo appNoSecret = new DbxAppInfo("test-key");
+        DbxWebAuth dbxWebAuth = new DbxWebAuth(CONFIG, appNoSecret);
+
+        dbxWebAuth.authorize(
+                DbxWebAuth.newRequestBuilder()
+                        .build()
+        );
+    }
 }

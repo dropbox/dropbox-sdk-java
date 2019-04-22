@@ -13,8 +13,6 @@ import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.util.StringUtil;
 import com.dropbox.core.v2.DbxRawClientV2;
 
-/*>>> import checkers.nullness.quals.Nullable; */
-
 /**
  * Does the OAuth 2 "authorization code" flow.  (This SDK does not support the "token" flow.)
  *
@@ -135,7 +133,7 @@ import com.dropbox.core.v2.DbxRawClientV2;
  * </pre>
  */
 public class DbxWebAuth {
-    private static final SecureRandom RAND = new SecureRandom();
+    protected static final SecureRandom RAND = new SecureRandom();
     private static final int CSRF_BYTES_SIZE = 16;
     private static final int CSRF_STRING_SIZE = StringUtil.urlSafeBase64Encode(new byte[CSRF_BYTES_SIZE]).length();
 
@@ -144,9 +142,9 @@ public class DbxWebAuth {
     /** Role representing the personal account associated with a user. Used by {@link Request.Builder#withRequireRole}. */
     public static final String ROLE_PERSONAL = "personal";
 
-    private final DbxRequestConfig requestConfig;
-    private final DbxAppInfo appInfo;
-    private final Request deprecatedRequest;
+    final DbxRequestConfig requestConfig;
+    final DbxAppInfo appInfo;
+    final Request deprecatedRequest;
 
     /**
      * Creates a new instance that will perform the OAuth2 authorization flow using a redirect URI.
@@ -164,6 +162,7 @@ public class DbxWebAuth {
     public DbxWebAuth(DbxRequestConfig requestConfig, DbxAppInfo appInfo, String redirectUri, DbxSessionStore sessionStore) {
         if (requestConfig == null) throw new NullPointerException("requestConfig");
         if (appInfo == null) throw new NullPointerException("appInfo");
+
 
         this.requestConfig = requestConfig;
         this.appInfo = appInfo;
@@ -225,8 +224,8 @@ public class DbxWebAuth {
     }
 
     /**
-     * Starts authorization and returns a "authorization URL" on the Dropbox website that gives the
-     * lets the user grant your app access to their Dropbox account.
+     * Starts authorization and returns an "authorization URL" on the Dropbox website that
+     * let the user grant your app access to their Dropbox account.
      *
      * <p> If a redirect URI was specified ({@link Request.Builder#withRedirectUri}), then users
      * will be redirected to the redirect URI after completing the authorization flow. Call {@link
@@ -243,17 +242,26 @@ public class DbxWebAuth {
      *
      * @throws IllegalStateException if this {@link DbxWebAuth} instance was created using the
      * deprecated {@link #DbxWebAuth(DbxRequestConfig,DbxAppInfo,String,DbxSessionStore)}
-     * constructor.
+     * constructor, or if this (@link DbxWebAuth} instance was created with {@link DbxAppInfo}
+     * without app secret.
      */
     public String authorize(Request request) {
         if (deprecatedRequest != null) {
             throw new IllegalStateException("Must create this instance using DbxWebAuth(DbxRequestConfig,DbxAppInfo) to call this method.");
         }
 
+        if (!appInfo.hasSecret()) {
+            throw new IllegalStateException("For native apps, please use DbxPKCEWebAuth");
+        }
+
         return authorizeImpl(request);
     }
 
     private String authorizeImpl(Request request) {
+        return authorizeImpl(request, null);
+    }
+
+    String authorizeImpl(Request request, Map<String, String> pkceParams) {
         Map<String, String> params = new HashMap<String, String>();
 
         params.put("client_id", appInfo.getKey());
@@ -275,6 +283,12 @@ public class DbxWebAuth {
         }
         if (request.tokenAccessType != null) {
             params.put("token_access_type", request.tokenAccessType.toString());
+        }
+
+        if (pkceParams != null) {
+            for (String key: pkceParams.keySet()) {
+                params.put(key, pkceParams.get(key));
+            }
         }
 
         return DbxRequestUtil.buildUrlWithParams(
@@ -386,8 +400,12 @@ public class DbxWebAuth {
         return finish(code, null, null);
     }
 
-    private DbxAuthFinish finish(String code, String redirectUri, final String state) throws DbxException {
+    DbxAuthFinish finish(String code, String redirectUri, final String state) throws
+            DbxException {
         if (code == null) throw new NullPointerException("code");
+        if (!appInfo.hasSecret()) {
+            throw new IllegalStateException("For native apps, please use DbxPKCEWebAuth");
+        }
 
         Map<String, String> params = new HashMap<String, String>();
         params.put("grant_type", "authorization_code");
