@@ -23,7 +23,7 @@ If you are using Gradle, then edit your project's "build.gradle" and add this to
 ```groovy
 dependencies {
     // ...
-    compile 'com.dropbox.core:dropbox-core-sdk:3.0.11'
+    implementation 'com.dropbox.core:dropbox-core-sdk:3.0.11'
 }
 ```
 
