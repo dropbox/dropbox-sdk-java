@@ -9,11 +9,11 @@ import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxHost;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.DbxRequestUtil;
-import com.dropbox.core.DbxUploader;
 import com.dropbox.core.DbxWebAuth;
 import com.dropbox.core.DbxWrappedException;
 import com.dropbox.core.NetworkIOException;
 import com.dropbox.core.RetryException;
+import com.dropbox.core.oauth.DbxRefreshResult;
 import com.dropbox.core.stone.StoneSerializer;
 import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.util.LangUtil;
@@ -27,8 +27,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -83,6 +81,10 @@ public abstract class DbxRawClientV2 {
      * @param headers List of request headers. Add authentication headers to this list.
      */
     protected abstract void addAuthHeaders(List<HttpRequestor.Header> headers);
+
+    public abstract DbxRefreshResult refreshAccessToken() throws DbxException;
+
+    public abstract void refreshAccessTokenIfExpire() throws DbxException;
 
     /**
      * Clone a new DbxRawClientV2 with Dropbox-API-Path-Root header.

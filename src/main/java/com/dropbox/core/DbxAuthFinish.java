@@ -222,7 +222,7 @@ public final class DbxAuthFinish {
             if (accountId == null && teamId == null) {
                 throw new JsonReadException("missing field \"account_id\" and missing field \"team_id\"", top);
             }
-            if (refreshToken != null&& expiresIn == null) {
+            if (refreshToken != null && expiresIn == null) {
                 throw new JsonReadException("missing field \"expires_in\"", top);
             }
 

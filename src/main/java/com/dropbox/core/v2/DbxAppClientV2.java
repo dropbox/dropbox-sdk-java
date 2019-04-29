@@ -4,6 +4,7 @@ import com.dropbox.core.DbxHost;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.DbxRequestUtil;
 import com.dropbox.core.http.HttpRequestor;
+import com.dropbox.core.oauth.DbxRefreshResult;
 import com.dropbox.core.v2.common.PathRoot;
 
 import java.util.List;
@@ -74,6 +75,16 @@ public class DbxAppClientV2 extends DbxAppClientV2Base {
             super(requestConfig, host, userId, null);
             this.key = key;
             this.secret = secret;
+        }
+
+        @Override
+        public DbxRefreshResult refreshAccessToken() {
+            //no op
+            return null;
+        }
+
+        public void refreshAccessTokenIfExpire() {
+            //no op
         }
 
         @Override

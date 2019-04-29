@@ -1,9 +1,12 @@
 package com.dropbox.core.v2;
 
+import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxHost;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.DbxRequestUtil;
 import com.dropbox.core.http.HttpRequestor;
+import com.dropbox.core.oauth.DbxCredential;
+import com.dropbox.core.oauth.DbxRefreshResult;
 import com.dropbox.core.v2.common.PathRoot;
 
 import java.util.List;
@@ -47,6 +50,10 @@ public class DbxClientV2 extends DbxClientV2Base {
         this(requestConfig, accessToken, DbxHost.DEFAULT, userId);
     }
 
+    public DbxClientV2(DbxRequestConfig requestConfig, DbxCredential credential) {
+        this(requestConfig, credential, DbxHost.DEFAULT, null, null);
+    }
+
     /**
      * Same as {@link #DbxClientV2(DbxRequestConfig, String)} except you can
      * also set the hostnames of the Dropbox API servers. This is used in
@@ -77,7 +84,16 @@ public class DbxClientV2 extends DbxClientV2Base {
      *               account use-case.
      */
     public DbxClientV2(DbxRequestConfig requestConfig, String accessToken, DbxHost host, String userId) {
-        super(new DbxUserRawClientV2(requestConfig, accessToken, host, userId, null));
+        this(requestConfig, new DbxCredential(accessToken), host, userId, null);
+    }
+
+    public DbxClientV2(
+        DbxRequestConfig requestConfig,
+        DbxCredential credential,
+        DbxHost host,
+        String userId,
+        PathRoot pathRoot) {
+        super(new DbxUserRawClientV2(requestConfig, credential, host, userId, pathRoot));
     }
 
     /**
@@ -112,30 +128,56 @@ public class DbxClientV2 extends DbxClientV2Base {
         return new DbxClientV2(_client.withPathRoot(pathRoot));
     }
 
+    public DbxRefreshResult refreshAccessToken() throws DbxException {
+        return this._client.refreshAccessToken();
+    }
+
     /**
      * {@link DbxRawClientV2} raw client that adds user OAuth2 auth headers to all requests.
      */
     private static final class DbxUserRawClientV2 extends DbxRawClientV2 {
-        private final String accessToken;
+        private final DbxCredential credential;
 
-        public DbxUserRawClientV2(DbxRequestConfig requestConfig, String accessToken, DbxHost host, String userId, PathRoot pathRoot) {
+        DbxUserRawClientV2(DbxRequestConfig requestConfig, DbxCredential credential, DbxHost host,
+                           String userId, PathRoot pathRoot) {
             super(requestConfig, host, userId, pathRoot);
 
-            if (accessToken == null) throw new NullPointerException("accessToken");
+            if (credential == null) throw new NullPointerException("credential");
+            this.credential = credential;
+        }
 
-            this.accessToken = accessToken;
+        @Override
+        public DbxRefreshResult refreshAccessToken() throws DbxException {
+            credential.refresh(this.getRequestConfig());
+            return new DbxRefreshResult(credential.getAccessToken(), credential.getExpiresAt());
+        }
+
+        @Override
+        public void refreshAccessTokenIfExpire() throws DbxException {
+            if (!credential.needRefresh()) {
+                return;
+            }
+
+            synchronized (this.credential) {
+                if (!credential.needRefresh()) {
+                    // another thread already refreshed.
+                    return;
+                }
+
+                credential.refresh(this.getRequestConfig(), this.getHost());
+            }
         }
 
         @Override
         protected void addAuthHeaders(List<HttpRequestor.Header> headers) {
-            DbxRequestUtil.addAuthHeader(headers, accessToken);
+            DbxRequestUtil.addAuthHeader(headers, credential.getAccessToken());
         }
 
         @Override
         protected DbxRawClientV2 withPathRoot(PathRoot pathRoot) {
             return new DbxUserRawClientV2(
                 this.getRequestConfig(),
-                this.accessToken,
+                this.credential,
                 this.getHost(),
                 this.getUserId(),
                 pathRoot

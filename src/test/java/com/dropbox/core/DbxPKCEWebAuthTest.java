@@ -178,8 +178,6 @@ public class DbxPKCEWebAuthTest extends DbxOAuthTestBase {
 
         HttpRequestor mockRequestor = mock(HttpRequestor.class);
         HttpRequestor.Uploader mockUploader = mock(HttpRequestor.Uploader.class);
-        //when(mockUploader.getBody())
-        //    .thenReturn(body);
         when(mockUploader.finish())
             .thenReturn(finishResponse);
         when(mockRequestor.startPost(anyString(), anyListOf(HttpRequestor.Header.class)))

@@ -51,7 +51,7 @@ public final class DbxRequestUtil {
         return buildUri(host, path) + "?" + encodeUrlParams(userLocale, params);
     }
 
-    static String [] toParamsArray(Map<String, String> params) {
+    public static String [] toParamsArray(Map<String, String> params) {
         String [] arr = new String[2 * params.size()];
         int i = 0;
         for (Map.Entry<String, String> entry : params.entrySet()) {
