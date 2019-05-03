@@ -124,7 +124,7 @@ public class DbxPKCEWebAuth extends DbxWebAuth {
 
     /**
      * Call this after the user has visited the authorizaton URL and copy/pasted the authorization
-     * code that Dropbox gave them, with the same {@link DbxPKCEWebAuth} instancd that generated
+     * code that Dropbox gave them, with the same {@link DbxPKCEWebAuth} instance that generated
      * the authorization URL.
      *
      * @throws DbxException if the instance is not the same one used to generate authorization
@@ -138,7 +138,7 @@ public class DbxPKCEWebAuth extends DbxWebAuth {
 
     /**
      * Call this after the user has visited the authorizaton URL and Dropbox has redirected them
-     * back to your native app, with the same {@link DbxPKCEWebAuth} instancd that generated
+     * back to your native app, with the same {@link DbxPKCEWebAuth} instance that generated
      * the authorization URL.
      *
      * @throws BadRequestException If the redirect request is missing required query parameters,

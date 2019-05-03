@@ -184,19 +184,12 @@ public class DbxTeamClientV2 extends DbxTeamClientV2Base {
         }
 
         @Override
-        public void refreshAccessTokenIfExpire() throws DbxException {
-            if (!credential.needRefresh()) {
+        public void refreshAccessTokenIfNeeded() throws DbxException {
+            if (credential.getRefreshToken() == null || credential.aboutToExpire()) {
                 return;
             }
 
-            synchronized (this.credential) {
-                if (!credential.needRefresh()) {
-                    // another thread already refreshed.
-                    return;
-                }
-
-                credential.refresh(this.getRequestConfig(), this.getHost());
-            }
+            credential.refresh(this.getRequestConfig(), this.getHost());
         }
 
         @Override

@@ -1,22 +1,16 @@
 package com.dropbox.core.oauth;
 
-import com.dropbox.core.BadRequestException;
 import com.dropbox.core.DbxAppInfo;
 import com.dropbox.core.DbxOAuthTestBase;
-import com.dropbox.core.DbxPKCEWebAuth;
 import com.dropbox.core.DbxRequestConfig;
-import com.dropbox.core.DbxWebAuth;
 import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.DbxTeamClientV2;
 import org.mockito.ArgumentCaptor;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -66,13 +60,12 @@ public class DbxRefershTest extends DbxOAuthTestBase {
     public void testExpire() {
         Long now = System.currentTimeMillis();
         assertTrue(new DbxCredential(EXPIRED_TOKEN, 0L, REFRESH_TOKEN, APP.getKey(), APP
-            .getSecret()).needRefresh());
+            .getSecret()).aboutToExpire());
         assertTrue(new DbxCredential(EXPIRED_TOKEN, now, REFRESH_TOKEN, APP.getKey(), APP
-            .getSecret()).needRefresh());
+            .getSecret()).aboutToExpire());
         assertTrue(new DbxCredential(EXPIRED_TOKEN, now + EXPIRES_IN, REFRESH_TOKEN, APP.getKey()
-            , APP.getSecret()).needRefresh());
-        assertFalse(new DbxCredential(EXPIRED_TOKEN).needRefresh());
-        assertFalse(new DbxCredential(EXPIRED_TOKEN, null, null, null, null).needRefresh());
+            , APP.getSecret()).aboutToExpire());
+        assertTrue(new DbxCredential(EXPIRED_TOKEN, null, "refresh", "appkey", null).aboutToExpire());
     }
 
     @Test

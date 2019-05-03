@@ -84,7 +84,7 @@ public abstract class DbxRawClientV2 {
 
     public abstract DbxRefreshResult refreshAccessToken() throws DbxException;
 
-    public abstract void refreshAccessTokenIfExpire() throws DbxException;
+    public abstract void refreshAccessTokenIfNeeded() throws DbxException;
 
     /**
      * Clone a new DbxRawClientV2 with Dropbox-API-Path-Root header.

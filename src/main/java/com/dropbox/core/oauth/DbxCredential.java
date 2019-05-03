@@ -20,11 +20,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.dropbox.core.oauth.DbxOAuthError.INVALID_REQUEST;
+
+/*>>> import checkers.nullness.quals.NonNull; */
+/*>>> import checkers.nullness.quals.Nullable; */
+
 public class DbxCredential {
     private final long EXPIRE_MARGIN = 5 * 60 * 1000; // 5 minutes
 
     private String accessToken;
-    private Long expiresAt;
+    private /*@Nullable*/Long expiresAt;
     private final String refreshToken;
     private final String appKey;
     private final String appSecret;
@@ -33,17 +38,18 @@ public class DbxCredential {
         this(accessToken, null, null, null, null);
     }
 
-    public DbxCredential(String accessToken, Long expiresAt, String refreshToken, String appKey) {
+    public DbxCredential(String accessToken, /*Nullable*/Long expiresAt, String refreshToken, String
+        appKey) {
         this(accessToken, expiresAt, refreshToken, appKey, null);
     }
 
-    public DbxCredential(String accessToken, Long expiresAt, String refreshToken, String appKey, String appSecret) {
+    public DbxCredential(String accessToken, /*@Nullable*/Long expiresAt, String refreshToken, String appKey, String appSecret) {
         if (refreshToken != null && appKey == null) {
-            throw new NullPointerException("Can't refresh without app Key");
+            throw new IllegalArgumentException("Can't refresh without app Key.");
         }
 
         if (accessToken == null) {
-            throw new NullPointerException("access token");
+            throw new IllegalArgumentException("Missing access token.");
         }
 
         this.accessToken = accessToken;
@@ -73,15 +79,7 @@ public class DbxCredential {
         return this.refreshToken;
     }
 
-    public boolean needRefresh() {
-        if (this.getRefreshToken() == null) {
-            return false;
-        }
-
-        return this.aboutToExpire();
-    }
-
-    private boolean aboutToExpire() {
+    public boolean aboutToExpire() {
         if (this.getExpiresAt() == null) {
             return true;
         }
@@ -91,7 +89,12 @@ public class DbxCredential {
 
     public DbxRefreshResult refresh(DbxRequestConfig requestConfig, DbxHost host) throws DbxException {
         if (this.refreshToken == null) {
-            throw new NullPointerException("Cannot refresh becasue there is no refresh token");
+            throw new DbxOAuthException(null, new DbxOAuthError(INVALID_REQUEST, "Cannot refresh becasue there is no refresh token"));
+        }
+
+        if (this.appKey == null) {
+            throw new IllegalStateException("DbxCredential's constructor should always guarantee " +
+                "appKey is not null if refreshToken is not null.");
         }
 
         Map<String, String> params = new HashMap<String, String>();
@@ -130,12 +133,14 @@ public class DbxCredential {
             }
         );
 
-        this.accessToken = dbxRefreshResult.getAccessToken();
-        this.expiresAt = dbxRefreshResult.getExpiresAt();
+        synchronized (this) {
+            this.accessToken = dbxRefreshResult.getAccessToken();
+            this.expiresAt = dbxRefreshResult.getExpiresAt();
+        }
         return dbxRefreshResult;
     }
 
-    synchronized public DbxRefreshResult refresh(DbxRequestConfig requestConfig) throws DbxException {
+    public DbxRefreshResult refresh(DbxRequestConfig requestConfig) throws DbxException {
         return refresh(requestConfig, DbxHost.DEFAULT);
     }
 

@@ -9,10 +9,12 @@ import com.fasterxml.jackson.core.JsonToken;
 
 import java.io.IOException;
 
+/*>>> import checkers.nullness.quals.NonNull; */
+
 
 public class DbxRefreshResult {
     private final String accessToken;
-    private final Long expiresIn;
+    private final long expiresIn;
     private long issueTime;
 
     /**
@@ -20,7 +22,10 @@ public class DbxRefreshResult {
      * @param expiresIn Duration time of accessToken in second.
      * was passed
      */
-    public DbxRefreshResult(String accessToken, Long expiresIn) {
+    public DbxRefreshResult(/*@NotNull*/String accessToken, long expiresIn) {
+        if (accessToken == null) {
+            throw new IllegalArgumentException("access token can't be null.");
+        }
         this.accessToken = accessToken;
         this.expiresIn = expiresIn;
         this.issueTime = System.currentTimeMillis();
@@ -43,9 +48,6 @@ public class DbxRefreshResult {
      * @return OAuth access token used for authorization with Dropbox servers
      */
     public Long getExpiresAt() {
-        if (expiresIn == null) {
-            return null;
-        }
         return issueTime + expiresIn * 1000;
     }
 

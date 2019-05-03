@@ -83,7 +83,7 @@ public class DbxAppClientV2 extends DbxAppClientV2Base {
             return null;
         }
 
-        public void refreshAccessTokenIfExpire() {
+        public void refreshAccessTokenIfNeeded() {
             //no op
         }
 
