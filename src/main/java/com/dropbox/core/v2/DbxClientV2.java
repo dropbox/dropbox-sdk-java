@@ -53,6 +53,20 @@ public class DbxClientV2 extends DbxClientV2Base {
         this(requestConfig, accessToken, DbxHost.DEFAULT, userId);
     }
 
+    /**
+     *
+     * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
+     * early access partner of this feature. The function signature is subjected to change
+     * in next minor version release.
+     *
+     * Create a client that uses {@link com.dropbox.core.oauth.DbxCredential} instead of raw
+     * access token. The credential object include access token as well as refresh token,
+     * expiration time, app key and app secret. Using credential enables dropbox client to support
+     * short live token feature.
+     *
+     * @param requestConfig Default attributes to use for each request
+     * @param credential The credential object containing all the information for authentication.
+     */
     public DbxClientV2(DbxRequestConfig requestConfig, DbxCredential credential) {
         this(requestConfig, credential, DbxHost.DEFAULT, null, null);
     }
@@ -90,7 +104,7 @@ public class DbxClientV2 extends DbxClientV2Base {
         this(requestConfig, new DbxCredential(accessToken), host, userId, null);
     }
 
-    public DbxClientV2(
+    private DbxClientV2(
         DbxRequestConfig requestConfig,
         DbxCredential credential,
         DbxHost host,
@@ -131,6 +145,19 @@ public class DbxClientV2 extends DbxClientV2Base {
         return new DbxClientV2(_client.withPathRoot(pathRoot));
     }
 
+    /**
+     *
+     * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
+     * early access partner of this feature. The function signature is subjected to change
+     * in next minor version release.
+     *
+     * Refresh the access token inside {@link DbxCredential}. It has the same behavior as
+     * {@link DbxCredential#refresh(DbxRequestConfig)}.
+     * @return The result contains new short-live access token and expiration time.
+     * @throws DbxOAuthException If refresh failed because of invalid parameter or invalid refresh
+     * token.
+     * @throws DbxException If refresh failed before of general problems like network issue.
+     */
     public DbxRefreshResult refreshAccessToken() throws DbxException {
         return this._client.refreshAccessToken();
     }

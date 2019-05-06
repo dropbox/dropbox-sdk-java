@@ -39,6 +39,11 @@ public final class DbxAuthFinish {
     }
 
     /**
+     *
+     * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
+     * early access partner of this feature. The function signature is subjected to change
+     * in next minor version release.
+     *
      * @param accessToken OAuth access token.
      * @param expiresIn Duration time of accessToken in second.
      * @param refreshToken A token used to obtain new accessToken.
@@ -71,6 +76,11 @@ public final class DbxAuthFinish {
     }
 
     /**
+     *
+     * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
+     * early access partner of this feature. The function signature is subjected to change
+     * in next minor version release.
+     *
      * Returns the time when {@link DbxAuthFinish#accessToken} expires in millisecond. If null then
      * it won't expire. Pass this in to the {@link com.dropbox.core.v2.DbxClientV2} constructor.
      *
@@ -84,6 +94,10 @@ public final class DbxAuthFinish {
     }
 
     /**
+     * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
+     * early access partner of this feature. The function signature is subjected to change
+     * in next minor version release.
+     *
      * Returns an <em>refresh token</em> which can be used to obtain new
      * {@link DbxAuthFinish#accessToken} . Pass this in to the
      * {@link com.dropbox.core.v2.DbxClientV2} constructor.

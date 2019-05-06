@@ -1,6 +1,7 @@
 package com.dropbox.core.oauth;
 
 import com.dropbox.core.DbxAuthFinish;
+import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
 import com.fasterxml.jackson.core.JsonLocation;
@@ -11,7 +12,14 @@ import java.io.IOException;
 
 /*>>> import checkers.nullness.quals.NonNull; */
 
-
+/**
+ * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
+ * early access partner of this feature. The function signature is subjected to change
+ * in next minor version release.
+ *
+ * This is the return value of {@link DbxCredential#refresh(DbxRequestConfig)}. It contains new
+ * access token and expiration time.
+ */
 public class DbxRefreshResult {
     private final String accessToken;
     private final long expiresIn;

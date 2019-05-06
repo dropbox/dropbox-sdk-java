@@ -25,7 +25,24 @@ import static com.dropbox.core.oauth.DbxOAuthError.INVALID_REQUEST;
 /*>>> import checkers.nullness.quals.NonNull; */
 /*>>> import checkers.nullness.quals.Nullable; */
 
+/**
+ *
+ * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
+ * early access partner of this feature. The function signature is subjected to change
+ * in next minor version release.
+ *
+ * Use this class to store the OAuth2 result. It wraps the access token, refresh token, token
+ * expiration time as well app key and app secret, which is used for refreshing call. The object
+ * can be serialized to or deserialized from persistent storage.
+ *
+ * {@link com.dropbox.core.v2.DbxClientV2} and {@link com.dropbox.core.v2.DbxTeamClientV2} use
+ * this class to construct clients supporting short-live token and refresh token.
+ */
 public class DbxCredential {
+    /**
+     * The margin that we think access token is "about to" expire. Within this margin, dropbox
+     * client would think the token is already expired and automatically refresh if possible.
+     */
     public final static long EXPIRE_MARGIN = 5 * 60 * 1000; // 5 minutes
 
     private String accessToken;
@@ -34,15 +51,38 @@ public class DbxCredential {
     private final String appKey;
     private final String appSecret;
 
+    /**
+     * Create a DbxCredential object that doesn't support refreshing.
+     *
+     * @param accessToken Short live token or legacty long live token.
+     */
     public DbxCredential(String accessToken) {
         this(accessToken, null, null, null, null);
     }
 
+    /**
+     * Create a DbxCredential object if your app uses PKCE. PKCE flow doesn't requrie app secret.
+     * @see com.dropbox.core.DbxPKCEWebAuth to learn what is PKCE.
+     *
+     * @param accessToken Short-lived access token from OAuth flow.
+     * @param expiresAt Expiration time in millisecond from OAuth flow.
+     * @param refreshToken Refresh token from OAuth flow.
+     * @param appKey You app's client id.
+     */
     public DbxCredential(String accessToken, /*Nullable*/Long expiresAt, String refreshToken, String
         appKey) {
         this(accessToken, expiresAt, refreshToken, appKey, null);
     }
 
+    /**
+     * Create a DbxCredential object supporting refreshing short live tokens.
+     *
+     * @param accessToken Short-lived access token from OAuth flow.
+     * @param expiresAt Expiration time in millisecond from OAuth flow.
+     * @param refreshToken Refresh token from OAuth flow
+     * @param appKey You app's client id.
+     * @param appSecret You app's client secret.
+     */
     public DbxCredential(String accessToken, /*@Nullable*/Long expiresAt, String refreshToken, String appKey, String appSecret) {
         if (accessToken == null) {
             throw new IllegalArgumentException("Missing access token.");
@@ -63,10 +103,24 @@ public class DbxCredential {
         this.appSecret = appSecret;
     }
 
+    /**
+     * Returns the OAuth access token to use for authorization with Dropbox servers.
+     *
+     * @return OAuth access token
+     */
     public String getAccessToken() {
         return this.accessToken;
     }
 
+    /**
+     * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
+     * early access partner of this feature. The function signature is subjected to change
+     * in next minor version release.
+     *
+     * Return the millisecond when accessToken is going to expire.
+     *
+     * @return ExpiresAt in millisecond.
+     */
     public Long getExpiresAt() {
         return this.expiresAt;
     }
@@ -79,10 +133,23 @@ public class DbxCredential {
         return this.appSecret;
     }
 
+    /**
+     * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
+     * early access partner of this feature. The function signature is subjected to change
+     * in next minor version release.
+     *
+     * Return the refresh token which can be used to obtain new access token.
+     *
+     * @return Refresh Token.
+     */
     public String getRefreshToken() {
         return this.refreshToken;
     }
 
+    /**
+     * @return true if access token is already expired or current time is within the \{@value
+     * EXPIRE_MARGIN} to expiration time.
+     */
     public boolean aboutToExpire() {
         if (this.getExpiresAt() == null) {
             return false;
@@ -91,7 +158,18 @@ public class DbxCredential {
         return System.currentTimeMillis() + EXPIRE_MARGIN > this.getExpiresAt();
     }
 
-    public DbxRefreshResult refresh(DbxRequestConfig requestConfig, DbxHost host) throws DbxException {
+    /**
+     * This should be used only in internal testing. Same as {@link #refresh(DbxRequestConfig)}
+     * but just add host.
+     * @param requestConfig request config used to make http request.
+     * @param host which host to call, only used in internal testing.
+     * @return DbxRefreshResult which contains app key and app secret.
+     * @throws DbxOAuthException If refresh failed becasue of invalid refresh parameter or
+     * refresh token is revoked.
+     * @throws DbxException If refresh failed for general errors.
+     */
+    public DbxRefreshResult refresh(DbxRequestConfig requestConfig, DbxHost host) throws
+        DbxException {
         if (this.refreshToken == null) {
             throw new DbxOAuthException(null, new DbxOAuthError(INVALID_REQUEST, "Cannot refresh becasue there is no refresh token"));
         }
@@ -144,6 +222,16 @@ public class DbxCredential {
         return dbxRefreshResult;
     }
 
+    /**
+     * Refresh the short live access token. If succeeds, the access token and expiration time
+     * value inside this object will be overwritten to new values.
+     *
+     * @param requestConfig request config used to make http request.
+     * @return DbxRefreshResult which contains app key and app secret.
+     * @throws DbxOAuthException If refresh failed because of invalid refresh parameter or
+     * refresh token is invalid or revoked.
+     * @throws DbxException If refresh failed for general errors.
+     */
     public DbxRefreshResult refresh(DbxRequestConfig requestConfig) throws DbxException {
         return refresh(requestConfig, DbxHost.DEFAULT);
     }

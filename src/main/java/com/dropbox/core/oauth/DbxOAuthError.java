@@ -11,6 +11,15 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
+ * early access partner of this feature. The function signature is subjected to change
+ * in next minor version release.
+ *
+ * This class provides deserialization for the error response returned from OAuth endpoint.
+ *
+ * @see <a href="https://tools.ietf.org/html/rfc6749#section-5.2">https://tools.ietf.org/html/rfc6749#section-5.2</a>
+ */
 public class DbxOAuthError {
     public final static String INVALID_REQUEST = "invalid_request";
     public final static String INVALID_GRANT = "invalid_grant";

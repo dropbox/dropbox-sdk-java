@@ -6,6 +6,7 @@ import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.DbxRequestUtil;
 import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.oauth.DbxCredential;
+import com.dropbox.core.oauth.DbxOAuthException;
 import com.dropbox.core.oauth.DbxRefreshResult;
 import com.dropbox.core.v2.common.PathRoot;
 
@@ -57,6 +58,20 @@ public class DbxTeamClientV2 extends DbxTeamClientV2Base {
         this(requestConfig, accessToken, host, null);
     }
 
+    /**
+     *
+     * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
+     * early access partner of this feature. The function signature is subjected to change
+     * in next minor version release.
+     *
+     * Create a client that uses {@link com.dropbox.core.oauth.DbxCredential} instead of raw
+     * access token. The credential object include access token as well as refresh token,
+     * expiration time, app key and app secret. Using credential enables dropbox client to support
+     * short live token feature.
+     *
+     * @param requestConfig Default attributes to use for each request
+     * @param credential The credential object containing all the information for authentication.
+     */
     public DbxTeamClientV2(DbxRequestConfig requestConfig, DbxCredential credential) {
         this(requestConfig, credential, DbxHost.DEFAULT, null);
     }
@@ -78,12 +93,40 @@ public class DbxTeamClientV2 extends DbxTeamClientV2Base {
         this(requestConfig, new DbxCredential(accessToken), host, userId);
     }
 
+    /**
+     *
+     * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
+     * early access partner of this feature. The function signature is subjected to change
+     * in next minor version release.
+     *
+     * Same as {@link #DbxTeamClientV2(DbxRequestConfig, DbxCredential)} except you can set host
+     * and userId.
+     *
+     * @param requestConfig Default attributes to use for each request
+     * @param credential The credential object containing all the information for authentication.
+     * @param host  Dropbox hosts to send requests to (used for mocking and testing)
+     * @param userId The user ID of the current Dropbox account. Used for
+     *               multi-Dropbox account use-case.
+     */
     public DbxTeamClientV2(DbxRequestConfig requestConfig, DbxCredential credential, DbxHost host,
                            String userId) {
         super(new DbxTeamRawClientV2(requestConfig, credential, host, userId, null, null, null));
         this.credential = credential;
     }
 
+    /**
+     *
+     * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
+     * early access partner of this feature. The function signature is subjected to change
+     * in next minor version release.
+     *
+     * Refresh the access token inside {@link DbxCredential}. It has the same behavior as
+     * {@link DbxCredential#refresh(DbxRequestConfig)}.
+     * @return The result contains new short-live access token and expiration time.
+     * @throws DbxOAuthException If refresh failed because of invalid parameter or invalid refresh
+     * token.
+     * @throws DbxException If refresh failed before of general problems like network issue.
+     */
     public DbxRefreshResult refreshAccessToken() throws DbxException {
         return this._client.refreshAccessToken();
     }

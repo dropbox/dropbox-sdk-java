@@ -30,6 +30,10 @@ public final class DbxAuthInfo {
     }
 
     /**
+     * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
+     * early access partner of this feature. The function signature is subjected to change
+     * in next minor version release.
+     *
      * Creates a new instance with the given parameters.
      *
      * @param accessToken OAuth access token for authorization with Dropbox servers
@@ -57,6 +61,10 @@ public final class DbxAuthInfo {
     }
 
     /**
+     * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
+     * early access partner of this feature. The function signature is subjected to change
+     * in next minor version release.
+     *
      * Return the millisecond when accessToken is going to expire.
      *
      * @return ExpiresAt in millisecond.
@@ -66,6 +74,10 @@ public final class DbxAuthInfo {
     }
 
     /**
+     * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
+     * early access partner of this feature. The function signature is subjected to change
+     * in next minor version release.
+     *
      * Return the refresh token which can be used to obtain new access token.
      *
      * @return Refresh Token.
