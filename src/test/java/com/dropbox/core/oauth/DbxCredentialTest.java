@@ -6,6 +6,9 @@ import org.testng.annotations.Test;
 import java.io.ByteArrayInputStream;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNull;
+import static org.testng.Assert.assertTrue;
+import static org.testng.AssertJUnit.assertFalse;
 
 public class DbxCredentialTest {
     @Test
@@ -20,6 +23,11 @@ public class DbxCredentialTest {
 
         DbxCredential credential = DbxCredential.Reader.readFully(responseStream);
         assertEquals(credential.getAccessToken(), "aaaaa");
+        assertFalse(credential.aboutToExpire());
+        assertNull(credential.getRefreshToken());
+        assertNull(credential.getExpiresAt());
+        assertNull(credential.getAppKey());
+        assertNull(credential.getAppSecret());
     }
 
     @Test
@@ -42,6 +50,7 @@ public class DbxCredentialTest {
         assertEquals(credential.getRefreshToken(), "bbbbb");
         assertEquals(credential.getAppKey(), "ccccc");
         assertEquals(credential.getAppSecret(), "ddddd");
+        assertTrue(credential.aboutToExpire());
     }
 
     @Test(expectedExceptions={JsonReadException.class})

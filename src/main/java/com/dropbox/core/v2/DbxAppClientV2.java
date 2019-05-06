@@ -83,12 +83,19 @@ public class DbxAppClientV2 extends DbxAppClientV2Base {
             return null;
         }
 
-        public void refreshAccessTokenIfNeeded() {
-            //no op
+        @Override
+        boolean canRefreshAccessToken() {
+            return false;
+        }
+
+        @Override
+        boolean needsRefreshAccessToken() {
+            return false;
         }
 
         @Override
         protected void addAuthHeaders(List<HttpRequestor.Header> headers) {
+            DbxRequestUtil.removeAuthHeader(headers);
             DbxRequestUtil.addBasicAuthHeader(headers, key, secret);
         }
 

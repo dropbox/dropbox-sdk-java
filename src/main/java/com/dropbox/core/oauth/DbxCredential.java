@@ -26,7 +26,7 @@ import static com.dropbox.core.oauth.DbxOAuthError.INVALID_REQUEST;
 /*>>> import checkers.nullness.quals.Nullable; */
 
 public class DbxCredential {
-    private final long EXPIRE_MARGIN = 5 * 60 * 1000; // 5 minutes
+    public final static long EXPIRE_MARGIN = 5 * 60 * 1000; // 5 minutes
 
     private String accessToken;
     private /*@Nullable*/Long expiresAt;
@@ -44,12 +44,16 @@ public class DbxCredential {
     }
 
     public DbxCredential(String accessToken, /*@Nullable*/Long expiresAt, String refreshToken, String appKey, String appSecret) {
+        if (accessToken == null) {
+            throw new IllegalArgumentException("Missing access token.");
+        }
+
         if (refreshToken != null && appKey == null) {
             throw new IllegalArgumentException("Can't refresh without app Key.");
         }
 
-        if (accessToken == null) {
-            throw new IllegalArgumentException("Missing access token.");
+        if (refreshToken != null && expiresAt == null) {
+            throw new IllegalArgumentException("Missing expireAt.");
         }
 
         this.accessToken = accessToken;
@@ -81,7 +85,7 @@ public class DbxCredential {
 
     public boolean aboutToExpire() {
         if (this.getExpiresAt() == null) {
-            return true;
+            return false;
         }
 
         return System.currentTimeMillis() + EXPIRE_MARGIN > this.getExpiresAt();

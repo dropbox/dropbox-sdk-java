@@ -65,7 +65,12 @@ public class DbxRefershTest extends DbxOAuthTestBase {
             .getSecret()).aboutToExpire());
         assertTrue(new DbxCredential(EXPIRED_TOKEN, now + EXPIRES_IN, REFRESH_TOKEN, APP.getKey()
             , APP.getSecret()).aboutToExpire());
-        assertTrue(new DbxCredential(EXPIRED_TOKEN, null, "refresh", "appkey", null).aboutToExpire());
+        try {
+            new DbxCredential(EXPIRED_TOKEN, null, "refresh", "appkey", null).aboutToExpire();
+        } catch (IllegalArgumentException ex) {
+            return;
+        }
+        fail("NPE should be thrown.");
     }
 
     @Test

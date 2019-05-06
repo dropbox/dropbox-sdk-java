@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import com.dropbox.core.stone.StoneSerializer;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import com.dropbox.core.http.HttpRequestor;
@@ -167,6 +169,23 @@ public final class DbxRequestUtil {
 
         if (headers == null) headers = new ArrayList<HttpRequestor.Header>();
         headers.add(new HttpRequestor.Header("Dropbox-API-Path-Root",  pathRoot.toString()));
+        return headers;
+    }
+
+    public static List<HttpRequestor.Header> removeAuthHeader(/*@Nullable*/List<HttpRequestor.Header> headers) {
+        if (headers == null) {
+            return new ArrayList<HttpRequestor.Header>();
+        }
+
+        List<HttpRequestor.Header> authHeaders = new ArrayList<HttpRequestor.Header>();
+
+        for (HttpRequestor.Header header: headers) {
+            if ("Authorization".equals(header.getKey())) {
+                authHeaders.add(header);
+            }
+        }
+
+        headers.removeAll(authHeaders);
         return headers;
     }
 
@@ -411,6 +430,12 @@ public final class DbxRequestUtil {
         } catch (IOException ex) {
             throw new NetworkIOException(ex);
         }
+    }
+
+    public static <T> T readJsonFromErrorMessage(StoneSerializer<T> serializer, String message, String requestId)
+        throws JsonParseException {
+        ApiErrorResponse<T> errorResponse = new ApiErrorResponse.Serializer<T>(serializer).deserialize(message);
+        return errorResponse.getError();
     }
 
     public static abstract class ResponseHandler<T> {

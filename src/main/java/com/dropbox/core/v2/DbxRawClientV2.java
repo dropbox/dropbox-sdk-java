@@ -11,16 +11,21 @@ import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.DbxRequestUtil;
 import com.dropbox.core.DbxWebAuth;
 import com.dropbox.core.DbxWrappedException;
+import com.dropbox.core.InvalidAccessTokenException;
 import com.dropbox.core.NetworkIOException;
 import com.dropbox.core.RetryException;
+import com.dropbox.core.oauth.DbxOAuthError;
+import com.dropbox.core.oauth.DbxOAuthException;
 import com.dropbox.core.oauth.DbxRefreshResult;
 import com.dropbox.core.stone.StoneSerializer;
 import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.util.LangUtil;
+import com.dropbox.core.v2.auth.AuthError;
 import com.dropbox.core.v2.common.PathRoot;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.io.ByteArrayOutputStream;
@@ -84,7 +89,21 @@ public abstract class DbxRawClientV2 {
 
     public abstract DbxRefreshResult refreshAccessToken() throws DbxException;
 
-    public abstract void refreshAccessTokenIfNeeded() throws DbxException;
+    abstract boolean canRefreshAccessToken();
+
+    abstract boolean needsRefreshAccessToken();
+
+    private void refreshAccessTokenIfNeeded() throws DbxException {
+        if (needsRefreshAccessToken()) {
+            try {
+                refreshAccessToken();
+            } catch (DbxOAuthException e) {
+                if (!DbxOAuthError.INVALID_GRANT.equals(e.getDbxOAuthError().getError())) {
+                    throw e;
+                }
+            }
+        }
+    }
 
     /**
      * Clone a new DbxRawClientV2 with Dropbox-API-Path-Root header.
@@ -105,7 +124,7 @@ public abstract class DbxRawClientV2 {
         final byte [] body = writeAsBytes(argSerializer, arg);
         final List<HttpRequestor.Header> headers = new ArrayList<HttpRequestor.Header>();
         if (!noAuth) {
-            addAuthHeaders(headers);
+            refreshAccessTokenIfNeeded();
         }
         if (!this.host.getNotify().equals(host)) {
             // TODO(krieb): fix this ugliness
@@ -115,11 +134,15 @@ public abstract class DbxRawClientV2 {
 
         headers.add(new HttpRequestor.Header("Content-Type", "application/json; charset=utf-8"));
 
-        return executeRetriable(requestConfig.getMaxRetries(), new RetriableExecution<ResT> () {
+        return executeRetriableWithRefresh(requestConfig.getMaxRetries(), new RetriableExecution<ResT> () {
             private String userIdAnon;
 
             @Override
             public ResT execute() throws DbxWrappedException, DbxException {
+                if (!noAuth) {
+                    addAuthHeaders(headers);
+                }
+
                 HttpRequestor.Response response = DbxRequestUtil.startPostRaw(requestConfig, USER_AGENT_ID, host, path, body, headers);
                 try {
                     switch (response.getStatusCode()) {
@@ -157,7 +180,7 @@ public abstract class DbxRawClientV2 {
 
         final List<HttpRequestor.Header> headers = new ArrayList<HttpRequestor.Header>(extraHeaders);
         if (!noAuth) {
-            addAuthHeaders(headers);
+            refreshAccessTokenIfNeeded();
         }
         addUserLocaleHeader(headers, requestConfig);
         addPathRootHeader(headers, this.pathRoot);
@@ -166,11 +189,14 @@ public abstract class DbxRawClientV2 {
 
         final byte[] body = new byte[0];
 
-        return executeRetriable(requestConfig.getMaxRetries(), new RetriableExecution<DbxDownloader<ResT>>() {
+        return executeRetriableWithRefresh(requestConfig.getMaxRetries(), new RetriableExecution<DbxDownloader<ResT>>() {
             private String userIdAnon;
 
             @Override
             public DbxDownloader<ResT> execute() throws DbxWrappedException, DbxException {
+                if (!noAuth) {
+                    addAuthHeaders(headers);
+                }
                 HttpRequestor.Response response = DbxRequestUtil.startPostRaw(requestConfig, USER_AGENT_ID, host, path, body, headers);
                 String requestId = DbxRequestUtil.getRequestId(response);
                 String contentType = DbxRequestUtil.getContentType(response);
@@ -248,6 +274,7 @@ public abstract class DbxRawClientV2 {
         String uri = DbxRequestUtil.buildUri(host, path);
         List<HttpRequestor.Header> headers = new ArrayList<HttpRequestor.Header>();
         if (!noAuth) {
+            refreshAccessTokenIfNeeded();
             addAuthHeaders(headers);
         }
         addUserLocaleHeader(headers, requestConfig);
@@ -256,7 +283,7 @@ public abstract class DbxRawClientV2 {
         headers = DbxRequestUtil.addUserAgentHeader(headers, requestConfig, USER_AGENT_ID);
         headers.add(new HttpRequestor.Header("Dropbox-API-Arg", headerSafeJson(argSerializer, arg)));
         try {
-            return requestConfig.getHttpRequestor().startPost(uri, headers);
+            return requestConfig.getHttpRequestor().startPostInStreamingMode(uri, headers);
         }
         catch (IOException ex) {
             throw new NetworkIOException(ex);
@@ -316,6 +343,38 @@ public abstract class DbxRawClientV2 {
                 }
             }
         }
+    }
+
+    private <T> T executeRetriableWithRefresh(int maxRetries, RetriableExecution<T>
+        execution) throws DbxWrappedException, DbxException {
+        try {
+            return executeRetriable(maxRetries, execution);
+        } catch (InvalidAccessTokenException ex) {
+            if (ex.getMessage() == null) {
+                // Java built-in URLConnection would terminate 401 response before receiving body
+                // in streaming mode. Give up.
+                throw ex;
+            }
+
+            try {
+                AuthError authError = DbxRequestUtil.readJsonFromErrorMessage(AuthError.Serializer
+                    .INSTANCE, ex.getMessage(), ex.getRequestId());
+
+                if (AuthError.EXPIRED_ACCESS_TOKEN.equals(authError) && canRefreshAccessToken()) {
+                    // retry with new access token.
+                    refreshAccessToken();
+                    return executeRetriable(maxRetries, execution);
+                } else {
+                    // Doesn't need refresh.
+                    throw ex;
+                }
+            } catch (JsonParseException newEx) {
+                // server returns unexpect string, or developers http requestor doesn't correctly
+                // handle server's string. Give up.
+                throw ex;
+            }
+        }
+
     }
 
     private static void sleepQuietlyWithJitter(long millis) {

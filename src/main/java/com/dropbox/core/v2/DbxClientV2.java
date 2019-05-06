@@ -1,11 +1,14 @@
 package com.dropbox.core.v2;
 
+import com.dropbox.core.DbxAppInfo;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxHost;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.DbxRequestUtil;
 import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.oauth.DbxCredential;
+import com.dropbox.core.oauth.DbxOAuthError;
+import com.dropbox.core.oauth.DbxOAuthException;
 import com.dropbox.core.oauth.DbxRefreshResult;
 import com.dropbox.core.v2.common.PathRoot;
 
@@ -153,16 +156,18 @@ public class DbxClientV2 extends DbxClientV2Base {
         }
 
         @Override
-        public void refreshAccessTokenIfNeeded() throws DbxException {
-            if (credential.getRefreshToken() == null || credential.aboutToExpire()) {
-                return;
-            }
+        boolean canRefreshAccessToken() {
+            return credential.getRefreshToken() != null;
+        }
 
-            credential.refresh(this.getRequestConfig(), this.getHost());
+        @Override
+        boolean needsRefreshAccessToken() {
+            return canRefreshAccessToken() && credential.aboutToExpire();
         }
 
         @Override
         protected void addAuthHeaders(List<HttpRequestor.Header> headers) {
+            DbxRequestUtil.removeAuthHeader(headers);
             DbxRequestUtil.addAuthHeader(headers, credential.getAccessToken());
         }
 

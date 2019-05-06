@@ -60,7 +60,7 @@ public class StandardHttpRequestor extends HttpRequestor {
 
     @Override
     public Response doGet(String url, Iterable<Header> headers) throws IOException {
-        HttpURLConnection conn = prepRequest(url, headers);
+        HttpURLConnection conn = prepRequest(url, headers, false);
         conn.setRequestMethod("GET");
         conn.connect();
         return toResponse(conn);
@@ -68,14 +68,22 @@ public class StandardHttpRequestor extends HttpRequestor {
 
     @Override
     public Uploader startPost(String url, Iterable<Header> headers) throws IOException {
-        HttpURLConnection conn = prepRequest(url, headers);
+        HttpURLConnection conn = prepRequest(url, headers, false);
+        conn.setRequestMethod("POST");
+        return new Uploader(conn);
+    }
+
+    @Override
+    public Uploader startPostInStreamingMode(String url, Iterable<Header> headers) throws
+        IOException {
+        HttpURLConnection conn = prepRequest(url, headers, true);
         conn.setRequestMethod("POST");
         return new Uploader(conn);
     }
 
     @Override
     public Uploader startPut(String url, Iterable<Header> headers) throws IOException {
-        HttpURLConnection conn = prepRequest(url, headers);
+        HttpURLConnection conn = prepRequest(url, headers, false);
         conn.setRequestMethod("PUT");
         return new Uploader(conn);
     }
@@ -187,7 +195,7 @@ public class StandardHttpRequestor extends HttpRequestor {
     }
 
 
-    private HttpURLConnection prepRequest(String url, Iterable<Header> headers) throws IOException {
+    private HttpURLConnection prepRequest(String url, Iterable<Header> headers, boolean streaming) throws IOException {
         URL urlObject = new URL(url);
         HttpURLConnection conn = (HttpURLConnection) urlObject.openConnection(config.getProxy());
 
@@ -195,7 +203,9 @@ public class StandardHttpRequestor extends HttpRequestor {
         conn.setReadTimeout((int) config.getReadTimeoutMillis());
         conn.setUseCaches(false);
         conn.setAllowUserInteraction(false);
-        conn.setChunkedStreamingMode(IOUtil.DEFAULT_COPY_BUFFER_SIZE);
+        if (streaming) {
+            conn.setChunkedStreamingMode(IOUtil.DEFAULT_COPY_BUFFER_SIZE);
+        }
 
         // Some JREs (like the one provided by Google AppEngine) will return HttpURLConnection
         // instead of HttpsURLConnection. So we have to check here.

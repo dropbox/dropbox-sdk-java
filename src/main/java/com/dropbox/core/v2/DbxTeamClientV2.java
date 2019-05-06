@@ -184,16 +184,18 @@ public class DbxTeamClientV2 extends DbxTeamClientV2Base {
         }
 
         @Override
-        public void refreshAccessTokenIfNeeded() throws DbxException {
-            if (credential.getRefreshToken() == null || credential.aboutToExpire()) {
-                return;
-            }
+        boolean canRefreshAccessToken() {
+            return credential.getRefreshToken() != null;
+        }
 
-            credential.refresh(this.getRequestConfig(), this.getHost());
+        @Override
+        boolean needsRefreshAccessToken() {
+            return canRefreshAccessToken() && credential.aboutToExpire();
         }
 
         @Override
         protected void addAuthHeaders(List<HttpRequestor.Header> headers) {
+            DbxRequestUtil.removeAuthHeader(headers);
             DbxRequestUtil.addAuthHeader(headers, credential.getAccessToken());
             if (memberId != null) {
                 DbxRequestUtil.addSelectUserHeader(headers, memberId);
