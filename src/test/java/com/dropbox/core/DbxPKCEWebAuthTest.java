@@ -33,7 +33,7 @@ public class DbxPKCEWebAuthTest extends DbxOAuthTestBase {
         DbxSessionStore sessionStore = new SimpleSessionStore();
         String state = "test-state";
 
-        DbxWebAuth auth = new DbxPKCEWebAuth(CONFIG, APP);
+        DbxPKCEWebAuth auth = new DbxPKCEWebAuth(CONFIG, APP);
 
         String authUrl = auth.authorize(
                 DbxWebAuth.newRequestBuilder()
@@ -58,7 +58,7 @@ public class DbxPKCEWebAuthTest extends DbxOAuthTestBase {
         DbxSessionStore sessionStore = new SimpleSessionStore();
         String state = "test-state";
 
-        DbxWebAuth.Request request = DbxPKCEWebAuth.newRequestBuilder()
+        DbxWebAuth.Request request = DbxWebAuth.newRequestBuilder()
                 .withRedirectUri(redirectUri, sessionStore)
                 .withState(state)
                 .build();
@@ -122,7 +122,7 @@ public class DbxPKCEWebAuthTest extends DbxOAuthTestBase {
 
     @Test
     public void testFinishWithoutAuthorize() {
-        final DbxWebAuth dbxWebAuth = new DbxPKCEWebAuth(CONFIG, APP);
+        final DbxPKCEWebAuth dbxWebAuth = new DbxPKCEWebAuth(CONFIG, APP);
         assertThrows(IllegalStateException.class, new ThrowingRunnable() {
             @Override
             public void run() throws Throwable {
@@ -132,35 +132,35 @@ public class DbxPKCEWebAuthTest extends DbxOAuthTestBase {
     }
 
     @Test
-    public void testPKCEdifferentCodeChallenge() throws Exception {
+    public void testPKCEdifferentInstance() throws Exception {
         String redirectUri = "https://localhost/compatibility/test";
         DbxSessionStore sessionStore = new SimpleSessionStore();
         String state = "test-state";
 
-        DbxWebAuth auth = new DbxPKCEWebAuth(CONFIG, APP);
-        String[] codeChallenges = new String[2];
+        DbxPKCEWebAuth auth = new DbxPKCEWebAuth(CONFIG, APP);
+        auth.authorize(
+            DbxWebAuth.newRequestBuilder()
+                .withRedirectUri(redirectUri, sessionStore)
+                .withState(state)
+                .build()
+        );
 
-        for (int i = 0; i < 2; i++) {
-            String authUrl = auth.authorize(
-                    DbxWebAuth.newRequestBuilder()
-                            .withRedirectUri(redirectUri, sessionStore)
-                            .withState(state)
-                            .build()
+        try {
+            auth.authorize(
+                DbxWebAuth.newRequestBuilder()
+                    .withRedirectUri(redirectUri, sessionStore)
+                    .withState(state)
+                    .build()
             );
-
-
-            Map<String, List<String>> params = toParamsMap(new URL(authUrl));
-            assertTrue(params.containsKey("code_challenge"));
-            String codeChallenge = params.get("code_challenge").get(0);
-            codeChallenges[i] = codeChallenge;
+        } catch (IllegalStateException ex) {
+            return;
         }
-
-        assertNotEquals(codeChallenges[0], codeChallenges[1]);
+        fail();
     }
 
     @Test
     public void testInvalidCodeVerifier() throws Exception{
-        DbxWebAuth.Request request = DbxPKCEWebAuth.newRequestBuilder().build();
+        DbxWebAuth.Request request = DbxWebAuth.newRequestBuilder().build();
 
         String code = "test-code";
 

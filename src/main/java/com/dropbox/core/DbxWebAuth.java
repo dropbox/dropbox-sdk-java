@@ -135,7 +135,7 @@ import com.dropbox.core.v2.DbxRawClientV2;
  * </pre>
  */
 public class DbxWebAuth {
-    protected static final SecureRandom RAND = new SecureRandom();
+    private static final SecureRandom RAND = new SecureRandom();
     private static final int CSRF_BYTES_SIZE = 16;
     private static final int CSRF_STRING_SIZE = StringUtil.urlSafeBase64Encode(new byte[CSRF_BYTES_SIZE]).length();
 
@@ -354,6 +354,15 @@ public class DbxWebAuth {
                                             DbxSessionStore sessionStore,
                                             Map<String, String[]> params)
         throws DbxException, BadRequestException, BadStateException, CsrfException, NotApprovedException, ProviderException {
+
+        String strippedState = validateRedirectUri(redirectUri, sessionStore, params);
+        String code = getParam(params, "code");
+        return finish(code, redirectUri, strippedState);
+    }
+
+    static String validateRedirectUri(String redirectUri, DbxSessionStore sessionStore, Map<String, String[]> params)
+        throws BadRequestException, BadStateException, CsrfException, NotApprovedException, ProviderException
+    {
         if (redirectUri == null) throw new NullPointerException("redirectUri");
         if (sessionStore == null) throw new NullPointerException("sessionStore");
         if (params == null) throw new NullPointerException("params");
@@ -395,7 +404,7 @@ public class DbxWebAuth {
             }
         }
 
-        return finish(code, redirectUri, state);
+        return state;
     }
 
     private DbxAuthFinish finish(String code) throws DbxException {
@@ -526,7 +535,7 @@ public class DbxWebAuth {
         return stripped.isEmpty() ? null : stripped;
     }
 
-    private static /*@Nullable*/String getParam(Map<String,String[]> params, String name) throws BadRequestException {
+    static /*@Nullable*/String getParam(Map<String,String[]> params, String name) throws BadRequestException {
         String[] v = params.get(name);
 
         if (v == null) {
