@@ -1,6 +1,8 @@
 rootProject.name = 'examples'
 include ':account-info'
+include ':account-info-beta'
 include ':authorize'
+include ':authorize-beta'
 include ':global-callbacks'
 include ':longpoll'
 include ':tutorial'

@@ -1,13 +1,13 @@
-package com.dropbox.core.examples.authorize;
+package com.dropbox.core.examples.authorize_beta;
 
 import com.dropbox.core.DbxAppInfo;
 import com.dropbox.core.DbxAuthFinish;
-import com.dropbox.core.DbxAuthInfo;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.DbxWebAuth;
 import com.dropbox.core.TokenAccessType;
 import com.dropbox.core.json.JsonReader;
+import com.dropbox.core.oauth.DbxCredential;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -18,7 +18,8 @@ import java.util.logging.Logger;
 
 /**
  * An example command-line application that runs through the web-based OAuth
- * flow (using {@link DbxWebAuth}).
+ * flow (using {@link DbxWebAuth}). It use the beta feature to grab short-live token as well as
+ * refresh token from server.
  */
 public class Main {
 
@@ -26,7 +27,7 @@ public class Main {
         // Only display important log messages.
         Logger.getLogger("").setLevel(Level.WARNING);
 
-        if (args.length != 3) {
+        if (args.length != 2) {
             System.out.println("Usage: COMMAND <app-info-file> <auth-file-output> " +
                     "<token-access-type>");
             System.out.println("");
@@ -41,12 +42,8 @@ public class Main {
             System.out.println("    https://dropbox.com/developers/apps");
             System.out.println("");
             System.out.println("<auth-file-output>: If authorization is successful, the resulting API");
-            System.out.println("  access token will be saved to this file, which can then be used with");
+            System.out.println("  credential will be saved to this file, which can then be used with");
             System.out.println("  other example programs, such as the one in \"examples/account-info\".");
-            System.out.println("");
-            System.out.println("<token-access-type>: String of legacy, online or offline.");
-            System.out.println("  Legacy means long-live access token. Online means short-live");
-            System.out.println("  token. Offline means short-live token with refresh token.");
             System.out.println("");
             System.exit(1);
             return;
@@ -54,7 +51,6 @@ public class Main {
 
         String argAppInfoFile = args[0];
         String argAuthFileOutput = args[1];
-        String tokenAccessType = args[2];
 
         // Read app info file (contains app key and app secret)
         DbxAppInfo appInfo;
@@ -69,18 +65,13 @@ public class Main {
         DbxRequestConfig requestConfig = new DbxRequestConfig("examples-authorize");
         DbxWebAuth webAuth = new DbxWebAuth(requestConfig, appInfo);
         DbxWebAuth.Request.Builder builder = DbxWebAuth.newRequestBuilder()
-                .withNoRedirect();
+                .withNoRedirect().withTokenAccessType(TokenAccessType.OFFLINE);
 
-        if ("online".equals(tokenAccessType)) {
-            builder.withTokenAccessType(TokenAccessType.ONLINE);
-        } else if ("offline".equals(tokenAccessType)) {
-            builder.withTokenAccessType(TokenAccessType.OFFLINE);
-        } else if (!"legacy".equals(tokenAccessType)) {
-            System.out.println("Invalid token access type: " + tokenAccessType);
-            System.exit(1);
-            return;
-        }
-        DbxWebAuth.Request webAuthRequest = builder.build();
+
+        DbxWebAuth.Request webAuthRequest =  DbxWebAuth.newRequestBuilder()
+            .withNoRedirect()
+            .withTokenAccessType(TokenAccessType.OFFLINE) // Use refresh Token
+            .build();
 
         String authorizeUrl = webAuth.authorize(webAuthRequest);
         System.out.println("1. Go to " + authorizeUrl);
@@ -106,23 +97,20 @@ public class Main {
         System.out.println("- User ID: " + authFinish.getUserId());
         System.out.println("- Account ID: " + authFinish.getAccountId());
         System.out.println("- Access Token: " + authFinish.getAccessToken());
-        if (authFinish.getExpiresAt() != null) {
-            System.out.println("- Expires At: " + authFinish.getExpiresAt());
-        }
-        if (authFinish.getRefreshToken() != null) {
-            System.out.println("- Refresh Token: " + authFinish.getRefreshToken());
-        }
+        System.out.println("- Expires At: " + authFinish.getExpiresAt());
+        System.out.println("- Refresh Token: " + authFinish.getRefreshToken());
 
         // Save auth information to output file.
-        DbxAuthInfo authInfo = new DbxAuthInfo(authFinish.getAccessToken(), appInfo.getHost());
+        DbxCredential credential = new DbxCredential(authFinish.getAccessToken(), authFinish
+            .getExpiresAt(), authFinish.getRefreshToken(), appInfo.getKey(), appInfo.getSecret());
         File output = new File(argAuthFileOutput);
         try {
-            DbxAuthInfo.Writer.writeToFile(authInfo, output);
+            DbxCredential.Writer.writeToFile(credential, output);
             System.out.println("Saved authorization information to \"" + output.getCanonicalPath() + "\".");
         } catch (IOException ex) {
             System.err.println("Error saving to <auth-file-out>: " + ex.getMessage());
             System.err.println("Dumping to stderr instead:");
-            DbxAuthInfo.Writer.writeToStream(authInfo, System.err);
+            DbxCredential.Writer.writeToStream(credential, System.err);
             System.exit(1); return;
         }
     }
