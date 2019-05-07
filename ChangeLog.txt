@@ -1,3 +1,70 @@
+3.1.0 (2019-5-6)
+---------------------------------------------
+- Early Access on Short-live token feature.
+- Update to Latest API specs:
+  Auth Namespace:
+  - Add missing_scope into AuthError
+
+  File_requests namespace:
+  - Add list and list/continue endpoints.
+  - Add count endpoint.
+  - Add delete and delete_all_closed endpoints.
+
+  Files namespace:
+  - Add unsupported_file to DownloadError.
+  - Add upper bound 9999 to start field in SearchArg.
+  - Add unsupported_content_type to LookupError.
+  - Add cant_move_shared_folder to RelocationError.
+  - Add email_not_verified and unsupported_file to GetTemporaryLinkError.
+
+  Seen_state namespace:
+  - Add mobile_ios, mobile_android and api into PlatformType.
+  - deprecate mobile in PlatformType.
+
+  Sharing namespace:
+  - Change shared_link_already_exists under CreateSharedLinkWithSettingsError from void to SharedLinkAlreadyExistsMetadata.
+  - Add banned_member to AddFolderMemberError.
+
+  Team namespace:
+  - Add profile_photo_url and suspended_on into MemberProfile.
+
+  Team_log namespace:
+  - Add reset_password and restore_file_or_folder to QuickActionType.
+  - Add google_oauth to LoginMethod.
+  - Add australia_only and japan_only to PlacementRestriction.
+  - Add trusted_teams to EventCategory.
+  - In event details.
+    - Add integration_connected_details.
+    - Add integration_disconnected_details.
+    - Add file_request_delete_details.
+    - Add guest_admin_signed_in_via_trusted_teams_details.
+    - Add guest_admin_signed_out_via_trusted_teams_details.
+    - Add member_add_external_id_details.
+    - Add member_change_external_id_details.
+    - Add member_remove_external_id_details
+    - Add integration_policy_changed_details.
+    - Add paper_default_folder_policy_changed_details.
+    - Add paper_desktop_policy_changed_details.
+    - Add team_extensions_policy_changed_details.
+    - Add guest_admin_change_status_details.
+  - In EventType
+    - Add integration_connected.
+    - Add integration_disconnected.
+    - Add file_request_delete.
+    - Add guest_admin_signed_in_via_trusted_teams.
+    - Add guest_admin_signed_out_via_trusted_teams.
+    - Add member_add_external_id.
+    - Add member_change_external_id.
+    - Add member_remove_external_i.
+    - Add integration_policy_change.
+    - Add paper_default_folder_policy_change.
+    - Add paper_desktop_policy_changed.
+    - Add team_extensions_policy_changed.
+    - Add guest_admin_change_status.
+
+  stone_cfg:
+  Add scope into route attribute.
+
 3.0.11 (2018-12-12)
 ---------------------------------------------
 - Update to Latest API specs:
