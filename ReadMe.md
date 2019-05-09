@@ -253,6 +253,19 @@ To run individual tests, use the `--tests` gradle test filter:
 
 ## FAQ
 
+### Why do I see code like `DbxPKCEWebAuth` and `TokenAcessType` has warning "Beta: this feature is not available to all developers"? What are they?
+
+Dropbox is working on a project to add short-live token and refresh token to the OAuth flow. This
+ feature is still at early access phase. All endpoints are gated, only certain partners will be 
+ able to access them.
+ 
+ Due to the nature of Java, most partners use our SDK through maven central instead of a 
+ customized jar file. To help our partners accessing our beta feature easier, we decide to 
+ include beta code in regular release.
+ 
+ Please reach out to us if you are interested in trying this feature!
+
+
 ### When I use `OkHttp3Requestor` in `DbxRequestConfig`, I get errors like 'class file for okhttp3.OkHttpClient not found'.
 
 The dependency of OKHttp/OKHttp3 is optional. You should add them, only if you explicitly want to use it as the http requestor. 

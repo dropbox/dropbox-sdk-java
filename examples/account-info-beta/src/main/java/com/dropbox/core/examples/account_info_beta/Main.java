@@ -15,8 +15,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ *
+ * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
+ * early access partner of this feature.
+ *
  * An example command-line application that grab access token and refresh token from credential
- * file, and then call APIV2.
+ * file, and then call APIV2. If the access token has expired, SDK will automatically refresh and
+ * get a new one, and store them into the original DbxCredential object.
  */
 public class Main
 {
@@ -40,7 +45,7 @@ public class Main
 
         String argAuthFile = args[0];
 
-        // Read auth from file.
+        // Use DbxCredential instead of DbxAuthInfo.
         DbxCredential credential;
         try {
             credential = DbxCredential.Reader.readFromFile(argAuthFile);
@@ -52,7 +57,7 @@ public class Main
 
         // Create a DbxClientV2, which is what you use to make API calls.
         DbxRequestConfig requestConfig = new DbxRequestConfig("examples-account-info");
-        // Use credential to create dbx client.
+        // Use DbxCredential to create dbx client.
         DbxClientV2 dbxClient = new DbxClientV2(requestConfig, credential);
 
         // Make the /account/info API call.

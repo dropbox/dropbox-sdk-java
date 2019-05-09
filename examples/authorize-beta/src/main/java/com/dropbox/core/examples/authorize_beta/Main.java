@@ -17,9 +17,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ *
+ * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
+ * early access partner of this feature.
+ *
  * An example command-line application that runs through the web-based OAuth
  * flow (using {@link DbxWebAuth}). It use the beta feature to grab short-live token as well as
- * refresh token from server.
+ * refresh token from server. It stores all authentication related data into the new
+ * DbxCredential object and save them to file.
  */
 public class Main {
 
@@ -68,9 +73,10 @@ public class Main {
                 .withNoRedirect().withTokenAccessType(TokenAccessType.OFFLINE);
 
 
+        // TokenAccessType.OFFLINE means refresh_token + access_token. ONLINE means access_token only.
         DbxWebAuth.Request webAuthRequest =  DbxWebAuth.newRequestBuilder()
             .withNoRedirect()
-            .withTokenAccessType(TokenAccessType.OFFLINE) // Use refresh Token
+            .withTokenAccessType(TokenAccessType.OFFLINE)
             .build();
 
         String authorizeUrl = webAuth.authorize(webAuthRequest);
@@ -100,7 +106,8 @@ public class Main {
         System.out.println("- Expires At: " + authFinish.getExpiresAt());
         System.out.println("- Refresh Token: " + authFinish.getRefreshToken());
 
-        // Save auth information to output file.
+        // Save auth information the new DbxCredential instance. It also contains app_key and
+        // app_secret which is required to do refresh call.
         DbxCredential credential = new DbxCredential(authFinish.getAccessToken(), authFinish
             .getExpiresAt(), authFinish.getRefreshToken(), appInfo.getKey(), appInfo.getSecret());
         File output = new File(argAuthFileOutput);
