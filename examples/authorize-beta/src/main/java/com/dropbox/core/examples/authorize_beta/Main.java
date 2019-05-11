@@ -33,8 +33,7 @@ public class Main {
         Logger.getLogger("").setLevel(Level.WARNING);
 
         if (args.length != 2) {
-            System.out.println("Usage: COMMAND <app-info-file> <auth-file-output> " +
-                    "<token-access-type>");
+            System.out.println("Usage: COMMAND <app-info-file> <auth-file-output>");
             System.out.println("");
             System.out.println("<app-info-file>: a JSON file with information about your API app.  Example:");
             System.out.println("");
