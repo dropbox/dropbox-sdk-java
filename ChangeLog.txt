@@ -1,3 +1,32 @@
+3.1.1 (2019-6-17)
+---------------------------------------------
+- Fix Fix protocol and ciphersuite selection to enable TLSv1.2 and TLSv1.1
+- Update to Latest API specs:
+  File namespace:
+  - Added new ExportInfo struct
+  - Added new fields (is_downloadable, export_info) to FileMetadata
+  - Added new include_non_downloadable_files to ListFolderArg
+  - Added new ExportMetadata, ExportArg, Export Result Structs
+  - Added new ExportError union
+  - Added new /export route
+
+  Sharing namespace:
+  - Added password field to LinkAudience
+  - Added effective_audience and link_access_level fields to LinkPermissions struct
+  - Updated docstrings for LinkPermissions
+  - Added audience and access fields to SharedLinkSettings struct
+  - New LinkAccessLevel and RequestedLinkAccessLevel union
+  - Added new create_view_link and create_edit_link fields to FileAction union
+
+  Team_log namespace:
+  - New types added
+
+  Team_policies namespace:
+  - New TwoStepVerificationState union
+
+  Team_reports namespace:
+  - New TemporaryFailureReason union added.
+
 3.1.0 (2019-5-6)
 ---------------------------------------------
 - Early Access on Short-live token feature.
