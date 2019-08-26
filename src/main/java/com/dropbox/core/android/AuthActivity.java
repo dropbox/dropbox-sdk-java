@@ -399,7 +399,13 @@ public class AuthActivity extends Activity {
         return authIntent;
     }
 
-
+    /**
+     * AuthActivity is launched first time, or user didn't finish oauth/dauth flow but
+     * switched back to this activity. (hit back button)
+     *
+     * If DAuth/Browser Auth succeeded, this flow should finish through onNewIntent()
+     * instead of onResume().
+     */
     @Override
     protected void onResume() {
         super.onResume();
@@ -408,9 +414,12 @@ public class AuthActivity extends Activity {
             return;
         }
 
-        if (mAuthStateNonce != null || mAppKey == null) {
+        boolean authNotFinish = mAuthStateNonce != null || mAppKey == null;
+
+        if (authNotFinish) {
             // We somehow returned to this activity without being forwarded
             // here by the official app.
+
             // Most commonly caused by user hitting "back" from the auth screen
             // or (if doing browser auth) task switching from auth task back to
             // this one.
@@ -434,12 +443,12 @@ public class AuthActivity extends Activity {
         final Intent officialAuthIntent = getOfficialAuthIntent();
         officialAuthIntent.putExtra(EXTRA_CONSUMER_KEY, mAppKey);
         officialAuthIntent.putExtra(EXTRA_CONSUMER_SIG, "");
-        officialAuthIntent.putExtra(EXTRA_DESIRED_UID, mDesiredUid);
-        officialAuthIntent.putExtra(EXTRA_ALREADY_AUTHED_UIDS, mAlreadyAuthedUids);
-        officialAuthIntent.putExtra(EXTRA_SESSION_ID, mSessionId);
         officialAuthIntent.putExtra(EXTRA_CALLING_PACKAGE, getPackageName());
         officialAuthIntent.putExtra(EXTRA_CALLING_CLASS, getClass().getName());
         officialAuthIntent.putExtra(EXTRA_AUTH_STATE, state);
+        officialAuthIntent.putExtra(EXTRA_DESIRED_UID, mDesiredUid);
+        officialAuthIntent.putExtra(EXTRA_ALREADY_AUTHED_UIDS, mAlreadyAuthedUids);
+        officialAuthIntent.putExtra(EXTRA_SESSION_ID, mSessionId);
 
         /*
          * An Android bug exists where onResume may be called twice in rapid succession.
