@@ -170,7 +170,7 @@ generateStone {
                     name: 'DbxClientV2Base',
                     javadoc: 'Base class for user auth clients.',
                     requestsClassnamePrefix: "DbxUser",
-                    routeFilter: 'auth="user" or auth="noauth"',
+                    routeFilter: 'auth="user" or auth="noauth" or auth="app, user"',
                     unusedClassesToGenerate: unusedClassesToGenerate,
                 ),
             ),
@@ -191,7 +191,7 @@ generateStone {
                     name: 'DbxAppClientV2Base',
                     javadoc: 'Base class for app auth clients.',
                     requestsClassnamePrefix: "DbxApp",
-                    routeFilter: 'auth="app"',
+                    routeFilter: 'auth="app" or auth="app, user"',
                 )
             ),
 
