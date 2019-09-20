@@ -32,7 +32,11 @@ public class UserActivity extends DropboxActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Auth.startOAuth2Authentication(UserActivity.this, getString(R.string.app_key));
+                if (DropboxActivity.USE_SLT) {
+                    Auth.startOAuth2PKCE(UserActivity.this, getString(R.string.app_key), DbxRequestConfigFactory.getRequestConfig());
+                } else {
+                    Auth.startOAuth2Authentication(UserActivity.this, getString(R.string.app_key));
+                }
             }
         });
 
