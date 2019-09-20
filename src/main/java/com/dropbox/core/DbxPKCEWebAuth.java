@@ -40,16 +40,11 @@ import static com.dropbox.core.util.StringUtil.urlSafeBase64Encode;
  * @see <a href="https://tools.ietf.org/html/rfc7636">https://tools.ietf.org/html/rfc7636</a>
  */
 public class DbxPKCEWebAuth {
-    private static final SecureRandom RAND = new SecureRandom();
-    private static final String CODE_VERIFIER_CHAR_SET =
-            "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~";
-    private static final int CODE_VERIFIER_SIZE = 128;
-    private static final String CODE_CHALLENGE_METHODS = "S256";
-
     private final DbxRequestConfig requestConfig;
     private final DbxAppInfo appInfo;
     private final DbxWebAuth dbxWebAuth;
-    private String codeVerifier;
+    private final DbxPKCEManager dbxPKCEManager;
+    private boolean started;
     private boolean consumed;
 
     /**
@@ -70,30 +65,9 @@ public class DbxPKCEWebAuth {
         this.requestConfig = requestConfig;
         this.appInfo = appInfo;
         this.dbxWebAuth = new DbxWebAuth(requestConfig, appInfo);
-        this.codeVerifier = null;
+        this.dbxPKCEManager = new DbxPKCEManager();
+        this.started = false;
         this.consumed = false;
-    }
-
-    private String generateCodeVerifier() {
-        StringBuilder sb = new StringBuilder();
-
-        for (int i = 0; i < CODE_VERIFIER_SIZE; i++) {
-            sb.append(CODE_VERIFIER_CHAR_SET.charAt(RAND.nextInt(CODE_VERIFIER_CHAR_SET.length())));
-        }
-
-        return sb.toString();
-    }
-
-    String generateCodeChallenge(String codeVerifier) {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] signiture = digest.digest(codeVerifier.getBytes("US-ASCII"));
-            return urlSafeBase64Encode(signiture).replaceAll("=+$", ""); // remove trailing equal
-        } catch (NoSuchAlgorithmException e) {
-            throw LangUtil.mkAssert("Impossible", e);
-        } catch (UnsupportedEncodingException e) {
-            throw LangUtil.mkAssert("Impossible", e);
-        }
     }
 
     /**
@@ -122,16 +96,11 @@ public class DbxPKCEWebAuth {
                 "already. To start a new PKCE OAuth flow, please create a new instance.");
         }
 
-        if (this.codeVerifier != null) {
-            throw new IllegalStateException("This DbxPKCEWebAuth instance has started an OAuth " +
-                "flow already. To restart a new PKCE OAuth flow, please create a new instance.");
-        }
-
-        this.codeVerifier = generateCodeVerifier();
+        this.started = true;
 
         Map<String, String> pkceParams = new HashMap<String, String>();
-        pkceParams.put("code_challenge", this.generateCodeChallenge(this.codeVerifier));
-        pkceParams.put("code_challenge_method", CODE_CHALLENGE_METHODS);
+        pkceParams.put("code_challenge", dbxPKCEManager.getCodeChallenge());
+        pkceParams.put("code_challenge_method", DbxPKCEManager.CODE_CHALLENGE_METHODS);
 
         return dbxWebAuth.authorizeImpl(request, pkceParams);
     }
@@ -180,47 +149,24 @@ public class DbxPKCEWebAuth {
 
     DbxAuthFinish finish(String code, String redirectUri, final String state) throws DbxException {
         if (code == null) throw new NullPointerException("code");
-        if (this.codeVerifier == null) {
+        if (!this.started) {
             throw new IllegalStateException("Must initialize the PKCE flow by calling authorize " +
                     "first.");
         }
+
         if (this.consumed) {
             throw new IllegalStateException("This DbxPKCEWebAuth instance has been consumed " +
                 "already. To start a new PKCE OAuth flow, please create a new instance.");
         }
 
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("grant_type", "authorization_code");
-        params.put("code", code);
-        params.put("locale", requestConfig.getUserLocale());
-        params.put("client_id", appInfo.getKey());
-        params.put("code_verifier", codeVerifier);
 
-        if (redirectUri != null) {
-            params.put("redirect_uri", redirectUri);
-        }
 
-        DbxAuthFinish dbxAuthFinish = DbxRequestUtil.doPostNoAuth(
-                requestConfig,
-                DbxRawClientV2.USER_AGENT_ID,
-                appInfo.getHost().getApi(),
-                "oauth2/token",
-                DbxRequestUtil.toParamsArray(params),
-                null,
-                new DbxRequestUtil.ResponseHandler<DbxAuthFinish>() {
-                    @Override
-                    public DbxAuthFinish handle(HttpRequestor.Response response) throws DbxException {
-                        if (response.getStatusCode() != 200) {
-                            throw DbxRequestUtil.unexpectedStatus(response);
-                        }
-                        return DbxRequestUtil.readJsonFromResponse(DbxAuthFinish.Reader, response)
-                                .withUrlState(state);
-                    }
-                }
+        DbxAuthFinish authFinish = dbxPKCEManager.makeTokenRequest(
+            requestConfig, code, appInfo.getKey(), redirectUri, appInfo.getHost()
         );
 
-        this.codeVerifier = null;
-        return dbxAuthFinish;
+        this.consumed = true;
+        return authFinish.withUrlState(state);
     }
 
 }

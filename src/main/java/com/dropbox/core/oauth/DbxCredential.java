@@ -125,11 +125,11 @@ public class DbxCredential {
         return this.expiresAt;
     }
 
-    String getAppKey() {
+    public String getAppKey() {
         return this.appKey;
     }
 
-    String getAppSecret() {
+    public String getAppSecret() {
         return this.appSecret;
     }
 
@@ -234,6 +234,14 @@ public class DbxCredential {
      */
     public DbxRefreshResult refresh(DbxRequestConfig requestConfig) throws DbxException {
         return refresh(requestConfig, DbxHost.DEFAULT);
+    }
+
+    /**
+     * @return The json string containing all fields.
+     */
+    @Override
+    public String toString() {
+        return Writer.writeToString(this);
     }
 
     public static final JsonReader<DbxCredential> Reader = new JsonReader<DbxCredential>()

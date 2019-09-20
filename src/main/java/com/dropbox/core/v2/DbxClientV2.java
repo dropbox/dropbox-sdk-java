@@ -1,13 +1,11 @@
 package com.dropbox.core.v2;
 
-import com.dropbox.core.DbxAppInfo;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxHost;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.DbxRequestUtil;
 import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.oauth.DbxCredential;
-import com.dropbox.core.oauth.DbxOAuthError;
 import com.dropbox.core.oauth.DbxOAuthException;
 import com.dropbox.core.oauth.DbxRefreshResult;
 import com.dropbox.core.v2.common.PathRoot;

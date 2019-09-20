@@ -3,6 +3,11 @@ package com.dropbox.core.android;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import com.dropbox.core.DbxAuthFinish;
+import com.dropbox.core.DbxHost;
+import com.dropbox.core.DbxRequestConfig;
+import com.dropbox.core.TokenAccessType;
+import com.dropbox.core.oauth.DbxCredential;
 
 import java.util.Arrays;
 
@@ -25,6 +30,44 @@ public class Auth {
     public static void startOAuth2Authentication(Context context, String appKey, String desiredUid,
                                                  String[] alreadyAuthedUids, String sessionId) {
         startOAuth2Authentication(context, appKey, desiredUid, alreadyAuthedUids, sessionId, "www.dropbox.com");
+    }
+
+    /**
+     * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
+     * early access partner of this feature. The function signature is subjected to change
+     * in next minor version release.
+     *
+     * @see Auth#startOAuth2PKCE(Context, String, DbxRequestConfig, DbxHost)
+     */
+    public static void startOAuth2PKCE(Context context, String appKey,
+                                                     DbxRequestConfig requestConfig) {
+        startOAuth2PKCE(context, appKey, requestConfig, null);
+    }
+
+    /**
+     * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
+     * early access partner of this feature. The function signature is subjected to change
+     * in next minor version release.
+     *
+     * Starts the Dropbox OAuth process by launching the Dropbox official app (AKA DAuth) or web
+     * browser if dropbox official app is not available. In browser flow, normally user need to
+     * sign in.
+     * @param context               the {@link Context} to use to launch the
+     *      *                       Dropbox authentication activity. This will typically be an
+     *      *                       {@link Activity} and the user will be taken back to that
+     *      *                       activity after authentication is complete (i.e., your activity
+     *      *                       will receive an {@code onResume()}).
+     * @param appKey                the app's key.
+     * @param requestConfig         Default attributes to use for each request
+     * @param host                  Dropbox hosts to send requests to (used for mocking and testing)
+     */
+    public static void startOAuth2PKCE(Context context, String appKey, DbxRequestConfig
+        requestConfig, DbxHost host) {
+        if (requestConfig == null) {
+            throw new IllegalArgumentException("Invalid Dbx requestConfig for PKCE flow.");
+        }
+        startOAuth2Authentication(context, appKey, null, null, null, null, TokenAccessType
+            .OFFLINE, requestConfig, host);
     }
     
     /**
@@ -64,6 +107,19 @@ public class Auth {
                                                  String[] alreadyAuthedUids,
                                                  String sessionId,
                                                  String webHost) {
+        startOAuth2Authentication(context, appKey, desiredUid, alreadyAuthedUids, sessionId,
+            webHost, null, null, null);
+    }
+
+    private static void startOAuth2Authentication(Context context,
+                                                  String appKey,
+                                                  String desiredUid,
+                                                  String[] alreadyAuthedUids,
+                                                  String sessionId,
+                                                  String webHost,
+                                                  TokenAccessType tokenAccessType,
+                                                  DbxRequestConfig requestConfig,
+                                                  DbxHost host) {
         if (!AuthActivity.checkAppBeforeAuth(context, appKey, true /*alertUser*/)) {
             return;
         }
@@ -75,7 +131,8 @@ public class Auth {
         // Start Dropbox auth activity.
         String apiType = "1";
         Intent intent =  AuthActivity.makeIntent(
-                context, appKey, desiredUid, alreadyAuthedUids, sessionId, webHost, apiType
+            context, appKey, desiredUid, alreadyAuthedUids, sessionId, webHost, apiType,
+            tokenAccessType, requestConfig, host
         );
         if (!(context instanceof Activity)) {
             // If starting the intent outside of an Activity, must include
@@ -87,26 +144,32 @@ public class Auth {
     }
 
     public static String getOAuth2Token() {
-        Intent data = AuthActivity.result;
+        DbxCredential credential = getDbxCredential();
 
-        if (data == null) {
+        if (credential == null) {
             return null;
         }
 
-        String token = data.getStringExtra(AuthActivity.EXTRA_ACCESS_TOKEN);
-        String secret = data.getStringExtra(AuthActivity.EXTRA_ACCESS_SECRET);
-        String uid = data.getStringExtra(AuthActivity.EXTRA_UID);
-
-        if (token != null && !token.equals("") &&
-                secret != null && !secret.equals("") &&
-                uid != null && !uid.equals("")) {
-            return secret;
-        }
-
-        return null;
+        return credential.getAccessToken();
     }
 
     public static String getUid() {
+        if (getDbxCredential() == null) {
+            return null;
+        }
+
+        Intent data = AuthActivity.result;
+        return data.getStringExtra(AuthActivity.EXTRA_UID);
+    }
+
+    /**
+     * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
+     * early access partner of this feature. The function signature is subjected to change
+     * in next minor version release.
+     *
+     * @return The result after
+     */
+    public static DbxCredential getDbxCredential() {
         Intent data = AuthActivity.result;
 
         if (data == null) {
@@ -117,12 +180,17 @@ public class Auth {
         String secret = data.getStringExtra(AuthActivity.EXTRA_ACCESS_SECRET);
         String uid = data.getStringExtra(AuthActivity.EXTRA_UID);
 
-        if (token != null && !token.equals("") &&
-            secret != null && !secret.equals("") &&
-            uid != null && !uid.equals("")) {
-            return uid;
+        if (token == null || "".equals(token) || secret == null || "".equals(secret) || uid ==
+            null || "".equals(uid)) {
+            return null;
         }
 
-        return null;
+        String appKey = data.getStringExtra(AuthActivity.EXTRA_CONSUMER_KEY);
+        String refreshToken = data.getStringExtra(AuthActivity.EXTRA_REFRESH_TOKEN);
+        long expiresAt = data.getLongExtra(AuthActivity.EXTRA_EXPIRES_AT, -1);
+        Long nullableExpiresAt = (expiresAt >= 0) ? expiresAt : null;
+
+
+        return new DbxCredential(secret, nullableExpiresAt, refreshToken, appKey);
     }
 }

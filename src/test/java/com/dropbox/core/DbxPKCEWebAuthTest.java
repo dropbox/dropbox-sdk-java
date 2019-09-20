@@ -107,7 +107,7 @@ public class DbxPKCEWebAuthTest extends DbxOAuthTestBase {
         verify(mockUploader).upload(argumentCaptor.capture());
         Map<String, List<String>> finishParams = toParamsMap(new String(argumentCaptor.getValue(), "UTF-8"));
         String code_verifier = finishParams.get("code_verifier").get(0);
-        assertEquals(code_challenge, dbxPKCEWebAuth.generateCodeChallenge(code_verifier));
+        assertEquals(code_challenge, DbxPKCEManager.generateCodeChallenge(code_verifier));
     }
 
     @Test
@@ -129,33 +129,6 @@ public class DbxPKCEWebAuthTest extends DbxOAuthTestBase {
                 dbxWebAuth.finish("any_code", null,  null);
             }
         });
-    }
-
-    @Test
-    public void testPKCEdifferentInstance() throws Exception {
-        String redirectUri = "https://localhost/compatibility/test";
-        DbxSessionStore sessionStore = new SimpleSessionStore();
-        String state = "test-state";
-
-        DbxPKCEWebAuth auth = new DbxPKCEWebAuth(CONFIG, APP);
-        auth.authorize(
-            DbxWebAuth.newRequestBuilder()
-                .withRedirectUri(redirectUri, sessionStore)
-                .withState(state)
-                .build()
-        );
-
-        try {
-            auth.authorize(
-                DbxWebAuth.newRequestBuilder()
-                    .withRedirectUri(redirectUri, sessionStore)
-                    .withState(state)
-                    .build()
-            );
-        } catch (IllegalStateException ex) {
-            return;
-        }
-        fail();
     }
 
     @Test
