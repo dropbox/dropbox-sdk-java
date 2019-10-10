@@ -113,22 +113,7 @@ public class AuthActivity extends Activity {
     /**
      * Used for internal authentication. You won't ever have to use this.
      */
-    public static final String EXTRA_AUTH_CODE_CHALLENGE = "CODE_CHALLENGE";
-
-    /**
-     * Used for internal authentication. You won't ever have to use this.
-     */
-    public static final String EXTRA_AUTH_CODE_CHALLENGE_METHOD = "CODE_CHALLENGE_METHOD";
-
-    /**
-     * Used for internal authentication. You won't ever have to use this.
-     */
-    public static final String EXTRA_AUTH_RESPONSE_TYPE = "RESPONSE_TYPE";
-
-    /**
-     * Used for internal authentication. You won't ever have to use this.
-     */
-    public static final String EXTRA_AUTH_TOKEN_ACCESS_TYPE = "TOKEN_ACCESS_TYPE";
+    public static final String EXTRA_AUTH_QUERY_PARAMS = "AUTH_QUERY_PARAMS";
 
     /**
      * The Android action which the official Dropbox app will accept to
@@ -515,15 +500,9 @@ public class AuthActivity extends Activity {
 
         if (mTokenAccessType != null) {
             // short live token flow
-            state = createPKCEStateNonce();
-
-            /*
-            officialAuthIntent.putExtra(EXTRA_AUTH_CODE_CHALLENGE, generateCodeChallenge
-                (mCodeVerifier));
-            officialAuthIntent.putExtra(EXTRA_AUTH_CODE_CHALLENGE_METHOD, CODE_CHALLENGE_METHODS);
-            officialAuthIntent.putExtra(EXTRA_AUTH_TOKEN_ACCESS_TYPE, mTokenAccessType.toString());
-            officialAuthIntent.putExtra(EXTRA_AUTH_RESPONSE_TYPE, REPONSE_TYPE_CODE);
-            */
+            state = createPKCEStateNonce(); // to support legacy DBApp with V1 flow with
+            // stormcrow android_use_dauth_version4 turned off.
+            officialAuthIntent.putExtra(EXTRA_AUTH_QUERY_PARAMS, createExtraQueryParams());
         } else {
             // Legacy long live token flow
             state = createStateNonce();
@@ -675,7 +654,9 @@ public class AuthActivity extends Activity {
                 "k", mAppKey,
                 "n", alreadyAuthedUid,
                 "api", mApiType,
-                "state", state};
+                "state", state,
+                "extra_query_params", createExtraQueryParams()
+        };
 
         String url = DbxRequestUtil.buildUrlWithParams(locale.toString(), mHost.getWeb(), path, params);
 
@@ -702,8 +683,18 @@ public class AuthActivity extends Activity {
                              mTokenAccessType.toString());
     }
 
+    private String createExtraQueryParams() {
+        return String.format(
+            "%s=%s&%s=%s&%s=%s&%s=%s",
+            "code_challenge", mPKCEManager.getCodeChallenge(),
+            "code_challenge_method", DbxPKCEManager.CODE_CHALLENGE_METHODS,
+            "token_access_type", mTokenAccessType.toString(),
+            "response_type", "code"
+        );
+    }
+
     private enum TokenType {
-        OAUTH2("oauth2"),
+        OAUTH2("oauth2:"),
         OAUTH2CODE("oauth2code:");
 
         private String string;
