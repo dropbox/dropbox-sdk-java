@@ -14,7 +14,8 @@ import com.dropbox.core.oauth.DbxCredential;
  * Will redirect to auth flow if needed
  */
 public abstract class DropboxActivity extends AppCompatActivity {
-    public final static boolean USE_SLT = true;
+
+    public final static boolean USE_SLT = false; //If USE_SLT is set to true, our Android example will use our beta feature Short Live Token.
 
     @Override
     protected void onResume() {
