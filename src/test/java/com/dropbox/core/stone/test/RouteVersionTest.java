@@ -33,12 +33,12 @@ public class RouteVersionTest {
         // Test return value
         assertEquals(v1.getReturnType(), TestUploadUploader.class);
         assertEquals(v2NoBuilder.getReturnType(), TestUploadV2Uploader.class);
-        assertEquals(v2Builder.getReturnType(), TestUploadV2Builder.class);
+        assertEquals(v2Builder.getReturnType(), DbxTestTestUploadV2Builder.class);
 
         // Test builder
-        TestUploadV2Builder.class.getDeclaredMethod("withBorn", Date.class);
-        TestUploadV2Builder.class.getDeclaredMethod("withSize", DogSize.class);
-        Method start = TestUploadV2Builder.class.getDeclaredMethod("start");
+        DbxTestTestUploadV2Builder.class.getDeclaredMethod("withBorn", Date.class);
+        DbxTestTestUploadV2Builder.class.getDeclaredMethod("withSize", DogSize.class);
+        Method start = DbxTestTestUploadV2Builder.class.getDeclaredMethod("start");
         assertTrue(Arrays.asList(start.getExceptionTypes()).contains(ParentUnionException.class));
 
         // Test return value of uploader from generic type
@@ -61,13 +61,13 @@ public class RouteVersionTest {
         Method v2Builder = c.getDeclaredMethod("testDownloadV2Builder", UninitializedReason.class, String.class);
 
         // Test return type
-        assertEquals(v1Builder.getReturnType(), TestDownloadBuilder.class);
-        assertEquals(v2Builder.getReturnType(), TestDownloadV2Builder.class);
+        assertEquals(v1Builder.getReturnType(), DbxTestTestDownloadBuilder.class);
+        assertEquals(v2Builder.getReturnType(), DbxTestTestDownloadV2Builder.class);
 
         // Test return type from generic type
-        ParameterizedType genericV1 = (ParameterizedType)TestDownloadBuilder.class.getGenericSuperclass();
+        ParameterizedType genericV1 = (ParameterizedType)DbxTestTestDownloadBuilder.class.getGenericSuperclass();
         assertEquals(genericV1.getActualTypeArguments()[0], Fish.class);
-        ParameterizedType genericV2 = (ParameterizedType)TestDownloadV2Builder.class.getGenericSuperclass();
+        ParameterizedType genericV2 = (ParameterizedType)DbxTestTestDownloadV2Builder.class.getGenericSuperclass();
         assertEquals(genericV2.getActualTypeArguments()[0], Fish.class);
 
 
