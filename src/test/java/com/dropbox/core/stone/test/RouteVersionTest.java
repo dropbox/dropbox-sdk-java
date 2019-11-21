@@ -29,17 +29,19 @@ public class RouteVersionTest {
         Method v1 = c.getDeclaredMethod("testUpload", UninitializedReason.class, String.class);
         Method v2NoBuilder = c.getDeclaredMethod("testUploadV2", String.class, String.class);
         Method v2Builder = c.getDeclaredMethod("testUploadV2Builder", String.class, String.class);
+        Method v3Builder = c.getDeclaredMethod("testUploadV3Builder", String.class, String.class);
 
         // Test return value
         assertEquals(v1.getReturnType(), TestUploadUploader.class);
         assertEquals(v2NoBuilder.getReturnType(), TestUploadV2Uploader.class);
         assertEquals(v2Builder.getReturnType(), TestUploadV2Builder.class);
+        assertEquals(v3Builder.getReturnType(), DbxTestTestUploadV3Builder.class);
 
         // Test builder
         TestUploadV2Builder.class.getDeclaredMethod("withBorn", Date.class);
         TestUploadV2Builder.class.getDeclaredMethod("withSize", DogSize.class);
-        Method start = TestUploadV2Builder.class.getDeclaredMethod("start");
-        assertTrue(Arrays.asList(start.getExceptionTypes()).contains(ParentUnionException.class));
+        Method start2 = TestUploadV2Builder.class.getDeclaredMethod("start");
+        assertTrue(Arrays.asList(start2.getExceptionTypes()).contains(ParentUnionException.class));
 
         // Test return value of uploader from generic type
         ParameterizedType genericV1 = (ParameterizedType)TestUploadUploader.class.getGenericSuperclass();
@@ -50,6 +52,12 @@ public class RouteVersionTest {
         // Test exception from generic type
         assertEquals(genericV1.getActualTypeArguments()[1], Void.class);
         assertEquals(genericV2.getActualTypeArguments()[1], ParentUnion.class);
+
+        // Test builder with multiple auth types has prefix
+        DbxTestTestUploadV3Builder.class.getDeclaredMethod("withBorn", Date.class);
+        DbxTestTestUploadV3Builder.class.getDeclaredMethod("withSize", DogSize.class);
+        Method start3 = DbxTestTestUploadV3Builder.class.getDeclaredMethod("start");
+        assertTrue(Arrays.asList(start3.getExceptionTypes()).contains(ParentUnionException.class));
     }
 
     @Test

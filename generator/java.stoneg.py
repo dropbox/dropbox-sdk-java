@@ -768,7 +768,6 @@ class JavaImporter(object):
         self._add_imports_for_data_type_exception(route.error_data_type)
 
         namespace = j.route_namespace(route)
-        route_auth = j.auth_style(route) if j.auth_style(route) != 'noauth' else 'user'
         self.add_imports(
             j.java_class(namespace),
             'com.dropbox.core.DbxException',
@@ -2011,8 +2010,15 @@ class JavaApi(object):
 
         if isinstance(stone_elem, ApiRoute):
             route = stone_elem
+
+            if ',' in self.auth_style(route):
+                # Use prefix here because multiple builders may be generated
+                # if the endpoint has multiple auth types
+                prefix = (self._args.requests_classname_prefix or self._args.client_class) + "_"
+            else:
+                prefix = ""
             package = self.java_class(route).package
-            return JavaClass(package + '.' + classname(format_func_name(route) + '_builder'))
+            return JavaClass(package + '.' + classname('%s%s_builder' % (prefix, format_func_name(route))))
         else:
             data_type = stone_elem
             assert is_user_defined_type(data_type), repr(data_type)
