@@ -86,6 +86,11 @@ route test_upload:2 (Dog, Void, ParentUnion)
     attrs
         style = "upload"
 
+route test_upload:3 (Dog, Void, ParentUnion)
+    attrs
+        style = "upload"
+        auth = "app, user"
+
 route test_download(Dog, Fish, Void)
     attrs
         host = "content"

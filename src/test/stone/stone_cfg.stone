@@ -7,3 +7,5 @@ struct Route
     style String = "rpc"
         "The RPC format to use for the request. Valid values: rpc, download,
         and upload."
+    auth String = "auth"
+        "Auth mode for the route."

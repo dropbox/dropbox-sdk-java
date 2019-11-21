@@ -2010,12 +2010,15 @@ class JavaApi(object):
 
         if isinstance(stone_elem, ApiRoute):
             route = stone_elem
-            # Use prefix here because multiple builders may be generated
-            # if the endpoint has multiple auth types
-            prefix = self._args.requests_classname_prefix or self._args.client_class
+
+            if ',' in self.auth_style(route):
+                # Use prefix here because multiple builders may be generated
+                # if the endpoint has multiple auth types
+                prefix = (self._args.requests_classname_prefix or self._args.client_class) + "_"
+            else:
+                prefix = ""
             package = self.java_class(route).package
-            return JavaClass(package + '.' + classname(
-                '{}_{}_builder'.format(prefix, format_func_name(route))))
+            return JavaClass(package + '.' + classname('%s%s_builder' % (prefix, format_func_name(route))))
         else:
             data_type = stone_elem
             assert is_user_defined_type(data_type), repr(data_type)
