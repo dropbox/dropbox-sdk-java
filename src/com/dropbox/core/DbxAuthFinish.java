@@ -84,6 +84,7 @@ public final class DbxAuthFinish implements java.io.Serializable
                     }
                 }
                 catch (JsonReadException ex) {
+                    System.out.println("Let's see if you catch this");
                     throw ex.addFieldContext(fieldName);
                 }
             }
