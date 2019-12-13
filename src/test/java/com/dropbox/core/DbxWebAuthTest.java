@@ -154,4 +154,16 @@ public class DbxWebAuthTest extends DbxOAuthTestBase {
                         .build()
         );
     }
+
+    @Test
+    public void testScope() throws Exception {
+        DbxWebAuth dbxWebAuth = new DbxWebAuth(CONFIG, APP);
+        DbxWebAuth.Request request = DbxWebAuth.newRequestBuilder()
+            .withNoRedirect()
+            .withScope("account.info.read")
+            .build();
+        String urlString = dbxWebAuth.authorize(request);
+        Map<String, List<String>> params = toParamsMap(new URL(urlString));
+        assertEquals(params.get("scope"), Collections.singletonList("account.info.read"));
+    }
 }

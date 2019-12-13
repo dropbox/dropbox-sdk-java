@@ -287,6 +287,10 @@ public class DbxWebAuth {
             params.put("token_access_type", request.tokenAccessType.toString());
         }
 
+        if (request.scope != null) {
+            params.put("scope", request.scope);
+        }
+
         if (pkceParams != null) {
             for (String key: pkceParams.keySet()) {
                 params.put(key, pkceParams.get(key));
@@ -659,6 +663,7 @@ public class DbxWebAuth {
         private final Boolean disableSignup;
         private final DbxSessionStore sessionStore;
         private final TokenAccessType tokenAccessType;
+        private final String scope;
 
 
         private Request(String redirectUri,
@@ -667,7 +672,8 @@ public class DbxWebAuth {
                         Boolean forceReapprove,
                         Boolean disableSignup,
                         DbxSessionStore sessionStore,
-                        TokenAccessType tokenAccessType) {
+                        TokenAccessType tokenAccessType,
+                        String scope) {
             this.redirectUri = redirectUri;
             this.state = state;
             this.requireRole = requireRole;
@@ -675,6 +681,7 @@ public class DbxWebAuth {
             this.disableSignup = disableSignup;
             this.sessionStore = sessionStore;
             this.tokenAccessType = tokenAccessType;
+            this.scope = scope;
         }
 
         /**
@@ -690,7 +697,9 @@ public class DbxWebAuth {
                     forceReapprove,
                     disableSignup,
                     sessionStore,
-                    tokenAccessType);
+                    tokenAccessType,
+                    scope
+                );
         }
 
         /**
@@ -713,9 +722,10 @@ public class DbxWebAuth {
             private Boolean disableSignup;
             private DbxSessionStore sessionStore;
             private TokenAccessType tokenAccessType;
+            private String scope;
 
             private Builder() {
-                this(null, null, null, null, null, null, null);
+                this(null, null, null, null, null, null, null, null);
             }
 
             private Builder(String redirectUri,
@@ -724,7 +734,8 @@ public class DbxWebAuth {
                             Boolean forceReapprove,
                             Boolean disableSignup,
                             DbxSessionStore sessionStore,
-                            TokenAccessType tokenAccessType) {
+                            TokenAccessType tokenAccessType,
+                            String scope) {
                 this.redirectUri = redirectUri;
                 this.state = state;
                 this.requireRole = requireRole;
@@ -732,6 +743,7 @@ public class DbxWebAuth {
                 this.disableSignup = disableSignup;
                 this.sessionStore = sessionStore;
                 this.tokenAccessType = tokenAccessType;
+                this.scope = scope;
             }
 
             /**
@@ -864,6 +876,10 @@ public class DbxWebAuth {
             }
 
             /**
+             * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
+             * early access partner of this feature. The function signature is subjected to change
+             * in next minor version release.
+             *
              * Whether or not to include refresh token in {@link DbxAuthFinish}
              *
              * For {@link TokenAccessType#ONLINE}, auth result only contains short live token.
@@ -879,6 +895,21 @@ public class DbxWebAuth {
              */
             public Builder withTokenAccessType(TokenAccessType tokenAccessType) {
                 this.tokenAccessType = tokenAccessType;
+                return this;
+            }
+
+            /**
+             *
+             * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
+             * early access partner of this feature. The function signature is subjected to change
+             * in next minor version release.
+             *
+             * @param scope A list of scope returned by Dropbox server. Each scope correspond to a group of
+             * API endpoints. To call one API endpoint you have to obtains the scope first otherwise you
+             * will get HTTP 401.
+             */
+            public Builder withScope(String scope) {
+                this.scope = scope;
                 return this;
             }
 
@@ -903,7 +934,8 @@ public class DbxWebAuth {
                         forceReapprove,
                         disableSignup,
                         sessionStore,
-                        tokenAccessType);
+                        tokenAccessType,
+                        scope);
             }
         }
     }

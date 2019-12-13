@@ -104,6 +104,7 @@ public class Main {
         System.out.println("- Access Token: " + authFinish.getAccessToken());
         System.out.println("- Expires At: " + authFinish.getExpiresAt());
         System.out.println("- Refresh Token: " + authFinish.getRefreshToken());
+        System.out.println("- Scope: " + authFinish.getScope());
 
         // Save auth information the new DbxCredential instance. It also contains app_key and
         // app_secret which is required to do refresh call.
