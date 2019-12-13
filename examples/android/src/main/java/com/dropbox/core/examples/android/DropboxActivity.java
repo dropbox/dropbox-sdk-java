@@ -3,7 +3,6 @@ package com.dropbox.core.examples.android;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 
-import android.util.Log;
 import com.dropbox.core.android.Auth;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.oauth.DbxCredential;
@@ -15,7 +14,8 @@ import com.dropbox.core.oauth.DbxCredential;
  */
 public abstract class DropboxActivity extends AppCompatActivity {
 
-    public final static boolean USE_SLT = false; //If USE_SLT is set to true, our Android example will use our beta feature Short Live Token.
+    private final static boolean USE_SLT = false; //If USE_SLT is set to true, our Android example
+    // will use our beta feature Short Live Token.
 
     @Override
     protected void onResume() {
@@ -82,6 +82,14 @@ public abstract class DropboxActivity extends AppCompatActivity {
         } else {
             String accessToken = prefs.getString("access-token", null);
             return accessToken != null;
+        }
+    }
+
+    public static void startOAuth2Authentication(Context context) {
+        if (USE_SLT) {
+            Auth.startOAuth2PKCE(context, getString(R.string.app_key), DbxRequestConfigFactory.getRequestConfig());
+        } else {
+            Auth.startOAuth2Authentication(context, getString(R.string.app_key));
         }
     }
 }

@@ -14,7 +14,7 @@ import java.io.IOException;
 
 /**
  * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
- * early access partner of this feature. The function signature is subjected to change
+ * early access partner of this feature. The function signature is subject to change
  * in next minor version release.
  *
  * This is the return value of {@link DbxCredential#refresh(DbxRequestConfig)}. It contains new

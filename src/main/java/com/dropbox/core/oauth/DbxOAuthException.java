@@ -4,7 +4,7 @@ import com.dropbox.core.DbxException;
 
 /**
  * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
- * early access partner of this feature. The function signature is subjected to change
+ * early access partner of this feature. The function signature is subject to change
  * in next minor version release.
  *
  * This exception means OAuth endpoint has thrown error.

@@ -34,7 +34,7 @@ public class Auth {
 
     /**
      * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
-     * early access partner of this feature. The function signature is subjected to change
+     * early access partner of this feature. The function signature is subject to change
      * in next minor version release.
      *
      * @see Auth#startOAuth2PKCE(Context, String, DbxRequestConfig, DbxHost)
@@ -46,11 +46,11 @@ public class Auth {
 
     /**
      * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
-     * early access partner of this feature. The function signature is subjected to change
+     * early access partner of this feature. The function signature is subject to change
      * in next minor version release.
      *
      * Starts the Dropbox OAuth process by launching the Dropbox official app (AKA DAuth) or web
-     * browser if dropbox official app is not available. In browser flow, normally user need to
+     * browser if dropbox official app is not available. In browser flow, normally user needs to
      * sign in.
      * @param context               the {@link Context} to use to launch the
      *      *                       Dropbox authentication activity. This will typically be an
@@ -164,7 +164,7 @@ public class Auth {
 
     /**
      * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
-     * early access partner of this feature. The function signature is subjected to change
+     * early access partner of this feature. The function signature is subject to change
      * in next minor version release.
      *
      * @return The result after

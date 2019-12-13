@@ -1,6 +1,5 @@
 package com.dropbox.core.oauth;
 
-import com.dropbox.core.ApiErrorResponse;
 import com.dropbox.core.DbxAppInfo;
 import com.dropbox.core.DbxOAuthTestBase;
 import com.dropbox.core.DbxRequestConfig;
@@ -8,7 +7,6 @@ import com.dropbox.core.InvalidAccessTokenException;
 import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.DbxTeamClientV2;
-import com.dropbox.core.v2.auth.AuthError;
 import org.mockito.ArgumentCaptor;
 import org.testng.annotations.Test;
 

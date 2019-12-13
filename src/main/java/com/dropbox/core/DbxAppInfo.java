@@ -25,7 +25,7 @@ public class DbxAppInfo extends Dumpable {
 
     /**
      * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless
-     * you are early access partner of this feature. The function signature is subjected to change
+     * you are early access partner of this feature. The function signature is subject to change
      * in next minor version release.
      *
      * DbxAppInfo without secret. Should only be used in PKCE flow.

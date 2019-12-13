@@ -42,7 +42,7 @@ public final class DbxAuthFinish {
     /**
      *
      * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
-     * early access partner of this feature. The function signature is subjected to change
+     * early access partner of this feature. The function signature is subject to change
      * in next minor version release.
      *
      * @param accessToken OAuth access token.
@@ -62,7 +62,7 @@ public final class DbxAuthFinish {
     /**
      *
      * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
-     * early access partner of this feature. The function signature is subjected to change
+     * early access partner of this feature. The function signature is subject to change
      * in next minor version release.
      *
      * @param accessToken OAuth access token.
@@ -104,7 +104,7 @@ public final class DbxAuthFinish {
     /**
      *
      * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
-     * early access partner of this feature. The function signature is subjected to change
+     * early access partner of this feature. The function signature is subject to change
      * in next minor version release.
      *
      * Returns the time when {@link DbxAuthFinish#accessToken} expires in millisecond. If null then
@@ -121,7 +121,7 @@ public final class DbxAuthFinish {
 
     /**
      * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
-     * early access partner of this feature. The function signature is subjected to change
+     * early access partner of this feature. The function signature is subject to change
      * in next minor version release.
      *
      * Returns an <em>refresh token</em> which can be used to obtain new
@@ -167,7 +167,7 @@ public final class DbxAuthFinish {
     /**
      *
      * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
-     * early access partner of this feature. The function signature is subjected to change
+     * early access partner of this feature. The function signature is subject to change
      * in next minor version release.
      *
      * Return the <em>scopes</em> of current OAuth flow. Each scope correspond to a group of
