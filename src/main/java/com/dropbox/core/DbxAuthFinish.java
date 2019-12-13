@@ -26,6 +26,7 @@ public final class DbxAuthFinish {
     private final String teamId;
     private final /*@Nullable*/String urlState;
     private long issueTime;
+    private final String scope;
 
     /**
      * @param accessToken OAuth access token
@@ -55,6 +56,30 @@ public final class DbxAuthFinish {
      */
     public DbxAuthFinish(String accessToken, Long expiresIn, String refreshToken, String userId,
                          String teamId, String accountId, /*@Nullable*/String urlState) {
+        this(accessToken, expiresIn, refreshToken, userId, teamId, accountId, urlState, null);
+    }
+
+    /**
+     *
+     * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
+     * early access partner of this feature. The function signature is subjected to change
+     * in next minor version release.
+     *
+     * @param accessToken OAuth access token.
+     * @param expiresIn Duration time of accessToken in second.
+     * @param refreshToken A token used to obtain new accessToken.
+     * @param userId Dropbox user ID of user that authorized this app.
+     * @param teamId Dropbox team ID of team that authorized this app.
+     * @param accountId Obfusticated user or team id. Keep it safe.
+     * @param urlState State data passed in to {@link DbxWebAuth#start} or {@code null} if no state
+     * was passed
+     * @param scope A list of scope returned by Dropbox server. Each scope correspond to a group of
+     * API endpoints. To call one API endpoint you have to obtains the scope first otherwise you
+     * will get HTTP 401.
+     */
+    public DbxAuthFinish(String accessToken, Long expiresIn, String refreshToken, String userId,
+                         String teamId, String accountId, /*@Nullable*/String urlState, String
+                             scope) {
         this.accessToken = accessToken;
         this.expiresIn = expiresIn;
         this.refreshToken = refreshToken;
@@ -63,6 +88,7 @@ public final class DbxAuthFinish {
         this.teamId = teamId;
         this.urlState = urlState;
         this.issueTime = System.currentTimeMillis();
+        this.scope = scope;
     }
 
     /**
@@ -139,6 +165,20 @@ public final class DbxAuthFinish {
     }
 
     /**
+     *
+     * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
+     * early access partner of this feature. The function signature is subjected to change
+     * in next minor version release.
+     *
+     * Return the <em>scopes</em> of current OAuth flow. Each scope correspond to a group of
+     * API endpoints. To call one API endpoint you have to obtains the scope first otherwise you
+     * will get HTTP 401.
+     */
+    public String getScope() {
+        return scope;
+    }
+
+    /**
      * Returns the state data you passed in to {@link DbxWebAuth#start}.  If you didn't pass
      * anything in, or you used {@link DbxWebAuthNoRedirect}, this will be {@code null}.
      *
@@ -168,7 +208,7 @@ public final class DbxAuthFinish {
         }
 
         DbxAuthFinish result =  new DbxAuthFinish(accessToken, expiresIn, refreshToken, userId,
-                teamId, accountId, urlState);
+                teamId, accountId, urlState, scope);
         result.setIssueTime(issueTime);
 
         return result;
@@ -189,6 +229,7 @@ public final class DbxAuthFinish {
             String accountId = null;
             String teamId = null;
             String state = null;
+            String scope = null;
 
             while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
                 String fieldName = parser.getCurrentName();
@@ -219,6 +260,9 @@ public final class DbxAuthFinish {
                     else if (fieldName.equals("state")) {
                         state = JsonReader.StringReader.readField(parser, fieldName, state);
                     }
+                    else if (fieldName.equals("scope")) {
+                        scope = JsonReader.StringReader.readField(parser, fieldName, scope);
+                    }
                     else {
                         // Unknown field.  Skip over it.
                         JsonReader.skipValue(parser);
@@ -243,7 +287,7 @@ public final class DbxAuthFinish {
             }
 
             return new DbxAuthFinish(accessToken, expiresIn, refreshToken, userId, teamId,
-                    accountId, state);
+                    accountId, state, scope);
         }
     };
 

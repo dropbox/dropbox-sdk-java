@@ -1,11 +1,14 @@
 package com.dropbox.core.oauth;
 
+import com.dropbox.core.ApiErrorResponse;
 import com.dropbox.core.DbxAppInfo;
 import com.dropbox.core.DbxOAuthTestBase;
 import com.dropbox.core.DbxRequestConfig;
+import com.dropbox.core.InvalidAccessTokenException;
 import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.DbxTeamClientV2;
+import com.dropbox.core.v2.auth.AuthError;
 import org.mockito.ArgumentCaptor;
 import org.testng.annotations.Test;
 
@@ -216,7 +219,7 @@ public class DbxRefershTest extends DbxOAuthTestBase {
         DbxRequestConfig mockConfig = setupMockRequestConfig(finishResponse, mockUploader);
 
         // Execute Refresh
-        DbxCredential credential = new DbxCredential(EXPIRED_TOKEN, EXPIRES_IN, REFRESH_TOKEN,
+        DbxCredential credential = new DbxCredential(EXPIRED_TOKEN, 100L, REFRESH_TOKEN,
             APP.getKey(), APP.getSecret());
         DbxClientV2 client = new DbxClientV2(mockConfig, credential);
 
@@ -228,5 +231,37 @@ public class DbxRefershTest extends DbxOAuthTestBase {
         }
 
         fail("Should not reach here.");
+    }
+
+    @Test
+    public void testMissingScope() throws Exception {
+        Long now = System.currentTimeMillis();
+        ByteArrayInputStream responseStream = new ByteArrayInputStream(
+            (
+                "{" +
+                    "\"error_summary\":\"missing_scope/.\" ,\"error\":{\".tag\": \"missing_scope\", \"required_scope\": \"account.info.read\"}" +
+                    "}"
+            ).getBytes("UTF-8")
+        );
+        HttpRequestor.Response finishResponse = new HttpRequestor.Response(
+            401, responseStream, new HashMap<String, List<String>>());
+
+        // Mock requester and uploader
+        HttpRequestor.Uploader mockUploader = mock(HttpRequestor.Uploader.class);
+        DbxRequestConfig mockConfig = setupMockRequestConfig(finishResponse, mockUploader);
+
+        DbxCredential credential = new DbxCredential(NEW_TOKEN, now +2 * DbxCredential.EXPIRE_MARGIN,
+            REFRESH_TOKEN,
+            APP.getKey(), APP.getSecret());
+        DbxClientV2 client = new DbxClientV2(mockConfig, credential);
+
+        try {
+            client.users().getCurrentAccount();
+            fail("Should raise exception before reaching here");
+        } catch (InvalidAccessTokenException ex) {
+            assertTrue(ex.getAuthError().isMissingScope());
+            String missingScope = ex.getAuthError().getMissingScopeValue().getRequiredScope();
+            assertEquals("account.info.read", missingScope, "expect account.info.read, get " + missingScope);
+        }
     }
 }

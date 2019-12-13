@@ -27,7 +27,7 @@ public class DbxAuthFinishTest extends DbxOAuthTestBase {
     @Test
     public void testDbxAuthFinishLegacyToken() throws Exception{
         DbxAuthFinish expected = new DbxAuthFinish(
-                "test-access-token", null, null, "test-user-id", null, "test", null
+                "test-access-token", null, null, "test-user-id", null, "test", null, null
         );
 
         ByteArrayInputStream responseStream = new ByteArrayInputStream(
@@ -55,7 +55,7 @@ public class DbxAuthFinishTest extends DbxOAuthTestBase {
     public void testDbxAuthFinishOnline() throws Exception{
         long now = System.currentTimeMillis();
         DbxAuthFinish expected = new DbxAuthFinish(
-                "test-access-token", 3600L, null, "test-user-id", null, "test", null
+                "test-access-token", 3600L, null, "test-user-id", null, "test", null, null
         );
         expected.setIssueTime(now);
 
@@ -88,7 +88,8 @@ public class DbxAuthFinishTest extends DbxOAuthTestBase {
     public void testDbxAuthFinishOffline() throws Exception{
         long now = System.currentTimeMillis();
         DbxAuthFinish expected = new DbxAuthFinish(
-                "test-access-token", 3600L, "test_refresh_token", "test-user-id", null, "test", null
+                "test-access-token", 3600L, "test_refresh_token", "test-user-id", null, "test",
+            null, null
         );
         expected.setIssueTime(now);
 
@@ -119,9 +120,47 @@ public class DbxAuthFinishTest extends DbxOAuthTestBase {
     }
 
     @Test
+    public void testDbxAuthFinishScope() throws Exception{
+        long now = System.currentTimeMillis();
+        DbxAuthFinish expected = new DbxAuthFinish(
+            "test-access-token", 3600L, "test_refresh_token", "test-user-id", null, "test",
+            null, "account_info.read"
+        );
+        expected.setIssueTime(now);
+
+        ByteArrayInputStream responseStream = new ByteArrayInputStream(
+            (
+                "{" +
+                    "\"token_type\":\"Bearer\"" +
+                    ",\"access_token\":\"" + expected.getAccessToken() + "\"" +
+                    ",\"expires_in\":" + 3600 +
+                    ",\"refresh_token\":\"" + expected.getRefreshToken() + "\"" +
+                    ",\"uid\":\"" + expected.getUserId() + "\"" +
+                    ",\"account_id\":\"" + expected.getAccountId() + "\"" +
+                    ",\"scope\":\"" + expected.getScope() + "\"" +
+                    "}"
+            ).getBytes("UTF-8")
+        );
+
+
+
+        DbxAuthFinish actual = DbxAuthFinish.Reader.readFully(responseStream);
+        actual.setIssueTime(now);
+        assertEquals(actual.getAccessToken(), expected.getAccessToken());
+        assertEquals(actual.getAccountId(), expected.getAccountId());
+        assertEquals(actual.getRefreshToken(), expected.getRefreshToken());
+        assertEquals(actual.getExpiresAt(), expected.getExpiresAt());
+        assertEquals(actual.getTeamId(), expected.getTeamId());
+        assertEquals(actual.getUserId(), expected.getUserId());
+        assertEquals(actual.getUrlState(), expected.getUrlState());
+        assertEquals(actual.getScope(), expected.getScope());
+    }
+
+    @Test
     public void testDbxAuthFinishWithUrlState() throws Exception {
         DbxAuthFinish expected = new DbxAuthFinish(
-                "test-access-token", 3600L, "test_refresh_token", "test-user-id", null, "test", null
+                "test-access-token", 3600L, "test_refresh_token", "test-user-id", null, "test",
+            null, null
         );
 
         DbxAuthFinish actual = expected.withUrlState("testState");
@@ -154,7 +193,7 @@ public class DbxAuthFinishTest extends DbxOAuthTestBase {
         assertNotNull(sessionStore.get());
 
         DbxAuthFinish expected = new DbxAuthFinish(
-                "test-access-token", null, null, "test-user-id", null, "test", state
+                "test-access-token", null, null, "test-user-id", null, "test", state, null
         );
         ByteArrayOutputStream body = new ByteArrayOutputStream();
         ByteArrayInputStream responseStream = new ByteArrayInputStream(

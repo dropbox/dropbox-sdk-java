@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Random;
 
 import com.dropbox.core.stone.StoneSerializer;
+import com.dropbox.core.v2.auth.AuthError;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -337,7 +338,14 @@ public final class DbxRequestUtil {
                 break;
             case 401:
                 message = DbxRequestUtil.messageFromResponse(response, requestId);
-                networkError = new InvalidAccessTokenException(requestId, message);
+                try {
+                    ApiErrorResponse<AuthError> authErrorReponse = new ApiErrorResponse
+                        .Serializer<AuthError>(AuthError.Serializer.INSTANCE).deserialize(message);
+                    AuthError authError = authErrorReponse.getError();
+                    networkError = new InvalidAccessTokenException(requestId, message, authError);
+                } catch (JsonParseException ex) {
+                    throw new BadResponseException(requestId, "Bad JSON: " + ex.getMessage(), ex);
+                }
                 break;
             case 403:
                 try {

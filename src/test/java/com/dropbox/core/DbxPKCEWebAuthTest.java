@@ -7,6 +7,7 @@ import org.testng.annotations.Test;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.net.URL;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -129,6 +130,21 @@ public class DbxPKCEWebAuthTest extends DbxOAuthTestBase {
                 dbxWebAuth.finish("any_code", null,  null);
             }
         });
+    }
+
+    @Test
+    public void testScope() throws Exception {
+        DbxPKCEWebAuth auth = new DbxPKCEWebAuth(CONFIG, APP);
+
+        String authUrl = auth.authorize(
+            DbxWebAuth.newRequestBuilder()
+                .withNoRedirect()
+                .withScope("account.info.read")
+                .build()
+        );
+
+        Map<String, List<String>> params = toParamsMap(new URL(authUrl));
+        assertEquals(params.get("scope"), Collections.singletonList("account.info.read"));
     }
 
     @Test

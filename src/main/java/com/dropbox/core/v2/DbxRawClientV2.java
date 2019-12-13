@@ -356,21 +356,14 @@ public abstract class DbxRawClientV2 {
                 throw ex;
             }
 
-            try {
-                AuthError authError = DbxRequestUtil.readJsonFromErrorMessage(AuthError.Serializer
-                    .INSTANCE, ex.getMessage(), ex.getRequestId());
+            AuthError authError = ex.getAuthError();
 
-                if (AuthError.EXPIRED_ACCESS_TOKEN.equals(authError) && canRefreshAccessToken()) {
-                    // retry with new access token.
-                    refreshAccessToken();
-                    return executeRetriable(maxRetries, execution);
-                } else {
-                    // Doesn't need refresh.
-                    throw ex;
-                }
-            } catch (JsonParseException newEx) {
-                // server returns unexpect string, or developers http requestor doesn't correctly
-                // handle server's string. Give up.
+            if (AuthError.EXPIRED_ACCESS_TOKEN.equals(authError) && canRefreshAccessToken()) {
+                // retry with new access token.
+                refreshAccessToken();
+                return executeRetriable(maxRetries, execution);
+            } else {
+                // Doesn't need refresh.
                 throw ex;
             }
         }
