@@ -28,7 +28,7 @@ import static com.dropbox.core.oauth.DbxOAuthError.INVALID_REQUEST;
 /**
  *
  * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
- * early access partner of this feature. The function signature is subjected to change
+ * early access partner of this feature. The function signature is subject to change
  * in next minor version release.
  *
  * Use this class to store the OAuth2 result. It wraps the access token, refresh token, token
@@ -114,7 +114,7 @@ public class DbxCredential {
 
     /**
      * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
-     * early access partner of this feature. The function signature is subjected to change
+     * early access partner of this feature. The function signature is subject to change
      * in next minor version release.
      *
      * Return the millisecond when accessToken is going to expire.
@@ -135,7 +135,7 @@ public class DbxCredential {
 
     /**
      * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
-     * early access partner of this feature. The function signature is subjected to change
+     * early access partner of this feature. The function signature is subject to change
      * in next minor version release.
      *
      * Return the refresh token which can be used to obtain new access token.

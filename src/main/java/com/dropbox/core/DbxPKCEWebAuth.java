@@ -16,7 +16,7 @@ import static com.dropbox.core.util.StringUtil.urlSafeBase64Encode;
 /**
  *
  * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
- * early access partner of this feature. The function signature is subjected to change
+ * early access partner of this feature. The function signature is subject to change
  * in next minor version release.
  *
  * This class does the OAuth2 "authorization code" flow with Proof Key for Code Exchange(PKCE).

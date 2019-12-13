@@ -4,6 +4,7 @@ import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.util.LangUtil;
 import com.dropbox.core.v2.DbxRawClientV2;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
@@ -18,14 +19,13 @@ import static com.dropbox.core.util.StringUtil.urlSafeBase64Encode;
  * This class should be lib/jar private. We make it public so that Android related code can use it.
  *
  * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
- * early access partner of this feature. The function signature is subjected to change
+ * early access partner of this feature. The function signature is subject to change
  * in next minor version release.
  *
  * This class does code verifier and code challenge generation in Proof Key for Code Exchange(PKCE).
  * @see <a href="https://tools.ietf.org/html/rfc7636">https://tools.ietf.org/html/rfc7636</a>
  */
-public class DbxPKCEManager implements Serializable {
-    public static final long serialVersionUID = 0;
+public class DbxPKCEManager {
     public static final String CODE_CHALLENGE_METHODS = "S256";
     public static final int CODE_VERIFIER_SIZE = 128;
 
@@ -43,7 +43,12 @@ public class DbxPKCEManager implements Serializable {
      */
     public DbxPKCEManager() {
         this.codeVerifier = generateCodeVerifier();
-        this.codeChallenge = generateCodeChallenge();
+        this.codeChallenge = generateCodeChallenge(this.codeVerifier);
+    }
+
+    public DbxPKCEManager(String codeVerifier) {
+        this.codeVerifier = codeVerifier;
+        this.codeChallenge = generateCodeChallenge(this.codeVerifier);
     }
 
     String generateCodeVerifier() {
@@ -54,10 +59,6 @@ public class DbxPKCEManager implements Serializable {
         }
 
         return sb.toString();
-    }
-
-    String generateCodeChallenge() {
-        return generateCodeChallenge(this.codeVerifier);
     }
 
     static String generateCodeChallenge(String codeVerifier) {
@@ -88,7 +89,7 @@ public class DbxPKCEManager implements Serializable {
 
     /**
      * Make oauth2/token request to exchange code for oauth2 access token. Client secret is not
-     * requried.
+     * required.
      * @param requestConfig Default attributes to use for each request.
      * @param oauth2Code OAuth2 code defined in OAuth2 code flow.
      * @param appKey Client Key

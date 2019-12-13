@@ -143,7 +143,7 @@ public class AuthActivity extends Activity {
     private static final String SIS_KEY_AUTH_STATE_NONCE = "SIS_KEY_AUTH_STATE_NONCE";
 
     // saved instance PKCE manger key
-    private static final String SIS_KEY_PKCE_MANAGER = "SIS_KEY_PKCE_MANAGER";
+    private static final String SIS_KEY_PKCE_CODE_VERIFIER = "SIS_KEY_PKCE_CODE_VERIFIER";
     /**
      * Provider of the local security needs of an AuthActivity.
      *
@@ -228,7 +228,8 @@ public class AuthActivity extends Activity {
     }
 
     /**
-     * Set static authentication parameters
+     * Set static authentication parameters. If both host and webHost are provided, we take use
+     * host as source of truth.
      */
     static void setAuthParams(String appKey, String desiredUid,
                               String[] alreadyAuthedUids, String sessionId, String webHost,
@@ -291,12 +292,17 @@ public class AuthActivity extends Activity {
      */
     public static Intent makeIntent(Context context, String appKey, String desiredUid, String[] alreadyAuthedUids,
                                     String sessionId, String webHost, String apiType) {
-        if (appKey == null) throw new IllegalArgumentException("'appKey' can't be null");
+        if (appKey == null) {
+            throw new IllegalArgumentException("'appKey' can't be null");
+        }
         setAuthParams(appKey, desiredUid, alreadyAuthedUids, sessionId, webHost, apiType, null,
             null, null);
         return new Intent(context, AuthActivity.class);
     }
 
+    /**
+     * If both host and webHost are provided, we take use host as source of truth.
+     */
     static Intent makeIntent(
         Context context, String appKey, String desiredUid, String[] alreadyAuthedUids,
         String sessionId, String webHost, String apiType, TokenAccessType tokenAccessType,
@@ -430,7 +436,7 @@ public class AuthActivity extends Activity {
             mPKCEManager = new DbxPKCEManager();
         } else {
             mAuthStateNonce = savedInstanceState.getString(SIS_KEY_AUTH_STATE_NONCE);
-            mPKCEManager = (DbxPKCEManager) savedInstanceState.getSerializable(SIS_KEY_PKCE_MANAGER);
+            mPKCEManager = new DbxPKCEManager(savedInstanceState.getString(SIS_KEY_PKCE_CODE_VERIFIER));
         }
 
         setTheme(android.R.style.Theme_Translucent_NoTitleBar);
@@ -442,7 +448,7 @@ public class AuthActivity extends Activity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(SIS_KEY_AUTH_STATE_NONCE, mAuthStateNonce);
-        outState.putSerializable(SIS_KEY_PKCE_MANAGER, mPKCEManager);
+        outState.putString(SIS_KEY_PKCE_CODE_VERIFIER, mPKCEManager.getCodeVerifier());
     }
 
     /**
@@ -604,7 +610,7 @@ public class AuthActivity extends Activity {
                 newResult.putExtra(EXTRA_UID, uid);
             } else if (token.equals(TokenType.OAUTH2CODE.toString())) {
                 // code flow with PKCE
-                TokenRequest tokenRequest = new TokenRequest(secret);
+                TokenRequestAsyncTask tokenRequest = new TokenRequestAsyncTask(secret);
                 try {
                     DbxAuthFinish dbxAuthFinish = tokenRequest.execute().get();
 
@@ -612,6 +618,8 @@ public class AuthActivity extends Activity {
                         newResult = null;
                     } else {
                         newResult = new Intent();
+                        // access_token and access_secret are OAuth1 concept. In OAuth2 we only
+                        // have access token. So I put both of them to be the same.
                         newResult.putExtra(EXTRA_ACCESS_TOKEN, dbxAuthFinish.getAccessToken());
                         newResult.putExtra(EXTRA_ACCESS_SECRET, dbxAuthFinish.getAccessToken());
                         newResult.putExtra(EXTRA_REFRESH_TOKEN, dbxAuthFinish.getRefreshToken());
@@ -677,7 +685,7 @@ public class AuthActivity extends Activity {
     }
 
     private String createPKCEStateNonce() {
-        return String.format("oauth2code:%s:%s:%s",
+        return String.format(Locale.US, "oauth2code:%s:%s:%s",
                              mPKCEManager.getCodeChallenge(),
                              DbxPKCEManager.CODE_CHALLENGE_METHODS,
                              mTokenAccessType.toString());
@@ -709,10 +717,10 @@ public class AuthActivity extends Activity {
         }
     }
 
-    private class TokenRequest extends AsyncTask<Void, Void, DbxAuthFinish> {
+    private class TokenRequestAsyncTask extends AsyncTask<Void, Void, DbxAuthFinish> {
         private final String code;
 
-        private TokenRequest(String code) {
+        private TokenRequestAsyncTask(String code) {
             this.code = code;
         }
 
@@ -720,7 +728,7 @@ public class AuthActivity extends Activity {
         @Override
         protected DbxAuthFinish doInBackground(Void... p) {
             try {
-                return mPKCEManager.makeTokenRequest(mRequestConfig, code, mAppKey, null,mHost);
+                return mPKCEManager.makeTokenRequest(mRequestConfig, code, mAppKey, null, mHost);
             } catch (DbxException e) {
                 Log.e(TAG, "Token Request Failed: " + e.getMessage());
                 return null;
