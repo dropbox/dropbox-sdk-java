@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.dropbox.core.android.Auth;
 import com.dropbox.core.examples.android.internal.OpenWithActivity;
 import com.dropbox.core.v2.users.FullAccount;
 
@@ -32,7 +31,7 @@ public class UserActivity extends DropboxActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DropboxActivity.startOAuth2Authentication(UserActivity.this);
+                DropboxActivity.startOAuth2Authentication(UserActivity.this, getString(R.string.app_key), null);
             }
         });
 

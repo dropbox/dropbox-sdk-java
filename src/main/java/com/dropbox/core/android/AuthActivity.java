@@ -72,6 +72,8 @@ public class AuthActivity extends Activity {
 
     public static final String EXTRA_EXPIRES_AT = "EXPIRES_AT";
 
+    public static final String EXTRA_SCOPE = "SCOPE";
+
     /**
      * Used for internal authentication. You won't ever have to use this.
      */
@@ -181,6 +183,7 @@ public class AuthActivity extends Activity {
     private static TokenAccessType sTokenAccessType;
     private static DbxRequestConfig sRequestConfig;
     private static DbxHost sHost;
+    private static String sScope;
 
     // These instance variables need not be stored in savedInstanceState as onNewIntent()
     // does not read them.
@@ -192,7 +195,8 @@ public class AuthActivity extends Activity {
     private TokenAccessType mTokenAccessType;
     private DbxPKCEManager mPKCEManager;
     private DbxRequestConfig mRequestConfig;
-    private static DbxHost mHost;
+    private DbxHost mHost;
+    private String mScope;
 
     // Stored in savedInstanceState to track an ongoing auth attempt, which
     // must include a locally-generated nonce in the response.
@@ -215,7 +219,8 @@ public class AuthActivity extends Activity {
      */
     static void setAuthParams(String appKey, String desiredUid,
                               String[] alreadyAuthedUids, String webHost, String apiType) {
-        setAuthParams(appKey, desiredUid, alreadyAuthedUids, null, null, null, null, null, null);
+        setAuthParams(appKey, desiredUid, alreadyAuthedUids, null, null, null, null, null, null,
+            null);
     }
 
     /**
@@ -224,7 +229,7 @@ public class AuthActivity extends Activity {
     static void setAuthParams(String appKey, String desiredUid,
                               String[] alreadyAuthedUids, String sessionId) {
         setAuthParams(appKey, desiredUid, alreadyAuthedUids, sessionId, null, null, null, null,
-            null);
+            null, null);
     }
 
     /**
@@ -234,7 +239,7 @@ public class AuthActivity extends Activity {
     static void setAuthParams(String appKey, String desiredUid,
                               String[] alreadyAuthedUids, String sessionId, String webHost,
                               String apiType, TokenAccessType tokenAccessType,
-                              DbxRequestConfig requestConfig, DbxHost host) {
+                              DbxRequestConfig requestConfig, DbxHost host, String scope) {
         sAppKey = appKey;
         sDesiredUid = desiredUid;
         sAlreadyAuthedUids = (alreadyAuthedUids != null) ? alreadyAuthedUids : new String[0];
@@ -252,6 +257,7 @@ public class AuthActivity extends Activity {
         } else {
             sHost = DbxHost.DEFAULT;
         }
+        sScope = scope;
     }
 
     /**
@@ -267,7 +273,8 @@ public class AuthActivity extends Activity {
      */
     public static Intent makeIntent(Context context, String appKey, String webHost,
                                           String apiType) {
-        return makeIntent(context, appKey, null, null, null, webHost, apiType, null, null, null);
+        return makeIntent(context, appKey, null, null, null, webHost, apiType, null, null, null,
+            null);
     }
 
     /**
@@ -296,7 +303,7 @@ public class AuthActivity extends Activity {
             throw new IllegalArgumentException("'appKey' can't be null");
         }
         setAuthParams(appKey, desiredUid, alreadyAuthedUids, sessionId, webHost, apiType, null,
-            null, null);
+            null, null, null);
         return new Intent(context, AuthActivity.class);
     }
 
@@ -306,12 +313,12 @@ public class AuthActivity extends Activity {
     static Intent makeIntent(
         Context context, String appKey, String desiredUid, String[] alreadyAuthedUids,
         String sessionId, String webHost, String apiType, TokenAccessType tokenAccessType,
-        DbxRequestConfig requestConfig, DbxHost host
+        DbxRequestConfig requestConfig, DbxHost host, String scope
     ) {
         if (appKey == null) throw new IllegalArgumentException("'appKey' can't be null");
         setAuthParams(
             appKey, desiredUid, alreadyAuthedUids, sessionId, webHost, apiType, tokenAccessType,
-            requestConfig, host
+            requestConfig, host, scope
         );
         return new Intent(context, AuthActivity.class);
     }
@@ -429,6 +436,7 @@ public class AuthActivity extends Activity {
         mTokenAccessType = sTokenAccessType;
         mRequestConfig = sRequestConfig;
         mHost = sHost;
+        mScope = sScope;
 
         if (savedInstanceState == null) {
             result = null;
@@ -626,6 +634,7 @@ public class AuthActivity extends Activity {
                         newResult.putExtra(EXTRA_EXPIRES_AT, dbxAuthFinish.getExpiresAt());
                         newResult.putExtra(EXTRA_UID, dbxAuthFinish.getUserId());
                         newResult.putExtra(EXTRA_CONSUMER_KEY, mAppKey);
+                        newResult.putExtra(EXTRA_SCOPE, dbxAuthFinish.getScope());
                     }
                 } catch (Exception e) {
                     newResult = null;
@@ -637,7 +646,6 @@ public class AuthActivity extends Activity {
             // Unsuccessful auth, or missing required parameters.
             newResult = null;
         }
-
         authFinished(newResult);
     }
 
@@ -692,13 +700,19 @@ public class AuthActivity extends Activity {
     }
 
     private String createExtraQueryParams() {
-        return String.format(
+        String param = String.format(Locale.US,
             "%s=%s&%s=%s&%s=%s&%s=%s",
             "code_challenge", mPKCEManager.getCodeChallenge(),
             "code_challenge_method", DbxPKCEManager.CODE_CHALLENGE_METHODS,
             "token_access_type", mTokenAccessType.toString(),
             "response_type", "code"
         );
+
+        if (mScope != null) {
+            param += String.format(Locale.US, "%s=%s", "scope", mScope);
+        }
+
+        return param;
     }
 
     private enum TokenType {

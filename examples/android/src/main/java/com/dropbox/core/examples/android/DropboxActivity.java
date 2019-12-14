@@ -1,5 +1,6 @@
 package com.dropbox.core.examples.android;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 
@@ -41,6 +42,7 @@ public abstract class DropboxActivity extends AppCompatActivity {
                     throw new IllegalStateException("Credential data corrupted: " + e.getMessage());
                 }
             }
+
         } else {
             String accessToken = prefs.getString("access-token", null);
             if (accessToken == null) {
@@ -85,11 +87,11 @@ public abstract class DropboxActivity extends AppCompatActivity {
         }
     }
 
-    public static void startOAuth2Authentication(Context context) {
+    public static void startOAuth2Authentication(Context context, String app_key, String scope) {
         if (USE_SLT) {
-            Auth.startOAuth2PKCE(context, getString(R.string.app_key), DbxRequestConfigFactory.getRequestConfig());
+            Auth.startOAuth2PKCE(context, app_key, DbxRequestConfigFactory.getRequestConfig(), scope);
         } else {
-            Auth.startOAuth2Authentication(context, getString(R.string.app_key));
+            Auth.startOAuth2Authentication(context, app_key);
         }
     }
 }

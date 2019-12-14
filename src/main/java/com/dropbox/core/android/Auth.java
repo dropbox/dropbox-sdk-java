@@ -41,7 +41,22 @@ public class Auth {
      */
     public static void startOAuth2PKCE(Context context, String appKey,
                                                      DbxRequestConfig requestConfig) {
-        startOAuth2PKCE(context, appKey, requestConfig, null);
+        startOAuth2PKCE(context, appKey, requestConfig, null, null);
+    }
+
+    /**
+     * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
+     * early access partner of this feature. The function signature is subject to change
+     * in next minor version release.
+     *
+     * @param scope A list of scope returned by Dropbox server. Each scope correspond to a group of
+     * API endpoints. To call one API endpoint you have to obtains the scope first otherwise you
+     * will get HTTP 401.
+     * @see Auth#startOAuth2PKCE(Context, String, DbxRequestConfig, DbxHost)
+     */
+    public static void startOAuth2PKCE(Context context, String appKey, DbxRequestConfig
+        requestConfig, String scope) {
+        startOAuth2PKCE(context, appKey, requestConfig, null, scope);
     }
 
     /**
@@ -68,6 +83,15 @@ public class Auth {
         }
         startOAuth2Authentication(context, appKey, null, null, null, null, TokenAccessType
             .OFFLINE, requestConfig, host);
+    }
+
+    public static void startOAuth2PKCE(Context context, String appKey, DbxRequestConfig
+        requestConfig, DbxHost host, String scope) {
+        if (requestConfig == null) {
+            throw new IllegalArgumentException("Invalid Dbx requestConfig for PKCE flow.");
+        }
+        startOAuth2Authentication(context, appKey, null, null, null, null, TokenAccessType
+            .OFFLINE, requestConfig, host, scope);
     }
     
     /**
@@ -120,6 +144,20 @@ public class Auth {
                                                   TokenAccessType tokenAccessType,
                                                   DbxRequestConfig requestConfig,
                                                   DbxHost host) {
+        startOAuth2Authentication(context, appKey, desiredUid, alreadyAuthedUids, sessionId,
+            webHost, tokenAccessType, requestConfig, host, null);
+    }
+
+    private static void startOAuth2Authentication(Context context,
+                                                  String appKey,
+                                                  String desiredUid,
+                                                  String[] alreadyAuthedUids,
+                                                  String sessionId,
+                                                  String webHost,
+                                                  TokenAccessType tokenAccessType,
+                                                  DbxRequestConfig requestConfig,
+                                                  DbxHost host,
+                                                  String scope) {
         if (!AuthActivity.checkAppBeforeAuth(context, appKey, true /*alertUser*/)) {
             return;
         }
@@ -132,7 +170,7 @@ public class Auth {
         String apiType = "1";
         Intent intent =  AuthActivity.makeIntent(
             context, appKey, desiredUid, alreadyAuthedUids, sessionId, webHost, apiType,
-            tokenAccessType, requestConfig, host
+            tokenAccessType, requestConfig, host, scope
         );
         if (!(context instanceof Activity)) {
             // If starting the intent outside of an Activity, must include
@@ -192,5 +230,26 @@ public class Auth {
 
 
         return new DbxCredential(secret, nullableExpiresAt, refreshToken, appKey);
+    }
+
+    /**
+     * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
+     * early access partner of this feature. The function signature is subject to change
+     * in next minor version release.
+     *
+     * Get the scope authorized in this OAuth flow.
+     *
+     * @return A list of scope returned by Dropbox server. Each scope correspond to a group of
+     * API endpoints. To call one API endpoint you have to obtains the scope first otherwise you
+     * will get HTTP 401.
+     */
+    public static String getScope() {
+        Intent data = AuthActivity.result;
+
+        if (data == null) {
+            return null;
+        }
+
+        return data.getStringExtra(AuthActivity.EXTRA_SCOPE);
     }
 }
