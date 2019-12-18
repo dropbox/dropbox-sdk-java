@@ -1,6 +1,8 @@
 package com.dropbox.core.android;
 
 import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -666,15 +668,20 @@ public class AuthActivity extends Activity {
         // Note that the API treats alreadyAuthUid of 0 and not present equivalently.
         String alreadyAuthedUid = (mAlreadyAuthedUids.length > 0) ? mAlreadyAuthedUids[0] : "0";
 
-        String[] params = {
-                "k", mAppKey,
-                "n", alreadyAuthedUid,
-                "api", mApiType,
-                "state", state,
-                "extra_query_params", createExtraQueryParams()
-        };
+        List<String> params = new ArrayList<String>(Arrays.asList(
+            "k", mAppKey,
+            "n", alreadyAuthedUid,
+            "api", mApiType,
+            "state", state
+        ));
 
-        String url = DbxRequestUtil.buildUrlWithParams(locale.toString(), mHost.getWeb(), path, params);
+        if (mTokenAccessType != null) {
+            params.add("extra_query_params");
+            params.add(createExtraQueryParams());
+        }
+
+        String url = DbxRequestUtil.buildUrlWithParams(locale.toString(), mHost.getWeb(), path,
+            params.toArray(new String [0]));
 
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         startActivity(intent);
@@ -700,6 +707,11 @@ public class AuthActivity extends Activity {
     }
 
     private String createExtraQueryParams() {
+        if (mTokenAccessType == null) {
+            throw new IllegalStateException("Extra Query Param should only be used in short live " +
+                "token flow.");
+        }
+
         String param = String.format(Locale.US,
             "%s=%s&%s=%s&%s=%s&%s=%s",
             "code_challenge", mPKCEManager.getCodeChallenge(),
@@ -709,7 +721,7 @@ public class AuthActivity extends Activity {
         );
 
         if (mScope != null) {
-            param += String.format(Locale.US, "%s=%s", "scope", mScope);
+            param += String.format(Locale.US, "&%s=%s", "scope", mScope);
         }
 
         return param;
