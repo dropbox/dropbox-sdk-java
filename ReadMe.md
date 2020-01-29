@@ -1,5 +1,9 @@
 # Dropbox Core SDK for Java 6+
 
+![GitHub](https://img.shields.io/github/license/dropbox/dropbox-sdk-java)
+![Maven Central](https://img.shields.io/maven-central/v/com.dropbox.core/dropbox-core-sdk)
+![GitHub Release Date](https://img.shields.io/github/release-date/dropbox/dropbox-sdk-java)
+
 A Java library to access [Dropbox's HTTP-based Core API v2](https://www.dropbox.com/developers/documentation/http/documentation).  This SDK also supports the older [Core API v1](https://www.dropbox.com/developers-v1/core/docs), but that support will be removed at some point.
 
 License: [MIT](License.txt)
