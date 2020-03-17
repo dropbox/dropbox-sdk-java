@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcel;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
@@ -34,10 +34,10 @@ public class OpenWithActivity extends DropboxActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_open_with);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
+        Toolbar toolbar = findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
 
-        Button generateIntentButton = (Button)findViewById(R.id.generate_intent);
+        Button generateIntentButton = findViewById(R.id.generate_intent);
         generateIntentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,7 +60,7 @@ public class OpenWithActivity extends DropboxActivity {
             }
         });
 
-        Button mInstalled = (Button)findViewById(R.id.is_installed);
+        Button mInstalled = findViewById(R.id.is_installed);
         mInstalled.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,7 +70,7 @@ public class OpenWithActivity extends DropboxActivity {
             }
         });
 
-        Button mGenLinked = (Button)findViewById(R.id.is_linked_any_button);
+        Button mGenLinked = findViewById(R.id.is_linked_any_button);
         mGenLinked.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,7 +79,7 @@ public class OpenWithActivity extends DropboxActivity {
             }
         });
 
-        Button mSpecLinked = (Button)findViewById(R.id.is_linked_spec_button);
+        Button mSpecLinked = findViewById(R.id.is_linked_spec_button);
         mSpecLinked.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,7 +88,7 @@ public class OpenWithActivity extends DropboxActivity {
             }
         });
 
-        Button mPreview = (Button)findViewById(R.id.preview_button);
+        Button mPreview = findViewById(R.id.preview_button);
         mPreview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,7 +99,7 @@ public class OpenWithActivity extends DropboxActivity {
             }
         });
 
-        Button mUpgrade = (Button)findViewById(R.id.upgrade_button);
+        Button mUpgrade = findViewById(R.id.upgrade_button);
         mUpgrade.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

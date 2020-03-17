@@ -2,7 +2,7 @@ package com.dropbox.core.examples.android;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -23,10 +23,10 @@ public class UserActivity extends DropboxActivity {
 
         setContentView(R.layout.activity_user);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
+        Toolbar toolbar = findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
 
-        Button loginButton = (Button)findViewById(R.id.login_button);
+        Button loginButton = findViewById(R.id.login_button);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,7 +35,7 @@ public class UserActivity extends DropboxActivity {
             }
         });
 
-        Button filesButton = (Button)findViewById(R.id.files_button);
+        Button filesButton = findViewById(R.id.files_button);
         filesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -43,7 +43,7 @@ public class UserActivity extends DropboxActivity {
             }
         });
 
-        Button openWithButton = (Button)findViewById(R.id.open_with);
+        Button openWithButton = findViewById(R.id.open_with);
         openWithButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
