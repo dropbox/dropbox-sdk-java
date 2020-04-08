@@ -137,11 +137,11 @@ project.sourceSets.all { SourceSet sourceSet ->
 
         def getSpecFiles = { fileTree(dir: specDir, include: '**/*.stone') }
 
-        inputs.dir { project.fileTree(dir: generatorDir, exclude: '**/*.pyc') }
-        inputs.dir(getSpecFiles).skipWhenEmpty = true
+        inputs.dir { project.fileTree(dir: generatorDir, exclude: '**/*.pyc') }.withPropertyName("stone").withPathSensitivity(PathSensitivity.RELATIVE)
+        inputs.dir(getSpecFiles).withPathSensitivity(PathSensitivity.RELATIVE).withPropertyName("stoneSpec").skipWhenEmpty(true)
         inputs.property "configs", { new groovy.json.JsonBuilder(configs).toString() }
-        outputs.dir { outputDir }
-
+        outputs.dir { outputDir }.withPropertyName("generatedStone")
+        outputs.cacheIf { true }
         doLast {
             def generatorFile = fileTree(dir: generatorDir, include: '**/*stoneg.py').getSingleFile()
             def specFiles = getSpecFiles().getFiles()
