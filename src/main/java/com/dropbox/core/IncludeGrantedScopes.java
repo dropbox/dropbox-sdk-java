@@ -1,23 +1,24 @@
 package com.dropbox.core;
 
 /**
- *  Whether or not to include refresh token in {@link DbxAuthFinish}
+ *  If this field is present, Dropbox server will return a token with all scopes user previously
+ *  granted your app.
  *  Non-mobile apps use it in {@link DbxWebAuth}.
  *  Mobile apps use it in {@link com.dropbox.core.android.Auth}
  */
-public enum TokenAccessType{
+public enum IncludeGrantedScopes {
     /**
-     * Auth result only contains short live token.
+     * Use it in user flow.
      */
-    ONLINE("online"),
+    USER("user"),
     /**
-     * auth result includes both short live token.
+     * Use it in team flow.
      */
-    OFFLINE("offline");
+    TEAM("team");
 
     private String string;
 
-    TokenAccessType(String string) {
+    IncludeGrantedScopes(String string) {
         this.string = string;
     }
 

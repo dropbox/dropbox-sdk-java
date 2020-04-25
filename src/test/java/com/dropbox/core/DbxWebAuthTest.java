@@ -165,5 +165,19 @@ public class DbxWebAuthTest extends DbxOAuthTestBase {
         String urlString = dbxWebAuth.authorize(request);
         Map<String, List<String>> params = toParamsMap(new URL(urlString));
         assertEquals(params.get("scope"), Collections.singletonList("account.info.read"));
+        assertNull(params.get("include_granted_scopes"));
+    }
+
+    @Test
+    public void testIncrementalOAuth() throws Exception {
+        DbxWebAuth dbxWebAuth = new DbxWebAuth(CONFIG, APP);
+        DbxWebAuth.Request request = DbxWebAuth.newRequestBuilder()
+            .withNoRedirect()
+            .withScope("account.info.read")
+            .withIncludeGrantedScopes(IncludeGrantedScopes.USER)
+            .build();
+        String urlString = dbxWebAuth.authorize(request);
+        Map<String, List<String>> params = toParamsMap(new URL(urlString));
+        assertEquals(params.get("include_granted_scopes"), Collections.singletonList("user"));
     }
 }

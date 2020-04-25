@@ -2,16 +2,15 @@ package com.dropbox.core.examples.authorize_beta;
 
 import com.dropbox.core.DbxAppInfo;
 import com.dropbox.core.DbxAuthFinish;
-import com.dropbox.core.DbxException;
-import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.DbxWebAuth;
-import com.dropbox.core.TokenAccessType;
 import com.dropbox.core.json.JsonReader;
 import com.dropbox.core.oauth.DbxCredential;
+import src.main.java.com.dropbox.core.examples.authorize_beta.IncrementalScopeAuthorize;
+import src.main.java.com.dropbox.core.examples.authorize_beta.PkceAuthorize;
+import src.main.java.com.dropbox.core.examples.authorize_beta.ScopeAuthorize;
+import src.main.java.com.dropbox.core.examples.authorize_beta.ShortLiveTokenAuthorize;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.InputStreamReader;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,8 +31,8 @@ public class Main {
         // Only display important log messages.
         Logger.getLogger("").setLevel(Level.WARNING);
 
-        if (args.length != 2) {
-            System.out.println("Usage: COMMAND <app-info-file> <auth-file-output>");
+        if (args.length != 3) {
+            System.out.println("Usage: COMMAND <app-info-file> <auth-file-output> <mode>");
             System.out.println("");
             System.out.println("<app-info-file>: a JSON file with information about your API app.  Example:");
             System.out.println("");
@@ -48,6 +47,15 @@ public class Main {
             System.out.println("<auth-file-output>: If authorization is successful, the resulting API");
             System.out.println("  credential will be saved to this file, which can then be used with");
             System.out.println("  other example programs, such as the one in \"examples/account-info\".");
+            System.out.println("");
+            System.out.println("<mode>: value can only be short_live_token, pkce, scope, or incremental.");
+            System.out.println("  short_live_token: authorization will request short_lived_token");
+            System.out.println("    together with refresh token and expiration time.");
+            System.out.println("  pkce: authorization will run short_live_token without app secret");
+            System.out.println("    use that when you have a client side only app without server.");
+            System.out.println("  scope: authorization will request specific scope.");
+            System.out.println("  incremental: authorization will request one scope, together ");
+            System.out.println("    with all previously granted scopes.");
             System.out.println("");
             System.exit(1);
             return;
@@ -66,36 +74,24 @@ public class Main {
         }
 
         // Run through Dropbox API authorization process
-        DbxRequestConfig requestConfig = new DbxRequestConfig("examples-authorize");
-        DbxWebAuth webAuth = new DbxWebAuth(requestConfig, appInfo);
-        DbxWebAuth.Request.Builder builder = DbxWebAuth.newRequestBuilder()
-                .withNoRedirect().withTokenAccessType(TokenAccessType.OFFLINE);
+        DbxAuthFinish authFinish = null;
 
-
-        // TokenAccessType.OFFLINE means refresh_token + access_token. ONLINE means access_token only.
-        DbxWebAuth.Request webAuthRequest =  DbxWebAuth.newRequestBuilder()
-            .withNoRedirect()
-            .withTokenAccessType(TokenAccessType.OFFLINE)
-            .build();
-
-        String authorizeUrl = webAuth.authorize(webAuthRequest);
-        System.out.println("1. Go to " + authorizeUrl);
-        System.out.println("2. Click \"Allow\" (you might have to log in first).");
-        System.out.println("3. Copy the authorization code.");
-        System.out.print("Enter the authorization code here: ");
-
-        String code = new BufferedReader(new InputStreamReader(System.in)).readLine();
-        if (code == null) {
-            System.exit(1); return;
-        }
-        code = code.trim();
-
-        DbxAuthFinish authFinish;
-        try {
-            authFinish = webAuth.finishFromCode(code);
-        } catch (DbxException ex) {
-            System.err.println("Error in DbxWebAuth.authorize: " + ex.getMessage());
-            System.exit(1); return;
+        switch (args[2]) {
+            case "short_live_token":
+                authFinish = new ShortLiveTokenAuthorize().authorize(appInfo);
+                break;
+            case "pkce":
+                authFinish = new PkceAuthorize().authorize(appInfo);
+                break;
+            case "scope":
+                authFinish = new ScopeAuthorize().authorize(appInfo);
+                break;
+            case "incremental":
+                authFinish = new IncrementalScopeAuthorize().authorize(appInfo);
+                break;
+            default:
+                System.err.println("Error reading <mode> : " + args[2]);
+                System.exit(1);
         }
 
         System.out.println("Authorization complete.");

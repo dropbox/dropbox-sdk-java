@@ -148,6 +148,22 @@ public class DbxPKCEWebAuthTest extends DbxOAuthTestBase {
     }
 
     @Test
+    public void testIncrementalOAuth() throws Exception {
+        DbxPKCEWebAuth auth = new DbxPKCEWebAuth(CONFIG, APP);
+
+        String authUrl = auth.authorize(
+            DbxWebAuth.newRequestBuilder()
+                .withNoRedirect()
+                .withScope("account.info.read")
+                .withIncludeGrantedScopes(IncludeGrantedScopes.USER)
+                .build()
+        );
+
+        Map<String, List<String>> params = toParamsMap(new URL(authUrl));
+        assertEquals(params.get("include_granted_scopes"), Collections.singletonList("user"));
+    }
+
+    @Test
     public void testInvalidCodeVerifier() throws Exception{
         DbxWebAuth.Request request = DbxWebAuth.newRequestBuilder().build();
 

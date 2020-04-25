@@ -291,6 +291,10 @@ public class DbxWebAuth {
             params.put("scope", request.scope);
         }
 
+        if (request.includeGrantedScopes != null) {
+            params.put("include_granted_scopes", request.includeGrantedScopes.toString());
+        }
+
         if (pkceParams != null) {
             for (String key: pkceParams.keySet()) {
                 params.put(key, pkceParams.get(key));
@@ -664,6 +668,7 @@ public class DbxWebAuth {
         private final DbxSessionStore sessionStore;
         private final TokenAccessType tokenAccessType;
         private final String scope;
+        private final IncludeGrantedScopes includeGrantedScopes;
 
 
         private Request(String redirectUri,
@@ -673,7 +678,8 @@ public class DbxWebAuth {
                         Boolean disableSignup,
                         DbxSessionStore sessionStore,
                         TokenAccessType tokenAccessType,
-                        String scope) {
+                        String scope,
+                        IncludeGrantedScopes includeGrantedScopes) {
             this.redirectUri = redirectUri;
             this.state = state;
             this.requireRole = requireRole;
@@ -682,6 +688,7 @@ public class DbxWebAuth {
             this.sessionStore = sessionStore;
             this.tokenAccessType = tokenAccessType;
             this.scope = scope;
+            this.includeGrantedScopes = includeGrantedScopes;
         }
 
         /**
@@ -698,7 +705,8 @@ public class DbxWebAuth {
                     disableSignup,
                     sessionStore,
                     tokenAccessType,
-                    scope
+                    scope,
+                includeGrantedScopes
                 );
         }
 
@@ -723,9 +731,10 @@ public class DbxWebAuth {
             private DbxSessionStore sessionStore;
             private TokenAccessType tokenAccessType;
             private String scope;
+            private IncludeGrantedScopes includeGrantedScopes;
 
             private Builder() {
-                this(null, null, null, null, null, null, null, null);
+                this(null, null, null, null, null, null, null, null, null);
             }
 
             private Builder(String redirectUri,
@@ -735,7 +744,8 @@ public class DbxWebAuth {
                             Boolean disableSignup,
                             DbxSessionStore sessionStore,
                             TokenAccessType tokenAccessType,
-                            String scope) {
+                            String scope,
+                            IncludeGrantedScopes includeGrantedScopes) {
                 this.redirectUri = redirectUri;
                 this.state = state;
                 this.requireRole = requireRole;
@@ -744,6 +754,7 @@ public class DbxWebAuth {
                 this.sessionStore = sessionStore;
                 this.tokenAccessType = tokenAccessType;
                 this.scope = scope;
+                this.includeGrantedScopes = includeGrantedScopes;
             }
 
             /**
@@ -914,6 +925,22 @@ public class DbxWebAuth {
             }
 
             /**
+             * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
+             * early access partner of this feature. The function signature is subject to change
+             * in next minor version release.
+             *
+             * @param includeGrantedScopes This field is optional. If not presented, Dropbox will
+             *                            give you the scopes in {@link #withScope(String)}.
+             *                            Otherwise Dropbox server will return a token with all
+             *                            scopes user previously granted your app together with
+             *                             the new scopes.
+             */
+            public Builder withIncludeGrantedScopes(IncludeGrantedScopes includeGrantedScopes) {
+                this.includeGrantedScopes = includeGrantedScopes;
+                return this;
+            }
+
+            /**
              * Returns a new OAuth {@link Request} that can be used in
              * {@link DbxWebAuth#DbxWebAuth(DbxRequestConfig,DbxAppInfo)} to authorize a user.
              *
@@ -927,6 +954,11 @@ public class DbxWebAuth {
                     throw new IllegalStateException("Cannot specify a state without a redirect URI.");
                 }
 
+                if (includeGrantedScopes != null && scope == null) {
+                    throw new IllegalArgumentException("If you are using includeGrantedScopes, " +
+                        "you must ask for specific new scopes");
+                }
+
                 return new Request(
                         redirectUri,
                         state,
@@ -935,7 +967,8 @@ public class DbxWebAuth {
                         disableSignup,
                         sessionStore,
                         tokenAccessType,
-                        scope);
+                        scope,
+                    includeGrantedScopes);
             }
         }
     }

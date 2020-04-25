@@ -28,6 +28,7 @@ import com.dropbox.core.DbxHost;
 import com.dropbox.core.DbxPKCEManager;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.DbxRequestUtil;
+import com.dropbox.core.IncludeGrantedScopes;
 import com.dropbox.core.TokenAccessType;
 
 //Note: This class's code is duplicated between Core SDK and Sync SDK.  For now,
@@ -186,6 +187,7 @@ public class AuthActivity extends Activity {
     private static DbxRequestConfig sRequestConfig;
     private static DbxHost sHost;
     private static String sScope;
+    private static IncludeGrantedScopes sIncludeGrantedScopes;
 
     // These instance variables need not be stored in savedInstanceState as onNewIntent()
     // does not read them.
@@ -199,6 +201,7 @@ public class AuthActivity extends Activity {
     private DbxRequestConfig mRequestConfig;
     private DbxHost mHost;
     private String mScope;
+    private IncludeGrantedScopes mIncludeGrantedScopes;
 
     // Stored in savedInstanceState to track an ongoing auth attempt, which
     // must include a locally-generated nonce in the response.
@@ -222,7 +225,7 @@ public class AuthActivity extends Activity {
     static void setAuthParams(String appKey, String desiredUid,
                               String[] alreadyAuthedUids, String webHost, String apiType) {
         setAuthParams(appKey, desiredUid, alreadyAuthedUids, null, null, null, null, null, null,
-            null);
+            null, null);
     }
 
     /**
@@ -231,7 +234,7 @@ public class AuthActivity extends Activity {
     static void setAuthParams(String appKey, String desiredUid,
                               String[] alreadyAuthedUids, String sessionId) {
         setAuthParams(appKey, desiredUid, alreadyAuthedUids, sessionId, null, null, null, null,
-            null, null);
+            null, null, null);
     }
 
     /**
@@ -241,7 +244,8 @@ public class AuthActivity extends Activity {
     static void setAuthParams(String appKey, String desiredUid,
                               String[] alreadyAuthedUids, String sessionId, String webHost,
                               String apiType, TokenAccessType tokenAccessType,
-                              DbxRequestConfig requestConfig, DbxHost host, String scope) {
+                              DbxRequestConfig requestConfig, DbxHost host, String scope,
+                              IncludeGrantedScopes includeGrantedScopes) {
         sAppKey = appKey;
         sDesiredUid = desiredUid;
         sAlreadyAuthedUids = (alreadyAuthedUids != null) ? alreadyAuthedUids : new String[0];
@@ -260,6 +264,7 @@ public class AuthActivity extends Activity {
             sHost = DbxHost.DEFAULT;
         }
         sScope = scope;
+        sIncludeGrantedScopes = includeGrantedScopes;
     }
 
     /**
@@ -276,7 +281,7 @@ public class AuthActivity extends Activity {
     public static Intent makeIntent(Context context, String appKey, String webHost,
                                           String apiType) {
         return makeIntent(context, appKey, null, null, null, webHost, apiType, null, null, null,
-            null);
+            null, null);
     }
 
     /**
@@ -305,7 +310,7 @@ public class AuthActivity extends Activity {
             throw new IllegalArgumentException("'appKey' can't be null");
         }
         setAuthParams(appKey, desiredUid, alreadyAuthedUids, sessionId, webHost, apiType, null,
-            null, null, null);
+            null, null, null, null);
         return new Intent(context, AuthActivity.class);
     }
 
@@ -315,12 +320,12 @@ public class AuthActivity extends Activity {
     static Intent makeIntent(
         Context context, String appKey, String desiredUid, String[] alreadyAuthedUids,
         String sessionId, String webHost, String apiType, TokenAccessType tokenAccessType,
-        DbxRequestConfig requestConfig, DbxHost host, String scope
+        DbxRequestConfig requestConfig, DbxHost host, String scope, IncludeGrantedScopes includeGrantedScopes
     ) {
         if (appKey == null) throw new IllegalArgumentException("'appKey' can't be null");
         setAuthParams(
             appKey, desiredUid, alreadyAuthedUids, sessionId, webHost, apiType, tokenAccessType,
-            requestConfig, host, scope
+            requestConfig, host, scope, includeGrantedScopes
         );
         return new Intent(context, AuthActivity.class);
     }
@@ -439,6 +444,7 @@ public class AuthActivity extends Activity {
         mRequestConfig = sRequestConfig;
         mHost = sHost;
         mScope = sScope;
+        mIncludeGrantedScopes = sIncludeGrantedScopes;
 
         if (savedInstanceState == null) {
             result = null;
@@ -518,7 +524,11 @@ public class AuthActivity extends Activity {
             // short live token flow
             state = createPKCEStateNonce(); // to support legacy DBApp with V1 flow with
             // stormcrow android_use_dauth_version4 turned off.
-            officialAuthIntent.putExtra(EXTRA_AUTH_QUERY_PARAMS, createExtraQueryParams());
+            String extraMap = createExtraQueryParams();
+            officialAuthIntent.putExtra(EXTRA_AUTH_QUERY_PARAMS, extraMap);
+            Log.d(TAG, "dauth: " + extraMap);
+            Log.d(TAG, "dauth: " + state);
+            Log.d(TAG, "dauth: " + mPKCEManager.getCodeVerifier());
         } else {
             // Legacy long live token flow
             state = createStateNonce();
@@ -546,11 +556,12 @@ public class AuthActivity extends Activity {
                 Log.d(TAG, "running startActivity in handler");
                 try {
                     // Auth with official app, or fall back to web.
-                    if (DbxOfficialAppConnector.getDropboxAppPackage(AuthActivity.this, officialAuthIntent) != null) {
-                        startActivity(officialAuthIntent);
-                    } else {
+                    //if (DbxOfficialAppConnector.getDropboxAppPackage(AuthActivity.this,
+                    //    officialAuthIntent) != null) {
+                     //   startActivity(officialAuthIntent);
+                    //} else {
                         startWebAuth(state);
-                    }
+                    //}
                 } catch (ActivityNotFoundException e) {
                     Log.e(TAG, "Could not launch intent. User may have restricted profile", e);
                     finish();
@@ -700,10 +711,13 @@ public class AuthActivity extends Activity {
     }
 
     private String createPKCEStateNonce() {
-        return String.format(Locale.US, "oauth2code:%s:%s:%s",
+        return String.format(Locale.US, "oauth2code:%s:%s:%s:%s:%s",
                              mPKCEManager.getCodeChallenge(),
                              DbxPKCEManager.CODE_CHALLENGE_METHODS,
-                             mTokenAccessType.toString());
+                             mTokenAccessType.toString(),
+                             mScope,
+                             mIncludeGrantedScopes
+        );
     }
 
     private String createExtraQueryParams() {
@@ -722,6 +736,11 @@ public class AuthActivity extends Activity {
 
         if (mScope != null) {
             param += String.format(Locale.US, "&%s=%s", "scope", mScope);
+        }
+
+        if (mIncludeGrantedScopes != null) {
+            param += String.format(Locale.US, "&%s=%s", "include_granted_scopes",
+                mIncludeGrantedScopes.toString());
         }
 
         return param;
