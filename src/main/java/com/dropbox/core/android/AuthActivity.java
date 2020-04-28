@@ -523,12 +523,7 @@ public class AuthActivity extends Activity {
         if (mTokenAccessType != null) {
             // short live token flow
             state = createPKCEStateNonce(); // to support legacy DBApp with V1 flow with
-            // stormcrow android_use_dauth_version4 turned off.
-            String extraMap = createExtraQueryParams();
-            officialAuthIntent.putExtra(EXTRA_AUTH_QUERY_PARAMS, extraMap);
-            Log.d(TAG, "dauth: " + extraMap);
-            Log.d(TAG, "dauth: " + state);
-            Log.d(TAG, "dauth: " + mPKCEManager.getCodeVerifier());
+            officialAuthIntent.putExtra(EXTRA_AUTH_QUERY_PARAMS, createExtraQueryParams());
         } else {
             // Legacy long live token flow
             state = createStateNonce();
@@ -556,12 +551,11 @@ public class AuthActivity extends Activity {
                 Log.d(TAG, "running startActivity in handler");
                 try {
                     // Auth with official app, or fall back to web.
-                    //if (DbxOfficialAppConnector.getDropboxAppPackage(AuthActivity.this,
-                    //    officialAuthIntent) != null) {
-                     //   startActivity(officialAuthIntent);
-                    //} else {
+                    if (DbxOfficialAppConnector.getDropboxAppPackage(AuthActivity.this, officialAuthIntent) != null) {
+                        startActivity(officialAuthIntent);
+                    } else {
                         startWebAuth(state);
-                    //}
+                    }
                 } catch (ActivityNotFoundException e) {
                     Log.e(TAG, "Could not launch intent. User may have restricted profile", e);
                     finish();

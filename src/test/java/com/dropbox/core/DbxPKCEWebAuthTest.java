@@ -160,7 +160,18 @@ public class DbxPKCEWebAuthTest extends DbxOAuthTestBase {
         );
 
         Map<String, List<String>> params = toParamsMap(new URL(authUrl));
+        assertEquals(params.get("client_id"), Collections.singletonList(APP.getKey()));
+        assertEquals(params.get("response_type"), Collections.singletonList("code"));
+        assertEquals(params.get("scope"), Collections.singletonList("account.info.read"));
         assertEquals(params.get("include_granted_scopes"), Collections.singletonList("user"));
+        assertFalse(params.containsKey("redirect_uri"));
+        assertFalse(params.containsKey("state"));
+        assertFalse(params.containsKey("require_role"));
+        assertFalse(params.containsKey("force_reapprove"));
+        assertFalse(params.containsKey("disable_signup"));
+        assertFalse(params.containsKey("token_access_type"));
+        assertNotNull(params.get("code_challenge"));
+        assertEquals(params.get("code_challenge_method"), Collections.singletonList("S256"));
     }
 
     @Test

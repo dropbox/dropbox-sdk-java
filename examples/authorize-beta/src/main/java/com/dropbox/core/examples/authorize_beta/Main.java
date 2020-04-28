@@ -5,7 +5,6 @@ import com.dropbox.core.DbxAuthFinish;
 import com.dropbox.core.DbxWebAuth;
 import com.dropbox.core.json.JsonReader;
 import com.dropbox.core.oauth.DbxCredential;
-import src.main.java.com.dropbox.core.examples.authorize_beta.IncrementalScopeAuthorize;
 import src.main.java.com.dropbox.core.examples.authorize_beta.PkceAuthorize;
 import src.main.java.com.dropbox.core.examples.authorize_beta.ScopeAuthorize;
 import src.main.java.com.dropbox.core.examples.authorize_beta.ShortLiveTokenAuthorize;
@@ -32,31 +31,29 @@ public class Main {
         Logger.getLogger("").setLevel(Level.WARNING);
 
         if (args.length != 3) {
-            System.out.println("Usage: COMMAND <app-info-file> <auth-file-output> <mode>");
-            System.out.println("");
-            System.out.println("<app-info-file>: a JSON file with information about your API app.  Example:");
-            System.out.println("");
-            System.out.println("  {");
-            System.out.println("    \"key\": \"Your Dropbox API app key...\",");
-            System.out.println("    \"secret\": \"Your Dropbox API app secret...\"");
-            System.out.println("  }");
-            System.out.println("");
-            System.out.println("  Get an API app key by registering with Dropbox:");
-            System.out.println("    https://dropbox.com/developers/apps");
-            System.out.println("");
-            System.out.println("<auth-file-output>: If authorization is successful, the resulting API");
-            System.out.println("  credential will be saved to this file, which can then be used with");
-            System.out.println("  other example programs, such as the one in \"examples/account-info\".");
-            System.out.println("");
-            System.out.println("<mode>: value can only be short_live_token, pkce, scope, or incremental.");
-            System.out.println("  short_live_token: authorization will request short_lived_token");
-            System.out.println("    together with refresh token and expiration time.");
-            System.out.println("  pkce: authorization will run short_live_token without app secret");
-            System.out.println("    use that when you have a client side only app without server.");
-            System.out.println("  scope: authorization will request specific scope.");
-            System.out.println("  incremental: authorization will request one scope, together ");
-            System.out.println("    with all previously granted scopes.");
-            System.out.println("");
+            System.err.println("Usage: COMMAND <app-info-file> <auth-file-output> <mode>");
+            System.err.println("");
+            System.err.println("<app-info-file>: a JSON file with information about your API app.  Example:");
+            System.err.println("");
+            System.err.println("  {");
+            System.err.println("    \"key\": \"Your Dropbox API app key...\",");
+            System.err.println("    \"secret\": \"Your Dropbox API app secret...\"");
+            System.err.println("  }");
+            System.err.println("");
+            System.err.println("  Get an API app key by registering with Dropbox:");
+            System.err.println("    https://dropbox.com/developers/apps");
+            System.err.println("");
+            System.err.println("<auth-file-output>: If authorization is successful, the resulting API");
+            System.err.println("  credential will be saved to this file, which can then be used with");
+            System.err.println("  other example programs, such as the one in \"examples/account-info\".");
+            System.err.println("");
+            System.err.println("<mode>: value can only be short_live_token, pkce, scope, or incremental.");
+            System.err.println("  short_live_token: authorization will request short_lived_token");
+            System.err.println("    together with refresh token and expiration time.");
+            System.err.println("  pkce: authorization will run short_live_token without app secret");
+            System.err.println("    use that when you have a client side only app without server.");
+            System.err.println("  scope: authorization will request specific scope.");
+            System.err.println("");
             System.exit(1);
             return;
         }
@@ -85,9 +82,6 @@ public class Main {
                 break;
             case "scope":
                 authFinish = new ScopeAuthorize().authorize(appInfo);
-                break;
-            case "incremental":
-                authFinish = new IncrementalScopeAuthorize().authorize(appInfo);
                 break;
             default:
                 System.err.println("Error reading <mode> : " + args[2]);

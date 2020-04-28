@@ -10,20 +10,14 @@ public enum IncludeGrantedScopes {
     /**
      * Use it in user flow.
      */
-    USER("user"),
+    USER,
     /**
      * Use it in team flow.
      */
-    TEAM("team");
-
-    private String string;
-
-    IncludeGrantedScopes(String string) {
-        this.string = string;
-    }
+    TEAM;
 
     @Override
     public String toString() {
-        return string;
+        return this.name().toLowerCase();
     }
 }

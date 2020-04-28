@@ -1,2 +1,3 @@
 
-description = 'Authorize Example (Dropbox Core API SDK)'
+description = 'Authorize Example (Dropbox Core API SDK) with beta features short lived token and ' +
+        'scope'
