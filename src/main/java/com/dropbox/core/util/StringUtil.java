@@ -8,8 +8,8 @@ import java.nio.CharBuffer;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
-import java.nio.charset.CharsetEncoder;
 import java.util.Arrays;
+import java.util.Collection;
 
 public class StringUtil
 {
@@ -232,5 +232,18 @@ public class StringUtil
         }
 
         return buf.toString();
+    }
+
+    public static String join(Collection<String> strings, String delimiter) {
+        StringBuilder sb = new StringBuilder();
+        int i = 0;
+        for (String s: strings) {
+            if (i > 0) {
+                sb.append(delimiter);
+            }
+            sb.append(s);
+            i++;
+        }
+        return sb.toString();
     }
 }

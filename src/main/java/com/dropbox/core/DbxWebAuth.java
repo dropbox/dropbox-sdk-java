@@ -5,6 +5,7 @@ import static com.dropbox.core.util.StringUtil.jq;
 import java.nio.charset.Charset;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -919,10 +920,13 @@ public class DbxWebAuth {
              * API endpoints. To call one API endpoint you have to obtains the scope first otherwise you
              * will get HTTP 401. Example: "account_info.read files.content.read"
              */
-            public Builder withScope(String scope) {
-                this.scope = scope;
+            public Builder withScope(Collection<String> scope) {
+                if (scope != null) {
+                    this.scope = StringUtil.join(scope, " ");
+                }
                 return this;
             }
+
 
             /**
              * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
@@ -930,7 +934,8 @@ public class DbxWebAuth {
              * in next minor version release.
              *
              * @param includeGrantedScopes This field is optional. If not presented, Dropbox will
-             *                            give you the scopes in {@link #withScope(String)}.
+             *                            give you the scopes in
+             *                            {@link #withScope(Collection)}.
              *                            Otherwise Dropbox server will return a token with all
              *                            scopes user previously granted your app together with
              *                             the new scopes.

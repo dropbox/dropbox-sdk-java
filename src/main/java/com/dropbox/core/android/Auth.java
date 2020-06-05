@@ -9,8 +9,11 @@ import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.IncludeGrantedScopes;
 import com.dropbox.core.TokenAccessType;
 import com.dropbox.core.oauth.DbxCredential;
+import com.dropbox.core.util.StringUtil;
 
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Helper class for integrating with {@link AuthActivity}
@@ -50,13 +53,13 @@ public class Auth {
      * early access partner of this feature. The function signature is subject to change
      * in next minor version release.
      *
-     * @param scope A list of scope returned by Dropbox server. Each scope correspond to a group of
+     * @param scope A list of scope strings. Each scope correspond to a group of
      * API endpoints. To call one API endpoint you have to obtains the scope first otherwise you
      * will get HTTP 401.
      * @see Auth#startOAuth2PKCE(Context, String, DbxRequestConfig, DbxHost)
      */
     public static void startOAuth2PKCE(Context context, String appKey, DbxRequestConfig
-        requestConfig, String scope) {
+        requestConfig, Collection<String> scope) {
         startOAuth2PKCE(context, appKey, requestConfig, null, scope);
     }
 
@@ -87,7 +90,7 @@ public class Auth {
     }
 
     public static void startOAuth2PKCE(Context context, String appKey, DbxRequestConfig
-        requestConfig, DbxHost host, String scope) {
+        requestConfig, DbxHost host, Collection<String> scope) {
         if (requestConfig == null) {
             throw new IllegalArgumentException("Invalid Dbx requestConfig for PKCE flow.");
         }
@@ -111,7 +114,7 @@ public class Auth {
      * @param appKey                the app's key.
      * @param requestConfig         Default attributes to use for each request
      * @param host                  Dropbox hosts to send requests to (used for mocking and testing)
-     * @param scope                 A list of scope returned by Dropbox server. Each scope correspond
+     * @param scope                 A list of scope strings. Each scope correspond
      *                              to a group of API endpoints. To call one API endpoint you
      *                              have to obtains the scope first otherwise you will get HTTP 401.
      * @param includeGrantedScopes  If this is set, result will contain both new scopes and all
@@ -119,7 +122,7 @@ public class Auth {
      *                              requesting scopes.
      */
     public static void startOAuth2PKCE(Context context, String appKey, DbxRequestConfig
-        requestConfig, DbxHost host, String scope, IncludeGrantedScopes includeGrantedScopes) {
+        requestConfig, DbxHost host, Collection<String> scope, IncludeGrantedScopes includeGrantedScopes) {
         if (requestConfig == null) {
             throw new IllegalArgumentException("Invalid Dbx requestConfig for PKCE flow.");
         }
@@ -196,7 +199,7 @@ public class Auth {
                                                   TokenAccessType tokenAccessType,
                                                   DbxRequestConfig requestConfig,
                                                   DbxHost host,
-                                                  String scope,
+                                                  Collection<String>  scope,
                                                   IncludeGrantedScopes includeGrantedScopes) {
         if (!AuthActivity.checkAppBeforeAuth(context, appKey, true /*alertUser*/)) {
             return;
@@ -206,11 +209,16 @@ public class Auth {
             throw new IllegalArgumentException("desiredUid cannot be present in alreadyAuthedUids");
         }
 
+        String scopeString = null;
+        if (scope != null) {
+            scopeString = StringUtil.join(scope, " ");
+        }
+
         // Start Dropbox auth activity.
         String apiType = "1";
         Intent intent =  AuthActivity.makeIntent(
             context, appKey, desiredUid, alreadyAuthedUids, sessionId, webHost, apiType,
-            tokenAccessType, requestConfig, host, scope, includeGrantedScopes
+            tokenAccessType, requestConfig, host, scopeString, includeGrantedScopes
         );
         if (!(context instanceof Activity)) {
             // If starting the intent outside of an Activity, must include
