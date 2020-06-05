@@ -163,13 +163,14 @@ public class DbxCredential {
      * but just add host.
      * @param requestConfig request config used to make http request.
      * @param host which host to call, only used in internal testing.
+     * @param scope space-delimited scope list. Must be subset of scope in current oauth2 grant.
      * @return DbxRefreshResult which contains app key and app secret.
      * @throws DbxOAuthException If refresh failed becasue of invalid refresh parameter or
      * refresh token is revoked.
      * @throws DbxException If refresh failed for general errors.
      */
-    public DbxRefreshResult refresh(DbxRequestConfig requestConfig, DbxHost host) throws
-        DbxException {
+    public DbxRefreshResult refresh(DbxRequestConfig requestConfig, DbxHost host, String scope)
+        throws DbxException {
         if (this.refreshToken == null) {
             throw new DbxOAuthException(null, new DbxOAuthError(INVALID_REQUEST, "Cannot refresh becasue there is no refresh token"));
         }
@@ -191,6 +192,10 @@ public class DbxCredential {
             params.put("client_id", this.appKey);
         } else {
             DbxRequestUtil.addBasicAuthHeader(headers, this.appKey, this.appSecret);
+        }
+
+        if (scope != null) {
+            params.put("scope", scope);
         }
 
         DbxRefreshResult dbxRefreshResult = DbxRequestUtil.doPostNoAuth(
@@ -233,7 +238,25 @@ public class DbxCredential {
      * @throws DbxException If refresh failed for general errors.
      */
     public DbxRefreshResult refresh(DbxRequestConfig requestConfig) throws DbxException {
-        return refresh(requestConfig, DbxHost.DEFAULT);
+        return refresh(requestConfig, DbxHost.DEFAULT, null);
+    }
+
+    /**
+     * Refresh the short live access token. If succeeds, the access token and expiration time
+     * value inside this object will be overwritten to new values.
+     *
+     * @param requestConfig request config used to make http request.
+     * @param scope space-delimited scope list string. Must be a subset of original scopes
+     *              requested with this OAuth2 grant. You can use this method to obtain a new short
+     *              lived token with less access than the original one.
+     * @return DbxRefreshResult which contains app key and app secret.
+     * @throws DbxOAuthException If refresh failed because of invalid refresh parameter or
+     * refresh token is invalid or revoked.
+     * @throws DbxException If refresh failed for general errors.
+     */
+    public DbxRefreshResult refresh(DbxRequestConfig requestConfig, String scope) throws
+        DbxException {
+        return refresh(requestConfig, DbxHost.DEFAULT, scope);
     }
 
     /**

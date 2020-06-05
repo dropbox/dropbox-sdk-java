@@ -24,6 +24,7 @@ public class DbxRefreshResult {
     private final String accessToken;
     private final long expiresIn;
     private long issueTime;
+    private String scope;
 
     /**
      * @param accessToken OAuth access token.
@@ -31,12 +32,22 @@ public class DbxRefreshResult {
      * was passed
      */
     public DbxRefreshResult(/*@NotNull*/String accessToken, long expiresIn) {
+        this(accessToken, expiresIn, null);
+    }
+
+    /**
+     * @param accessToken OAuth access token.
+     * @param expiresIn Duration time of accessToken in second.
+     * was passed
+     */
+    public DbxRefreshResult(/*@NotNull*/String accessToken, long expiresIn, String scope) {
         if (accessToken == null) {
             throw new IllegalArgumentException("access token can't be null.");
         }
         this.accessToken = accessToken;
         this.expiresIn = expiresIn;
         this.issueTime = System.currentTimeMillis();
+        this.scope = scope;
     }
 
     /**
@@ -60,6 +71,14 @@ public class DbxRefreshResult {
     }
 
     /**
+     * @return If you specified a subset of original scope in refresh call, this value shows what
+     * permissions the new short lived token has.
+     */
+    public String getScope() {
+        return scope;
+    }
+
+    /**
      *  Setting issue time should only be used to copy current object.
      * */
     void setIssueTime(long issueTime) {
@@ -76,6 +95,7 @@ public class DbxRefreshResult {
             String tokenType = null;
             String accessToken = null;
             Long expiresIn = null;
+            String scope = null;
 
             while (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
                 String fieldName = parser.getCurrentName();
@@ -90,6 +110,9 @@ public class DbxRefreshResult {
                     }
                     else if (fieldName.equals("expires_in")) {
                         expiresIn = JsonReader.UInt64Reader.readField(parser, fieldName, expiresIn);
+                    }
+                    else if (fieldName.equals("scope")) {
+                        scope = JsonReader.StringReader.readField(parser, fieldName, scope);
                     }
                     else {
                         // Unknown field.  Skip over it.
@@ -109,7 +132,7 @@ public class DbxRefreshResult {
                 throw new JsonReadException("missing field \"expires_in\"", top);
             }
 
-            return new DbxRefreshResult(accessToken, expiresIn);
+            return new DbxRefreshResult(accessToken, expiresIn, scope);
         }
     };
 }

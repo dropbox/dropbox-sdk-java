@@ -915,9 +915,9 @@ public class DbxWebAuth {
              * early access partner of this feature. The function signature is subject to change
              * in next minor version release.
              *
-             * @param scope A list of scope returned by Dropbox server. Each scope correspond to a group of
+             * @param scope Space-delimited scope string. Each scope corresponds to a group of
              * API endpoints. To call one API endpoint you have to obtains the scope first otherwise you
-             * will get HTTP 401.
+             * will get HTTP 401. Example: "account_info.read files.content.read"
              */
             public Builder withScope(String scope) {
                 this.scope = scope;
