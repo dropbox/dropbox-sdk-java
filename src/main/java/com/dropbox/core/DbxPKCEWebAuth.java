@@ -37,7 +37,8 @@ import static com.dropbox.core.util.StringUtil.urlSafeBase64Encode;
  *     object.</li>
  * </ol>
  *
- * @see <a href="https://tools.ietf.org/html/rfc7636">https://tools.ietf.org/html/rfc7636</a>
+ * @see <a href="https://tools.ietf.org/html/rfc7636">https://tools.ietf.org/html/rfc7636</a> and
+ * new <a href="https://www.dropbox.com/lp/developers/reference/oauth-guide.html">dropbox oauth guide</a>
  */
 public class DbxPKCEWebAuth {
     private final DbxRequestConfig requestConfig;
