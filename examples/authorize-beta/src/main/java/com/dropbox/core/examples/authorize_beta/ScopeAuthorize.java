@@ -11,6 +11,8 @@ import com.dropbox.core.TokenAccessType;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.Collections;
 
 
 /**
@@ -35,7 +37,7 @@ public class ScopeAuthorize {
         DbxWebAuth.Request webAuthRequest =  DbxWebAuth.newRequestBuilder()
             .withNoRedirect()
             .withTokenAccessType(TokenAccessType.OFFLINE)
-            .withScope("account_info.read")
+            .withScope(Collections.singletonList("account_info.read"))
             .build();
 
         String authorizeUrl = webAuth.authorize(webAuthRequest);
@@ -73,7 +75,7 @@ public class ScopeAuthorize {
         webAuthRequest = DbxWebAuth.newRequestBuilder()
             .withNoRedirect()
             .withTokenAccessType(TokenAccessType.OFFLINE)
-            .withScope("files.metadata.write")
+            .withScope(Collections.singletonList("files.metadata.write"))
             .build();
 
         authorizeUrl = webAuth.authorize(webAuthRequest);
@@ -111,7 +113,7 @@ public class ScopeAuthorize {
         webAuthRequest = DbxWebAuth.newRequestBuilder()
             .withNoRedirect()
             .withTokenAccessType(TokenAccessType.OFFLINE)
-            .withScope("files.content.read files.content.write")
+            .withScope(Arrays.asList("files.content.read", "files.content.write"))
             .withIncludeGrantedScopes(IncludeGrantedScopes.USER)
             .build();
 

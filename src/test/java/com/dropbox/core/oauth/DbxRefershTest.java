@@ -200,6 +200,46 @@ public class DbxRefershTest extends DbxOAuthTestBase {
     }
 
     @Test
+    public void testDownScoping() throws Exception {
+        ByteArrayInputStream responseStream = new ByteArrayInputStream(
+            (
+                "{" +
+                    "\"token_type\":\"Bearer\"" +
+                    ",\"access_token\":\"" + NEW_TOKEN + "\"" +
+                    ",\"expires_in\":" + EXPIRES_IN +
+                    ",\"scope\":" + "\"myscope1\"" +
+                "}"
+            ).getBytes("UTF-8")
+        );
+        HttpRequestor.Response finishResponse = new HttpRequestor.Response(
+            200, responseStream, new HashMap<String, List<String>>());
+        long currentMilllis = System.currentTimeMillis();
+
+        // Mock requester and uploader
+        HttpRequestor.Uploader mockUploader = mock(HttpRequestor.Uploader.class);
+        DbxRequestConfig mockConfig = setupMockRequestConfig(finishResponse, mockUploader);
+
+        // Execute Refreshing
+        DbxCredential credential = new DbxCredential(EXPIRED_TOKEN, EXPIRES_IN, REFRESH_TOKEN,
+            APP.getKey());
+        DbxRefreshResult refreshResult = credential.refresh(mockConfig, "myscope1 myscope2");
+
+        // Get URL Param
+        ArgumentCaptor<byte[]> paramCaptor = ArgumentCaptor.forClass(byte[].class);
+        verify(mockUploader).upload(paramCaptor.capture());
+        Map<String, List<String>> refreshParams = toParamsMap(new String(paramCaptor.getValue(), "UTF-8"));
+
+        // Verification
+        assertEquals(refreshParams.get("grant_type").get(0), "refresh_token");
+        assertEquals(refreshParams.get("refresh_token").get(0), REFRESH_TOKEN);
+        assertEquals(refreshParams.get("client_id").get(0), APP.getKey());
+        assertEquals(refreshParams.get("scope").get(0), "myscope1 myscope2");
+        assertEquals(credential.getAccessToken(), NEW_TOKEN);
+        assertTrue(currentMilllis + EXPIRES_IN < credential.getExpiresAt());
+        assertEquals(refreshResult.getScope(), "myscope1");
+    }
+
+    @Test
     public void testGrantRevoked() throws Exception{
         ByteArrayInputStream responseStream = new ByteArrayInputStream(
             (
