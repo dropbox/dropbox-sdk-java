@@ -160,7 +160,7 @@ public class DbxWebAuthTest extends DbxOAuthTestBase {
         DbxWebAuth dbxWebAuth = new DbxWebAuth(CONFIG, APP);
         DbxWebAuth.Request request = DbxWebAuth.newRequestBuilder()
             .withNoRedirect()
-            .withScope("account.info.read")
+            .withScope(Collections.singletonList("account.info.read"))
             .build();
         String urlString = dbxWebAuth.authorize(request);
         Map<String, List<String>> params = toParamsMap(new URL(urlString));
@@ -173,7 +173,7 @@ public class DbxWebAuthTest extends DbxOAuthTestBase {
         DbxWebAuth dbxWebAuth = new DbxWebAuth(CONFIG, APP);
         DbxWebAuth.Request request = DbxWebAuth.newRequestBuilder()
             .withNoRedirect()
-            .withScope("account.info.read")
+            .withScope(Collections.singletonList("account.info.read"))
             .withIncludeGrantedScopes(IncludeGrantedScopes.USER)
             .build();
         String urlString = dbxWebAuth.authorize(request);

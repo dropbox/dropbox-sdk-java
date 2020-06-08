@@ -8,6 +8,8 @@ import com.dropbox.core.android.Auth;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.oauth.DbxCredential;
 
+import java.util.List;
+
 
 /**
  * Base class for Activities that require auth tokens
@@ -87,7 +89,7 @@ public abstract class DropboxActivity extends AppCompatActivity {
         }
     }
 
-    public static void startOAuth2Authentication(Context context, String app_key, String scope) {
+    public static void startOAuth2Authentication(Context context, String app_key, List<String> scope) {
         if (USE_SLT) {
             Auth.startOAuth2PKCE(context, app_key, DbxRequestConfigFactory.getRequestConfig(), scope);
         } else {

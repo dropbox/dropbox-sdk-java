@@ -2079,7 +2079,7 @@ class JavaApi(object):
         assert self.request_style(route) == 'download', repr(route)
 
         return JavaClass('com.dropbox.core.DbxDownloader', generics=(
-            self.java_class(route.result_data_type),
+            self.java_class(route.result_data_type, boxed=True),
         ))
 
     def is_used_by_client(self, data_type):
@@ -3804,7 +3804,7 @@ class JavaCodeGenerationInstance(object):
                     args = ['arg_']
                     if j.request_style(route) == 'download':
                         args.append('getHeaders()')
-                    if j.has_result(route) or j.request_style(route) == 'upload':
+                    if j.has_result(route) or j.request_style(route) in ('upload', 'download'):
                         w.out('return _client.%s(%s);', j.route_method(route), ', '.join(args))
                     else:
                         w.out('_client.%s(%s);', j.route_method(route), ', '.join(args))

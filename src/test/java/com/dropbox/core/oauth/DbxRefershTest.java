@@ -12,6 +12,7 @@ import org.testng.annotations.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -222,7 +223,7 @@ public class DbxRefershTest extends DbxOAuthTestBase {
         // Execute Refreshing
         DbxCredential credential = new DbxCredential(EXPIRED_TOKEN, EXPIRES_IN, REFRESH_TOKEN,
             APP.getKey());
-        DbxRefreshResult refreshResult = credential.refresh(mockConfig, "myscope1 myscope2");
+        DbxRefreshResult refreshResult = credential.refresh(mockConfig, Arrays.asList("myscope1", "myscope2"));
 
         // Get URL Param
         ArgumentCaptor<byte[]> paramCaptor = ArgumentCaptor.forClass(byte[].class);

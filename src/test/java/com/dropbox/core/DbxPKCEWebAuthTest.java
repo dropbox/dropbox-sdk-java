@@ -139,7 +139,7 @@ public class DbxPKCEWebAuthTest extends DbxOAuthTestBase {
         String authUrl = auth.authorize(
             DbxWebAuth.newRequestBuilder()
                 .withNoRedirect()
-                .withScope("account.info.read")
+                .withScope(Collections.singletonList("account.info.read"))
                 .build()
         );
 
@@ -154,7 +154,7 @@ public class DbxPKCEWebAuthTest extends DbxOAuthTestBase {
         String authUrl = auth.authorize(
             DbxWebAuth.newRequestBuilder()
                 .withNoRedirect()
-                .withScope("account.info.read")
+                .withScope(Collections.singletonList("account.info.read"))
                 .withIncludeGrantedScopes(IncludeGrantedScopes.USER)
                 .build()
         );
