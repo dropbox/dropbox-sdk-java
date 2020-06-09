@@ -12,6 +12,7 @@ com.dropbox.core.v2.async
 com.dropbox.core.v2.auth
 com.dropbox.core.v2.callbacks
 com.dropbox.core.v2.check
+com.dropbox.core.v2.clouddocs
 com.dropbox.core.v2.common
 com.dropbox.core.v2.contacts
 com.dropbox.core.v2.fileproperties
