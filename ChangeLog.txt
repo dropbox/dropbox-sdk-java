@@ -1,3 +1,209 @@
+3.1.4 (2020-06-08)
+---------------------------------------------
+- Files Namespace:
+  - Update comments on FileLockMetadata struct
+  - Add optional lockholder_account_id to FileLockMetadata struct
+  - Add optional invalid_argument to SearchError union
+  - Add get_thumbnail:2 route
+  - Add ThumbnailV2Error union
+  - Add MinimalFileLinkMetadata struct
+  - Add PreviewResult struct
+  - Add SharedLinkFileInfo struct
+  - Add PathOrLink union
+  - Add ThumbnailV2Arg struct
+  - Change UnlockFileArg's path type to WritePathOrId
+  - Change LockFileArg's path type to WritePathOrId
+
+- Update query description on SearchArg Struct, SearchV2Arg Struct
+- Update move:2 and move_batch:2 route descirption
+
+- File Properties Namespace
+  - Update AddPropertiesArg description
+  - Add duplicate_property_groups to InvalidPropertyGroupError Union
+  - Update property_groups description on AddPropertiesError Union
+
+- Shared Links Namespace:
+  - Fix Typo
+
+- Team Groups Namespace:
+  - Add add_creator_as_owner to GroupCreateArg struct
+  - Update comments for async_job_id on GroupMembersChangeResult struct
+
+- Team Legal Holds Namespace:
+  - Add exporting to LegalHoldStatus union
+  - Add invactive_legal_hold to LegalHoldsListHeldRevisionsError union
+  - Add legal_hold_policy_not_found to LegalHoldsPolicyUpdateError union
+
+  - Add MembersInfo struct
+  - Add LegalHoldsError union
+
+  - mark legal_holds/export_policy to deprecated
+  - mark legal_holds/export_policy_job_status/check to deprecated
+
+  - Change LegalHoldPolicy's members type to MembersInfo
+  - Update LegalHoldPolicy's examples
+  - Update LegalHoldsPolicyCreateError to extend LegalHoldsError
+  - Update LegalHoldsGetPolicyError to extend LegalHoldsError
+  - Update LegalHoldsListPoliciesError to extend LegalHoldsError
+  - Update LegalHoldsPolicyUpdateError to extend LegalHoldsError
+  - Deleted deprecated routes legal_holds/export_policy and legal_holds/export_policy_job_status/check
+  - Added comments to legalHoldPolicy struct
+  - Add more detailed comments to LegalHoldsListHeldRevisionResult
+  - Fix misc typos in comments
+
+- Team_log namespace:
+  - Add team_exceeded_legal_hold_quota to LegalHoldsPolicyCreateError union
+  - Change LegalHoldsListHeldRevisionsError and LegalHoldsPolicyReleaseError to extend LegalHoldsError
+  - Add optional EventTypeArg event_type to GetTeamEventsArg struct
+  - Add invalid_filters to GetTeamEventsError union
+
+- Team Log Namespace:
+  - Remove lifespan comment
+
+- Team Log Generated Namesapce:
+  - Add team_invite_details to ActionDetails union
+  - Add optional has_linked_apps to JoinTeamDetails struct
+  - Add optional has_linked_devices to JoinTeamDetails struct
+  - Add optional has_linkeD_shared_folders to JoinTeamDetails struct
+  - Update comments in JoinTeamDetails struct
+  - Update JoinTeamDetails struct examples
+  - Update LegalHoldsExportAHoldDetails struct examples
+  - Update PaperContentRemoveFromFolderDetails target_asset_index to be optional
+  - Update PaperContentRemoveFromFolderDetails parent_asset_index to be optional
+  - Add shared_content_link to SharedLinkSettingsAddExpirationDetails struct
+  - Update SharedLinkSettingAddExpirationDetails struct examples
+  - Add optional shared_content_link to SharedLinkSettingsAddPasswordDetails struct
+  - Add optional shared_content_link to SharedLinkSettingsAllowDownloadDisabledDetails struct
+  - Add optional shared_content_link to SharedLinkSettingsAllowDownloadEnabledDetails struct
+  - Add optional shared_content_link to SharedLinkSettingsChangeAudienceDetails struct
+  - Add optional shared_content_link to SharedLinkSettingsChangeExpirationDetails struct
+  - Add optional shared_content_link to SharedLinkSettingsChangePasswordDetails struct
+  - Add optional shared_content_link to SharedLinkSettingsRemoveExpirationDetails struct
+  - Add optional shared_content_link to SharedLinkSettingsRemovePasswordDetails struct
+  - Add file_locking_status_changed_details to EventDetails union
+  - Add rewind_folder_details to EventDetails union
+  - Add legal_holds_export_cancelled_details to EventDetails union
+  - Add legal_holds_export_downloaded_details to EventDetails union
+  - Add legal_holds_export_removed_details to EventDetails union
+  - Add create_team_invite_link_details to EventDetails union
+  - Add delete_team_invite_link_details to EventDetails union
+  - Add binder_add_page_details to EventDetails union
+  - Add binder_add_section_details to EventDetails union
+  - Add binder_remove_page_details to EventDetails union
+  - Add binder_remove_section_details to EventDetails union
+  - Add binder_rename_page_details to EventDetails union
+  - Add binder_rename_section_details to EventDetails union
+  - Add binder_reorder_page_details to EventDetails union
+  - Add binder_reorder_section_details to EventDetails union
+  - Add rewind_policy_changed_details to EventDetails union
+  - Add team_sharing_whitelist_subjects_changed_details to EventDetails union
+  - Add web_sessions_change_active_session_limit_details to EventDetails union
+  - Add enterprise_settings_locking_details to EventDetails union
+  - Add file_locking_lock_status_changed to EventType union
+  - Add rewind_folder to EventType union
+  - Add legal_holds_export_cancelled to EventType union
+  - Add legal_holds_export_downloaded to EventType union
+  - Add legal_holds_export_removed to EventType union
+  - Add create_team_invite_link to EventType union
+  - Add delete_team_invite_link to EventType union
+  - Add binder_add_page to EventType union
+  - Add binder_add_section to EventType union
+  - Add binder_remove_page to EventType union
+  - Add binder_remove_section to EventType union
+  - Add binder_rename_page to EventType union
+  - Add binder_rename_section to EventType union
+  - Add binder_reorder_page to EventType union
+  - Add binder_reorder_section to EventType union
+  - Add rewind_policy_changed to EventType union
+  - Add team_sharing_whitelist_subjects_changed to EventType union
+  - Add web_sessions_change_active_session_limit to EventType union
+  - Add enterprise_settings_locking to EventType union
+
+  - Add TeamInviteDetails struct
+  - Add InviteMethod union
+  - Add LockStatus union
+  - Add RewindPolicy union
+  - Add FileLockingLockStatusChangedDetails struct
+  - Add RewindFolderDetails struct
+  - Add LegalHoldsExportCancelledDetails struct
+  - Add LegalHoldsExportDownloadedDetails struct
+  - Add LegalHoldsExportRemovedDetails struct
+  - Add CreateTeamInviteLinkDetails struct
+  - Add DeleteTeamInviteLinkDetails struct
+  - Add BinderAddPageDetails struct
+  - Add BinderAddSectionDetails struct
+  - Add BinderRemovePageDetails struct
+  - Add BinderRemoveSectionDetails struct
+  - Add BinderRenamePageDetails struct
+  - Add BinderRenameSectionDetails struct
+  - Add BinderReorderPageDetails struct
+  - Add BinderReorderSectionDetails struct
+  - Add RewindPolicyChangedDetails struct
+  - Add TeamSharingWhitelistSubjectsChangedDetails struct
+  - Add WebSessionsChangeActiviteSessionLimitDetails struct
+  - Add EnterpriseSettingsLockingDetails struct
+  - Add FileLockingLockStatusChangedType struct
+  - Add RewindFolderType struct
+  - Add LegalHoldsExportCancelledType struct
+  - Add LegalHoldsExportDownloadedType struct
+  - Add LegalHoldsExportRemovedType struct
+  - Add CreateTeamInviteLinkType struct
+  - Add DeleteTeamInviteLinkType struct
+  - Add BinderAddPageType struct
+  - Add BinderAddSectionType struct
+  - Add BinderRemovePageType struct
+  - Add BinderRemoveSectionType struct
+  - Add BinderRenamePageType struct
+  - Add BinderRenameSectionType struct
+  - Add BinderReorderPageType struct
+  - Add BinderReorderSectionType struct
+  - Add RewindPolicyChangedType struct
+  - Add TeamSharingWhitelistSubjectsChangedType struct
+  - Add WebSessionsChangeActiveSessionLimitType struct
+  - Add EnterpriseSettingsLockingType struct
+  - Added AccountState union
+  - Added AccountLockOrUnlockedType struct
+  - Added AccountLockOrUnlockedDetails struct
+  - Added MemberSendInvitePolicy union
+  - Added MemberSendInvitePolicyChangedType struct
+  - Added MemberSendInvitePolicyChangedDetails struct
+  - Added a new tag first_party_token_exchange to LoginMethod union
+  - Added new tags account_lock_or_unlocked_details and member_send_invite_policy_changed_details to EventDetails union
+  - Added new tags account_lock_or_unlocked and member_send_invite_policy_changed to EventType union
+  - Added a new field file_size to FileOrFolderLogInfo and FileLogInfo struct
+  - Added a new field file_count to FolderLogInfo struct
+  - Add NoExpirationLinkGenCreateReportDetails, NoExpirationLinkGenReportFailedDetails, NoPasswordLinkGenCreateReportDetails, NoPasswordLinkGenReportFailedDetails, NoPasswordLinkViewCreateReportDetails, NoPasswordLinkViewReportFailedDetails, OutdatedLinkViewCreateReportDetails, OutdatedLnkViewReportFailedDetails structs to the EventDetails union
+  - Add NoExpirationLinkGenCreateReportType, NoExpirationLinkGenReportFailedType, NoPasswordLinkGenCreateReportType, NoPasswordLinkGenReportFailedType, NoPasswordLinkViewCreateReportType, NoPasswordLinkViewReportFailedType, OutdatedLinkViewCreateReportType, OutdatedLinkViewReportFailedType structs to the EventType union
+  - Add deprecated tag to was_linked_apps_truncated, was_linked_devices_truncated, was_link_shared_folders_truncated parameters in JoinTeamDetails struct
+  - Added the EventTypeArg union
+
+- Users Namespace:
+  - Add file_locking to UserFeature union
+  - Add file_locking to UserFeatureValue
+  - Update example for UserFeaturesGetaluesBatchArg
+
+  - Add FileLockingValue union
+
+- Cloud Docs Namespace
+  - added a new route property is_cloud_doc_auth indicating whether the endpoint is a Dropbox cloud docs endpoint which takes cloud docs auth token.
+  - Add get_content, get_metadata, rename, unlock, and lock routes
+  - Add corresponding args, results, and errors
+
+- Shared Links Namespace
+  - Update SharedLinkSettings example
+
+- Stone CFG Namespace
+  - Update auth type string patterns
+  - Update host string patterns
+  - Update style string patterns
+  - Update select_admin_mode string patterns
+
+- Team Secondary Mails Namespace:
+  - Remove is_preview from route add, resend_verification_emails, and delete
+
+- Team Members Namespace:
+  - Update comment for retain_team_shares arg of MembersRemoveArg
+
 3.1.3 (2019-12-17)
 ---------------------------------------------
 - Fix mobile sign in bug.
