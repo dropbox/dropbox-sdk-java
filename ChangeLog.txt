@@ -1,5 +1,7 @@
 3.1.4 (2020-06-08)
 ---------------------------------------------
+- Support include_granted_scopes in OAuth2 flow.
+- Support new scope parameter when refreshing DbxCredential.
 - Files Namespace:
   - Update comments on FileLockMetadata struct
   - Add optional lockholder_account_id to FileLockMetadata struct
