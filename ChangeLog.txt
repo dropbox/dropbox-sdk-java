@@ -1,3 +1,50 @@
+3.1.5 (2020-08-11)
+---------------------------------------------
+- Fix bug in authorization flow.
+- Files Namespace
+  - Add internal_error to SearchError union.
+  - Add locked to LookupError union.
+  - Add cant_move_into_vault to RelocationError union.
+  - Add MoveIntoVaultError union.
+  - Add SearchMatchFieldOptions struct.
+  - Add optional match_field_options to SearchV2Arg struct.
+  - Doc/example changes.
+- Sharing Namespace
+  - Add is_vault to SharePathError union.
+  - Add invalid_shared_folder to AddFolderMemberError union.
+- Team Namespace
+  - Make members field of LegalHoldsPolicyUpdateArg struct optional.
+  - Add app_folder_removal_not_supported to RevokeLinkedAppError union.
+  - Doc/example changes.
+- Team Log Namespace
+  - Add auto_approve to InviteMethod union.
+  - Add moved_from_another_team to InviteMethod union.
+  - Add moved_from_another_team to MemberStatus union.
+  - Add no_one to SharedLinkVisibility union.
+  - Add optional new_team to MemberChangeStatusDetails struct.
+  - Add optional previous_team to MemberChangeStatusDetails struct.
+  - Add external_sharing_create_report_details to EventDetails union.
+  - Add external_sharing_report_failed to EventDetails union.
+  - Add content_administration_policy_changed_details to EventDetails
+union.
+  - Add external_sharing_create_report to EventType union.
+  - Add external_sharing_report_failed to EventType union.
+  - Add content_administration_policy_changed to EventType union.
+  - Add send_for_signature_policy_changed_details to EventDetails union.
+  - Add external_sharing_create_report to EventTypeArgs union.
+  - Add external_sharing_report_failed to EventTypeArgs union.
+  - Add content_administration_policy_changed to EventTypeArgs union.
+  - Add send_for_signature_policy_changed to EventTypeArgs union.
+  - Add SendForSignaturePolicy union.
+  - Add ExternalSharingCreateReportDetails struct.
+  - Add ExternalSharingReportFailedDetails struct.
+  - Add ContentAdministrationPolicyChangedDetails struct.
+  - Add SendForSignaturePolicyChangedDetails struct.
+  - Add ExternalSharingCreateReportType struct.
+  - Add ExternalSharingReportFailedType struct.
+  - Add ContentAdministrationPolicyChangedType struct.
+  - Add SendForSignaturePolicyChangedType struct.
+
 3.1.4 (2020-06-08)
 ---------------------------------------------
 - Support include_granted_scopes in OAuth2 flow.

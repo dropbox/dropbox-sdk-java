@@ -11,6 +11,8 @@ import android.widget.TextView;
 import com.dropbox.core.examples.android.internal.OpenWithActivity;
 import com.dropbox.core.v2.users.FullAccount;
 
+import java.util.Arrays;
+
 
 /**
  * Activity that shows information about the currently logged in user
@@ -31,7 +33,7 @@ public class UserActivity extends DropboxActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DropboxActivity.startOAuth2Authentication(UserActivity.this, getString(R.string.app_key), null);
+                DropboxActivity.startOAuth2Authentication(UserActivity.this, getString(R.string.app_key), Arrays.asList("account_info.read", "files.content.write"));
             }
         });
 

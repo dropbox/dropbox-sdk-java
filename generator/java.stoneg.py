@@ -2826,7 +2826,7 @@ class JavaCodeGenerationInstance(object):
         )
 
         default_fields = tuple(f for f in arg.all_optional_fields if f.has_default)
-        doc = route.doc or ''
+        doc = route.raw_doc or ''
         if required_only and default_fields:
             if j.has_builder(route):
                 doc += """
