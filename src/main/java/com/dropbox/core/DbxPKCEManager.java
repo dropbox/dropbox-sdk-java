@@ -18,9 +18,6 @@ import static com.dropbox.core.util.StringUtil.urlSafeBase64Encode;
 /**
  * This class should be lib/jar private. We make it public so that Android related code can use it.
  *
- * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
- * early access partner of this feature. The function signature is subject to change
- * in next minor version release.
  *
  * This class does code verifier and code challenge generation in Proof Key for Code Exchange(PKCE).
  * @see <a href="https://tools.ietf.org/html/rfc7636">https://tools.ietf.org/html/rfc7636</a>

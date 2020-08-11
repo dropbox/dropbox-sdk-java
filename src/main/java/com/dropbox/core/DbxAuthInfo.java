@@ -30,9 +30,6 @@ public final class DbxAuthInfo {
     }
 
     /**
-     * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
-     * early access partner of this feature. The function signature is subject to change
-     * in next minor version release.
      *
      * Creates a new instance with the given parameters.
      *
@@ -61,9 +58,6 @@ public final class DbxAuthInfo {
     }
 
     /**
-     * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
-     * early access partner of this feature. The function signature is subject to change
-     * in next minor version release.
      *
      * Return the millisecond when accessToken is going to expire.
      *
@@ -74,9 +68,6 @@ public final class DbxAuthInfo {
     }
 
     /**
-     * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
-     * early access partner of this feature. The function signature is subject to change
-     * in next minor version release.
      *
      * Return the refresh token which can be used to obtain new access token.
      *

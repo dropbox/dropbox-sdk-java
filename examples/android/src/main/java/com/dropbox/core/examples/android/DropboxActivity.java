@@ -18,7 +18,7 @@ import java.util.List;
 public abstract class DropboxActivity extends AppCompatActivity {
 
     private final static boolean USE_SLT = false; //If USE_SLT is set to true, our Android example
-    // will use our beta feature Short Live Token.
+    // will use our Short Lived Token.
 
     @Override
     protected void onResume() {

@@ -888,9 +888,6 @@ public class DbxWebAuth {
             }
 
             /**
-             * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
-             * early access partner of this feature. The function signature is subject to change
-             * in next minor version release.
              *
              * Whether or not to include refresh token in {@link DbxAuthFinish}
              *
@@ -912,9 +909,6 @@ public class DbxWebAuth {
 
             /**
              *
-             * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
-             * early access partner of this feature. The function signature is subject to change
-             * in next minor version release.
              *
              * @param scope Space-delimited scope string. Each scope corresponds to a group of
              * API endpoints. To call one API endpoint you have to obtains the scope first otherwise you
@@ -929,9 +923,6 @@ public class DbxWebAuth {
 
 
             /**
-             * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
-             * early access partner of this feature. The function signature is subject to change
-             * in next minor version release.
              *
              * @param includeGrantedScopes This field is optional. If not presented, Dropbox will
              *                            give you the scopes in

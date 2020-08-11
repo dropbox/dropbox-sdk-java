@@ -34,7 +34,7 @@ public class Main
             System.out.println("");
             System.out.println(" <auth-file>: An \"auth file\" that contains the information necessary to make");
             System.out.println("    an authorized Dropbox API request.  Generate this file using the");
-            System.out.println("    \"authorize-beta\" example program.");
+            System.out.println("    \"authorize\" example program.");
             System.out.println("");
             System.exit(1);
             return;

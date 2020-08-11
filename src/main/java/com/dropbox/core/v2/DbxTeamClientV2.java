@@ -60,9 +60,6 @@ public class DbxTeamClientV2 extends DbxTeamClientV2Base {
 
     /**
      *
-     * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
-     * early access partner of this feature. The function signature is subject to change
-     * in next minor version release.
      *
      * Create a client that uses {@link com.dropbox.core.oauth.DbxCredential} instead of raw
      * access token. The credential object include access token as well as refresh token,
@@ -95,9 +92,6 @@ public class DbxTeamClientV2 extends DbxTeamClientV2Base {
 
     /**
      *
-     * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
-     * early access partner of this feature. The function signature is subject to change
-     * in next minor version release.
      *
      * Same as {@link #DbxTeamClientV2(DbxRequestConfig, DbxCredential)} except you can set host
      * and userId.
@@ -116,9 +110,6 @@ public class DbxTeamClientV2 extends DbxTeamClientV2Base {
 
     /**
      *
-     * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
-     * early access partner of this feature. The function signature is subject to change
-     * in next minor version release.
      *
      * Refresh the access token inside {@link DbxCredential}. It has the same behavior as
      * {@link DbxCredential#refresh(DbxRequestConfig)}.

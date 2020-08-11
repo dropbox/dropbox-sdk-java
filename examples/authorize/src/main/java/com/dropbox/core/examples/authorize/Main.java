@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 /**
  *
  * An example command-line application that runs through the web-based OAuth
- * flow (using {@link DbxWebAuth}). It use the beta feature to grab short-live token as well as
+ * flow (using {@link DbxWebAuth}). It grabs short-live token as well as
  * refresh token from server. It stores all authentication related data into the new
  * DbxCredential object and save them to file.
  */
