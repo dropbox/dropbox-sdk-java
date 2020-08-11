@@ -5,9 +5,9 @@ import com.dropbox.core.DbxAuthFinish;
 import com.dropbox.core.DbxWebAuth;
 import com.dropbox.core.json.JsonReader;
 import com.dropbox.core.oauth.DbxCredential;
-import src.main.java.com.dropbox.core.examples.authorize_beta.PkceAuthorize;
-import src.main.java.com.dropbox.core.examples.authorize_beta.ScopeAuthorize;
-import src.main.java.com.dropbox.core.examples.authorize_beta.ShortLiveTokenAuthorize;
+import com.dropbox.core.examples.authorize.PkceAuthorize;
+import com.dropbox.core.examples.authorize.ScopeAuthorize;
+import com.dropbox.core.examples.authorize.ShortLiveTokenAuthorize;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,9 +15,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
- * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
- * early access partner of this feature.
  *
  * An example command-line application that runs through the web-based OAuth
  * flow (using {@link DbxWebAuth}). It use the beta feature to grab short-live token as well as

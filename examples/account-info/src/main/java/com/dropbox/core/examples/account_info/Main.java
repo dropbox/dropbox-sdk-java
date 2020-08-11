@@ -16,9 +16,6 @@ import java.util.logging.Logger;
 
 /**
  *
- * <b>Beta</b>: This feature is not available to all developers. Please do NOT use it unless you are
- * early access partner of this feature.
- *
  * An example command-line application that grab access token and refresh token from credential
  * file, and then call APIV2. If the access token has expired, SDK will automatically refresh and
  * get a new one, and store them into the original DbxCredential object.
