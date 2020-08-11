@@ -705,13 +705,21 @@ public class AuthActivity extends Activity {
     }
 
     private String createPKCEStateNonce() {
-        return String.format(Locale.US, "oauth2code:%s:%s:%s:%s:%s",
+        String state =  String.format(Locale.US, "oauth2code:%s:%s:%s",
                              mPKCEManager.getCodeChallenge(),
                              DbxPKCEManager.CODE_CHALLENGE_METHODS,
-                             mTokenAccessType.toString(),
-                             mScope,
-                             mIncludeGrantedScopes
+                             mTokenAccessType.toString()
         );
+
+        if (mScope != null) {
+            state += ":" + mScope;
+        }
+
+        if (mIncludeGrantedScopes != null) {
+            state += ":" + mIncludeGrantedScopes.toString();
+        }
+
+        return state;
     }
 
     private String createExtraQueryParams() {

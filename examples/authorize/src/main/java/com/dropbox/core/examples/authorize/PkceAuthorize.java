@@ -1,4 +1,4 @@
-package src.main.java.com.dropbox.core.examples.authorize_beta;
+package src.main.java.com.dropbox.core.examples.account_info;
 
 import com.dropbox.core.DbxAuthFinish;
 import com.dropbox.core.DbxException;
