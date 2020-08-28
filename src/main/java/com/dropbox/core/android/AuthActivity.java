@@ -1,6 +1,8 @@
 package com.dropbox.core.android;
 
 import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -14,12 +16,17 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
+import android.os.*;
 import android.util.Log;
 
+import com.dropbox.core.DbxAuthFinish;
+import com.dropbox.core.DbxException;
+import com.dropbox.core.DbxHost;
+import com.dropbox.core.DbxPKCEManager;
+import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.DbxRequestUtil;
+import com.dropbox.core.IncludeGrantedScopes;
+import com.dropbox.core.TokenAccessType;
 
 //Note: This class's code is duplicated between Core SDK and Sync SDK.  For now,
 //it has to be manually copied, but the code is set up so that it can be used in both
@@ -61,6 +68,12 @@ public class AuthActivity extends Activity {
      */
     public static final String EXTRA_UID = "UID";
 
+    public static final String EXTRA_REFRESH_TOKEN = "REFRESH_TOKEN";
+
+    public static final String EXTRA_EXPIRES_AT = "EXPIRES_AT";
+
+    public static final String EXTRA_SCOPE = "SCOPE";
+
     /**
      * Used for internal authentication. You won't ever have to use this.
      */
@@ -100,6 +113,11 @@ public class AuthActivity extends Activity {
     public static final String EXTRA_SESSION_ID = "SESSION_ID";
 
     /**
+     * Used for internal authentication. You won't ever have to use this.
+     */
+    public static final String EXTRA_AUTH_QUERY_PARAMS = "AUTH_QUERY_PARAMS";
+
+    /**
      * The Android action which the official Dropbox app will accept to
      * authenticate a user. You won't ever have to use this.
      */
@@ -126,6 +144,8 @@ public class AuthActivity extends Activity {
     // saved instance state keys
     private static final String SIS_KEY_AUTH_STATE_NONCE = "SIS_KEY_AUTH_STATE_NONCE";
 
+    // saved instance PKCE manger key
+    private static final String SIS_KEY_PKCE_CODE_VERIFIER = "SIS_KEY_PKCE_CODE_VERIFIER";
     /**
      * Provider of the local security needs of an AuthActivity.
      *
@@ -156,20 +176,29 @@ public class AuthActivity extends Activity {
 
     // Temporary storage for parameters before Activity is created
     private static String sAppKey;
-    private static String sWebHost = DEFAULT_WEB_HOST;
     private static String sApiType;
     private static String sDesiredUid;
     private static String[] sAlreadyAuthedUids;
     private static String sSessionId;
+    private static TokenAccessType sTokenAccessType;
+    private static DbxRequestConfig sRequestConfig;
+    private static DbxHost sHost;
+    private static String sScope;
+    private static IncludeGrantedScopes sIncludeGrantedScopes;
 
     // These instance variables need not be stored in savedInstanceState as onNewIntent()
     // does not read them.
     private String mAppKey;
-    private String mWebHost;
     private String mApiType;
     private String mDesiredUid;
     private String[] mAlreadyAuthedUids;
     private String mSessionId;
+    private TokenAccessType mTokenAccessType;
+    private DbxPKCEManager mPKCEManager;
+    private DbxRequestConfig mRequestConfig;
+    private DbxHost mHost;
+    private String mScope;
+    private IncludeGrantedScopes mIncludeGrantedScopes;
 
     // Stored in savedInstanceState to track an ongoing auth attempt, which
     // must include a locally-generated nonce in the response.
@@ -192,7 +221,8 @@ public class AuthActivity extends Activity {
      */
     static void setAuthParams(String appKey, String desiredUid,
                               String[] alreadyAuthedUids, String webHost, String apiType) {
-        setAuthParams(appKey, desiredUid, alreadyAuthedUids, null, null, null);
+        setAuthParams(appKey, desiredUid, alreadyAuthedUids, null, null, null, null, null, null,
+            null, null);
     }
 
     /**
@@ -200,20 +230,38 @@ public class AuthActivity extends Activity {
      */
     static void setAuthParams(String appKey, String desiredUid,
                               String[] alreadyAuthedUids, String sessionId) {
-        setAuthParams(appKey, desiredUid, alreadyAuthedUids, sessionId, null, null);
+        setAuthParams(appKey, desiredUid, alreadyAuthedUids, sessionId, null, null, null, null,
+            null, null, null);
     }
 
     /**
-     * Set static authentication parameters
+     * Set static authentication parameters. If both host and webHost are provided, we take use
+     * host as source of truth.
      */
     static void setAuthParams(String appKey, String desiredUid,
-                              String[] alreadyAuthedUids, String sessionId, String webHost, String apiType) {
+                              String[] alreadyAuthedUids, String sessionId, String webHost,
+                              String apiType, TokenAccessType tokenAccessType,
+                              DbxRequestConfig requestConfig, DbxHost host, String scope,
+                              IncludeGrantedScopes includeGrantedScopes) {
         sAppKey = appKey;
         sDesiredUid = desiredUid;
         sAlreadyAuthedUids = (alreadyAuthedUids != null) ? alreadyAuthedUids : new String[0];
         sSessionId = sessionId;
-        sWebHost = (webHost != null) ? webHost : DEFAULT_WEB_HOST;
         sApiType = apiType;
+        sTokenAccessType = tokenAccessType;
+        sRequestConfig = requestConfig;
+        if (host != null) {
+            sHost = host;
+        } else if (webHost != null) {
+            sHost = new DbxHost(
+                DbxHost.DEFAULT.getApi(), DbxHost.DEFAULT.getContent(), webHost,
+                DbxHost.DEFAULT.getNotify()
+            );
+        } else {
+            sHost = DbxHost.DEFAULT;
+        }
+        sScope = scope;
+        sIncludeGrantedScopes = includeGrantedScopes;
     }
 
     /**
@@ -229,7 +277,8 @@ public class AuthActivity extends Activity {
      */
     public static Intent makeIntent(Context context, String appKey, String webHost,
                                           String apiType) {
-        return makeIntent(context, appKey, null, null, null, webHost, apiType);
+        return makeIntent(context, appKey, null, null, null, webHost, apiType, null, null, null,
+            null, null);
     }
 
     /**
@@ -254,8 +303,27 @@ public class AuthActivity extends Activity {
      */
     public static Intent makeIntent(Context context, String appKey, String desiredUid, String[] alreadyAuthedUids,
                                     String sessionId, String webHost, String apiType) {
+        if (appKey == null) {
+            throw new IllegalArgumentException("'appKey' can't be null");
+        }
+        setAuthParams(appKey, desiredUid, alreadyAuthedUids, sessionId, webHost, apiType, null,
+            null, null, null, null);
+        return new Intent(context, AuthActivity.class);
+    }
+
+    /**
+     * If both host and webHost are provided, we take use host as source of truth.
+     */
+    static Intent makeIntent(
+        Context context, String appKey, String desiredUid, String[] alreadyAuthedUids,
+        String sessionId, String webHost, String apiType, TokenAccessType tokenAccessType,
+        DbxRequestConfig requestConfig, DbxHost host, String scope, IncludeGrantedScopes includeGrantedScopes
+    ) {
         if (appKey == null) throw new IllegalArgumentException("'appKey' can't be null");
-        setAuthParams(appKey, desiredUid, alreadyAuthedUids, sessionId, webHost, apiType);
+        setAuthParams(
+            appKey, desiredUid, alreadyAuthedUids, sessionId, webHost, apiType, tokenAccessType,
+            requestConfig, host, scope, includeGrantedScopes
+        );
         return new Intent(context, AuthActivity.class);
     }
 
@@ -365,17 +433,23 @@ public class AuthActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mAppKey = sAppKey;
-        mWebHost = sWebHost;
         mApiType = sApiType;
         mDesiredUid = sDesiredUid;
         mAlreadyAuthedUids = sAlreadyAuthedUids;
         mSessionId = sSessionId;
+        mTokenAccessType = sTokenAccessType;
+        mRequestConfig = sRequestConfig;
+        mHost = sHost;
+        mScope = sScope;
+        mIncludeGrantedScopes = sIncludeGrantedScopes;
 
         if (savedInstanceState == null) {
             result = null;
             mAuthStateNonce = null;
+            mPKCEManager = new DbxPKCEManager();
         } else {
             mAuthStateNonce = savedInstanceState.getString(SIS_KEY_AUTH_STATE_NONCE);
+            mPKCEManager = new DbxPKCEManager(savedInstanceState.getString(SIS_KEY_PKCE_CODE_VERIFIER));
         }
 
         setTheme(android.R.style.Theme_Translucent_NoTitleBar);
@@ -387,6 +461,7 @@ public class AuthActivity extends Activity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(SIS_KEY_AUTH_STATE_NONCE, mAuthStateNonce);
+        outState.putString(SIS_KEY_PKCE_CODE_VERIFIER, mPKCEManager.getCodeVerifier());
     }
 
     /**
@@ -399,18 +474,41 @@ public class AuthActivity extends Activity {
         return authIntent;
     }
 
-
     @Override
     protected void onResume() {
         super.onResume();
 
-        if (isFinishing()) {
+        if (Build.VERSION.SDK_INT < 29) {
+            // onTopResumedActivityChanged was introduced in Android 29 so we need to call it
+            // manually when Android version is less than 29
+            onTopResumedActivityChanged(true/* onTop */);
+        }
+    }
+
+    /**
+     * AuthActivity is launched first time, or user didn't finish oauth/dauth flow but
+     * switched back to this activity. (hit back button)
+     *
+     * If DAuth/Browser Auth succeeded, this flow should finish through onNewIntent()
+     * instead of onResume().
+     *
+     * NOTE: Although Android Studio doesn't think this overrides a method, it actually overrides
+     * onTopResumedActivityChanged() introduced in Android level 29. 
+     *
+     * See:
+     * https://developer.android.com/reference/android/app/Activity#onTopResumedActivityChanged(boolean)
+     */
+    protected void onTopResumedActivityChanged(boolean onTop) {
+        if (isFinishing() || !onTop) {
             return;
         }
 
-        if (mAuthStateNonce != null || mAppKey == null) {
+        boolean authNotFinish = mAuthStateNonce != null || mAppKey == null;
+
+        if (authNotFinish) {
             // We somehow returned to this activity without being forwarded
             // here by the official app.
+
             // Most commonly caused by user hitting "back" from the auth screen
             // or (if doing browser auth) task switching from auth task back to
             // this one.
@@ -428,18 +526,28 @@ public class AuthActivity extends Activity {
         // Random entropy passed through auth makes sure we don't accept a
         // response which didn't come from our request.  Each random
         // value is only ever used once.
-        final String state = createStateNonce();
+        final String state;
 
         // Create intent to auth with official app.
         final Intent officialAuthIntent = getOfficialAuthIntent();
+
+        if (mTokenAccessType != null) {
+            // short live token flow
+            state = createPKCEStateNonce(); // to support legacy DBApp with V1 flow with
+            officialAuthIntent.putExtra(EXTRA_AUTH_QUERY_PARAMS, createExtraQueryParams());
+        } else {
+            // Legacy long live token flow
+            state = createStateNonce();
+        }
+
         officialAuthIntent.putExtra(EXTRA_CONSUMER_KEY, mAppKey);
         officialAuthIntent.putExtra(EXTRA_CONSUMER_SIG, "");
-        officialAuthIntent.putExtra(EXTRA_DESIRED_UID, mDesiredUid);
-        officialAuthIntent.putExtra(EXTRA_ALREADY_AUTHED_UIDS, mAlreadyAuthedUids);
-        officialAuthIntent.putExtra(EXTRA_SESSION_ID, mSessionId);
         officialAuthIntent.putExtra(EXTRA_CALLING_PACKAGE, getPackageName());
         officialAuthIntent.putExtra(EXTRA_CALLING_CLASS, getClass().getName());
         officialAuthIntent.putExtra(EXTRA_AUTH_STATE, state);
+        officialAuthIntent.putExtra(EXTRA_DESIRED_UID, mDesiredUid);
+        officialAuthIntent.putExtra(EXTRA_ALREADY_AUTHED_UIDS, mAlreadyAuthedUids);
+        officialAuthIntent.putExtra(EXTRA_SESSION_ID, mSessionId);
 
         /*
          * An Android bug exists where onResume may be called twice in rapid succession.
@@ -520,15 +628,42 @@ public class AuthActivity extends Activity {
             }
 
             // Successful auth.
-            newResult = new Intent();
-            newResult.putExtra(EXTRA_ACCESS_TOKEN, token);
-            newResult.putExtra(EXTRA_ACCESS_SECRET, secret);
-            newResult.putExtra(EXTRA_UID, uid);
+            if (token.equals(TokenType.OAUTH2.toString())) {
+                // token flow
+                newResult = new Intent();
+                newResult.putExtra(EXTRA_ACCESS_TOKEN, token);
+                newResult.putExtra(EXTRA_ACCESS_SECRET, secret);
+                newResult.putExtra(EXTRA_UID, uid);
+            } else if (token.equals(TokenType.OAUTH2CODE.toString())) {
+                // code flow with PKCE
+                TokenRequestAsyncTask tokenRequest = new TokenRequestAsyncTask(secret);
+                try {
+                    DbxAuthFinish dbxAuthFinish = tokenRequest.execute().get();
+
+                    if (dbxAuthFinish == null) {
+                        newResult = null;
+                    } else {
+                        newResult = new Intent();
+                        // access_token and access_secret are OAuth1 concept. In OAuth2 we only
+                        // have access token. So I put both of them to be the same.
+                        newResult.putExtra(EXTRA_ACCESS_TOKEN, dbxAuthFinish.getAccessToken());
+                        newResult.putExtra(EXTRA_ACCESS_SECRET, dbxAuthFinish.getAccessToken());
+                        newResult.putExtra(EXTRA_REFRESH_TOKEN, dbxAuthFinish.getRefreshToken());
+                        newResult.putExtra(EXTRA_EXPIRES_AT, dbxAuthFinish.getExpiresAt());
+                        newResult.putExtra(EXTRA_UID, dbxAuthFinish.getUserId());
+                        newResult.putExtra(EXTRA_CONSUMER_KEY, mAppKey);
+                        newResult.putExtra(EXTRA_SCOPE, dbxAuthFinish.getScope());
+                    }
+                } catch (Exception e) {
+                    newResult = null;
+                }
+            } else {
+                newResult = null;
+            }
         } else {
             // Unsuccessful auth, or missing required parameters.
             newResult = null;
         }
-
         authFinished(newResult);
     }
 
@@ -542,19 +677,27 @@ public class AuthActivity extends Activity {
     private void startWebAuth(String state) {
         String path = "1/connect";
         Locale locale = Locale.getDefault();
+        locale = new Locale(locale.getLanguage(), locale.getCountry());
 
         // Web Auth currently does not support desiredUid and only one alreadyAuthUid (param n).
         // We use first alreadyAuthUid arbitrarily.
         // Note that the API treats alreadyAuthUid of 0 and not present equivalently.
         String alreadyAuthedUid = (mAlreadyAuthedUids.length > 0) ? mAlreadyAuthedUids[0] : "0";
 
-        String[] params = {
-                "k", mAppKey,
-                "n", alreadyAuthedUid,
-                "api", mApiType,
-                "state", state};
+        List<String> params = new ArrayList<String>(Arrays.asList(
+            "k", mAppKey,
+            "n", alreadyAuthedUid,
+            "api", mApiType,
+            "state", state
+        ));
 
-        String url = DbxRequestUtil.buildUrlWithParams(locale.toString(), mWebHost, path, params);
+        if (mTokenAccessType != null) {
+            params.add("extra_query_params");
+            params.add(createExtraQueryParams());
+        }
+
+        String url = DbxRequestUtil.buildUrlWithParams(locale.toString(), mHost.getWeb(), path,
+            params.toArray(new String [0]));
 
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         startActivity(intent);
@@ -570,5 +713,84 @@ public class AuthActivity extends Activity {
             sb.append(String.format("%02x", (randomBytes[i]&0xff)));
         }
         return sb.toString();
+    }
+
+    private String createPKCEStateNonce() {
+        String state =  String.format(Locale.US, "oauth2code:%s:%s:%s",
+                             mPKCEManager.getCodeChallenge(),
+                             DbxPKCEManager.CODE_CHALLENGE_METHODS,
+                             mTokenAccessType.toString()
+        );
+
+        if (mScope != null) {
+            state += ":" + mScope;
+        }
+
+        if (mIncludeGrantedScopes != null) {
+            state += ":" + mIncludeGrantedScopes.toString();
+        }
+
+        return state;
+    }
+
+    private String createExtraQueryParams() {
+        if (mTokenAccessType == null) {
+            throw new IllegalStateException("Extra Query Param should only be used in short live " +
+                "token flow.");
+        }
+
+        String param = String.format(Locale.US,
+            "%s=%s&%s=%s&%s=%s&%s=%s",
+            "code_challenge", mPKCEManager.getCodeChallenge(),
+            "code_challenge_method", DbxPKCEManager.CODE_CHALLENGE_METHODS,
+            "token_access_type", mTokenAccessType.toString(),
+            "response_type", "code"
+        );
+
+        if (mScope != null) {
+            param += String.format(Locale.US, "&%s=%s", "scope", mScope);
+        }
+
+        if (mIncludeGrantedScopes != null) {
+            param += String.format(Locale.US, "&%s=%s", "include_granted_scopes",
+                mIncludeGrantedScopes.toString());
+        }
+
+        return param;
+    }
+
+    private enum TokenType {
+        OAUTH2("oauth2:"),
+        OAUTH2CODE("oauth2code:");
+
+        private String string;
+
+        TokenType(String string) {
+            this.string = string;
+        }
+
+        @Override
+        public String toString() {
+            return string;
+        }
+    }
+
+    private class TokenRequestAsyncTask extends AsyncTask<Void, Void, DbxAuthFinish> {
+        private final String code;
+
+        private TokenRequestAsyncTask(String code) {
+            this.code = code;
+        }
+
+
+        @Override
+        protected DbxAuthFinish doInBackground(Void... p) {
+            try {
+                return mPKCEManager.makeTokenRequest(mRequestConfig, code, mAppKey, null, mHost);
+            } catch (DbxException e) {
+                Log.e(TAG, "Token Request Failed: " + e.getMessage());
+                return null;
+            }
+        }
     }
 }
