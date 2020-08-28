@@ -7,6 +7,7 @@ import com.dropbox.core.DbxWebAuth;
 import com.dropbox.core.NetworkIOException;
 import com.dropbox.core.RetryException;
 import com.dropbox.core.json.JsonReader;
+import com.dropbox.core.util.IOUtil.ProgressListener;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.DbxPathV2;
 import com.dropbox.core.v2.files.CommitInfo;
@@ -15,7 +16,6 @@ import com.dropbox.core.v2.files.UploadErrorException;
 import com.dropbox.core.v2.files.UploadSessionCursor;
 import com.dropbox.core.v2.files.UploadSessionFinishErrorException;
 import com.dropbox.core.v2.files.UploadSessionLookupErrorException;
-import com.dropbox.core.v2.files.UploadSessionOffsetError;
 import com.dropbox.core.v2.files.WriteMode;
 
 import java.io.File;
@@ -47,10 +47,12 @@ public class Main {
      */
     private static void uploadFile(DbxClientV2 dbxClient, File localFile, String dropboxPath) {
         try (InputStream in = new FileInputStream(localFile)) {
+            ProgressListener progressListener = l -> printProgress(l, localFile.length());
+
             FileMetadata metadata = dbxClient.files().uploadBuilder(dropboxPath)
                 .withMode(WriteMode.ADD)
                 .withClientModified(new Date(localFile.lastModified()))
-                .uploadAndFinish(in);
+                .uploadAndFinish(in, progressListener);
 
             System.out.println(metadata.toStringMultiline());
         } catch (UploadErrorException ex) {
@@ -89,6 +91,15 @@ public class Main {
         long uploaded = 0L;
         DbxException thrown = null;
 
+        ProgressListener progressListener = new ProgressListener() {
+            long uploadedBytes = 0;
+            @Override
+            public void onProgress(long l) {
+                printProgress(l + uploadedBytes, size);
+                if (l == CHUNKED_UPLOAD_CHUNK_SIZE) uploadedBytes += CHUNKED_UPLOAD_CHUNK_SIZE;
+            }
+        };
+
         // Chunked uploads have 3 phases, each of which can accept uploaded bytes:
         //
         //    (1)  Start: initiate the upload and get an upload session ID
@@ -109,7 +120,7 @@ public class Main {
                 // (1) Start
                 if (sessionId == null) {
                     sessionId = dbxClient.files().uploadSessionStart()
-                        .uploadAndFinish(in, CHUNKED_UPLOAD_CHUNK_SIZE)
+                        .uploadAndFinish(in, CHUNKED_UPLOAD_CHUNK_SIZE, progressListener)
                         .getSessionId();
                     uploaded += CHUNKED_UPLOAD_CHUNK_SIZE;
                     printProgress(uploaded, size);
@@ -120,7 +131,7 @@ public class Main {
                 // (2) Append
                 while ((size - uploaded) > CHUNKED_UPLOAD_CHUNK_SIZE) {
                     dbxClient.files().uploadSessionAppendV2(cursor)
-                        .uploadAndFinish(in, CHUNKED_UPLOAD_CHUNK_SIZE);
+                        .uploadAndFinish(in, CHUNKED_UPLOAD_CHUNK_SIZE, progressListener);
                     uploaded += CHUNKED_UPLOAD_CHUNK_SIZE;
                     printProgress(uploaded, size);
                     cursor = new UploadSessionCursor(sessionId, uploaded);
@@ -133,7 +144,7 @@ public class Main {
                     .withClientModified(new Date(localFile.lastModified()))
                     .build();
                 FileMetadata metadata = dbxClient.files().uploadSessionFinish(cursor, commitInfo)
-                    .uploadAndFinish(in, remaining);
+                    .uploadAndFinish(in, remaining, progressListener);
 
                 System.out.println(metadata.toStringMultiline());
                 return;

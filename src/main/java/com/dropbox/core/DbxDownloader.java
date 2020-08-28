@@ -1,6 +1,7 @@
 package com.dropbox.core;
 
 import com.dropbox.core.util.IOUtil;
+import com.dropbox.core.util.ProgressOutputStream;
 
 import java.io.Closeable;
 import java.io.InputStream;
@@ -39,14 +40,20 @@ import java.io.OutputStream;
 public class DbxDownloader<R> implements Closeable {
     private final R result;
     private final InputStream body;
+    private final String contentType;
 
     private boolean closed;
 
-    public DbxDownloader(R result, InputStream body) {
+    public DbxDownloader(R result, InputStream body, String contentType) {
         this.result = result;
         this.body = body;
+        this.contentType = contentType;
 
         this.closed = false;
+    }
+
+    public DbxDownloader(R result, InputStream body) {
+        this(result, body, null);
     }
 
     /**
@@ -59,6 +66,15 @@ public class DbxDownloader<R> implements Closeable {
      */
     public R getResult() {
         return result;
+    }
+
+    /**
+     * Returns the value of the content-type header field.
+     *
+     * @return the content type, or null if not known.
+     */
+    public String getContentType() {
+        return contentType;
     }
 
     /**
@@ -118,6 +134,21 @@ public class DbxDownloader<R> implements Closeable {
         }
 
         return result;
+    }
+
+    /**
+     * This method is the same as {@link #download(OutputStream)} except for allowing to track
+     * download progress.
+     *
+     * @param out {@code OutputStream} to write response body to
+     * @param progressListener {@code IOUtil.ProgressListener} to track the download progress.
+     * @return Response from server
+     * @throws DbxException if an error occurs reading the response or response body.
+     * @throws IOException if an error occurs writing the response body to the output stream.
+     */
+    public R download(OutputStream out, IOUtil.ProgressListener progressListener)
+            throws DbxException,  IOException {
+        return download(new ProgressOutputStream(out, progressListener));
     }
 
     /**

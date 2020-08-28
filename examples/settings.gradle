@@ -1,5 +1,7 @@
 rootProject.name = 'examples'
+include ':account-info-legacy'
 include ':account-info'
+include ':authorize-legacy'
 include ':authorize'
 include ':global-callbacks'
 include ':longpoll'

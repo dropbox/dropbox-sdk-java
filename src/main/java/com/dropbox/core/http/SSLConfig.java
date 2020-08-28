@@ -2,10 +2,10 @@ package com.dropbox.core.http;
 
 import com.dropbox.core.util.IOUtil;
 import static com.dropbox.core.util.LangUtil.mkAssert;
+import static com.dropbox.core.util.StringUtil.jq;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
-import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
@@ -61,21 +61,40 @@ public class SSLConfig {
     private static final SSLSocketFactory SSL_SOCKET_FACTORY = createSSLSocketFactory();
 
     private static final String[] PROTOCOL_LIST_TLS_V1_2 = {"TLSv1.2"};
-    private static final String[] PROTOCOL_LIST_TLS_V1_0 = {"TLSv1.0"};
+    private static final String[] PROTOCOL_LIST_TLS_V1_1 = {"TLSv1.1"};
     private static final String[] PROTOCOL_LIST_TLS_V1 = {"TLSv1"};
 
     private static /*@MonotonicNonNull*/CipherSuiteFilterationResults CACHED_CIPHER_SUITE_FILTERATION_RESULTS;
 
-    private static final String ROOT_CERTS_RESOURCE = "/trusted-certs.raw";
+    private static final String ROOT_CERTS_RESOURCE = "/com/dropbox/core/trusted-certs.raw";
     private static final int MAX_CERT_LENGTH = 10 * 1024;
 
     // All client ciphersuites allowed by Dropbox.
     //
-    // Including both RFC and OpenSSL ciphersuite naming conventions to support
+    // Including IBM, RFC and OpenSSL ciphersuite naming conventions to support
     // all Android API levels:
     //  - API Level >= 10 uses the RFC naming convention
     //  - API Level < 10 uses the OpenSSL naming convention
     private static final HashSet<String> ALLOWED_CIPHER_SUITES = new HashSet<String>(Arrays.asList(new String[] {
+        "SSL_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
+        "SSL_ECDHE_RSA_WITH_AES_256_CBC_SHA384",
+        "SSL_ECDHE_RSA_WITH_AES_256_CBC_SHA",
+        "SSL_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
+        "SSL_ECDHE_RSA_WITH_AES_128_CBC_SHA256",
+        "SSL_ECDHE_RSA_WITH_AES_128_CBC_SHA",
+        "SSL_ECDHE_RSA_WITH_RC4_128_SHA",
+        "SSL_DHE_RSA_WITH_AES_256_GCM_SHA384",
+        "SSL_DHE_RSA_WITH_AES_256_CBC_SHA256",
+        "SSL_DHE_RSA_WITH_AES_256_CBC_SHA",
+        "SSL_DHE_RSA_WITH_AES_128_GCM_SHA256",
+        "SSL_DHE_RSA_WITH_AES_128_CBC_SHA256",
+        "SSL_DHE_RSA_WITH_AES_128_CBC_SHA",
+        "SSL_RSA_WITH_AES_256_GCM_SHA384",
+        "SSL_RSA_WITH_AES_256_CBC_SHA256",
+        "SSL_RSA_WITH_AES_256_CBC_SHA",
+        "SSL_RSA_WITH_AES_128_GCM_SHA256",
+        "SSL_RSA_WITH_AES_128_CBC_SHA256",
+        "SSL_RSA_WITH_AES_128_CBC_SHA",
         "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
         "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384",
         "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA",
@@ -132,70 +151,62 @@ public class SSLConfig {
         return SSL_SOCKET_FACTORY;
     }
 
-    private static void limitProtocolsAndCiphers(SSLSocket socket) throws SSLException
-    {
-        // Set TLS protocol version
-        outer: {
-            for (String protocol : socket.getSupportedProtocols()) {
-                if (protocol.equals("TLSv1.2")) {
-                    socket.setEnabledProtocols(PROTOCOL_LIST_TLS_V1_2);
-                    break outer;
-                }
-                if (protocol.equals("TLSv1.0")) {
-                    socket.setEnabledProtocols(PROTOCOL_LIST_TLS_V1_0);
-                    break outer;
-                }
-                if (protocol.equals("TLSv1")) {
-                    socket.setEnabledProtocols(PROTOCOL_LIST_TLS_V1);
-                    break outer;
-                }
-            }
-            throw new SSLException("Socket doesn't support protocols \"TLSv1.2\", \"TLSv1.0\" or \"TLSv1\".");
-        }
-
-        socket.setEnabledCipherSuites(getFilteredCipherSuites(socket.getSupportedCipherSuites()));
+    private static void limitProtocolsAndCiphers(SSLSocket socket) throws SSLException {
+        socket.setEnabledProtocols(getFilteredProtocols(socket.getEnabledProtocols()));
+        socket.setEnabledCipherSuites(getFilteredCipherSuites(socket.getEnabledCipherSuites()));
     }
 
-    private static String[] getFilteredCipherSuites(String[] supportedCipherSuites) {
-        // Since the supported cipher suites probably won't change, try to reuse the
+    private static String[] getFilteredProtocols(String[] availableProtocols) throws SSLException {
+        boolean haveTls1_2 = false;
+        boolean haveTls1_1 = false;
+        boolean haveTls1 = false;
+
+        for (String protocol : availableProtocols) {
+            if (protocol.equals("TLSv1.2")) {
+                haveTls1_2 = true;
+            } else if (protocol.equals("TLSv1.1")) {
+                haveTls1_1 = true;
+            } else if (protocol.equals("TLSv1")) {
+                haveTls1 = true;
+            }
+        }
+
+        if (haveTls1_2) return PROTOCOL_LIST_TLS_V1_2;
+        if (haveTls1_1) return PROTOCOL_LIST_TLS_V1_1;
+        if (haveTls1) return PROTOCOL_LIST_TLS_V1;
+        throw new SSLException("Socket's available protocols doesn't overlap with our allowed protocols: " + jq(availableProtocols) + ".");
+    }
+
+    private static String[] getFilteredCipherSuites(String[] availableCipherSuites) {
+        // Since the available cipher suites probably won't change, try to reuse the
         // result of the last filteration.
         CipherSuiteFilterationResults cached = CACHED_CIPHER_SUITE_FILTERATION_RESULTS;
         if (cached != null) {
-            if (Arrays.equals(cached.supported, supportedCipherSuites)) {
-                return cached.enabled;
+            if (Arrays.equals(cached.available, availableCipherSuites)) {
+                return cached.filtered;
             }
         }
 
-        // Filter the 'supported' list to yield the 'enabled' list.
-        ArrayList<String> enabled = new ArrayList<String>(ALLOWED_CIPHER_SUITES.size());
-        for (String supported : supportedCipherSuites) {
-            if (ALLOWED_CIPHER_SUITES.contains(supported)) {
-                enabled.add(supported);
+        // Filter the 'available' list to yield the 'filtered' list.
+        ArrayList<String> filtered = new ArrayList<String>(ALLOWED_CIPHER_SUITES.size());
+        for (String available : availableCipherSuites) {
+            if (ALLOWED_CIPHER_SUITES.contains(available)) {
+                filtered.add(available);
             }
         }
 
-        String[] filteredArray = enabled.toArray(new String[enabled.size()]);
-        CACHED_CIPHER_SUITE_FILTERATION_RESULTS = new CipherSuiteFilterationResults(supportedCipherSuites, filteredArray);
+        String[] filteredArray = filtered.toArray(new String[filtered.size()]);
+        CACHED_CIPHER_SUITE_FILTERATION_RESULTS = new CipherSuiteFilterationResults(availableCipherSuites, filteredArray);
         return filteredArray;
     }
 
     private static final class CipherSuiteFilterationResults {
-        private final String[] supported;
-        private final String[] enabled;
+        private final String[] available;
+        private final String[] filtered;
 
-        public CipherSuiteFilterationResults(String[] supported, String[] enabled) {
-            this.supported = supported;
-            this.enabled = enabled;
-        }
-
-        // The ciphersuites supported by the underlying library.
-        public String [] getSupported() {
-            return supported;
-        }
-
-        // The subset of 'supported' that we allow to be used.
-        public String [] getEnabled() {
-            return enabled;
+        public CipherSuiteFilterationResults(String[] available, String[] filtered) {
+            this.available = available;
+            this.filtered = filtered;
         }
     }
 

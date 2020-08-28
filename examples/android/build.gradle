@@ -1,12 +1,13 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+apply plugin: 'com.android.application'
 
 buildscript {
     repositories {
         jcenter()
+        google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.0'
-        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.5.2'
+        classpath 'com.android.tools.build:gradle:3.6.2'
+        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.8.3'
     }
 }
 
@@ -14,19 +15,17 @@ allprojects {
     repositories {
         jcenter()
         mavenLocal()
+        google()
     }
 }
 
-apply plugin: 'com.android.application'
-
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    compileSdkVersion 28
 
     defaultConfig {
         applicationId "com.dropbox.core.examples.android"
         minSdkVersion 19
-        targetSdkVersion 23
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
     }
@@ -53,19 +52,17 @@ android {
 
     lintOptions {
         disable 'InvalidPackage'
+        abortOnError false
     }
 }
 
 dependencies {
-    compile group: 'com.dropbox.core', name: 'dropbox-core-sdk', version: '0-SNAPSHOT', changing: true
-    compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'com.android.support:design:23.1.1'
-    compile 'com.android.support:recyclerview-v7:23.1.1'
-    // picasso 2.5.2 doesn't have OkHttp3 support (although it exists
-    // on master). Must use OkHttp v2 and v3 until new picasso release
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.squareup.okhttp:okhttp:2.7.5'
-    compile 'com.squareup.okhttp3:okhttp:3.5.0'
+    implementation group: 'com.dropbox.core', name: 'dropbox-core-sdk', version: '0-SNAPSHOT', changing: true
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'com.google.android.material:material:1.1.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'com.squareup.picasso:picasso:2.71828'
+    api 'com.squareup.okhttp3:okhttp:4.4.0'
 }
 
 apply plugin: 'com.getkeepsafe.dexcount'

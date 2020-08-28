@@ -4,6 +4,8 @@ import com.dropbox.core.DbxHost;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.DbxRequestUtil;
 import com.dropbox.core.http.HttpRequestor;
+import com.dropbox.core.oauth.DbxRefreshResult;
+import com.dropbox.core.v2.common.PathRoot;
 
 import java.util.List;
 
@@ -16,8 +18,7 @@ import java.util.List;
  * <p> This class has no mutable state, so it's thread safe as long as you pass
  * in a thread safe {@link HttpRequestor} implementation. </p>
  */
-// package private to hide from documentation for now until we have a route that requires it.
-class DbxAppClientV2 extends DbxAppClientV2Base {
+public class DbxAppClientV2 extends DbxAppClientV2Base {
 
     /**
      * Creates a client that uses the given app key and secret when performing requests against the
@@ -71,14 +72,36 @@ class DbxAppClientV2 extends DbxAppClientV2Base {
         private final String secret;
 
         private DbxAppRawClientV2(DbxRequestConfig requestConfig, String key, String secret, DbxHost host, String userId) {
-            super(requestConfig, host, userId);
+            super(requestConfig, host, userId, null);
             this.key = key;
             this.secret = secret;
         }
 
         @Override
+        public DbxRefreshResult refreshAccessToken() {
+            //no op
+            return null;
+        }
+
+        @Override
+        boolean canRefreshAccessToken() {
+            return false;
+        }
+
+        @Override
+        boolean needsRefreshAccessToken() {
+            return false;
+        }
+
+        @Override
         protected void addAuthHeaders(List<HttpRequestor.Header> headers) {
+            DbxRequestUtil.removeAuthHeader(headers);
             DbxRequestUtil.addBasicAuthHeader(headers, key, secret);
+        }
+
+        @Override
+        protected DbxRawClientV2 withPathRoot(PathRoot pathRoot) {
+            throw new UnsupportedOperationException("App endpoints don't support Dropbox-API-Path-Root header.");
         }
     }
 }

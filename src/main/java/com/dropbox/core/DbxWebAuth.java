@@ -5,6 +5,7 @@ import static com.dropbox.core.util.StringUtil.jq;
 import java.nio.charset.Charset;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -144,9 +145,9 @@ public class DbxWebAuth {
     /** Role representing the personal account associated with a user. Used by {@link Request.Builder#withRequireRole}. */
     public static final String ROLE_PERSONAL = "personal";
 
-    private final DbxRequestConfig requestConfig;
-    private final DbxAppInfo appInfo;
-    private final Request deprecatedRequest;
+    final DbxRequestConfig requestConfig;
+    final DbxAppInfo appInfo;
+    final Request deprecatedRequest;
 
     /**
      * Creates a new instance that will perform the OAuth2 authorization flow using a redirect URI.
@@ -164,6 +165,7 @@ public class DbxWebAuth {
     public DbxWebAuth(DbxRequestConfig requestConfig, DbxAppInfo appInfo, String redirectUri, DbxSessionStore sessionStore) {
         if (requestConfig == null) throw new NullPointerException("requestConfig");
         if (appInfo == null) throw new NullPointerException("appInfo");
+
 
         this.requestConfig = requestConfig;
         this.appInfo = appInfo;
@@ -225,8 +227,8 @@ public class DbxWebAuth {
     }
 
     /**
-     * Starts authorization and returns a "authorization URL" on the Dropbox website that gives the
-     * lets the user grant your app access to their Dropbox account.
+     * Starts authorization and returns an "authorization URL" on the Dropbox website that
+     * let the user grant your app access to their Dropbox account.
      *
      * <p> If a redirect URI was specified ({@link Request.Builder#withRedirectUri}), then users
      * will be redirected to the redirect URI after completing the authorization flow. Call {@link
@@ -243,17 +245,26 @@ public class DbxWebAuth {
      *
      * @throws IllegalStateException if this {@link DbxWebAuth} instance was created using the
      * deprecated {@link #DbxWebAuth(DbxRequestConfig,DbxAppInfo,String,DbxSessionStore)}
-     * constructor.
+     * constructor, or if this (@link DbxWebAuth} instance was created with {@link DbxAppInfo}
+     * without app secret.
      */
     public String authorize(Request request) {
         if (deprecatedRequest != null) {
             throw new IllegalStateException("Must create this instance using DbxWebAuth(DbxRequestConfig,DbxAppInfo) to call this method.");
         }
 
+        if (!appInfo.hasSecret()) {
+            throw new IllegalStateException("For native apps, please use DbxPKCEWebAuth");
+        }
+
         return authorizeImpl(request);
     }
 
     private String authorizeImpl(Request request) {
+        return authorizeImpl(request, null);
+    }
+
+    String authorizeImpl(Request request, Map<String, String> pkceParams) {
         Map<String, String> params = new HashMap<String, String>();
 
         params.put("client_id", appInfo.getKey());
@@ -272,6 +283,23 @@ public class DbxWebAuth {
         }
         if (request.disableSignup != null) {
             params.put("disable_signup", Boolean.toString(request.disableSignup).toLowerCase());
+        }
+        if (request.tokenAccessType != null) {
+            params.put("token_access_type", request.tokenAccessType.toString());
+        }
+
+        if (request.scope != null) {
+            params.put("scope", request.scope);
+        }
+
+        if (request.includeGrantedScopes != null) {
+            params.put("include_granted_scopes", request.includeGrantedScopes.toString());
+        }
+
+        if (pkceParams != null) {
+            for (String key: pkceParams.keySet()) {
+                params.put(key, pkceParams.get(key));
+            }
         }
 
         return DbxRequestUtil.buildUrlWithParams(
@@ -335,6 +363,15 @@ public class DbxWebAuth {
                                             DbxSessionStore sessionStore,
                                             Map<String, String[]> params)
         throws DbxException, BadRequestException, BadStateException, CsrfException, NotApprovedException, ProviderException {
+
+        String strippedState = validateRedirectUri(redirectUri, sessionStore, params);
+        String code = getParam(params, "code");
+        return finish(code, redirectUri, strippedState);
+    }
+
+    static String validateRedirectUri(String redirectUri, DbxSessionStore sessionStore, Map<String, String[]> params)
+        throws BadRequestException, BadStateException, CsrfException, NotApprovedException, ProviderException
+    {
         if (redirectUri == null) throw new NullPointerException("redirectUri");
         if (sessionStore == null) throw new NullPointerException("sessionStore");
         if (params == null) throw new NullPointerException("params");
@@ -376,15 +413,19 @@ public class DbxWebAuth {
             }
         }
 
-        return finish(code, redirectUri, state);
+        return state;
     }
 
     private DbxAuthFinish finish(String code) throws DbxException {
         return finish(code, null, null);
     }
 
-    private DbxAuthFinish finish(String code, String redirectUri, final String state) throws DbxException {
+    DbxAuthFinish finish(String code, String redirectUri, final String state) throws
+            DbxException {
         if (code == null) throw new NullPointerException("code");
+        if (!appInfo.hasSecret()) {
+            throw new IllegalStateException("For native apps, please use DbxPKCEWebAuth");
+        }
 
         Map<String, String> params = new HashMap<String, String>();
         params.put("grant_type", "authorization_code");
@@ -503,7 +544,7 @@ public class DbxWebAuth {
         return stripped.isEmpty() ? null : stripped;
     }
 
-    private static /*@Nullable*/String getParam(Map<String,String[]> params, String name) throws BadRequestException {
+    static /*@Nullable*/String getParam(Map<String,String[]> params, String name) throws BadRequestException {
         String[] v = params.get(name);
 
         if (v == null) {
@@ -626,19 +667,29 @@ public class DbxWebAuth {
         private final Boolean forceReapprove;
         private final Boolean disableSignup;
         private final DbxSessionStore sessionStore;
+        private final TokenAccessType tokenAccessType;
+        private final String scope;
+        private final IncludeGrantedScopes includeGrantedScopes;
+
 
         private Request(String redirectUri,
                         String state,
                         String requireRole,
                         Boolean forceReapprove,
                         Boolean disableSignup,
-                        DbxSessionStore sessionStore) {
+                        DbxSessionStore sessionStore,
+                        TokenAccessType tokenAccessType,
+                        String scope,
+                        IncludeGrantedScopes includeGrantedScopes) {
             this.redirectUri = redirectUri;
             this.state = state;
             this.requireRole = requireRole;
             this.forceReapprove = forceReapprove;
             this.disableSignup = disableSignup;
             this.sessionStore = sessionStore;
+            this.tokenAccessType = tokenAccessType;
+            this.scope = scope;
+            this.includeGrantedScopes = includeGrantedScopes;
         }
 
         /**
@@ -647,12 +698,17 @@ public class DbxWebAuth {
          * @return copy of this request
          */
         public Builder copy() {
-            return new Builder(redirectUri,
-                               state,
-                               requireRole,
-                               forceReapprove,
-                               disableSignup,
-                               sessionStore);
+            return new Builder(
+                    redirectUri,
+                    state,
+                    requireRole,
+                    forceReapprove,
+                    disableSignup,
+                    sessionStore,
+                    tokenAccessType,
+                    scope,
+                includeGrantedScopes
+                );
         }
 
         /**
@@ -674,9 +730,12 @@ public class DbxWebAuth {
             private Boolean forceReapprove;
             private Boolean disableSignup;
             private DbxSessionStore sessionStore;
+            private TokenAccessType tokenAccessType;
+            private String scope;
+            private IncludeGrantedScopes includeGrantedScopes;
 
             private Builder() {
-                this(null, null, null, null, null, null);
+                this(null, null, null, null, null, null, null, null, null);
             }
 
             private Builder(String redirectUri,
@@ -684,13 +743,19 @@ public class DbxWebAuth {
                             String requireRole,
                             Boolean forceReapprove,
                             Boolean disableSignup,
-                            DbxSessionStore sessionStore) {
+                            DbxSessionStore sessionStore,
+                            TokenAccessType tokenAccessType,
+                            String scope,
+                            IncludeGrantedScopes includeGrantedScopes) {
                 this.redirectUri = redirectUri;
                 this.state = state;
                 this.requireRole = requireRole;
                 this.forceReapprove = forceReapprove;
                 this.disableSignup = disableSignup;
                 this.sessionStore = sessionStore;
+                this.tokenAccessType = tokenAccessType;
+                this.scope = scope;
+                this.includeGrantedScopes = includeGrantedScopes;
             }
 
             /**
@@ -823,6 +888,55 @@ public class DbxWebAuth {
             }
 
             /**
+             *
+             * Whether or not to include refresh token in {@link DbxAuthFinish}
+             *
+             * For {@link TokenAccessType#ONLINE}, auth result only contains short live token.
+             * For {@link TokenAccessType#OFFLINE}, auth result includes both short live token
+             * and refresh token.
+             * For {@code null}, auth result is either legacy long live token or short live token
+             * only, depending on the app setting.
+             *
+             * @param tokenAccessType Whether or not to include refresh token in
+             * {@link DbxAuthFinish}
+             *
+             * @return this builder
+             */
+            public Builder withTokenAccessType(TokenAccessType tokenAccessType) {
+                this.tokenAccessType = tokenAccessType;
+                return this;
+            }
+
+            /**
+             *
+             *
+             * @param scope Space-delimited scope string. Each scope corresponds to a group of
+             * API endpoints. To call one API endpoint you have to obtains the scope first otherwise you
+             * will get HTTP 401. Example: "account_info.read files.content.read"
+             */
+            public Builder withScope(Collection<String> scope) {
+                if (scope != null) {
+                    this.scope = StringUtil.join(scope, " ");
+                }
+                return this;
+            }
+
+
+            /**
+             *
+             * @param includeGrantedScopes This field is optional. If not presented, Dropbox will
+             *                            give you the scopes in
+             *                            {@link #withScope(Collection)}.
+             *                            Otherwise Dropbox server will return a token with all
+             *                            scopes user previously granted your app together with
+             *                             the new scopes.
+             */
+            public Builder withIncludeGrantedScopes(IncludeGrantedScopes includeGrantedScopes) {
+                this.includeGrantedScopes = includeGrantedScopes;
+                return this;
+            }
+
+            /**
              * Returns a new OAuth {@link Request} that can be used in
              * {@link DbxWebAuth#DbxWebAuth(DbxRequestConfig,DbxAppInfo)} to authorize a user.
              *
@@ -836,12 +950,21 @@ public class DbxWebAuth {
                     throw new IllegalStateException("Cannot specify a state without a redirect URI.");
                 }
 
-                return new Request(redirectUri,
-                                   state,
-                                   requireRole,
-                                   forceReapprove,
-                                   disableSignup,
-                                   sessionStore);
+                if (includeGrantedScopes != null && scope == null) {
+                    throw new IllegalArgumentException("If you are using includeGrantedScopes, " +
+                        "you must ask for specific new scopes");
+                }
+
+                return new Request(
+                        redirectUri,
+                        state,
+                        requireRole,
+                        forceReapprove,
+                        disableSignup,
+                        sessionStore,
+                        tokenAccessType,
+                        scope,
+                    includeGrantedScopes);
             }
         }
     }

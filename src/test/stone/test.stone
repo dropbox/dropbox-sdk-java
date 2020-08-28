@@ -43,6 +43,7 @@ struct Pet
         fish Fish
 
     name String
+        "Used in :route:`test_route:2`"
     born Timestamp("%Y-%m-%dT%H:%M:%SZ")?
 
 struct Dog extends Pet
@@ -71,3 +72,37 @@ union TankSize
 struct Dimensions
     width UInt32
     height UInt32
+
+route test_route(Void, Void, Void)
+    ":route:`test_route:2`"
+
+route test_route:2 (Pet, Void, ParentUnion)
+
+route test_upload(Uninitialized, Void, Void)
+    attrs
+        style = "upload"
+
+route test_upload:2 (Dog, Void, ParentUnion)
+    attrs
+        style = "upload"
+
+route test_upload:3 (Dog, Void, ParentUnion)
+    attrs
+        style = "upload"
+        auth = "app, user"
+
+route test_download(Dog, Fish, Void)
+    attrs
+        host = "content"
+        style = "download"
+
+route test_download:2 (Uninitialized, Fish, ParentUnion)
+    attrs
+        host = "content"
+        style = "download"
+
+struct DefaultFloat
+    duration Float64(min_value=60, max_value=14400) = 14400
+
+struct WithByte
+    field1 Bytes

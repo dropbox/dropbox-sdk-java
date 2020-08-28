@@ -1,11 +1,11 @@
 apply plugin: 'java'
 
-
 class StoneConfig {
     String packageName = 'com.dropbox.stone'
     String globalRouteFilter = null
     boolean dataTypesOnly = false
-    List<ClientSpec> clients = []
+    ClientSpec client = null
+    String routeWhitelistFilter = null
 }
 
 class ClientSpec {
@@ -16,11 +16,12 @@ class ClientSpec {
     String unusedClassesToGenerate = null
 }
 
-def runStoneGenerator(StoneConfig config,
+def runStoneGenerator(List<StoneConfig> configs,
                       File stoneDir,
                       File generatorFile,
                       Collection<File> specFiles,
-                      File outputDir) {
+                      File outputDir
+                      ) {
     def srcOutputDir = new File(outputDir, "src")
     def refsFile = new File(outputDir, "refs/javadoc-refs.json")
     def logFile = new File(outputDir, "log/stone.log")
@@ -36,71 +37,81 @@ def runStoneGenerator(StoneConfig config,
     logFile.parentFile.mkdirs()
     refsFile.parentFile.mkdirs()
 
-    if (config.dataTypesOnly && config.clients) {
-        throw new GradleException("Cannot specify dataTypesOnly and clients for Stone generation.")
-    }
+    boolean isFirst = true
 
-    // generate only data types. This is a much simpler call
-    if (config.dataTypesOnly) {
-        project.exec {
-            standardOutput = new FileOutputStream(logFile)
-            commandLine "python", "-m", "stone.cli"
+    for (StoneConfig c : configs) {
+        boolean append = !isFirst
+        if (c.dataTypesOnly) {
+            // generate only data types. This is a much simpler call
+            if (c.client) {
+                throw new GradleException("Cannot specify dataTypesOnly and clients for Stone generation.")
+            }
 
-            environment PYTHONPATH: stoneDir.absolutePath
-            args "--clean-build"
-            args generatorFile.absolutePath
-            args srcOutputDir.absolutePath
-            args specFiles.collect({ f -> f.absolutePath })
-            args "--"
-            args "--package", config.packageName
-            args "--data-types-only"
-        }
-        return
-    }
 
-    for (int i = 0; i < config.clients.size; ++i) {
-        def client = config.clients[i]
-        def isFirst = i == 0
+            project.exec {
+                standardOutput = new FileOutputStream(logFile, append)
+                commandLine "python", "-m", "stone.cli"
 
-        def append = !isFirst
-        def routeFilters = [config.globalRouteFilter, client.routeFilter]
-        def routeFilter = routeFilters\
+                environment PYTHONPATH: stoneDir.absolutePath
+
+                if (isFirst) {
+                    args "--clean-build"
+                }
+                if (c.routeWhitelistFilter) {
+                    args "--route-whitelist-filter", config.routeWhitelistFilter
+                }
+                args generatorFile.absolutePath
+                args srcOutputDir.absolutePath
+                args specFiles.collect({ f -> f.absolutePath })
+                args "--"
+                args "--package", c.packageName
+                args "--data-types-only"
+            }
+        } else {
+            def client = c.client
+            def routeFilters = [c.globalRouteFilter, client.routeFilter]
+            def routeFilter = routeFilters\
             .findAll { filter -> filter != null }\
             .collect { filter -> "(${filter})" }\
             .join " and "
 
-        project.exec {
-            standardOutput = new FileOutputStream(logFile, append)
-            commandLine "python", "-m", "stone.cli"
+            project.exec {
+                standardOutput = new FileOutputStream(logFile, append)
+                commandLine "python", "-m", "stone.cli"
 
-            environment PYTHONPATH: stoneDir.absolutePath
-            if (isFirst) {
-                args "--clean-build"
-            }
-            args "--attribute", ":all"
-            if (routeFilter) {
-                args "--filter-by-route-attr", routeFilter
-            }
-            args generatorFile.absolutePath
-            args srcOutputDir.absolutePath
-            args specFiles.collect({ f -> f.absolutePath })
-            args "--"
-            args "--package", config.packageName
-            args "--javadoc-refs", refsFile.absolutePath
+                environment PYTHONPATH: stoneDir.absolutePath
+                if (isFirst) {
+                    args "--clean-build"
+                }
+                args "--attribute", ":all"
+                if (routeFilter) {
+                    args "--filter-by-route-attr", routeFilter
+                }
+                if (c.routeWhitelistFilter) {
+                    args "--route-whitelist-filter", c.routeWhitelistFilter
+                }
+                args generatorFile.absolutePath
+                args srcOutputDir.absolutePath
+                args specFiles.collect({ f -> f.absolutePath })
+                args "--"
+                args "--package", c.packageName
+                args "--javadoc-refs", refsFile.absolutePath
 
-            if (client.name) {
-                args "--client-class", client.name
-            }
-            if (client.javadoc != null) {
-                args "--client-javadoc", client.javadoc
-            }
-            if (client.requestsClassnamePrefix != null) {
-                args "--requests-classname-prefix", client.requestsClassnamePrefix
-            }
-            if (client.unusedClassesToGenerate != null) {
-                args "--unused-classes-to-generate", client.unusedClassesToGenerate
+                if (client.name) {
+                    args "--client-class", client.name
+                }
+                if (client.javadoc != null) {
+                    args "--client-javadoc", client.javadoc
+                }
+                if (client.requestsClassnamePrefix != null) {
+                    args "--requests-classname-prefix", client.requestsClassnamePrefix
+                }
+                if (client.unusedClassesToGenerate != null) {
+                    args "--unused-classes-to-generate", client.unusedClassesToGenerate
+                }
             }
         }
+        isFirst = false
     }
 }
 
@@ -108,73 +119,99 @@ def runStoneGenerator(StoneConfig config,
 
 // add generateStone task for all source sets (e.g. generateTestStone, etc)
 project.sourceSets.all { SourceSet sourceSet ->
-    def taskName = "main".equals(sourceSet.name) ? "generateStone" : "generate${sourceSet.name.capitalize()}Stone"
+    def taskName = "main" == sourceSet.name ? "generateStone" : "generate${sourceSet.name.capitalize()}Stone"
     task "${taskName}" {
         description "Generate Stone Java source files for ${sourceSet.name}."
 
         def specDirPropName = "com.dropbox.api.${sourceSet.name}.specDir".toString()
+        def routeWhitelistFilterPropName = "com.dropbox.api.${sourceSet.name}.routeWhitelistFilter".toString()
 
         ext {
-            config = new StoneConfig()
+            configs = []
             generatorDir = 'generator'
             stoneDir = 'stone'
             specDir = project.properties.get(specDirPropName, "src/${sourceSet.name}/stone")
             outputDir = "${project.buildDir}/generated/source/stone/${sourceSet.name}"
+            routeWhitelistFilter = project.properties.get(routeWhitelistFilterPropName, null)
         }
 
         def getSpecFiles = { fileTree(dir: specDir, include: '**/*.stone') }
 
-        inputs.dir { project.fileTree(dir: generatorDir, exclude: '**/*.pyc') }
-        inputs.dir(getSpecFiles).skipWhenEmpty = true
-        inputs.property "config", { new groovy.json.JsonBuilder(config).toString() }
-        outputs.dir { outputDir }
-
+        inputs.dir { project.fileTree(dir: generatorDir, exclude: '**/*.pyc') }.withPropertyName("stone").withPathSensitivity(PathSensitivity.RELATIVE)
+        inputs.dir(getSpecFiles).withPathSensitivity(PathSensitivity.RELATIVE).withPropertyName("stoneSpec").skipWhenEmpty(true)
+        inputs.property "configs", { new groovy.json.JsonBuilder(configs).toString() }
+        outputs.dir { outputDir }.withPropertyName("generatedStone")
+        outputs.cacheIf { true }
         doLast {
             def generatorFile = fileTree(dir: generatorDir, include: '**/*stoneg.py').getSingleFile()
             def specFiles = getSpecFiles().getFiles()
-            runStoneGenerator config, file(stoneDir), generatorFile, specFiles, file(outputDir)
+            for (StoneConfig config in configs) {
+                config.routeWhitelistFilter = routeWhitelistFilter
+            }
+            runStoneGenerator configs, file(stoneDir), generatorFile, specFiles, file(outputDir)
         }
     }
 
-    sourceSet.java.srcDir project.tasks."${taskName}".outputDir
+    sourceSet.java.srcDir project.tasks."${taskName}".outputDir + "/src"
     Task compile = project.tasks.getByName(sourceSet.getCompileTaskName("java"))
     compile.dependsOn project.tasks."${taskName}"
 }
 
 
 generateStone {
-    String unusedClassesToGenerate = 'PathRootError, AccessError, RateLimitError'
-    config = new StoneConfig(
-        packageName: 'com.dropbox.core.v2',
-        globalRouteFilter: 'alpha_group=null and beta_group=null',
+    String unusedClassesToGenerate = 'AuthError, PathRoot, PathRootError, AccessError, RateLimitError'
+    String packageName = 'com.dropbox.core.v2'
+    String globalRouteFilter = 'alpha_group=null and beta_group=null'
+    configs = [
+            new StoneConfig(
+                packageName: packageName,
+                globalRouteFilter: globalRouteFilter,
+                client: new ClientSpec(
+                    name: 'DbxClientV2Base',
+                    javadoc: 'Base class for user auth clients.',
+                    requestsClassnamePrefix: "DbxUser",
+                    routeFilter: 'auth="user" or auth="noauth" or auth="app, user"',
+                    unusedClassesToGenerate: unusedClassesToGenerate,
+                ),
+            ),
+            new StoneConfig(
+                packageName: packageName,
+                globalRouteFilter: globalRouteFilter,
+                client:  new ClientSpec(
+                    name: 'DbxTeamClientV2Base',
+                    javadoc: 'Base class for team auth clients.',
+                    requestsClassnamePrefix: 'DbxTeam',
+                    routeFilter: 'auth="team"',
+                ),
+            ),
+            new StoneConfig(
+                packageName: packageName,
+                globalRouteFilter: globalRouteFilter,
+                client: new ClientSpec(
+                    name: 'DbxAppClientV2Base',
+                    javadoc: 'Base class for app auth clients.',
+                    requestsClassnamePrefix: "DbxApp",
+                    routeFilter: 'auth="app" or auth="app, user"',
+                )
+            ),
 
-        clients: [
-            new ClientSpec(
-                name: 'DbxClientV2Base',
-                javadoc: 'Base class for user auth clients.',
-                requestsClassnamePrefix: "DbxUser",
-                routeFilter: 'auth="user" or auth="noauth"',
-                unusedClassesToGenerate: unusedClassesToGenerate,
-            ),
-            new ClientSpec(
-                name: 'DbxTeamClientV2Base',
-                javadoc: 'Base class for team auth clients.',
-                requestsClassnamePrefix: 'DbxTeam',
-                routeFilter: 'auth="team"',
-            ),
-            new ClientSpec(
-                name: 'DbxAppClientV2Base',
-                javadoc: 'Base class for app auth clients.',
-                requestsClassnamePrefix: "DbxApp",
-                routeFilter: 'auth="app"',
-            )
-        ],
-    )
+    ]
 }
 
 generateTestStone {
-    config = new StoneConfig(
-        packageName: 'com.dropbox.core.stone',
-        dataTypesOnly: true,
-    )
+    String packageName = 'com.dropbox.core.stone'
+    configs = [
+            new StoneConfig(
+                packageName: packageName,
+                dataTypesOnly: true,
+            ),
+            new StoneConfig(
+                packageName: packageName,
+                client: new ClientSpec(
+                    name: 'DbxClientV2Base',
+                    javadoc: 'TestClass.',
+                    requestsClassnamePrefix: "DbxTest",
+                )
+            ),
+    ]
 }

@@ -18,15 +18,13 @@ from functools import (
 )
 from itertools import chain
 
-from stone.api import (
+from stone.ir import (
     Api,
     ApiNamespace,
     ApiRoute,
-)
-from stone.generator import CodeGenerator
-from stone.data_type import (
     DataType,
     Field,
+    Int32,
     is_boolean_type,
     is_bytes_type,
     is_composite_type,
@@ -48,9 +46,12 @@ from stone.data_type import (
     unwrap_nullable,
     Void,
 )
+from stone.backend import CodeBackend
+from stone.frontend.ir_generator import parse_data_types_from_doc_ref
 
+@six.add_metaclass(abc.ABCMeta)
 class StoneType:
-    __metaclass__ = abc.ABCMeta
+    pass
 
 StoneType.register(ApiNamespace)
 StoneType.register(ApiRoute)
@@ -317,6 +318,10 @@ def union_create_with_method_name(data_type, value_fields_subset):
     else:
         method_suffix = ''
     return 'withTag%s' % method_suffix
+
+
+def format_func_name(route):
+    return '{}_v{}'.format(route.name, route.version) if route.version > 1 else route.name
 
 
 @total_ordering
@@ -607,7 +612,7 @@ _CMDLINE_PARSER.add_argument('--javadoc-refs', type=six.text_type, default=None,
 _CMDLINE_PARSER.add_argument('--unused-classes-to-generate', default=None, help='Specify types ' +
                              'that we want to generate regardless of whether they are used.')
 
-class JavaCodeGenerator(CodeGenerator):
+class JavaCodeGenerator(CodeBackend):
     cmdline_parser = _CMDLINE_PARSER
 
     def generate(self, api):
@@ -763,7 +768,6 @@ class JavaImporter(object):
         self._add_imports_for_data_type_exception(route.error_data_type)
 
         namespace = j.route_namespace(route)
-        route_auth = j.auth_style(route) if j.auth_style(route) != 'noauth' else 'user'
         self.add_imports(
             j.java_class(namespace),
             'com.dropbox.core.DbxException',
@@ -868,6 +872,7 @@ class JavaImporter(object):
             'com.fasterxml.jackson.core.JsonParser',
             'com.fasterxml.jackson.core.JsonToken',
             'com.dropbox.core.stone.StoneSerializers',
+            'com.dropbox.core.stone.StoneDeserializerLogger',
         )
         if is_struct_type(data_type):
             self.add_imports('com.dropbox.core.stone.StructSerializer')
@@ -1055,6 +1060,8 @@ class JavaClassWriter(object):
 
         if data_type.name == 'Boolean':
             return 'true' if stone_value else 'false'
+        elif data_type.name == 'String':
+            return self.fmt('"%s"', stone_value.replace('\\', '\\\\').replace('"', '\\"'))
         elif data_type.name in ('Float32', 'Float64'):
             return repr(stone_value) # Because str() drops the last few digits.
         elif data_type.name in ('Int64', 'UInt64', 'UInt32'):
@@ -1442,7 +1449,7 @@ class JavaClassWriter(object):
                     return '.'.join(parts)
 
         if tag == 'route':
-            fq_name = resolve_fq_name(val, 2)
+            fq_name = resolve_fq_name(val.replace(":", "_v"), 2)
             return self._refs.route(fq_name) if fq_name else None
         elif tag == 'type':
             fq_name = resolve_fq_name(val, 2)
@@ -1621,9 +1628,20 @@ class JavaApi(object):
         cur_state = visibility.copy()
         while prev_state != cur_state:
             for namespace in api.namespaces.values():
+                if namespace.doc is not None:
+                    data_types = parse_data_types_from_doc_ref(api, namespace.doc, namespace.name,
+                                                               ignore_missing_entries=True)
+                    for d in data_types:
+                        update_by_reference(d, namespace)
                 for data_type in namespace.data_types:
                     if not visibility[data_type].is_visible:
                         continue
+
+                    if data_type.doc is not None:
+                        data_types = parse_data_types_from_doc_ref(api, data_type.doc, namespace.name,
+                                                                   ignore_missing_entries=True)
+                        for d in data_types:
+                            update_by_reference(d, namespace)
 
                     for field in data_type.all_fields:
                         field_data_type = get_underlying_type(field.data_type)
@@ -1636,6 +1654,12 @@ class JavaApi(object):
                                 # otherwise, just update visibility so this class can properly reference
                                 # the field data type
                                 update_by_reference(field_data_type, namespace)
+
+                        if field.doc is not None:
+                            data_types = parse_data_types_from_doc_ref(api, field.doc, namespace.name,
+                                                                       ignore_missing_entries=True)
+                            for d in data_types:
+                                update_by_reference(d, namespace)
 
                     if is_struct_type(data_type):
                         if data_type.parent_type:
@@ -1685,14 +1709,31 @@ class JavaApi(object):
         cur_state = visibility.copy()
         while prev_state != cur_state:
             for namespace in api.namespaces.values():
+                if namespace.doc is not None:
+                    data_types = parse_data_types_from_doc_ref(api, namespace.doc, namespace.name,
+                                                               ignore_missing_entries=True)
+                    for d in data_types:
+                        update_by_reference(d, namespace)
                 for data_type in namespace.data_types:
                     if not visibility[data_type].is_visible:
                         continue
+
+                    if data_type.doc is not None:
+                        data_types = parse_data_types_from_doc_ref(api, data_type.doc, namespace.name,
+                                                                   ignore_missing_entries=True)
+                        for d in data_types:
+                            update_by_reference(d, namespace)
 
                     for field in data_type.all_fields:
                         field_data_type = get_underlying_type(field.data_type)
                         if is_user_defined_type(field_data_type):
                             update_by_reference(field_data_type, namespace)
+
+                        if field.doc is not None:
+                            data_types = parse_data_types_from_doc_ref(api, field.doc, namespace.name,
+                                                                       ignore_missing_entries=True)
+                            for d in data_types:
+                                update_by_reference(d, namespace)
 
                     # parents need access to their enumerated subtype serializers
                     if is_struct_type(data_type) and data_type.has_enumerated_subtypes():
@@ -1707,8 +1748,8 @@ class JavaApi(object):
     @staticmethod
     def get_spec_filename(element):
         assert isinstance(element, StoneType), repr(element)
-        assert hasattr(element, '_token'), repr(element)
-        return os.path.basename(element._token.path)
+        assert hasattr(element, '_ast_node'), repr(element)
+        return os.path.basename(element._ast_node.path)
 
     def get_spec_filenames(self, element):
         assert isinstance(element, StoneType), repr(element)
@@ -1760,23 +1801,23 @@ class JavaApi(object):
         assert isinstance(containing_data_type, DataType) or containing_data_type is None, repr(containing_data_type)
 
         if isinstance(stone_elem, ApiNamespace):
-            parts = [stone_elem]
+            parts = [stone_elem.name]
         elif isinstance(stone_elem, DataType):
             if is_user_defined_type(stone_elem):
-                parts = [stone_elem.namespace, stone_elem]
+                parts = [stone_elem.namespace.name, stone_elem.name]
             else:
-                parts = [stone_elem]
+                parts = [stone_elem.name]
         elif isinstance(stone_elem, ApiRoute):
             namespace = self.route_namespace(stone_elem)
-            parts = [namespace, stone_elem]
+            parts = [namespace.name, format_func_name(stone_elem)]
         elif isinstance(stone_elem, Field):
             containing_data_type = containing_data_type or self.field_containing_data_type(stone_elem)
             namespace = containing_data_type.namespace
-            parts = [namespace, containing_data_type, stone_elem]
+            parts = [namespace.name, containing_data_type.name, stone_elem.name]
         else:
             raise ValueError("Unsupported Stone type: %s" % type(stone_elem))
 
-        return '.'.join(p.name for p in parts)
+        return '.'.join(p for p in parts)
 
     def namespace_getter_method(self, namespace):
         assert isinstance(namespace, ApiNamespace), repr(namespace)
@@ -1868,7 +1909,7 @@ class JavaApi(object):
         Server URL path associated with this route.
         """
         assert isinstance(route, ApiRoute), repr(route)
-        return '2/%s/%s' % (self._namespaces_by_route[route].name, route.name)
+        return '2/%s/%s' % (self._namespaces_by_route[route].name, format_func_name(route))
 
     @staticmethod
     def has_arg(route):
@@ -1917,12 +1958,12 @@ class JavaApi(object):
     @staticmethod
     def route_method(route):
         assert isinstance(route, ApiRoute), repr(route)
-        return camelcase(route.name)
+        return camelcase(format_func_name(route))
 
     @staticmethod
     def route_builder_method(route):
         assert isinstance(route, ApiRoute), repr(route)
-        return camelcase(route.name + '_builder')
+        return camelcase(format_func_name(route) + '_builder')
 
     @staticmethod
     def namespace_package(namespace, base_package):
@@ -1969,8 +2010,15 @@ class JavaApi(object):
 
         if isinstance(stone_elem, ApiRoute):
             route = stone_elem
+
+            if ',' in self.auth_style(route):
+                # Use prefix here because multiple builders may be generated
+                # if the endpoint has multiple auth types
+                prefix = (self._args.requests_classname_prefix or self._args.client_class) + "_"
+            else:
+                prefix = ""
             package = self.java_class(route).package
-            return JavaClass(package + '.' + classname(route.name + '_builder'))
+            return JavaClass(package + '.' + classname('%s%s_builder' % (prefix, format_func_name(route))))
         else:
             data_type = stone_elem
             assert is_user_defined_type(data_type), repr(data_type)
@@ -2022,14 +2070,16 @@ class JavaApi(object):
 
     def route_uploader_class(self, route):
         assert isinstance(route, ApiRoute), repr(route)
-        return JavaClass(self.java_class(route).package + '.' + classname(route.name + '_Uploader'))
+        return JavaClass(
+            self.java_class(route).package + '.' + classname(format_func_name(route) + '_Uploader')
+        )
 
     def route_downloader_class(self, route):
         assert isinstance(route, ApiRoute), repr(route)
         assert self.request_style(route) == 'download', repr(route)
 
         return JavaClass('com.dropbox.core.DbxDownloader', generics=(
-            self.java_class(route.result_data_type),
+            self.java_class(route.result_data_type, boxed=True),
         ))
 
     def is_used_by_client(self, data_type):
@@ -2264,7 +2314,7 @@ class JavaReference(object):
 
     def _as_json(self):
         dct = {}
-        for k, v in self.__dict__.iteritems():
+        for k, v in self.__dict__.items():
             # avoid cyclic references issue
             if isinstance(v, JavaReference):
                 dct[k] = v.fq_name
@@ -2404,6 +2454,8 @@ class JavaCodeGenerationInstance(object):
         self.api = api
         self.g = g
         self.j = JavaApi(api, self.g.args)
+        # some classes are unused, but we still want them to be generated
+        self._mark_special_unused_classes()
         self.refs = JavaReferences(self.j)
         # JavaClassWriter, created with self.class_writer(..)
         self.w = None
@@ -2429,9 +2481,6 @@ class JavaCodeGenerationInstance(object):
         self.update_javadoc_refs()
 
         self.generate_client()
-
-        # some classes are unused, but we still want them to be generated
-        self._mark_special_unused_classes()
 
         for namespace in self.api.namespaces.values():
             self.generate_namespace(namespace)
@@ -2777,7 +2826,7 @@ class JavaCodeGenerationInstance(object):
         )
 
         default_fields = tuple(f for f in arg.all_optional_fields if f.has_default)
-        doc = route.doc or ''
+        doc = route.raw_doc or ''
         if required_only and default_fields:
             if j.has_builder(route):
                 doc += """
@@ -2890,7 +2939,7 @@ class JavaCodeGenerationInstance(object):
                          error_wrapper_var)
         else:
             message = '"Unexpected error response for \\"%s\\":" + %s.getErrorValue()' % (
-                route.name,
+                format_func_name(route),
                 error_wrapper_var,
             )
             return 'new DbxApiException(%s.getRequestId(), %s.getUserMessage(), %s);' % (
@@ -3755,7 +3804,7 @@ class JavaCodeGenerationInstance(object):
                     args = ['arg_']
                     if j.request_style(route) == 'download':
                         args.append('getHeaders()')
-                    if j.has_result(route):
+                    if j.has_result(route) or j.request_style(route) in ('upload', 'download'):
                         w.out('return _client.%s(%s);', j.route_method(route), ', '.join(args))
                     else:
                         w.out('_client.%s(%s);', j.route_method(route), ', '.join(args))
@@ -3960,6 +4009,7 @@ class JavaCodeGenerationInstance(object):
             with w.block('if (!collapsed)'):
                 w.out('expectEndObject(p);')
 
+            w.out('StoneDeserializerLogger.log(value, value.toStringMultiline());')
             w.out('return value;')
 
     def generate_union_serialize(self, data_type):
@@ -4073,12 +4123,12 @@ class JavaCodeGenerationInstance(object):
 
         if is_list_type(data_type):
             if data_type.min_items is not None:
-                java_value = w.java_value(data_type, data_type.min_items)
+                java_value = w.java_value(Int32(), data_type.min_items)
                 with w.block('if (%s.size() < %s)', value_name, java_value):
                     w.out('throw new IllegalArgumentException("List%s has fewer than %s items");',
                           description, java_value)
             if data_type.max_items is not None:
-                java_value = w.java_value(data_type, data_type.max_items)
+                java_value = w.java_value(Int32(), data_type.max_items)
                 with w.block('if (%s.size() > %s)', value_name, java_value):
                     w.out('throw new IllegalArgumentException("List%s has more than %s items");',
                           description, java_value)
@@ -4111,12 +4161,12 @@ class JavaCodeGenerationInstance(object):
 
         elif is_string_type(data_type):
             if data_type.min_length is not None:
-                java_value = w.java_value(data_type, data_type.min_length)
+                java_value = w.java_value(Int32(), data_type.min_length)
                 with w.block('if (%s.length() < %s)', value_name, java_value):
                     w.out('throw new IllegalArgumentException("String%s is shorter than %s");',
                           description, java_value)
             if data_type.max_length is not None:
-                java_value = w.java_value(data_type, data_type.max_length)
+                java_value = w.java_value(Int32(), data_type.max_length)
                 with w.block('if (%s.length() > %s)', value_name, java_value):
                     w.out('throw new IllegalArgumentException("String%s is longer than %s");',
                           description, java_value)
@@ -4275,6 +4325,8 @@ class JavaCodeGenerationInstance(object):
                         w.out(';')
             with w.block('else'):
                 w.out('return false;')
+
+
 
 
 # TODO: Add all Java reserved words.

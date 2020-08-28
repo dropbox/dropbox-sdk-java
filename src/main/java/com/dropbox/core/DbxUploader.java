@@ -93,8 +93,28 @@ public abstract class DbxUploader<R, E, X extends DbxApiException> implements Cl
      * @throws IllegalStateException if this uploader has already been closed (see {@link #close}) or finished (see {@link #finish})
      */
     public R uploadAndFinish(InputStream in) throws X, DbxException, IOException {
+        return uploadAndFinish(in, null);
+    }
+
+    /**
+     * This method is the same as {@link #uploadAndFinish(InputStream, long)} except for it allow
+     * tracking the upload progress.
+     *
+     * @param in {@code InputStream} containing data to upload
+     * @param progressListener {@code OUtil.ProgressListener} to track the upload progress.
+     *                                                       Only support  OKHttpRequester and StandardHttpRequester.
+     *
+     * @return Response from server
+     *
+     * @throws X if the server sent an error response for the request
+     * @throws DbxException if an error occurs uploading the data or reading the response
+     * @throws IOException if an error occurs reading the input stream.
+     * @throws IllegalStateException if this uploader has already been closed (see {@link #close}) or finished (see {@link #finish})
+     */
+    public R uploadAndFinish(InputStream in, IOUtil.ProgressListener progressListener) throws X, DbxException, IOException {
         try {
             try {
+                httpUploader.setProgressListener(progressListener);
                 httpUploader.upload(in);
             } catch (IOUtil.ReadException ex) {
                 throw ex.getCause();
@@ -148,6 +168,26 @@ public abstract class DbxUploader<R, E, X extends DbxApiException> implements Cl
     }
 
     /**
+     * This method is the same as {@link #uploadAndFinish(InputStream, long)} except for it allows
+     * tracking the upload progress.
+     *
+     * @param in    {@code InputStream} containing data to upload
+     * @param limit Maximum number of bytes to read from the given {@code InputStream}
+     * @param progressListener {@code OUtil.ProgressListener} to track the upload progress.
+     *                                                       Only support  OKHttpRequester and StandardHttpRequester.
+     *
+     * @return Response from server
+     *
+     * @throws X if the server sent an error response for the request
+     * @throws DbxException if an error occurs uploading the data or reading the response
+     * @throws IOException if an error occurs reading the input stream.
+     * @throws IllegalStateException if this uploader has already been closed (see {@link #close}) or finished (see {@link #finish})
+     */
+    public R uploadAndFinish(InputStream in, long limit, IOUtil.ProgressListener progressListener) throws X, DbxException, IOException {
+        return uploadAndFinish(IOUtil.limit(in, limit), progressListener);
+    }
+
+    /**
      * Closes this upload request and releases its underlying resources.
      *
      * This method should always be called to allow for proper resource deallocation.
@@ -181,7 +221,7 @@ public abstract class DbxUploader<R, E, X extends DbxApiException> implements Cl
      * Returns an {@link OutputStream} that writes to the request body. Remember to call {@link
      * #finish} to complete the request and retrieve the response.
      *
-     * Data writen to this stream will be uploaded.
+     * Data written to this stream will be uploaded.
      *
      * Typically you will not need this method and can use the more convenient {@link
      * #uploadAndFinish(InputStream)}.

@@ -16,7 +16,11 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
-import android.os.*;
+import android.os.AsyncTask;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import com.dropbox.core.DbxAuthFinish;
@@ -473,7 +477,7 @@ public class AuthActivity extends Activity {
         authIntent.setPackage("com.dropbox.android");
         return authIntent;
     }
-
+  
     @Override
     protected void onResume() {
         super.onResume();

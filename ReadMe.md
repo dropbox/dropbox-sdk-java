@@ -1,10 +1,14 @@
 # Dropbox Core SDK for Java 6+
 
+![GitHub](https://img.shields.io/github/license/dropbox/dropbox-sdk-java)
+![Maven Central](https://img.shields.io/maven-central/v/com.dropbox.core/dropbox-core-sdk)
+![GitHub Release Date](https://img.shields.io/github/release-date/dropbox/dropbox-sdk-java)
+
 A Java library to access [Dropbox's HTTP-based Core API v2](https://www.dropbox.com/developers/documentation/http/documentation).  This SDK also supports the older [Core API v1](https://www.dropbox.com/developers-v1/core/docs), but that support will be removed at some point.
 
 License: [MIT](License.txt)
 
-Documentation: [Javadocs](https://dropbox.github.io/dropbox-sdk-java/api-docs/v3.0.x/)
+Documentation: [Javadocs](https://dropbox.github.io/dropbox-sdk-java/api-docs/v3.1.x/)
 
 ## Setup
 
@@ -14,7 +18,7 @@ If you're using Maven, then edit your project's "pom.xml" and add this to the `<
 <dependency>
     <groupId>com.dropbox.core</groupId>
     <artifactId>dropbox-core-sdk</artifactId>
-    <version>3.0.3</version>
+    <version>3.1.5</version>
 </dependency>
 ```
 
@@ -23,7 +27,7 @@ If you are using Gradle, then edit your project's "build.gradle" and add this to
 ```groovy
 dependencies {
     // ...
-    compile 'com.dropbox.core:dropbox-core-sdk:3.0.3'
+    implementation 'com.dropbox.core:dropbox-core-sdk:3.1.5'
 }
 ```
 
@@ -31,17 +35,18 @@ You can also download the Java SDK JAR and and its required dependencies directl
 
 ## Dropbox for Java tutorial
 
-A good way to start using the Java SDK is to follow this quick tutorial. Just make sure you have the the Java SDK [installed](/developers/documentation/java#install) first!
+A good way to start using the Java SDK is to follow this quick tutorial. Just make sure you have the the Java SDK [installed](#setup) first!
 
 ### Register a Dropbox API app
 
-To use the Dropbox API, you'll need to register a new app in the [App Console](/developers/apps). Select Dropbox API app and choose your app's permission. You'll need to use the app key created with this app to access API v2.
+To use the Dropbox API, you'll need to register a new app in the [App Console](https://www.dropbox.com/developers/apps). Select Dropbox API app and choose your app's permission. You'll need to use the app key created with this app to access API v2.
 
 ### Link an account
 
 In order to make calls to the API, you'll need an instance of the Dropbox object. To instantiate, pass in the access token for the account you want to link. (Tip: You can [generate an access token](https://blogs.dropbox.com/developers/2014/05/generate-an-access-token-for-your-own-account/) for your own account through the [App Console](https://www.dropbox.com/developers/apps)).
 
 ```java
+import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.v2.DbxClientV2;
 
@@ -50,7 +55,7 @@ public class Main {
 
     public static void main(String args[]) throws DbxException {
         // Create Dropbox client
-        DbxRequestConfig config = new DbxRequestConfig("dropbox/java-tutorial", "en_US");
+        DbxRequestConfig config = DbxRequestConfig.newBuilder("dropbox/java-tutorial").build();
         DbxClientV2 client = new DbxClientV2(config, ACCESS_TOKEN);
     }
 }
@@ -104,8 +109,6 @@ import com.dropbox.core.v2.files.FileMetadata;
 import com.dropbox.core.v2.files.ListFolderResult;
 import com.dropbox.core.v2.files.Metadata;
 import com.dropbox.core.v2.users.FullAccount;
-
-import java.util.List;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -166,6 +169,8 @@ Save your Dropbox API key to a JSON file called, say, "test.app":
 }
 ```
 
+App key and secret can be found in you app page in [App Console](https://www.dropbox.com/developers/apps).
+
 ### Building from source
 
 ```
@@ -180,7 +185,7 @@ The output will be in "build/".
 ### Running the examples
 
 1. Follow the instructions in the "Build from source" section above.
-2. Save your Dropbox API key in a file called "test.app".  See: [Get a Dropbox API key](#get-a-dropbox-api-key), above.
+2. Save your Dropbox API key in a file called "test.app".  See: [Save your Dropbox API key](#save-your-dropbox-api-key), above.
 3. Compile and install the SDK into your local maven repo: `./gradlew install`
 4. To compile all the examples: `(cd examples/ && ./gradlew classes`
 5. To compile just one example: `(cd examples/ && ./gradlew :<example-name>:classes`
@@ -218,10 +223,6 @@ cd examples
 
 (You must first generate "test.auth" using the "authorize" example above.)
 
-#### tutorial
-
-The example from our [online tutorial](https://www.dropbox.com/developers/documentation/java#tutorial). Unlike the other examples, this example is not meant to be run without modification.
-
 #### upload-file
 
 Uploads a file to Dropbox. The example includes regular and chunked file uploads.
@@ -255,6 +256,34 @@ To run individual tests, use the `--tests` gradle test filter:
 ```
 
 ## FAQ
+
+### Why do I see code like `Scope`, `DbxPKCEWebAuth` and `TokenAcessType` has warning "Beta: this feature is not available to all developers"? What are they?
+
+Dropbox is working on a project to improve our OAuth flow to support new permission model and 
+short lived tokens. This feature is still at early access phase. All endpoints are gated, only 
+certain developers will be able to access them.
+ 
+ Due to the nature of Java, most partners use our SDK through maven central instead of a 
+ customized jar file. To help our partners accessing our beta feature easier, we decide to 
+ include beta code in regular release.
+ 
+Here is more [documentation](https://www.dropbox.com/lp/developers/reference/oauth-guide.html) 
+for our new OAuth 2 flow. Please reach out to us if you are interested in trying this feature!
+
+
+### When I use `OkHttp3Requestor` in `DbxRequestConfig`, I get errors like 'class file for okhttp3.OkHttpClient not found'.
+
+The dependency of OKHttp/OKHttp3 is optional. You should add them, only if you explicitly want to use it as the http requestor. 
+
+Example in Gradle:
+
+```
+dependencies {
+    // ...
+    api 'com.squareup.okhttp3:okhttp:3.11.0'
+}
+```
+
 
 ### When I use the bundle JAR with some OSGi containers within an OSGi subsystem, I get a "Missing required capability" error.
 

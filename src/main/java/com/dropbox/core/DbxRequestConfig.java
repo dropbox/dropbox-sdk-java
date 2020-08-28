@@ -31,8 +31,7 @@ public class DbxRequestConfig {
     /**
      * Creates a new configuration.
      *
-     * @param clientIdentifier client identifier typically in the form "Name/Version" to be used in
-     *                         the User-Agent header (see {@link #getClientIdentifier}).
+     * @param clientIdentifier see {@link #getClientIdentifier}
      */
     public DbxRequestConfig(String clientIdentifier) {
         this(clientIdentifier, null);
@@ -41,10 +40,8 @@ public class DbxRequestConfig {
     /**
      * Creates a new configuration.
      *
-     * @param clientIdentifier client identifier typically in the form "Name/Version" to be used in
-     *                         the User-Agent header (see {@link #getClientIdentifier}).
-     * @param userLocale IETF BCP 47 language tag of locale to use for user-visible text in responses, or
-     *                   {@code null} to use the user's Dropbox locale preference.
+     * @param clientIdentifier see {@link #getClientIdentifier}
+     * @param userLocale see {@link #getUserLocale}
      *
      * @deprecated Use {@link #newBuilder} to customize configuration
      */
@@ -56,11 +53,9 @@ public class DbxRequestConfig {
     /**
      * Creates a new configuration.
      *
-     * @param clientIdentifier client identifier typically in the form "Name/Version" to be used in
-     *                         the User-Agent header (see {@link #getClientIdentifier}).
-     * @param userLocale IETF BCP 47 language tag of locale to use for user-visible text in responses, or
-     *                   {@code null} to use the user's Dropbox locale preference.
-     * @param httpRequestor HTTP client to use for issuing requests.
+     * @param clientIdentifier see {@link #getClientIdentifier}
+     * @param userLocale see {@link #getUserLocale}
+     * @param httpRequestor see {@link #getHttpRequestor}
      *
      * @deprecated Use {@link #newBuilder} to customize configuration
      */
@@ -70,57 +65,54 @@ public class DbxRequestConfig {
     }
 
     /**
-     * Returns an identifier for the API client, typically of the form "Name/Version".
-     * This is used to set the HTTP {@code User-Agent} header when making API requests.
-     * Example: {@code "PhotoEditServer/1.3"}
+     * Returns the {@link clientIdentifier} you passed in when constructing this object.
      *
      * <p>
-     * If you're the author a higher-level library on top of the basic SDK, and the
-     * "Photo Edit" Android app is using your library to access Dropbox, you should append
-     * your library's name and version to form the full identifier.  For example,
-     * if your library is called "File Picker", you might set this field to:
-     * {@code "PhotoEditAndroid/2.4 FilePicker/0.1-beta"}
+     * The client identifier is usually of the form "SoftwareName/SoftwareVersion".
+     * For example, if you have a project named "PhotoEdit", your might set the client
+     * identifier to {@code "PhotoEditServer/1.3"} in your server software and to
+     * {@code "PhotoEditAndroid/1.8"} in your Android app.
      * </p>
      *
      * <p>
-     * The exact format of the {@code User-Agent} header is described in
-     * <a href="http://tools.ietf.org/html/rfc2616#section-3.8">section 3.8 of the HTTP specification</a>.
+     * This value is prepended to the
+     * <a href="https://tools.ietf.org/html/rfc7231#section-5.5.3">"User-Agent"
+     * HTTP header</a> on all requests made to the Dropbox API.  This has no effect on the
+     * behavior of the Dropbox API, but it may help identify your application when
+     * debugging things later.
      * </p>
-     *
-     * <p>
-     * Note that the underlying {@link com.dropbox.core.http.HttpRequestor HttpRequestor} may
-     * append other things to the {@code User-Agent}, such as the name of the library being used to
-     * actually make the HTTP request, or the version of the Java VM.
-     * </p>
-     *
-     * @return HTTP User-Agent identifier for the API client
      */
     public String getClientIdentifier() {
         return clientIdentifier;
     }
 
     /**
-     * Returns the locale of the user of your app as an IETF BCP 47 language tag.  This is used by
-     * the Dropbox server to localize user-visible strings returned by API calls.
+     * Returns the {@code userLocale} you passed in when constructing this object, which
+     * defaults to {@code null}.
      *
-     * <p> If the value is {@code null} or some locale that Dropbox doesn't support, the strings
-     * will be localized based on the user's Dropbox locale preference.
+     * <p>
+     * This should be set to the <a href="https://tools.ietf.org/html/bcp47">IETF BCP 47
+     * language tag</a> of the end user currently using your software.  Example: "en-US".
+     * </p>
      *
-     * <p> Defaults to {@code null}.
+     * <p>
+     * This value is passed in as the "Dropbox-API-User-Locale" HTTP header on all requests
+     * made to the Dropbox API.  It controls the language used by the Dropbox API for certain
+     * return values, e.g. like error messages intended for the user.
+     * </p>
      *
-     * @return locale of app user, or {@code null} to use user's Dropbox locale settings.
+     * <p>
+     * If {@code null}, or if set to a value Dropbox doesn't support, the server will default
+     * to the user's configured locale setting.
+     * </p>
      */
     public String getUserLocale() {
         return userLocale;
     }
 
     /**
-     * The {@link HttpRequestor} implementation to use when making HTTP requests to the Dropbox API
-     * servers.
-     *
-     * <p> Defaults to {@link StandardHttpRequestor#INSTANCE}.
-     *
-     * @return HTTP requestor to use for issuing HTTP requests.
+     * Returns the {@link HttpRequestor} you passed in when constructing this object, which
+     * defaults to {@link StandardHttpRequestor#INSTANCE}.
      */
     public HttpRequestor getHttpRequestor() {
         return httpRequestor;
@@ -128,7 +120,7 @@ public class DbxRequestConfig {
 
     /**
      * Returns whether or not the client should automatically retry RPC and download requests after
-     * recieving a {@link RetryException}.
+     * receiving a {@link RetryException}.
      *
      * <p> If enabled, the client will retry the request a max number of times (specified by {@link
      * #getMaxRetries}) before propagating the {@link RetryException}.</p>
@@ -178,11 +170,7 @@ public class DbxRequestConfig {
     /**
      * Returns a new builder for creating a {@link DbxRequestConfig} instance.
      *
-     * Identifiers are typically of the form "Name/Version" (e.g. {@code
-     * "PhotoEditServer/1.3"}). See {@link #getClientIdentifier} for more details.
-     *
-     * @param clientIdentifier HTTP User-Agent identifier for the API app (see {@link
-     * #getClientIdentifier}), never {@code null}
+     * @param clientIdentifier see {@link #getClientIdentifier}
      */
     public static Builder newBuilder(String clientIdentifier) {
         if (clientIdentifier == null) throw new NullPointerException("clientIdentifier");

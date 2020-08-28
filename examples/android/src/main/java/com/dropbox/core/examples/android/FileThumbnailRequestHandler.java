@@ -8,6 +8,7 @@ import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.files.FileMetadata;
 import com.dropbox.core.v2.files.ThumbnailFormat;
 import com.dropbox.core.v2.files.ThumbnailSize;
+import okio.Okio;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Request;
 import com.squareup.picasso.RequestHandler;
@@ -54,7 +55,7 @@ public class FileThumbnailRequestHandler extends RequestHandler {
                             .withSize(ThumbnailSize.W1024H768)
                             .start();
 
-            return new Result(downloader.getInputStream(), Picasso.LoadedFrom.NETWORK);
+            return new Result(Okio.source(downloader.getInputStream()), Picasso.LoadedFrom.NETWORK);
         } catch (DbxException e) {
             throw new IOException(e);
         }

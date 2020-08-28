@@ -40,7 +40,7 @@ def verifySdkVersion(deployment) {
         def jar = new java.util.jar.JarInputStream(stream)
         def entry = jar.getNextJarEntry()
         while (entry != null) {
-            if (entry.getName().equals("sdk-version.txt")) {
+            if (entry.getName().equals("com/dropbox/core/sdk-version.txt")) {
                 def version = jar.text.trim();
                 if (!(version ==~ /\d+\.\d+\.\d+/)) {
                     throw new GradleException("SDK version not in semantic versioning format: " + version +

@@ -112,4 +112,51 @@ public abstract class DbxUploadStyleBuilder<R,E, X extends DbxApiException> {
     {
         return start().uploadAndFinish(in, limit);
     }
+
+    /**
+     * Convenience method for {@link DbxUploader#uploadAndFinish(InputStream, long, IOUtil.ProgressListener)}:
+     *
+     * <pre><code>
+     *    builder.start().uploadAndFinish(in, limit, progressListener);
+     * </code></pre>
+     *
+     * @param in    {@code InputStream} containing data to upload
+     * @param limit Maximum number of bytes to read from the given {@code InputStream}
+     * @param progressListener {@code ProgressListener} to track the upload progress. Only support
+     *  OKHttpRequester and StandardHttpRequester
+     *
+     * @return Response from server
+     *
+     * @throws X if the server sent an error response for the request
+     * @throws DbxException if an error occurs uploading the data or reading the response
+     * @throws IOException if an error occurs reading the input stream.
+     */
+    public R uploadAndFinish(InputStream in, long limit, IOUtil.ProgressListener progressListener)
+            throws X, DbxException, IOException
+    {
+        return start().uploadAndFinish(in, limit, progressListener);
+    }
+
+    /**
+     * Convenience method for {@link DbxUploader#uploadAndFinish(InputStream, IOUtil.ProgressListener)}:
+     *
+     * <pre><code>
+     *    builder.start().uploadAndFinish(in, progressListener);
+     * </code></pre>
+     *
+     * @param in {@code InputStream} containing data to upload
+     * @param progressListener {@code ProgressListener} to track the upload progress. Only support
+     *  OKHttpRequester and StandardHttpRequester
+     *
+     * @return Response from server
+     *
+     * @throws X if the server sent an error response for the request
+     * @throws DbxException if an error occurs uploading the data or reading the response
+     * @throws IOException if an error occurs reading the input stream.
+     */
+    public R uploadAndFinish(InputStream in, IOUtil.ProgressListener progressListener)
+            throws X, DbxException, IOException
+    {
+        return start().uploadAndFinish(in, progressListener);
+    }
 }

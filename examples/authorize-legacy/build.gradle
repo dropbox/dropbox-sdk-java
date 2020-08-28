@@ -1,0 +1,3 @@
+
+description = 'Authorize Example (Dropbox Core API SDK) with legacy OAuth2 flow which use long ' +
+        'live token'

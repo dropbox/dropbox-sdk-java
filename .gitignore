@@ -1,6 +1,7 @@
 # Gradle
 .gradle/
 build/
+out/
 
 # Maven build output folder
 /target/

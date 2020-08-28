@@ -1,0 +1,11 @@
+namespace stone_cfg
+
+struct Route
+    host String = "api"
+        "The server to make the request to. Valid values: api, content,
+        and notify."
+    style String = "rpc"
+        "The RPC format to use for the request. Valid values: rpc, download,
+        and upload."
+    auth String = "auth"
+        "Auth mode for the route."

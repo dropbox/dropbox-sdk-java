@@ -8,6 +8,8 @@ import org.testng.annotations.Test;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.TimeZone;
 
 public class StoneSerializersTest {
@@ -66,6 +68,59 @@ public class StoneSerializersTest {
     public void testDeserializeNonEmptyVoidType() throws Exception {
         StoneSerializers.void_().deserialize("{\".tag\":\"foo\"}");
         StoneSerializers.void_().deserialize(quoted("bar"));
+    }
+    @Test
+    public void testEmptyMap() throws Exception {
+        Map<String, Integer> map = new HashMap<String, Integer>();
+        String serialized = "{}";
+
+        StoneSerializer<Map<String, Integer>> serializer = StoneSerializers.map(StoneSerializers.int32());
+        assertEquals(serializer.serialize(map), serialized);
+        assertEquals(serializer.deserialize(serialized), map);
+    }
+
+    @Test
+    public void testFlatMap() throws Exception {
+        Map<String, Integer> map = new HashMap<String, Integer>() {{
+            put("a", 1);
+            put("b", 2);
+        }};
+        String serialized = "{\"a\":1,\"b\":2}";
+
+        StoneSerializer<Map<String, Integer>> serializer = StoneSerializers.map(StoneSerializers.int32());
+        assertEquals(serializer.serialize(map), serialized);
+        assertEquals(serializer.deserialize(serialized), map);
+    }
+
+    @Test
+    public void testNestedMap() throws Exception {
+        Map<String, Map<String, Integer>> map = new HashMap<String, Map<String, Integer>>() {{
+            put("a", new HashMap<String, Integer>() {{
+                put("aa", 1);
+            }});
+            put("b", new HashMap<String, Integer>() {{
+                put("bb", 2);
+            }});
+        }};
+        String serialized = "{\"a\":{\"aa\":1},\"b\":{\"bb\":2}}";
+
+        StoneSerializer<Map<String, Map<String, Integer>>> serializer =
+                StoneSerializers.map(StoneSerializers.map(StoneSerializers.int32()));
+        assertEquals(serializer.serialize(map), serialized);
+        assertEquals(serializer.deserialize(serialized), map);
+    }
+
+    @Test
+    public void testMapWithNullableValue() throws Exception {
+        Map<String, String> map = new HashMap<String, String>() {{
+            put("a", null);
+        }};
+        String serialized = "{\"a\":null}";
+
+        StoneSerializer<Map<String, String>> serializer =
+                StoneSerializers.map(StoneSerializers.nullable(StoneSerializers.string()));
+        assertEquals(serializer.serialize(map), serialized);
+        assertEquals(serializer.deserialize(serialized), map);
     }
 
     private static String quoted(String value) {

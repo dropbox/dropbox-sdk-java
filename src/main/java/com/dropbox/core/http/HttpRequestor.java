@@ -38,6 +38,9 @@ public abstract class HttpRequestor
 
     public abstract Response doGet(String url, Iterable<Header> headers) throws IOException;
     public abstract Uploader startPost(String url, Iterable<Header> headers) throws IOException;
+    public Uploader startPostInStreamingMode(String url, Iterable<Header> headers) throws IOException {
+        return startPost(url, headers);
+    }
     public abstract Uploader startPut(String url, Iterable<Header> headers) throws IOException;
 
     /**
@@ -73,6 +76,8 @@ public abstract class HttpRequestor
     }
 
     public static abstract class Uploader {
+        protected IOUtil.ProgressListener progressListener;
+
         public abstract OutputStream getBody();
         public abstract void close();
         public abstract void abort();
@@ -108,6 +113,10 @@ public abstract class HttpRequestor
             } finally {
                 out.close();
             }
+        }
+
+        public void setProgressListener(IOUtil.ProgressListener progressListener) {
+            this.progressListener = progressListener;
         }
     }
 

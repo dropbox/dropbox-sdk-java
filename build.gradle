@@ -1,7 +1,7 @@
 import org.gradle.internal.os.OperatingSystem
 
 apply plugin: 'java'
-apply plugin: 'osgi'
+apply plugin: 'com.github.blindpirate.osgi'
 apply plugin: 'maven'
 apply plugin: 'com.github.ben-manes.versions' // dependencyUpdates task
 
@@ -58,11 +58,13 @@ buildscript {
     repositories {
         jcenter()
         mavenCentral()
+        maven { url 'https://plugins.gradle.org/m2/' }
     }
 
     dependencies {
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.12.0'
         classpath 'com.dropbox.maven:pem-converter-maven-plugin:1.0'
+        classpath 'gradle.plugin.com.github.blindpirate:gradle-legacy-osgi-plugin:0.0.3'
     }
 }
 
@@ -110,9 +112,11 @@ processResources {
         )
         inputstream.close()
 
-        def out = new DataOutputStream(new FileOutputStream(new File(
-                getDestinationDir(), fcd.name.substring(0, fcd.name.length()-4) + ".raw"
-        )))
+        def crtPath = fcd.getPath()
+        def rawPath = crtPath.substring(0, crtPath.length() - 4) + ".raw"
+        def rawFile = new File(getDestinationDir(), rawPath);
+        rawFile.getParentFile().mkdirs();
+        def out = new DataOutputStream(new FileOutputStream(rawFile))
         com.dropbox.maven.pem_converter.RawLoader.store(certDatas, out)
         out.close()
 
@@ -183,6 +187,9 @@ task integrationTest(type: Test) {
     include '**/*IT.class'
     include '**/*IT$*.class'
 
+    exclude '**/*V1IT.class'
+    exclude '**/*V1IT$*.class'
+
     testLogging {
         events "skipped", "failed"
         info {
@@ -230,6 +237,13 @@ jar {
         name project.name
         description project.description
         license project.basePom.getModel().getLicenses()[0].url
+        instruction 'Import-Package',
+            'android.*;resolution:=optional',
+            'com.google.appengine.*;resolution:=optional',
+            'com.squareup.okhttp;resolution:=optional',
+            'okhttp3;resolution:=optional',
+            'okio;resolution:=optional',
+            '*'
 
         def noeeProp = 'osgi.bnd.noee'
         def noee = project.properties.get(noeeProp, System.properties.get(noeeProp, 'false'))

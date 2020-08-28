@@ -291,4 +291,8 @@ public class IOUtil {
             return skipped;
         }
     }
+
+    public interface ProgressListener {
+        void onProgress(long bytesWritten);
+    }
 }

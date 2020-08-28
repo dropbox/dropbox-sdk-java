@@ -1,17 +1,17 @@
 package com.dropbox.core.examples.android;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.dropbox.core.android.Auth;
 import com.dropbox.core.examples.android.internal.OpenWithActivity;
 import com.dropbox.core.v2.users.FullAccount;
+
+import java.util.Arrays;
 
 
 /**
@@ -33,7 +33,7 @@ public class UserActivity extends DropboxActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Auth.startOAuth2Authentication(UserActivity.this, getString(R.string.app_key));
+                DropboxActivity.startOAuth2Authentication(UserActivity.this, getString(R.string.app_key), Arrays.asList("account_info.read", "files.content.write"));
             }
         });
 

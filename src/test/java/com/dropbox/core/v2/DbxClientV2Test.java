@@ -4,10 +4,13 @@ import static org.mockito.Mockito.*;
 import static org.testng.Assert.*;
 import static com.dropbox.core.v2.files.FilesSerializers.serializer;
 
+import com.dropbox.core.DbxRequestUtil;
+import com.dropbox.core.InvalidAccessTokenException;
 import com.dropbox.core.http.HttpRequestor;
+import com.dropbox.core.oauth.DbxCredential;
+import com.dropbox.core.v2.auth.AuthError;
 import com.dropbox.core.v2.files.FileMetadata;
 import com.dropbox.core.v2.files.Metadata;
-import com.dropbox.core.util.IOUtil;
 import com.dropbox.core.BadRequestException;
 import com.dropbox.core.DbxDownloader;
 import com.dropbox.core.DbxException;
@@ -20,14 +23,18 @@ import org.mockito.Matchers;
 
 import org.testng.annotations.Test;
 
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -64,8 +71,31 @@ public class DbxClientV2Test {
         }
     }
 
+    private FileMetadata constructFileMetadate() throws Exception {
+        Class builderClass = FileMetadata.Builder.class;
+        Constructor constructor = builderClass.getDeclaredConstructors()[0];
+        constructor.setAccessible(true);
+
+        List<Object> arguments = new ArrayList<Object>(Arrays.asList(
+                "bar.txt",
+                "id:1HkLjqifwMAAAAAAAAAAAQ",
+                new Date(1456169040985L),
+                new Date(1456169040985L),
+                "2e0c38735597",
+                2091603
+        ));
+
+        // hack for internal version of SDK
+        if (constructor.getParameterTypes().length > 6) {
+            arguments.addAll(Arrays.asList("20MB", "text.png", "text/plain"));
+        }
+
+        FileMetadata.Builder builder = (FileMetadata.Builder) constructor.newInstance(arguments.toArray());
+        return builder.build();
+    }
+
     @Test
-    public void testRetrySuccess() throws DbxException, IOException {
+    public void testRetrySuccess() throws Exception {
         HttpRequestor mockRequestor = mock(HttpRequestor.class);
         DbxRequestConfig config = createRequestConfig()
             .withAutoRetryEnabled(3)
@@ -73,14 +103,7 @@ public class DbxClientV2Test {
             .build();
 
         DbxClientV2 client = new DbxClientV2(config, "fakeAccessToken");
-        FileMetadata expected = new FileMetadata(
-            "bar.txt",
-            "id:1HkLjqifwMAAAAAAAAAAAQ",
-            new Date(1456169040985L),
-            new Date(1456169040985L),
-            "2e0c38735597",
-            2091603
-        );
+        FileMetadata expected = constructFileMetadate();
 
         // 503 twice, then return result
         HttpRequestor.Uploader mockUploader = mockUploader();
@@ -154,7 +177,7 @@ public class DbxClientV2Test {
     }
 
     @Test
-    public void testRetryDownload() throws DbxException, IOException {
+    public void testRetryDownload() throws Exception {
         HttpRequestor mockRequestor = mock(HttpRequestor.class);
         DbxRequestConfig config = createRequestConfig()
             .withAutoRetryEnabled(3)
@@ -162,15 +185,7 @@ public class DbxClientV2Test {
             .build();
 
         DbxClientV2 client = new DbxClientV2(config, "fakeAccessToken");
-
-        FileMetadata expectedMetadata = new FileMetadata(
-            "download_me.txt",
-            "id:KLavC4viCDAAAAAAAAAAAQ",
-            new Date(1456169692501L),
-            new Date(1456169692501L),
-            "341438735597",
-            2626
-        );
+        FileMetadata expectedMetadata = constructFileMetadate();
         byte [] expectedBytes = new byte [] { 1, 2, 3, 4 };
 
         // 503 once, then return 200
@@ -195,7 +210,7 @@ public class DbxClientV2Test {
     }
 
     @Test
-    public void testRetrySuccessWithBackoff() throws DbxException, IOException {
+    public void testRetrySuccessWithBackoff() throws Exception {
         HttpRequestor mockRequestor = mock(HttpRequestor.class);
         DbxRequestConfig config = createRequestConfig()
             .withAutoRetryEnabled(3)
@@ -203,14 +218,7 @@ public class DbxClientV2Test {
             .build();
 
         DbxClientV2 client = new DbxClientV2(config, "fakeAccessToken");
-        FileMetadata expected = new FileMetadata(
-            "banana.png",
-            "id:eRsVsAya9YAAAAAAAAAAAQ",
-            new Date(1456173312172L),
-            new Date(1456173312172L),
-            "89df885732c38",
-            12345L
-        );
+        FileMetadata expected = constructFileMetadate();
 
         // 503 twice, then return result
         HttpRequestor.Uploader mockUploader = mockUploader();
@@ -236,6 +244,298 @@ public class DbxClientV2Test {
 
         assertEquals(actual.getName(), expected.getName());
         assertTrue(actual instanceof FileMetadata, actual.getClass().toString());
+    }
+
+    @Test
+    public void testRefreshBeforeCall() throws Exception {
+        HttpRequestor mockRequestor = mock(HttpRequestor.class);
+        DbxRequestConfig config = createRequestConfig()
+            .withHttpRequestor(mockRequestor)
+            .build();
+
+        DbxCredential credential = new DbxCredential("accesstoken", 10L, "refresh_token",
+            "appkey", "app_secret");
+
+        DbxClientV2 client = new DbxClientV2(config, credential);
+        FileMetadata expected = constructFileMetadate();
+
+        HttpRequestor.Uploader mockUploader = mockUploader();
+        when(mockUploader.finish())
+            .thenReturn(createSuccessRefreshResponse("newToken", 10L))
+            .thenReturn(createSuccessResponse(serialize(expected)));
+
+        when(mockRequestor.startPost(anyString(), anyHeaders()))
+            .thenReturn(mockUploader);
+
+        long now = System.currentTimeMillis();
+
+        Metadata actual = client.files().getMetadata(expected.getId());
+
+        verify(mockRequestor, times(2)).startPost(anyString(), anyHeaders());
+
+        assertEquals(credential.getAccessToken(), "newToken");
+        assertTrue(credential.getExpiresAt() > now);
+
+        assertEquals(actual.getName(), expected.getName());
+        assertTrue(actual instanceof FileMetadata, actual.getClass().toString());
+        assertEquals(((FileMetadata) actual).getId(), expected.getId());
+    }
+
+    @Test
+    public void testDontRefreshBeforeCallIfNotExpired() throws Exception {
+        HttpRequestor mockRequestor = mock(HttpRequestor.class);
+        DbxRequestConfig config = createRequestConfig()
+            .withHttpRequestor(mockRequestor)
+            .build();
+
+        long now = System.currentTimeMillis();
+
+        DbxCredential credential = new DbxCredential("accesstoken", now + 2*DbxCredential
+            .EXPIRE_MARGIN,
+            "refresh_token",
+            "appkey", "app_secret");
+
+        DbxClientV2 client = new DbxClientV2(config, credential);
+        FileMetadata expected = constructFileMetadate();
+
+        HttpRequestor.Uploader mockUploader = mockUploader();
+        when(mockUploader.finish()).thenReturn(createSuccessResponse(serialize(expected)));
+
+        when(mockRequestor.startPost(anyString(), anyHeaders()))
+            .thenReturn(mockUploader);
+
+        Metadata actual = client.files().getMetadata(expected.getId());
+
+        verify(mockRequestor, times(1)).startPost(anyString(), anyHeaders());
+        assertEquals(credential.getAccessToken(), "accesstoken");
+
+        assertEquals(actual.getName(), expected.getName());
+        assertTrue(actual instanceof FileMetadata, actual.getClass().toString());
+        assertEquals(((FileMetadata) actual).getId(), expected.getId());
+    }
+
+    @Test
+    public void testDontRefreshForInvalidGrant() throws Exception {
+        HttpRequestor mockRequestor = mock(HttpRequestor.class);
+        DbxRequestConfig config = createRequestConfig()
+            .withHttpRequestor(mockRequestor)
+            .build();
+
+        ByteArrayInputStream responseStream = new ByteArrayInputStream(
+            (
+                "{" +
+                    "\"error_description\":\"refresh token is invalid or revoked\"" +
+                    ",\"error\":\"invalid_grant\"" +
+                    "}"
+            ).getBytes("UTF-8")
+        );
+        HttpRequestor.Response finishResponse = new HttpRequestor.Response(
+            400, responseStream, new HashMap<String, List<String>>());
+
+        DbxCredential credential = new DbxCredential("accesstoken", 10L, "refresh_token",
+            "appkey", "app_secret");
+
+        DbxClientV2 client = new DbxClientV2(config, credential);
+        FileMetadata expected = constructFileMetadate();
+
+        HttpRequestor.Uploader mockUploader = mockUploader();
+        when(mockUploader.finish())
+            .thenReturn(finishResponse)
+            .thenReturn(createSuccessResponse(serialize(expected)));
+
+        when(mockRequestor.startPost(anyString(), anyHeaders()))
+            .thenReturn(mockUploader);
+
+        Metadata actual = client.files().getMetadata(expected.getId());
+
+        verify(mockRequestor, times(2)).startPost(anyString(), anyHeaders());
+
+        assertEquals(credential.getAccessToken(), "accesstoken");
+        assertEquals(credential.getExpiresAt(), new Long(10));
+
+        assertEquals(actual.getName(), expected.getName());
+        assertTrue(actual instanceof FileMetadata, actual.getClass().toString());
+        assertEquals(((FileMetadata) actual).getId(), expected.getId());
+    }
+
+    @Test
+    public void testRefreshAndRetryAfterTokenExpired() throws Exception {
+        HttpRequestor mockRequestor = mock(HttpRequestor.class);
+        DbxRequestConfig config = createRequestConfig()
+            .withHttpRequestor(mockRequestor)
+            .build();
+
+        long now = System.currentTimeMillis();
+
+        DbxCredential credential = new DbxCredential("accesstoken", now + 2*DbxCredential
+            .EXPIRE_MARGIN,
+            "refresh_token",
+            "appkey", "app_secret");
+
+        DbxClientV2 client = new DbxClientV2(config, credential);
+        FileMetadata expected = constructFileMetadate();
+
+        HttpRequestor.Uploader mockUploader = mockUploader();
+        when(mockUploader.finish())
+            .thenReturn(createTokenExpiredResponse())
+            .thenReturn(createSuccessRefreshResponse("new_token", 14400L))
+            .thenReturn(createSuccessResponse(serialize(expected)));
+
+        when(mockRequestor.startPost(anyString(), anyHeaders()))
+            .thenReturn(mockUploader);
+
+        Metadata actual = client.files().getMetadata(expected.getId());
+
+        verify(mockRequestor, times(3)).startPost(anyString(), anyHeaders());
+        assertEquals(credential.getAccessToken(), "new_token");
+
+        assertEquals(actual.getName(), expected.getName());
+        assertTrue(actual instanceof FileMetadata, actual.getClass().toString());
+        assertEquals(((FileMetadata) actual).getId(), expected.getId());
+    }
+
+    @Test
+    public void testRefreshAndRetryAfterTokenExpiredForDownload() throws Exception {
+        HttpRequestor mockRequestor = mock(HttpRequestor.class);
+        DbxRequestConfig config = createRequestConfig()
+            .withHttpRequestor(mockRequestor)
+            .build();
+
+        long now = System.currentTimeMillis();
+
+        DbxCredential credential = new DbxCredential("accesstoken", now + 2*DbxCredential
+            .EXPIRE_MARGIN,
+            "refresh_token",
+            "appkey", "app_secret");
+
+        DbxClientV2 client = new DbxClientV2(config, credential);
+        FileMetadata expected = constructFileMetadate();
+
+        HttpRequestor.Uploader mockUploader = mockUploader();
+        when(mockUploader.finish())
+            .thenReturn(createTokenExpiredResponse())
+            .thenReturn(createSuccessRefreshResponse("new_token", 14400L))
+            .thenReturn(createDownloadSuccessResponse("data".getBytes(), new String(serialize(expected))));
+
+        when(mockRequestor.startPost(anyString(), anyHeaders()))
+            .thenReturn(mockUploader);
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+        DbxDownloader<FileMetadata> downloader = client.files().download("/path");
+
+        try {
+            downloader.download(out);
+        } finally {
+            downloader.close();
+        }
+
+        assertEquals(out.toString(), "data");
+
+        Metadata actual = downloader.getResult();
+
+        verify(mockRequestor, times(3)).startPost(anyString(), anyHeaders());
+        assertEquals(credential.getAccessToken(), "new_token");
+
+        assertEquals(actual.getName(), expected.getName());
+        assertEquals(((FileMetadata) actual).getId(), expected.getId());
+    }
+
+    @Test
+    public void testRefreshAndRetryWith503Retry() throws Exception {
+        HttpRequestor mockRequestor = mock(HttpRequestor.class);
+        DbxRequestConfig config = createRequestConfig()
+            .withAutoRetryEnabled()
+            .withHttpRequestor(mockRequestor)
+            .build();
+
+        long now = System.currentTimeMillis();
+
+        DbxCredential credential = new DbxCredential("accesstoken", now + 2*DbxCredential
+            .EXPIRE_MARGIN,
+            "refresh_token",
+            "appkey", "app_secret");
+
+        DbxClientV2 client = new DbxClientV2(config, credential);
+        FileMetadata expected = constructFileMetadate();
+
+        HttpRequestor.Uploader mockUploader = mockUploader();
+        when(mockUploader.finish())
+            .thenReturn(createTokenExpiredResponse())
+            .thenReturn(createSuccessRefreshResponse("new_token", 14400L))
+            .thenReturn(createEmptyResponse(503))
+            .thenReturn(createSuccessResponse(serialize(expected)));
+
+        when(mockRequestor.startPost(anyString(), anyHeaders()))
+            .thenReturn(mockUploader);
+
+        Metadata actual = client.files().getMetadata(expected.getId());
+
+        verify(mockRequestor, times(4)).startPost(anyString(), anyHeaders());
+        assertEquals(credential.getAccessToken(), "new_token");
+
+        assertEquals(actual.getName(), expected.getName());
+        assertTrue(actual instanceof FileMetadata, actual.getClass().toString());
+        assertEquals(((FileMetadata) actual).getId(), expected.getId());
+    }
+
+    @Test
+    public void testOnlineWontRefresh() throws Exception {
+        HttpRequestor mockRequestor = mock(HttpRequestor.class);
+        DbxRequestConfig config = createRequestConfig()
+            .withHttpRequestor(mockRequestor)
+            .build();
+
+        DbxCredential credential = new DbxCredential("accesstoken");
+
+        DbxClientV2 client = new DbxClientV2(config, credential);
+        FileMetadata expected = constructFileMetadate();
+
+        HttpRequestor.Uploader mockUploader = mockUploader();
+        when(mockUploader.finish()).thenReturn(createTokenExpiredResponse());
+
+        when(mockRequestor.startPost(anyString(), anyHeaders()))
+            .thenReturn(mockUploader);
+
+        try {
+            client.files().getMetadata(expected.getId());
+        } catch (InvalidAccessTokenException ex) {
+            verify(mockRequestor, times(1)).startPost(anyString(), anyHeaders());
+            assertEquals(credential.getAccessToken(), "accesstoken");
+
+            AuthError authError = DbxRequestUtil.readJsonFromErrorMessage(AuthError.Serializer
+                .INSTANCE, ex.getMessage(), ex.getRequestId());
+            assertEquals(authError, AuthError.EXPIRED_ACCESS_TOKEN);
+            return;
+        }
+
+        fail("API v2 call should throw exception");
+    }
+
+    private static HttpRequestor.Response createSuccessRefreshResponse(String newToken, long
+        newExpiresIn)  throws Exception {
+        ByteArrayInputStream responseStream = new ByteArrayInputStream(
+            (
+                "{" +
+                    "\"token_type\":\"Bearer\"" +
+                    ",\"access_token\":\"" + newToken + "\"" +
+                    ",\"expires_in\":" + newExpiresIn +
+                    "}"
+            ).getBytes("UTF-8")
+        );
+        return new HttpRequestor.Response(200, responseStream, new HashMap<String, List<String>>());
+    }
+
+    private static HttpRequestor.Response createTokenExpiredResponse() throws Exception {
+        ByteArrayInputStream responseStream = new ByteArrayInputStream(
+            (
+                "{" +
+                    "\"error_summary\":\"expired_access_token/..\"" +
+                    ",\"error\":{\".tag\": \"expired_access_token\"}" +
+                "}"
+            ).getBytes("UTF-8")
+        );
+        return new HttpRequestor.Response(401, responseStream, new HashMap<String, List<String>>());
     }
 
     private static HttpRequestor.Response createRateLimitResponse(long backoffSeconds) {
@@ -275,6 +575,17 @@ public class DbxClientV2Test {
             200,
             new ByteArrayInputStream(body),
             Collections.<String,List<String>>emptyMap()
+        );
+    }
+
+    private static HttpRequestor.Response createDownloadSuccessResponse(byte [] body, final String
+        metadata) {
+        return new HttpRequestor.Response(
+            200,
+            new ByteArrayInputStream(body),
+            new HashMap<String, List<String>>() {{
+                put("dropbox-api-result", Collections.singletonList(metadata));
+            }}
         );
     }
 

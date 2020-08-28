@@ -1,8 +1,6 @@
 package com.dropbox.core.examples.android;
 
-import com.dropbox.core.DbxHost;
-import com.dropbox.core.DbxRequestConfig;
-import com.dropbox.core.http.OkHttp3Requestor;
+import com.dropbox.core.oauth.DbxCredential;
 import com.dropbox.core.v2.DbxClientV2;
 
 /**
@@ -14,11 +12,14 @@ public class DropboxClientFactory {
 
     public static void init(String accessToken) {
         if (sDbxClient == null) {
-            DbxRequestConfig requestConfig = DbxRequestConfig.newBuilder("examples-v2-demo")
-                .withHttpRequestor(new OkHttp3Requestor(OkHttp3Requestor.defaultOkHttpClient()))
-                .build();
+            sDbxClient = new DbxClientV2(DbxRequestConfigFactory.getRequestConfig(), accessToken);
+        }
+    }
 
-            sDbxClient = new DbxClientV2(requestConfig, accessToken);
+    public static void init(DbxCredential credential) {
+        credential = new DbxCredential(credential.getAccessToken(), -1L, credential.getRefreshToken(), credential.getAppKey());
+        if (sDbxClient == null) {
+            sDbxClient = new DbxClientV2(DbxRequestConfigFactory.getRequestConfig(), credential);
         }
     }
 

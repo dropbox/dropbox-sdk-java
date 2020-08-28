@@ -8,7 +8,8 @@ import java.nio.CharBuffer;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
-import java.nio.charset.CharsetEncoder;
+import java.util.Arrays;
+import java.util.Collection;
 
 public class StringUtil
 {
@@ -83,8 +84,27 @@ public class StringUtil
         return b.toString();
     }
 
+    public static String javaQuotedLiterals(String[] value) {
+        return javaQuotedLiterals(Arrays.asList(value));
+    }
+
+    public static String javaQuotedLiterals(Iterable<String> value) {
+        StringBuilder b = new StringBuilder();
+        String sep = "";
+        for (String element : value) {
+            b.append(sep);
+            sep = ", ";
+            b.append(javaQuotedLiteral(element));
+        }
+        return b.toString();
+    }
+
     /** Shorthand for {@link #javaQuotedLiteral}. */
     public static String jq(String value) { return javaQuotedLiteral(value); }
+    /** Shorthand for {@link #javaQuotedLiterals}. */
+    public static String jq(String[] value) { return javaQuotedLiterals(value); }
+    /** Shorthand for {@link #javaQuotedLiterals}. */
+    public static String jq(Iterable<String> value) { return javaQuotedLiterals(value); }
 
     public static String binaryToHex(byte[] data)
     {
@@ -212,5 +232,18 @@ public class StringUtil
         }
 
         return buf.toString();
+    }
+
+    public static String join(Collection<String> strings, String delimiter) {
+        StringBuilder sb = new StringBuilder();
+        int i = 0;
+        for (String s: strings) {
+            if (i > 0) {
+                sb.append(delimiter);
+            }
+            sb.append(s);
+            i++;
+        }
+        return sb.toString();
     }
 }

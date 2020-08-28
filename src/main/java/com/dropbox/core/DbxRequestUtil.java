@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import com.dropbox.core.stone.StoneSerializer;
+import com.dropbox.core.v2.auth.AuthError;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import com.dropbox.core.http.HttpRequestor;
@@ -20,10 +23,11 @@ import com.dropbox.core.json.JsonReader;
 import com.dropbox.core.util.IOUtil;
 import com.dropbox.core.util.StringUtil;
 import com.dropbox.core.v2.auth.AccessError;
-import com.dropbox.core.v2.common.PathRootError;
-import com.dropbox.core.v2.common.PathRootError.Serializer;
 import com.dropbox.core.v2.callbacks.DbxGlobalCallbackFactory;
 import com.dropbox.core.v2.callbacks.DbxNetworkErrorCallback;
+import com.dropbox.core.v2.common.PathRoot;
+import com.dropbox.core.v2.common.PathRootError;
+import com.dropbox.core.v2.common.PathRootError.Serializer;
 
 import static com.dropbox.core.util.StringUtil.jq;
 import static com.dropbox.core.util.LangUtil.mkAssert;
@@ -50,7 +54,7 @@ public final class DbxRequestUtil {
         return buildUri(host, path) + "?" + encodeUrlParams(userLocale, params);
     }
 
-    static String [] toParamsArray(Map<String, String> params) {
+    public static String [] toParamsArray(Map<String, String> params) {
         String [] arr = new String[2 * params.size()];
         int i = 0;
         for (Map.Entry<String, String> entry : params.entrySet()) {
@@ -75,7 +79,7 @@ public final class DbxRequestUtil {
         StringBuilder buf = new StringBuilder();
         String sep = "";
         if (userLocale != null) {
-            buf.append("locale=").append(userLocale);
+            buf.append("locale=").append(encodeUrlParam(userLocale));
             sep = "&";
         }
 
@@ -116,6 +120,14 @@ public final class DbxRequestUtil {
         return headers;
     }
 
+    public static List<HttpRequestor.Header> addSelectAdminHeader(/*@Nullable*/List<HttpRequestor.Header> headers, String adminId) {
+        if (adminId == null) throw new NullPointerException("adminId");
+        if (headers == null) headers = new ArrayList<HttpRequestor.Header>();
+
+        headers.add(new HttpRequestor.Header("Dropbox-API-Select-Admin", adminId));
+        return headers;
+    }
+
     public static List<HttpRequestor.Header> addBasicAuthHeader(/*@Nullable*/List<HttpRequestor.Header> headers, String username, String password) {
         if (username == null) throw new NullPointerException("username");
         if (password == null) throw new NullPointerException("password");
@@ -149,6 +161,33 @@ public final class DbxRequestUtil {
 
     public static HttpRequestor.Header buildUserAgentHeader(DbxRequestConfig requestConfig, String sdkUserAgentIdentifier) {
         return new HttpRequestor.Header("User-Agent",  requestConfig.getClientIdentifier() + " " + sdkUserAgentIdentifier + "/" + DbxSdkVersion.Version);
+    }
+
+    public static List<HttpRequestor.Header> addPathRootHeader(/*@Nullable*/List<HttpRequestor.Header> headers, PathRoot pathRoot) {
+        if (pathRoot == null) {
+            return headers;
+        }
+
+        if (headers == null) headers = new ArrayList<HttpRequestor.Header>();
+        headers.add(new HttpRequestor.Header("Dropbox-API-Path-Root",  pathRoot.toString()));
+        return headers;
+    }
+
+    public static List<HttpRequestor.Header> removeAuthHeader(/*@Nullable*/List<HttpRequestor.Header> headers) {
+        if (headers == null) {
+            return new ArrayList<HttpRequestor.Header>();
+        }
+
+        List<HttpRequestor.Header> authHeaders = new ArrayList<HttpRequestor.Header>();
+
+        for (HttpRequestor.Header header: headers) {
+            if ("Authorization".equals(header.getKey())) {
+                authHeaders.add(header);
+            }
+        }
+
+        headers.removeAll(authHeaders);
+        return headers;
     }
 
     /**
@@ -299,7 +338,14 @@ public final class DbxRequestUtil {
                 break;
             case 401:
                 message = DbxRequestUtil.messageFromResponse(response, requestId);
-                networkError = new InvalidAccessTokenException(requestId, message);
+                try {
+                    ApiErrorResponse<AuthError> authErrorReponse = new ApiErrorResponse
+                        .Serializer<AuthError>(AuthError.Serializer.INSTANCE).deserialize(message);
+                    AuthError authError = authErrorReponse.getError();
+                    networkError = new InvalidAccessTokenException(requestId, message, authError);
+                } catch (JsonParseException ex) {
+                    throw new BadResponseException(requestId, "Bad JSON: " + ex.getMessage(), ex);
+                }
                 break;
             case 403:
                 try {
@@ -394,6 +440,12 @@ public final class DbxRequestUtil {
         }
     }
 
+    public static <T> T readJsonFromErrorMessage(StoneSerializer<T> serializer, String message, String requestId)
+        throws JsonParseException {
+        ApiErrorResponse<T> errorResponse = new ApiErrorResponse.Serializer<T>(serializer).deserialize(message);
+        return errorResponse.getError();
+    }
+
     public static abstract class ResponseHandler<T> {
         public abstract T handle(HttpRequestor.Response response) throws DbxException;
     }
@@ -482,6 +534,10 @@ public final class DbxRequestUtil {
 
     public static /*@Nullable*/ String getRequestId(HttpRequestor.Response response) {
         return DbxRequestUtil.getFirstHeaderMaybe(response, "X-Dropbox-Request-Id");
+    }
+
+    public static /*@Nullable*/ String getContentType(HttpRequestor.Response response) {
+        return DbxRequestUtil.getFirstHeaderMaybe(response, "Content-Type");
     }
 
     public static abstract class RequestMaker<T, E extends Throwable> {
