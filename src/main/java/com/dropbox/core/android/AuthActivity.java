@@ -17,6 +17,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -476,6 +477,17 @@ public class AuthActivity extends Activity {
         authIntent.setPackage("com.dropbox.android");
         return authIntent;
     }
+  
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (Build.VERSION.SDK_INT < 29) {
+            // onTopResumedActivityChanged was introduced in Android 29 so we need to call it
+            // manually when Android version is less than 29
+            onTopResumedActivityChanged(true/* onTop */);
+        }
+    }
 
     /**
      * AuthActivity is launched first time, or user didn't finish oauth/dauth flow but
@@ -483,12 +495,15 @@ public class AuthActivity extends Activity {
      *
      * If DAuth/Browser Auth succeeded, this flow should finish through onNewIntent()
      * instead of onResume().
+     *
+     * NOTE: Although Android Studio doesn't think this overrides a method, it actually overrides
+     * onTopResumedActivityChanged() introduced in Android level 29. 
+     *
+     * See:
+     * https://developer.android.com/reference/android/app/Activity#onTopResumedActivityChanged(boolean)
      */
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        if (isFinishing()) {
+    protected void onTopResumedActivityChanged(boolean onTop) {
+        if (isFinishing() || !onTop) {
             return;
         }
 
