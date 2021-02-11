@@ -6,6 +6,7 @@ class StoneConfig {
     boolean dataTypesOnly = false
     ClientSpec client = null
     String routeWhitelistFilter = null
+    boolean observableRoutes = false
 }
 
 class ClientSpec {
@@ -109,6 +110,10 @@ def runStoneGenerator(List<StoneConfig> configs,
                 if (client.unusedClassesToGenerate != null) {
                     args "--unused-classes-to-generate", client.unusedClassesToGenerate
                 }
+
+                if (c.observableRoutes) {
+                    args "--observable-routes"
+                }
             }
         }
         isFirst = false
@@ -125,6 +130,7 @@ project.sourceSets.all { SourceSet sourceSet ->
 
         def specDirPropName = "com.dropbox.api.${sourceSet.name}.specDir".toString()
         def routeWhitelistFilterPropName = "com.dropbox.api.${sourceSet.name}.routeWhitelistFilter".toString()
+        def observableRoutesPropName = "com.dropbox.api.${sourceSet.name}.observableRoutes".toString()
 
         ext {
             configs = []
@@ -133,6 +139,7 @@ project.sourceSets.all { SourceSet sourceSet ->
             specDir = project.properties.get(specDirPropName, "src/${sourceSet.name}/stone")
             outputDir = "${project.buildDir}/generated/source/stone/${sourceSet.name}"
             routeWhitelistFilter = project.properties.get(routeWhitelistFilterPropName, null)
+            observableRoutes = project.properties.get(observableRoutesPropName, false)
         }
 
         def getSpecFiles = { fileTree(dir: specDir, include: '**/*.stone') }
@@ -147,6 +154,7 @@ project.sourceSets.all { SourceSet sourceSet ->
             def specFiles = getSpecFiles().getFiles()
             for (StoneConfig config in configs) {
                 config.routeWhitelistFilter = routeWhitelistFilter
+                config.observableRoutes = observableRoutes
             }
             runStoneGenerator configs, file(stoneDir), generatorFile, specFiles, file(outputDir)
         }
