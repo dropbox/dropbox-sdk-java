@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 public class ProgressOutputStream extends OutputStream {
-    private int completed;
+    private long completed;
     private OutputStream underlying;
     private IOUtil.ProgressListener listener;
 
