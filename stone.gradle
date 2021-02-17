@@ -20,7 +20,8 @@ def runStoneGenerator(List<StoneConfig> configs,
                       File stoneDir,
                       File generatorFile,
                       Collection<File> specFiles,
-                      File outputDir
+                      File outputDir,
+                      String pythonCommand
                       ) {
     def srcOutputDir = new File(outputDir, "src")
     def refsFile = new File(outputDir, "refs/javadoc-refs.json")
@@ -50,7 +51,7 @@ def runStoneGenerator(List<StoneConfig> configs,
 
             project.exec {
                 standardOutput = new FileOutputStream(logFile, append)
-                commandLine "python", "-m", "stone.cli"
+                commandLine pythonCommand, "-m", "stone.cli"
 
                 environment PYTHONPATH: stoneDir.absolutePath
 
@@ -77,7 +78,7 @@ def runStoneGenerator(List<StoneConfig> configs,
 
             project.exec {
                 standardOutput = new FileOutputStream(logFile, append)
-                commandLine "python", "-m", "stone.cli"
+                commandLine pythonCommand, "-m", "stone.cli"
 
                 environment PYTHONPATH: stoneDir.absolutePath
                 if (isFirst) {
@@ -133,6 +134,7 @@ project.sourceSets.all { SourceSet sourceSet ->
             specDir = project.properties.get(specDirPropName, "src/${sourceSet.name}/stone")
             outputDir = "${project.buildDir}/generated/source/stone/${sourceSet.name}"
             routeWhitelistFilter = project.properties.get(routeWhitelistFilterPropName, null)
+            pythonCommand = 'python'
         }
 
         def getSpecFiles = { fileTree(dir: specDir, include: '**/*.stone') }
@@ -148,7 +150,7 @@ project.sourceSets.all { SourceSet sourceSet ->
             for (StoneConfig config in configs) {
                 config.routeWhitelistFilter = routeWhitelistFilter
             }
-            runStoneGenerator configs, file(stoneDir), generatorFile, specFiles, file(outputDir)
+            runStoneGenerator(configs, file(stoneDir), generatorFile, specFiles, file(outputDir), pythonCommand)
         }
     }
 
