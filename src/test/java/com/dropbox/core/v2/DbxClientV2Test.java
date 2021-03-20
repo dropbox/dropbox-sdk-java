@@ -1,8 +1,10 @@
 package com.dropbox.core.v2;
 
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 import static org.mockito.Mockito.*;
-import static org.testng.Assert.*;
 import static com.dropbox.core.v2.files.FilesSerializers.serializer;
+import static org.testng.Assert.fail;
 
 import com.dropbox.core.DbxRequestUtil;
 import com.dropbox.core.InvalidAccessTokenException;
@@ -120,9 +122,9 @@ public class DbxClientV2Test {
         // should have only been called 3 times: initial call + 2 retries
         verify(mockRequestor, times(3)).startPost(anyString(), anyHeaders());
 
-        assertEquals(actual.getName(), expected.getName());
-        assertTrue(actual instanceof FileMetadata, actual.getClass().toString());
-        assertEquals(((FileMetadata) actual).getId(), expected.getId());
+        assertThat(actual.getName()).isEqualTo(expected.getName());
+        assertWithMessage(actual.getClass().toString()).that(actual instanceof FileMetadata).isTrue();
+        assertThat(((FileMetadata) actual).getId()).isEqualTo(expected.getId());
     }
 
     @Test(expectedExceptions = RetryException.class)
@@ -205,8 +207,8 @@ public class DbxClientV2Test {
         FileMetadata actualMetadata = downloader.download(bout);
         byte [] actualBytes = bout.toByteArray();
 
-        assertEquals(actualBytes, expectedBytes);
-        assertEquals(actualMetadata, expectedMetadata);
+        assertThat(actualBytes).isEqualTo(expectedBytes);
+        assertThat(actualMetadata).isEqualTo(expectedMetadata);
     }
 
     @Test
@@ -237,13 +239,13 @@ public class DbxClientV2Test {
 
         // no way easy way to properly test this, but request should
         // have taken AT LEAST 3 seconds due to backoff.
-        assertTrue((end - start) >= 3000L, "duration: " + (end - start) + " millis");
+        assertWithMessage("duration: " + (end - start) + " millis").that(end - start >= 3000L).isTrue();
 
         // should have been called 4 times: initial call + 3 retries
         verify(mockRequestor, times(4)).startPost(anyString(), anyHeaders());
 
-        assertEquals(actual.getName(), expected.getName());
-        assertTrue(actual instanceof FileMetadata, actual.getClass().toString());
+        assertThat(actual.getName()).isEqualTo(expected.getName());
+        assertWithMessage(actual.getClass().toString()).that(actual instanceof FileMetadata).isTrue();
     }
 
     @Test
@@ -273,12 +275,12 @@ public class DbxClientV2Test {
 
         verify(mockRequestor, times(2)).startPost(anyString(), anyHeaders());
 
-        assertEquals(credential.getAccessToken(), "newToken");
-        assertTrue(credential.getExpiresAt() > now);
+        assertThat(credential.getAccessToken()).isEqualTo("newToken");
+        assertThat(credential.getExpiresAt() > now).isTrue();
 
-        assertEquals(actual.getName(), expected.getName());
-        assertTrue(actual instanceof FileMetadata, actual.getClass().toString());
-        assertEquals(((FileMetadata) actual).getId(), expected.getId());
+        assertThat(actual.getName()).isEqualTo(expected.getName());
+        assertWithMessage(actual.getClass().toString()).that(actual instanceof FileMetadata).isTrue();
+        assertThat(((FileMetadata) actual).getId()).isEqualTo(expected.getId());
     }
 
     @Test
@@ -307,11 +309,11 @@ public class DbxClientV2Test {
         Metadata actual = client.files().getMetadata(expected.getId());
 
         verify(mockRequestor, times(1)).startPost(anyString(), anyHeaders());
-        assertEquals(credential.getAccessToken(), "accesstoken");
+        assertThat(credential.getAccessToken()).isEqualTo("accesstoken");
 
-        assertEquals(actual.getName(), expected.getName());
-        assertTrue(actual instanceof FileMetadata, actual.getClass().toString());
-        assertEquals(((FileMetadata) actual).getId(), expected.getId());
+        assertThat(actual.getName()).isEqualTo(expected.getName());
+        assertWithMessage(actual.getClass().toString()).that(actual instanceof FileMetadata).isTrue();
+        assertThat(((FileMetadata) actual).getId()).isEqualTo( expected.getId());
     }
 
     @Test
@@ -350,12 +352,12 @@ public class DbxClientV2Test {
 
         verify(mockRequestor, times(2)).startPost(anyString(), anyHeaders());
 
-        assertEquals(credential.getAccessToken(), "accesstoken");
-        assertEquals(credential.getExpiresAt(), new Long(10));
+        assertThat(credential.getAccessToken()).isEqualTo("accesstoken");
+        assertThat(credential.getExpiresAt()).isEqualTo(new Long(10));
 
-        assertEquals(actual.getName(), expected.getName());
-        assertTrue(actual instanceof FileMetadata, actual.getClass().toString());
-        assertEquals(((FileMetadata) actual).getId(), expected.getId());
+        assertThat(actual.getName()).isEqualTo(expected.getName());
+        assertWithMessage(actual.getClass().toString()).that(actual instanceof FileMetadata).isTrue();
+        assertThat(((FileMetadata) actual).getId()).isEqualTo(expected.getId());
     }
 
     @Test
@@ -387,11 +389,11 @@ public class DbxClientV2Test {
         Metadata actual = client.files().getMetadata(expected.getId());
 
         verify(mockRequestor, times(3)).startPost(anyString(), anyHeaders());
-        assertEquals(credential.getAccessToken(), "new_token");
+        assertThat(credential.getAccessToken()).isEqualTo("new_token");
 
-        assertEquals(actual.getName(), expected.getName());
-        assertTrue(actual instanceof FileMetadata, actual.getClass().toString());
-        assertEquals(((FileMetadata) actual).getId(), expected.getId());
+        assertThat(actual.getName()).isEqualTo(expected.getName());
+        assertWithMessage(actual.getClass().toString()).that(actual instanceof FileMetadata).isTrue();
+        assertThat(((FileMetadata) actual).getId()).isEqualTo(expected.getId());
     }
 
     @Test
@@ -430,15 +432,15 @@ public class DbxClientV2Test {
             downloader.close();
         }
 
-        assertEquals(out.toString(), "data");
+        assertThat(out.toString()).isEqualTo("data");
 
         Metadata actual = downloader.getResult();
 
         verify(mockRequestor, times(3)).startPost(anyString(), anyHeaders());
-        assertEquals(credential.getAccessToken(), "new_token");
+        assertThat(credential.getAccessToken()).isEqualTo("new_token");
 
-        assertEquals(actual.getName(), expected.getName());
-        assertEquals(((FileMetadata) actual).getId(), expected.getId());
+        assertThat(actual.getName()).isEqualTo(expected.getName());
+        assertThat(((FileMetadata) actual).getId()).isEqualTo(expected.getId());
     }
 
     @Test
@@ -472,11 +474,11 @@ public class DbxClientV2Test {
         Metadata actual = client.files().getMetadata(expected.getId());
 
         verify(mockRequestor, times(4)).startPost(anyString(), anyHeaders());
-        assertEquals(credential.getAccessToken(), "new_token");
+        assertThat(credential.getAccessToken()).isEqualTo("new_token");
 
-        assertEquals(actual.getName(), expected.getName());
-        assertTrue(actual instanceof FileMetadata, actual.getClass().toString());
-        assertEquals(((FileMetadata) actual).getId(), expected.getId());
+        assertThat(actual.getName()).isEqualTo(expected.getName());
+        assertWithMessage(actual.getClass().toString()).that(actual instanceof FileMetadata).isTrue();
+        assertThat(((FileMetadata) actual).getId()).isEqualTo(expected.getId());
     }
 
     @Test
@@ -501,11 +503,11 @@ public class DbxClientV2Test {
             client.files().getMetadata(expected.getId());
         } catch (InvalidAccessTokenException ex) {
             verify(mockRequestor, times(1)).startPost(anyString(), anyHeaders());
-            assertEquals(credential.getAccessToken(), "accesstoken");
+            assertThat(credential.getAccessToken()).isEqualTo("accesstoken");
 
             AuthError authError = DbxRequestUtil.readJsonFromErrorMessage(AuthError.Serializer
                 .INSTANCE, ex.getMessage(), ex.getRequestId());
-            assertEquals(authError, AuthError.EXPIRED_ACCESS_TOKEN);
+            assertThat(authError).isEqualTo(AuthError.EXPIRED_ACCESS_TOKEN);
             return;
         }
 
@@ -602,7 +604,7 @@ public class DbxClientV2Test {
     }
 
     private static Map<String, List<String>> headers(String name, String value, String ... rest) {
-        assertTrue(rest.length % 2 == 0);
+        assertThat(rest.length % 2 == 0).isTrue();
 
         Map<String, List<String>> headers = new TreeMap<String, List<String>>(String.CASE_INSENSITIVE_ORDER);
         List<String> values = new ArrayList<String>();
@@ -627,7 +629,7 @@ public class DbxClientV2Test {
     }
 
     private static byte [] serialize(Metadata metadata) {
-        assertNotNull(metadata);
+        assertThat(metadata).isNotNull();
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         try {

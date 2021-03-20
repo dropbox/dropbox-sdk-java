@@ -2,6 +2,7 @@ package com.dropbox.core;
 
 import com.dropbox.core.http.HttpRequestor;
 import org.mockito.ArgumentCaptor;
+import org.testng.Assert.ThrowingRunnable;
 import org.testng.annotations.Test;
 
 import java.io.ByteArrayInputStream;
@@ -14,12 +15,14 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertThrows;
 
 public class DbxPKCEWebAuthTest extends DbxOAuthTestBase {
     private static final DbxRequestConfig CONFIG = DbxRequestConfig.newBuilder("DbxWebAuthTest/1.0")
@@ -45,12 +48,12 @@ public class DbxPKCEWebAuthTest extends DbxOAuthTestBase {
 
 
         Map<String, List<String>> params = toParamsMap(new URL(authUrl));
-        assertTrue(params.containsKey("code_challenge"));
+        assertThat(params.containsKey("code_challenge")).isTrue();
         String codeChallenge = params.get("code_challenge").get(0);
-        assertTrue(Pattern.matches(PKCE_REGEX, codeChallenge), codeChallenge);
+        assertWithMessage(codeChallenge).that(Pattern.matches(PKCE_REGEX, codeChallenge)).isTrue();
 
-        assertTrue(params.containsKey("code_challenge_method"));
-        assertEquals(params.get("code_challenge_method").get(0), "S256");
+        assertThat(params.containsKey("code_challenge_method")).isTrue();
+        assertThat(params.get("code_challenge_method").get(0)).isEqualTo("S256");
     }
 
     @Test
@@ -108,7 +111,7 @@ public class DbxPKCEWebAuthTest extends DbxOAuthTestBase {
         verify(mockUploader).upload(argumentCaptor.capture());
         Map<String, List<String>> finishParams = toParamsMap(new String(argumentCaptor.getValue(), "UTF-8"));
         String code_verifier = finishParams.get("code_verifier").get(0);
-        assertEquals(code_challenge, DbxPKCEManager.generateCodeChallenge(code_verifier));
+        assertThat(code_challenge).isEqualTo(DbxPKCEManager.generateCodeChallenge(code_verifier));
     }
 
     @Test
@@ -144,7 +147,7 @@ public class DbxPKCEWebAuthTest extends DbxOAuthTestBase {
         );
 
         Map<String, List<String>> params = toParamsMap(new URL(authUrl));
-        assertEquals(params.get("scope"), Collections.singletonList("account.info.read"));
+        assertThat(params.get("scope")).isEqualTo(Collections.singletonList("account.info.read"));
     }
 
     @Test
@@ -160,18 +163,18 @@ public class DbxPKCEWebAuthTest extends DbxOAuthTestBase {
         );
 
         Map<String, List<String>> params = toParamsMap(new URL(authUrl));
-        assertEquals(params.get("client_id"), Collections.singletonList(APP.getKey()));
-        assertEquals(params.get("response_type"), Collections.singletonList("code"));
-        assertEquals(params.get("scope"), Collections.singletonList("account.info.read"));
-        assertEquals(params.get("include_granted_scopes"), Collections.singletonList("user"));
-        assertFalse(params.containsKey("redirect_uri"));
-        assertFalse(params.containsKey("state"));
-        assertFalse(params.containsKey("require_role"));
-        assertFalse(params.containsKey("force_reapprove"));
-        assertFalse(params.containsKey("disable_signup"));
-        assertFalse(params.containsKey("token_access_type"));
-        assertNotNull(params.get("code_challenge"));
-        assertEquals(params.get("code_challenge_method"), Collections.singletonList("S256"));
+        assertThat(params.get("client_id")).isEqualTo(Collections.singletonList(APP.getKey()));
+        assertThat(params.get("response_type")).isEqualTo(Collections.singletonList("code"));
+        assertThat(params.get("scope")).isEqualTo(Collections.singletonList("account.info.read"));
+        assertThat(params.get("include_granted_scopes")).isEqualTo(Collections.singletonList("user"));
+        assertThat(params.containsKey("redirect_uri")).isFalse();
+        assertThat(params.containsKey("state")).isFalse();
+        assertThat(params.containsKey("require_role")).isFalse();
+        assertThat(params.containsKey("force_reapprove")).isFalse();
+        assertThat(params.containsKey("disable_signup")).isFalse();
+        assertThat(params.containsKey("token_access_type")).isFalse();
+        assertThat(params.get("code_challenge")).isNotNull();
+        assertThat(params.get("code_challenge_method")).isEqualTo(Collections.singletonList("S256"));
     }
 
     @Test

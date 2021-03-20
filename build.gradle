@@ -94,6 +94,7 @@ dependencies {
     testCompile 'com.squareup.okhttp:okhttp:2.7.5'
     testCompile 'com.squareup.okhttp3:okhttp:3.5.0'
     testCompile 'com.google.guava:guava:19.0'
+    testCompile "com.google.truth:truth:1.1.2"
 }
 
 configurations {

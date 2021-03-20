@@ -1,6 +1,6 @@
 package com.dropbox.core;
 
-import static org.testng.Assert.*;
+import static org.testng.Assert.fail;
 
 import java.nio.charset.Charset;
 import java.text.DateFormat;
