@@ -32,7 +32,7 @@ public class RouteVersionTest {
         Method v3Builder = c.getDeclaredMethod("testUploadV3Builder", String.class, String.class);
 
         // Test return value
-        assertThat(v1.getReturnType(), TestUploadUploader.class);
+        assertThat(v1.getReturnType()).isEqualTo(TestUploadUploader.class);
         assertThat(v2NoBuilder.getReturnType()).isEqualTo(TestUploadV2Uploader.class);
         assertThat(v2Builder.getReturnType()).isEqualTo(TestUploadV2Builder.class);
         assertThat(v3Builder.getReturnType()).isEqualTo(DbxTestTestUploadV3Builder.class);

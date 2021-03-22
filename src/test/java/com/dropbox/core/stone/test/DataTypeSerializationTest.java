@@ -63,7 +63,7 @@ public class DataTypeSerializationTest {
     @Test
     public void testUnknownStructFields() throws Exception {
         String json = "{\"height\":768,\"alpha\":0.5,\"width\":1024,\"foo\":{\"bar\":[1, 2, 3],\"baz\":false}}";
-        Dimensions expected = new Dimensions(1024).isEqualTo(768);
+        Dimensions expected = new Dimensions(1024, 768);
         Dimensions actual = Dimensions.Serializer.INSTANCE.deserialize(json);
 
         assertThat(actual).isEqualTo(expected);

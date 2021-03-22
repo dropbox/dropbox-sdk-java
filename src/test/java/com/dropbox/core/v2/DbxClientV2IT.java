@@ -224,7 +224,7 @@ public class DbxClientV2IT {
             assertThat(err.isPath()).isTrue();
 
             LookupError lookup = err.getPathValue();
-            assertThat(lookup).isNotNull;
+            assertThat(lookup).isNotNull();
             assertThat(lookup.tag()).isEqualTo(LookupError.Tag.NOT_FOUND);
             assertThat(lookup.isNotFound()).isTrue();
             assertThat(lookup.isNotFile()).isFalse();

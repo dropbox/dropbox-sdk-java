@@ -258,7 +258,7 @@ public class DbxClientV1IT {
         DbxEntry.File e2 = uploadFile(path, 100, DbxWriteMode.force());
         assertThat(client.getRevisions(path).size()).isEqualTo(1);
         client.delete(path);
-        assertThat(client.getRevisions(path).size(), 1);
+        assertThat(client.getRevisions(path).size()).isEqualTo(1);
         DbxEntry.File e1 = uploadFile(path, 200, DbxWriteMode.force());
         DbxEntry.File e0 = uploadFile(path, 300, DbxWriteMode.force());
 
