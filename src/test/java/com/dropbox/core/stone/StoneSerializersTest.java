@@ -1,6 +1,7 @@
 package com.dropbox.core.stone;
 
-import static org.testng.Assert.*;
+import static com.google.common.truth.Truth.assertThat;
+import static org.testng.Assert.fail;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -31,26 +32,26 @@ public class StoneSerializersTest {
         Date expected = fromTimestampString(expectedTimestamp);
         Date actual = StoneSerializers.timestamp().deserialize(quoted(expectedTimestamp));
 
-        assertEquals(actual, expected);
+        assertThat(actual).isEqualTo(expected);
 
         // LONG FORMAT SERIALIZATION
         String actualTimestamp = StoneSerializers.timestamp().serialize(expected);
 
-        assertEquals(actualTimestamp, quoted(expectedTimestamp));
+        assertThat(actualTimestamp).isEqualTo(quoted(expectedTimestamp));
 
         // SHORT FORMAT DESERIALIZATION
         String shortTimestamp = "2011-02-03";
         expected = fromTimestampString(shortTimestamp);
         actual = StoneSerializers.timestamp().deserialize(quoted(shortTimestamp));
 
-        assertEquals(actual, expected);
+        assertThat(actual).isEqualTo(expected);
 
         // SHORT FORMAT SERIALIZATION
         actualTimestamp = StoneSerializers.timestamp().serialize(expected);
 
         // we always format to long-form
         expectedTimestamp = toTimestampString(expected);
-        assertEquals(actualTimestamp, quoted(expectedTimestamp));
+        assertThat(actualTimestamp).isEqualTo(quoted(expectedTimestamp));
     }
 
     @Test(expectedExceptions = JsonProcessingException.class)
@@ -75,8 +76,8 @@ public class StoneSerializersTest {
         String serialized = "{}";
 
         StoneSerializer<Map<String, Integer>> serializer = StoneSerializers.map(StoneSerializers.int32());
-        assertEquals(serializer.serialize(map), serialized);
-        assertEquals(serializer.deserialize(serialized), map);
+        assertThat(serializer.serialize(map)).isEqualTo(serialized);
+        assertThat(serializer.deserialize(serialized)).isEqualTo(map);
     }
 
     @Test
@@ -88,8 +89,8 @@ public class StoneSerializersTest {
         String serialized = "{\"a\":1,\"b\":2}";
 
         StoneSerializer<Map<String, Integer>> serializer = StoneSerializers.map(StoneSerializers.int32());
-        assertEquals(serializer.serialize(map), serialized);
-        assertEquals(serializer.deserialize(serialized), map);
+        assertThat(serializer.serialize(map)).isEqualTo(serialized);
+        assertThat(serializer.deserialize(serialized)).isEqualTo(map);
     }
 
     @Test
@@ -106,8 +107,8 @@ public class StoneSerializersTest {
 
         StoneSerializer<Map<String, Map<String, Integer>>> serializer =
                 StoneSerializers.map(StoneSerializers.map(StoneSerializers.int32()));
-        assertEquals(serializer.serialize(map), serialized);
-        assertEquals(serializer.deserialize(serialized), map);
+        assertThat(serializer.serialize(map)).isEqualTo(serialized);
+        assertThat(serializer.deserialize(serialized)).isEqualTo(map);
     }
 
     @Test
@@ -119,8 +120,8 @@ public class StoneSerializersTest {
 
         StoneSerializer<Map<String, String>> serializer =
                 StoneSerializers.map(StoneSerializers.nullable(StoneSerializers.string()));
-        assertEquals(serializer.serialize(map), serialized);
-        assertEquals(serializer.deserialize(serialized), map);
+        assertThat(serializer.serialize(map)).isEqualTo(serialized);
+        assertThat(serializer.deserialize(serialized)).isEqualTo(map);
     }
 
     private static String quoted(String value) {

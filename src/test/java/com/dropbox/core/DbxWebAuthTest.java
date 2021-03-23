@@ -6,7 +6,8 @@ import org.testng.annotations.Test;
 import java.net.URL;
 import java.util.*;
 
-import static org.testng.Assert.*;
+import static com.google.common.truth.Truth.assertThat;
+import static org.testng.Assert.fail;
 
 public class DbxWebAuthTest extends DbxOAuthTestBase {
     private static final DbxRequestConfig CONFIG = DbxRequestConfig.newBuilder("DbxWebAuthTest/1.0")
@@ -46,7 +47,7 @@ public class DbxWebAuthTest extends DbxOAuthTestBase {
 
         // assert token access type is empty
         Map<String, List<String>> params = toParamsMap(new URL(authUrl));
-        assertFalse(params.containsKey("token_access_type"));
+        assertThat(params.containsKey("token_access_type")).isFalse();
     }
 
     @Test(expectedExceptions={IllegalArgumentException.class})
@@ -120,7 +121,7 @@ public class DbxWebAuthTest extends DbxOAuthTestBase {
                 .build();
         String urlString = dbxWebAuth.authorize(request);
         Map<String, List<String>> params = toParamsMap(new URL(urlString));
-        assertEquals(params.get("token_access_type"), Collections.singletonList("online"));
+        assertThat(params.get("token_access_type")).isEqualTo(Collections.singletonList("online"));
 
         request = DbxWebAuth.newRequestBuilder()
                 .withNoRedirect()
@@ -128,7 +129,7 @@ public class DbxWebAuthTest extends DbxOAuthTestBase {
                 .build();
         urlString = dbxWebAuth.authorize(request);
         params = toParamsMap(new URL(urlString));
-        assertEquals(params.get("token_access_type"), Collections.singletonList("offline"));
+        assertThat(params.get("token_access_type")).isEqualTo(Collections.singletonList("offline"));
     }
 
     @Test(expectedExceptions={DbxWebAuth.CsrfException.class})
@@ -164,8 +165,8 @@ public class DbxWebAuthTest extends DbxOAuthTestBase {
             .build();
         String urlString = dbxWebAuth.authorize(request);
         Map<String, List<String>> params = toParamsMap(new URL(urlString));
-        assertEquals(params.get("scope"), Collections.singletonList("account.info.read"));
-        assertNull(params.get("include_granted_scopes"));
+        assertThat(params.get("scope")).isEqualTo(Collections.singletonList("account.info.read"));
+        assertThat(params.get("include_granted_scopes")).isNull();
     }
 
     @Test
@@ -178,16 +179,16 @@ public class DbxWebAuthTest extends DbxOAuthTestBase {
             .build();
         String urlString = dbxWebAuth.authorize(request);
         Map<String, List<String>> params = toParamsMap(new URL(urlString));
-        assertEquals(params.get("client_id"), Collections.singletonList(APP.getKey()));
-        assertEquals(params.get("response_type"), Collections.singletonList("code"));
-        assertEquals(params.get("scope"), Collections.singletonList("account.info.read"));
-        assertEquals(params.get("include_granted_scopes"), Collections.singletonList("user"));
-        assertFalse(params.containsKey("redirect_uri"));
-        assertFalse(params.containsKey("state"));
-        assertFalse(params.containsKey("require_role"));
-        assertFalse(params.containsKey("force_reapprove"));
-        assertFalse(params.containsKey("disable_signup"));
-        assertFalse(params.containsKey("token_access_type"));
+        assertThat(params.get("client_id")).isEqualTo(Collections.singletonList(APP.getKey()));
+        assertThat(params.get("response_type")).isEqualTo(Collections.singletonList("code"));
+        assertThat(params.get("scope")).isEqualTo(Collections.singletonList("account.info.read"));
+        assertThat(params.get("include_granted_scopes")).isEqualTo(Collections.singletonList("user"));
+        assertThat(params.containsKey("redirect_uri")).isFalse();
+        assertThat(params.containsKey("state")).isFalse();
+        assertThat(params.containsKey("require_role")).isFalse();
+        assertThat(params.containsKey("force_reapprove")).isFalse();
+        assertThat(params.containsKey("disable_signup")).isFalse();
+        assertThat(params.containsKey("token_access_type")).isFalse();
 
     }
 }
