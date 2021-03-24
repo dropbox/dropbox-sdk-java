@@ -1,3 +1,8 @@
+3.2.0 (2021-03-22)
+---------------------------------------------
+- update Java tests to use Google's Truth library
+- bump target Java version from 6 to 8
+
 3.1.5 (2020-08-11)
 ---------------------------------------------
 - Fix bug in authorization flow.
