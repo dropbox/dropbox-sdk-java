@@ -1,8 +1,7 @@
 package com.dropbox.core.v1;
 
+import static org.testng.Assert.*;
 import static com.dropbox.core.util.StringUtil.jq;
-import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
 
 import com.dropbox.core.DbxStreamWriter;
 import com.dropbox.core.ITUtil;
@@ -37,7 +36,7 @@ public class DbxClientV1IT {
     private void setup() throws Exception {
         this.client = ITUtil.newClientV1();
         this.testFolder = ITUtil.root(DbxClientV1IT.class);
-        assertThat(client.createFolder(testFolder)).isNotNull();
+        assertNotNull(client.createFolder(testFolder));
     }
 
     @AfterMethod
@@ -71,15 +70,15 @@ public class DbxClientV1IT {
         String remotePath = p("test-fil" + E_ACCENT + ".txt");
 
         DbxEntry.File up = client.uploadFile(remotePath, DbxWriteMode.add(), contents.length, new ByteArrayInputStream(contents));
-        assertThat(up.path).isEqualTo(remotePath);
-        assertThat(up.numBytes).isEqualTo(contents.length);
+        assertEquals(up.path, remotePath);
+        assertEquals(up.numBytes, contents.length);
 
         ByteArrayOutputStream downBodyStream = new ByteArrayOutputStream();
         DbxEntry.File down = client.getFile(remotePath, null, downBodyStream);
         byte[] downBody = downBodyStream.toByteArray();
 
-        assertThat(up.numBytes).isEqualTo(down.numBytes);
-        assertThat(up.numBytes).isEqualTo(downBody.length);
+        assertEquals(up.numBytes, down.numBytes);
+        assertEquals(up.numBytes, downBody.length);
     }
 
     private DbxEntry.File addFile(String path, int length) throws Exception {
@@ -106,32 +105,32 @@ public class DbxClientV1IT {
 
         {
             DbxEntry entry = client.getMetadata(p("a.txt"));
-            assertThat(entry.path).isEqualTo(p("a.txt"));
-            assertThat(entry instanceof DbxEntry.File).isTrue();
+            assertEquals(entry.path, p("a.txt"));
+            assertTrue(entry instanceof DbxEntry.File);
             DbxEntry.File f = (DbxEntry.File) entry;
-            assertThat(f.numBytes).isEqualTo(100);
+            assertEquals(f.numBytes, 100);
 
             DbxEntry.WithChildren mwc = client.getMetadataWithChildren(p("a.txt"));
-            assertThat(mwc.entry).isEqualTo(entry);
+            assertEquals(mwc.entry, entry);
         }
 
         // Containing folder.
         {
             DbxEntry.WithChildren mwc = client.getMetadataWithChildren(p());
-            assertThat(mwc.children.size()).isEqualTo(1);
+            assertEquals(mwc.children.size(), 1);
 
             // Folder metadata should be the same if we call /metadata again.
             Maybe<DbxEntry.WithChildren> r2 = client.getMetadataWithChildrenIfChanged(p(), mwc.hash);
-            assertThat(r2.isNothing()).isTrue();
+            assertTrue(r2.isNothing());
         }
 
         // File not found.
         {
             DbxEntry entry = client.getMetadata(p("does not exists.txt"));
-            assertThat(entry).isNull();
+            assertNull(entry);
 
             DbxEntry.WithChildren mwc = client.getMetadataWithChildren(p("does not exist.txt"));
-            assertThat(mwc).isNull();
+            assertNull(mwc);
         }
     }
 
@@ -146,8 +145,8 @@ public class DbxClientV1IT {
         // Get latest cursors before modifying dropbox folders
         String latestCursor = client.getDeltaLatestCursor();
         String latestCursorWithPath = client.getDeltaLatestCursorWithPathPrefix(p("b"));
-        assertThat(latestCursor).isNotNull();
-        assertThat(latestCursorWithPath).isNotNull();
+        assertNotNull(latestCursor);
+        assertNotNull(latestCursorWithPath);
 
         DbxEntry.Folder top = (DbxEntry.Folder) client.getMetadata(p());
         DbxEntry.File a = addFile(p("a.txt"), 10);
@@ -168,16 +167,16 @@ public class DbxClientV1IT {
                 DbxDelta<DbxEntry> d = client.getDelta(cursor);
                 for (DbxDelta.Entry<DbxEntry> e : d.entries) {
                     if (e.lcPath.startsWith(lcPrefix+"/") || e.lcPath.equals(lcPrefix)) {
-                        assertThat(e.metadata).isNotNull();  // We shouldn't see deletes in our test folder.
+                        assertNotNull(e.metadata);  // We shouldn't see deletes in our test folder.
                         boolean removed = expected.remove(e.metadata);
-                        assertThat(removed).isTrue();
+                        assertTrue(removed);
                     }
                 }
                 cursor = d.cursor;
                 if (!d.hasMore) break;
             }
 
-            assertThat(expected.size()).isEqualTo(0);
+            assertEquals(expected.size(), 0);
         }
 
         // getDeltaWithPathPrefix
@@ -190,16 +189,16 @@ public class DbxClientV1IT {
             while (true) {
                 DbxDelta<DbxEntry> d = client.getDeltaWithPathPrefix(cursor, prefix);
                 for (DbxDelta.Entry<DbxEntry> e : d.entries) {
-                    assertThat(e.lcPath.startsWith(lcPrefix+"/") || e.lcPath.equals(lcPrefix)).isTrue();
-                    assertThat(e.metadata).isNotNull();  // We should never see deletes.
+                    assertTrue(e.lcPath.startsWith(lcPrefix+"/") || e.lcPath.equals(lcPrefix));
+                    assertNotNull(e.metadata);  // We should never see deletes.
                     boolean removed = expected.remove(e.metadata);
-                    assertThat(removed).isTrue();
+                    assertTrue(removed);
                 }
                 cursor = d.cursor;
                 if (!d.hasMore) break;
             }
 
-            assertThat(expected.size()).isEqualTo(0);
+            assertEquals(expected.size(), 0);
         }
 
         // Test latest cursor responses
@@ -210,16 +209,16 @@ public class DbxClientV1IT {
             while (true) {
                 DbxDelta<DbxEntry> d = client.getDelta(cursor);
                 for (DbxDelta.Entry<DbxEntry> e : d.entries) {
-                    assertThat(e.lcPath.startsWith(lcPrefix+"/") || e.lcPath.equals(lcPrefix)).isTrue();
-                    assertThat(e.metadata).isNotNull();  // We shouldn't see deletes in our test folder.
+                    assertTrue(e.lcPath.startsWith(lcPrefix+"/") || e.lcPath.equals(lcPrefix));
+                    assertNotNull(e.metadata);  // We shouldn't see deletes in our test folder.
                     boolean removed = expected.remove(e.metadata);
-                    assertThat(removed).isTrue();
+                    assertTrue(removed);
                 }
                 cursor = d.cursor;
                 if (!d.hasMore) break;
             }
 
-            assertThat(expected.size()).isEqualTo(0);
+            assertEquals(expected.size(), 0);
         }
 
         // Test latest cursor with path prefix
@@ -232,22 +231,22 @@ public class DbxClientV1IT {
             while (true) {
                 DbxDelta<DbxEntry> d = client.getDeltaWithPathPrefix(cursor, prefix);
                 for (DbxDelta.Entry<DbxEntry> e : d.entries) {
-                    assertThat(e.lcPath.startsWith(lcPrefix+"/") || e.lcPath.equals(lcPrefix)).isTrue();
-                    assertThat(e.metadata).isNotNull();  // We should never see deletes.
+                    assertTrue(e.lcPath.startsWith(lcPrefix+"/") || e.lcPath.equals(lcPrefix));
+                    assertNotNull(e.metadata);  // We should never see deletes.
                     boolean removed = expected.remove(e.metadata);
-                    assertThat(removed).isTrue();
+                    assertTrue(removed);
                 }
                 cursor = d.cursor;
                 if (!d.hasMore) break;
             }
 
-            assertThat(expected.size()).isEqualTo(0);
+            assertEquals(expected.size(), 0);
         }
 
         // Test longpoll_delta
         {
             DbxLongpollDeltaResult longpollDelta = client.getLongpollDelta(latestCursor, 30);
-            assertThat(longpollDelta.mightHaveChanges).isTrue();
+            assertTrue(longpollDelta.mightHaveChanges);
         }
     }
 
@@ -256,23 +255,23 @@ public class DbxClientV1IT {
         String path = p("r"+E_ACCENT+"visions.txt");
 
         DbxEntry.File e2 = uploadFile(path, 100, DbxWriteMode.force());
-        assertThat(client.getRevisions(path).size()).isEqualTo(1);
+        assertEquals(client.getRevisions(path).size(), 1);
         client.delete(path);
-        assertThat(client.getRevisions(path).size()).isEqualTo(1);
+        assertEquals(client.getRevisions(path).size(), 1);
         DbxEntry.File e1 = uploadFile(path, 200, DbxWriteMode.force());
         DbxEntry.File e0 = uploadFile(path, 300, DbxWriteMode.force());
 
         List<DbxEntry.File> mds = client.getRevisions(path);
-        assertThat(mds.size()).isEqualTo(3);
+        assertEquals(mds.size(), 3);
 
-        assertThat(mds.get(0)).isEqualTo(e0);
-        assertThat(mds.get(1)).isEqualTo(e1);
-        assertThat(mds.get(2)).isEqualTo(e2);
+        assertEquals(mds.get(0), e0);
+        assertEquals(mds.get(1), e1);
+        assertEquals(mds.get(2), e2);
 
         DbxEntry.File r1 = client.restoreFile(path, e1.rev);
-        assertThat(r1.numBytes).isEqualTo(e1.numBytes);
+        assertEquals(r1.numBytes, e1.numBytes);
         DbxEntry.File r2 = client.restoreFile(path, e2.rev);
-        assertThat(r2.numBytes).isEqualTo(e2.numBytes);
+        assertEquals(r2.numBytes, e2.numBytes);
     }
 
     @Test
@@ -284,14 +283,14 @@ public class DbxClientV1IT {
         List<DbxEntry> results;
 
         results = client.searchFileAndFolderNames(p(), "search");
-        assertThat(results.size()).isEqualTo(2);
+        assertEquals(results.size(), 2);
 
         results = client.searchFileAndFolderNames(p("sub"), "search");
-        assertThat(results.size()).isEqualTo(1);
+        assertEquals(results.size(), 1);
 
         results = client.searchFileAndFolderNames(p(), "a.txt");
-        assertThat(results.size()).isEqualTo(1);
-        assertThat(results.get(0).name).isEqualTo("search - a.txt");
+        assertEquals(results.size(), 1);
+        assertEquals(results.get(0).name, "search - a.txt");
     }
 
     private static byte[] downloadUrl(String urlS) throws Exception {
@@ -315,7 +314,7 @@ public class DbxClientV1IT {
 
         // Preview page should be larger than the original content.
         byte[] previewPage = downloadUrl(previewUrl.toString());
-        assertThat(previewPage.length > contents.length).isTrue();
+        assertTrue(previewPage.length > contents.length);
 
         // Direct download should match exactly.
         URL directUrl = new URL(
@@ -325,7 +324,7 @@ public class DbxClientV1IT {
             previewUrl.getFile()
         );
         byte[] directContents = downloadUrl(directUrl.toString());
-        assertThat(directContents).isEqualTo(contents);
+        assertEquals(directContents, contents);
     }
 
     @Test
@@ -337,7 +336,7 @@ public class DbxClientV1IT {
         DbxUrlWithExpiration uwe = client.createTemporaryDirectUrl(path);
 
         byte[] downloadedContents = downloadUrl(uwe.url);
-        assertThat(downloadedContents).isEqualTo(contents);
+        assertEquals(downloadedContents, contents);
     }
 
     @Test
@@ -350,10 +349,10 @@ public class DbxClientV1IT {
         String copyRef = client.createCopyRef(source);
 
         DbxEntry.File destMd = client.copyFromCopyRef(copyRef, dest).asFile();
-        assertThat(size).isEqualTo(destMd.numBytes);
+        assertEquals(size, destMd.numBytes);
 
         DbxEntry.WithChildren mwc = client.getMetadataWithChildren(p());
-        assertThat(mwc.children.size()).isEqualTo(2);
+        assertEquals(mwc.children.size(), 2);
     }
 
     @Test
@@ -367,11 +366,11 @@ public class DbxClientV1IT {
         String copyRef = client.createCopyRef(source);
         DbxEntry r = client.copyFromCopyRef(copyRef, dest);
 
-        assertThat(r.isFolder()).isTrue();
-        assertThat(r.path).isEqualTo(dest);
+        assertTrue(r.isFolder());
+        assertEquals(r.path, dest);
 
         DbxEntry.WithChildren c = client.getMetadataWithChildren(dest);
-        assertThat(c.children.size()).isEqualTo(2);
+        assertEquals(c.children.size(), 2);
     }
 
     @Test
@@ -383,11 +382,11 @@ public class DbxClientV1IT {
         String copyRef = client.createCopyRef(source);
         DbxEntry r = client.copyFromCopyRef(copyRef, dest);
 
-        assertThat(r.isFolder()).isTrue();
-        assertThat(r.path).isEqualTo(dest);
+        assertTrue(r.isFolder());
+        assertEquals(r.path, dest);
 
         DbxEntry.WithChildren c = client.getMetadataWithChildren(dest);
-        assertThat(c.children.size()).isEqualTo(0);
+        assertEquals(c.children.size(), 0);
     }
 
     @Test
@@ -407,7 +406,7 @@ public class DbxClientV1IT {
         finally {
             IOUtil.closeInput(in);
         }
-        assertThat(uploadEntry.path.toLowerCase()).isEqualTo(orig.toLowerCase());
+        assertEquals(uploadEntry.path.toLowerCase(), orig.toLowerCase());
 
         // Get metadata with photo info (keep trying until photo info is available)
         int maxTries = 30;
@@ -423,12 +422,12 @@ public class DbxClientV1IT {
             if (origEntry.photoInfo == DbxEntry.File.PhotoInfo.PENDING) break;
         }
 
-        assertThat(origEntry.path.toLowerCase()).isEqualTo(orig.toLowerCase());
-        assertThat(origEntry.photoInfo).isNotNull();
+        assertEquals(origEntry.path.toLowerCase(), orig.toLowerCase());
+        assertNotNull(origEntry.photoInfo);
 
         // List folder with photo info.
         DbxEntry.File childEntry = client.getMetadataWithChildren(folder, true).children.get(0).asFile();
-        assertThat(childEntry).isEqualTo(origEntry);
+        assertEquals(childEntry, origEntry);
     }
 
     @Test
@@ -471,19 +470,19 @@ public class DbxClientV1IT {
                 DbxEntry.File md = client.getThumbnail(size, format, orig, null, out);
                 byte[] data = out.toByteArray();
 
-                assertThat(removeMediaInfo(origMD)).isEqualTo(removeMediaInfo(md));
+                assertEquals(removeMediaInfo(origMD), removeMediaInfo(md));
 
                 // We're getting bigger and bigger thumbnails, so they should have more bytes
                 // than the previous ones.
-                assertThat(data.length > prevSize).isTrue();
+                assertTrue(data.length > prevSize);
 
                 reader.setInput(new MemoryCacheImageInputStream(new ByteArrayInputStream(data)));
                 int w = reader.getWidth(0);
                 int h = reader.getHeight(0);
                 int expectedW = Math.min(size.width, origW);
                 int expectedH = Math.min(size.width, origH);
-                assertWithMessage("expected = " + expectedW + "x" + expectedH + ", got = " + w + "x" + h)
-                        .that((w == expectedW && h <= expectedH) || (h == expectedH && w <= expectedW)).isTrue();
+                assertTrue((w == expectedW && h <= expectedH) || (h == expectedH && w <= expectedW),
+                    "expected = " + expectedW + "x" + expectedH + ", got = " + w + "x" + h);
             }
         }
     }
@@ -510,7 +509,7 @@ public class DbxClientV1IT {
     public void testChunkedUpload() throws Exception {
         byte[] contents = StringUtil.stringToUtf8("A simple test file");
         int chunkSize = 7;
-        assertThat(contents.length % chunkSize).isNotEqualTo(0);  // Make sure the last chunk is not full-sized.
+        assertNotEquals(contents.length % chunkSize, 0);  // Make sure the last chunk is not full-sized.
 
 
         // Pass in the correct file size.
@@ -518,15 +517,15 @@ public class DbxClientV1IT {
             String remotePath = p("test-fil" + E_ACCENT + ".txt");
             DbxEntry.File up = client.uploadFileChunked(chunkSize, remotePath, DbxWriteMode.add(),
                                                         contents.length, new DbxStreamWriter.ByteArrayCopier(contents));
-            assertThat(up.path).isEqualTo(remotePath);
-            assertThat(up.numBytes).isEqualTo(contents.length);
+            assertEquals(up.path, remotePath);
+            assertEquals(up.numBytes, contents.length);
 
             ByteArrayOutputStream downBodyStream = new ByteArrayOutputStream();
             DbxEntry.File down = client.getFile(remotePath, null, downBodyStream);
             byte[] downBody = downBodyStream.toByteArray();
 
-            assertThat(up.numBytes).isEqualTo(down.numBytes);
-            assertThat(downBody).isEqualTo(contents);
+            assertEquals(up.numBytes, down.numBytes);
+            assertEquals(downBody, contents);
         }
 
         // Pass in "-1" for file size.
@@ -534,15 +533,15 @@ public class DbxClientV1IT {
             String remotePath = p("test-fil" + E_ACCENT + "-2.txt");
             DbxEntry.File up = client.uploadFileChunked(chunkSize, remotePath, DbxWriteMode.add(),
                                                         -1, new DbxStreamWriter.ByteArrayCopier(contents));
-            assertThat(up.path).isEqualTo(remotePath);
-            assertThat(up.numBytes).isEqualTo(contents.length);
+            assertEquals(up.path, remotePath);
+            assertEquals(up.numBytes, contents.length);
 
             ByteArrayOutputStream downBodyStream = new ByteArrayOutputStream();
             DbxEntry.File down = client.getFile(remotePath, null, downBodyStream);
             byte[] downBody = downBodyStream.toByteArray();
 
-            assertThat(up.numBytes).isEqualTo(down.numBytes);
-            assertThat(downBody).isEqualTo(contents);
+            assertEquals(up.numBytes, down.numBytes);
+            assertEquals(downBody, contents);
         }
 
         // Try uploading a file that is smaller than the first chunk.
@@ -550,15 +549,15 @@ public class DbxClientV1IT {
             String remotePath = p("test-fil" + E_ACCENT + "-3.txt");
             DbxEntry.File up = client.uploadFileChunked(contents.length + 2, remotePath, DbxWriteMode.add(),
                                                         -1, new DbxStreamWriter.ByteArrayCopier(contents));
-            assertThat(up.path).isEqualTo(remotePath);
-            assertThat(up.numBytes).isEqualTo(contents.length);
+            assertEquals(up.path, remotePath);
+            assertEquals(up.numBytes, contents.length);
 
             ByteArrayOutputStream downBodyStream = new ByteArrayOutputStream();
             DbxEntry.File down = client.getFile(remotePath, null, downBodyStream);
             byte[] downBody = downBodyStream.toByteArray();
 
-            assertThat(up.numBytes).isEqualTo(down.numBytes);
-            assertThat(downBody).isEqualTo(contents);
+            assertEquals(up.numBytes, down.numBytes);
+            assertEquals(downBody, contents);
         }
     }
 
@@ -570,11 +569,11 @@ public class DbxClientV1IT {
 
         addFile(source, size);
         DbxEntry.File md = client.copy(source, dest).asFile();
-        assertThat(md.numBytes).isEqualTo(size);
-        assertThat(md.path).isEqualTo(dest);
+        assertEquals(md.numBytes, size);
+        assertEquals(md.path, dest);
 
         DbxEntry.WithChildren mwc = client.getMetadataWithChildren(p());
-        assertThat(mwc.children.size()).isEqualTo(2);
+        assertEquals(mwc.children.size(), 2);
     }
 
     @Test
@@ -587,11 +586,11 @@ public class DbxClientV1IT {
         String dest = p("copied folder");
         DbxEntry r = client.copy(source, dest);
 
-        assertThat(r.isFolder()).isTrue();
-        assertThat(r.path).isEqualTo(dest);
+        assertTrue(r.isFolder());
+        assertEquals(r.path, dest);
 
         DbxEntry.WithChildren c = client.getMetadataWithChildren(dest);
-        assertThat(c.children.size()).isEqualTo(2);
+        assertEquals(c.children.size(), 2);
     }
 
     @Test
@@ -602,24 +601,24 @@ public class DbxClientV1IT {
         String dest = p("copied empty folder");
         DbxEntry r = client.copy(source, dest);
 
-        assertThat(r.isFolder()).isTrue();
-        assertThat(r.path).isEqualTo(dest);
+        assertTrue(r.isFolder());
+        assertEquals(r.path, dest);
 
         DbxEntry.WithChildren c = client.getMetadataWithChildren(dest);
-        assertThat(c.children.size()).isEqualTo(0);
+        assertEquals(c.children.size(), 0);
     }
 
     @Test
     public void testCreateFolder() throws Exception {
         DbxEntry.WithChildren mwc = client.getMetadataWithChildren(p());
-        assertThat(mwc.children.size()).isEqualTo(0);
+        assertEquals(mwc.children.size(), 0);
 
         client.createFolder(p("a"));
         mwc = client.getMetadataWithChildren(p());
-        assertThat(mwc.children.size()).isEqualTo(1);
+        assertEquals(mwc.children.size(), 1);
 
         DbxEntry folderMd = client.getMetadata(p("a"));
-        assertThat(folderMd.isFolder()).isTrue();
+        assertTrue(folderMd.isFolder());
     }
 
     @Test
@@ -631,7 +630,7 @@ public class DbxClientV1IT {
         client.delete(path);
 
         DbxEntry.WithChildren mwc = client.getMetadataWithChildren(p());
-        assertThat(mwc.children.size()).isEqualTo(0);
+        assertEquals(mwc.children.size(), 0);
     }
 
     @Test
@@ -642,13 +641,13 @@ public class DbxClientV1IT {
 
         addFile(source, size);
         DbxEntry.WithChildren mwc = client.getMetadataWithChildren(p());
-        assertThat(mwc.children.size()).isEqualTo(1);
+        assertEquals(mwc.children.size(), 1);
 
         DbxEntry.File destMd = client.move(source, dest).asFile();
-        assertThat(destMd.numBytes).isEqualTo(size);
+        assertEquals(destMd.numBytes, size);
 
         mwc = client.getMetadataWithChildren(p());
-        assertThat(mwc.children.size()).isEqualTo(1);
+        assertEquals(mwc.children.size(), 1);
     }
 
     @Test
@@ -661,15 +660,15 @@ public class DbxClientV1IT {
         String dest = p("moved folder");
         DbxEntry r = client.move(source, dest);
 
-        assertThat(r.isFolder()).isTrue();
-        assertThat(r.path).isEqualTo(dest);
+        assertTrue(r.isFolder());
+        assertEquals(r.path, dest);
 
         DbxEntry.WithChildren c = client.getMetadataWithChildren(dest);
-        assertThat(c.children.size()).isEqualTo(2);
+        assertEquals(c.children.size(), 2);
 
         // Make sure source is now gone.
         DbxEntry deleted = client.getMetadata(source);
-        assertThat(deleted == null).isTrue();
+        assertTrue(deleted == null);
     }
 
     @Test
@@ -680,14 +679,14 @@ public class DbxClientV1IT {
         String dest = p("moved empty folder");
         DbxEntry r = client.move(source, dest);
 
-        assertThat(r.isFolder()).isTrue();
-        assertThat(r.path).isEqualTo(dest);
+        assertTrue(r.isFolder());
+        assertEquals(r.path, dest);
 
         DbxEntry.WithChildren c = client.getMetadataWithChildren(dest);
-        assertThat(c.children.size()).isEqualTo(0);
+        assertEquals(c.children.size(), 0);
 
         // Make sure source is now gone.
         DbxEntry deleted = client.getMetadata(source);
-        assertThat(deleted == null).isTrue();
+        assertTrue(deleted == null);
     }
 }

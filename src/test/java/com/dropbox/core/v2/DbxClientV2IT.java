@@ -1,7 +1,6 @@
 package com.dropbox.core.v2;
 
-import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
+import static org.testng.Assert.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -30,14 +29,14 @@ public class DbxClientV2IT {
         DbxClientV2 client = ITUtil.newClientV2();
 
         FullAccount full = client.users().getCurrentAccount();
-        assertThat(full).isNotNull();
-        assertThat(full.getName()).isNotNull();
-        assertThat(full.getAccountId()).isNotNull();
+        assertNotNull(full);
+        assertNotNull(full.getName());
+        assertNotNull(full.getAccountId());
 
         BasicAccount basic = client.users().getAccount(full.getAccountId());
-        assertThat(basic).isNotNull();
-        assertThat(basic.getName()).isNotNull();
-        assertThat(basic.getAccountId()).isEqualTo(full.getAccountId());
+        assertNotNull(basic);
+        assertNotNull(basic.getName());
+        assertEquals(basic.getAccountId(), full.getAccountId());
     }
 
     @Test
@@ -94,13 +93,13 @@ public class DbxClientV2IT {
                 .withMute(true)
                 .uploadAndFinish(new ByteArrayInputStream(contents), progressListener);
 
-        assertThat(metadata.getName()).isEqualTo(filename);
-        assertThat(metadata.getPathLower()).isEqualTo(path.toLowerCase());
-        assertThat(metadata.getSize()).isEqualTo(contents.length);
+        assertEquals(metadata.getName(), filename);
+        assertEquals(metadata.getPathLower(), path.toLowerCase());
+        assertEquals(metadata.getSize(), contents.length);
 
         Metadata actual = client.files().getMetadata(path);
-        assertWithMessage(actual.getClass().getCanonicalName()).that(actual instanceof FileMetadata).isTrue();
-        assertThat(actual).isEqualTo(metadata);
+        assertTrue(actual instanceof FileMetadata, actual.getClass().getCanonicalName());
+        assertEquals(actual, metadata);
 
         if (trackProgress) {
             progressListener = createTestListener(contents.length);
@@ -113,12 +112,12 @@ public class DbxClientV2IT {
         byte [] actualContents = out.toByteArray();
         FileMetadata actualResult = downloader.getResult();
 
-        assertThat(actualResult).isEqualTo(metadata);
-        assertThat(actualContents).isEqualTo(contents);
-        assertThat(downloader.getContentType()).isEqualTo("application/octet-stream");
+        assertEquals(actualResult, metadata);
+        assertEquals(actualContents, contents);
+        assertEquals(downloader.getContentType(), "application/octet-stream");
 
         Metadata deleted = client.files().delete(path);
-        assertThat(deleted).isEqualTo(metadata);
+        assertEquals(deleted, metadata);
     }
 
     @Test
@@ -134,7 +133,7 @@ public class DbxClientV2IT {
             .withMute(true)
             .uploadAndFinish(new ByteArrayInputStream(contents));
 
-        assertThat(metadata.getSize()).isEqualTo(contents.length);
+        assertEquals(metadata.getSize(), contents.length);
 
         assertRangeDownload(client, path, contents, 0, contents.length);
         assertRangeDownload(client, path, contents, 0, 200);
@@ -160,7 +159,7 @@ public class DbxClientV2IT {
             .withMute(true)
             .uploadAndFinish(new ByteArrayInputStream(rtfV1));
 
-        assertThat(metadataV1.getPathLower()).isEqualTo(path.toLowerCase());
+        assertEquals(metadataV1.getPathLower(), path.toLowerCase());
 
         FileMetadata metadataV2 = client.files().uploadBuilder(path)
             .withAutorename(false)
@@ -168,38 +167,38 @@ public class DbxClientV2IT {
             .withMute(true)
             .uploadAndFinish(new ByteArrayInputStream(rtfV2));
 
-        assertThat(metadataV2.getPathLower()).isEqualTo(path.toLowerCase());
+        assertEquals(metadataV2.getPathLower(), path.toLowerCase());
 
         // ensure we have separate revisions
-        assertThat(metadataV1.getRev()).isNotEqualTo(metadataV2.getRev());
+        assertNotEquals(metadataV1.getRev(), metadataV2.getRev());
 
         // now use download builder to set revision and make sure it works properly
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         client.files().downloadBuilder(path)
             .withRev(metadataV1.getRev())
             .download(out);
-        assertThat(out.toByteArray()).isEqualTo(rtfV1);
+        assertEquals(out.toByteArray(), rtfV1);
 
         out = new ByteArrayOutputStream();
         client.files().downloadBuilder(path)
             .withRev(metadataV2.getRev())
             .download(out);
-        assertThat(out.toByteArray()).isEqualTo(rtfV2);
+        assertEquals(out.toByteArray(), rtfV2);
 
         // ensure we still keep the non-builder optional route in our generator (for
         // backwards-compatibility)
         out = new ByteArrayOutputStream();
         client.files().download(path, metadataV1.getRev()).download(out);
-        assertThat(out.toByteArray()).isEqualTo(rtfV1);
+        assertEquals(out.toByteArray(), rtfV1);
 
         out = new ByteArrayOutputStream();
         client.files().download(path, metadataV2.getRev()).download(out);
-        assertThat(out.toByteArray()).isEqualTo(rtfV2);
+        assertEquals(out.toByteArray(), rtfV2);
 
         // and ensure we keep the required-only route
         out = new ByteArrayOutputStream();
         client.files().download(path).download(out);
-        assertThat(out.toByteArray()).isEqualTo(rtfV2);
+        assertEquals(out.toByteArray(), rtfV2);
     }
 
     @Test(expectedExceptions={GetMetadataErrorException.class})
@@ -211,25 +210,25 @@ public class DbxClientV2IT {
         try {
             client.files().getMetadata(path);
         } catch (GetMetadataErrorException ex) {
-            assertThat(ex.getRequestId()).isNotNull();
+            assertNotNull(ex.getRequestId());
             if (ex.getUserMessage() != null) {
-                assertThat(ex.getUserMessage().getLocale()).isNotNull();
-                assertThat(ex.getUserMessage().getText()).isNotNull();
-                assertThat(ex.getUserMessage().toString()).isNotNull();
+                assertNotNull(ex.getUserMessage().getLocale());
+                assertNotNull(ex.getUserMessage().getText());
+                assertNotNull(ex.getUserMessage().toString());
             }
 
             GetMetadataError err = ex.errorValue;
-            assertThat(err).isNotNull();
-            assertThat(err.tag()).isEqualTo(GetMetadataError.Tag.PATH);
-            assertThat(err.isPath()).isTrue();
+            assertNotNull(err);
+            assertEquals(err.tag(), GetMetadataError.Tag.PATH);
+            assertTrue(err.isPath());
 
             LookupError lookup = err.getPathValue();
-            assertThat(lookup).isNotNull();
-            assertThat(lookup.tag()).isEqualTo(LookupError.Tag.NOT_FOUND);
-            assertThat(lookup.isNotFound()).isTrue();
-            assertThat(lookup.isNotFile()).isFalse();
-            assertThat(lookup.isOther()).isFalse();
-            assertThat(lookup.isMalformedPath()).isFalse();
+            assertNotNull(lookup);
+            assertEquals(lookup.tag(), LookupError.Tag.NOT_FOUND);
+            assertTrue(lookup.isNotFound());
+            assertFalse(lookup.isNotFile());
+            assertFalse(lookup.isOther());
+            assertFalse(lookup.isMalformedPath());
 
             // raise so test can confirm an exception was thrown
             throw ex;
@@ -246,7 +245,7 @@ public class DbxClientV2IT {
         try {
             client.files().listFolderContinue(badCursor);
         } catch (BadRequestException ex) {
-            assertThat(ex.getRequestId()).isNotNull();
+            assertNotNull(ex.getRequestId());
             throw ex;
         }
     }
@@ -263,9 +262,9 @@ public class DbxClientV2IT {
         try {
             client.sharing().getFolderMetadata("-1");
         } catch (DbxApiException ex) {
-            assertThat(ex.getUserMessage()).isNotNull();
-            assertThat(ex.getUserMessage().getLocale()).isNotNull();
-            assertThat(ex.getUserMessage().getLocale()).isNotEqualTo(""); // make sure something is specified
+            assertNotNull(ex.getUserMessage());
+            assertNotNull(ex.getUserMessage().getLocale());
+            assertNotEquals(ex.getUserMessage().getLocale(), ""); // make sure something is specified
         }
     }
 
@@ -287,7 +286,7 @@ public class DbxClientV2IT {
         System.arraycopy(contents, start, expected, 0, expected.length);
         byte [] actual = out.toByteArray();
 
-        assertThat(actual).isEqualTo(expected);
+        assertEquals(actual, expected);
     }
 
     private static void assertUserMessageLocale(Locale locale) throws Exception {
@@ -295,15 +294,15 @@ public class DbxClientV2IT {
         try {
             client.sharing().getFolderMetadata("-1");
         } catch (DbxApiException ex) {
-            assertThat(ex.getUserMessage()).isNotNull();
-            assertThat(ex.getUserMessage().getLocale()).isNotNull();
+            assertNotNull(ex.getUserMessage());
+            assertNotNull(ex.getUserMessage().getLocale());
             if (ex.getUserMessage().getLocale().contains("-")) {
                 // TODO: update this test to properly support language tags when we upgrade away
                 // from Java 6
-                assertThat(ex.getUserMessage().getLocale()).isEqualTo(toLanguageTag(locale));
+                assertEquals(ex.getUserMessage().getLocale(), toLanguageTag(locale));
             } else {
                 // omit the country code
-                assertThat(ex.getUserMessage().getLocale()).isEqualTo(locale.getLanguage());
+                assertEquals(ex.getUserMessage().getLocale(), locale.getLanguage());
             }
         }
     }
@@ -326,8 +325,8 @@ public class DbxClientV2IT {
             private long lastBytesWritten = 0;
             @Override
             public void onProgress(long bytesWritten) {
-                assertThat(bytesWritten > lastBytesWritten).isTrue();
-                assertThat(bytesWritten <= totalLength).isTrue();
+                assertTrue(bytesWritten > lastBytesWritten);
+                assertTrue(bytesWritten <= totalLength);
                 lastBytesWritten = bytesWritten;
             }
         };

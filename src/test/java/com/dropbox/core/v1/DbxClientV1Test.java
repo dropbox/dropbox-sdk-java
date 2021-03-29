@@ -1,8 +1,7 @@
 package com.dropbox.core.v1;
 
-import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
 import static org.mockito.Mockito.*;
+import static org.testng.Assert.*;
 import static com.dropbox.core.v1.DbxClientV1.Downloader;
 
 import com.dropbox.core.http.HttpRequestor;
@@ -85,13 +84,13 @@ public class DbxClientV1Test {
 
         // no way easy way to properly test this, but request should
         // have taken AT LEAST 3 seconds due to backoff.
-        assertWithMessage("duration: " + (end - start) + " millis").that((end - start) >= 3000L).isTrue();
+        assertTrue((end - start) >= 3000L, "duration: " + (end - start) + " millis");
 
         // should have been called 4 times: initial call + 3 retries
         verify(mockRequestor, times(4)).startPost(anyString(), anyHeaders());
 
-        assertThat(actual.reset).isTrue();
-        assertThat(actual.cursor).isEqualTo("fakeCursor");
+        assertEquals(actual.reset, true);
+        assertEquals(actual.cursor, "fakeCursor");
     }
 
     @Test(expectedExceptions = RetryException.class)
@@ -151,7 +150,7 @@ public class DbxClientV1Test {
 
         // load File metadata json
         InputStream in = getClass().getResourceAsStream("/file-with-photo-info.json");
-        assertThat(in).isNotNull();
+        assertNotNull(in);
         String metadataJson = IOUtil.toUtf8String(in);
 
         byte [] expected = new byte [] { 1, 2, 3, 4 };
@@ -175,8 +174,8 @@ public class DbxClientV1Test {
         IOUtil.copyStreamToStream(downloader.body, bout);
         byte [] actual = bout.toByteArray();
 
-        assertThat(actual).isEqualTo(expected);
-        assertThat(downloader.metadata.path).isEqualTo("/Photos/Sample Album/Boston City Flow.jpg");
+        assertEquals(actual, expected);
+        assertEquals(downloader.metadata.path, "/Photos/Sample Album/Boston City Flow.jpg");
     }
 
     private static HttpRequestor.Response createEmptyResponse(int statusCode) {
@@ -227,7 +226,7 @@ public class DbxClientV1Test {
     }
 
     private static Map<String, List<String>> headers(String name, String value, String ... rest) {
-        assertThat(rest.length % 2 == 0).isTrue();
+        assertTrue(rest.length % 2 == 0);
 
         Map<String, List<String>> headers = new TreeMap<String, List<String>>(String.CASE_INSENSITIVE_ORDER);
         List<String> values = new ArrayList<String>();
