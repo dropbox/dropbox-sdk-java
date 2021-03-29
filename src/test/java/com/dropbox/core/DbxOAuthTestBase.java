@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.google.common.truth.Truth.assertThat;
+import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.fail;
 
 public class DbxOAuthTestBase {
@@ -34,20 +34,20 @@ public class DbxOAuthTestBase {
             URL a = new URL(actual);
             URL b = new URL(expected);
 
-            assertThat(a.getProtocol()).isEqualTo(b.getProtocol());
-            assertThat(a.getAuthority()).isEqualTo(b.getAuthority());
-            assertThat(a.getPath()).isEqualTo(b.getPath());
-            assertThat(a.getRef()).isEqualTo(b.getRef());
+            assertEquals(a.getProtocol(), b.getProtocol());
+            assertEquals(a.getAuthority(), b.getAuthority());
+            assertEquals(a.getPath(), b.getPath());
+            assertEquals(a.getRef(), b.getRef());
 
             Map<String, List<String>> pa = toParamsMap(new URL(actual));
             Map<String, List<String>> pb = toParamsMap(new URL(actual));
 
-            assertThat(pa.keySet()).isEqualTo(pb.keySet());
+            assertEquals(pa.keySet(), pb.keySet());
             for (String key : pa.keySet()) {
                 if ("state".equals(key)) {
                     continue;
                 }
-                assertThat(pa.get(key)).isEqualTo(pb.get(key));
+                assertEquals(pa.get(key), pb.get(key));
             }
         } catch (Exception ex) {
             fail("Couldn't compare authorization URLs", ex);

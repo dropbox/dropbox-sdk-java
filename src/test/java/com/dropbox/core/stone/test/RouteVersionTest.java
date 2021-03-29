@@ -1,6 +1,6 @@
 package com.dropbox.core.stone.test;
 
-import static com.google.common.truth.Truth.assertThat;
+import static org.testng.Assert.*;
 
 import org.testng.annotations.Test;
 
@@ -18,9 +18,9 @@ public class RouteVersionTest {
         Method v2Option = c.getDeclaredMethod("testRouteV2", String.class, Date.class);
 
         // Test exception
-        assertThat(Arrays.asList(v1.getExceptionTypes()).contains(ParentUnionException.class)).isFalse();
-        assertThat(Arrays.asList(v2NoOpition.getExceptionTypes()).contains(ParentUnionException.class)).isTrue();
-        assertThat(Arrays.asList(v2Option.getExceptionTypes()).contains(ParentUnionException.class)).isTrue();
+        assertFalse(Arrays.asList(v1.getExceptionTypes()).contains(ParentUnionException.class));
+        assertTrue(Arrays.asList(v2NoOpition.getExceptionTypes()).contains(ParentUnionException.class));
+        assertTrue(Arrays.asList(v2Option.getExceptionTypes()).contains(ParentUnionException.class));
     }
 
     @Test
@@ -32,32 +32,32 @@ public class RouteVersionTest {
         Method v3Builder = c.getDeclaredMethod("testUploadV3Builder", String.class, String.class);
 
         // Test return value
-        assertThat(v1.getReturnType()).isEqualTo(TestUploadUploader.class);
-        assertThat(v2NoBuilder.getReturnType()).isEqualTo(TestUploadV2Uploader.class);
-        assertThat(v2Builder.getReturnType()).isEqualTo(TestUploadV2Builder.class);
-        assertThat(v3Builder.getReturnType()).isEqualTo(DbxTestTestUploadV3Builder.class);
+        assertEquals(v1.getReturnType(), TestUploadUploader.class);
+        assertEquals(v2NoBuilder.getReturnType(), TestUploadV2Uploader.class);
+        assertEquals(v2Builder.getReturnType(), TestUploadV2Builder.class);
+        assertEquals(v3Builder.getReturnType(), DbxTestTestUploadV3Builder.class);
 
         // Test builder
         TestUploadV2Builder.class.getDeclaredMethod("withBorn", Date.class);
         TestUploadV2Builder.class.getDeclaredMethod("withSize", DogSize.class);
         Method start2 = TestUploadV2Builder.class.getDeclaredMethod("start");
-        assertThat(Arrays.asList(start2.getExceptionTypes())).contains(ParentUnionException.class);
+        assertTrue(Arrays.asList(start2.getExceptionTypes()).contains(ParentUnionException.class));
 
         // Test return value of uploader from generic type
         ParameterizedType genericV1 = (ParameterizedType)TestUploadUploader.class.getGenericSuperclass();
-        assertThat(genericV1.getActualTypeArguments()[1]).isEqualTo(Void.class);
+        assertEquals(genericV1.getActualTypeArguments()[1], Void.class);
         ParameterizedType genericV2 = (ParameterizedType)TestUploadV2Uploader.class.getGenericSuperclass();
-        assertThat(genericV2.getActualTypeArguments()[1]).isEqualTo(ParentUnion.class);
+        assertEquals(genericV2.getActualTypeArguments()[1], ParentUnion.class);
 
         // Test exception from generic type
-        assertThat(genericV1.getActualTypeArguments()[1]).isEqualTo(Void.class);
-        assertThat(genericV2.getActualTypeArguments()[1]).isEqualTo(ParentUnion.class);
+        assertEquals(genericV1.getActualTypeArguments()[1], Void.class);
+        assertEquals(genericV2.getActualTypeArguments()[1], ParentUnion.class);
 
         // Test builder with multiple auth types has prefix
         DbxTestTestUploadV3Builder.class.getDeclaredMethod("withBorn", Date.class);
         DbxTestTestUploadV3Builder.class.getDeclaredMethod("withSize", DogSize.class);
         Method start3 = DbxTestTestUploadV3Builder.class.getDeclaredMethod("start");
-        assertThat(Arrays.asList(start3.getExceptionTypes())).contains(ParentUnionException.class);
+        assertTrue(Arrays.asList(start3.getExceptionTypes()).contains(ParentUnionException.class));
     }
 
     @Test
@@ -69,18 +69,18 @@ public class RouteVersionTest {
         Method v2Builder = c.getDeclaredMethod("testDownloadV2Builder", UninitializedReason.class, String.class);
 
         // Test return type
-        assertThat(v1Builder.getReturnType()).isEqualTo(TestDownloadBuilder.class);
-        assertThat(v2Builder.getReturnType()).isEqualTo(TestDownloadV2Builder.class);
+        assertEquals(v1Builder.getReturnType(), TestDownloadBuilder.class);
+        assertEquals(v2Builder.getReturnType(), TestDownloadV2Builder.class);
 
         // Test return type from generic type
         ParameterizedType genericV1 = (ParameterizedType)TestDownloadBuilder.class.getGenericSuperclass();
-        assertThat(genericV1.getActualTypeArguments()[0]).isEqualTo(Fish.class);
+        assertEquals(genericV1.getActualTypeArguments()[0], Fish.class);
         ParameterizedType genericV2 = (ParameterizedType)TestDownloadV2Builder.class.getGenericSuperclass();
-        assertThat(genericV2.getActualTypeArguments()[0]).isEqualTo(Fish.class);
+        assertEquals(genericV2.getActualTypeArguments()[0], Fish.class);
 
 
         // Test exception type
-        assertThat(Arrays.asList(v1NoBuilder.getExceptionTypes())).doesNotContain(ParentUnionException.class);
-        assertThat(Arrays.asList(v2NoBuilder.getExceptionTypes())).contains(ParentUnionException.class);
+        assertFalse(Arrays.asList(v1NoBuilder.getExceptionTypes()).contains(ParentUnionException.class));
+        assertTrue(Arrays.asList(v2NoBuilder.getExceptionTypes()).contains(ParentUnionException.class));
     }
 }

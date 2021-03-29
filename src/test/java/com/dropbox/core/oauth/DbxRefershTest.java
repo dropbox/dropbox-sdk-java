@@ -18,13 +18,14 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
 import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
 import static org.testng.Assert.fail;
 
 public class DbxRefershTest extends DbxOAuthTestBase {
@@ -53,19 +54,19 @@ public class DbxRefershTest extends DbxOAuthTestBase {
         DbxRefreshResult actual = DbxRefreshResult.Reader.readFully(responseStream);
         actual.setIssueTime(0);
 
-        assertThat(actual.getAccessToken()).isEqualTo(NEW_TOKEN);
-        assertThat(actual.getExpiresAt()).isEqualTo(new Long(EXPIRES_IN * 1000));
+        assertEquals(actual.getAccessToken(), NEW_TOKEN);
+        assertEquals(actual.getExpiresAt(), new Long(EXPIRES_IN * 1000));
     }
 
     @Test
     public void testExpire() {
         Long now = System.currentTimeMillis();
-        assertThat(new DbxCredential(EXPIRED_TOKEN, 0L, REFRESH_TOKEN, APP.getKey(), APP
-            .getSecret()).aboutToExpire()).isTrue();
-        assertThat(new DbxCredential(EXPIRED_TOKEN, now, REFRESH_TOKEN, APP.getKey(), APP
-            .getSecret()).aboutToExpire()).isTrue();
-        assertThat(new DbxCredential(EXPIRED_TOKEN, now + EXPIRES_IN, REFRESH_TOKEN, APP.getKey()
-            , APP.getSecret()).aboutToExpire()).isTrue();
+        assertTrue(new DbxCredential(EXPIRED_TOKEN, 0L, REFRESH_TOKEN, APP.getKey(), APP
+            .getSecret()).aboutToExpire());
+        assertTrue(new DbxCredential(EXPIRED_TOKEN, now, REFRESH_TOKEN, APP.getKey(), APP
+            .getSecret()).aboutToExpire());
+        assertTrue(new DbxCredential(EXPIRED_TOKEN, now + EXPIRES_IN, REFRESH_TOKEN, APP.getKey()
+            , APP.getSecret()).aboutToExpire());
         try {
             new DbxCredential(EXPIRED_TOKEN, null, "refresh", "appkey", null).aboutToExpire();
         } catch (IllegalArgumentException ex) {
@@ -117,11 +118,11 @@ public class DbxRefershTest extends DbxOAuthTestBase {
         Map<String, List<String>> refreshParams = toParamsMap(new String(paramCaptor.getValue(), "UTF-8"));
 
         // Verification
-        assertThat(refreshParams.get("grant_type").get(0)).isEqualTo("refresh_token");
-        assertThat(refreshParams.get("refresh_token").get(0)).isEqualTo(REFRESH_TOKEN);
-        assertThat(refreshParams.containsKey("client_id")).isFalse();
-        assertThat(credential.getAccessToken()).isEqualTo(NEW_TOKEN);
-        assertThat(currentMilllis + EXPIRES_IN < credential.getExpiresAt()).isTrue();
+        assertEquals(refreshParams.get("grant_type").get(0), "refresh_token");
+        assertEquals(refreshParams.get("refresh_token").get(0), REFRESH_TOKEN);
+        assertFalse(refreshParams.containsKey("client_id"));
+        assertEquals(credential.getAccessToken(), NEW_TOKEN);
+        assertTrue(currentMilllis + EXPIRES_IN < credential.getExpiresAt());
     }
 
     @Test
@@ -155,11 +156,11 @@ public class DbxRefershTest extends DbxOAuthTestBase {
         Map<String, List<String>> refreshParams = toParamsMap(new String(paramCaptor.getValue(), "UTF-8"));
 
         // Verification
-        assertThat(refreshParams.get("grant_type").get(0)).isEqualTo("refresh_token");
-        assertThat(refreshParams.get("refresh_token").get(0)).isEqualTo(REFRESH_TOKEN);
-        assertThat(refreshParams.containsKey("client_id")).isFalse();
-        assertThat(credential.getAccessToken()).isEqualTo(NEW_TOKEN);
-        assertThat(currentMilllis + EXPIRES_IN < credential.getExpiresAt()).isTrue();
+        assertEquals(refreshParams.get("grant_type").get(0), "refresh_token");
+        assertEquals(refreshParams.get("refresh_token").get(0), REFRESH_TOKEN);
+        assertFalse(refreshParams.containsKey("client_id"));
+        assertEquals(credential.getAccessToken(), NEW_TOKEN);
+        assertTrue(currentMilllis + EXPIRES_IN < credential.getExpiresAt());
     }
 
     @Test
@@ -192,11 +193,11 @@ public class DbxRefershTest extends DbxOAuthTestBase {
         Map<String, List<String>> refreshParams = toParamsMap(new String(paramCaptor.getValue(), "UTF-8"));
 
         // Verification
-        assertThat(refreshParams.get("grant_type").get(0)).isEqualTo("refresh_token");
-        assertThat(refreshParams.get("refresh_token").get(0)).isEqualTo(REFRESH_TOKEN);
-        assertThat(refreshParams.get("client_id").get(0)).isEqualTo(APP.getKey());
-        assertThat(credential.getAccessToken()).isEqualTo(NEW_TOKEN);
-        assertThat(currentMilllis + EXPIRES_IN < credential.getExpiresAt()).isTrue();
+        assertEquals(refreshParams.get("grant_type").get(0), "refresh_token");
+        assertEquals(refreshParams.get("refresh_token").get(0), REFRESH_TOKEN);
+        assertEquals(refreshParams.get("client_id").get(0), APP.getKey());
+        assertEquals(credential.getAccessToken(), NEW_TOKEN);
+        assertTrue(currentMilllis + EXPIRES_IN < credential.getExpiresAt());
     }
 
     @Test
@@ -230,13 +231,13 @@ public class DbxRefershTest extends DbxOAuthTestBase {
         Map<String, List<String>> refreshParams = toParamsMap(new String(paramCaptor.getValue(), "UTF-8"));
 
         // Verification
-        assertThat(refreshParams.get("grant_type").get(0)).isEqualTo("refresh_token");
-        assertThat(refreshParams.get("refresh_token").get(0)).isEqualTo(REFRESH_TOKEN);
-        assertThat(refreshParams.get("client_id").get(0)).isEqualTo(APP.getKey());
-        assertThat(refreshParams.get("scope").get(0)).isEqualTo("myscope1 myscope2");
-        assertThat(credential.getAccessToken()).isEqualTo(NEW_TOKEN);
-        assertThat(currentMilllis + EXPIRES_IN < credential.getExpiresAt()).isTrue();
-        assertThat(refreshResult.getScope()).isEqualTo("myscope1");
+        assertEquals(refreshParams.get("grant_type").get(0), "refresh_token");
+        assertEquals(refreshParams.get("refresh_token").get(0), REFRESH_TOKEN);
+        assertEquals(refreshParams.get("client_id").get(0), APP.getKey());
+        assertEquals(refreshParams.get("scope").get(0), "myscope1 myscope2");
+        assertEquals(credential.getAccessToken(), NEW_TOKEN);
+        assertTrue(currentMilllis + EXPIRES_IN < credential.getExpiresAt());
+        assertEquals(refreshResult.getScope(), "myscope1");
     }
 
     @Test
@@ -264,7 +265,7 @@ public class DbxRefershTest extends DbxOAuthTestBase {
         try {
             client.refreshAccessToken();
         } catch (DbxOAuthException e) {
-            assertThat(e.getDbxOAuthError().getError()).isEqualTo("invalid_grant");
+            assertEquals(e.getDbxOAuthError().getError(), "invalid_grant");
             return;
         }
 
@@ -297,9 +298,9 @@ public class DbxRefershTest extends DbxOAuthTestBase {
             client.users().getCurrentAccount();
             fail("Should raise exception before reaching here");
         } catch (InvalidAccessTokenException ex) {
-            assertThat(ex.getAuthError().isMissingScope()).isTrue();
+            assertTrue(ex.getAuthError().isMissingScope());
             String missingScope = ex.getAuthError().getMissingScopeValue().getRequiredScope();
-            assertWithMessage("expect account.info.read, get " + missingScope).that("account.info.read").isEqualTo(missingScope);
+            assertEquals("account.info.read", missingScope, "expect account.info.read, get " + missingScope);
         }
     }
 }
