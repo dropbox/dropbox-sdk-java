@@ -1,3 +1,8 @@
+4.0.0 (2021-03-29)
+---------------------------------------------
+- update Java tests to use Google's Truth library
+- bump target Java version from 6 to 8
+
 3.2.1 (2021-03-29)
 ---------------------------------------------
 - revert Java version bump (back to Java 6)
