@@ -12,6 +12,6 @@ public class DbxSdkVersion
 
     private static String loadVersion()
     {
-        return "3.2.1"; //TODO: figure out a consistent way to generate it.
+        return "4.0.0"; //TODO: figure out a consistent way to generate it.
     }
 }
