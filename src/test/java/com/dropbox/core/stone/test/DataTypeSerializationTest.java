@@ -1,6 +1,6 @@
 package com.dropbox.core.stone.test;
 
-import static org.testng.Assert.*;
+import static com.google.common.truth.Truth.assertThat;
 
 import java.io.IOException;
 
@@ -16,27 +16,27 @@ public class DataTypeSerializationTest {
         // (e.g. no instances or fields have been accessed for this class yet)
         String json = "{\"reason\":{\".tag\":\"bad_feels\",\"bad_feels\":\"meh\"},\"session_id\":\"2\"}";
         Uninitialized actual = Uninitialized.Serializer.INSTANCE.deserialize(json);
-        assertEquals(actual.getSessionId(), "2");
-        assertEquals(actual.getReason().tag(), UninitializedReason.Tag.BAD_FEELS);
-        assertEquals(actual.getReason().getBadFeelsValue(), BadFeel.MEH);
+        assertThat(actual.getSessionId()).isEqualTo("2");
+        assertThat(actual.getReason().tag()).isEqualTo(UninitializedReason.Tag.BAD_FEELS);
+        assertThat(actual.getReason().getBadFeelsValue()).isEqualTo(BadFeel.MEH);
     }
 
     @Test
     public void testCatchAllDeserialization() throws Exception {
         String json = "{\".tag\":\"catch_all\",\"catch_all\":\"test_unknown_tag\"}";
         NestingUnion actual = NestingUnion.Serializer.INSTANCE.deserialize(json);
-        assertEquals(actual.tag(), NestingUnion.Tag.CATCH_ALL);
-        assertEquals(actual.getCatchAllValue(), CatchAllUnion.OTHER);
+        assertThat(actual.tag()).isEqualTo(NestingUnion.Tag.CATCH_ALL);
+        assertThat(actual.getCatchAllValue()).isEqualTo(CatchAllUnion.OTHER);
 
         json = "{\".tag\":\"catch_all\",\"catch_all\":{\".tag\":\"test_unknown_tag\",\"test\":true}}";
         actual = NestingUnion.Serializer.INSTANCE.deserialize(json);
-        assertEquals(actual.tag(), NestingUnion.Tag.CATCH_ALL);
-        assertEquals(actual.getCatchAllValue(), CatchAllUnion.OTHER);
+        assertThat(actual.tag()).isEqualTo(NestingUnion.Tag.CATCH_ALL);
+        assertThat(actual.getCatchAllValue()).isEqualTo(CatchAllUnion.OTHER);
 
         json = "\"test_unknown_tag\"";
         actual = NestingUnion.Serializer.INSTANCE.deserialize(json);
-        assertNotNull(actual);
-        assertEquals(actual.tag(), NestingUnion.Tag.OTHER);
+        assertThat(actual).isNotNull();
+        assertThat(actual.tag()).isEqualTo(NestingUnion.Tag.OTHER);
     }
 
     @Test(expectedExceptions={IOException.class})
@@ -52,12 +52,12 @@ public class DataTypeSerializationTest {
         Dimensions expected = new Dimensions(1024, 768);
         Dimensions actual = Dimensions.Serializer.INSTANCE.deserialize(json);
 
-        assertEquals(actual, expected);
+        assertThat(actual).isEqualTo(expected);
 
         json = "{\"width\":1024,\"height\":768}";
         actual = Dimensions.Serializer.INSTANCE.deserialize(json);
 
-        assertEquals(actual, expected);
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
@@ -66,14 +66,14 @@ public class DataTypeSerializationTest {
         Dimensions expected = new Dimensions(1024, 768);
         Dimensions actual = Dimensions.Serializer.INSTANCE.deserialize(json);
 
-        assertEquals(actual, expected);
+        assertThat(actual).isEqualTo(expected);
 
         // sometimes the order can matter. Add an unknown struct field early to see if we skip it properly
         json = "{\"height\":768,\"foo\":{\"bar\":[1, 2, 3],\"baz\":false},\"alpha\":0.5,\"width\":1024}";
         expected = new Dimensions(1024, 768);
         actual = Dimensions.Serializer.INSTANCE.deserialize(json);
 
-        assertEquals(actual, expected);
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
@@ -86,19 +86,19 @@ public class DataTypeSerializationTest {
         String json = Cat.Serializer.INSTANCE.serialize(expected);
         Cat actual = Cat.Serializer.INSTANCE.deserialize(json);
 
-        assertEquals(actual, expected);
+        assertThat(actual).isEqualTo(expected);
 
         // explicitly use long date
         json = "{\".tag\":\"cat\",\"name\":\"Mimi\",\"born\":\"2016-01-15T00:00:00Z\"}";
         actual = Cat.Serializer.INSTANCE.deserialize(json);
 
-        assertEquals(actual, expected);
+        assertThat(actual).isEqualTo(expected);
 
         // use short date
         json = "{\".tag\":\"cat\",\"name\":\"Mimi\",\"born\":\"2016-01-15\"}";
         actual = Cat.Serializer.INSTANCE.deserialize(json);
 
-        assertEquals(actual, expected);
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
@@ -117,33 +117,33 @@ public class DataTypeSerializationTest {
         String json = Dog.Serializer.INSTANCE.serialize(dog);
         Pet actual = Pet.Serializer.INSTANCE.deserialize(json);
 
-        assertEquals(actual.getClass(), Dog.class);
-        assertEquals(actual, dog);
+        assertThat(actual.getClass()).isEqualTo(Dog.class);
+        assertThat(actual).isEqualTo(dog);
 
         json = Cat.Serializer.INSTANCE.serialize(cat);
         actual = Pet.Serializer.INSTANCE.deserialize(json);
 
-        assertEquals(actual.getClass(), Cat.class);
-        assertEquals(actual, cat);
+        assertThat(actual.getClass()).isEqualTo(Cat.class);
+        assertThat(actual).isEqualTo(cat);
 
         json = Fish.Serializer.INSTANCE.serialize(fish);
         actual = Pet.Serializer.INSTANCE.deserialize(json);
 
-        assertEquals(actual.getClass(), Fish.class);
-        assertEquals(actual, fish);
+        assertThat(actual.getClass()).isEqualTo(Fish.class);
+        assertThat(actual).isEqualTo(fish);
 
         json = Pet.Serializer.INSTANCE.serialize(pet);
         actual = Pet.Serializer.INSTANCE.deserialize(json);
 
-        assertEquals(actual.getClass(), Pet.class);
-        assertEquals(actual, pet);
+        assertThat(actual.getClass()).isEqualTo(Pet.class);
+        assertThat(actual).isEqualTo(pet);
 
         // check that we can deserialize as the specific type if necessary.
         json = Dog.Serializer.INSTANCE.serialize(dog);
         actual = Dog.Serializer.INSTANCE.deserialize(json);
 
-        assertEquals(actual.getClass(), Dog.class);
-        assertEquals(actual, dog);
+        assertThat(actual.getClass()).isEqualTo(Dog.class);
+        assertThat(actual).isEqualTo(dog);
     }
 
     @Test
@@ -154,7 +154,7 @@ public class DataTypeSerializationTest {
         String json = "{\".tag\":\"cat\",\"name\":\"Pusheen\"}";
         Cat actual = Cat.Serializer.INSTANCE.deserialize(json);
 
-        assertEquals(actual, expected);
+        assertThat(actual).isEqualTo(expected);
 
         // set the optional fields
         expected = Cat.newBuilder("Pusheen")
@@ -166,20 +166,20 @@ public class DataTypeSerializationTest {
         json = Cat.Serializer.INSTANCE.serialize(expected);
         actual = Cat.Serializer.INSTANCE.deserialize(json);
 
-        assertEquals(actual, expected);
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
     public void testUnionInheritanceSerialization() throws Exception {
         String actual = ChildUnion.Serializer.INSTANCE.serialize(ChildUnion.ALPHA);
-        assertEquals(actual, "\"alpha\"");
+        assertThat(actual).isEqualTo("\"alpha\"");
     }
 
     @Test
     public void testUnionInheritanceDeserialization() throws Exception {
         String json = "\"alpha\"";
         ChildUnion actual = ChildUnion.Serializer.INSTANCE.deserialize(json);
-        assertEquals(actual, ChildUnion.ALPHA);
+        assertThat(actual).isEqualTo(ChildUnion.ALPHA);
     }
 
 }
