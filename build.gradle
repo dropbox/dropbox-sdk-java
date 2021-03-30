@@ -9,8 +9,8 @@ description = 'Official Java client library for the Dropbox API.'
 group = 'com.dropbox.core'
 archivesBaseName = 'dropbox-core-sdk'
 version = '0-SNAPSHOT'
-sourceCompatibility = JavaVersion.VERSION_1_6
-targetCompatibility = JavaVersion.VERSION_1_6
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
 
 // needed before we define the pom
 conf2ScopeMappings.addMapping(1, configurations.compileOnly, 'provided')
@@ -94,6 +94,7 @@ dependencies {
     testCompile 'com.squareup.okhttp:okhttp:2.7.5'
     testCompile 'com.squareup.okhttp3:okhttp:3.5.0'
     testCompile 'com.google.guava:guava:19.0'
+    testCompile "com.google.truth:truth:1.1.2"
 }
 
 configurations {

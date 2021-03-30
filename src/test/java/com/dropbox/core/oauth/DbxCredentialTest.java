@@ -5,10 +5,7 @@ import org.testng.annotations.Test;
 
 import java.io.ByteArrayInputStream;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNull;
-import static org.testng.Assert.assertTrue;
-import static org.testng.AssertJUnit.assertFalse;
+import static com.google.common.truth.Truth.assertThat;
 
 public class DbxCredentialTest {
     @Test
@@ -22,12 +19,12 @@ public class DbxCredentialTest {
         );
 
         DbxCredential credential = DbxCredential.Reader.readFully(responseStream);
-        assertEquals(credential.getAccessToken(), "aaaaa");
-        assertFalse(credential.aboutToExpire());
-        assertNull(credential.getRefreshToken());
-        assertNull(credential.getExpiresAt());
-        assertNull(credential.getAppKey());
-        assertNull(credential.getAppSecret());
+        assertThat(credential.getAccessToken()).isEqualTo("aaaaa");
+        assertThat(credential.aboutToExpire()).isFalse();
+        assertThat(credential.getRefreshToken()).isNull();
+        assertThat(credential.getExpiresAt()).isNull();
+        assertThat(credential.getAppKey()).isNull();
+        assertThat(credential.getAppSecret()).isNull();
     }
 
     @Test
@@ -45,12 +42,12 @@ public class DbxCredentialTest {
         );
 
         DbxCredential credential = DbxCredential.Reader.readFully(responseStream);
-        assertEquals(credential.getAccessToken(), "aaaaa");
-        assertEquals(credential.getExpiresAt(), new Long(10));
-        assertEquals(credential.getRefreshToken(), "bbbbb");
-        assertEquals(credential.getAppKey(), "ccccc");
-        assertEquals(credential.getAppSecret(), "ddddd");
-        assertTrue(credential.aboutToExpire());
+        assertThat(credential.getAccessToken()).isEqualTo("aaaaa");
+        assertThat(credential.getExpiresAt()).isEqualTo(new Long(10));
+        assertThat(credential.getRefreshToken()).isEqualTo("bbbbb");
+        assertThat(credential.getAppKey()).isEqualTo("ccccc");
+        assertThat(credential.getAppSecret()).isEqualTo("ddddd");
+        assertThat(credential.aboutToExpire()).isTrue();
     }
 
     @Test(expectedExceptions={JsonReadException.class})
@@ -71,10 +68,10 @@ public class DbxCredentialTest {
 
         String data = DbxCredential.Writer.writeToString(credential);
         DbxCredential afterRead = DbxCredential.Reader.readFully(data);
-        assertEquals(afterRead.getAccessToken(), credential.getAccessToken());
-        assertEquals(afterRead.getExpiresAt(), credential.getExpiresAt());
-        assertEquals(afterRead.getRefreshToken(), credential.getRefreshToken());
-        assertEquals(afterRead.getAppKey(), credential.getAppKey());
-        assertEquals(afterRead.getAppSecret(), credential.getAppSecret());
+        assertThat(afterRead.getAccessToken()).isEqualTo(credential.getAccessToken());
+        assertThat(afterRead.getExpiresAt()).isEqualTo(credential.getExpiresAt());
+        assertThat(afterRead.getRefreshToken()).isEqualTo(credential.getRefreshToken());
+        assertThat(afterRead.getAppKey()).isEqualTo(credential.getAppKey());
+        assertThat(afterRead.getAppSecret()).isEqualTo(credential.getAppSecret());
     }
 }

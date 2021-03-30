@@ -4,8 +4,7 @@ import org.testng.annotations.Test;
 
 import java.io.ByteArrayInputStream;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
+import static com.google.common.truth.Truth.assertThat;
 
 public class DbxAppInfoTest {
     @Test
@@ -20,8 +19,8 @@ public class DbxAppInfoTest {
         );
 
         DbxAppInfo appInfo = DbxAppInfo.Reader.readFully(responseStream);
-        assertEquals(appInfo.getKey(), "aaaaa");
-        assertEquals(appInfo.getSecret(), "aaaaa");
+        assertThat(appInfo.getKey()).isEqualTo("aaaaa");
+        assertThat(appInfo.getSecret()).isEqualTo("aaaaa");
     }
 
     @Test
@@ -40,7 +39,7 @@ public class DbxAppInfoTest {
         );
 
         DbxAppInfo appInfo = DbxAppInfo.Reader.readFully(responseStream);
-        assertEquals(appInfo.getKey(), "aaaaa");
-        assertFalse(appInfo.hasSecret());
+        assertThat(appInfo.getKey()).isEqualTo("aaaaa");
+        assertThat(appInfo.hasSecret()).isFalse();
     }
 }

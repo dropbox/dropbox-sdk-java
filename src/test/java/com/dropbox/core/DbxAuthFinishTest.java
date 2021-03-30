@@ -10,13 +10,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
+import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertNull;
 
 public class DbxAuthFinishTest extends DbxOAuthTestBase {
     private static final DbxRequestConfig CONFIG = DbxRequestConfig.newBuilder("DbxWebAuthTest/1.0")
@@ -42,13 +40,13 @@ public class DbxAuthFinishTest extends DbxOAuthTestBase {
         );
 
         DbxAuthFinish actual = DbxAuthFinish.Reader.readFully(responseStream);
-        assertEquals(actual.getAccessToken(), expected.getAccessToken());
-        assertEquals(actual.getAccountId(), expected.getAccountId());
-        assertEquals(actual.getRefreshToken(), expected.getRefreshToken());
-        assertEquals(actual.getExpiresAt(), expected.getExpiresAt());
-        assertEquals(actual.getTeamId(), expected.getTeamId());
-        assertEquals(actual.getUserId(), expected.getUserId());
-        assertEquals(actual.getUrlState(), expected.getUrlState());
+        assertThat(actual.getAccessToken()).isEqualTo(expected.getAccessToken());
+        assertThat(actual.getAccountId()).isEqualTo(expected.getAccountId());
+        assertThat(actual.getRefreshToken()).isEqualTo(expected.getRefreshToken());
+        assertThat(actual.getExpiresAt()).isEqualTo(expected.getExpiresAt());
+        assertThat(actual.getTeamId()).isEqualTo(expected.getTeamId());
+        assertThat(actual.getUserId()).isEqualTo(expected.getUserId());
+        assertThat(actual.getUrlState()).isEqualTo(expected.getUrlState());
     }
 
     @Test
@@ -75,13 +73,13 @@ public class DbxAuthFinishTest extends DbxOAuthTestBase {
 
         DbxAuthFinish actual = DbxAuthFinish.Reader.readFully(responseStream);
         actual.setIssueTime(now);
-        assertEquals(actual.getAccessToken(), expected.getAccessToken());
-        assertEquals(actual.getAccountId(), expected.getAccountId());
-        assertEquals(actual.getRefreshToken(), expected.getRefreshToken());
-        assertEquals(actual.getExpiresAt(), expected.getExpiresAt());
-        assertEquals(actual.getTeamId(), expected.getTeamId());
-        assertEquals(actual.getUserId(), expected.getUserId());
-        assertEquals(actual.getUrlState(), expected.getUrlState());
+        assertThat(actual.getAccessToken()).isEqualTo(expected.getAccessToken());
+        assertThat(actual.getAccountId()).isEqualTo(expected.getAccountId());
+        assertThat(actual.getRefreshToken()).isEqualTo(expected.getRefreshToken());
+        assertThat(actual.getExpiresAt()).isEqualTo(expected.getExpiresAt());
+        assertThat(actual.getTeamId()).isEqualTo(expected.getTeamId());
+        assertThat(actual.getUserId()).isEqualTo(expected.getUserId());
+        assertThat(actual.getUrlState()).isEqualTo(expected.getUrlState());
     }
 
     @Test
@@ -110,13 +108,13 @@ public class DbxAuthFinishTest extends DbxOAuthTestBase {
 
         DbxAuthFinish actual = DbxAuthFinish.Reader.readFully(responseStream);
         actual.setIssueTime(now);
-        assertEquals(actual.getAccessToken(), expected.getAccessToken());
-        assertEquals(actual.getAccountId(), expected.getAccountId());
-        assertEquals(actual.getRefreshToken(), expected.getRefreshToken());
-        assertEquals(actual.getExpiresAt(), expected.getExpiresAt());
-        assertEquals(actual.getTeamId(), expected.getTeamId());
-        assertEquals(actual.getUserId(), expected.getUserId());
-        assertEquals(actual.getUrlState(), expected.getUrlState());
+        assertThat(actual.getAccessToken()).isEqualTo(expected.getAccessToken());
+        assertThat(actual.getAccountId()).isEqualTo(expected.getAccountId());
+        assertThat(actual.getRefreshToken()).isEqualTo(expected.getRefreshToken());
+        assertThat(actual.getExpiresAt()).isEqualTo(expected.getExpiresAt());
+        assertThat(actual.getTeamId()).isEqualTo(expected.getTeamId());
+        assertThat(actual.getUserId()).isEqualTo(expected.getUserId());
+        assertThat(actual.getUrlState()).isEqualTo(expected.getUrlState());
     }
 
     @Test
@@ -146,14 +144,14 @@ public class DbxAuthFinishTest extends DbxOAuthTestBase {
 
         DbxAuthFinish actual = DbxAuthFinish.Reader.readFully(responseStream);
         actual.setIssueTime(now);
-        assertEquals(actual.getAccessToken(), expected.getAccessToken());
-        assertEquals(actual.getAccountId(), expected.getAccountId());
-        assertEquals(actual.getRefreshToken(), expected.getRefreshToken());
-        assertEquals(actual.getExpiresAt(), expected.getExpiresAt());
-        assertEquals(actual.getTeamId(), expected.getTeamId());
-        assertEquals(actual.getUserId(), expected.getUserId());
-        assertEquals(actual.getUrlState(), expected.getUrlState());
-        assertEquals(actual.getScope(), expected.getScope());
+        assertThat(actual.getAccessToken()).isEqualTo(expected.getAccessToken());
+        assertThat(actual.getAccountId()).isEqualTo(expected.getAccountId());
+        assertThat(actual.getRefreshToken()).isEqualTo(expected.getRefreshToken());
+        assertThat(actual.getExpiresAt()).isEqualTo(expected.getExpiresAt());
+        assertThat(actual.getTeamId()).isEqualTo(expected.getTeamId());
+        assertThat(actual.getUserId()).isEqualTo(expected.getUserId());
+        assertThat(actual.getUrlState()).isEqualTo(expected.getUrlState());
+        assertThat(actual.getScope()).isEqualTo(expected.getScope());
     }
 
     @Test
@@ -165,13 +163,13 @@ public class DbxAuthFinishTest extends DbxOAuthTestBase {
 
         DbxAuthFinish actual = expected.withUrlState("testState");
 
-        assertEquals(actual.getAccessToken(), expected.getAccessToken());
-        assertEquals(actual.getAccountId(), expected.getAccountId());
-        assertEquals(actual.getRefreshToken(), expected.getRefreshToken());
-        assertEquals(actual.getExpiresAt(), expected.getExpiresAt());
-        assertEquals(actual.getTeamId(), expected.getTeamId());
-        assertEquals(actual.getUserId(), expected.getUserId());
-        assertEquals(actual.getUrlState(), "testState");
+        assertThat(actual.getAccessToken()).isEqualTo(expected.getAccessToken());
+        assertThat(actual.getAccountId()).isEqualTo(expected.getAccountId());
+        assertThat(actual.getRefreshToken()).isEqualTo(expected.getRefreshToken());
+        assertThat(actual.getExpiresAt()).isEqualTo(expected.getExpiresAt());
+        assertThat(actual.getTeamId()).isEqualTo(expected.getTeamId());
+        assertThat(actual.getUserId()).isEqualTo(expected.getUserId());
+        assertThat(actual.getUrlState()).isEqualTo("testState");
     }
 
     @Test
@@ -190,7 +188,7 @@ public class DbxAuthFinishTest extends DbxOAuthTestBase {
         String authorizationUrl = new DbxWebAuth(CONFIG, APP).authorize(request);
         String code = "test-code";
 
-        assertNotNull(sessionStore.get());
+        assertThat(sessionStore.get()).isNotNull();
 
         DbxAuthFinish expected = new DbxAuthFinish(
                 "test-access-token", null, null, "test-user-id", null, "test", state, null
@@ -232,11 +230,11 @@ public class DbxAuthFinishTest extends DbxOAuthTestBase {
 
         // verify the state param isn't send to the 'oauth2/token' endpoint
         String finishParams = new String(body.toByteArray(), "UTF-8");
-        assertNull(toParamsMap(finishParams).get("state"));
+        assertThat(toParamsMap(finishParams).get("state")).isNull();
 
-        assertNotNull(actual);
-        assertEquals(actual.getAccessToken(), expected.getAccessToken());
-        assertEquals(actual.getUserId(), expected.getUserId());
-        assertEquals(actual.getUrlState(), expected.getUrlState());
+        assertThat(actual).isNotNull();
+        assertThat(actual.getAccessToken()).isEqualTo(expected.getAccessToken());
+        assertThat(actual.getUserId()).isEqualTo(expected.getUserId());
+        assertThat(actual.getUrlState()).isEqualTo(expected.getUrlState());
     }
 }
