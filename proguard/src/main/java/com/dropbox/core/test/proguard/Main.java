@@ -54,7 +54,7 @@ public class Main {
         String rootPath = "/test/proguard-tests";
 
         try {
-            FolderMetadata root = client.files().createFolder(rootPath);
+            FolderMetadata root = client.files().createFolderV2(rootPath).getMetadata();
             assertNotNull(root);
             assertEquals(root.getPathLower(), rootPath);
             assertEquals(root.getPathDisplay(), rootPath);
@@ -94,7 +94,7 @@ public class Main {
             }
 
             for (String path : files.keySet()) {
-                Metadata file = client.files().delete(path);
+                Metadata file = client.files().deleteV2(path).getMetadata();
                 assertNotNull(file);
                 assertEquals(file.getPathLower(), path);
                 assertTrue(file instanceof FileMetadata);
@@ -108,7 +108,7 @@ public class Main {
                 assertEquals(deleted.getPathLower(), path);
             }
         } finally {
-            client.files().delete(rootPath);
+            client.files().deleteV2(rootPath);
         }
     }
 
@@ -117,7 +117,7 @@ public class Main {
         String fakePath = "/tests/_fake_path.txt";
         try {
             client.files().getMetadata(fakePath);
-            client.files().delete(fakePath);
+            client.files().deleteV2(fakePath);
         } catch (GetMetadataErrorException ex) {
             if (ex.errorValue.isPath() &&
                 ex.errorValue.getPathValue().isNotFound()) {
