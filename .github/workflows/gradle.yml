@@ -21,11 +21,9 @@ jobs:
       with:
         java-version: '11'
         distribution: 'adopt'
-    - name: where am i
-      run: pwd && ls
+    - name: Grant execute permissions
+      run: chmod +x gradlew && chmod +x update-submodules
     - name: Set up submodules
-      run: cd $dropbox-sdk-java && update-submodules
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
+      run: ./update-submodules
     - name: Build with Gradle
       run: ./gradlew build
