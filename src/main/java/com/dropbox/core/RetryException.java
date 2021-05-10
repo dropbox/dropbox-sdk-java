@@ -38,7 +38,7 @@ public class RetryException extends DbxException {
     /**
      * Returns the number of milliseconds the client should backoff before retrying the request.
      *
-     * @return backoff time, in seconds, before retrying the request, or {@code 0} if the request
+     * @return backoff time, in milliseconds, before retrying the request, or {@code 0} if the request
      * can be retried immediately.
      */
     public long getBackoffMillis() {
