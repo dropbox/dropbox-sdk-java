@@ -17,15 +17,15 @@ import java.util.Collections;
 
 /**
  * You must have an api app migrated to new permission to run this example. You app must have
- * scopes "account_info.read", "files.metadata.write", "files.content.read" and
- * "files.content.write" to run this example. You can manage your app's scopes inside your app
- * console's permisison tab.
+ * scopes "account_info.read", "files.metadata.write", "files.content.read",
+ * "files.content.write", and "sharing.read" to run this example.
+ * You can manage your app's scopes inside your app console's permisison tab.
  *
  * This example goes through 3 different flows:
  *  Step 1: Kick off initial authorization with only "account_info.read" scope
  *  Step 2: Request a different scope "files.metadata.write"
- *  Step 3: Request "files.content.read" and "files.content.write", along with all previously
- *  granted scopes using include_granted_scopes.
+ *  Step 3: Request "files.content.read", "files.content.write", and "sharing.read",
+ *  along with all previously granted scopes using include_granted_scopes.
  */
 public class ScopeAuthorize {
     public DbxAuthFinish authorize(DbxAppInfo appInfo) throws IOException {
@@ -108,12 +108,12 @@ public class ScopeAuthorize {
         }
 
 
-        // Oauth2 flow 3: Ask for "files.content.read" and "files.content.write", along with all
-        // previously granted scopes.
+        // Oauth2 flow 3: Ask for "files.content.read", "files.content.write" and "sharing.read",
+        // along with all previously granted scopes.
         webAuthRequest = DbxWebAuth.newRequestBuilder()
             .withNoRedirect()
             .withTokenAccessType(TokenAccessType.OFFLINE)
-            .withScope(Arrays.asList("files.content.read", "files.content.write"))
+            .withScope(Arrays.asList("files.content.read", "files.content.write", "sharing.read"))
             .withIncludeGrantedScopes(IncludeGrantedScopes.USER)
             .build();
 
@@ -145,8 +145,16 @@ public class ScopeAuthorize {
                 System.exit(1); return null;
             }
 
+            if (!authFinish.getScope().contains("sharing.read")) {
+                System.err.println("You app doesn't have sharing.read scope. Can't finish" +
+                        " " +
+                        "this example.");
+                System.exit(1); return null;
+            }
+
             assert authFinish.getScope().contains("account_info.read");
             assert authFinish.getScope().contains("files.metadata.write");
+            assert authFinish.getScope().contains("sharing.read");
 
             System.out.println("Successfully requested scope " + authFinish.getScope());
             return authFinish;
