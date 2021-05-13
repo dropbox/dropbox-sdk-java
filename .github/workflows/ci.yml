@@ -42,4 +42,4 @@ jobs:
         REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
       run: ./generate-ci-auth-file
     - name: Run release checks
-      run: ./scripts/release-check auth_output
+      run: ./scripts/release-check $(find `pwd` -name auth_output)
