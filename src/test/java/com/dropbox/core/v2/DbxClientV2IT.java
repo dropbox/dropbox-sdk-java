@@ -100,7 +100,11 @@ public class DbxClientV2IT {
 
         Metadata actual = client.files().getMetadata(path);
         assertWithMessage(actual.getClass().getCanonicalName()).that(actual instanceof FileMetadata).isTrue();
-        assertThat(actual).isEqualTo(metadata);
+
+        // Ignore parentSharedFolderId field; CDM users will fail that check due to nature of CDM member folder.
+        assertThat(actual.getName()).isEqualTo(metadata.getName());
+        assertThat(actual.getPathLower()).isEqualTo(metadata.getPathLower());
+        assertThat(actual.getPathDisplay()).isEqualTo(metadata.getPathDisplay());
 
         if (trackProgress) {
             progressListener = createTestListener(contents.length);
@@ -117,7 +121,7 @@ public class DbxClientV2IT {
         assertThat(actualContents).isEqualTo(contents);
         assertThat(downloader.getContentType()).isEqualTo("application/octet-stream");
 
-        Metadata deleted = client.files().delete(path);
+        Metadata deleted = client.files().deleteV2(path).getMetadata();
         assertThat(deleted).isEqualTo(metadata);
     }
 
