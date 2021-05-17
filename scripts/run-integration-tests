@@ -19,6 +19,14 @@ run() {
     echo "================================================================================"
 }
 
+gradle() {
+    (cd "${DIR}" && run ./gradlew -c standalone-settings.gradle "$@")
+}
+
+android_gradle() {
+    (cd "${DIR}/examples/android" && run ./gradlew "$@")
+}
+
 if [ $# -ne 1 ] ; then
     script=`basename "${0}"`
     echo >&2 "usage: $script production-user-auth.json"
@@ -38,15 +46,18 @@ function cleanup() {
 }
 trap cleanup EXIT
 
-echo "Running release checks..."
-echo ""
-echo "A series of tests will be performed to verify package is ready for release."
-echo "These tests may take a while to complete."
-echo ""
+echo "Running integration tests..."
 
-# run examples
-./scripts/run-examples ${AUTH_FILE}
+gradle clean
+gradle check
 
-# run integration tests
-./scripts/run-integration-tests ${AUTH_FILE}
+# prepare examples to be run
+gradle install
+android_gradle clean
+android_gradle assemble
+
+# Run integration tests against major HTTP requestor implementations
+for requestor in "StandardHttpRequestor" "OkHttpRequestor" "OkHttp3Requestor" ; do
+    gradle -Pcom.dropbox.test.httpRequestor="${requestor}" -Pcom.dropbox.test.authInfoFile="${AUTH_FILE}" integrationTest proguardTest
+done
 

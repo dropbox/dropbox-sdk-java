@@ -90,11 +90,7 @@ public class Main {
                 assertEquals(file.getSize(), data.length);
 
                 Metadata metadata = client.files().getMetadata(path);
-
-                // Ignore parentSharedFolderId field; CDM users will fail that check due to nature of CDM member folder.
-                assertEquals(metadata.getName(), file.getName());
-                assertEquals(metadata.getPathLower(), file.getPathLower());
-                assertEquals(metadata.getPathDisplay(), file.getPathDisplay());
+                assertEquals(metadata, file);
             }
 
             for (String path : files.keySet()) {
