@@ -9,8 +9,6 @@ import java.util.Date;
 import java.util.Locale;
 
 import com.dropbox.core.util.IOUtil.ProgressListener;
-
-import org.junit.After;
 import org.testng.annotations.Test;
 
 import com.dropbox.core.BadRequestException;
