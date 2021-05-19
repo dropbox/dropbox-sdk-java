@@ -100,24 +100,31 @@ public class DbxClientV2IT {
 
         Metadata actual = client.files().getMetadata(path);
         assertWithMessage(actual.getClass().getCanonicalName()).that(actual instanceof FileMetadata).isTrue();
-        assertThat(actual).isEqualTo(metadata);
 
-        if (trackProgress) {
-            progressListener = createTestListener(contents.length);
+        try {
+            assertThat(actual).isEqualTo(metadata);
+
+            if (trackProgress) {
+                progressListener = createTestListener(contents.length);
+            }
+
+            DbxDownloader<FileMetadata> downloader = client.files().download(path);
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            downloader.download(out, progressListener);
+
+            byte[] actualContents = out.toByteArray();
+            FileMetadata actualResult = downloader.getResult();
+
+            assertThat(actualResult).isEqualTo(metadata);
+            assertThat(actualContents).isEqualTo(contents);
+            assertThat(downloader.getContentType()).isEqualTo("application/octet-stream");
+        } catch (AssertionError e) {
+            // so subsequent tests don't fail due to file not being cleaned up
+            client.files().deleteV2(path).getMetadata();
+            throw e;
         }
 
-        DbxDownloader<FileMetadata> downloader = client.files().download(path);
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        downloader.download(out, progressListener);
-
-        byte [] actualContents = out.toByteArray();
-        FileMetadata actualResult = downloader.getResult();
-
-        assertThat(actualResult).isEqualTo(metadata);
-        assertThat(actualContents).isEqualTo(contents);
-        assertThat(downloader.getContentType()).isEqualTo("application/octet-stream");
-
-        Metadata deleted = client.files().delete(path);
+        Metadata deleted = client.files().deleteV2(path).getMetadata();
         assertThat(deleted).isEqualTo(metadata);
     }
 
