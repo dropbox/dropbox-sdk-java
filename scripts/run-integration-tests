@@ -52,7 +52,6 @@ gradle clean
 gradle check
 
 # prepare examples to be run
-gradle install
 android_gradle clean
 android_gradle assemble
 
