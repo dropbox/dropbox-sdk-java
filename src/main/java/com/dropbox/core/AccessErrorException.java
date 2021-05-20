@@ -6,7 +6,7 @@ import com.dropbox.core.v2.auth.AccessError;
  * Gets thrown when invalid access occurs.
  */
 public class AccessErrorException extends DbxException {
-    private static final long serialVersionUID = 0;
+    private static final long serialVersionUID = -1;
 
     private final AccessError accessError;
 
