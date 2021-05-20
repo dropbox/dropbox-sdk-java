@@ -46,5 +46,5 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: test results
-        path: build/test-results/
+        name: test reports
+        path: build/reports/
