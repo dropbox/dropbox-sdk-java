@@ -1,8 +1,8 @@
-# This workflow will build the project with Gradle and run examples
+# This workflow will build the project with Gradle and run integration tests
 # Because secrets are not available on external forks, this job is expected to fail
 # on external pull requests.
 
-name: Build project & run examples
+name: Build project & run integration tests
 
 on:
   push:
@@ -42,4 +42,9 @@ jobs:
         REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
       run: ./generate-ci-auth-file
     - name: Run examples
-      run: ./scripts/run-examples $(find `pwd` -name auth_output)
+      run: ./scripts/run-integration-tests $(find `pwd` -name auth_output)
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: test reports
+        path: build/reports/
