@@ -171,7 +171,7 @@ public class DbxClientV2 extends DbxClientV2Base {
         @Override
         public DbxRefreshResult refreshAccessToken() throws DbxException {
             credential.refresh(this.getRequestConfig());
-            return new DbxRefreshResult(credential.getAccessToken(), credential.getExpiresAt());
+            return new DbxRefreshResult(credential.getAccessToken(), (credential.getExpiresAt() - System.currentTimeMillis())/1000);
         }
 
         @Override
