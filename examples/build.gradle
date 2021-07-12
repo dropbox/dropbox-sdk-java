@@ -1,7 +1,6 @@
 allprojects  {
     apply plugin: 'maven'
     group = 'com.dropbox.core'
-    version = '0-SNAPSHOT'
 }
 
 subprojects {
