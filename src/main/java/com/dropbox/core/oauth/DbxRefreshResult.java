@@ -19,8 +19,8 @@ import java.io.IOException;
  */
 public class DbxRefreshResult {
     private final String accessToken;
-    private final long expiresIn;
-    private long issueTime;
+    private final long expiresIn; /* in seconds */
+    private long issueTime; /* in milliseconds */
     private String scope;
 
     /**

@@ -27,7 +27,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.testng.Assert.fail;
 
-public class DbxRefershTest extends DbxOAuthTestBase {
+public class DbxRefreshTest extends DbxOAuthTestBase {
     private static final DbxRequestConfig CONFIG = DbxRequestConfig.newBuilder("DbxWebAuthTest/1.0")
         .withUserLocaleFrom(Locale.UK)
         .build();
@@ -35,7 +35,8 @@ public class DbxRefershTest extends DbxOAuthTestBase {
     private static final String EXPIRED_TOKEN = "expired_token";
     private static final String REFRESH_TOKEN = "refresh____token";
     private static final String NEW_TOKEN = "new_token";
-    private static final long EXPIRES_IN = 14400;
+    private static final long EXPIRES_IN_SECONDS = 14400L;
+    private static final long OFFSET_BETWEEN_CALLS_IN_MS = 1000L;
 
 
     @Test
@@ -45,7 +46,7 @@ public class DbxRefershTest extends DbxOAuthTestBase {
                 "{" +
                     "\"token_type\":\"Bearer\"" +
                     ",\"access_token\":\"" + NEW_TOKEN + "\"" +
-                    ",\"expires_in\":" + EXPIRES_IN +
+                    ",\"expires_in\":" + EXPIRES_IN_SECONDS +
                 "}"
             ).getBytes("UTF-8")
         );
@@ -54,7 +55,7 @@ public class DbxRefershTest extends DbxOAuthTestBase {
         actual.setIssueTime(0);
 
         assertThat(actual.getAccessToken()).isEqualTo(NEW_TOKEN);
-        assertThat(actual.getExpiresAt()).isEqualTo(new Long(EXPIRES_IN * 1000));
+        assertThat(actual.getExpiresAt()).isEqualTo(new Long(EXPIRES_IN_SECONDS * 1000));
     }
 
     @Test
@@ -64,7 +65,7 @@ public class DbxRefershTest extends DbxOAuthTestBase {
             .getSecret()).aboutToExpire()).isTrue();
         assertThat(new DbxCredential(EXPIRED_TOKEN, now, REFRESH_TOKEN, APP.getKey(), APP
             .getSecret()).aboutToExpire()).isTrue();
-        assertThat(new DbxCredential(EXPIRED_TOKEN, now + EXPIRES_IN, REFRESH_TOKEN, APP.getKey()
+        assertThat(new DbxCredential(EXPIRED_TOKEN, now + EXPIRES_IN_SECONDS, REFRESH_TOKEN, APP.getKey()
             , APP.getSecret()).aboutToExpire()).isTrue();
         try {
             new DbxCredential(EXPIRED_TOKEN, null, "refresh", "appkey", null).aboutToExpire();
@@ -93,23 +94,24 @@ public class DbxRefershTest extends DbxOAuthTestBase {
                 "{" +
                     "\"token_type\":\"Bearer\"" +
                     ",\"access_token\":\"" + NEW_TOKEN + "\"" +
-                    ",\"expires_in\":" + EXPIRES_IN +
+                    ",\"expires_in\":" + EXPIRES_IN_SECONDS +
                 "}"
             ).getBytes("UTF-8")
         );
         HttpRequestor.Response finishResponse = new HttpRequestor.Response(
             200, responseStream, new HashMap<String, List<String>>());
-        long currentMilllis = System.currentTimeMillis();
+        long currentMillis = System.currentTimeMillis();
 
         // Mock requester and uploader
         HttpRequestor.Uploader mockUploader = mock(HttpRequestor.Uploader.class);
         DbxRequestConfig mockConfig = setupMockRequestConfig(finishResponse, mockUploader);
 
         // Execute Refreshing
-        DbxCredential credential = new DbxCredential(EXPIRED_TOKEN, EXPIRES_IN, REFRESH_TOKEN,
+        long expiresAtMs = currentMillis + EXPIRES_IN_SECONDS * 1000;
+        DbxCredential credential = new DbxCredential(EXPIRED_TOKEN, expiresAtMs, REFRESH_TOKEN,
             APP.getKey(), APP.getSecret());
         DbxClientV2 client = new DbxClientV2(mockConfig, credential);
-        client.refreshAccessToken();
+        DbxRefreshResult token = client.refreshAccessToken();
 
         // Get URL Param
         ArgumentCaptor<byte[]> paramCaptor = ArgumentCaptor.forClass(byte[].class);
@@ -121,7 +123,8 @@ public class DbxRefershTest extends DbxOAuthTestBase {
         assertThat(refreshParams.get("refresh_token").get(0)).isEqualTo(REFRESH_TOKEN);
         assertThat(refreshParams.containsKey("client_id")).isFalse();
         assertThat(credential.getAccessToken()).isEqualTo(NEW_TOKEN);
-        assertThat(currentMilllis + EXPIRES_IN < credential.getExpiresAt()).isTrue();
+        assertThat(credential.getExpiresAt()).isLessThan(expiresAtMs + OFFSET_BETWEEN_CALLS_IN_MS);
+        assertThat(token.getExpiresAt()).isLessThan(expiresAtMs + OFFSET_BETWEEN_CALLS_IN_MS);
     }
 
     @Test
@@ -131,23 +134,24 @@ public class DbxRefershTest extends DbxOAuthTestBase {
                 "{" +
                     "\"token_type\":\"Bearer\"" +
                     ",\"access_token\":\"" + NEW_TOKEN + "\"" +
-                    ",\"expires_in\":" + EXPIRES_IN +
+                    ",\"expires_in\":" + EXPIRES_IN_SECONDS +
                     "}"
             ).getBytes("UTF-8")
         );
         HttpRequestor.Response finishResponse = new HttpRequestor.Response(
             200, responseStream, new HashMap<String, List<String>>());
-        long currentMilllis = System.currentTimeMillis();
+        long currentMillis = System.currentTimeMillis();
 
         // Mock requester and uploader
         HttpRequestor.Uploader mockUploader = mock(HttpRequestor.Uploader.class);
         DbxRequestConfig mockConfig = setupMockRequestConfig(finishResponse, mockUploader);
 
         // Execute Refreshing
-        DbxCredential credential = new DbxCredential(EXPIRED_TOKEN, EXPIRES_IN, REFRESH_TOKEN,
+        long expiresAtMs = currentMillis + EXPIRES_IN_SECONDS * 1000;
+        DbxCredential credential = new DbxCredential(EXPIRED_TOKEN, expiresAtMs, REFRESH_TOKEN,
             APP.getKey(), APP.getSecret());
         DbxTeamClientV2 client = new DbxTeamClientV2(mockConfig, credential);
-        client.refreshAccessToken();
+        DbxRefreshResult token = client.refreshAccessToken();
 
         // Get URL Param
         ArgumentCaptor<byte[]> paramCaptor = ArgumentCaptor.forClass(byte[].class);
@@ -159,7 +163,8 @@ public class DbxRefershTest extends DbxOAuthTestBase {
         assertThat(refreshParams.get("refresh_token").get(0)).isEqualTo(REFRESH_TOKEN);
         assertThat(refreshParams.containsKey("client_id")).isFalse();
         assertThat(credential.getAccessToken()).isEqualTo(NEW_TOKEN);
-        assertThat(currentMilllis + EXPIRES_IN < credential.getExpiresAt()).isTrue();
+        assertThat(credential.getExpiresAt()).isLessThan(expiresAtMs + OFFSET_BETWEEN_CALLS_IN_MS);
+        assertThat(token.getExpiresAt()).isLessThan(expiresAtMs + OFFSET_BETWEEN_CALLS_IN_MS);
     }
 
     @Test
@@ -169,20 +174,21 @@ public class DbxRefershTest extends DbxOAuthTestBase {
                 "{" +
                     "\"token_type\":\"Bearer\"" +
                     ",\"access_token\":\"" + NEW_TOKEN + "\"" +
-                    ",\"expires_in\":" + EXPIRES_IN +
+                    ",\"expires_in\":" + EXPIRES_IN_SECONDS +
                     "}"
             ).getBytes("UTF-8")
         );
         HttpRequestor.Response finishResponse = new HttpRequestor.Response(
             200, responseStream, new HashMap<String, List<String>>());
-        long currentMilllis = System.currentTimeMillis();
+        long currentMillis = System.currentTimeMillis();
 
         // Mock requester and uploader
         HttpRequestor.Uploader mockUploader = mock(HttpRequestor.Uploader.class);
         DbxRequestConfig mockConfig = setupMockRequestConfig(finishResponse, mockUploader);
 
         // Execute Refreshing
-        DbxCredential credential = new DbxCredential(EXPIRED_TOKEN, EXPIRES_IN, REFRESH_TOKEN,
+        long expiresAtMs = currentMillis + EXPIRES_IN_SECONDS * 1000;
+        DbxCredential credential = new DbxCredential(EXPIRED_TOKEN, expiresAtMs, REFRESH_TOKEN,
             APP.getKey());
         credential.refresh(mockConfig);
 
@@ -196,7 +202,7 @@ public class DbxRefershTest extends DbxOAuthTestBase {
         assertThat(refreshParams.get("refresh_token").get(0)).isEqualTo(REFRESH_TOKEN);
         assertThat(refreshParams.get("client_id").get(0)).isEqualTo(APP.getKey());
         assertThat(credential.getAccessToken()).isEqualTo(NEW_TOKEN);
-        assertThat(currentMilllis + EXPIRES_IN < credential.getExpiresAt()).isTrue();
+        assertThat(credential.getExpiresAt()).isLessThan(expiresAtMs + OFFSET_BETWEEN_CALLS_IN_MS);
     }
 
     @Test
@@ -206,7 +212,7 @@ public class DbxRefershTest extends DbxOAuthTestBase {
                 "{" +
                     "\"token_type\":\"Bearer\"" +
                     ",\"access_token\":\"" + NEW_TOKEN + "\"" +
-                    ",\"expires_in\":" + EXPIRES_IN +
+                    ",\"expires_in\":" + EXPIRES_IN_SECONDS +
                     ",\"scope\":" + "\"myscope1\"" +
                 "}"
             ).getBytes("UTF-8")
@@ -220,7 +226,7 @@ public class DbxRefershTest extends DbxOAuthTestBase {
         DbxRequestConfig mockConfig = setupMockRequestConfig(finishResponse, mockUploader);
 
         // Execute Refreshing
-        DbxCredential credential = new DbxCredential(EXPIRED_TOKEN, EXPIRES_IN, REFRESH_TOKEN,
+        DbxCredential credential = new DbxCredential(EXPIRED_TOKEN, EXPIRES_IN_SECONDS, REFRESH_TOKEN,
             APP.getKey());
         DbxRefreshResult refreshResult = credential.refresh(mockConfig, Arrays.asList("myscope1", "myscope2"));
 
@@ -235,7 +241,7 @@ public class DbxRefershTest extends DbxOAuthTestBase {
         assertThat(refreshParams.get("client_id").get(0)).isEqualTo(APP.getKey());
         assertThat(refreshParams.get("scope").get(0)).isEqualTo("myscope1 myscope2");
         assertThat(credential.getAccessToken()).isEqualTo(NEW_TOKEN);
-        assertThat(currentMilllis + EXPIRES_IN < credential.getExpiresAt()).isTrue();
+        assertThat(currentMilllis + EXPIRES_IN_SECONDS < credential.getExpiresAt()).isTrue();
         assertThat(refreshResult.getScope()).isEqualTo("myscope1");
     }
 
