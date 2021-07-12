@@ -1,4 +1,4 @@
-# This workflow will build the project with Gradle and run integration tests
+# This workflow will build the project with Gradle, run integration tests, and release.
 # Because secrets are not available on external forks, this job is expected to fail
 # on external pull requests.
 
@@ -48,3 +48,9 @@ jobs:
       with:
         name: test reports
         path: build/reports/
+    - name: Publish artifacts
+      env:
+        OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+        OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+        SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
+      run: ./gradlew clean uploadArchives -Psigning.password="$SIGNING_PASSWORD" -PossrhUsername="$OSSRH_USERNAME" -PossrhPassword="$OSSRH_PASSWORD"
