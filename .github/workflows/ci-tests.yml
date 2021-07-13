@@ -43,12 +43,14 @@ jobs:
       run: ./generate-ci-auth-file
     - name: Run examples
       run: ./scripts/run-integration-tests $(find `pwd` -name auth_output)
-    - name: Publish artifacts
+    - name: Deploy artifacts artifacts
       env:
         OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
         OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
         SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
-      run: ./gradlew clean uploadArchives -Psigning.password="$SIGNING_PASSWORD" -PossrhUsername="$OSSRH_USERNAME" -PossrhPassword="$OSSRH_PASSWORD"
+        ENCRYPT_KEY: ${{ secrets.ENCRYPT_KEY }}
+        SIGNING_ID: ${{ secrets.SIGNING_ID }}
+      run: scripts/deploy-artifacts
     - name: Upload Test Reports
       uses: actions/upload-artifact@v2
       with:
