@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Dropbox Java SDK Android App"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/account_photo" />
+
+    <Button
+        android:id="@+id/login_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Login with Dropbox"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/logout_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Logout of Dropbox"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/access_token_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Access Token"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/header" />
+
+    <TextView
+        android:id="@+id/access_token"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/access_token_header"
+        app:layout_constraintTop_toBottomOf="@+id/access_token_header"
+        tools:text="access token will be here" />
+
+    <TextView
+        android:id="@+id/refresh_token_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Refresh Token"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/access_token"
+        app:layout_constraintTop_toBottomOf="@+id/access_token" />
+
+    <TextView
+        android:id="@+id/refresh_token"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@+id/access_token"
+        app:layout_constraintStart_toStartOf="@+id/refresh_token_header"
+        app:layout_constraintTop_toBottomOf="@+id/refresh_token_header"
+        tools:text="refresh token will be here" />
+
+    <TextView
+        android:id="@+id/app_key_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="App Key"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/refresh_token"
+        app:layout_constraintTop_toBottomOf="@+id/refresh_token" />
+
+    <TextView
+        android:id="@+id/app_key"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@+id/refresh_token"
+        app:layout_constraintStart_toStartOf="@+id/app_key_header"
+        app:layout_constraintTop_toBottomOf="@+id/app_key_header"
+        tools:text="app key will be here" />
+
+    <TextView
+        android:id="@+id/expire_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Expires in:"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/app_key"
+        app:layout_constraintTop_toBottomOf="@+id/app_key" />
+
+    <TextView
+        android:id="@+id/expires_in"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@+id/app_key"
+        app:layout_constraintStart_toStartOf="@+id/expire_header"
+        app:layout_constraintTop_toBottomOf="@+id/expire_header"
+        tools:text="xxxx seconds" />
+
+    <Button
+        android:id="@+id/upload_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:enabled="false"
+        android:text="Upload an image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/expires_in" />
+
+    <ImageView
+        android:id="@+id/account_photo"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <ProgressBar
+        android:id="@+id/upload_loading"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="7dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/upload_button"
+        app:layout_constraintStart_toEndOf="@+id/upload_button"
+        app:layout_constraintTop_toTopOf="@+id/upload_button" />
+
+    <TextView
+        android:id="@+id/exception_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/upload_button"
+        tools:text="Exception messages will go here!" />
+</androidx.constraintlayout.widget.ConstraintLayout>
