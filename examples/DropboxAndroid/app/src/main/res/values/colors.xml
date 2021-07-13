@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="dropbox_blue">#0061FF</color>
+    <color name="dropbox_blue_dark">#003FA5</color>
+    <color name="dropbox_yellow">#FFE7AA</color>
+    <color name="dropbox_yellow_dark">#FDD571</color>
+</resources>

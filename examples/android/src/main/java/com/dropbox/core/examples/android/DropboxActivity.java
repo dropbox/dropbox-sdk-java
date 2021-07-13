@@ -3,7 +3,7 @@ package com.dropbox.core.examples.android;
 import android.content.Context;
 import android.content.SharedPreferences;
 import androidx.appcompat.app.AppCompatActivity;
-
+import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.android.Auth;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.oauth.DbxCredential;
@@ -90,10 +90,8 @@ public abstract class DropboxActivity extends AppCompatActivity {
     }
 
     public static void startOAuth2Authentication(Context context, String app_key, List<String> scope) {
-        if (USE_SLT) {
-            Auth.startOAuth2PKCE(context, app_key, DbxRequestConfigFactory.getRequestConfig(), scope);
-        } else {
-            Auth.startOAuth2Authentication(context, app_key);
-        }
+       // Auth.startOAuth2PKCE(context, app_key, DbxRequestConfigFactory.getRequestConfig(), scope);
+        String clientIdentifier = "DrobpoxSampleAndroid/1.0.0";
+        Auth.startOAuth2PKCE(context, app_key, new DbxRequestConfig(clientIdentifier), scope);
     }
 }
