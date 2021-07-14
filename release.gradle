@@ -14,6 +14,14 @@ ext {
     SONATYPE_STAGING_URL = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
 }
 
+def getUsername() {
+    return hasProperty('ossrhUsername') ? ossrhUsername : ""
+}
+
+def getPassword() {
+    return hasProperty('ossrhPassword') ? ossrhPassword : ""
+}
+
 signing {
     required {
         // don't sign for installing in local maven
@@ -71,8 +79,8 @@ uploadArchives {
 
             repository(url: version.endsWith('SNAPSHOT') ? SONATYPE_SNAPSHOT_URL : SONATYPE_STAGING_URL) {
                 authentication(
-                    userName: ossrhUsername,
-                    password: ossrhPassword
+                    userName: getUsername(),
+                    password: getPassword()
                 )
             }
         }
