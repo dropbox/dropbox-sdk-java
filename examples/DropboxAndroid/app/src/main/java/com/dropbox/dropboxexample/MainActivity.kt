@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.webkit.MimeTypeMap
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -13,26 +14,26 @@ import com.dropbox.core.DbxRequestConfig
 import com.dropbox.core.android.Auth
 import com.dropbox.core.oauth.DbxCredential
 import com.dropbox.core.v2.DbxClientV2
-import com.dropbox.dropboxexample.UriHelpers.getFileForUri
 import com.dropbox.dropboxexample.databinding.ActivityMainBinding
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import java.io.File
 import java.io.InputStream
-import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private val adapter = FilesAdapter()
 
-    //TODO where to keep the app key?
-    //does it need hidden?
-    private val APP_KEY = "8yvxleco33h5ucf"
+    private val APP_KEY = BuildConfig.DROPBOX_KEY
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+
+        fetchAccountInfo()
+        fetchDropboxFolder()
     }
 
     override fun onStart() {
@@ -46,35 +47,36 @@ class MainActivity : AppCompatActivity() {
         binding.uploadButton.setOnClickListener {
             selectFileForUpload()
         }
+        binding.files.adapter = adapter
     }
 
     override fun onResume() {
         super.onResume()
 
-        //Check if we have an existing token stored
-        //TODO this credential is never being updated, even though the dbxclientv2 might be refreshing
+        //Check if we have an existing token stored, this will be used by DbxClient to make requests
         val localCredential: DbxCredential? = getLocalCredential()
         val credential: DbxCredential? = if (localCredential == null) {
-            val credential = Auth.getDbxCredential()
+            val credential = Auth.getDbxCredential() //fetch the result from the AuthActivity
             credential?.let {
-                //we have a credential from Dropbox OAuth and we haven't stored it yet
+                //the user successfully connected their Dropbox account!
                 storeCredentialLocally(it)
+                fetchAccountInfo()
+                fetchDropboxFolder()
             }
             credential
         } else localCredential
 
-        credential?.let {
-            val expiryTime = credential.expiresAt - System.currentTimeMillis()
-            val minutes = TimeUnit.MILLISECONDS.toMinutes(expiryTime)
+        if (credential == null) {
             with(binding) {
-                accessToken.text = credential.accessToken
-                appKey.text = credential.appKey
-                refreshToken.text = credential.refreshToken
-                expiresIn.text = "$minutes minutes"
+                loginButton.visibility = View.VISIBLE
+                logoutButton.visibility = View.GONE
+                uploadButton.isEnabled = false
+            }
+        } else {
+            with(binding) {
                 uploadButton.isEnabled = true
                 logoutButton.visibility = View.VISIBLE
                 loginButton.visibility = View.GONE
-                fetchAccountInfo()
             }
         }
     }
@@ -89,7 +91,7 @@ class MainActivity : AppCompatActivity() {
     **/
     private fun startDropboxAuthorization() {
         // The client identifier is usually of the form "SoftwareName/SoftwareVersion".
-        val clientIdentifier = "DrobpoxSampleAndroid/1.0.0"
+        val clientIdentifier = "DropboxSampleAndroid/1.0.0"
         val requestConfig = DbxRequestConfig(clientIdentifier)
 
         // The scope's your app will need from Dropbox
@@ -99,7 +101,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun revokeDropboxAuthorization() {
-        val clientIdentifier = "DrobpoxSampleAndroid/1.0.0"
+        val clientIdentifier = "DropboxSampleAndroid/1.0.0"
         val requestConfig = DbxRequestConfig(clientIdentifier)
         val credential = getLocalCredential()
         val dropboxClient = DbxClientV2(requestConfig, credential)
@@ -109,6 +111,15 @@ class MainActivity : AppCompatActivity() {
         }
         val sharedPreferences = getSharedPreferences("dropbox-sample", MODE_PRIVATE)
         sharedPreferences.edit().remove("credential").apply()
+        clearData()
+    }
+
+    private fun clearData() {
+        adapter.submitList(emptyList())
+        binding.accountPhoto.setImageBitmap(null)
+        binding.logoutButton.visibility = View.GONE
+        binding.loginButton.visibility = View.VISIBLE
+        binding.uploadButton.isEnabled = false
     }
 
     //deserialize the credential from SharedPreferences if it exists
@@ -125,20 +136,57 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun fetchAccountInfo() {
-        val clientIdentifier = "DrobpoxSampleAndroid/1.0.0"
+        val clientIdentifier = "DropboxSampleAndroid/1.0.0"
         val requestConfig = DbxRequestConfig(clientIdentifier)
         val credential = getLocalCredential()
-        val dropboxClient = DbxClientV2(requestConfig, credential)
-        val dropboxApi = DropboxApi(dropboxClient)
-        lifecycleScope.launch {
-            when (val response = dropboxApi.getAccountInfo()) {
-                is DropboxAccountInfoResponse.Failure -> {
-                    Toast.makeText(this@MainActivity, "Error getting account info!", Toast.LENGTH_SHORT).show()
-                    binding.exceptionText.text = "type: ${response.exception.javaClass} + ${response.exception.localizedMessage}"
+        credential?.let {
+            val dropboxClient = DbxClientV2(requestConfig, credential)
+            val dropboxApi = DropboxApi(dropboxClient)
+            lifecycleScope.launch {
+                when (val response = dropboxApi.getAccountInfo()) {
+                    is DropboxAccountInfoResponse.Failure -> {
+                        Toast.makeText(
+                            this@MainActivity,
+                            "Error getting account info!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        binding.exceptionText.text =
+                            "type: ${response.exception.javaClass} + ${response.exception.localizedMessage}"
+                    }
+                    is DropboxAccountInfoResponse.Success -> {
+                        val profileImageUrl = response.accountInfo.profilePhotoUrl
+                        Glide.with(this@MainActivity).load(profileImageUrl)
+                            .into(binding.accountPhoto)
+                    }
                 }
-                is DropboxAccountInfoResponse.Success -> {
-                    val profileImageUrl = response.accountInfo.profilePhotoUrl
-                    Glide.with(this@MainActivity).load(profileImageUrl).into( binding.accountPhoto)
+            }
+        }
+    }
+
+    private fun fetchDropboxFolder() {
+        val clientIdentifier = "DropboxSampleAndroid/1.0.0"
+        val requestConfig = DbxRequestConfig(clientIdentifier)
+        val credential = getLocalCredential()
+        credential?.let {
+            val dropboxClient = DbxClientV2(requestConfig, credential)
+            val dropboxApi = DropboxApi(dropboxClient)
+
+            lifecycleScope.launch {
+                dropboxApi.getFilesForFolderFlow("").collect {
+                    when (it) {
+                        is GetFilesResponse.Failure -> {
+                            Toast.makeText(
+                                this@MainActivity,
+                                "Error getting Dropbox files!",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            binding.exceptionText.text =
+                                "type: ${it.exception.javaClass} + ${it.exception.localizedMessage}"
+                        }
+                        is GetFilesResponse.Success -> {
+                            adapter.submitList(it.result)
+                        }
+                    }
                 }
             }
         }
@@ -148,23 +196,34 @@ class MainActivity : AppCompatActivity() {
         contract.launch("image/*")
     }
 
-    private fun uploadFile(file: File, inputStream: InputStream) {
-        val clientIdentifier = "DrobpoxSampleAndroid/1.0.0"
+    private fun uploadFile(fileName: String, inputStream: InputStream) {
+        val clientIdentifier = "DropboxSampleAndroid/1.0.0"
         val requestConfig = DbxRequestConfig(clientIdentifier)
         val credential = getLocalCredential()
-        val dropboxClient = DbxClientV2(requestConfig, credential)
-        val dropboxApi = DropboxApi(dropboxClient)
-        lifecycleScope.launch {
-            binding.uploadLoading.visibility = View.VISIBLE
-            val response = dropboxApi.uploadFile(file.name, inputStream)
-            binding.uploadLoading.visibility = View.GONE
-            when (response) {
-                is DropboxUploadApiResponse.Failure -> {
-                    Toast.makeText(this@MainActivity, "Error uploading file", Toast.LENGTH_SHORT).show()
-                    binding.exceptionText.text = "type: ${response.exception.javaClass} + ${response.exception.localizedMessage}"
-                }
-                is DropboxUploadApiResponse.Success -> {
-                    Toast.makeText(this@MainActivity, "${response.fileMetadata.name} uploaded successfully!", Toast.LENGTH_SHORT).show()
+        credential?.let {
+            val dropboxClient = DbxClientV2(requestConfig, credential)
+            val dropboxApi = DropboxApi(dropboxClient)
+            lifecycleScope.launch {
+                binding.uploadLoading.visibility = View.VISIBLE
+                val response = dropboxApi.uploadFile(fileName, inputStream)
+                binding.uploadLoading.visibility = View.GONE
+                when (response) {
+                    is DropboxUploadApiResponse.Failure -> {
+                        Toast.makeText(
+                            this@MainActivity,
+                            "Error uploading file",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        binding.exceptionText.text =
+                            "type: ${response.exception.javaClass} + ${response.exception.localizedMessage}"
+                    }
+                    is DropboxUploadApiResponse.Success -> {
+                        Toast.makeText(
+                            this@MainActivity,
+                            "${response.fileMetadata.name} uploaded successfully!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
             }
         }
@@ -182,9 +241,10 @@ class MainActivity : AppCompatActivity() {
     private val contract = registerForActivityResult(openFileContract) { uri ->
         if (uri != null) {
             if (uri.scheme == "content") {
-                val file = getFileForUri(this, uri) //TODO this is null
+                val name = uri.lastPathSegment
+                val type = MimeTypeMap.getSingleton().getExtensionFromMimeType(contentResolver?.getType(uri))
                 val inputStream = contentResolver?.openInputStream(uri)
-                uploadFile(file!!, inputStream!!)
+                uploadFile("$name.$type", inputStream!!)
             }
         } else {
             Toast.makeText(this, "Error selecting file", Toast.LENGTH_SHORT).show()
