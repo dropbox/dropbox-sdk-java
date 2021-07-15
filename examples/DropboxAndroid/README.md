@@ -10,6 +10,8 @@ This is a sample app to show you how to integrate an Android app with the Dropbo
 - Use Kotlin Coroutines to make calls to the Dropbox API off the main thread using the Java SDK
 - Hide the app key using `local.properties` (as described below)
 
+To run the app locally you'll need to create a Dropbox app key in the developer console and put this line in the `local.properties` file: `DROPBOX_KEY=mydropboxkeygoeshere`
+
 
 <img src="https://user-images.githubusercontent.com/10744793/125870219-87508fbd-56f8-4960-8ca4-d938a83069c7.png" width="320">  <img src="https://user-images.githubusercontent.com/10744793/125870223-22fff96c-e818-4884-b354-87c4bba0d08a.png" width="320">
 
