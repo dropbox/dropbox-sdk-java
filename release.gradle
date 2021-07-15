@@ -9,6 +9,18 @@ task releaseTest() {
     dependsOn integrationTest
 }
 
+ext {
+    SONATYPE_SNAPSHOT_URL = "https://oss.sonatype.org/content/repositories/snapshots/"
+    SONATYPE_STAGING_URL = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+}
+
+def getUsername() {
+    return hasProperty('ossrhUsername') ? ossrhUsername : ""
+}
+
+def getPassword() {
+    return hasProperty('ossrhPassword') ? ossrhPassword : ""
+}
 
 signing {
     required {
@@ -42,7 +54,7 @@ def verifySdkVersion(deployment) {
         while (entry != null) {
             if (entry.getName().equals("com/dropbox/core/sdk-version.txt")) {
                 def version = jar.text.trim();
-                if (!(version ==~ /\d+\.\d+\.\d+/)) {
+                if (!(version ==~ /\d\.\d\.\d(-SNAPSHOT)?+/)) {
                     throw new GradleException("SDK version not in semantic versioning format: " + version +
                                               ". Try running './gradlew clean' before uploading archives.");
                 }
@@ -65,10 +77,10 @@ uploadArchives {
 
             pom = project.basePom
 
-            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+            repository(url: version.endsWith('SNAPSHOT') ? SONATYPE_SNAPSHOT_URL : SONATYPE_STAGING_URL) {
                 authentication(
-                    userName: ossrhUsername,
-                    password: ossrhPassword
+                    userName: getUsername(),
+                    password: getPassword()
                 )
             }
         }

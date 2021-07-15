@@ -4,7 +4,6 @@ apply plugin: 'java'
 description = 'ProGuard minified SDK test suite for ProGuard compatibility tests.'
 group = 'com.dropbox.core.test'
 archivesBaseName = 'dropbox-proguard-test'
-version = '0-SNAPSHOT'
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
@@ -31,7 +30,7 @@ repositories {
 }
 
 dependencies {
-    compile group: 'com.dropbox.core', name: 'dropbox-core-sdk', version: '0-SNAPSHOT', changing: true
+    compile group: 'com.dropbox.core', name: 'dropbox-core-sdk', version: '+', changing: true
     compile 'org.testng:testng:6.9.10'
 }
 

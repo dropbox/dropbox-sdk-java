@@ -1,0 +1,20 @@
+#!/bin/bash
+#
+# Deploy a jar, source jar, and javadoc jar to Sonatype's snapshot repo.
+#
+# Adapted from https://coderwall.com/p/9b_lfq and
+# http://benlimmer.com/2013/12/26/automatically-publish-javadoc-to-gh-pages-with-travis-ci/
+
+BRANCH="master"
+
+set -e
+
+if [ "${GITHUB_REF##*/}" != "$BRANCH" ]; then
+  echo "Skipping snapshot deployment: wrong branch. Expected '$BRANCH' but was '${GITHUB_REF##*/}'."
+else
+  echo "Deploying dropbox-sdk-java..."
+  openssl aes-256-cbc -md sha256 -d -in scripts/sdk-sign-secret.gnupg-keyring.aes -out scripts/sdk-sign-secret.gnupg-keyring -k "${ENCRYPT_KEY}"
+  # https://docs.gradle.org/current/userguide/signing_plugin.html#sec:signatory_credentials
+  ./gradlew uploadArchives -PossrhUsername="${OSSRH_USERNAME}" -PossrhPassword="${OSSRH_PASSWORD}" -Psigning.keyId="${SIGNING_ID}" -Psigning.password="${SIGNING_PASSWORD}" -Psigning.secretKeyRingFile=${PWD}/scripts/sdk-sign-secret.gnupg-keyring
+  echo "dropbox-sdk-java deployed!"
+fi

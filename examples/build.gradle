@@ -1,7 +1,6 @@
 allprojects  {
     apply plugin: 'maven'
     group = 'com.dropbox.core'
-    version = '0-SNAPSHOT'
 }
 
 subprojects {
@@ -20,7 +19,7 @@ subprojects {
     }
 
     dependencies {
-        compile group: 'com.dropbox.core', name: 'dropbox-core-sdk', version: '0-SNAPSHOT', changing: true
+        compile group: 'com.dropbox.core', name: 'dropbox-core-sdk', version: '+', changing: true
     }
 
     compileJava {
