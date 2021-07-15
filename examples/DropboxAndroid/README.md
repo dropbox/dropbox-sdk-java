@@ -1,4 +1,6 @@
 # Dropbox Android Example
+<img src="https://user-images.githubusercontent.com/10744793/125870299-b1079798-e3ba-4e51-a289-f2689dfc9905.png" width="220">
+
 
 This is a sample app to show you how to integrate an Android app with the Dropbox Java SDK. It demonstrates how to do the following:
 - Authenticates with the Dropbox SDK
@@ -8,6 +10,8 @@ This is a sample app to show you how to integrate an Android app with the Dropbo
 - Use Kotlin Coroutines to make calls to the Dropbox API off the main thread using the Java SDK
 - Hide the app key using `local.properties` (as described below)
 
+
+<img src="https://user-images.githubusercontent.com/10744793/125870219-87508fbd-56f8-4960-8ca4-d938a83069c7.png" width="320">  <img src="https://user-images.githubusercontent.com/10744793/125870223-22fff96c-e818-4884-b354-87c4bba0d08a.png" width="320">
 
 ## Creating your own Android app with the Dropbox Java SDK
 
