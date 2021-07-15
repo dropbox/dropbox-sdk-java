@@ -1,3 +1,5 @@
+### This example is not fully up to date, please see [our latest example](../DropboxAndroid)
+
 # Example Android application (using the Dropbox SDK for Java.)
 
 This shows the Dropbox API authorization flow and some API calls to retrieve files.
