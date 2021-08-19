@@ -344,7 +344,7 @@ public final class DbxRequestUtil {
                     AuthError authError = authErrorReponse.getError();
                     networkError = new InvalidAccessTokenException(requestId, message, authError);
                 } catch (JsonParseException ex) {
-                    throw new BadResponseException(requestId, "Bad JSON: " + ex.getMessage(), ex);
+                    networkError = new InvalidAccessTokenException(requestId, message, AuthError.INVALID_ACCESS_TOKEN);
                 }
                 break;
             case 403:

@@ -514,6 +514,38 @@ public class DbxClientV2Test {
         fail("API v2 call should throw exception");
     }
 
+    @Test
+    public void testOnlineInvalidToken() throws Exception {
+        HttpRequestor mockRequestor = mock(HttpRequestor.class);
+        DbxRequestConfig config = createRequestConfig()
+                .withHttpRequestor(mockRequestor)
+                .build();
+
+        DbxCredential credential = new DbxCredential("accesstoken");
+
+        DbxClientV2 client = new DbxClientV2(config, credential);
+        FileMetadata expected = constructFileMetadate();
+
+        HttpRequestor.Uploader mockUploader = mockUploader();
+        when(mockUploader.finish()).thenReturn(createInvalidTokenResponse());
+
+        when(mockRequestor.startPost(anyString(), anyHeaders()))
+                .thenReturn(mockUploader);
+
+        try {
+            client.files().getMetadata(expected.getId());
+        } catch (InvalidAccessTokenException ex) {
+            verify(mockRequestor, times(1)).startPost(anyString(), anyHeaders());
+            assertThat(credential.getAccessToken()).isEqualTo("accesstoken");
+
+            assertThat(ex.getAuthError()).isEqualTo(AuthError.INVALID_ACCESS_TOKEN);
+            assertThat(ex.getMessage()).isEqualTo("");
+            return;
+        }
+
+        fail("API v2 call should throw exception");
+    }
+
     private static HttpRequestor.Response createSuccessRefreshResponse(String newToken, long
         newExpiresIn)  throws Exception {
         ByteArrayInputStream responseStream = new ByteArrayInputStream(
@@ -526,6 +558,11 @@ public class DbxClientV2Test {
             ).getBytes("UTF-8")
         );
         return new HttpRequestor.Response(200, responseStream, new HashMap<String, List<String>>());
+    }
+
+    private static HttpRequestor.Response createInvalidTokenResponse() throws Exception {
+        ByteArrayInputStream responseStream = new ByteArrayInputStream(("").getBytes("UTF-8"));
+        return new HttpRequestor.Response(401, responseStream, new HashMap<String, List<String>>());
     }
 
     private static HttpRequestor.Response createTokenExpiredResponse() throws Exception {
