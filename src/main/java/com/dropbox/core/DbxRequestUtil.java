@@ -338,13 +338,17 @@ public final class DbxRequestUtil {
                 break;
             case 401:
                 message = DbxRequestUtil.messageFromResponse(response, requestId);
-                try {
-                    ApiErrorResponse<AuthError> authErrorReponse = new ApiErrorResponse
-                        .Serializer<AuthError>(AuthError.Serializer.INSTANCE).deserialize(message);
-                    AuthError authError = authErrorReponse.getError();
-                    networkError = new InvalidAccessTokenException(requestId, message, authError);
-                } catch (JsonParseException ex) {
+                if (message.isEmpty()) {
                     networkError = new InvalidAccessTokenException(requestId, message, AuthError.INVALID_ACCESS_TOKEN);
+                } else {
+                    try {
+                        ApiErrorResponse<AuthError> authErrorReponse = new ApiErrorResponse
+                                .Serializer<AuthError>(AuthError.Serializer.INSTANCE).deserialize(message);
+                        AuthError authError = authErrorReponse.getError();
+                        networkError = new InvalidAccessTokenException(requestId, message, authError);
+                    } catch (JsonParseException ex) {
+                        throw new BadResponseException(requestId, "Bad JSON: " + ex.getMessage(), ex);
+                    }
                 }
                 break;
             case 403:

@@ -6,18 +6,12 @@ import static org.mockito.Mockito.*;
 import static com.dropbox.core.v2.files.FilesSerializers.serializer;
 import static org.testng.Assert.fail;
 
-import com.dropbox.core.DbxRequestUtil;
-import com.dropbox.core.InvalidAccessTokenException;
+import com.dropbox.core.*;
 import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.oauth.DbxCredential;
 import com.dropbox.core.v2.auth.AuthError;
 import com.dropbox.core.v2.files.FileMetadata;
 import com.dropbox.core.v2.files.Metadata;
-import com.dropbox.core.BadRequestException;
-import com.dropbox.core.DbxDownloader;
-import com.dropbox.core.DbxException;
-import com.dropbox.core.DbxRequestConfig;
-import com.dropbox.core.RetryException;
 
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -546,6 +540,37 @@ public class DbxClientV2Test {
         fail("API v2 call should throw exception");
     }
 
+    @Test
+    public void testOnlineBadTokenResponse() throws Exception {
+        HttpRequestor mockRequestor = mock(HttpRequestor.class);
+        DbxRequestConfig config = createRequestConfig()
+                .withHttpRequestor(mockRequestor)
+                .build();
+
+        DbxCredential credential = new DbxCredential("accesstoken");
+
+        DbxClientV2 client = new DbxClientV2(config, credential);
+        FileMetadata expected = constructFileMetadate();
+
+        HttpRequestor.Uploader mockUploader = mockUploader();
+        when(mockUploader.finish()).thenReturn(createBadTokenResponse());
+
+        when(mockRequestor.startPost(anyString(), anyHeaders()))
+                .thenReturn(mockUploader);
+
+        try {
+            client.files().getMetadata(expected.getId());
+        } catch (BadResponseException ex) {
+            verify(mockRequestor, times(1)).startPost(anyString(), anyHeaders());
+            assertThat(credential.getAccessToken()).isEqualTo("accesstoken");
+
+            assertThat(ex.getMessage()).startsWith("Bad JSON:");
+            return;
+        }
+
+        fail("API v2 call should throw exception");
+    }
+
     private static HttpRequestor.Response createSuccessRefreshResponse(String newToken, long
         newExpiresIn)  throws Exception {
         ByteArrayInputStream responseStream = new ByteArrayInputStream(
@@ -562,6 +587,12 @@ public class DbxClientV2Test {
 
     private static HttpRequestor.Response createInvalidTokenResponse() throws Exception {
         ByteArrayInputStream responseStream = new ByteArrayInputStream(("").getBytes("UTF-8"));
+        return new HttpRequestor.Response(401, responseStream, new HashMap<String, List<String>>());
+    }
+
+    private static HttpRequestor.Response createBadTokenResponse() throws Exception {
+        ByteArrayInputStream responseStream = new ByteArrayInputStream(("this is garbage json that cant be parsed")
+                .getBytes("UTF-8"));
         return new HttpRequestor.Response(401, responseStream, new HashMap<String, List<String>>());
     }
 
