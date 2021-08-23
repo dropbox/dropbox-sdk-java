@@ -1,0 +1,21 @@
+namespace stone_cfg
+
+struct Route
+
+    auth String(pattern="^(user|team|app|noauth|app, user)$") = "user"
+        "The auth type for the route. In case of multiple values it should be sorted allphabetically"
+    host String(pattern="^(api|content|notify)$") = "api"
+        "The server to make the request to. "
+    style String(pattern="^(rpc|download|upload)$") = "rpc"
+        "The RPC format to use for the request."
+    is_preview Boolean = false
+        "A flag indicating whether the route is subject to breaking
+        changes without notice."
+    allow_app_folder_app Boolean = false
+        "If app folder app is allowed to use this endpoint."
+    select_admin_mode String(pattern="^(team_admin|whole_team)$")?
+        "Which mode for Dropbox-API-Select-Admin header can be used in this route."
+    scope String?
+        "Name of the scope required to call this route."
+    is_cloud_doc_auth Boolean = false
+        "Whether the endpoint is a Dropbox cloud docs endpoint which takes cloud docs auth token."

@@ -1,0 +1,361 @@
+namespace team
+
+import common
+import team_common
+import files
+
+alias LegalHoldId = String(pattern="^pid_dbhid:.+")
+alias LegalHoldPolicyName = String(max_length=140)
+alias LegalHoldPolicyDescription = String(max_length=501)
+alias Path = String(pattern="(/(.|[\\r\\n])*)?")
+
+union LegalHoldStatus
+    active
+        "The legal hold policy is active."
+    released
+        "The legal hold policy was released."
+    activating
+        "The legal hold policy is activating."
+    updating
+        "The legal hold policy is updating."
+    exporting
+        "The legal hold policy is exporting."
+    releasing
+        "The legal hold policy is releasing."
+
+struct MembersInfo
+    team_member_ids List(team_common.TeamMemberId)
+        "Team member IDs of the users under this hold."
+    permanently_deleted_users UInt64
+        "The number of permanently deleted users that were under this hold."
+
+    example default
+        team_member_ids = ["dbmid:efgh5678"]
+        permanently_deleted_users = 2
+
+union LegalHoldsError
+    unknown_legal_hold_error
+        "There has been an unknown legal hold error."
+    insufficient_permissions
+        "You don't have permissions to perform this action."
+
+struct LegalHoldPolicy
+    id LegalHoldId
+        "The legal hold id."
+    name LegalHoldPolicyName
+        "Policy name."
+    description LegalHoldPolicyDescription?
+        "A description of the legal hold policy."
+    activation_time common.DropboxTimestamp?
+        "The time at which the legal hold was activated."
+    members MembersInfo
+        "Team members IDs and number of permanetly deleted members under hold."
+    status LegalHoldStatus
+        "The current state of the hold."
+    start_date common.DropboxTimestamp
+        "Start date of the legal hold policy."
+    end_date common.DropboxTimestamp?
+        "End date of the legal hold policy."
+
+    example default
+        id = "pid_dbhid:abcd1234"
+        name = "acme cfo policy"
+        activation_time = "2016-01-20T00:00:10Z"
+        members = default
+        status = active
+        start_date = "2016-01-01T00:00:00Z"
+        end_date = "2017-12-31T00:00:00Z"
+
+#
+# route legal_holds/create_policy
+#
+
+struct LegalHoldsPolicyCreateArg
+    name LegalHoldPolicyName
+        "Policy name."
+    description LegalHoldPolicyDescription?
+        "A description of the legal hold policy."
+    members List(team_common.TeamMemberId)
+        "List of team member IDs added to the hold."
+    start_date common.DropboxTimestamp?
+        "start date of the legal hold policy."
+    end_date common.DropboxTimestamp?
+        "end date of the legal hold policy."
+
+    example default
+        name = "acme cfo policy"
+        members = ["dbmid:FDFSVF-DFSDF"]
+        start_date = "2016-01-01T00:00:00Z"
+        end_date = "2017-12-31T00:00:00Z"
+
+union LegalHoldsPolicyCreateError extends LegalHoldsError
+    start_date_is_later_than_end_date
+        "Start date must be earlier than end date."
+    empty_members_list
+        "The users list must have at least one user."
+    invalid_members
+        "Some members in the members list are not valid to be placed under legal hold."
+    number_of_users_on_hold_is_greater_than_hold_limitation
+        "You cannot add more than 5 users in a legal hold."
+    transient_error
+        "Temporary infrastructure failure, please retry."
+    name_must_be_unique
+        "The name provided is already in use by another legal hold."
+    team_exceeded_legal_hold_quota
+        "Team exceeded legal hold quota."
+
+alias LegalHoldsPolicyCreateResult = LegalHoldPolicy
+
+route legal_holds/create_policy(LegalHoldsPolicyCreateArg, LegalHoldsPolicyCreateResult, LegalHoldsPolicyCreateError)
+    "Creates new legal hold policy.
+    Note: Legal Holds is a paid add-on. Not all teams have the feature.
+
+    Permission : Team member file access."
+
+    attrs
+        auth = "team"
+        scope = "team_data.member"
+
+#
+# route legal_holds/get_policy
+#
+
+struct LegalHoldsGetPolicyArg
+    id LegalHoldId
+        "The legal hold Id."
+    example default
+        id = "pid_dbhid:abcd1234"
+
+alias LegalHoldsGetPolicyResult = LegalHoldPolicy
+
+union LegalHoldsGetPolicyError extends LegalHoldsError
+    legal_hold_policy_not_found
+        "Legal hold policy does not exist for :field:`LegalHoldsGetPolicyArg.id`."
+
+route legal_holds/get_policy(LegalHoldsGetPolicyArg, LegalHoldsGetPolicyResult, LegalHoldsGetPolicyError)
+    "Gets a legal hold by Id.
+    Note: Legal Holds is a paid add-on. Not all teams have the feature.
+
+    Permission : Team member file access."
+
+    attrs
+        auth = "team"
+        scope = "team_data.member"
+
+
+#
+# route legal_holds/list_policies
+#
+struct LegalHoldsListPoliciesArg
+    include_released Boolean = false
+        "Whether to return holds that were released."
+
+    example default
+        include_released = false
+
+struct LegalHoldsListPoliciesResult
+    policies List(LegalHoldPolicy)
+
+    example default
+        policies = [default]
+
+union LegalHoldsListPoliciesError extends LegalHoldsError
+    transient_error
+        "Temporary infrastructure failure, please retry."
+
+route legal_holds/list_policies(LegalHoldsListPoliciesArg, LegalHoldsListPoliciesResult, LegalHoldsListPoliciesError)
+    "Lists legal holds on a team.
+    Note: Legal Holds is a paid add-on. Not all teams have the feature.
+
+    Permission : Team member file access."
+
+    attrs
+        auth = "team"
+        scope = "team_data.member"
+
+
+#
+# route legal_holds/list_held_revisions
+#
+
+struct LegalHoldsListHeldRevisionsArg
+    id LegalHoldId
+        "The legal hold Id."
+    example default
+        id = "pid_dbhid:abcd1234"
+
+union LegalHoldsListHeldRevisionsError extends LegalHoldsError
+    transient_error
+        "Temporary infrastructure failure, please retry."
+    legal_hold_still_empty
+        "The legal hold is not holding any revisions yet."
+    inactive_legal_hold
+        "Trying to list revisions for an inactive legal hold."
+
+struct LegalHoldHeldRevisionMetadata
+    new_filename String
+        "The held revision filename."
+    original_revision_id files.Rev
+        "The id of the held revision."
+    original_file_path Path
+        "The original path of the held revision."
+    server_modified common.DropboxTimestamp
+        "The last time the file was modified on Dropbox."
+    author_member_id team_common.TeamMemberId
+        "The member id of the revision's author."
+    author_member_status TeamMemberStatus
+        "The member status of the revision's author."
+    author_email common.EmailAddress
+        "The email address of the held revision author."
+    file_type String
+        "The type of the held revision's file."
+    size UInt64
+        "The file size in bytes."
+    content_hash files.Sha256HexHash
+        "A hash of the file content. This field can be used to verify data integrity. For more
+        information see our :link:`Content hash https://www.dropbox.com/developers/reference/content-hash` page."
+
+    example default
+        new_filename = "111_222.pdf"
+        original_revision_id = "ab2rij4i5ojgfd"
+        original_file_path = "/a.pdf"
+        server_modified = "2019-08-12T12:08:52Z"
+        author_member_id = "dbmid:abcd1234abcd1234abcd1234abcd1234a23"
+        author_member_status = active
+        author_email = "a@a.com"
+        file_type = "Document"
+        size = 3
+        content_hash = "abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234"
+
+alias ListHeldRevisionCursor = String(min_length=1)
+
+struct LegalHoldsListHeldRevisionResult
+    entries List(LegalHoldHeldRevisionMetadata)
+        "List of file entries that under the hold."
+    cursor ListHeldRevisionCursor?
+        "The cursor idicates where to continue reading file metadata entries for the next API call. When there are no more entries, the cursor will return none.
+
+        Pass the cursor into
+        /2/team/legal_holds/list_held_revisions/continue."
+    has_more Boolean
+        "True if there are more file entries that haven't been returned. You can retrieve them with a call to /legal_holds/list_held_revisions_continue."
+
+    example default
+        entries = [default]
+        has_more = false
+
+route legal_holds/list_held_revisions(LegalHoldsListHeldRevisionsArg, LegalHoldsListHeldRevisionResult, LegalHoldsListHeldRevisionsError)
+    "List the file metadata that's under the hold.
+    Note: Legal Holds is a paid add-on. Not all teams have the feature.
+
+    Permission : Team member file access."
+
+    attrs
+        auth = "team"
+        scope = "team_data.member"
+
+
+#
+# route legal_holds/list_held_revisions_continue
+#
+
+struct LegalHoldsListHeldRevisionsContinueArg
+    id LegalHoldId
+        "The legal hold Id."
+    cursor ListHeldRevisionCursor?
+        "The cursor idicates where to continue reading file metadata entries for the next API call. When there are no more entries, the cursor will return none."
+    example default
+        id = "pid_dbhid:abcd1234"
+
+union LegalHoldsListHeldRevisionsContinueError
+    unknown_legal_hold_error
+        "There has been an unknown legal hold error."
+    transient_error
+        "Temporary infrastructure failure, please retry."
+    reset
+        "Indicates that the cursor has been invalidated. Call
+        :route:`legal_holds/list_held_revisions_continue` again with an empty cursor to obtain a new cursor."
+
+route legal_holds/list_held_revisions_continue(LegalHoldsListHeldRevisionsContinueArg, LegalHoldsListHeldRevisionResult, LegalHoldsListHeldRevisionsError)
+    "Continue listing the file metadata that's under the hold.
+    Note: Legal Holds is a paid add-on. Not all teams have the feature.
+
+    Permission : Team member file access."
+
+    attrs
+        auth = "team"
+        scope = "team_data.member"
+
+#
+# route legal_holds/update_policy
+#
+
+struct LegalHoldsPolicyUpdateArg
+    id LegalHoldId
+        "The legal hold Id."
+    name LegalHoldPolicyName?
+        "Policy new name."
+    description LegalHoldPolicyDescription?
+        "Policy new description."
+    members List(team_common.TeamMemberId)?
+        "List of team member IDs to apply the policy on."
+    example default
+        id = "pid_dbhid:abcd1234"
+        members = ["dbmid:FDFSVF-DFSDF"]
+
+union LegalHoldsPolicyUpdateError extends LegalHoldsError
+    inactive_legal_hold
+        "Trying to release an inactive legal hold."
+    legal_hold_performing_another_operation
+        "Legal hold is currently performing another operation."
+    invalid_members
+        "Some members in the members list are not valid to be placed under legal hold."
+    number_of_users_on_hold_is_greater_than_hold_limitation
+        "You cannot add more than 5 users in a legal hold."
+    empty_members_list
+        "The users list must have at least one user."
+    name_must_be_unique
+        "The name provided is already in use by another legal hold."
+    legal_hold_policy_not_found
+        "Legal hold policy does not exist for :field:`LegalHoldsPolicyUpdateArg.id`."
+
+
+alias LegalHoldsPolicyUpdateResult = LegalHoldPolicy
+
+route legal_holds/update_policy(LegalHoldsPolicyUpdateArg, LegalHoldsPolicyUpdateResult, LegalHoldsPolicyUpdateError)
+    "Updates a legal hold.
+    Note: Legal Holds is a paid add-on. Not all teams have the feature.
+
+    Permission : Team member file access."
+
+    attrs
+        auth = "team"
+        scope = "team_data.member"
+
+#
+# route legal_holds/release_policy
+#
+
+struct LegalHoldsPolicyReleaseArg
+    id LegalHoldId
+        "The legal hold Id."
+    example default
+        id = "pid_dbhid:abcd1234"
+
+union LegalHoldsPolicyReleaseError extends LegalHoldsError
+    legal_hold_performing_another_operation
+        "Legal hold is currently performing another operation."
+    legal_hold_already_releasing
+        "Legal hold is currently performing a release or is already released."
+    legal_hold_policy_not_found
+        "Legal hold policy does not exist for :field:`LegalHoldsPolicyReleaseArg.id`."
+
+route legal_holds/release_policy(LegalHoldsPolicyReleaseArg, Void, LegalHoldsPolicyReleaseError)
+    "Releases a legal hold by Id.
+    Note: Legal Holds is a paid add-on. Not all teams have the feature.
+
+    Permission : Team member file access."
+
+    attrs
+        auth = "team"
+        scope = "team_data.member"

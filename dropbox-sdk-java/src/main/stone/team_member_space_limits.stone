@@ -1,0 +1,217 @@
+namespace team
+
+
+alias UserQuota = UInt32(min_value=15)
+
+
+struct UserCustomQuotaArg
+    "User and their required custom quota in GB (1 TB = 1024 GB)."
+    user UserSelectorArg
+    quota_gb UserQuota
+
+    example default
+        user=default
+        quota_gb=30
+
+
+struct UserCustomQuotaResult
+    "User and their custom quota in GB (1 TB = 1024 GB).
+     No quota returns if the user has no custom quota set."
+    user UserSelectorArg
+    quota_gb UserQuota?
+
+
+struct SetCustomQuotaArg
+    users_and_quotas List(UserCustomQuotaArg)
+        "List of users and their custom quotas."
+
+    example default
+        users_and_quotas=[default]
+
+
+union CustomQuotaError
+    "Error returned when getting member custom quota."
+
+    too_many_users
+        "A maximum of 1000 users can be set for a single call."
+
+
+union SetCustomQuotaError extends CustomQuotaError
+    "Error returned when setting member custom quota."
+
+    some_users_are_excluded
+        "Some of the users are on the excluded users list and can't have custom quota set."
+
+
+union CustomQuotaResult
+    "User custom quota."
+
+    success UserCustomQuotaResult
+        "User's custom quota."
+    invalid_user UserSelectorArg
+        "Invalid user (not in team)."
+
+
+struct CustomQuotaUsersArg
+    users List(UserSelectorArg)
+        "List of users."
+
+    example default
+        users=[default]
+
+
+union RemoveCustomQuotaResult
+    "User result for setting member custom quota."
+
+    success UserSelectorArg
+        "Successfully removed user."
+    invalid_user UserSelectorArg
+        "Invalid user (not in team)."
+
+
+route member_space_limits/set_custom_quota(SetCustomQuotaArg, List(CustomQuotaResult), SetCustomQuotaError)
+    "Set users custom quota. Custom quota has to be at least 15GB.
+    A maximum of 1000 members can be specified in a single call."
+
+    attrs
+        auth = "team"
+        scope = "members.read"
+
+
+route member_space_limits/remove_custom_quota(CustomQuotaUsersArg, List(RemoveCustomQuotaResult), CustomQuotaError)
+    "Remove users custom quota.
+    A maximum of 1000 members can be specified in a single call."
+
+    attrs
+        auth = "team"
+        scope = "members.write"
+
+
+route member_space_limits/get_custom_quota(CustomQuotaUsersArg, List(CustomQuotaResult), CustomQuotaError)
+    "Get users custom quota. Returns none as the custom quota if none was set.
+    A maximum of 1000 members can be specified in a single call."
+
+    attrs
+        auth = "team"
+        scope = "members.read"
+
+
+struct ExcludedUsersUpdateArg
+    "Argument of excluded users update operation.
+    Should include a list of users to add/remove (according to endpoint),
+    Maximum size of the list is 1000 users."
+
+    users List(UserSelectorArg)?
+        "List of users to be added/removed."
+
+    example default
+        users = [default]
+
+
+union ExcludedUsersUpdateError
+    "Excluded users update error."
+
+    users_not_in_team
+        "At least one of the users is not part of your team."
+    too_many_users
+        "A maximum of 1000 users for each of addition/removal can be supplied."
+
+
+struct ExcludedUsersListArg
+    "Excluded users list argument."
+
+    limit UInt32(min_value=1, max_value=1000) = 1000
+        "Number of results to return per call."
+
+    example default
+        limit = 100
+
+
+struct ExcludedUsersListContinueArg
+    "Excluded users list continue argument."
+
+    cursor String
+        "Indicates from what point to get the next set of users."
+
+    example default
+        cursor = "ZtkX9_EHj3x7PMkVuFIhwKYXEpwpLwyxp9vMKomUhllil9q7eWiAu"
+
+
+struct ExcludedUsersListResult
+    "Excluded users list result."
+
+    users List(MemberProfile)
+    cursor String?
+        "Pass the cursor into :route:`member_space_limits/excluded_users/list/continue` to obtain
+        additional excluded users."
+    has_more Boolean
+        "Is true if there are additional excluded users that have not been returned
+        yet. An additional call to :route:`member_space_limits/excluded_users/list/continue` can
+        retrieve them."
+
+    example default
+        users = []
+        cursor = "ZtkX9_EHj3x7PMkVuFIhwKYXEpwpLwyxp9vMKomUhllil9q7eWiAu"
+        has_more = false
+
+
+union ExcludedUsersUpdateStatus
+    "Excluded users update operation status."
+
+    success
+        "Update successful."
+
+
+struct ExcludedUsersUpdateResult
+    "Excluded users update result."
+
+    status ExcludedUsersUpdateStatus
+        "Update status."
+
+    example default
+        status = success
+
+
+union ExcludedUsersListError
+    "Excluded users list error."
+
+    list_error
+        "An error occurred."
+
+
+union ExcludedUsersListContinueError
+    "Excluded users list continue error."
+
+    invalid_cursor
+        "The cursor is invalid."
+
+
+route member_space_limits/excluded_users/add(ExcludedUsersUpdateArg, ExcludedUsersUpdateResult, ExcludedUsersUpdateError)
+    "Add users to member space limits excluded users list."
+
+    attrs
+        auth = "team"
+        scope = "members.write"
+
+
+route member_space_limits/excluded_users/remove(ExcludedUsersUpdateArg, ExcludedUsersUpdateResult, ExcludedUsersUpdateError)
+    "Remove users from member space limits excluded users list."
+
+    attrs
+        auth = "team"
+        scope = "members.write"
+
+route member_space_limits/excluded_users/list(ExcludedUsersListArg, ExcludedUsersListResult, ExcludedUsersListError)
+    "List member space limits excluded users."
+
+    attrs
+        auth = "team"
+        scope = "members.read"
+
+
+route member_space_limits/excluded_users/list/continue(ExcludedUsersListContinueArg, ExcludedUsersListResult, ExcludedUsersListContinueError)
+    "Continue listing member space limits excluded users."
+
+    attrs
+        auth = "team"
+        scope = "members.read"

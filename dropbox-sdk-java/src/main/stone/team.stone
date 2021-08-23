@@ -1,0 +1,346 @@
+namespace team
+
+import common
+import file_properties
+import team_common
+import team_policies
+import users_common
+import secondary_emails
+
+# Note that in the database, we also have members that are in state "deleted"
+# meaning that the User has been permanently removed from the team.
+# But the API is not going to expose such users externally.  We will omit such users
+# in API responses.
+#
+union_closed TeamMemberStatus
+    "The user's status as a member of a specific team."
+
+    active
+        "User has successfully joined the team."
+    invited
+        "User has been invited to a team, but has not joined the team yet."
+    suspended
+        "User is no longer a member of the team, but the account can be un-suspended,
+        re-establishing the user as a team member."
+    removed RemovedStatus
+        "User is no longer a member of the team.
+        Removed users are only listed when include_removed is true in members/list."
+
+struct RemovedStatus
+    is_recoverable Boolean
+        "True if the removed team member is recoverable."
+
+    is_disconnected Boolean
+        "True if the team member's account was converted to individual account."
+
+    example default
+        is_recoverable = false
+        is_disconnected = false
+
+union_closed TeamMembershipType
+    full
+        "User uses a license and has full access to team resources like the shared quota."
+    limited
+        "User does not have access to the shared quota and team admins have restricted administrative control."
+
+struct MemberProfile
+    "Basic member profile."
+
+    team_member_id team_common.TeamMemberId
+        "ID of user as a member of a team."
+
+    external_id String?
+        "External ID that a team can attach to the user.
+        An application using the API may find it easier to use their
+        own IDs instead of Dropbox IDs like account_id or team_member_id."
+
+    account_id users_common.AccountId?
+        "A user's account identifier."
+
+    email String
+        "Email address of user."
+
+    email_verified Boolean
+        "Is true if the user's email is verified to be owned by the user."
+
+    secondary_emails List(secondary_emails.SecondaryEmail)?
+        "Secondary emails of a user."
+
+    status TeamMemberStatus
+        "The user's status as a member of a specific team."
+
+    name users.Name
+        "Representations for a person's name."
+
+    membership_type TeamMembershipType
+        "The user's membership type: full (normal team member) vs limited (does not use a license; no access to the team's shared quota)."
+
+    invited_on common.DropboxTimestamp?
+        "The date and time the user was invited to the team (contains value only when the member's status matches :field:`TeamMemberStatus.invited`)."
+
+    joined_on common.DropboxTimestamp?
+        "The date and time the user joined as a member of a specific team."
+
+    suspended_on common.DropboxTimestamp?
+        "The date and time the user was suspended from the team (contains value only when the member's status matches :field:`TeamMemberStatus.suspended`)."
+
+    persistent_id String?
+        "Persistent ID that a team can attach to the user.
+        The persistent ID is unique ID to be used for SAML authentication."
+
+    is_directory_restricted Boolean?
+        "Whether the user is a directory restricted user."
+
+    profile_photo_url String?
+        "URL for the photo representing the user, if one is set."
+
+    example default
+        team_member_id = "dbmid:1234567"
+        account_id = "dbid:AAH4f99T0taONIb-OurWxbNQ6ywGRopQngc"
+        email = "mary@lamb.com"
+        email_verified = true
+        secondary_emails = [default, second_sec_email, third_sec_email]
+        status = active
+        name = default
+        membership_type = full
+        joined_on = "2015-05-12T15:50:38Z"
+        profile_photo_url = "https://dl-web.dropbox.com/account_photo/get/dbaphid%3AAAHWGmIXV3sUuOmBfTz0wPsiqHUpBWvv3ZA?vers=1556069330102&size=128x128"
+
+union_closed UserSelectorArg
+    "Argument for selecting a single user, either by team_member_id, external_id or email."
+
+    team_member_id team_common.TeamMemberId
+    external_id team_common.MemberExternalId
+    email common.EmailAddress
+
+    example default
+        team_member_id = "dbmid:efgh5678"
+
+    example email
+        email = "dan@hotmail.com"
+
+union_closed UserSelectorError
+    "Error that can be returned whenever a struct derived from :type:`UserSelectorArg` is used."
+
+    user_not_found
+        "No matching user found. The provided team_member_id, email, or external_id does not exist on this team."
+
+union_closed UsersSelectorArg
+    "Argument for selecting a list of users, either by team_member_ids, external_ids or emails."
+
+    team_member_ids List(team_common.TeamMemberId)
+        "List of member IDs."
+    external_ids List(team_common.MemberExternalId)
+        "List of external user IDs."
+    emails List(common.EmailAddress)
+        "List of email addresses."
+
+
+
+#
+# Handle DfB routes that do not have a better place to be.
+#
+
+#
+# Route get_info
+#
+
+struct TeamGetInfoResult
+
+    name String
+        "The name of the team."
+
+    team_id String
+        "The ID of the team."
+
+    num_licensed_users UInt32
+        "The number of licenses available to the team."
+
+    num_provisioned_users UInt32
+        "The number of accounts that have been invited or are already active members of the team."
+
+    policies team_policies.TeamMemberPolicies
+
+    example default
+        name="Dropbox Inc."
+        team_id="dbtid:1234abcd"
+        num_licensed_users=5
+        num_provisioned_users=2
+        policies=default
+
+route get_info(Void, TeamGetInfoResult, Void)
+    "Retrieves information about a team."
+
+    attrs
+        auth = "team"
+        scope = "team_info.read"
+
+
+#
+# Structs for token/get_authenticated_admin
+#
+
+struct TokenGetAuthenticatedAdminResult
+    "Results for :route:`token/get_authenticated_admin`."
+
+    admin_profile TeamMemberProfile
+        "The admin who authorized the token."
+
+    example default
+        admin_profile = default
+
+union TokenGetAuthenticatedAdminError
+    "Error returned by :route:`token/get_authenticated_admin`."
+
+    mapping_not_found
+        "The current token is not associated with a team admin, because mappings were not
+        recorded when the token was created. Consider re-authorizing a new access token
+        to record its authenticating admin."
+    admin_not_active
+        "Either the team admin that authorized this token is no longer an active member of the
+        team or no longer a team admin."
+
+#
+# Route: token/get_authenticated_admin
+#
+
+route token/get_authenticated_admin(Void, TokenGetAuthenticatedAdminResult, TokenGetAuthenticatedAdminError)
+    "Returns the member profile of the admin who generated the team access token used to make the call."
+
+    attrs
+        auth = "team"
+        scope = "team_info.read"
+
+#
+# Common types
+#
+
+union Feature
+    "A set of features that a Dropbox Business account may support."
+
+    upload_api_rate_limit
+        "The number of upload API calls allowed per month."
+    has_team_shared_dropbox
+        "Does this team have a shared team root."
+    has_team_file_events
+        "Does this team have file events."
+    has_team_selective_sync
+        "Does this team have team selective sync enabled."
+
+union FeatureValue
+    "The values correspond to entries in :type:`Feature`. You may get different value according
+    to your Dropbox Business plan."
+
+    upload_api_rate_limit UploadApiRateLimitValue
+    has_team_shared_dropbox  HasTeamSharedDropboxValue
+    has_team_file_events HasTeamFileEventsValue
+    has_team_selective_sync HasTeamSelectiveSyncValue
+
+    example uploadRateLimited
+        upload_api_rate_limit = limited
+
+    example hasTeamSharedDropbox
+        has_team_shared_dropbox  = default
+
+    example hasTeamFileEvents
+        has_team_file_events = ex_no_file_events
+
+    example HasTeamSelectiveSync
+        has_team_selective_sync = default
+
+union UploadApiRateLimitValue
+    "The value for :field:`Feature.upload_api_rate_limit`."
+
+    unlimited
+        "This team has unlimited upload API quota. So far both server version account and legacy
+         account type have unlimited monthly upload api quota."
+    limit UInt32
+        "The number of upload API calls allowed per month."
+
+    example limited
+        limit = 25000
+
+union HasTeamSharedDropboxValue
+    "The value for :field:`Feature.has_team_shared_dropbox`."
+
+    has_team_shared_dropbox Boolean
+        "Does this team have a shared team root."
+
+    example default
+        has_team_shared_dropbox = false
+
+union HasTeamFileEventsValue
+    "The value for :field:`Feature.has_team_file_events`."
+
+    enabled Boolean
+        "Does this team have file events."
+
+    example ex_no_file_events
+        enabled = false
+
+union HasTeamSelectiveSyncValue
+    "The value for :field:`Feature.has_team_selective_sync`."
+
+    has_team_selective_sync Boolean
+        "Does this team have team selective sync enabled."
+
+    example default
+        has_team_selective_sync = true
+
+#
+# Route: feature/get_value_batch
+#
+
+struct FeaturesGetValuesBatchArg
+    features List(Feature)
+        "A list of features in :type:`Feature`. If the list is empty,
+        this route will return :type:`FeaturesGetValuesBatchError`."
+
+    example listOfValues
+        features = [upload_api_rate_limit, has_team_shared_dropbox]
+
+struct FeaturesGetValuesBatchResult
+    values List(FeatureValue)
+
+    example listOfResults
+        values = [uploadRateLimited, hasTeamSharedDropbox]
+
+union FeaturesGetValuesBatchError
+    empty_features_list
+        "At least one :type:`Feature` must be included in the
+        :type:`FeaturesGetValuesBatchArg`.features list."
+
+route features/get_values(FeaturesGetValuesBatchArg, FeaturesGetValuesBatchResult, FeaturesGetValuesBatchError)
+    "Get the values for one or more featues. This route allows you to check your account's
+    capability for what feature you can access or what value you have for certain features.
+
+    Permission : Team information."
+
+    attrs
+        auth = "team"
+        scope = "team_info.read"
+
+#
+# Deprecated File Properties Routes
+#
+
+route properties/template/add(file_properties.AddTemplateArg, file_properties.AddTemplateResult, file_properties.ModifyTemplateError) deprecated
+    "Permission : Team member file access."
+
+    attrs
+        auth = "team"
+
+route properties/template/update(file_properties.UpdateTemplateArg, file_properties.UpdateTemplateResult, file_properties.ModifyTemplateError) deprecated
+    "Permission : Team member file access."
+    attrs
+        auth = "team"
+
+route properties/template/get(file_properties.GetTemplateArg, file_properties.GetTemplateResult, file_properties.TemplateError) deprecated
+    "Permission : Team member file access."
+    attrs
+        auth = "team"
+
+route properties/template/list(Void, file_properties.ListTemplateResult, file_properties.TemplateError) deprecated
+    "Permission : Team member file access."
+    attrs
+        auth = "team"

@@ -1,0 +1,126 @@
+namespace team_log
+
+import async
+import common
+import team
+import team_common
+import users_common
+
+###############################
+# Routes declarations
+###############################
+
+struct GetTeamEventsArg
+    limit UInt32(min_value=1, max_value=1000) = 1000
+        "The maximal number of results to return per call. Note that some calls may not return
+        :field:`limit` number of events, and may even return no events, even with `has_more` set to true.
+        In this case, callers should fetch again using :route:`get_events/continue`."
+    account_id users_common.AccountId?
+        "Filter the events by account ID. Return only events with this account_id as either
+        Actor, Context, or Participants."
+    time team_common.TimeRange?
+        "Filter by time range."
+    category EventCategory?
+        "Filter the returned events to a single category. Note that category shouldn't be provided
+        together with event_type."
+    event_type EventTypeArg?
+        "Filter the returned events to a single event type. Note that event_type shouldn't be provided
+        together with category."
+
+    example default
+        limit=50
+        category=groups
+
+# This is used only for `json_encode` in metaserver/tests/util/event_helper.py
+# simply because I don't know how to use the list.
+alias TeamEventList = List(TeamEvent)
+
+struct GetTeamEventsResult
+    events List(TeamEvent)
+        "List of events. Note that events are not guaranteed to be sorted by their timestamp value."
+    cursor String
+        "Pass the cursor into :route:`get_events/continue` to obtain additional events.
+
+        The value of :field:`cursor` may change for each response from :route:`get_events/continue`,
+        regardless of the value of :field:`has_more`; older cursor strings may expire.
+
+        Thus, callers should ensure that they update their cursor based on the latest value of
+        :field:`cursor` after each call, and poll regularly if they wish to poll for new events.
+
+        Callers should handle reset exceptions for expired cursors."
+    has_more Boolean
+        "Is true if there may be additional events that have not been returned yet.
+        An additional call to :route:`get_events/continue` can retrieve them.
+        Note that :field:`has_more` may be :val:`true`, even if :field:`events` is empty."
+
+    example default
+        events = [default]
+        cursor = "ZtkX9_EHj3x7PMkVuFIhwKYXEpwpLwyxp9vMKomUhllil9q7eWiAu"
+        has_more = false
+
+union GetTeamEventsError
+    "Errors that can be raised when calling :route:`get_events`."
+
+    account_id_not_found
+        "No user found matching the provided account_id."
+    invalid_time_range
+        "Invalid time range."
+    invalid_filters
+        "Invalid filters. Do not specify both event_type and category parameters for the same call."
+
+    example default
+        account_id_not_found = null
+
+route get_events(GetTeamEventsArg, GetTeamEventsResult, GetTeamEventsError)
+    "Retrieves team events. If the result's :field:`GetTeamEventsResult.has_more` field is
+    :val:`true`, call :route:`get_events/continue` with the returned cursor to retrieve
+    more entries. If end_time is not specified in your request, you may use the returned cursor to
+    poll :route:`get_events/continue` for new events.
+
+    Many attributes note 'may be missing due to historical data gap'.
+
+    Note that the file_operations category and & analogous paper events are not available on all
+    Dropbox Business :link:`plans /business/plans-comparison`.
+    Use :link:`features/get_values /developers/documentation/http/teams#team-features-get_values`
+    to check for this feature.
+
+    Permission : Team Auditing."
+
+    attrs
+        auth = "team"
+        scope = "events.read"
+
+struct GetTeamEventsContinueArg
+    cursor String
+        "Indicates from what point to get the next set of events."
+
+    example default
+        cursor = "ZtkX9_EHj3x7PMkVuFIhwKYXEpwpLwyxp9vMKomUhllil9q7eWiAu"
+
+
+union GetTeamEventsContinueError
+    "Errors that can be raised when calling :route:`get_events/continue`."
+
+    bad_cursor
+        "Bad cursor."
+
+    reset common.DropboxTimestamp
+        "Cursors are intended to be used quickly. Individual cursor values are normally valid for days,
+        but in rare cases may be reset sooner.
+
+        Cursor reset errors should be handled by fetching a new cursor from :route:`get_events`.
+
+        The associated value is the approximate timestamp of the most recent event returned by the cursor.
+        This should be used as a resumption point when calling :route:`get_events` to obtain a new cursor."
+
+    example default
+        bad_cursor = null
+
+route get_events/continue(GetTeamEventsContinueArg, GetTeamEventsResult, GetTeamEventsContinueError)
+    "Once a cursor has been retrieved from :route:`get_events`, use this to paginate through all events.
+
+    Permission : Team Auditing."
+
+    attrs
+        auth = "team"
+        scope = "events.read"

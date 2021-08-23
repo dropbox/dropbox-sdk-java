@@ -1,0 +1,2943 @@
+namespace files
+    "This namespace contains endpoints and data types for basic file operations."
+
+import async
+import auth
+import common
+import file_properties
+import users_common
+
+alias Id = String(min_length=1)
+
+alias FileId = String(pattern="id:.+", min_length=4)
+
+alias ListFolderCursor = String(min_length=1)
+
+alias Path = String(pattern="/(.|[\\r\\n])*")
+
+alias PathOrId = String(pattern="/(.|[\\r\\n])*|id:.*|(ns:[0-9]+(/.*)?)")
+
+alias PathROrId = String(pattern="(/(.|[\\r\\n])*)?|id:.*|(ns:[0-9]+(/.*)?)")
+
+alias PathR = String(pattern="(/(.|[\\r\\n])*)?|(ns:[0-9]+(/.*)?)")               # A path that can be the root path ("").
+
+alias ReadPath = String(pattern="(/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)")
+
+alias Rev = String(min_length=9, pattern="[0-9a-f]+") # TODO: Change pattern to "rev:[0-9a-f]{9,}"
+
+alias Sha256HexHash = String(min_length=64, max_length=64)
+
+alias SharedLinkUrl = String
+
+alias WritePath = String(pattern="(/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)")
+
+alias WritePathOrId = String(pattern="(/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)")
+
+#
+# Metadata definitions and route
+#
+
+struct Metadata
+    "Metadata for a file or folder."
+
+    union_closed
+        file FileMetadata
+        folder FolderMetadata
+        deleted DeletedMetadata  # Used by list_folder* and search
+
+    name String
+        "The last component of the path (including extension).
+        This never contains a slash."
+
+    path_lower String?
+        "The lowercased full path in the user's Dropbox. This always starts with a slash.
+        This field will be null if the file or folder is not mounted."
+
+    path_display String?
+        "The cased path to be used for display purposes only. In rare instances the casing will not
+        correctly match the user's filesystem, but this behavior will match the path provided in
+        the Core API v1, and at least the last path component will have the correct casing. Changes
+        to only the casing of paths won't be returned by :route:`list_folder/continue`. This field
+        will be null if the file or folder is not mounted."
+
+    parent_shared_folder_id common.SharedFolderId?
+        "Please use :field:`FileSharingInfo.parent_shared_folder_id`
+        or :field:`FolderSharingInfo.parent_shared_folder_id` instead."
+
+    example default
+        file = default
+
+    example folder_metadata
+        folder = default
+
+union MetadataV2
+    "Metadata for a file, folder or other resource types."
+
+    metadata Metadata
+    # new types can be added here in the future
+
+    example default
+        metadata = default
+
+struct HighlightSpan
+
+    highlight_str String
+        "String to be determined whether it should be highlighted or not."
+    is_highlighted Boolean
+        "The string should be highlighted or not."
+
+    example default
+        highlight_str = "test"
+        is_highlighted = false
+
+struct SharingInfo
+    "Sharing info for a file or folder."
+
+    read_only Boolean
+        "True if the file or folder is inside a read-only shared folder."
+
+    example default
+        read_only = false
+
+struct FileSharingInfo extends SharingInfo
+    "Sharing info for a file which is contained by a shared folder."
+
+    parent_shared_folder_id common.SharedFolderId
+        "ID of shared folder that holds this file."
+
+    modified_by users_common.AccountId?
+        "The last user who modified the file. This field will be null if
+        the user's account has been deleted."
+
+    example default
+        read_only = true
+        parent_shared_folder_id = "84528192421"
+        modified_by = "dbid:AAH4f99T0taONIb-OurWxbNQ6ywGRopQngc"
+
+struct ExportInfo
+    "Export information for a file."
+
+    export_as String?
+        "Format to which the file can be exported to."
+
+    example default
+        export_as = "xlsx"
+
+struct FolderSharingInfo extends SharingInfo
+    "Sharing info for a folder which is contained in a shared folder or is a
+    shared folder mount point."
+
+    parent_shared_folder_id common.SharedFolderId?
+        "Set if the folder is contained by a shared folder."
+
+    shared_folder_id common.SharedFolderId?
+        "If this folder is a shared folder mount point, the ID of the shared
+        folder mounted at this location."
+
+    traverse_only Boolean = false
+        "Specifies that the folder can only be traversed and the user can only see
+        a limited subset of the contents of this folder because they don't have
+        read access to this folder. They do, however, have access to some sub folder."
+
+    no_access Boolean = false
+        "Specifies that the folder cannot be accessed by the user."
+
+    example default
+        "Folder inside a shared folder."
+        read_only = false
+        parent_shared_folder_id = "84528192421"
+
+    example shared_folder
+        "Read-only shared folder mount point."
+        read_only = true
+        shared_folder_id = "84528192421"
+
+struct Dimensions
+    "Dimensions for a photo or video."
+
+    height UInt64
+        "Height of the photo/video."
+    width UInt64
+        "Width of the photo/video."
+
+    example default
+        height = 768
+        width = 1024
+
+struct GpsCoordinates
+    "GPS coordinates for a photo or video."
+
+    latitude Float64
+        "Latitude of the GPS coordinates."
+    longitude Float64
+        "Longitude of the GPS coordinates."
+
+    example default
+        latitude = 37.7833
+        longitude = 122.4167
+
+struct MediaMetadata
+    "Metadata for a photo or video."
+
+    union_closed
+        photo PhotoMetadata
+        video VideoMetadata
+
+    dimensions Dimensions?
+        "Dimension of the photo/video."
+    location GpsCoordinates?
+        "The GPS coordinate of the photo/video."
+    time_taken common.DropboxTimestamp?
+        "The timestamp when the photo/video is taken."
+
+struct PhotoMetadata extends MediaMetadata
+    "Metadata for a photo."
+
+    example default
+        dimensions = default
+        location = default
+        time_taken = "2015-05-12T15:50:38Z"
+
+struct VideoMetadata extends MediaMetadata
+    "Metadata for a video."
+
+    duration UInt64?
+        "The duration of the video in milliseconds."
+
+    example default
+        dimensions = default
+        location = default
+        time_taken = "2015-05-12T15:50:38Z"
+        duration = 1000
+
+union_closed MediaInfo
+    pending
+        "Indicate the photo/video is still under processing and metadata is
+        not available yet."
+    metadata MediaMetadata
+        "The metadata for the photo/video."
+
+struct SymlinkInfo
+    target String
+        "The target this symlink points to."
+
+struct FileLockMetadata
+
+    is_lockholder Boolean?
+        "True if caller holds the file lock."
+
+    lockholder_name String?
+        "The display name of the lock holder."
+
+    lockholder_account_id users_common.AccountId?
+        "The account ID of the lock holder if known."
+
+    created common.DropboxTimestamp?
+        "The timestamp of the lock was created."
+
+    example default
+        is_lockholder = true
+        lockholder_name = "Imaginary User"
+        created =  "2015-05-12T15:50:38Z"
+
+struct FileMetadata extends Metadata
+
+    id Id
+        "A unique identifier for the file."
+
+    client_modified common.DropboxTimestamp
+        "For files, this is the modification time set by the desktop client
+        when the file was added to Dropbox. Since this time is not verified
+        (the Dropbox server stores whatever the desktop client sends up), this
+        should only be used for display purposes (such as sorting) and not,
+        for example, to determine if a file has changed or not."
+
+    server_modified common.DropboxTimestamp
+        "The last time the file was modified on Dropbox."
+
+    rev Rev
+        "A unique identifier for the current revision of a file. This field is
+        the same rev as elsewhere in the API and can be used to detect changes
+        and avoid conflicts."
+
+    size UInt64
+        "The file size in bytes."
+
+    media_info MediaInfo?
+        "Additional information if the file is a photo or video. This field will not be set on entries returned by :route:`list_folder`, :route:`list_folder/continue`, or :route:`get_thumbnail_batch`, starting December 2, 2019."
+
+    symlink_info SymlinkInfo?
+        "Set if this file is a symlink."
+
+    sharing_info FileSharingInfo?
+        "Set if this file is contained in a shared folder."
+
+    is_downloadable Boolean = true
+        "If true, file can be downloaded directly; else the file must be exported."
+
+    export_info ExportInfo?
+        "Information about format this file can be exported to. This filed must be set if :field:`is_downloadable`
+        is set to false."
+
+    property_groups List(file_properties.PropertyGroup)?
+        "Additional information if the file has custom properties with the
+        property template specified."
+
+    has_explicit_shared_members Boolean?
+        "This flag will only be present if include_has_explicit_shared_members
+         is true in :route:`list_folder` or :route:`get_metadata`. If this
+         flag is present, it will be true if this file has any explicit shared
+         members. This is different from sharing_info in that this could be true
+         in the case where a file has explicit members but is not contained within
+         a shared folder."
+
+    content_hash Sha256HexHash?
+        "A hash of the file content. This field can be used to verify data integrity. For more
+        information see our :link:`Content hash https://www.dropbox.com/developers/reference/content-hash` page."
+
+    file_lock_info FileLockMetadata?
+        "If present, the metadata associated with the file's current lock."
+
+    example default
+        id = "id:a4ayc_80_OEAAAAAAAAAXw"
+        name = "Prime_Numbers.txt"
+        path_lower = "/homework/math/prime_numbers.txt"
+        path_display = "/Homework/math/Prime_Numbers.txt"
+        sharing_info = default
+        client_modified = "2015-05-12T15:50:38Z"
+        server_modified = "2015-05-12T15:50:38Z"
+        rev = "a1c10ce0dd78"
+        size = 7212
+        is_downloadable = true
+        property_groups = [default]
+        has_explicit_shared_members = false
+        content_hash = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        file_lock_info = default
+
+struct FolderMetadata extends Metadata
+    id Id
+        "A unique identifier for the folder."
+
+    shared_folder_id common.SharedFolderId?
+        "Please use :field:`sharing_info` instead."
+
+    sharing_info FolderSharingInfo?
+        "Set if the folder is contained in a shared folder or is a shared folder mount point."
+
+    property_groups List(file_properties.PropertyGroup)?
+        "Additional information if the file has custom properties with the
+        property template specified. Note that only properties associated with
+        user-owned templates, not team-owned templates, can be attached to folders."
+
+    example default
+        id = "id:a4ayc_80_OEAAAAAAAAAXz"
+        path_lower = "/homework/math"
+        path_display = "/Homework/math"
+        name = "math"
+        sharing_info = default
+        property_groups = [default]
+
+struct DeletedMetadata extends Metadata
+    "Indicates that there used to be a file or folder at this path, but it no longer exists."
+    # TODO: Do we care about whether it's a deleted file or folder?
+    # TODO: Add the mtime when it's been deleted?  And the rev???
+
+    example default
+        path_lower = "/homework/math/pi.txt"
+        path_display = "/Homework/math/pi.txt"
+        name = "pi.txt"
+
+union_closed GetMetadataError
+    path LookupError
+
+struct GetMetadataArg
+    path ReadPath
+        "The path of a file or folder on Dropbox."
+    include_media_info Boolean = false
+        "If true, :field:`FileMetadata.media_info` is set for photo and video."
+    include_deleted Boolean = false
+        "If true, :type:`DeletedMetadata` will be returned for deleted file or
+        folder, otherwise :field:`LookupError.not_found` will be returned."
+    include_has_explicit_shared_members Boolean = false
+        "If true, the results will include a flag for each file indicating whether or not
+         that file has any explicit members."
+    include_property_groups file_properties.TemplateFilterBase?
+        "If set to a valid list of template IDs, :field:`FileMetadata.property_groups`
+        is set if there exists property data associated with the file and each of the
+        listed templates."
+
+    example default
+        path = "/Homework/math"
+
+    example id
+        path = "id:a4ayc_80_OEAAAAAAAAAYa"
+
+    example rev
+        path = "rev:a1c10ce0dd78"
+
+route get_metadata (GetMetadataArg, Metadata, GetMetadataError)
+    "Returns the metadata for a file or folder.
+
+    Note: Metadata for the root folder is unsupported."
+
+    attrs
+        allow_app_folder_app = true
+        select_admin_mode = "whole_team"
+        scope = "files.metadata.read"
+#
+# General fileops
+#
+
+struct FileOpsResult
+    example default
+
+#
+# List folder routes
+#
+
+struct ListFolderLongpollArg
+    cursor ListFolderCursor
+        "A cursor as returned by :route:`list_folder` or :route:`list_folder/continue`. Cursors
+        retrieved by setting :field:`ListFolderArg.include_media_info` to :val:`true` are
+        not supported."
+
+    timeout UInt64(min_value=30, max_value=480) = 30
+        "A timeout in seconds. The request will block for at most this length
+        of time, plus up to 90 seconds of random jitter added to avoid the
+        thundering herd problem. Care should be taken when using this
+        parameter, as some network infrastructure does not support long
+        timeouts."
+
+    example default
+        cursor = "ZtkX9_EHj3x7PMkVuFIhwKYXEpwpLwyxp9vMKomUhllil9q7eWiAu"
+
+struct ListFolderLongpollResult
+    changes Boolean
+        "Indicates whether new changes are available. If true, call
+        :route:`list_folder/continue` to retrieve the changes."
+    backoff UInt64?
+        "If present, backoff for at least this many seconds before calling
+        :route:`list_folder/longpoll` again."
+
+    example default
+        changes = true
+
+union ListFolderLongpollError
+    reset
+        "Indicates that the cursor has been invalidated. Call
+        :route:`list_folder` to obtain a new cursor."
+
+route list_folder/longpoll (ListFolderLongpollArg, ListFolderLongpollResult, ListFolderLongpollError)
+    "A longpoll endpoint to wait for changes on an account. In conjunction with
+    :route:`list_folder/continue`, this call gives you a low-latency way to
+    monitor an account for file changes. The connection will block until there
+    are changes available or a timeout occurs. This endpoint is useful mostly
+    for client-side apps. If you're looking for server-side notifications,
+    check out our
+    :link:`webhooks documentation https://www.dropbox.com/developers/reference/webhooks`."
+
+    attrs
+        host = "notify"
+        auth = "noauth"
+        allow_app_folder_app = true
+        select_admin_mode = "whole_team"
+        scope = "files.metadata.read"
+
+struct SharedLink
+    url SharedLinkUrl
+        "Shared link url."
+    password String?
+        "Password for the shared link."
+
+    example default
+        url = "https://www.dropbox.com/s/2sn712vy1ovegw8?dl=0"
+        password = "password"
+
+struct ListFolderArg
+    path PathROrId
+        "A unique identifier for the file."
+    recursive Boolean = false
+        "If true, the list folder operation will be applied recursively to all subfolders
+        and the response will contain contents of all subfolders."
+    include_media_info Boolean = false
+        "If true, :field:`FileMetadata.media_info` is set for photo and video. This parameter will no longer have an effect starting December 2, 2019."
+    include_deleted Boolean = false
+        "If true, the results will include entries for files and folders that used to exist but were deleted."
+    include_has_explicit_shared_members Boolean = false
+        "If true, the results will include a flag for each file indicating whether or not
+         that file has any explicit members."
+    include_mounted_folders Boolean = true
+        "If true, the results will include entries under mounted folders which includes app folder,
+        shared folder and team folder."
+    limit UInt32(min_value=1, max_value=2000)?
+        "The maximum number of results to return per request. Note: This is an approximate number
+        and there can be slightly more entries returned in some cases."
+    shared_link SharedLink?
+        "A shared link to list the contents of. If the link is password-protected, the password
+        must be provided. If this field is present, :field:`ListFolderArg.path` will be relative
+        to root of the shared link. Only non-recursive mode is supported for shared link."
+    include_property_groups file_properties.TemplateFilterBase?
+        "If set to a valid list of template IDs, :field:`FileMetadata.property_groups`
+        is set if there exists property data associated with the file and each of the
+        listed templates."
+    include_non_downloadable_files Boolean = true
+        "If true, include files that are not downloadable, i.e. Google Docs."
+
+    example default
+        path = "/Homework/math"
+        recursive = false
+
+struct ListFolderResult
+    entries List(Metadata)
+        "The files and (direct) subfolders in the folder."
+    cursor ListFolderCursor
+        "Pass the cursor into :route:`list_folder/continue` to see what's
+        changed in the folder since your previous query."
+    has_more Boolean
+        "If true, then there are more entries available. Pass the
+        cursor to :route:`list_folder/continue` to retrieve the rest."
+
+    example default
+        entries = [default, folder_metadata]
+        cursor = "ZtkX9_EHj3x7PMkVuFIhwKYXEpwpLwyxp9vMKomUhllil9q7eWiAu"
+        has_more = false
+
+union ListFolderError
+    path LookupError
+    template_error file_properties.TemplateError
+
+route list_folder (ListFolderArg, ListFolderResult, ListFolderError)
+    "Starts returning the contents of a folder. If the result's :field:`ListFolderResult.has_more`
+    field is :val:`true`, call :route:`list_folder/continue` with the returned
+    :field:`ListFolderResult.cursor` to retrieve more entries.
+
+    If you're using :field:`ListFolderArg.recursive` set to :val:`true` to keep a local cache of
+    the contents of a Dropbox account, iterate through each entry in order and process them as
+    follows to keep your local state in sync:
+
+    For each :type:`FileMetadata`, store the new entry at the given path in your local state. If the
+    required parent folders don't exist yet, create them. If there's already something else at the
+    given path, replace it and remove all its children.
+
+    For each :type:`FolderMetadata`, store the new entry at the given path in your local state. If
+    the required parent folders don't exist yet, create them. If there's already something else at
+    the given path, replace it but leave the children as they are. Check the new entry's
+    :field:`FolderSharingInfo.read_only` and set all its children's read-only statuses to match.
+
+    For each :type:`DeletedMetadata`, if your local state has something at the given path, remove it
+    and all its children. If there's nothing at the given path, ignore this entry.
+
+    Note: :type:`auth.RateLimitError` may be returned if multiple :route:`list_folder` or
+    :route:`list_folder/continue` calls with same parameters are made simultaneously by same
+    API app for same user. If your app implements retry logic, please hold off the retry until
+    the previous request finishes."
+
+    attrs
+        allow_app_folder_app = true
+        select_admin_mode = "whole_team"
+        scope = "files.metadata.read"
+
+
+struct ListFolderContinueArg
+    cursor ListFolderCursor
+        "The cursor returned by your last call to :route:`list_folder` or
+        :route:`list_folder/continue`."
+
+    example default
+        cursor = "ZtkX9_EHj3x7PMkVuFIhwKYXEpwpLwyxp9vMKomUhllil9q7eWiAu"
+
+union ListFolderContinueError
+    path LookupError
+    reset
+        "Indicates that the cursor has been invalidated. Call
+        :route:`list_folder` to obtain a new cursor."
+
+route list_folder/continue (ListFolderContinueArg, ListFolderResult, ListFolderContinueError)
+    "Once a cursor has been retrieved from :route:`list_folder`, use this to paginate through all
+    files and retrieve updates to the folder, following the same rules as documented for
+    :route:`list_folder`."
+
+    attrs
+        allow_app_folder_app = true
+        select_admin_mode = "whole_team"
+        scope = "files.metadata.read"
+
+struct ListFolderGetLatestCursorResult
+    cursor ListFolderCursor
+        "Pass the cursor into :route:`list_folder/continue` to see what's
+        changed in the folder since your previous query."
+
+    example default
+        cursor = "ZtkX9_EHj3x7PMkVuFIhwKYXEpwpLwyxp9vMKomUhllil9q7eWiAu"
+
+route list_folder/get_latest_cursor (ListFolderArg, ListFolderGetLatestCursorResult, ListFolderError)
+    "A way to quickly get a cursor for the folder's state. Unlike :route:`list_folder`,
+    :route:`list_folder/get_latest_cursor` doesn't return any entries. This endpoint is for app
+    which only needs to know about new files and modifications and doesn't need to know about
+    files that already exist in Dropbox."
+
+    attrs
+        allow_app_folder_app = true
+        select_admin_mode = "whole_team"
+        scope = "files.metadata.read"
+#
+# Download
+#
+
+union DownloadError
+    path LookupError
+    # For example, attempting to download a Cloud Doc
+    unsupported_file
+        "This file type cannot be downloaded directly; use :route:`export` instead."
+
+struct DownloadArg
+
+    path ReadPath
+        "The path of the file to download."
+
+    rev Rev?
+        "Please specify revision in :field:`path` instead."
+
+    example default
+        path = "/Homework/math/Prime_Numbers.txt"
+
+    example id
+        path = "id:a4ayc_80_OEAAAAAAAAAYa"
+
+    example rev
+        path = "rev:a1c10ce0dd78"
+
+route download (DownloadArg, FileMetadata, DownloadError)
+    "Download a file from a user's Dropbox."
+
+    attrs
+        host = "content"
+        style = "download"
+        allow_app_folder_app = true
+        select_admin_mode = "whole_team"
+        scope = "files.content.read"
+
+#
+# Download zip
+#
+
+union DownloadZipError
+    path LookupError
+    too_large
+        "The folder or a file is too large to download."
+    too_many_files
+        "The folder has too many files to download."
+
+struct DownloadZipArg
+    path ReadPath
+        "The path of the folder to download."
+
+    example default
+        path = "/Homework/math"
+
+    example id
+        path = "id:a4ayc_80_OEAAAAAAAAAYa"
+
+    example rev
+        path = "rev:a1c10ce0dd78"
+
+struct DownloadZipResult
+    metadata FolderMetadata
+
+    example default
+        metadata = default
+
+route download_zip (DownloadZipArg, DownloadZipResult, DownloadZipError)
+    "Download a folder from the user's Dropbox, as a zip file. The folder must be less than 20 GB
+    in size and have fewer than 10,000 total files. The input cannot be a single file. Any single
+    file must be less than 4GB in size."
+
+    attrs
+        host = "content"
+        style = "download"
+        allow_app_folder_app = true
+        scope = "files.content.read"
+
+#
+# Export
+#
+
+union ExportError
+    path LookupError
+    non_exportable
+        "This file type cannot be exported. Use :route:`download` instead."
+    retry_error
+        "The exportable content is not yet available. Please retry later."
+
+
+struct ExportArg
+
+    path ReadPath
+        "The path of the file to be exported."
+
+    example default
+        path = "/Homework/math/Prime_Numbers.gsheet"
+
+    example id
+        path = "id:a4ayc_80_OEAAAAAAAAAYa"
+
+
+struct ExportMetadata
+    name String
+        "The last component of the path (including extension).
+        This never contains a slash."
+
+    size UInt64
+        "The file size in bytes."
+
+    export_hash Sha256HexHash?
+        "A hash based on the exported file content. This field can be used to verify data integrity. Similar to content hash.
+        For more information see our :link:`Content hash https://www.dropbox.com/developers/reference/content-hash` page."
+
+    example default
+        name = "Prime_Numbers.xlsx"
+        size = 7189
+        export_hash = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+
+
+struct ExportResult
+    export_metadata ExportMetadata
+        "Metadata for the exported version of the file."
+    file_metadata FileMetadata
+        "Metadata for the original file."
+
+    example default
+        export_metadata = default
+        file_metadata = default
+
+
+route export (ExportArg, ExportResult, ExportError)
+    "Export a file from a user's Dropbox. This route only supports exporting files that cannot be downloaded directly
+     and whose :field:`ExportResult.file_metadata` has :field:`ExportInfo.export_as` populated."
+
+    attrs
+        is_preview = true
+        host = "content"
+        style = "download"
+        allow_app_folder_app = true
+        select_admin_mode = "whole_team"
+        scope = "files.content.read"
+
+
+#
+# Upload Routes
+#
+
+# Errors
+
+struct UploadWriteFailed
+    reason WriteError
+        "The reason why the file couldn't be saved."
+    upload_session_id String
+        "The upload session ID; data has already been uploaded to the corresponding upload
+        session and this ID may be used to retry the commit with :route:`upload_session/finish`."
+
+union UploadError
+    path UploadWriteFailed
+        "Unable to save the uploaded contents to a file."
+    properties_error file_properties.InvalidPropertyGroupError
+        "The supplied property group is invalid. The file has uploaded without property groups."
+
+struct UploadSessionOffsetError
+    correct_offset UInt64
+        "The offset up to which data has been collected."
+
+union UploadSessionLookupError
+    not_found
+        "The upload session ID was not found or has expired. Upload sessions are
+        valid for 48 hours."
+    incorrect_offset UploadSessionOffsetError
+        "The specified offset was incorrect. See the value for the
+        correct offset. This error may occur when a previous request
+        was received and processed successfully but the client did not
+        receive the response, e.g. due to a network error."
+    closed
+        "You are attempting to append data to an upload session that
+        has already been closed (i.e. committed)."
+    not_closed
+        "The session must be closed before calling upload_session/finish_batch."
+    too_large
+        "You can not append to the upload session because the size of a file should not reach the
+        max file size limit (i.e. 350GB)."
+
+union UploadSessionFinishError
+    lookup_failed UploadSessionLookupError
+        "The session arguments are incorrect; the value explains the reason."
+    path WriteError
+        "Unable to save the uploaded contents to a file. Data has already been appended to the
+        upload
+        session. Please retry with empty data body and updated offset."
+    properties_error file_properties.InvalidPropertyGroupError
+        "The supplied property group is invalid. The file has uploaded without property groups."
+    too_many_shared_folder_targets
+        "The batch request commits files into too many different shared folders.
+        Please limit your batch request to files contained in a single shared folder."
+    too_many_write_operations
+        "There are too many write operations happening in the user's Dropbox. You should
+        retry uploading this file."
+
+# Req/Resp
+
+struct UploadSessionStartArg
+    close Boolean = false
+        "If true, the current session will be closed, at which point you won't
+        be able to call :route:`upload_session/append:2` anymore with the
+        current session."
+
+    example with_close
+        close = false
+
+struct UploadSessionStartResult
+    session_id String
+        "A unique identifier for the upload session. Pass this to
+        :route:`upload_session/append:2` and
+        :route:`upload_session/finish`."
+
+    example default
+        session_id = "1234faaf0678bcde"
+
+route upload_session/start (UploadSessionStartArg, UploadSessionStartResult, Void)
+    "Upload sessions allow you to upload a single file in one or more
+    requests, for example where the size of the file is greater than 150
+    MB.  This call starts a new upload session with the given data. You
+    can then use :route:`upload_session/append:2` to add more data and
+    :route:`upload_session/finish` to save all the data to a file in
+    Dropbox.
+
+    A single request should not upload more than 150 MB. The maximum size of
+    a file one can upload to an upload session is 350 GB.
+
+    An upload session can be used for a maximum of 48 hours. Attempting
+    to use an :field:`UploadSessionStartResult.session_id` with
+    :route:`upload_session/append:2` or :route:`upload_session/finish` more
+    than 48 hours after its creation will return a
+    :field:`UploadSessionLookupError.not_found`.
+
+    Calls to this endpoint will count as data transport calls for any Dropbox
+    Business teams with a limit on the number of data transport calls allowed
+    per month. For more information, see the :link:`Data transport limit page https://www.dropbox.com/developers/reference/data-transport-limit`."
+
+    attrs
+        host = "content"
+        style = "upload"
+        allow_app_folder_app = true
+        select_admin_mode = "team_admin"
+        scope = "files.content.write"
+
+struct UploadSessionAppendArg
+    cursor UploadSessionCursor
+        "Contains the upload session ID and the offset."
+    close Boolean = false
+        "If true, the current session will be closed, at which point
+        you won't be able to call :route:`upload_session/append:2`
+        anymore with the current session."
+
+    example default
+        cursor = default
+
+route upload_session/append:2 (UploadSessionAppendArg, Void, UploadSessionLookupError)
+    "Append more data to an upload session.
+
+    When the parameter close is set, this call will close the session.
+
+    A single request should not upload more than 150 MB. The maximum size of
+    a file one can upload to an upload session is 350 GB.
+
+    Calls to this endpoint will count as data transport calls for any Dropbox
+    Business teams with a limit on the number of data transport calls allowed
+    per month. For more information, see the :link:`Data transport limit page https://www.dropbox.com/developers/reference/data-transport-limit`."
+
+    attrs
+        host = "content"
+        style = "upload"
+        allow_app_folder_app = true
+        select_admin_mode = "team_admin"
+        scope = "files.content.write"
+
+struct UploadSessionCursor
+    session_id String
+        "The upload session ID (returned by :route:`upload_session/start`)."
+    offset UInt64
+        "The amount of data that has been uploaded so far. We use this to make
+        sure upload data isn't lost or duplicated in the event of a network
+        error."
+
+    example default
+        session_id = "1234faaf0678bcde"
+        offset = 0
+
+route upload_session/append (UploadSessionCursor, Void, UploadSessionLookupError) deprecated by upload_session/append:2
+    "Append more data to an upload session.
+
+    A single request should not upload more than 150 MB. The maximum size of
+    a file one can upload to an upload session is 350 GB.
+
+    Calls to this endpoint will count as data transport calls for any Dropbox
+    Business teams with a limit on the number of data transport calls allowed
+    per month. For more information, see the :link:`Data transport limit page https://www.dropbox.com/developers/reference/data-transport-limit`."
+
+    attrs
+        host = "content"
+        style = "upload"
+        allow_app_folder_app = true
+        select_admin_mode = "team_admin"
+        scope = "files.content.write"
+
+union_closed WriteMode
+    "Your intent when writing a file to some path. This is used to determine
+    what constitutes a conflict and what the autorename strategy is.
+
+    In some situations, the conflict behavior is identical:
+    (a) If the target path doesn't refer to anything, the file is always written;
+    no conflict.
+    (b) If the target path refers to a folder, it's always a conflict.
+    (c) If the target path refers to a file with identical contents, nothing gets
+    written; no conflict.
+
+    The conflict checking differs in the case where there's a file at the target
+    path with contents different from the contents you're trying to write."
+
+    add
+        "Do not overwrite an existing file if there is a conflict. The
+        autorename strategy is to append a number to the file name. For example,
+        \"document.txt\" might become \"document (2).txt\"."
+    overwrite
+        "Always overwrite the existing file. The autorename
+        strategy is the same as it is for :field:`add`."
+    update Rev
+        "Overwrite if the given \"rev\" matches the existing file's \"rev\".
+        The autorename strategy is to append the string \"conflicted copy\"
+        to the file name. For example, \"document.txt\" might become
+        \"document (conflicted copy).txt\" or \"document (Panda's conflicted copy).txt\"."
+
+    example default
+        add = null
+
+    example overwriting
+        overwrite = null
+
+    example with_revision
+        update = "a1c10ce0dd78"
+
+struct CommitInfo
+    path WritePathOrId
+        "Path in the user's Dropbox to save the file."
+    mode WriteMode = add
+        "Selects what to do if the file already exists."
+    autorename Boolean = false
+        "If there's a conflict, as determined by :field:`mode`, have the Dropbox
+        server try to autorename the file to avoid conflict."
+    client_modified common.DropboxTimestamp?
+        "The value to store as the :field:`client_modified` timestamp. Dropbox
+        automatically records the time at which the file was written to the
+        Dropbox servers. It can also record an additional timestamp, provided
+        by Dropbox desktop clients, mobile clients, and API apps of when the
+        file was actually created or modified."
+    mute Boolean = false
+        "Normally, users are made aware of any file modifications in their
+        Dropbox account via notifications in the client software. If
+        :val:`true`, this tells the clients that this modification shouldn't
+        result in a user notification."
+    property_groups List(file_properties.PropertyGroup)?
+        "List of custom properties to add to file."
+    strict_conflict Boolean = false
+        "Be more strict about how each :type:`WriteMode` detects conflict.
+        For example, always return a conflict error when :field:`mode`
+        = :field:`WriteMode.update` and the given \"rev\" doesn't match
+        the existing file's \"rev\", even if the existing file has been
+        deleted."
+
+    example default
+        path = "/Homework/math/Matrices.txt"
+        autorename = true
+
+    example update
+        path = "/Homework/math/Matrices.txt"
+        mode = with_revision
+        autorename = false
+        property_groups = [default]
+
+struct UploadSessionFinishArg
+    cursor UploadSessionCursor
+        "Contains the upload session ID and the offset."
+    commit CommitInfo
+        "Contains the path and other optional modifiers for the commit."
+
+    example default
+        cursor = default
+        commit = default
+
+    example update
+        cursor = default
+        commit = update
+
+route upload_session/finish (UploadSessionFinishArg, FileMetadata, UploadSessionFinishError)
+    "Finish an upload session and save the uploaded data to the given file
+    path.
+
+    A single request should not upload more than 150 MB. The maximum size of
+    a file one can upload to an upload session is 350 GB.
+
+    Calls to this endpoint will count as data transport calls for any Dropbox
+    Business teams with a limit on the number of data transport calls allowed
+    per month. For more information, see the :link:`Data transport limit page https://www.dropbox.com/developers/reference/data-transport-limit`."
+
+    attrs
+        host = "content"
+        style = "upload"
+        allow_app_folder_app = true
+        select_admin_mode = "team_admin"
+        scope= "files.content.write"
+
+route upload (CommitInfo, FileMetadata, UploadError)
+    "Create a new file with the contents provided in the request.
+
+    Do not use this to upload a file larger than 150 MB. Instead, create an
+    upload session with :route:`upload_session/start`.
+
+    Calls to this endpoint will count as data transport calls for any Dropbox
+    Business teams with a limit on the number of data transport calls allowed
+    per month. For more information, see the :link:`Data transport limit page https://www.dropbox.com/developers/reference/data-transport-limit`."
+
+    attrs
+        host = "content"
+        style = "upload"
+        allow_app_folder_app = true
+        select_admin_mode = "team_admin"
+        scope = "files.content.write"
+
+#
+# Batch Upload
+#
+
+struct UploadSessionFinishBatchArg
+    entries List(UploadSessionFinishArg, max_items=1000)
+        "Commit information for each file in the batch."
+
+    example default
+        entries = [default]
+
+struct UploadSessionFinishBatchResult
+    entries List(UploadSessionFinishBatchResultEntry)
+        "Each entry in :field:`UploadSessionFinishBatchArg.entries` will appear at the same position
+        inside :field:`UploadSessionFinishBatchResult.entries`."
+
+    example default
+        entries = [default]
+
+union_closed UploadSessionFinishBatchResultEntry
+    success FileMetadata
+    failure UploadSessionFinishError
+
+    example default
+        success = default
+
+union_closed UploadSessionFinishBatchJobStatus extends async.PollResultBase
+    complete UploadSessionFinishBatchResult
+        "The :route:`upload_session/finish_batch` has finished."
+
+    example default
+        complete = default
+
+union UploadSessionFinishBatchLaunch extends async.LaunchResultBase
+    "Result returned by :route:`upload_session/finish_batch` that may either launch an
+    asynchronous job or complete synchronously."
+
+    complete UploadSessionFinishBatchResult
+
+    example complete
+        complete = default
+
+    example async_job_id
+        async_job_id = "34g93hh34h04y384084"
+
+route upload_session/finish_batch (UploadSessionFinishBatchArg, UploadSessionFinishBatchLaunch, Void)
+    "This route helps you commit many files at once into a user's Dropbox. Use
+    :route:`upload_session/start` and :route:`upload_session/append:2` to
+    upload file contents. We recommend uploading many files in parallel to increase
+    throughput. Once the file contents have been uploaded, rather than calling
+    :route:`upload_session/finish`, use this route to finish all your upload sessions
+    in a single request.
+
+    :field:`UploadSessionStartArg.close` or :field:`UploadSessionAppendArg.close`
+    needs to be true for the last
+    :route:`upload_session/start` or :route:`upload_session/append:2` call. The maximum
+    size of a file one can upload to an upload session is 350 GB.
+
+    This route will return a job_id immediately and do the async commit job in background.
+    Use :route:`upload_session/finish_batch/check` to check the job status.
+
+    For the same account, this route should be executed serially. That means you should not start
+    the next job before current job finishes. We allow up to 1000 entries in a single request.
+
+    Calls to this endpoint will count as data transport calls for any Dropbox
+    Business teams with a limit on the number of data transport calls allowed
+    per month. For more information, see the :link:`Data transport limit page https://www.dropbox.com/developers/reference/data-transport-limit`."
+
+    attrs
+        allow_app_folder_app = true
+        select_admin_mode = "team_admin"
+        scope = "files.content.write"
+
+route upload_session/finish_batch/check(async.PollArg, UploadSessionFinishBatchJobStatus, async.PollError)
+    "Returns the status of an asynchronous job for :route:`upload_session/finish_batch`. If
+    success, it returns list of result for each entry."
+
+    attrs
+        allow_app_folder_app = true
+        select_admin_mode = "team_admin"
+        scope = "files.content.write"
+
+#
+# Search
+#
+
+union_closed SearchMode
+    filename
+        "Search file and folder names."
+    filename_and_content
+        "Search file and folder names as well as file contents."
+    deleted_filename
+        "Search for deleted file and folder names."
+
+    example default
+        filename_and_content = null
+
+    example name_only
+        filename = null
+
+    example deleted_names
+        deleted_filename = null
+
+struct SearchArg
+    path PathROrId
+        "The path in the user's Dropbox to search. Should probably be
+        a folder."
+
+    query String
+        "The string to search for. Query string may be rewritten to improve relevance of results.
+        The string is split on spaces into multiple tokens. For file name searching,
+        the last token is used for prefix matching (i.e. \"bat c\" matches \"bat cave\"
+        but not \"batman car\")."
+
+    start UInt64(max_value=9999) = 0
+        "The starting index within the search results (used for paging)."
+
+    max_results UInt64(min_value=1, max_value=1000) = 100
+        "The maximum number of search results to return."
+
+    mode SearchMode = filename
+        "The search mode (filename, filename_and_content, or deleted_filename).
+        Note that searching file content is only available for Dropbox Business
+        accounts."
+
+    example default
+        path = ""
+        query = "prime numbers"
+
+union_closed SearchMatchType
+    "Indicates what type of match was found for a given item."
+
+    filename
+        "This item was matched on its file or folder name."
+    content
+        "This item was matched based on its file contents."
+    both
+        "This item was matched based on both its contents and its file name."
+
+    example default
+        content = null
+
+struct SearchMatch
+    match_type SearchMatchType
+        "The type of the match."
+    metadata Metadata
+        "The metadata for the matched file or folder."
+
+    example default
+        match_type = default
+        metadata = default
+
+struct SearchResult
+    matches List(SearchMatch)
+        "A list (possibly empty) of matches for the query."
+    more Boolean
+        "Used for paging. If true, indicates there is another page of results
+        available that can be fetched by calling :route:`search` again."
+    start UInt64
+        "Used for paging. Value to set the start argument to when calling
+        :route:`search` to fetch the next page of results."
+
+    example default
+        matches = [default]
+        more = false
+        start = 1
+
+union SearchError
+    path LookupError
+    invalid_argument String?
+    internal_error
+        "Something went wrong, please try again."
+
+route search (SearchArg, SearchResult, SearchError) deprecated by search:2
+    "Searches for files and folders.
+
+    Note: Recent changes will be reflected in search results within a few seconds
+    and older revisions of existing files may still match your query for up to a few days."
+
+    attrs
+        allow_app_folder_app = true
+        scope = "files.metadata.read"
+#
+# Search:2
+#
+route search:2 (SearchV2Arg, SearchV2Result, SearchError)
+    "Searches for files and folders.
+
+    Note: :route:`search:2` along with :route:`search/continue:2` can only be used to
+    retrieve a maximum of 10,000 matches.
+
+    Recent changes may not immediately be reflected in search results due to a short delay in indexing.
+    Duplicate results may be returned across pages. Some results may not be returned."
+
+    attrs
+        allow_app_folder_app = true
+        scope = "files.metadata.read"
+
+struct SearchV2Arg
+
+    query String
+        "The string to search for. May match across multiple fields based on the request arguments.
+        Query string may be rewritten to improve relevance of results."
+
+    options SearchOptions?
+        "Options for more targeted search results."
+
+    match_field_options SearchMatchFieldOptions?
+        "Options for search results match fields."
+
+    include_highlights Boolean = false
+        "Deprecated and moved this option to SearchMatchFieldOptions."
+
+    example default
+        query = "cat"
+
+struct SearchOptions
+
+    path PathROrId?
+        "Scopes the search to a path in the user's Dropbox. Searches the entire Dropbox if not specified."
+
+    max_results UInt64(min_value=1, max_value=1000) = 100
+        "The maximum number of search results to return."
+
+    file_status FileStatus = active
+        "Restricts search to the given file status."
+
+    filename_only Boolean = false
+        "Restricts search to only match on filenames."
+
+    file_extensions List(String)?
+        "Restricts search to only the extensions specified. Only supported for active file search."
+
+    file_categories List(FileCategory)?
+        "Restricts search to only the file categories specified. Only supported for active file search."
+
+    example default
+        path = ""
+        max_results = 20
+
+struct SearchMatchFieldOptions
+
+    include_highlights Boolean = false
+        "Whether to include highlight span from file title."
+
+# both -- maybe supported in the future
+union FileStatus
+    active
+    deleted
+
+    example default
+        active = null
+
+union FileCategory
+
+    image
+        "jpg, png, gif, and more."
+
+    document
+        "doc, docx, txt, and more."
+
+    pdf
+        "pdf."
+
+    spreadsheet
+        "xlsx, xls, csv, and more."
+
+    presentation
+        "ppt, pptx, key, and more."
+
+    audio
+        "mp3, wav, mid, and more."
+
+    video
+        "mov, wmv, mp4, and more."
+
+    folder
+        "dropbox folder."
+
+    paper
+        "dropbox paper doc."
+
+    others
+        "any file not in one of the categories above."
+
+route search/continue:2 (SearchV2ContinueArg, SearchV2Result, SearchError)
+    "Fetches the next page of search results returned from :route:`search:2`.
+
+    Note: :route:`search:2` along with :route:`search/continue:2` can only be used to
+    retrieve a maximum of 10,000 matches.
+
+    Recent changes may not immediately be reflected in search results due to a short delay in indexing.
+    Duplicate results may be returned across pages. Some results may not be returned."
+
+    attrs
+        allow_app_folder_app = true
+        scope = "files.metadata.read"
+
+alias SearchV2Cursor = String(min_length=1)
+
+struct SearchV2ContinueArg
+    cursor SearchV2Cursor
+        "The cursor returned by your last call to :route:`search:2`. Used to fetch the next page of results."
+
+    example default
+        cursor = "ZtkX9_EHj3x7PMkVuFIhwKYXEpwpLwyxp9vMKomUhllil9q7eWiAu"
+
+
+struct SearchV2Result
+
+    matches List(SearchMatchV2)
+        "A list (possibly empty) of matches for the query."
+
+    has_more Boolean
+        "Used for paging. If true, indicates there is another page of results
+        available that can be fetched by calling :route:`search/continue:2` with the cursor."
+
+    cursor SearchV2Cursor?
+        "Pass the cursor into :route:`search/continue:2` to fetch the next page of results."
+
+    example default
+        matches = [default]
+        has_more = false
+        cursor = null
+
+struct SearchMatchV2
+
+    metadata MetadataV2
+        "The metadata for the matched file or folder."
+
+    highlight_spans List(HighlightSpan)?
+        "The list of HighlightSpan determines which parts of the file title should be highlighted."
+
+    example default
+        metadata = default
+        highlight_spans = null
+
+
+#
+# Errors shared by various operations
+#
+
+alias MalformedPathError = String?  # TODO: Maybe a user_message-like thing?
+
+union LookupError
+    malformed_path MalformedPathError
+        "The given path does not satisfy the required path format. Please refer to the :link:`Path formats documentation https://www.dropbox.com/developers/documentation/http/documentation#path-formats` for more information."
+    not_found
+        "There is nothing at the given path."
+    not_file
+        "We were expecting a file, but the given path refers to something that isn't a file."
+    not_folder
+        "We were expecting a folder, but the given path refers to something that isn't a folder."
+    restricted_content
+        "The file cannot be transferred because the content is restricted.  For example,
+        sometimes there are legal restrictions due to copyright claims."
+    unsupported_content_type
+        "This operation is not supported for this content type."
+    locked
+        "The given path is locked."
+
+union WriteError
+    malformed_path MalformedPathError
+        "The given path does not satisfy the required path format. Please refer to the :link:`Path formats documentation https://www.dropbox.com/developers/documentation/http/documentation#path-formats` for more information."
+    conflict WriteConflictError
+        "Couldn't write to the target path because there was something in the way."
+    no_write_permission
+        "The user doesn't have permissions to write to the target location."
+    insufficient_space
+        "The user doesn't have enough available space (bytes) to write more data."
+    disallowed_name
+        "Dropbox will not save the file or folder because of its name."
+    team_folder
+        "This endpoint cannot move or delete team folders."
+    too_many_write_operations
+        "There are too many write operations in user's Dropbox. Please retry
+        this request."
+
+union WriteConflictError
+    file
+        "There's a file in the way."
+    folder
+        "There's a folder in the way."
+    file_ancestor
+        "There's a file at an ancestor path, so we couldn't create the required parent folders."
+
+#
+# Create folder
+#
+
+struct CreateFolderArg
+    path WritePath
+        "Path in the user's Dropbox to create."
+    autorename Boolean = false
+        "If there's a conflict, have the Dropbox server try to autorename
+        the folder to avoid the conflict."
+
+    example default
+        path = "/Homework/math"
+
+struct CreateFolderResult extends FileOpsResult
+    metadata FolderMetadata
+        "Metadata of the created folder."
+
+    example default
+        metadata = default
+
+union_closed CreateFolderError
+    path WriteError
+
+route create_folder:2 (CreateFolderArg, CreateFolderResult, CreateFolderError)
+    "Create a folder at a given path."
+
+    attrs
+        allow_app_folder_app = true
+        select_admin_mode = "team_admin"
+        scope = "files.content.write"
+
+route create_folder (CreateFolderArg, FolderMetadata, CreateFolderError) deprecated by create_folder:2
+    "Create a folder at a given path."
+
+    attrs
+        allow_app_folder_app = true
+        select_admin_mode = "team_admin"
+        scope = "files.content.write"
+
+struct CreateFolderBatchArg
+    paths List(WritePath)
+        "List of paths to be created in the user's Dropbox. Duplicate path
+        arguments in the batch are considered only once."
+    autorename Boolean = false
+        "If there's a conflict, have the Dropbox server try to autorename
+        the folder to avoid the conflict."
+    force_async Boolean = false
+        "Whether to force the create to happen asynchronously."
+
+    example default
+        paths = ["/Homework/math"]
+        autorename = false
+
+struct CreateFolderEntryResult
+    metadata FolderMetadata
+        "Metadata of the created folder."
+
+    example default
+        metadata = default
+
+union CreateFolderEntryError
+    path WriteError
+
+union_closed CreateFolderBatchResultEntry
+    success CreateFolderEntryResult
+    failure CreateFolderEntryError
+
+    example default
+        success = default
+
+union CreateFolderBatchError
+    too_many_files
+        "The operation would involve too many files or folders."
+
+struct CreateFolderBatchResult extends FileOpsResult
+    entries List(CreateFolderBatchResultEntry)
+        "Each entry in :field:`CreateFolderBatchArg.paths` will appear at the same position
+        inside :field:`CreateFolderBatchResult.entries`."
+
+    example default
+        entries = [default]
+
+union CreateFolderBatchJobStatus extends async.PollResultBase
+    complete CreateFolderBatchResult
+        "The batch create folder has finished."
+    failed CreateFolderBatchError
+        "The batch create folder has failed."
+
+    example default
+        complete = default
+
+union CreateFolderBatchLaunch extends async.LaunchResultBase
+    "Result returned by :route:`create_folder_batch` that may either launch an
+    asynchronous job or complete synchronously."
+
+    complete CreateFolderBatchResult
+
+    example complete
+        complete = default
+
+    example async_job_id
+        async_job_id = "34g93hh34h04y384084"
+
+route create_folder_batch (CreateFolderBatchArg, CreateFolderBatchLaunch, Void)
+    "Create multiple folders at once.
+
+    This route is asynchronous for large batches, which returns a job ID immediately and runs
+    the create folder batch asynchronously. Otherwise, creates the folders and returns the result
+    synchronously for smaller inputs. You can force asynchronous behaviour by using the
+    :field:`CreateFolderBatchArg.force_async` flag.  Use :route:`create_folder_batch/check` to check
+    the job status."
+
+    attrs
+        allow_app_folder_app = true
+        select_admin_mode = "team_admin"
+        scope = "files.content.write"
+
+route create_folder_batch/check (async.PollArg, CreateFolderBatchJobStatus, async.PollError)
+    "Returns the status of an asynchronous job for :route:`create_folder_batch`. If
+    success, it returns list of result for each entry."
+
+    attrs
+        allow_app_folder_app = true
+        select_admin_mode = "team_admin"
+        scope = "files.content.write"
+
+#
+# Delete
+#
+
+struct DeleteArg
+    path WritePathOrId
+        "Path in the user's Dropbox to delete."
+    parent_rev Rev?
+        "Perform delete if given \"rev\" matches the existing file's latest \"rev\". This field
+        does not support deleting a folder."
+
+    example delete
+        path = "/Homework/math/Prime_Numbers.txt"
+
+union DeleteError
+    path_lookup LookupError
+    path_write WriteError
+    too_many_write_operations
+        "There are too many write operations in user's Dropbox. Please retry
+        this request."
+    too_many_files
+        "There are too many files in one request. Please retry with fewer files."
+
+struct DeleteBatchArg
+    entries List(DeleteArg)
+
+    example default
+        entries = [delete]
+
+struct DeleteBatchResultData
+    metadata Metadata
+        "Metadata of the deleted object."
+
+    example default
+        metadata = default
+
+union_closed DeleteBatchResultEntry
+    success DeleteBatchResultData
+    failure DeleteError
+
+    example default
+        success = default
+
+struct DeleteResult extends FileOpsResult
+    metadata Metadata
+        "Metadata of the deleted object."
+
+    example default
+        metadata = default
+
+struct DeleteBatchResult extends FileOpsResult
+    entries List(DeleteBatchResultEntry)
+        "Each entry in :field:`DeleteBatchArg.entries` will appear at the same position inside
+        :field:`DeleteBatchResult.entries`."
+
+    example default
+        entries = [default]
+
+union DeleteBatchError
+
+    too_many_write_operations
+        "Use :field:`DeleteError.too_many_write_operations`. :route:`delete_batch` now
+        provides smaller granularity about which entry has failed because of this."
+
+union DeleteBatchJobStatus extends async.PollResultBase
+    complete DeleteBatchResult
+        "The batch delete has finished."
+    failed DeleteBatchError
+        "The batch delete has failed."
+
+    example default
+        complete = default
+
+union DeleteBatchLaunch extends async.LaunchResultBase
+    "Result returned by :route:`delete_batch` that may either launch an asynchronous job or complete
+    synchronously."
+
+    complete DeleteBatchResult
+
+    example complete
+        complete = default
+
+    example async_job_id
+        async_job_id = "34g93hh34h04y384084"
+
+route delete:2 (DeleteArg, DeleteResult, DeleteError)
+    "Delete the file or folder at a given path.
+
+    If the path is a folder, all its contents will be deleted too.
+
+    A successful response indicates that the file or folder was deleted. The returned metadata will
+    be the corresponding :type:`FileMetadata` or :type:`FolderMetadata` for the item at time of
+    deletion, and not a :type:`DeletedMetadata` object."
+
+    attrs
+        allow_app_folder_app = true
+        select_admin_mode = "team_admin"
+        scope = "files.content.write"
+
+route delete (DeleteArg, Metadata, DeleteError) deprecated by delete:2
+    "Delete the file or folder at a given path.
+
+    If the path is a folder, all its contents will be deleted too.
+
+    A successful response indicates that the file or folder was deleted. The returned metadata will
+    be the corresponding :type:`FileMetadata` or :type:`FolderMetadata` for the item at time of
+    deletion, and not a :type:`DeletedMetadata` object."
+
+    attrs
+        allow_app_folder_app = true
+        select_admin_mode = "team_admin"
+        scope = "files.content.write"
+
+route delete_batch (DeleteBatchArg, DeleteBatchLaunch, Void)
+    "Delete multiple files/folders at once.
+
+    This route is asynchronous, which returns a job ID immediately and runs
+    the delete batch asynchronously. Use :route:`delete_batch/check` to check
+    the job status."
+
+    attrs
+        allow_app_folder_app = true
+        select_admin_mode = "team_admin"
+        scope = "files.content.write"
+
+route delete_batch/check (async.PollArg, DeleteBatchJobStatus, async.PollError)
+    "Returns the status of an asynchronous job for :route:`delete_batch`. If
+    success, it returns list of result for each entry."
+
+    attrs
+        allow_app_folder_app = true
+        select_admin_mode = "team_admin"
+        scope = "files.content.write"
+
+route permanently_delete (DeleteArg, Void, DeleteError)
+    "Permanently delete the file or folder at a given path
+    (see https://www.dropbox.com/en/help/40).
+
+    Note: This endpoint is only available for Dropbox Business apps."
+
+    attrs
+        select_admin_mode = "team_admin"
+        allow_app_folder_app = true
+        scope = "files.permanent_delete"
+
+#
+# Args and error shared by copy and move
+#
+
+# Arg, result and error for relocation and relocation batch.
+
+struct RelocationPath
+    from_path WritePathOrId
+        "Path in the user's Dropbox to be copied or moved."
+    to_path WritePathOrId
+        "Path in the user's Dropbox that is the destination."
+
+    example default
+        from_path = "/Homework/math"
+        to_path = "/Homework/algebra"
+
+struct RelocationArg extends RelocationPath
+    allow_shared_folder Boolean = false
+        "If true, :route:`copy` will copy contents in shared folder,
+        otherwise :field:`RelocationError.cant_copy_shared_folder` will be
+        returned if :field:`from_path` contains shared folder. This field is
+        always true for :route:`move`."
+    autorename Boolean = false
+        "If there's a conflict, have the Dropbox server try to autorename
+        the file to avoid the conflict."
+    allow_ownership_transfer Boolean = false
+        "Allow moves by owner even if it would result in an ownership transfer
+        for the content being moved. This does not apply to copies."
+
+    example default
+        from_path = "/Homework/math"
+        to_path = "/Homework/algebra"
+
+union RelocationError
+    from_lookup LookupError
+    from_write WriteError
+    to WriteError
+
+    cant_copy_shared_folder
+        "Shared folders can't be copied."
+    cant_nest_shared_folder
+        "Your move operation would result in nested shared folders.  This is not allowed."
+    cant_move_folder_into_itself
+        "You cannot move a folder into itself."
+    too_many_files
+        "The operation would involve more than 10,000 files and folders."
+    duplicated_or_nested_paths
+        "There are duplicated/nested paths among :field:`RelocationArg.from_path`
+        and :field:`RelocationArg.to_path`."
+    cant_transfer_ownership
+        "Your move operation would result in an ownership transfer.
+        You may reissue the request with
+        the field :field:`RelocationArg.allow_ownership_transfer` to true."
+    insufficient_quota
+        "The current user does not have enough space to move or copy the files."
+    internal_error
+        "Something went wrong with the job on Dropbox's end. You'll need to
+        verify that the action you were taking succeeded, and if not, try
+        again. This should happen very rarely."
+    cant_move_shared_folder
+        "Can't move the shared folder to the given destination."
+    cant_move_into_vault MoveIntoVaultError
+        "Some content cannot be moved into Vault under certain circumstances, see detailed error."
+
+union MoveIntoVaultError
+    is_shared_folder
+        "Moving shared folder into Vault is not allowed."
+
+struct RelocationResult extends FileOpsResult
+    metadata Metadata
+        "Metadata of the relocated object."
+
+    example default
+        metadata = default
+
+struct RelocationBatchArgBase
+    entries List(RelocationPath, min_items=1)
+        "List of entries to be moved or copied. Each entry is :type:`RelocationPath`."
+    autorename Boolean = false
+        "If there's a conflict with any file, have the Dropbox server try to
+        autorename that file to avoid the conflict."
+
+    example default
+        entries = [default]
+
+union_closed RelocationBatchV2Launch extends async.LaunchResultBase
+    "Result returned by :route:`copy_batch:2` or :route:`move_batch:2` that may either launch an
+    asynchronous job or complete synchronously."
+
+    complete RelocationBatchV2Result
+
+    example complete
+        complete = default
+
+    example async_job_id
+        async_job_id = "34g93hh34h04y384084"
+
+union_closed RelocationBatchV2JobStatus extends async.PollResultBase
+    "Result returned by :route:`copy_batch/check:2` or :route:`move_batch/check:2` that may either
+    be in progress or completed with result for each entry."
+
+    complete RelocationBatchV2Result
+        "The copy or move batch job has finished."
+
+    example default
+        complete = default
+
+struct RelocationBatchV2Result extends FileOpsResult
+    entries List(RelocationBatchResultEntry)
+        "Each entry in CopyBatchArg.entries or :field:`MoveBatchArg.entries` will
+        appear at the same position inside :field:`RelocationBatchV2Result.entries`."
+
+    example default
+        entries = [success]
+
+union RelocationBatchErrorEntry
+    relocation_error RelocationError
+        "User errors that retry won't help."
+    internal_error
+        "Something went wrong with the job on Dropbox's end. You'll need to
+        verify that the action you were taking succeeded, and if not, try
+        again. This should happen very rarely."
+    too_many_write_operations
+        "There are too many write operations in user's Dropbox. Please retry
+        this request."
+
+union RelocationBatchResultEntry
+    success Metadata
+    failure RelocationBatchErrorEntry
+
+    example success
+        success = default
+
+# Deprecated Arg, Result and error.
+
+struct RelocationBatchArg extends RelocationBatchArgBase
+    allow_shared_folder Boolean = false
+        "If true, :route:`copy_batch` will copy contents in shared folder,
+        otherwise :field:`RelocationError.cant_copy_shared_folder` will be
+        returned if :field:`RelocationPath.from_path` contains shared folder.
+        This field is always true for :route:`move_batch`."
+    allow_ownership_transfer Boolean = false
+        "Allow moves by owner even if it would result in an ownership transfer
+        for the content being moved. This does not apply to copies."
+
+    example default
+        entries = [default]
+
+struct RelocationBatchResultData
+    metadata Metadata
+        "Metadata of the relocated object."
+
+    example default
+        metadata = default
+
+struct RelocationBatchResult extends FileOpsResult
+    entries List(RelocationBatchResultData)
+
+    example default
+        entries = [default]
+
+union_closed RelocationBatchJobStatus extends async.PollResultBase
+    complete RelocationBatchResult
+        "The copy or move batch job has finished."
+    failed RelocationBatchError
+        "The copy or move batch job has failed with exception."
+
+    example default
+        complete = default
+
+union RelocationBatchLaunch extends async.LaunchResultBase
+
+    "Result returned by :route:`copy_batch` or :route:`move_batch` that may either launch an
+    asynchronous job or complete synchronously."
+
+    complete RelocationBatchResult
+
+    example complete
+        complete = default
+
+    example async_job_id
+        async_job_id = "34g93hh34h04y384084"
+
+union RelocationBatchError extends RelocationError
+    too_many_write_operations
+        "There are too many write operations in user's Dropbox. Please retry
+        this request."
+
+#
+# Copy
+#
+
+alias CopyBatchArg = RelocationBatchArgBase
+
+route copy:2 (RelocationArg, RelocationResult, RelocationError)
+    "Copy a file or folder to a different location in the user's Dropbox.
+
+    If the source path is a folder all its contents will be copied."
+
+    attrs
+        allow_app_folder_app = true
+        select_admin_mode = "team_admin"
+        scope = "files.content.write"
+
+route copy (RelocationArg, Metadata, RelocationError) deprecated by copy:2
+    "Copy a file or folder to a different location in the user's Dropbox.
+
+    If the source path is a folder all its contents will be copied."
+
+    attrs
+        allow_app_folder_app = true
+        select_admin_mode = "team_admin"
+        scope = "files.content.write"
+
+route copy_batch:2 (CopyBatchArg, RelocationBatchV2Launch, Void)
+    "Copy multiple files or folders to different locations at once in the
+    user's Dropbox.
+
+    This route will replace :route:`copy_batch:1`. The main difference is this
+    route will return status for each entry, while :route:`copy_batch:1` raises
+    failure if any entry fails.
+
+    This route will either finish synchronously, or return a job ID and do the
+    async copy job in background. Please use :route:`copy_batch/check:2` to
+    check the job status."
+
+    attrs
+        allow_app_folder_app = true
+        select_admin_mode = "team_admin"
+        scope = "files.content.write"
+
+route copy_batch/check:2 (async.PollArg, RelocationBatchV2JobStatus, async.PollError)
+    "Returns the status of an asynchronous job for :route:`copy_batch:2`. It returns
+    list of results for each entry."
+
+    attrs
+        allow_app_folder_app = true
+        select_admin_mode = "team_admin"
+        scope = "files.content.write"
+
+# deprecated copy routes
+
+route copy_batch (RelocationBatchArg, RelocationBatchLaunch, Void) deprecated by copy_batch:2
+    "Copy multiple files or folders to different locations at once in the
+    user's Dropbox.
+
+    If :field:`RelocationBatchArg.allow_shared_folder` is false, this
+    route is atomic. If one entry fails, the whole transaction will abort. If
+    :field:`RelocationBatchArg.allow_shared_folder` is true,
+    atomicity is not guaranteed, but it allows you to copy the contents of
+    shared folders to new locations.
+
+    This route will return job ID immediately and do the async copy job in
+    background. Please use :route:`copy_batch/check:1` to check the job status."
+
+    attrs
+        allow_app_folder_app = true
+        select_admin_mode = "team_admin"
+        scope = "files.content.write"
+
+route copy_batch/check (async.PollArg, RelocationBatchJobStatus, async.PollError) deprecated by copy_batch/check:2
+    "Returns the status of an asynchronous job for :route:`copy_batch:1`. If
+    success, it returns list of results for each entry."
+
+    attrs
+        allow_app_folder_app = true
+        select_admin_mode = "team_admin"
+        scope = "files.content.write"
+
+#
+# Move
+#
+
+struct MoveBatchArg extends RelocationBatchArgBase
+    allow_ownership_transfer Boolean = false
+        "Allow moves by owner even if it would result in an ownership transfer
+        for the content being moved. This does not apply to copies."
+
+    example default
+        entries = [default]
+
+route move:2 (RelocationArg, RelocationResult, RelocationError)
+    "Move a file or folder to a different location in the user's Dropbox.
+
+    If the source path is a folder all its contents will be moved.
+
+    Note that we do not currently support case-only renaming."
+
+    attrs
+        allow_app_folder_app = true
+        select_admin_mode = "team_admin"
+        scope = "files.content.write"
+
+route move (RelocationArg, Metadata, RelocationError) deprecated by move:2
+    "Move a file or folder to a different location in the user's Dropbox.
+
+    If the source path is a folder all its contents will be moved."
+
+    attrs
+        allow_app_folder_app = true
+        select_admin_mode = "team_admin"
+        scope = "files.content.write"
+
+route move_batch:2(MoveBatchArg, RelocationBatchV2Launch, Void)
+    "Move multiple files or folders to different locations at once in the
+    user's Dropbox. Note that we do not currently support case-only renaming.
+
+    This route will replace :route:`move_batch:1`. The main difference is this
+    route will return status for each entry, while :route:`move_batch:1` raises
+    failure if any entry fails.
+
+    This route will either finish synchronously, or return a job ID and do the
+    async move job in background. Please use :route:`move_batch/check:2` to
+    check the job status."
+
+    attrs
+        allow_app_folder_app = true
+        select_admin_mode = "team_admin"
+        scope = "files.content.write"
+
+route move_batch/check:2(async.PollArg, RelocationBatchV2JobStatus, async.PollError)
+    "Returns the status of an asynchronous job for :route:`move_batch:2`. It
+    returns list of results for each entry."
+
+    attrs
+        allow_app_folder_app = true
+        select_admin_mode = "team_admin"
+        scope = "files.content.write"
+
+# deprecated move routes
+
+route move_batch (RelocationBatchArg, RelocationBatchLaunch, Void) deprecated by move_batch:2
+    "Move multiple files or folders to different locations at once in the
+    user's Dropbox.
+
+    This route will return job ID immediately and do the async moving job in
+    background. Please use :route:`move_batch/check:1` to check the job status."
+
+    attrs
+        allow_app_folder_app = true
+        select_admin_mode = "team_admin"
+        scope = "files.content.write"
+
+route move_batch/check(async.PollArg, RelocationBatchJobStatus, async.PollError) deprecated by move_batch/check:2
+    "Returns the status of an asynchronous job for :route:`move_batch:1`. If
+    success, it returns list of results for each entry."
+
+    attrs
+        allow_app_folder_app = true
+        select_admin_mode = "team_admin"
+        scope = "files.content.write"
+
+#
+# Thumbnail
+#
+
+union_closed ThumbnailSize
+    w32h32
+        "32 by 32 px."
+    w64h64
+        "64 by 64 px."
+    w128h128
+        "128 by 128 px."
+    w256h256
+        "256 by 256 px."
+    w480h320
+        "480 by 320 px."
+    w640h480
+        "640 by 480 px."
+    w960h640
+        "960 by 640 px."
+    w1024h768
+        "1024 by 768 px."
+    w2048h1536
+        "2048 by 1536 px."
+
+union_closed ThumbnailFormat
+    jpeg
+    png
+
+union_closed ThumbnailMode
+    strict
+        "Scale down the image to fit within the given size."
+    bestfit
+        "Scale down the image to fit within the given size or its transpose."
+    fitone_bestfit
+        "Scale down the image to completely cover the given size or its transpose."
+
+struct ThumbnailArg
+    path ReadPath
+        "The path to the image file you want to thumbnail."
+    format ThumbnailFormat = jpeg
+        "The format for the thumbnail image, jpeg (default) or png. For
+         images that are photos, jpeg should be preferred, while png is
+         better for screenshots and digital arts."
+    size ThumbnailSize = w64h64
+        "The size for the thumbnail image."
+    mode ThumbnailMode = strict
+        "How to resize and crop the image to achieve the desired size."
+
+    example default
+        path = "/image.jpg"
+        format = jpeg
+
+    example id
+        path = "id:a4ayc_80_OEAAAAAAAAAYa"
+        format = jpeg
+
+    example rev
+        path = "rev:a1c10ce0dd78"
+        format = jpeg
+
+struct GetThumbnailBatchArg
+    "Arguments for :route:`get_thumbnail_batch`."
+
+    entries List(ThumbnailArg)
+        "List of files to get thumbnails."
+
+    example default
+        entries = [default]
+
+struct GetThumbnailBatchResult
+    entries List(GetThumbnailBatchResultEntry)
+        "List of files and their thumbnails."
+
+    example default
+        entries = [default]
+
+union GetThumbnailBatchResultEntry
+    success GetThumbnailBatchResultData
+    failure ThumbnailError
+        "The result for this file if it was an error."
+
+    example default
+        success = default
+
+struct GetThumbnailBatchResultData
+    metadata FileMetadata
+    thumbnail String
+        "A string containing the base64-encoded thumbnail data for this file."
+
+    example default
+        metadata = default
+        thumbnail = "iVBORw0KGgoAAAANSUhEUgAAAdcAAABrCAMAAAI="
+
+union GetThumbnailBatchError
+    too_many_files
+        "The operation involves more than 25 files."
+
+union_closed ThumbnailError
+    path LookupError
+        "An error occurs when downloading metadata for the image."
+    unsupported_extension
+        "The file extension doesn't allow conversion to a thumbnail."
+    unsupported_image
+        "The image cannot be converted to a thumbnail."
+    conversion_error
+        "An error occurs during thumbnail conversion."
+
+route get_thumbnail(ThumbnailArg, FileMetadata, ThumbnailError)
+    "Get a thumbnail for an image.
+
+    This method currently supports files with the following file extensions:
+    jpg, jpeg, png, tiff, tif, gif and bmp. Photos that are larger than 20MB
+    in size won't be converted to a thumbnail."
+
+    attrs
+        host = "content"
+        style = "download"
+        allow_app_folder_app = true
+        select_admin_mode = "whole_team"
+        scope = "files.content.read"
+
+route get_thumbnail_batch(GetThumbnailBatchArg, GetThumbnailBatchResult, GetThumbnailBatchError)
+    "Get thumbnails for a list of images. We allow up to 25 thumbnails in a single batch.
+
+    This method currently supports files with the following file extensions:
+    jpg, jpeg, png, tiff, tif, gif and bmp. Photos that are larger than 20MB
+    in size won't be converted to a thumbnail."
+
+    attrs
+        host = "content"
+        allow_app_folder_app = true
+        select_admin_mode = "whole_team"
+        scope = "files.content.read"
+
+union ThumbnailV2Error
+    path LookupError
+        "An error occurred when downloading metadata for the image."
+    unsupported_extension
+        "The file extension doesn't allow conversion to a thumbnail."
+    unsupported_image
+        "The image cannot be converted to a thumbnail."
+    conversion_error
+        "An error occurred during thumbnail conversion."
+    access_denied
+        "Access to this shared link is forbidden."
+    not_found
+        "The shared link does not exist."
+
+
+struct MinimalFileLinkMetadata
+    url String
+        "URL of the shared link."
+
+    id Id?
+        "Unique identifier for the linked file."
+
+    path String?
+        "Full path in the user's Dropbox. This always starts with a slash.
+        This field will only be present only if the linked file is in the authenticated user's Dropbox."
+
+    rev Rev
+        "A unique identifier for the current revision of a file. This field is
+        the same rev as elsewhere in the API and can be used to detect changes
+        and avoid conflicts."
+
+
+struct PreviewResult
+    file_metadata FileMetadata?
+        "Metadata corresponding to the file received as an argument. Will be populated if the endpoint is called with
+        a path (ReadPath)."
+    link_metadata MinimalFileLinkMetadata?
+        "Minimal metadata corresponding to the file received as an argument. Will be populated if the endpoint is called
+        using a shared link (SharedLinkFileInfo)."
+    example default
+        file_metadata = default
+
+
+struct SharedLinkFileInfo
+    url String
+        "The shared link corresponding to either a file or shared link to a folder. If it is for a folder shared link,
+        we use the path param to determine for which file in the folder the view is for."
+    path String?
+        "The path corresponding to a file in a shared link to a folder. Required for shared links to folders."
+    password String?
+        "Password for the shared link. Required for password-protected shared links to files
+         unless it can be read from a cookie."
+
+    example default
+        url = "https://dropbox.com/s/hash/filename.png"
+
+
+union PathOrLink
+    path ReadPath
+    link SharedLinkFileInfo
+
+    example default
+        path = "/a.docx"
+
+
+struct ThumbnailV2Arg
+    resource PathOrLink
+        "Information specifying which file to preview. This could be a path to a file, a shared link pointing to a file,
+        or a shared link pointing to a folder, with a relative path."
+    format ThumbnailFormat = jpeg
+        "The format for the thumbnail image, jpeg (default) or png. For
+         images that are photos, jpeg should be preferred, while png is
+         better for screenshots and digital arts."
+    size ThumbnailSize = w64h64
+        "The size for the thumbnail image."
+    mode ThumbnailMode = strict
+        "How to resize and crop the image to achieve the desired size."
+
+    example default
+        resource = default
+        format = jpeg
+
+
+route get_thumbnail:2(ThumbnailV2Arg, PreviewResult, ThumbnailV2Error)
+    "Get a thumbnail for a file."
+
+    attrs
+        host = "content"
+        style = "download"
+        allow_app_folder_app = true
+        select_admin_mode = "whole_team"
+        scope = "files.content.read"
+        auth = "app, user"
+#
+# Preview
+#
+
+struct PreviewArg
+    path ReadPath
+        "The path of the file to preview."
+
+    rev Rev?
+        "Please specify revision in :field:`path` instead."
+
+    example default
+        path = "/word.docx"
+
+    example id
+        path = "id:a4ayc_80_OEAAAAAAAAAYa"
+
+    example rev
+        path = "rev:a1c10ce0dd78"
+
+union_closed PreviewError
+    path LookupError
+        "An error occurs when downloading metadata for the file."
+    in_progress
+        "This preview generation is still in progress and the file is not ready
+         for preview yet."
+    unsupported_extension
+        "The file extension is not supported preview generation."
+    unsupported_content
+        "The file content is not supported for preview generation."
+
+route get_preview(PreviewArg, FileMetadata, PreviewError)
+    "Get a preview for a file.
+
+    Currently, PDF previews are generated for files with the following extensions:
+    .ai, .doc, .docm, .docx, .eps, .gdoc, .gslides, .odp, .odt, .pps, .ppsm, .ppsx, .ppt, .pptm, .pptx, .rtf.
+
+    HTML previews are generated for files with the following extensions: .csv, .ods, .xls, .xlsm, .gsheet, .xlsx.
+
+    Other formats will return an unsupported extension error."
+
+    attrs
+        host = "content"
+        style = "download"
+        allow_app_folder_app = true
+        select_admin_mode = "whole_team"
+        scope = "files.content.read"
+
+#
+# List revisions
+#
+
+union ListRevisionsMode
+    path
+        "Returns revisions with the same file path as identified by the latest file entry at the
+        given file path or id."
+
+    id
+        "Returns revisions with the same file id as identified by the latest file entry at the given
+        file path or id."
+
+struct ListRevisionsArg
+    path PathOrId
+        "The path to the file you want to see the revisions of."
+
+    mode ListRevisionsMode = path
+        "Determines the behavior of the API in listing the revisions for a given file path or id."
+
+    limit UInt64(min_value=1, max_value=100) = 10
+        "The maximum number of revision entries returned."
+
+    # TODO: Add last_rev when we get pagination support from FJ Service.
+
+    example default
+        path = "/root/word.docx"
+        mode = path
+        limit = 10
+
+union ListRevisionsError
+    path LookupError
+
+struct ListRevisionsResult
+    is_deleted Boolean
+        "If the file identified by the latest revision in the response is either deleted or moved."
+    server_deleted common.DropboxTimestamp?
+        "The time of deletion if the file was deleted."
+    entries List(FileMetadata)
+        "The revisions for the file. Only revisions that are not deleted will show up here."
+
+    example default
+        is_deleted = false
+        entries = [default]
+
+route list_revisions(ListRevisionsArg, ListRevisionsResult, ListRevisionsError)
+    "Returns revisions for files based on a file path or a file id. The file path or file id is
+    identified from the latest file entry at the given file path or id. This end point allows your
+    app to query either by file path or file id by setting the mode parameter appropriately.
+
+    In the :field:`ListRevisionsMode.path` (default) mode, all revisions at the same
+    file path as the latest file entry are
+    returned. If revisions with the same file id are desired, then mode must be set to
+    :field:`ListRevisionsMode.id`. The :field:`ListRevisionsMode.id` mode is useful to retrieve
+    revisions for a given file across moves or renames."
+
+    attrs
+        allow_app_folder_app = true
+        select_admin_mode = "whole_team"
+        scope = "files.metadata.read"
+
+#
+# Restore
+#
+
+struct RestoreArg
+    path WritePath
+        "The path to save the restored file."
+    rev Rev
+        "The revision to restore."
+
+    example default
+        path = "/root/word.docx"
+        rev = "a1c10ce0dd78"
+
+union RestoreError
+    path_lookup LookupError
+        "An error occurs when downloading metadata for the file."
+    path_write WriteError
+        "An error occurs when trying to restore the file to that path."
+    invalid_revision
+        "The revision is invalid. It may not exist."
+
+route restore(RestoreArg, FileMetadata, RestoreError)
+    "Restore a specific revision of a file to the given path."
+
+    attrs
+        allow_app_folder_app = true
+        select_admin_mode = "team_admin"
+        scope = "files.content.write"
+
+#
+# Temporary link
+#
+
+struct GetTemporaryLinkArg
+    path ReadPath
+        "The path to the file you want a temporary link to."
+
+    example default
+        path = "/video.mp4"
+
+struct GetTemporaryLinkResult
+    metadata FileMetadata
+        "Metadata of the file."
+    link String
+        "The temporary link which can be used to stream content the file."
+
+    example default
+        metadata = default
+        link = "https://dl.dropboxusercontent.com/apitl/1/YXNkZmFzZGcyMzQyMzI0NjU2NDU2NDU2"
+
+union GetTemporaryLinkError
+    path LookupError
+    email_not_verified
+        "The user's email address needs to be verified to use this functionality."
+    unsupported_file
+        "Cannot get temporary link to this file type; use :route:`export` instead."
+
+route get_temporary_link(GetTemporaryLinkArg, GetTemporaryLinkResult, GetTemporaryLinkError)
+    "Get a temporary link to stream content of a file. This link will expire in four hours and
+    afterwards you will get 410 Gone. This URL should not be used to display content directly
+    in the browser. The Content-Type of the link is determined automatically by the file's mime type."
+
+    attrs
+        allow_app_folder_app = true
+        scope = "files.content.read"
+
+#
+# Temporary upload link
+#
+
+struct GetTemporaryUploadLinkArg
+    commit_info CommitInfo
+        "Contains the path and other optional modifiers for the future upload commit.
+        Equivalent to the parameters provided to :route:`upload`."
+    duration Float64(min_value=60, max_value=14400) = 14400
+        "How long before this link expires, in seconds.
+         Attempting to start an upload with this link longer than this period
+         of time after link creation will result in an error."
+
+    example default
+        commit_info = default
+        duration = 3600
+
+struct GetTemporaryUploadLinkResult
+    link String
+        "The temporary link which can be used to stream a file to a Dropbox location."
+
+    example default
+        link = "https://content.dropboxapi.com/apitul/1/bNi2uIYF51cVBND"
+
+route get_temporary_upload_link(GetTemporaryUploadLinkArg, GetTemporaryUploadLinkResult, Void)
+    "Get a one-time use temporary upload link to upload a file to a Dropbox location.
+
+
+    This endpoint acts as a delayed :route:`upload`. The returned temporary upload link may be used
+    to make a POST request with the data to be uploaded. The upload will then be perfomed with the
+    :type:`CommitInfo` previously provided to :route:`get_temporary_upload_link` but evaluated only
+    upon consumption. Hence, errors stemming from invalid :type:`CommitInfo` with respect to the
+    state of the user's Dropbox will only be communicated at consumption time. Additionally, these
+    errors are surfaced as generic HTTP 409 Conflict responses, potentially hiding issue details.
+    The maximum temporary upload link duration is 4 hours. Upon consumption or expiration,
+    a new link will have to be generated. Multiple links may exist for a specific upload path
+    at any given time.
+
+
+    The POST request on the temporary upload link must have its Content-Type
+    set to \"application/octet-stream\".
+
+
+    Example temporary upload link consumption request:
+
+
+    curl -X POST https://content.dropboxapi.com/apitul/1/bNi2uIYF51cVBND
+
+    --header \"Content-Type: application/octet-stream\"
+
+    --data-binary @local_file.txt
+
+
+    A successful temporary upload link consumption request returns the content hash
+    of the uploaded data in JSON format.
+
+
+    Example succesful temporary upload link consumption response:
+
+    {\"content-hash\": \"599d71033d700ac892a0e48fa61b125d2f5994\"}
+
+
+    An unsuccessful temporary upload link consumption request returns any of the following status
+    codes:
+
+
+    HTTP 400 Bad Request: Content-Type is not one of
+    application/octet-stream and text/plain or request is invalid.
+
+    HTTP 409 Conflict: The temporary upload link does not exist or is currently unavailable,
+    the upload failed, or another error happened.
+
+    HTTP 410 Gone: The temporary upload link is expired or consumed.
+
+
+    Example unsuccessful temporary upload link consumption response:
+
+    Temporary upload link has been recently consumed.
+    "
+
+    attrs
+        allow_app_folder_app = true
+        scope = "files.content.write"
+
+#
+# Copy reference
+#
+
+struct GetCopyReferenceArg
+    path ReadPath
+        "The path to the file or folder you want to get a copy reference to."
+
+    example default
+        path = "/video.mp4"
+
+struct GetCopyReferenceResult
+    metadata Metadata
+        "Metadata of the file or folder."
+    copy_reference String
+        "A copy reference to the file or folder."
+    expires common.DropboxTimestamp
+        "The expiration date of the copy reference. This value is currently set to be
+        far enough in the future so that expiration is effectively not an issue."
+
+    example default
+        metadata = default
+        copy_reference = "z1X6ATl6aWtzOGq0c3g5Ng"
+        expires = "2045-05-12T15:50:38Z"
+
+union GetCopyReferenceError
+    path LookupError
+
+route copy_reference/get(GetCopyReferenceArg, GetCopyReferenceResult, GetCopyReferenceError)
+    "Get a copy reference to a file or folder. This reference string can be used to
+    save that file or folder to another user's Dropbox by passing it to
+    :route:`copy_reference/save`."
+
+    attrs
+        allow_app_folder_app = true
+        scope = "files.content.write"
+
+struct SaveCopyReferenceArg
+    copy_reference String
+        "A copy reference returned by :route:`copy_reference/get`."
+
+    path Path
+        "Path in the user's Dropbox that is the destination."
+
+    example default
+        copy_reference = "z1X6ATl6aWtzOGq0c3g5Ng"
+        path = "/video.mp4"
+
+struct SaveCopyReferenceResult
+    metadata Metadata
+        "The metadata of the saved file or folder in the user's Dropbox."
+
+    example default
+        metadata = default
+
+union SaveCopyReferenceError
+    path WriteError
+    invalid_copy_reference
+        "The copy reference is invalid."
+    no_permission
+        "You don't have permission to save the given copy reference. Please make sure this app
+        is same app which created the copy reference and the source user is still linked to
+        the app."
+    not_found
+        "The file referenced by the copy reference cannot be found."
+    too_many_files
+        "The operation would involve more than 10,000 files and folders."
+
+route copy_reference/save(SaveCopyReferenceArg, SaveCopyReferenceResult, SaveCopyReferenceError)
+    "Save a copy reference returned by :route:`copy_reference/get` to the user's Dropbox."
+
+    attrs
+        allow_app_folder_app = true
+        scope = "files.content.write"
+
+#
+# Save URL
+#
+
+struct SaveUrlArg
+    path Path
+        "The path in Dropbox where the URL will be saved to."
+
+    url String
+        "The URL to be saved."
+
+    example default
+        path = "/a.txt"
+        url = "http://example.com/a.txt"
+
+union_closed SaveUrlResult extends async.LaunchResultBase
+    complete FileMetadata
+        "Metadata of the file where the URL is saved to."
+
+    example default
+        complete = default
+
+union SaveUrlError
+    path WriteError
+    download_failed
+        "Failed downloading the given URL. The URL may be
+         password-protected and the password provided was incorrect,
+         or the link may be disabled."
+    invalid_url
+        "The given URL is invalid."
+    not_found
+        "The file where the URL is saved to no longer exists."
+
+route save_url(SaveUrlArg, SaveUrlResult, SaveUrlError)
+    "Save the data from a specified URL into a file in user's Dropbox.
+
+    Note that the transfer from the URL must complete within 5 minutes, or the
+    operation will time out and the job will fail.
+
+    If the given path already exists, the file will be renamed to avoid the
+    conflict (e.g. myfile (1).txt)."
+
+    attrs
+        allow_app_folder_app = true
+        scope = "files.content.write"
+
+#
+# Save URL Job
+#
+
+union_closed SaveUrlJobStatus extends async.PollResultBase
+    complete FileMetadata
+        "Metadata of the file where the URL is saved to."
+    failed SaveUrlError
+
+route save_url/check_job_status(async.PollArg, SaveUrlJobStatus, async.PollError)
+    "Check the status of a :route:`save_url` job."
+
+    attrs
+        allow_app_folder_app = true
+        scope = "files.content.write"
+
+#
+# Patched File Properties endpoints
+#
+
+
+#
+# Patched /get_metadata that can return properties
+#
+
+route alpha/get_metadata (AlphaGetMetadataArg, Metadata, AlphaGetMetadataError) deprecated by get_metadata
+    "Returns the metadata for a file or folder. This is an alpha endpoint
+    compatible with the properties API.
+
+    Note: Metadata for the root folder is unsupported."
+
+    attrs
+        is_preview=true
+        allow_app_folder_app = true
+
+struct AlphaGetMetadataArg extends GetMetadataArg
+
+    include_property_templates List(file_properties.TemplateId)?
+        "If set to a valid list of template IDs,
+        :field:`FileMetadata.property_groups` is set for files with custom
+        properties."
+
+    example default
+        path = "/Homework/math"
+
+    example id
+        path = "id:a4ayc_80_OEAAAAAAAAAYa"
+
+    example rev
+        path = "rev:a1c10ce0dd78"
+
+union_closed AlphaGetMetadataError extends GetMetadataError
+    properties_error file_properties.LookUpPropertiesError
+
+#
+# Patched /upload that accepts properties
+#
+
+route alpha/upload (CommitInfoWithProperties, FileMetadata, UploadErrorWithProperties) deprecated by alpha/upload
+    "Create a new file with the contents provided in the request. Note that this
+    endpoint is part of the properties API alpha and is slightly different from
+    :route:`upload`.
+
+    Do not use this to upload a file larger than 150 MB. Instead, create an
+    upload session with :route:`upload_session/start`."
+
+    attrs
+        host="content"
+        style="upload"
+        is_preview=true
+        allow_app_folder_app = true
+
+struct CommitInfoWithProperties extends CommitInfo
+    example default
+        path = "/Homework/math/Matrices.txt"
+        autorename = true
+
+union UploadErrorWithProperties extends UploadError
+    example default
+        properties_error = does_not_fit_template
+
+#
+# Deprecated File Properties routes
+#
+
+route properties/add(file_properties.AddPropertiesArg, Void, file_properties.AddPropertiesError) deprecated
+route properties/overwrite(file_properties.OverwritePropertyGroupArg, Void, file_properties.InvalidPropertyGroupError) deprecated
+route properties/update(file_properties.UpdatePropertiesArg, Void, file_properties.UpdatePropertiesError) deprecated
+route properties/remove(file_properties.RemovePropertiesArg, Void, file_properties.RemovePropertiesError) deprecated
+route properties/template/get(file_properties.GetTemplateArg, file_properties.GetTemplateResult, file_properties.TemplateError) deprecated
+route properties/template/list(Void, file_properties.ListTemplateResult, file_properties.TemplateError) deprecated
+#
+# Team selective sync additions
+#
+union SyncSettingArg
+    default
+        "On first sync to members' computers, the specified folder will follow its
+        parent folder's setting or otherwise follow default sync behavior."
+    not_synced
+        "On first sync to members' computers, the specified folder will be set
+        to not sync with selective sync."
+
+    example default
+        not_synced = null
+
+union SyncSetting
+    default
+        "On first sync to members' computers, the specified folder will follow
+        its parent folder's setting or otherwise follow default sync behavior."
+    not_synced
+        "On first sync to members' computers, the specified folder will be set
+        to not sync with selective sync."
+    not_synced_inactive
+        "The specified folder's not_synced setting is inactive due to its
+        location or other configuration changes. It will follow its parent
+        folder's setting."
+
+struct ContentSyncSettingArg
+    id FileId
+        "Id of the item this setting is applied to."
+
+    sync_setting SyncSettingArg
+        "Setting for this item."
+
+    example default
+        id = "id:a4ayc_80_OEAAAAAAAAAXw"
+        sync_setting = default
+
+struct ContentSyncSetting
+    id FileId
+        "Id of the item this setting is applied to."
+
+    sync_setting SyncSetting
+        "Setting for this item."
+
+    example default
+        id = "id:a4ayc_80_OEAAAAAAAAAXw"
+        sync_setting = default
+
+union SyncSettingsError
+    path LookupError
+
+    unsupported_combination
+        "Setting this combination of sync settings simultaneously is not supported."
+
+    unsupported_configuration
+        "The specified configuration is not supported."
+
+#
+# FILE LOCKING
+#
+
+#
+# File Lock Definition
+#
+
+struct SingleUserLock
+    created common.DropboxTimestamp
+        "The time the lock was created."
+    lock_holder_account_id users_common.AccountId
+        "The account ID of the lock holder if known."
+    lock_holder_team_id String?
+        "The id of the team of the account holder if it exists."
+
+    example default
+        created = "2015-05-12T15:50:38Z"
+        lock_holder_account_id = "dbid:AAH4f99T0taONIb-OurWxbNQ6ywGRopQngc"
+        lock_holder_team_id = "dbtid:1234abcd"
+
+union FileLockContent
+    unlocked
+        "Empty type to indicate no lock."
+    single_user SingleUserLock
+        "A lock held by a single user."
+
+    example default
+        single_user = default
+
+struct FileLock
+    content FileLockContent
+        "The lock description."
+
+    example default
+        content = default
+
+struct UnlockFileArg
+    path WritePathOrId
+        "Path in the user's Dropbox to a file."
+
+    example lock
+        path = "/John Doe/sample/test.pdf"
+
+struct LockFileResult
+    metadata Metadata
+        "Metadata of the file."
+    lock FileLock
+        "The file lock state after the operation."
+
+    example default
+        metadata = default
+        lock = default
+
+struct LockConflictError
+    lock FileLock
+        "The lock that caused the conflict."
+
+union LockFileError
+    path_lookup LookupError
+        "Could not find the specified resource."
+    too_many_write_operations
+        "There are too many write operations in user's Dropbox. Please retry this request."
+    too_many_files
+        "There are too many files in one request. Please retry with fewer files."
+    no_write_permission
+        "The user does not have permissions to change the lock state or access the file."
+    cannot_be_locked
+        "Item is a type that cannot be locked."
+    file_not_shared
+        "Requested file is not currently shared."
+    lock_conflict LockConflictError
+        "The user action conflicts with an existing lock on the file."
+    internal_error
+        "Something went wrong with the job on Dropbox's end. You'll need to
+        verify that the action you were taking succeeded, and if not, try
+        again. This should happen very rarely."
+#    unlock_token
+#        "An invalid unlock_token was passed. For example, a garbage token, or a token which as already been used."
+
+union_closed LockFileResultEntry
+    success LockFileResult
+    failure LockFileError
+
+    example default
+        success = default
+
+struct LockFileBatchResult extends FileOpsResult
+    entries List(LockFileResultEntry)
+        "Each Entry in the 'entries' will have '.tag' with the operation status (e.g. success),
+        the metadata for the file and the lock state after the operation."
+
+    example default
+        entries = [default]
+
+struct LockFileArg
+    path WritePathOrId
+        "Path in the user's Dropbox to a file."
+
+    example lock
+        path = "/John Doe/sample/test.pdf"
+
+struct LockFileBatchArg
+    entries List(LockFileArg)
+        "List of 'entries'. Each 'entry' contains a path of the file which will be
+        locked or queried.
+        Duplicate path arguments in the batch are considered only once."
+
+    example default
+        entries = [lock]
+
+struct UnlockFileBatchArg
+    entries List(UnlockFileArg)
+        "List of 'entries'. Each 'entry' contains a path of the file which will be unlocked.
+        Duplicate path arguments in the batch are considered only once."
+
+    example default
+        entries = [lock]
+
+#
+# Lock File
+#
+
+route lock_file_batch (LockFileBatchArg, LockFileBatchResult, LockFileError)
+    "
+    Lock the files at the given paths. A locked file will be writable only by the lock holder.
+    A successful response indicates that the file has been locked. Returns a list of the
+    locked file paths and their metadata after this operation.
+    "
+
+    attrs
+        scope = "files.content.write"
+
+#
+# Unlock File
+#
+
+route unlock_file_batch (UnlockFileBatchArg, LockFileBatchResult, LockFileError)
+    "
+    Unlock the files at the given paths. A locked file can only be unlocked by the lock holder
+    or, if a business account, a team admin. A successful response indicates that the file has
+    been unlocked. Returns a list of the unlocked file paths and their metadata after
+    this operation.
+    "
+
+    attrs
+        select_admin_mode = "whole_team"
+        scope = "files.content.write"
+
+#
+# Get Lock
+#
+
+route get_file_lock_batch (LockFileBatchArg, LockFileBatchResult, LockFileError)
+    "
+    Return the lock metadata for the given list of paths.
+    "
+
+    attrs
+        scope = "files.content.read"
+
+#
+# END OF FILE LOCKING
+#

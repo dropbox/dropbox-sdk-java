@@ -1,0 +1,30 @@
+namespace contacts
+
+import common
+
+route delete_manual_contacts(Void, Void, Void)
+    "Removes all manually added contacts.
+    You'll still keep contacts who are on your team or who you imported.
+    New contacts will be added when you share."
+
+    attrs
+        scope = "contacts.write"
+
+struct DeleteManualContactsArg
+    email_addresses List(common.EmailAddress)
+        "List of manually added contacts to be deleted."
+
+    example default
+        email_addresses = ["contactemailaddress1@domain.com", "contactemailaddress2@domain.com"]
+
+union DeleteManualContactsError
+    contacts_not_found List(common.EmailAddress)
+        "Can't delete contacts from this list.
+        Make sure the list only has manually added contacts.
+        The deletion was cancelled."
+
+route delete_manual_contacts_batch(DeleteManualContactsArg, Void, DeleteManualContactsError)
+    "Removes manually added contacts from the given list."
+
+    attrs
+        scope = "contacts.write"

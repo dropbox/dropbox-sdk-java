@@ -1,0 +1,551 @@
+namespace file_properties
+    "This namespace contains helpers for property and template metadata endpoints.
+
+
+    These endpoints enable you to tag arbitrary key/value data to Dropbox files.
+
+
+    The most basic unit in this namespace is the :type:`PropertyField`. These fields encapsulate the
+    actual key/value data.
+
+
+    Fields are added to a Dropbox file using a :type:`PropertyGroup`. Property groups contain a
+    reference to a Dropbox file and a :type:`PropertyGroupTemplate`. Property groups are uniquely
+    identified by the combination of their associated Dropbox file and template.
+
+
+    The :type:`PropertyGroupTemplate` is a way of restricting the possible key names and value types
+    of the data within a property group. The possible key names and value types are explicitly
+    enumerated using :type:`PropertyFieldTemplate` objects.
+
+
+    You can think of a property group template as a class definition for a particular key/value
+    metadata object, and the property groups themselves as the instantiations of these objects.
+
+
+    Templates are owned either by a user/app pair or team/app pair. Templates and their associated
+    properties can't be accessed by any app other than the app that created them, and even then, only
+    when the app is linked with the owner of the template (either a user or team).
+
+
+    User-owned templates are accessed via the user-auth file_properties/templates/*_for_user endpoints, while
+    team-owned templates are accessed via the team-auth file_properties/templates/*_for_team endpoints. Properties
+    associated with either type of template can be accessed via the user-auth properties/* endpoints.
+
+
+    Finally, properties can be accessed from a number of endpoints that return metadata, including
+    `files/get_metadata`, and `files/list_folder`. Properties can also be added during upload, using
+    `files/upload`.
+
+    "
+
+alias TemplateId = String(min_length=1,pattern="(/|ptid:).*")
+alias PathOrId = String(pattern="/(.|[\\r\\n])*|id:.*|(ns:[0-9]+(/.*)?)")
+alias Id = String(min_length=1)
+alias PropertiesSearchCursor = String(min_length=1)
+
+#
+# Core data types
+#
+
+struct PropertyField
+    "Raw key/value data to be associated with a Dropbox file. Property fields are added to Dropbox
+    files as a :type:`PropertyGroup`."
+
+    name String
+        "Key of the property field associated with a file and template.
+        Keys can be up to 256 bytes."
+    value String
+        "Value of the property field associated with a file and template.
+        Values can be up to 1024 bytes."
+
+    example default
+        name = "Security Policy"
+        value = "Confidential"
+
+struct PropertyGroup
+    "A subset of the property fields described by the corresponding :type:`PropertyGroupTemplate`.
+    Properties are always added to a Dropbox file as a :type:`PropertyGroup`.
+    The possible key names and value types in this group are defined by the
+    corresponding :type:`PropertyGroupTemplate`."
+
+    template_id TemplateId
+        "A unique identifier for the associated template."
+    fields List(PropertyField)
+        "The actual properties associated with the template. There can be up to 32
+        property types per template."
+
+    example default
+        template_id = "ptid:1a5n2i6d3OYEAAAAAAAAAYa"
+        fields = [default]
+
+struct PropertyFieldTemplate
+    "Defines how a single property field may be structured. Used exclusively by :type:`PropertyGroupTemplate`."
+
+    name String
+        "Key of the property field being described. Property field keys can be up to 256 bytes."
+    description String
+        "Description of the property field. Property field descriptions can be up to 1024 bytes."
+    type PropertyType
+        "Data type of the value of this property field. This type
+        will be enforced upon property creation and modifications."
+        union
+            "Data type of the given property field added."
+
+            string
+                "The associated property field will be of type string. Unicode is supported."
+
+            example default
+                string = null
+
+    example default
+        name = "Security Policy"
+        description = "This is the security policy of the file or folder described.
+        Policies can be Confidential, Public or Internal."
+        type = default
+
+struct PropertyGroupTemplate
+    "Defines how a property group may be structured."
+
+    name String
+        "Display name for the template. Template names can
+        be up to 256 bytes."
+    description String
+        "Description for the template. Template descriptions
+        can be up to 1024 bytes."
+    fields List(PropertyFieldTemplate)
+        "Definitions of the property fields associated with this template.
+        There can be up to 32 properties in a single template."
+
+    example default
+        name = "Security"
+        description = "These properties describe how confidential this file or folder is."
+        fields = [default]
+
+#
+# Property routes
+#
+
+struct AddPropertiesArg
+    path PathOrId
+        "A unique identifier for the file or folder."
+    property_groups List(PropertyGroup)
+        "The property groups which are to be added to a Dropbox file. No two groups in the input should
+         refer to the same template."
+
+    example default
+        path = "/my_awesome/word.docx"
+        property_groups = [default]
+
+union LookupError
+    malformed_path String
+    not_found
+        "There is nothing at the given path."
+    not_file
+        "We were expecting a file, but the given path refers to something that isn't a file."
+    not_folder
+        "We were expecting a folder, but the given path refers to something that isn't a folder."
+    restricted_content
+        "The file cannot be transferred because the content is restricted.  For example,
+        sometimes there are legal restrictions due to copyright claims."
+
+union LookUpPropertiesError
+    property_group_not_found
+        "No property group was found."
+
+union TemplateError
+    template_not_found TemplateId
+        "Template does not exist for the given identifier."
+    restricted_content
+        "You do not have permission to modify this template."
+
+union PropertiesError extends TemplateError
+    path LookupError
+    unsupported_folder
+        "This folder cannot be tagged. Tagging folders is not supported for team-owned templates."
+
+union InvalidPropertyGroupError extends PropertiesError
+    property_field_too_large
+        "One or more of the supplied property field values is too large."
+    does_not_fit_template
+        "One or more of the supplied property fields does not conform to the template specifications."
+    duplicate_property_groups
+        "There are 2 or more property groups referring to the same templates in the input. "
+
+union AddPropertiesError extends InvalidPropertyGroupError
+    property_group_already_exists
+        "A property group associated with this template and file already exists."
+
+route properties/add(AddPropertiesArg, Void, AddPropertiesError)
+    "Add property groups to a Dropbox file. See :route:`templates/add_for_user` or
+    :route:`templates/add_for_team` to create new templates."
+
+    attrs
+        scope = "files.metadata.write"
+
+struct OverwritePropertyGroupArg
+    path PathOrId
+        "A unique identifier for the file or folder."
+    property_groups List(PropertyGroup, min_items=1)
+        "The property groups \"snapshot\" updates to force apply. No two groups in the input should
+         refer to the same template."
+
+    example default
+        path = "/my_awesome/word.docx"
+        property_groups = [default]
+
+route properties/overwrite(OverwritePropertyGroupArg, Void, InvalidPropertyGroupError)
+    "Overwrite property groups associated with a file. This endpoint should be used
+    instead of :route:`properties/update` when property groups are being updated via a
+    \"snapshot\" instead of via a \"delta\". In other words, this endpoint will delete all
+    omitted fields from a property group, whereas :route:`properties/update` will only
+    delete fields that are explicitly marked for deletion."
+
+    attrs
+        scope = "files.metadata.write"
+
+struct PropertyGroupUpdate
+    template_id TemplateId
+        "A unique identifier for a property template."
+    add_or_update_fields List(PropertyField)?
+        "Property fields to update. If the property field already exists, it is updated.
+        If the property field doesn't exist, the property group is added."
+    remove_fields List(String)?
+        "Property fields to remove (by name), provided they exist."
+
+    example default
+        template_id = "ptid:1a5n2i6d3OYEAAAAAAAAAYa"
+        add_or_update_fields = [default]
+        remove_fields = []
+
+struct UpdatePropertiesArg
+    path PathOrId
+        "A unique identifier for the file or folder."
+    update_property_groups List(PropertyGroupUpdate)
+        "The property groups \"delta\" updates to apply."
+
+    example default
+        path = "/my_awesome/word.docx"
+        update_property_groups = [default]
+
+union UpdatePropertiesError extends InvalidPropertyGroupError
+    property_group_lookup LookUpPropertiesError
+
+route properties/update(UpdatePropertiesArg, Void, UpdatePropertiesError)
+    "Add, update or remove properties associated with the supplied file and templates.
+    This endpoint should be used instead of :route:`properties/overwrite` when property groups
+    are being updated via a \"delta\" instead of via a \"snapshot\" . In other words, this endpoint
+    will not delete any omitted fields from a property group, whereas :route:`properties/overwrite`
+    will delete any fields that are omitted from a property group."
+
+    attrs
+        scope = "files.metadata.write"
+
+struct RemovePropertiesArg
+    path PathOrId
+        "A unique identifier for the file or folder."
+    property_template_ids List(TemplateId)
+        "A list of identifiers for a template created by :route:`templates/add_for_user` or
+        :route:`templates/add_for_team`."
+
+    example default
+        path = "/my_awesome/word.docx"
+        property_template_ids = ["ptid:1a5n2i6d3OYEAAAAAAAAAYa"]
+
+union RemovePropertiesError extends PropertiesError
+    property_group_lookup LookUpPropertiesError
+
+route properties/remove(RemovePropertiesArg, Void, RemovePropertiesError)
+    "Permanently removes the specified property group from the file. To remove specific property field key
+    value pairs, see :route:`properties/update`.
+    To update a template, see
+    :route:`templates/update_for_user` or :route:`templates/update_for_team`.
+    To remove a template, see
+    :route:`templates/remove_for_user` or :route:`templates/remove_for_team`."
+
+    attrs
+        scope = "files.metadata.write"
+
+#
+# Property Group Template Routes
+#
+
+struct AddTemplateArg extends PropertyGroupTemplate
+    example default
+        name = "Security"
+        description = "These properties describe how confidential this file or folder is."
+        fields = [default]
+
+struct AddTemplateResult
+    template_id TemplateId
+        "An identifier for template added by  See :route:`templates/add_for_user` or
+        :route:`templates/add_for_team`."
+
+    example default
+        template_id = "ptid:1a5n2i6d3OYEAAAAAAAAAYa"
+
+union ModifyTemplateError extends TemplateError
+    conflicting_property_names
+        "A property field key with that name already exists in the template."
+    too_many_properties
+        "There are too many properties in the changed template.
+        The maximum number of properties per template is 32."
+    too_many_templates
+        "There are too many templates for the team."
+    template_attribute_too_large
+        "The template name, description or one or more of the property field keys is too large."
+
+route templates/add_for_user(AddTemplateArg, AddTemplateResult, ModifyTemplateError)
+    "Add a template associated with a user. See :route:`properties/add` to add properties to a file. This
+    endpoint can't be called on a team member or admin's behalf."
+
+    attrs
+        scope = "files.metadata.write"
+
+route templates/add_for_team(AddTemplateArg, AddTemplateResult, ModifyTemplateError)
+    "Add a template associated with a team. See :route:`properties/add` to add properties to a file or folder.
+
+    Note: this endpoint will create team-owned templates."
+
+    attrs
+        auth="team"
+        scope = "files.team_metadata.write"
+
+struct GetTemplateArg
+    template_id TemplateId
+        "An identifier for template added by route  See :route:`templates/add_for_user` or
+        :route:`templates/add_for_team`."
+
+    example default
+        template_id = "ptid:1a5n2i6d3OYEAAAAAAAAAYa"
+
+struct GetTemplateResult extends PropertyGroupTemplate
+
+    example default
+        name = "Security"
+        description = "These properties describe how confidential this file or folder is."
+        fields = [default]
+
+route templates/get_for_user(GetTemplateArg, GetTemplateResult, TemplateError)
+    "Get the schema for a specified template. This endpoint can't be called on a team member or admin's behalf."
+
+    attrs
+        scope = "files.metadata.read"
+
+route templates/get_for_team(GetTemplateArg, GetTemplateResult, TemplateError)
+    "Get the schema for a specified template."
+
+    attrs
+        auth="team"
+        scope = "files.team_metadata.write"
+
+struct UpdateTemplateArg
+    template_id TemplateId
+        "An identifier for template added by  See :route:`templates/add_for_user` or
+        :route:`templates/add_for_team`."
+    name String?
+        "A display name for the template. template names can
+        be up to 256 bytes."
+    description String?
+        "Description for the new template. Template descriptions
+        can be up to 1024 bytes."
+    add_fields List(PropertyFieldTemplate)?
+        "Property field templates to be added to the group template.
+        There can be up to 32 properties in a single template."
+
+    example default
+        template_id = "ptid:1a5n2i6d3OYEAAAAAAAAAYa"
+        name = "New Security Template Name"
+        description = "These properties will describe how confidential this file or folder is."
+        add_fields = [default]
+
+struct UpdateTemplateResult
+    template_id TemplateId
+        "An identifier for template added by route  See :route:`templates/add_for_user` or
+        :route:`templates/add_for_team`."
+
+    example default
+        template_id = "ptid:1a5n2i6d3OYEAAAAAAAAAYa"
+
+route templates/update_for_user(UpdateTemplateArg, UpdateTemplateResult, ModifyTemplateError)
+    "Update a template associated with a user. This route can update the template name,
+    the template description and add optional properties to templates. This endpoint can't
+    be called on a team member or admin's behalf."
+
+    attrs
+        scope = "files.metadata.write"
+
+route templates/update_for_team(UpdateTemplateArg, UpdateTemplateResult, ModifyTemplateError)
+    "Update a template associated with a team. This route can update the template name,
+    the template description and add optional properties to templates."
+
+    attrs
+        auth="team"
+        scope = "files.team_metadata.write"
+
+struct ListTemplateResult
+    template_ids List(TemplateId)
+        "List of identifiers for templates added by  See :route:`templates/add_for_user` or
+        :route:`templates/add_for_team`."
+
+    example default
+        template_ids = ["ptid:1a5n2i6d3OYEAAAAAAAAAYa"]
+
+route templates/list_for_user(Void, ListTemplateResult, TemplateError)
+    "Get the template identifiers for a team. To get the schema of
+    each template use :route:`templates/get_for_user`. This endpoint can't be
+    called on a team member or admin's behalf."
+
+    attrs
+        scope = "files.metadata.read"
+
+route templates/list_for_team(Void, ListTemplateResult, TemplateError)
+    "Get the template identifiers for a team. To get the schema of
+    each template use :route:`templates/get_for_team`."
+
+    attrs
+        auth="team"
+        scope = "files.team_metadata.write"
+
+struct RemoveTemplateArg
+    template_id TemplateId
+        "An identifier for a template created by :route:`templates/add_for_user` or
+        :route:`templates/add_for_team`."
+
+    example default
+        template_id = "ptid:1a5n2i6d3OYEAAAAAAAAAYa"
+
+route templates/remove_for_user(RemoveTemplateArg, Void, TemplateError)
+    "Permanently removes the specified template created from :route:`templates/add_for_user`.
+    All properties associated with the template will also be removed. This action
+    cannot be undone."
+
+    attrs
+        scope = "files.metadata.write"
+
+route templates/remove_for_team(RemoveTemplateArg, Void, TemplateError)
+    "Permanently removes the specified template created from :route:`templates/add_for_user`.
+    All properties associated with the template will also be removed. This action
+    cannot be undone."
+
+    attrs
+        auth="team"
+        scope = "files.team_metadata.write"
+
+union TemplateOwnerType
+    user
+        "Template will be associated with a user."
+    team
+        "Template will be associated with a team."
+
+    example default
+        user = null
+
+union LogicalOperator
+    "Logical operator to join search queries together."
+
+    or_operator
+        "Append a query with an \"or\" operator."
+
+    example default
+        or_operator = null
+
+union PropertiesSearchMode
+    field_name String
+        "Search for a value associated with this field name."
+
+    example default
+        field_name = "Security"
+
+struct PropertiesSearchQuery
+    query String
+        "The property field value for which to search across templates."
+    mode PropertiesSearchMode
+        "The mode with which to perform the search."
+    logical_operator LogicalOperator = or_operator
+        "The logical operator with which to append the query."
+
+    example default
+        query = "Confidential"
+        mode = default
+        logical_operator = default
+
+union TemplateFilterBase
+    filter_some List(TemplateId, min_items=1)
+        "Only templates with an ID in the supplied list will be returned (a subset of
+        templates will be returned)."
+
+    example default
+        filter_some = ["ptid:1a5n2i6d3OYEAAAAAAAAAYa"]
+
+union TemplateFilter extends TemplateFilterBase
+    filter_none
+        "No templates will be filtered from the result (all templates will be returned)."
+
+    example default
+        filter_none = null
+
+struct PropertiesSearchArg
+    queries List(PropertiesSearchQuery, min_items=1)
+        "Queries to search."
+    template_filter TemplateFilter = filter_none
+        "Filter results to contain only properties associated with these template IDs."
+
+    example default
+        queries = [default]
+        template_filter = default
+
+struct PropertiesSearchMatch
+    id Id
+        "The ID for the matched file or folder."
+    path String
+        "The path for the matched file or folder."
+    is_deleted Boolean
+        "Whether the file or folder is deleted."
+    property_groups List(PropertyGroup)
+        "List of custom property groups associated with the file."
+
+    example default
+        id = "id:a4ayc_80_OEAAAAAAAAAXz"
+        path =  "/my_awesome/word.docx"
+        is_deleted = false
+        property_groups = [default]
+
+struct PropertiesSearchResult
+    matches List(PropertiesSearchMatch)
+        "A list (possibly empty) of matches for the query."
+    cursor PropertiesSearchCursor?
+        "Pass the cursor into :route:`properties/search/continue` to continue to receive
+        search results. Cursor will be null when there are no more results."
+
+    example default
+        matches = [default]
+
+union PropertiesSearchError
+    property_group_lookup LookUpPropertiesError
+
+route properties/search(PropertiesSearchArg, PropertiesSearchResult, PropertiesSearchError)
+    "Search across property templates for particular property field values."
+
+    attrs
+        scope = "files.metadata.read"
+
+struct PropertiesSearchContinueArg
+    cursor PropertiesSearchCursor
+        "The cursor returned by your last call to :route:`properties/search` or
+        :route:`properties/search/continue`."
+
+    example default
+        cursor = "ZtkX9_EHj3x7PMkVuFIhwKYXEpwpLwyxp9vMKomUhllil9q7eWiAu"
+
+union PropertiesSearchContinueError
+    reset
+        "Indicates that the cursor has been invalidated. Call
+        :route:`properties/search` to obtain a new cursor."
+
+route properties/search/continue (PropertiesSearchContinueArg, PropertiesSearchResult, PropertiesSearchContinueError)
+    "Once a cursor has been retrieved from :route:`properties/search`, use this to paginate through all
+    search results."
+
+    attrs
+        scope = "files.metadata.read"

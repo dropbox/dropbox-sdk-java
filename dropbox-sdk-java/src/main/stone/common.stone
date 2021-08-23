@@ -1,0 +1,96 @@
+namespace common
+
+# Annotates fields to serialize a subset of total fields, depending on caller type
+
+# Annotates fields to redact information before storing in logs
+
+# Annotates fields for documentation changes
+
+alias DropboxTimestamp = Timestamp("%Y-%m-%dT%H:%M:%SZ")
+
+alias Date = Timestamp("%Y-%m-%d")
+
+# Note - "\\." is needed in order to translate to "\."
+
+alias EmailAddress = String(pattern="^['&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*\\.[A-Za-z]{2,15}$", max_length=255)
+
+# First name or Last name. NOTE: max_length should be synced with USER_NAME_MAX_LEN
+alias NamePart = String(pattern="[^\/:?*<>\"|]*", min_length=1, max_length=100)
+
+# First name or Last name. NOTE: max_length should be synced with USER_NAME_MAX_LEN
+# Accepting zeo length values which are usually used to clear the first or last name.
+alias OptionalNamePart = String(pattern="[^\/:?*<>\"|]*", max_length=100)
+
+# We don't limit the length because it's always generated from the first & last names.
+alias DisplayName = String(pattern="[^\/:?*<>\"|]*", min_length=1)
+
+# There are some existing accounts with special characters in their names. Though we don't allow such special characters
+# being used through UI, it's still possible to use them right now through some endpoints. This alias should be used in
+# the places where those legacy account names are expected, one of the example being the team audit logging. In other
+# places we should use `DisplayName` instead to prevent more usage of these special characters.
+alias DisplayNameLegacy = String
+
+alias NamespaceId = String(pattern="[-_0-9a-zA-Z:]+")
+
+alias SharedFolderId = NamespaceId
+
+alias SessionId = String
+
+struct RootInfo
+    "Information about current user's root."
+
+    union
+        team TeamRootInfo
+        user UserRootInfo
+
+    root_namespace_id NamespaceId
+        "The namespace ID for user's root namespace. It will be the namespace ID
+        of the shared team root if the user is member of a team with a separate team root.
+        Otherwise it will be same as :field:`RootInfo.home_namespace_id`."
+
+    home_namespace_id NamespaceId
+        "The namespace ID for user's home namespace."
+
+    example default
+        user = default
+
+struct TeamRootInfo extends RootInfo
+    "Root info when user is member of a team with a separate root namespace ID."
+
+    home_path String
+        "The path for user's home directory under the shared team root."
+
+struct UserRootInfo extends RootInfo
+    "Root info when user is not member of a team or
+    the user is a member of a team and the team does not have a separate root namespace."
+
+    example default
+        home_namespace_id = "3235641"
+        root_namespace_id = "3235641"
+
+union PathRoot
+    home
+        "Paths are relative to the authenticating user's home namespace,
+        whether or not that user belongs to a team."
+
+    root NamespaceId
+        "Paths are relative to the authenticating user's root namespace
+        (This results in :field:`PathRootError.invalid_root` if the
+        user's root namespace has changed.)."
+
+    namespace_id NamespaceId
+        "Paths are relative to given namespace id (This results in
+        :field:`PathRootError.no_permission` if you don't have access
+        to this namespace.)."
+
+
+union PathRootError
+    invalid_root RootInfo
+        "The root namespace id in Dropbox-API-Path-Root header is not valid. The value
+        of this error is use's latest root info."
+    no_permission
+        "You don't have permission to access the namespace id in Dropbox-API-Path-Root
+         header."
+
+alias LanguageCode = String(min_length=2)
+    "A ISO639-1 code."

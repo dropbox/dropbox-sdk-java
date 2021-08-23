@@ -1,0 +1,287 @@
+namespace team
+
+import common
+import secondary_emails
+
+alias SecondaryEmail = secondary_emails.SecondaryEmail
+
+
+struct UserSecondaryEmailsArg
+    "User and a list of secondary emails."
+    user UserSelectorArg
+    secondary_emails List(common.EmailAddress)
+
+    example default
+        user = default
+        secondary_emails = ["bob2@hotmail.com", "bob@inst.gov"]
+
+
+#
+# add secondary emails
+#
+
+
+union AddSecondaryEmailResult
+    "Result of trying to add a secondary email to a user.
+    'success' is the only value indicating that a secondary email was successfully added to a user.
+    The other values explain the type of error that occurred, and include the email for which the error occured."
+
+    success SecondaryEmail
+        "Describes a secondary email that was successfully added to a user."
+
+    unavailable common.EmailAddress
+        "Secondary email is not available to be claimed by the user."
+
+    already_pending common.EmailAddress
+        "Secondary email is already a pending email for the user."
+
+    already_owned_by_user common.EmailAddress
+        "Secondary email is already a verified email for the user."
+
+    reached_limit common.EmailAddress
+        "User already has the maximum number of secondary emails allowed."
+
+    transient_error common.EmailAddress
+        "A transient error occurred. Please try again later."
+
+    too_many_updates common.EmailAddress
+        "An error occurred due to conflicting updates. Please try again later."
+
+    unknown_error common.EmailAddress
+        "An unknown error occurred."
+
+    rate_limited common.EmailAddress
+        "Too many emails are being sent to this email address. Please try again later."
+
+    example default
+        success = default
+
+    example unavailable
+        unavailable = "alice@example.com"
+
+
+struct UserSecondaryEmailsResult
+    user UserSelectorArg
+    results List(AddSecondaryEmailResult)
+
+    example default
+        user = default
+        results = [default, unavailable]
+
+
+union UserAddResult
+    "Result of trying to add secondary emails to a user.
+    'success' is the only value indicating that a user was successfully retrieved for adding secondary emails.
+    The other values explain the type of error that occurred, and include the user for which the error occured."
+
+    success UserSecondaryEmailsResult
+        "Describes a user and the results for each attempt to add a secondary email."
+
+    invalid_user UserSelectorArg
+        "Specified user is not a valid target for adding secondary emails."
+
+    unverified UserSelectorArg
+        "Secondary emails can only be added to verified users."
+
+    placeholder_user UserSelectorArg
+        "Secondary emails cannot be added to placeholder users."
+
+    example default
+        success = default
+
+    example invalid
+        invalid_user = default
+
+
+struct AddSecondaryEmailsArg
+    new_secondary_emails List(UserSecondaryEmailsArg)
+        "List of users and secondary emails to add."
+
+    example default
+        new_secondary_emails = [default]
+
+
+struct AddSecondaryEmailsResult
+    results List(UserAddResult)
+        "List of users and secondary email results."
+
+    example default
+        results = [default, invalid]
+
+
+union AddSecondaryEmailsError
+    "Error returned when adding secondary emails fails."
+
+    secondary_emails_disabled
+        "Secondary emails are disabled for the team."
+
+    too_many_emails
+        "A maximum of 20 secondary emails can be added in a single call."
+
+
+route members/secondary_emails/add(AddSecondaryEmailsArg, AddSecondaryEmailsResult, AddSecondaryEmailsError)
+    "Add secondary emails to users.
+
+    Permission : Team member management.
+
+    Emails that are on verified domains will be verified automatically.
+    For each email address not on a verified domain a verification email will be sent."
+
+    attrs
+        auth = "team"
+        scope = "members.write"
+
+#
+# resend verification emails
+#
+
+
+struct ResendVerificationEmailArg
+    emails_to_resend List(UserSecondaryEmailsArg)
+        "List of users and secondary emails to resend verification emails to."
+
+    example default
+        emails_to_resend = [default]
+
+
+union ResendSecondaryEmailResult
+    "Result of trying to resend verification email to a secondary email address.
+    'success' is the only value indicating that a verification email was successfully sent.
+    The other values explain the type of error that occurred, and include the email for which the error occured."
+
+    success common.EmailAddress
+        "A verification email was successfully sent to the secondary email address."
+
+    not_pending common.EmailAddress
+        "This secondary email address is not pending for the user."
+
+    rate_limited common.EmailAddress
+        "Too many emails are being sent to this email address. Please try again later."
+
+    example default
+        success = "alice@example.com"
+
+
+struct UserResendEmailsResult
+    user UserSelectorArg
+    results List(ResendSecondaryEmailResult)
+
+    example default
+        user = default
+        results = [default]
+
+
+union UserResendResult
+    "Result of trying to resend verification emails to a user.
+    'success' is the only value indicating that a user was successfully retrieved for sending verification emails.
+    The other values explain the type of error that occurred, and include the user for which the error occured."
+
+    success UserResendEmailsResult
+        "Describes a user and the results for each attempt to resend verification emails."
+
+    invalid_user UserSelectorArg
+        "Specified user is not a valid target for resending verification emails."
+
+    example default
+        success = default
+
+    example invalid
+        invalid_user = default
+
+
+struct ResendVerificationEmailResult
+    "List of users and resend results."
+    results List(UserResendResult)
+
+    example default
+        results = [default]
+
+
+route members/secondary_emails/resend_verification_emails(ResendVerificationEmailArg, ResendVerificationEmailResult, Void)
+    "Resend secondary email verification emails.
+
+    Permission : Team member management."
+
+    attrs
+        auth = "team"
+        scope = "members.write"
+
+
+#
+# delete secondary emails
+#
+
+
+struct DeleteSecondaryEmailsArg
+    emails_to_delete List(UserSecondaryEmailsArg)
+        "List of users and their secondary emails to delete."
+
+    example default
+        emails_to_delete = [default]
+
+
+union DeleteSecondaryEmailResult
+    "Result of trying to delete a secondary email address.
+    'success' is the only value indicating that a secondary email was successfully deleted.
+    The other values explain the type of error that occurred, and include the email for which the error occured."
+
+    success common.EmailAddress
+        "The secondary email was successfully deleted."
+
+    not_found common.EmailAddress
+        "The email address was not found for the user."
+
+    cannot_remove_primary common.EmailAddress
+        "The email address is the primary email address of the user, and cannot be removed."
+
+    example default
+        success = "alice@example.com"
+
+    example not_found
+        not_found = "alic@example.com"
+
+
+struct UserDeleteEmailsResult
+    user UserSelectorArg
+    results List(DeleteSecondaryEmailResult)
+
+    example default
+        user = default
+        results = [default, not_found]
+
+
+union UserDeleteResult
+    "Result of trying to delete a user's secondary emails.
+    'success' is the only value indicating that a user was successfully retrieved for deleting secondary emails.
+    The other values explain the type of error that occurred, and include the user for which the error occured."
+
+    success UserDeleteEmailsResult
+        "Describes a user and the results for each attempt to delete a secondary email."
+
+    invalid_user UserSelectorArg
+        "Specified user is not a valid target for deleting secondary emails."
+
+    example default
+        success = default
+
+    example invalid_user
+        invalid_user = default
+
+
+struct DeleteSecondaryEmailsResult
+    results List(UserDeleteResult)
+
+    example default
+        results = [default]
+
+
+route members/secondary_emails/delete(DeleteSecondaryEmailsArg, DeleteSecondaryEmailsResult, Void)
+    "Delete secondary emails from users
+
+    Permission : Team member management.
+
+    Users will be notified of deletions of verified secondary emails at both the secondary email and their primary email."
+
+    attrs
+        auth = "team"
+        scope = "members.write"

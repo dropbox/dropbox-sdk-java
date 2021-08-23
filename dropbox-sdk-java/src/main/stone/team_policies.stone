@@ -1,0 +1,201 @@
+namespace team_policies
+
+struct TeamMemberPolicies
+    "Policies governing team members."
+
+    sharing TeamSharingPolicies
+        "Policies governing sharing."
+    emm_state EmmState
+        "This describes the Enterprise Mobility Management (EMM) state for this team.
+        This information can be used to understand if an organization is integrating with
+        a third-party EMM vendor to further manage and apply restrictions upon the team's
+        Dropbox usage on mobile devices.
+        This is a new feature and in the future we'll be adding more new fields and additional
+        documentation."
+    office_addin OfficeAddInPolicy
+        "The admin policy around the Dropbox Office Add-In for this team."
+
+    example default
+        sharing = default
+        emm_state = disabled
+        office_addin = disabled
+
+struct TeamSharingPolicies
+    "Policies governing sharing within and outside of the team."
+
+    shared_folder_member_policy SharedFolderMemberPolicy
+        "Who can join folders shared by team members."
+    shared_folder_join_policy SharedFolderJoinPolicy
+        "Which shared folders team members can join."
+    shared_link_create_policy SharedLinkCreatePolicy
+        "Who can view shared links owned by team members."
+
+    example default
+        shared_folder_member_policy = team
+        shared_folder_join_policy = from_anyone
+        shared_link_create_policy = team_only
+
+# NOTE: we do not reuse sharing.MemberPolicy here since we may want to enable folder-specific member
+# policies that work on top of the broader team policies.
+union SharedFolderMemberPolicy
+    "Policy governing who can be a member of a folder shared by a team member."
+
+    team
+        "Only a teammate can be a member of a folder shared by a team member."
+    anyone
+        "Anyone can be a member of a folder shared by a team member."
+
+union SharedFolderJoinPolicy
+    "Policy governing which shared folders a team member can join."
+
+    from_team_only
+        "Team members can only join folders shared by teammates."
+    from_anyone
+        "Team members can join any shared folder, including those shared by users outside the team."
+
+union SharedLinkCreatePolicy
+    "Policy governing the visibility of shared links. This policy can apply to newly created shared
+    links, or all shared links."
+
+    default_public
+        "By default, anyone can access newly created shared links.
+        No login will be required to access the shared links unless overridden."
+    default_team_only
+        "By default, only members of the same team can access newly created shared links.
+        Login will be required to access the shared links unless overridden."
+    team_only
+        "Only members of the same team can access all shared links.
+        Login will be required to access all shared links."
+
+union EmmState
+    disabled
+        "Emm token is disabled."
+    optional
+        "Emm token is optional."
+    required
+        "Emm token is required."
+
+union OfficeAddInPolicy
+    disabled
+        "Office Add-In is disabled."
+    enabled
+        "Office Add-In is enabled."
+
+union SsoPolicy
+    disabled
+        "Users will be able to sign in with their Dropbox credentials."
+    optional
+        "Users will be able to sign in with either their Dropbox or single sign-on credentials."
+    required
+        "Users will be required to sign in with their single sign-on credentials."
+
+union PaperDeploymentPolicy
+    full
+        "All team members have access to Paper."
+    partial
+        "Only whitelisted team members can access Paper.
+        To see which user is whitelisted, check 'is_paper_whitelisted' on 'account/info'."
+
+union_closed RolloutMethod
+    unlink_all
+        "Unlink all."
+    unlink_most_inactive
+        "Unlink devices with the most inactivity."
+    add_member_to_exceptions
+        "Add member to Exceptions."
+
+union PaperEnabledPolicy
+    disabled
+        "Paper is disabled."
+    enabled
+        "Paper is enabled."
+    unspecified
+        "Unspecified policy."
+
+union PasswordControlMode
+    disabled
+        "Password is disabled."
+    enabled
+        "Password is enabled."
+
+union PasswordStrengthPolicy
+    minimal_requirements
+        "User passwords will adhere to the minimal password strength policy."
+    moderate_password
+        "User passwords will adhere to the moderate password strength policy."
+    strong_password
+        "User passwords will adhere to the very strong password strength policy."
+
+union TwoStepVerificationPolicy
+    require_tfa_enable
+        "Enabled require two factor authorization."
+    require_tfa_disable
+        "Disabled require two factor authorization."
+
+union TwoStepVerificationState
+    required
+        "Enabled require two factor authorization."
+    optional
+        "Optional require two factor authorization."
+    disabled
+        "Disabled require two factor authorization."
+
+union SmartSyncPolicy
+    local
+        "The specified content will be synced as local files by default."
+    on_demand
+        "The specified content will be synced as on-demand files by default."
+
+union_closed GroupCreation
+    admins_and_members
+        "Team admins and members can create groups."
+    admins_only
+        "Only team admins can create groups."
+
+union ShowcaseEnabledPolicy
+    disabled
+        "Showcase is disabled."
+    enabled
+        "Showcase is enabled."
+
+union ShowcaseDownloadPolicy
+    disabled
+        "Do not allow files to be downloaded from Showcases."
+    enabled
+        "Allow files to be downloaded from Showcases."
+
+union ShowcaseExternalSharingPolicy
+    disabled
+        "Do not allow showcases to be shared with people not on the team."
+    enabled
+        "Allow showcases to be shared with people not on the team."
+
+union CameraUploadsPolicyState
+    disabled
+        "Background camera uploads are disabled."
+    enabled
+        "Background camera uploads are allowed."
+
+union SmarterSmartSyncPolicyState
+    disabled
+        "Smarter Smart Sync feature is disabled."
+    enabled
+        "Smarter Smart Sync feature is enabled."
+
+union FileLockingPolicyState
+    disabled
+        "File locking feature is disabled."
+    enabled
+        "File locking feature is allowed."
+
+union PaperDefaultFolderPolicy
+    everyone_in_team
+        "Everyone in team will be the default option when creating a folder in Paper."
+    invite_only
+        "Invite only will be the default option when creating a folder in Paper."
+
+union PaperDesktopPolicy
+    disabled
+        "Do not allow team members to use Paper Desktop."
+    enabled
+        "Allow team members to use Paper Desktop."

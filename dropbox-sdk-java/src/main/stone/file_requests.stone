@@ -1,0 +1,404 @@
+namespace file_requests
+    "This namespace contains endpoints and data types for file request operations."
+
+
+alias FileRequestId = String(pattern="[-_0-9a-zA-Z]+", min_length=1)
+
+import common
+import files
+
+#
+# Common file requests objects
+#
+
+union GracePeriod
+    one_day
+    two_days
+    seven_days
+    thirty_days
+    always
+
+    example default
+        seven_days = null
+
+struct FileRequestDeadline
+
+    deadline common.DropboxTimestamp
+        "The deadline for this file request."
+    allow_late_uploads GracePeriod?
+        "If set, allow uploads after the deadline has passed. These
+            uploads will be marked overdue."
+
+    example deadline
+        deadline = "2020-10-12T17:00:00Z"
+
+    example deadline_with_grace_period
+        deadline = "2020-10-12T17:00:00Z"
+        allow_late_uploads = seven_days
+
+struct FileRequest
+    "A :link:`file request https://www.dropbox.com/help/9090` for receiving
+    files into the user's Dropbox account."
+
+    id FileRequestId
+        "The ID of the file request."
+    url String(min_length=1)
+        "The URL of the file request."
+    title String(min_length=1)
+        "The title of the file request."
+    destination files.Path?
+        "The path of the folder in the Dropbox where uploaded files will be
+        sent. This can be :val:`null` if the destination was removed. For apps
+        with the app folder permission, this will be relative to the app
+        folder."
+    created common.DropboxTimestamp
+        "When this file request was created."
+    deadline FileRequestDeadline?
+        "The deadline for this file request. Only set if the request has a
+        deadline."
+    is_open Boolean
+        "Whether or not the file request is open. If the file request is
+        closed, it will not accept any more file submissions."
+    file_count Int64
+        "The number of files this file request has received."
+
+    example default
+        id = "oaCAVmEyrqYnkZX9955Y"
+        url = "https://www.dropbox.com/request/oaCAVmEyrqYnkZX9955Y"
+        title = "Homework submission"
+        destination = "/File Requests/Homework"
+        created = "2015-10-05T17:00:00Z"
+        deadline = deadline_with_grace_period
+        is_open = true
+        file_count = 3
+
+    example with_deadline
+        id = "BAJ7IrRGicQKGToykQdB"
+        url = "https://www.dropbox.com/request/BAJ7IrRGjcQKGToykQdB"
+        title = "Photo contest submission"
+        destination = "/Photo contest entries"
+        created = "2015-11-02T04:00:00Z"
+        deadline = deadline
+        is_open = true
+        file_count = 105
+
+    example with_no_deadline
+        id = "rxwMPvK3ATTa0VxOJu5T"
+        url = "https://www.dropbox.com/request/rxwMPvK3ATTa0VxOJu5T"
+        title = "Wedding photo submission"
+        destination = "/Wedding photos"
+        created = "2015-12-15T13:02:00Z"
+        deadline = null
+        is_open = true
+        file_count = 37
+
+alias FileRequestValidationError = String?
+
+union GeneralFileRequestsError
+    "There is an error accessing the file requests functionality."
+
+    disabled_for_team
+        "This user's Dropbox Business team doesn't allow file requests."
+
+union FileRequestError extends GeneralFileRequestsError
+    "There is an error with the file request."
+
+    not_found
+        "This file request ID was not found."
+    not_a_folder
+        "The specified path is not a folder."
+    app_lacks_access
+        "This file request is not accessible to this app. Apps with the app
+        folder permission can only access file requests in their app folder."
+    no_permission
+        "This user doesn't have permission to access or modify this file
+        request."
+    email_unverified
+        "This user's email address is not verified. File requests are only
+        available on accounts with a verified email address. Users can verify
+        their email address :link:`here https://www.dropbox.com/help/317`."
+    validation_error
+        "There was an error validating the request. For example, the title was
+        invalid, or there were disallowed characters in the destination path."
+
+#
+# Getting file requests
+#
+
+route list:2(ListFileRequestsArg, ListFileRequestsV2Result, ListFileRequestsError)
+    "Returns a list of file requests owned by this user. For apps with the app
+    folder permission, this will only return file requests with destinations in
+    the app folder."
+
+    attrs
+        allow_app_folder_app = true
+        is_preview = true
+        scope = "file_requests.read"
+
+struct ListFileRequestsArg
+    "Arguments for :route:`list:2`."
+
+    limit UInt64 = 1000
+        "The maximum number of file requests that should be returned per request."
+
+    example default
+        limit = 1000
+
+struct ListFileRequestsV2Result
+    "Result for :route:`list:2` and :route:`list/continue`."
+
+    file_requests List(FileRequest)
+        "The file requests owned by this user. Apps with the app folder
+        permission will only see file requests in their app folder."
+
+    cursor String
+        "Pass the cursor into :route:`list/continue` to obtain additional file requests."
+
+    has_more Boolean
+        "Is true if there are additional file requests that have not been returned
+        yet. An additional call to :route:list/continue` can retrieve them."
+
+    example default
+        file_requests = [default, with_deadline, with_no_deadline]
+        cursor = "ZtkX9_EHj3x7PMkVuFIhwKYXEpwpLwyxp9vMKomUhllil9q7eWiAu"
+        has_more = true
+
+route list/continue(ListFileRequestsContinueArg, ListFileRequestsV2Result, ListFileRequestsContinueError)
+    "Once a cursor has been retrieved from :route:`list:2`, use this to paginate through all
+    file requests. The cursor must come from a previous call to :route:`list:2` or
+    :route:`list/continue`."
+    attrs
+        allow_app_folder_app = true
+        is_preview = true
+        scope = "file_requests.read"
+
+struct ListFileRequestsContinueArg
+    cursor String
+        "The cursor returned by the previous API call specified in the endpoint description."
+
+    example default
+        cursor = "ZtkX9_EHj3x7PMkVuFIhwKYXEpwpLwyxp9vMKomUhllil9q7eWiAu"
+
+union ListFileRequestsContinueError extends GeneralFileRequestsError
+    "There was an error retrieving the file requests."
+
+    invalid_cursor
+        "The cursor is invalid."
+
+
+route list(Void, ListFileRequestsResult, ListFileRequestsError)
+    "Returns a list of file requests owned by this user. For apps with the app
+    folder permission, this will only return file requests with destinations in
+    the app folder."
+
+    attrs
+        allow_app_folder_app = true
+        scope = "file_requests.read"
+
+struct ListFileRequestsResult
+    "Result for :route:`list`."
+
+    file_requests List(FileRequest)
+        "The file requests owned by this user. Apps with the app folder
+        permission will only see file requests in their app folder."
+
+    example default
+        file_requests = [default, with_deadline, with_no_deadline]
+
+union ListFileRequestsError extends GeneralFileRequestsError
+    "There was an error retrieving the file requests."
+
+
+#
+# Getting individual file requests
+#
+
+route get(GetFileRequestArgs, FileRequest, GetFileRequestError)
+    "Returns the specified file request."
+
+    attrs
+        allow_app_folder_app = true
+        scope = "file_requests.read"
+
+struct GetFileRequestArgs
+    "Arguments for :route:`get`."
+
+    id FileRequestId
+        "The ID of the file request to retrieve."
+
+    example default
+        id = "oaCAVmEyrqYnkZX9955Y"
+
+union GetFileRequestError extends FileRequestError
+    "There was an error retrieving the specified file request."
+
+
+#
+# Creating new file requests
+#
+
+route create(CreateFileRequestArgs, FileRequest, CreateFileRequestError)
+    "Creates a file request for this user."
+
+    attrs
+        allow_app_folder_app = true
+        scope = "file_requests.write"
+
+struct CreateFileRequestArgs
+    "Arguments for :route:`create`."
+
+    title String(min_length=1)
+        "The title of the file request. Must not be empty."
+    destination files.Path
+        "The path of the folder in the Dropbox where uploaded files will be
+        sent. For apps with the app folder permission, this will be relative to
+        the app folder."
+    deadline FileRequestDeadline?
+        "The deadline for the file request. Deadlines can only be set by
+        Professional and Business accounts."
+    open Boolean = true
+        "Whether or not the file request should be open. If the file request is
+        closed, it will not accept any file submissions, but it can be opened
+        later."
+
+    example default
+        title = "Homework submission"
+        destination = "/File Requests/Homework"
+        deadline = deadline_with_grace_period
+
+union CreateFileRequestError extends FileRequestError
+    "There was an error creating the file request."
+
+    invalid_location
+        "File requests are not available on the specified folder."
+    rate_limit
+        "The user has reached the rate limit for creating file requests. The
+        limit is currently 4000 file requests total."
+
+#
+# Updating existing file requests
+#
+
+route update(UpdateFileRequestArgs, FileRequest, UpdateFileRequestError)
+    "Update a file request."
+
+    attrs
+        allow_app_folder_app = true
+        scope = "file_requests.write"
+
+struct UpdateFileRequestArgs
+    "Arguments for :route:`update`."
+
+    id FileRequestId
+        "The ID of the file request to update."
+    title String(min_length=1)?
+        "The new title of the file request. Must not be empty."
+    destination files.Path?
+        "The new path of the folder in the Dropbox where uploaded files will be
+        sent. For apps with the app folder permission, this will be relative to
+        the app folder."
+    deadline UpdateFileRequestDeadline = no_update
+        "The new deadline for the file request. Deadlines can only be set by
+        Professional and Business accounts."
+        union
+            no_update
+                "Do not change the file request's deadline."
+            update FileRequestDeadline?
+                "If :val:`null`, the file request's deadline is cleared."
+
+            example set_deadline
+                update = deadline_with_grace_period
+    open Boolean?
+        "Whether to set this file request as open or closed."
+
+    example default
+        id = "oaCAVmEyrqYnkZX9955Y"
+        title = "Homework submission"
+        destination = "/File Requests/Homework"
+        deadline = set_deadline
+        open = true
+
+union UpdateFileRequestError extends FileRequestError
+    "There is an error updating the file request."
+
+#
+# Count file requests
+#
+
+route count(Void, CountFileRequestsResult, CountFileRequestsError)
+    "Returns the total number of file requests owned by this user. Includes both open and
+    closed file requests."
+
+    attrs
+        allow_app_folder_app = true
+        scope = "file_requests.read"
+
+struct CountFileRequestsResult
+    "Result for :route:`count`."
+
+    file_request_count UInt64
+        "The number file requests owner by this user."
+
+    example default
+        file_request_count = 15
+
+union CountFileRequestsError extends GeneralFileRequestsError
+    "There was an error counting the file requests."
+
+#
+# Deleting existing file requests
+#
+
+route delete(DeleteFileRequestArgs, DeleteFileRequestsResult, DeleteFileRequestError)
+    "Delete a batch of closed file requests."
+
+    attrs
+        allow_app_folder_app = true
+        scope = "file_requests.write"
+
+struct DeleteFileRequestArgs
+    "Arguments for :route:`delete`."
+
+    ids List(FileRequestId)
+        "List IDs of the file requests to delete."
+
+    example default
+        ids = ["oaCAVmEyrqYnkZX9955Y", "BaZmehYoXMPtaRmfTbSG"]
+
+struct DeleteFileRequestsResult
+    "Result for :route:`delete`."
+
+    file_requests List(FileRequest)
+        "The file requests deleted by the request."
+
+    example default
+        file_requests = [default, with_deadline, with_no_deadline]
+
+union DeleteFileRequestError extends FileRequestError
+    "There was an error deleting these file requests."
+
+    file_request_open
+        "One or more file requests currently open."
+
+#
+# Deleting all closed file requests
+#
+
+route delete_all_closed(Void, DeleteAllClosedFileRequestsResult, DeleteAllClosedFileRequestsError)
+    "Delete all closed file requests owned by this user."
+
+    attrs
+        allow_app_folder_app = true
+        scope = "file_requests.write"
+
+struct DeleteAllClosedFileRequestsResult
+    "Result for :route:`delete_all_closed`."
+
+    file_requests List(FileRequest)
+        "The file requests deleted for this user."
+
+    example default
+        file_requests = [default, with_deadline, with_no_deadline]
+
+union DeleteAllClosedFileRequestsError extends FileRequestError
+    "There was an error deleting all closed file requests."
