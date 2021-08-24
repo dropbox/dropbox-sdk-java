@@ -1,0 +1,307 @@
+import org.gradle.internal.os.OperatingSystem
+
+apply plugin: 'java'
+apply plugin: 'com.github.blindpirate.osgi'
+apply plugin: 'maven'
+apply plugin: 'com.github.ben-manes.versions' // dependencyUpdates task
+
+description = 'Official Java client library for the Dropbox API.'
+group = 'com.dropbox.core'
+archivesBaseName = 'dropbox-core-sdk'
+version = "4.0.0-SNAPSHOT"
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+// needed before we define the pom
+conf2ScopeMappings.addMapping(1, configurations.compileOnly, 'provided')
+
+ext {
+    mavenName = 'Official Dropbox Java SDK'
+    generatedSources = file("$buildDir/generated-sources")
+    generatedResources = file("$buildDir/generated-resources")
+    authInfoPropertyName = 'com.dropbox.test.authInfoFile'
+    basePom = pom {
+        name = mavenName
+        artifactId = archivesBaseName
+        project {
+            description = description
+            packaging 'jar'
+            url 'https://www.dropbox.com/developers/core'
+
+            scm {
+                connection 'scm:git:git@github.com:dropbox/dropbox-sdk-java.git'
+                developerConnection 'scm:git:git@github.com:dropbox/dropbox-sdk-java.git'
+                url 'https://github.com/dropbox/dropbox-sdk-java'
+            }
+
+            developers {
+                developer {
+                    id 'dropbox-api-team'
+                    name 'Dropbox API Team'
+                    email 'api-support@dropbox.com'
+                    organization = 'Dropbox'
+                }
+            }
+
+            licenses {
+                license {
+                    name 'MIT'
+                    url 'http://opensource.org/licenses/MIT'
+                    distribution 'repo'
+                }
+            }
+        }
+    }
+}
+
+dependencies {
+    // Important: Jackson 2.8+ will be free to use JDK7 features and no longer guarantees JDK6
+    //            compatibility
+    compile 'com.fasterxml.jackson.core:jackson-core:2.7.4'
+
+    compileOnly 'javax.servlet:servlet-api:2.5'
+    compileOnly 'com.squareup.okhttp:okhttp:2.7.5'  // support both v2 and v3 to avoid
+    compileOnly 'com.squareup.okhttp3:okhttp:3.5.0' // method count bloat
+    compileOnly 'com.google.appengine:appengine-api-1.0-sdk:1.9.38'
+
+    testCompile 'org.testng:testng:6.9.10'
+    testCompile 'org.mockito:mockito-core:1.10.19'
+    testCompile 'org.openjdk.jmh:jmh-core:1.12'
+    testCompile 'org.openjdk.jmh:jmh-generator-annprocess:1.12'
+    testCompile 'com.google.appengine:appengine-api-1.0-sdk:1.9.38'
+    testCompile 'com.google.appengine:appengine-api-labs:1.9.38'
+    testCompile 'com.google.appengine:appengine-api-stubs:1.9.38'
+    testCompile 'com.google.appengine:appengine-testing:1.9.38'
+    testCompile 'com.squareup.okhttp:okhttp:2.7.5'
+    testCompile 'com.squareup.okhttp3:okhttp:3.5.0'
+    testCompile 'com.google.guava:guava:19.0'
+    testCompile "com.google.truth:truth:1.1.2"
+}
+
+configurations {
+    withoutOsgi.extendsFrom compile
+}
+
+processResources {
+    filesMatching('**/sdk-version.txt') {
+        expand project.properties
+    }
+
+    filesMatching('**/*.crt') { fcd ->
+        def inputstream = fcd.open()
+        def certDatas = com.dropbox.maven.pem_converter.PemLoader.load(
+                new InputStreamReader(inputstream, "UTF-8")
+        )
+        inputstream.close()
+
+        def crtPath = fcd.getPath()
+        def rawPath = crtPath.substring(0, crtPath.length() - 4) + ".raw"
+        def rawFile = new File(getDestinationDir(), rawPath);
+        rawFile.getParentFile().mkdirs();
+        def out = new DataOutputStream(new FileOutputStream(rawFile))
+        com.dropbox.maven.pem_converter.RawLoader.store(certDatas, out)
+        out.close()
+
+        fcd.exclude()
+    }
+}
+
+compileJava {
+    options.compilerArgs << '-Xlint:all'
+    options.warnings = true
+    options.deprecation = true
+    options.encoding = 'utf-8'
+}
+
+test {
+    useTestNG()
+
+    // TestNG specific options
+    options.parallel 'methods'
+    options.threadCount 4
+
+    // exclude integration tests
+    exclude '**/IT*.class'
+    exclude '**/*IT.class'
+    exclude '**/*IT$*.class'
+
+    testLogging {
+        events "skipped", "failed"
+        info {
+            events "passed", "skipped", "failed"
+        }
+    }
+}
+
+def getAuthInfoFile() {
+    if (!project.hasProperty(authInfoPropertyName)) {
+        throw new GradleException('' +
+            "These tests require the \"${authInfoPropertyName}\" " +
+            "project property be set to point to an authorization JSON file " +
+            "(e.g. ./gradlew integrationTest -P${authInfoPropertyName}=auth.json)."
+        )
+    }
+
+    def authInfoFile = file(project.property(authInfoPropertyName))
+    if (!authInfoFile.exists()) {
+        throw new GradleException('' +
+            "The test auth info file does not exist: \"${authInfoFile.absolutePath}\". " +
+            "Please ensure the \"${authInfoPropertyName}\" project property is set to point to " +
+            "the correct authorization JSON file."
+        )
+    }
+    return authInfoFile
+}
+
+
+task integrationTest(type: Test) {
+    description 'Runs integration tests against Production or Dev servers.'
+
+    useTestNG()
+
+    // TestNG specific options
+    options.parallel 'classes'
+    options.threadCount 4
+    options.preserveOrder true
+
+    // only select integration tests (similar to maven-failsafe-plugin rules)
+    include '**/IT*.class'
+    include '**/*IT.class'
+    include '**/*IT$*.class'
+
+    exclude '**/*V1IT.class'
+    exclude '**/*V1IT$*.class'
+
+    testLogging {
+        events "skipped", "failed"
+        info {
+            events "passed", "skipped", "failed"
+        }
+    }
+
+    reports {
+        html {
+            destination = file("${buildDir}/reports/integration-tests")
+        }
+    }
+
+    ext {
+        authInfoPropertyName = 'com.dropbox.test.authInfoFile'
+        httpRequestorPropertyName = 'com.dropbox.test.httpRequestor'
+    }
+
+    doFirst {
+        systemProperty authInfoPropertyName, getAuthInfoFile().absolutePath
+        if (project.hasProperty(httpRequestorPropertyName)) {
+            systemProperty httpRequestorPropertyName, project.property(httpRequestorPropertyName)
+        }
+    }
+}
+
+javadoc {
+    title "${project.mavenName} ${project.version} API"
+    failOnError true
+
+    // JDK 8's javadoc has an on-by-default lint called "missing", which requires that everything
+    // be documented. Disable this lint because we intentionally don't document some things.
+    //
+    // NOTE: ugly hack to set our doclint settings due to strange handling of string options by the
+    // javadoc task.
+    if (JavaVersion.current().isJava8Compatible()) {
+        options.addBooleanOption "Xdoclint:all,-missing", true
+    }
+    options.addStringOption "link", "http://docs.oracle.com/javase/6/docs/api/"
+}
+
+jar {
+    // OsgiManifest since we import 'osgi' plugin
+    manifest {
+        name project.name
+        description project.description
+        license project.basePom.getModel().getLicenses()[0].url
+        instruction 'Import-Package',
+            'com.google.appengine.*;resolution:=optional',
+            'com.squareup.okhttp;resolution:=optional',
+            'okhttp3;resolution:=optional',
+            'okio;resolution:=optional',
+            '*'
+
+        def noeeProp = 'osgi.bnd.noee'
+        def noee = project.properties.get(noeeProp, System.properties.get(noeeProp, 'false'))
+        instruction '-noee', noee
+    }
+}
+
+task jarWithoutOsgi(type: Jar, dependsOn: classes) {
+    classifier 'withoutOsgi'
+    from sourceSets.main.output
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+    withoutOsgi jarWithoutOsgi
+}
+
+install {
+    repositories.mavenInstaller {
+        pom = project.basePom
+    }
+}
+
+// To avoid cross-compilation surprises, add JDK6 libs to the boot classpath. This prevents issues
+// where we depend on a JDK7 interface that did not exist in JDK6.
+if (project.sourceCompatibility == JavaVersion.VERSION_1_6) {
+    if (System.env.JDK6_HOME == null) {
+        logger.warn("Set JDK6_HOME environment to disable boot classpath warnings.")
+    } else {
+        def jdkHome = System.env.JDK6_HOME
+        def sep = File.pathSeparator
+
+        logger.info("Setting JVM boot classpath to use ${jdkHome}")
+        project.tasks.withType(JavaCompile) {
+            def jdkLibs = "${jdkHome}/jre/lib"
+            def runtimeClasses = "rt.jar"
+            if (OperatingSystem.current().isMacOsX()) {
+                jdkLibs = "${jdkHome}/Classes"
+                runtimeClasses = "classes.jar"
+            }
+            options.bootClasspath = "${jdkLibs}/${runtimeClasses}"
+            options.bootClasspath += "${sep}${jdkLibs}/jsse.jar"
+            options.bootClasspath += "${sep}${jdkLibs}/jce.jar"
+        }
+    }
+}
+
+// reject dependencyUpdates candidates with alpha or beta in their names:
+dependencyUpdates.resolutionStrategy = {
+    componentSelection { rules ->
+        rules.all { ComponentSelection selection ->
+            boolean rejected = ['alpha', 'beta', 'rc'].any { qualifier ->
+                selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
+            }
+            if (rejected) {
+                selection.reject('Release candidate')
+            }
+        }
+    }
+}
+
+
+/* BEGIN PRIVATE REPO ONLY */
+apply from: '../stone.gradle'
+
+// load release configuration
+apply from: '../release.gradle'
+
+/* END PRIVATE REPO ONLY */

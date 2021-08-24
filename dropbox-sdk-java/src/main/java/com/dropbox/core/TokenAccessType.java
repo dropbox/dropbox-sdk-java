@@ -3,7 +3,7 @@ package com.dropbox.core;
 /**
  *  Whether or not to include refresh token in {@link DbxAuthFinish}
  *  Non-mobile apps use it in {@link DbxWebAuth}.
- *  Mobile apps use it in {@link com.dropbox.core.android.Auth}
+ *  Mobile apps use it in com.dropbox.core.android.Auth (in dropbox-sdk-android library)
  */
 public enum TokenAccessType{
     /**

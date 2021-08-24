@@ -1,0 +1,14 @@
+[MESSAGES CONTROL]
+disable=
+    C,
+    R,
+    fixme,
+    locally-disabled,
+    protected-access,
+    useless-else-on-loop,
+    cell-var-from-loop, # https://github.com/PyCQA/pylint/issues/1934
+    bad-string-format-type, # bogus errors
+enable=useless-suppression
+
+[REPORTS]
+reports=n
