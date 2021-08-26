@@ -8,7 +8,7 @@ A Java library to access [Dropbox's HTTP-based Core API v2](https://www.dropbox.
 
 License: [MIT](License.txt)
 
-Documentation: [Javadocs](https://dropbox.github.io/dropbox-sdk-java/api-docs/v4.0.0/)
+Documentation: [Javadocs](https://dropbox.github.io/dropbox-sdk-java/api-docs/v4.0.1/)
 
 ## Setup
 
@@ -18,7 +18,7 @@ If you're using Maven, then edit your project's "pom.xml" and add this to the `<
 <dependency>
     <groupId>com.dropbox.core</groupId>
     <artifactId>dropbox-core-sdk</artifactId>
-    <version>4.0.0</version>
+    <version>4.0.1</version>
 </dependency>
 ```
 
