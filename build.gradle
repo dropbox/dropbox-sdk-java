@@ -8,7 +8,7 @@ apply plugin: 'com.github.ben-manes.versions' // dependencyUpdates task
 description = 'Official Java client library for the Dropbox API.'
 group = 'com.dropbox.core'
 archivesBaseName = 'dropbox-core-sdk'
-version = "4.0.0-SNAPSHOT"
+version = "4.0.1"
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 

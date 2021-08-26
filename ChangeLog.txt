@@ -1,3 +1,8 @@
+4.0.1 (2021-08-26)
+---------------------------------------------
+- Return an error when we have an invalid access token
+- DbxRefreshResult Expires In returns the right time
+
 4.0.0 (2021-03-29)
 ---------------------------------------------
 - update Java tests to use Google's Truth library
