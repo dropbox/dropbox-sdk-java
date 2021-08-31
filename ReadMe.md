@@ -27,7 +27,7 @@ If you are using Gradle, then edit your project's "build.gradle" and add this to
 ```groovy
 dependencies {
     // ...
-    implementation 'com.dropbox.core:dropbox-core-sdk:4.0.0'
+    implementation 'com.dropbox.core:dropbox-core-sdk:4.0.1'
 }
 ```
 
