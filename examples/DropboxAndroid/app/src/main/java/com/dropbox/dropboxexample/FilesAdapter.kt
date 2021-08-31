@@ -38,6 +38,8 @@ class FilesAdapter : ListAdapter<Metadata, RecyclerView.ViewHolder>(FileDiffCall
             } else if (item is FolderMetadata) {
                 //the item is a folder
                 binding.fileIcon.setImageResource(R.drawable.ic_folder)
+            } else {
+                throw IllegalStateException("Unsupported item in adapter")
             }
             binding.apply {
                 fileName.text = item.name

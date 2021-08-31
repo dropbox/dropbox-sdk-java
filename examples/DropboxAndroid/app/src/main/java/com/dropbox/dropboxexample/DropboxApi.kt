@@ -15,18 +15,19 @@ import java.io.InputStream
 
 class DropboxApi(private val dropboxClient: DbxClientV2) {
 
-    suspend fun uploadFile(fileName: String, inputStream: InputStream): DropboxUploadApiResponse = withContext(Dispatchers.IO) {
-        try {
-            val fileMetadata = dropboxClient
-                .files()
-                .uploadBuilder("/$fileName") //Upload to the root of dropbox
-                .withMode(WriteMode.OVERWRITE)
-                .uploadAndFinish(inputStream)
-            DropboxUploadApiResponse.Success(fileMetadata)
-        } catch (exception: DbxException) {
-            DropboxUploadApiResponse.Failure(exception)
+    suspend fun uploadFile(fileName: String, inputStream: InputStream): DropboxUploadApiResponse =
+        withContext(Dispatchers.IO) {
+            try {
+                val fileMetadata = dropboxClient
+                    .files()
+                    .uploadBuilder("/$fileName") //Upload to the root of Dropbox
+                    .withMode(WriteMode.OVERWRITE)
+                    .uploadAndFinish(inputStream)
+                DropboxUploadApiResponse.Success(fileMetadata)
+            } catch (exception: DbxException) {
+                DropboxUploadApiResponse.Failure(exception)
+            }
         }
-    }
 
     suspend fun getAccountInfo(): DropboxAccountInfoResponse = withContext(Dispatchers.IO) {
         try {
@@ -37,7 +38,10 @@ class DropboxApi(private val dropboxClient: DbxClientV2) {
         }
     }
 
-    // Loads the file metadata for a folder, it will continue until the server says there is no more data in the folder
+    /**
+     *   Loads the file metadata for a folder, it will continue until the server says there is no
+     *   more data in the folder
+     */
     fun getFilesForFolderFlow(folderPath: String): Flow<GetFilesResponse> = flow {
         val files = mutableListOf<Metadata>()
         when (val response = getFilesForFolder(folderPath)) {
@@ -66,14 +70,15 @@ class DropboxApi(private val dropboxClient: DbxClientV2) {
         }
     }
 
-    private suspend fun getFilesForFolder(folderPath: String): GetFilesApiResponse = withContext(Dispatchers.IO) {
-        try {
-            val files = dropboxClient.files().listFolder(folderPath)
-            GetFilesApiResponse.Success(files)
-        } catch (exception: DbxException) {
-            GetFilesApiResponse.Failure(exception)
+    private suspend fun getFilesForFolder(folderPath: String): GetFilesApiResponse =
+        withContext(Dispatchers.IO) {
+            try {
+                val files = dropboxClient.files().listFolder(folderPath)
+                GetFilesApiResponse.Success(files)
+            } catch (exception: DbxException) {
+                GetFilesApiResponse.Failure(exception)
+            }
         }
-    }
 
     private suspend fun getFilesForFolderContinue(cursor: String) = withContext(Dispatchers.IO) {
         try {
@@ -90,22 +95,22 @@ class DropboxApi(private val dropboxClient: DbxClientV2) {
 }
 
 sealed class DropboxUploadApiResponse {
-    data class Success(val fileMetadata: FileMetadata): DropboxUploadApiResponse()
-    data class Failure(val exception: DbxException): DropboxUploadApiResponse()
+    data class Success(val fileMetadata: FileMetadata) : DropboxUploadApiResponse()
+    data class Failure(val exception: DbxException) : DropboxUploadApiResponse()
 }
 
 sealed class DropboxAccountInfoResponse {
-    data class Success(val accountInfo: FullAccount): DropboxAccountInfoResponse()
-    data class Failure(val exception: DbxException): DropboxAccountInfoResponse()
+    data class Success(val accountInfo: FullAccount) : DropboxAccountInfoResponse()
+    data class Failure(val exception: DbxException) : DropboxAccountInfoResponse()
 }
 
 sealed class GetFilesResponse {
-    data class Success(val result: List<Metadata>): GetFilesResponse()
-    data class Failure(val exception: DbxException): GetFilesResponse()
+    data class Success(val result: List<Metadata>) : GetFilesResponse()
+    data class Failure(val exception: DbxException) : GetFilesResponse()
 }
 
 
 sealed class GetFilesApiResponse {
-    data class Success(val result: ListFolderResult): GetFilesApiResponse()
-    data class Failure(val exception: DbxException): GetFilesApiResponse()
+    data class Success(val result: ListFolderResult) : GetFilesApiResponse()
+    data class Failure(val exception: DbxException) : GetFilesApiResponse()
 }
