@@ -84,7 +84,7 @@ def getLocalProperties() {
     return props
 }
 ```
-3. Edit your `AndroidManifest` to use the manifest placeholder defined in step 2.
+3. Edit your `AndroidManifest.xml` to use the manifest placeholder defined in step 2.
 ```
     <activity
         android:name="com.dropbox.core.android.AuthActivity"
@@ -107,6 +107,6 @@ val APP_KEY = BuildConfig.DROPBOX_KEY
 ## Authentication with the Dropbox Java SDK
 Starting September 30, 2021 the Dropbox authentication flow will only return short lived tokens. The Java SDK has been updated to support this using `DbxCredential`s.
 This credential consists of a short lived `accessToken` and a long lived `refreshToken`. The SDK will refresh this short lived access token by calling the server and exchanging the refresh token for an access token when the access token has expired (See `refreshAccessTokenIfNeeded()` in `DbxRawClientV2`).
-This allows clients to continue to have a valid access token without further interaction with the user. This is useful for mobile clients that need to do periodic background work without having to force the user to manually re-authenticate.
+This allows clients to continue to have a valid access token without further interaction with the user. This is useful for mobile clients that need to do periodic background work without having to force the user to manually re-authenticate. You can read more about this [on the Dropbox Tech blog](https://dropbox.tech/developers/migrating-app-permissions-and-access-tokens)
 
 If you have users with existing long lived access tokens, they will not be impacted. Only tokens issued after September 30th will be short lived.
