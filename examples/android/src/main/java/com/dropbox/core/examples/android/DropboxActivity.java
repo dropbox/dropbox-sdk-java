@@ -90,8 +90,10 @@ public abstract class DropboxActivity extends AppCompatActivity {
     }
 
     public static void startOAuth2Authentication(Context context, String app_key, List<String> scope) {
-       // Auth.startOAuth2PKCE(context, app_key, DbxRequestConfigFactory.getRequestConfig(), scope);
-        String clientIdentifier = "DrobpoxSampleAndroid/1.0.0";
-        Auth.startOAuth2PKCE(context, app_key, new DbxRequestConfig(clientIdentifier), scope);
+        if (USE_SLT) {
+            Auth.startOAuth2PKCE(context, app_key, DbxRequestConfigFactory.getRequestConfig(), scope);
+        } else {
+            Auth.startOAuth2Authentication(context, app_key);
+        }
     }
 }
