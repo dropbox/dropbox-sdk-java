@@ -153,7 +153,8 @@ public class Main {
 
 Some more complete examples can be found here:
   * Example for a simple web app: [Web File Browser example](examples/web-file-browser/src/main/java/com/dropbox/core/examples/web_file_browser/DropboxAuth.java)
-  * Example for an Android app: [Android example](examples/android/src/main/java/com/dropbox/core/examples/android/UserActivity.java)
+  * Example for an Android app written in Kotlin: [Android Kotlin Example](examples/DropboxAndroid)
+  * Example for an Android app (deprecated): [Android example](examples/android/src/main/java/com/dropbox/core/examples/android/UserActivity.java)
   * Example for a command-line tool: [Command-Line Authorization example](examples/authorize/src/main/java/com/dropbox/core/examples/authorize/Main.java)
 
 To try out running this examples, please follow the instructions below.
@@ -256,20 +257,6 @@ To run individual tests, use the `--tests` gradle test filter:
 ```
 
 ## FAQ
-
-### Why do I see code like `Scope`, `DbxPKCEWebAuth` and `TokenAcessType` has warning "Beta: this feature is not available to all developers"? What are they?
-
-Dropbox is working on a project to improve our OAuth flow to support new permission model and 
-short lived tokens. This feature is still at early access phase. All endpoints are gated, only 
-certain developers will be able to access them.
- 
- Due to the nature of Java, most partners use our SDK through maven central instead of a 
- customized jar file. To help our partners accessing our beta feature easier, we decide to 
- include beta code in regular release.
- 
-Here is more [documentation](https://www.dropbox.com/lp/developers/reference/oauth-guide.html) 
-for our new OAuth 2 flow. Please reach out to us if you are interested in trying this feature!
-
 
 ### When I use `OkHttp3Requestor` in `DbxRequestConfig`, I get errors like 'class file for okhttp3.OkHttpClient not found'.
 
