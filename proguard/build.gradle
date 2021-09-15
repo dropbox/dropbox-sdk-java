@@ -13,7 +13,7 @@ ext {
 
 buildscript {
     repositories {
-        jcenter()
+        google()
         mavenCentral()
     }
 
@@ -24,7 +24,7 @@ buildscript {
 }
 
 repositories {
-    jcenter()
+    google()
     mavenLocal()
     mavenCentral()
 }
