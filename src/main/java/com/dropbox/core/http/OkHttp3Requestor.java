@@ -348,6 +348,11 @@ public class OkHttp3Requestor extends HttpRequestor {
         }
 
         @Override
+        public boolean isOneShot() {
+            return true;
+        }
+
+        @Override
         public void close() {
             stream.close();
         }
