@@ -79,7 +79,7 @@ dependencies {
 
     compileOnly 'javax.servlet:servlet-api:2.5'
     compileOnly 'com.squareup.okhttp:okhttp:2.7.5'  // support both v2 and v3 to avoid
-    compileOnly 'com.squareup.okhttp3:okhttp:3.5.0' // method count bloat
+    compileOnly 'com.squareup.okhttp3:okhttp:4.0.0' // method count bloat
     compileOnly 'com.google.android:android:4.1.1.4'
     compileOnly 'com.google.appengine:appengine-api-1.0-sdk:1.9.38'
 
@@ -92,7 +92,7 @@ dependencies {
     testCompile 'com.google.appengine:appengine-api-stubs:1.9.38'
     testCompile 'com.google.appengine:appengine-testing:1.9.38'
     testCompile 'com.squareup.okhttp:okhttp:2.7.5'
-    testCompile 'com.squareup.okhttp3:okhttp:3.5.0'
+    testCompile 'com.squareup.okhttp3:okhttp:4.0.0'
     testCompile 'com.google.guava:guava:19.0'
     testCompile "com.google.truth:truth:1.1.2"
 }
