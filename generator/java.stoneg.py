@@ -1062,7 +1062,9 @@ class JavaClassWriter(object):
             return 'true' if stone_value else 'false'
         elif data_type.name == 'String':
             return self.fmt('"%s"', stone_value.replace('\\', '\\\\').replace('"', '\\"'))
-        elif data_type.name in ('Float32', 'Float64'):
+        elif data_type.name == 'Float32':
+            return repr(stone_value) + 'f' # append a f at the end for float value
+        elif data_type.name == 'Float64':
             return repr(stone_value) # Because str() drops the last few digits.
         elif data_type.name in ('Int64', 'UInt64', 'UInt32'):
             return str(stone_value) + 'L'  # Need exact type match for boxed values.
