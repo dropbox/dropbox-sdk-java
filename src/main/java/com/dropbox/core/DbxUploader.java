@@ -238,6 +238,28 @@ public abstract class DbxUploader<R, E, X extends DbxApiException> implements Cl
     }
 
     /**
+     * Returns an {@link OutputStream} that writes to the request body. Remember to call {@link
+     * #finish} to complete the request and retrieve the response.
+     *
+     * Data written to this stream will be uploaded.
+     *
+     * Typically you will not need this method and can use the more convenient {@link
+     * #uploadAndFinish(InputStream)}.
+     *
+     * @param progressListener {@code IOUtil.ProgressListener} to track the upload progress. Only support OKHttpRequester and StandardHttpRequester.
+     *
+     * @return Request body output stream.
+     *
+     * @throws IllegalStateException if this uploader has already been closed (see {@link #close}) or finished (see {@link #finish})
+     *
+     * @see #uploadAndFinish(InputStream)
+     */
+    public OutputStream getOutputStream(IOUtil.ProgressListener progressListener) {
+        this.httpUploader.setProgressListener(progressListener);
+        return getOutputStream();
+    }
+
+    /**
      * Completes the request and returns response from the server.
      *
      * This method should be called after writing data to the upload {@link OutputStream} (see
