@@ -1,4 +1,4 @@
-# Dropbox Core SDK for Java 8+
+# Dropbox Core SDK for Java 8+ (test pr don't merge)
 
 ![GitHub](https://img.shields.io/github/license/dropbox/dropbox-sdk-java)
 ![Maven Central](https://img.shields.io/maven-central/v/com.dropbox.core/dropbox-core-sdk)
