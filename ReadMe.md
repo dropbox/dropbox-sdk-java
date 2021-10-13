@@ -10,7 +10,7 @@ License: [MIT](License.txt)
 
 Documentation: [Javadocs](https://dropbox.github.io/dropbox-sdk-java/api-docs/v4.0.1/)
 
-## Setup
+## Setup 
 
 If you're using Maven, then edit your project's "pom.xml" and add this to the `<dependencies>` section:
 
