@@ -1,3 +1,9 @@
+5.0.0 (2021-10-12)
+---------------------------------------------
+- Upgrade OKHttp to V4
+- Mark PipedRequestBody as a one shot request to avoid potential data corrupting during upload
+- Expose progress listener for upload progress via getOutputStream, useful for concurrent uploads
+
 4.0.1 (2021-08-26)
 ---------------------------------------------
 - Return an error when we have an invalid access token
