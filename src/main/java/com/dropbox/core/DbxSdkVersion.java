@@ -12,6 +12,6 @@ public class DbxSdkVersion
 
     private static String loadVersion()
     {
-        return "4.0.1-SNAPSHOT";
+        return "5.0.0-SNAPSHOT";
     }
 }

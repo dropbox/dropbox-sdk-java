@@ -236,12 +236,12 @@ public class OkHttp3Requestor extends HttpRequestor {
 
         @Override
         public void upload(File file) {
-            setBody(RequestBody.create(null, file));
+            setBody(RequestBody.Companion.create(file, null));
         }
 
         @Override
         public void upload(byte [] body) {
-            setBody(RequestBody.create(null, body));
+            setBody(RequestBody.Companion.create(body, null));
         }
 
         @Override
@@ -345,6 +345,11 @@ public class OkHttp3Requestor extends HttpRequestor {
 
         public OutputStream getOutputStream() {
             return stream.getOutputStream();
+        }
+
+        @Override
+        public boolean isOneShot() {
+            return true;
         }
 
         @Override
