@@ -41,7 +41,7 @@ public abstract class JsonReader<T>
         // Base implementation does nothing.
     }
 
-    public final T readField(JsonParser parser, String fieldName, /*@Nullable*/T v)
+    public final T readField(JsonParser parser, String fieldName, /*@Nullable*/Object v)
         throws IOException, JsonReadException
     {
         if (v != null) throw new JsonReadException("duplicate field \"" + fieldName + "\"", parser.getTokenLocation());

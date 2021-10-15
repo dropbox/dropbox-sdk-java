@@ -63,7 +63,7 @@ buildscript {
 
     dependencies {
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.12.0'
-        classpath 'com.dropbox.maven:pem-converter-maven-plugin:1.0'
+        classpath files('gradle/dropbox-pem-converter-plugin')
         classpath 'gradle.plugin.com.github.blindpirate:gradle-legacy-osgi-plugin:0.0.3'
     }
 }

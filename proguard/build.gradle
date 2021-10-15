@@ -18,8 +18,8 @@ buildscript {
     }
 
     dependencies {
-        classpath 'net.sf.proguard:proguard-gradle:5.2.1'
-        classpath 'net.sf.proguard:proguard-base:5.2.1'
+        classpath 'net.sf.proguard:proguard-gradle:6.2.2'
+        classpath 'net.sf.proguard:proguard-base:6.2.2'
     }
 }
 
@@ -74,7 +74,15 @@ task proguard(type: proguard.gradle.ProGuardTask) {
     inputs.file configFile
 
     injars sourceSets.main.runtimeClasspath, filter:'!META-INF/*'
-    libraryjars "${System.getProperty('java.home')}/lib/rt.jar"
+    if (System.getProperty('java.version').startsWith('1.')) {
+        libraryjars "${System.getProperty('java.home')}/lib/rt.jar"
+    } else {
+        // As of Java 9, the runtime classes are packaged in modular jmod files.
+        libraryjars "${System.getProperty('java.home')}/jmods/java.base.jmod", jarfilter: '!**.jar', filter: '!module-info.class'
+        libraryjars "${System.getProperty('java.home')}/jmods/java.logging.jmod", jarfilter: '!**.jar', filter: '!module-info.class'
+        //libraryjars "${System.getProperty('java.home')}/jmods/java.sql.jmod", jarfilter: '!**.jar', filter: '!module-info.class'
+        //libraryjars "${System.getProperty('java.home')}/jmods/....."
+    }
     libraryjars sourceSets.main.compileClasspath.filter { file ->
         return !sourceSets.main.runtimeClasspath.contains(file)
     }
