@@ -2,7 +2,7 @@ import org.gradle.internal.os.OperatingSystem
 
 apply plugin: 'java'
 apply plugin: 'com.github.blindpirate.osgi'
-apply plugin: 'maven'
+apply plugin: 'maven-publish'
 apply plugin: 'com.github.ben-manes.versions' // dependencyUpdates task
 
 description = 'Official Java client library for the Dropbox API.'
@@ -13,8 +13,9 @@ sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
 // needed before we define the pom
-conf2ScopeMappings.addMapping(1, configurations.compileOnly, 'provided')
+//conf2ScopeMappings.addMapping(1, configurations.compileOnly, 'provided')
 
+/*
 ext {
     mavenName = 'Official Dropbox Java SDK'
     generatedSources = file("$buildDir/generated-sources")
@@ -53,7 +54,7 @@ ext {
         }
     }
 }
-
+*/
 buildscript {
     repositories {
         google()
@@ -218,7 +219,7 @@ task integrationTest(type: Test) {
 }
 
 javadoc {
-    title "${project.mavenName} ${project.version} API"
+    title "TODO" // "${project.mavenName} ${project.version} API"
     failOnError true
 
     // JDK 8's javadoc has an on-by-default lint called "missing", which requires that everything
@@ -237,7 +238,7 @@ jar {
     manifest {
         name project.name
         description project.description
-        license project.basePom.getModel().getLicenses()[0].url
+        license 'TODO' // project.basePom.getModel().getLicenses()[0].url
         instruction 'Import-Package',
             'android.*;resolution:=optional',
             'com.google.appengine.*;resolution:=optional',
@@ -272,13 +273,13 @@ artifacts {
     archives javadocJar
     withoutOsgi jarWithoutOsgi
 }
-
+/*
 install {
     repositories.mavenInstaller {
         pom = project.basePom
     }
 }
-
+*/
 // To avoid cross-compilation surprises, add JDK6 libs to the boot classpath. This prevents issues
 // where we depend on a JDK7 interface that did not exist in JDK6.
 if (project.sourceCompatibility == JavaVersion.VERSION_1_6) {

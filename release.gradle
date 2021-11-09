@@ -1,7 +1,7 @@
 apply plugin: 'java'
 apply plugin: 'java-library-distribution'
 apply plugin: 'signing'
-apply plugin: 'maven'
+apply plugin: 'maven-publish'
 
 task releaseTest() {
     dependsOn ':proguard:proguardTest'
@@ -32,6 +32,7 @@ signing {
 
 // Remember to upload binary with releases on GitHub. Some 3rd party developers still rely on
 // manually downloading and managing their dependencies.
+/*
 distributions {
     main {
         baseName = project.archivesBaseName
@@ -42,6 +43,7 @@ distributions {
         }
     }
 }
+*/
 
 /**
  * Verify our SDK version is set correctly in our artifact before uploading. This is to protect
@@ -66,7 +68,7 @@ def verifySdkVersion(deployment) {
         throw new GradleException("Could not find sdk-version.txt in artifact: " + deployment.mainArtifact.file.absolutePath);
     }
 }
-
+/*
 uploadArchives {
     repositories {
         mavenDeployer {
@@ -86,4 +88,5 @@ uploadArchives {
         }
     }
 }
+*/
 
