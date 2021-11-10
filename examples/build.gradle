@@ -1,5 +1,5 @@
 allprojects  {
-    apply plugin: 'maven'
+    apply plugin: 'maven-publish'
     group = 'com.dropbox.core'
 }
 

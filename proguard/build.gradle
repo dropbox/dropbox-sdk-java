@@ -1,4 +1,4 @@
-apply plugin: 'maven'
+apply plugin: 'maven-publish'
 apply plugin: 'java'
 
 description = 'ProGuard minified SDK test suite for ProGuard compatibility tests.'
