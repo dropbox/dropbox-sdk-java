@@ -66,6 +66,26 @@ def verifySdkVersion(deployment) {
         throw new GradleException("Could not find sdk-version.txt in artifact: " + deployment.mainArtifact.file.absolutePath);
     }
 }
+
+/** START - This is what I have migrated over so far */
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            url version.endsWith('SNAPSHOT') ? SONATYPE_SNAPSHOT_URL : SONATYPE_STAGING_URL
+            credentials {
+                username getUsername()
+                password getPassword()
+            }
+        }
+    }
+}
+/** END - This is what I have migrated over so far */
+
 /*
 uploadArchives {
     repositories {
