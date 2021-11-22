@@ -73,10 +73,15 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    withoutOsgi.extendsFrom compile
+}
+
 dependencies {
     // Important: Jackson 2.8+ will be free to use JDK7 features and no longer guarantees JDK6
     //            compatibility
     implementation 'com.fasterxml.jackson.core:jackson-core:2.7.4'
+    withoutOsgi 'com.fasterxml.jackson.core:jackson-core:2.7.4'
 
     compileOnly 'javax.servlet:servlet-api:2.5'
     compileOnly 'com.squareup.okhttp:okhttp:2.7.5'  // support both v2 and v3 to avoid
@@ -96,10 +101,6 @@ dependencies {
     testImplementation 'com.squareup.okhttp3:okhttp:4.0.0'
     testImplementation 'com.google.guava:guava:19.0'
     testImplementation "com.google.truth:truth:1.1.2"
-}
-
-configurations {
-    withoutOsgi.extendsFrom compile
 }
 
 processResources {
