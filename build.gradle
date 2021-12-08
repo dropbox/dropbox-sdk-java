@@ -2,57 +2,22 @@ import org.gradle.internal.os.OperatingSystem
 
 apply plugin: 'java'
 apply plugin: 'com.github.blindpirate.osgi'
-apply plugin: 'maven'
 apply plugin: 'com.github.ben-manes.versions' // dependencyUpdates task
 
-description = 'Official Java client library for the Dropbox API.'
-group = 'com.dropbox.core'
-archivesBaseName = 'dropbox-core-sdk'
-version = "5.0.0-SNAPSHOT"
+
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
 // needed before we define the pom
-conf2ScopeMappings.addMapping(1, configurations.compileOnly, 'provided')
+//conf2ScopeMappings.addMapping(1, configurations.compileOnly, 'provided')
 
 ext {
     mavenName = 'Official Dropbox Java SDK'
     generatedSources = file("$buildDir/generated-sources")
     generatedResources = file("$buildDir/generated-resources")
     authInfoPropertyName = 'com.dropbox.test.authInfoFile'
-    basePom = pom {
-        name = mavenName
-        artifactId = archivesBaseName
-        project {
-            description = description
-            packaging 'jar'
-            url 'https://www.dropbox.com/developers/core'
-
-            scm {
-                connection 'scm:git:git@github.com:dropbox/dropbox-sdk-java.git'
-                developerConnection 'scm:git:git@github.com:dropbox/dropbox-sdk-java.git'
-                url 'https://github.com/dropbox/dropbox-sdk-java'
-            }
-
-            developers {
-                developer {
-                    id 'dropbox-api-team'
-                    name 'Dropbox API Team'
-                    email 'api-support@dropbox.com'
-                    organization = 'Dropbox'
-                }
-            }
-
-            licenses {
-                license {
-                    name 'MIT'
-                    url 'http://opensource.org/licenses/MIT'
-                    distribution 'repo'
-                }
-            }
-        }
-    }
 }
+
 
 buildscript {
     repositories {
@@ -75,7 +40,7 @@ repositories {
 dependencies {
     // Important: Jackson 2.8+ will be free to use JDK7 features and no longer guarantees JDK6
     //            compatibility
-    compile 'com.fasterxml.jackson.core:jackson-core:2.7.4'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.7.4'
 
     compileOnly 'javax.servlet:servlet-api:2.5'
     compileOnly 'com.squareup.okhttp:okhttp:2.7.5'  // support both v2 and v3 to avoid
@@ -83,18 +48,18 @@ dependencies {
     compileOnly 'com.google.android:android:4.1.1.4'
     compileOnly 'com.google.appengine:appengine-api-1.0-sdk:1.9.38'
 
-    testCompile 'org.testng:testng:6.9.10'
-    testCompile 'org.mockito:mockito-core:1.10.19'
-    testCompile 'org.openjdk.jmh:jmh-core:1.12'
-    testCompile 'org.openjdk.jmh:jmh-generator-annprocess:1.12'
-    testCompile 'com.google.appengine:appengine-api-1.0-sdk:1.9.38'
-    testCompile 'com.google.appengine:appengine-api-labs:1.9.38'
-    testCompile 'com.google.appengine:appengine-api-stubs:1.9.38'
-    testCompile 'com.google.appengine:appengine-testing:1.9.38'
-    testCompile 'com.squareup.okhttp:okhttp:2.7.5'
-    testCompile 'com.squareup.okhttp3:okhttp:4.0.0'
-    testCompile 'com.google.guava:guava:19.0'
-    testCompile "com.google.truth:truth:1.1.2"
+    testImplementation 'org.testng:testng:6.9.10'
+    testImplementation 'org.mockito:mockito-core:1.10.19'
+    testImplementation 'org.openjdk.jmh:jmh-core:1.12'
+    testImplementation 'org.openjdk.jmh:jmh-generator-annprocess:1.12'
+    testImplementation 'com.google.appengine:appengine-api-1.0-sdk:1.9.38'
+    testImplementation 'com.google.appengine:appengine-api-labs:1.9.38'
+    testImplementation 'com.google.appengine:appengine-api-stubs:1.9.38'
+    testImplementation 'com.google.appengine:appengine-testing:1.9.38'
+    testImplementation 'com.squareup.okhttp:okhttp:2.7.5'
+    testImplementation 'com.squareup.okhttp3:okhttp:4.0.0'
+    testImplementation 'com.google.guava:guava:19.0'
+    testImplementation "com.google.truth:truth:1.1.2"
 }
 
 configurations {
@@ -155,18 +120,18 @@ test {
 def getAuthInfoFile() {
     if (!project.hasProperty(authInfoPropertyName)) {
         throw new GradleException('' +
-            "These tests require the \"${authInfoPropertyName}\" " +
-            "project property be set to point to an authorization JSON file " +
-            "(e.g. ./gradlew integrationTest -P${authInfoPropertyName}=auth.json)."
+                "These tests require the \"${authInfoPropertyName}\" " +
+                "project property be set to point to an authorization JSON file " +
+                "(e.g. ./gradlew integrationTest -P${authInfoPropertyName}=auth.json)."
         )
     }
 
     def authInfoFile = file(project.property(authInfoPropertyName))
     if (!authInfoFile.exists()) {
         throw new GradleException('' +
-            "The test auth info file does not exist: \"${authInfoFile.absolutePath}\". " +
-            "Please ensure the \"${authInfoPropertyName}\" project property is set to point to " +
-            "the correct authorization JSON file."
+                "The test auth info file does not exist: \"${authInfoFile.absolutePath}\". " +
+                "Please ensure the \"${authInfoPropertyName}\" project property is set to point to " +
+                "the correct authorization JSON file."
         )
     }
     return authInfoFile
@@ -237,14 +202,14 @@ jar {
     manifest {
         name project.name
         description project.description
-        license project.basePom.getModel().getLicenses()[0].url
+        license 'http://opensource.org/licenses/MIT'
         instruction 'Import-Package',
-            'android.*;resolution:=optional',
-            'com.google.appengine.*;resolution:=optional',
-            'com.squareup.okhttp;resolution:=optional',
-            'okhttp3;resolution:=optional',
-            'okio;resolution:=optional',
-            '*'
+                'android.*;resolution:=optional',
+                'com.google.appengine.*;resolution:=optional',
+                'com.squareup.okhttp;resolution:=optional',
+                'okhttp3;resolution:=optional',
+                'okio;resolution:=optional',
+                '*'
 
         def noeeProp = 'osgi.bnd.noee'
         def noee = project.properties.get(noeeProp, System.properties.get(noeeProp, 'false'))
@@ -262,6 +227,7 @@ task sourcesJar(type: Jar, dependsOn: classes) {
     from sourceSets.main.allSource
 }
 
+
 task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
     from javadoc.destinationDir
@@ -273,11 +239,6 @@ artifacts {
     withoutOsgi jarWithoutOsgi
 }
 
-install {
-    repositories.mavenInstaller {
-        pom = project.basePom
-    }
-}
 
 // To avoid cross-compilation surprises, add JDK6 libs to the boot classpath. This prevents issues
 // where we depend on a JDK7 interface that did not exist in JDK6.

@@ -1,25 +1,15 @@
 apply plugin: 'java'
 apply plugin: 'java-library-distribution'
 apply plugin: 'signing'
-apply plugin: 'maven'
+apply plugin: 'maven-publish'
+
+version = "5.0.0-SNAPSHOT"
+def isSnapshot = project.version.contains('SNAPSHOT')
 
 task releaseTest() {
     dependsOn ':proguard:proguardTest'
     dependsOn test
     dependsOn integrationTest
-}
-
-ext {
-    SONATYPE_SNAPSHOT_URL = "https://oss.sonatype.org/content/repositories/snapshots/"
-    SONATYPE_STAGING_URL = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
-}
-
-def getUsername() {
-    return hasProperty('ossrhUsername') ? ossrhUsername : ""
-}
-
-def getPassword() {
-    return hasProperty('ossrhPassword') ? ossrhPassword : ""
 }
 
 signing {
@@ -32,16 +22,16 @@ signing {
 
 // Remember to upload binary with releases on GitHub. Some 3rd party developers still rely on
 // manually downloading and managing their dependencies.
-distributions {
-    main {
-        baseName = project.archivesBaseName
-        contents {
-            // Add source JARs
-            from { sourcesJar.outputs.getFiles() }
-            from { 'ChangeLog.txt' }
-        }
-    }
-}
+//distributions {
+//    main {
+//        baseName = project.archivesBaseName
+//        contents {
+//            // Add source JARs
+//            from { sourcesJar.outputs.getFiles() }
+//            from { 'ChangeLog.txt' }
+//        }
+//    }
+//}
 
 /**
  * Verify our SDK version is set correctly in our artifact before uploading. This is to protect
@@ -67,23 +57,74 @@ def verifySdkVersion(deployment) {
     }
 }
 
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            beforeDeployment { deployment ->
-                verifySdkVersion(deployment)
-                signing.signPom(deployment)
+//uploadArchives {
+//    repositories {
+//        mavenDeployer {
+//            beforeDeployment { deployment ->
+//                verifySdkVersion(deployment)
+//                signing.signPom(deployment)
+//            }
+//
+//            pom = project.basePom
+//
+//            repository(url: version.endsWith('SNAPSHOT') ? SONATYPE_SNAPSHOT_URL : SONATYPE_STAGING_URL) {
+//                authentication(
+//                    userName: getUsername(),
+//                    password: getPassword()
+//                )
+//            }
+//        }
+//    }
+//}
+
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            pom {
+                artifactId = 'dropbox-core-sdk'
+                groupId = 'com.dropbox.core'
+                name = 'Official Dropbox Java SDK'
+                description = 'Official Java client library for the Dropbox API.'
+                url 'https://www.dropbox.com/developers/core'
+
+                scm {
+                    connection 'scm:git:git@github.com:dropbox/dropbox-sdk-java.git'
+                    developerConnection 'scm:git:git@github.com:dropbox/dropbox-sdk-java.git'
+                    url 'https://github.com/dropbox/dropbox-sdk-java'
+                }
+                licenses {
+                    license {
+                        name 'MIT'
+                        url 'http://opensource.org/licenses/MIT'
+                        distribution 'repo'
+                    }
+                }
+                developers {
+                    developer {
+                        id 'dropbox-api-team'
+                        name 'Dropbox API Team'
+                        email 'api-support@dropbox.com'
+                        organization = 'Dropbox'
+                    }
+                }
             }
-
-            pom = project.basePom
-
-            repository(url: version.endsWith('SNAPSHOT') ? SONATYPE_SNAPSHOT_URL : SONATYPE_STAGING_URL) {
-                authentication(
-                    userName: getUsername(),
-                    password: getPassword()
-                )
+        }
+    }
+    repositories {
+        maven {
+            def stagingRepoUrl = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+            def snapshotRepoUrl = 'https://oss.sonatype.org/content/repositories/snapshots/'
+            url isSnapshot ? snapshotRepoUrl : stagingRepoUrl
+            credentials {
+                username = rootProject.findProperty('ossrhUsername') ?: ''
+                password = rootProject.findProperty('ossrhPassword') ?: ''
             }
         }
     }
 }
-
