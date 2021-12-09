@@ -20,7 +20,7 @@ run() {
 }
 
 gradle() {
-    (cd "${DIR}" && run ./gradlew -c standalone-settings.gradle "$@")
+    (cd "${DIR}" && run ./gradlew "$@")
 }
 
 android_gradle() {
