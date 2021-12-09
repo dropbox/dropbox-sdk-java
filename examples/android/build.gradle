@@ -1,8 +1,5 @@
 apply plugin: 'com.android.application'
 
-sourceCompatibility = JavaVersion.VERSION_11
-targetCompatibility = JavaVersion.VERSION_11
-
 buildscript {
     repositories {
         google()
@@ -24,6 +21,14 @@ allprojects {
 
 android {
     compileSdkVersion 28
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+    kotlinOptions {
+        jvmTarget = '1.11'
+    }
 
     defaultConfig {
         applicationId "com.dropbox.core.examples.android"

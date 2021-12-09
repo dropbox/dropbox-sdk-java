@@ -5,8 +5,8 @@ apply plugin: 'com.github.blindpirate.osgi'
 apply plugin: 'com.github.ben-manes.versions' // dependencyUpdates task
 
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_11
 
 ext {
     mavenName = 'Official Dropbox Java SDK'
