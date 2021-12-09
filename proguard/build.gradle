@@ -17,8 +17,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'net.sf.proguard:proguard-gradle:6.2.2'
-        classpath 'net.sf.proguard:proguard-base:6.2.2'
+        classpath 'com.guardsquare:proguard-gradle:7.1.0'
     }
 }
 
