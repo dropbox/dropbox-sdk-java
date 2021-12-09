@@ -15,11 +15,6 @@ ext {
     authInfoPropertyName = 'com.dropbox.test.authInfoFile'
 }
 
-task printVersion() {
-    println("Project version: " + project.version)
-}
-
-
 buildscript {
     repositories {
         google()
@@ -278,9 +273,6 @@ dependencyUpdates.resolutionStrategy = {
 
 /* BEGIN PRIVATE REPO ONLY */
 apply from: 'stone.gradle'
-
-// load release configuration
-apply from: 'release.gradle'
 
 apply plugin: 'com.vanniktech.maven.publish'
 

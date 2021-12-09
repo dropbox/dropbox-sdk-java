@@ -9,7 +9,7 @@ public class DbxSdkVersion
         Version = loadVersion();
     }
 
-
+    // TODO: Pass this version from Gradle
     private static String loadVersion()
     {
         return "5.0.0-SNAPSHOT";
