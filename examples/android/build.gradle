@@ -7,7 +7,7 @@ buildscript {
     }
     dependencies {
         classpath "com.android.tools.build:gradle:7.0.3"
-        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.8.3'
+        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:3.0.1'
     }
 }
 
@@ -67,10 +67,3 @@ dependencies {
 }
 
 apply plugin: 'com.getkeepsafe.dexcount'
-
-dexcount {
-    format = "list"
-    includeClasses = true
-    includeFieldCount = false
-    orderByMethodCount = true
-}

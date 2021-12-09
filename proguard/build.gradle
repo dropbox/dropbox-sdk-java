@@ -29,8 +29,8 @@ repositories {
 }
 
 dependencies {
-    compile group: 'com.dropbox.core', name: 'dropbox-core-sdk', version: '+', changing: true
-    compile 'org.testng:testng:6.9.10'
+    implementation group: 'com.dropbox.core', name: 'dropbox-core-sdk', version: '+', changing: true
+    implementation 'org.testng:testng:6.9.10'
 }
 
 compileJava {
@@ -66,7 +66,7 @@ task proguard(type: proguard.gradle.ProGuardTask) {
     ext {
         configDir = file("src/main/resources/proguard/")
         configFile = file("../examples/android/proguard-rules.pro")
-        proguardJar = file("${project.libsDir}/${project.archivesBaseName}-${project.version}-proguard.jar")
+        proguardJar = file("${project.buildDir}/${project.archivesBaseName}-${project.version}-proguard.jar")
     }
 
     inputs.dir configDir
