@@ -6,8 +6,8 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.6.2'
-        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.8.3'
+        classpath "com.android.tools.build:gradle:7.0.3"
+        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:3.0.1'
     }
 }
 
@@ -20,7 +20,8 @@ allprojects {
 }
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "com.dropbox.core.examples.android"
@@ -66,10 +67,3 @@ dependencies {
 }
 
 apply plugin: 'com.getkeepsafe.dexcount'
-
-dexcount {
-    format = "list"
-    includeClasses = true
-    includeFieldCount = false
-    orderByMethodCount = true
-}

@@ -12,57 +12,72 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
-    - name: Set up JDK 8
+
+    - name: Set up JDK 11
       uses: actions/setup-java@v2
       with:
-        java-version: '8'
+        java-version: '11'
         distribution: 'zulu'
-    - uses: actions/checkout@v2
+
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
         python-version: '2.7'
     - run: python -m pip install ply && pip install six
+
     - name: Grant execute permissions
       run: chmod +x gradlew && chmod +x update-submodules
             && chmod +x generate-ci-auth-file && chmod +x scripts/run-examples
+
     - name: Set up submodules
       run: ./update-submodules
-    - name: Install new gradle build
-      run: ./gradlew install
+
     - name: Obtain access token
       env:
         APP_KEY: ${{ secrets.APP_KEY }}
         APP_SECRET: ${{ secrets.APP_SECRET }}
         REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
       run: ./generate-ci-auth-file
+
     - name: Run examples
       run: ./scripts/run-integration-tests $(find `pwd` -name auth_output)
-    - name: Deploy artifacts artifacts
+
+    - name: Upload Artifacts
+      run: ./gradlew publishAllPublicationsToMavenCentralRepository --no-daemon --no-parallel
       env:
-        OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-        OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
-        SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
-        ENCRYPT_KEY: ${{ secrets.ENCRYPT_KEY }}
-        SIGNING_ID: ${{ secrets.SIGNING_ID }}
-      run: scripts/deploy-artifacts
+        ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.OSSRH_USERNAME }}
+        ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.OSSRH_PASSWORD }}
+        ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_KEY }}
+        ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_PASSWORD }}
+
+    - name: Retrieve version
+      run: |
+        echo "VERSION_NAME=$(cat gradle.properties | grep -w "VERSION_NAME" | cut -d'=' -f2)" >> $GITHUB_ENV
+    - name: Publish release
+      run: ./gradlew closeAndReleaseRepository --no-daemon --no-parallel
+      if: "!endsWith(env.VERSION_NAME, '-SNAPSHOT')"
+      env:
+        ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.OSSRH_USERNAME }}
+        ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.OSSRH_PASSWORD }}
+
     - name: Upload Test Reports
       uses: actions/upload-artifact@v2
       with:
         name: TestReports
         path: |
           build/reports/
+
     - name: Upload JavaDocs
       uses: actions/upload-artifact@v2
       with:
         name: JavaDocs
         path: |
           build/docs/javadoc/
+
     - name: Upload Build Artifacts
       uses: actions/upload-artifact@v2
       with:

@@ -1,13 +1,8 @@
-allprojects  {
-    apply plugin: 'maven'
-    group = 'com.dropbox.core'
-}
-
 subprojects {
     apply plugin: 'java'
 
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
 
     repositories {
         google()
@@ -19,7 +14,7 @@ subprojects {
     }
 
     dependencies {
-        compile group: 'com.dropbox.core', name: 'dropbox-core-sdk', version: '+', changing: true
+        implementation group: 'com.dropbox.core', name: 'dropbox-core-sdk', version: '+', changing: true
     }
 
     compileJava {

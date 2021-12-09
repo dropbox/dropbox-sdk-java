@@ -1,11 +1,10 @@
-apply plugin: 'maven'
 apply plugin: 'java'
 
 description = 'ProGuard minified SDK test suite for ProGuard compatibility tests.'
 group = 'com.dropbox.core.test'
 archivesBaseName = 'dropbox-proguard-test'
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_11
 
 ext {
     authInfoPropertyName = 'com.dropbox.test.authInfoFile'
@@ -18,8 +17,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'net.sf.proguard:proguard-gradle:6.2.2'
-        classpath 'net.sf.proguard:proguard-base:6.2.2'
+        classpath 'com.guardsquare:proguard-gradle:7.1.0'
     }
 }
 
@@ -30,8 +28,8 @@ repositories {
 }
 
 dependencies {
-    compile group: 'com.dropbox.core', name: 'dropbox-core-sdk', version: '+', changing: true
-    compile 'org.testng:testng:6.9.10'
+    implementation group: 'com.dropbox.core', name: 'dropbox-core-sdk', version: '+', changing: true
+    implementation 'org.testng:testng:6.9.10'
 }
 
 compileJava {
@@ -67,7 +65,7 @@ task proguard(type: proguard.gradle.ProGuardTask) {
     ext {
         configDir = file("src/main/resources/proguard/")
         configFile = file("../examples/android/proguard-rules.pro")
-        proguardJar = file("${project.libsDir}/${project.archivesBaseName}-${project.version}-proguard.jar")
+        proguardJar = file("${project.buildDir}/${project.archivesBaseName}-${project.version}-proguard.jar")
     }
 
     inputs.dir configDir
