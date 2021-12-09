@@ -36,9 +36,6 @@ jobs:
     - name: Set up submodules
       run: ./update-submodules
 
-    - name: Install new gradle build
-      run: ./gradlew install
-
     - name: Obtain access token
       env:
         APP_KEY: ${{ secrets.APP_KEY }}
