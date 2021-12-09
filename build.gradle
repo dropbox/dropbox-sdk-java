@@ -30,6 +30,7 @@ buildscript {
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.12.0'
         classpath files('gradle/dropbox-pem-converter-plugin')
         classpath 'gradle.plugin.com.github.blindpirate:gradle-legacy-osgi-plugin:0.0.3'
+        classpath "com.vanniktech:gradle-maven-publish-plugin:0.18.0"
     }
 }
 
@@ -283,5 +284,7 @@ apply from: 'stone.gradle'
 
 // load release configuration
 apply from: 'release.gradle'
+
+apply plugin: 'com.vanniktech.maven.publish'
 
 /* END PRIVATE REPO ONLY */
