@@ -8,14 +8,15 @@ apply plugin: 'com.github.ben-manes.versions' // dependencyUpdates task
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
-// needed before we define the pom
-//conf2ScopeMappings.addMapping(1, configurations.compileOnly, 'provided')
-
 ext {
     mavenName = 'Official Dropbox Java SDK'
     generatedSources = file("$buildDir/generated-sources")
     generatedResources = file("$buildDir/generated-resources")
     authInfoPropertyName = 'com.dropbox.test.authInfoFile'
+}
+
+task printVersion() {
+    println("Project version: " + project.version)
 }
 
 
@@ -68,10 +69,6 @@ configurations {
 }
 
 processResources {
-    filesMatching('**/sdk-version.txt') {
-        expand project.properties
-    }
-
     filesMatching('**/*.crt') { fcd ->
         def inputstream = fcd.open()
         def certDatas = com.dropbox.maven.pem_converter.PemLoader.load(

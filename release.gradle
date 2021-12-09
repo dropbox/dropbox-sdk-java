@@ -20,30 +20,6 @@ distributions {
     }
 }
 
-/**
- * Verify our SDK version is set correctly in our artifact before uploading. This is to protect
- * against any silly mistakes.
- */
-def verifySdkVersion(deployment) {
-    deployment.mainArtifact.file.withInputStream { stream ->
-        def jar = new java.util.jar.JarInputStream(stream)
-        def entry = jar.getNextJarEntry()
-        while (entry != null) {
-            if (entry.getName().equals("com/dropbox/core/sdk-version.txt")) {
-                def version = jar.text.trim();
-                if (!(version ==~ /\d\.\d\.\d(-SNAPSHOT)?+/)) {
-                    throw new GradleException("SDK version not in semantic versioning format: " + version +
-                                              ". Try running './gradlew clean' before uploading archives.");
-                }
-                return
-            }
-            entry = jar.getNextJarEntry()
-        }
-
-        throw new GradleException("Could not find sdk-version.txt in artifact: " + deployment.mainArtifact.file.absolutePath);
-    }
-}
-
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
