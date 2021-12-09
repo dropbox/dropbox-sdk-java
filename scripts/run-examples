@@ -20,7 +20,7 @@ run() {
 }
 
 gradle() {
-    (cd "${DIR}" && run ./gradlew -c standalone-settings.gradle "$@")
+    (cd "${DIR}" && run ./gradlew "$@")
 }
 
 examples_gradle() {
@@ -60,7 +60,6 @@ gradle clean
 gradle check
 
 # prepare examples to be run
-gradle install
 examples_gradle clean
 examples_gradle classes
 
