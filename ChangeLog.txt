@@ -1,3 +1,8 @@
+5.1.0 (2021-12-09)
+---------------------------------------------
+- Upgrade to Gradle 7.2
+- Bumped Java source and target compatability to 11
+
 5.0.0 (2021-10-12)
 ---------------------------------------------
 - Upgrade OKHttp to V4
