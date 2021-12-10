@@ -83,4 +83,4 @@ jobs:
       with:
         name: BuildArtifacts
         path: |
-          build/distributions/
+          build/libs/
