@@ -1,6 +1,6 @@
 import org.gradle.internal.os.OperatingSystem
 
-apply plugin: 'java'
+apply plugin: 'java-library'
 apply plugin: 'com.github.blindpirate.osgi'
 apply plugin: 'com.github.ben-manes.versions' // dependencyUpdates task
 
