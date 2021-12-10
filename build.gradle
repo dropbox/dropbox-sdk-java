@@ -1,6 +1,6 @@
 import org.gradle.internal.os.OperatingSystem
 
-apply plugin: 'java'
+apply plugin: 'java-library'
 apply plugin: 'com.github.blindpirate.osgi'
 apply plugin: 'com.github.ben-manes.versions' // dependencyUpdates task
 
@@ -37,7 +37,7 @@ repositories {
 dependencies {
     // Important: Jackson 2.8+ will be free to use JDK7 features and no longer guarantees JDK6
     //            compatibility
-    implementation 'com.fasterxml.jackson.core:jackson-core:2.7.4'
+    api 'com.fasterxml.jackson.core:jackson-core:2.7.4'
 
     implementation 'javax.servlet:servlet-api:2.5'
     implementation 'com.squareup.okhttp:okhttp:2.7.5'  // support both v2 and v3 to avoid
@@ -60,7 +60,7 @@ dependencies {
 }
 
 configurations {
-    withoutOsgi.extendsFrom compile
+    withoutOsgi.extendsFrom api
 }
 
 processResources {
