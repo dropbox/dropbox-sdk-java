@@ -60,7 +60,7 @@ dependencies {
 }
 
 configurations {
-    withoutOsgi.extendsFrom compile
+    withoutOsgi.extendsFrom api
 }
 
 processResources {
