@@ -56,7 +56,7 @@ android_gradle clean
 android_gradle assemble
 
 # Run integration tests against major HTTP requestor implementations
-for requestor in "StandardHttpRequestor" "OkHttpRequestor" "OkHttp3Requestor" ; do
+for requestor in "StandardHttpRequestor " "OkHttpRequestor" "OkHttp3Requestor" ; do
     gradle -Pcom.dropbox.test.httpRequestor="${requestor}" -Pcom.dropbox.test.authInfoFile="${AUTH_FILE}" integrationTest proguardTest
 done
 
