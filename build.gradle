@@ -39,11 +39,12 @@ dependencies {
     //            compatibility
     api 'com.fasterxml.jackson.core:jackson-core:2.7.4'
 
-    implementation 'javax.servlet:servlet-api:2.5'
-    implementation 'com.squareup.okhttp:okhttp:2.7.5'  // support both v2 and v3 to avoid
-    implementation 'com.squareup.okhttp3:okhttp:4.0.0' // method count bloat
-    implementation 'com.google.android:android:4.1.1.4'
-    implementation 'com.google.appengine:appengine-api-1.0-sdk:1.9.38'
+    // DO NOT flip this back to implementation, we should split the android code to its own module in the future
+    compileOnly 'com.google.android:android:4.1.1.4'
+    compileOnly 'javax.servlet:servlet-api:2.5'
+    compileOnly 'com.squareup.okhttp:okhttp:2.7.5'  // support both v2 and v3 to avoid
+    compileOnly 'com.squareup.okhttp3:okhttp:4.0.0' // method count bloat
+    compileOnly 'com.google.appengine:appengine-api-1.0-sdk:1.9.38'
 
     testImplementation 'org.testng:testng:6.9.10'
     testImplementation 'org.mockito:mockito-core:1.10.19'

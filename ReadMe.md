@@ -316,8 +316,14 @@ Versions 2.0.0-2.0.3 of this SDK require SDK-specific ProGuard rules when shrink
 -dontwarn okio.**
 -dontwarn okhttp3.**
 -dontwarn com.squareup.okhttp.**
+-dontwarn com.google.apphosting.**
 -dontwarn com.google.appengine.**
+-dontwarn com.google.protos.cloud.sql.**
+-dontwarn com.google.cloud.sql.**
+-dontwarn javax.activation.**
+-dontwarn javax.mail.**
 -dontwarn javax.servlet.**
+-dontwarn org.apache.**
 ```
 
 **IMPORTANT: If you are running version 2.0.x before 2.0.3, you should update to the latest Dropbox SDK version to avoid a deserialization bug that can cause Android apps that use ProGuard to crash.**
