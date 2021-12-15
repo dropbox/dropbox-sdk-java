@@ -58,7 +58,10 @@ android {
 }
 
 dependencies {
-    implementation group: 'com.dropbox.core', name: 'dropbox-core-sdk', version: '+', changing: true
+    implementation (project("dropbox-sdk-java"))
+//    {
+//        exclude (group: 'com.google.android')
+//    }
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.google.android.material:material:1.1.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'

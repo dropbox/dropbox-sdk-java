@@ -1,0 +1,2 @@
+include ':dropbox-sdk-java'
+project(':dropbox-sdk-java').projectDir = new File("../..")
