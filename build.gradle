@@ -38,6 +38,8 @@ dependencies {
     // Important: Jackson 2.8+ will be free to use JDK7 features and no longer guarantees JDK6
     //            compatibility
     api 'com.fasterxml.jackson.core:jackson-core:2.7.4'
+
+    // DO NOT flip this back to implementation, we should split the android code to its own module in the future
     compileOnly 'com.google.android:android:4.1.1.4'
 
     implementation 'javax.servlet:servlet-api:2.5'
