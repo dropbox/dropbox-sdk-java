@@ -272,6 +272,14 @@ public class Auth {
 
     /**
      *
+     * Use when revoking token to avoid restoring the previous accessToken
+     */
+    public static void clearDbxCredential() {
+        AuthActivity.result = null;
+    }
+
+    /**
+     *
      *
      * Get the scope authorized in this OAuth flow.
      *

@@ -29,4 +29,8 @@ public class DropboxClientFactory {
         }
         return sDbxClient;
     }
+
+    public static void clearClient() {
+        sDbxClient = null;
+    }
 }

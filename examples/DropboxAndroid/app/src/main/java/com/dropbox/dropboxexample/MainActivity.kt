@@ -111,6 +111,8 @@ class MainActivity : AppCompatActivity() {
         }
         val sharedPreferences = getSharedPreferences("dropbox-sample", MODE_PRIVATE)
         sharedPreferences.edit().remove("credential").apply()
+        DropboxClientFactory.clearClient()
+        Auth.clearDbxCredential()
         clearData()
     }
 
