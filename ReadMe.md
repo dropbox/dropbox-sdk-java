@@ -178,7 +178,7 @@ App key and secret can be found in you app page in [App Console](https://www.dro
 git clone https://github.com/dropbox/dropbox-sdk-java.git
 cd dropbox-sdk-java
 ./update-submodules    # also do this after every "git checkout"
-./gradlew build
+./gradlew build # requires `python` command to use Python 3
 ```
 
 The output will be in "build/".
