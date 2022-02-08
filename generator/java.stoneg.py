@@ -910,12 +910,12 @@ class JavaClassWriter(object):
         path = os.path.join(*components)
         self._mkdirs(os.path.dirname(path))
 
-        self._enter_ctx = self._g.output_to_relative_path(path + '.java')
+        self._enter_ctx = self._g.output_to_relative_path(path + '.kt')
         self._enter_ctx.__enter__()
         self._emit_header()
         if self._package_doc:
             self.javadoc(self._package_doc)
-        self.out('package %s;', self._class.package)
+        self.out('package %s', self._class.package)
         self.out('')
         return self
 
@@ -967,7 +967,7 @@ class JavaClassWriter(object):
         if isinstance(element, DataType):
             data_type = element
             if j.is_enum(data_type):
-                class_type = 'enum'
+                class_type = 'enum class'
             elif is_union_type(data_type):
                 modifiers.append('final')
             elif is_struct_type(data_type) and data_type.parent_type:
@@ -1030,22 +1030,22 @@ class JavaClassWriter(object):
 
         if project_imports:
             for import_ in sorted(project_imports):
-                self.out('import %s;', import_.import_class.fq)
+                self.out('import %s', import_.import_class.fq)
 
         java_imports = grouped.pop('java', set())
         javax_imports = grouped.pop('javax', set())
 
         needs_newline = bool(project_imports)
         for _, imports in chain(sorted(grouped.items()), [
-                ('java', java_imports),
-                ('javax', javax_imports)
+            ('java', java_imports),
+            ('javax', javax_imports)
         ]):
             if imports:
                 if needs_newline:
                     self.out('')
                 needs_newline = True
                 for import_ in sorted(imports):
-                    self.out('import %s;', import_.import_class.fq)
+                    self.out('import %s', import_.import_class.fq)
 
     def java_default_value(self, field):
         assert isinstance(field, Field), repr(field)
@@ -2527,10 +2527,10 @@ class JavaCodeGenerationInstance(object):
             w.out('')
             w.javadoc(self.g.args.client_javadoc or "")
             with w.class_block(client_class):
-                w.out('protected final DbxRawClientV2 _client;')
+                w.out('protected val _client: DbxRawClientV2')
                 w.out('')
                 for namespace in namespaces:
-                    w.out('private final %s %s;', j.java_class(namespace), j.param_name(namespace))
+                    w.out('private final %s %s', j.java_class(namespace), j.param_name(namespace))
 
                 w.out('')
                 w.javadoc(
@@ -2540,9 +2540,9 @@ class JavaCodeGenerationInstance(object):
                     params=(('_client', 'Raw v2 client to use for issuing requests'),)
                 )
                 with w.block('protected %s(DbxRawClientV2 _client)', client_class.name):
-                    w.out('this._client = _client;')
+                    w.out('this._client = _client')
                     for namespace in namespaces:
-                        w.out('this.%s = new %s(_client);', j.param_name(namespace), j.java_class(namespace))
+                        w.out('this.%s = %s(_client)', j.param_name(namespace), j.java_class(namespace))
 
                 for namespace in namespaces:
                     w.out('')
@@ -2552,8 +2552,8 @@ class JavaCodeGenerationInstance(object):
                         """ % namespace.name,
                         returns="Dropbox %s client" % namespace.name
                     )
-                    with w.block("public %s %s()", j.java_class(namespace), j.namespace_getter_method(namespace)):
-                        w.out('return %s;' % j.param_name(namespace))
+                    with w.block("fun %s() : %s", j.namespace_getter_method(namespace), j.java_class(namespace)):
+                        w.out('return %s' % j.param_name(namespace))
 
     def generate_namespace(self, namespace):
         assert isinstance(namespace, ApiNamespace), repr(namespace)
@@ -2643,11 +2643,11 @@ class JavaCodeGenerationInstance(object):
             with w.class_block(namespace):
                 w.out('// namespace %s (%s)', namespace.name, ', '.join(j.get_spec_filenames(namespace)))
                 w.out('')
-                w.out('private final DbxRawClientV2 client;')
+                w.out('private var client: DbxRawClientV2')
 
                 w.out('')
-                with w.block('public %s(DbxRawClientV2 client)', j.java_class(namespace)):
-                    w.out('this.client = client;')
+                with w.block('public %s(client: DbxRawClientV2)', j.java_class(namespace)):
+                    w.out('this.client = client')
 
                 for route in namespace.routes:
                     w.out('')
@@ -2733,13 +2733,13 @@ class JavaCodeGenerationInstance(object):
             visibility = ''    # package private
 
         throws_classes = j.route_throws_classes(route)
-        throws = ', '.join(w.resolved_class(c) for c in throws_classes)
+        # throws = ', '.join(w.resolved_class(c) for c in throws_classes)
 
         args = []
         params = []
         if j.has_arg(route):
             arg_class = j.java_class(route.arg_data_type)
-            args.append(w.fmt('%s arg', arg_class))
+            args.append(w.fmt('arg : %s', arg_class))
             params.append(('arg', route.arg_data_type.doc))
 
         if is_download:
@@ -2750,17 +2750,20 @@ class JavaCodeGenerationInstance(object):
             else:
                 headers_var = '_headers'
                 headers_class = JavaClass.from_str('java.util.List<com.dropbox.core.http.HttpRequestor.Header>')
-                args.append(w.fmt('%s %s', headers_class, headers_var))
+                args.append(w.fmt('%s: %s', headers_var, headers_class))
                 params.append((headers_var, 'Extra headers to send with request.'))
 
         w.out('')
         w.javadoc(route, returns=returns, deprecated=deprecated, params=params)
-        with w.block('%s %s %s(%s) throws %s',
+
+        for c in throws_classes:
+            w.out('@Throws(%s::class)', c)
+
+        with w.block('%s fun %s(%s): %s',
                      visibility,
-                     return_class,
                      j.route_method(route),
                      ', '.join(args),
-                     throws):
+                     return_class):
             if j.request_style(route) == 'rpc':
                 self.generate_route_rpc_call(route, 'arg')
             elif j.request_style(route) == 'upload':
@@ -2824,7 +2827,7 @@ class JavaCodeGenerationInstance(object):
         else:
             fields = arg.all_fields
         args = ', '.join(
-            w.fmt('%s %s', j.java_class(f), j.param_name(f)) for f in fields
+            w.fmt('%s: %s', j.param_name(f), j.java_class(f)) for f in fields
         )
 
         default_fields = tuple(f for f in arg.all_optional_fields if f.has_default)
@@ -2847,15 +2850,18 @@ class JavaCodeGenerationInstance(object):
                     ','.join(w.resolved_class(j.java_class(f, generics=False)) for f in arg.all_fields),
                 )
         throws_classes = j.route_throws_classes(route)
-        throws = ', '.join(w.resolved_class(c) for c in throws_classes)
+        # throws = ', '.join(w.resolved_class(c) for c in throws_classes)
 
         w.out('')
         w.javadoc(doc, stone_elem=route, fields=fields, returns=returns, allow_defaults=False)
-        with w.block('public %s %s(%s) throws %s', return_class, j.route_method(route), args, throws):
+
+        for c in throws_classes:
+            w.out('@Throws(%s::class)', c)
+        with w.block('fun %s(%s) : %s', j.route_method(route), args, return_class):
             arg_class = j.java_class(arg)
             required_args = ', '.join(j.param_name(f) for f in arg.all_required_fields)
             if required_only:
-                w.out('%s _arg = new %s(%s);', arg_class, arg_class, required_args)
+                w.out('%s _arg = %s(%s)', arg_class, arg_class, required_args)
             else:
                 optional_fields = arg.all_optional_fields
                 for field in optional_fields:
@@ -2868,11 +2874,11 @@ class JavaCodeGenerationInstance(object):
                     with self.g.indent():
                         for field in optional_fields:
                             w.out('.%s(%s)', j.field_builder_method(field), j.param_name(field))
-                        w.out('.build();')
+                        w.out('.build()')
                 else:
                     # use full constructor
                     all_args = ', '.join(j.param_name(f) for f in arg.all_fields)
-                    w.out('%s _arg = new %s(%s);', arg_class, arg_class, all_args)
+                    w.out('%s _arg = %s(%s)', arg_class, arg_class, all_args)
 
             if j.has_result(route) or j.request_style(route) in ('upload', 'download'):
                 args = ['_arg']
@@ -2881,9 +2887,9 @@ class JavaCodeGenerationInstance(object):
                     args.append(w.fmt('%s.<%s>emptyList()',
                                       JavaClass('java.util.Collections'),
                                       JavaClass('com.dropbox.core.http.HttpRequestor.Header')))
-                w.out('return %s(%s);', j.route_method(route), ', '.join(args))
+                w.out('return %s(%s)', j.route_method(route), ', '.join(args))
             else:
-                w.out('%s(_arg);', j.route_method(route))
+                w.out('%s(_arg)', j.route_method(route))
 
     def generate_route_builder_method(self, route):
         assert isinstance(route, ApiRoute), repr(route)
@@ -2915,14 +2921,14 @@ class JavaCodeGenerationInstance(object):
         with w.block('public %s %s(%s)', j.builder_class(route), j.route_builder_method(route), args):
             builder_args = ', '.join(j.param_name(f) for f in required_fields)
             if j.has_builder(arg):
-                w.out('%s argBuilder_ = %s.newBuilder(%s);',
+                w.out('%s argBuilder_ = %s.newBuilder(%s)',
                       j.builder_class(arg),
                       j.java_class(arg),
                       builder_args,
                 )
-                w.out('return new %s(this, argBuilder_);', return_class)
+                w.out('return %s(this, argBuilder_)', return_class)
             else:
-                w.out('return new %s(this, %s);', return_class, builder_args)
+                w.out('return %s(this, %s)', return_class, builder_args)
 
     def translate_error_wrapper(self, route, error_wrapper_var):
         assert isinstance(route, ApiRoute), repr(route)
@@ -2932,19 +2938,19 @@ class JavaCodeGenerationInstance(object):
         j = self.j
 
         if j.has_error(route):
-            return w.fmt('new %s("%s", %s.getRequestId(), %s.getUserMessage(), (%s) %s.getErrorValue());',
+            return w.fmt('%s("%s", %s.getRequestId(), %s.getUserMessage(), (%s.getErrorValue() as %s))',
                          j.route_exception_class(route),
                          j.url_path(route),
                          error_wrapper_var,
                          error_wrapper_var,
-                         j.java_class(route.error_data_type),
-                         error_wrapper_var)
+                         error_wrapper_var,
+                         j.java_class(route.error_data_type))
         else:
             message = '"Unexpected error response for \\"%s\\":" + %s.getErrorValue()' % (
                 format_func_name(route),
                 error_wrapper_var,
             )
-            return 'new DbxApiException(%s.getRequestId(), %s.getUserMessage(), %s);' % (
+            return 'DbxApiException(%s.getRequestId(), %s.getUserMessage(), %s)' % (
                 error_wrapper_var,
                 error_wrapper_var,
                 message)
@@ -3020,7 +3026,7 @@ class JavaCodeGenerationInstance(object):
                          JavaClass('com.dropbox.core.http.HttpRequestor.Uploader')),
             after=';',
         )
-        w.out('return new %s(_uploader, this.client.getUserId());', j.route_uploader_class(route))
+        w.out('return %s(_uploader, this.client.getUserId());', j.route_uploader_class(route))
 
     def generate_data_type(self, data_type):
         """Generate a class definition for a datatype (a struct or a union)."""
@@ -3123,7 +3129,7 @@ class JavaCodeGenerationInstance(object):
             #
             w.out('')
             w.javadoc('Discriminating tag type for {@link %s}.' % j.java_class(data_type).name)
-            with w.block('public enum Tag'):
+            with w.block('public enum class Tag'):
                 self.generate_enum_values(data_type)
 
             #
@@ -3139,9 +3145,9 @@ class JavaCodeGenerationInstance(object):
                 singleton_args = ', '.join(["Tag.%s" % j.field_tag_enum_name(field)])
                 w.javadoc(field)
                 method_name = union_create_with_method_name(data_type, [])
-                w.out('public static final %s %s = new %s().%s(%s);',
-                      j.java_class(data_type),
+                w.out('public static final %s: %s = %s().%s(%s);',
                       j.field_static_instance(field),
+                      j.java_class(data_type),
                       j.java_class(data_type),
                       method_name,
                       singleton_args,
@@ -3151,10 +3157,10 @@ class JavaCodeGenerationInstance(object):
             # Instance fields
             #
             w.out('')
-            w.out('private Tag _tag;')
+            w.out('private var _tag: Tag')
             for field in all_fields:
                 if j.has_value(field):
-                    w.out('private %s %s;', j.java_class(field, boxed=True), j.param_name(field))
+                    w.out('private val %s: %s', j.param_name(field), j.java_class(field, boxed=True))
 
             #
             # Constructors
@@ -3174,18 +3180,18 @@ class JavaCodeGenerationInstance(object):
                 formatted_args = ', '.join(chain(
                     ['Tag _tag'],
                     [
-                        w.fmt('%s %s', j.java_class(f, boxed=True), j.param_name(f))
+                        w.fmt('%s: %s', j.param_name(f), j.java_class(f, boxed=True))
                         for f in value_fields_subset
                     ],
                 ))
                 method_name = union_create_with_method_name(data_type, value_fields_subset)
-                with w.block('private %s %s(%s)', j.java_class(data_type), method_name, formatted_args):
-                    w.out('%s result = new %s();', j.java_class(data_type), j.java_class(data_type))
-                    w.out('result._tag = _tag;')
+                with w.block('private fun %s(%s): %s', method_name, formatted_args, j.java_class(data_type)):
+                    w.out('val result = %s()', j.java_class(data_type))
+                    w.out('result._tag = _tag')
                     for field in value_fields_subset:
                         # don't perform validation in the private constructor
-                        w.out('result.%s = %s;', j.param_name(field), j.param_name(field))
-                    w.out('return result;')
+                        w.out('result.%s = %s', j.param_name(field), j.param_name(field))
+                    w.out('return result')
 
             _gen_create_with_method(data_type, [])
             for f in value_fields:
@@ -3218,7 +3224,7 @@ class JavaCodeGenerationInstance(object):
                 returns="the tag for this instance."
             )
             with w.block('public Tag tag()'):
-                w.out('return _tag;')
+                w.out('return _tag')
             self.generate_data_type_union_field_methods(data_type)
 
             #
@@ -3259,7 +3265,7 @@ class JavaCodeGenerationInstance(object):
                 ) % j.field_tag_enum_name(field)
             )
             with w.block('public boolean %s()' % j.field_tag_match_method_name(field)):
-                w.out('return this._tag == Tag.%s;', j.field_tag_enum_name(field))
+                w.out('return this._tag == Tag.%s', j.field_tag_enum_name(field))
 
             if j.has_value(field):
                 #
@@ -3283,14 +3289,14 @@ class JavaCodeGenerationInstance(object):
                     throws=w.throws(field, "value"),
                 )
                 if j.has_value(field):
-                    with w.block('public static %s %s(%s value)',
-                                 j.java_class(data_type),
+                    with w.block('public static fun %s(%s value) : %s',
                                  j.field_factory_method(field),
                                  j.java_class(field),
+                                 j.java_class(data_type),
                     ):
                         self.generate_field_validation(field, value_name="value", omit_arg_name=True, allow_default=False)
                         method_name = union_create_with_method_name(data_type, [field])
-                        w.out('return new %s().%s(Tag.%s, %s);',
+                        w.out('return %s().%s(Tag.%s, %s)',
                               j.java_class(data_type),
                               method_name,
                               j.field_tag_enum_name(field),
@@ -3299,8 +3305,8 @@ class JavaCodeGenerationInstance(object):
                     if is_nullable_type(field.data_type):
                         w.out('')
                         w.javadoc(doc, stone_elem=field, returns=returns)
-                        with w.block('public static %s %s()', j.java_class(data_type), j.field_factory_method(field)):
-                            w.out('return %s(null);', j.field_factory_method(field))
+                        with w.block('public static %s() : %s', j.field_factory_method(field), j.java_class(data_type)):
+                            w.out('return %s(null)', j.field_factory_method(field))
 
                 #
                 # getFieldNameValue()
@@ -3321,10 +3327,10 @@ class JavaCodeGenerationInstance(object):
                         IllegalStateException="If {@link #%s} is {@code false}." % j.field_tag_match_method_name(field),
                     )
                 )
-                with w.block('public %s %s()', j.java_class(field), j.field_getter_method(field)):
+                with w.block('public %s() : %s', j.field_getter_method(field), j.java_class(field)):
                     with w.block('if (this._tag != Tag.%s)', j.field_tag_enum_name(field)):
-                        w.out('throw new IllegalStateException("Invalid tag: required Tag.%s, but was Tag." + this._tag.name());', j.field_tag_enum_name(field))
-                    w.out('return %s;', j.param_name(field))
+                        w.out('throw IllegalStateException("Invalid tag: required Tag.%s, but was Tag." + this._tag.name())', j.field_tag_enum_name(field))
+                    w.out('return %s', j.param_name(field))
 
 
     def generate_data_type_struct(self, data_type):
@@ -3346,7 +3352,7 @@ class JavaCodeGenerationInstance(object):
             w.out('')
             for field in data_type.fields:
                 # fields marked as protected since structs allow inheritance
-                w.out('protected final %s %s;', j.java_class(field), j.param_name(field))
+                w.out('protected val %s: %s', j.param_name(field), j.java_class(field))
 
             #
             # constructor.
@@ -3354,7 +3360,7 @@ class JavaCodeGenerationInstance(object):
 
             # use builder or required-only constructor for default values
             args = ', '.join(
-                w.fmt('%s %s', j.java_class(f), j.param_name(f))
+                w.fmt('%s: %s', j.param_name(f), j.java_class(f))
                 for f in data_type.all_fields
             )
             doc = data_type.doc or ''
@@ -3370,7 +3376,7 @@ class JavaCodeGenerationInstance(object):
 
                 if parent_fields:
                     parent_args = ', '.join(j.param_name(f) for f in parent_fields)
-                    w.out('super(%s);', parent_args)
+                    w.out('super(%s)', parent_args)
 
                 for field in data_type.fields:
                     self.generate_field_validation(field, allow_default=False)
@@ -3381,7 +3387,7 @@ class JavaCodeGenerationInstance(object):
                 # create a constructor with just required fields (for convenience)
                 required_fields = data_type.all_required_fields
                 required_args = ', '.join(
-                    w.fmt('%s %s', j.java_class(f), j.param_name(f))
+                    w.fmt('%s: %s', j.param_name(f), j.java_class(f))
                     for f in required_fields
                 )
                 w.out('')
@@ -3403,7 +3409,7 @@ class JavaCodeGenerationInstance(object):
                             this_args.append(w.java_default_value(field))
                         else:
                             this_args.append(j.param_name(field))
-                    w.out('this(%s);', ', '.join(this_args))
+                    w.out('this(%s)', ', '.join(this_args))
 
             #
             # getter methods
@@ -3421,8 +3427,8 @@ class JavaCodeGenerationInstance(object):
                     returns += ' Defaults to %s.' % w.java_default_value(field)
 
                 w.javadoc(field.doc or '', stone_elem=field, returns=returns)
-                with w.block('public %s %s()', j.java_class(field), j.field_getter_method(field)):
-                    w.out('return %s;' % j.param_name(field))
+                with w.block('public %s() : %s', j.field_getter_method(field), j.java_class(field)):
+                    w.out('return %s' % j.param_name(field))
 
 
             #
@@ -3459,10 +3465,10 @@ class JavaCodeGenerationInstance(object):
         ancestors = get_ancestors(data_type)
 
         all_required_args = ', '.join(
-            w.fmt('%s %s', j.java_class(f), j.param_name(f)) for f in all_required_fields
+            w.fmt('%s: %s', j.param_name(f), j.java_class(f)) for f in all_required_fields
         )
         required_args = ', '.join(
-            w.fmt('%s %s', j.java_class(f), j.param_name(f)) for f in required_fields
+            w.fmt('%s: %s', j.param_name(f), j.java_class(f)) for f in required_fields
         )
 
         w.out('')
@@ -3474,7 +3480,7 @@ class JavaCodeGenerationInstance(object):
         )
         with w.block('public static %s newBuilder(%s)', j.builder_class(data_type), all_required_args):
             builder_args = ', '.join(j.param_name(f) for f in all_required_fields)
-            w.out('return new %s(%s);', j.builder_class(data_type), builder_args)
+            w.out('return %s(%s);', j.builder_class(data_type), builder_args)
 
         parent_class = None
         if data_type.parent_type and j.has_builder(data_type.parent_type):
@@ -3541,7 +3547,7 @@ class JavaCodeGenerationInstance(object):
             )
             with w.block('public %s build()', j.java_class(data_type)):
                 build_args = ', '.join(j.param_name(f) for f in data_type.all_fields)
-                w.out('return new %s(%s);', j.java_class(data_type), build_args)
+                w.out('return %s(%s);', j.java_class(data_type), build_args)
 
     def generate_builder_methods(self, builder_class, fields, wrapped_builder_name=None):
         assert isinstance(builder_class, JavaClass), repr(builder_class)
@@ -3631,7 +3637,7 @@ class JavaCodeGenerationInstance(object):
                              exception_class, j.java_class(data_type)):
                     w.out('super(requestId, userMessage, buildMessage(routeName, userMessage, errorValue));')
                     with w.block('if (errorValue == null)'):
-                        w.out('throw new NullPointerException("errorValue");')
+                        w.out('throw NullPointerException("errorValue");')
                     w.out('this.errorValue = errorValue;')
 
     def generate_route_uploader(self, route):
@@ -3759,12 +3765,12 @@ class JavaCodeGenerationInstance(object):
                 # package private
                 with w.block('%s(%s)', j.builder_class(route), args):
                     with w.block('if (_client == null)'):
-                        w.out('throw new NullPointerException("_client");')
+                        w.out('throw NullPointerException("_client");')
                     w.out('this._client = _client;')
 
                     if j.has_builder(arg):
                         with w.block('if (_builder == null)'):
-                            w.out('throw new NullPointerException("_builder");')
+                            w.out('throw NullPointerException("_builder");')
                         w.out('this._builder = _builder;')
                     else:
                         for field in fields:
@@ -3799,7 +3805,7 @@ class JavaCodeGenerationInstance(object):
                     if j.has_builder(arg):
                         w.out('%s arg_ = this._builder.build();', j.java_class(arg))
                     else:
-                        w.out('%s arg_ = new %s(%s);',
+                        w.out('%s arg_ = %s(%s);',
                               j.java_class(arg),
                               j.java_class(arg),
                               ', '.join(j.param_name(f) for f in arg.all_fields))
@@ -3864,9 +3870,9 @@ class JavaCodeGenerationInstance(object):
             if not (j.is_java_primitive(field.data_type) or (allow_default and field.has_default)):
                 with w.block('if (%s == null)' % value_name):
                     if omit_arg_name:
-                        w.out('throw new IllegalArgumentException("Value is null");')
+                        w.out('throw IllegalArgumentException("Value is null");')
                     else:
-                        w.out('throw new IllegalArgumentException("Required value for \'%s\' is null");', value_name)
+                        w.out('throw IllegalArgumentException("Required value for \'%s\' is null");', value_name)
             self.generate_data_type_validation(data_type, value_name, omit_arg_name=omit_arg_name)
 
     # T95586: Because Android has a bug that forces all classes with RUNTIME annotations into the
@@ -3891,7 +3897,7 @@ class JavaCodeGenerationInstance(object):
         w.out('')
         w.javadoc("For internal use only.")
         with w.class_block(j.serializer_class(data_type), visibility=visibility, parent_class=parent_class):
-            w.out('public static final %s INSTANCE = new %s();',
+            w.out('public static final %s INSTANCE = %s();',
                   j.serializer_class(data_type),
                   j.serializer_class(data_type))
             self.generate_struct_serialize(data_type)
@@ -3911,7 +3917,7 @@ class JavaCodeGenerationInstance(object):
         w.out('')
         w.javadoc("For internal use only.")
         with w.class_block(j.serializer_class(data_type), visibility=visibility, parent_class=parent_class):
-            w.out('public static final %s INSTANCE = new %s();',
+            w.out('public static final %s INSTANCE = %s();',
                   j.serializer_class(data_type),
                   j.serializer_class(data_type))
             self.generate_union_serialize(data_type)
@@ -3924,8 +3930,10 @@ class JavaCodeGenerationInstance(object):
         j = self.j
 
         w.out('')
-        w.out('@Override')
-        with w.block('public void serialize(%s value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException', j.java_class(data_type)):
+        # w.out('@Override')
+        w.out('@Throws(IOException::class)')
+        w.out('@Throws(JsonGenerationException::class)')
+        with w.block('override fun serialize(value: %s, g: JsonGenerator, collapse: Boolean)', j.java_class(data_type)):
 
             if data_type.has_enumerated_subtypes():
                 for subtype in data_type.get_enumerated_subtypes():
@@ -3961,8 +3969,10 @@ class JavaCodeGenerationInstance(object):
         j = self.j
 
         w.out('')
-        w.out('@Override')
-        with w.block('public %s deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException', j.java_class(data_type)):
+        # w.out('@Override')
+        w.out('@Throws(IOException::class)')
+        w.out('@Throws(JsonParseException::class)')
+        with w.block('override fun deserialize(JsonParser p, boolean collapsed) : %s', j.java_class(data_type)):
             w.out('%s value;', j.java_class(data_type))
             w.out('String tag = null;')
 
@@ -3997,16 +4007,16 @@ class JavaCodeGenerationInstance(object):
                 for field in data_type.all_fields:
                     if field not in data_type.all_optional_fields:
                         with w.block('if (f_%s == null)', j.param_name(field)):
-                            w.out('throw new JsonParseException(p, "Required field \\"%s\\" missing.");' , field.name)
+                            w.out('throw JsonParseException(p, "Required field \\"%s\\" missing.");' , field.name)
                 args = ['f_%s' % j.param_name(f) for f in data_type.all_fields]
-                w.out('value = new %s(%s);', j.java_class(data_type), ', '.join(args))
+                w.out('value = %s(%s);', j.java_class(data_type), ', '.join(args))
 
             for tag, subtype_dt in get_enumerated_subtypes_recursively(data_type):
                 with w.block('else if ("%s".equals(tag))', tag):
                     w.out('value = %s.deserialize(p, true);', w.java_serializer(subtype_dt))
 
             with w.block('else'):
-                w.out('throw new JsonParseException(p, "No subtype found that matches tag: \\"" + tag + "\\"");')
+                w.out('throw JsonParseException(p, "No subtype found that matches tag: \\"" + tag + "\\"");')
 
             with w.block('if (!collapsed)'):
                 w.out('expectEndObject(p);')
@@ -4021,8 +4031,10 @@ class JavaCodeGenerationInstance(object):
         j = self.j
 
         w.out('')
-        w.out('@Override')
-        with w.block('public void serialize(%s value, JsonGenerator g) throws IOException, JsonGenerationException', j.java_class(data_type)):
+        # w.out('@Override')
+        w.out('@Throws(IOException::class)')
+        w.out('@Throws(JsonGenerationException::class)')
+        with w.block('override fun serialize(value: %s, g : JsonGenerator)', j.java_class(data_type)):
             tag = 'value' if j.is_enum(data_type) else 'value.tag()'
             with w.block('switch (%s)' % tag):
                 for field in data_type.all_fields:
@@ -4048,7 +4060,7 @@ class JavaCodeGenerationInstance(object):
                     if data_type.catch_all_field:
                         w.out('g.writeString("%s");', data_type.catch_all_field.name)
                     else:
-                        w.out('throw new IllegalArgumentException("Unrecognized tag: " + %s);', tag)
+                        w.out('throw IllegalArgumentException("Unrecognized tag: " + %s)', tag)
 
     def generate_union_deserialize(self, data_type):
         assert is_union_type(data_type), repr(data_type)
@@ -4057,23 +4069,25 @@ class JavaCodeGenerationInstance(object):
         j = self.j
 
         w.out('')
-        w.out('@Override')
-        with w.block('public %s deserialize(JsonParser p) throws IOException, JsonParseException', j.java_class(data_type)):
+        # w.out('@Override')
+        w.out('@Throws(IOException::class)')
+        w.out('@Throws(JsonParseException::class)')
+        with w.block('override fun deserialize(p : JsonParser) : %s', j.java_class(data_type)):
             w.out('%s value;', j.java_class(data_type))
-            w.out('boolean collapsed;')
+            w.out('Boolean collapsed;')
             w.out('String tag;')
 
             with w.block('if (p.getCurrentToken() == JsonToken.VALUE_STRING)'):
-                w.out('collapsed = true;')
-                w.out('tag = getStringValue(p);')
-                w.out('p.nextToken();')
+                w.out('collapsed = true')
+                w.out('tag = getStringValue(p)')
+                w.out('p.nextToken()')
             with w.block('else'):
-                w.out('collapsed = false;')
-                w.out('expectStartObject(p);')
-                w.out('tag = readTag(p);')
+                w.out('collapsed = false')
+                w.out('expectStartObject(p)')
+                w.out('tag = readTag(p)')
 
             with w.block('if (tag == null)'):
-                w.out('throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);')
+                w.out('throw JsonParseException(p, "Required field missing: " + TAG_FIELD)')
 
             for field in data_type.all_fields:
                 if field == data_type.catch_all_field:
@@ -4082,35 +4096,35 @@ class JavaCodeGenerationInstance(object):
                 field_dt = field.data_type
                 with w.block('else if ("%s".equals(tag))', field.name):
                     if is_void_type(field.data_type):
-                        w.out('value = %s.%s;', j.java_class(data_type), j.field_static_instance(field))
+                        w.out('value = %s.%s', j.java_class(data_type), j.field_static_instance(field))
                     else:
-                        w.out('%s fieldValue = null;', j.java_class(field_dt, boxed=True, generics=True))
+                        w.out('%s fieldValue = null', j.java_class(field_dt, boxed=True, generics=True))
                         with w.conditional_block(is_nullable_type(field.data_type), 'if (p.getCurrentToken() != JsonToken.END_OBJECT)'):
                             field_serializer = w.java_serializer(field_dt)
                             if j.is_collapsible(field_dt) or is_nullable_type(field_dt) and j.is_collapsible(field_dt.data_type):
-                                w.out('fieldValue = %s.deserialize(p, true);', field_serializer)
+                                w.out('fieldValue = %s.deserialize(p, true)', field_serializer)
                             else:
-                                w.out('expectField("%s", p);', field.name)
-                                w.out('fieldValue = %s.deserialize(p);', field_serializer)
+                                w.out('expectField("%s", p)', field.name)
+                                w.out('fieldValue = %s.deserialize(p)', field_serializer)
 
                         if is_nullable_type(field.data_type):
                             with w.block('if (fieldValue == null)'):
-                                w.out('value = %s.%s();', j.java_class(data_type), j.field_factory_method(field))
+                                w.out('value = %s.%s()', j.java_class(data_type), j.field_factory_method(field))
                             with w.block('else'):
-                                w.out('value = %s.%s(fieldValue);', j.java_class(data_type), j.field_factory_method(field))
+                                w.out('value = %s.%s(fieldValue)', j.java_class(data_type), j.field_factory_method(field))
                         else:
-                            w.out('value = %s.%s(fieldValue);', j.java_class(data_type), j.field_factory_method(field))
+                            w.out('value = %s.%s(fieldValue)', j.java_class(data_type), j.field_factory_method(field))
             with w.block('else'):
                 if data_type.catch_all_field:
-                    w.out('value = %s.%s;', j.java_class(data_type), j.field_static_instance(data_type.catch_all_field))
+                    w.out('value = %s.%s', j.java_class(data_type), j.field_static_instance(data_type.catch_all_field))
                 else:
-                    w.out('throw new JsonParseException(p, "Unknown tag: " + tag);')
+                    w.out('throw JsonParseException(p, "Unknown tag: " + tag)')
 
             with w.block('if (!collapsed)'):
-                w.out('skipFields(p);')
-                w.out('expectEndObject(p);')
+                w.out('skipFields(p)')
+                w.out('expectEndObject(p)')
 
-            w.out('return value;')
+            w.out('return value')
 
     def generate_data_type_validation(self, data_type, value_name, description=None, omit_arg_name=False, level=0):
         assert isinstance(data_type, DataType), repr(data_type)
@@ -4127,50 +4141,50 @@ class JavaCodeGenerationInstance(object):
             if data_type.min_items is not None:
                 java_value = w.java_value(Int32(), data_type.min_items)
                 with w.block('if (%s.size() < %s)', value_name, java_value):
-                    w.out('throw new IllegalArgumentException("List%s has fewer than %s items");',
+                    w.out('throw IllegalArgumentException("List%s has fewer than %s items")',
                           description, java_value)
             if data_type.max_items is not None:
                 java_value = w.java_value(Int32(), data_type.max_items)
                 with w.block('if (%s.size() > %s)', value_name, java_value):
-                    w.out('throw new IllegalArgumentException("List%s has more than %s items");',
+                    w.out('throw IllegalArgumentException("List%s has more than %s items")',
                           description, java_value)
             xn = 'x' if level == 0 else 'x%d' % level
             list_item_type = j.java_class(data_type.data_type, boxed=True, generics=True)
-            with w.block('for (%s %s : %s)', list_item_type, xn, value_name):
+            with w.block('for (%s %s: %s)', list_item_type, xn, value_name):
                 with w.block('if (%s == null)', xn):
-                    w.out('throw new IllegalArgumentException("An item in list%s is null");', description)
+                    w.out('throw IllegalArgumentException("An item in list%s is null")', description)
                 self.generate_data_type_validation(data_type.data_type, xn, 'an item in list%s' % description, level=level+1)
 
         elif is_map_type(data_type):
             xn = 'x' if level == 0 else 'x%d' % level
             map_item_type = j.java_class(data_type.value_data_type, boxed=True, generics=True)
-            with w.block('for (%s %s : %s.values())', map_item_type, xn, value_name):
+            with w.block('for (%s %s: %s.values())', map_item_type, xn, value_name):
                 with w.block('if (%s == null)', xn):
-                    w.out('throw new IllegalArgumentException("An item in map%s is null");', description)
+                    w.out('throw IllegalArgumentException("An item in map%s is null")', description)
                 self.generate_data_type_validation(data_type.value_data_type, xn, 'an item in map%s' % description, level=level+1)
 
         elif is_numeric_type(data_type):
             if data_type.min_value is not None:
                 java_value = w.java_value(data_type, data_type.min_value)
                 with w.block('if (%s < %s)', value_name, java_value):
-                    w.out('throw new IllegalArgumentException("Number%s is smaller than %s");',
+                    w.out('throw IllegalArgumentException("Number%s is smaller than %s")',
                           description, java_value)
             if data_type.max_value is not None:
                 java_value = w.java_value(data_type, data_type.max_value)
                 with w.block('if (%s > %s)', value_name, java_value):
-                    w.out('throw new IllegalArgumentException("Number%s is larger than %s");',
+                    w.out('throw IllegalArgumentException("Number%s is larger than %s")',
                           description, java_value)
 
         elif is_string_type(data_type):
             if data_type.min_length is not None:
                 java_value = w.java_value(Int32(), data_type.min_length)
                 with w.block('if (%s.length() < %s)', value_name, java_value):
-                    w.out('throw new IllegalArgumentException("String%s is shorter than %s");',
+                    w.out('throw IllegalArgumentException("String%s is shorter than %s")',
                           description, java_value)
             if data_type.max_length is not None:
                 java_value = w.java_value(Int32(), data_type.max_length)
                 with w.block('if (%s.length() > %s)', value_name, java_value):
-                    w.out('throw new IllegalArgumentException("String%s is longer than %s");',
+                    w.out('throw IllegalArgumentException("String%s is longer than %s")',
                           description, java_value)
             if data_type.pattern is not None:
                 # TODO: Save the pattern as a static variable.
@@ -4178,7 +4192,7 @@ class JavaCodeGenerationInstance(object):
                 pattern_class = JavaClass("java.util.regex.Pattern")
                 pattern = sanitize_pattern(data_type.pattern)
                 with w.block('if (!%s.matches("%s", %s))', pattern_class, pattern, value_name):
-                    w.out('throw new IllegalArgumentException("String%s does not match pattern");', description)
+                    w.out('throw IllegalArgumentException("String%s does not match pattern")', description)
 
         elif any((
                 is_composite_type(data_type),
@@ -4197,9 +4211,9 @@ class JavaCodeGenerationInstance(object):
         w = self.w
 
         w.out('')
-        w.out('@Override')
-        with w.block('public String toString()'):
-            w.out('return Serializer.INSTANCE.serialize(this, false);')
+        # w.out('@Override')
+        with w.block('override fun toString() : String'):
+            w.out('return Serializer.INSTANCE.serialize(this, false)')
 
         w.out('')
         w.javadoc(
@@ -4210,8 +4224,8 @@ class JavaCodeGenerationInstance(object):
             """,
             returns="Formatted, multiline String representation of this object"
         )
-        with w.block('public String toStringMultiline()'):
-            w.out('return Serializer.INSTANCE.serialize(this, true);')
+        with w.block('public fun toStringMultiline() : String'):
+            w.out('return Serializer.INSTANCE.serialize(this, true)')
 
     def generate_hash_code(self, data_type):
         assert isinstance(data_type, DataType), repr(data_type)
@@ -4228,18 +4242,18 @@ class JavaCodeGenerationInstance(object):
             fields = ['_tag'] + [j.param_name(f) for f in data_type.all_fields if j.has_value(f)]
 
         w.out('')
-        w.out('@Override')
-        with w.block('public int hashCode()'):
+        # w.out('@Override')
+        with w.block('override hashCode() : Integer'):
             if not fields:
                 w.out('// attempt to deal with inheritance')
-                w.out('return getClass().toString().hashCode();')
+                w.out('return getClass().toString().hashCode()')
             else:
                 arrays_class = JavaClass('java.util.Arrays')
-                with w.block('int hash = %s.hashCode(new Object []', arrays_class, after=');'):
+                with w.block('int hash = %s.hashCode(Object []', arrays_class, after=')'):
                     self.g.generate_multiline_list(fields, delim=('', ''))
                 if data_type.parent_type:
-                    w.out('hash = (31 * super.hashCode()) + hash;')
-                w.out('return hash;')
+                    w.out('hash = (31 * super.hashCode()) + hash')
+                w.out('return hash')
 
     def _java_eq(self, field, name=None):
         assert isinstance(field, Field), repr(field)
@@ -4273,30 +4287,30 @@ class JavaCodeGenerationInstance(object):
         assert not j.is_enum(data_type), "enum types don't require equals() methods"
 
         w.out('')
-        w.out('@Override')
-        with w.block('public boolean equals(Object obj)'):
+        # w.out('@Override')
+        with w.block('override equals(obj : Object) : Boolean'):
             with w.block('if (obj == this)'):
-                w.out('return true;')
+                w.out('return true')
             with w.block('if (obj == null)'):
-                w.out('return false;')
+                w.out('return false')
             with w.block('else if (obj instanceof %s)', j.java_class(data_type)):
-                w.out('%s other = (%s) obj;', j.java_class(data_type), j.java_class(data_type))
+                w.out('%s other = (%s) obj', j.java_class(data_type), j.java_class(data_type))
                 with w.block('if (this._tag != other._tag)'):
-                    w.out('return false;')
+                    w.out('return false')
 
                 with w.block('switch (_tag)'):
                     for field in data_type.all_fields:
                         w.out('case %s:', j.field_tag_enum_name(field))
                         with self.g.indent():
                             if j.has_value(field):
-                                w.out('return %s;', self._java_eq(field))
+                                w.out('return %s', self._java_eq(field))
                             else:
-                                w.out('return true;')
+                                w.out('return true')
                     w.out('default:')
                     with self.g.indent():
-                        w.out('return false;')
+                        w.out('return false')
             with w.block('else'):
-                w.out('return false;')
+                w.out('return false')
 
     def generate_struct_equals(self, data_type):
         assert is_struct_type(data_type), repr(data_type)
@@ -4305,18 +4319,18 @@ class JavaCodeGenerationInstance(object):
         j = self.j
 
         w.out('')
-        w.out('@Override')
-        with w.block('public boolean equals(Object obj)'):
+        # w.out('@Override')
+        with w.block('override fun equals(obj : Object) : Boolean'):
             with w.block('if (obj == this)'):
-                w.out('return true;')
+                w.out('return true')
             with w.block('if (obj == null)'):
-                w.out('return false;')
+                w.out('return false')
             w.out('// be careful with inheritance')
             with w.block('else if (obj.getClass().equals(this.getClass()))'):
-                w.out('%s other = (%s) obj;', j.java_class(data_type), j.java_class(data_type))
+                w.out('%s other = (%s) obj', j.java_class(data_type), j.java_class(data_type))
 
                 if not data_type.all_fields:
-                    w.out('return true;')
+                    w.out('return true')
                 elif len(data_type.all_fields) == 1:
                     w.out('return %s;', self._java_eq(data_type.all_fields[0]))
                 else:
@@ -4326,7 +4340,7 @@ class JavaCodeGenerationInstance(object):
                             w.out('&& (%s)', self._java_eq(field))
                         w.out(';')
             with w.block('else'):
-                w.out('return false;')
+                w.out('return false')
 
 
 
