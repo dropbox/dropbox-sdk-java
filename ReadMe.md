@@ -1,4 +1,4 @@
-# Dropbox Core SDK for Java 11+
+# Dropbox Core SDK for Java
 
 ![GitHub](https://img.shields.io/github/license/dropbox/dropbox-sdk-java)
 ![Maven Central](https://img.shields.io/maven-central/v/com.dropbox.core/dropbox-core-sdk)
@@ -11,6 +11,12 @@ License: [MIT](License.txt)
 Documentation: [Javadocs](https://dropbox.github.io/dropbox-sdk-java/api-docs/v5.1.1/)
 
 ## Setup
+
+### Java Version
+
+The current release of Dropbox SDK Java supports Java 11+. If you are running Java 8 and want to use the SDK, you should user version `4.0.1`.
+
+### Add a dependency on the Dropbox Java SDK to your project
 
 If you're using Maven, then edit your project's "pom.xml" and add this to the `<dependencies>` section:
 
