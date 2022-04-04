@@ -8,7 +8,7 @@ A Java library to access [Dropbox's HTTP-based Core API v2](https://www.dropbox.
 
 License: [MIT](License.txt)
 
-Documentation: [Javadocs](https://dropbox.github.io/dropbox-sdk-java/api-docs/v5.1.1/)
+Documentation: [Javadocs](https://dropbox.github.io/dropbox-sdk-java/api-docs/v5.2.0/)
 
 ## Setup
 
@@ -24,7 +24,7 @@ If you're using Maven, then edit your project's "pom.xml" and add this to the `<
 <dependency>
     <groupId>com.dropbox.core</groupId>
     <artifactId>dropbox-core-sdk</artifactId>
-    <version>5.1.1</version>
+    <version>5.2.0</version>
 </dependency>
 ```
 
@@ -33,7 +33,7 @@ If you are using Gradle, then edit your project's "build.gradle" and add this to
 ```groovy
 dependencies {
     // ...
-    implementation 'com.dropbox.core:dropbox-core-sdk:5.1.1'
+    implementation 'com.dropbox.core:dropbox-core-sdk:5.2.0'
 }
 ```
 
