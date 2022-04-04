@@ -278,3 +278,11 @@ apply from: 'stone.gradle'
 apply plugin: 'com.vanniktech.maven.publish'
 
 /* END PRIVATE REPO ONLY */
+
+allprojects {
+    plugins.withId("com.vanniktech.maven.publish") {
+        mavenPublish {
+            sonatypeHost = "S01"
+        }
+    }
+}
