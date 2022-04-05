@@ -1,4 +1,4 @@
-5.2.0 (2021-12-17)
+5.2.0 (2022-4-04)
 ---------------------------------------------
 - Update dropbox-api-spec to point to more recent version (Feb 2022)
 - Update jackson-core to 2.7.9
