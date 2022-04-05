@@ -12,6 +12,6 @@ public class DbxSdkVersion
     // https://github.com/dropbox/dropbox-sdk-java/issues/357
     private static String loadVersion()
     {
-        return "5.2.0";
+        return "5.2.1-SNAPSHOT";
     }
 }
