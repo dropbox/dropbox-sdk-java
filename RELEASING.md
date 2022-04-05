@@ -21,6 +21,6 @@ Releasing
            * Select all the Repositories that contain the content you want to release
            * Click on Close and refresh until the Release button is active
            * Click Release and submit
- 14. Create a GitHub release with the title vX.Y.Z. Attach .zip and .tar archives and signature files from `build/distributions` directory.
+ 14. Create a GitHub release with the title and tag vX.Y.Z. Attach the sdk, -javadoc, and -sources .jar files from your `build/libs` directory.
  15. Update gh-pages. Add or replace the files within `https://github.com/dropbox/dropbox-sdk-java/tree/gh-pages` with the files inside `dropbox-sdk-java/build/docs/javadoc`
  16. Push these changes to GitHub.
