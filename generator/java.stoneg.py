@@ -1054,8 +1054,7 @@ class JavaClassWriter(object):
     def java_default_value(self, field):
         assert isinstance(field, Field), repr(field)
         assert field.has_default, repr(field)
-        default_value = '\"\"' if field.default == '' else field.default
-        return self.java_value(field.data_type, default_value)
+        return self.java_value(field.data_type, field.default)
 
     def java_value(self, data_type, stone_value):
         assert isinstance(data_type, DataType), repr(data_type)
