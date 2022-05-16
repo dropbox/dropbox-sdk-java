@@ -64,7 +64,7 @@ configurations {
     withoutOsgi.extendsFrom api
 }
 
-processResources {
+processResources { task ->
     filesMatching('**/*.crt') { fcd ->
         def inputstream = fcd.open()
         def certDatas = com.dropbox.maven.pem_converter.PemLoader.load(
@@ -74,7 +74,7 @@ processResources {
 
         def crtPath = fcd.getPath()
         def rawPath = crtPath.substring(0, crtPath.length() - 4) + ".raw"
-        def rawFile = new File(getDestinationDir(), rawPath);
+        def rawFile = new File(task.getDestinationDir(), rawPath);
         rawFile.getParentFile().mkdirs();
         def out = new DataOutputStream(new FileOutputStream(rawFile))
         com.dropbox.maven.pem_converter.RawLoader.store(certDatas, out)
@@ -206,7 +206,9 @@ jar {
                 '*'
 
         def noeeProp = 'osgi.bnd.noee'
-        def noee = project.properties.get(noeeProp, System.properties.get(noeeProp, 'false'))
+        def noee = providers.gradleProperty(noeeProp).forUseAtConfigurationTime().getOrElse(
+                providers.systemProperty(noeeProp).forUseAtConfigurationTime().getOrElse('false')
+        )
         instruction '-noee', noee
     }
 }
