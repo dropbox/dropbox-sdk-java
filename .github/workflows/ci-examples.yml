@@ -24,9 +24,9 @@ jobs:
         distribution: 'zulu'
     - uses: actions/checkout@v2
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v3
       with:
-        python-version: '2.7'
+        python-version: '3.9.10'
     - run: python -m pip install ply && pip install six
     - name: Grant execute permissions
       run: chmod +x gradlew && chmod +x update-submodules
