@@ -1,6 +1,6 @@
 apply plugin: 'java'
 
-class StoneConfig {
+class StoneConfig implements Serializable {
     String packageName = 'com.dropbox.stone'
     String globalRouteFilter = null
     boolean dataTypesOnly = false
@@ -8,7 +8,7 @@ class StoneConfig {
     String routeWhitelistFilter = null
 }
 
-class ClientSpec {
+class ClientSpec implements Serializable {
     String name = null
     String javadoc = null
     String routeFilter = null
@@ -16,145 +16,216 @@ class ClientSpec {
     String unusedClassesToGenerate = null
 }
 
-def runStoneGenerator(List<StoneConfig> configs,
-                      File stoneDir,
-                      File generatorFile,
-                      Collection<File> specFiles,
-                      File outputDir,
-                      String pythonCommand
-                      ) {
-    def srcOutputDir = new File(outputDir, "src")
-    def refsFile = new File(outputDir, "refs/javadoc-refs.json")
-    def logFile = new File(outputDir, "log/stone.log")
+abstract class StoneTask extends DefaultTask {
 
-    // delete output dir for a clean build
-    if (outputDir.exists()) {
-        if (!outputDir.deleteDir()) {
-            throw new GradleException("Failed to delete output directory: ${outputDir.absolutePath}")
-        }
+    @Input
+    protected abstract ListProperty<StoneConfig> getStoneConfigs();
+
+    @Input
+    protected abstract Property<String> getGeneratorDir()
+
+    @Input
+    protected abstract Property<String> getSpecDir()
+
+    @Optional
+    @Input
+    protected abstract Property<String> getRouteWhitelistFilter()
+
+    @Input
+    protected abstract Property<String> getStoneDir()
+
+    @Input
+    protected abstract Property<String> getPythonCommand()
+
+    @OutputDirectory
+    protected abstract DirectoryProperty getOutputDir();
+
+    @Inject
+    protected abstract ObjectFactory getObjectFactory();
+
+    @Inject
+    protected abstract ExecOperations getExecOperations();
+
+
+    public void config(List<StoneConfig> configs) {
+        getStoneConfigs().set(configs)
     }
 
-    srcOutputDir.mkdirs()
-    logFile.parentFile.mkdirs()
-    refsFile.parentFile.mkdirs()
+    public void generatorDir(String generatorDir) {
+        getGeneratorDir().set(generatorDir)
+    }
 
-    boolean isFirst = true
+    public void routeWhitelistFilter(String routeWhitelistFilter) {
+        getRouteWhitelistFilter().set(routeWhitelistFilter)
+    }
 
-    for (StoneConfig c : configs) {
-        boolean append = !isFirst
-        if (c.dataTypesOnly) {
-            // generate only data types. This is a much simpler call
-            if (c.client) {
-                throw new GradleException("Cannot specify dataTypesOnly and clients for Stone generation.")
+    public void stoneDir(String stoneDir) {
+        getStoneDir().set(stoneDir)
+    }
+
+    public void pythonCommand(String pythonCommand) {
+        getPythonCommand().set(pythonCommand)
+    }
+
+    public void specDir(String specDir) {
+        getSpecDir().set(specDir)
+    }
+
+    public void outputDir(String outputDir) {
+        getOutputDir().set(new File(outputDir))
+    }
+
+    @TaskAction
+    public void processStone() {
+        def generatorFileTree = getObjectFactory().fileTree().from(getGeneratorDir().get())
+        generatorFileTree.include('**/*stoneg.py')
+        def generatorFile = generatorFileTree.getSingleFile()
+        def specFiles = getSpecFiles(getObjectFactory(), getSpecDir().get()).getFiles()
+        for (StoneConfig config in getStoneConfigs().get()) {
+            config.routeWhitelistFilter = getRouteWhitelistFilter().getOrNull()
+        }
+        runStoneGenerator(
+                getStoneConfigs().get(),
+                getObjectFactory().fileTree().from(getStoneDir().get()).getDir(),
+                generatorFile,
+                specFiles,
+                getOutputDir().getAsFile().get(),
+                getPythonCommand().get()
+        )
+    }
+
+    static FileTree getSpecFiles(ObjectFactory objectFactory, String specDir) {
+        def fileTree = objectFactory.fileTree().from(specDir)
+        fileTree.include('**/*.stone')
+        return fileTree
+    }
+
+    def runStoneGenerator(
+            List<StoneConfig> configs,
+            File stoneDir,
+            File generatorFile,
+            Collection<File> specFiles,
+            File outputDir,
+            String pythonCommand
+    ) {
+        def srcOutputDir = new File(outputDir, "src")
+        def refsFile = new File(outputDir, "refs/javadoc-refs.json")
+        def logFile = new File(outputDir, "log/stone.log")
+
+        // delete output dir for a clean build
+        if (outputDir.exists()) {
+            if (!outputDir.deleteDir()) {
+                throw new GradleException("Failed to delete output directory: ${outputDir.absolutePath}")
             }
+        }
 
+        srcOutputDir.mkdirs()
+        logFile.parentFile.mkdirs()
+        refsFile.parentFile.mkdirs()
 
-            project.exec {
-                standardOutput = new FileOutputStream(logFile, append)
-                commandLine pythonCommand, "-m", "stone.cli"
+        boolean isFirst = true
 
-                environment PYTHONPATH: stoneDir.absolutePath
-
-                if (isFirst) {
-                    args "--clean-build"
+        for (StoneConfig c : configs) {
+            boolean append = !isFirst
+            if (c.dataTypesOnly) {
+                // generate only data types. This is a much simpler call
+                if (c.client) {
+                    throw new GradleException("Cannot specify dataTypesOnly and clients for Stone generation.")
                 }
-                if (c.routeWhitelistFilter) {
-                    args "--route-whitelist-filter", config.routeWhitelistFilter
+
+
+                getExecOperations().exec {
+                    standardOutput = new FileOutputStream(logFile, append)
+                    commandLine pythonCommand, "-m", "stone.cli"
+
+                    environment PYTHONPATH: stoneDir.absolutePath
+
+                    if (isFirst) {
+                        args "--clean-build"
+                    }
+                    if (c.routeWhitelistFilter) {
+                        args "--route-whitelist-filter", config.routeWhitelistFilter
+                    }
+                    args generatorFile.absolutePath
+                    args srcOutputDir.absolutePath
+                    args specFiles.collect({ f -> f.absolutePath })
+                    args "--"
+                    args "--package", c.packageName
+                    args "--data-types-only"
                 }
-                args generatorFile.absolutePath
-                args srcOutputDir.absolutePath
-                args specFiles.collect({ f -> f.absolutePath })
-                args "--"
-                args "--package", c.packageName
-                args "--data-types-only"
-            }
-        } else {
-            def client = c.client
-            def routeFilters = [c.globalRouteFilter, client.routeFilter]
-            def routeFilter = routeFilters\
+            } else {
+                def client = c.client
+                def routeFilters = [c.globalRouteFilter, client.routeFilter]
+                def routeFilter = routeFilters\
             .findAll { filter -> filter != null }\
             .collect { filter -> "(${filter})" }\
             .join " and "
 
-            project.exec {
-                standardOutput = new FileOutputStream(logFile, append)
-                commandLine pythonCommand, "-m", "stone.cli"
+                getExecOperations().exec {
+                    standardOutput = new FileOutputStream(logFile, append)
+                    commandLine pythonCommand, "-m", "stone.cli"
 
-                environment PYTHONPATH: stoneDir.absolutePath
-                if (isFirst) {
-                    args "--clean-build"
-                }
-                args "--attribute", ":all"
-                if (routeFilter) {
-                    args "--filter-by-route-attr", routeFilter
-                }
-                if (c.routeWhitelistFilter) {
-                    args "--route-whitelist-filter", c.routeWhitelistFilter
-                }
-                args generatorFile.absolutePath
-                args srcOutputDir.absolutePath
-                args specFiles.collect({ f -> f.absolutePath })
-                args "--"
-                args "--package", c.packageName
-                args "--javadoc-refs", refsFile.absolutePath
+                    environment PYTHONPATH: stoneDir.absolutePath
+                    if (isFirst) {
+                        args "--clean-build"
+                    }
+                    args "--attribute", ":all"
+                    if (routeFilter) {
+                        args "--filter-by-route-attr", routeFilter
+                    }
+                    if (c.routeWhitelistFilter) {
+                        args "--route-whitelist-filter", c.routeWhitelistFilter
+                    }
+                    args generatorFile.absolutePath
+                    args srcOutputDir.absolutePath
+                    args specFiles.collect({ f -> f.absolutePath })
+                    args "--"
+                    args "--package", c.packageName
+                    args "--javadoc-refs", refsFile.absolutePath
 
-                if (client.name) {
-                    args "--client-class", client.name
-                }
-                if (client.javadoc != null) {
-                    args "--client-javadoc", client.javadoc
-                }
-                if (client.requestsClassnamePrefix != null) {
-                    args "--requests-classname-prefix", client.requestsClassnamePrefix
-                }
-                if (client.unusedClassesToGenerate != null) {
-                    args "--unused-classes-to-generate", client.unusedClassesToGenerate
+                    if (client.name) {
+                        args "--client-class", client.name
+                    }
+                    if (client.javadoc != null) {
+                        args "--client-javadoc", client.javadoc
+                    }
+                    if (client.requestsClassnamePrefix != null) {
+                        args "--requests-classname-prefix", client.requestsClassnamePrefix
+                    }
+                    if (client.unusedClassesToGenerate != null) {
+                        args "--unused-classes-to-generate", client.unusedClassesToGenerate
+                    }
                 }
             }
+            isFirst = false
         }
-        isFirst = false
     }
 }
-
-
 
 // add generateStone task for all source sets (e.g. generateTestStone, etc)
 project.sourceSets.all { SourceSet sourceSet ->
     def taskName = "main" == sourceSet.name ? "generateStone" : "generate${sourceSet.name.capitalize()}Stone"
-    task "${taskName}" {
+    tasks.register(taskName, StoneTask) {
         description "Generate Stone Java source files for ${sourceSet.name}."
 
         def specDirPropName = "com.dropbox.api.${sourceSet.name}.specDir".toString()
+        def mySpecDir = project.properties.get(specDirPropName, "src/${sourceSet.name}/stone")
+        specDir mySpecDir
         def routeWhitelistFilterPropName = "com.dropbox.api.${sourceSet.name}.routeWhitelistFilter".toString()
-
-        ext {
-            configs = []
-            generatorDir = 'generator'
-            stoneDir = 'stone'
-            specDir = project.properties.get(specDirPropName, "src/${sourceSet.name}/stone")
-            outputDir = "${project.buildDir}/generated/source/stone/${sourceSet.name}"
-            routeWhitelistFilter = project.properties.get(routeWhitelistFilterPropName, null)
-            pythonCommand = 'python'
-        }
-
-        def getSpecFiles = { fileTree(dir: specDir, include: '**/*.stone') }
+        generatorDir 'generator'
+        stoneDir 'stone'
+        routeWhitelistFilter project.properties.get(routeWhitelistFilterPropName, null)
+        pythonCommand 'python'
+        outputDir "${project.buildDir}/generated/source/stone/${sourceSet.name}"
 
         inputs.dir { project.fileTree(dir: generatorDir, exclude: '**/*.pyc') }.withPropertyName("stone").withPathSensitivity(PathSensitivity.RELATIVE)
-        inputs.dir(getSpecFiles).withPathSensitivity(PathSensitivity.RELATIVE).withPropertyName("stoneSpec").skipWhenEmpty(true)
-        inputs.property "configs", { new groovy.json.JsonBuilder(configs).toString() }
-        outputs.dir { outputDir }.withPropertyName("generatedStone")
+        inputs.dir(getSpecFiles(objects, getSpecDir().get())).withPathSensitivity(PathSensitivity.RELATIVE).withPropertyName("stoneSpec").skipWhenEmpty(true)
+        inputs.property "configs", { new groovy.json.JsonBuilder(getStoneConfigs().get()).toString() }
+        outputs.dir { getOutputDir().get() }.withPropertyName("generatedStone")
         outputs.cacheIf { true }
-        doLast {
-            def generatorFile = fileTree(dir: generatorDir, include: '**/*stoneg.py').getSingleFile()
-            def specFiles = getSpecFiles().getFiles()
-            for (StoneConfig config in configs) {
-                config.routeWhitelistFilter = routeWhitelistFilter
-            }
-            runStoneGenerator(configs, file(stoneDir), generatorFile, specFiles, file(outputDir), pythonCommand)
-        }
     }
 
-    sourceSet.java.srcDir project.tasks."${taskName}".outputDir + "/src"
+    sourceSet.java.srcDir project.tasks."${taskName}".getOutputDir().get().toString() + "/src"
     Task compile = project.tasks.getByName(sourceSet.getCompileTaskName("java"))
     compile.dependsOn project.tasks."${taskName}"
 }
@@ -164,7 +235,7 @@ generateStone {
     String unusedClassesToGenerate = 'AuthError, PathRoot, PathRootError, AccessError, RateLimitError'
     String packageName = 'com.dropbox.core.v2'
     String globalRouteFilter = 'alpha_group=null and beta_group=null'
-    configs = [
+    config [
             new StoneConfig(
                 packageName: packageName,
                 globalRouteFilter: globalRouteFilter,
@@ -202,7 +273,7 @@ generateStone {
 
 generateTestStone {
     String packageName = 'com.dropbox.core.stone'
-    configs = [
+    config [
             new StoneConfig(
                 packageName: packageName,
                 dataTypesOnly: true,
