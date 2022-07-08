@@ -1,0 +1,62 @@
+{
+  "events": [
+    {
+      "timestamp": "2020-05-14T15:58:15Z",
+      "event_category": {
+        ".tag": "file_operations"
+      },
+      "actor": {
+        ".tag": "admin",
+        "admin": {
+          ".tag": "team_member",
+          "account_id": "dbid:AAAZ86YODCBh5Jen6VnAdG85KJrv1KNkkFQ",
+          "display_name": "db test",
+          "email": "testing@example.com",
+          "team_member_id": "dbmid:AADKrgMss5NUAOy0dFNSF3TZjxjn_rGACdM"
+        }
+      },
+      "origin": {
+        "access_method": {
+          ".tag": "end_user",
+          "end_user": {
+            ".tag": "web",
+            "session_id": ""
+          }
+        }
+      },
+      "involve_non_team_member": false,
+      "context": {
+        ".tag": "team_member",
+        "account_id": "dbid:AAAZ86YODCBh5Jen6VnAdG85KJrv1KNkkFQ",
+        "display_name": "db test",
+        "email": "testing@example.com",
+        "team_member_id": "dbmid:AADKrgMss5NUAOy0dFNSF3TZjxjn_rGACdM"
+      },
+      "participants": [],
+      "assets": [
+        {
+          ".tag": "file",
+          "path": {
+            "contextual": "/some shared folder/test.txt",
+            "namespace_relative": {
+              "ns_id": "7662767952",
+              "relative_path": "/test.txt",
+              "is_shared_namespace": true
+            }
+          },
+          "display_name": "test.txt",
+          "file_id": "id:l1eKEQ3VrqAAAAAAAAAAHw"
+        }
+      ],
+      "event_type": {
+        ".tag": "file_locking_lock_status_changed",
+        "description": "Locked/unlocked editing for a file"
+      },
+      "details": {
+        ".tag": "file_locking_lock_status_changed_details"
+      }
+    }
+  ],
+  "cursor": "AABnfF2cvbaP2c1zmbwY8KITrkCjf7V94-BrRsRk3cg3wU6zJP-h0Sh7T8ORvxupn6uvS7Rl_B9uJJ3tp0DbTPCi2aBTw_-z9OnGkGLoEvuMhO1mdRGXGOayxbOEaKM2_m9N4M4lSGZMawU1jJA9z6e7kQ60tHHz8wZoz_Nhu7Wk339vZSIUEIvIeeTch3lEfkODfUs4fWZzPELX9n-qc4qnL14fl59_sVS9_jCceufRl3ichwLnEPOiIT6HHZ3EirPQrg4J7FybSluiHZR7o01BkB3ENK-zlXu7R8ObPLSrYLcGi5tkBa2XVGp4lDXM4rt7CTNDQqZG9Hb36SH0QkJQ7KCZ1zV0_9r5BtpCBHiETw",
+  "has_more": false
+}
