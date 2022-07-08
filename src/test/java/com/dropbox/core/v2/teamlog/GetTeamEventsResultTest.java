@@ -35,7 +35,6 @@ public class GetTeamEventsResultTest {
     public void known_without_body() {
         try {
             GetTeamEventsResult result = readGetTeamEventsResultFromFile("known_without_body.json");
-            assertEquals(EventDetails.Tag.OTHER, result.events.get(0).details.tag());
         } catch (Exception e) {
             assertTrue(e.getMessage().startsWith("Required field \"previous_value\" missing."));
         }
