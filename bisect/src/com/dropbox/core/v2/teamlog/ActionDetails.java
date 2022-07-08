@@ -44,6 +44,10 @@ public final class ActionDetails {
          */
         REMOVE_ACTION, // MemberRemoveActionType
         /**
+         * Additional information relevant when someone is invited to the team.
+         */
+        TEAM_INVITE_DETAILS, // TeamInviteDetails
+        /**
          * Catch-all used for unknown tag values returned by the Dropbox
          * servers.
          *
@@ -66,6 +70,7 @@ public final class ActionDetails {
     private Tag _tag;
     private JoinTeamDetails teamJoinDetailsValue;
     private MemberRemoveActionType removeActionValue;
+    private TeamInviteDetails teamInviteDetailsValue;
 
     /**
      * Private default constructor, so that object is uninitializable publicly.
@@ -119,6 +124,24 @@ public final class ActionDetails {
         ActionDetails result = new ActionDetails();
         result._tag = _tag;
         result.removeActionValue = removeActionValue;
+        return result;
+    }
+
+    /**
+     * Additional information indicating the action taken that caused status
+     * change.
+     *
+     * @param teamInviteDetailsValue  Additional information relevant when
+     *     someone is invited to the team. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private ActionDetails withTagAndTeamInviteDetails(Tag _tag, TeamInviteDetails teamInviteDetailsValue) {
+        ActionDetails result = new ActionDetails();
+        result._tag = _tag;
+        result.teamInviteDetailsValue = teamInviteDetailsValue;
         return result;
     }
 
@@ -240,6 +263,56 @@ public final class ActionDetails {
     }
 
     /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#TEAM_INVITE_DETAILS}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#TEAM_INVITE_DETAILS}, {@code false} otherwise.
+     */
+    public boolean isTeamInviteDetails() {
+        return this._tag == Tag.TEAM_INVITE_DETAILS;
+    }
+
+    /**
+     * Returns an instance of {@code ActionDetails} that has its tag set to
+     * {@link Tag#TEAM_INVITE_DETAILS}.
+     *
+     * <p> Additional information relevant when someone is invited to the team.
+     * </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code ActionDetails} with its tag set to {@link
+     *     Tag#TEAM_INVITE_DETAILS}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static ActionDetails teamInviteDetails(TeamInviteDetails value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new ActionDetails().withTagAndTeamInviteDetails(Tag.TEAM_INVITE_DETAILS, value);
+    }
+
+    /**
+     * Additional information relevant when someone is invited to the team.
+     *
+     * <p> This instance must be tagged as {@link Tag#TEAM_INVITE_DETAILS}. </p>
+     *
+     * @return The {@link TeamInviteDetails} value associated with this instance
+     *     if {@link #isTeamInviteDetails} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isTeamInviteDetails} is {@code
+     *     false}.
+     */
+    public TeamInviteDetails getTeamInviteDetailsValue() {
+        if (this._tag != Tag.TEAM_INVITE_DETAILS) {
+            throw new IllegalStateException("Invalid tag: required Tag.TEAM_INVITE_DETAILS, but was Tag." + this._tag.name());
+        }
+        return teamInviteDetailsValue;
+    }
+
+    /**
      * Returns {@code true} if this instance has the tag {@link Tag#OTHER},
      * {@code false} otherwise.
      *
@@ -255,7 +328,8 @@ public final class ActionDetails {
         int hash = Arrays.hashCode(new Object [] {
             _tag,
             teamJoinDetailsValue,
-            removeActionValue
+            removeActionValue,
+            teamInviteDetailsValue
         });
         return hash;
     }
@@ -278,6 +352,8 @@ public final class ActionDetails {
                     return (this.teamJoinDetailsValue == other.teamJoinDetailsValue) || (this.teamJoinDetailsValue.equals(other.teamJoinDetailsValue));
                 case REMOVE_ACTION:
                     return (this.removeActionValue == other.removeActionValue) || (this.removeActionValue.equals(other.removeActionValue));
+                case TEAM_INVITE_DETAILS:
+                    return (this.teamInviteDetailsValue == other.teamInviteDetailsValue) || (this.teamInviteDetailsValue.equals(other.teamInviteDetailsValue));
                 case OTHER:
                     return true;
                 default:
@@ -330,6 +406,13 @@ public final class ActionDetails {
                     g.writeEndObject();
                     break;
                 }
+                case TEAM_INVITE_DETAILS: {
+                    g.writeStartObject();
+                    writeTag("team_invite_details", g);
+                    TeamInviteDetails.Serializer.INSTANCE.serialize(value.teamInviteDetailsValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
                 default: {
                     g.writeString("other");
                 }
@@ -364,6 +447,11 @@ public final class ActionDetails {
                 expectField("remove_action", p);
                 fieldValue = MemberRemoveActionType.Serializer.INSTANCE.deserialize(p);
                 value = ActionDetails.removeAction(fieldValue);
+            }
+            else if ("team_invite_details".equals(tag)) {
+                TeamInviteDetails fieldValue = null;
+                fieldValue = TeamInviteDetails.Serializer.INSTANCE.deserialize(p, true);
+                value = ActionDetails.teamInviteDetails(fieldValue);
             }
             else {
                 value = ActionDetails.OTHER;

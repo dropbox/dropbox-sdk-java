@@ -23,22 +23,34 @@ public class FileLockMetadata {
 
     protected final Boolean isLockholder;
     protected final String lockholderName;
+    protected final String lockholderAccountId;
     protected final Date created;
 
     /**
      * Use {@link newBuilder} to create instances of this class without
      * specifying values for all optional fields.
      *
-     * @param isLockholder  True if caller holds the file lock. Missing if
-     *     is_locked is false.
-     * @param lockholderName  The display name of the lock holder. Missing if
-     *     is_locked is false.
-     * @param created  The timestamp of the lock was created. Missing if
-     *     is_locked is false.
+     * @param isLockholder  True if caller holds the file lock.
+     * @param lockholderName  The display name of the lock holder.
+     * @param lockholderAccountId  The account ID of the lock holder if known.
+     *     Must have length of at least 40 and have length of at most 40.
+     * @param created  The timestamp of the lock was created.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
      */
-    public FileLockMetadata(Boolean isLockholder, String lockholderName, Date created) {
+    public FileLockMetadata(Boolean isLockholder, String lockholderName, String lockholderAccountId, Date created) {
         this.isLockholder = isLockholder;
         this.lockholderName = lockholderName;
+        if (lockholderAccountId != null) {
+            if (lockholderAccountId.length() < 40) {
+                throw new IllegalArgumentException("String 'lockholderAccountId' is shorter than 40");
+            }
+            if (lockholderAccountId.length() > 40) {
+                throw new IllegalArgumentException("String 'lockholderAccountId' is longer than 40");
+            }
+        }
+        this.lockholderAccountId = lockholderAccountId;
         this.created = LangUtil.truncateMillis(created);
     }
 
@@ -48,11 +60,11 @@ public class FileLockMetadata {
      * <p> The default values for unset fields will be used. </p>
      */
     public FileLockMetadata() {
-        this(null, null, null);
+        this(null, null, null, null);
     }
 
     /**
-     * True if caller holds the file lock. Missing if is_locked is false.
+     * True if caller holds the file lock.
      *
      * @return value for this field, or {@code null} if not present.
      */
@@ -61,7 +73,7 @@ public class FileLockMetadata {
     }
 
     /**
-     * The display name of the lock holder. Missing if is_locked is false.
+     * The display name of the lock holder.
      *
      * @return value for this field, or {@code null} if not present.
      */
@@ -70,7 +82,16 @@ public class FileLockMetadata {
     }
 
     /**
-     * The timestamp of the lock was created. Missing if is_locked is false.
+     * The account ID of the lock holder if known.
+     *
+     * @return value for this field, or {@code null} if not present.
+     */
+    public String getLockholderAccountId() {
+        return lockholderAccountId;
+    }
+
+    /**
+     * The timestamp of the lock was created.
      *
      * @return value for this field, or {@code null} if not present.
      */
@@ -94,19 +115,20 @@ public class FileLockMetadata {
 
         protected Boolean isLockholder;
         protected String lockholderName;
+        protected String lockholderAccountId;
         protected Date created;
 
         protected Builder() {
             this.isLockholder = null;
             this.lockholderName = null;
+            this.lockholderAccountId = null;
             this.created = null;
         }
 
         /**
          * Set value for optional field.
          *
-         * @param isLockholder  True if caller holds the file lock. Missing if
-         *     is_locked is false.
+         * @param isLockholder  True if caller holds the file lock.
          *
          * @return this builder
          */
@@ -118,8 +140,7 @@ public class FileLockMetadata {
         /**
          * Set value for optional field.
          *
-         * @param lockholderName  The display name of the lock holder. Missing
-         *     if is_locked is false.
+         * @param lockholderName  The display name of the lock holder.
          *
          * @return this builder
          */
@@ -131,8 +152,32 @@ public class FileLockMetadata {
         /**
          * Set value for optional field.
          *
-         * @param created  The timestamp of the lock was created. Missing if
-         *     is_locked is false.
+         * @param lockholderAccountId  The account ID of the lock holder if
+         *     known. Must have length of at least 40 and have length of at most
+         *     40.
+         *
+         * @return this builder
+         *
+         * @throws IllegalArgumentException  If any argument does not meet its
+         *     preconditions.
+         */
+        public Builder withLockholderAccountId(String lockholderAccountId) {
+            if (lockholderAccountId != null) {
+                if (lockholderAccountId.length() < 40) {
+                    throw new IllegalArgumentException("String 'lockholderAccountId' is shorter than 40");
+                }
+                if (lockholderAccountId.length() > 40) {
+                    throw new IllegalArgumentException("String 'lockholderAccountId' is longer than 40");
+                }
+            }
+            this.lockholderAccountId = lockholderAccountId;
+            return this;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param created  The timestamp of the lock was created.
          *
          * @return this builder
          */
@@ -148,7 +193,7 @@ public class FileLockMetadata {
          * @return new instance of {@link FileLockMetadata}
          */
         public FileLockMetadata build() {
-            return new FileLockMetadata(isLockholder, lockholderName, created);
+            return new FileLockMetadata(isLockholder, lockholderName, lockholderAccountId, created);
         }
     }
 
@@ -157,6 +202,7 @@ public class FileLockMetadata {
         int hash = Arrays.hashCode(new Object [] {
             isLockholder,
             lockholderName,
+            lockholderAccountId,
             created
         });
         return hash;
@@ -175,6 +221,7 @@ public class FileLockMetadata {
             FileLockMetadata other = (FileLockMetadata) obj;
             return ((this.isLockholder == other.isLockholder) || (this.isLockholder != null && this.isLockholder.equals(other.isLockholder)))
                 && ((this.lockholderName == other.lockholderName) || (this.lockholderName != null && this.lockholderName.equals(other.lockholderName)))
+                && ((this.lockholderAccountId == other.lockholderAccountId) || (this.lockholderAccountId != null && this.lockholderAccountId.equals(other.lockholderAccountId)))
                 && ((this.created == other.created) || (this.created != null && this.created.equals(other.created)))
                 ;
         }
@@ -219,6 +266,10 @@ public class FileLockMetadata {
                 g.writeFieldName("lockholder_name");
                 StoneSerializers.nullable(StoneSerializers.string()).serialize(value.lockholderName, g);
             }
+            if (value.lockholderAccountId != null) {
+                g.writeFieldName("lockholder_account_id");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.lockholderAccountId, g);
+            }
             if (value.created != null) {
                 g.writeFieldName("created");
                 StoneSerializers.nullable(StoneSerializers.timestamp()).serialize(value.created, g);
@@ -239,6 +290,7 @@ public class FileLockMetadata {
             if (tag == null) {
                 Boolean f_isLockholder = null;
                 String f_lockholderName = null;
+                String f_lockholderAccountId = null;
                 Date f_created = null;
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String field = p.getCurrentName();
@@ -249,6 +301,9 @@ public class FileLockMetadata {
                     else if ("lockholder_name".equals(field)) {
                         f_lockholderName = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
                     }
+                    else if ("lockholder_account_id".equals(field)) {
+                        f_lockholderAccountId = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                    }
                     else if ("created".equals(field)) {
                         f_created = StoneSerializers.nullable(StoneSerializers.timestamp()).deserialize(p);
                     }
@@ -256,7 +311,7 @@ public class FileLockMetadata {
                         skipValue(p);
                     }
                 }
-                value = new FileLockMetadata(f_isLockholder, f_lockholderName, f_created);
+                value = new FileLockMetadata(f_isLockholder, f_lockholderName, f_lockholderAccountId, f_created);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

@@ -35,6 +35,10 @@ public enum LegalHoldStatus {
      */
     UPDATING,
     /**
+     * The legal hold policy is exporting.
+     */
+    EXPORTING,
+    /**
      * The legal hold policy is releasing.
      */
     RELEASING,
@@ -70,6 +74,10 @@ public enum LegalHoldStatus {
                 }
                 case UPDATING: {
                     g.writeString("updating");
+                    break;
+                }
+                case EXPORTING: {
+                    g.writeString("exporting");
                     break;
                 }
                 case RELEASING: {
@@ -111,6 +119,9 @@ public enum LegalHoldStatus {
             }
             else if ("updating".equals(tag)) {
                 value = LegalHoldStatus.UPDATING;
+            }
+            else if ("exporting".equals(tag)) {
+                value = LegalHoldStatus.EXPORTING;
             }
             else if ("releasing".equals(tag)) {
                 value = LegalHoldStatus.RELEASING;

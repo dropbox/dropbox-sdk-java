@@ -19,9 +19,13 @@ import java.util.Arrays;
 public enum LegalHoldsListPoliciesError {
     // union team.LegalHoldsListPoliciesError (team_legal_holds.stone)
     /**
-     * Temporary infrastructure failure, please retry.
+     * There has been an unknown legal hold error.
      */
-    TRANSIENT_ERROR,
+    UNKNOWN_LEGAL_HOLD_ERROR,
+    /**
+     * You don't have permissions to perform this action.
+     */
+    INSUFFICIENT_PERMISSIONS,
     /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *
@@ -29,7 +33,11 @@ public enum LegalHoldsListPoliciesError {
      * not up to date. Consider updating your SDK version to handle the new
      * tags. </p>
      */
-    OTHER; // *catch_all
+    OTHER,
+    /**
+     * Temporary infrastructure failure, please retry.
+     */
+    TRANSIENT_ERROR;
 
     /**
      * For internal use only.
@@ -40,12 +48,24 @@ public enum LegalHoldsListPoliciesError {
         @Override
         public void serialize(LegalHoldsListPoliciesError value, JsonGenerator g) throws IOException, JsonGenerationException {
             switch (value) {
+                case UNKNOWN_LEGAL_HOLD_ERROR: {
+                    g.writeString("unknown_legal_hold_error");
+                    break;
+                }
+                case INSUFFICIENT_PERMISSIONS: {
+                    g.writeString("insufficient_permissions");
+                    break;
+                }
+                case OTHER: {
+                    g.writeString("other");
+                    break;
+                }
                 case TRANSIENT_ERROR: {
                     g.writeString("transient_error");
                     break;
                 }
                 default: {
-                    g.writeString("other");
+                    throw new IllegalArgumentException("Unrecognized tag: " + value);
                 }
             }
         }
@@ -68,11 +88,20 @@ public enum LegalHoldsListPoliciesError {
             if (tag == null) {
                 throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
             }
+            else if ("unknown_legal_hold_error".equals(tag)) {
+                value = LegalHoldsListPoliciesError.UNKNOWN_LEGAL_HOLD_ERROR;
+            }
+            else if ("insufficient_permissions".equals(tag)) {
+                value = LegalHoldsListPoliciesError.INSUFFICIENT_PERMISSIONS;
+            }
+            else if ("other".equals(tag)) {
+                value = LegalHoldsListPoliciesError.OTHER;
+            }
             else if ("transient_error".equals(tag)) {
                 value = LegalHoldsListPoliciesError.TRANSIENT_ERROR;
             }
             else {
-                value = LegalHoldsListPoliciesError.OTHER;
+                throw new JsonParseException(p, "Unknown tag: " + tag);
             }
             if (!collapsed) {
                 skipFields(p);

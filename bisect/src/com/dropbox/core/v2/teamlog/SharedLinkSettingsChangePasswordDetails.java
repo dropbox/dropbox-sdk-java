@@ -24,9 +24,30 @@ public class SharedLinkSettingsChangePasswordDetails {
     // struct team_log.SharedLinkSettingsChangePasswordDetails (team_log_generated.stone)
 
     protected final AccessLevel sharedContentAccessLevel;
+    protected final String sharedContentLink;
 
     /**
      * Changed the password of the shared link.
+     *
+     * @param sharedContentAccessLevel  Shared content access level. Must not be
+     *     {@code null}.
+     * @param sharedContentLink  Shared content link.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public SharedLinkSettingsChangePasswordDetails(AccessLevel sharedContentAccessLevel, String sharedContentLink) {
+        if (sharedContentAccessLevel == null) {
+            throw new IllegalArgumentException("Required value for 'sharedContentAccessLevel' is null");
+        }
+        this.sharedContentAccessLevel = sharedContentAccessLevel;
+        this.sharedContentLink = sharedContentLink;
+    }
+
+    /**
+     * Changed the password of the shared link.
+     *
+     * <p> The default values for unset fields will be used. </p>
      *
      * @param sharedContentAccessLevel  Shared content access level. Must not be
      *     {@code null}.
@@ -35,10 +56,7 @@ public class SharedLinkSettingsChangePasswordDetails {
      *     preconditions.
      */
     public SharedLinkSettingsChangePasswordDetails(AccessLevel sharedContentAccessLevel) {
-        if (sharedContentAccessLevel == null) {
-            throw new IllegalArgumentException("Required value for 'sharedContentAccessLevel' is null");
-        }
-        this.sharedContentAccessLevel = sharedContentAccessLevel;
+        this(sharedContentAccessLevel, null);
     }
 
     /**
@@ -50,10 +68,20 @@ public class SharedLinkSettingsChangePasswordDetails {
         return sharedContentAccessLevel;
     }
 
+    /**
+     * Shared content link.
+     *
+     * @return value for this field, or {@code null} if not present.
+     */
+    public String getSharedContentLink() {
+        return sharedContentLink;
+    }
+
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            sharedContentAccessLevel
+            sharedContentAccessLevel,
+            sharedContentLink
         });
         return hash;
     }
@@ -69,7 +97,9 @@ public class SharedLinkSettingsChangePasswordDetails {
         // be careful with inheritance
         else if (obj.getClass().equals(this.getClass())) {
             SharedLinkSettingsChangePasswordDetails other = (SharedLinkSettingsChangePasswordDetails) obj;
-            return (this.sharedContentAccessLevel == other.sharedContentAccessLevel) || (this.sharedContentAccessLevel.equals(other.sharedContentAccessLevel));
+            return ((this.sharedContentAccessLevel == other.sharedContentAccessLevel) || (this.sharedContentAccessLevel.equals(other.sharedContentAccessLevel)))
+                && ((this.sharedContentLink == other.sharedContentLink) || (this.sharedContentLink != null && this.sharedContentLink.equals(other.sharedContentLink)))
+                ;
         }
         else {
             return false;
@@ -106,6 +136,10 @@ public class SharedLinkSettingsChangePasswordDetails {
             }
             g.writeFieldName("shared_content_access_level");
             AccessLevel.Serializer.INSTANCE.serialize(value.sharedContentAccessLevel, g);
+            if (value.sharedContentLink != null) {
+                g.writeFieldName("shared_content_link");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.sharedContentLink, g);
+            }
             if (!collapse) {
                 g.writeEndObject();
             }
@@ -121,11 +155,15 @@ public class SharedLinkSettingsChangePasswordDetails {
             }
             if (tag == null) {
                 AccessLevel f_sharedContentAccessLevel = null;
+                String f_sharedContentLink = null;
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String field = p.getCurrentName();
                     p.nextToken();
                     if ("shared_content_access_level".equals(field)) {
                         f_sharedContentAccessLevel = AccessLevel.Serializer.INSTANCE.deserialize(p);
+                    }
+                    else if ("shared_content_link".equals(field)) {
+                        f_sharedContentLink = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
                     }
                     else {
                         skipValue(p);
@@ -134,7 +172,7 @@ public class SharedLinkSettingsChangePasswordDetails {
                 if (f_sharedContentAccessLevel == null) {
                     throw new JsonParseException(p, "Required field \"shared_content_access_level\" missing.");
                 }
-                value = new SharedLinkSettingsChangePasswordDetails(f_sharedContentAccessLevel);
+                value = new SharedLinkSettingsChangePasswordDetails(f_sharedContentAccessLevel, f_sharedContentLink);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

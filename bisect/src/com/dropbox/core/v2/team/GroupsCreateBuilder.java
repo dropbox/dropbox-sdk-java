@@ -40,6 +40,21 @@ public class GroupsCreateBuilder {
     /**
      * Set value for optional field.
      *
+     * <p> If left unset or set to {@code null}, defaults to {@code false}. </p>
+     *
+     * @param addCreatorAsOwner  Automatically add the creator of the group.
+     *     Defaults to {@code false} when set to {@code null}.
+     *
+     * @return this builder
+     */
+    public GroupsCreateBuilder withAddCreatorAsOwner(Boolean addCreatorAsOwner) {
+        this._builder.withAddCreatorAsOwner(addCreatorAsOwner);
+        return this;
+    }
+
+    /**
+     * Set value for optional field.
+     *
      * @param groupExternalId  The creator of a team can associate an arbitrary
      *     external ID to the group.
      *

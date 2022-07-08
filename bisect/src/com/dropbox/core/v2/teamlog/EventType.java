@@ -230,6 +230,10 @@ public final class EventType {
          */
         FILE_GET_COPY_REFERENCE, // FileGetCopyReferenceType
         /**
+         * (file_operations) Locked/unlocked editing for a file
+         */
+        FILE_LOCKING_LOCK_STATUS_CHANGED, // FileLockingLockStatusChangedType
+        /**
          * (file_operations) Moved files and/or folders
          */
         FILE_MOVE, // FileMoveType
@@ -273,6 +277,10 @@ public final class EventType {
          * (file_operations) Unpinned item from folder overview
          */
         FOLDER_OVERVIEW_ITEM_UNPINNED, // FolderOverviewItemUnpinnedType
+        /**
+         * (file_operations) Rewound a folder
+         */
+        REWIND_FOLDER, // RewindFolderType
         /**
          * (file_requests) Changed file request
          */
@@ -366,6 +374,18 @@ public final class EventType {
          */
         LEGAL_HOLDS_EXPORT_A_HOLD, // LegalHoldsExportAHoldType
         /**
+         * (legal_holds) Canceled export for a hold
+         */
+        LEGAL_HOLDS_EXPORT_CANCELLED, // LegalHoldsExportCancelledType
+        /**
+         * (legal_holds) Downloaded export for a hold
+         */
+        LEGAL_HOLDS_EXPORT_DOWNLOADED, // LegalHoldsExportDownloadedType
+        /**
+         * (legal_holds) Removed export for a hold
+         */
+        LEGAL_HOLDS_EXPORT_REMOVED, // LegalHoldsExportRemovedType
+        /**
          * (legal_holds) Released a hold
          */
         LEGAL_HOLDS_RELEASE_A_HOLD, // LegalHoldsReleaseAHoldType
@@ -423,6 +443,14 @@ public final class EventType {
          * to sign in')
          */
         SSO_ERROR, // SsoErrorType
+        /**
+         * (members) Created team invite link
+         */
+        CREATE_TEAM_INVITE_LINK, // CreateTeamInviteLinkType
+        /**
+         * (members) Deleted team invite link
+         */
+        DELETE_TEAM_INVITE_LINK, // DeleteTeamInviteLinkType
         /**
          * (members) Added an external ID for team member
          */
@@ -517,6 +545,42 @@ public final class EventType {
          * (members) Secondary mails policy changed
          */
         SECONDARY_MAILS_POLICY_CHANGED, // SecondaryMailsPolicyChangedType
+        /**
+         * (paper) Added Binder page (deprecated, replaced by 'Edited files')
+         */
+        BINDER_ADD_PAGE, // BinderAddPageType
+        /**
+         * (paper) Added Binder section (deprecated, replaced by 'Edited files')
+         */
+        BINDER_ADD_SECTION, // BinderAddSectionType
+        /**
+         * (paper) Removed Binder page (deprecated, replaced by 'Edited files')
+         */
+        BINDER_REMOVE_PAGE, // BinderRemovePageType
+        /**
+         * (paper) Removed Binder section (deprecated, replaced by 'Edited
+         * files')
+         */
+        BINDER_REMOVE_SECTION, // BinderRemoveSectionType
+        /**
+         * (paper) Renamed Binder page (deprecated, replaced by 'Edited files')
+         */
+        BINDER_RENAME_PAGE, // BinderRenamePageType
+        /**
+         * (paper) Renamed Binder section (deprecated, replaced by 'Edited
+         * files')
+         */
+        BINDER_RENAME_SECTION, // BinderRenameSectionType
+        /**
+         * (paper) Reordered Binder page (deprecated, replaced by 'Edited
+         * files')
+         */
+        BINDER_REORDER_PAGE, // BinderReorderPageType
+        /**
+         * (paper) Reordered Binder section (deprecated, replaced by 'Edited
+         * files')
+         */
+        BINDER_REORDER_SECTION, // BinderReorderSectionType
         /**
          * (paper) Added users and/or groups to Paper doc/folder
          */
@@ -1445,6 +1509,10 @@ public final class EventType {
          */
         RESELLER_SUPPORT_CHANGE_POLICY, // ResellerSupportChangePolicyType
         /**
+         * (team_policies) Changed Rewind policy for team
+         */
+        REWIND_POLICY_CHANGED, // RewindPolicyChangedType
+        /**
          * (team_policies) Changed whether team members can join shared folders
          * owned outside team
          */
@@ -1502,6 +1570,10 @@ public final class EventType {
          */
         TEAM_SELECTIVE_SYNC_POLICY_CHANGED, // TeamSelectiveSyncPolicyChangedType
         /**
+         * (team_policies) Edited the approved list for sharing externally
+         */
+        TEAM_SHARING_WHITELIST_SUBJECTS_CHANGED, // TeamSharingWhitelistSubjectsChangedType
+        /**
          * (team_policies) Added members to two factor authentication exception
          * list
          */
@@ -1528,6 +1600,10 @@ public final class EventType {
          * (team_policies) Changed watermarking policy for team
          */
         WATERMARKING_POLICY_CHANGED, // WatermarkingPolicyChangedType
+        /**
+         * (team_policies) Changed limit on active sessions per member
+         */
+        WEB_SESSIONS_CHANGE_ACTIVE_SESSION_LIMIT, // WebSessionsChangeActiveSessionLimitType
         /**
          * (team_policies) Changed how long members can stay signed in to
          * Dropbox.com
@@ -1611,6 +1687,10 @@ public final class EventType {
          * by 'Ended enterprise admin session')
          */
         ENDED_ENTERPRISE_ADMIN_SESSION_DEPRECATED, // EndedEnterpriseAdminSessionDeprecatedType
+        /**
+         * (trusted_teams) Changed who can update a setting
+         */
+        ENTERPRISE_SETTINGS_LOCKING, // EnterpriseSettingsLockingType
         /**
          * (trusted_teams) Changed guest team admin status
          */
@@ -1770,6 +1850,7 @@ public final class EventType {
     private FileDownloadType fileDownloadValue;
     private FileEditType fileEditValue;
     private FileGetCopyReferenceType fileGetCopyReferenceValue;
+    private FileLockingLockStatusChangedType fileLockingLockStatusChangedValue;
     private FileMoveType fileMoveValue;
     private FilePermanentlyDeleteType filePermanentlyDeleteValue;
     private FilePreviewType filePreviewValue;
@@ -1781,6 +1862,7 @@ public final class EventType {
     private FolderOverviewDescriptionChangedType folderOverviewDescriptionChangedValue;
     private FolderOverviewItemPinnedType folderOverviewItemPinnedValue;
     private FolderOverviewItemUnpinnedType folderOverviewItemUnpinnedValue;
+    private RewindFolderType rewindFolderValue;
     private FileRequestChangeType fileRequestChangeValue;
     private FileRequestCloseType fileRequestCloseValue;
     private FileRequestCreateType fileRequestCreateValue;
@@ -1804,6 +1886,9 @@ public final class EventType {
     private LegalHoldsChangeHoldDetailsType legalHoldsChangeHoldDetailsValue;
     private LegalHoldsChangeHoldNameType legalHoldsChangeHoldNameValue;
     private LegalHoldsExportAHoldType legalHoldsExportAHoldValue;
+    private LegalHoldsExportCancelledType legalHoldsExportCancelledValue;
+    private LegalHoldsExportDownloadedType legalHoldsExportDownloadedValue;
+    private LegalHoldsExportRemovedType legalHoldsExportRemovedValue;
     private LegalHoldsReleaseAHoldType legalHoldsReleaseAHoldValue;
     private LegalHoldsRemoveMembersType legalHoldsRemoveMembersValue;
     private LegalHoldsReportAHoldType legalHoldsReportAHoldValue;
@@ -1818,6 +1903,8 @@ public final class EventType {
     private SignInAsSessionEndType signInAsSessionEndValue;
     private SignInAsSessionStartType signInAsSessionStartValue;
     private SsoErrorType ssoErrorValue;
+    private CreateTeamInviteLinkType createTeamInviteLinkValue;
+    private DeleteTeamInviteLinkType deleteTeamInviteLinkValue;
     private MemberAddExternalIdType memberAddExternalIdValue;
     private MemberAddNameType memberAddNameValue;
     private MemberChangeAdminRoleType memberChangeAdminRoleValue;
@@ -1841,6 +1928,14 @@ public final class EventType {
     private SecondaryEmailDeletedType secondaryEmailDeletedValue;
     private SecondaryEmailVerifiedType secondaryEmailVerifiedValue;
     private SecondaryMailsPolicyChangedType secondaryMailsPolicyChangedValue;
+    private BinderAddPageType binderAddPageValue;
+    private BinderAddSectionType binderAddSectionValue;
+    private BinderRemovePageType binderRemovePageValue;
+    private BinderRemoveSectionType binderRemoveSectionValue;
+    private BinderRenamePageType binderRenamePageValue;
+    private BinderRenameSectionType binderRenameSectionValue;
+    private BinderReorderPageType binderReorderPageValue;
+    private BinderReorderSectionType binderReorderSectionValue;
     private PaperContentAddMemberType paperContentAddMemberValue;
     private PaperContentAddToFolderType paperContentAddToFolderValue;
     private PaperContentArchiveType paperContentArchiveValue;
@@ -2059,6 +2154,7 @@ public final class EventType {
     private PasswordStrengthRequirementsChangePolicyType passwordStrengthRequirementsChangePolicyValue;
     private PermanentDeleteChangePolicyType permanentDeleteChangePolicyValue;
     private ResellerSupportChangePolicyType resellerSupportChangePolicyValue;
+    private RewindPolicyChangedType rewindPolicyChangedValue;
     private SharingChangeFolderJoinPolicyType sharingChangeFolderJoinPolicyValue;
     private SharingChangeLinkPolicyType sharingChangeLinkPolicyValue;
     private SharingChangeMemberPolicyType sharingChangeMemberPolicyValue;
@@ -2072,12 +2168,14 @@ public final class EventType {
     private SsoChangePolicyType ssoChangePolicyValue;
     private TeamExtensionsPolicyChangedType teamExtensionsPolicyChangedValue;
     private TeamSelectiveSyncPolicyChangedType teamSelectiveSyncPolicyChangedValue;
+    private TeamSharingWhitelistSubjectsChangedType teamSharingWhitelistSubjectsChangedValue;
     private TfaAddExceptionType tfaAddExceptionValue;
     private TfaChangePolicyType tfaChangePolicyValue;
     private TfaRemoveExceptionType tfaRemoveExceptionValue;
     private TwoAccountChangePolicyType twoAccountChangePolicyValue;
     private ViewerInfoPolicyChangedType viewerInfoPolicyChangedValue;
     private WatermarkingPolicyChangedType watermarkingPolicyChangedValue;
+    private WebSessionsChangeActiveSessionLimitType webSessionsChangeActiveSessionLimitValue;
     private WebSessionsChangeFixedLengthPolicyType webSessionsChangeFixedLengthPolicyValue;
     private WebSessionsChangeIdleLengthPolicyType webSessionsChangeIdleLengthPolicyValue;
     private TeamMergeFromType teamMergeFromValue;
@@ -2098,6 +2196,7 @@ public final class EventType {
     private ChangedEnterpriseConnectedTeamStatusType changedEnterpriseConnectedTeamStatusValue;
     private EndedEnterpriseAdminSessionType endedEnterpriseAdminSessionValue;
     private EndedEnterpriseAdminSessionDeprecatedType endedEnterpriseAdminSessionDeprecatedValue;
+    private EnterpriseSettingsLockingType enterpriseSettingsLockingValue;
     private GuestAdminChangeStatusType guestAdminChangeStatusValue;
     private StartedEnterpriseAdminSessionType startedEnterpriseAdminSessionValue;
     private TeamMergeRequestAcceptedType teamMergeRequestAcceptedValue;
@@ -2945,6 +3044,23 @@ public final class EventType {
     /**
      * The type of the event.
      *
+     * @param fileLockingLockStatusChangedValue  (file_operations)
+     *     Locked/unlocked editing for a file. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndFileLockingLockStatusChanged(Tag _tag, FileLockingLockStatusChangedType fileLockingLockStatusChangedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.fileLockingLockStatusChangedValue = fileLockingLockStatusChangedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event.
+     *
      * @param fileMoveValue  (file_operations) Moved files and/or folders. Must
      *     not be {@code null}.
      * @param _tag  Discriminating tag for this instance.
@@ -3126,6 +3242,23 @@ public final class EventType {
         EventType result = new EventType();
         result._tag = _tag;
         result.folderOverviewItemUnpinnedValue = folderOverviewItemUnpinnedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event.
+     *
+     * @param rewindFolderValue  (file_operations) Rewound a folder. Must not be
+     *     {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndRewindFolder(Tag _tag, RewindFolderType rewindFolderValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.rewindFolderValue = rewindFolderValue;
         return result;
     }
 
@@ -3523,6 +3656,57 @@ public final class EventType {
     /**
      * The type of the event.
      *
+     * @param legalHoldsExportCancelledValue  (legal_holds) Canceled export for
+     *     a hold. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndLegalHoldsExportCancelled(Tag _tag, LegalHoldsExportCancelledType legalHoldsExportCancelledValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.legalHoldsExportCancelledValue = legalHoldsExportCancelledValue;
+        return result;
+    }
+
+    /**
+     * The type of the event.
+     *
+     * @param legalHoldsExportDownloadedValue  (legal_holds) Downloaded export
+     *     for a hold. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndLegalHoldsExportDownloaded(Tag _tag, LegalHoldsExportDownloadedType legalHoldsExportDownloadedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.legalHoldsExportDownloadedValue = legalHoldsExportDownloadedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event.
+     *
+     * @param legalHoldsExportRemovedValue  (legal_holds) Removed export for a
+     *     hold. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndLegalHoldsExportRemoved(Tag _tag, LegalHoldsExportRemovedType legalHoldsExportRemovedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.legalHoldsExportRemovedValue = legalHoldsExportRemovedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event.
+     *
      * @param legalHoldsReleaseAHoldValue  (legal_holds) Released a hold. Must
      *     not be {@code null}.
      * @param _tag  Discriminating tag for this instance.
@@ -3753,6 +3937,40 @@ public final class EventType {
         EventType result = new EventType();
         result._tag = _tag;
         result.ssoErrorValue = ssoErrorValue;
+        return result;
+    }
+
+    /**
+     * The type of the event.
+     *
+     * @param createTeamInviteLinkValue  (members) Created team invite link.
+     *     Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndCreateTeamInviteLink(Tag _tag, CreateTeamInviteLinkType createTeamInviteLinkValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.createTeamInviteLinkValue = createTeamInviteLinkValue;
+        return result;
+    }
+
+    /**
+     * The type of the event.
+     *
+     * @param deleteTeamInviteLinkValue  (members) Deleted team invite link.
+     *     Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndDeleteTeamInviteLink(Tag _tag, DeleteTeamInviteLinkType deleteTeamInviteLinkValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.deleteTeamInviteLinkValue = deleteTeamInviteLinkValue;
         return result;
     }
 
@@ -4147,6 +4365,142 @@ public final class EventType {
         EventType result = new EventType();
         result._tag = _tag;
         result.secondaryMailsPolicyChangedValue = secondaryMailsPolicyChangedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event.
+     *
+     * @param binderAddPageValue  (paper) Added Binder page (deprecated,
+     *     replaced by 'Edited files'). Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndBinderAddPage(Tag _tag, BinderAddPageType binderAddPageValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.binderAddPageValue = binderAddPageValue;
+        return result;
+    }
+
+    /**
+     * The type of the event.
+     *
+     * @param binderAddSectionValue  (paper) Added Binder section (deprecated,
+     *     replaced by 'Edited files'). Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndBinderAddSection(Tag _tag, BinderAddSectionType binderAddSectionValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.binderAddSectionValue = binderAddSectionValue;
+        return result;
+    }
+
+    /**
+     * The type of the event.
+     *
+     * @param binderRemovePageValue  (paper) Removed Binder page (deprecated,
+     *     replaced by 'Edited files'). Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndBinderRemovePage(Tag _tag, BinderRemovePageType binderRemovePageValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.binderRemovePageValue = binderRemovePageValue;
+        return result;
+    }
+
+    /**
+     * The type of the event.
+     *
+     * @param binderRemoveSectionValue  (paper) Removed Binder section
+     *     (deprecated, replaced by 'Edited files'). Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndBinderRemoveSection(Tag _tag, BinderRemoveSectionType binderRemoveSectionValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.binderRemoveSectionValue = binderRemoveSectionValue;
+        return result;
+    }
+
+    /**
+     * The type of the event.
+     *
+     * @param binderRenamePageValue  (paper) Renamed Binder page (deprecated,
+     *     replaced by 'Edited files'). Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndBinderRenamePage(Tag _tag, BinderRenamePageType binderRenamePageValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.binderRenamePageValue = binderRenamePageValue;
+        return result;
+    }
+
+    /**
+     * The type of the event.
+     *
+     * @param binderRenameSectionValue  (paper) Renamed Binder section
+     *     (deprecated, replaced by 'Edited files'). Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndBinderRenameSection(Tag _tag, BinderRenameSectionType binderRenameSectionValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.binderRenameSectionValue = binderRenameSectionValue;
+        return result;
+    }
+
+    /**
+     * The type of the event.
+     *
+     * @param binderReorderPageValue  (paper) Reordered Binder page (deprecated,
+     *     replaced by 'Edited files'). Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndBinderReorderPage(Tag _tag, BinderReorderPageType binderReorderPageValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.binderReorderPageValue = binderReorderPageValue;
+        return result;
+    }
+
+    /**
+     * The type of the event.
+     *
+     * @param binderReorderSectionValue  (paper) Reordered Binder section
+     *     (deprecated, replaced by 'Edited files'). Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndBinderReorderSection(Tag _tag, BinderReorderSectionType binderReorderSectionValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.binderReorderSectionValue = binderReorderSectionValue;
         return result;
     }
 
@@ -7908,6 +8262,23 @@ public final class EventType {
     /**
      * The type of the event.
      *
+     * @param rewindPolicyChangedValue  (team_policies) Changed Rewind policy
+     *     for team. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndRewindPolicyChanged(Tag _tag, RewindPolicyChangedType rewindPolicyChangedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.rewindPolicyChangedValue = rewindPolicyChangedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event.
+     *
      * @param sharingChangeFolderJoinPolicyValue  (team_policies) Changed
      *     whether team members can join shared folders owned outside team. Must
      *     not be {@code null}.
@@ -8135,6 +8506,23 @@ public final class EventType {
     /**
      * The type of the event.
      *
+     * @param teamSharingWhitelistSubjectsChangedValue  (team_policies) Edited
+     *     the approved list for sharing externally. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndTeamSharingWhitelistSubjectsChanged(Tag _tag, TeamSharingWhitelistSubjectsChangedType teamSharingWhitelistSubjectsChangedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.teamSharingWhitelistSubjectsChangedValue = teamSharingWhitelistSubjectsChangedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event.
+     *
      * @param tfaAddExceptionValue  (team_policies) Added members to two factor
      *     authentication exception list. Must not be {@code null}.
      * @param _tag  Discriminating tag for this instance.
@@ -8232,6 +8620,23 @@ public final class EventType {
         EventType result = new EventType();
         result._tag = _tag;
         result.watermarkingPolicyChangedValue = watermarkingPolicyChangedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event.
+     *
+     * @param webSessionsChangeActiveSessionLimitValue  (team_policies) Changed
+     *     limit on active sessions per member. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndWebSessionsChangeActiveSessionLimit(Tag _tag, WebSessionsChangeActiveSessionLimitType webSessionsChangeActiveSessionLimitValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.webSessionsChangeActiveSessionLimitValue = webSessionsChangeActiveSessionLimitValue;
         return result;
     }
 
@@ -8575,6 +8980,23 @@ public final class EventType {
         EventType result = new EventType();
         result._tag = _tag;
         result.endedEnterpriseAdminSessionDeprecatedValue = endedEnterpriseAdminSessionDeprecatedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event.
+     *
+     * @param enterpriseSettingsLockingValue  (trusted_teams) Changed who can
+     *     update a setting. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndEnterpriseSettingsLocking(Tag _tag, EnterpriseSettingsLockingType enterpriseSettingsLockingValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.enterpriseSettingsLockingValue = enterpriseSettingsLockingValue;
         return result;
     }
 
@@ -11316,6 +11738,57 @@ public final class EventType {
     }
 
     /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#FILE_LOCKING_LOCK_STATUS_CHANGED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#FILE_LOCKING_LOCK_STATUS_CHANGED}, {@code false} otherwise.
+     */
+    public boolean isFileLockingLockStatusChanged() {
+        return this._tag == Tag.FILE_LOCKING_LOCK_STATUS_CHANGED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#FILE_LOCKING_LOCK_STATUS_CHANGED}.
+     *
+     * <p> (file_operations) Locked/unlocked editing for a file </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#FILE_LOCKING_LOCK_STATUS_CHANGED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType fileLockingLockStatusChanged(FileLockingLockStatusChangedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndFileLockingLockStatusChanged(Tag.FILE_LOCKING_LOCK_STATUS_CHANGED, value);
+    }
+
+    /**
+     * (file_operations) Locked/unlocked editing for a file
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#FILE_LOCKING_LOCK_STATUS_CHANGED}. </p>
+     *
+     * @return The {@link FileLockingLockStatusChangedType} value associated
+     *     with this instance if {@link #isFileLockingLockStatusChanged} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isFileLockingLockStatusChanged}
+     *     is {@code false}.
+     */
+    public FileLockingLockStatusChangedType getFileLockingLockStatusChangedValue() {
+        if (this._tag != Tag.FILE_LOCKING_LOCK_STATUS_CHANGED) {
+            throw new IllegalStateException("Invalid tag: required Tag.FILE_LOCKING_LOCK_STATUS_CHANGED, but was Tag." + this._tag.name());
+        }
+        return fileLockingLockStatusChangedValue;
+    }
+
+    /**
      * Returns {@code true} if this instance has the tag {@link Tag#FILE_MOVE},
      * {@code false} otherwise.
      *
@@ -11857,6 +12330,55 @@ public final class EventType {
             throw new IllegalStateException("Invalid tag: required Tag.FOLDER_OVERVIEW_ITEM_UNPINNED, but was Tag." + this._tag.name());
         }
         return folderOverviewItemUnpinnedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#REWIND_FOLDER}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#REWIND_FOLDER}, {@code false} otherwise.
+     */
+    public boolean isRewindFolder() {
+        return this._tag == Tag.REWIND_FOLDER;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#REWIND_FOLDER}.
+     *
+     * <p> (file_operations) Rewound a folder </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#REWIND_FOLDER}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType rewindFolder(RewindFolderType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndRewindFolder(Tag.REWIND_FOLDER, value);
+    }
+
+    /**
+     * (file_operations) Rewound a folder
+     *
+     * <p> This instance must be tagged as {@link Tag#REWIND_FOLDER}. </p>
+     *
+     * @return The {@link RewindFolderType} value associated with this instance
+     *     if {@link #isRewindFolder} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isRewindFolder} is {@code
+     *     false}.
+     */
+    public RewindFolderType getRewindFolderValue() {
+        if (this._tag != Tag.REWIND_FOLDER) {
+            throw new IllegalStateException("Invalid tag: required Tag.REWIND_FOLDER, but was Tag." + this._tag.name());
+        }
+        return rewindFolderValue;
     }
 
     /**
@@ -13003,6 +13525,158 @@ public final class EventType {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#LEGAL_HOLDS_EXPORT_CANCELLED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#LEGAL_HOLDS_EXPORT_CANCELLED}, {@code false} otherwise.
+     */
+    public boolean isLegalHoldsExportCancelled() {
+        return this._tag == Tag.LEGAL_HOLDS_EXPORT_CANCELLED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#LEGAL_HOLDS_EXPORT_CANCELLED}.
+     *
+     * <p> (legal_holds) Canceled export for a hold </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#LEGAL_HOLDS_EXPORT_CANCELLED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType legalHoldsExportCancelled(LegalHoldsExportCancelledType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndLegalHoldsExportCancelled(Tag.LEGAL_HOLDS_EXPORT_CANCELLED, value);
+    }
+
+    /**
+     * (legal_holds) Canceled export for a hold
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#LEGAL_HOLDS_EXPORT_CANCELLED}. </p>
+     *
+     * @return The {@link LegalHoldsExportCancelledType} value associated with
+     *     this instance if {@link #isLegalHoldsExportCancelled} is {@code
+     *     true}.
+     *
+     * @throws IllegalStateException  If {@link #isLegalHoldsExportCancelled} is
+     *     {@code false}.
+     */
+    public LegalHoldsExportCancelledType getLegalHoldsExportCancelledValue() {
+        if (this._tag != Tag.LEGAL_HOLDS_EXPORT_CANCELLED) {
+            throw new IllegalStateException("Invalid tag: required Tag.LEGAL_HOLDS_EXPORT_CANCELLED, but was Tag." + this._tag.name());
+        }
+        return legalHoldsExportCancelledValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#LEGAL_HOLDS_EXPORT_DOWNLOADED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#LEGAL_HOLDS_EXPORT_DOWNLOADED}, {@code false} otherwise.
+     */
+    public boolean isLegalHoldsExportDownloaded() {
+        return this._tag == Tag.LEGAL_HOLDS_EXPORT_DOWNLOADED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#LEGAL_HOLDS_EXPORT_DOWNLOADED}.
+     *
+     * <p> (legal_holds) Downloaded export for a hold </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#LEGAL_HOLDS_EXPORT_DOWNLOADED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType legalHoldsExportDownloaded(LegalHoldsExportDownloadedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndLegalHoldsExportDownloaded(Tag.LEGAL_HOLDS_EXPORT_DOWNLOADED, value);
+    }
+
+    /**
+     * (legal_holds) Downloaded export for a hold
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#LEGAL_HOLDS_EXPORT_DOWNLOADED}. </p>
+     *
+     * @return The {@link LegalHoldsExportDownloadedType} value associated with
+     *     this instance if {@link #isLegalHoldsExportDownloaded} is {@code
+     *     true}.
+     *
+     * @throws IllegalStateException  If {@link #isLegalHoldsExportDownloaded}
+     *     is {@code false}.
+     */
+    public LegalHoldsExportDownloadedType getLegalHoldsExportDownloadedValue() {
+        if (this._tag != Tag.LEGAL_HOLDS_EXPORT_DOWNLOADED) {
+            throw new IllegalStateException("Invalid tag: required Tag.LEGAL_HOLDS_EXPORT_DOWNLOADED, but was Tag." + this._tag.name());
+        }
+        return legalHoldsExportDownloadedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#LEGAL_HOLDS_EXPORT_REMOVED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#LEGAL_HOLDS_EXPORT_REMOVED}, {@code false} otherwise.
+     */
+    public boolean isLegalHoldsExportRemoved() {
+        return this._tag == Tag.LEGAL_HOLDS_EXPORT_REMOVED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#LEGAL_HOLDS_EXPORT_REMOVED}.
+     *
+     * <p> (legal_holds) Removed export for a hold </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#LEGAL_HOLDS_EXPORT_REMOVED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType legalHoldsExportRemoved(LegalHoldsExportRemovedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndLegalHoldsExportRemoved(Tag.LEGAL_HOLDS_EXPORT_REMOVED, value);
+    }
+
+    /**
+     * (legal_holds) Removed export for a hold
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#LEGAL_HOLDS_EXPORT_REMOVED}. </p>
+     *
+     * @return The {@link LegalHoldsExportRemovedType} value associated with
+     *     this instance if {@link #isLegalHoldsExportRemoved} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isLegalHoldsExportRemoved} is
+     *     {@code false}.
+     */
+    public LegalHoldsExportRemovedType getLegalHoldsExportRemovedValue() {
+        if (this._tag != Tag.LEGAL_HOLDS_EXPORT_REMOVED) {
+            throw new IllegalStateException("Invalid tag: required Tag.LEGAL_HOLDS_EXPORT_REMOVED, but was Tag." + this._tag.name());
+        }
+        return legalHoldsExportRemovedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#LEGAL_HOLDS_RELEASE_A_HOLD}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -13700,6 +14374,106 @@ public final class EventType {
             throw new IllegalStateException("Invalid tag: required Tag.SSO_ERROR, but was Tag." + this._tag.name());
         }
         return ssoErrorValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#CREATE_TEAM_INVITE_LINK}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#CREATE_TEAM_INVITE_LINK}, {@code false} otherwise.
+     */
+    public boolean isCreateTeamInviteLink() {
+        return this._tag == Tag.CREATE_TEAM_INVITE_LINK;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#CREATE_TEAM_INVITE_LINK}.
+     *
+     * <p> (members) Created team invite link </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#CREATE_TEAM_INVITE_LINK}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType createTeamInviteLink(CreateTeamInviteLinkType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndCreateTeamInviteLink(Tag.CREATE_TEAM_INVITE_LINK, value);
+    }
+
+    /**
+     * (members) Created team invite link
+     *
+     * <p> This instance must be tagged as {@link Tag#CREATE_TEAM_INVITE_LINK}.
+     * </p>
+     *
+     * @return The {@link CreateTeamInviteLinkType} value associated with this
+     *     instance if {@link #isCreateTeamInviteLink} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isCreateTeamInviteLink} is
+     *     {@code false}.
+     */
+    public CreateTeamInviteLinkType getCreateTeamInviteLinkValue() {
+        if (this._tag != Tag.CREATE_TEAM_INVITE_LINK) {
+            throw new IllegalStateException("Invalid tag: required Tag.CREATE_TEAM_INVITE_LINK, but was Tag." + this._tag.name());
+        }
+        return createTeamInviteLinkValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#DELETE_TEAM_INVITE_LINK}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#DELETE_TEAM_INVITE_LINK}, {@code false} otherwise.
+     */
+    public boolean isDeleteTeamInviteLink() {
+        return this._tag == Tag.DELETE_TEAM_INVITE_LINK;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#DELETE_TEAM_INVITE_LINK}.
+     *
+     * <p> (members) Deleted team invite link </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#DELETE_TEAM_INVITE_LINK}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType deleteTeamInviteLink(DeleteTeamInviteLinkType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndDeleteTeamInviteLink(Tag.DELETE_TEAM_INVITE_LINK, value);
+    }
+
+    /**
+     * (members) Deleted team invite link
+     *
+     * <p> This instance must be tagged as {@link Tag#DELETE_TEAM_INVITE_LINK}.
+     * </p>
+     *
+     * @return The {@link DeleteTeamInviteLinkType} value associated with this
+     *     instance if {@link #isDeleteTeamInviteLink} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isDeleteTeamInviteLink} is
+     *     {@code false}.
+     */
+    public DeleteTeamInviteLinkType getDeleteTeamInviteLinkValue() {
+        if (this._tag != Tag.DELETE_TEAM_INVITE_LINK) {
+            throw new IllegalStateException("Invalid tag: required Tag.DELETE_TEAM_INVITE_LINK, but was Tag." + this._tag.name());
+        }
+        return deleteTeamInviteLinkValue;
     }
 
     /**
@@ -14865,6 +15639,409 @@ public final class EventType {
             throw new IllegalStateException("Invalid tag: required Tag.SECONDARY_MAILS_POLICY_CHANGED, but was Tag." + this._tag.name());
         }
         return secondaryMailsPolicyChangedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#BINDER_ADD_PAGE}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#BINDER_ADD_PAGE}, {@code false} otherwise.
+     */
+    public boolean isBinderAddPage() {
+        return this._tag == Tag.BINDER_ADD_PAGE;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#BINDER_ADD_PAGE}.
+     *
+     * <p> (paper) Added Binder page (deprecated, replaced by 'Edited files')
+     * </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#BINDER_ADD_PAGE}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType binderAddPage(BinderAddPageType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndBinderAddPage(Tag.BINDER_ADD_PAGE, value);
+    }
+
+    /**
+     * (paper) Added Binder page (deprecated, replaced by 'Edited files')
+     *
+     * <p> This instance must be tagged as {@link Tag#BINDER_ADD_PAGE}. </p>
+     *
+     * @return The {@link BinderAddPageType} value associated with this instance
+     *     if {@link #isBinderAddPage} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isBinderAddPage} is {@code
+     *     false}.
+     */
+    public BinderAddPageType getBinderAddPageValue() {
+        if (this._tag != Tag.BINDER_ADD_PAGE) {
+            throw new IllegalStateException("Invalid tag: required Tag.BINDER_ADD_PAGE, but was Tag." + this._tag.name());
+        }
+        return binderAddPageValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#BINDER_ADD_SECTION}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#BINDER_ADD_SECTION}, {@code false} otherwise.
+     */
+    public boolean isBinderAddSection() {
+        return this._tag == Tag.BINDER_ADD_SECTION;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#BINDER_ADD_SECTION}.
+     *
+     * <p> (paper) Added Binder section (deprecated, replaced by 'Edited files')
+     * </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#BINDER_ADD_SECTION}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType binderAddSection(BinderAddSectionType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndBinderAddSection(Tag.BINDER_ADD_SECTION, value);
+    }
+
+    /**
+     * (paper) Added Binder section (deprecated, replaced by 'Edited files')
+     *
+     * <p> This instance must be tagged as {@link Tag#BINDER_ADD_SECTION}. </p>
+     *
+     * @return The {@link BinderAddSectionType} value associated with this
+     *     instance if {@link #isBinderAddSection} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isBinderAddSection} is {@code
+     *     false}.
+     */
+    public BinderAddSectionType getBinderAddSectionValue() {
+        if (this._tag != Tag.BINDER_ADD_SECTION) {
+            throw new IllegalStateException("Invalid tag: required Tag.BINDER_ADD_SECTION, but was Tag." + this._tag.name());
+        }
+        return binderAddSectionValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#BINDER_REMOVE_PAGE}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#BINDER_REMOVE_PAGE}, {@code false} otherwise.
+     */
+    public boolean isBinderRemovePage() {
+        return this._tag == Tag.BINDER_REMOVE_PAGE;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#BINDER_REMOVE_PAGE}.
+     *
+     * <p> (paper) Removed Binder page (deprecated, replaced by 'Edited files')
+     * </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#BINDER_REMOVE_PAGE}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType binderRemovePage(BinderRemovePageType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndBinderRemovePage(Tag.BINDER_REMOVE_PAGE, value);
+    }
+
+    /**
+     * (paper) Removed Binder page (deprecated, replaced by 'Edited files')
+     *
+     * <p> This instance must be tagged as {@link Tag#BINDER_REMOVE_PAGE}. </p>
+     *
+     * @return The {@link BinderRemovePageType} value associated with this
+     *     instance if {@link #isBinderRemovePage} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isBinderRemovePage} is {@code
+     *     false}.
+     */
+    public BinderRemovePageType getBinderRemovePageValue() {
+        if (this._tag != Tag.BINDER_REMOVE_PAGE) {
+            throw new IllegalStateException("Invalid tag: required Tag.BINDER_REMOVE_PAGE, but was Tag." + this._tag.name());
+        }
+        return binderRemovePageValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#BINDER_REMOVE_SECTION}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#BINDER_REMOVE_SECTION}, {@code false} otherwise.
+     */
+    public boolean isBinderRemoveSection() {
+        return this._tag == Tag.BINDER_REMOVE_SECTION;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#BINDER_REMOVE_SECTION}.
+     *
+     * <p> (paper) Removed Binder section (deprecated, replaced by 'Edited
+     * files') </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#BINDER_REMOVE_SECTION}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType binderRemoveSection(BinderRemoveSectionType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndBinderRemoveSection(Tag.BINDER_REMOVE_SECTION, value);
+    }
+
+    /**
+     * (paper) Removed Binder section (deprecated, replaced by 'Edited files')
+     *
+     * <p> This instance must be tagged as {@link Tag#BINDER_REMOVE_SECTION}.
+     * </p>
+     *
+     * @return The {@link BinderRemoveSectionType} value associated with this
+     *     instance if {@link #isBinderRemoveSection} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isBinderRemoveSection} is
+     *     {@code false}.
+     */
+    public BinderRemoveSectionType getBinderRemoveSectionValue() {
+        if (this._tag != Tag.BINDER_REMOVE_SECTION) {
+            throw new IllegalStateException("Invalid tag: required Tag.BINDER_REMOVE_SECTION, but was Tag." + this._tag.name());
+        }
+        return binderRemoveSectionValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#BINDER_RENAME_PAGE}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#BINDER_RENAME_PAGE}, {@code false} otherwise.
+     */
+    public boolean isBinderRenamePage() {
+        return this._tag == Tag.BINDER_RENAME_PAGE;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#BINDER_RENAME_PAGE}.
+     *
+     * <p> (paper) Renamed Binder page (deprecated, replaced by 'Edited files')
+     * </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#BINDER_RENAME_PAGE}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType binderRenamePage(BinderRenamePageType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndBinderRenamePage(Tag.BINDER_RENAME_PAGE, value);
+    }
+
+    /**
+     * (paper) Renamed Binder page (deprecated, replaced by 'Edited files')
+     *
+     * <p> This instance must be tagged as {@link Tag#BINDER_RENAME_PAGE}. </p>
+     *
+     * @return The {@link BinderRenamePageType} value associated with this
+     *     instance if {@link #isBinderRenamePage} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isBinderRenamePage} is {@code
+     *     false}.
+     */
+    public BinderRenamePageType getBinderRenamePageValue() {
+        if (this._tag != Tag.BINDER_RENAME_PAGE) {
+            throw new IllegalStateException("Invalid tag: required Tag.BINDER_RENAME_PAGE, but was Tag." + this._tag.name());
+        }
+        return binderRenamePageValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#BINDER_RENAME_SECTION}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#BINDER_RENAME_SECTION}, {@code false} otherwise.
+     */
+    public boolean isBinderRenameSection() {
+        return this._tag == Tag.BINDER_RENAME_SECTION;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#BINDER_RENAME_SECTION}.
+     *
+     * <p> (paper) Renamed Binder section (deprecated, replaced by 'Edited
+     * files') </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#BINDER_RENAME_SECTION}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType binderRenameSection(BinderRenameSectionType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndBinderRenameSection(Tag.BINDER_RENAME_SECTION, value);
+    }
+
+    /**
+     * (paper) Renamed Binder section (deprecated, replaced by 'Edited files')
+     *
+     * <p> This instance must be tagged as {@link Tag#BINDER_RENAME_SECTION}.
+     * </p>
+     *
+     * @return The {@link BinderRenameSectionType} value associated with this
+     *     instance if {@link #isBinderRenameSection} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isBinderRenameSection} is
+     *     {@code false}.
+     */
+    public BinderRenameSectionType getBinderRenameSectionValue() {
+        if (this._tag != Tag.BINDER_RENAME_SECTION) {
+            throw new IllegalStateException("Invalid tag: required Tag.BINDER_RENAME_SECTION, but was Tag." + this._tag.name());
+        }
+        return binderRenameSectionValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#BINDER_REORDER_PAGE}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#BINDER_REORDER_PAGE}, {@code false} otherwise.
+     */
+    public boolean isBinderReorderPage() {
+        return this._tag == Tag.BINDER_REORDER_PAGE;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#BINDER_REORDER_PAGE}.
+     *
+     * <p> (paper) Reordered Binder page (deprecated, replaced by 'Edited
+     * files') </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#BINDER_REORDER_PAGE}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType binderReorderPage(BinderReorderPageType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndBinderReorderPage(Tag.BINDER_REORDER_PAGE, value);
+    }
+
+    /**
+     * (paper) Reordered Binder page (deprecated, replaced by 'Edited files')
+     *
+     * <p> This instance must be tagged as {@link Tag#BINDER_REORDER_PAGE}. </p>
+     *
+     * @return The {@link BinderReorderPageType} value associated with this
+     *     instance if {@link #isBinderReorderPage} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isBinderReorderPage} is {@code
+     *     false}.
+     */
+    public BinderReorderPageType getBinderReorderPageValue() {
+        if (this._tag != Tag.BINDER_REORDER_PAGE) {
+            throw new IllegalStateException("Invalid tag: required Tag.BINDER_REORDER_PAGE, but was Tag." + this._tag.name());
+        }
+        return binderReorderPageValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#BINDER_REORDER_SECTION}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#BINDER_REORDER_SECTION}, {@code false} otherwise.
+     */
+    public boolean isBinderReorderSection() {
+        return this._tag == Tag.BINDER_REORDER_SECTION;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#BINDER_REORDER_SECTION}.
+     *
+     * <p> (paper) Reordered Binder section (deprecated, replaced by 'Edited
+     * files') </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#BINDER_REORDER_SECTION}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType binderReorderSection(BinderReorderSectionType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndBinderReorderSection(Tag.BINDER_REORDER_SECTION, value);
+    }
+
+    /**
+     * (paper) Reordered Binder section (deprecated, replaced by 'Edited files')
+     *
+     * <p> This instance must be tagged as {@link Tag#BINDER_REORDER_SECTION}.
+     * </p>
+     *
+     * @return The {@link BinderReorderSectionType} value associated with this
+     *     instance if {@link #isBinderReorderSection} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isBinderReorderSection} is
+     *     {@code false}.
+     */
+    public BinderReorderSectionType getBinderReorderSectionValue() {
+        if (this._tag != Tag.BINDER_REORDER_SECTION) {
+            throw new IllegalStateException("Invalid tag: required Tag.BINDER_REORDER_SECTION, but was Tag." + this._tag.name());
+        }
+        return binderReorderSectionValue;
     }
 
     /**
@@ -25928,6 +27105,56 @@ public final class EventType {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#REWIND_POLICY_CHANGED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#REWIND_POLICY_CHANGED}, {@code false} otherwise.
+     */
+    public boolean isRewindPolicyChanged() {
+        return this._tag == Tag.REWIND_POLICY_CHANGED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#REWIND_POLICY_CHANGED}.
+     *
+     * <p> (team_policies) Changed Rewind policy for team </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#REWIND_POLICY_CHANGED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType rewindPolicyChanged(RewindPolicyChangedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndRewindPolicyChanged(Tag.REWIND_POLICY_CHANGED, value);
+    }
+
+    /**
+     * (team_policies) Changed Rewind policy for team
+     *
+     * <p> This instance must be tagged as {@link Tag#REWIND_POLICY_CHANGED}.
+     * </p>
+     *
+     * @return The {@link RewindPolicyChangedType} value associated with this
+     *     instance if {@link #isRewindPolicyChanged} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isRewindPolicyChanged} is
+     *     {@code false}.
+     */
+    public RewindPolicyChangedType getRewindPolicyChangedValue() {
+        if (this._tag != Tag.REWIND_POLICY_CHANGED) {
+            throw new IllegalStateException("Invalid tag: required Tag.REWIND_POLICY_CHANGED, but was Tag." + this._tag.name());
+        }
+        return rewindPolicyChangedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#SHARING_CHANGE_FOLDER_JOIN_POLICY}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -26597,6 +27824,58 @@ public final class EventType {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#TEAM_SHARING_WHITELIST_SUBJECTS_CHANGED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#TEAM_SHARING_WHITELIST_SUBJECTS_CHANGED}, {@code false}
+     *     otherwise.
+     */
+    public boolean isTeamSharingWhitelistSubjectsChanged() {
+        return this._tag == Tag.TEAM_SHARING_WHITELIST_SUBJECTS_CHANGED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#TEAM_SHARING_WHITELIST_SUBJECTS_CHANGED}.
+     *
+     * <p> (team_policies) Edited the approved list for sharing externally </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#TEAM_SHARING_WHITELIST_SUBJECTS_CHANGED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType teamSharingWhitelistSubjectsChanged(TeamSharingWhitelistSubjectsChangedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndTeamSharingWhitelistSubjectsChanged(Tag.TEAM_SHARING_WHITELIST_SUBJECTS_CHANGED, value);
+    }
+
+    /**
+     * (team_policies) Edited the approved list for sharing externally
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#TEAM_SHARING_WHITELIST_SUBJECTS_CHANGED}. </p>
+     *
+     * @return The {@link TeamSharingWhitelistSubjectsChangedType} value
+     *     associated with this instance if {@link
+     *     #isTeamSharingWhitelistSubjectsChanged} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isTeamSharingWhitelistSubjectsChanged} is {@code false}.
+     */
+    public TeamSharingWhitelistSubjectsChangedType getTeamSharingWhitelistSubjectsChangedValue() {
+        if (this._tag != Tag.TEAM_SHARING_WHITELIST_SUBJECTS_CHANGED) {
+            throw new IllegalStateException("Invalid tag: required Tag.TEAM_SHARING_WHITELIST_SUBJECTS_CHANGED, but was Tag." + this._tag.name());
+        }
+        return teamSharingWhitelistSubjectsChangedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#TFA_ADD_EXCEPTION}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -26897,6 +28176,58 @@ public final class EventType {
             throw new IllegalStateException("Invalid tag: required Tag.WATERMARKING_POLICY_CHANGED, but was Tag." + this._tag.name());
         }
         return watermarkingPolicyChangedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#WEB_SESSIONS_CHANGE_ACTIVE_SESSION_LIMIT}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#WEB_SESSIONS_CHANGE_ACTIVE_SESSION_LIMIT}, {@code false}
+     *     otherwise.
+     */
+    public boolean isWebSessionsChangeActiveSessionLimit() {
+        return this._tag == Tag.WEB_SESSIONS_CHANGE_ACTIVE_SESSION_LIMIT;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#WEB_SESSIONS_CHANGE_ACTIVE_SESSION_LIMIT}.
+     *
+     * <p> (team_policies) Changed limit on active sessions per member </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#WEB_SESSIONS_CHANGE_ACTIVE_SESSION_LIMIT}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType webSessionsChangeActiveSessionLimit(WebSessionsChangeActiveSessionLimitType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndWebSessionsChangeActiveSessionLimit(Tag.WEB_SESSIONS_CHANGE_ACTIVE_SESSION_LIMIT, value);
+    }
+
+    /**
+     * (team_policies) Changed limit on active sessions per member
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#WEB_SESSIONS_CHANGE_ACTIVE_SESSION_LIMIT}. </p>
+     *
+     * @return The {@link WebSessionsChangeActiveSessionLimitType} value
+     *     associated with this instance if {@link
+     *     #isWebSessionsChangeActiveSessionLimit} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isWebSessionsChangeActiveSessionLimit} is {@code false}.
+     */
+    public WebSessionsChangeActiveSessionLimitType getWebSessionsChangeActiveSessionLimitValue() {
+        if (this._tag != Tag.WEB_SESSIONS_CHANGE_ACTIVE_SESSION_LIMIT) {
+            throw new IllegalStateException("Invalid tag: required Tag.WEB_SESSIONS_CHANGE_ACTIVE_SESSION_LIMIT, but was Tag." + this._tag.name());
+        }
+        return webSessionsChangeActiveSessionLimitValue;
     }
 
     /**
@@ -27910,6 +29241,57 @@ public final class EventType {
             throw new IllegalStateException("Invalid tag: required Tag.ENDED_ENTERPRISE_ADMIN_SESSION_DEPRECATED, but was Tag." + this._tag.name());
         }
         return endedEnterpriseAdminSessionDeprecatedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#ENTERPRISE_SETTINGS_LOCKING}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#ENTERPRISE_SETTINGS_LOCKING}, {@code false} otherwise.
+     */
+    public boolean isEnterpriseSettingsLocking() {
+        return this._tag == Tag.ENTERPRISE_SETTINGS_LOCKING;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#ENTERPRISE_SETTINGS_LOCKING}.
+     *
+     * <p> (trusted_teams) Changed who can update a setting </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#ENTERPRISE_SETTINGS_LOCKING}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType enterpriseSettingsLocking(EnterpriseSettingsLockingType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndEnterpriseSettingsLocking(Tag.ENTERPRISE_SETTINGS_LOCKING, value);
+    }
+
+    /**
+     * (trusted_teams) Changed who can update a setting
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#ENTERPRISE_SETTINGS_LOCKING}. </p>
+     *
+     * @return The {@link EnterpriseSettingsLockingType} value associated with
+     *     this instance if {@link #isEnterpriseSettingsLocking} is {@code
+     *     true}.
+     *
+     * @throws IllegalStateException  If {@link #isEnterpriseSettingsLocking} is
+     *     {@code false}.
+     */
+    public EnterpriseSettingsLockingType getEnterpriseSettingsLockingValue() {
+        if (this._tag != Tag.ENTERPRISE_SETTINGS_LOCKING) {
+            throw new IllegalStateException("Invalid tag: required Tag.ENTERPRISE_SETTINGS_LOCKING, but was Tag." + this._tag.name());
+        }
+        return enterpriseSettingsLockingValue;
     }
 
     /**
@@ -29033,6 +30415,7 @@ public final class EventType {
             fileDownloadValue,
             fileEditValue,
             fileGetCopyReferenceValue,
+            fileLockingLockStatusChangedValue,
             fileMoveValue,
             filePermanentlyDeleteValue,
             filePreviewValue,
@@ -29044,6 +30427,7 @@ public final class EventType {
             folderOverviewDescriptionChangedValue,
             folderOverviewItemPinnedValue,
             folderOverviewItemUnpinnedValue,
+            rewindFolderValue,
             fileRequestChangeValue,
             fileRequestCloseValue,
             fileRequestCreateValue,
@@ -29067,6 +30451,9 @@ public final class EventType {
             legalHoldsChangeHoldDetailsValue,
             legalHoldsChangeHoldNameValue,
             legalHoldsExportAHoldValue,
+            legalHoldsExportCancelledValue,
+            legalHoldsExportDownloadedValue,
+            legalHoldsExportRemovedValue,
             legalHoldsReleaseAHoldValue,
             legalHoldsRemoveMembersValue,
             legalHoldsReportAHoldValue,
@@ -29081,6 +30468,8 @@ public final class EventType {
             signInAsSessionEndValue,
             signInAsSessionStartValue,
             ssoErrorValue,
+            createTeamInviteLinkValue,
+            deleteTeamInviteLinkValue,
             memberAddExternalIdValue,
             memberAddNameValue,
             memberChangeAdminRoleValue,
@@ -29104,6 +30493,14 @@ public final class EventType {
             secondaryEmailDeletedValue,
             secondaryEmailVerifiedValue,
             secondaryMailsPolicyChangedValue,
+            binderAddPageValue,
+            binderAddSectionValue,
+            binderRemovePageValue,
+            binderRemoveSectionValue,
+            binderRenamePageValue,
+            binderRenameSectionValue,
+            binderReorderPageValue,
+            binderReorderSectionValue,
             paperContentAddMemberValue,
             paperContentAddToFolderValue,
             paperContentArchiveValue,
@@ -29322,6 +30719,7 @@ public final class EventType {
             passwordStrengthRequirementsChangePolicyValue,
             permanentDeleteChangePolicyValue,
             resellerSupportChangePolicyValue,
+            rewindPolicyChangedValue,
             sharingChangeFolderJoinPolicyValue,
             sharingChangeLinkPolicyValue,
             sharingChangeMemberPolicyValue,
@@ -29335,12 +30733,14 @@ public final class EventType {
             ssoChangePolicyValue,
             teamExtensionsPolicyChangedValue,
             teamSelectiveSyncPolicyChangedValue,
+            teamSharingWhitelistSubjectsChangedValue,
             tfaAddExceptionValue,
             tfaChangePolicyValue,
             tfaRemoveExceptionValue,
             twoAccountChangePolicyValue,
             viewerInfoPolicyChangedValue,
             watermarkingPolicyChangedValue,
+            webSessionsChangeActiveSessionLimitValue,
             webSessionsChangeFixedLengthPolicyValue,
             webSessionsChangeIdleLengthPolicyValue,
             teamMergeFromValue,
@@ -29361,6 +30761,7 @@ public final class EventType {
             changedEnterpriseConnectedTeamStatusValue,
             endedEnterpriseAdminSessionValue,
             endedEnterpriseAdminSessionDeprecatedValue,
+            enterpriseSettingsLockingValue,
             guestAdminChangeStatusValue,
             startedEnterpriseAdminSessionValue,
             teamMergeRequestAcceptedValue,
@@ -29493,6 +30894,8 @@ public final class EventType {
                     return (this.fileEditValue == other.fileEditValue) || (this.fileEditValue.equals(other.fileEditValue));
                 case FILE_GET_COPY_REFERENCE:
                     return (this.fileGetCopyReferenceValue == other.fileGetCopyReferenceValue) || (this.fileGetCopyReferenceValue.equals(other.fileGetCopyReferenceValue));
+                case FILE_LOCKING_LOCK_STATUS_CHANGED:
+                    return (this.fileLockingLockStatusChangedValue == other.fileLockingLockStatusChangedValue) || (this.fileLockingLockStatusChangedValue.equals(other.fileLockingLockStatusChangedValue));
                 case FILE_MOVE:
                     return (this.fileMoveValue == other.fileMoveValue) || (this.fileMoveValue.equals(other.fileMoveValue));
                 case FILE_PERMANENTLY_DELETE:
@@ -29515,6 +30918,8 @@ public final class EventType {
                     return (this.folderOverviewItemPinnedValue == other.folderOverviewItemPinnedValue) || (this.folderOverviewItemPinnedValue.equals(other.folderOverviewItemPinnedValue));
                 case FOLDER_OVERVIEW_ITEM_UNPINNED:
                     return (this.folderOverviewItemUnpinnedValue == other.folderOverviewItemUnpinnedValue) || (this.folderOverviewItemUnpinnedValue.equals(other.folderOverviewItemUnpinnedValue));
+                case REWIND_FOLDER:
+                    return (this.rewindFolderValue == other.rewindFolderValue) || (this.rewindFolderValue.equals(other.rewindFolderValue));
                 case FILE_REQUEST_CHANGE:
                     return (this.fileRequestChangeValue == other.fileRequestChangeValue) || (this.fileRequestChangeValue.equals(other.fileRequestChangeValue));
                 case FILE_REQUEST_CLOSE:
@@ -29561,6 +30966,12 @@ public final class EventType {
                     return (this.legalHoldsChangeHoldNameValue == other.legalHoldsChangeHoldNameValue) || (this.legalHoldsChangeHoldNameValue.equals(other.legalHoldsChangeHoldNameValue));
                 case LEGAL_HOLDS_EXPORT_A_HOLD:
                     return (this.legalHoldsExportAHoldValue == other.legalHoldsExportAHoldValue) || (this.legalHoldsExportAHoldValue.equals(other.legalHoldsExportAHoldValue));
+                case LEGAL_HOLDS_EXPORT_CANCELLED:
+                    return (this.legalHoldsExportCancelledValue == other.legalHoldsExportCancelledValue) || (this.legalHoldsExportCancelledValue.equals(other.legalHoldsExportCancelledValue));
+                case LEGAL_HOLDS_EXPORT_DOWNLOADED:
+                    return (this.legalHoldsExportDownloadedValue == other.legalHoldsExportDownloadedValue) || (this.legalHoldsExportDownloadedValue.equals(other.legalHoldsExportDownloadedValue));
+                case LEGAL_HOLDS_EXPORT_REMOVED:
+                    return (this.legalHoldsExportRemovedValue == other.legalHoldsExportRemovedValue) || (this.legalHoldsExportRemovedValue.equals(other.legalHoldsExportRemovedValue));
                 case LEGAL_HOLDS_RELEASE_A_HOLD:
                     return (this.legalHoldsReleaseAHoldValue == other.legalHoldsReleaseAHoldValue) || (this.legalHoldsReleaseAHoldValue.equals(other.legalHoldsReleaseAHoldValue));
                 case LEGAL_HOLDS_REMOVE_MEMBERS:
@@ -29589,6 +31000,10 @@ public final class EventType {
                     return (this.signInAsSessionStartValue == other.signInAsSessionStartValue) || (this.signInAsSessionStartValue.equals(other.signInAsSessionStartValue));
                 case SSO_ERROR:
                     return (this.ssoErrorValue == other.ssoErrorValue) || (this.ssoErrorValue.equals(other.ssoErrorValue));
+                case CREATE_TEAM_INVITE_LINK:
+                    return (this.createTeamInviteLinkValue == other.createTeamInviteLinkValue) || (this.createTeamInviteLinkValue.equals(other.createTeamInviteLinkValue));
+                case DELETE_TEAM_INVITE_LINK:
+                    return (this.deleteTeamInviteLinkValue == other.deleteTeamInviteLinkValue) || (this.deleteTeamInviteLinkValue.equals(other.deleteTeamInviteLinkValue));
                 case MEMBER_ADD_EXTERNAL_ID:
                     return (this.memberAddExternalIdValue == other.memberAddExternalIdValue) || (this.memberAddExternalIdValue.equals(other.memberAddExternalIdValue));
                 case MEMBER_ADD_NAME:
@@ -29635,6 +31050,22 @@ public final class EventType {
                     return (this.secondaryEmailVerifiedValue == other.secondaryEmailVerifiedValue) || (this.secondaryEmailVerifiedValue.equals(other.secondaryEmailVerifiedValue));
                 case SECONDARY_MAILS_POLICY_CHANGED:
                     return (this.secondaryMailsPolicyChangedValue == other.secondaryMailsPolicyChangedValue) || (this.secondaryMailsPolicyChangedValue.equals(other.secondaryMailsPolicyChangedValue));
+                case BINDER_ADD_PAGE:
+                    return (this.binderAddPageValue == other.binderAddPageValue) || (this.binderAddPageValue.equals(other.binderAddPageValue));
+                case BINDER_ADD_SECTION:
+                    return (this.binderAddSectionValue == other.binderAddSectionValue) || (this.binderAddSectionValue.equals(other.binderAddSectionValue));
+                case BINDER_REMOVE_PAGE:
+                    return (this.binderRemovePageValue == other.binderRemovePageValue) || (this.binderRemovePageValue.equals(other.binderRemovePageValue));
+                case BINDER_REMOVE_SECTION:
+                    return (this.binderRemoveSectionValue == other.binderRemoveSectionValue) || (this.binderRemoveSectionValue.equals(other.binderRemoveSectionValue));
+                case BINDER_RENAME_PAGE:
+                    return (this.binderRenamePageValue == other.binderRenamePageValue) || (this.binderRenamePageValue.equals(other.binderRenamePageValue));
+                case BINDER_RENAME_SECTION:
+                    return (this.binderRenameSectionValue == other.binderRenameSectionValue) || (this.binderRenameSectionValue.equals(other.binderRenameSectionValue));
+                case BINDER_REORDER_PAGE:
+                    return (this.binderReorderPageValue == other.binderReorderPageValue) || (this.binderReorderPageValue.equals(other.binderReorderPageValue));
+                case BINDER_REORDER_SECTION:
+                    return (this.binderReorderSectionValue == other.binderReorderSectionValue) || (this.binderReorderSectionValue.equals(other.binderReorderSectionValue));
                 case PAPER_CONTENT_ADD_MEMBER:
                     return (this.paperContentAddMemberValue == other.paperContentAddMemberValue) || (this.paperContentAddMemberValue.equals(other.paperContentAddMemberValue));
                 case PAPER_CONTENT_ADD_TO_FOLDER:
@@ -30071,6 +31502,8 @@ public final class EventType {
                     return (this.permanentDeleteChangePolicyValue == other.permanentDeleteChangePolicyValue) || (this.permanentDeleteChangePolicyValue.equals(other.permanentDeleteChangePolicyValue));
                 case RESELLER_SUPPORT_CHANGE_POLICY:
                     return (this.resellerSupportChangePolicyValue == other.resellerSupportChangePolicyValue) || (this.resellerSupportChangePolicyValue.equals(other.resellerSupportChangePolicyValue));
+                case REWIND_POLICY_CHANGED:
+                    return (this.rewindPolicyChangedValue == other.rewindPolicyChangedValue) || (this.rewindPolicyChangedValue.equals(other.rewindPolicyChangedValue));
                 case SHARING_CHANGE_FOLDER_JOIN_POLICY:
                     return (this.sharingChangeFolderJoinPolicyValue == other.sharingChangeFolderJoinPolicyValue) || (this.sharingChangeFolderJoinPolicyValue.equals(other.sharingChangeFolderJoinPolicyValue));
                 case SHARING_CHANGE_LINK_POLICY:
@@ -30097,6 +31530,8 @@ public final class EventType {
                     return (this.teamExtensionsPolicyChangedValue == other.teamExtensionsPolicyChangedValue) || (this.teamExtensionsPolicyChangedValue.equals(other.teamExtensionsPolicyChangedValue));
                 case TEAM_SELECTIVE_SYNC_POLICY_CHANGED:
                     return (this.teamSelectiveSyncPolicyChangedValue == other.teamSelectiveSyncPolicyChangedValue) || (this.teamSelectiveSyncPolicyChangedValue.equals(other.teamSelectiveSyncPolicyChangedValue));
+                case TEAM_SHARING_WHITELIST_SUBJECTS_CHANGED:
+                    return (this.teamSharingWhitelistSubjectsChangedValue == other.teamSharingWhitelistSubjectsChangedValue) || (this.teamSharingWhitelistSubjectsChangedValue.equals(other.teamSharingWhitelistSubjectsChangedValue));
                 case TFA_ADD_EXCEPTION:
                     return (this.tfaAddExceptionValue == other.tfaAddExceptionValue) || (this.tfaAddExceptionValue.equals(other.tfaAddExceptionValue));
                 case TFA_CHANGE_POLICY:
@@ -30109,6 +31544,8 @@ public final class EventType {
                     return (this.viewerInfoPolicyChangedValue == other.viewerInfoPolicyChangedValue) || (this.viewerInfoPolicyChangedValue.equals(other.viewerInfoPolicyChangedValue));
                 case WATERMARKING_POLICY_CHANGED:
                     return (this.watermarkingPolicyChangedValue == other.watermarkingPolicyChangedValue) || (this.watermarkingPolicyChangedValue.equals(other.watermarkingPolicyChangedValue));
+                case WEB_SESSIONS_CHANGE_ACTIVE_SESSION_LIMIT:
+                    return (this.webSessionsChangeActiveSessionLimitValue == other.webSessionsChangeActiveSessionLimitValue) || (this.webSessionsChangeActiveSessionLimitValue.equals(other.webSessionsChangeActiveSessionLimitValue));
                 case WEB_SESSIONS_CHANGE_FIXED_LENGTH_POLICY:
                     return (this.webSessionsChangeFixedLengthPolicyValue == other.webSessionsChangeFixedLengthPolicyValue) || (this.webSessionsChangeFixedLengthPolicyValue.equals(other.webSessionsChangeFixedLengthPolicyValue));
                 case WEB_SESSIONS_CHANGE_IDLE_LENGTH_POLICY:
@@ -30149,6 +31586,8 @@ public final class EventType {
                     return (this.endedEnterpriseAdminSessionValue == other.endedEnterpriseAdminSessionValue) || (this.endedEnterpriseAdminSessionValue.equals(other.endedEnterpriseAdminSessionValue));
                 case ENDED_ENTERPRISE_ADMIN_SESSION_DEPRECATED:
                     return (this.endedEnterpriseAdminSessionDeprecatedValue == other.endedEnterpriseAdminSessionDeprecatedValue) || (this.endedEnterpriseAdminSessionDeprecatedValue.equals(other.endedEnterpriseAdminSessionDeprecatedValue));
+                case ENTERPRISE_SETTINGS_LOCKING:
+                    return (this.enterpriseSettingsLockingValue == other.enterpriseSettingsLockingValue) || (this.enterpriseSettingsLockingValue.equals(other.enterpriseSettingsLockingValue));
                 case GUEST_ADMIN_CHANGE_STATUS:
                     return (this.guestAdminChangeStatusValue == other.guestAdminChangeStatusValue) || (this.guestAdminChangeStatusValue.equals(other.guestAdminChangeStatusValue));
                 case STARTED_ENTERPRISE_ADMIN_SESSION:
@@ -30555,6 +31994,13 @@ public final class EventType {
                     g.writeEndObject();
                     break;
                 }
+                case FILE_LOCKING_LOCK_STATUS_CHANGED: {
+                    g.writeStartObject();
+                    writeTag("file_locking_lock_status_changed", g);
+                    FileLockingLockStatusChangedType.Serializer.INSTANCE.serialize(value.fileLockingLockStatusChangedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
                 case FILE_MOVE: {
                     g.writeStartObject();
                     writeTag("file_move", g);
@@ -30629,6 +32075,13 @@ public final class EventType {
                     g.writeStartObject();
                     writeTag("folder_overview_item_unpinned", g);
                     FolderOverviewItemUnpinnedType.Serializer.INSTANCE.serialize(value.folderOverviewItemUnpinnedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case REWIND_FOLDER: {
+                    g.writeStartObject();
+                    writeTag("rewind_folder", g);
+                    RewindFolderType.Serializer.INSTANCE.serialize(value.rewindFolderValue, g, true);
                     g.writeEndObject();
                     break;
                 }
@@ -30793,6 +32246,27 @@ public final class EventType {
                     g.writeEndObject();
                     break;
                 }
+                case LEGAL_HOLDS_EXPORT_CANCELLED: {
+                    g.writeStartObject();
+                    writeTag("legal_holds_export_cancelled", g);
+                    LegalHoldsExportCancelledType.Serializer.INSTANCE.serialize(value.legalHoldsExportCancelledValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case LEGAL_HOLDS_EXPORT_DOWNLOADED: {
+                    g.writeStartObject();
+                    writeTag("legal_holds_export_downloaded", g);
+                    LegalHoldsExportDownloadedType.Serializer.INSTANCE.serialize(value.legalHoldsExportDownloadedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case LEGAL_HOLDS_EXPORT_REMOVED: {
+                    g.writeStartObject();
+                    writeTag("legal_holds_export_removed", g);
+                    LegalHoldsExportRemovedType.Serializer.INSTANCE.serialize(value.legalHoldsExportRemovedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
                 case LEGAL_HOLDS_RELEASE_A_HOLD: {
                     g.writeStartObject();
                     writeTag("legal_holds_release_a_hold", g);
@@ -30888,6 +32362,20 @@ public final class EventType {
                     g.writeStartObject();
                     writeTag("sso_error", g);
                     SsoErrorType.Serializer.INSTANCE.serialize(value.ssoErrorValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case CREATE_TEAM_INVITE_LINK: {
+                    g.writeStartObject();
+                    writeTag("create_team_invite_link", g);
+                    CreateTeamInviteLinkType.Serializer.INSTANCE.serialize(value.createTeamInviteLinkValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case DELETE_TEAM_INVITE_LINK: {
+                    g.writeStartObject();
+                    writeTag("delete_team_invite_link", g);
+                    DeleteTeamInviteLinkType.Serializer.INSTANCE.serialize(value.deleteTeamInviteLinkValue, g, true);
                     g.writeEndObject();
                     break;
                 }
@@ -31049,6 +32537,62 @@ public final class EventType {
                     g.writeStartObject();
                     writeTag("secondary_mails_policy_changed", g);
                     SecondaryMailsPolicyChangedType.Serializer.INSTANCE.serialize(value.secondaryMailsPolicyChangedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case BINDER_ADD_PAGE: {
+                    g.writeStartObject();
+                    writeTag("binder_add_page", g);
+                    BinderAddPageType.Serializer.INSTANCE.serialize(value.binderAddPageValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case BINDER_ADD_SECTION: {
+                    g.writeStartObject();
+                    writeTag("binder_add_section", g);
+                    BinderAddSectionType.Serializer.INSTANCE.serialize(value.binderAddSectionValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case BINDER_REMOVE_PAGE: {
+                    g.writeStartObject();
+                    writeTag("binder_remove_page", g);
+                    BinderRemovePageType.Serializer.INSTANCE.serialize(value.binderRemovePageValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case BINDER_REMOVE_SECTION: {
+                    g.writeStartObject();
+                    writeTag("binder_remove_section", g);
+                    BinderRemoveSectionType.Serializer.INSTANCE.serialize(value.binderRemoveSectionValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case BINDER_RENAME_PAGE: {
+                    g.writeStartObject();
+                    writeTag("binder_rename_page", g);
+                    BinderRenamePageType.Serializer.INSTANCE.serialize(value.binderRenamePageValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case BINDER_RENAME_SECTION: {
+                    g.writeStartObject();
+                    writeTag("binder_rename_section", g);
+                    BinderRenameSectionType.Serializer.INSTANCE.serialize(value.binderRenameSectionValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case BINDER_REORDER_PAGE: {
+                    g.writeStartObject();
+                    writeTag("binder_reorder_page", g);
+                    BinderReorderPageType.Serializer.INSTANCE.serialize(value.binderReorderPageValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case BINDER_REORDER_SECTION: {
+                    g.writeStartObject();
+                    writeTag("binder_reorder_section", g);
+                    BinderReorderSectionType.Serializer.INSTANCE.serialize(value.binderReorderSectionValue, g, true);
                     g.writeEndObject();
                     break;
                 }
@@ -32578,6 +34122,13 @@ public final class EventType {
                     g.writeEndObject();
                     break;
                 }
+                case REWIND_POLICY_CHANGED: {
+                    g.writeStartObject();
+                    writeTag("rewind_policy_changed", g);
+                    RewindPolicyChangedType.Serializer.INSTANCE.serialize(value.rewindPolicyChangedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
                 case SHARING_CHANGE_FOLDER_JOIN_POLICY: {
                     g.writeStartObject();
                     writeTag("sharing_change_folder_join_policy", g);
@@ -32669,6 +34220,13 @@ public final class EventType {
                     g.writeEndObject();
                     break;
                 }
+                case TEAM_SHARING_WHITELIST_SUBJECTS_CHANGED: {
+                    g.writeStartObject();
+                    writeTag("team_sharing_whitelist_subjects_changed", g);
+                    TeamSharingWhitelistSubjectsChangedType.Serializer.INSTANCE.serialize(value.teamSharingWhitelistSubjectsChangedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
                 case TFA_ADD_EXCEPTION: {
                     g.writeStartObject();
                     writeTag("tfa_add_exception", g);
@@ -32708,6 +34266,13 @@ public final class EventType {
                     g.writeStartObject();
                     writeTag("watermarking_policy_changed", g);
                     WatermarkingPolicyChangedType.Serializer.INSTANCE.serialize(value.watermarkingPolicyChangedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case WEB_SESSIONS_CHANGE_ACTIVE_SESSION_LIMIT: {
+                    g.writeStartObject();
+                    writeTag("web_sessions_change_active_session_limit", g);
+                    WebSessionsChangeActiveSessionLimitType.Serializer.INSTANCE.serialize(value.webSessionsChangeActiveSessionLimitValue, g, true);
                     g.writeEndObject();
                     break;
                 }
@@ -32848,6 +34413,13 @@ public final class EventType {
                     g.writeStartObject();
                     writeTag("ended_enterprise_admin_session_deprecated", g);
                     EndedEnterpriseAdminSessionDeprecatedType.Serializer.INSTANCE.serialize(value.endedEnterpriseAdminSessionDeprecatedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case ENTERPRISE_SETTINGS_LOCKING: {
+                    g.writeStartObject();
+                    writeTag("enterprise_settings_locking", g);
+                    EnterpriseSettingsLockingType.Serializer.INSTANCE.serialize(value.enterpriseSettingsLockingValue, g, true);
                     g.writeEndObject();
                     break;
                 }
@@ -33250,6 +34822,11 @@ public final class EventType {
                 fieldValue = FileGetCopyReferenceType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.fileGetCopyReference(fieldValue);
             }
+            else if ("file_locking_lock_status_changed".equals(tag)) {
+                FileLockingLockStatusChangedType fieldValue = null;
+                fieldValue = FileLockingLockStatusChangedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.fileLockingLockStatusChanged(fieldValue);
+            }
             else if ("file_move".equals(tag)) {
                 FileMoveType fieldValue = null;
                 fieldValue = FileMoveType.Serializer.INSTANCE.deserialize(p, true);
@@ -33304,6 +34881,11 @@ public final class EventType {
                 FolderOverviewItemUnpinnedType fieldValue = null;
                 fieldValue = FolderOverviewItemUnpinnedType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.folderOverviewItemUnpinned(fieldValue);
+            }
+            else if ("rewind_folder".equals(tag)) {
+                RewindFolderType fieldValue = null;
+                fieldValue = RewindFolderType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.rewindFolder(fieldValue);
             }
             else if ("file_request_change".equals(tag)) {
                 FileRequestChangeType fieldValue = null;
@@ -33420,6 +35002,21 @@ public final class EventType {
                 fieldValue = LegalHoldsExportAHoldType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.legalHoldsExportAHold(fieldValue);
             }
+            else if ("legal_holds_export_cancelled".equals(tag)) {
+                LegalHoldsExportCancelledType fieldValue = null;
+                fieldValue = LegalHoldsExportCancelledType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.legalHoldsExportCancelled(fieldValue);
+            }
+            else if ("legal_holds_export_downloaded".equals(tag)) {
+                LegalHoldsExportDownloadedType fieldValue = null;
+                fieldValue = LegalHoldsExportDownloadedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.legalHoldsExportDownloaded(fieldValue);
+            }
+            else if ("legal_holds_export_removed".equals(tag)) {
+                LegalHoldsExportRemovedType fieldValue = null;
+                fieldValue = LegalHoldsExportRemovedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.legalHoldsExportRemoved(fieldValue);
+            }
             else if ("legal_holds_release_a_hold".equals(tag)) {
                 LegalHoldsReleaseAHoldType fieldValue = null;
                 fieldValue = LegalHoldsReleaseAHoldType.Serializer.INSTANCE.deserialize(p, true);
@@ -33489,6 +35086,16 @@ public final class EventType {
                 SsoErrorType fieldValue = null;
                 fieldValue = SsoErrorType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.ssoError(fieldValue);
+            }
+            else if ("create_team_invite_link".equals(tag)) {
+                CreateTeamInviteLinkType fieldValue = null;
+                fieldValue = CreateTeamInviteLinkType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.createTeamInviteLink(fieldValue);
+            }
+            else if ("delete_team_invite_link".equals(tag)) {
+                DeleteTeamInviteLinkType fieldValue = null;
+                fieldValue = DeleteTeamInviteLinkType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.deleteTeamInviteLink(fieldValue);
             }
             else if ("member_add_external_id".equals(tag)) {
                 MemberAddExternalIdType fieldValue = null;
@@ -33604,6 +35211,46 @@ public final class EventType {
                 SecondaryMailsPolicyChangedType fieldValue = null;
                 fieldValue = SecondaryMailsPolicyChangedType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.secondaryMailsPolicyChanged(fieldValue);
+            }
+            else if ("binder_add_page".equals(tag)) {
+                BinderAddPageType fieldValue = null;
+                fieldValue = BinderAddPageType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.binderAddPage(fieldValue);
+            }
+            else if ("binder_add_section".equals(tag)) {
+                BinderAddSectionType fieldValue = null;
+                fieldValue = BinderAddSectionType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.binderAddSection(fieldValue);
+            }
+            else if ("binder_remove_page".equals(tag)) {
+                BinderRemovePageType fieldValue = null;
+                fieldValue = BinderRemovePageType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.binderRemovePage(fieldValue);
+            }
+            else if ("binder_remove_section".equals(tag)) {
+                BinderRemoveSectionType fieldValue = null;
+                fieldValue = BinderRemoveSectionType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.binderRemoveSection(fieldValue);
+            }
+            else if ("binder_rename_page".equals(tag)) {
+                BinderRenamePageType fieldValue = null;
+                fieldValue = BinderRenamePageType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.binderRenamePage(fieldValue);
+            }
+            else if ("binder_rename_section".equals(tag)) {
+                BinderRenameSectionType fieldValue = null;
+                fieldValue = BinderRenameSectionType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.binderRenameSection(fieldValue);
+            }
+            else if ("binder_reorder_page".equals(tag)) {
+                BinderReorderPageType fieldValue = null;
+                fieldValue = BinderReorderPageType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.binderReorderPage(fieldValue);
+            }
+            else if ("binder_reorder_section".equals(tag)) {
+                BinderReorderSectionType fieldValue = null;
+                fieldValue = BinderReorderSectionType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.binderReorderSection(fieldValue);
             }
             else if ("paper_content_add_member".equals(tag)) {
                 PaperContentAddMemberType fieldValue = null;
@@ -34695,6 +36342,11 @@ public final class EventType {
                 fieldValue = ResellerSupportChangePolicyType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.resellerSupportChangePolicy(fieldValue);
             }
+            else if ("rewind_policy_changed".equals(tag)) {
+                RewindPolicyChangedType fieldValue = null;
+                fieldValue = RewindPolicyChangedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.rewindPolicyChanged(fieldValue);
+            }
             else if ("sharing_change_folder_join_policy".equals(tag)) {
                 SharingChangeFolderJoinPolicyType fieldValue = null;
                 fieldValue = SharingChangeFolderJoinPolicyType.Serializer.INSTANCE.deserialize(p, true);
@@ -34760,6 +36412,11 @@ public final class EventType {
                 fieldValue = TeamSelectiveSyncPolicyChangedType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.teamSelectiveSyncPolicyChanged(fieldValue);
             }
+            else if ("team_sharing_whitelist_subjects_changed".equals(tag)) {
+                TeamSharingWhitelistSubjectsChangedType fieldValue = null;
+                fieldValue = TeamSharingWhitelistSubjectsChangedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.teamSharingWhitelistSubjectsChanged(fieldValue);
+            }
             else if ("tfa_add_exception".equals(tag)) {
                 TfaAddExceptionType fieldValue = null;
                 fieldValue = TfaAddExceptionType.Serializer.INSTANCE.deserialize(p, true);
@@ -34789,6 +36446,11 @@ public final class EventType {
                 WatermarkingPolicyChangedType fieldValue = null;
                 fieldValue = WatermarkingPolicyChangedType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.watermarkingPolicyChanged(fieldValue);
+            }
+            else if ("web_sessions_change_active_session_limit".equals(tag)) {
+                WebSessionsChangeActiveSessionLimitType fieldValue = null;
+                fieldValue = WebSessionsChangeActiveSessionLimitType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.webSessionsChangeActiveSessionLimit(fieldValue);
             }
             else if ("web_sessions_change_fixed_length_policy".equals(tag)) {
                 WebSessionsChangeFixedLengthPolicyType fieldValue = null;
@@ -34889,6 +36551,11 @@ public final class EventType {
                 EndedEnterpriseAdminSessionDeprecatedType fieldValue = null;
                 fieldValue = EndedEnterpriseAdminSessionDeprecatedType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.endedEnterpriseAdminSessionDeprecated(fieldValue);
+            }
+            else if ("enterprise_settings_locking".equals(tag)) {
+                EnterpriseSettingsLockingType fieldValue = null;
+                fieldValue = EnterpriseSettingsLockingType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.enterpriseSettingsLocking(fieldValue);
             }
             else if ("guest_admin_change_status".equals(tag)) {
                 GuestAdminChangeStatusType fieldValue = null;

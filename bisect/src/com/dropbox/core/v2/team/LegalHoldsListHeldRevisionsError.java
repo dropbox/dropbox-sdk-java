@@ -31,6 +31,10 @@ public enum LegalHoldsListHeldRevisionsError {
      */
     LEGAL_HOLD_STILL_EMPTY,
     /**
+     * Trying to list revisions for an inactive legal hold.
+     */
+    INACTIVE_LEGAL_HOLD,
+    /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *
      * <p> Receiving a catch-all value typically indicates this SDK version is
@@ -58,6 +62,10 @@ public enum LegalHoldsListHeldRevisionsError {
                 }
                 case LEGAL_HOLD_STILL_EMPTY: {
                     g.writeString("legal_hold_still_empty");
+                    break;
+                }
+                case INACTIVE_LEGAL_HOLD: {
+                    g.writeString("inactive_legal_hold");
                     break;
                 }
                 default: {
@@ -92,6 +100,9 @@ public enum LegalHoldsListHeldRevisionsError {
             }
             else if ("legal_hold_still_empty".equals(tag)) {
                 value = LegalHoldsListHeldRevisionsError.LEGAL_HOLD_STILL_EMPTY;
+            }
+            else if ("inactive_legal_hold".equals(tag)) {
+                value = LegalHoldsListHeldRevisionsError.INACTIVE_LEGAL_HOLD;
             }
             else {
                 value = LegalHoldsListHeldRevisionsError.OTHER;

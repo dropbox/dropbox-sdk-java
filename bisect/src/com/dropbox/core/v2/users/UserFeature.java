@@ -27,6 +27,11 @@ public enum UserFeature {
      */
     PAPER_AS_FILES,
     /**
+     * This feature allows users to lock files in order to restrict other users
+     * from editing them.
+     */
+    FILE_LOCKING,
+    /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *
      * <p> Receiving a catch-all value typically indicates this SDK version is
@@ -46,6 +51,10 @@ public enum UserFeature {
             switch (value) {
                 case PAPER_AS_FILES: {
                     g.writeString("paper_as_files");
+                    break;
+                }
+                case FILE_LOCKING: {
+                    g.writeString("file_locking");
                     break;
                 }
                 default: {
@@ -74,6 +83,9 @@ public enum UserFeature {
             }
             else if ("paper_as_files".equals(tag)) {
                 value = UserFeature.PAPER_AS_FILES;
+            }
+            else if ("file_locking".equals(tag)) {
+                value = UserFeature.FILE_LOCKING;
             }
             else {
                 value = UserFeature.OTHER;

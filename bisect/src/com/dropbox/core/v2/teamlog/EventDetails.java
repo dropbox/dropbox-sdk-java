@@ -82,6 +82,7 @@ public final class EventDetails {
         FILE_DOWNLOAD_DETAILS, // FileDownloadDetails
         FILE_EDIT_DETAILS, // FileEditDetails
         FILE_GET_COPY_REFERENCE_DETAILS, // FileGetCopyReferenceDetails
+        FILE_LOCKING_LOCK_STATUS_CHANGED_DETAILS, // FileLockingLockStatusChangedDetails
         FILE_MOVE_DETAILS, // FileMoveDetails
         FILE_PERMANENTLY_DELETE_DETAILS, // FilePermanentlyDeleteDetails
         FILE_PREVIEW_DETAILS, // FilePreviewDetails
@@ -93,6 +94,7 @@ public final class EventDetails {
         FOLDER_OVERVIEW_DESCRIPTION_CHANGED_DETAILS, // FolderOverviewDescriptionChangedDetails
         FOLDER_OVERVIEW_ITEM_PINNED_DETAILS, // FolderOverviewItemPinnedDetails
         FOLDER_OVERVIEW_ITEM_UNPINNED_DETAILS, // FolderOverviewItemUnpinnedDetails
+        REWIND_FOLDER_DETAILS, // RewindFolderDetails
         FILE_REQUEST_CHANGE_DETAILS, // FileRequestChangeDetails
         FILE_REQUEST_CLOSE_DETAILS, // FileRequestCloseDetails
         FILE_REQUEST_CREATE_DETAILS, // FileRequestCreateDetails
@@ -116,6 +118,9 @@ public final class EventDetails {
         LEGAL_HOLDS_CHANGE_HOLD_DETAILS_DETAILS, // LegalHoldsChangeHoldDetailsDetails
         LEGAL_HOLDS_CHANGE_HOLD_NAME_DETAILS, // LegalHoldsChangeHoldNameDetails
         LEGAL_HOLDS_EXPORT_A_HOLD_DETAILS, // LegalHoldsExportAHoldDetails
+        LEGAL_HOLDS_EXPORT_CANCELLED_DETAILS, // LegalHoldsExportCancelledDetails
+        LEGAL_HOLDS_EXPORT_DOWNLOADED_DETAILS, // LegalHoldsExportDownloadedDetails
+        LEGAL_HOLDS_EXPORT_REMOVED_DETAILS, // LegalHoldsExportRemovedDetails
         LEGAL_HOLDS_RELEASE_A_HOLD_DETAILS, // LegalHoldsReleaseAHoldDetails
         LEGAL_HOLDS_REMOVE_MEMBERS_DETAILS, // LegalHoldsRemoveMembersDetails
         LEGAL_HOLDS_REPORT_A_HOLD_DETAILS, // LegalHoldsReportAHoldDetails
@@ -130,6 +135,8 @@ public final class EventDetails {
         SIGN_IN_AS_SESSION_END_DETAILS, // SignInAsSessionEndDetails
         SIGN_IN_AS_SESSION_START_DETAILS, // SignInAsSessionStartDetails
         SSO_ERROR_DETAILS, // SsoErrorDetails
+        CREATE_TEAM_INVITE_LINK_DETAILS, // CreateTeamInviteLinkDetails
+        DELETE_TEAM_INVITE_LINK_DETAILS, // DeleteTeamInviteLinkDetails
         MEMBER_ADD_EXTERNAL_ID_DETAILS, // MemberAddExternalIdDetails
         MEMBER_ADD_NAME_DETAILS, // MemberAddNameDetails
         MEMBER_CHANGE_ADMIN_ROLE_DETAILS, // MemberChangeAdminRoleDetails
@@ -153,6 +160,14 @@ public final class EventDetails {
         SECONDARY_EMAIL_DELETED_DETAILS, // SecondaryEmailDeletedDetails
         SECONDARY_EMAIL_VERIFIED_DETAILS, // SecondaryEmailVerifiedDetails
         SECONDARY_MAILS_POLICY_CHANGED_DETAILS, // SecondaryMailsPolicyChangedDetails
+        BINDER_ADD_PAGE_DETAILS, // BinderAddPageDetails
+        BINDER_ADD_SECTION_DETAILS, // BinderAddSectionDetails
+        BINDER_REMOVE_PAGE_DETAILS, // BinderRemovePageDetails
+        BINDER_REMOVE_SECTION_DETAILS, // BinderRemoveSectionDetails
+        BINDER_RENAME_PAGE_DETAILS, // BinderRenamePageDetails
+        BINDER_RENAME_SECTION_DETAILS, // BinderRenameSectionDetails
+        BINDER_REORDER_PAGE_DETAILS, // BinderReorderPageDetails
+        BINDER_REORDER_SECTION_DETAILS, // BinderReorderSectionDetails
         PAPER_CONTENT_ADD_MEMBER_DETAILS, // PaperContentAddMemberDetails
         PAPER_CONTENT_ADD_TO_FOLDER_DETAILS, // PaperContentAddToFolderDetails
         PAPER_CONTENT_ARCHIVE_DETAILS, // PaperContentArchiveDetails
@@ -371,6 +386,7 @@ public final class EventDetails {
         PASSWORD_STRENGTH_REQUIREMENTS_CHANGE_POLICY_DETAILS, // PasswordStrengthRequirementsChangePolicyDetails
         PERMANENT_DELETE_CHANGE_POLICY_DETAILS, // PermanentDeleteChangePolicyDetails
         RESELLER_SUPPORT_CHANGE_POLICY_DETAILS, // ResellerSupportChangePolicyDetails
+        REWIND_POLICY_CHANGED_DETAILS, // RewindPolicyChangedDetails
         SHARING_CHANGE_FOLDER_JOIN_POLICY_DETAILS, // SharingChangeFolderJoinPolicyDetails
         SHARING_CHANGE_LINK_POLICY_DETAILS, // SharingChangeLinkPolicyDetails
         SHARING_CHANGE_MEMBER_POLICY_DETAILS, // SharingChangeMemberPolicyDetails
@@ -384,12 +400,14 @@ public final class EventDetails {
         SSO_CHANGE_POLICY_DETAILS, // SsoChangePolicyDetails
         TEAM_EXTENSIONS_POLICY_CHANGED_DETAILS, // TeamExtensionsPolicyChangedDetails
         TEAM_SELECTIVE_SYNC_POLICY_CHANGED_DETAILS, // TeamSelectiveSyncPolicyChangedDetails
+        TEAM_SHARING_WHITELIST_SUBJECTS_CHANGED_DETAILS, // TeamSharingWhitelistSubjectsChangedDetails
         TFA_ADD_EXCEPTION_DETAILS, // TfaAddExceptionDetails
         TFA_CHANGE_POLICY_DETAILS, // TfaChangePolicyDetails
         TFA_REMOVE_EXCEPTION_DETAILS, // TfaRemoveExceptionDetails
         TWO_ACCOUNT_CHANGE_POLICY_DETAILS, // TwoAccountChangePolicyDetails
         VIEWER_INFO_POLICY_CHANGED_DETAILS, // ViewerInfoPolicyChangedDetails
         WATERMARKING_POLICY_CHANGED_DETAILS, // WatermarkingPolicyChangedDetails
+        WEB_SESSIONS_CHANGE_ACTIVE_SESSION_LIMIT_DETAILS, // WebSessionsChangeActiveSessionLimitDetails
         WEB_SESSIONS_CHANGE_FIXED_LENGTH_POLICY_DETAILS, // WebSessionsChangeFixedLengthPolicyDetails
         WEB_SESSIONS_CHANGE_IDLE_LENGTH_POLICY_DETAILS, // WebSessionsChangeIdleLengthPolicyDetails
         TEAM_MERGE_FROM_DETAILS, // TeamMergeFromDetails
@@ -410,6 +428,7 @@ public final class EventDetails {
         CHANGED_ENTERPRISE_CONNECTED_TEAM_STATUS_DETAILS, // ChangedEnterpriseConnectedTeamStatusDetails
         ENDED_ENTERPRISE_ADMIN_SESSION_DETAILS, // EndedEnterpriseAdminSessionDetails
         ENDED_ENTERPRISE_ADMIN_SESSION_DEPRECATED_DETAILS, // EndedEnterpriseAdminSessionDeprecatedDetails
+        ENTERPRISE_SETTINGS_LOCKING_DETAILS, // EnterpriseSettingsLockingDetails
         GUEST_ADMIN_CHANGE_STATUS_DETAILS, // GuestAdminChangeStatusDetails
         STARTED_ENTERPRISE_ADMIN_SESSION_DETAILS, // StartedEnterpriseAdminSessionDetails
         TEAM_MERGE_REQUEST_ACCEPTED_DETAILS, // TeamMergeRequestAcceptedDetails
@@ -503,6 +522,7 @@ public final class EventDetails {
     private FileDownloadDetails fileDownloadDetailsValue;
     private FileEditDetails fileEditDetailsValue;
     private FileGetCopyReferenceDetails fileGetCopyReferenceDetailsValue;
+    private FileLockingLockStatusChangedDetails fileLockingLockStatusChangedDetailsValue;
     private FileMoveDetails fileMoveDetailsValue;
     private FilePermanentlyDeleteDetails filePermanentlyDeleteDetailsValue;
     private FilePreviewDetails filePreviewDetailsValue;
@@ -514,6 +534,7 @@ public final class EventDetails {
     private FolderOverviewDescriptionChangedDetails folderOverviewDescriptionChangedDetailsValue;
     private FolderOverviewItemPinnedDetails folderOverviewItemPinnedDetailsValue;
     private FolderOverviewItemUnpinnedDetails folderOverviewItemUnpinnedDetailsValue;
+    private RewindFolderDetails rewindFolderDetailsValue;
     private FileRequestChangeDetails fileRequestChangeDetailsValue;
     private FileRequestCloseDetails fileRequestCloseDetailsValue;
     private FileRequestCreateDetails fileRequestCreateDetailsValue;
@@ -537,6 +558,9 @@ public final class EventDetails {
     private LegalHoldsChangeHoldDetailsDetails legalHoldsChangeHoldDetailsDetailsValue;
     private LegalHoldsChangeHoldNameDetails legalHoldsChangeHoldNameDetailsValue;
     private LegalHoldsExportAHoldDetails legalHoldsExportAHoldDetailsValue;
+    private LegalHoldsExportCancelledDetails legalHoldsExportCancelledDetailsValue;
+    private LegalHoldsExportDownloadedDetails legalHoldsExportDownloadedDetailsValue;
+    private LegalHoldsExportRemovedDetails legalHoldsExportRemovedDetailsValue;
     private LegalHoldsReleaseAHoldDetails legalHoldsReleaseAHoldDetailsValue;
     private LegalHoldsRemoveMembersDetails legalHoldsRemoveMembersDetailsValue;
     private LegalHoldsReportAHoldDetails legalHoldsReportAHoldDetailsValue;
@@ -551,6 +575,8 @@ public final class EventDetails {
     private SignInAsSessionEndDetails signInAsSessionEndDetailsValue;
     private SignInAsSessionStartDetails signInAsSessionStartDetailsValue;
     private SsoErrorDetails ssoErrorDetailsValue;
+    private CreateTeamInviteLinkDetails createTeamInviteLinkDetailsValue;
+    private DeleteTeamInviteLinkDetails deleteTeamInviteLinkDetailsValue;
     private MemberAddExternalIdDetails memberAddExternalIdDetailsValue;
     private MemberAddNameDetails memberAddNameDetailsValue;
     private MemberChangeAdminRoleDetails memberChangeAdminRoleDetailsValue;
@@ -574,6 +600,14 @@ public final class EventDetails {
     private SecondaryEmailDeletedDetails secondaryEmailDeletedDetailsValue;
     private SecondaryEmailVerifiedDetails secondaryEmailVerifiedDetailsValue;
     private SecondaryMailsPolicyChangedDetails secondaryMailsPolicyChangedDetailsValue;
+    private BinderAddPageDetails binderAddPageDetailsValue;
+    private BinderAddSectionDetails binderAddSectionDetailsValue;
+    private BinderRemovePageDetails binderRemovePageDetailsValue;
+    private BinderRemoveSectionDetails binderRemoveSectionDetailsValue;
+    private BinderRenamePageDetails binderRenamePageDetailsValue;
+    private BinderRenameSectionDetails binderRenameSectionDetailsValue;
+    private BinderReorderPageDetails binderReorderPageDetailsValue;
+    private BinderReorderSectionDetails binderReorderSectionDetailsValue;
     private PaperContentAddMemberDetails paperContentAddMemberDetailsValue;
     private PaperContentAddToFolderDetails paperContentAddToFolderDetailsValue;
     private PaperContentArchiveDetails paperContentArchiveDetailsValue;
@@ -792,6 +826,7 @@ public final class EventDetails {
     private PasswordStrengthRequirementsChangePolicyDetails passwordStrengthRequirementsChangePolicyDetailsValue;
     private PermanentDeleteChangePolicyDetails permanentDeleteChangePolicyDetailsValue;
     private ResellerSupportChangePolicyDetails resellerSupportChangePolicyDetailsValue;
+    private RewindPolicyChangedDetails rewindPolicyChangedDetailsValue;
     private SharingChangeFolderJoinPolicyDetails sharingChangeFolderJoinPolicyDetailsValue;
     private SharingChangeLinkPolicyDetails sharingChangeLinkPolicyDetailsValue;
     private SharingChangeMemberPolicyDetails sharingChangeMemberPolicyDetailsValue;
@@ -805,12 +840,14 @@ public final class EventDetails {
     private SsoChangePolicyDetails ssoChangePolicyDetailsValue;
     private TeamExtensionsPolicyChangedDetails teamExtensionsPolicyChangedDetailsValue;
     private TeamSelectiveSyncPolicyChangedDetails teamSelectiveSyncPolicyChangedDetailsValue;
+    private TeamSharingWhitelistSubjectsChangedDetails teamSharingWhitelistSubjectsChangedDetailsValue;
     private TfaAddExceptionDetails tfaAddExceptionDetailsValue;
     private TfaChangePolicyDetails tfaChangePolicyDetailsValue;
     private TfaRemoveExceptionDetails tfaRemoveExceptionDetailsValue;
     private TwoAccountChangePolicyDetails twoAccountChangePolicyDetailsValue;
     private ViewerInfoPolicyChangedDetails viewerInfoPolicyChangedDetailsValue;
     private WatermarkingPolicyChangedDetails watermarkingPolicyChangedDetailsValue;
+    private WebSessionsChangeActiveSessionLimitDetails webSessionsChangeActiveSessionLimitDetailsValue;
     private WebSessionsChangeFixedLengthPolicyDetails webSessionsChangeFixedLengthPolicyDetailsValue;
     private WebSessionsChangeIdleLengthPolicyDetails webSessionsChangeIdleLengthPolicyDetailsValue;
     private TeamMergeFromDetails teamMergeFromDetailsValue;
@@ -831,6 +868,7 @@ public final class EventDetails {
     private ChangedEnterpriseConnectedTeamStatusDetails changedEnterpriseConnectedTeamStatusDetailsValue;
     private EndedEnterpriseAdminSessionDetails endedEnterpriseAdminSessionDetailsValue;
     private EndedEnterpriseAdminSessionDeprecatedDetails endedEnterpriseAdminSessionDeprecatedDetailsValue;
+    private EnterpriseSettingsLockingDetails enterpriseSettingsLockingDetailsValue;
     private GuestAdminChangeStatusDetails guestAdminChangeStatusDetailsValue;
     private StartedEnterpriseAdminSessionDetails startedEnterpriseAdminSessionDetailsValue;
     private TeamMergeRequestAcceptedDetails teamMergeRequestAcceptedDetailsValue;
@@ -1640,6 +1678,23 @@ public final class EventDetails {
     /**
      * Additional fields depending on the event type.
      *
+     * @param fileLockingLockStatusChangedDetailsValue  Must not be {@code
+     *     null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventDetails withTagAndFileLockingLockStatusChangedDetails(Tag _tag, FileLockingLockStatusChangedDetails fileLockingLockStatusChangedDetailsValue) {
+        EventDetails result = new EventDetails();
+        result._tag = _tag;
+        result.fileLockingLockStatusChangedDetailsValue = fileLockingLockStatusChangedDetailsValue;
+        return result;
+    }
+
+    /**
+     * Additional fields depending on the event type.
+     *
      * @param fileMoveDetailsValue  Must not be {@code null}.
      * @param _tag  Discriminating tag for this instance.
      *
@@ -1811,6 +1866,22 @@ public final class EventDetails {
         EventDetails result = new EventDetails();
         result._tag = _tag;
         result.folderOverviewItemUnpinnedDetailsValue = folderOverviewItemUnpinnedDetailsValue;
+        return result;
+    }
+
+    /**
+     * Additional fields depending on the event type.
+     *
+     * @param rewindFolderDetailsValue  Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventDetails withTagAndRewindFolderDetails(Tag _tag, RewindFolderDetails rewindFolderDetailsValue) {
+        EventDetails result = new EventDetails();
+        result._tag = _tag;
+        result.rewindFolderDetailsValue = rewindFolderDetailsValue;
         return result;
     }
 
@@ -2185,6 +2256,54 @@ public final class EventDetails {
     /**
      * Additional fields depending on the event type.
      *
+     * @param legalHoldsExportCancelledDetailsValue  Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventDetails withTagAndLegalHoldsExportCancelledDetails(Tag _tag, LegalHoldsExportCancelledDetails legalHoldsExportCancelledDetailsValue) {
+        EventDetails result = new EventDetails();
+        result._tag = _tag;
+        result.legalHoldsExportCancelledDetailsValue = legalHoldsExportCancelledDetailsValue;
+        return result;
+    }
+
+    /**
+     * Additional fields depending on the event type.
+     *
+     * @param legalHoldsExportDownloadedDetailsValue  Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventDetails withTagAndLegalHoldsExportDownloadedDetails(Tag _tag, LegalHoldsExportDownloadedDetails legalHoldsExportDownloadedDetailsValue) {
+        EventDetails result = new EventDetails();
+        result._tag = _tag;
+        result.legalHoldsExportDownloadedDetailsValue = legalHoldsExportDownloadedDetailsValue;
+        return result;
+    }
+
+    /**
+     * Additional fields depending on the event type.
+     *
+     * @param legalHoldsExportRemovedDetailsValue  Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventDetails withTagAndLegalHoldsExportRemovedDetails(Tag _tag, LegalHoldsExportRemovedDetails legalHoldsExportRemovedDetailsValue) {
+        EventDetails result = new EventDetails();
+        result._tag = _tag;
+        result.legalHoldsExportRemovedDetailsValue = legalHoldsExportRemovedDetailsValue;
+        return result;
+    }
+
+    /**
+     * Additional fields depending on the event type.
+     *
      * @param legalHoldsReleaseAHoldDetailsValue  Must not be {@code null}.
      * @param _tag  Discriminating tag for this instance.
      *
@@ -2405,6 +2524,38 @@ public final class EventDetails {
         EventDetails result = new EventDetails();
         result._tag = _tag;
         result.ssoErrorDetailsValue = ssoErrorDetailsValue;
+        return result;
+    }
+
+    /**
+     * Additional fields depending on the event type.
+     *
+     * @param createTeamInviteLinkDetailsValue  Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventDetails withTagAndCreateTeamInviteLinkDetails(Tag _tag, CreateTeamInviteLinkDetails createTeamInviteLinkDetailsValue) {
+        EventDetails result = new EventDetails();
+        result._tag = _tag;
+        result.createTeamInviteLinkDetailsValue = createTeamInviteLinkDetailsValue;
+        return result;
+    }
+
+    /**
+     * Additional fields depending on the event type.
+     *
+     * @param deleteTeamInviteLinkDetailsValue  Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventDetails withTagAndDeleteTeamInviteLinkDetails(Tag _tag, DeleteTeamInviteLinkDetails deleteTeamInviteLinkDetailsValue) {
+        EventDetails result = new EventDetails();
+        result._tag = _tag;
+        result.deleteTeamInviteLinkDetailsValue = deleteTeamInviteLinkDetailsValue;
         return result;
     }
 
@@ -2779,6 +2930,134 @@ public final class EventDetails {
         EventDetails result = new EventDetails();
         result._tag = _tag;
         result.secondaryMailsPolicyChangedDetailsValue = secondaryMailsPolicyChangedDetailsValue;
+        return result;
+    }
+
+    /**
+     * Additional fields depending on the event type.
+     *
+     * @param binderAddPageDetailsValue  Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventDetails withTagAndBinderAddPageDetails(Tag _tag, BinderAddPageDetails binderAddPageDetailsValue) {
+        EventDetails result = new EventDetails();
+        result._tag = _tag;
+        result.binderAddPageDetailsValue = binderAddPageDetailsValue;
+        return result;
+    }
+
+    /**
+     * Additional fields depending on the event type.
+     *
+     * @param binderAddSectionDetailsValue  Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventDetails withTagAndBinderAddSectionDetails(Tag _tag, BinderAddSectionDetails binderAddSectionDetailsValue) {
+        EventDetails result = new EventDetails();
+        result._tag = _tag;
+        result.binderAddSectionDetailsValue = binderAddSectionDetailsValue;
+        return result;
+    }
+
+    /**
+     * Additional fields depending on the event type.
+     *
+     * @param binderRemovePageDetailsValue  Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventDetails withTagAndBinderRemovePageDetails(Tag _tag, BinderRemovePageDetails binderRemovePageDetailsValue) {
+        EventDetails result = new EventDetails();
+        result._tag = _tag;
+        result.binderRemovePageDetailsValue = binderRemovePageDetailsValue;
+        return result;
+    }
+
+    /**
+     * Additional fields depending on the event type.
+     *
+     * @param binderRemoveSectionDetailsValue  Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventDetails withTagAndBinderRemoveSectionDetails(Tag _tag, BinderRemoveSectionDetails binderRemoveSectionDetailsValue) {
+        EventDetails result = new EventDetails();
+        result._tag = _tag;
+        result.binderRemoveSectionDetailsValue = binderRemoveSectionDetailsValue;
+        return result;
+    }
+
+    /**
+     * Additional fields depending on the event type.
+     *
+     * @param binderRenamePageDetailsValue  Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventDetails withTagAndBinderRenamePageDetails(Tag _tag, BinderRenamePageDetails binderRenamePageDetailsValue) {
+        EventDetails result = new EventDetails();
+        result._tag = _tag;
+        result.binderRenamePageDetailsValue = binderRenamePageDetailsValue;
+        return result;
+    }
+
+    /**
+     * Additional fields depending on the event type.
+     *
+     * @param binderRenameSectionDetailsValue  Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventDetails withTagAndBinderRenameSectionDetails(Tag _tag, BinderRenameSectionDetails binderRenameSectionDetailsValue) {
+        EventDetails result = new EventDetails();
+        result._tag = _tag;
+        result.binderRenameSectionDetailsValue = binderRenameSectionDetailsValue;
+        return result;
+    }
+
+    /**
+     * Additional fields depending on the event type.
+     *
+     * @param binderReorderPageDetailsValue  Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventDetails withTagAndBinderReorderPageDetails(Tag _tag, BinderReorderPageDetails binderReorderPageDetailsValue) {
+        EventDetails result = new EventDetails();
+        result._tag = _tag;
+        result.binderReorderPageDetailsValue = binderReorderPageDetailsValue;
+        return result;
+    }
+
+    /**
+     * Additional fields depending on the event type.
+     *
+     * @param binderReorderSectionDetailsValue  Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventDetails withTagAndBinderReorderSectionDetails(Tag _tag, BinderReorderSectionDetails binderReorderSectionDetailsValue) {
+        EventDetails result = new EventDetails();
+        result._tag = _tag;
+        result.binderReorderSectionDetailsValue = binderReorderSectionDetailsValue;
         return result;
     }
 
@@ -6333,6 +6612,22 @@ public final class EventDetails {
     /**
      * Additional fields depending on the event type.
      *
+     * @param rewindPolicyChangedDetailsValue  Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventDetails withTagAndRewindPolicyChangedDetails(Tag _tag, RewindPolicyChangedDetails rewindPolicyChangedDetailsValue) {
+        EventDetails result = new EventDetails();
+        result._tag = _tag;
+        result.rewindPolicyChangedDetailsValue = rewindPolicyChangedDetailsValue;
+        return result;
+    }
+
+    /**
+     * Additional fields depending on the event type.
+     *
      * @param sharingChangeFolderJoinPolicyDetailsValue  Must not be {@code
      *     null}.
      * @param _tag  Discriminating tag for this instance.
@@ -6546,6 +6841,23 @@ public final class EventDetails {
     /**
      * Additional fields depending on the event type.
      *
+     * @param teamSharingWhitelistSubjectsChangedDetailsValue  Must not be
+     *     {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventDetails withTagAndTeamSharingWhitelistSubjectsChangedDetails(Tag _tag, TeamSharingWhitelistSubjectsChangedDetails teamSharingWhitelistSubjectsChangedDetailsValue) {
+        EventDetails result = new EventDetails();
+        result._tag = _tag;
+        result.teamSharingWhitelistSubjectsChangedDetailsValue = teamSharingWhitelistSubjectsChangedDetailsValue;
+        return result;
+    }
+
+    /**
+     * Additional fields depending on the event type.
+     *
      * @param tfaAddExceptionDetailsValue  Must not be {@code null}.
      * @param _tag  Discriminating tag for this instance.
      *
@@ -6636,6 +6948,23 @@ public final class EventDetails {
         EventDetails result = new EventDetails();
         result._tag = _tag;
         result.watermarkingPolicyChangedDetailsValue = watermarkingPolicyChangedDetailsValue;
+        return result;
+    }
+
+    /**
+     * Additional fields depending on the event type.
+     *
+     * @param webSessionsChangeActiveSessionLimitDetailsValue  Must not be
+     *     {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventDetails withTagAndWebSessionsChangeActiveSessionLimitDetails(Tag _tag, WebSessionsChangeActiveSessionLimitDetails webSessionsChangeActiveSessionLimitDetailsValue) {
+        EventDetails result = new EventDetails();
+        result._tag = _tag;
+        result.webSessionsChangeActiveSessionLimitDetailsValue = webSessionsChangeActiveSessionLimitDetailsValue;
         return result;
     }
 
@@ -6961,6 +7290,22 @@ public final class EventDetails {
         EventDetails result = new EventDetails();
         result._tag = _tag;
         result.endedEnterpriseAdminSessionDeprecatedDetailsValue = endedEnterpriseAdminSessionDeprecatedDetailsValue;
+        return result;
+    }
+
+    /**
+     * Additional fields depending on the event type.
+     *
+     * @param enterpriseSettingsLockingDetailsValue  Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventDetails withTagAndEnterpriseSettingsLockingDetails(Tag _tag, EnterpriseSettingsLockingDetails enterpriseSettingsLockingDetailsValue) {
+        EventDetails result = new EventDetails();
+        result._tag = _tag;
+        result.enterpriseSettingsLockingDetailsValue = enterpriseSettingsLockingDetailsValue;
         return result;
     }
 
@@ -9622,6 +9967,56 @@ public final class EventDetails {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#FILE_LOCKING_LOCK_STATUS_CHANGED_DETAILS}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#FILE_LOCKING_LOCK_STATUS_CHANGED_DETAILS}, {@code false}
+     *     otherwise.
+     */
+    public boolean isFileLockingLockStatusChangedDetails() {
+        return this._tag == Tag.FILE_LOCKING_LOCK_STATUS_CHANGED_DETAILS;
+    }
+
+    /**
+     * Returns an instance of {@code EventDetails} that has its tag set to
+     * {@link Tag#FILE_LOCKING_LOCK_STATUS_CHANGED_DETAILS}.
+     *
+     * <p> None </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventDetails} with its tag set to {@link
+     *     Tag#FILE_LOCKING_LOCK_STATUS_CHANGED_DETAILS}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventDetails fileLockingLockStatusChangedDetails(FileLockingLockStatusChangedDetails value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventDetails().withTagAndFileLockingLockStatusChangedDetails(Tag.FILE_LOCKING_LOCK_STATUS_CHANGED_DETAILS, value);
+    }
+
+    /**
+     * This instance must be tagged as {@link
+     * Tag#FILE_LOCKING_LOCK_STATUS_CHANGED_DETAILS}.
+     *
+     * @return The {@link FileLockingLockStatusChangedDetails} value associated
+     *     with this instance if {@link #isFileLockingLockStatusChangedDetails}
+     *     is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isFileLockingLockStatusChangedDetails} is {@code false}.
+     */
+    public FileLockingLockStatusChangedDetails getFileLockingLockStatusChangedDetailsValue() {
+        if (this._tag != Tag.FILE_LOCKING_LOCK_STATUS_CHANGED_DETAILS) {
+            throw new IllegalStateException("Invalid tag: required Tag.FILE_LOCKING_LOCK_STATUS_CHANGED_DETAILS, but was Tag." + this._tag.name());
+        }
+        return fileLockingLockStatusChangedDetailsValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#FILE_MOVE_DETAILS}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -10148,6 +10543,53 @@ public final class EventDetails {
             throw new IllegalStateException("Invalid tag: required Tag.FOLDER_OVERVIEW_ITEM_UNPINNED_DETAILS, but was Tag." + this._tag.name());
         }
         return folderOverviewItemUnpinnedDetailsValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#REWIND_FOLDER_DETAILS}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#REWIND_FOLDER_DETAILS}, {@code false} otherwise.
+     */
+    public boolean isRewindFolderDetails() {
+        return this._tag == Tag.REWIND_FOLDER_DETAILS;
+    }
+
+    /**
+     * Returns an instance of {@code EventDetails} that has its tag set to
+     * {@link Tag#REWIND_FOLDER_DETAILS}.
+     *
+     * <p> None </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventDetails} with its tag set to {@link
+     *     Tag#REWIND_FOLDER_DETAILS}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventDetails rewindFolderDetails(RewindFolderDetails value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventDetails().withTagAndRewindFolderDetails(Tag.REWIND_FOLDER_DETAILS, value);
+    }
+
+    /**
+     * This instance must be tagged as {@link Tag#REWIND_FOLDER_DETAILS}.
+     *
+     * @return The {@link RewindFolderDetails} value associated with this
+     *     instance if {@link #isRewindFolderDetails} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isRewindFolderDetails} is
+     *     {@code false}.
+     */
+    public RewindFolderDetails getRewindFolderDetailsValue() {
+        if (this._tag != Tag.REWIND_FOLDER_DETAILS) {
+            throw new IllegalStateException("Invalid tag: required Tag.REWIND_FOLDER_DETAILS, but was Tag." + this._tag.name());
+        }
+        return rewindFolderDetailsValue;
     }
 
     /**
@@ -11259,6 +11701,153 @@ public final class EventDetails {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#LEGAL_HOLDS_EXPORT_CANCELLED_DETAILS}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#LEGAL_HOLDS_EXPORT_CANCELLED_DETAILS}, {@code false} otherwise.
+     */
+    public boolean isLegalHoldsExportCancelledDetails() {
+        return this._tag == Tag.LEGAL_HOLDS_EXPORT_CANCELLED_DETAILS;
+    }
+
+    /**
+     * Returns an instance of {@code EventDetails} that has its tag set to
+     * {@link Tag#LEGAL_HOLDS_EXPORT_CANCELLED_DETAILS}.
+     *
+     * <p> None </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventDetails} with its tag set to {@link
+     *     Tag#LEGAL_HOLDS_EXPORT_CANCELLED_DETAILS}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventDetails legalHoldsExportCancelledDetails(LegalHoldsExportCancelledDetails value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventDetails().withTagAndLegalHoldsExportCancelledDetails(Tag.LEGAL_HOLDS_EXPORT_CANCELLED_DETAILS, value);
+    }
+
+    /**
+     * This instance must be tagged as {@link
+     * Tag#LEGAL_HOLDS_EXPORT_CANCELLED_DETAILS}.
+     *
+     * @return The {@link LegalHoldsExportCancelledDetails} value associated
+     *     with this instance if {@link #isLegalHoldsExportCancelledDetails} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isLegalHoldsExportCancelledDetails} is {@code false}.
+     */
+    public LegalHoldsExportCancelledDetails getLegalHoldsExportCancelledDetailsValue() {
+        if (this._tag != Tag.LEGAL_HOLDS_EXPORT_CANCELLED_DETAILS) {
+            throw new IllegalStateException("Invalid tag: required Tag.LEGAL_HOLDS_EXPORT_CANCELLED_DETAILS, but was Tag." + this._tag.name());
+        }
+        return legalHoldsExportCancelledDetailsValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#LEGAL_HOLDS_EXPORT_DOWNLOADED_DETAILS}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#LEGAL_HOLDS_EXPORT_DOWNLOADED_DETAILS}, {@code false} otherwise.
+     */
+    public boolean isLegalHoldsExportDownloadedDetails() {
+        return this._tag == Tag.LEGAL_HOLDS_EXPORT_DOWNLOADED_DETAILS;
+    }
+
+    /**
+     * Returns an instance of {@code EventDetails} that has its tag set to
+     * {@link Tag#LEGAL_HOLDS_EXPORT_DOWNLOADED_DETAILS}.
+     *
+     * <p> None </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventDetails} with its tag set to {@link
+     *     Tag#LEGAL_HOLDS_EXPORT_DOWNLOADED_DETAILS}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventDetails legalHoldsExportDownloadedDetails(LegalHoldsExportDownloadedDetails value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventDetails().withTagAndLegalHoldsExportDownloadedDetails(Tag.LEGAL_HOLDS_EXPORT_DOWNLOADED_DETAILS, value);
+    }
+
+    /**
+     * This instance must be tagged as {@link
+     * Tag#LEGAL_HOLDS_EXPORT_DOWNLOADED_DETAILS}.
+     *
+     * @return The {@link LegalHoldsExportDownloadedDetails} value associated
+     *     with this instance if {@link #isLegalHoldsExportDownloadedDetails} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isLegalHoldsExportDownloadedDetails} is {@code false}.
+     */
+    public LegalHoldsExportDownloadedDetails getLegalHoldsExportDownloadedDetailsValue() {
+        if (this._tag != Tag.LEGAL_HOLDS_EXPORT_DOWNLOADED_DETAILS) {
+            throw new IllegalStateException("Invalid tag: required Tag.LEGAL_HOLDS_EXPORT_DOWNLOADED_DETAILS, but was Tag." + this._tag.name());
+        }
+        return legalHoldsExportDownloadedDetailsValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#LEGAL_HOLDS_EXPORT_REMOVED_DETAILS}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#LEGAL_HOLDS_EXPORT_REMOVED_DETAILS}, {@code false} otherwise.
+     */
+    public boolean isLegalHoldsExportRemovedDetails() {
+        return this._tag == Tag.LEGAL_HOLDS_EXPORT_REMOVED_DETAILS;
+    }
+
+    /**
+     * Returns an instance of {@code EventDetails} that has its tag set to
+     * {@link Tag#LEGAL_HOLDS_EXPORT_REMOVED_DETAILS}.
+     *
+     * <p> None </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventDetails} with its tag set to {@link
+     *     Tag#LEGAL_HOLDS_EXPORT_REMOVED_DETAILS}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventDetails legalHoldsExportRemovedDetails(LegalHoldsExportRemovedDetails value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventDetails().withTagAndLegalHoldsExportRemovedDetails(Tag.LEGAL_HOLDS_EXPORT_REMOVED_DETAILS, value);
+    }
+
+    /**
+     * This instance must be tagged as {@link
+     * Tag#LEGAL_HOLDS_EXPORT_REMOVED_DETAILS}.
+     *
+     * @return The {@link LegalHoldsExportRemovedDetails} value associated with
+     *     this instance if {@link #isLegalHoldsExportRemovedDetails} is {@code
+     *     true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isLegalHoldsExportRemovedDetails} is {@code false}.
+     */
+    public LegalHoldsExportRemovedDetails getLegalHoldsExportRemovedDetailsValue() {
+        if (this._tag != Tag.LEGAL_HOLDS_EXPORT_REMOVED_DETAILS) {
+            throw new IllegalStateException("Invalid tag: required Tag.LEGAL_HOLDS_EXPORT_REMOVED_DETAILS, but was Tag." + this._tag.name());
+        }
+        return legalHoldsExportRemovedDetailsValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#LEGAL_HOLDS_RELEASE_A_HOLD_DETAILS}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -11934,6 +12523,104 @@ public final class EventDetails {
             throw new IllegalStateException("Invalid tag: required Tag.SSO_ERROR_DETAILS, but was Tag." + this._tag.name());
         }
         return ssoErrorDetailsValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#CREATE_TEAM_INVITE_LINK_DETAILS}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#CREATE_TEAM_INVITE_LINK_DETAILS}, {@code false} otherwise.
+     */
+    public boolean isCreateTeamInviteLinkDetails() {
+        return this._tag == Tag.CREATE_TEAM_INVITE_LINK_DETAILS;
+    }
+
+    /**
+     * Returns an instance of {@code EventDetails} that has its tag set to
+     * {@link Tag#CREATE_TEAM_INVITE_LINK_DETAILS}.
+     *
+     * <p> None </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventDetails} with its tag set to {@link
+     *     Tag#CREATE_TEAM_INVITE_LINK_DETAILS}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventDetails createTeamInviteLinkDetails(CreateTeamInviteLinkDetails value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventDetails().withTagAndCreateTeamInviteLinkDetails(Tag.CREATE_TEAM_INVITE_LINK_DETAILS, value);
+    }
+
+    /**
+     * This instance must be tagged as {@link
+     * Tag#CREATE_TEAM_INVITE_LINK_DETAILS}.
+     *
+     * @return The {@link CreateTeamInviteLinkDetails} value associated with
+     *     this instance if {@link #isCreateTeamInviteLinkDetails} is {@code
+     *     true}.
+     *
+     * @throws IllegalStateException  If {@link #isCreateTeamInviteLinkDetails}
+     *     is {@code false}.
+     */
+    public CreateTeamInviteLinkDetails getCreateTeamInviteLinkDetailsValue() {
+        if (this._tag != Tag.CREATE_TEAM_INVITE_LINK_DETAILS) {
+            throw new IllegalStateException("Invalid tag: required Tag.CREATE_TEAM_INVITE_LINK_DETAILS, but was Tag." + this._tag.name());
+        }
+        return createTeamInviteLinkDetailsValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#DELETE_TEAM_INVITE_LINK_DETAILS}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#DELETE_TEAM_INVITE_LINK_DETAILS}, {@code false} otherwise.
+     */
+    public boolean isDeleteTeamInviteLinkDetails() {
+        return this._tag == Tag.DELETE_TEAM_INVITE_LINK_DETAILS;
+    }
+
+    /**
+     * Returns an instance of {@code EventDetails} that has its tag set to
+     * {@link Tag#DELETE_TEAM_INVITE_LINK_DETAILS}.
+     *
+     * <p> None </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventDetails} with its tag set to {@link
+     *     Tag#DELETE_TEAM_INVITE_LINK_DETAILS}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventDetails deleteTeamInviteLinkDetails(DeleteTeamInviteLinkDetails value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventDetails().withTagAndDeleteTeamInviteLinkDetails(Tag.DELETE_TEAM_INVITE_LINK_DETAILS, value);
+    }
+
+    /**
+     * This instance must be tagged as {@link
+     * Tag#DELETE_TEAM_INVITE_LINK_DETAILS}.
+     *
+     * @return The {@link DeleteTeamInviteLinkDetails} value associated with
+     *     this instance if {@link #isDeleteTeamInviteLinkDetails} is {@code
+     *     true}.
+     *
+     * @throws IllegalStateException  If {@link #isDeleteTeamInviteLinkDetails}
+     *     is {@code false}.
+     */
+    public DeleteTeamInviteLinkDetails getDeleteTeamInviteLinkDetailsValue() {
+        if (this._tag != Tag.DELETE_TEAM_INVITE_LINK_DETAILS) {
+            throw new IllegalStateException("Invalid tag: required Tag.DELETE_TEAM_INVITE_LINK_DETAILS, but was Tag." + this._tag.name());
+        }
+        return deleteTeamInviteLinkDetailsValue;
     }
 
     /**
@@ -13060,6 +13747,386 @@ public final class EventDetails {
             throw new IllegalStateException("Invalid tag: required Tag.SECONDARY_MAILS_POLICY_CHANGED_DETAILS, but was Tag." + this._tag.name());
         }
         return secondaryMailsPolicyChangedDetailsValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#BINDER_ADD_PAGE_DETAILS}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#BINDER_ADD_PAGE_DETAILS}, {@code false} otherwise.
+     */
+    public boolean isBinderAddPageDetails() {
+        return this._tag == Tag.BINDER_ADD_PAGE_DETAILS;
+    }
+
+    /**
+     * Returns an instance of {@code EventDetails} that has its tag set to
+     * {@link Tag#BINDER_ADD_PAGE_DETAILS}.
+     *
+     * <p> None </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventDetails} with its tag set to {@link
+     *     Tag#BINDER_ADD_PAGE_DETAILS}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventDetails binderAddPageDetails(BinderAddPageDetails value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventDetails().withTagAndBinderAddPageDetails(Tag.BINDER_ADD_PAGE_DETAILS, value);
+    }
+
+    /**
+     * This instance must be tagged as {@link Tag#BINDER_ADD_PAGE_DETAILS}.
+     *
+     * @return The {@link BinderAddPageDetails} value associated with this
+     *     instance if {@link #isBinderAddPageDetails} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isBinderAddPageDetails} is
+     *     {@code false}.
+     */
+    public BinderAddPageDetails getBinderAddPageDetailsValue() {
+        if (this._tag != Tag.BINDER_ADD_PAGE_DETAILS) {
+            throw new IllegalStateException("Invalid tag: required Tag.BINDER_ADD_PAGE_DETAILS, but was Tag." + this._tag.name());
+        }
+        return binderAddPageDetailsValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#BINDER_ADD_SECTION_DETAILS}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#BINDER_ADD_SECTION_DETAILS}, {@code false} otherwise.
+     */
+    public boolean isBinderAddSectionDetails() {
+        return this._tag == Tag.BINDER_ADD_SECTION_DETAILS;
+    }
+
+    /**
+     * Returns an instance of {@code EventDetails} that has its tag set to
+     * {@link Tag#BINDER_ADD_SECTION_DETAILS}.
+     *
+     * <p> None </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventDetails} with its tag set to {@link
+     *     Tag#BINDER_ADD_SECTION_DETAILS}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventDetails binderAddSectionDetails(BinderAddSectionDetails value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventDetails().withTagAndBinderAddSectionDetails(Tag.BINDER_ADD_SECTION_DETAILS, value);
+    }
+
+    /**
+     * This instance must be tagged as {@link Tag#BINDER_ADD_SECTION_DETAILS}.
+     *
+     * @return The {@link BinderAddSectionDetails} value associated with this
+     *     instance if {@link #isBinderAddSectionDetails} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isBinderAddSectionDetails} is
+     *     {@code false}.
+     */
+    public BinderAddSectionDetails getBinderAddSectionDetailsValue() {
+        if (this._tag != Tag.BINDER_ADD_SECTION_DETAILS) {
+            throw new IllegalStateException("Invalid tag: required Tag.BINDER_ADD_SECTION_DETAILS, but was Tag." + this._tag.name());
+        }
+        return binderAddSectionDetailsValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#BINDER_REMOVE_PAGE_DETAILS}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#BINDER_REMOVE_PAGE_DETAILS}, {@code false} otherwise.
+     */
+    public boolean isBinderRemovePageDetails() {
+        return this._tag == Tag.BINDER_REMOVE_PAGE_DETAILS;
+    }
+
+    /**
+     * Returns an instance of {@code EventDetails} that has its tag set to
+     * {@link Tag#BINDER_REMOVE_PAGE_DETAILS}.
+     *
+     * <p> None </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventDetails} with its tag set to {@link
+     *     Tag#BINDER_REMOVE_PAGE_DETAILS}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventDetails binderRemovePageDetails(BinderRemovePageDetails value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventDetails().withTagAndBinderRemovePageDetails(Tag.BINDER_REMOVE_PAGE_DETAILS, value);
+    }
+
+    /**
+     * This instance must be tagged as {@link Tag#BINDER_REMOVE_PAGE_DETAILS}.
+     *
+     * @return The {@link BinderRemovePageDetails} value associated with this
+     *     instance if {@link #isBinderRemovePageDetails} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isBinderRemovePageDetails} is
+     *     {@code false}.
+     */
+    public BinderRemovePageDetails getBinderRemovePageDetailsValue() {
+        if (this._tag != Tag.BINDER_REMOVE_PAGE_DETAILS) {
+            throw new IllegalStateException("Invalid tag: required Tag.BINDER_REMOVE_PAGE_DETAILS, but was Tag." + this._tag.name());
+        }
+        return binderRemovePageDetailsValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#BINDER_REMOVE_SECTION_DETAILS}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#BINDER_REMOVE_SECTION_DETAILS}, {@code false} otherwise.
+     */
+    public boolean isBinderRemoveSectionDetails() {
+        return this._tag == Tag.BINDER_REMOVE_SECTION_DETAILS;
+    }
+
+    /**
+     * Returns an instance of {@code EventDetails} that has its tag set to
+     * {@link Tag#BINDER_REMOVE_SECTION_DETAILS}.
+     *
+     * <p> None </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventDetails} with its tag set to {@link
+     *     Tag#BINDER_REMOVE_SECTION_DETAILS}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventDetails binderRemoveSectionDetails(BinderRemoveSectionDetails value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventDetails().withTagAndBinderRemoveSectionDetails(Tag.BINDER_REMOVE_SECTION_DETAILS, value);
+    }
+
+    /**
+     * This instance must be tagged as {@link
+     * Tag#BINDER_REMOVE_SECTION_DETAILS}.
+     *
+     * @return The {@link BinderRemoveSectionDetails} value associated with this
+     *     instance if {@link #isBinderRemoveSectionDetails} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isBinderRemoveSectionDetails}
+     *     is {@code false}.
+     */
+    public BinderRemoveSectionDetails getBinderRemoveSectionDetailsValue() {
+        if (this._tag != Tag.BINDER_REMOVE_SECTION_DETAILS) {
+            throw new IllegalStateException("Invalid tag: required Tag.BINDER_REMOVE_SECTION_DETAILS, but was Tag." + this._tag.name());
+        }
+        return binderRemoveSectionDetailsValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#BINDER_RENAME_PAGE_DETAILS}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#BINDER_RENAME_PAGE_DETAILS}, {@code false} otherwise.
+     */
+    public boolean isBinderRenamePageDetails() {
+        return this._tag == Tag.BINDER_RENAME_PAGE_DETAILS;
+    }
+
+    /**
+     * Returns an instance of {@code EventDetails} that has its tag set to
+     * {@link Tag#BINDER_RENAME_PAGE_DETAILS}.
+     *
+     * <p> None </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventDetails} with its tag set to {@link
+     *     Tag#BINDER_RENAME_PAGE_DETAILS}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventDetails binderRenamePageDetails(BinderRenamePageDetails value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventDetails().withTagAndBinderRenamePageDetails(Tag.BINDER_RENAME_PAGE_DETAILS, value);
+    }
+
+    /**
+     * This instance must be tagged as {@link Tag#BINDER_RENAME_PAGE_DETAILS}.
+     *
+     * @return The {@link BinderRenamePageDetails} value associated with this
+     *     instance if {@link #isBinderRenamePageDetails} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isBinderRenamePageDetails} is
+     *     {@code false}.
+     */
+    public BinderRenamePageDetails getBinderRenamePageDetailsValue() {
+        if (this._tag != Tag.BINDER_RENAME_PAGE_DETAILS) {
+            throw new IllegalStateException("Invalid tag: required Tag.BINDER_RENAME_PAGE_DETAILS, but was Tag." + this._tag.name());
+        }
+        return binderRenamePageDetailsValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#BINDER_RENAME_SECTION_DETAILS}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#BINDER_RENAME_SECTION_DETAILS}, {@code false} otherwise.
+     */
+    public boolean isBinderRenameSectionDetails() {
+        return this._tag == Tag.BINDER_RENAME_SECTION_DETAILS;
+    }
+
+    /**
+     * Returns an instance of {@code EventDetails} that has its tag set to
+     * {@link Tag#BINDER_RENAME_SECTION_DETAILS}.
+     *
+     * <p> None </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventDetails} with its tag set to {@link
+     *     Tag#BINDER_RENAME_SECTION_DETAILS}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventDetails binderRenameSectionDetails(BinderRenameSectionDetails value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventDetails().withTagAndBinderRenameSectionDetails(Tag.BINDER_RENAME_SECTION_DETAILS, value);
+    }
+
+    /**
+     * This instance must be tagged as {@link
+     * Tag#BINDER_RENAME_SECTION_DETAILS}.
+     *
+     * @return The {@link BinderRenameSectionDetails} value associated with this
+     *     instance if {@link #isBinderRenameSectionDetails} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isBinderRenameSectionDetails}
+     *     is {@code false}.
+     */
+    public BinderRenameSectionDetails getBinderRenameSectionDetailsValue() {
+        if (this._tag != Tag.BINDER_RENAME_SECTION_DETAILS) {
+            throw new IllegalStateException("Invalid tag: required Tag.BINDER_RENAME_SECTION_DETAILS, but was Tag." + this._tag.name());
+        }
+        return binderRenameSectionDetailsValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#BINDER_REORDER_PAGE_DETAILS}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#BINDER_REORDER_PAGE_DETAILS}, {@code false} otherwise.
+     */
+    public boolean isBinderReorderPageDetails() {
+        return this._tag == Tag.BINDER_REORDER_PAGE_DETAILS;
+    }
+
+    /**
+     * Returns an instance of {@code EventDetails} that has its tag set to
+     * {@link Tag#BINDER_REORDER_PAGE_DETAILS}.
+     *
+     * <p> None </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventDetails} with its tag set to {@link
+     *     Tag#BINDER_REORDER_PAGE_DETAILS}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventDetails binderReorderPageDetails(BinderReorderPageDetails value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventDetails().withTagAndBinderReorderPageDetails(Tag.BINDER_REORDER_PAGE_DETAILS, value);
+    }
+
+    /**
+     * This instance must be tagged as {@link Tag#BINDER_REORDER_PAGE_DETAILS}.
+     *
+     * @return The {@link BinderReorderPageDetails} value associated with this
+     *     instance if {@link #isBinderReorderPageDetails} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isBinderReorderPageDetails} is
+     *     {@code false}.
+     */
+    public BinderReorderPageDetails getBinderReorderPageDetailsValue() {
+        if (this._tag != Tag.BINDER_REORDER_PAGE_DETAILS) {
+            throw new IllegalStateException("Invalid tag: required Tag.BINDER_REORDER_PAGE_DETAILS, but was Tag." + this._tag.name());
+        }
+        return binderReorderPageDetailsValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#BINDER_REORDER_SECTION_DETAILS}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#BINDER_REORDER_SECTION_DETAILS}, {@code false} otherwise.
+     */
+    public boolean isBinderReorderSectionDetails() {
+        return this._tag == Tag.BINDER_REORDER_SECTION_DETAILS;
+    }
+
+    /**
+     * Returns an instance of {@code EventDetails} that has its tag set to
+     * {@link Tag#BINDER_REORDER_SECTION_DETAILS}.
+     *
+     * <p> None </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventDetails} with its tag set to {@link
+     *     Tag#BINDER_REORDER_SECTION_DETAILS}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventDetails binderReorderSectionDetails(BinderReorderSectionDetails value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventDetails().withTagAndBinderReorderSectionDetails(Tag.BINDER_REORDER_SECTION_DETAILS, value);
+    }
+
+    /**
+     * This instance must be tagged as {@link
+     * Tag#BINDER_REORDER_SECTION_DETAILS}.
+     *
+     * @return The {@link BinderReorderSectionDetails} value associated with
+     *     this instance if {@link #isBinderReorderSectionDetails} is {@code
+     *     true}.
+     *
+     * @throws IllegalStateException  If {@link #isBinderReorderSectionDetails}
+     *     is {@code false}.
+     */
+    public BinderReorderSectionDetails getBinderReorderSectionDetailsValue() {
+        if (this._tag != Tag.BINDER_REORDER_SECTION_DETAILS) {
+            throw new IllegalStateException("Invalid tag: required Tag.BINDER_REORDER_SECTION_DETAILS, but was Tag." + this._tag.name());
+        }
+        return binderReorderSectionDetailsValue;
     }
 
     /**
@@ -23697,6 +24764,54 @@ public final class EventDetails {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#REWIND_POLICY_CHANGED_DETAILS}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#REWIND_POLICY_CHANGED_DETAILS}, {@code false} otherwise.
+     */
+    public boolean isRewindPolicyChangedDetails() {
+        return this._tag == Tag.REWIND_POLICY_CHANGED_DETAILS;
+    }
+
+    /**
+     * Returns an instance of {@code EventDetails} that has its tag set to
+     * {@link Tag#REWIND_POLICY_CHANGED_DETAILS}.
+     *
+     * <p> None </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventDetails} with its tag set to {@link
+     *     Tag#REWIND_POLICY_CHANGED_DETAILS}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventDetails rewindPolicyChangedDetails(RewindPolicyChangedDetails value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventDetails().withTagAndRewindPolicyChangedDetails(Tag.REWIND_POLICY_CHANGED_DETAILS, value);
+    }
+
+    /**
+     * This instance must be tagged as {@link
+     * Tag#REWIND_POLICY_CHANGED_DETAILS}.
+     *
+     * @return The {@link RewindPolicyChangedDetails} value associated with this
+     *     instance if {@link #isRewindPolicyChangedDetails} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isRewindPolicyChangedDetails}
+     *     is {@code false}.
+     */
+    public RewindPolicyChangedDetails getRewindPolicyChangedDetailsValue() {
+        if (this._tag != Tag.REWIND_POLICY_CHANGED_DETAILS) {
+            throw new IllegalStateException("Invalid tag: required Tag.REWIND_POLICY_CHANGED_DETAILS, but was Tag." + this._tag.name());
+        }
+        return rewindPolicyChangedDetailsValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#SHARING_CHANGE_FOLDER_JOIN_POLICY_DETAILS}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -24335,6 +25450,57 @@ public final class EventDetails {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#TEAM_SHARING_WHITELIST_SUBJECTS_CHANGED_DETAILS}, {@code false}
+     * otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#TEAM_SHARING_WHITELIST_SUBJECTS_CHANGED_DETAILS}, {@code false}
+     *     otherwise.
+     */
+    public boolean isTeamSharingWhitelistSubjectsChangedDetails() {
+        return this._tag == Tag.TEAM_SHARING_WHITELIST_SUBJECTS_CHANGED_DETAILS;
+    }
+
+    /**
+     * Returns an instance of {@code EventDetails} that has its tag set to
+     * {@link Tag#TEAM_SHARING_WHITELIST_SUBJECTS_CHANGED_DETAILS}.
+     *
+     * <p> None </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventDetails} with its tag set to {@link
+     *     Tag#TEAM_SHARING_WHITELIST_SUBJECTS_CHANGED_DETAILS}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventDetails teamSharingWhitelistSubjectsChangedDetails(TeamSharingWhitelistSubjectsChangedDetails value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventDetails().withTagAndTeamSharingWhitelistSubjectsChangedDetails(Tag.TEAM_SHARING_WHITELIST_SUBJECTS_CHANGED_DETAILS, value);
+    }
+
+    /**
+     * This instance must be tagged as {@link
+     * Tag#TEAM_SHARING_WHITELIST_SUBJECTS_CHANGED_DETAILS}.
+     *
+     * @return The {@link TeamSharingWhitelistSubjectsChangedDetails} value
+     *     associated with this instance if {@link
+     *     #isTeamSharingWhitelistSubjectsChangedDetails} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isTeamSharingWhitelistSubjectsChangedDetails} is {@code false}.
+     */
+    public TeamSharingWhitelistSubjectsChangedDetails getTeamSharingWhitelistSubjectsChangedDetailsValue() {
+        if (this._tag != Tag.TEAM_SHARING_WHITELIST_SUBJECTS_CHANGED_DETAILS) {
+            throw new IllegalStateException("Invalid tag: required Tag.TEAM_SHARING_WHITELIST_SUBJECTS_CHANGED_DETAILS, but was Tag." + this._tag.name());
+        }
+        return teamSharingWhitelistSubjectsChangedDetailsValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#TFA_ADD_EXCEPTION_DETAILS}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -24619,6 +25785,57 @@ public final class EventDetails {
             throw new IllegalStateException("Invalid tag: required Tag.WATERMARKING_POLICY_CHANGED_DETAILS, but was Tag." + this._tag.name());
         }
         return watermarkingPolicyChangedDetailsValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#WEB_SESSIONS_CHANGE_ACTIVE_SESSION_LIMIT_DETAILS}, {@code false}
+     * otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#WEB_SESSIONS_CHANGE_ACTIVE_SESSION_LIMIT_DETAILS}, {@code false}
+     *     otherwise.
+     */
+    public boolean isWebSessionsChangeActiveSessionLimitDetails() {
+        return this._tag == Tag.WEB_SESSIONS_CHANGE_ACTIVE_SESSION_LIMIT_DETAILS;
+    }
+
+    /**
+     * Returns an instance of {@code EventDetails} that has its tag set to
+     * {@link Tag#WEB_SESSIONS_CHANGE_ACTIVE_SESSION_LIMIT_DETAILS}.
+     *
+     * <p> None </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventDetails} with its tag set to {@link
+     *     Tag#WEB_SESSIONS_CHANGE_ACTIVE_SESSION_LIMIT_DETAILS}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventDetails webSessionsChangeActiveSessionLimitDetails(WebSessionsChangeActiveSessionLimitDetails value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventDetails().withTagAndWebSessionsChangeActiveSessionLimitDetails(Tag.WEB_SESSIONS_CHANGE_ACTIVE_SESSION_LIMIT_DETAILS, value);
+    }
+
+    /**
+     * This instance must be tagged as {@link
+     * Tag#WEB_SESSIONS_CHANGE_ACTIVE_SESSION_LIMIT_DETAILS}.
+     *
+     * @return The {@link WebSessionsChangeActiveSessionLimitDetails} value
+     *     associated with this instance if {@link
+     *     #isWebSessionsChangeActiveSessionLimitDetails} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isWebSessionsChangeActiveSessionLimitDetails} is {@code false}.
+     */
+    public WebSessionsChangeActiveSessionLimitDetails getWebSessionsChangeActiveSessionLimitDetailsValue() {
+        if (this._tag != Tag.WEB_SESSIONS_CHANGE_ACTIVE_SESSION_LIMIT_DETAILS) {
+            throw new IllegalStateException("Invalid tag: required Tag.WEB_SESSIONS_CHANGE_ACTIVE_SESSION_LIMIT_DETAILS, but was Tag." + this._tag.name());
+        }
+        return webSessionsChangeActiveSessionLimitDetailsValue;
     }
 
     /**
@@ -25596,6 +26813,55 @@ public final class EventDetails {
             throw new IllegalStateException("Invalid tag: required Tag.ENDED_ENTERPRISE_ADMIN_SESSION_DEPRECATED_DETAILS, but was Tag." + this._tag.name());
         }
         return endedEnterpriseAdminSessionDeprecatedDetailsValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#ENTERPRISE_SETTINGS_LOCKING_DETAILS}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#ENTERPRISE_SETTINGS_LOCKING_DETAILS}, {@code false} otherwise.
+     */
+    public boolean isEnterpriseSettingsLockingDetails() {
+        return this._tag == Tag.ENTERPRISE_SETTINGS_LOCKING_DETAILS;
+    }
+
+    /**
+     * Returns an instance of {@code EventDetails} that has its tag set to
+     * {@link Tag#ENTERPRISE_SETTINGS_LOCKING_DETAILS}.
+     *
+     * <p> None </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventDetails} with its tag set to {@link
+     *     Tag#ENTERPRISE_SETTINGS_LOCKING_DETAILS}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventDetails enterpriseSettingsLockingDetails(EnterpriseSettingsLockingDetails value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventDetails().withTagAndEnterpriseSettingsLockingDetails(Tag.ENTERPRISE_SETTINGS_LOCKING_DETAILS, value);
+    }
+
+    /**
+     * This instance must be tagged as {@link
+     * Tag#ENTERPRISE_SETTINGS_LOCKING_DETAILS}.
+     *
+     * @return The {@link EnterpriseSettingsLockingDetails} value associated
+     *     with this instance if {@link #isEnterpriseSettingsLockingDetails} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isEnterpriseSettingsLockingDetails} is {@code false}.
+     */
+    public EnterpriseSettingsLockingDetails getEnterpriseSettingsLockingDetailsValue() {
+        if (this._tag != Tag.ENTERPRISE_SETTINGS_LOCKING_DETAILS) {
+            throw new IllegalStateException("Invalid tag: required Tag.ENTERPRISE_SETTINGS_LOCKING_DETAILS, but was Tag." + this._tag.name());
+        }
+        return enterpriseSettingsLockingDetailsValue;
     }
 
     /**
@@ -26736,6 +28002,7 @@ public final class EventDetails {
             fileDownloadDetailsValue,
             fileEditDetailsValue,
             fileGetCopyReferenceDetailsValue,
+            fileLockingLockStatusChangedDetailsValue,
             fileMoveDetailsValue,
             filePermanentlyDeleteDetailsValue,
             filePreviewDetailsValue,
@@ -26747,6 +28014,7 @@ public final class EventDetails {
             folderOverviewDescriptionChangedDetailsValue,
             folderOverviewItemPinnedDetailsValue,
             folderOverviewItemUnpinnedDetailsValue,
+            rewindFolderDetailsValue,
             fileRequestChangeDetailsValue,
             fileRequestCloseDetailsValue,
             fileRequestCreateDetailsValue,
@@ -26770,6 +28038,9 @@ public final class EventDetails {
             legalHoldsChangeHoldDetailsDetailsValue,
             legalHoldsChangeHoldNameDetailsValue,
             legalHoldsExportAHoldDetailsValue,
+            legalHoldsExportCancelledDetailsValue,
+            legalHoldsExportDownloadedDetailsValue,
+            legalHoldsExportRemovedDetailsValue,
             legalHoldsReleaseAHoldDetailsValue,
             legalHoldsRemoveMembersDetailsValue,
             legalHoldsReportAHoldDetailsValue,
@@ -26784,6 +28055,8 @@ public final class EventDetails {
             signInAsSessionEndDetailsValue,
             signInAsSessionStartDetailsValue,
             ssoErrorDetailsValue,
+            createTeamInviteLinkDetailsValue,
+            deleteTeamInviteLinkDetailsValue,
             memberAddExternalIdDetailsValue,
             memberAddNameDetailsValue,
             memberChangeAdminRoleDetailsValue,
@@ -26807,6 +28080,14 @@ public final class EventDetails {
             secondaryEmailDeletedDetailsValue,
             secondaryEmailVerifiedDetailsValue,
             secondaryMailsPolicyChangedDetailsValue,
+            binderAddPageDetailsValue,
+            binderAddSectionDetailsValue,
+            binderRemovePageDetailsValue,
+            binderRemoveSectionDetailsValue,
+            binderRenamePageDetailsValue,
+            binderRenameSectionDetailsValue,
+            binderReorderPageDetailsValue,
+            binderReorderSectionDetailsValue,
             paperContentAddMemberDetailsValue,
             paperContentAddToFolderDetailsValue,
             paperContentArchiveDetailsValue,
@@ -27025,6 +28306,7 @@ public final class EventDetails {
             passwordStrengthRequirementsChangePolicyDetailsValue,
             permanentDeleteChangePolicyDetailsValue,
             resellerSupportChangePolicyDetailsValue,
+            rewindPolicyChangedDetailsValue,
             sharingChangeFolderJoinPolicyDetailsValue,
             sharingChangeLinkPolicyDetailsValue,
             sharingChangeMemberPolicyDetailsValue,
@@ -27038,12 +28320,14 @@ public final class EventDetails {
             ssoChangePolicyDetailsValue,
             teamExtensionsPolicyChangedDetailsValue,
             teamSelectiveSyncPolicyChangedDetailsValue,
+            teamSharingWhitelistSubjectsChangedDetailsValue,
             tfaAddExceptionDetailsValue,
             tfaChangePolicyDetailsValue,
             tfaRemoveExceptionDetailsValue,
             twoAccountChangePolicyDetailsValue,
             viewerInfoPolicyChangedDetailsValue,
             watermarkingPolicyChangedDetailsValue,
+            webSessionsChangeActiveSessionLimitDetailsValue,
             webSessionsChangeFixedLengthPolicyDetailsValue,
             webSessionsChangeIdleLengthPolicyDetailsValue,
             teamMergeFromDetailsValue,
@@ -27064,6 +28348,7 @@ public final class EventDetails {
             changedEnterpriseConnectedTeamStatusDetailsValue,
             endedEnterpriseAdminSessionDetailsValue,
             endedEnterpriseAdminSessionDeprecatedDetailsValue,
+            enterpriseSettingsLockingDetailsValue,
             guestAdminChangeStatusDetailsValue,
             startedEnterpriseAdminSessionDetailsValue,
             teamMergeRequestAcceptedDetailsValue,
@@ -27197,6 +28482,8 @@ public final class EventDetails {
                     return (this.fileEditDetailsValue == other.fileEditDetailsValue) || (this.fileEditDetailsValue.equals(other.fileEditDetailsValue));
                 case FILE_GET_COPY_REFERENCE_DETAILS:
                     return (this.fileGetCopyReferenceDetailsValue == other.fileGetCopyReferenceDetailsValue) || (this.fileGetCopyReferenceDetailsValue.equals(other.fileGetCopyReferenceDetailsValue));
+                case FILE_LOCKING_LOCK_STATUS_CHANGED_DETAILS:
+                    return (this.fileLockingLockStatusChangedDetailsValue == other.fileLockingLockStatusChangedDetailsValue) || (this.fileLockingLockStatusChangedDetailsValue.equals(other.fileLockingLockStatusChangedDetailsValue));
                 case FILE_MOVE_DETAILS:
                     return (this.fileMoveDetailsValue == other.fileMoveDetailsValue) || (this.fileMoveDetailsValue.equals(other.fileMoveDetailsValue));
                 case FILE_PERMANENTLY_DELETE_DETAILS:
@@ -27219,6 +28506,8 @@ public final class EventDetails {
                     return (this.folderOverviewItemPinnedDetailsValue == other.folderOverviewItemPinnedDetailsValue) || (this.folderOverviewItemPinnedDetailsValue.equals(other.folderOverviewItemPinnedDetailsValue));
                 case FOLDER_OVERVIEW_ITEM_UNPINNED_DETAILS:
                     return (this.folderOverviewItemUnpinnedDetailsValue == other.folderOverviewItemUnpinnedDetailsValue) || (this.folderOverviewItemUnpinnedDetailsValue.equals(other.folderOverviewItemUnpinnedDetailsValue));
+                case REWIND_FOLDER_DETAILS:
+                    return (this.rewindFolderDetailsValue == other.rewindFolderDetailsValue) || (this.rewindFolderDetailsValue.equals(other.rewindFolderDetailsValue));
                 case FILE_REQUEST_CHANGE_DETAILS:
                     return (this.fileRequestChangeDetailsValue == other.fileRequestChangeDetailsValue) || (this.fileRequestChangeDetailsValue.equals(other.fileRequestChangeDetailsValue));
                 case FILE_REQUEST_CLOSE_DETAILS:
@@ -27265,6 +28554,12 @@ public final class EventDetails {
                     return (this.legalHoldsChangeHoldNameDetailsValue == other.legalHoldsChangeHoldNameDetailsValue) || (this.legalHoldsChangeHoldNameDetailsValue.equals(other.legalHoldsChangeHoldNameDetailsValue));
                 case LEGAL_HOLDS_EXPORT_A_HOLD_DETAILS:
                     return (this.legalHoldsExportAHoldDetailsValue == other.legalHoldsExportAHoldDetailsValue) || (this.legalHoldsExportAHoldDetailsValue.equals(other.legalHoldsExportAHoldDetailsValue));
+                case LEGAL_HOLDS_EXPORT_CANCELLED_DETAILS:
+                    return (this.legalHoldsExportCancelledDetailsValue == other.legalHoldsExportCancelledDetailsValue) || (this.legalHoldsExportCancelledDetailsValue.equals(other.legalHoldsExportCancelledDetailsValue));
+                case LEGAL_HOLDS_EXPORT_DOWNLOADED_DETAILS:
+                    return (this.legalHoldsExportDownloadedDetailsValue == other.legalHoldsExportDownloadedDetailsValue) || (this.legalHoldsExportDownloadedDetailsValue.equals(other.legalHoldsExportDownloadedDetailsValue));
+                case LEGAL_HOLDS_EXPORT_REMOVED_DETAILS:
+                    return (this.legalHoldsExportRemovedDetailsValue == other.legalHoldsExportRemovedDetailsValue) || (this.legalHoldsExportRemovedDetailsValue.equals(other.legalHoldsExportRemovedDetailsValue));
                 case LEGAL_HOLDS_RELEASE_A_HOLD_DETAILS:
                     return (this.legalHoldsReleaseAHoldDetailsValue == other.legalHoldsReleaseAHoldDetailsValue) || (this.legalHoldsReleaseAHoldDetailsValue.equals(other.legalHoldsReleaseAHoldDetailsValue));
                 case LEGAL_HOLDS_REMOVE_MEMBERS_DETAILS:
@@ -27293,6 +28588,10 @@ public final class EventDetails {
                     return (this.signInAsSessionStartDetailsValue == other.signInAsSessionStartDetailsValue) || (this.signInAsSessionStartDetailsValue.equals(other.signInAsSessionStartDetailsValue));
                 case SSO_ERROR_DETAILS:
                     return (this.ssoErrorDetailsValue == other.ssoErrorDetailsValue) || (this.ssoErrorDetailsValue.equals(other.ssoErrorDetailsValue));
+                case CREATE_TEAM_INVITE_LINK_DETAILS:
+                    return (this.createTeamInviteLinkDetailsValue == other.createTeamInviteLinkDetailsValue) || (this.createTeamInviteLinkDetailsValue.equals(other.createTeamInviteLinkDetailsValue));
+                case DELETE_TEAM_INVITE_LINK_DETAILS:
+                    return (this.deleteTeamInviteLinkDetailsValue == other.deleteTeamInviteLinkDetailsValue) || (this.deleteTeamInviteLinkDetailsValue.equals(other.deleteTeamInviteLinkDetailsValue));
                 case MEMBER_ADD_EXTERNAL_ID_DETAILS:
                     return (this.memberAddExternalIdDetailsValue == other.memberAddExternalIdDetailsValue) || (this.memberAddExternalIdDetailsValue.equals(other.memberAddExternalIdDetailsValue));
                 case MEMBER_ADD_NAME_DETAILS:
@@ -27339,6 +28638,22 @@ public final class EventDetails {
                     return (this.secondaryEmailVerifiedDetailsValue == other.secondaryEmailVerifiedDetailsValue) || (this.secondaryEmailVerifiedDetailsValue.equals(other.secondaryEmailVerifiedDetailsValue));
                 case SECONDARY_MAILS_POLICY_CHANGED_DETAILS:
                     return (this.secondaryMailsPolicyChangedDetailsValue == other.secondaryMailsPolicyChangedDetailsValue) || (this.secondaryMailsPolicyChangedDetailsValue.equals(other.secondaryMailsPolicyChangedDetailsValue));
+                case BINDER_ADD_PAGE_DETAILS:
+                    return (this.binderAddPageDetailsValue == other.binderAddPageDetailsValue) || (this.binderAddPageDetailsValue.equals(other.binderAddPageDetailsValue));
+                case BINDER_ADD_SECTION_DETAILS:
+                    return (this.binderAddSectionDetailsValue == other.binderAddSectionDetailsValue) || (this.binderAddSectionDetailsValue.equals(other.binderAddSectionDetailsValue));
+                case BINDER_REMOVE_PAGE_DETAILS:
+                    return (this.binderRemovePageDetailsValue == other.binderRemovePageDetailsValue) || (this.binderRemovePageDetailsValue.equals(other.binderRemovePageDetailsValue));
+                case BINDER_REMOVE_SECTION_DETAILS:
+                    return (this.binderRemoveSectionDetailsValue == other.binderRemoveSectionDetailsValue) || (this.binderRemoveSectionDetailsValue.equals(other.binderRemoveSectionDetailsValue));
+                case BINDER_RENAME_PAGE_DETAILS:
+                    return (this.binderRenamePageDetailsValue == other.binderRenamePageDetailsValue) || (this.binderRenamePageDetailsValue.equals(other.binderRenamePageDetailsValue));
+                case BINDER_RENAME_SECTION_DETAILS:
+                    return (this.binderRenameSectionDetailsValue == other.binderRenameSectionDetailsValue) || (this.binderRenameSectionDetailsValue.equals(other.binderRenameSectionDetailsValue));
+                case BINDER_REORDER_PAGE_DETAILS:
+                    return (this.binderReorderPageDetailsValue == other.binderReorderPageDetailsValue) || (this.binderReorderPageDetailsValue.equals(other.binderReorderPageDetailsValue));
+                case BINDER_REORDER_SECTION_DETAILS:
+                    return (this.binderReorderSectionDetailsValue == other.binderReorderSectionDetailsValue) || (this.binderReorderSectionDetailsValue.equals(other.binderReorderSectionDetailsValue));
                 case PAPER_CONTENT_ADD_MEMBER_DETAILS:
                     return (this.paperContentAddMemberDetailsValue == other.paperContentAddMemberDetailsValue) || (this.paperContentAddMemberDetailsValue.equals(other.paperContentAddMemberDetailsValue));
                 case PAPER_CONTENT_ADD_TO_FOLDER_DETAILS:
@@ -27775,6 +29090,8 @@ public final class EventDetails {
                     return (this.permanentDeleteChangePolicyDetailsValue == other.permanentDeleteChangePolicyDetailsValue) || (this.permanentDeleteChangePolicyDetailsValue.equals(other.permanentDeleteChangePolicyDetailsValue));
                 case RESELLER_SUPPORT_CHANGE_POLICY_DETAILS:
                     return (this.resellerSupportChangePolicyDetailsValue == other.resellerSupportChangePolicyDetailsValue) || (this.resellerSupportChangePolicyDetailsValue.equals(other.resellerSupportChangePolicyDetailsValue));
+                case REWIND_POLICY_CHANGED_DETAILS:
+                    return (this.rewindPolicyChangedDetailsValue == other.rewindPolicyChangedDetailsValue) || (this.rewindPolicyChangedDetailsValue.equals(other.rewindPolicyChangedDetailsValue));
                 case SHARING_CHANGE_FOLDER_JOIN_POLICY_DETAILS:
                     return (this.sharingChangeFolderJoinPolicyDetailsValue == other.sharingChangeFolderJoinPolicyDetailsValue) || (this.sharingChangeFolderJoinPolicyDetailsValue.equals(other.sharingChangeFolderJoinPolicyDetailsValue));
                 case SHARING_CHANGE_LINK_POLICY_DETAILS:
@@ -27801,6 +29118,8 @@ public final class EventDetails {
                     return (this.teamExtensionsPolicyChangedDetailsValue == other.teamExtensionsPolicyChangedDetailsValue) || (this.teamExtensionsPolicyChangedDetailsValue.equals(other.teamExtensionsPolicyChangedDetailsValue));
                 case TEAM_SELECTIVE_SYNC_POLICY_CHANGED_DETAILS:
                     return (this.teamSelectiveSyncPolicyChangedDetailsValue == other.teamSelectiveSyncPolicyChangedDetailsValue) || (this.teamSelectiveSyncPolicyChangedDetailsValue.equals(other.teamSelectiveSyncPolicyChangedDetailsValue));
+                case TEAM_SHARING_WHITELIST_SUBJECTS_CHANGED_DETAILS:
+                    return (this.teamSharingWhitelistSubjectsChangedDetailsValue == other.teamSharingWhitelistSubjectsChangedDetailsValue) || (this.teamSharingWhitelistSubjectsChangedDetailsValue.equals(other.teamSharingWhitelistSubjectsChangedDetailsValue));
                 case TFA_ADD_EXCEPTION_DETAILS:
                     return (this.tfaAddExceptionDetailsValue == other.tfaAddExceptionDetailsValue) || (this.tfaAddExceptionDetailsValue.equals(other.tfaAddExceptionDetailsValue));
                 case TFA_CHANGE_POLICY_DETAILS:
@@ -27813,6 +29132,8 @@ public final class EventDetails {
                     return (this.viewerInfoPolicyChangedDetailsValue == other.viewerInfoPolicyChangedDetailsValue) || (this.viewerInfoPolicyChangedDetailsValue.equals(other.viewerInfoPolicyChangedDetailsValue));
                 case WATERMARKING_POLICY_CHANGED_DETAILS:
                     return (this.watermarkingPolicyChangedDetailsValue == other.watermarkingPolicyChangedDetailsValue) || (this.watermarkingPolicyChangedDetailsValue.equals(other.watermarkingPolicyChangedDetailsValue));
+                case WEB_SESSIONS_CHANGE_ACTIVE_SESSION_LIMIT_DETAILS:
+                    return (this.webSessionsChangeActiveSessionLimitDetailsValue == other.webSessionsChangeActiveSessionLimitDetailsValue) || (this.webSessionsChangeActiveSessionLimitDetailsValue.equals(other.webSessionsChangeActiveSessionLimitDetailsValue));
                 case WEB_SESSIONS_CHANGE_FIXED_LENGTH_POLICY_DETAILS:
                     return (this.webSessionsChangeFixedLengthPolicyDetailsValue == other.webSessionsChangeFixedLengthPolicyDetailsValue) || (this.webSessionsChangeFixedLengthPolicyDetailsValue.equals(other.webSessionsChangeFixedLengthPolicyDetailsValue));
                 case WEB_SESSIONS_CHANGE_IDLE_LENGTH_POLICY_DETAILS:
@@ -27853,6 +29174,8 @@ public final class EventDetails {
                     return (this.endedEnterpriseAdminSessionDetailsValue == other.endedEnterpriseAdminSessionDetailsValue) || (this.endedEnterpriseAdminSessionDetailsValue.equals(other.endedEnterpriseAdminSessionDetailsValue));
                 case ENDED_ENTERPRISE_ADMIN_SESSION_DEPRECATED_DETAILS:
                     return (this.endedEnterpriseAdminSessionDeprecatedDetailsValue == other.endedEnterpriseAdminSessionDeprecatedDetailsValue) || (this.endedEnterpriseAdminSessionDeprecatedDetailsValue.equals(other.endedEnterpriseAdminSessionDeprecatedDetailsValue));
+                case ENTERPRISE_SETTINGS_LOCKING_DETAILS:
+                    return (this.enterpriseSettingsLockingDetailsValue == other.enterpriseSettingsLockingDetailsValue) || (this.enterpriseSettingsLockingDetailsValue.equals(other.enterpriseSettingsLockingDetailsValue));
                 case GUEST_ADMIN_CHANGE_STATUS_DETAILS:
                     return (this.guestAdminChangeStatusDetailsValue == other.guestAdminChangeStatusDetailsValue) || (this.guestAdminChangeStatusDetailsValue.equals(other.guestAdminChangeStatusDetailsValue));
                 case STARTED_ENTERPRISE_ADMIN_SESSION_DETAILS:
@@ -28261,6 +29584,13 @@ public final class EventDetails {
                     g.writeEndObject();
                     break;
                 }
+                case FILE_LOCKING_LOCK_STATUS_CHANGED_DETAILS: {
+                    g.writeStartObject();
+                    writeTag("file_locking_lock_status_changed_details", g);
+                    FileLockingLockStatusChangedDetails.Serializer.INSTANCE.serialize(value.fileLockingLockStatusChangedDetailsValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
                 case FILE_MOVE_DETAILS: {
                     g.writeStartObject();
                     writeTag("file_move_details", g);
@@ -28335,6 +29665,13 @@ public final class EventDetails {
                     g.writeStartObject();
                     writeTag("folder_overview_item_unpinned_details", g);
                     FolderOverviewItemUnpinnedDetails.Serializer.INSTANCE.serialize(value.folderOverviewItemUnpinnedDetailsValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case REWIND_FOLDER_DETAILS: {
+                    g.writeStartObject();
+                    writeTag("rewind_folder_details", g);
+                    RewindFolderDetails.Serializer.INSTANCE.serialize(value.rewindFolderDetailsValue, g, true);
                     g.writeEndObject();
                     break;
                 }
@@ -28499,6 +29836,27 @@ public final class EventDetails {
                     g.writeEndObject();
                     break;
                 }
+                case LEGAL_HOLDS_EXPORT_CANCELLED_DETAILS: {
+                    g.writeStartObject();
+                    writeTag("legal_holds_export_cancelled_details", g);
+                    LegalHoldsExportCancelledDetails.Serializer.INSTANCE.serialize(value.legalHoldsExportCancelledDetailsValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case LEGAL_HOLDS_EXPORT_DOWNLOADED_DETAILS: {
+                    g.writeStartObject();
+                    writeTag("legal_holds_export_downloaded_details", g);
+                    LegalHoldsExportDownloadedDetails.Serializer.INSTANCE.serialize(value.legalHoldsExportDownloadedDetailsValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case LEGAL_HOLDS_EXPORT_REMOVED_DETAILS: {
+                    g.writeStartObject();
+                    writeTag("legal_holds_export_removed_details", g);
+                    LegalHoldsExportRemovedDetails.Serializer.INSTANCE.serialize(value.legalHoldsExportRemovedDetailsValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
                 case LEGAL_HOLDS_RELEASE_A_HOLD_DETAILS: {
                     g.writeStartObject();
                     writeTag("legal_holds_release_a_hold_details", g);
@@ -28594,6 +29952,20 @@ public final class EventDetails {
                     g.writeStartObject();
                     writeTag("sso_error_details", g);
                     SsoErrorDetails.Serializer.INSTANCE.serialize(value.ssoErrorDetailsValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case CREATE_TEAM_INVITE_LINK_DETAILS: {
+                    g.writeStartObject();
+                    writeTag("create_team_invite_link_details", g);
+                    CreateTeamInviteLinkDetails.Serializer.INSTANCE.serialize(value.createTeamInviteLinkDetailsValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case DELETE_TEAM_INVITE_LINK_DETAILS: {
+                    g.writeStartObject();
+                    writeTag("delete_team_invite_link_details", g);
+                    DeleteTeamInviteLinkDetails.Serializer.INSTANCE.serialize(value.deleteTeamInviteLinkDetailsValue, g, true);
                     g.writeEndObject();
                     break;
                 }
@@ -28755,6 +30127,62 @@ public final class EventDetails {
                     g.writeStartObject();
                     writeTag("secondary_mails_policy_changed_details", g);
                     SecondaryMailsPolicyChangedDetails.Serializer.INSTANCE.serialize(value.secondaryMailsPolicyChangedDetailsValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case BINDER_ADD_PAGE_DETAILS: {
+                    g.writeStartObject();
+                    writeTag("binder_add_page_details", g);
+                    BinderAddPageDetails.Serializer.INSTANCE.serialize(value.binderAddPageDetailsValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case BINDER_ADD_SECTION_DETAILS: {
+                    g.writeStartObject();
+                    writeTag("binder_add_section_details", g);
+                    BinderAddSectionDetails.Serializer.INSTANCE.serialize(value.binderAddSectionDetailsValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case BINDER_REMOVE_PAGE_DETAILS: {
+                    g.writeStartObject();
+                    writeTag("binder_remove_page_details", g);
+                    BinderRemovePageDetails.Serializer.INSTANCE.serialize(value.binderRemovePageDetailsValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case BINDER_REMOVE_SECTION_DETAILS: {
+                    g.writeStartObject();
+                    writeTag("binder_remove_section_details", g);
+                    BinderRemoveSectionDetails.Serializer.INSTANCE.serialize(value.binderRemoveSectionDetailsValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case BINDER_RENAME_PAGE_DETAILS: {
+                    g.writeStartObject();
+                    writeTag("binder_rename_page_details", g);
+                    BinderRenamePageDetails.Serializer.INSTANCE.serialize(value.binderRenamePageDetailsValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case BINDER_RENAME_SECTION_DETAILS: {
+                    g.writeStartObject();
+                    writeTag("binder_rename_section_details", g);
+                    BinderRenameSectionDetails.Serializer.INSTANCE.serialize(value.binderRenameSectionDetailsValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case BINDER_REORDER_PAGE_DETAILS: {
+                    g.writeStartObject();
+                    writeTag("binder_reorder_page_details", g);
+                    BinderReorderPageDetails.Serializer.INSTANCE.serialize(value.binderReorderPageDetailsValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case BINDER_REORDER_SECTION_DETAILS: {
+                    g.writeStartObject();
+                    writeTag("binder_reorder_section_details", g);
+                    BinderReorderSectionDetails.Serializer.INSTANCE.serialize(value.binderReorderSectionDetailsValue, g, true);
                     g.writeEndObject();
                     break;
                 }
@@ -30284,6 +31712,13 @@ public final class EventDetails {
                     g.writeEndObject();
                     break;
                 }
+                case REWIND_POLICY_CHANGED_DETAILS: {
+                    g.writeStartObject();
+                    writeTag("rewind_policy_changed_details", g);
+                    RewindPolicyChangedDetails.Serializer.INSTANCE.serialize(value.rewindPolicyChangedDetailsValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
                 case SHARING_CHANGE_FOLDER_JOIN_POLICY_DETAILS: {
                     g.writeStartObject();
                     writeTag("sharing_change_folder_join_policy_details", g);
@@ -30375,6 +31810,13 @@ public final class EventDetails {
                     g.writeEndObject();
                     break;
                 }
+                case TEAM_SHARING_WHITELIST_SUBJECTS_CHANGED_DETAILS: {
+                    g.writeStartObject();
+                    writeTag("team_sharing_whitelist_subjects_changed_details", g);
+                    TeamSharingWhitelistSubjectsChangedDetails.Serializer.INSTANCE.serialize(value.teamSharingWhitelistSubjectsChangedDetailsValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
                 case TFA_ADD_EXCEPTION_DETAILS: {
                     g.writeStartObject();
                     writeTag("tfa_add_exception_details", g);
@@ -30414,6 +31856,13 @@ public final class EventDetails {
                     g.writeStartObject();
                     writeTag("watermarking_policy_changed_details", g);
                     WatermarkingPolicyChangedDetails.Serializer.INSTANCE.serialize(value.watermarkingPolicyChangedDetailsValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case WEB_SESSIONS_CHANGE_ACTIVE_SESSION_LIMIT_DETAILS: {
+                    g.writeStartObject();
+                    writeTag("web_sessions_change_active_session_limit_details", g);
+                    WebSessionsChangeActiveSessionLimitDetails.Serializer.INSTANCE.serialize(value.webSessionsChangeActiveSessionLimitDetailsValue, g, true);
                     g.writeEndObject();
                     break;
                 }
@@ -30554,6 +32003,13 @@ public final class EventDetails {
                     g.writeStartObject();
                     writeTag("ended_enterprise_admin_session_deprecated_details", g);
                     EndedEnterpriseAdminSessionDeprecatedDetails.Serializer.INSTANCE.serialize(value.endedEnterpriseAdminSessionDeprecatedDetailsValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case ENTERPRISE_SETTINGS_LOCKING_DETAILS: {
+                    g.writeStartObject();
+                    writeTag("enterprise_settings_locking_details", g);
+                    EnterpriseSettingsLockingDetails.Serializer.INSTANCE.serialize(value.enterpriseSettingsLockingDetailsValue, g, true);
                     g.writeEndObject();
                     break;
                 }
@@ -30963,6 +32419,11 @@ public final class EventDetails {
                 fieldValue = FileGetCopyReferenceDetails.Serializer.INSTANCE.deserialize(p, true);
                 value = EventDetails.fileGetCopyReferenceDetails(fieldValue);
             }
+            else if ("file_locking_lock_status_changed_details".equals(tag)) {
+                FileLockingLockStatusChangedDetails fieldValue = null;
+                fieldValue = FileLockingLockStatusChangedDetails.Serializer.INSTANCE.deserialize(p, true);
+                value = EventDetails.fileLockingLockStatusChangedDetails(fieldValue);
+            }
             else if ("file_move_details".equals(tag)) {
                 FileMoveDetails fieldValue = null;
                 fieldValue = FileMoveDetails.Serializer.INSTANCE.deserialize(p, true);
@@ -31017,6 +32478,11 @@ public final class EventDetails {
                 FolderOverviewItemUnpinnedDetails fieldValue = null;
                 fieldValue = FolderOverviewItemUnpinnedDetails.Serializer.INSTANCE.deserialize(p, true);
                 value = EventDetails.folderOverviewItemUnpinnedDetails(fieldValue);
+            }
+            else if ("rewind_folder_details".equals(tag)) {
+                RewindFolderDetails fieldValue = null;
+                fieldValue = RewindFolderDetails.Serializer.INSTANCE.deserialize(p, true);
+                value = EventDetails.rewindFolderDetails(fieldValue);
             }
             else if ("file_request_change_details".equals(tag)) {
                 FileRequestChangeDetails fieldValue = null;
@@ -31133,6 +32599,21 @@ public final class EventDetails {
                 fieldValue = LegalHoldsExportAHoldDetails.Serializer.INSTANCE.deserialize(p, true);
                 value = EventDetails.legalHoldsExportAHoldDetails(fieldValue);
             }
+            else if ("legal_holds_export_cancelled_details".equals(tag)) {
+                LegalHoldsExportCancelledDetails fieldValue = null;
+                fieldValue = LegalHoldsExportCancelledDetails.Serializer.INSTANCE.deserialize(p, true);
+                value = EventDetails.legalHoldsExportCancelledDetails(fieldValue);
+            }
+            else if ("legal_holds_export_downloaded_details".equals(tag)) {
+                LegalHoldsExportDownloadedDetails fieldValue = null;
+                fieldValue = LegalHoldsExportDownloadedDetails.Serializer.INSTANCE.deserialize(p, true);
+                value = EventDetails.legalHoldsExportDownloadedDetails(fieldValue);
+            }
+            else if ("legal_holds_export_removed_details".equals(tag)) {
+                LegalHoldsExportRemovedDetails fieldValue = null;
+                fieldValue = LegalHoldsExportRemovedDetails.Serializer.INSTANCE.deserialize(p, true);
+                value = EventDetails.legalHoldsExportRemovedDetails(fieldValue);
+            }
             else if ("legal_holds_release_a_hold_details".equals(tag)) {
                 LegalHoldsReleaseAHoldDetails fieldValue = null;
                 fieldValue = LegalHoldsReleaseAHoldDetails.Serializer.INSTANCE.deserialize(p, true);
@@ -31202,6 +32683,16 @@ public final class EventDetails {
                 SsoErrorDetails fieldValue = null;
                 fieldValue = SsoErrorDetails.Serializer.INSTANCE.deserialize(p, true);
                 value = EventDetails.ssoErrorDetails(fieldValue);
+            }
+            else if ("create_team_invite_link_details".equals(tag)) {
+                CreateTeamInviteLinkDetails fieldValue = null;
+                fieldValue = CreateTeamInviteLinkDetails.Serializer.INSTANCE.deserialize(p, true);
+                value = EventDetails.createTeamInviteLinkDetails(fieldValue);
+            }
+            else if ("delete_team_invite_link_details".equals(tag)) {
+                DeleteTeamInviteLinkDetails fieldValue = null;
+                fieldValue = DeleteTeamInviteLinkDetails.Serializer.INSTANCE.deserialize(p, true);
+                value = EventDetails.deleteTeamInviteLinkDetails(fieldValue);
             }
             else if ("member_add_external_id_details".equals(tag)) {
                 MemberAddExternalIdDetails fieldValue = null;
@@ -31317,6 +32808,46 @@ public final class EventDetails {
                 SecondaryMailsPolicyChangedDetails fieldValue = null;
                 fieldValue = SecondaryMailsPolicyChangedDetails.Serializer.INSTANCE.deserialize(p, true);
                 value = EventDetails.secondaryMailsPolicyChangedDetails(fieldValue);
+            }
+            else if ("binder_add_page_details".equals(tag)) {
+                BinderAddPageDetails fieldValue = null;
+                fieldValue = BinderAddPageDetails.Serializer.INSTANCE.deserialize(p, true);
+                value = EventDetails.binderAddPageDetails(fieldValue);
+            }
+            else if ("binder_add_section_details".equals(tag)) {
+                BinderAddSectionDetails fieldValue = null;
+                fieldValue = BinderAddSectionDetails.Serializer.INSTANCE.deserialize(p, true);
+                value = EventDetails.binderAddSectionDetails(fieldValue);
+            }
+            else if ("binder_remove_page_details".equals(tag)) {
+                BinderRemovePageDetails fieldValue = null;
+                fieldValue = BinderRemovePageDetails.Serializer.INSTANCE.deserialize(p, true);
+                value = EventDetails.binderRemovePageDetails(fieldValue);
+            }
+            else if ("binder_remove_section_details".equals(tag)) {
+                BinderRemoveSectionDetails fieldValue = null;
+                fieldValue = BinderRemoveSectionDetails.Serializer.INSTANCE.deserialize(p, true);
+                value = EventDetails.binderRemoveSectionDetails(fieldValue);
+            }
+            else if ("binder_rename_page_details".equals(tag)) {
+                BinderRenamePageDetails fieldValue = null;
+                fieldValue = BinderRenamePageDetails.Serializer.INSTANCE.deserialize(p, true);
+                value = EventDetails.binderRenamePageDetails(fieldValue);
+            }
+            else if ("binder_rename_section_details".equals(tag)) {
+                BinderRenameSectionDetails fieldValue = null;
+                fieldValue = BinderRenameSectionDetails.Serializer.INSTANCE.deserialize(p, true);
+                value = EventDetails.binderRenameSectionDetails(fieldValue);
+            }
+            else if ("binder_reorder_page_details".equals(tag)) {
+                BinderReorderPageDetails fieldValue = null;
+                fieldValue = BinderReorderPageDetails.Serializer.INSTANCE.deserialize(p, true);
+                value = EventDetails.binderReorderPageDetails(fieldValue);
+            }
+            else if ("binder_reorder_section_details".equals(tag)) {
+                BinderReorderSectionDetails fieldValue = null;
+                fieldValue = BinderReorderSectionDetails.Serializer.INSTANCE.deserialize(p, true);
+                value = EventDetails.binderReorderSectionDetails(fieldValue);
             }
             else if ("paper_content_add_member_details".equals(tag)) {
                 PaperContentAddMemberDetails fieldValue = null;
@@ -32408,6 +33939,11 @@ public final class EventDetails {
                 fieldValue = ResellerSupportChangePolicyDetails.Serializer.INSTANCE.deserialize(p, true);
                 value = EventDetails.resellerSupportChangePolicyDetails(fieldValue);
             }
+            else if ("rewind_policy_changed_details".equals(tag)) {
+                RewindPolicyChangedDetails fieldValue = null;
+                fieldValue = RewindPolicyChangedDetails.Serializer.INSTANCE.deserialize(p, true);
+                value = EventDetails.rewindPolicyChangedDetails(fieldValue);
+            }
             else if ("sharing_change_folder_join_policy_details".equals(tag)) {
                 SharingChangeFolderJoinPolicyDetails fieldValue = null;
                 fieldValue = SharingChangeFolderJoinPolicyDetails.Serializer.INSTANCE.deserialize(p, true);
@@ -32473,6 +34009,11 @@ public final class EventDetails {
                 fieldValue = TeamSelectiveSyncPolicyChangedDetails.Serializer.INSTANCE.deserialize(p, true);
                 value = EventDetails.teamSelectiveSyncPolicyChangedDetails(fieldValue);
             }
+            else if ("team_sharing_whitelist_subjects_changed_details".equals(tag)) {
+                TeamSharingWhitelistSubjectsChangedDetails fieldValue = null;
+                fieldValue = TeamSharingWhitelistSubjectsChangedDetails.Serializer.INSTANCE.deserialize(p, true);
+                value = EventDetails.teamSharingWhitelistSubjectsChangedDetails(fieldValue);
+            }
             else if ("tfa_add_exception_details".equals(tag)) {
                 TfaAddExceptionDetails fieldValue = null;
                 fieldValue = TfaAddExceptionDetails.Serializer.INSTANCE.deserialize(p, true);
@@ -32502,6 +34043,11 @@ public final class EventDetails {
                 WatermarkingPolicyChangedDetails fieldValue = null;
                 fieldValue = WatermarkingPolicyChangedDetails.Serializer.INSTANCE.deserialize(p, true);
                 value = EventDetails.watermarkingPolicyChangedDetails(fieldValue);
+            }
+            else if ("web_sessions_change_active_session_limit_details".equals(tag)) {
+                WebSessionsChangeActiveSessionLimitDetails fieldValue = null;
+                fieldValue = WebSessionsChangeActiveSessionLimitDetails.Serializer.INSTANCE.deserialize(p, true);
+                value = EventDetails.webSessionsChangeActiveSessionLimitDetails(fieldValue);
             }
             else if ("web_sessions_change_fixed_length_policy_details".equals(tag)) {
                 WebSessionsChangeFixedLengthPolicyDetails fieldValue = null;
@@ -32602,6 +34148,11 @@ public final class EventDetails {
                 EndedEnterpriseAdminSessionDeprecatedDetails fieldValue = null;
                 fieldValue = EndedEnterpriseAdminSessionDeprecatedDetails.Serializer.INSTANCE.deserialize(p, true);
                 value = EventDetails.endedEnterpriseAdminSessionDeprecatedDetails(fieldValue);
+            }
+            else if ("enterprise_settings_locking_details".equals(tag)) {
+                EnterpriseSettingsLockingDetails fieldValue = null;
+                fieldValue = EnterpriseSettingsLockingDetails.Serializer.INSTANCE.deserialize(p, true);
+                value = EventDetails.enterpriseSettingsLockingDetails(fieldValue);
             }
             else if ("guest_admin_change_status_details".equals(tag)) {
                 GuestAdminChangeStatusDetails fieldValue = null;

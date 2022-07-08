@@ -21,6 +21,7 @@ class GroupCreateArg {
     // struct team.GroupCreateArg (team_groups.stone)
 
     protected final String groupName;
+    protected final boolean addCreatorAsOwner;
     protected final String groupExternalId;
     protected final GroupManagementType groupManagementType;
 
@@ -29,6 +30,7 @@ class GroupCreateArg {
      * specifying values for all optional fields.
      *
      * @param groupName  Group name. Must not be {@code null}.
+     * @param addCreatorAsOwner  Automatically add the creator of the group.
      * @param groupExternalId  The creator of a team can associate an arbitrary
      *     external ID to the group.
      * @param groupManagementType  Whether the team can be managed by selected
@@ -37,11 +39,12 @@ class GroupCreateArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupCreateArg(String groupName, String groupExternalId, GroupManagementType groupManagementType) {
+    public GroupCreateArg(String groupName, boolean addCreatorAsOwner, String groupExternalId, GroupManagementType groupManagementType) {
         if (groupName == null) {
             throw new IllegalArgumentException("Required value for 'groupName' is null");
         }
         this.groupName = groupName;
+        this.addCreatorAsOwner = addCreatorAsOwner;
         this.groupExternalId = groupExternalId;
         this.groupManagementType = groupManagementType;
     }
@@ -57,7 +60,7 @@ class GroupCreateArg {
      *     preconditions.
      */
     public GroupCreateArg(String groupName) {
-        this(groupName, null, null);
+        this(groupName, false, null, null);
     }
 
     /**
@@ -67,6 +70,16 @@ class GroupCreateArg {
      */
     public String getGroupName() {
         return groupName;
+    }
+
+    /**
+     * Automatically add the creator of the group.
+     *
+     * @return value for this field, or {@code null} if not present. Defaults to
+     *     false.
+     */
+    public boolean getAddCreatorAsOwner() {
+        return addCreatorAsOwner;
     }
 
     /**
@@ -109,6 +122,7 @@ class GroupCreateArg {
     public static class Builder {
         protected final String groupName;
 
+        protected boolean addCreatorAsOwner;
         protected String groupExternalId;
         protected GroupManagementType groupManagementType;
 
@@ -117,8 +131,30 @@ class GroupCreateArg {
                 throw new IllegalArgumentException("Required value for 'groupName' is null");
             }
             this.groupName = groupName;
+            this.addCreatorAsOwner = false;
             this.groupExternalId = null;
             this.groupManagementType = null;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * <p> If left unset or set to {@code null}, defaults to {@code false}.
+         * </p>
+         *
+         * @param addCreatorAsOwner  Automatically add the creator of the group.
+         *     Defaults to {@code false} when set to {@code null}.
+         *
+         * @return this builder
+         */
+        public Builder withAddCreatorAsOwner(Boolean addCreatorAsOwner) {
+            if (addCreatorAsOwner != null) {
+                this.addCreatorAsOwner = addCreatorAsOwner;
+            }
+            else {
+                this.addCreatorAsOwner = false;
+            }
+            return this;
         }
 
         /**
@@ -154,7 +190,7 @@ class GroupCreateArg {
          * @return new instance of {@link GroupCreateArg}
          */
         public GroupCreateArg build() {
-            return new GroupCreateArg(groupName, groupExternalId, groupManagementType);
+            return new GroupCreateArg(groupName, addCreatorAsOwner, groupExternalId, groupManagementType);
         }
     }
 
@@ -162,6 +198,7 @@ class GroupCreateArg {
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
             groupName,
+            addCreatorAsOwner,
             groupExternalId,
             groupManagementType
         });
@@ -180,6 +217,7 @@ class GroupCreateArg {
         else if (obj.getClass().equals(this.getClass())) {
             GroupCreateArg other = (GroupCreateArg) obj;
             return ((this.groupName == other.groupName) || (this.groupName.equals(other.groupName)))
+                && (this.addCreatorAsOwner == other.addCreatorAsOwner)
                 && ((this.groupExternalId == other.groupExternalId) || (this.groupExternalId != null && this.groupExternalId.equals(other.groupExternalId)))
                 && ((this.groupManagementType == other.groupManagementType) || (this.groupManagementType != null && this.groupManagementType.equals(other.groupManagementType)))
                 ;
@@ -219,6 +257,8 @@ class GroupCreateArg {
             }
             g.writeFieldName("group_name");
             StoneSerializers.string().serialize(value.groupName, g);
+            g.writeFieldName("add_creator_as_owner");
+            StoneSerializers.boolean_().serialize(value.addCreatorAsOwner, g);
             if (value.groupExternalId != null) {
                 g.writeFieldName("group_external_id");
                 StoneSerializers.nullable(StoneSerializers.string()).serialize(value.groupExternalId, g);
@@ -242,6 +282,7 @@ class GroupCreateArg {
             }
             if (tag == null) {
                 String f_groupName = null;
+                Boolean f_addCreatorAsOwner = false;
                 String f_groupExternalId = null;
                 GroupManagementType f_groupManagementType = null;
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
@@ -249,6 +290,9 @@ class GroupCreateArg {
                     p.nextToken();
                     if ("group_name".equals(field)) {
                         f_groupName = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("add_creator_as_owner".equals(field)) {
+                        f_addCreatorAsOwner = StoneSerializers.boolean_().deserialize(p);
                     }
                     else if ("group_external_id".equals(field)) {
                         f_groupExternalId = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
@@ -263,7 +307,7 @@ class GroupCreateArg {
                 if (f_groupName == null) {
                     throw new JsonParseException(p, "Required field \"group_name\" missing.");
                 }
-                value = new GroupCreateArg(f_groupName, f_groupExternalId, f_groupManagementType);
+                value = new GroupCreateArg(f_groupName, f_addCreatorAsOwner, f_groupExternalId, f_groupManagementType);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

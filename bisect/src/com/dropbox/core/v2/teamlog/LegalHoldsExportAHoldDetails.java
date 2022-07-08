@@ -24,17 +24,19 @@ public class LegalHoldsExportAHoldDetails {
 
     protected final String legalHoldId;
     protected final String name;
+    protected final String exportName;
 
     /**
      * Exported hold.
      *
      * @param legalHoldId  Hold ID. Must not be {@code null}.
      * @param name  Hold name. Must not be {@code null}.
+     * @param exportName  Export name.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LegalHoldsExportAHoldDetails(String legalHoldId, String name) {
+    public LegalHoldsExportAHoldDetails(String legalHoldId, String name, String exportName) {
         if (legalHoldId == null) {
             throw new IllegalArgumentException("Required value for 'legalHoldId' is null");
         }
@@ -43,6 +45,22 @@ public class LegalHoldsExportAHoldDetails {
             throw new IllegalArgumentException("Required value for 'name' is null");
         }
         this.name = name;
+        this.exportName = exportName;
+    }
+
+    /**
+     * Exported hold.
+     *
+     * <p> The default values for unset fields will be used. </p>
+     *
+     * @param legalHoldId  Hold ID. Must not be {@code null}.
+     * @param name  Hold name. Must not be {@code null}.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public LegalHoldsExportAHoldDetails(String legalHoldId, String name) {
+        this(legalHoldId, name, null);
     }
 
     /**
@@ -63,11 +81,21 @@ public class LegalHoldsExportAHoldDetails {
         return name;
     }
 
+    /**
+     * Export name.
+     *
+     * @return value for this field, or {@code null} if not present.
+     */
+    public String getExportName() {
+        return exportName;
+    }
+
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
             legalHoldId,
-            name
+            name,
+            exportName
         });
         return hash;
     }
@@ -85,6 +113,7 @@ public class LegalHoldsExportAHoldDetails {
             LegalHoldsExportAHoldDetails other = (LegalHoldsExportAHoldDetails) obj;
             return ((this.legalHoldId == other.legalHoldId) || (this.legalHoldId.equals(other.legalHoldId)))
                 && ((this.name == other.name) || (this.name.equals(other.name)))
+                && ((this.exportName == other.exportName) || (this.exportName != null && this.exportName.equals(other.exportName)))
                 ;
         }
         else {
@@ -124,6 +153,10 @@ public class LegalHoldsExportAHoldDetails {
             StoneSerializers.string().serialize(value.legalHoldId, g);
             g.writeFieldName("name");
             StoneSerializers.string().serialize(value.name, g);
+            if (value.exportName != null) {
+                g.writeFieldName("export_name");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.exportName, g);
+            }
             if (!collapse) {
                 g.writeEndObject();
             }
@@ -140,6 +173,7 @@ public class LegalHoldsExportAHoldDetails {
             if (tag == null) {
                 String f_legalHoldId = null;
                 String f_name = null;
+                String f_exportName = null;
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String field = p.getCurrentName();
                     p.nextToken();
@@ -148,6 +182,9 @@ public class LegalHoldsExportAHoldDetails {
                     }
                     else if ("name".equals(field)) {
                         f_name = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("export_name".equals(field)) {
+                        f_exportName = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
                     }
                     else {
                         skipValue(p);
@@ -159,7 +196,7 @@ public class LegalHoldsExportAHoldDetails {
                 if (f_name == null) {
                     throw new JsonParseException(p, "Required field \"name\" missing.");
                 }
-                value = new LegalHoldsExportAHoldDetails(f_legalHoldId, f_name);
+                value = new LegalHoldsExportAHoldDetails(f_legalHoldId, f_name, f_exportName);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

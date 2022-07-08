@@ -358,6 +358,9 @@ public class DbxTeamTeamRequests {
      *
      * <p> Permission : Team member management. </p>
      *
+     * <p> The default values for the optional request parameters will be used.
+     * See {@link GroupsCreateBuilder} for more details. </p>
+     *
      * @param groupName  Group name. Must not be {@code null}.
      *
      * @return Full description of a group.
@@ -1150,7 +1153,10 @@ public class DbxTeamTeamRequests {
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
+     *
+     * @deprecated
      */
+    @Deprecated
     public LegalHoldsExportPolicyResult legalHoldsExportPolicy(String id, String path) throws LegalHoldsExportPolicyErrorException, DbxException {
         LegalHoldsPolicyExportArg _arg = new LegalHoldsPolicyExportArg(id, path);
         return legalHoldsExportPolicy(_arg);
@@ -1195,7 +1201,10 @@ public class DbxTeamTeamRequests {
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
+     *
+     * @deprecated
      */
+    @Deprecated
     public ExportPolicyJobStatusResult legalHoldsExportPolicyJobStatusCheck(String asyncJobId) throws PollErrorException, DbxException {
         PollArg _arg = new PollArg(asyncJobId);
         return legalHoldsExportPolicyJobStatusCheck(_arg);

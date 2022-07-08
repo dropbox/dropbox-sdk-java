@@ -17,7 +17,6 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 import java.util.regex.Pattern;
 
 public class LegalHoldPolicy {
@@ -27,7 +26,7 @@ public class LegalHoldPolicy {
     protected final String name;
     protected final String description;
     protected final Date activationTime;
-    protected final List<String> members;
+    protected final MembersInfo members;
     protected final LegalHoldStatus status;
     protected final Date startDate;
     protected final Date endDate;
@@ -40,8 +39,7 @@ public class LegalHoldPolicy {
      *     and not be {@code null}.
      * @param name  Policy name. Must have length of at most 140 and not be
      *     {@code null}.
-     * @param members  Must not contain a {@code null} item and not be {@code
-     *     null}.
+     * @param members  Must not be {@code null}.
      * @param status  Must not be {@code null}.
      * @param startDate  start date of the legal hold policy. Must not be {@code
      *     null}.
@@ -53,7 +51,7 @@ public class LegalHoldPolicy {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LegalHoldPolicy(String id, String name, List<String> members, LegalHoldStatus status, Date startDate, String description, Date activationTime, Date endDate) {
+    public LegalHoldPolicy(String id, String name, MembersInfo members, LegalHoldStatus status, Date startDate, String description, Date activationTime, Date endDate) {
         if (id == null) {
             throw new IllegalArgumentException("Required value for 'id' is null");
         }
@@ -78,11 +76,6 @@ public class LegalHoldPolicy {
         if (members == null) {
             throw new IllegalArgumentException("Required value for 'members' is null");
         }
-        for (String x : members) {
-            if (x == null) {
-                throw new IllegalArgumentException("An item in list 'members' is null");
-            }
-        }
         this.members = members;
         if (status == null) {
             throw new IllegalArgumentException("Required value for 'status' is null");
@@ -104,8 +97,7 @@ public class LegalHoldPolicy {
      *     and not be {@code null}.
      * @param name  Policy name. Must have length of at most 140 and not be
      *     {@code null}.
-     * @param members  Must not contain a {@code null} item and not be {@code
-     *     null}.
+     * @param members  Must not be {@code null}.
      * @param status  Must not be {@code null}.
      * @param startDate  start date of the legal hold policy. Must not be {@code
      *     null}.
@@ -113,7 +105,7 @@ public class LegalHoldPolicy {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LegalHoldPolicy(String id, String name, List<String> members, LegalHoldStatus status, Date startDate) {
+    public LegalHoldPolicy(String id, String name, MembersInfo members, LegalHoldStatus status, Date startDate) {
         this(id, name, members, status, startDate, null, null, null);
     }
 
@@ -139,7 +131,7 @@ public class LegalHoldPolicy {
      *
      * @return value for this field, never {@code null}.
      */
-    public List<String> getMembers() {
+    public MembersInfo getMembers() {
         return members;
     }
 
@@ -194,8 +186,7 @@ public class LegalHoldPolicy {
      *     and not be {@code null}.
      * @param name  Policy name. Must have length of at most 140 and not be
      *     {@code null}.
-     * @param members  Must not contain a {@code null} item and not be {@code
-     *     null}.
+     * @param members  Must not be {@code null}.
      * @param status  Must not be {@code null}.
      * @param startDate  start date of the legal hold policy. Must not be {@code
      *     null}.
@@ -205,7 +196,7 @@ public class LegalHoldPolicy {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public static Builder newBuilder(String id, String name, List<String> members, LegalHoldStatus status, Date startDate) {
+    public static Builder newBuilder(String id, String name, MembersInfo members, LegalHoldStatus status, Date startDate) {
         return new Builder(id, name, members, status, startDate);
     }
 
@@ -215,7 +206,7 @@ public class LegalHoldPolicy {
     public static class Builder {
         protected final String id;
         protected final String name;
-        protected final List<String> members;
+        protected final MembersInfo members;
         protected final LegalHoldStatus status;
         protected final Date startDate;
 
@@ -223,7 +214,7 @@ public class LegalHoldPolicy {
         protected Date activationTime;
         protected Date endDate;
 
-        protected Builder(String id, String name, List<String> members, LegalHoldStatus status, Date startDate) {
+        protected Builder(String id, String name, MembersInfo members, LegalHoldStatus status, Date startDate) {
             if (id == null) {
                 throw new IllegalArgumentException("Required value for 'id' is null");
             }
@@ -240,11 +231,6 @@ public class LegalHoldPolicy {
             this.name = name;
             if (members == null) {
                 throw new IllegalArgumentException("Required value for 'members' is null");
-            }
-            for (String x : members) {
-                if (x == null) {
-                    throw new IllegalArgumentException("An item in list 'members' is null");
-                }
             }
             this.members = members;
             if (status == null) {
@@ -391,7 +377,7 @@ public class LegalHoldPolicy {
             g.writeFieldName("name");
             StoneSerializers.string().serialize(value.name, g);
             g.writeFieldName("members");
-            StoneSerializers.list(StoneSerializers.string()).serialize(value.members, g);
+            MembersInfo.Serializer.INSTANCE.serialize(value.members, g);
             g.writeFieldName("status");
             LegalHoldStatus.Serializer.INSTANCE.serialize(value.status, g);
             g.writeFieldName("start_date");
@@ -424,7 +410,7 @@ public class LegalHoldPolicy {
             if (tag == null) {
                 String f_id = null;
                 String f_name = null;
-                List<String> f_members = null;
+                MembersInfo f_members = null;
                 LegalHoldStatus f_status = null;
                 Date f_startDate = null;
                 String f_description = null;
@@ -440,7 +426,7 @@ public class LegalHoldPolicy {
                         f_name = StoneSerializers.string().deserialize(p);
                     }
                     else if ("members".equals(field)) {
-                        f_members = StoneSerializers.list(StoneSerializers.string()).deserialize(p);
+                        f_members = MembersInfo.Serializer.INSTANCE.deserialize(p);
                     }
                     else if ("status".equals(field)) {
                         f_status = LegalHoldStatus.Serializer.INSTANCE.deserialize(p);

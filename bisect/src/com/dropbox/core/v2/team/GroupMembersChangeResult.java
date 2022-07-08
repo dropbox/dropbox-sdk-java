@@ -36,9 +36,11 @@ public class GroupMembersChangeResult {
      *
      * @param groupInfo  The group info after member change operation has been
      *     performed. Must not be {@code null}.
-     * @param asyncJobId  An ID that can be used to obtain the status of
-     *     granting/revoking group-owned resources. Must have length of at least
-     *     1 and not be {@code null}.
+     * @param asyncJobId  For legacy purposes async_job_id will always return
+     *     one space ' '. Formerly, it was an ID that was used to obtain the
+     *     status of granting/revoking group-owned resources. It's no longer
+     *     necessary because the async processing now happens automatically.
+     *     Must have length of at least 1 and not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -67,8 +69,10 @@ public class GroupMembersChangeResult {
     }
 
     /**
-     * An ID that can be used to obtain the status of granting/revoking
-     * group-owned resources.
+     * For legacy purposes async_job_id will always return one space ' '.
+     * Formerly, it was an ID that was used to obtain the status of
+     * granting/revoking group-owned resources. It's no longer necessary because
+     * the async processing now happens automatically.
      *
      * @return value for this field, never {@code null}.
      */

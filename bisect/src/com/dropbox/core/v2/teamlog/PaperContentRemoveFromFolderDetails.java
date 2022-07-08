@@ -23,11 +23,14 @@ public class PaperContentRemoveFromFolderDetails {
     // struct team_log.PaperContentRemoveFromFolderDetails (team_log_generated.stone)
 
     protected final String eventUuid;
-    protected final long targetAssetIndex;
-    protected final long parentAssetIndex;
+    protected final Long targetAssetIndex;
+    protected final Long parentAssetIndex;
 
     /**
      * Removed Paper doc/folder from folder.
+     *
+     * <p> Use {@link newBuilder} to create instances of this class without
+     * specifying values for all optional fields. </p>
      *
      * @param eventUuid  Event unique identifier. Must not be {@code null}.
      * @param targetAssetIndex  Target asset position in the Assets list.
@@ -36,13 +39,27 @@ public class PaperContentRemoveFromFolderDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperContentRemoveFromFolderDetails(String eventUuid, long targetAssetIndex, long parentAssetIndex) {
+    public PaperContentRemoveFromFolderDetails(String eventUuid, Long targetAssetIndex, Long parentAssetIndex) {
         if (eventUuid == null) {
             throw new IllegalArgumentException("Required value for 'eventUuid' is null");
         }
         this.eventUuid = eventUuid;
         this.targetAssetIndex = targetAssetIndex;
         this.parentAssetIndex = parentAssetIndex;
+    }
+
+    /**
+     * Removed Paper doc/folder from folder.
+     *
+     * <p> The default values for unset fields will be used. </p>
+     *
+     * @param eventUuid  Event unique identifier. Must not be {@code null}.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public PaperContentRemoveFromFolderDetails(String eventUuid) {
+        this(eventUuid, null, null);
     }
 
     /**
@@ -57,19 +74,86 @@ public class PaperContentRemoveFromFolderDetails {
     /**
      * Target asset position in the Assets list.
      *
-     * @return value for this field.
+     * @return value for this field, or {@code null} if not present.
      */
-    public long getTargetAssetIndex() {
+    public Long getTargetAssetIndex() {
         return targetAssetIndex;
     }
 
     /**
      * Parent asset position in the Assets list.
      *
-     * @return value for this field.
+     * @return value for this field, or {@code null} if not present.
      */
-    public long getParentAssetIndex() {
+    public Long getParentAssetIndex() {
         return parentAssetIndex;
+    }
+
+    /**
+     * Returns a new builder for creating an instance of this class.
+     *
+     * @param eventUuid  Event unique identifier. Must not be {@code null}.
+     *
+     * @return builder for this class.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public static Builder newBuilder(String eventUuid) {
+        return new Builder(eventUuid);
+    }
+
+    /**
+     * Builder for {@link PaperContentRemoveFromFolderDetails}.
+     */
+    public static class Builder {
+        protected final String eventUuid;
+
+        protected Long targetAssetIndex;
+        protected Long parentAssetIndex;
+
+        protected Builder(String eventUuid) {
+            if (eventUuid == null) {
+                throw new IllegalArgumentException("Required value for 'eventUuid' is null");
+            }
+            this.eventUuid = eventUuid;
+            this.targetAssetIndex = null;
+            this.parentAssetIndex = null;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param targetAssetIndex  Target asset position in the Assets list.
+         *
+         * @return this builder
+         */
+        public Builder withTargetAssetIndex(Long targetAssetIndex) {
+            this.targetAssetIndex = targetAssetIndex;
+            return this;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param parentAssetIndex  Parent asset position in the Assets list.
+         *
+         * @return this builder
+         */
+        public Builder withParentAssetIndex(Long parentAssetIndex) {
+            this.parentAssetIndex = parentAssetIndex;
+            return this;
+        }
+
+        /**
+         * Builds an instance of {@link PaperContentRemoveFromFolderDetails}
+         * configured with this builder's values
+         *
+         * @return new instance of {@link PaperContentRemoveFromFolderDetails}
+         */
+        public PaperContentRemoveFromFolderDetails build() {
+            return new PaperContentRemoveFromFolderDetails(eventUuid, targetAssetIndex, parentAssetIndex);
+        }
     }
 
     @Override
@@ -94,8 +178,8 @@ public class PaperContentRemoveFromFolderDetails {
         else if (obj.getClass().equals(this.getClass())) {
             PaperContentRemoveFromFolderDetails other = (PaperContentRemoveFromFolderDetails) obj;
             return ((this.eventUuid == other.eventUuid) || (this.eventUuid.equals(other.eventUuid)))
-                && (this.targetAssetIndex == other.targetAssetIndex)
-                && (this.parentAssetIndex == other.parentAssetIndex)
+                && ((this.targetAssetIndex == other.targetAssetIndex) || (this.targetAssetIndex != null && this.targetAssetIndex.equals(other.targetAssetIndex)))
+                && ((this.parentAssetIndex == other.parentAssetIndex) || (this.parentAssetIndex != null && this.parentAssetIndex.equals(other.parentAssetIndex)))
                 ;
         }
         else {
@@ -133,10 +217,14 @@ public class PaperContentRemoveFromFolderDetails {
             }
             g.writeFieldName("event_uuid");
             StoneSerializers.string().serialize(value.eventUuid, g);
-            g.writeFieldName("target_asset_index");
-            StoneSerializers.uInt64().serialize(value.targetAssetIndex, g);
-            g.writeFieldName("parent_asset_index");
-            StoneSerializers.uInt64().serialize(value.parentAssetIndex, g);
+            if (value.targetAssetIndex != null) {
+                g.writeFieldName("target_asset_index");
+                StoneSerializers.nullable(StoneSerializers.uInt64()).serialize(value.targetAssetIndex, g);
+            }
+            if (value.parentAssetIndex != null) {
+                g.writeFieldName("parent_asset_index");
+                StoneSerializers.nullable(StoneSerializers.uInt64()).serialize(value.parentAssetIndex, g);
+            }
             if (!collapse) {
                 g.writeEndObject();
             }
@@ -161,10 +249,10 @@ public class PaperContentRemoveFromFolderDetails {
                         f_eventUuid = StoneSerializers.string().deserialize(p);
                     }
                     else if ("target_asset_index".equals(field)) {
-                        f_targetAssetIndex = StoneSerializers.uInt64().deserialize(p);
+                        f_targetAssetIndex = StoneSerializers.nullable(StoneSerializers.uInt64()).deserialize(p);
                     }
                     else if ("parent_asset_index".equals(field)) {
-                        f_parentAssetIndex = StoneSerializers.uInt64().deserialize(p);
+                        f_parentAssetIndex = StoneSerializers.nullable(StoneSerializers.uInt64()).deserialize(p);
                     }
                     else {
                         skipValue(p);
@@ -172,12 +260,6 @@ public class PaperContentRemoveFromFolderDetails {
                 }
                 if (f_eventUuid == null) {
                     throw new JsonParseException(p, "Required field \"event_uuid\" missing.");
-                }
-                if (f_targetAssetIndex == null) {
-                    throw new JsonParseException(p, "Required field \"target_asset_index\" missing.");
-                }
-                if (f_parentAssetIndex == null) {
-                    throw new JsonParseException(p, "Required field \"parent_asset_index\" missing.");
                 }
                 value = new PaperContentRemoveFromFolderDetails(f_eventUuid, f_targetAssetIndex, f_parentAssetIndex);
             }

@@ -24,31 +24,37 @@ import java.util.Arrays;
 public class SharedLinkSettingsChangeAudienceDetails {
     // struct team_log.SharedLinkSettingsChangeAudienceDetails (team_log_generated.stone)
 
+    protected final AccessLevel sharedContentAccessLevel;
+    protected final String sharedContentLink;
     protected final LinkAudience newValue;
     protected final LinkAudience previousValue;
-    protected final AccessLevel sharedContentAccessLevel;
 
     /**
      * Changed the audience of the shared link.
      *
-     * @param newValue  New link audience value. Must not be {@code null}.
+     * <p> Use {@link newBuilder} to create instances of this class without
+     * specifying values for all optional fields. </p>
+     *
      * @param sharedContentAccessLevel  Shared content access level. Must not be
      *     {@code null}.
+     * @param newValue  New link audience value. Must not be {@code null}.
+     * @param sharedContentLink  Shared content link.
      * @param previousValue  Previous link audience value.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedLinkSettingsChangeAudienceDetails(LinkAudience newValue, AccessLevel sharedContentAccessLevel, LinkAudience previousValue) {
+    public SharedLinkSettingsChangeAudienceDetails(AccessLevel sharedContentAccessLevel, LinkAudience newValue, String sharedContentLink, LinkAudience previousValue) {
+        if (sharedContentAccessLevel == null) {
+            throw new IllegalArgumentException("Required value for 'sharedContentAccessLevel' is null");
+        }
+        this.sharedContentAccessLevel = sharedContentAccessLevel;
+        this.sharedContentLink = sharedContentLink;
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
         this.newValue = newValue;
         this.previousValue = previousValue;
-        if (sharedContentAccessLevel == null) {
-            throw new IllegalArgumentException("Required value for 'sharedContentAccessLevel' is null");
-        }
-        this.sharedContentAccessLevel = sharedContentAccessLevel;
     }
 
     /**
@@ -56,24 +62,15 @@ public class SharedLinkSettingsChangeAudienceDetails {
      *
      * <p> The default values for unset fields will be used. </p>
      *
-     * @param newValue  New link audience value. Must not be {@code null}.
      * @param sharedContentAccessLevel  Shared content access level. Must not be
      *     {@code null}.
+     * @param newValue  New link audience value. Must not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedLinkSettingsChangeAudienceDetails(LinkAudience newValue, AccessLevel sharedContentAccessLevel) {
-        this(newValue, sharedContentAccessLevel, null);
-    }
-
-    /**
-     * New link audience value.
-     *
-     * @return value for this field, never {@code null}.
-     */
-    public LinkAudience getNewValue() {
-        return newValue;
+    public SharedLinkSettingsChangeAudienceDetails(AccessLevel sharedContentAccessLevel, LinkAudience newValue) {
+        this(sharedContentAccessLevel, newValue, null, null);
     }
 
     /**
@@ -86,6 +83,24 @@ public class SharedLinkSettingsChangeAudienceDetails {
     }
 
     /**
+     * New link audience value.
+     *
+     * @return value for this field, never {@code null}.
+     */
+    public LinkAudience getNewValue() {
+        return newValue;
+    }
+
+    /**
+     * Shared content link.
+     *
+     * @return value for this field, or {@code null} if not present.
+     */
+    public String getSharedContentLink() {
+        return sharedContentLink;
+    }
+
+    /**
      * Previous link audience value.
      *
      * @return value for this field, or {@code null} if not present.
@@ -94,12 +109,88 @@ public class SharedLinkSettingsChangeAudienceDetails {
         return previousValue;
     }
 
+    /**
+     * Returns a new builder for creating an instance of this class.
+     *
+     * @param sharedContentAccessLevel  Shared content access level. Must not be
+     *     {@code null}.
+     * @param newValue  New link audience value. Must not be {@code null}.
+     *
+     * @return builder for this class.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public static Builder newBuilder(AccessLevel sharedContentAccessLevel, LinkAudience newValue) {
+        return new Builder(sharedContentAccessLevel, newValue);
+    }
+
+    /**
+     * Builder for {@link SharedLinkSettingsChangeAudienceDetails}.
+     */
+    public static class Builder {
+        protected final AccessLevel sharedContentAccessLevel;
+        protected final LinkAudience newValue;
+
+        protected String sharedContentLink;
+        protected LinkAudience previousValue;
+
+        protected Builder(AccessLevel sharedContentAccessLevel, LinkAudience newValue) {
+            if (sharedContentAccessLevel == null) {
+                throw new IllegalArgumentException("Required value for 'sharedContentAccessLevel' is null");
+            }
+            this.sharedContentAccessLevel = sharedContentAccessLevel;
+            if (newValue == null) {
+                throw new IllegalArgumentException("Required value for 'newValue' is null");
+            }
+            this.newValue = newValue;
+            this.sharedContentLink = null;
+            this.previousValue = null;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param sharedContentLink  Shared content link.
+         *
+         * @return this builder
+         */
+        public Builder withSharedContentLink(String sharedContentLink) {
+            this.sharedContentLink = sharedContentLink;
+            return this;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param previousValue  Previous link audience value.
+         *
+         * @return this builder
+         */
+        public Builder withPreviousValue(LinkAudience previousValue) {
+            this.previousValue = previousValue;
+            return this;
+        }
+
+        /**
+         * Builds an instance of {@link SharedLinkSettingsChangeAudienceDetails}
+         * configured with this builder's values
+         *
+         * @return new instance of {@link
+         *     SharedLinkSettingsChangeAudienceDetails}
+         */
+        public SharedLinkSettingsChangeAudienceDetails build() {
+            return new SharedLinkSettingsChangeAudienceDetails(sharedContentAccessLevel, newValue, sharedContentLink, previousValue);
+        }
+    }
+
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
+            sharedContentAccessLevel,
+            sharedContentLink,
             newValue,
-            previousValue,
-            sharedContentAccessLevel
+            previousValue
         });
         return hash;
     }
@@ -115,8 +206,9 @@ public class SharedLinkSettingsChangeAudienceDetails {
         // be careful with inheritance
         else if (obj.getClass().equals(this.getClass())) {
             SharedLinkSettingsChangeAudienceDetails other = (SharedLinkSettingsChangeAudienceDetails) obj;
-            return ((this.newValue == other.newValue) || (this.newValue.equals(other.newValue)))
-                && ((this.sharedContentAccessLevel == other.sharedContentAccessLevel) || (this.sharedContentAccessLevel.equals(other.sharedContentAccessLevel)))
+            return ((this.sharedContentAccessLevel == other.sharedContentAccessLevel) || (this.sharedContentAccessLevel.equals(other.sharedContentAccessLevel)))
+                && ((this.newValue == other.newValue) || (this.newValue.equals(other.newValue)))
+                && ((this.sharedContentLink == other.sharedContentLink) || (this.sharedContentLink != null && this.sharedContentLink.equals(other.sharedContentLink)))
                 && ((this.previousValue == other.previousValue) || (this.previousValue != null && this.previousValue.equals(other.previousValue)))
                 ;
         }
@@ -153,10 +245,14 @@ public class SharedLinkSettingsChangeAudienceDetails {
             if (!collapse) {
                 g.writeStartObject();
             }
-            g.writeFieldName("new_value");
-            LinkAudience.Serializer.INSTANCE.serialize(value.newValue, g);
             g.writeFieldName("shared_content_access_level");
             AccessLevel.Serializer.INSTANCE.serialize(value.sharedContentAccessLevel, g);
+            g.writeFieldName("new_value");
+            LinkAudience.Serializer.INSTANCE.serialize(value.newValue, g);
+            if (value.sharedContentLink != null) {
+                g.writeFieldName("shared_content_link");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.sharedContentLink, g);
+            }
             if (value.previousValue != null) {
                 g.writeFieldName("previous_value");
                 StoneSerializers.nullable(LinkAudience.Serializer.INSTANCE).serialize(value.previousValue, g);
@@ -175,17 +271,21 @@ public class SharedLinkSettingsChangeAudienceDetails {
                 tag = readTag(p);
             }
             if (tag == null) {
-                LinkAudience f_newValue = null;
                 AccessLevel f_sharedContentAccessLevel = null;
+                LinkAudience f_newValue = null;
+                String f_sharedContentLink = null;
                 LinkAudience f_previousValue = null;
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String field = p.getCurrentName();
                     p.nextToken();
-                    if ("new_value".equals(field)) {
+                    if ("shared_content_access_level".equals(field)) {
+                        f_sharedContentAccessLevel = AccessLevel.Serializer.INSTANCE.deserialize(p);
+                    }
+                    else if ("new_value".equals(field)) {
                         f_newValue = LinkAudience.Serializer.INSTANCE.deserialize(p);
                     }
-                    else if ("shared_content_access_level".equals(field)) {
-                        f_sharedContentAccessLevel = AccessLevel.Serializer.INSTANCE.deserialize(p);
+                    else if ("shared_content_link".equals(field)) {
+                        f_sharedContentLink = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
                     }
                     else if ("previous_value".equals(field)) {
                         f_previousValue = StoneSerializers.nullable(LinkAudience.Serializer.INSTANCE).deserialize(p);
@@ -194,13 +294,13 @@ public class SharedLinkSettingsChangeAudienceDetails {
                         skipValue(p);
                     }
                 }
-                if (f_newValue == null) {
-                    throw new JsonParseException(p, "Required field \"new_value\" missing.");
-                }
                 if (f_sharedContentAccessLevel == null) {
                     throw new JsonParseException(p, "Required field \"shared_content_access_level\" missing.");
                 }
-                value = new SharedLinkSettingsChangeAudienceDetails(f_newValue, f_sharedContentAccessLevel, f_previousValue);
+                if (f_newValue == null) {
+                    throw new JsonParseException(p, "Required field \"new_value\" missing.");
+                }
+                value = new SharedLinkSettingsChangeAudienceDetails(f_sharedContentAccessLevel, f_newValue, f_sharedContentLink, f_previousValue);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

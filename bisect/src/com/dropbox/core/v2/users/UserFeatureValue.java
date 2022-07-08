@@ -36,6 +36,7 @@ public final class UserFeatureValue {
      */
     public enum Tag {
         PAPER_AS_FILES, // PaperAsFilesValue
+        FILE_LOCKING, // FileLockingValue
         /**
          * Catch-all used for unknown tag values returned by the Dropbox
          * servers.
@@ -58,6 +59,7 @@ public final class UserFeatureValue {
 
     private Tag _tag;
     private PaperAsFilesValue paperAsFilesValue;
+    private FileLockingValue fileLockingValue;
 
     /**
      * Private default constructor, so that object is uninitializable publicly.
@@ -90,6 +92,22 @@ public final class UserFeatureValue {
         UserFeatureValue result = new UserFeatureValue();
         result._tag = _tag;
         result.paperAsFilesValue = paperAsFilesValue;
+        return result;
+    }
+
+    /**
+     * Values that correspond to entries in {@link UserFeature}.
+     *
+     * @param fileLockingValue  Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private UserFeatureValue withTagAndFileLocking(Tag _tag, FileLockingValue fileLockingValue) {
+        UserFeatureValue result = new UserFeatureValue();
+        result._tag = _tag;
+        result.fileLockingValue = fileLockingValue;
         return result;
     }
 
@@ -159,6 +177,53 @@ public final class UserFeatureValue {
     }
 
     /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#FILE_LOCKING}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#FILE_LOCKING}, {@code false} otherwise.
+     */
+    public boolean isFileLocking() {
+        return this._tag == Tag.FILE_LOCKING;
+    }
+
+    /**
+     * Returns an instance of {@code UserFeatureValue} that has its tag set to
+     * {@link Tag#FILE_LOCKING}.
+     *
+     * <p> None </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code UserFeatureValue} with its tag set to {@link
+     *     Tag#FILE_LOCKING}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static UserFeatureValue fileLocking(FileLockingValue value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new UserFeatureValue().withTagAndFileLocking(Tag.FILE_LOCKING, value);
+    }
+
+    /**
+     * This instance must be tagged as {@link Tag#FILE_LOCKING}.
+     *
+     * @return The {@link FileLockingValue} value associated with this instance
+     *     if {@link #isFileLocking} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isFileLocking} is {@code
+     *     false}.
+     */
+    public FileLockingValue getFileLockingValue() {
+        if (this._tag != Tag.FILE_LOCKING) {
+            throw new IllegalStateException("Invalid tag: required Tag.FILE_LOCKING, but was Tag." + this._tag.name());
+        }
+        return fileLockingValue;
+    }
+
+    /**
      * Returns {@code true} if this instance has the tag {@link Tag#OTHER},
      * {@code false} otherwise.
      *
@@ -173,7 +238,8 @@ public final class UserFeatureValue {
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
             _tag,
-            paperAsFilesValue
+            paperAsFilesValue,
+            fileLockingValue
         });
         return hash;
     }
@@ -194,6 +260,8 @@ public final class UserFeatureValue {
             switch (_tag) {
                 case PAPER_AS_FILES:
                     return (this.paperAsFilesValue == other.paperAsFilesValue) || (this.paperAsFilesValue.equals(other.paperAsFilesValue));
+                case FILE_LOCKING:
+                    return (this.fileLockingValue == other.fileLockingValue) || (this.fileLockingValue.equals(other.fileLockingValue));
                 case OTHER:
                     return true;
                 default:
@@ -239,6 +307,14 @@ public final class UserFeatureValue {
                     g.writeEndObject();
                     break;
                 }
+                case FILE_LOCKING: {
+                    g.writeStartObject();
+                    writeTag("file_locking", g);
+                    g.writeFieldName("file_locking");
+                    FileLockingValue.Serializer.INSTANCE.serialize(value.fileLockingValue, g);
+                    g.writeEndObject();
+                    break;
+                }
                 default: {
                     g.writeString("other");
                 }
@@ -268,6 +344,12 @@ public final class UserFeatureValue {
                 expectField("paper_as_files", p);
                 fieldValue = PaperAsFilesValue.Serializer.INSTANCE.deserialize(p);
                 value = UserFeatureValue.paperAsFiles(fieldValue);
+            }
+            else if ("file_locking".equals(tag)) {
+                FileLockingValue fieldValue = null;
+                expectField("file_locking", p);
+                fieldValue = FileLockingValue.Serializer.INSTANCE.deserialize(p);
+                value = UserFeatureValue.fileLocking(fieldValue);
             }
             else {
                 value = UserFeatureValue.OTHER;

@@ -25,26 +25,32 @@ import java.util.Date;
 public class SharedLinkSettingsRemoveExpirationDetails {
     // struct team_log.SharedLinkSettingsRemoveExpirationDetails (team_log_generated.stone)
 
-    protected final Date previousValue;
     protected final AccessLevel sharedContentAccessLevel;
+    protected final String sharedContentLink;
+    protected final Date previousValue;
 
     /**
      * Removed the expiration date from the shared link.
      *
+     * <p> Use {@link newBuilder} to create instances of this class without
+     * specifying values for all optional fields. </p>
+     *
      * @param sharedContentAccessLevel  Shared content access level. Must not be
      *     {@code null}.
+     * @param sharedContentLink  Shared content link.
      * @param previousValue  Previous shared link expiration date. Might be
      *     missing due to historical data gap.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedLinkSettingsRemoveExpirationDetails(AccessLevel sharedContentAccessLevel, Date previousValue) {
-        this.previousValue = LangUtil.truncateMillis(previousValue);
+    public SharedLinkSettingsRemoveExpirationDetails(AccessLevel sharedContentAccessLevel, String sharedContentLink, Date previousValue) {
         if (sharedContentAccessLevel == null) {
             throw new IllegalArgumentException("Required value for 'sharedContentAccessLevel' is null");
         }
         this.sharedContentAccessLevel = sharedContentAccessLevel;
+        this.sharedContentLink = sharedContentLink;
+        this.previousValue = LangUtil.truncateMillis(previousValue);
     }
 
     /**
@@ -59,7 +65,7 @@ public class SharedLinkSettingsRemoveExpirationDetails {
      *     preconditions.
      */
     public SharedLinkSettingsRemoveExpirationDetails(AccessLevel sharedContentAccessLevel) {
-        this(sharedContentAccessLevel, null);
+        this(sharedContentAccessLevel, null, null);
     }
 
     /**
@@ -72,6 +78,15 @@ public class SharedLinkSettingsRemoveExpirationDetails {
     }
 
     /**
+     * Shared content link.
+     *
+     * @return value for this field, or {@code null} if not present.
+     */
+    public String getSharedContentLink() {
+        return sharedContentLink;
+    }
+
+    /**
      * Previous shared link expiration date. Might be missing due to historical
      * data gap.
      *
@@ -81,11 +96,83 @@ public class SharedLinkSettingsRemoveExpirationDetails {
         return previousValue;
     }
 
+    /**
+     * Returns a new builder for creating an instance of this class.
+     *
+     * @param sharedContentAccessLevel  Shared content access level. Must not be
+     *     {@code null}.
+     *
+     * @return builder for this class.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public static Builder newBuilder(AccessLevel sharedContentAccessLevel) {
+        return new Builder(sharedContentAccessLevel);
+    }
+
+    /**
+     * Builder for {@link SharedLinkSettingsRemoveExpirationDetails}.
+     */
+    public static class Builder {
+        protected final AccessLevel sharedContentAccessLevel;
+
+        protected String sharedContentLink;
+        protected Date previousValue;
+
+        protected Builder(AccessLevel sharedContentAccessLevel) {
+            if (sharedContentAccessLevel == null) {
+                throw new IllegalArgumentException("Required value for 'sharedContentAccessLevel' is null");
+            }
+            this.sharedContentAccessLevel = sharedContentAccessLevel;
+            this.sharedContentLink = null;
+            this.previousValue = null;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param sharedContentLink  Shared content link.
+         *
+         * @return this builder
+         */
+        public Builder withSharedContentLink(String sharedContentLink) {
+            this.sharedContentLink = sharedContentLink;
+            return this;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param previousValue  Previous shared link expiration date. Might be
+         *     missing due to historical data gap.
+         *
+         * @return this builder
+         */
+        public Builder withPreviousValue(Date previousValue) {
+            this.previousValue = LangUtil.truncateMillis(previousValue);
+            return this;
+        }
+
+        /**
+         * Builds an instance of {@link
+         * SharedLinkSettingsRemoveExpirationDetails} configured with this
+         * builder's values
+         *
+         * @return new instance of {@link
+         *     SharedLinkSettingsRemoveExpirationDetails}
+         */
+        public SharedLinkSettingsRemoveExpirationDetails build() {
+            return new SharedLinkSettingsRemoveExpirationDetails(sharedContentAccessLevel, sharedContentLink, previousValue);
+        }
+    }
+
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            previousValue,
-            sharedContentAccessLevel
+            sharedContentAccessLevel,
+            sharedContentLink,
+            previousValue
         });
         return hash;
     }
@@ -102,6 +189,7 @@ public class SharedLinkSettingsRemoveExpirationDetails {
         else if (obj.getClass().equals(this.getClass())) {
             SharedLinkSettingsRemoveExpirationDetails other = (SharedLinkSettingsRemoveExpirationDetails) obj;
             return ((this.sharedContentAccessLevel == other.sharedContentAccessLevel) || (this.sharedContentAccessLevel.equals(other.sharedContentAccessLevel)))
+                && ((this.sharedContentLink == other.sharedContentLink) || (this.sharedContentLink != null && this.sharedContentLink.equals(other.sharedContentLink)))
                 && ((this.previousValue == other.previousValue) || (this.previousValue != null && this.previousValue.equals(other.previousValue)))
                 ;
         }
@@ -140,6 +228,10 @@ public class SharedLinkSettingsRemoveExpirationDetails {
             }
             g.writeFieldName("shared_content_access_level");
             AccessLevel.Serializer.INSTANCE.serialize(value.sharedContentAccessLevel, g);
+            if (value.sharedContentLink != null) {
+                g.writeFieldName("shared_content_link");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.sharedContentLink, g);
+            }
             if (value.previousValue != null) {
                 g.writeFieldName("previous_value");
                 StoneSerializers.nullable(StoneSerializers.timestamp()).serialize(value.previousValue, g);
@@ -159,12 +251,16 @@ public class SharedLinkSettingsRemoveExpirationDetails {
             }
             if (tag == null) {
                 AccessLevel f_sharedContentAccessLevel = null;
+                String f_sharedContentLink = null;
                 Date f_previousValue = null;
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String field = p.getCurrentName();
                     p.nextToken();
                     if ("shared_content_access_level".equals(field)) {
                         f_sharedContentAccessLevel = AccessLevel.Serializer.INSTANCE.deserialize(p);
+                    }
+                    else if ("shared_content_link".equals(field)) {
+                        f_sharedContentLink = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
                     }
                     else if ("previous_value".equals(field)) {
                         f_previousValue = StoneSerializers.nullable(StoneSerializers.timestamp()).deserialize(p);
@@ -176,7 +272,7 @@ public class SharedLinkSettingsRemoveExpirationDetails {
                 if (f_sharedContentAccessLevel == null) {
                     throw new JsonParseException(p, "Required field \"shared_content_access_level\" missing.");
                 }
-                value = new SharedLinkSettingsRemoveExpirationDetails(f_sharedContentAccessLevel, f_previousValue);
+                value = new SharedLinkSettingsRemoveExpirationDetails(f_sharedContentAccessLevel, f_sharedContentLink, f_previousValue);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

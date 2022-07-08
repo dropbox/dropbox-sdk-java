@@ -29,6 +29,9 @@ public class JoinTeamDetails {
     protected final Boolean wasLinkedAppsTruncated;
     protected final Boolean wasLinkedDevicesTruncated;
     protected final Boolean wasLinkedSharedFoldersTruncated;
+    protected final Boolean hasLinkedApps;
+    protected final Boolean hasLinkedDevices;
+    protected final Boolean hasLinkedSharedFolders;
 
     /**
      * Additional information relevant when a new member joins the team.
@@ -36,23 +39,30 @@ public class JoinTeamDetails {
      * <p> Use {@link newBuilder} to create instances of this class without
      * specifying values for all optional fields. </p>
      *
-     * @param linkedApps  Linked applications. Must not contain a {@code null}
-     *     item and not be {@code null}.
-     * @param linkedDevices  Linked devices. Must not contain a {@code null}
-     *     item and not be {@code null}.
-     * @param linkedSharedFolders  Linked shared folders. Must not contain a
-     *     {@code null} item and not be {@code null}.
+     * @param linkedApps  Linked applications. (Deprecated) Please use
+     *     has_linked_apps boolean field instead. Must not contain a {@code
+     *     null} item and not be {@code null}.
+     * @param linkedDevices  Linked devices. (Deprecated) Please use
+     *     has_linked_devices boolean field instead. Must not contain a {@code
+     *     null} item and not be {@code null}.
+     * @param linkedSharedFolders  Linked shared folders. (Deprecated) Please
+     *     use has_linked_shared_folders boolean field instead. Must not contain
+     *     a {@code null} item and not be {@code null}.
      * @param wasLinkedAppsTruncated  True if the linked_apps list was truncated
      *     to the maximum supported length (50).
      * @param wasLinkedDevicesTruncated  True if the linked_devices list was
      *     truncated to the maximum supported length (50).
      * @param wasLinkedSharedFoldersTruncated  True if the linked_shared_folders
      *     list was truncated to the maximum supported length (50).
+     * @param hasLinkedApps  True if the user had linked apps at event time.
+     * @param hasLinkedDevices  True if the user had linked apps at event time.
+     * @param hasLinkedSharedFolders  True if the user had linked shared folders
+     *     at event time.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public JoinTeamDetails(List<UserLinkedAppLogInfo> linkedApps, List<LinkedDeviceLogInfo> linkedDevices, List<FolderLogInfo> linkedSharedFolders, Boolean wasLinkedAppsTruncated, Boolean wasLinkedDevicesTruncated, Boolean wasLinkedSharedFoldersTruncated) {
+    public JoinTeamDetails(List<UserLinkedAppLogInfo> linkedApps, List<LinkedDeviceLogInfo> linkedDevices, List<FolderLogInfo> linkedSharedFolders, Boolean wasLinkedAppsTruncated, Boolean wasLinkedDevicesTruncated, Boolean wasLinkedSharedFoldersTruncated, Boolean hasLinkedApps, Boolean hasLinkedDevices, Boolean hasLinkedSharedFolders) {
         if (linkedApps == null) {
             throw new IllegalArgumentException("Required value for 'linkedApps' is null");
         }
@@ -83,6 +93,9 @@ public class JoinTeamDetails {
         this.wasLinkedAppsTruncated = wasLinkedAppsTruncated;
         this.wasLinkedDevicesTruncated = wasLinkedDevicesTruncated;
         this.wasLinkedSharedFoldersTruncated = wasLinkedSharedFoldersTruncated;
+        this.hasLinkedApps = hasLinkedApps;
+        this.hasLinkedDevices = hasLinkedDevices;
+        this.hasLinkedSharedFolders = hasLinkedSharedFolders;
     }
 
     /**
@@ -90,22 +103,26 @@ public class JoinTeamDetails {
      *
      * <p> The default values for unset fields will be used. </p>
      *
-     * @param linkedApps  Linked applications. Must not contain a {@code null}
-     *     item and not be {@code null}.
-     * @param linkedDevices  Linked devices. Must not contain a {@code null}
-     *     item and not be {@code null}.
-     * @param linkedSharedFolders  Linked shared folders. Must not contain a
-     *     {@code null} item and not be {@code null}.
+     * @param linkedApps  Linked applications. (Deprecated) Please use
+     *     has_linked_apps boolean field instead. Must not contain a {@code
+     *     null} item and not be {@code null}.
+     * @param linkedDevices  Linked devices. (Deprecated) Please use
+     *     has_linked_devices boolean field instead. Must not contain a {@code
+     *     null} item and not be {@code null}.
+     * @param linkedSharedFolders  Linked shared folders. (Deprecated) Please
+     *     use has_linked_shared_folders boolean field instead. Must not contain
+     *     a {@code null} item and not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
     public JoinTeamDetails(List<UserLinkedAppLogInfo> linkedApps, List<LinkedDeviceLogInfo> linkedDevices, List<FolderLogInfo> linkedSharedFolders) {
-        this(linkedApps, linkedDevices, linkedSharedFolders, null, null, null);
+        this(linkedApps, linkedDevices, linkedSharedFolders, null, null, null, null, null, null);
     }
 
     /**
-     * Linked applications.
+     * Linked applications. (Deprecated) Please use has_linked_apps boolean
+     * field instead.
      *
      * @return value for this field, never {@code null}.
      */
@@ -114,7 +131,8 @@ public class JoinTeamDetails {
     }
 
     /**
-     * Linked devices.
+     * Linked devices. (Deprecated) Please use has_linked_devices boolean field
+     * instead.
      *
      * @return value for this field, never {@code null}.
      */
@@ -123,7 +141,8 @@ public class JoinTeamDetails {
     }
 
     /**
-     * Linked shared folders.
+     * Linked shared folders. (Deprecated) Please use has_linked_shared_folders
+     * boolean field instead.
      *
      * @return value for this field, never {@code null}.
      */
@@ -162,14 +181,44 @@ public class JoinTeamDetails {
     }
 
     /**
+     * True if the user had linked apps at event time.
+     *
+     * @return value for this field, or {@code null} if not present.
+     */
+    public Boolean getHasLinkedApps() {
+        return hasLinkedApps;
+    }
+
+    /**
+     * True if the user had linked apps at event time.
+     *
+     * @return value for this field, or {@code null} if not present.
+     */
+    public Boolean getHasLinkedDevices() {
+        return hasLinkedDevices;
+    }
+
+    /**
+     * True if the user had linked shared folders at event time.
+     *
+     * @return value for this field, or {@code null} if not present.
+     */
+    public Boolean getHasLinkedSharedFolders() {
+        return hasLinkedSharedFolders;
+    }
+
+    /**
      * Returns a new builder for creating an instance of this class.
      *
-     * @param linkedApps  Linked applications. Must not contain a {@code null}
-     *     item and not be {@code null}.
-     * @param linkedDevices  Linked devices. Must not contain a {@code null}
-     *     item and not be {@code null}.
-     * @param linkedSharedFolders  Linked shared folders. Must not contain a
-     *     {@code null} item and not be {@code null}.
+     * @param linkedApps  Linked applications. (Deprecated) Please use
+     *     has_linked_apps boolean field instead. Must not contain a {@code
+     *     null} item and not be {@code null}.
+     * @param linkedDevices  Linked devices. (Deprecated) Please use
+     *     has_linked_devices boolean field instead. Must not contain a {@code
+     *     null} item and not be {@code null}.
+     * @param linkedSharedFolders  Linked shared folders. (Deprecated) Please
+     *     use has_linked_shared_folders boolean field instead. Must not contain
+     *     a {@code null} item and not be {@code null}.
      *
      * @return builder for this class.
      *
@@ -191,6 +240,9 @@ public class JoinTeamDetails {
         protected Boolean wasLinkedAppsTruncated;
         protected Boolean wasLinkedDevicesTruncated;
         protected Boolean wasLinkedSharedFoldersTruncated;
+        protected Boolean hasLinkedApps;
+        protected Boolean hasLinkedDevices;
+        protected Boolean hasLinkedSharedFolders;
 
         protected Builder(List<UserLinkedAppLogInfo> linkedApps, List<LinkedDeviceLogInfo> linkedDevices, List<FolderLogInfo> linkedSharedFolders) {
             if (linkedApps == null) {
@@ -223,6 +275,9 @@ public class JoinTeamDetails {
             this.wasLinkedAppsTruncated = null;
             this.wasLinkedDevicesTruncated = null;
             this.wasLinkedSharedFoldersTruncated = null;
+            this.hasLinkedApps = null;
+            this.hasLinkedDevices = null;
+            this.hasLinkedSharedFolders = null;
         }
 
         /**
@@ -266,13 +321,51 @@ public class JoinTeamDetails {
         }
 
         /**
+         * Set value for optional field.
+         *
+         * @param hasLinkedApps  True if the user had linked apps at event time.
+         *
+         * @return this builder
+         */
+        public Builder withHasLinkedApps(Boolean hasLinkedApps) {
+            this.hasLinkedApps = hasLinkedApps;
+            return this;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param hasLinkedDevices  True if the user had linked apps at event
+         *     time.
+         *
+         * @return this builder
+         */
+        public Builder withHasLinkedDevices(Boolean hasLinkedDevices) {
+            this.hasLinkedDevices = hasLinkedDevices;
+            return this;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param hasLinkedSharedFolders  True if the user had linked shared
+         *     folders at event time.
+         *
+         * @return this builder
+         */
+        public Builder withHasLinkedSharedFolders(Boolean hasLinkedSharedFolders) {
+            this.hasLinkedSharedFolders = hasLinkedSharedFolders;
+            return this;
+        }
+
+        /**
          * Builds an instance of {@link JoinTeamDetails} configured with this
          * builder's values
          *
          * @return new instance of {@link JoinTeamDetails}
          */
         public JoinTeamDetails build() {
-            return new JoinTeamDetails(linkedApps, linkedDevices, linkedSharedFolders, wasLinkedAppsTruncated, wasLinkedDevicesTruncated, wasLinkedSharedFoldersTruncated);
+            return new JoinTeamDetails(linkedApps, linkedDevices, linkedSharedFolders, wasLinkedAppsTruncated, wasLinkedDevicesTruncated, wasLinkedSharedFoldersTruncated, hasLinkedApps, hasLinkedDevices, hasLinkedSharedFolders);
         }
     }
 
@@ -284,7 +377,10 @@ public class JoinTeamDetails {
             linkedSharedFolders,
             wasLinkedAppsTruncated,
             wasLinkedDevicesTruncated,
-            wasLinkedSharedFoldersTruncated
+            wasLinkedSharedFoldersTruncated,
+            hasLinkedApps,
+            hasLinkedDevices,
+            hasLinkedSharedFolders
         });
         return hash;
     }
@@ -306,6 +402,9 @@ public class JoinTeamDetails {
                 && ((this.wasLinkedAppsTruncated == other.wasLinkedAppsTruncated) || (this.wasLinkedAppsTruncated != null && this.wasLinkedAppsTruncated.equals(other.wasLinkedAppsTruncated)))
                 && ((this.wasLinkedDevicesTruncated == other.wasLinkedDevicesTruncated) || (this.wasLinkedDevicesTruncated != null && this.wasLinkedDevicesTruncated.equals(other.wasLinkedDevicesTruncated)))
                 && ((this.wasLinkedSharedFoldersTruncated == other.wasLinkedSharedFoldersTruncated) || (this.wasLinkedSharedFoldersTruncated != null && this.wasLinkedSharedFoldersTruncated.equals(other.wasLinkedSharedFoldersTruncated)))
+                && ((this.hasLinkedApps == other.hasLinkedApps) || (this.hasLinkedApps != null && this.hasLinkedApps.equals(other.hasLinkedApps)))
+                && ((this.hasLinkedDevices == other.hasLinkedDevices) || (this.hasLinkedDevices != null && this.hasLinkedDevices.equals(other.hasLinkedDevices)))
+                && ((this.hasLinkedSharedFolders == other.hasLinkedSharedFolders) || (this.hasLinkedSharedFolders != null && this.hasLinkedSharedFolders.equals(other.hasLinkedSharedFolders)))
                 ;
         }
         else {
@@ -359,6 +458,18 @@ public class JoinTeamDetails {
                 g.writeFieldName("was_linked_shared_folders_truncated");
                 StoneSerializers.nullable(StoneSerializers.boolean_()).serialize(value.wasLinkedSharedFoldersTruncated, g);
             }
+            if (value.hasLinkedApps != null) {
+                g.writeFieldName("has_linked_apps");
+                StoneSerializers.nullable(StoneSerializers.boolean_()).serialize(value.hasLinkedApps, g);
+            }
+            if (value.hasLinkedDevices != null) {
+                g.writeFieldName("has_linked_devices");
+                StoneSerializers.nullable(StoneSerializers.boolean_()).serialize(value.hasLinkedDevices, g);
+            }
+            if (value.hasLinkedSharedFolders != null) {
+                g.writeFieldName("has_linked_shared_folders");
+                StoneSerializers.nullable(StoneSerializers.boolean_()).serialize(value.hasLinkedSharedFolders, g);
+            }
             if (!collapse) {
                 g.writeEndObject();
             }
@@ -379,6 +490,9 @@ public class JoinTeamDetails {
                 Boolean f_wasLinkedAppsTruncated = null;
                 Boolean f_wasLinkedDevicesTruncated = null;
                 Boolean f_wasLinkedSharedFoldersTruncated = null;
+                Boolean f_hasLinkedApps = null;
+                Boolean f_hasLinkedDevices = null;
+                Boolean f_hasLinkedSharedFolders = null;
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String field = p.getCurrentName();
                     p.nextToken();
@@ -400,6 +514,15 @@ public class JoinTeamDetails {
                     else if ("was_linked_shared_folders_truncated".equals(field)) {
                         f_wasLinkedSharedFoldersTruncated = StoneSerializers.nullable(StoneSerializers.boolean_()).deserialize(p);
                     }
+                    else if ("has_linked_apps".equals(field)) {
+                        f_hasLinkedApps = StoneSerializers.nullable(StoneSerializers.boolean_()).deserialize(p);
+                    }
+                    else if ("has_linked_devices".equals(field)) {
+                        f_hasLinkedDevices = StoneSerializers.nullable(StoneSerializers.boolean_()).deserialize(p);
+                    }
+                    else if ("has_linked_shared_folders".equals(field)) {
+                        f_hasLinkedSharedFolders = StoneSerializers.nullable(StoneSerializers.boolean_()).deserialize(p);
+                    }
                     else {
                         skipValue(p);
                     }
@@ -413,7 +536,7 @@ public class JoinTeamDetails {
                 if (f_linkedSharedFolders == null) {
                     throw new JsonParseException(p, "Required field \"linked_shared_folders\" missing.");
                 }
-                value = new JoinTeamDetails(f_linkedApps, f_linkedDevices, f_linkedSharedFolders, f_wasLinkedAppsTruncated, f_wasLinkedDevicesTruncated, f_wasLinkedSharedFoldersTruncated);
+                value = new JoinTeamDetails(f_linkedApps, f_linkedDevices, f_linkedSharedFolders, f_wasLinkedAppsTruncated, f_wasLinkedDevicesTruncated, f_wasLinkedSharedFoldersTruncated, f_hasLinkedApps, f_hasLinkedDevices, f_hasLinkedSharedFolders);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

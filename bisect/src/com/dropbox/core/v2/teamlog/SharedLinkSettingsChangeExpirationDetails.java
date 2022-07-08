@@ -25,9 +25,10 @@ import java.util.Date;
 public class SharedLinkSettingsChangeExpirationDetails {
     // struct team_log.SharedLinkSettingsChangeExpirationDetails (team_log_generated.stone)
 
+    protected final AccessLevel sharedContentAccessLevel;
+    protected final String sharedContentLink;
     protected final Date newValue;
     protected final Date previousValue;
-    protected final AccessLevel sharedContentAccessLevel;
 
     /**
      * Changed the expiration date of the shared link.
@@ -37,6 +38,7 @@ public class SharedLinkSettingsChangeExpirationDetails {
      *
      * @param sharedContentAccessLevel  Shared content access level. Must not be
      *     {@code null}.
+     * @param sharedContentLink  Shared content link.
      * @param newValue  New shared content link expiration date. Might be
      *     missing due to historical data gap.
      * @param previousValue  Previous shared content link expiration date. Might
@@ -45,13 +47,14 @@ public class SharedLinkSettingsChangeExpirationDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedLinkSettingsChangeExpirationDetails(AccessLevel sharedContentAccessLevel, Date newValue, Date previousValue) {
-        this.newValue = LangUtil.truncateMillis(newValue);
-        this.previousValue = LangUtil.truncateMillis(previousValue);
+    public SharedLinkSettingsChangeExpirationDetails(AccessLevel sharedContentAccessLevel, String sharedContentLink, Date newValue, Date previousValue) {
         if (sharedContentAccessLevel == null) {
             throw new IllegalArgumentException("Required value for 'sharedContentAccessLevel' is null");
         }
         this.sharedContentAccessLevel = sharedContentAccessLevel;
+        this.sharedContentLink = sharedContentLink;
+        this.newValue = LangUtil.truncateMillis(newValue);
+        this.previousValue = LangUtil.truncateMillis(previousValue);
     }
 
     /**
@@ -66,7 +69,7 @@ public class SharedLinkSettingsChangeExpirationDetails {
      *     preconditions.
      */
     public SharedLinkSettingsChangeExpirationDetails(AccessLevel sharedContentAccessLevel) {
-        this(sharedContentAccessLevel, null, null);
+        this(sharedContentAccessLevel, null, null, null);
     }
 
     /**
@@ -76,6 +79,15 @@ public class SharedLinkSettingsChangeExpirationDetails {
      */
     public AccessLevel getSharedContentAccessLevel() {
         return sharedContentAccessLevel;
+    }
+
+    /**
+     * Shared content link.
+     *
+     * @return value for this field, or {@code null} if not present.
+     */
+    public String getSharedContentLink() {
+        return sharedContentLink;
     }
 
     /**
@@ -119,6 +131,7 @@ public class SharedLinkSettingsChangeExpirationDetails {
     public static class Builder {
         protected final AccessLevel sharedContentAccessLevel;
 
+        protected String sharedContentLink;
         protected Date newValue;
         protected Date previousValue;
 
@@ -127,8 +140,21 @@ public class SharedLinkSettingsChangeExpirationDetails {
                 throw new IllegalArgumentException("Required value for 'sharedContentAccessLevel' is null");
             }
             this.sharedContentAccessLevel = sharedContentAccessLevel;
+            this.sharedContentLink = null;
             this.newValue = null;
             this.previousValue = null;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param sharedContentLink  Shared content link.
+         *
+         * @return this builder
+         */
+        public Builder withSharedContentLink(String sharedContentLink) {
+            this.sharedContentLink = sharedContentLink;
+            return this;
         }
 
         /**
@@ -166,16 +192,17 @@ public class SharedLinkSettingsChangeExpirationDetails {
          *     SharedLinkSettingsChangeExpirationDetails}
          */
         public SharedLinkSettingsChangeExpirationDetails build() {
-            return new SharedLinkSettingsChangeExpirationDetails(sharedContentAccessLevel, newValue, previousValue);
+            return new SharedLinkSettingsChangeExpirationDetails(sharedContentAccessLevel, sharedContentLink, newValue, previousValue);
         }
     }
 
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
+            sharedContentAccessLevel,
+            sharedContentLink,
             newValue,
-            previousValue,
-            sharedContentAccessLevel
+            previousValue
         });
         return hash;
     }
@@ -192,6 +219,7 @@ public class SharedLinkSettingsChangeExpirationDetails {
         else if (obj.getClass().equals(this.getClass())) {
             SharedLinkSettingsChangeExpirationDetails other = (SharedLinkSettingsChangeExpirationDetails) obj;
             return ((this.sharedContentAccessLevel == other.sharedContentAccessLevel) || (this.sharedContentAccessLevel.equals(other.sharedContentAccessLevel)))
+                && ((this.sharedContentLink == other.sharedContentLink) || (this.sharedContentLink != null && this.sharedContentLink.equals(other.sharedContentLink)))
                 && ((this.newValue == other.newValue) || (this.newValue != null && this.newValue.equals(other.newValue)))
                 && ((this.previousValue == other.previousValue) || (this.previousValue != null && this.previousValue.equals(other.previousValue)))
                 ;
@@ -231,6 +259,10 @@ public class SharedLinkSettingsChangeExpirationDetails {
             }
             g.writeFieldName("shared_content_access_level");
             AccessLevel.Serializer.INSTANCE.serialize(value.sharedContentAccessLevel, g);
+            if (value.sharedContentLink != null) {
+                g.writeFieldName("shared_content_link");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.sharedContentLink, g);
+            }
             if (value.newValue != null) {
                 g.writeFieldName("new_value");
                 StoneSerializers.nullable(StoneSerializers.timestamp()).serialize(value.newValue, g);
@@ -254,6 +286,7 @@ public class SharedLinkSettingsChangeExpirationDetails {
             }
             if (tag == null) {
                 AccessLevel f_sharedContentAccessLevel = null;
+                String f_sharedContentLink = null;
                 Date f_newValue = null;
                 Date f_previousValue = null;
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
@@ -261,6 +294,9 @@ public class SharedLinkSettingsChangeExpirationDetails {
                     p.nextToken();
                     if ("shared_content_access_level".equals(field)) {
                         f_sharedContentAccessLevel = AccessLevel.Serializer.INSTANCE.deserialize(p);
+                    }
+                    else if ("shared_content_link".equals(field)) {
+                        f_sharedContentLink = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
                     }
                     else if ("new_value".equals(field)) {
                         f_newValue = StoneSerializers.nullable(StoneSerializers.timestamp()).deserialize(p);
@@ -275,7 +311,7 @@ public class SharedLinkSettingsChangeExpirationDetails {
                 if (f_sharedContentAccessLevel == null) {
                     throw new JsonParseException(p, "Required field \"shared_content_access_level\" missing.");
                 }
-                value = new SharedLinkSettingsChangeExpirationDetails(f_sharedContentAccessLevel, f_newValue, f_previousValue);
+                value = new SharedLinkSettingsChangeExpirationDetails(f_sharedContentAccessLevel, f_sharedContentLink, f_newValue, f_previousValue);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

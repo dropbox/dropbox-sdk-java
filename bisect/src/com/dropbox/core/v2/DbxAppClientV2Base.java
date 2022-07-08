@@ -5,6 +5,7 @@ package com.dropbox.core.v2;
 
 import com.dropbox.core.v2.auth.DbxAppAuthRequests;
 import com.dropbox.core.v2.check.DbxAppCheckRequests;
+import com.dropbox.core.v2.files.DbxAppFilesRequests;
 
 /**
  * Base class for app auth clients.
@@ -14,6 +15,7 @@ public class DbxAppClientV2Base {
 
     private final DbxAppAuthRequests auth;
     private final DbxAppCheckRequests check;
+    private final DbxAppFilesRequests files;
 
     /**
      * For internal use only.
@@ -24,6 +26,7 @@ public class DbxAppClientV2Base {
         this._client = _client;
         this.auth = new DbxAppAuthRequests(_client);
         this.check = new DbxAppCheckRequests(_client);
+        this.files = new DbxAppFilesRequests(_client);
     }
 
     /**
@@ -42,5 +45,14 @@ public class DbxAppClientV2Base {
      */
     public DbxAppCheckRequests check() {
         return check;
+    }
+
+    /**
+     * Returns client for issuing requests in the {@code "files"} namespace.
+     *
+     * @return Dropbox files client
+     */
+    public DbxAppFilesRequests files() {
+        return files;
     }
 }

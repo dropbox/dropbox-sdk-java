@@ -28,10 +28,9 @@ public class DbxTeamTeamLogRequests {
     //
 
     /**
-     * Retrieves team events. Events have a lifespan of two years. Events older
-     * than two years will not be returned. Many attributes note 'may be missing
-     * due to historical data gap'. Note that the file_operations category and
-     * &amp; analogous paper events are not available on all Dropbox Business <a
+     * Retrieves team events. Many attributes note 'may be missing due to
+     * historical data gap'. Note that the file_operations category and &amp;
+     * analogous paper events are not available on all Dropbox Business <a
      * href="/business/plans-comparison">plans</a>. Use <a
      * href="/developers/documentation/http/teams#team-features-get_values">features/get_values</a>
      * to check for this feature. Permission : Team Auditing.
@@ -55,9 +54,6 @@ public class DbxTeamTeamLogRequests {
     /**
      * Retrieves team events.
      *
-     * <p> Events have a lifespan of two years. Events older than two years will
-     * not be returned. </p>
-     *
      * <p> Many attributes note 'may be missing due to historical data gap'.
      * </p>
      *
@@ -78,10 +74,9 @@ public class DbxTeamTeamLogRequests {
     }
 
     /**
-     * Retrieves team events. Events have a lifespan of two years. Events older
-     * than two years will not be returned. Many attributes note 'may be missing
-     * due to historical data gap'. Note that the file_operations category and
-     * &amp; analogous paper events are not available on all Dropbox Business <a
+     * Retrieves team events. Many attributes note 'may be missing due to
+     * historical data gap'. Note that the file_operations category and &amp;
+     * analogous paper events are not available on all Dropbox Business <a
      * href="/business/plans-comparison">plans</a>. Use <a
      * href="/developers/documentation/http/teams#team-features-get_values">features/get_values</a>
      * to check for this feature. Permission : Team Auditing.

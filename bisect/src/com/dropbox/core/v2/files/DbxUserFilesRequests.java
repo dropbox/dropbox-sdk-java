@@ -2057,6 +2057,75 @@ public class DbxUserFilesRequests {
     }
 
     //
+    // route 2/files/get_thumbnail_v2
+    //
+
+    /**
+     * Get a thumbnail for a file.
+     *
+     * @param _headers  Extra headers to send with request.
+     *
+     * @return Downloader used to download the response body and view the server
+     *     response.
+     */
+    DbxDownloader<PreviewResult> getThumbnailV2(ThumbnailV2Arg arg, List<HttpRequestor.Header> _headers) throws ThumbnailV2ErrorException, DbxException {
+        try {
+            return this.client.downloadStyle(this.client.getHost().getContent(),
+                                             "2/files/get_thumbnail_v2",
+                                             arg,
+                                             false,
+                                             _headers,
+                                             ThumbnailV2Arg.Serializer.INSTANCE,
+                                             PreviewResult.Serializer.INSTANCE,
+                                             ThumbnailV2Error.Serializer.INSTANCE);
+        }
+        catch (DbxWrappedException ex) {
+            throw new ThumbnailV2ErrorException("2/files/get_thumbnail_v2", ex.getRequestId(), ex.getUserMessage(), (ThumbnailV2Error) ex.getErrorValue());
+        }
+    }
+
+    /**
+     * Get a thumbnail for a file.
+     *
+     * <p> The default values for the optional request parameters will be used.
+     * See {@link DbxUserGetThumbnailV2Builder} for more details. </p>
+     *
+     * @param resource  Information specifying which file to preview. This could
+     *     be a path to a file, a shared link pointing to a file, or a shared
+     *     link pointing to a folder, with a relative path. Must not be {@code
+     *     null}.
+     *
+     * @return Downloader used to download the response body and view the server
+     *     response.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public DbxDownloader<PreviewResult> getThumbnailV2(PathOrLink resource) throws ThumbnailV2ErrorException, DbxException {
+        ThumbnailV2Arg _arg = new ThumbnailV2Arg(resource);
+        return getThumbnailV2(_arg, Collections.<HttpRequestor.Header>emptyList());
+    }
+
+    /**
+     * Get a thumbnail for a file.
+     *
+     * @param resource  Information specifying which file to preview. This could
+     *     be a path to a file, a shared link pointing to a file, or a shared
+     *     link pointing to a folder, with a relative path. Must not be {@code
+     *     null}.
+     *
+     * @return Downloader builder for configuring the request parameters and
+     *     instantiating a downloader.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public DbxUserGetThumbnailV2Builder getThumbnailV2Builder(PathOrLink resource) {
+        ThumbnailV2Arg.Builder argBuilder_ = ThumbnailV2Arg.newBuilder(resource);
+        return new DbxUserGetThumbnailV2Builder(this, argBuilder_);
+    }
+
+    //
     // route 2/files/get_thumbnail_batch
     //
 
@@ -2825,10 +2894,9 @@ public class DbxUserFilesRequests {
 
     /**
      * Move multiple files or folders to different locations at once in the
-     * user's Dropbox. This route is 'all or nothing', which means if one entry
-     * fails, the whole transaction will abort. This route will return job ID
-     * immediately and do the async moving job in background. Please use {@code
-     * moveBatchCheck:1} to check the job status.
+     * user's Dropbox. This route will return job ID immediately and do the
+     * async moving job in background. Please use {@code moveBatchCheck:1} to
+     * check the job status.
      *
      *
      * @return Result returned by {@link DbxUserFilesRequests#copyBatch(List)}
@@ -2853,9 +2921,6 @@ public class DbxUserFilesRequests {
     /**
      * Move multiple files or folders to different locations at once in the
      * user's Dropbox.
-     *
-     * <p> This route is 'all or nothing', which means if one entry fails, the
-     * whole transaction will abort. </p>
      *
      * <p> This route will return job ID immediately and do the async moving job
      * in background. Please use {@code moveBatchCheck:1} to check the job
@@ -2885,10 +2950,9 @@ public class DbxUserFilesRequests {
 
     /**
      * Move multiple files or folders to different locations at once in the
-     * user's Dropbox. This route is 'all or nothing', which means if one entry
-     * fails, the whole transaction will abort. This route will return job ID
-     * immediately and do the async moving job in background. Please use {@code
-     * moveBatchCheck:1} to check the job status.
+     * user's Dropbox. This route will return job ID immediately and do the
+     * async moving job in background. Please use {@code moveBatchCheck:1} to
+     * check the job status.
      *
      * @param entries  List of entries to be moved or copied. Each entry is
      *     {@link RelocationPath}. Must contain at least 1 items, not contain a

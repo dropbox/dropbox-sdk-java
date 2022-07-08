@@ -19,6 +19,22 @@ import java.util.Arrays;
 public enum LegalHoldsPolicyCreateError {
     // union team.LegalHoldsPolicyCreateError (team_legal_holds.stone)
     /**
+     * There has been an unknown legal hold error.
+     */
+    UNKNOWN_LEGAL_HOLD_ERROR,
+    /**
+     * You don't have permissions to perform this action.
+     */
+    INSUFFICIENT_PERMISSIONS,
+    /**
+     * Catch-all used for unknown tag values returned by the Dropbox servers.
+     *
+     * <p> Receiving a catch-all value typically indicates this SDK version is
+     * not up to date. Consider updating your SDK version to handle the new
+     * tags. </p>
+     */
+    OTHER,
+    /**
      * Start date must be earlier than end date.
      */
     START_DATE_IS_LATER_THAN_END_DATE,
@@ -42,15 +58,7 @@ public enum LegalHoldsPolicyCreateError {
     /**
      * The name provided is already in use by another legal hold.
      */
-    NAME_MUST_BE_UNIQUE,
-    /**
-     * Catch-all used for unknown tag values returned by the Dropbox servers.
-     *
-     * <p> Receiving a catch-all value typically indicates this SDK version is
-     * not up to date. Consider updating your SDK version to handle the new
-     * tags. </p>
-     */
-    OTHER; // *catch_all
+    NAME_MUST_BE_UNIQUE;
 
     /**
      * For internal use only.
@@ -61,6 +69,18 @@ public enum LegalHoldsPolicyCreateError {
         @Override
         public void serialize(LegalHoldsPolicyCreateError value, JsonGenerator g) throws IOException, JsonGenerationException {
             switch (value) {
+                case UNKNOWN_LEGAL_HOLD_ERROR: {
+                    g.writeString("unknown_legal_hold_error");
+                    break;
+                }
+                case INSUFFICIENT_PERMISSIONS: {
+                    g.writeString("insufficient_permissions");
+                    break;
+                }
+                case OTHER: {
+                    g.writeString("other");
+                    break;
+                }
                 case START_DATE_IS_LATER_THAN_END_DATE: {
                     g.writeString("start_date_is_later_than_end_date");
                     break;
@@ -86,7 +106,7 @@ public enum LegalHoldsPolicyCreateError {
                     break;
                 }
                 default: {
-                    g.writeString("other");
+                    throw new IllegalArgumentException("Unrecognized tag: " + value);
                 }
             }
         }
@@ -109,6 +129,15 @@ public enum LegalHoldsPolicyCreateError {
             if (tag == null) {
                 throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
             }
+            else if ("unknown_legal_hold_error".equals(tag)) {
+                value = LegalHoldsPolicyCreateError.UNKNOWN_LEGAL_HOLD_ERROR;
+            }
+            else if ("insufficient_permissions".equals(tag)) {
+                value = LegalHoldsPolicyCreateError.INSUFFICIENT_PERMISSIONS;
+            }
+            else if ("other".equals(tag)) {
+                value = LegalHoldsPolicyCreateError.OTHER;
+            }
             else if ("start_date_is_later_than_end_date".equals(tag)) {
                 value = LegalHoldsPolicyCreateError.START_DATE_IS_LATER_THAN_END_DATE;
             }
@@ -128,7 +157,7 @@ public enum LegalHoldsPolicyCreateError {
                 value = LegalHoldsPolicyCreateError.NAME_MUST_BE_UNIQUE;
             }
             else {
-                value = LegalHoldsPolicyCreateError.OTHER;
+                throw new JsonParseException(p, "Unknown tag: " + tag);
             }
             if (!collapsed) {
                 skipFields(p);

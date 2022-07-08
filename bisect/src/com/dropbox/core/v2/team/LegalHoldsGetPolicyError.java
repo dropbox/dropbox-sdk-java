@@ -19,10 +19,9 @@ import java.util.Arrays;
 public enum LegalHoldsGetPolicyError {
     // union team.LegalHoldsGetPolicyError (team_legal_holds.stone)
     /**
-     * Legal hold policy does not exist for {@link
-     * LegalHoldsGetPolicyArg#getId}.
+     * There has been an unknown legal hold error.
      */
-    LEGAL_HOLD_POLICY_NOT_FOUND,
+    UNKNOWN_LEGAL_HOLD_ERROR,
     /**
      * You don't have permissions to perform this action.
      */
@@ -34,7 +33,12 @@ public enum LegalHoldsGetPolicyError {
      * not up to date. Consider updating your SDK version to handle the new
      * tags. </p>
      */
-    OTHER; // *catch_all
+    OTHER,
+    /**
+     * Legal hold policy does not exist for {@link
+     * LegalHoldsGetPolicyArg#getId}.
+     */
+    LEGAL_HOLD_POLICY_NOT_FOUND;
 
     /**
      * For internal use only.
@@ -45,16 +49,24 @@ public enum LegalHoldsGetPolicyError {
         @Override
         public void serialize(LegalHoldsGetPolicyError value, JsonGenerator g) throws IOException, JsonGenerationException {
             switch (value) {
-                case LEGAL_HOLD_POLICY_NOT_FOUND: {
-                    g.writeString("legal_hold_policy_not_found");
+                case UNKNOWN_LEGAL_HOLD_ERROR: {
+                    g.writeString("unknown_legal_hold_error");
                     break;
                 }
                 case INSUFFICIENT_PERMISSIONS: {
                     g.writeString("insufficient_permissions");
                     break;
                 }
-                default: {
+                case OTHER: {
                     g.writeString("other");
+                    break;
+                }
+                case LEGAL_HOLD_POLICY_NOT_FOUND: {
+                    g.writeString("legal_hold_policy_not_found");
+                    break;
+                }
+                default: {
+                    throw new IllegalArgumentException("Unrecognized tag: " + value);
                 }
             }
         }
@@ -77,14 +89,20 @@ public enum LegalHoldsGetPolicyError {
             if (tag == null) {
                 throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
             }
-            else if ("legal_hold_policy_not_found".equals(tag)) {
-                value = LegalHoldsGetPolicyError.LEGAL_HOLD_POLICY_NOT_FOUND;
+            else if ("unknown_legal_hold_error".equals(tag)) {
+                value = LegalHoldsGetPolicyError.UNKNOWN_LEGAL_HOLD_ERROR;
             }
             else if ("insufficient_permissions".equals(tag)) {
                 value = LegalHoldsGetPolicyError.INSUFFICIENT_PERMISSIONS;
             }
-            else {
+            else if ("other".equals(tag)) {
                 value = LegalHoldsGetPolicyError.OTHER;
+            }
+            else if ("legal_hold_policy_not_found".equals(tag)) {
+                value = LegalHoldsGetPolicyError.LEGAL_HOLD_POLICY_NOT_FOUND;
+            }
+            else {
+                throw new JsonParseException(p, "Unknown tag: " + tag);
             }
             if (!collapsed) {
                 skipFields(p);

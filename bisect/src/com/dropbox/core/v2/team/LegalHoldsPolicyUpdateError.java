@@ -19,6 +19,22 @@ import java.util.Arrays;
 public enum LegalHoldsPolicyUpdateError {
     // union team.LegalHoldsPolicyUpdateError (team_legal_holds.stone)
     /**
+     * There has been an unknown legal hold error.
+     */
+    UNKNOWN_LEGAL_HOLD_ERROR,
+    /**
+     * You don't have permissions to perform this action.
+     */
+    INSUFFICIENT_PERMISSIONS,
+    /**
+     * Catch-all used for unknown tag values returned by the Dropbox servers.
+     *
+     * <p> Receiving a catch-all value typically indicates this SDK version is
+     * not up to date. Consider updating your SDK version to handle the new
+     * tags. </p>
+     */
+    OTHER,
+    /**
      * Trying to release an inactive legal hold.
      */
     INACTIVE_LEGAL_HOLD,
@@ -44,13 +60,10 @@ public enum LegalHoldsPolicyUpdateError {
      */
     NAME_MUST_BE_UNIQUE,
     /**
-     * Catch-all used for unknown tag values returned by the Dropbox servers.
-     *
-     * <p> Receiving a catch-all value typically indicates this SDK version is
-     * not up to date. Consider updating your SDK version to handle the new
-     * tags. </p>
+     * Legal hold policy does not exist for {@link
+     * LegalHoldsPolicyUpdateArg#getId}.
      */
-    OTHER; // *catch_all
+    LEGAL_HOLD_POLICY_NOT_FOUND;
 
     /**
      * For internal use only.
@@ -61,6 +74,18 @@ public enum LegalHoldsPolicyUpdateError {
         @Override
         public void serialize(LegalHoldsPolicyUpdateError value, JsonGenerator g) throws IOException, JsonGenerationException {
             switch (value) {
+                case UNKNOWN_LEGAL_HOLD_ERROR: {
+                    g.writeString("unknown_legal_hold_error");
+                    break;
+                }
+                case INSUFFICIENT_PERMISSIONS: {
+                    g.writeString("insufficient_permissions");
+                    break;
+                }
+                case OTHER: {
+                    g.writeString("other");
+                    break;
+                }
                 case INACTIVE_LEGAL_HOLD: {
                     g.writeString("inactive_legal_hold");
                     break;
@@ -85,8 +110,12 @@ public enum LegalHoldsPolicyUpdateError {
                     g.writeString("name_must_be_unique");
                     break;
                 }
+                case LEGAL_HOLD_POLICY_NOT_FOUND: {
+                    g.writeString("legal_hold_policy_not_found");
+                    break;
+                }
                 default: {
-                    g.writeString("other");
+                    throw new IllegalArgumentException("Unrecognized tag: " + value);
                 }
             }
         }
@@ -109,6 +138,15 @@ public enum LegalHoldsPolicyUpdateError {
             if (tag == null) {
                 throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
             }
+            else if ("unknown_legal_hold_error".equals(tag)) {
+                value = LegalHoldsPolicyUpdateError.UNKNOWN_LEGAL_HOLD_ERROR;
+            }
+            else if ("insufficient_permissions".equals(tag)) {
+                value = LegalHoldsPolicyUpdateError.INSUFFICIENT_PERMISSIONS;
+            }
+            else if ("other".equals(tag)) {
+                value = LegalHoldsPolicyUpdateError.OTHER;
+            }
             else if ("inactive_legal_hold".equals(tag)) {
                 value = LegalHoldsPolicyUpdateError.INACTIVE_LEGAL_HOLD;
             }
@@ -127,8 +165,11 @@ public enum LegalHoldsPolicyUpdateError {
             else if ("name_must_be_unique".equals(tag)) {
                 value = LegalHoldsPolicyUpdateError.NAME_MUST_BE_UNIQUE;
             }
+            else if ("legal_hold_policy_not_found".equals(tag)) {
+                value = LegalHoldsPolicyUpdateError.LEGAL_HOLD_POLICY_NOT_FOUND;
+            }
             else {
-                value = LegalHoldsPolicyUpdateError.OTHER;
+                throw new JsonParseException(p, "Unknown tag: " + tag);
             }
             if (!collapsed) {
                 skipFields(p);

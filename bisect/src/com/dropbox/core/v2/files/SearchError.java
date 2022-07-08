@@ -34,6 +34,7 @@ public final class SearchError {
      */
     public enum Tag {
         PATH, // LookupError
+        INVALID_ARGUMENT, // String
         /**
          * Catch-all used for unknown tag values returned by the Dropbox
          * servers.
@@ -56,6 +57,7 @@ public final class SearchError {
 
     private Tag _tag;
     private LookupError pathValue;
+    private String invalidArgumentValue;
 
     /**
      * Private default constructor, so that object is uninitializable publicly.
@@ -86,6 +88,17 @@ public final class SearchError {
         SearchError result = new SearchError();
         result._tag = _tag;
         result.pathValue = pathValue;
+        return result;
+    }
+
+    /**
+     *
+     * @param _tag  Discriminating tag for this instance.
+     */
+    private SearchError withTagAndInvalidArgument(Tag _tag, String invalidArgumentValue) {
+        SearchError result = new SearchError();
+        result._tag = _tag;
+        result.invalidArgumentValue = invalidArgumentValue;
         return result;
     }
 
@@ -154,6 +167,61 @@ public final class SearchError {
     }
 
     /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#INVALID_ARGUMENT}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#INVALID_ARGUMENT}, {@code false} otherwise.
+     */
+    public boolean isInvalidArgument() {
+        return this._tag == Tag.INVALID_ARGUMENT;
+    }
+
+    /**
+     * Returns an instance of {@code SearchError} that has its tag set to {@link
+     * Tag#INVALID_ARGUMENT}.
+     *
+     * <p> None </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code SearchError} with its tag set to {@link
+     *     Tag#INVALID_ARGUMENT}.
+     */
+    public static SearchError invalidArgument(String value) {
+        return new SearchError().withTagAndInvalidArgument(Tag.INVALID_ARGUMENT, value);
+    }
+
+    /**
+     * Returns an instance of {@code SearchError} that has its tag set to {@link
+     * Tag#INVALID_ARGUMENT}.
+     *
+     * <p> None </p>
+     *
+     * @return Instance of {@code SearchError} with its tag set to {@link
+     *     Tag#INVALID_ARGUMENT}.
+     */
+    public static SearchError invalidArgument() {
+        return invalidArgument(null);
+    }
+
+    /**
+     * This instance must be tagged as {@link Tag#INVALID_ARGUMENT}.
+     *
+     * @return The {@link String} value associated with this instance if {@link
+     *     #isInvalidArgument} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isInvalidArgument} is {@code
+     *     false}.
+     */
+    public String getInvalidArgumentValue() {
+        if (this._tag != Tag.INVALID_ARGUMENT) {
+            throw new IllegalStateException("Invalid tag: required Tag.INVALID_ARGUMENT, but was Tag." + this._tag.name());
+        }
+        return invalidArgumentValue;
+    }
+
+    /**
      * Returns {@code true} if this instance has the tag {@link Tag#OTHER},
      * {@code false} otherwise.
      *
@@ -168,7 +236,8 @@ public final class SearchError {
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
             _tag,
-            pathValue
+            pathValue,
+            invalidArgumentValue
         });
         return hash;
     }
@@ -189,6 +258,8 @@ public final class SearchError {
             switch (_tag) {
                 case PATH:
                     return (this.pathValue == other.pathValue) || (this.pathValue.equals(other.pathValue));
+                case INVALID_ARGUMENT:
+                    return (this.invalidArgumentValue == other.invalidArgumentValue) || (this.invalidArgumentValue != null && this.invalidArgumentValue.equals(other.invalidArgumentValue));
                 case OTHER:
                     return true;
                 default:
@@ -234,6 +305,14 @@ public final class SearchError {
                     g.writeEndObject();
                     break;
                 }
+                case INVALID_ARGUMENT: {
+                    g.writeStartObject();
+                    writeTag("invalid_argument", g);
+                    g.writeFieldName("invalid_argument");
+                    StoneSerializers.nullable(StoneSerializers.string()).serialize(value.invalidArgumentValue, g);
+                    g.writeEndObject();
+                    break;
+                }
                 default: {
                     g.writeString("other");
                 }
@@ -263,6 +342,19 @@ public final class SearchError {
                 expectField("path", p);
                 fieldValue = LookupError.Serializer.INSTANCE.deserialize(p);
                 value = SearchError.path(fieldValue);
+            }
+            else if ("invalid_argument".equals(tag)) {
+                String fieldValue = null;
+                if (p.getCurrentToken() != JsonToken.END_OBJECT) {
+                    expectField("invalid_argument", p);
+                    fieldValue = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                }
+                if (fieldValue == null) {
+                    value = SearchError.invalidArgument();
+                }
+                else {
+                    value = SearchError.invalidArgument(fieldValue);
+                }
             }
             else {
                 value = SearchError.OTHER;
