@@ -129,6 +129,7 @@ public abstract class StoneSerializer<T> {
         while (p.getCurrentToken() != null && !p.getCurrentToken().isStructEnd()) {
             if (p.getCurrentToken().isStructStart()) {
                 p.skipChildren();
+                p.nextToken();
             } else if (p.getCurrentToken() == JsonToken.FIELD_NAME) {
                 p.nextToken();
             } else if (p.getCurrentToken().isScalarValue()) {
