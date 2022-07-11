@@ -39,5 +39,5 @@ jobs:
         APP_SECRET: ${{ secrets.APP_SECRET }}
         REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
       run: ./generate-ci-auth-file
-    - name: Run examples
+    - name: Run Examples
       run: ./scripts/run-examples $(find `pwd` -name auth_output)

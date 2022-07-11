@@ -43,7 +43,7 @@ jobs:
         REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
       run: ./generate-ci-auth-file
 
-    - name: Run examples
+    - name: Run Integration Tests
       run: ./scripts/run-integration-tests $(find `pwd` -name auth_output)
 
     - name: Upload Artifacts
