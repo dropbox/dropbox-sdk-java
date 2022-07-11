@@ -286,6 +286,13 @@ public class Main {
         } else {
             chunkedUploadFile(dbxClient, localFile, dropboxPath);
         }
+        
+        try {
+            // Delete the file we uploaded so we don't run out of space on the integration test account
+            dbxClient.files().deleteV2(dropboxPath);
+        } catch (DbxException e) {
+            throw new RuntimeException("Could not cleanup the test file we just uploaded at " + dropboxPath, e);
+        }
 
         System.exit(0);
     }
