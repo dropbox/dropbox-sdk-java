@@ -339,6 +339,10 @@ class JavaClass(object):
         assert isinstance(fq_name, six.text_type), repr(fq_name)
         assert isinstance(generics, Sequence), repr(generics)
 
+        # Find/Replace ".Tag" with ".TagObject" due to name conflict WEBSERVDB-18031
+        if fq_name.endswith(".Tag"):
+            fq_name = fq_name.replace(".Tag", ".TagObject")
+
         self._fq_name = fq_name
         self._generics = generics
 
