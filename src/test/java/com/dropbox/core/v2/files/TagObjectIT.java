@@ -32,7 +32,6 @@ public class TagObjectIT {
 
         int randomInt = new Random().nextInt();
 
-
         byte[] contents = ("Tagging Test " + randomInt).getBytes();
         String dropboxPath = ITUtil.path(getClass(), "/tagging-test-" + randomInt + ".txt");
 
@@ -43,10 +42,18 @@ public class TagObjectIT {
 
         // Add Tag "a" to file
         client.files().tagsAdd(dropboxPath, "a");
-        assertEquals("a", getTagsForPath(client, dropboxPath).get(0).getUserGeneratedTagValue().getTagText());
+        Thread.sleep(100);
+
+        // Assert tag "a" exists
+        List<TagObject> tagsJustA = getTagsForPath(client, dropboxPath);
+        assertEquals(1, tagsJustA.size());
+        assertEquals("a", tagsJustA.get(0).getUserGeneratedTagValue().getTagText());
 
         // Add Tag "b" to file
         client.files().tagsAdd(dropboxPath, "b");
+        Thread.sleep(100);
+
+        // Assert tags "a" and "b" exist.
         List<TagObject> tagsAandB = getTagsForPath(client, dropboxPath);
         assertEquals(2, tagsAandB.size());
         assertEquals("a", tagsAandB.get(0).getUserGeneratedTagValue().getTagText());
@@ -54,12 +61,18 @@ public class TagObjectIT {
 
         // Remove Tag "a" from file
         client.files().tagsRemove(dropboxPath, "a");
+        Thread.sleep(100);
+
+        // Assert only tag "b" exists
         List<TagObject> tagsJustB = getTagsForPath(client, dropboxPath);
         assertEquals(1, tagsJustB.size());
         assertEquals("b", tagsJustB.get(0).getUserGeneratedTagValue().getTagText());
 
         // Remove Tag "b" from file
         client.files().tagsRemove(dropboxPath, "b");
+        Thread.sleep(100);
+
+        // Assert no remaining tags
         List<TagObject> tagsNone = getTagsForPath(client, dropboxPath);
         assertEquals(0, tagsNone.size());
 
