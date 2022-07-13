@@ -64,23 +64,23 @@ jobs:
         ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.OSSRH_USERNAME }}
         ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.OSSRH_PASSWORD }}
 
-    - name: Upload Test Reports
-      uses: actions/upload-artifact@v2
-      with:
-        name: TestReports
-        path: |
-          build/reports/
-
-    - name: Upload JavaDocs
-      uses: actions/upload-artifact@v2
-      with:
-        name: JavaDocs
-        path: |
-          build/docs/javadoc/
-
-    - name: Upload Build Artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: BuildArtifacts
-        path: |
-          build/distributions/
+#    - name: Upload Test Reports
+#      uses: actions/upload-artifact@v2
+#      with:
+#        name: TestReports
+#        path: |
+#          build/reports/
+#
+#    - name: Upload JavaDocs
+#      uses: actions/upload-artifact@v2
+#      with:
+#        name: JavaDocs
+#        path: |
+#          build/docs/javadoc/
+#
+#    - name: Upload Build Artifacts
+#      uses: actions/upload-artifact@v2
+#      with:
+#        name: BuildArtifacts
+#        path: |
+#          build/distributions/
