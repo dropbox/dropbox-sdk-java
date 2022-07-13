@@ -331,6 +331,12 @@ public final class DbxRequestUtil {
         String message = null;
         DbxException networkError;
 
+        System.out.println(response.getStatusCode());
+        System.out.println(message);
+        for (Map.Entry entry : response.getHeaders().entrySet()) {
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+        }
+
         switch (response.getStatusCode()) {
             case 400:
                 message = DbxRequestUtil.messageFromResponse(response, requestId);
@@ -490,8 +496,13 @@ public final class DbxRequestUtil {
                                /*@Nullable*/List<HttpRequestor.Header> headers,
                                ResponseHandler<T> handler)
         throws DbxException {
+        System.out.println(accessToken);
+        System.out.println(path);
         headers = copyHeaders(headers);
         headers = addAuthHeader(headers, accessToken);
+        for (HttpRequestor.Header header : headers) {
+            System.out.println(header.getKey() + ": " + header.getValue());
+        }
         return doPostNoAuth(requestConfig, sdkUserAgentIdentifier, host, path, params, headers, handler);
     }
 
@@ -506,6 +517,7 @@ public final class DbxRequestUtil {
         return runAndRetry(requestConfig.getMaxRetries(), new RequestMaker<T, DbxException>() {
             @Override
             public T run() throws DbxException {
+                System.out.println(path);
                 HttpRequestor.Response response = startPostNoAuth(requestConfig, sdkUserAgentIdentifier, host, path, params, headers);
                 return finishResponse(response, handler);
             }
