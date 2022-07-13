@@ -30,39 +30,20 @@ public class TagObjectIT {
     public void testTagging() throws Exception {
         DbxClientV2 client = ITUtil.newClientV2();
 
-        int randomInt = new Random().nextInt();
-
-
-        byte[] contents = ("Tagging Test " + randomInt).getBytes();
-        String dropboxPath = ITUtil.path(getClass(), "/tagging-test-" + randomInt + ".txt");
-        System.out.println("DropboxPath: " + dropboxPath);
+        byte[] contents = ("Tagging Test").getBytes();
+        String dropboxPath = ITUtil.path(getClass(), "/tagging-test" + new Random().nextInt() + ".txt");
 
         // Upload File
-        FileMetadata fileMetadata = client.files().uploadBuilder(dropboxPath)
-                .withMode(WriteMode.OVERWRITE)
+        FileMetadata fileMetadata = client.files()
+                .uploadBuilder(dropboxPath)
                 .uploadAndFinish(new ByteArrayInputStream(contents));
-
-        System.out.println("fileMetadata: " + fileMetadata);
 
         // Add Tag "a" to file
         client.files().tagsAdd(dropboxPath, "a");
         assertEquals("a", getTagsForPath(client, dropboxPath).get(0).getUserGeneratedTagValue().getTagText());
 
-        // Add Tag "b" to file
-        client.files().tagsAdd(dropboxPath, "b");
-        List<TagObject> tagsAandB = getTagsForPath(client, dropboxPath);
-        assertEquals(2, tagsAandB.size());
-        assertEquals("a", tagsAandB.get(0).getUserGeneratedTagValue().getTagText());
-        assertEquals("b", tagsAandB.get(1).getUserGeneratedTagValue().getTagText());
-
         // Remove Tag "a" from file
         client.files().tagsRemove(dropboxPath, "a");
-        List<TagObject> tagsJustB = getTagsForPath(client, dropboxPath);
-        assertEquals(1, tagsJustB.size());
-        assertEquals("b", tagsJustB.get(0).getUserGeneratedTagValue().getTagText());
-
-        // Remove Tag "b" from file
-        client.files().tagsRemove(dropboxPath, "b");
         List<TagObject> tagsNone = getTagsForPath(client, dropboxPath);
         assertEquals(0, tagsNone.size());
 
