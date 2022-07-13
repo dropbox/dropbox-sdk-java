@@ -35,11 +35,14 @@ public class TagObjectIT {
 
         byte[] contents = ("Tagging Test " + randomInt).getBytes();
         String dropboxPath = ITUtil.path(getClass(), "/tagging-test-" + randomInt + ".txt");
+        System.out.println("DropboxPath: " + dropboxPath);
 
         // Upload File
-        client.files().uploadBuilder(dropboxPath)
+        FileMetadata fileMetadata = client.files().uploadBuilder(dropboxPath)
                 .withMode(WriteMode.OVERWRITE)
                 .uploadAndFinish(new ByteArrayInputStream(contents));
+
+        System.out.println("fileMetadata: " + fileMetadata);
 
         // Add Tag "a" to file
         client.files().tagsAdd(dropboxPath, "a");

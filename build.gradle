@@ -103,12 +103,14 @@ test {
     exclude '**/*IT.class'
     exclude '**/*IT$*.class'
 
-//    testLogging {
-//        events "skipped", "failed"
-//        info {
-//            events "passed", "skipped", "failed"
-//        }
-//    }
+    testLogging {
+        events "skipped", "failed"
+        info {
+            events "passed", "skipped", "failed"
+        }
+        // Include System.out.println() for Unit Tests
+        showStandardStreams = true
+    }
 }
 
 def getAuthInfoFile() {
