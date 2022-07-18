@@ -51,12 +51,12 @@ echo "Running integration tests..."
 gradle clean
 gradle check
 
+# Run integration tests against major HTTP requestor implementations
+for requestor in "OkHttpRequestor" "OkHttp3Requestor" "StandardHttpRequestor" ; do
+    gradle -Pcom.dropbox.test.httpRequestor="${requestor}" -Pcom.dropbox.test.authInfoFile="${AUTH_FILE}" integrationTest --info
+    gradle -Pcom.dropbox.test.httpRequestor="${requestor}" -Pcom.dropbox.test.authInfoFile="${AUTH_FILE}" proguardTest
+done
+
 # prepare examples to be run
 android_gradle clean
 android_gradle assemble
-
-# Run integration tests against major HTTP requestor implementations
-for requestor in "StandardHttpRequestor" "OkHttpRequestor" "OkHttp3Requestor" ; do
-    gradle -Pcom.dropbox.test.httpRequestor="${requestor}" -Pcom.dropbox.test.authInfoFile="${AUTH_FILE}" integrationTest proguardTest
-done
-

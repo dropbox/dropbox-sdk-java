@@ -22,7 +22,6 @@ public class TagObjectIT {
         assertEquals(1, pathToTags.size()); // There is only one path (the one we asked for)
         PathToTags pathToTag = pathToTags.get(0);
         assertEquals(dropboxPath, pathToTag.getPath()); // This is the path we are looking for
-        System.out.println("Path to Tags: " + pathToTag.getTags());
         return pathToTag.getTags();
     }
 
@@ -30,38 +29,29 @@ public class TagObjectIT {
     public void testTagging() throws Exception {
         DbxClientV2 client = ITUtil.newClientV2();
 
-        int randomInt = new Random().nextInt();
-
-
-        byte[] contents = ("Tagging Test " + randomInt).getBytes();
-        String dropboxPath = ITUtil.path(getClass(), "/tagging-test-" + randomInt + ".txt");
+        byte[] contents = ("Tagging Test").getBytes();
+        String dropboxPath = ITUtil.path(getClass(), "/tagging-test.txt");
 
         // Upload File
         client.files().uploadBuilder(dropboxPath)
                 .withMode(WriteMode.OVERWRITE)
                 .uploadAndFinish(new ByteArrayInputStream(contents));
+        Thread.sleep(1000);
 
         // Add Tag "a" to file
         client.files().tagsAdd(dropboxPath, "a");
-        assertEquals("a", getTagsForPath(client, dropboxPath).get(0).getUserGeneratedTagValue().getTagText());
+        Thread.sleep(1000);
 
-        // Add Tag "b" to file
-        client.files().tagsAdd(dropboxPath, "b");
-        List<TagObject> tagsAandB = getTagsForPath(client, dropboxPath);
-        assertEquals(2, tagsAandB.size());
-        assertEquals("a", tagsAandB.get(0).getUserGeneratedTagValue().getTagText());
-        assertEquals("b", tagsAandB.get(1).getUserGeneratedTagValue().getTagText());
+        List<TagObject> tagsWithA = getTagsForPath(client, dropboxPath);
+        assertEquals("a", tagsWithA.get(0).getUserGeneratedTagValue().getTagText());
+        Thread.sleep(1000);
+
 
         // Remove Tag "a" from file
         client.files().tagsRemove(dropboxPath, "a");
-        List<TagObject> tagsJustB = getTagsForPath(client, dropboxPath);
-        assertEquals(1, tagsJustB.size());
-        assertEquals("b", tagsJustB.get(0).getUserGeneratedTagValue().getTagText());
-
-        // Remove Tag "b" from file
-        client.files().tagsRemove(dropboxPath, "b");
         List<TagObject> tagsNone = getTagsForPath(client, dropboxPath);
         assertEquals(0, tagsNone.size());
+        Thread.sleep(1000);
 
         // Cleanup, delete our test directory.
         client.files().deleteV2(dropboxPath);

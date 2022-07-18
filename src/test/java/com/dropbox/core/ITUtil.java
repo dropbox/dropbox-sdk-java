@@ -18,6 +18,8 @@ import com.google.appengine.tools.development.testing.LocalURLFetchServiceTestCo
 
 import com.squareup.okhttp.OkHttpClient;
 
+import okhttp3.Request;
+import okhttp3.Response;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 
@@ -48,11 +50,13 @@ public final class ITUtil {
         new LocalURLFetchServiceTestConfig());
 
     public static DbxRequestConfig.Builder newRequestConfig() {
+        HttpRequestor httpRequestor = newHttpRequestor();
+        System.out.println("Using HttpRequestor of type: " + httpRequestor.getClass().getSimpleName());
         return DbxRequestConfig.newBuilder("sdk-integration-test")
             // enable auto-retry to avoid flakiness
             .withAutoRetryEnabled(MAX_RETRIES)
             .withUserLocaleFrom(Locale.US)
-            .withHttpRequestor(newHttpRequestor());
+            .withHttpRequestor(httpRequestor);
     }
 
     /**
@@ -98,13 +102,25 @@ public final class ITUtil {
     public static OkHttpRequestor newOkHttpRequestor() {
         OkHttpClient httpClient = OkHttpRequestor.defaultOkHttpClient().clone();
         httpClient.setReadTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS);
+        httpClient.interceptors().add(chain -> {
+            com.squareup.okhttp.Request request = chain.request();
+            com.squareup.okhttp.Response response = chain.proceed(request);
+            System.out.println(response.code() + " | " + request.method() + " | " + request.url() + " | X-Dropbox-Request-Id: " + response.header("X-Dropbox-Request-Id"));
+            return response;
+        });
         return new OkHttpRequestor(httpClient);
     }
 
     public static OkHttp3Requestor newOkHttp3Requestor() {
         okhttp3.OkHttpClient httpClient = OkHttp3Requestor.defaultOkHttpClient().newBuilder()
-            .readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS)
-            .build();
+                .addInterceptor(chain -> {
+                    Request request = chain.request();
+                    Response response = chain.proceed(request);
+                    System.out.println(response.code() + " | " + request.method() + " | " + request.url() + " | X-Dropbox-Request-Id: " + response.header("X-Dropbox-Request-Id"));
+                    return response;
+                })
+                .readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS)
+                .build();
         return new OkHttp3Requestor(httpClient);
     }
 
