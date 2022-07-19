@@ -104,10 +104,7 @@ test {
     exclude '**/*IT$*.class'
 
     testLogging {
-        events "skipped", "failed"
-        info {
-            events "passed", "skipped", "failed"
-        }
+        showStandardStreams = true // System.out.println
     }
 }
 
@@ -131,16 +128,10 @@ def getAuthInfoFile() {
     return authInfoFile
 }
 
-
 task integrationTest(type: Test) {
     description 'Runs integration tests against Production or Dev servers.'
 
     useTestNG()
-
-    // TestNG specific options
-    options.parallel 'classes'
-    options.threadCount 4
-    options.preserveOrder true
 
     // only select integration tests (similar to maven-failsafe-plugin rules)
     include '**/IT*.class'
@@ -151,10 +142,7 @@ task integrationTest(type: Test) {
     exclude '**/*V1IT$*.class'
 
     testLogging {
-        events "skipped", "failed"
-        info {
-            events "passed", "skipped", "failed"
-        }
+        showStandardStreams = true // System.out.println
     }
 
     reports {
@@ -174,6 +162,9 @@ task integrationTest(type: Test) {
             systemProperty httpRequestorPropertyName, project.property(httpRequestorPropertyName)
         }
     }
+
+    // Will ensure that integration tests are re-run every time because they are not hermetic
+    outputs.upToDateWhen { false }
 }
 
 javadoc {

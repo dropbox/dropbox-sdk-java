@@ -45,10 +45,11 @@ public class TagObjectIT {
         List<TagObject> tagsWithA = getTagsForPath(client, dropboxPath);
         assertEquals("a", tagsWithA.get(0).getUserGeneratedTagValue().getTagText());
         Thread.sleep(1000);
-
-
+        
         // Remove Tag "a" from file
         client.files().tagsRemove(dropboxPath, "a");
+        Thread.sleep(1000);
+
         List<TagObject> tagsNone = getTagsForPath(client, dropboxPath);
         assertEquals(0, tagsNone.size());
         Thread.sleep(1000);
