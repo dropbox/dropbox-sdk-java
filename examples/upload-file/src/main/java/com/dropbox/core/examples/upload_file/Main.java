@@ -15,7 +15,6 @@ import com.dropbox.core.v2.files.FileMetadata;
 import com.dropbox.core.v2.files.UploadErrorException;
 import com.dropbox.core.v2.files.UploadSessionCursor;
 import com.dropbox.core.v2.files.UploadSessionFinishErrorException;
-import com.dropbox.core.v2.files.UploadSessionLookupErrorException;
 import com.dropbox.core.v2.files.WriteMode;
 
 import java.io.File;
@@ -158,21 +157,6 @@ public class Main {
                 thrown = ex;
                 // network issue with Dropbox (maybe a timeout?) try again
                 continue;
-            } catch (UploadSessionLookupErrorException ex) {
-                if (ex.errorValue.isIncorrectOffset()) {
-                    thrown = ex;
-                    // server offset into the stream doesn't match our offset (uploaded). Seek to
-                    // the expected offset according to the server and try again.
-                    uploaded = ex.errorValue
-                        .getIncorrectOffsetValue()
-                        .getCorrectOffset();
-                    continue;
-                } else {
-                    // Some other error occurred, give up.
-                    System.err.println("Error uploading to Dropbox: " + ex.getMessage());
-                    System.exit(1);
-                    return;
-                }
             } catch (UploadSessionFinishErrorException ex) {
                 if (ex.errorValue.isLookupFailed() && ex.errorValue.getLookupFailedValue().isIncorrectOffset()) {
                     thrown = ex;
