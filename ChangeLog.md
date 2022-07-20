@@ -1,4 +1,4 @@
-## 5.3.0-SNAPSHOT (2022-07-20) [Milestone](https://github.com/dropbox/dropbox-sdk-java/milestone/1?closed=1)
+## 5.3.0 (2022-07-20) [Milestone](https://github.com/dropbox/dropbox-sdk-java/milestone/1?closed=1)
 ---------------------------------------------
 - Update dropbox-api-spec to point to more recent version (July 13, 2022) [#400](https://github.com/dropbox/dropbox-sdk-java/pull/400)
 - The generateStone Gradle Task now supports Gradle Configuration Caching [#390](https://github.com/dropbox/dropbox-sdk-java/pull/390)
