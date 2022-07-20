@@ -1,6 +1,12 @@
-5.2.0 (2022-4-04)
+## 5.3.0-SNAPSHOT (2022-07-20) [Milestone](https://github.com/dropbox/dropbox-sdk-java/milestone/1?closed=1)
 ---------------------------------------------
-- Update dropbox-api-spec to point to more recent version (Feb 2022)
+- Update dropbox-api-spec to point to more recent version (July 13, 2022) [#400](https://github.com/dropbox/dropbox-sdk-java/pull/400)
+- The generateStone Gradle Task now supports Gradle Configuration Caching [#390](https://github.com/dropbox/dropbox-sdk-java/pull/390)
+- API Backwards Compatibility Fix - Won't crash when new types are returned from API [#395](https://github.com/dropbox/dropbox-sdk-java/pull/395)
+- Version Bumps in the Dropbox Android Sample Apps [#391](https://github.com/dropbox/dropbox-sdk-java/pull/391)
+
+5.2.0 (2022-04-04)
+---------------------------------------------
 - Update jackson-core to 2.7.9
 
 5.1.1 (2021-12-17)
