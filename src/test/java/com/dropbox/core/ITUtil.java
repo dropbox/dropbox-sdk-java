@@ -234,7 +234,7 @@ public final class ITUtil {
                 .withHttpRequestor(newStandardHttpRequestor())
         );
         try {
-            client.files().delete(RootContainer.ROOT);
+            client.files().deleteV2(RootContainer.ROOT);
         } catch (DeleteErrorException ex) {
             if (ex.errorValue.isPathLookup() &&
                 ex.errorValue.getPathLookupValue().isNotFound()) {
