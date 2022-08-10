@@ -17,7 +17,7 @@ android {
         Properties localProperties = getLocalProperties()
         String dropboxKey = localProperties['DROPBOX_KEY']
         if (dropboxKey == null) {
-            logger.error("No value provided for DROPBOX_KEY (Dropbox API Key).  Specify a value in a examples/DropboxAndroid/local.properties file. You can register for one at https://developers.dropbox.com/")
+            logger.warn("No value provided for DROPBOX_KEY (Dropbox API Key).  Specify a value in a examples/DropboxAndroid/local.properties file. You can register for one at https://developers.dropbox.com/")
             dropboxKey = "PUT_YOUR_API_KEY_HERE"
         }
         buildConfigField "String", "DROPBOX_KEY", "\"${dropboxKey}\""
