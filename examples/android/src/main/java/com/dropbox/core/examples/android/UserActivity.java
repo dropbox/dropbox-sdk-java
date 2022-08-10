@@ -30,7 +30,7 @@ public class UserActivity extends DropboxActivity {
 
         String apiKey = getString(R.string.app_key);
 
-        if (apiKey.equals("PUT_YOUR_API_KEY_HERE")) {
+        if (apiKey.equals("YOUR_API_KEY_HERE")) {
             new AlertDialog.Builder(this)
                     .setTitle("API KEY Required")
                     .setMessage("You must specify an API KEY in local.properties.\n" + "You can get your own API key at https://developers.dropbox.com/.")

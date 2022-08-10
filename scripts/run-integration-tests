@@ -24,7 +24,7 @@ gradle() {
 }
 
 android_gradle() {
-    (cd "${DIR}/examples/android" && run ./gradlew "$@")
+    (cd "${DIR}/examples" && run ./gradlew "$@")
 }
 
 if [ $# -ne 1 ] ; then
