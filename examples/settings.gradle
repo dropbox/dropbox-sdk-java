@@ -9,3 +9,7 @@ include ':tutorial'
 include ':upgrade-oauth1-token'
 include ':upload-file'
 include ':web-file-browser'
+include ':android'
+include ':DropboxAndroid:app'
+include ':dropbox-sdk-java'
+project(':dropbox-sdk-java').projectDir = new File("../")

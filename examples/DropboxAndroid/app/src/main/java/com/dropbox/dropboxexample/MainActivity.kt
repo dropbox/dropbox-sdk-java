@@ -7,6 +7,7 @@ import android.view.View
 import android.webkit.MimeTypeMap
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
@@ -34,6 +35,10 @@ class MainActivity : AppCompatActivity() {
 
         fetchAccountInfo()
         fetchDropboxFolder()
+
+        if (APP_KEY == "PUT_YOUR_API_KEY_HERE") {
+            AlertDialog.Builder(this).setTitle("API KEY Required").setMessage("You must specify an API KEY in local.properties.  You can get your own API key at https://developers.dropbox.com/").create().show()
+        }
     }
 
     override fun onStart() {
@@ -88,7 +93,7 @@ class MainActivity : AppCompatActivity() {
      *
      * Because mobile apps need to keep Dropbox secrets in their binaries we need to use PKCE.
      * Read more about this here: https://dropbox.tech/developers/pkce--what-and-why-
-    **/
+     **/
     private fun startDropboxAuthorization() {
         // The client identifier is usually of the form "SoftwareName/SoftwareVersion".
         val clientIdentifier = "DropboxSampleAndroid/1.0.0"
@@ -242,7 +247,8 @@ class MainActivity : AppCompatActivity() {
         if (uri != null) {
             if (uri.scheme == "content") {
                 val name = uri.lastPathSegment
-                val type = MimeTypeMap.getSingleton().getExtensionFromMimeType(contentResolver?.getType(uri))
+                val type = MimeTypeMap.getSingleton()
+                    .getExtensionFromMimeType(contentResolver?.getType(uri))
                 val inputStream = contentResolver?.openInputStream(uri)
                 uploadFile("$name.$type", inputStream!!)
             }
