@@ -2,7 +2,10 @@ package com.dropbox.core.examples.android;
 
 import android.content.Intent;
 import android.os.Bundle;
+
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -25,19 +28,29 @@ public class UserActivity extends DropboxActivity {
 
         setContentView(R.layout.activity_user);
 
+        String apiKey = getString(R.string.app_key);
+
+        if (apiKey.equals("PUT_YOUR_API_KEY_HERE")) {
+            new AlertDialog.Builder(this)
+                    .setTitle("API KEY Required")
+                    .setMessage("You must specify an API KEY in local.properties.\n" + "You can get your own API key at https://developers.dropbox.com/.")
+                    .create()
+                    .show();
+        }
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
 
-        Button loginButton = (Button)findViewById(R.id.login_button);
+        Button loginButton = (Button) findViewById(R.id.login_button);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DropboxActivity.startOAuth2Authentication(UserActivity.this, getString(R.string.app_key), Arrays.asList("account_info.read", "files.content.write"));
+                DropboxActivity.startOAuth2Authentication(UserActivity.this, apiKey, Arrays.asList("account_info.read", "files.content.write"));
             }
         });
 
-        Button filesButton = (Button)findViewById(R.id.files_button);
+        Button filesButton = (Button) findViewById(R.id.files_button);
         filesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -45,7 +58,7 @@ public class UserActivity extends DropboxActivity {
             }
         });
 
-        Button openWithButton = (Button)findViewById(R.id.open_with);
+        Button openWithButton = (Button) findViewById(R.id.open_with);
         openWithButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

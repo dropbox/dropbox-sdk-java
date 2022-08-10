@@ -22,9 +22,8 @@ subprojects {
         targetCompatibility = JavaVersion.VERSION_11
 
         dependencies {
-//            implementation project(":dropbox-sdk-java")
+            implementation "com.dropbox.core:dropbox-core-sdk:5.3.0"
         }
-
 
         // allow subprojects to run with arbitrary number of arguments specified through project properties:
         //

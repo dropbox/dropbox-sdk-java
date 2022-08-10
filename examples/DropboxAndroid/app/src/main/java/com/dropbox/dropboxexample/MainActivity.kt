@@ -37,7 +37,15 @@ class MainActivity : AppCompatActivity() {
         fetchDropboxFolder()
 
         if (APP_KEY == "PUT_YOUR_API_KEY_HERE") {
-            AlertDialog.Builder(this).setTitle("API KEY Required").setMessage("You must specify an API KEY in local.properties.  You can get your own API key at https://developers.dropbox.com/").create().show()
+            AlertDialog.Builder(this)
+                .setTitle("API KEY Required")
+                .setMessage("""
+                    You must specify an API KEY in local.properties.
+                    
+                    You can get your own API key at https://developers.dropbox.com/.
+                    """.trimIndent())
+                .create()
+                .show()
         }
     }
 
