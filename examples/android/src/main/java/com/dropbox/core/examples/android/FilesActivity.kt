@@ -16,6 +16,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dropbox.core.v2.files.FileMetadata
@@ -24,6 +25,7 @@ import com.dropbox.core.v2.files.ListFolderResult
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.io.File
 import java.text.DateFormat
+
 
 /**
  * Activity that displays the content of a path in dropbox and lets users navigate folders,
@@ -174,7 +176,7 @@ class FilesActivity : DropboxActivity() {
             object : DownloadFileTask.Callback {
                 override fun onDownloadComplete(result: File?) {
                     dialog.dismiss()
-                    result?.let { viewFileInExternalApp(it) }
+                    result?.let { viewFileInExternalApp(applicationContext, it) }
                 }
 
                 override fun onError(e: Exception?) {
@@ -190,12 +192,18 @@ class FilesActivity : DropboxActivity() {
             }).execute(file)
     }
 
-    private fun viewFileInExternalApp(result: File) {
+    private fun viewFileInExternalApp(context: Context, result: File) {
         val intent = Intent(Intent.ACTION_VIEW)
         val mime = MimeTypeMap.getSingleton()
         val ext = result.name.substring(result.name.indexOf(".") + 1)
         val type = mime.getMimeTypeFromExtension(ext)
-        intent.setDataAndType(Uri.fromFile(result), type)
+        val uri: Uri = FileProvider.getUriForFile(
+            context,
+            context.applicationContext.packageName + ".provider", result
+        )
+
+        intent.setDataAndType(uri, type)
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
 
         // Check for a handler first to avoid a crash
         val manager = packageManager
