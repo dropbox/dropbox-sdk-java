@@ -5,16 +5,17 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.webkit.MimeTypeMap
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dropbox.core.android.Auth
-import com.dropbox.core.examples.android.databinding.ActivityMainBinding
 import com.dropbox.core.examples.android.internal.DropboxAccountInfoResponse
-import com.dropbox.core.examples.android.internal.DropboxCredentialUtil
-import com.dropbox.core.examples.android.internal.DropboxOAuthUtil
 import com.dropbox.core.examples.android.internal.DropboxUploadApiResponse
 import com.dropbox.core.examples.android.internal.GetFilesResponse
 import com.dropbox.core.oauth.DbxCredential
@@ -24,15 +25,11 @@ import kotlinx.coroutines.launch
 
 class NewMainActivity : DropboxActivity() {
 
-    private lateinit var binding: ActivityMainBinding
-
     private val adapter = NewFilesAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+        setContentView(R.layout.activity_main)
 
         dropboxCredentialUtil.getLocalCredential()?.let {
             fetchAccountInfo()
@@ -42,19 +39,27 @@ class NewMainActivity : DropboxActivity() {
         dropboxOAuthUtil.showWarningDialogIfAppKeyNotSet(this)
     }
 
+    private val loginButton get() = findViewById<Button>(R.id.login_button)
+    private val logoutButton get() = findViewById<Button>(R.id.logout_button)
+    private val uploadButton get() = findViewById<Button>(R.id.upload_button)
+    private val filesRecyclerView get() = findViewById<RecyclerView>(R.id.files)
+    private val accountPhoto get() = findViewById<ImageView>(R.id.account_photo)
+    private val exceptionText get() = findViewById<TextView>(R.id.exception_text)
+    private val uploadLoading get() = findViewById<ProgressBar>(R.id.upload_loading)
+
     override fun onStart() {
         super.onStart()
-        binding.loginButton.setOnClickListener {
+        loginButton.setOnClickListener {
             dropboxOAuthUtil.startDropboxAuthorization(this)
         }
-        binding.logoutButton.setOnClickListener {
+        logoutButton.setOnClickListener {
             dropboxOAuthUtil.revokeDropboxAuthorization(lifecycleScope)
             resetUi()
         }
-        binding.uploadButton.setOnClickListener {
+        uploadButton.setOnClickListener {
             selectFileForUpload()
         }
-        binding.files.adapter = adapter
+        filesRecyclerView.adapter = adapter
     }
 
     override fun onResume() {
@@ -73,17 +78,13 @@ class NewMainActivity : DropboxActivity() {
         } else localCredential
 
         if (credential == null) {
-            with(binding) {
-                loginButton.visibility = View.VISIBLE
-                logoutButton.visibility = View.GONE
-                uploadButton.isEnabled = false
-            }
+            loginButton.visibility = View.VISIBLE
+            logoutButton.visibility = View.GONE
+            uploadButton.isEnabled = false
         } else {
-            with(binding) {
-                uploadButton.isEnabled = true
-                logoutButton.visibility = View.VISIBLE
-                loginButton.visibility = View.GONE
-            }
+            uploadButton.isEnabled = true
+            logoutButton.visibility = View.VISIBLE
+            loginButton.visibility = View.GONE
         }
     }
 
@@ -94,10 +95,10 @@ class NewMainActivity : DropboxActivity() {
 
     private fun resetUi() {
         adapter.submitList(emptyList())
-        binding.accountPhoto.setImageBitmap(null)
-        binding.logoutButton.visibility = View.GONE
-        binding.loginButton.visibility = View.VISIBLE
-        binding.uploadButton.isEnabled = false
+        accountPhoto.setImageBitmap(null)
+        logoutButton.visibility = View.GONE
+        loginButton.visibility = View.VISIBLE
+        uploadButton.isEnabled = false
     }
 
     private fun fetchAccountInfo() {
@@ -109,13 +110,13 @@ class NewMainActivity : DropboxActivity() {
                         "Error getting account info!",
                         Toast.LENGTH_SHORT
                     ).show()
-                    binding.exceptionText.text =
+                    exceptionText.text =
                         "type: ${response.exception.javaClass} + ${response.exception.localizedMessage}"
                 }
                 is DropboxAccountInfoResponse.Success -> {
                     val profileImageUrl = response.accountInfo.profilePhotoUrl
                     Glide.with(this@NewMainActivity).load(profileImageUrl)
-                        .into(binding.accountPhoto)
+                        .into(accountPhoto)
                 }
             }
         }
@@ -131,7 +132,7 @@ class NewMainActivity : DropboxActivity() {
                             "Error getting Dropbox files!",
                             Toast.LENGTH_SHORT
                         ).show()
-                        binding.exceptionText.text =
+                        exceptionText.text =
                             "type: ${it.exception.javaClass} + ${it.exception.localizedMessage}"
                     }
                     is GetFilesResponse.Success -> {
@@ -148,9 +149,9 @@ class NewMainActivity : DropboxActivity() {
 
     private fun uploadFile(fileName: String, inputStream: InputStream) {
         lifecycleScope.launch {
-            binding.uploadLoading.visibility = View.VISIBLE
+            uploadLoading.visibility = View.VISIBLE
             val response = dropboxApi.uploadFile(fileName, inputStream)
-            binding.uploadLoading.visibility = View.GONE
+            uploadLoading.visibility = View.GONE
             when (response) {
                 is DropboxUploadApiResponse.Failure -> {
                     Toast.makeText(
@@ -158,7 +159,7 @@ class NewMainActivity : DropboxActivity() {
                         "Error uploading file",
                         Toast.LENGTH_SHORT
                     ).show()
-                    binding.exceptionText.text =
+                    exceptionText.text =
                         "type: ${response.exception.javaClass} + ${response.exception.localizedMessage}"
                 }
                 is DropboxUploadApiResponse.Success -> {
