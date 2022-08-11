@@ -1,24 +1,5 @@
 apply plugin: 'com.android.application'
 
-buildscript {
-    repositories {
-        google()
-        mavenCentral()
-    }
-    dependencies {
-        classpath "com.android.tools.build:gradle:7.0.3"
-        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:3.0.1'
-    }
-}
-
-allprojects {
-    repositories {
-        google()
-        mavenLocal()
-        mavenCentral()
-    }
-}
-
 android {
     compileSdkVersion 31
     buildToolsVersion "30.0.3"
@@ -26,7 +7,7 @@ android {
     defaultConfig {
         applicationId "com.dropbox.core.examples.android"
         minSdkVersion 19
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
     }
@@ -58,12 +39,11 @@ android {
 }
 
 dependencies {
-    implementation project("dropbox-sdk-java")
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'com.google.android.material:material:1.1.0'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0'
-    implementation 'com.squareup.picasso:picasso:2.71828'
-    api 'com.squareup.okhttp3:okhttp:4.4.0'
-}
+    implementation "com.dropbox.core:dropbox-core-sdk:5.3.0"
 
-apply plugin: 'com.getkeepsafe.dexcount'
+    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation 'com.google.android.material:material:1.6.1'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    implementation 'com.squareup.picasso:picasso:2.71828'
+    api 'com.squareup.okhttp3:okhttp:4.9.3'
+}

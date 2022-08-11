@@ -1,2 +1,3 @@
+apply plugin: 'java'
 
 description = 'Account Info Example (Dropbox Core API SDK)'
