@@ -3,6 +3,7 @@ package com.dropbox.core.examples.android.internal
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
+import com.dropbox.core.android.Auth
 import com.dropbox.core.oauth.DbxCredential
 
 class DropboxCredentialUtil(appContext: Context) {
@@ -14,12 +15,18 @@ class DropboxCredentialUtil(appContext: Context) {
     //deserialize the credential from SharedPreferences if it exists
     fun getLocalCredential(): DbxCredential? {
         val serializedCredential = sharedPreferences.getString("credential", null)
-        return if (serializedCredential != null) {
+        val resultCredential: DbxCredential? = if (serializedCredential != null) {
             DbxCredential.Reader.readFully(serializedCredential)
         } else {
-            null
+            val authDbxCredential = Auth.getDbxCredential() //fetch the result from the AuthActivity
+            if (authDbxCredential != null) {
+                storeCredentialLocally(authDbxCredential)
+                authDbxCredential
+            } else {
+                null
+            }
         }
-
+        return resultCredential
     }
 
     //serialize the credential and store in SharedPreferences

@@ -1,16 +1,12 @@
 package com.dropbox.core.examples.android
 
 import android.content.Context
-import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.dropbox.core.android.Auth
+import com.dropbox.core.examples.android.internal.DropboxAppConfig
 import com.dropbox.core.examples.android.internal.DropboxCredentialUtil
 import com.dropbox.core.examples.android.internal.DropboxOAuthUtil
 
-class DropboxAppConfig(
-    val apiKey: String = BuildConfig.DROPBOX_APP_KEY,
-    val clientIdentifier: String = "db-${apiKey}"
-)
 
 /**
  * Base class for Activities that require auth tokens
@@ -38,6 +34,10 @@ abstract class DropboxActivity : AppCompatActivity() {
     // will use our Short Lived Token.
     override fun onResume() {
         super.onResume()
+        if (isAuthenticated()) {
+            loadData()
+        }
+
         val prefs = getSharedPreferences("dropbox-sample", Context.MODE_PRIVATE)
 
         val uid = Auth.getUid()
@@ -49,16 +49,9 @@ abstract class DropboxActivity : AppCompatActivity() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        dropboxCredentialUtil.getLocalCredential()?.let {
-            loadData()
-        }
-    }
-
     protected abstract fun loadData()
 
-    protected fun hasToken(): Boolean {
+    protected fun isAuthenticated(): Boolean {
         return dropboxCredentialUtil.getLocalCredential() != null
     }
 

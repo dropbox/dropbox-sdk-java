@@ -35,9 +35,9 @@ class FilesActivity : DropboxActivity() {
     private var mSelectedFile: FileMetadata? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val path = intent.getStringExtra(EXTRA_PATH)
-        mPath = path ?: ""
+        mPath = intent.getStringExtra(EXTRA_PATH) ?: ""
         setContentView(R.layout.activity_files)
+
         val toolbar = findViewById<View>(R.id.app_bar) as Toolbar
         setSupportActionBar(toolbar)
         val fab = findViewById<View>(R.id.fab) as FloatingActionButton
@@ -134,35 +134,39 @@ class FilesActivity : DropboxActivity() {
     }
 
     override fun loadData() {
-        val dialog = ProgressDialog(this)
-        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER)
-        dialog.setCancelable(false)
-        dialog.setMessage("Loading")
-        dialog.show()
-        ListFolderTask(dropboxApi.dropboxClient, object : ListFolderTask.Callback {
-            override fun onDataLoaded(result: ListFolderResult?) {
-                dialog.dismiss()
-                mFilesAdapter!!.setFiles(result!!.entries)
+        mPath?.let {
+            val dialog: ProgressDialog = ProgressDialog(this).apply {
+                setProgressStyle(ProgressDialog.STYLE_SPINNER)
+                setCancelable(false)
+                setMessage("Loading")
             }
+            dialog.show()
+            ListFolderTask(dropboxApi.dropboxClient, object : ListFolderTask.Callback {
+                override fun onDataLoaded(result: ListFolderResult?) {
+                    dialog.dismiss()
+                    mFilesAdapter!!.setFiles(result!!.entries)
+                }
 
-            override fun onError(e: Exception?) {
-                dialog.dismiss()
-                Log.e(TAG, "Failed to list folder.", e)
-                Toast.makeText(
-                    this@FilesActivity,
-                    "An error has occurred",
-                    Toast.LENGTH_SHORT
-                )
-                    .show()
-            }
-        }).execute(mPath)
+                override fun onError(e: Exception?) {
+                    dialog.dismiss()
+                    Log.e(TAG, "Failed to list folder.", e)
+                    Toast.makeText(
+                        this@FilesActivity,
+                        "An error has occurred",
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                }
+            }).execute(mPath)
+        }
     }
 
     private fun downloadFile(file: FileMetadata) {
-        val dialog = ProgressDialog(this)
-        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER)
-        dialog.setCancelable(false)
-        dialog.setMessage("Downloading")
+        val dialog = ProgressDialog(this).apply {
+            setProgressStyle(ProgressDialog.STYLE_SPINNER)
+            setCancelable(false)
+            setMessage("Downloading")
+        }
         dialog.show()
         DownloadFileTask(
             this@FilesActivity,

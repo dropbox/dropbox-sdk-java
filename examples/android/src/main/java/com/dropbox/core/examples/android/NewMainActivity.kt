@@ -25,7 +25,7 @@ import kotlinx.coroutines.launch
 
 class NewMainActivity : DropboxActivity() {
 
-    private val adapter = NewFilesAdapter()
+    private val NewFilesAdapter = NewFilesAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,7 +59,7 @@ class NewMainActivity : DropboxActivity() {
         uploadButton.setOnClickListener {
             selectFileForUpload()
         }
-        filesRecyclerView.adapter = adapter
+        filesRecyclerView.adapter = NewFilesAdapter
     }
 
     override fun onResume() {
@@ -94,7 +94,7 @@ class NewMainActivity : DropboxActivity() {
     }
 
     private fun resetUi() {
-        adapter.submitList(emptyList())
+        NewFilesAdapter.submitList(emptyList())
         accountPhoto.setImageBitmap(null)
         logoutButton.visibility = View.GONE
         loginButton.visibility = View.VISIBLE
@@ -136,7 +136,7 @@ class NewMainActivity : DropboxActivity() {
                             "type: ${it.exception.javaClass} + ${it.exception.localizedMessage}"
                     }
                     is GetFilesResponse.Success -> {
-                        adapter.submitList(it.result)
+                        NewFilesAdapter.submitList(it.result)
                     }
                 }
             }

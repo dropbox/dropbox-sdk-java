@@ -5,7 +5,6 @@ import androidx.appcompat.app.AlertDialog
 import com.dropbox.core.DbxRequestConfig
 import com.dropbox.core.android.Auth
 import com.dropbox.core.examples.android.DropboxApi
-import com.dropbox.core.examples.android.DropboxAppConfig
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
