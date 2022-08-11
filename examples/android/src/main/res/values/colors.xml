@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="dropbox_blue">#0061FF</color>
+    <color name="dropbox_blue_dark">#003FA5</color>
+    <color name="dropbox_yellow">#FFE7AA</color>
+    <color name="dropbox_yellow_dark">#FDD571</color>
+
     <color name="dbx_white_opaque_100">#FFFFFFFF</color>
     <color name="dbx_primary">#FF007EE5</color>
     <color name="dbx_primary_dark">#FF0078d9</color>
