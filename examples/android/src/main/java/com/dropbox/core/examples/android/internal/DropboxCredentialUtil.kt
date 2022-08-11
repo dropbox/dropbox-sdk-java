@@ -1,4 +1,3 @@
-
 package com.dropbox.core.examples.android.internal
 
 import android.content.Context
@@ -14,16 +13,25 @@ class DropboxCredentialUtil(appContext: Context) {
 
     //deserialize the credential from SharedPreferences if it exists
     fun getLocalCredential(): DbxCredential? {
-        val serializedCredential = sharedPreferences.getString("credential", null) ?: return null
-        return DbxCredential.Reader.readFully(serializedCredential)
+        val serializedCredential = sharedPreferences.getString("credential", null)
+        return if (serializedCredential != null) {
+            DbxCredential.Reader.readFully(serializedCredential)
+        } else {
+            null
+        }
+
     }
 
     //serialize the credential and store in SharedPreferences
     fun storeCredentialLocally(dbxCredential: DbxCredential) {
-        sharedPreferences.edit().putString("credential", dbxCredential.toString()).apply()
+        sharedPreferences.edit().apply {
+            putString("credential", DbxCredential.Writer.writeToString(dbxCredential))
+        }.apply()
     }
 
     fun removeCredentialLocally() {
-        sharedPreferences.edit().remove("credential").apply()
+        sharedPreferences.edit().apply {
+            remove("credential")
+        }.apply()
     }
 }

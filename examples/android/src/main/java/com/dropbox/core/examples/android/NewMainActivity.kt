@@ -10,7 +10,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
-import com.dropbox.core.DbxRequestConfig
 import com.dropbox.core.android.Auth
 import com.dropbox.core.examples.android.databinding.ActivityMainBinding
 import com.dropbox.core.examples.android.internal.DropboxAccountInfoResponse
@@ -19,28 +18,15 @@ import com.dropbox.core.examples.android.internal.DropboxOAuthUtil
 import com.dropbox.core.examples.android.internal.DropboxUploadApiResponse
 import com.dropbox.core.examples.android.internal.GetFilesResponse
 import com.dropbox.core.oauth.DbxCredential
-import com.dropbox.core.v2.DbxClientV2
 import java.io.InputStream
 import kotlinx.coroutines.launch
 
 
-class NewMainActivity : AppCompatActivity() {
+class NewMainActivity : DropboxActivity() {
 
     private lateinit var binding: ActivityMainBinding
+
     private val adapter = NewFilesAdapter()
-
-    private val dropboxCredentialUtil = DropboxCredentialUtil(
-        appContext = this.applicationContext
-    )
-
-    private val dropboxOAuthUtil = DropboxOAuthUtil(
-        dropboxCredentialUtil = dropboxCredentialUtil,
-        apiKey = BuildConfig.DROPBOX_APP_KEY
-    )
-
-    private val dropboxApi = DropboxApi(
-        dropboxCredentialUtil.getLocalCredential()!!
-    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,8 +34,10 @@ class NewMainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        fetchAccountInfo()
-        fetchDropboxFolder()
+        dropboxCredentialUtil.getLocalCredential()?.let {
+            fetchAccountInfo()
+            fetchDropboxFolder()
+        }
 
         dropboxOAuthUtil.showWarningDialogIfAppKeyNotSet(this)
     }
@@ -79,8 +67,7 @@ class NewMainActivity : AppCompatActivity() {
             credential?.let {
                 //the user successfully connected their Dropbox account!
                 dropboxCredentialUtil.storeCredentialLocally(it)
-                fetchAccountInfo()
-                fetchDropboxFolder()
+                loadData()
             }
             credential
         } else localCredential
@@ -98,6 +85,11 @@ class NewMainActivity : AppCompatActivity() {
                 loginButton.visibility = View.GONE
             }
         }
+    }
+
+    override fun loadData() {
+        fetchAccountInfo()
+        fetchDropboxFolder()
     }
 
     private fun resetUi() {

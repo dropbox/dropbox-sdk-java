@@ -90,6 +90,5 @@
         android:layout_height="100dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header"
         app:srcCompat="@drawable/ic_dropbox_android" />
 </androidx.constraintlayout.widget.ConstraintLayout>

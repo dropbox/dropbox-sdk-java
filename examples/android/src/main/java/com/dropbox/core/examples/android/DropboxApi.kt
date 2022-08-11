@@ -17,10 +17,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 
-class DropboxApi(dbxCredential: DbxCredential) {
+class DropboxApi(dbxCredential: DbxCredential, clientIdentifier: String) {
 
     val dropboxClient: DbxClientV2 = DbxClientV2(
-        DbxRequestConfig(DropboxOAuthUtil.CLIENT_IDENTIFIER),
+        DbxRequestConfig(clientIdentifier),
         dbxCredential
     )
 

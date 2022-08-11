@@ -42,20 +42,20 @@ class FilesActivity : DropboxActivity() {
         setSupportActionBar(toolbar)
         val fab = findViewById<View>(R.id.fab) as FloatingActionButton
         fab.setOnClickListener { performWithPermissions(FileAction.UPLOAD) }
-        //init picasso client
-        PicassoClient.init(this, dropboxApi.dropboxClient)
         val recyclerView = findViewById<View>(R.id.files_list) as RecyclerView
-        mFilesAdapter = FilesAdapter(PicassoClient.picasso, object : FilesAdapter.Callback {
-            override fun onFolderClicked(folder: FolderMetadata?) {
-                requireNotNull(folder)
-                startActivity(getIntent(this@FilesActivity, folder.pathLower))
-            }
+        mFilesAdapter = FilesAdapter(
+            SamplePicassoClient(this, dropboxApi.dropboxClient).picasso,
+            object : FilesAdapter.Callback {
+                override fun onFolderClicked(folder: FolderMetadata?) {
+                    requireNotNull(folder)
+                    startActivity(getIntent(this@FilesActivity, folder.pathLower))
+                }
 
-            override fun onFileClicked(file: FileMetadata?) {
-                mSelectedFile = file
-                performWithPermissions(FileAction.DOWNLOAD)
-            }
-        })
+                override fun onFileClicked(file: FileMetadata?) {
+                    mSelectedFile = file
+                    performWithPermissions(FileAction.DOWNLOAD)
+                }
+            })
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = mFilesAdapter
         mSelectedFile = null
@@ -164,23 +164,26 @@ class FilesActivity : DropboxActivity() {
         dialog.setCancelable(false)
         dialog.setMessage("Downloading")
         dialog.show()
-        DownloadFileTask(this@FilesActivity, dropboxApi.dropboxClient, object : DownloadFileTask.Callback {
-            override fun onDownloadComplete(result: File?) {
-                dialog.dismiss()
-                result?.let { viewFileInExternalApp(it) }
-            }
+        DownloadFileTask(
+            this@FilesActivity,
+            dropboxApi.dropboxClient,
+            object : DownloadFileTask.Callback {
+                override fun onDownloadComplete(result: File?) {
+                    dialog.dismiss()
+                    result?.let { viewFileInExternalApp(it) }
+                }
 
-            override fun onError(e: Exception?) {
-                dialog.dismiss()
-                Log.e(TAG, "Failed to download file.", e)
-                Toast.makeText(
-                    this@FilesActivity,
-                    "An error has occurred",
-                    Toast.LENGTH_SHORT
-                )
-                    .show()
-            }
-        }).execute(file)
+                override fun onError(e: Exception?) {
+                    dialog.dismiss()
+                    Log.e(TAG, "Failed to download file.", e)
+                    Toast.makeText(
+                        this@FilesActivity,
+                        "An error has occurred",
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                }
+            }).execute(file)
     }
 
     private fun viewFileInExternalApp(result: File) {

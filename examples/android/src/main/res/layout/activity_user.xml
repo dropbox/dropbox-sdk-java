@@ -23,13 +23,6 @@
             android:layout_gravity="center_horizontal"
             app:srcCompat="@drawable/ic_dropbox_android" />
 
-        <Button
-            style="@style/ButtonStyle"
-            android:id="@+id/login_button"
-            android:text="Login with Dropbox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
         <TextView
             android:id="@+id/email_text"
             android:layout_width="match_parent"
@@ -59,15 +52,45 @@
             android:layout_height="wrap_content"
             android:text="Test Open With (Internal)"/>
 
-        <!-- Migrated from other sample app -->
+
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".NewMainActivity">
 
         <Button
-            style="@style/ButtonStyle"
+            android:id="@+id/login_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="Login with Dropbox"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/logout_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="Logout of Dropbox"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
             android:id="@+id/upload_button"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:enabled="false"
-            android:text="Upload an image"/>
+            android:text="Upload an image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
         <ImageView
             android:id="@+id/account_photo"
@@ -85,7 +108,10 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_marginStart="8dp"
-            android:visibility="invisible" />
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/upload_button"
+            app:layout_constraintStart_toEndOf="@+id/upload_button"
+            app:layout_constraintTop_toTopOf="@+id/upload_button" />
 
         <TextView
             android:id="@+id/exception_text"
@@ -106,7 +132,13 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/exception_text"
+            app:layout_constraintVertical_bias="0.0"
             tools:listitem="@layout/item_file" />
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>
