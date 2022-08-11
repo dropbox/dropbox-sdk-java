@@ -92,10 +92,6 @@ class UserActivity : DropboxActivity() {
     }
 
 
-    //------------------
-
-
-
     private val newFilesAdapter = NewFilesAdapter()
 
     private val loginButton get() = findViewById<Button>(R.id.login_button)
