@@ -33,7 +33,7 @@ class OpenWithActivity : DropboxActivity() {
         val toolbar = findViewById<View>(R.id.app_bar) as Toolbar
         setSupportActionBar(toolbar)
         val generateIntentButton = findViewById<View>(R.id.generate_intent) as Button
-        generateIntentButton.setOnClickListener { v: View? ->
+        generateIntentButton.setOnClickListener {
             val editText = findViewById<View>(R.id.editText) as EditText
             val path = editText.text.toString()
             //fake OpenWithIntent with some dummy parameters
@@ -52,29 +52,29 @@ class OpenWithActivity : DropboxActivity() {
             }
         }
         val mInstalled = findViewById<View>(R.id.is_installed) as Button
-        mInstalled.setOnClickListener { v: View? ->
+        mInstalled.setOnClickListener {
             val installInfo = DbxOfficialAppConnector.isInstalled(this@OpenWithActivity)
             showToast(installInfo?.toString() ?: "Not installed!")
         }
         val mGenLinked = findViewById<View>(R.id.is_linked_any_button) as Button
-        mGenLinked.setOnClickListener { v: View? ->
+        mGenLinked.setOnClickListener {
             val isSigned = DbxOfficialAppConnector.isAnySignedIn(this@OpenWithActivity)
             showToast("Any Signed in?:$isSigned")
         }
         val mSpecLinked = findViewById<View>(R.id.is_linked_spec_button) as Button
-        mSpecLinked.setOnClickListener { v: View? ->
+        mSpecLinked.setOnClickListener {
             val isSigned = mDoac!!.isSignedIn(this@OpenWithActivity)
             showToast("Signed in?:$isSigned")
         }
         val mPreview = findViewById<View>(R.id.preview_button) as Button
-        mPreview.setOnClickListener { v: View? ->
+        mPreview.setOnClickListener {
             val editText = findViewById<View>(R.id.editText) as EditText
             val path = editText.text.toString()
             val pIntent = mDoac!!.getPreviewFileIntent(this@OpenWithActivity, path, "")
             startActivity(pIntent)
         }
         val mUpgrade = findViewById<View>(R.id.upgrade_button) as Button
-        mUpgrade.setOnClickListener { v: View? ->
+        mUpgrade.setOnClickListener {
             val uIntent = mDoac!!.getUpgradeAccountIntent(this@OpenWithActivity)
             startActivity(uIntent)
         }
