@@ -17,14 +17,16 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dropbox.core.v2.files.FileMetadata
 import com.dropbox.core.v2.files.FolderMetadata
-import com.dropbox.core.v2.files.ListFolderResult
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.io.File
 import java.text.DateFormat
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 /**
@@ -136,30 +138,32 @@ class FilesActivity : DropboxActivity() {
     }
 
     override fun loadData() {
-        mPath?.let {
+        mPath?.let { path ->
             val dialog: ProgressDialog = ProgressDialog(this).apply {
                 setProgressStyle(ProgressDialog.STYLE_SPINNER)
                 setCancelable(false)
                 setMessage("Loading")
             }
             dialog.show()
-            ListFolderTask(dropboxApi.dropboxClient, object : ListFolderTask.Callback {
-                override fun onDataLoaded(result: ListFolderResult?) {
-                    dialog.dismiss()
-                    mFilesAdapter!!.setFiles(result!!.entries)
+            lifecycleScope.launch {
+                val apiResult = ListFolderTask(dropboxApi.dropboxClient).execute(path)
+                when (apiResult) {
+                    is ListFolderApiResult.Error -> {
+                        dialog.dismiss()
+                        Log.e(TAG, "Failed to list folder.", apiResult.e)
+                        Toast.makeText(
+                            this@FilesActivity,
+                            "An error has occurred",
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
+                    }
+                    is ListFolderApiResult.Success -> {
+                        dialog.dismiss()
+                        mFilesAdapter!!.setFiles(apiResult.result.entries)
+                    }
                 }
-
-                override fun onError(e: Exception?) {
-                    dialog.dismiss()
-                    Log.e(TAG, "Failed to list folder.", e)
-                    Toast.makeText(
-                        this@FilesActivity,
-                        "An error has occurred",
-                        Toast.LENGTH_SHORT
-                    )
-                        .show()
-                }
-            }).execute(mPath)
+            }
         }
     }
 
@@ -170,26 +174,31 @@ class FilesActivity : DropboxActivity() {
             setMessage("Downloading")
         }
         dialog.show()
-        DownloadFileTask(
-            this@FilesActivity,
-            dropboxApi.dropboxClient,
-            object : DownloadFileTask.Callback {
-                override fun onDownloadComplete(result: File?) {
+        lifecycleScope.launch {
+            val downloadFileTaskResult = DownloadFileTask(
+                this@FilesActivity,
+                dropboxApi.dropboxClient,
+                Dispatchers.IO,
+            ).download(file)
+            when (downloadFileTaskResult) {
+                is DownloadFileTaskResult.Error -> {
                     dialog.dismiss()
-                    result?.let { viewFileInExternalApp(applicationContext, it) }
-                }
-
-                override fun onError(e: Exception?) {
-                    dialog.dismiss()
-                    Log.e(TAG, "Failed to download file.", e)
+                    Log.e(TAG, "Failed to download file.", downloadFileTaskResult.e)
                     Toast.makeText(
                         this@FilesActivity,
                         "An error has occurred",
                         Toast.LENGTH_SHORT
-                    )
-                        .show()
+                    ).show()
                 }
-            }).execute(file)
+                is DownloadFileTaskResult.Success -> {
+                    dialog.dismiss()
+                    viewFileInExternalApp(
+                        applicationContext,
+                        downloadFileTaskResult.result
+                    )
+                }
+            }
+        }
     }
 
     private fun viewFileInExternalApp(context: Context, result: File) {
@@ -219,30 +228,39 @@ class FilesActivity : DropboxActivity() {
         dialog.setCancelable(false)
         dialog.setMessage("Uploading")
         dialog.show()
-        UploadFileTask(this, dropboxApi.dropboxClient, object : UploadFileTask.Callback {
-            override fun onUploadComplete(result: FileMetadata?) {
-                dialog.dismiss()
-                requireNotNull(result)
-                val message = result.name + " size " + result.size + " modified " +
-                        DateFormat.getDateTimeInstance().format(result.clientModified)
-                Toast.makeText(this@FilesActivity, message, Toast.LENGTH_SHORT)
-                    .show()
+        lifecycleScope.launch {
+            val uploadedFileResult = UploadFileTask(
+                applicationContext,
+                dropboxApi.dropboxClient,
+                Dispatchers.IO
+            ).execute(
+                fileUri,
+                mPath!!
+            )
 
-                // Reload the folder
-                loadData()
-            }
+            when (uploadedFileResult) {
+                is FileMetadataApiResult.Error -> {
+                    dialog.dismiss()
+                    Log.e(TAG, "Failed to upload file.", uploadedFileResult.e)
+                    Toast.makeText(
+                        this@FilesActivity,
+                        "An error has occurred",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                is FileMetadataApiResult.Success -> {
+                    val result = uploadedFileResult.fileMetadata
+                    dialog.dismiss()
+                    val message = result.name + " size " + result.size + " modified " +
+                            DateFormat.getDateTimeInstance().format(result.clientModified)
+                    Toast.makeText(this@FilesActivity, message, Toast.LENGTH_SHORT)
+                        .show()
 
-            override fun onError(e: Exception?) {
-                dialog.dismiss()
-                Log.e(TAG, "Failed to upload file.", e)
-                Toast.makeText(
-                    this@FilesActivity,
-                    "An error has occurred",
-                    Toast.LENGTH_SHORT
-                )
-                    .show()
+                    // Reload the folder
+                    loadData()
+                }
             }
-        }).execute(fileUri, mPath)
+        }
     }
 
     private fun performWithPermissions(action: FileAction) {

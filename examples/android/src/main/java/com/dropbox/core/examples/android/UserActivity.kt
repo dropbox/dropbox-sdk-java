@@ -16,14 +16,11 @@ import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.dropbox.core.android.Auth
-import com.dropbox.core.examples.android.internal.DropboxAccountInfoResponse
 import com.dropbox.core.examples.android.internal.DropboxUploadApiResponse
 import com.dropbox.core.examples.android.internal.GetFilesResponse
 import com.dropbox.core.examples.android.internal.OpenWithActivity
-import com.dropbox.core.oauth.DbxCredential
-import com.dropbox.core.v2.users.FullAccount
 import java.io.InputStream
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 /**
@@ -66,31 +63,51 @@ class UserActivity : DropboxActivity() {
         dropboxOAuthUtil.showWarningDialogIfAppKeyNotSet(this)
     }
 
+    private fun fetchAccountInfo() {
+        lifecycleScope.launch {
+            val accountResult = GetCurrentAccountTask(
+                dropboxApi.dropboxClient,
+                Dispatchers.IO,
+            ).execute()
+
+            when (accountResult) {
+                is GetCurrentAccountResult.Error -> {
+                    Log.e(
+                        javaClass.name,
+                        "Failed to get account details.",
+                        accountResult.e
+                    )
+                    Toast.makeText(
+                        applicationContext,
+                        "Error getting account info!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    exceptionText.text =
+                        "type: ${accountResult.e.javaClass} + ${accountResult.e.localizedMessage}"
+                }
+                is GetCurrentAccountResult.Success -> {
+                    val account = accountResult.account
+                    (findViewById<View>(R.id.email_text) as TextView).text = account.email
+                    (findViewById<View>(R.id.name_text) as TextView).text = account.name.displayName
+                    (findViewById<View>(R.id.type_text) as TextView).text = account.accountType.name
+
+                    Glide.with(applicationContext)
+                        .load(account.profilePhotoUrl)
+                        .into(accountPhoto)
+                }
+            }
+        }
+    }
+
     override fun onResume() {
         super.onResume()
-       resetUi()
+        resetUi()
     }
 
     override fun loadData() {
-        GetCurrentAccountTask(
-            dropboxApi.dropboxClient,
-            object : GetCurrentAccountTask.Callback {
-                override fun onComplete(result: FullAccount?) {
-                    requireNotNull(result)
-                    (findViewById<View>(R.id.email_text) as TextView).text = result.email
-                    (findViewById<View>(R.id.name_text) as TextView).text = result.name.displayName
-                    (findViewById<View>(R.id.type_text) as TextView).text = result.accountType.name
-                }
-
-                override fun onError(e: Exception?) {
-                    Log.e(javaClass.name, "Failed to get account details.", e)
-                }
-            }).execute()
-
         fetchAccountInfo()
         fetchDropboxFolder()
     }
-
 
     private val newFilesAdapter = NewFilesAdapter()
 
@@ -141,31 +158,9 @@ class UserActivity : DropboxActivity() {
             findViewById<View>(R.id.files_button).isEnabled = false
             findViewById<View>(R.id.open_with).isEnabled = false
 
-
             loginButton.visibility = View.VISIBLE
             logoutButton.visibility = View.GONE
             uploadButton.isEnabled = false
-        }
-    }
-
-    private fun fetchAccountInfo() {
-        lifecycleScope.launch {
-            when (val response = dropboxApi.getAccountInfo()) {
-                is DropboxAccountInfoResponse.Failure -> {
-                    Toast.makeText(
-                        applicationContext,
-                        "Error getting account info!",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    exceptionText.text =
-                        "type: ${response.exception.javaClass} + ${response.exception.localizedMessage}"
-                }
-                is DropboxAccountInfoResponse.Success -> {
-                    val profileImageUrl = response.accountInfo.profilePhotoUrl
-                    Glide.with(applicationContext).load(profileImageUrl)
-                        .into(accountPhoto)
-                }
-            }
         }
     }
 
