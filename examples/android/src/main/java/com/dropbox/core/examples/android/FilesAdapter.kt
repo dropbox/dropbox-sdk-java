@@ -1,23 +1,41 @@
 package com.dropbox.core.examples.android
 
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.MimeTypeMap
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.dropbox.core.DbxDownloader
 import com.dropbox.core.examples.android.FilesAdapter.MetadataViewHolder
+import com.dropbox.core.v2.DbxClientV2
 import com.dropbox.core.v2.files.FileMetadata
 import com.dropbox.core.v2.files.FolderMetadata
 import com.dropbox.core.v2.files.Metadata
-import com.squareup.picasso.Picasso
+import com.dropbox.core.v2.files.ThumbnailFormat
+import com.dropbox.core.v2.files.ThumbnailSize
+import java.io.ByteArrayOutputStream
 import java.util.Collections
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
 
 /**
  * Adapter for file list
  */
-class FilesAdapter(private val mPicasso: Picasso, private val mCallback: Callback) :
+class FilesAdapter(
+    private val dbxClientV2: DbxClientV2,
+    private val mCallback: Callback,
+    private val scope:CoroutineScope,
+) :
     RecyclerView.Adapter<MetadataViewHolder>() {
     private var mFiles: List<Metadata>? = null
     fun setFiles(files: List<Metadata>?) {
@@ -34,7 +52,7 @@ class FilesAdapter(private val mPicasso: Picasso, private val mCallback: Callbac
         val context = viewGroup.context
         val view = LayoutInflater.from(context)
             .inflate(R.layout.files_item, viewGroup, false)
-        return MetadataViewHolder(view)
+        return MetadataViewHolder(scope, view)
     }
 
     override fun onBindViewHolder(metadataViewHolder: MetadataViewHolder, i: Int) {
@@ -49,8 +67,9 @@ class FilesAdapter(private val mPicasso: Picasso, private val mCallback: Callbac
         return if (mFiles == null) 0 else mFiles!!.size
     }
 
-    inner class MetadataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
+    inner class MetadataViewHolder(scope: CoroutineScope, itemView: View) : RecyclerView.ViewHolder(itemView),
         View.OnClickListener {
+        private var job: Job? = null
         private val mTextView: TextView
         private val mImageView: ImageView
         private var mItem: Metadata? = null
@@ -70,29 +89,59 @@ class FilesAdapter(private val mPicasso: Picasso, private val mCallback: Callbac
         }
 
         fun bind(item: Metadata) {
+            job?.let {
+                if (it.isActive) {
+                    it.cancel()
+                }
+            }
+            job = null
             mItem = item
             mTextView.text = mItem!!.name
+            val applicationContext = mImageView.context.applicationContext
 
             // Load based on file path
             // Prepending a magic scheme to get it to
-            // be picked up by DropboxPicassoRequestHandler
             if (item is FileMetadata) {
                 val mime = MimeTypeMap.getSingleton()
                 val ext = item.getName().substring(item.getName().indexOf(".") + 1)
                 val type = mime.getMimeTypeFromExtension(ext)
                 if (type != null && type.startsWith("image/")) {
-                    mPicasso.load(FileThumbnailRequestHandler.Companion.buildPicassoUri(item))
-                        .placeholder(R.drawable.ic_photo_grey_600_36dp)
-                        .error(R.drawable.ic_photo_grey_600_36dp)
-                        .into(mImageView)
+                    job = scope.launch {
+                        withContext(Dispatchers.Main) {
+                            Glide.with(applicationContext)
+                                .load(R.drawable.ic_photo_grey_600_36dp)
+                                .transition(DrawableTransitionOptions.withCrossFade())
+                                .into(mImageView)
+                        }
+
+                        val downloader: DbxDownloader<FileMetadata> = dbxClientV2.files()
+                            .getThumbnailBuilder(item.getPathLower())
+                            .withFormat(ThumbnailFormat.JPEG)
+                            .withSize(ThumbnailSize.W1024H768)
+                            .start()
+                        val byteBuffer = ByteArrayOutputStream()
+                        downloader.download(byteBuffer)
+
+                        withContext(Dispatchers.Main) {
+                            Glide.with(applicationContext)
+                                .load(byteBuffer.toByteArray())
+                                .placeholder(R.drawable.ic_photo_grey_600_36dp)
+                                .error(R.drawable.ic_photo_grey_600_36dp)
+                                .transition(DrawableTransitionOptions.withCrossFade())
+                                .into(mImageView)
+                        }
+                    }
                 } else {
-                    mPicasso.load(R.drawable.ic_insert_drive_file_blue_36dp)
-                        .noFade()
+                    println(item.mediaInfo)
+                    Glide.with(applicationContext)
+                        .load(R.drawable.ic_insert_drive_file_blue_36dp)
+                        .transition(DrawableTransitionOptions.withCrossFade())
                         .into(mImageView)
                 }
             } else if (item is FolderMetadata) {
-                mPicasso.load(R.drawable.ic_folder_blue_36dp)
-                    .noFade()
+                Glide.with(applicationContext)
+                    .load(R.drawable.ic_folder_blue_36dp)
+                    .transition(DrawableTransitionOptions.withCrossFade())
                     .into(mImageView)
             }
         }

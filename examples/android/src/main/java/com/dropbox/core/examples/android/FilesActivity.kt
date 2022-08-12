@@ -12,6 +12,7 @@ import android.util.Log
 import android.view.View
 import android.webkit.MimeTypeMap
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContract
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
@@ -48,8 +49,8 @@ class FilesActivity : DropboxActivity() {
         fab.setOnClickListener { performWithPermissions(FileAction.UPLOAD) }
         val recyclerView = findViewById<View>(R.id.files_list) as RecyclerView
         mFilesAdapter = FilesAdapter(
-            SamplePicassoClient(this, dropboxApi.dropboxClient).picasso,
-            object : FilesAdapter.Callback {
+            dbxClientV2 = dropboxApi.dropboxClient,
+            mCallback = object : FilesAdapter.Callback {
                 override fun onFolderClicked(folder: FolderMetadata?) {
                     requireNotNull(folder)
                     startActivity(getIntent(this@FilesActivity, folder.pathLower))
