@@ -43,8 +43,17 @@ jobs:
         REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
       run: ./generate-ci-auth-file
 
-    - name: Run Integration Tests
-      run: ./scripts/run-integration-tests $(find `pwd` -name auth_output)
+    - name: Run OkHttpRequestor Integration Tests
+      run: ./gradlew -Pcom.dropbox.test.httpRequestor=OkHttpRequestor -Pcom.dropbox.test.authInfoFile=auth_output integrationTest proguardTest
+
+    - name: Run OkHttp3Requestor Integration Tests
+      run: ./gradlew -Pcom.dropbox.test.httpRequestor=OkHttp3Requestor -Pcom.dropbox.test.authInfoFile=auth_output integrationTest proguardTest
+
+    - name: Run StandardHttpRequestor Integration Tests
+      run: ./gradlew -Pcom.dropbox.test.httpRequestor=StandardHttpRequestor -Pcom.dropbox.test.authInfoFile=auth_output integrationTest proguardTest
+
+    - name: Assemble Samples
+      run: cd examples && ./gradlew assemble
 
     - name: Upload Artifacts
       run: ./gradlew publishAllPublicationsToMavenCentralRepository --no-daemon --no-parallel
