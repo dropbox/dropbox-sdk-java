@@ -11,10 +11,6 @@ sealed class DropboxUploadApiResponse {
     data class Failure(val exception: DbxException) : DropboxUploadApiResponse()
 }
 
-sealed class DropboxApiResponses {
-    data class Success(val fileMetadata: FileMetadata) : DropboxApiResponses()
-    data class Failure(val exception: DbxException) : DropboxApiResponses()
-}
 sealed class DropboxAccountInfoResponse {
     data class Success(val accountInfo: FullAccount) : DropboxAccountInfoResponse()
     data class Failure(val exception: DbxException) : DropboxAccountInfoResponse()

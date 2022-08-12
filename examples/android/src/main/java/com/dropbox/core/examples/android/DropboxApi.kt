@@ -3,7 +3,6 @@ package com.dropbox.core.examples.android
 import com.dropbox.core.DbxException
 import com.dropbox.core.DbxRequestConfig
 import com.dropbox.core.examples.android.internal.DropboxAccountInfoResponse
-import com.dropbox.core.examples.android.internal.DropboxOAuthUtil
 import com.dropbox.core.examples.android.internal.DropboxUploadApiResponse
 import com.dropbox.core.examples.android.internal.GetFilesApiResponse
 import com.dropbox.core.examples.android.internal.GetFilesResponse

@@ -2,4 +2,6 @@
     <string name="app_name">Dropbox Java SDK Android Example</string>
     <string name="title_activity_files">Files</string>
     <string name="title_activity_openwith">Open With</string>
+    <string name="login_with_dropbox">Login with Dropbox</string>
+    <string name="logout_of_dropbox">Logout of Dropbox</string>
 </resources>

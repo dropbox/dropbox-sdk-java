@@ -35,11 +35,10 @@ class UserActivity : DropboxActivity() {
         val toolbar = findViewById<Toolbar>(R.id.app_bar)
         setSupportActionBar(toolbar)
         val loginButton = findViewById<Button>(R.id.login_button)
-        loginButton.setOnClickListener { v: View? ->
+        loginButton.setOnClickListener {
             dropboxOAuthUtil.startDropboxAuthorization(this)
         }
-        val filesButton = findViewById<Button>(R.id.files_button)
-        filesButton.setOnClickListener { v: View? ->
+        filesButton.setOnClickListener {
             startActivity(
                 FilesActivity.getIntent(
                     this@UserActivity,
@@ -48,16 +47,9 @@ class UserActivity : DropboxActivity() {
             )
         }
         val openWithButton = findViewById<Button>(R.id.open_with)
-        openWithButton.setOnClickListener { v: View? ->
+        openWithButton.setOnClickListener {
             val openWithIntent = Intent(this@UserActivity, OpenWithActivity::class.java)
             startActivity(openWithIntent)
-        }
-
-        dropboxOAuthUtil.showWarningDialogIfAppKeyNotSet(this)
-
-        dropboxCredentialUtil.getLocalCredential()?.let {
-            fetchAccountInfo()
-            fetchDropboxFolder()
         }
 
         dropboxOAuthUtil.showWarningDialogIfAppKeyNotSet(this)
@@ -106,18 +98,20 @@ class UserActivity : DropboxActivity() {
 
     override fun loadData() {
         fetchAccountInfo()
-        fetchDropboxFolder()
     }
-
-    private val newFilesAdapter = NewFilesAdapter()
 
     private val loginButton get() = findViewById<Button>(R.id.login_button)
     private val logoutButton get() = findViewById<Button>(R.id.logout_button)
-    private val uploadButton get() = findViewById<Button>(R.id.upload_button)
-    private val filesRecyclerView get() = findViewById<RecyclerView>(R.id.files)
+    private val uploadImageButton get() = findViewById<Button>(R.id.upload_button)
     private val accountPhoto get() = findViewById<ImageView>(R.id.account_photo)
     private val exceptionText get() = findViewById<TextView>(R.id.exception_text)
     private val uploadLoading get() = findViewById<ProgressBar>(R.id.upload_loading)
+    private val loggedInContent get() = findViewById<View>(R.id.logged_in_content)
+    private val emailText get() = findViewById<View>(R.id.email_text)
+    private val typeText get() = findViewById<View>(R.id.type_text)
+    private val nameText get() = findViewById<View>(R.id.name_text)
+    private val filesButton get() = findViewById<Button>(R.id.files_button)
+    private val openWithButton get() = findViewById<Button>(R.id.open_with)
 
     override fun onStart() {
         super.onStart()
@@ -128,60 +122,38 @@ class UserActivity : DropboxActivity() {
             dropboxOAuthUtil.revokeDropboxAuthorization(lifecycleScope)
             resetUi()
         }
-        uploadButton.setOnClickListener {
+        uploadImageButton.setOnClickListener {
             selectFileForUpload()
         }
-        filesRecyclerView.adapter = newFilesAdapter
     }
 
     private fun resetUi() {
-        newFilesAdapter.submitList(emptyList())
         accountPhoto.setImageBitmap(null)
 
         if (isAuthenticated()) {
-            findViewById<View>(R.id.login_button).visibility = View.GONE
-            findViewById<View>(R.id.email_text).visibility = View.VISIBLE
-            findViewById<View>(R.id.name_text).visibility = View.VISIBLE
-            findViewById<View>(R.id.type_text).visibility = View.VISIBLE
-            findViewById<View>(R.id.files_button).isEnabled = true
-            findViewById<View>(R.id.open_with).isEnabled = true
-
-
-            uploadButton.isEnabled = true
+            emailText.visibility = View.VISIBLE
+            nameText.visibility = View.VISIBLE
+            typeText.visibility = View.VISIBLE
+            loggedInContent.visibility = View.VISIBLE
             logoutButton.visibility = View.VISIBLE
+
             loginButton.visibility = View.GONE
+
+            filesButton.isEnabled = true
+            openWithButton.isEnabled = true
+            uploadImageButton.isEnabled = true
         } else {
-            findViewById<View>(R.id.login_button).visibility = View.VISIBLE
-            findViewById<View>(R.id.email_text).visibility = View.GONE
-            findViewById<View>(R.id.name_text).visibility = View.GONE
-            findViewById<View>(R.id.type_text).visibility = View.GONE
-            findViewById<View>(R.id.files_button).isEnabled = false
-            findViewById<View>(R.id.open_with).isEnabled = false
+            emailText.visibility = View.GONE
+            loggedInContent.visibility = View.GONE
+            nameText.visibility = View.GONE
+            typeText.visibility = View.GONE
+            logoutButton.visibility = View.GONE
 
             loginButton.visibility = View.VISIBLE
-            logoutButton.visibility = View.GONE
-            uploadButton.isEnabled = false
-        }
-    }
 
-    private fun fetchDropboxFolder() {
-        lifecycleScope.launch {
-            dropboxApi.getFilesForFolderFlow("").collect {
-                when (it) {
-                    is GetFilesResponse.Failure -> {
-                        Toast.makeText(
-                            applicationContext,
-                            "Error getting Dropbox files!",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        exceptionText.text =
-                            "type: ${it.exception.javaClass} + ${it.exception.localizedMessage}"
-                    }
-                    is GetFilesResponse.Success -> {
-                        newFilesAdapter.submitList(it.result)
-                    }
-                }
-            }
+            uploadImageButton.isEnabled = false
+            filesButton.isEnabled = false
+            openWithButton.isEnabled = false
         }
     }
 
