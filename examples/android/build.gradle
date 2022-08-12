@@ -14,7 +14,6 @@ android {
 
         Properties localProperties = getLocalProperties()
         String dropboxKey = localProperties['DROPBOX_APP_KEY']
-        System.out.println("Dropbox App Key: $dropboxKey")
         if (dropboxKey == null) {
             logger.warn("No value provided for DROPBOX_APP_KEY.  Specify a value in a examples/android/local.properties file. You can register for one at https://developers.dropbox.com/")
             dropboxKey = "PUT_YOUR_APP_KEY_HERE"
@@ -31,6 +30,7 @@ android {
         }
         debug {
             minifyEnabled false
+            shrinkResources false
         }
     }
 

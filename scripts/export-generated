@@ -24,7 +24,7 @@ IGNORE_PATTERNS = [
     '/stone.gradle',
     '/stone_legacy.gradle', # required by dbapp-android integration until stone-gradle-plugin is public
     '/proguard', # ProGuard tests are mostly for release testing
-    '/standalone-settings.gradle', # ugly hack due to Android Studio bug
+    '/settings.gradle', # ugly hack due to Android Studio bug
 ]
 
 cmdline_desc = """\
