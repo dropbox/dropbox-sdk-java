@@ -1,13 +1,11 @@
 package com.dropbox.core.examples.android
 
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.MimeTypeMap
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
@@ -34,7 +32,7 @@ import kotlinx.coroutines.withContext
 class FilesAdapter(
     private val dbxClientV2: DbxClientV2,
     private val mCallback: Callback,
-    private val scope:CoroutineScope,
+    private val scope: CoroutineScope,
 ) :
     RecyclerView.Adapter<MetadataViewHolder>() {
     private var mFiles: List<Metadata>? = null
@@ -52,7 +50,7 @@ class FilesAdapter(
         val context = viewGroup.context
         val view = LayoutInflater.from(context)
             .inflate(R.layout.files_item, viewGroup, false)
-        return MetadataViewHolder(scope, view)
+        return MetadataViewHolder(view)
     }
 
     override fun onBindViewHolder(metadataViewHolder: MetadataViewHolder, i: Int) {
@@ -67,7 +65,7 @@ class FilesAdapter(
         return if (mFiles == null) 0 else mFiles!!.size
     }
 
-    inner class MetadataViewHolder(scope: CoroutineScope, itemView: View) : RecyclerView.ViewHolder(itemView),
+    inner class MetadataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
         View.OnClickListener {
         private var job: Job? = null
         private val mTextView: TextView
@@ -107,29 +105,27 @@ class FilesAdapter(
                 val type = mime.getMimeTypeFromExtension(ext)
                 if (type != null && type.startsWith("image/")) {
                     job = scope.launch {
-                        withContext(Dispatchers.Main) {
-                            Glide.with(applicationContext)
-                                .load(R.drawable.ic_photo_grey_600_36dp)
-                                .transition(DrawableTransitionOptions.withCrossFade())
-                                .into(mImageView)
+                        Glide.with(applicationContext)
+                            .load(R.drawable.ic_photo_grey_600_36dp)
+                            .transition(DrawableTransitionOptions.withCrossFade())
+                            .into(mImageView)
+
+                        val byteBuffer = ByteArrayOutputStream()
+                        withContext(Dispatchers.IO) {
+                            val downloader: DbxDownloader<FileMetadata> = dbxClientV2.files()
+                                .getThumbnailBuilder(item.getPathLower())
+                                .withFormat(ThumbnailFormat.JPEG)
+                                .withSize(ThumbnailSize.W1024H768)
+                                .start()
+                            downloader.download(byteBuffer)
                         }
 
-                        val downloader: DbxDownloader<FileMetadata> = dbxClientV2.files()
-                            .getThumbnailBuilder(item.getPathLower())
-                            .withFormat(ThumbnailFormat.JPEG)
-                            .withSize(ThumbnailSize.W1024H768)
-                            .start()
-                        val byteBuffer = ByteArrayOutputStream()
-                        downloader.download(byteBuffer)
-
-                        withContext(Dispatchers.Main) {
                             Glide.with(applicationContext)
                                 .load(byteBuffer.toByteArray())
                                 .placeholder(R.drawable.ic_photo_grey_600_36dp)
                                 .error(R.drawable.ic_photo_grey_600_36dp)
                                 .transition(DrawableTransitionOptions.withCrossFade())
                                 .into(mImageView)
-                        }
                     }
                 } else {
                     println(item.mediaInfo)

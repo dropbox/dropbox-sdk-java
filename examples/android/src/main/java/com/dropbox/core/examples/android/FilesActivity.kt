@@ -12,7 +12,6 @@ import android.util.Log
 import android.view.View
 import android.webkit.MimeTypeMap
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContract
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
@@ -26,6 +25,7 @@ import com.dropbox.core.v2.files.FolderMetadata
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.io.File
 import java.text.DateFormat
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -60,7 +60,9 @@ class FilesActivity : DropboxActivity() {
                     mSelectedFile = file
                     performWithPermissions(FileAction.DOWNLOAD)
                 }
-            })
+            },
+            scope = lifecycleScope,
+        )
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = mFilesAdapter
         mSelectedFile = null
