@@ -121,12 +121,12 @@ class FilesAdapter(
                             downloader.download(byteBuffer)
                         }
 
-                            Glide.with(applicationContext)
-                                .load(byteBuffer.toByteArray())
-                                .placeholder(R.drawable.ic_photo_grey_600_36dp)
-                                .error(R.drawable.ic_photo_grey_600_36dp)
-                                .transition(DrawableTransitionOptions.withCrossFade())
-                                .into(mImageView)
+                        Glide.with(applicationContext)
+                            .load(byteBuffer.toByteArray())
+                            .placeholder(R.drawable.ic_photo_grey_600_36dp)
+                            .error(R.drawable.ic_photo_grey_600_36dp)
+                            .transition(DrawableTransitionOptions.withCrossFade())
+                            .into(mImageView)
                     }
                 } else {
                     println(item.mediaInfo)

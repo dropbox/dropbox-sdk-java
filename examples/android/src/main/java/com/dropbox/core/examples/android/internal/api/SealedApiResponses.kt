@@ -22,7 +22,6 @@ sealed interface ListFolderApiResult {
     class Error(val e: Exception) : ListFolderApiResult
 }
 
-
 sealed interface GetCurrentAccountResult {
     class Success(val account: FullAccount) : GetCurrentAccountResult
     class Error(val e: Exception) : GetCurrentAccountResult

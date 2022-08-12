@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Path"
-            android:layout_centerInParent="true"/>
+            android:layout_centerInParent="true" />
 
 
         <Button
@@ -30,42 +30,42 @@
             android:id="@+id/generate_intent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Test Generating Openwith Intent"/>
+            android:text="Test Generating Openwith Intent" />
 
         <Button
             style="@style/ButtonStyle"
             android:id="@+id/is_installed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Test Is Installed"/>
+            android:text="Test Is Installed" />
 
         <Button
             style="@style/ButtonStyle"
             android:id="@+id/is_linked_any_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Test Is Linked Any"/>
+            android:text="Test Is Linked Any" />
 
         <Button
             style="@style/ButtonStyle"
             android:id="@+id/is_linked_spec_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Test Is Linked Spec"/>
+            android:text="Test Is Linked Spec" />
 
         <Button
             style="@style/ButtonStyle"
             android:id="@+id/preview_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Test Preview"/>
+            android:text="Test Preview" />
 
         <Button
             style="@style/ButtonStyle"
             android:id="@+id/upgrade_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Test Upgrade"/>
+            android:text="Test Upgrade" />
 
     </LinearLayout>
 
