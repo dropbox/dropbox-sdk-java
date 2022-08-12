@@ -14,23 +14,20 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.dropbox.core.examples.android.internal.DropboxUploadApiResponse
-import com.dropbox.core.examples.android.internal.GetFilesResponse
-import com.dropbox.core.examples.android.internal.OpenWithActivity
+import com.dropbox.core.examples.android.internal.api.DropboxUploadApiResponse
+import com.dropbox.core.examples.android.internal.api.GetCurrentAccountResult
 import java.io.InputStream
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 /**
  * Activity that shows information about the currently logged in user
  */
-class UserActivity : DropboxActivity() {
+class HomeActivity : BaseSampleActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_user)
+        setContentView(R.layout.activity_home)
 
         val toolbar = findViewById<Toolbar>(R.id.app_bar)
         setSupportActionBar(toolbar)
@@ -41,14 +38,14 @@ class UserActivity : DropboxActivity() {
         filesButton.setOnClickListener {
             startActivity(
                 FilesActivity.getIntent(
-                    this@UserActivity,
+                    this@HomeActivity,
                     ""
                 )
             )
         }
         val openWithButton = findViewById<Button>(R.id.open_with)
         openWithButton.setOnClickListener {
-            val openWithIntent = Intent(this@UserActivity, OpenWithActivity::class.java)
+            val openWithIntent = Intent(this@HomeActivity, OpenWithActivity::class.java)
             startActivity(openWithIntent)
         }
 
@@ -57,12 +54,7 @@ class UserActivity : DropboxActivity() {
 
     private fun fetchAccountInfo() {
         lifecycleScope.launch {
-            val accountResult = GetCurrentAccountTask(
-                dropboxApi.dropboxClient,
-                Dispatchers.IO,
-            ).execute()
-
-            when (accountResult) {
+            when (val accountResult = dropboxApiWrapper.getCurrentAccount()) {
                 is GetCurrentAccountResult.Error -> {
                     Log.e(
                         javaClass.name,
@@ -164,7 +156,7 @@ class UserActivity : DropboxActivity() {
     private fun uploadFile(fileName: String, inputStream: InputStream) {
         lifecycleScope.launch {
             uploadLoading.visibility = View.VISIBLE
-            val response = dropboxApi.uploadFile(fileName, inputStream)
+            val response = dropboxApiWrapper.uploadFile(fileName, inputStream)
             uploadLoading.visibility = View.GONE
             when (response) {
                 is DropboxUploadApiResponse.Failure -> {

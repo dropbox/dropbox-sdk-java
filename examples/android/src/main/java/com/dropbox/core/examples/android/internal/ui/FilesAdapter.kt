@@ -1,4 +1,4 @@
-package com.dropbox.core.examples.android
+package com.dropbox.core.examples.android.internal.ui
 
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.dropbox.core.DbxDownloader
-import com.dropbox.core.examples.android.FilesAdapter.MetadataViewHolder
+import com.dropbox.core.examples.android.R
+import com.dropbox.core.examples.android.internal.ui.FilesAdapter.MetadataViewHolder
 import com.dropbox.core.v2.DbxClientV2
 import com.dropbox.core.v2.files.FileMetadata
 import com.dropbox.core.v2.files.FolderMetadata

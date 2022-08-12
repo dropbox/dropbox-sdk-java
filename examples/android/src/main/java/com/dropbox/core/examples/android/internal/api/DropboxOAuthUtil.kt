@@ -1,10 +1,9 @@
-package com.dropbox.core.examples.android.internal
+package com.dropbox.core.examples.android.internal.api
 
 import android.content.Context
 import androidx.appcompat.app.AlertDialog
 import com.dropbox.core.DbxRequestConfig
 import com.dropbox.core.android.Auth
-import com.dropbox.core.examples.android.DropboxApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -47,9 +46,9 @@ class DropboxOAuthUtil(
 
     fun revokeDropboxAuthorization(scope: CoroutineScope) {
         val credential = dropboxCredentialUtil.getLocalCredential()
-        val dropboxApi = DropboxApi(credential!!, dropboxAppConfig.clientIdentifier)
+        val dropboxApiWrapper = DropboxApiWrapper(credential!!, dropboxAppConfig.clientIdentifier)
         scope.launch {
-            dropboxApi.revokeDropboxAuthorization()
+            dropboxApiWrapper.revokeDropboxAuthorization()
         }
         dropboxCredentialUtil.removeCredentialLocally()
     }

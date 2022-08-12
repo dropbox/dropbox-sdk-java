@@ -1,4 +1,4 @@
-package com.dropbox.core.examples.android.internal
+package com.dropbox.core.examples.android
 
 import android.content.Context
 import android.content.Intent
@@ -15,8 +15,6 @@ import com.dropbox.core.android.Auth
 import com.dropbox.core.android.DbxOfficialAppConnector
 import com.dropbox.core.android.DropboxParseException
 import com.dropbox.core.android.DropboxUidNotInitializedException
-import com.dropbox.core.examples.android.DropboxActivity
-import com.dropbox.core.examples.android.R
 
 /**
  * This example is only for 3rd party apps who registered OpenWith feature at our server side who use
@@ -25,7 +23,7 @@ import com.dropbox.core.examples.android.R
  * you don't need openwith or if you use regular {@value Intent#ACTION_EDIT} and
  * {@value Intent#ACTION_VIEW}.
  */
-class OpenWithActivity : DropboxActivity() {
+class OpenWithActivity : BaseSampleActivity() {
     private var mDoac: DbxOfficialAppConnector? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

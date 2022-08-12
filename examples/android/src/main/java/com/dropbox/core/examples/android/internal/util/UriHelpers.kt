@@ -1,4 +1,4 @@
-package com.dropbox.core.examples.android
+package com.dropbox.core.examples.android.internal.util
 
 import android.content.ContentUris
 import android.content.Context

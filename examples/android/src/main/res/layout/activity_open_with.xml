@@ -4,7 +4,7 @@
     android:id="@+id/activity_open_with"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.dropbox.core.examples.android.internal.OpenWithActivity">
+    tools:context="com.dropbox.core.examples.android.OpenWithActivity">
 
     <include layout="@layout/app_bar" />
 

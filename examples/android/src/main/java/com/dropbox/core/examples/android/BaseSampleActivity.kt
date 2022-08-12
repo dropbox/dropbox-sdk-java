@@ -3,16 +3,17 @@ package com.dropbox.core.examples.android
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import com.dropbox.core.android.Auth
-import com.dropbox.core.examples.android.internal.DropboxAppConfig
-import com.dropbox.core.examples.android.internal.DropboxCredentialUtil
-import com.dropbox.core.examples.android.internal.DropboxOAuthUtil
+import com.dropbox.core.examples.android.internal.api.DropboxApiWrapper
+import com.dropbox.core.examples.android.internal.api.DropboxAppConfig
+import com.dropbox.core.examples.android.internal.api.DropboxCredentialUtil
+import com.dropbox.core.examples.android.internal.api.DropboxOAuthUtil
 
 
 /**
  * Base class for Activities that require auth tokens
  * Will redirect to auth flow if needed
  */
-abstract class DropboxActivity : AppCompatActivity() {
+abstract class BaseSampleActivity : AppCompatActivity() {
 
     protected val dropboxAppConfig = DropboxAppConfig()
 
@@ -25,8 +26,8 @@ abstract class DropboxActivity : AppCompatActivity() {
         )
     }
 
-    protected val dropboxApi
-        get() = DropboxApi(
+    protected val dropboxApiWrapper
+        get() = DropboxApiWrapper(
             dbxCredential = dropboxCredentialUtil.getLocalCredential()!!,
             clientIdentifier = dropboxAppConfig.clientIdentifier
         )

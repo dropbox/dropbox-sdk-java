@@ -1,4 +1,4 @@
-package com.dropbox.core.examples.android.internal
+package com.dropbox.core.examples.android.internal.api
 
 import com.dropbox.core.examples.android.BuildConfig
 

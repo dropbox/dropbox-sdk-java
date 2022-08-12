@@ -43,14 +43,14 @@ jobs:
         REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
       run: ./generate-ci-auth-file
 
-    - name: Assemble Android Samples
-      run: cd examples && ./gradlew :android:assemble --info
-
     - name: Check
       run: ./gradlew check
 
-    - name: Check Samples
+    - name: Check Examples
       run: cd examples && ./gradlew check
+
+    - name: Assemble Examples
+      run: cd examples && ./gradlew assemble
 
     - name: Run Integration Tests - OkHttpRequestor
       run: ./gradlew -Pcom.dropbox.test.httpRequestor=OkHttpRequestor -Pcom.dropbox.test.authInfoFile=auth_output integrationTest &&

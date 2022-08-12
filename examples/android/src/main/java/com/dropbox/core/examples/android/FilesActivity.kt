@@ -20,13 +20,16 @@ import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.dropbox.core.examples.android.internal.api.DownloadFileTaskResult
+import com.dropbox.core.examples.android.internal.api.FileMetadataApiResult
+import com.dropbox.core.examples.android.internal.api.ListFolderApiResult
+import com.dropbox.core.examples.android.internal.ui.FilesAdapter
+import com.dropbox.core.examples.android.internal.util.UriHelpers
 import com.dropbox.core.v2.files.FileMetadata
 import com.dropbox.core.v2.files.FolderMetadata
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.io.File
 import java.text.DateFormat
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
@@ -34,7 +37,7 @@ import kotlinx.coroutines.launch
  * Activity that displays the content of a path in dropbox and lets users navigate folders,
  * and upload/download files
  */
-class FilesActivity : DropboxActivity() {
+class FilesActivity : BaseSampleActivity() {
     private var mPath: String? = null
     private var mFilesAdapter: FilesAdapter? = null
     private var mSelectedFile: FileMetadata? = null
@@ -49,7 +52,7 @@ class FilesActivity : DropboxActivity() {
         fab.setOnClickListener { performWithPermissions(FileAction.UPLOAD) }
         val recyclerView = findViewById<View>(R.id.files_list) as RecyclerView
         mFilesAdapter = FilesAdapter(
-            dbxClientV2 = dropboxApi.dropboxClient,
+            dbxClientV2 = dropboxApiWrapper.dropboxClient,
             mCallback = object : FilesAdapter.Callback {
                 override fun onFolderClicked(folder: FolderMetadata?) {
                     requireNotNull(folder)
@@ -133,10 +136,7 @@ class FilesActivity : DropboxActivity() {
             FileAction.UPLOAD -> launchFilePicker()
             FileAction.DOWNLOAD -> if (mSelectedFile != null) {
                 downloadFile(mSelectedFile!!)
-            } else {
-                Log.e(TAG, "No file selected to download.")
             }
-            else -> Log.e(TAG, "Can't perform unhandled file action: $action")
         }
     }
 
@@ -149,8 +149,7 @@ class FilesActivity : DropboxActivity() {
             }
             dialog.show()
             lifecycleScope.launch {
-                val apiResult = ListFolderTask(dropboxApi.dropboxClient).execute(path)
-                when (apiResult) {
+                when (val apiResult = dropboxApiWrapper.listFolders(path)) {
                     is ListFolderApiResult.Error -> {
                         dialog.dismiss()
                         Log.e(TAG, "Failed to list folder.", apiResult.e)
@@ -178,11 +177,9 @@ class FilesActivity : DropboxActivity() {
         }
         dialog.show()
         lifecycleScope.launch {
-            val downloadFileTaskResult = DownloadFileTask(
-                this@FilesActivity,
-                dropboxApi.dropboxClient,
-                Dispatchers.IO,
-            ).download(file)
+            val downloadFileTaskResult = dropboxApiWrapper.download(
+                this@FilesActivity.applicationContext, file
+            )
             when (downloadFileTaskResult) {
                 is DownloadFileTaskResult.Error -> {
                     dialog.dismiss()
@@ -232,16 +229,9 @@ class FilesActivity : DropboxActivity() {
         dialog.setMessage("Uploading")
         dialog.show()
         lifecycleScope.launch {
-            val uploadedFileResult = UploadFileTask(
-                applicationContext,
-                dropboxApi.dropboxClient,
-                Dispatchers.IO
-            ).execute(
-                fileUri,
-                mPath!!
-            )
+            val localFile = UriHelpers.getFileForUri(applicationContext, Uri.parse(fileUri))
 
-            when (uploadedFileResult) {
+            when (val uploadedFileResult = dropboxApiWrapper.uploadFile(localFile!!, mPath!!)) {
                 is FileMetadataApiResult.Error -> {
                     dialog.dismiss()
                     Log.e(TAG, "Failed to upload file.", uploadedFileResult.e)
@@ -256,8 +246,7 @@ class FilesActivity : DropboxActivity() {
                     dialog.dismiss()
                     val message = result.name + " size " + result.size + " modified " +
                             DateFormat.getDateTimeInstance().format(result.clientModified)
-                    Toast.makeText(this@FilesActivity, message, Toast.LENGTH_SHORT)
-                        .show()
+                    Toast.makeText(this@FilesActivity, message, Toast.LENGTH_SHORT).show()
 
                     // Reload the folder
                     loadData()
