@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme"
         android:supportsRtl="false">
         <activity
-            android:name=".UserActivity"
+            android:name=".HomeActivity"
             android:exported="true"
             android:label="@string/app_name">
             <intent-filter>
@@ -31,9 +31,8 @@
             android:configChanges="orientation|keyboard"
             android:launchMode="singleTask">
             <intent-filter>
-
                 <!-- Change this to be db- followed by your app key -->
-                <data android:scheme="db-YOUR_APP_KEY_HERE" />
+                <data android:scheme="db-${dropboxKey}" />
 
                 <action android:name="android.intent.action.VIEW" />
 
@@ -42,15 +41,25 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".internal.OpenWithActivity"
+            android:name=".OpenWithActivity"
             android:exported="true"
             android:label="@string/title_activity_openwith">
             <intent-filter>
-                <action android:name="com.dropbox.android.intent.action.DBXC_EDIT"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <data android:mimeType="text/plain"/>
+                <action android:name="com.dropbox.android.intent.action.DBXC_EDIT" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
     </application>
 
 </manifest>

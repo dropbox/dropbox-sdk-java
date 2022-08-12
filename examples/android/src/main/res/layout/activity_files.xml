@@ -1,5 +1,4 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
 
     android:orientation="vertical"
@@ -25,7 +24,7 @@
             android:layout_gravity="bottom|end"
             app:borderWidth="0dp"
             android:layout_margin="@dimen/fab_margin"
-            android:src="@drawable/ic_add_white_24dp"/>
+            android:src="@drawable/ic_add_white_24dp" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </LinearLayout>

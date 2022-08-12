@@ -27,10 +27,6 @@ examples_gradle() {
     (cd "${DIR}/examples" && run ./gradlew "$@")
 }
 
-android_gradle() {
-    (cd "${DIR}/examples/android" && run ./gradlew "$@")
-}
-
 run_example() {
     (cd "${DIR}/examples" && run ./run --fail-on-error "$@")
 }

@@ -43,8 +43,26 @@ jobs:
         REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
       run: ./generate-ci-auth-file
 
-    - name: Run Integration Tests
-      run: ./scripts/run-integration-tests $(find `pwd` -name auth_output)
+    - name: Check
+      run: ./gradlew check
+
+    - name: Check Examples
+      run: cd examples && ./gradlew check
+
+    - name: Assemble Examples
+      run: cd examples && ./gradlew assemble
+
+    - name: Run Integration Tests - OkHttpRequestor
+      run: ./gradlew -Pcom.dropbox.test.httpRequestor=OkHttpRequestor -Pcom.dropbox.test.authInfoFile=auth_output integrationTest &&
+           ./gradlew -Pcom.dropbox.test.httpRequestor=OkHttpRequestor -Pcom.dropbox.test.authInfoFile=../auth_output proguardTest
+
+    - name: Run Integration Tests - OkHttp3Requestor
+      run: ./gradlew -Pcom.dropbox.test.httpRequestor=OkHttp3Requestor -Pcom.dropbox.test.authInfoFile=auth_output integrationTest &&
+           ./gradlew -Pcom.dropbox.test.httpRequestor=OkHttp3Requestor -Pcom.dropbox.test.authInfoFile=../auth_output proguardTest
+
+    - name: Run Integration Tests - StandardHttpRequestor
+      run: ./gradlew -Pcom.dropbox.test.httpRequestor=StandardHttpRequestor -Pcom.dropbox.test.authInfoFile=auth_output integrationTest &&
+           ./gradlew -Pcom.dropbox.test.httpRequestor=StandardHttpRequestor -Pcom.dropbox.test.authInfoFile=../auth_output proguardTest
 
     - name: Upload Artifacts
       run: ./gradlew publishAllPublicationsToMavenCentralRepository --no-daemon --no-parallel

@@ -26,3 +26,6 @@ classyshark*
 
 # macOS
 *.DS_Store
+
+# Integration Test Auth Info
+auth_output
