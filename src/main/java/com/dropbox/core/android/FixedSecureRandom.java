@@ -70,7 +70,7 @@ public final class FixedSecureRandom extends SecureRandom {
         public LinuxPrngSecureRandomProvider()
         {
             super("LinuxPRNG",
-                    1.0,
+                    "1.0",
                     "A Linux-specific random number provider that uses"
                         + " /dev/urandom");
             // Although /dev/urandom is not a SHA-1 PRNG, some apps

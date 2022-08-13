@@ -20,8 +20,8 @@ import java.util.Map;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
-import static org.mockito.Matchers.anyListOf;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -55,7 +55,7 @@ public class DbxRefreshTest extends DbxOAuthTestBase {
         actual.setIssueTime(0);
 
         assertThat(actual.getAccessToken()).isEqualTo(NEW_TOKEN);
-        assertThat(actual.getExpiresAt()).isEqualTo(new Long(EXPIRES_IN_SECONDS * 1000));
+        assertThat(actual.getExpiresAt()).isEqualTo((EXPIRES_IN_SECONDS * 1000));
     }
 
     @Test
@@ -81,7 +81,7 @@ public class DbxRefreshTest extends DbxOAuthTestBase {
         IOException {
         HttpRequestor mockRequestor = mock(HttpRequestor.class);
         when(mockUploader.finish()).thenReturn(response);
-        when(mockRequestor.startPost(anyString(), anyListOf(HttpRequestor.Header.class)))
+        when(mockRequestor.startPost(anyString(), anyList()))
             .thenReturn(mockUploader);
 
         return CONFIG.copy().withHttpRequestor(mockRequestor).build();

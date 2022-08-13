@@ -11,8 +11,8 @@ import java.util.List;
 import java.util.Locale;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.Matchers.anyListOf;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -214,7 +214,7 @@ public class DbxAuthFinishTest extends DbxOAuthTestBase {
                 .thenReturn(body);
         when(mockUploader.finish())
                 .thenReturn(finishResponse);
-        when(mockRequestor.startPost(anyString(), anyListOf(HttpRequestor.Header.class)))
+        when(mockRequestor.startPost(anyString(), anyList()))
                 .thenReturn(mockUploader);
 
         DbxRequestConfig mockConfig = CONFIG.copy()

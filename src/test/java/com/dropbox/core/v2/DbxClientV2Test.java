@@ -13,9 +13,9 @@ import com.dropbox.core.v2.auth.AuthError;
 import com.dropbox.core.v2.files.FileMetadata;
 import com.dropbox.core.v2.files.Metadata;
 
+import org.mockito.ArgumentMatchers;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-import org.mockito.Matchers;
 
 import org.testng.annotations.Test;
 
@@ -347,7 +347,7 @@ public class DbxClientV2Test {
         verify(mockRequestor, times(2)).startPost(anyString(), anyHeaders());
 
         assertThat(credential.getAccessToken()).isEqualTo("accesstoken");
-        assertThat(credential.getExpiresAt()).isEqualTo(new Long(10));
+        assertThat(credential.getExpiresAt()).isEqualTo((10L));
 
         assertThat(actual.getName()).isEqualTo(expected.getName());
         assertWithMessage(actual.getClass().toString()).that(actual instanceof FileMetadata).isTrue();
@@ -693,7 +693,7 @@ public class DbxClientV2Test {
     }
 
     private static Iterable<HttpRequestor.Header> anyHeaders() {
-        return Matchers.<Iterable<HttpRequestor.Header>>any();
+        return ArgumentMatchers.<Iterable<HttpRequestor.Header>>any();
     }
 
     private static byte [] serialize(Metadata metadata) {

@@ -43,7 +43,7 @@ public class DbxCredentialTest {
 
         DbxCredential credential = DbxCredential.Reader.readFully(responseStream);
         assertThat(credential.getAccessToken()).isEqualTo("aaaaa");
-        assertThat(credential.getExpiresAt()).isEqualTo(new Long(10));
+        assertThat(credential.getExpiresAt()).isEqualTo(10L);
         assertThat(credential.getRefreshToken()).isEqualTo("bbbbb");
         assertThat(credential.getAppKey()).isEqualTo("ccccc");
         assertThat(credential.getAppSecret()).isEqualTo("ddddd");
