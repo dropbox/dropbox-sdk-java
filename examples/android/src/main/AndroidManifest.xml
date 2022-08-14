@@ -31,7 +31,6 @@
             android:configChanges="orientation|keyboard"
             android:launchMode="singleTask">
             <intent-filter>
-                <!-- Change this to be db- followed by your app key -->
                 <data android:scheme="db-${dropboxKey}" />
 
                 <action android:name="android.intent.action.VIEW" />

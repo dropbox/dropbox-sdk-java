@@ -159,11 +159,10 @@ public class Main {
 
 Some more complete examples can be found here:
   * Example for a simple web app: [Web File Browser example](examples/web-file-browser/src/main/java/com/dropbox/core/examples/web_file_browser/DropboxAuth.java)
-  * Example for an Android app written in Kotlin: [Android Kotlin Example](examples/DropboxAndroid)
-  * Example for an Android app (deprecated): [Android example](examples/android/src/main/java/com/dropbox/core/examples/android/UserActivity.java)
+  * Example for an Android app written in Kotlin: [Android Kotlin Example](examples/android)
   * Example for a command-line tool: [Command-Line Authorization example](examples/authorize/src/main/java/com/dropbox/core/examples/authorize/Main.java)
 
-To try out running this examples, please follow the instructions below.
+To try out running these examples, please follow the instructions below.
 
 ### Save your Dropbox API key
 
@@ -193,13 +192,13 @@ The output will be in "build/".
 
 1. Follow the instructions in the "Build from source" section above.
 2. Save your Dropbox API key in a file called "test.app".  See: [Save your Dropbox API key](#save-your-dropbox-api-key), above.
-3. Compile and install the SDK into your local maven repo: `./gradlew install`
-4. To compile all the examples: `(cd examples/ && ./gradlew classes`
-5. To compile just one example: `(cd examples/ && ./gradlew :<example-name>:classes`
+3. Compile and install the SDK into your local maven repo: `./gradlew build`
+4. To compile all the examples: `cd examples/ && ./gradlew classes`
+5. To compile just one example: `cd examples/ && ./gradlew :<example-name>:classes`
 
 #### authorize
 
-This examples runs through the OAuth 2 authorization flow.
+This example runs through the OAuth 2 authorization flow.
 
 ```
 cd examples
