@@ -52,17 +52,18 @@ class OpenWithActivity : BaseSampleActivity() {
         val mInstalled = findViewById<View>(R.id.is_installed) as Button
         mInstalled.setOnClickListener {
             val installInfo = DbxOfficialAppConnector.isInstalled(this@OpenWithActivity)
-            showToast(installInfo?.toString() ?: "Not installed!")
+            val toastText = installInfo?.toString() ?: "Not installed!"
+            showToast(toastText)
         }
         val mGenLinked = findViewById<View>(R.id.is_linked_any_button) as Button
         mGenLinked.setOnClickListener {
             val isSigned = DbxOfficialAppConnector.isAnySignedIn(this@OpenWithActivity)
-            showToast("Any Signed in?:$isSigned")
+            showToast("Any Signed in?: $isSigned")
         }
         val mSpecLinked = findViewById<View>(R.id.is_linked_spec_button) as Button
         mSpecLinked.setOnClickListener {
             val isSigned = mDoac!!.isSignedIn(this@OpenWithActivity)
-            showToast("Signed in?:$isSigned")
+            showToast("Signed in?: $isSigned")
         }
         val mPreview = findViewById<View>(R.id.preview_button) as Button
         mPreview.setOnClickListener {

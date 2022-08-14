@@ -61,5 +61,7 @@
                 android:resource="@xml/provider_paths" />
         </provider>
     </application>
-
+    <queries>
+        <package android:name="com.dropbox.android" />
+    </queries>
 </manifest>
