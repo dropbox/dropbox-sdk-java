@@ -1,21 +1,19 @@
-### This example is not fully up to date, please see [our latest example](../DropboxAndroid)
-
 # Example Android application (using the Dropbox SDK for Java.)
 
 This shows the Dropbox API authorization flow and some API calls to retrieve files.
 
 ## Requirements
 
-This example is backwards compatible with Android 4.4 (KitKat). Ensure your build environment supports at least Android SDK version 19.
+This example is backwards compatible with Android 5.0 (Lollipop). Ensure your build environment supports at least Android SDK version 21.
 
 ## Running the example
 
 Prerequisites: Apache Maven (to build the SDK), [Android Studio](http://developer.android.com/sdk/installing/) (not strictly necessary)
 
 1. Download this repository.
-2. Build the SDK: run `./gradlew install` in the SDK root directory (two levels up from this folder).
+2. Build the SDK: run `./gradlew build` in the SDK root directory (two levels up from this folder).
 3. In Android Studio, choose "Import Project" and select this folder.
-4. Edit "src/main/AndroidManifest.xml" and "src/main/res/values/strings.xml" and replace `YOUR_APP_KEY_HERE` with your Dropbox API key ([how to get a Dropbox API key](../../ReadMe.md#get-a-dropbox-api-key)).
+4. Edit local.properties and add `DROPBOX_APP_KEY=YOUR_KEY_HERE` with your Dropbox API key ([how to get a Dropbox API key](../../ReadMe.md#get-a-dropbox-api-key)).
 5. Build and run.
 
 If you don't have Android Studio, you can use the command-line:
