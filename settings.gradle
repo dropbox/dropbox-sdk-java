@@ -1,3 +1,2 @@
 include ':proguard'
-
-
+include ':dropbox-android-sdk'

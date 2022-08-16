@@ -1,0 +1,25 @@
+[versions]
+android_compile_sdk = "33"
+android_gradle_plugin = "7.2.2"
+android_min_sdk = "24"
+android_target_sdk = "32"
+androidx_activity = "1.5.0"
+junit_jupiter = "5.8.2"
+kotlin = "1.7.10"
+kotlin_coroutines = "1.6.4"
+
+[libraries]
+android_gradle_plugin = { module = "com.android.tools.build:gradle", version.ref = "android_gradle_plugin" }
+androidx_activity = { module = "androidx.activity:activity", version.ref = "androidx_activity" }
+junit = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit_jupiter" }
+kotlin_gradle_plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+kotlin_stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
+kotlin_test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
+kotlin_test_annotations_common = { module = "org.jetbrains.kotlin:kotlin-test-annotations-common", version.ref = "kotlin" }
+kotlin_test_common = { module = "org.jetbrains.kotlin:kotlin-test-common", version.ref = "kotlin" }
+kotlin_test_junit5 = { module = "org.jetbrains.kotlin:kotlin-test-junit5", version.ref = "kotlin" }
+kotlin_test_jvm = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
+kotlin_coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlin_coroutines" }
+
+[plugins]
+kotlin_jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
