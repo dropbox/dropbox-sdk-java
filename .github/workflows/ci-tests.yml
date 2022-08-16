@@ -43,29 +43,19 @@ jobs:
         REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
       run: ./generate-ci-auth-file
 
+    - name: Assemble
+      run: ./gradlew assemble
+
     - name: Check
       run: ./gradlew check
 
-    - name: Check Examples
-      run: cd examples && ./gradlew check
-
-    - name: Assemble Examples
-      run: cd examples && ./gradlew assemble
-
-    - name: Run Integration Tests - OkHttpRequestor
-      run: ./gradlew -Pcom.dropbox.test.httpRequestor=OkHttpRequestor -Pcom.dropbox.test.authInfoFile=auth_output integrationTest &&
-           ./gradlew -Pcom.dropbox.test.httpRequestor=OkHttpRequestor -Pcom.dropbox.test.authInfoFile=../auth_output proguardTest
-
-    - name: Run Integration Tests - OkHttp3Requestor
-      run: ./gradlew -Pcom.dropbox.test.httpRequestor=OkHttp3Requestor -Pcom.dropbox.test.authInfoFile=auth_output integrationTest &&
-           ./gradlew -Pcom.dropbox.test.httpRequestor=OkHttp3Requestor -Pcom.dropbox.test.authInfoFile=../auth_output proguardTest
-
-    - name: Run Integration Tests - StandardHttpRequestor
-      run: ./gradlew -Pcom.dropbox.test.httpRequestor=StandardHttpRequestor -Pcom.dropbox.test.authInfoFile=auth_output integrationTest &&
-           ./gradlew -Pcom.dropbox.test.httpRequestor=StandardHttpRequestor -Pcom.dropbox.test.authInfoFile=../auth_output proguardTest
+    - name: Run Integration Tests
+      run: ./gradlew -Pcom.dropbox.test.httpRequestor=OkHttpRequestor -Pcom.dropbox.test.authInfoFile=auth_output integrationTest proguardTest --no-parallel &&
+           ./gradlew -Pcom.dropbox.test.httpRequestor=OkHttp3Requestor -Pcom.dropbox.test.authInfoFile=auth_output integrationTest proguardTest --no-parallel &&
+           ./gradlew -Pcom.dropbox.test.httpRequestor=StandardHttpRequestor -Pcom.dropbox.test.authInfoFile=auth_output integrationTest proguardTest --no-parallel
 
     - name: Upload Artifacts
-      run: ./gradlew publishAllPublicationsToMavenCentralRepository --no-daemon --no-parallel
+      run: ./gradlew publishAllPublicationsToMavenCentralRepository --no-parallel
       env:
         ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.OSSRH_USERNAME }}
         ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.OSSRH_PASSWORD }}

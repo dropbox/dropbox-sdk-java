@@ -1,3 +1,7 @@
 apply plugin: 'java'
 
 description = 'Global Callbacks Example (Dropbox Core API SDK)'
+
+dependencies {
+    implementation(project(":"))
+}

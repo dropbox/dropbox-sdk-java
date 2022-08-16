@@ -282,3 +282,46 @@ allprojects {
         }
     }
 }
+
+
+subprojects {
+    pluginManager.withPlugin('java') {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+
+        dependencies {
+            implementation "com.dropbox.core:dropbox-core-sdk:5.3.0"
+        }
+
+        // allow subprojects to run with arbitrary number of arguments specified through project properties:
+        //
+        //   -Parg0=... -Parg1=... -Parg2=...
+        //
+        // This is intended to be used by the ./run script and not through gradle directly
+        task run(type: JavaExec) {
+            standardInput = System.in
+            classpath = sourceSets.main.runtimeClasspath
+            main = "com.dropbox.core.examples.${project.name.replace('-', '_')}.Main"
+
+            // convenience for not having to always specify the auth file
+            def useAuthInfoFileProp = project.properties.get('useAuthInfoFileProp', 'false') == 'true'
+            if (useAuthInfoFileProp && project.hasProperty('com.dropbox.test.authInfoFile')) {
+                args project.property('com.dropbox.test.authInfoFile')
+            }
+
+            def failOnError = project.properties.get('failOnError', 'false') == 'true'
+            ignoreExitValue !failOnError
+
+            def argi = 0
+            while (true) {
+                def prop = "arg${argi}"
+                if (project.hasProperty(prop)) {
+                    args project.property(prop)
+                } else {
+                    break
+                }
+                ++argi
+            }
+        }
+    }
+}

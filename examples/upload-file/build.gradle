@@ -1,2 +1,6 @@
 apply plugin: 'java'
 description = 'Upload File Example (Dropbox Core API SDK)'
+
+dependencies {
+    implementation(project(":"))
+}
