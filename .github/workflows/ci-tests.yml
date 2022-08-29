@@ -32,9 +32,16 @@ jobs:
     - name: Grant execute permissions
       run: chmod +x gradlew && chmod +x update-submodules
             && chmod +x generate-ci-auth-file && chmod +x scripts/run-examples
+            && chmod +x scripts/check-clean-git-status
 
     - name: Set up submodules
       run: ./update-submodules
+
+    - name: Generate Stone
+      run: ./gradlew :generateStone
+
+    - name: Ensure no generated code changes
+      run: ./scripts/check-clean-git-status
 
     - name: Obtain access token
       env:
