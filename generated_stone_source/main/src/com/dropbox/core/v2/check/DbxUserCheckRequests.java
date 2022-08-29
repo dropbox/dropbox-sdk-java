@@ -64,8 +64,8 @@ public class DbxUserCheckRequests {
      * least part of the Dropbox API infrastructure is working and that the
      * access token is valid.
      *
-     * <p> The {@code query} request parameter will default to {@code "\"\""}
-     * (see {@link #user(String)}). </p>
+     * <p> The {@code query} request parameter will default to {@code ""} (see
+     * {@link #user(String)}). </p>
      *
      * @return EchoResult contains the result returned from the Dropbox servers.
      */

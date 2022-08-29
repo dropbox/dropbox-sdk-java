@@ -64,8 +64,8 @@ public class DbxAppCheckRequests {
      * least part of the Dropbox API infrastructure is working and that the app
      * key and secret valid.
      *
-     * <p> The {@code query} request parameter will default to {@code "\"\""}
-     * (see {@link #app(String)}). </p>
+     * <p> The {@code query} request parameter will default to {@code ""} (see
+     * {@link #app(String)}). </p>
      *
      * @return EchoResult contains the result returned from the Dropbox servers.
      */
