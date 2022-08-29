@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
-
-if [[ $(git diff --stat) != '' ]]; then
+if [[ $(git status --porcelain) != '' ]]; then
     echo "Working directory is dirty. Please check that you committed any changes after running ./gradlew :generateStone";
-    git status
     exit 1
 else
     echo "Working directory is clean!"
