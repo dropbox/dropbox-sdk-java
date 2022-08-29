@@ -46,14 +46,14 @@ public class EchoResult {
      * <p> The default values for unset fields will be used. </p>
      */
     public EchoResult() {
-        this("\"\"");
+        this("");
     }
 
     /**
      * If everything worked correctly, this would be the same as query.
      *
      * @return value for this field, or {@code null} if not present. Defaults to
-     *     "\"\"".
+     *     "".
      */
     public String getResult() {
         return result;
@@ -129,7 +129,7 @@ public class EchoResult {
                 tag = readTag(p);
             }
             if (tag == null) {
-                String f_result = "\"\"";
+                String f_result = "";
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String field = p.getCurrentName();
                     p.nextToken();

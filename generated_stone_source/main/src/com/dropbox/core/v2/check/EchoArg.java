@@ -49,14 +49,14 @@ class EchoArg {
      * <p> The default values for unset fields will be used. </p>
      */
     public EchoArg() {
-        this("\"\"");
+        this("");
     }
 
     /**
      * The string that you'd like to be echoed back to you.
      *
      * @return value for this field, or {@code null} if not present. Defaults to
-     *     "\"\"".
+     *     "".
      */
     public String getQuery() {
         return query;
@@ -132,7 +132,7 @@ class EchoArg {
                 tag = readTag(p);
             }
             if (tag == null) {
-                String f_query = "\"\"";
+                String f_query = "";
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String field = p.getCurrentName();
                     p.nextToken();
