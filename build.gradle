@@ -27,8 +27,8 @@ buildscript {
         classpath files('gradle/dropbox-pem-converter-plugin')
         classpath 'gradle.plugin.com.github.blindpirate:gradle-legacy-osgi-plugin:0.0.6'
         classpath "com.vanniktech:gradle-maven-publish-plugin:0.18.0"
-        classpath(libs.android.gradle.plugin)
-        classpath(libs.kotlin.gradle.plugin)
+        classpath(dropboxJavaSdkLibs.android.gradle.plugin)
+        classpath(dropboxJavaSdkLibs.kotlin.gradle.plugin)
     }
 }
 

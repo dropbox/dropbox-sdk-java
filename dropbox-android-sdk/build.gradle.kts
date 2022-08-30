@@ -4,14 +4,14 @@ plugins {
 }
 
 android {
-    compileSdk = libs.versions.android.compile.sdk.get().toInt()
+    compileSdk = dropboxJavaSdkLibs.versions.android.compile.sdk.get().toInt()
     defaultConfig {
-        minSdk = libs.versions.android.min.sdk.get().toInt()
-        targetSdk = libs.versions.android.target.sdk.get().toInt()
+        minSdk = dropboxJavaSdkLibs.versions.android.min.sdk.get().toInt()
+        targetSdk = dropboxJavaSdkLibs.versions.android.target.sdk.get().toInt()
     }
 }
 
 dependencies {
-    implementation(libs.kotlin.stdlib)
+    implementation(dropboxJavaSdkLibs.kotlin.stdlib)
     project(":")
 }

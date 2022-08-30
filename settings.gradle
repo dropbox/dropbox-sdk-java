@@ -1,2 +1,10 @@
 include ':proguard'
 include ':dropbox-android-sdk'
+
+dependencyResolutionManagement {
+    versionCatalogs {
+        dropboxJavaSdkLibs {
+            from(files("gradle/dropboxJavaSdkLibs.versions.toml"))
+        }
+    }
+}
