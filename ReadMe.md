@@ -125,7 +125,7 @@ public class Main {
 
     public static void main(String args[]) throws DbxException, IOException {
         // Create Dropbox client
-        DbxRequestConfig config = new DbxRequestConfig("dropbox/java-tutorial", "en_US");
+        DbxRequestConfig config = DbxRequestConfig.newBuilder("dropbox/java-tutorial").build();
         DbxClientV2 client = new DbxClientV2(config, ACCESS_TOKEN);
 
         // Get current account info
@@ -158,9 +158,10 @@ public class Main {
 ## Full examples
 
 Some more complete examples can be found here:
-  * Example for a simple web app: [Web File Browser example](examples/web-file-browser/src/main/java/com/dropbox/core/examples/web_file_browser/DropboxAuth.java)
-  * Example for an Android app written in Kotlin: [Android Kotlin Example](examples/android)
-  * Example for a command-line tool: [Command-Line Authorization example](examples/authorize/src/main/java/com/dropbox/core/examples/authorize/Main.java)
+
+* Example for a simple web app: [Web File Browser example](examples/web-file-browser/src/main/java/com/dropbox/core/examples/web_file_browser/DropboxAuth.java)
+* Example for an Android app written in Kotlin: [Android Kotlin Example](examples/android)
+* Example for a command-line tool: [Command-Line Authorization example](examples/authorize/src/main/java/com/dropbox/core/examples/authorize/Main.java)
 
 To try out running these examples, please follow the instructions below.
 
@@ -168,7 +169,7 @@ To try out running these examples, please follow the instructions below.
 
 Save your Dropbox API key to a JSON file called, say, "test.app":
 
-```
+```json
 {
   "key": "Your Dropbox API app key",
   "secret": "Your Dropbox API app secret"
@@ -179,7 +180,7 @@ App key and secret can be found in you app page in [App Console](https://www.dro
 
 ### Building from source
 
-```
+```shell
 git clone https://github.com/dropbox/dropbox-sdk-java.git
 cd dropbox-sdk-java
 ./update-submodules    # also do this after every "git checkout"
@@ -200,7 +201,7 @@ The output will be in "build/".
 
 This example runs through the OAuth 2 authorization flow.
 
-```
+```shell
 cd examples
 ./run authorize test.app test.auth
 ```
@@ -211,7 +212,7 @@ This produces a file named "test.auth" that has the access token.  This file can
 
 A simple example that fetches and displays information about the account associated with the access token.
 
-```
+```shell
 cd examples
 ./run account-info test.auth
 ```
@@ -222,7 +223,7 @@ cd examples
 
 An example of how to watch for changes in a Dropbox directory.
 
-```
+```shell
 cd examples
 ./run longpoll test.auth "/path/to/watch"
 ```
@@ -233,7 +234,7 @@ cd examples
 
 Uploads a file to Dropbox. The example includes regular and chunked file uploads.
 
-```
+```shell
 cd examples
 ./run upload-file test.auth local-path/file.txt /dropbox-path/file.txt
 ```
@@ -246,7 +247,7 @@ A tiny web app that runs through the OAuth 2 authorization flow and then uses Dr
 
 Prerequisite: In the Dropbox API [app configuration console](https://www.dropbox.com/developers/apps), you need to add "http://localhost:5000/dropbox-auth-finish" to the list of allowed redirect URIs.
 
-```
+```shell
 cd examples
 ./run web-file-browser 5000 test.app web-file-browser.db
 ```
@@ -257,7 +258,8 @@ cd examples
 2. `./gradlew -Pcom.dropbox.test.authInfoFile=<path-to-test.auth> integrationTest`
 
 To run individual tests, use the `--tests` gradle test filter:
-```
+
+```shell
 ./gradlew -Pcom.dropbox.test.authInfoFile=<path-to-test.auth> integrationTest --tests '*.DbxClientV1IT.testAccountInfo'
 ```
 
@@ -268,7 +270,8 @@ In the event you are using the Android-specific code in this library (i.e. the c
 When targeting/running on Android 11 (targetSdk 30 in your app's `build.gradle`), the Android OS will restrict what installed apps your app can query for through the `PackageManager`. Since the android code in this library queries for the official Dropbox app, those restrictions will affect your app when you target SDK 30. In particular, if you don't declare that your app queries for the official Dropbox app, then you will see crashes when you hit the code that talks to the official Dropbox app.
 
 To resolve the issue, add the following to your `AndroidManifest.xml`
-```
+
+```xml
 <queries>
     <package android:name="com.dropbox.android" />
 </queries>
@@ -278,21 +281,20 @@ We are working on pulling out this Android-specific code into its own android li
 
 ## FAQ
 
-### When I use `OkHttp3Requestor` in `DbxRequestConfig`, I get errors like 'class file for okhttp3.OkHttpClient not found'.
+### When I use `OkHttp3Requestor` in `DbxRequestConfig`, I get errors like 'class file for okhttp3.OkHttpClient not found'
 
-The dependency of OKHttp/OKHttp3 is optional. You should add them, only if you explicitly want to use it as the http requestor. 
+The dependency of OKHttp/OKHttp3 is optional. You should add them, only if you explicitly want to use it as the http requestor.
 
 Example in Gradle:
 
-```
+```gradle
 dependencies {
     // ...
     api 'com.squareup.okhttp3:okhttp:3.11.0'
 }
 ```
 
-
-### When I use the bundle JAR with some OSGi containers within an OSGi subsystem, I get a "Missing required capability" error.
+### When I use the bundle JAR with some OSGi containers within an OSGi subsystem, I get a "Missing required capability" error
 
 The JAR's manifest has the following line:
 
@@ -304,7 +306,7 @@ OSGi containers running on Java 1.6 or above should provide this capability.  Un
 
 As a workaround, you can build your own version of the JAR that omits the "osgi.ee" capability by running:
 
-```
+```shell
 ./gradlew clean
 ./gradlew -Posgi.bnd.noee=true jar
 ```
