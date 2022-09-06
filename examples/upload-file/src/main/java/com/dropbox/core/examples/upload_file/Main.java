@@ -41,7 +41,7 @@ public class Main {
      * eliminates unnecessary round-trips to the servers.
      *
      * @param dbxClient Dropbox user authenticated client
-     * @param localFIle local file to upload
+     * @param localFile local file to upload
      * @param dropboxPath Where to upload the file to within Dropbox
      */
     private static void uploadFile(DbxClientV2 dbxClient, File localFile, String dropboxPath) {
@@ -73,7 +73,7 @@ public class Main {
      * to re-upload all the bytes).
      *
      * @param dbxClient Dropbox user authenticated client
-     * @param localFIle local file to upload
+     * @param localFile local file to upload
      * @param dropboxPath Where to upload the file to within Dropbox
      */
     private static void chunkedUploadFile(DbxClientV2 dbxClient, File localFile, String dropboxPath) {
