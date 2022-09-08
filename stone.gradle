@@ -216,7 +216,7 @@ project.sourceSets.all { SourceSet sourceSet ->
         stoneDir 'stone'
         routeWhitelistFilter project.properties.get(routeWhitelistFilterPropName, null)
         pythonCommand 'python'
-        outputDir "${project.rootDir}/generated_stone_source/${sourceSet.name}"
+        outputDir "${project.getProjectDir()}/generated_stone_source/${sourceSet.name}"
 
         inputs.dir { project.fileTree(dir: generatorDir, exclude: '**/*.pyc') }.withPropertyName("stone").withPathSensitivity(PathSensitivity.RELATIVE)
         inputs.dir(getSpecFiles(objects, getSpecDir().get())).withPathSensitivity(PathSensitivity.RELATIVE).withPropertyName("stoneSpec").skipWhenEmpty(true)
