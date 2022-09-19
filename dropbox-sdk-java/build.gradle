@@ -247,3 +247,18 @@ dependencyUpdates.resolutionStrategy = {
 }
 
 apply from: 'stone.gradle'
+
+apply plugin: 'com.vanniktech.maven.publish'
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    plugins.withId("com.vanniktech.maven.publish") {
+        mavenPublish {
+            sonatypeHost = "S01"
+        }
+    }
+}

@@ -38,7 +38,7 @@ jobs:
       run: ./update-submodules
 
     - name: Generate Stone
-      run: ./gradlew :generateStone
+      run: ./gradlew :dropbox-sdk-java:generateStone
 
     - name: Ensure no generated code changes
       run: ./scripts/check-clean-git-status
