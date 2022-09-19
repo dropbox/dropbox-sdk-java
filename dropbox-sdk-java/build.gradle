@@ -1,9 +1,13 @@
-import org.gradle.internal.os.OperatingSystem
-
 apply plugin: 'java-library'
+apply plugin: 'kotlin'
 apply plugin: 'com.github.blindpirate.osgi'
 apply plugin: 'com.github.ben-manes.versions' // dependencyUpdates task
 
+kotlin {
+    sourceSets {
+        main.kotlin.srcDirs += 'src/main/java'
+    }
+}
 
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
@@ -205,31 +209,6 @@ artifacts {
     archives sourcesJar
     archives javadocJar
     withoutOsgi jarWithoutOsgi
-}
-
-
-// To avoid cross-compilation surprises, add JDK6 libs to the boot classpath. This prevents issues
-// where we depend on a JDK7 interface that did not exist in JDK6.
-if (project.sourceCompatibility == JavaVersion.VERSION_1_6) {
-    if (System.env.JDK6_HOME == null) {
-        logger.warn("Set JDK6_HOME environment to disable boot classpath warnings.")
-    } else {
-        def jdkHome = System.env.JDK6_HOME
-        def sep = File.pathSeparator
-
-        logger.info("Setting JVM boot classpath to use ${jdkHome}")
-        project.tasks.withType(JavaCompile) {
-            def jdkLibs = "${jdkHome}/jre/lib"
-            def runtimeClasses = "rt.jar"
-            if (OperatingSystem.current().isMacOsX()) {
-                jdkLibs = "${jdkHome}/Classes"
-                runtimeClasses = "classes.jar"
-            }
-            options.bootClasspath = "${jdkLibs}/${runtimeClasses}"
-            options.bootClasspath += "${sep}${jdkLibs}/jsse.jar"
-            options.bootClasspath += "${sep}${jdkLibs}/jce.jar"
-        }
-    }
 }
 
 // reject dependencyUpdates candidates with alpha or beta in their names:

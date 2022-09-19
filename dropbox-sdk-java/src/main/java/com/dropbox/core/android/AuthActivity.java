@@ -1,11 +1,5 @@
 package com.dropbox.core.android;
 
-import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
@@ -16,7 +10,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -24,13 +17,21 @@ import android.os.Looper;
 import android.util.Log;
 
 import com.dropbox.core.DbxAuthFinish;
-import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxHost;
 import com.dropbox.core.DbxPKCEManager;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.DbxRequestUtil;
 import com.dropbox.core.IncludeGrantedScopes;
 import com.dropbox.core.TokenAccessType;
+import com.dropbox.core.android.internal.AuthUtils;
+import com.dropbox.core.android.internal.TokenRequestAsyncTask;
+import com.dropbox.core.android.internal.TokenType;
+
+import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
 
 //Note: This class's code is duplicated between Core SDK and Sync SDK.  For now,
 //it has to be manually copied, but the code is set up so that it can be used in both
@@ -537,11 +538,16 @@ public class AuthActivity extends Activity {
 
         if (mTokenAccessType != null) {
             // short live token flow
-            state = createPKCEStateNonce(); // to support legacy DBApp with V1 flow with
+            state = AuthUtils.createPKCEStateNonce(
+                    mPKCEManager.getCodeChallenge(),
+                    mTokenAccessType.toString(),
+                    mScope,
+                    mIncludeGrantedScopes
+            ); // to support legacy DBApp with V1 flow with
             officialAuthIntent.putExtra(EXTRA_AUTH_QUERY_PARAMS, createExtraQueryParams());
         } else {
             // Legacy long live token flow
-            state = createStateNonce();
+            state = AuthUtils.createStateNonce(getSecurityProvider());
         }
 
         officialAuthIntent.putExtra(EXTRA_CONSUMER_KEY, mAppKey);
@@ -640,7 +646,14 @@ public class AuthActivity extends Activity {
                 newResult.putExtra(EXTRA_UID, uid);
             } else if (token.equals(TokenType.OAUTH2CODE.toString())) {
                 // code flow with PKCE
-                TokenRequestAsyncTask tokenRequest = new TokenRequestAsyncTask(secret);
+                TokenRequestAsyncTask tokenRequest = new TokenRequestAsyncTask(
+                        secret,
+                        mPKCEManager,
+                        mRequestConfig,
+                        mAppKey,
+                        mHost
+                );
+
                 try {
                     DbxAuthFinish dbxAuthFinish = tokenRequest.execute().get();
 
@@ -707,36 +720,6 @@ public class AuthActivity extends Activity {
         startActivity(intent);
     }
 
-    private String createStateNonce() {
-        final int NONCE_BYTES = 16; // 128 bits of randomness.
-        byte randomBytes[] = new byte[NONCE_BYTES];
-        getSecureRandom().nextBytes(randomBytes);
-        StringBuilder sb = new StringBuilder();
-        sb.append("oauth2:");
-        for (int i = 0; i < NONCE_BYTES; ++i) {
-            sb.append(String.format("%02x", (randomBytes[i]&0xff)));
-        }
-        return sb.toString();
-    }
-
-    private String createPKCEStateNonce() {
-        String state =  String.format(Locale.US, "oauth2code:%s:%s:%s",
-                             mPKCEManager.getCodeChallenge(),
-                             DbxPKCEManager.CODE_CHALLENGE_METHODS,
-                             mTokenAccessType.toString()
-        );
-
-        if (mScope != null) {
-            state += ":" + mScope;
-        }
-
-        if (mIncludeGrantedScopes != null) {
-            state += ":" + mIncludeGrantedScopes.toString();
-        }
-
-        return state;
-    }
-
     private String createExtraQueryParams() {
         if (mTokenAccessType == null) {
             throw new IllegalStateException("Extra Query Param should only be used in short live " +
@@ -761,40 +744,5 @@ public class AuthActivity extends Activity {
         }
 
         return param;
-    }
-
-    private enum TokenType {
-        OAUTH2("oauth2:"),
-        OAUTH2CODE("oauth2code:");
-
-        private String string;
-
-        TokenType(String string) {
-            this.string = string;
-        }
-
-        @Override
-        public String toString() {
-            return string;
-        }
-    }
-
-    private class TokenRequestAsyncTask extends AsyncTask<Void, Void, DbxAuthFinish> {
-        private final String code;
-
-        private TokenRequestAsyncTask(String code) {
-            this.code = code;
-        }
-
-
-        @Override
-        protected DbxAuthFinish doInBackground(Void... p) {
-            try {
-                return mPKCEManager.makeTokenRequest(mRequestConfig, code, mAppKey, null, mHost);
-            } catch (DbxException e) {
-                Log.e(TAG, "Token Request Failed: " + e.getMessage());
-                return null;
-            }
-        }
     }
 }
