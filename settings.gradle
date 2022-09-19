@@ -1,5 +1,4 @@
 include ':proguard'
-include ':dropbox-android-sdk'
 
 dependencyResolutionManagement {
     versionCatalogs {
