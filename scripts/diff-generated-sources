@@ -21,8 +21,8 @@ cd $base_dir
 # Save the current branch name.
 branch=`git rev-parse --abbrev-ref HEAD`
 
-# Checkout master, update the suprepos and generate source files.
-git checkout master
+# Checkout main, update the suprepos and generate source files.
+git checkout main
 git submodule sync
 git submodule update --init
 ./gradlew cleanGenerateBabelSources generateBabelSources
