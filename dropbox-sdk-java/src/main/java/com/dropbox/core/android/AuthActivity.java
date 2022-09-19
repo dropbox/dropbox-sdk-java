@@ -31,6 +31,7 @@ import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.DbxRequestUtil;
 import com.dropbox.core.IncludeGrantedScopes;
 import com.dropbox.core.TokenAccessType;
+import com.dropbox.core.android.internal.TokenRequestAsyncTask;
 
 //Note: This class's code is duplicated between Core SDK and Sync SDK.  For now,
 //it has to be manually copied, but the code is set up so that it can be used in both
@@ -640,7 +641,15 @@ public class AuthActivity extends Activity {
                 newResult.putExtra(EXTRA_UID, uid);
             } else if (token.equals(TokenType.OAUTH2CODE.toString())) {
                 // code flow with PKCE
-                TokenRequestAsyncTask tokenRequest = new TokenRequestAsyncTask(secret);
+                TokenRequestAsyncTask tokenRequest = new TokenRequestAsyncTask(
+                        secret,
+                        mPKCEManager,
+                        mRequestConfig,
+                        mAppKey,
+                        mHost
+                );
+
+
                 try {
                     DbxAuthFinish dbxAuthFinish = tokenRequest.execute().get();
 
@@ -776,25 +785,6 @@ public class AuthActivity extends Activity {
         @Override
         public String toString() {
             return string;
-        }
-    }
-
-    private class TokenRequestAsyncTask extends AsyncTask<Void, Void, DbxAuthFinish> {
-        private final String code;
-
-        private TokenRequestAsyncTask(String code) {
-            this.code = code;
-        }
-
-
-        @Override
-        protected DbxAuthFinish doInBackground(Void... p) {
-            try {
-                return mPKCEManager.makeTokenRequest(mRequestConfig, code, mAppKey, null, mHost);
-            } catch (DbxException e) {
-                Log.e(TAG, "Token Request Failed: " + e.getMessage());
-                return null;
-            }
         }
     }
 }
