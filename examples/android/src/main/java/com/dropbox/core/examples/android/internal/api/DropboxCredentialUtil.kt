@@ -18,7 +18,7 @@ class DropboxCredentialUtil(appContext: Context) {
         val resultCredential: DbxCredential? = if (serializedCredential != null) {
             DbxCredential.Reader.readFully(serializedCredential)
         } else {
-            val authDbxCredential = Auth.getDbxCredential() //fetch the result from the AuthActivity
+            val authDbxCredential = Auth.dbxCredential //fetch the result from the AuthActivity
             if (authDbxCredential != null) {
                 storeCredentialLocally(authDbxCredential)
                 authDbxCredential

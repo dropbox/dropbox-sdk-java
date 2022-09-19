@@ -41,7 +41,7 @@ abstract class BaseSampleActivity : AppCompatActivity() {
 
         val prefs = getSharedPreferences("dropbox-sample", Context.MODE_PRIVATE)
 
-        val uid = Auth.getUid()
+        val uid = Auth.uid
         val storedUid = prefs.getString("user-id", null)
         if (uid != null && uid != storedUid) {
             prefs.edit().apply {

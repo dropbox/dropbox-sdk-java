@@ -19,18 +19,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package com.dropbox.core.android
 
-package com.dropbox.core.android;
-
-import com.dropbox.core.DbxException;
+import com.dropbox.core.DbxException
 
 /**
- * Thrown when {@link DbxOfficialAppConnector} is initialized with an empty uid.
+ * Thrown when [DbxOfficialAppConnector] can't parse the utm content.
  */
-public class DropboxUidNotInitializedException extends DbxException {
-    private static final long serialVersionUID = 1L;
-
-    public DropboxUidNotInitializedException(String message) {
-        super(message);
+public class DropboxParseException(message: String?) : DbxException(message) {
+    public companion object {
+        private val serialVersionUID: Long = 1L
     }
 }

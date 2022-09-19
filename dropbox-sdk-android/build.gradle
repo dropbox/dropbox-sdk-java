@@ -11,7 +11,12 @@ android {
         minSdk 21
         targetSdk 33
     }
+
+    kotlinOptions {
+        freeCompilerArgs += '-Xexplicit-api=strict'
+    }
 }
+
 
 dependencies {
     api(project(path: ":dropbox-sdk-java", configuration: "withoutOsgi"))
