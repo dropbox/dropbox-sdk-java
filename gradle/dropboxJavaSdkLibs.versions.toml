@@ -5,7 +5,7 @@ android_min_sdk = "24"
 android_target_sdk = "32"
 androidx_activity = "1.5.0"
 junit_jupiter = "5.8.2"
-kotlin = "1.7.10"
+kotlin = "1.6.21"
 kotlin_coroutines = "1.6.4"
 
 [libraries]

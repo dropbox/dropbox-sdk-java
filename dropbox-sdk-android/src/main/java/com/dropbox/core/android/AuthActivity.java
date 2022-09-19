@@ -503,7 +503,8 @@ public class AuthActivity extends Activity {
      * See:
      * https://developer.android.com/reference/android/app/Activity#onTopResumedActivityChanged(boolean)
      */
-    protected void onTopResumedActivityChanged(boolean onTop) {
+    @Override
+    public void onTopResumedActivityChanged(boolean onTop) {
         if (isFinishing() || !onTop) {
             return;
         }
