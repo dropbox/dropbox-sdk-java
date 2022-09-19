@@ -127,7 +127,7 @@ public class DbxOfficialAppConnector {
     public static DbxOfficialAppInstallInfo isInstalled(Context context) {
 
         // For now, use dAuth intent
-        Intent authIntent = AuthActivity.getOfficialAuthIntent();
+        Intent authIntent = AuthActivity.Companion.getOfficialAuthIntent();
         PackageInfo dropboxPackage = getDropboxAppPackage(context, authIntent);
         if (dropboxPackage == null) {
             return null;

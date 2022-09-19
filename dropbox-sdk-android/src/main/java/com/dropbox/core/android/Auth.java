@@ -193,7 +193,7 @@ public class Auth {
                                                   DbxHost host,
                                                   Collection<String>  scope,
                                                   IncludeGrantedScopes includeGrantedScopes) {
-        if (!AuthActivity.checkAppBeforeAuth(context, appKey, true /*alertUser*/)) {
+        if (!AuthActivity.Companion.checkAppBeforeAuth(context, appKey, true /*alertUser*/)) {
             return;
         }
 
@@ -208,7 +208,7 @@ public class Auth {
 
         // Start Dropbox auth activity.
         String apiType = "1";
-        Intent intent =  AuthActivity.makeIntent(
+        Intent intent =  AuthActivity.Companion.makeIntent(
             context, appKey, desiredUid, alreadyAuthedUids, sessionId, webHost, apiType,
             tokenAccessType, requestConfig, host, scopeString, includeGrantedScopes
         );
