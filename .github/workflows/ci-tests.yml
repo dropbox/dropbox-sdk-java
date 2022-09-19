@@ -53,6 +53,9 @@ jobs:
     - name: Check
       run: ./gradlew check
 
+    - name: Check Binary Compatibility
+      run: ./gradlew :dropbox-sdk-android:apiCheck
+
     - name: Check Examples
       run: cd examples && ./gradlew check
 
