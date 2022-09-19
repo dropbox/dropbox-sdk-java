@@ -38,7 +38,7 @@ jobs:
       run: ./update-submodules
 
     - name: Generate Stone
-      run: ./gradlew :generateStone
+      run: ./gradlew :dropbox-sdk-java:generateStone
 
     - name: Ensure no generated code changes
       run: ./scripts/check-clean-git-status
@@ -60,16 +60,13 @@ jobs:
       run: cd examples && ./gradlew assemble
 
     - name: Run Integration Tests - OkHttpRequestor
-      run: ./gradlew -Pcom.dropbox.test.httpRequestor=OkHttpRequestor -Pcom.dropbox.test.authInfoFile=auth_output integrationTest &&
-           ./gradlew -Pcom.dropbox.test.httpRequestor=OkHttpRequestor -Pcom.dropbox.test.authInfoFile=../auth_output proguardTest
+      run: ./gradlew -Pcom.dropbox.test.httpRequestor=OkHttpRequestor -Pcom.dropbox.test.authInfoFile=../auth_output integrationTest proguardTest
 
     - name: Run Integration Tests - OkHttp3Requestor
-      run: ./gradlew -Pcom.dropbox.test.httpRequestor=OkHttp3Requestor -Pcom.dropbox.test.authInfoFile=auth_output integrationTest &&
-           ./gradlew -Pcom.dropbox.test.httpRequestor=OkHttp3Requestor -Pcom.dropbox.test.authInfoFile=../auth_output proguardTest
+      run: ./gradlew -Pcom.dropbox.test.httpRequestor=OkHttp3Requestor -Pcom.dropbox.test.authInfoFile=../auth_output integrationTest proguardTest
 
     - name: Run Integration Tests - StandardHttpRequestor
-      run: ./gradlew -Pcom.dropbox.test.httpRequestor=StandardHttpRequestor -Pcom.dropbox.test.authInfoFile=auth_output integrationTest &&
-           ./gradlew -Pcom.dropbox.test.httpRequestor=StandardHttpRequestor -Pcom.dropbox.test.authInfoFile=../auth_output proguardTest
+      run: ./gradlew -Pcom.dropbox.test.httpRequestor=StandardHttpRequestor -Pcom.dropbox.test.authInfoFile=../auth_output integrationTest proguardTest
 
     - name: Upload Artifacts
       run: ./gradlew publishAllPublicationsToMavenCentralRepository --no-daemon --no-parallel

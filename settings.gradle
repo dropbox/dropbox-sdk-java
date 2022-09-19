@@ -1,4 +1,5 @@
 include ':proguard'
+include ':dropbox-sdk-java'
 
 dependencyResolutionManagement {
     versionCatalogs {
