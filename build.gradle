@@ -2,7 +2,7 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        maven { url 'https://plugins.gradle.org/m2/' }
+        gradlePluginPortal()
     }
 
     dependencies {
@@ -12,5 +12,19 @@ buildscript {
         classpath "com.vanniktech:gradle-maven-publish-plugin:0.18.0"
         classpath(dropboxJavaSdkLibs.android.gradle.plugin)
         classpath(dropboxJavaSdkLibs.kotlin.gradle.plugin)
+    }
+}
+
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    plugins.withId("com.vanniktech.maven.publish") {
+        mavenPublish {
+            sonatypeHost = "S01"
+        }
     }
 }

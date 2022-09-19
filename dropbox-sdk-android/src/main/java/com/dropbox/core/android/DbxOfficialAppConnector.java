@@ -22,19 +22,20 @@
 
 package com.dropbox.core.android;
 
-import java.util.List;
-
-import android.content.*;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
 import android.content.pm.Signature;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.util.Base64;
+
+import java.util.List;
 
 /**
  * The DbxOfficialAppConnector is used by an app to communicate with the Official Android Dropbox
@@ -163,7 +164,12 @@ public class DbxOfficialAppConnector {
             return NO_USER;
         }
         cursor.moveToFirst();
-        return cursor.getInt(cursor.getColumnIndex("logged_in"));
+        int columnIndex = cursor.getColumnIndex("logged_in");
+        if (columnIndex < 0) {
+            // Column Doesn't Exist
+            return NO_USER;
+        }
+        return cursor.getInt(columnIndex);
     }
 
     /**

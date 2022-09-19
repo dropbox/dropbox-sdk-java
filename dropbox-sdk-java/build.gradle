@@ -1,13 +1,7 @@
 apply plugin: 'java-library'
-apply plugin: 'kotlin'
 apply plugin: 'com.github.blindpirate.osgi'
 apply plugin: 'com.github.ben-manes.versions' // dependencyUpdates task
-
-kotlin {
-    sourceSets {
-        main.kotlin.srcDirs += 'src/main/java'
-    }
-}
+apply plugin: 'com.vanniktech.maven.publish'
 
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
@@ -24,8 +18,6 @@ dependencies {
     //            compatibility
     api 'com.fasterxml.jackson.core:jackson-core:2.7.9'
 
-    // DO NOT flip this back to implementation, we should split the android code to its own module in the future
-    compileOnly 'com.google.android:android:4.1.1.4'
     compileOnly 'javax.servlet:servlet-api:2.5'
     compileOnly 'com.squareup.okhttp:okhttp:2.7.5'  // support both v2 and v3 to avoid
     compileOnly 'com.squareup.okhttp3:okhttp:4.0.0' // method count bloat
@@ -226,18 +218,3 @@ dependencyUpdates.resolutionStrategy = {
 }
 
 apply from: 'stone.gradle'
-
-apply plugin: 'com.vanniktech.maven.publish'
-
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-    }
-
-    plugins.withId("com.vanniktech.maven.publish") {
-        mavenPublish {
-            sonatypeHost = "S01"
-        }
-    }
-}
