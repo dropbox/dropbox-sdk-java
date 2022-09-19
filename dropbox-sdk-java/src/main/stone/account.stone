@@ -1,0 +1,49 @@
+namespace account
+
+import common
+
+#
+# Route set_profile_photo
+#
+
+union PhotoSourceArg
+    base64_data String
+        "Image data in base64-encoded bytes."
+
+    example default
+        base64_data = "SW1hZ2UgZGF0YSBpbiBiYXNlNjQtZW5jb2RlZCBieXRlcy4gTm90IGEgdmFsaWQgZXhhbXBsZS4="
+
+
+struct SetProfilePhotoArg
+    photo PhotoSourceArg
+        "Image to set as the user's new profile photo."
+
+    example default
+        photo = default
+
+
+struct SetProfilePhotoResult
+    profile_photo_url String
+        "URL for the photo representing the user, if one is set."
+
+    example default
+        profile_photo_url = "https://dl-web.dropbox.com/account_photo/get/dbaphid%3AAAHWGmIXV3sUuOmBfTz0wPsiqHUpBWvv3ZA?vers=1556069330102&size=128x128"
+
+
+union SetProfilePhotoError
+    file_type_error
+        "File cannot be set as profile photo."
+    file_size_error
+        "File cannot exceed 10 MB."
+    dimension_error
+        "Image must be larger than 128 x 128."
+    thumbnail_error
+        "Image could not be thumbnailed."
+    transient_error
+        "Temporary infrastructure failure, please retry."
+
+route set_profile_photo(SetProfilePhotoArg, SetProfilePhotoResult, SetProfilePhotoError)
+    "Sets a user's profile photo."
+
+    attrs
+        scope = "account_info.write"

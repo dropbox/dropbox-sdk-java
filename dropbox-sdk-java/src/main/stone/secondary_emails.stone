@@ -1,0 +1,22 @@
+namespace secondary_emails
+
+import common
+
+struct SecondaryEmail
+    email common.EmailAddress
+        "Secondary email address."
+
+    is_verified Boolean
+        "Whether or not the secondary email address is verified to be owned by a user."
+
+    example default
+        email = "apple@orange.com"
+        is_verified = true
+
+    example second_sec_email
+        email = "banana@honeydew.com"
+        is_verified = true
+
+    example third_sec_email
+        email = "grape@strawberry.com"
+        is_verified = false
