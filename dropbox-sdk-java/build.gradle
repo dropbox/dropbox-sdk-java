@@ -1,6 +1,7 @@
 apply plugin: 'java-library'
 apply plugin: 'com.github.blindpirate.osgi'
 apply plugin: 'com.github.ben-manes.versions' // dependencyUpdates task
+apply plugin: 'com.vanniktech.maven.publish'
 
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
@@ -217,5 +218,3 @@ dependencyUpdates.resolutionStrategy = {
 }
 
 apply from: 'stone.gradle'
-
-apply plugin: 'com.vanniktech.maven.publish'
