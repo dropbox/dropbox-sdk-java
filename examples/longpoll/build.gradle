@@ -1,3 +1,4 @@
 apply plugin: 'java'
+apply from: '../gradle/integration-test-config.gradle'
 
 description = 'List Folder Longpoll Example (Dropbox Core API SDK)'

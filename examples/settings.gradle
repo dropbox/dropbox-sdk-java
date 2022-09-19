@@ -10,3 +10,5 @@ include ':upgrade-oauth1-token'
 include ':upload-file'
 include ':web-file-browser'
 include ':android'
+include ':dropbox-sdk-java'
+project(":dropbox-sdk-java").projectDir = file("../dropbox-sdk-java")
