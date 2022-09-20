@@ -15,3 +15,11 @@ include ':dropbox-sdk-android'
 
 project(":dropbox-sdk-android").projectDir = file("../dropbox-sdk-android")
 project(":dropbox-sdk-java").projectDir = file("../dropbox-sdk-java")
+
+dependencyResolutionManagement {
+    versionCatalogs {
+        dropboxJavaSdkLibs {
+            from(files("../gradle/dropboxJavaSdkLibs.versions.toml"))
+        }
+    }
+}
