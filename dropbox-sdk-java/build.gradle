@@ -8,6 +8,7 @@ targetCompatibility = JavaVersion.VERSION_11
 
 ext {
     mavenName = 'Official Dropbox Java SDK'
+    version = VERSION_NAME
     generatedSources = file("$buildDir/generated-sources")
     generatedResources = file("$buildDir/generated-resources")
     authInfoPropertyName = 'com.dropbox.test.authInfoFile'
@@ -156,6 +157,7 @@ javadoc {
     if (JavaVersion.current().isJava8Compatible()) {
         options.addBooleanOption "Xdoclint:all,-missing", true
     }
+    options.addBooleanOption('-no-module-directories', true)
     options.addStringOption "link", "http://docs.oracle.com/javase/6/docs/api/"
 }
 
