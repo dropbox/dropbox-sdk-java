@@ -13,6 +13,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import com.dropbox.core.*
+import com.dropbox.core.android.internal.AuthParameters
 import com.dropbox.core.android.internal.AuthUtils.createPKCEStateNonce
 import com.dropbox.core.android.internal.AuthUtils.createStateNonce
 import com.dropbox.core.android.internal.TokenRequestAsyncTask
@@ -65,16 +66,16 @@ public class AuthActivity : Activity() {
     private var mAuthStateNonce: String? = null
     private var mActivityDispatchHandlerPosted = false
     override fun onCreate(savedInstanceState: Bundle?) {
-        mAppKey = sAppKey
-        mApiType = sApiType
-        mDesiredUid = sDesiredUid
-        mAlreadyAuthedUids = sAlreadyAuthedUids
-        mSessionId = sSessionId
-        mTokenAccessType = sTokenAccessType
-        mRequestConfig = sRequestConfig
-        mHost = sHost
-        mScope = sScope
-        mIncludeGrantedScopes = sIncludeGrantedScopes
+        mAppKey = sAuthParams?.sAppKey
+        mApiType = sAuthParams?.sApiType
+        mDesiredUid = sAuthParams?.sDesiredUid
+        mAlreadyAuthedUids = sAuthParams?.sAlreadyAuthedUids?.toTypedArray() ?: emptyArray()
+        mSessionId = sAuthParams?.sSessionId
+        mTokenAccessType = sAuthParams?.sTokenAccessType
+        mRequestConfig = sAuthParams?.sRequestConfig
+        mHost = sAuthParams?.sHost
+        mScope = sAuthParams?.sScope
+        mIncludeGrantedScopes = sAuthParams?.sIncludeGrantedScopes
         if (savedInstanceState == null) {
             result = null
             mAuthStateNonce = null
@@ -108,9 +109,6 @@ public class AuthActivity : Activity() {
      *
      * If DAuth/Browser Auth succeeded, this flow should finish through onNewIntent()
      * instead of onResume().
-     *
-     * NOTE: Although Android Studio doesn't think this overrides a method, it actually overrides
-     * onTopResumedActivityChanged() introduced in Android level 29.
      *
      * See:
      * https://developer.android.com/reference/android/app/Activity#onTopResumedActivityChanged(boolean)
@@ -171,7 +169,8 @@ public class AuthActivity : Activity() {
          * Empirical research has found that posting the remainder of the auth logic to a handler
          * mitigates the issue by delaying remainder of auth logic to after the
          * previously posted onResume.
-         */Handler(Looper.getMainLooper()).post(Runnable {
+         */
+        Handler(Looper.getMainLooper()).post(Runnable {
             Log.d(TAG, "running startActivity in handler")
             try {
                 // Auth with official app, or fall back to web.
@@ -461,23 +460,14 @@ public class AuthActivity : Activity() {
         @JvmField
         public var result: Intent? = null
 
-        // Temporary storage for parameters before Activity is created
-        private var sAppKey: String? = null
-        private var sApiType: String? = null
-        private var sDesiredUid: String? = null
-        private var sAlreadyAuthedUids: Array<String> = emptyArray()
-        private var sSessionId: String? = null
-        private var sTokenAccessType: TokenAccessType? = null
-        private var sRequestConfig: DbxRequestConfig? = null
-        private var sHost: DbxHost? = null
-        private var sScope: String? = null
-        private var sIncludeGrantedScopes: IncludeGrantedScopes? = null
+        private var sAuthParams: AuthParameters? = null
 
         /**
          * Set static authentication parameters
          */
         public fun setAuthParams(
-            appKey: String?, desiredUid: String?,
+            appKey: String?,
+            desiredUid: String?,
             alreadyAuthedUids: Array<String>?
         ) {
             setAuthParams(appKey, desiredUid, alreadyAuthedUids, null)
@@ -487,8 +477,12 @@ public class AuthActivity : Activity() {
          * Set static authentication parameters
          */
         public fun setAuthParams(
-            appKey: String?, desiredUid: String?,
-            alreadyAuthedUids: Array<String>?, webHost: String?, apiType: String?
+            appKey: String?,
+            desiredUid: String?,
+            alreadyAuthedUids:
+            Array<String>?,
+            webHost: String?,
+            apiType: String?
         ) {
             setAuthParams(
                 appKey, desiredUid, alreadyAuthedUids, null, null, null, null, null, null,
@@ -500,8 +494,10 @@ public class AuthActivity : Activity() {
          * Set static authentication parameters
          */
         public fun setAuthParams(
-            appKey: String?, desiredUid: String?,
-            alreadyAuthedUids: Array<String>?, sessionId: String?
+            appKey: String?,
+            desiredUid: String?,
+            alreadyAuthedUids: Array<String>?,
+            sessionId: String?
         ) {
             setAuthParams(
                 appKey, desiredUid, alreadyAuthedUids, sessionId, null, null, null, null,
@@ -514,31 +510,36 @@ public class AuthActivity : Activity() {
          * host as source of truth.
          */
         internal fun setAuthParams(
-            appKey: String?, desiredUid: String?,
-            alreadyAuthedUids: Array<String>?, sessionId: String?, webHost: String?,
-            apiType: String?, tokenAccessType: TokenAccessType?,
-            requestConfig: DbxRequestConfig?, host: DbxHost?, scope: String?,
+            appKey: String?,
+            desiredUid: String?,
+            alreadyAuthedUids: Array<String>?,
+            sessionId: String?, webHost: String?,
+            apiType: String?,
+            tokenAccessType: TokenAccessType?,
+            requestConfig: DbxRequestConfig?,
+            host: DbxHost?,
+            scope: String?,
             includeGrantedScopes: IncludeGrantedScopes?
         ) {
-            sAppKey = appKey
-            sDesiredUid = desiredUid
-            sAlreadyAuthedUids = alreadyAuthedUids ?: emptyArray()
-            sSessionId = sessionId
-            sApiType = apiType
-            sTokenAccessType = tokenAccessType
-            sRequestConfig = requestConfig
-            if (host != null) {
-                sHost = host
-            } else if (webHost != null) {
-                sHost = DbxHost(
-                    DbxHost.DEFAULT.api, DbxHost.DEFAULT.content, webHost,
-                    DbxHost.DEFAULT.notify
-                )
-            } else {
-                sHost = DbxHost.DEFAULT
-            }
-            sScope = scope
-            sIncludeGrantedScopes = includeGrantedScopes
+            sAuthParams = AuthParameters(
+                sAppKey = appKey,
+                sDesiredUid = desiredUid,
+                sAlreadyAuthedUids = alreadyAuthedUids?.toList() ?: emptyList(),
+                sSessionId = sessionId,
+                sApiType = apiType,
+                sTokenAccessType = tokenAccessType,
+                sRequestConfig = requestConfig,
+                sHost = host ?: if (webHost != null) {
+                    DbxHost(
+                        DbxHost.DEFAULT.api, DbxHost.DEFAULT.content, webHost,
+                        DbxHost.DEFAULT.notify
+                    )
+                } else {
+                    DbxHost.DEFAULT
+                },
+                sScope = scope,
+                sIncludeGrantedScopes = includeGrantedScopes,
+            )
         }
 
         /**
@@ -685,7 +686,7 @@ public class AuthActivity : Activity() {
                 // it's within the same package so when we return from web auth
                 // we're going back to this app and not some other app.
                 val resolveInfo = activities[0]
-                check(!(null == resolveInfo || null == resolveInfo.activityInfo || context.packageName != resolveInfo.activityInfo.packageName)) {
+                check(!(resolveInfo?.activityInfo == null || context.packageName != resolveInfo.activityInfo.packageName)) {
                     "There must be a " +
                             AuthActivity::class.java.name + " within your app's package " +
                             "registered for your URI scheme (" + scheme + "). However, " +
