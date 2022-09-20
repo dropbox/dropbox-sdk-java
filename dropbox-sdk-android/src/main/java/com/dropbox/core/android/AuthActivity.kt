@@ -453,7 +453,7 @@ public class AuthActivity : Activity() {
         // if desired.
         private var sSecurityProvider: SecurityProvider = object : SecurityProvider {
             override val secureRandom: SecureRandom
-                get() = FixedSecureRandom.get()
+                get() = SecureRandom()
         }
         private val sSecurityProviderLock = Any()
 
