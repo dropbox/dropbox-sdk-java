@@ -144,7 +144,7 @@ public class DbxOfficialAppConnector(uid: String?) {
         } else previewIntent
     }
 
-    internal companion object {
+    public companion object {
         // App Connector intent definitions
         // to Dropbox actions
         public const val ACTION_SHOW_UPGRADE: String = "com.dropbox.android.intent.action.SHOW_UPGRADE"
@@ -275,7 +275,7 @@ public class DbxOfficialAppConnector(uid: String?) {
          *
          * @return PackageInfo of DropboxApp if Dropbox App can process intent, else null
          */
-        fun getDropboxAppPackage(context: Context, intent: Intent?): PackageInfo? {
+        public fun getDropboxAppPackage(context: Context, intent: Intent?): PackageInfo? {
             val manager = context.packageManager
             val infos = manager.queryIntentActivities(intent!!, 0)
             if (1 != infos.size) {

@@ -1,20 +1,36 @@
-public class com/dropbox/core/android/Auth {
+public final class com/dropbox/core/android/Auth {
+	public static final field Companion Lcom/dropbox/core/android/Auth$Companion;
 	public fun <init> ()V
-	public static fun getDbxCredential ()Lcom/dropbox/core/oauth/DbxCredential;
-	public static fun getOAuth2Token ()Ljava/lang/String;
-	public static fun getScope ()Ljava/lang/String;
-	public static fun getUid ()Ljava/lang/String;
-	public static fun startOAuth2Authentication (Landroid/content/Context;Ljava/lang/String;)V
-	public static fun startOAuth2Authentication (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;)V
-	public static fun startOAuth2Authentication (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
-	public static fun startOAuth2PKCE (Landroid/content/Context;Ljava/lang/String;Lcom/dropbox/core/DbxRequestConfig;)V
-	public static fun startOAuth2PKCE (Landroid/content/Context;Ljava/lang/String;Lcom/dropbox/core/DbxRequestConfig;Lcom/dropbox/core/DbxHost;)V
-	public static fun startOAuth2PKCE (Landroid/content/Context;Ljava/lang/String;Lcom/dropbox/core/DbxRequestConfig;Lcom/dropbox/core/DbxHost;Ljava/util/Collection;)V
-	public static fun startOAuth2PKCE (Landroid/content/Context;Ljava/lang/String;Lcom/dropbox/core/DbxRequestConfig;Lcom/dropbox/core/DbxHost;Ljava/util/Collection;Lcom/dropbox/core/IncludeGrantedScopes;)V
-	public static fun startOAuth2PKCE (Landroid/content/Context;Ljava/lang/String;Lcom/dropbox/core/DbxRequestConfig;Ljava/util/Collection;)V
+	public static final fun getDbxCredential ()Lcom/dropbox/core/oauth/DbxCredential;
+	public static final fun getOAuth2Token ()Ljava/lang/String;
+	public static final fun getScope ()Ljava/lang/String;
+	public static final fun startOAuth2Authentication (Landroid/content/Context;Ljava/lang/String;)V
+	public static final fun startOAuth2Authentication (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;)V
+	public static final fun startOAuth2Authentication (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public static final fun startOAuth2PKCE (Landroid/content/Context;Ljava/lang/String;Lcom/dropbox/core/DbxRequestConfig;)V
+	public static final fun startOAuth2PKCE (Landroid/content/Context;Ljava/lang/String;Lcom/dropbox/core/DbxRequestConfig;Lcom/dropbox/core/DbxHost;)V
+	public static final fun startOAuth2PKCE (Landroid/content/Context;Ljava/lang/String;Lcom/dropbox/core/DbxRequestConfig;Lcom/dropbox/core/DbxHost;Ljava/util/Collection;)V
+	public static final fun startOAuth2PKCE (Landroid/content/Context;Ljava/lang/String;Lcom/dropbox/core/DbxRequestConfig;Lcom/dropbox/core/DbxHost;Ljava/util/Collection;Lcom/dropbox/core/IncludeGrantedScopes;)V
+	public static final fun startOAuth2PKCE (Landroid/content/Context;Ljava/lang/String;Lcom/dropbox/core/DbxRequestConfig;Ljava/util/Collection;)V
 }
 
-public class com/dropbox/core/android/AuthActivity : android/app/Activity {
+public final class com/dropbox/core/android/Auth$Companion {
+	public final fun getDbxCredential ()Lcom/dropbox/core/oauth/DbxCredential;
+	public final fun getOAuth2Token ()Ljava/lang/String;
+	public final fun getScope ()Ljava/lang/String;
+	public final fun getUid ()Ljava/lang/String;
+	public final fun startOAuth2Authentication (Landroid/content/Context;Ljava/lang/String;)V
+	public final fun startOAuth2Authentication (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;)V
+	public final fun startOAuth2Authentication (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public final fun startOAuth2PKCE (Landroid/content/Context;Ljava/lang/String;Lcom/dropbox/core/DbxRequestConfig;)V
+	public final fun startOAuth2PKCE (Landroid/content/Context;Ljava/lang/String;Lcom/dropbox/core/DbxRequestConfig;Lcom/dropbox/core/DbxHost;)V
+	public final fun startOAuth2PKCE (Landroid/content/Context;Ljava/lang/String;Lcom/dropbox/core/DbxRequestConfig;Lcom/dropbox/core/DbxHost;Ljava/util/Collection;)V
+	public final fun startOAuth2PKCE (Landroid/content/Context;Ljava/lang/String;Lcom/dropbox/core/DbxRequestConfig;Lcom/dropbox/core/DbxHost;Ljava/util/Collection;Lcom/dropbox/core/IncludeGrantedScopes;)V
+	public final fun startOAuth2PKCE (Landroid/content/Context;Ljava/lang/String;Lcom/dropbox/core/DbxRequestConfig;Ljava/util/Collection;)V
+	public static synthetic fun startOAuth2PKCE$default (Lcom/dropbox/core/android/Auth$Companion;Landroid/content/Context;Ljava/lang/String;Lcom/dropbox/core/DbxRequestConfig;Ljava/util/Collection;ILjava/lang/Object;)V
+}
+
+public final class com/dropbox/core/android/AuthActivity : android/app/Activity {
 	public static final field ACTION_AUTHENTICATE_V1 Ljava/lang/String;
 	public static final field ACTION_AUTHENTICATE_V2 Ljava/lang/String;
 	public static final field AUTH_PATH_CONNECT Ljava/lang/String;
@@ -36,69 +52,60 @@ public class com/dropbox/core/android/AuthActivity : android/app/Activity {
 	public static final field EXTRA_UID Ljava/lang/String;
 	public static field result Landroid/content/Intent;
 	public fun <init> ()V
-	public static fun checkAppBeforeAuth (Landroid/content/Context;Ljava/lang/String;Z)Z
-	public static fun makeIntent (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
-	public static fun makeIntent (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
-	protected fun onCreate (Landroid/os/Bundle;)V
-	protected fun onNewIntent (Landroid/content/Intent;)V
-	protected fun onResume ()V
-	protected fun onSaveInstanceState (Landroid/os/Bundle;)V
+	public static final fun checkAppBeforeAuth (Landroid/content/Context;Ljava/lang/String;Z)Z
+	public static final fun makeIntent (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
+	public static final fun makeIntent (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
 	public fun onTopResumedActivityChanged (Z)V
-	public static fun setSecurityProvider (Lcom/dropbox/core/android/AuthActivity$SecurityProvider;)V
+	public static final fun setSecurityProvider (Lcom/dropbox/core/android/AuthActivity$SecurityProvider;)V
 }
 
 public abstract interface class com/dropbox/core/android/AuthActivity$SecurityProvider {
 	public abstract fun getSecureRandom ()Ljava/security/SecureRandom;
 }
 
-public class com/dropbox/core/android/DbxOfficialAppConnector {
+public final class com/dropbox/core/android/DbxOfficialAppConnector {
 	public static final field ACTION_DBXC_EDIT Ljava/lang/String;
 	public static final field ACTION_DBXC_VIEW Ljava/lang/String;
 	public static final field ACTION_SHOW_DROPBOX_PREVIEW Ljava/lang/String;
 	public static final field ACTION_SHOW_UPGRADE Ljava/lang/String;
+	public static final field Companion Lcom/dropbox/core/android/DbxOfficialAppConnector$Companion;
 	public static final field EXTRA_CALLING_PACKAGE Ljava/lang/String;
 	public static final field EXTRA_DROPBOX_PATH Ljava/lang/String;
 	public static final field EXTRA_DROPBOX_READ_ONLY Ljava/lang/String;
 	public static final field EXTRA_DROPBOX_REV Ljava/lang/String;
 	public static final field EXTRA_DROPBOX_SESSION_ID Ljava/lang/String;
 	public static final field EXTRA_DROPBOX_UID Ljava/lang/String;
-	protected field uid Ljava/lang/String;
 	public fun <init> (Ljava/lang/String;)V
-	protected fun addExtrasToIntent (Landroid/content/Context;Landroid/content/Intent;)V
-	public static fun generateOpenWithIntentFromUtmContent (Ljava/lang/String;)Landroid/content/Intent;
-	public static fun getDropboxPlayStoreIntent ()Landroid/content/Intent;
-	public fun getPreviewFileIntent (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
-	public fun getUpgradeAccountIntent (Landroid/content/Context;)Landroid/content/Intent;
-	public static fun isAnySignedIn (Landroid/content/Context;)Z
-	public static fun isInstalled (Landroid/content/Context;)Lcom/dropbox/core/android/DbxOfficialAppConnector$DbxOfficialAppInstallInfo;
-	public fun isSignedIn (Landroid/content/Context;)Z
-	protected fun launchDropbox (Landroid/content/Context;)Landroid/content/Intent;
+	public static final fun generateOpenWithIntentFromUtmContent (Ljava/lang/String;)Landroid/content/Intent;
+	public static final fun getDropboxPlayStoreIntent ()Landroid/content/Intent;
+	public final fun getPreviewFileIntent (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
+	public final fun getUpgradeAccountIntent (Landroid/content/Context;)Landroid/content/Intent;
+	public static final fun isAnySignedIn (Landroid/content/Context;)Z
+	public static final fun isInstalled (Landroid/content/Context;)Lcom/dropbox/core/android/DbxOfficialAppConnector$DbxOfficialAppInstallInfo;
+	public final fun isSignedIn (Landroid/content/Context;)Z
 }
 
-public class com/dropbox/core/android/DbxOfficialAppConnector$DbxOfficialAppInstallInfo {
+public final class com/dropbox/core/android/DbxOfficialAppConnector$Companion {
+	public final fun generateOpenWithIntentFromUtmContent (Ljava/lang/String;)Landroid/content/Intent;
+	public final fun getDropboxAppPackage (Landroid/content/Context;Landroid/content/Intent;)Landroid/content/pm/PackageInfo;
+	public final fun getDropboxPlayStoreIntent ()Landroid/content/Intent;
+	public final fun isAnySignedIn (Landroid/content/Context;)Z
+	public final fun isInstalled (Landroid/content/Context;)Lcom/dropbox/core/android/DbxOfficialAppConnector$DbxOfficialAppInstallInfo;
+}
+
+public final class com/dropbox/core/android/DbxOfficialAppConnector$DbxOfficialAppInstallInfo {
 	public final field supportsOpenWith Z
 	public final field versionCode I
 	public fun <init> (ZI)V
 	public fun toString ()Ljava/lang/String;
 }
 
-public class com/dropbox/core/android/DropboxParseException : com/dropbox/core/DbxException {
+public final class com/dropbox/core/android/DropboxParseException : com/dropbox/core/DbxException {
 	public fun <init> (Ljava/lang/String;)V
 }
 
-public class com/dropbox/core/android/DropboxUidNotInitializedException : com/dropbox/core/DbxException {
+public final class com/dropbox/core/android/DropboxUidNotInitializedException : com/dropbox/core/DbxException {
 	public fun <init> (Ljava/lang/String;)V
-}
-
-public final class com/dropbox/core/android/FixedSecureRandom : java/security/SecureRandom {
-	public static fun get ()Ljava/security/SecureRandom;
-}
-
-public class com/dropbox/core/android/FixedSecureRandom$LinuxPrngSecureRandomSpi : java/security/SecureRandomSpi {
-	public fun <init> ()V
-	protected fun engineGenerateSeed (I)[B
-	protected fun engineNextBytes ([B)V
-	protected fun engineSetSeed ([B)V
 }
 
 public final class com/dropbox/core/sdk/android/BuildConfig {
@@ -107,3 +114,4 @@ public final class com/dropbox/core/sdk/android/BuildConfig {
 	public static final field LIBRARY_PACKAGE_NAME Ljava/lang/String;
 	public fun <init> ()V
 }
+

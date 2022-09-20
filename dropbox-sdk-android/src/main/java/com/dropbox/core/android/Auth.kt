@@ -17,7 +17,7 @@ import java.util.*
  * Helper class for integrating with [AuthActivity]
  */
 public class Auth {
-    private companion object {
+    public companion object {
 
         /**
          * @see Auth#startOAuth2Authentication(Context, String, String, String[], String, String)
@@ -277,7 +277,6 @@ public class Auth {
                 return credential.accessToken
             }
 
-        @JvmStatic
         public val uid: String?
             get() {
                 if (dbxCredential == null) {
