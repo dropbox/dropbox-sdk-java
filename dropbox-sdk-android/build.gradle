@@ -1,9 +1,10 @@
 plugins {
     id 'org.jetbrains.kotlinx.binary-compatibility-validator' version '0.11.1'
+    alias(dropboxJavaSdkLibs.plugins.maven.publish.plugin) apply false
+    alias(dropboxJavaSdkLibs.plugins.gradle.version.plugin) apply false
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
 }
-apply plugin: "com.android.library"
-apply plugin: "org.jetbrains.kotlin.android"
-apply plugin: 'com.vanniktech.maven.publish'
 
 android {
     compileSdk 33
