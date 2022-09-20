@@ -144,7 +144,7 @@ public class DbxOfficialAppConnector(uid: String?) {
         } else previewIntent
     }
 
-    public companion object {
+    internal companion object {
         // App Connector intent definitions
         // to Dropbox actions
         public const val ACTION_SHOW_UPGRADE: String = "com.dropbox.android.intent.action.SHOW_UPGRADE"
@@ -172,6 +172,7 @@ public class DbxOfficialAppConnector(uid: String?) {
          * @return Information about installed version of DropboxApp. Returns null if DropboxApp is not
          * installed
          */
+        @JvmStatic
         public fun isInstalled(context: Context): DbxOfficialAppInstallInfo? {
 
             // For now, use dAuth intent
@@ -216,6 +217,7 @@ public class DbxOfficialAppConnector(uid: String?) {
         /**
          * @return If any account is connected to DropboxApp
          */
+        @JvmStatic
         public fun isAnySignedIn(context: Context): Boolean {
             val loggedInState = getLoggedinState(context, "0")
             return loggedInState != NO_USER
@@ -225,8 +227,8 @@ public class DbxOfficialAppConnector(uid: String?) {
          * @return Intent that when passed into startActivity() will launch the Play Store page for
          * Dropbox.
          */
-        public val dropboxPlayStoreIntent: Intent
-            get() {
+        @JvmStatic
+        public fun getDropboxPlayStoreIntent(): Intent {
                 val intent = Intent(Intent.ACTION_VIEW)
                 intent.data = Uri.parse("market://details?id=com.dropbox.android")
                 return intent
@@ -273,8 +275,7 @@ public class DbxOfficialAppConnector(uid: String?) {
          *
          * @return PackageInfo of DropboxApp if Dropbox App can process intent, else null
          */
-        @JvmStatic
-        public fun getDropboxAppPackage(context: Context, intent: Intent?): PackageInfo? {
+        fun getDropboxAppPackage(context: Context, intent: Intent?): PackageInfo? {
             val manager = context.packageManager
             val infos = manager.queryIntentActivities(intent!!, 0)
             if (1 != infos.size) {
