@@ -1501,8 +1501,8 @@ public final class EventType {
          */
         ACCOUNT_CAPTURE_CHANGE_POLICY, // AccountCaptureChangePolicyType
         /**
-         * (team_policies) Changed admin email reminder policy for team requests
-         * to join
+         * (team_policies) Changed admin reminder settings for requests to join
+         * the team
          */
         ADMIN_EMAIL_REMINDERS_CHANGED, // AdminEmailRemindersChangedType
         /**
@@ -1620,6 +1620,10 @@ public final class EventType {
          * (team_policies) Changed file locking policy for team
          */
         FILE_LOCKING_POLICY_CHANGED, // FileLockingPolicyChangedType
+        /**
+         * (team_policies) Changed File Provider Migration policy for team
+         */
+        FILE_PROVIDER_MIGRATION_POLICY_CHANGED, // FileProviderMigrationPolicyChangedType
         /**
          * (team_policies) Enabled/disabled file requests
          */
@@ -2464,6 +2468,7 @@ public final class EventType {
     private ExternalDriveBackupPolicyChangedType externalDriveBackupPolicyChangedValue;
     private FileCommentsChangePolicyType fileCommentsChangePolicyValue;
     private FileLockingPolicyChangedType fileLockingPolicyChangedValue;
+    private FileProviderMigrationPolicyChangedType fileProviderMigrationPolicyChangedValue;
     private FileRequestsChangePolicyType fileRequestsChangePolicyValue;
     private FileRequestsEmailsEnabledType fileRequestsEmailsEnabledValue;
     private FileRequestsEmailsRestrictedToTeamOnlyType fileRequestsEmailsRestrictedToTeamOnlyValue;
@@ -8628,7 +8633,7 @@ public final class EventType {
      * The type of the event with description.
      *
      * @param adminEmailRemindersChangedValue  (team_policies) Changed admin
-     *     email reminder policy for team requests to join. Must not be {@code
+     *     reminder settings for requests to join the team. Must not be {@code
      *     null}.
      * @param _tag  Discriminating tag for this instance.
      *
@@ -9106,6 +9111,23 @@ public final class EventType {
         EventType result = new EventType();
         result._tag = _tag;
         result.fileLockingPolicyChangedValue = fileLockingPolicyChangedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param fileProviderMigrationPolicyChangedValue  (team_policies) Changed
+     *     File Provider Migration policy for team. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndFileProviderMigrationPolicyChanged(Tag _tag, FileProviderMigrationPolicyChangedType fileProviderMigrationPolicyChangedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.fileProviderMigrationPolicyChangedValue = fileProviderMigrationPolicyChangedValue;
         return result;
     }
 
@@ -28692,8 +28714,8 @@ public final class EventType {
      * Returns an instance of {@code EventType} that has its tag set to {@link
      * Tag#ADMIN_EMAIL_REMINDERS_CHANGED}.
      *
-     * <p> (team_policies) Changed admin email reminder policy for team requests
-     * to join </p>
+     * <p> (team_policies) Changed admin reminder settings for requests to join
+     * the team </p>
      *
      * @param value  value to assign to this instance.
      *
@@ -28710,8 +28732,8 @@ public final class EventType {
     }
 
     /**
-     * (team_policies) Changed admin email reminder policy for team requests to
-     * join
+     * (team_policies) Changed admin reminder settings for requests to join the
+     * team
      *
      * <p> This instance must be tagged as {@link
      * Tag#ADMIN_EMAIL_REMINDERS_CHANGED}. </p>
@@ -30112,6 +30134,57 @@ public final class EventType {
             throw new IllegalStateException("Invalid tag: required Tag.FILE_LOCKING_POLICY_CHANGED, but was Tag." + this._tag.name());
         }
         return fileLockingPolicyChangedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#FILE_PROVIDER_MIGRATION_POLICY_CHANGED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#FILE_PROVIDER_MIGRATION_POLICY_CHANGED}, {@code false} otherwise.
+     */
+    public boolean isFileProviderMigrationPolicyChanged() {
+        return this._tag == Tag.FILE_PROVIDER_MIGRATION_POLICY_CHANGED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#FILE_PROVIDER_MIGRATION_POLICY_CHANGED}.
+     *
+     * <p> (team_policies) Changed File Provider Migration policy for team </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#FILE_PROVIDER_MIGRATION_POLICY_CHANGED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType fileProviderMigrationPolicyChanged(FileProviderMigrationPolicyChangedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndFileProviderMigrationPolicyChanged(Tag.FILE_PROVIDER_MIGRATION_POLICY_CHANGED, value);
+    }
+
+    /**
+     * (team_policies) Changed File Provider Migration policy for team
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#FILE_PROVIDER_MIGRATION_POLICY_CHANGED}. </p>
+     *
+     * @return The {@link FileProviderMigrationPolicyChangedType} value
+     *     associated with this instance if {@link
+     *     #isFileProviderMigrationPolicyChanged} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isFileProviderMigrationPolicyChanged} is {@code false}.
+     */
+    public FileProviderMigrationPolicyChangedType getFileProviderMigrationPolicyChangedValue() {
+        if (this._tag != Tag.FILE_PROVIDER_MIGRATION_POLICY_CHANGED) {
+            throw new IllegalStateException("Invalid tag: required Tag.FILE_PROVIDER_MIGRATION_POLICY_CHANGED, but was Tag." + this._tag.name());
+        }
+        return fileProviderMigrationPolicyChangedValue;
     }
 
     /**
@@ -35738,6 +35811,7 @@ public final class EventType {
             externalDriveBackupPolicyChangedValue,
             fileCommentsChangePolicyValue,
             fileLockingPolicyChangedValue,
+            fileProviderMigrationPolicyChangedValue,
             fileRequestsChangePolicyValue,
             fileRequestsEmailsEnabledValue,
             fileRequestsEmailsRestrictedToTeamOnlyValue,
@@ -36619,6 +36693,8 @@ public final class EventType {
                     return (this.fileCommentsChangePolicyValue == other.fileCommentsChangePolicyValue) || (this.fileCommentsChangePolicyValue.equals(other.fileCommentsChangePolicyValue));
                 case FILE_LOCKING_POLICY_CHANGED:
                     return (this.fileLockingPolicyChangedValue == other.fileLockingPolicyChangedValue) || (this.fileLockingPolicyChangedValue.equals(other.fileLockingPolicyChangedValue));
+                case FILE_PROVIDER_MIGRATION_POLICY_CHANGED:
+                    return (this.fileProviderMigrationPolicyChangedValue == other.fileProviderMigrationPolicyChangedValue) || (this.fileProviderMigrationPolicyChangedValue.equals(other.fileProviderMigrationPolicyChangedValue));
                 case FILE_REQUESTS_CHANGE_POLICY:
                     return (this.fileRequestsChangePolicyValue == other.fileRequestsChangePolicyValue) || (this.fileRequestsChangePolicyValue.equals(other.fileRequestsChangePolicyValue));
                 case FILE_REQUESTS_EMAILS_ENABLED:
@@ -39525,6 +39601,13 @@ public final class EventType {
                     g.writeEndObject();
                     break;
                 }
+                case FILE_PROVIDER_MIGRATION_POLICY_CHANGED: {
+                    g.writeStartObject();
+                    writeTag("file_provider_migration_policy_changed", g);
+                    FileProviderMigrationPolicyChangedType.Serializer.INSTANCE.serialize(value.fileProviderMigrationPolicyChangedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
                 case FILE_REQUESTS_CHANGE_POLICY: {
                     g.writeStartObject();
                     writeTag("file_requests_change_policy", g);
@@ -42160,6 +42243,11 @@ public final class EventType {
                 FileLockingPolicyChangedType fieldValue = null;
                 fieldValue = FileLockingPolicyChangedType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.fileLockingPolicyChanged(fieldValue);
+            }
+            else if ("file_provider_migration_policy_changed".equals(tag)) {
+                FileProviderMigrationPolicyChangedType fieldValue = null;
+                fieldValue = FileProviderMigrationPolicyChangedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.fileProviderMigrationPolicyChanged(fieldValue);
             }
             else if ("file_requests_change_policy".equals(tag)) {
                 FileRequestsChangePolicyType fieldValue = null;

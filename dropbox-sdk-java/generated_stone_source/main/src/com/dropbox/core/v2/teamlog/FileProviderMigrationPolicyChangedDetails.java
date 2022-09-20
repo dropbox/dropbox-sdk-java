@@ -6,6 +6,7 @@ package com.dropbox.core.v2.teamlog;
 import com.dropbox.core.stone.StoneDeserializerLogger;
 import com.dropbox.core.stone.StoneSerializers;
 import com.dropbox.core.stone.StructSerializer;
+import com.dropbox.core.v2.teampolicies.FileProviderMigrationPolicyState;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -17,16 +18,16 @@ import java.io.IOException;
 import java.util.Arrays;
 
 /**
- * Changed admin reminder settings for requests to join the team.
+ * Changed File Provider Migration policy for team.
  */
-public class AdminEmailRemindersChangedDetails {
-    // struct team_log.AdminEmailRemindersChangedDetails (team_log_generated.stone)
+public class FileProviderMigrationPolicyChangedDetails {
+    // struct team_log.FileProviderMigrationPolicyChangedDetails (team_log_generated.stone)
 
-    protected final AdminEmailRemindersPolicy newValue;
-    protected final AdminEmailRemindersPolicy previousValue;
+    protected final FileProviderMigrationPolicyState newValue;
+    protected final FileProviderMigrationPolicyState previousValue;
 
     /**
-     * Changed admin reminder settings for requests to join the team.
+     * Changed File Provider Migration policy for team.
      *
      * @param newValue  To. Must not be {@code null}.
      * @param previousValue  From. Must not be {@code null}.
@@ -34,7 +35,7 @@ public class AdminEmailRemindersChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AdminEmailRemindersChangedDetails(AdminEmailRemindersPolicy newValue, AdminEmailRemindersPolicy previousValue) {
+    public FileProviderMigrationPolicyChangedDetails(FileProviderMigrationPolicyState newValue, FileProviderMigrationPolicyState previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -50,7 +51,7 @@ public class AdminEmailRemindersChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    public AdminEmailRemindersPolicy getNewValue() {
+    public FileProviderMigrationPolicyState getNewValue() {
         return newValue;
     }
 
@@ -59,7 +60,7 @@ public class AdminEmailRemindersChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    public AdminEmailRemindersPolicy getPreviousValue() {
+    public FileProviderMigrationPolicyState getPreviousValue() {
         return previousValue;
     }
 
@@ -82,7 +83,7 @@ public class AdminEmailRemindersChangedDetails {
         }
         // be careful with inheritance
         else if (obj.getClass().equals(this.getClass())) {
-            AdminEmailRemindersChangedDetails other = (AdminEmailRemindersChangedDetails) obj;
+            FileProviderMigrationPolicyChangedDetails other = (FileProviderMigrationPolicyChangedDetails) obj;
             return ((this.newValue == other.newValue) || (this.newValue.equals(other.newValue)))
                 && ((this.previousValue == other.previousValue) || (this.previousValue.equals(other.previousValue)))
                 ;
@@ -112,42 +113,42 @@ public class AdminEmailRemindersChangedDetails {
     /**
      * For internal use only.
      */
-    static class Serializer extends StructSerializer<AdminEmailRemindersChangedDetails> {
+    static class Serializer extends StructSerializer<FileProviderMigrationPolicyChangedDetails> {
         public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(AdminEmailRemindersChangedDetails value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+        public void serialize(FileProviderMigrationPolicyChangedDetails value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
             if (!collapse) {
                 g.writeStartObject();
             }
             g.writeFieldName("new_value");
-            AdminEmailRemindersPolicy.Serializer.INSTANCE.serialize(value.newValue, g);
+            FileProviderMigrationPolicyState.Serializer.INSTANCE.serialize(value.newValue, g);
             g.writeFieldName("previous_value");
-            AdminEmailRemindersPolicy.Serializer.INSTANCE.serialize(value.previousValue, g);
+            FileProviderMigrationPolicyState.Serializer.INSTANCE.serialize(value.previousValue, g);
             if (!collapse) {
                 g.writeEndObject();
             }
         }
 
         @Override
-        public AdminEmailRemindersChangedDetails deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
-            AdminEmailRemindersChangedDetails value;
+        public FileProviderMigrationPolicyChangedDetails deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException {
+            FileProviderMigrationPolicyChangedDetails value;
             String tag = null;
             if (!collapsed) {
                 expectStartObject(p);
                 tag = readTag(p);
             }
             if (tag == null) {
-                AdminEmailRemindersPolicy f_newValue = null;
-                AdminEmailRemindersPolicy f_previousValue = null;
+                FileProviderMigrationPolicyState f_newValue = null;
+                FileProviderMigrationPolicyState f_previousValue = null;
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String field = p.getCurrentName();
                     p.nextToken();
                     if ("new_value".equals(field)) {
-                        f_newValue = AdminEmailRemindersPolicy.Serializer.INSTANCE.deserialize(p);
+                        f_newValue = FileProviderMigrationPolicyState.Serializer.INSTANCE.deserialize(p);
                     }
                     else if ("previous_value".equals(field)) {
-                        f_previousValue = AdminEmailRemindersPolicy.Serializer.INSTANCE.deserialize(p);
+                        f_previousValue = FileProviderMigrationPolicyState.Serializer.INSTANCE.deserialize(p);
                     }
                     else {
                         skipValue(p);
@@ -159,7 +160,7 @@ public class AdminEmailRemindersChangedDetails {
                 if (f_previousValue == null) {
                     throw new JsonParseException(p, "Required field \"previous_value\" missing.");
                 }
-                value = new AdminEmailRemindersChangedDetails(f_newValue, f_previousValue);
+                value = new FileProviderMigrationPolicyChangedDetails(f_newValue, f_previousValue);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

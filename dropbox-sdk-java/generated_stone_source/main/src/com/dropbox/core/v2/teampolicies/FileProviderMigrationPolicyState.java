@@ -1,7 +1,7 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_policies.stone */
 
-package com.dropbox.core.v2.teamlog;
+package com.dropbox.core.v2.teampolicies;
 
 import com.dropbox.core.stone.StoneDeserializerLogger;
 import com.dropbox.core.stone.StoneSerializers;
@@ -16,11 +16,20 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
-public enum TeamMembershipType {
-    // union team_log.TeamMembershipType (team_log_generated.stone)
-    FREE,
-    FULL,
-    GUEST,
+public enum FileProviderMigrationPolicyState {
+    // union team_policies.FileProviderMigrationPolicyState (team_policies.stone)
+    /**
+     * Team admin has opted out of File Provider Migration for team members.
+     */
+    DISABLED,
+    /**
+     * Team admin has not opted out of File Provider Migration for team members.
+     */
+    ENABLED,
+    /**
+     * Team admin has default value based on team tier.
+     */
+    DEFAULT,
     /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *
@@ -33,22 +42,22 @@ public enum TeamMembershipType {
     /**
      * For internal use only.
      */
-    static class Serializer extends UnionSerializer<TeamMembershipType> {
+    public static class Serializer extends UnionSerializer<FileProviderMigrationPolicyState> {
         public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public void serialize(TeamMembershipType value, JsonGenerator g) throws IOException, JsonGenerationException {
+        public void serialize(FileProviderMigrationPolicyState value, JsonGenerator g) throws IOException, JsonGenerationException {
             switch (value) {
-                case FREE: {
-                    g.writeString("free");
+                case DISABLED: {
+                    g.writeString("disabled");
                     break;
                 }
-                case FULL: {
-                    g.writeString("full");
+                case ENABLED: {
+                    g.writeString("enabled");
                     break;
                 }
-                case GUEST: {
-                    g.writeString("guest");
+                case DEFAULT: {
+                    g.writeString("default");
                     break;
                 }
                 default: {
@@ -58,8 +67,8 @@ public enum TeamMembershipType {
         }
 
         @Override
-        public TeamMembershipType deserialize(JsonParser p) throws IOException, JsonParseException {
-            TeamMembershipType value;
+        public FileProviderMigrationPolicyState deserialize(JsonParser p) throws IOException, JsonParseException {
+            FileProviderMigrationPolicyState value;
             boolean collapsed;
             String tag;
             if (p.getCurrentToken() == JsonToken.VALUE_STRING) {
@@ -75,17 +84,17 @@ public enum TeamMembershipType {
             if (tag == null) {
                 throw new JsonParseException(p, "Required field missing: " + TAG_FIELD);
             }
-            else if ("free".equals(tag)) {
-                value = TeamMembershipType.FREE;
+            else if ("disabled".equals(tag)) {
+                value = FileProviderMigrationPolicyState.DISABLED;
             }
-            else if ("full".equals(tag)) {
-                value = TeamMembershipType.FULL;
+            else if ("enabled".equals(tag)) {
+                value = FileProviderMigrationPolicyState.ENABLED;
             }
-            else if ("guest".equals(tag)) {
-                value = TeamMembershipType.GUEST;
+            else if ("default".equals(tag)) {
+                value = FileProviderMigrationPolicyState.DEFAULT;
             }
             else {
-                value = TeamMembershipType.OTHER;
+                value = FileProviderMigrationPolicyState.OTHER;
             }
             if (!collapsed) {
                 skipFields(p);
