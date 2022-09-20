@@ -27,7 +27,7 @@ import com.dropbox.core.DbxException
  * Thrown when [DbxOfficialAppConnector] is initialized with an empty uid.
  */
 public class DropboxUidNotInitializedException(message: String?) : DbxException(message) {
-    public companion object {
+    private companion object {
         private const val serialVersionUID = 1L
     }
 }

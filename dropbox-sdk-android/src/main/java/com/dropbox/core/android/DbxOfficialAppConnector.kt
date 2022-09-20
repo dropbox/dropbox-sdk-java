@@ -46,10 +46,12 @@ public class DbxOfficialAppConnector(uid: String?) {
         /**
          * Whether installed version of Dropbox supports OpenWith
          */
+        @JvmField
         public val supportsOpenWith: Boolean,
         /**
          * Version of Dropbox installed
          */
+        @JvmField
         public val versionCode: Int
     ) {
         override fun toString(): String {
@@ -271,10 +273,11 @@ public class DbxOfficialAppConnector(uid: String?) {
          *
          * @return PackageInfo of DropboxApp if Dropbox App can process intent, else null
          */
+        @JvmStatic
         public fun getDropboxAppPackage(context: Context, intent: Intent?): PackageInfo? {
             val manager = context.packageManager
             val infos = manager.queryIntentActivities(intent!!, 0)
-            if (null == infos || 1 != infos.size) {
+            if (1 != infos.size) {
                 // The official app doesn't exist, or only an older version
                 // is available, or multiple activities are confusing us.
                 return null
@@ -282,8 +285,7 @@ public class DbxOfficialAppConnector(uid: String?) {
                 // The official app exists. Make sure it's the correct one by
                 // checking signing keys.
                 val resolveInfo = manager.resolveActivity(intent, 0) ?: return null
-                val packageInfo: PackageInfo
-                packageInfo = try {
+                val packageInfo: PackageInfo = try {
                     manager.getPackageInfo(
                         resolveInfo.activityInfo.packageName,
                         PackageManager.GET_SIGNATURES
@@ -316,6 +318,7 @@ public class DbxOfficialAppConnector(uid: String?) {
          * edit. Caller MUST convert intent into an explicit intent it can handle.
          * @throws DropboxParseException if cannot produce Intent from UtmContent
          */
+        @JvmStatic
         @Throws(DropboxParseException::class)
         public fun generateOpenWithIntentFromUtmContent(UtmContent: String?): Intent {
             // Utm content is encoded a base64-encoded marshalled bundle

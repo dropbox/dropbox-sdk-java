@@ -27,7 +27,7 @@ import com.dropbox.core.DbxException
  * Thrown when [DbxOfficialAppConnector] can't parse the utm content.
  */
 public class DropboxParseException(message: String?) : DbxException(message) {
-    public companion object {
-        private val serialVersionUID: Long = 1L
+    private companion object {
+        private const val serialVersionUID: Long = 1L
     }
 }
