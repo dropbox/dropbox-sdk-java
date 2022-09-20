@@ -8,7 +8,6 @@ targetCompatibility = JavaVersion.VERSION_11
 
 ext {
     mavenName = 'Official Dropbox Java SDK'
-    version = VERSION_NAME
     generatedSources = file("$buildDir/generated-sources")
     generatedResources = file("$buildDir/generated-resources")
     authInfoPropertyName = 'com.dropbox.test.authInfoFile'
@@ -146,7 +145,14 @@ task integrationTest(type: Test) {
 }
 
 javadoc {
-    title "${project.mavenName} ${project.version} API"
+    String versionName
+    if (project.hasProperty("VERSION_NAME")) {
+        versionName = "${project.property("VERSION_NAME")}"
+    } else {
+        versionName = ""
+    }
+
+    title "${project.mavenName} ${versionName} API"
     failOnError true
 
     // JDK 8's javadoc has an on-by-default lint called "missing", which requires that everything
