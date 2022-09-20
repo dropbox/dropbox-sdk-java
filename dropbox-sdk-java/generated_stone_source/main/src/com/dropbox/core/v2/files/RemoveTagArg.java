@@ -27,9 +27,10 @@ class RemoveTagArg {
      *
      * @param path  Path to the item to tag. Must match pattern "{@code
      *     /(.|[\\r\\n])*}" and not be {@code null}.
-     * @param tagText  The tag to remove. Must have length of at least 1, have
-     *     length of at most 32, match pattern "{@code [A-Za-z0-9_]+}", and not
-     *     be {@code null}.
+     * @param tagText  The tag to remove. Will be automatically converted to
+     *     lowercase letters. Must have length of at least 1, have length of at
+     *     most 32, match pattern "{@code [A-Za-z0-9_]+}", and not be {@code
+     *     null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -67,7 +68,7 @@ class RemoveTagArg {
     }
 
     /**
-     * The tag to remove.
+     * The tag to remove. Will be automatically converted to lowercase letters.
      *
      * @return value for this field, never {@code null}.
      */

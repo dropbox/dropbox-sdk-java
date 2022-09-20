@@ -1476,8 +1476,8 @@ public enum EventTypeArg {
      */
     ACCOUNT_CAPTURE_CHANGE_POLICY,
     /**
-     * (team_policies) Changed admin email reminder policy for team requests to
-     * join
+     * (team_policies) Changed admin reminder settings for requests to join the
+     * team
      */
     ADMIN_EMAIL_REMINDERS_CHANGED,
     /**
@@ -1595,6 +1595,10 @@ public enum EventTypeArg {
      * (team_policies) Changed file locking policy for team
      */
     FILE_LOCKING_POLICY_CHANGED,
+    /**
+     * (team_policies) Changed File Provider Migration policy for team
+     */
+    FILE_PROVIDER_MIGRATION_POLICY_CHANGED,
     /**
      * (team_policies) Enabled/disabled file requests
      */
@@ -3573,6 +3577,10 @@ public enum EventTypeArg {
                     g.writeString("file_locking_policy_changed");
                     break;
                 }
+                case FILE_PROVIDER_MIGRATION_POLICY_CHANGED: {
+                    g.writeString("file_provider_migration_policy_changed");
+                    break;
+                }
                 case FILE_REQUESTS_CHANGE_POLICY: {
                     g.writeString("file_requests_change_policy");
                     break;
@@ -5143,6 +5151,9 @@ public enum EventTypeArg {
             }
             else if ("file_locking_policy_changed".equals(tag)) {
                 value = EventTypeArg.FILE_LOCKING_POLICY_CHANGED;
+            }
+            else if ("file_provider_migration_policy_changed".equals(tag)) {
+                value = EventTypeArg.FILE_PROVIDER_MIGRATION_POLICY_CHANGED;
             }
             else if ("file_requests_change_policy".equals(tag)) {
                 value = EventTypeArg.FILE_REQUESTS_CHANGE_POLICY;

@@ -30,8 +30,12 @@ public final class FileMemberActionIndividualResult {
      */
     public enum Tag {
         /**
-         * Member was successfully removed from this file. If AccessLevel is
-         * given, the member still has access via a parent shared folder.
+         * Part of the response for both add_file_member and
+         * remove_file_member_v1 (deprecated). For add_file_member, indicates
+         * giving access was successful and at what AccessLevel. For
+         * remove_file_member_v1, indicates member was successfully removed from
+         * the file. If AccessLevel is given, the member still has access via a
+         * parent shared folder.
          */
         SUCCESS, // AccessLevel
         /**
@@ -63,9 +67,12 @@ public final class FileMemberActionIndividualResult {
 
     /**
      *
-     * @param successValue  Member was successfully removed from this file. If
-     *     AccessLevel is given, the member still has access via a parent shared
-     *     folder.
+     * @param successValue  Part of the response for both add_file_member and
+     *     remove_file_member_v1 (deprecated). For add_file_member, indicates
+     *     giving access was successful and at what AccessLevel. For
+     *     remove_file_member_v1, indicates member was successfully removed from
+     *     the file. If AccessLevel is given, the member still has access via a
+     *     parent shared folder.
      * @param _tag  Discriminating tag for this instance.
      */
     private FileMemberActionIndividualResult withTagAndSuccess(Tag _tag, AccessLevel successValue) {
@@ -121,8 +128,11 @@ public final class FileMemberActionIndividualResult {
      * Returns an instance of {@code FileMemberActionIndividualResult} that has
      * its tag set to {@link Tag#SUCCESS}.
      *
-     * <p> Member was successfully removed from this file. If AccessLevel is
-     * given, the member still has access via a parent shared folder. </p>
+     * <p> Part of the response for both add_file_member and
+     * remove_file_member_v1 (deprecated). For add_file_member, indicates giving
+     * access was successful and at what AccessLevel. For remove_file_member_v1,
+     * indicates member was successfully removed from the file. If AccessLevel
+     * is given, the member still has access via a parent shared folder. </p>
      *
      * @param value  value to assign to this instance.
      *
@@ -137,8 +147,11 @@ public final class FileMemberActionIndividualResult {
      * Returns an instance of {@code FileMemberActionIndividualResult} that has
      * its tag set to {@link Tag#SUCCESS}.
      *
-     * <p> Member was successfully removed from this file. If AccessLevel is
-     * given, the member still has access via a parent shared folder. </p>
+     * <p> Part of the response for both add_file_member and
+     * remove_file_member_v1 (deprecated). For add_file_member, indicates giving
+     * access was successful and at what AccessLevel. For remove_file_member_v1,
+     * indicates member was successfully removed from the file. If AccessLevel
+     * is given, the member still has access via a parent shared folder. </p>
      *
      * @return Instance of {@code FileMemberActionIndividualResult} with its tag
      *     set to {@link Tag#SUCCESS}.
@@ -148,8 +161,11 @@ public final class FileMemberActionIndividualResult {
     }
 
     /**
-     * Member was successfully removed from this file. If AccessLevel is given,
-     * the member still has access via a parent shared folder.
+     * Part of the response for both add_file_member and remove_file_member_v1
+     * (deprecated). For add_file_member, indicates giving access was successful
+     * and at what AccessLevel. For remove_file_member_v1, indicates member was
+     * successfully removed from the file. If AccessLevel is given, the member
+     * still has access via a parent shared folder.
      *
      * <p> This instance must be tagged as {@link Tag#SUCCESS}. </p>
      *

@@ -3901,9 +3901,10 @@ public class DbxUserFilesRequests {
      *
      * @param path  Path to the item to be tagged. Must match pattern "{@code
      *     /(.|[\\r\\n])*}" and not be {@code null}.
-     * @param tagText  The value of the tag to add. Must have length of at least
-     *     1, have length of at most 32, match pattern "{@code [A-Za-z0-9_]+}",
-     *     and not be {@code null}.
+     * @param tagText  The value of the tag to add. Will be automatically
+     *     converted to lowercase letters. Must have length of at least 1, have
+     *     length of at most 32, match pattern "{@code [A-Za-z0-9_]+}", and not
+     *     be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -3978,9 +3979,10 @@ public class DbxUserFilesRequests {
      *
      * @param path  Path to the item to tag. Must match pattern "{@code
      *     /(.|[\\r\\n])*}" and not be {@code null}.
-     * @param tagText  The tag to remove. Must have length of at least 1, have
-     *     length of at most 32, match pattern "{@code [A-Za-z0-9_]+}", and not
-     *     be {@code null}.
+     * @param tagText  The tag to remove. Will be automatically converted to
+     *     lowercase letters. Must have length of at least 1, have length of at
+     *     most 32, match pattern "{@code [A-Za-z0-9_]+}", and not be {@code
+     *     null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.

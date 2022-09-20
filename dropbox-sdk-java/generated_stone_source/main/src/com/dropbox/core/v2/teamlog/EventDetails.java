@@ -416,6 +416,7 @@ public final class EventDetails {
         EXTERNAL_DRIVE_BACKUP_POLICY_CHANGED_DETAILS, // ExternalDriveBackupPolicyChangedDetails
         FILE_COMMENTS_CHANGE_POLICY_DETAILS, // FileCommentsChangePolicyDetails
         FILE_LOCKING_POLICY_CHANGED_DETAILS, // FileLockingPolicyChangedDetails
+        FILE_PROVIDER_MIGRATION_POLICY_CHANGED_DETAILS, // FileProviderMigrationPolicyChangedDetails
         FILE_REQUESTS_CHANGE_POLICY_DETAILS, // FileRequestsChangePolicyDetails
         FILE_REQUESTS_EMAILS_ENABLED_DETAILS, // FileRequestsEmailsEnabledDetails
         FILE_REQUESTS_EMAILS_RESTRICTED_TO_TEAM_ONLY_DETAILS, // FileRequestsEmailsRestrictedToTeamOnlyDetails
@@ -924,6 +925,7 @@ public final class EventDetails {
     private ExternalDriveBackupPolicyChangedDetails externalDriveBackupPolicyChangedDetailsValue;
     private FileCommentsChangePolicyDetails fileCommentsChangePolicyDetailsValue;
     private FileLockingPolicyChangedDetails fileLockingPolicyChangedDetailsValue;
+    private FileProviderMigrationPolicyChangedDetails fileProviderMigrationPolicyChangedDetailsValue;
     private FileRequestsChangePolicyDetails fileRequestsChangePolicyDetailsValue;
     private FileRequestsEmailsEnabledDetails fileRequestsEmailsEnabledDetailsValue;
     private FileRequestsEmailsRestrictedToTeamOnlyDetails fileRequestsEmailsRestrictedToTeamOnlyDetailsValue;
@@ -7237,6 +7239,23 @@ public final class EventDetails {
         EventDetails result = new EventDetails();
         result._tag = _tag;
         result.fileLockingPolicyChangedDetailsValue = fileLockingPolicyChangedDetailsValue;
+        return result;
+    }
+
+    /**
+     * Additional fields depending on the event type.
+     *
+     * @param fileProviderMigrationPolicyChangedDetailsValue  Must not be {@code
+     *     null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventDetails withTagAndFileProviderMigrationPolicyChangedDetails(Tag _tag, FileProviderMigrationPolicyChangedDetails fileProviderMigrationPolicyChangedDetailsValue) {
+        EventDetails result = new EventDetails();
+        result._tag = _tag;
+        result.fileProviderMigrationPolicyChangedDetailsValue = fileProviderMigrationPolicyChangedDetailsValue;
         return result;
     }
 
@@ -27508,6 +27527,57 @@ public final class EventDetails {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#FILE_PROVIDER_MIGRATION_POLICY_CHANGED_DETAILS}, {@code false}
+     * otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#FILE_PROVIDER_MIGRATION_POLICY_CHANGED_DETAILS}, {@code false}
+     *     otherwise.
+     */
+    public boolean isFileProviderMigrationPolicyChangedDetails() {
+        return this._tag == Tag.FILE_PROVIDER_MIGRATION_POLICY_CHANGED_DETAILS;
+    }
+
+    /**
+     * Returns an instance of {@code EventDetails} that has its tag set to
+     * {@link Tag#FILE_PROVIDER_MIGRATION_POLICY_CHANGED_DETAILS}.
+     *
+     * <p> None </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventDetails} with its tag set to {@link
+     *     Tag#FILE_PROVIDER_MIGRATION_POLICY_CHANGED_DETAILS}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventDetails fileProviderMigrationPolicyChangedDetails(FileProviderMigrationPolicyChangedDetails value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventDetails().withTagAndFileProviderMigrationPolicyChangedDetails(Tag.FILE_PROVIDER_MIGRATION_POLICY_CHANGED_DETAILS, value);
+    }
+
+    /**
+     * This instance must be tagged as {@link
+     * Tag#FILE_PROVIDER_MIGRATION_POLICY_CHANGED_DETAILS}.
+     *
+     * @return The {@link FileProviderMigrationPolicyChangedDetails} value
+     *     associated with this instance if {@link
+     *     #isFileProviderMigrationPolicyChangedDetails} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isFileProviderMigrationPolicyChangedDetails} is {@code false}.
+     */
+    public FileProviderMigrationPolicyChangedDetails getFileProviderMigrationPolicyChangedDetailsValue() {
+        if (this._tag != Tag.FILE_PROVIDER_MIGRATION_POLICY_CHANGED_DETAILS) {
+            throw new IllegalStateException("Invalid tag: required Tag.FILE_PROVIDER_MIGRATION_POLICY_CHANGED_DETAILS, but was Tag." + this._tag.name());
+        }
+        return fileProviderMigrationPolicyChangedDetailsValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#FILE_REQUESTS_CHANGE_POLICY_DETAILS}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -32977,6 +33047,7 @@ public final class EventDetails {
             externalDriveBackupPolicyChangedDetailsValue,
             fileCommentsChangePolicyDetailsValue,
             fileLockingPolicyChangedDetailsValue,
+            fileProviderMigrationPolicyChangedDetailsValue,
             fileRequestsChangePolicyDetailsValue,
             fileRequestsEmailsEnabledDetailsValue,
             fileRequestsEmailsRestrictedToTeamOnlyDetailsValue,
@@ -33859,6 +33930,8 @@ public final class EventDetails {
                     return (this.fileCommentsChangePolicyDetailsValue == other.fileCommentsChangePolicyDetailsValue) || (this.fileCommentsChangePolicyDetailsValue.equals(other.fileCommentsChangePolicyDetailsValue));
                 case FILE_LOCKING_POLICY_CHANGED_DETAILS:
                     return (this.fileLockingPolicyChangedDetailsValue == other.fileLockingPolicyChangedDetailsValue) || (this.fileLockingPolicyChangedDetailsValue.equals(other.fileLockingPolicyChangedDetailsValue));
+                case FILE_PROVIDER_MIGRATION_POLICY_CHANGED_DETAILS:
+                    return (this.fileProviderMigrationPolicyChangedDetailsValue == other.fileProviderMigrationPolicyChangedDetailsValue) || (this.fileProviderMigrationPolicyChangedDetailsValue.equals(other.fileProviderMigrationPolicyChangedDetailsValue));
                 case FILE_REQUESTS_CHANGE_POLICY_DETAILS:
                     return (this.fileRequestsChangePolicyDetailsValue == other.fileRequestsChangePolicyDetailsValue) || (this.fileRequestsChangePolicyDetailsValue.equals(other.fileRequestsChangePolicyDetailsValue));
                 case FILE_REQUESTS_EMAILS_ENABLED_DETAILS:
@@ -36767,6 +36840,13 @@ public final class EventDetails {
                     g.writeEndObject();
                     break;
                 }
+                case FILE_PROVIDER_MIGRATION_POLICY_CHANGED_DETAILS: {
+                    g.writeStartObject();
+                    writeTag("file_provider_migration_policy_changed_details", g);
+                    FileProviderMigrationPolicyChangedDetails.Serializer.INSTANCE.serialize(value.fileProviderMigrationPolicyChangedDetailsValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
                 case FILE_REQUESTS_CHANGE_POLICY_DETAILS: {
                     g.writeStartObject();
                     writeTag("file_requests_change_policy_details", g);
@@ -39409,6 +39489,11 @@ public final class EventDetails {
                 FileLockingPolicyChangedDetails fieldValue = null;
                 fieldValue = FileLockingPolicyChangedDetails.Serializer.INSTANCE.deserialize(p, true);
                 value = EventDetails.fileLockingPolicyChangedDetails(fieldValue);
+            }
+            else if ("file_provider_migration_policy_changed_details".equals(tag)) {
+                FileProviderMigrationPolicyChangedDetails fieldValue = null;
+                fieldValue = FileProviderMigrationPolicyChangedDetails.Serializer.INSTANCE.deserialize(p, true);
+                value = EventDetails.fileProviderMigrationPolicyChangedDetails(fieldValue);
             }
             else if ("file_requests_change_policy_details".equals(tag)) {
                 FileRequestsChangePolicyDetails fieldValue = null;

@@ -10,6 +10,7 @@ import com.dropbox.core.v2.contacts.DbxUserContactsRequests;
 import com.dropbox.core.v2.fileproperties.DbxUserFilePropertiesRequests;
 import com.dropbox.core.v2.filerequests.DbxUserFileRequestsRequests;
 import com.dropbox.core.v2.files.DbxUserFilesRequests;
+import com.dropbox.core.v2.openid.DbxUserOpenidRequests;
 import com.dropbox.core.v2.paper.DbxUserPaperRequests;
 import com.dropbox.core.v2.sharing.DbxUserSharingRequests;
 import com.dropbox.core.v2.users.DbxUserUsersRequests;
@@ -27,6 +28,7 @@ public class DbxClientV2Base {
     private final DbxUserFilePropertiesRequests fileProperties;
     private final DbxUserFileRequestsRequests fileRequests;
     private final DbxUserFilesRequests files;
+    private final DbxUserOpenidRequests openid;
     private final DbxUserPaperRequests paper;
     private final DbxUserSharingRequests sharing;
     private final DbxUserUsersRequests users;
@@ -45,6 +47,7 @@ public class DbxClientV2Base {
         this.fileProperties = new DbxUserFilePropertiesRequests(_client);
         this.fileRequests = new DbxUserFileRequestsRequests(_client);
         this.files = new DbxUserFilesRequests(_client);
+        this.openid = new DbxUserOpenidRequests(_client);
         this.paper = new DbxUserPaperRequests(_client);
         this.sharing = new DbxUserSharingRequests(_client);
         this.users = new DbxUserUsersRequests(_client);
@@ -113,6 +116,15 @@ public class DbxClientV2Base {
      */
     public DbxUserFilesRequests files() {
         return files;
+    }
+
+    /**
+     * Returns client for issuing requests in the {@code "openid"} namespace.
+     *
+     * @return Dropbox openid client
+     */
+    public DbxUserOpenidRequests openid() {
+        return openid;
     }
 
     /**
