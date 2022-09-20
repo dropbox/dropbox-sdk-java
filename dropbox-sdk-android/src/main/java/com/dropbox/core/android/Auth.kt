@@ -17,7 +17,36 @@ import java.util.*
  * Helper class for integrating with [AuthActivity]
  */
 public class Auth {
-    public companion object {
+    private companion object {
+
+        /**
+         * @see Auth#startOAuth2Authentication(Context, String, String, String[], String, String)
+         */
+        @JvmStatic
+        public fun startOAuth2Authentication(
+                context: Context,
+                appKey: String?,
+                ) {
+            startOAuth2Authentication(
+                    context, appKey, null, null, null
+            )
+        }
+
+        /**
+         * @see Auth#startOAuth2Authentication(Context, String, String, String[], String, String)
+         */
+        @JvmStatic
+        public fun startOAuth2Authentication(
+                context: Context,
+                appKey: String?,
+                desiredUid: String?,
+                alreadyAuthedUids: Array<String>?,
+                sessionId: String?,
+        ) {
+            startOAuth2Authentication(
+                    context, appKey, desiredUid, alreadyAuthedUids, sessionId, "www.dropbox.com"
+            )
+        }
         /**
          *
          *
@@ -26,11 +55,13 @@ public class Auth {
          * will get HTTP 401.
          * @see Auth.startOAuth2PKCE
          */
+        @JvmStatic
+        @JvmOverloads
         public fun startOAuth2PKCE(
             context: Context,
             appKey: String?,
             requestConfig: DbxRequestConfig?,
-            scope: Collection<String?>?
+            scope: Collection<String?>? = null
         ) {
             startOAuth2PKCE(context, appKey, requestConfig, null, scope)
         }
@@ -50,6 +81,7 @@ public class Auth {
          * @param requestConfig         Default attributes to use for each request
          * @param host                  Dropbox hosts to send requests to (used for mocking and testing)
          */
+        @JvmStatic
         public fun startOAuth2PKCE(
             context: Context,
             appKey: String?,
@@ -75,6 +107,7 @@ public class Auth {
          *
          * @see Auth.startOAuth2PKCE
          */
+        @JvmStatic
         public fun startOAuth2PKCE(
             context: Context,
             appKey: String?,
@@ -119,6 +152,7 @@ public class Auth {
          * previously granted scopes. It enables incrementally
          * requesting scopes.
          */
+        @JvmStatic
         public fun startOAuth2PKCE(
             context: Context,
             appKey: String?,
@@ -178,19 +212,14 @@ public class Auth {
          * manifest, meaning that the Dropbox app will
          * not be able to redirect back to your app after auth.
          */
-        /**
-         * @see Auth.startOAuth2Authentication
-         */
-        /**
-         * @see Auth.startOAuth2Authentication
-         */
+        @JvmStatic
         public fun startOAuth2Authentication(
             context: Context,
             appKey: String?,
-            desiredUid: String? = null,
-            alreadyAuthedUids: Array<String>? = null,
-            sessionId: String? = null,
-            webHost: String? = "www.dropbox.com"
+            desiredUid: String?,
+            alreadyAuthedUids: Array<String>?,
+            sessionId: String?,
+            webHost: String?
         ) {
             startOAuth2Authentication(
                 context, appKey, desiredUid, alreadyAuthedUids, sessionId,
@@ -198,6 +227,9 @@ public class Auth {
             )
         }
 
+        /**
+         * @see Auth.startOAuth2Authentication
+         */
         private fun startOAuth2Authentication(
             context: Context,
             appKey: String?,
@@ -238,11 +270,14 @@ public class Auth {
             context.startActivity(intent)
         }
 
+        @JvmStatic
         public val oAuth2Token: String?
             get() {
                 val credential = dbxCredential ?: return null
                 return credential.accessToken
             }
+
+        @JvmStatic
         public val uid: String?
             get() {
                 if (dbxCredential == null) {
@@ -257,6 +292,7 @@ public class Auth {
          *
          * @return The result after
          */
+        @JvmStatic
         public val dbxCredential: DbxCredential?
             get() {
                 val data = AuthActivity.result ?: return null
@@ -282,6 +318,7 @@ public class Auth {
          * API endpoints. To call one API endpoint you have to obtains the scope first otherwise you
          * will get HTTP 401.
          */
+        @JvmStatic
         public val scope: String?
             get() {
                 val data = AuthActivity.result ?: return null
