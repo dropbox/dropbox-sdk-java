@@ -35,21 +35,6 @@ public final class com/dropbox/core/android/AuthActivity : android/app/Activity 
 	public static final field ACTION_AUTHENTICATE_V2 Ljava/lang/String;
 	public static final field AUTH_PATH_CONNECT Ljava/lang/String;
 	public static final field AUTH_VERSION I
-	public static final field EXTRA_ACCESS_SECRET Ljava/lang/String;
-	public static final field EXTRA_ACCESS_TOKEN Ljava/lang/String;
-	public static final field EXTRA_ALREADY_AUTHED_UIDS Ljava/lang/String;
-	public static final field EXTRA_AUTH_QUERY_PARAMS Ljava/lang/String;
-	public static final field EXTRA_AUTH_STATE Ljava/lang/String;
-	public static final field EXTRA_CALLING_CLASS Ljava/lang/String;
-	public static final field EXTRA_CALLING_PACKAGE Ljava/lang/String;
-	public static final field EXTRA_CONSUMER_KEY Ljava/lang/String;
-	public static final field EXTRA_CONSUMER_SIG Ljava/lang/String;
-	public static final field EXTRA_DESIRED_UID Ljava/lang/String;
-	public static final field EXTRA_EXPIRES_AT Ljava/lang/String;
-	public static final field EXTRA_REFRESH_TOKEN Ljava/lang/String;
-	public static final field EXTRA_SCOPE Ljava/lang/String;
-	public static final field EXTRA_SESSION_ID Ljava/lang/String;
-	public static final field EXTRA_UID Ljava/lang/String;
 	public static field result Landroid/content/Intent;
 	public fun <init> ()V
 	public static final fun checkAppBeforeAuth (Landroid/content/Context;Ljava/lang/String;Z)Z
@@ -87,7 +72,6 @@ public final class com/dropbox/core/android/DbxOfficialAppConnector {
 
 public final class com/dropbox/core/android/DbxOfficialAppConnector$Companion {
 	public final fun generateOpenWithIntentFromUtmContent (Ljava/lang/String;)Landroid/content/Intent;
-	public final fun getDropboxAppPackage (Landroid/content/Context;Landroid/content/Intent;)Landroid/content/pm/PackageInfo;
 	public final fun getDropboxPlayStoreIntent ()Landroid/content/Intent;
 	public final fun isAnySignedIn (Landroid/content/Context;)Z
 	public final fun isInstalled (Landroid/content/Context;)Lcom/dropbox/core/android/DbxOfficialAppConnector$DbxOfficialAppInstallInfo;

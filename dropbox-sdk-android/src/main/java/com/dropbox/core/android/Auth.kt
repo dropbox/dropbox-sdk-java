@@ -9,6 +9,7 @@ import com.dropbox.core.IncludeGrantedScopes
 import com.dropbox.core.TokenAccessType
 import com.dropbox.core.android.AuthActivity.Companion.checkAppBeforeAuth
 import com.dropbox.core.android.AuthActivity.Companion.makeIntent
+import com.dropbox.core.android.internal.DropboxAuthIntent
 import com.dropbox.core.oauth.DbxCredential
 import com.dropbox.core.util.StringUtil
 import java.util.*
@@ -283,7 +284,7 @@ public class Auth {
                     return null
                 }
                 val data = AuthActivity.result
-                return data!!.getStringExtra(AuthActivity.EXTRA_UID)
+                return data!!.getStringExtra(DropboxAuthIntent.EXTRA_UID)
             }
 
         /**
@@ -295,15 +296,15 @@ public class Auth {
         public val dbxCredential: DbxCredential?
             get() {
                 val data = AuthActivity.result ?: return null
-                val token = data.getStringExtra(AuthActivity.EXTRA_ACCESS_TOKEN)
-                val secret = data.getStringExtra(AuthActivity.EXTRA_ACCESS_SECRET)
-                val uid = data.getStringExtra(AuthActivity.EXTRA_UID)
+                val token = data.getStringExtra(DropboxAuthIntent.EXTRA_ACCESS_TOKEN)
+                val secret = data.getStringExtra(DropboxAuthIntent.EXTRA_ACCESS_SECRET)
+                val uid = data.getStringExtra(DropboxAuthIntent.EXTRA_UID)
                 if (token == null || "" == token || secret == null || "" == secret || uid == null || "" == uid) {
                     return null
                 }
-                val appKey = data.getStringExtra(AuthActivity.EXTRA_CONSUMER_KEY)
-                val refreshToken = data.getStringExtra(AuthActivity.EXTRA_REFRESH_TOKEN)
-                val expiresAt = data.getLongExtra(AuthActivity.EXTRA_EXPIRES_AT, -1)
+                val appKey = data.getStringExtra(DropboxAuthIntent.EXTRA_CONSUMER_KEY)
+                val refreshToken = data.getStringExtra(DropboxAuthIntent.EXTRA_REFRESH_TOKEN)
+                val expiresAt = data.getLongExtra(DropboxAuthIntent.EXTRA_EXPIRES_AT, -1)
                 val nullableExpiresAt = if (expiresAt >= 0) expiresAt else null
                 return DbxCredential(secret, nullableExpiresAt, refreshToken, appKey)
             }
@@ -321,7 +322,7 @@ public class Auth {
         public val scope: String?
             get() {
                 val data = AuthActivity.result ?: return null
-                return data.getStringExtra(AuthActivity.EXTRA_SCOPE)
+                return data.getStringExtra(DropboxAuthIntent.EXTRA_SCOPE)
             }
     }
 }
