@@ -145,7 +145,14 @@ task integrationTest(type: Test) {
 }
 
 javadoc {
-    title "${project.mavenName} ${project.version} API"
+    String versionName
+    if (project.hasProperty("VERSION_NAME")) {
+        versionName = "${project.property("VERSION_NAME")}"
+    } else {
+        versionName = ""
+    }
+
+    title "${project.mavenName} ${versionName} API"
     failOnError true
 
     // JDK 8's javadoc has an on-by-default lint called "missing", which requires that everything
@@ -156,6 +163,7 @@ javadoc {
     if (JavaVersion.current().isJava8Compatible()) {
         options.addBooleanOption "Xdoclint:all,-missing", true
     }
+    options.addBooleanOption('-no-module-directories', true)
     options.addStringOption "link", "http://docs.oracle.com/javase/6/docs/api/"
 }
 
