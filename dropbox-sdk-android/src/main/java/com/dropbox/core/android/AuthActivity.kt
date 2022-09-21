@@ -777,13 +777,6 @@ public class AuthActivity : Activity() {
         public fun setSecurityProvider(prov: SecurityProvider) {
             synchronized(sSecurityProviderLock) { sSecurityProvider = prov }
         }
-
-        private val secureRandom: SecureRandom
-            private get() {
-                val prov = getSecurityProvider()
-                return prov.secureRandom
-            }
-
         /**
          * @return Intent to auth with official app
          * Extras should be filled in by callee
