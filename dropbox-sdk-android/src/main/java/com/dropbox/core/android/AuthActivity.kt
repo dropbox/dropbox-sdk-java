@@ -18,16 +18,15 @@ import com.dropbox.core.DbxRequestConfig
 import com.dropbox.core.DbxRequestUtil
 import com.dropbox.core.IncludeGrantedScopes
 import com.dropbox.core.TokenAccessType
-import com.dropbox.core.android.internal.DropboxAuthIntent
 import com.dropbox.core.android.internal.AuthParameters
 import com.dropbox.core.android.internal.AuthUtils.createPKCEStateNonce
 import com.dropbox.core.android.internal.AuthUtils.createStateNonce
+import com.dropbox.core.android.internal.DropboxAuthIntent
 import com.dropbox.core.android.internal.QueryParamsUtil
 import com.dropbox.core.android.internal.TokenRequestAsyncTask
 import com.dropbox.core.android.internal.TokenType
 import java.security.SecureRandom
 import java.util.*
-import kotlin.collections.ArrayList
 
 //Note: This class's code is duplicated between Core SDK and Sync SDK.  For now,
 //it has to be manually copied, but the code is set up so that it can be used in both
@@ -160,30 +159,33 @@ public class AuthActivity : Activity() {
         // Random entropy passed through auth makes sure we don't accept a
         // response which didn't come from our request.  Each random
         // value is only ever used once.
-        val stateNonce: String
-
-        // Create intent to auth with official app.
-        val officialAuthIntent = DropboxAuthIntent.buildOfficialAuthIntent(mState)
-        if (mState.mTokenAccessType != null) {
+        val stateNonce: String = if (mState.mTokenAccessType != null) {
             // short live token flow
-            stateNonce = createPKCEStateNonce(
+            createPKCEStateNonce(
                 codeChallenge = mPKCEManager.codeChallenge,
                 tokenAccessType = mState.mTokenAccessType.toString(),
                 scope = mState.mScope,
                 mIncludeGrantedScopes = mState.mIncludeGrantedScopes
-            ) // to support legacy DBApp with V1 flow with
-            officialAuthIntent.putExtra(DropboxAuthIntent.EXTRA_AUTH_QUERY_PARAMS, QueryParamsUtil.createExtraQueryParams(
-                mState.mTokenAccessType,
-                mState.mScope,
-                includeGrantedScopes = mState.mIncludeGrantedScopes,
-                mPKCEManager
-            ))
+            )
         } else {
             // Legacy long live token flow
-            stateNonce = createStateNonce(getSecurityProvider())
+            createStateNonce(getSecurityProvider())
         }
-        officialAuthIntent.putExtra(DropboxAuthIntent.EXTRA_CALLING_PACKAGE, packageName)
-        officialAuthIntent.putExtra(DropboxAuthIntent.EXTRA_AUTH_STATE, stateNonce)
+
+        val queryParams = QueryParamsUtil.createExtraQueryParams(
+            tokenAccessType = mState.mTokenAccessType,
+            scope = mState.mScope,
+            includeGrantedScopes = mState.mIncludeGrantedScopes,
+            pkceManagerCodeChallenge = mPKCEManager.codeChallenge
+        )
+
+        // Create intent to auth with official app.
+        val officialAuthIntent = DropboxAuthIntent.buildOfficialAuthIntent(
+            mState = mState,
+            stateNonce = stateNonce,
+            packageName = this@AuthActivity.packageName,
+            queryParams = queryParams
+        )
 
         /*
          * An Android bug exists where onResume may be called twice in rapid succession.
@@ -319,15 +321,14 @@ public class AuthActivity : Activity() {
         // Web Auth currently does not support desiredUid and only one alreadyAuthUid (param n).
         // We use first alreadyAuthUid arbitrarily.
         // Note that the API treats alreadyAuthUid of 0 and not present equivalently.
-        val alreadyAuthedUid = if (mState.mAlreadyAuthedUids.size > 0) mState.mAlreadyAuthedUids[0] else "0"
-        val params: MutableList<String?> = ArrayList(
-            Arrays.asList(
+        val alreadyAuthedUid = if (mState.mAlreadyAuthedUids.isNotEmpty()) mState.mAlreadyAuthedUids[0] else "0"
+        val params: MutableList<String?> =
+            mutableListOf(
                 "k", mState.mAppKey,
                 "n", alreadyAuthedUid,
                 "api", mState.mApiType,
                 "state", state
             )
-        )
         if (mState.mTokenAccessType != null) {
             params.add("extra_query_params")
             params.add(
@@ -335,7 +336,7 @@ public class AuthActivity : Activity() {
                     tokenAccessType = mState.mTokenAccessType,
                     scope = mState.mScope,
                     includeGrantedScopes = mState.mIncludeGrantedScopes,
-                    pkceManager = mPKCEManager,
+                    pkceManagerCodeChallenge = mPKCEManager.codeChallenge,
                 )
             )
         }

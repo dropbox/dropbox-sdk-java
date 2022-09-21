@@ -11,7 +11,7 @@ internal object QueryParamsUtil {
         tokenAccessType: TokenAccessType?,
         scope: String?,
         includeGrantedScopes: IncludeGrantedScopes?,
-        pkceManager: DbxPKCEManager,
+        pkceManagerCodeChallenge: String,
     ): String {
         checkNotNull(tokenAccessType) {
             "Extra Query Param should only be used in short live " +
@@ -20,7 +20,7 @@ internal object QueryParamsUtil {
         var param = String.format(
             Locale.US,
             "%s=%s&%s=%s&%s=%s&%s=%s",
-            "code_challenge", pkceManager.codeChallenge,
+            "code_challenge", pkceManagerCodeChallenge,
             "code_challenge_method", DbxPKCEManager.CODE_CHALLENGE_METHODS,
             "token_access_type", tokenAccessType.toString(),
             "response_type", "code"

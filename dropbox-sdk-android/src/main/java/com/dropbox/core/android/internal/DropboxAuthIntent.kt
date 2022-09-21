@@ -16,17 +16,25 @@ internal object DropboxAuthIntent {
      * @return Intent to auth with official app
      * Extras should be filled in by callee
      */
-    fun buildOfficialAuthIntent(mState: AuthActivity.AuthActivityState): Intent {
+    fun buildOfficialAuthIntent(
+        mState: AuthActivity.AuthActivityState,
+        stateNonce: String,
+        packageName: String,
+        queryParams: String
+    ): Intent {
         return buildActionAuthenticateIntent().apply {
             putExtra(EXTRA_CONSUMER_KEY, mState.mAppKey)
             putExtra(EXTRA_CONSUMER_SIG, "")
             putExtra(EXTRA_CALLING_CLASS, javaClass.name)
             putExtra(EXTRA_DESIRED_UID, mState.mDesiredUid)
-            putExtra(
-                EXTRA_ALREADY_AUTHED_UIDS,
-                mState.mAlreadyAuthedUids.toTypedArray()
-            )
+            putExtra(EXTRA_ALREADY_AUTHED_UIDS, mState.mAlreadyAuthedUids.toTypedArray())
             putExtra(EXTRA_SESSION_ID, mState.mSessionId)
+            putExtra(EXTRA_CALLING_PACKAGE, packageName)
+            putExtra(EXTRA_AUTH_STATE, stateNonce)
+            mState.mTokenAccessType?.apply {
+                // to support legacy DBApp with V1 flow with
+                putExtra(EXTRA_AUTH_QUERY_PARAMS, queryParams)
+            }
         }
     }
 
