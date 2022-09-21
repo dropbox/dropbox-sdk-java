@@ -500,8 +500,17 @@ public class AuthActivity : Activity() {
             apiType: String?
         ) {
             setAuthParams(
-                appKey, desiredUid, alreadyAuthedUids, null, null, null, null, null, null,
-                null, null
+                appKey = appKey,
+                desiredUid = desiredUid,
+                alreadyAuthedUids = alreadyAuthedUids,
+                sessionId = null,
+                webHost = null,
+                apiType = null,
+                tokenAccessType = null,
+                requestConfig = null,
+                host = null,
+                scope = null,
+                includeGrantedScopes = null
             )
         }
 
@@ -515,8 +524,17 @@ public class AuthActivity : Activity() {
             sessionId: String?
         ) {
             setAuthParams(
-                appKey, desiredUid, alreadyAuthedUids, sessionId, null, null, null, null,
-                null, null, null
+                appKey = appKey,
+                desiredUid = desiredUid,
+                alreadyAuthedUids = alreadyAuthedUids,
+                sessionId = sessionId,
+                webHost = null,
+                apiType = null,
+                tokenAccessType = null,
+                requestConfig = null,
+                host = null,
+                scope = null,
+                includeGrantedScopes = null
             )
         }
 
@@ -577,8 +595,18 @@ public class AuthActivity : Activity() {
             apiType: String?
         ): Intent {
             return makeIntent(
-                context, appKey, null, null, null, webHost, apiType, null, null, null,
-                null, null
+                context = context,
+                appKey = appKey,
+                desiredUid = null,
+                alreadyAuthedUids = null,
+                sessionId = null,
+                webHost = webHost,
+                apiType = apiType,
+                tokenAccessType = null,
+                requestConfig = null,
+                host = null,
+                scope = null,
+                includeGrantedScopes = null
             )
         }
 
@@ -615,8 +643,17 @@ public class AuthActivity : Activity() {
         ): Intent {
             requireNotNull(appKey) { "'appKey' can't be null" }
             setAuthParams(
-                appKey, desiredUid, alreadyAuthedUids, sessionId, webHost, apiType, null,
-                null, null, null, null
+                appKey = appKey,
+                desiredUid = desiredUid,
+                alreadyAuthedUids = alreadyAuthedUids,
+                sessionId = sessionId,
+                webHost = webHost,
+                apiType = apiType,
+                tokenAccessType = null,
+                requestConfig = null,
+                host = null,
+                scope = null,
+                includeGrantedScopes = null
             )
             return Intent(context, AuthActivity::class.java)
         }
@@ -660,18 +697,19 @@ public class AuthActivity : Activity() {
          * @return `true` if this app is properly set up for authentication.
          */
         @JvmStatic
-        fun checkAppBeforeAuth(context: Context, appKey: String, alertUser: Boolean): Boolean {
+        @Deprecated("Use Methods in com.dropbox.core.android.Auth, This will be removed in future versions.")
+        public fun checkAppBeforeAuth(context: Context, appKey: String, alertUser: Boolean): Boolean {
             // Check if the app has set up its manifest properly.
             val testIntent = Intent(Intent.ACTION_VIEW)
             val scheme = "db-$appKey"
-            val uri = scheme + "://" + AUTH_VERSION + AUTH_PATH_CONNECT
+            val uri = "$scheme://$AUTH_VERSION$AUTH_PATH_CONNECT"
             testIntent.data = Uri.parse(uri)
             val pm = context.packageManager
             val activities = pm.queryIntentActivities(testIntent, 0)
             // Just one activity registered for the URI scheme. Now make sure
             // it's within the same package so when we return from web auth
             // we're going back to this app and not some other app.
-            check(!(null == activities || 0 == activities.size)) {
+            check(0 != activities.size) {
                 "URI scheme in your app's " +
                         "manifest is not set up correctly. You should have a " +
                         AuthActivity::class.java.name + " with the " +
