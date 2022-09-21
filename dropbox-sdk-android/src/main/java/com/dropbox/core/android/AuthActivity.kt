@@ -47,35 +47,49 @@ public class AuthActivity : Activity() {
         public val secureRandom: SecureRandom
     }
 
-    // These instance variables need not be stored in savedInstanceState as onNewIntent()
-    // does not read them.
-    private var mAppKey: String? = null
-    private var mApiType: String? = null
-    private var mDesiredUid: String? = null
-    private var mAlreadyAuthedUids: Array<String> = emptyArray()
-    private var mSessionId: String? = null
-    private var mTokenAccessType: TokenAccessType? = null
-    private var mPKCEManager: DbxPKCEManager? = null
-    private var mRequestConfig: DbxRequestConfig? = null
-    private var mHost: DbxHost? = null
-    private var mScope: String? = null
-    private var mIncludeGrantedScopes: IncludeGrantedScopes? = null
+    /**
+     * These instance variables need not be stored in savedInstanceState as onNewIntent()
+     * does not read them.
+     */
+    internal data class AuthActivityState(
+        val mAppKey: String? = null,
+        val mApiType: String? = null,
+        val mDesiredUid: String? = null,
+        val mAlreadyAuthedUids: Array<String> = emptyArray(),
+        val mSessionId: String? = null,
+        val mTokenAccessType: TokenAccessType? = null,
+        val mRequestConfig: DbxRequestConfig? = null,
+        val mHost: DbxHost? = null,
+        val mScope: String? = null,
+        val mIncludeGrantedScopes: IncludeGrantedScopes? = null,
+    ) {
+        companion object {
+            fun fromAuthParams(sAuthParams: AuthParameters?): AuthActivityState {
+                return AuthActivityState(
+                    mAppKey = sAuthParams?.sAppKey,
+                    mApiType = sAuthParams?.sApiType,
+                    mDesiredUid = sAuthParams?.sDesiredUid,
+                    mAlreadyAuthedUids = sAuthParams?.sAlreadyAuthedUids?.toTypedArray() ?: emptyArray(),
+                    mSessionId = sAuthParams?.sSessionId,
+                    mTokenAccessType = sAuthParams?.sTokenAccessType,
+                    mRequestConfig = sAuthParams?.sRequestConfig,
+                    mHost = sAuthParams?.sHost,
+                    mScope = sAuthParams?.sScope,
+                    mIncludeGrantedScopes = sAuthParams?.sIncludeGrantedScopes,
+                )
+            }
+        }
+    }
+    
+    private var mState: AuthActivityState = AuthActivityState()
 
     // Stored in savedInstanceState to track an ongoing auth attempt, which
     // must include a locally-generated nonce in the response.
     private var mAuthStateNonce: String? = null
     private var mActivityDispatchHandlerPosted = false
+    private var mPKCEManager: DbxPKCEManager? = null
     override fun onCreate(savedInstanceState: Bundle?) {
-        mAppKey = sAuthParams?.sAppKey
-        mApiType = sAuthParams?.sApiType
-        mDesiredUid = sAuthParams?.sDesiredUid
-        mAlreadyAuthedUids = sAuthParams?.sAlreadyAuthedUids?.toTypedArray() ?: emptyArray()
-        mSessionId = sAuthParams?.sSessionId
-        mTokenAccessType = sAuthParams?.sTokenAccessType
-        mRequestConfig = sAuthParams?.sRequestConfig
-        mHost = sAuthParams?.sHost
-        mScope = sAuthParams?.sScope
-        mIncludeGrantedScopes = sAuthParams?.sIncludeGrantedScopes
+        mState = AuthActivityState.fromAuthParams(sAuthParams)
         if (savedInstanceState == null) {
             result = null
             mAuthStateNonce = null
@@ -84,6 +98,7 @@ public class AuthActivity : Activity() {
             mAuthStateNonce = savedInstanceState.getString(SIS_KEY_AUTH_STATE_NONCE)
             mPKCEManager = DbxPKCEManager(savedInstanceState.getString(SIS_KEY_PKCE_CODE_VERIFIER))
         }
+
         setTheme(R.style.Theme_Translucent_NoTitleBar)
         super.onCreate(savedInstanceState)
     }
@@ -117,7 +132,7 @@ public class AuthActivity : Activity() {
         if (isFinishing || !onTop) {
             return
         }
-        val authNotFinish = mAuthStateNonce != null || mAppKey == null
+        val authNotFinish = mAuthStateNonce != null || mState.mAppKey == null
         if (authNotFinish) {
             // We somehow returned to this activity without being forwarded
             // here by the official app.
@@ -141,27 +156,27 @@ public class AuthActivity : Activity() {
 
         // Create intent to auth with official app.
         val officialAuthIntent = AuthActivity.officialAuthIntent
-        if (mTokenAccessType != null) {
+        if (mState.mTokenAccessType != null) {
             // short live token flow
             state = createPKCEStateNonce(
                 mPKCEManager!!.codeChallenge,
-                mTokenAccessType.toString(),
-                mScope,
-                mIncludeGrantedScopes
+                mState.mTokenAccessType.toString(),
+                mState.mScope,
+                mState.mIncludeGrantedScopes
             ) // to support legacy DBApp with V1 flow with
             officialAuthIntent.putExtra(EXTRA_AUTH_QUERY_PARAMS, createExtraQueryParams())
         } else {
             // Legacy long live token flow
             state = createStateNonce(getSecurityProvider())
         }
-        officialAuthIntent.putExtra(EXTRA_CONSUMER_KEY, mAppKey)
+        officialAuthIntent.putExtra(EXTRA_CONSUMER_KEY, mState.mAppKey)
         officialAuthIntent.putExtra(EXTRA_CONSUMER_SIG, "")
         officialAuthIntent.putExtra(EXTRA_CALLING_PACKAGE, packageName)
         officialAuthIntent.putExtra(EXTRA_CALLING_CLASS, javaClass.name)
         officialAuthIntent.putExtra(EXTRA_AUTH_STATE, state)
-        officialAuthIntent.putExtra(EXTRA_DESIRED_UID, mDesiredUid)
-        officialAuthIntent.putExtra(EXTRA_ALREADY_AUTHED_UIDS, mAlreadyAuthedUids)
-        officialAuthIntent.putExtra(EXTRA_SESSION_ID, mSessionId)
+        officialAuthIntent.putExtra(EXTRA_DESIRED_UID, mState.mDesiredUid)
+        officialAuthIntent.putExtra(EXTRA_ALREADY_AUTHED_UIDS, mState.mAlreadyAuthedUids)
+        officialAuthIntent.putExtra(EXTRA_SESSION_ID, mState.mSessionId)
 
         /*
          * An Android bug exists where onResume may be called twice in rapid succession.
@@ -249,9 +264,9 @@ public class AuthActivity : Activity() {
                 val tokenRequest = TokenRequestAsyncTask(
                     secret,
                     mPKCEManager!!,
-                    mRequestConfig!!,
-                    mAppKey!!,
-                    mHost!!
+                    mState.mRequestConfig!!,
+                    mState.mAppKey!!,
+                    mState.mHost!!
                 )
                 try {
                     val dbxAuthFinish = tokenRequest.execute().get()
@@ -266,7 +281,7 @@ public class AuthActivity : Activity() {
                         newResult.putExtra(EXTRA_REFRESH_TOKEN, dbxAuthFinish.refreshToken)
                         newResult.putExtra(EXTRA_EXPIRES_AT, dbxAuthFinish.expiresAt)
                         newResult.putExtra(EXTRA_UID, dbxAuthFinish.userId)
-                        newResult.putExtra(EXTRA_CONSUMER_KEY, mAppKey)
+                        newResult.putExtra(EXTRA_CONSUMER_KEY, mState.mAppKey)
                         newResult.putExtra(EXTRA_SCOPE, dbxAuthFinish.scope)
                     }
                 } catch (e: Exception) {
@@ -297,21 +312,21 @@ public class AuthActivity : Activity() {
         // Web Auth currently does not support desiredUid and only one alreadyAuthUid (param n).
         // We use first alreadyAuthUid arbitrarily.
         // Note that the API treats alreadyAuthUid of 0 and not present equivalently.
-        val alreadyAuthedUid = if (mAlreadyAuthedUids.size > 0) mAlreadyAuthedUids[0] else "0"
+        val alreadyAuthedUid = if (mState.mAlreadyAuthedUids.size > 0) mState.mAlreadyAuthedUids[0] else "0"
         val params: MutableList<String?> = ArrayList(
             Arrays.asList(
-                "k", mAppKey,
+                "k", mState.mAppKey,
                 "n", alreadyAuthedUid,
-                "api", mApiType,
+                "api", mState.mApiType,
                 "state", state
             )
         )
-        if (mTokenAccessType != null) {
+        if (mState.mTokenAccessType != null) {
             params.add("extra_query_params")
             params.add(createExtraQueryParams())
         }
         val url = DbxRequestUtil.buildUrlWithParams(
-            locale.toString(), mHost!!.web, path,
+            locale.toString(), mState.mHost!!.web, path,
             params.toTypedArray()
         )
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
@@ -319,7 +334,7 @@ public class AuthActivity : Activity() {
     }
 
     private fun createExtraQueryParams(): String {
-        checkNotNull(mTokenAccessType) {
+        checkNotNull(mState.mTokenAccessType) {
             "Extra Query Param should only be used in short live " +
                     "token flow."
         }
@@ -328,16 +343,16 @@ public class AuthActivity : Activity() {
             "%s=%s&%s=%s&%s=%s&%s=%s",
             "code_challenge", mPKCEManager!!.codeChallenge,
             "code_challenge_method", DbxPKCEManager.CODE_CHALLENGE_METHODS,
-            "token_access_type", mTokenAccessType.toString(),
+            "token_access_type", mState.mTokenAccessType.toString(),
             "response_type", "code"
         )
-        if (mScope != null) {
-            param += String.format(Locale.US, "&%s=%s", "scope", mScope)
+        if (mState.mScope != null) {
+            param += String.format(Locale.US, "&%s=%s", "scope", mState.mScope)
         }
-        if (mIncludeGrantedScopes != null) {
+        if (mState.mIncludeGrantedScopes != null) {
             param += String.format(
                 Locale.US, "&%s=%s", "include_granted_scopes",
-                mIncludeGrantedScopes.toString()
+                mState.mIncludeGrantedScopes.toString()
             )
         }
         return param
@@ -554,6 +569,7 @@ public class AuthActivity : Activity() {
          * @return a newly created intent.
          */
         @JvmStatic
+        @Deprecated("Use Methods in com.dropbox.core.android.Auth, This will be removed in future versions.")
         public fun makeIntent(
             context: Context?,
             appKey: String?,
@@ -587,6 +603,7 @@ public class AuthActivity : Activity() {
          * @return a newly created intent.
          */
         @JvmStatic
+        @Deprecated("Use Methods in com.dropbox.core.android.Auth. This will be removed in future versions.")
         public fun makeIntent(
             context: Context?,
             appKey: String?,
