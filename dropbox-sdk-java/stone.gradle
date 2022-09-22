@@ -1,3 +1,5 @@
+import javax.inject.Inject
+
 apply plugin: 'java'
 
 class StoneConfig implements Serializable {
