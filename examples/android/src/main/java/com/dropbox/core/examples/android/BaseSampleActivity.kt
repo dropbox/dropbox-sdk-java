@@ -3,10 +3,7 @@ package com.dropbox.core.examples.android
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import com.dropbox.core.android.Auth
-import com.dropbox.core.examples.android.internal.api.DropboxApiWrapper
-import com.dropbox.core.examples.android.internal.api.DropboxAppConfig
-import com.dropbox.core.examples.android.internal.api.DropboxCredentialUtil
-import com.dropbox.core.examples.android.internal.api.DropboxOAuthUtil
+import com.dropbox.core.examples.android.internal.di.AppGraph
 
 
 /**
@@ -15,26 +12,18 @@ import com.dropbox.core.examples.android.internal.api.DropboxOAuthUtil
  */
 abstract class BaseSampleActivity : AppCompatActivity() {
 
-    protected val dropboxAppConfig = DropboxAppConfig()
+    val appGraph: AppGraph get() = (this.applicationContext as DropboxAndroidSampleApplication).appGraph
 
-    protected val dropboxCredentialUtil by lazy { DropboxCredentialUtil(this.applicationContext) }
+    protected val dropboxOAuthUtil get() = appGraph.dropboxOAuthUtil
 
-    protected val dropboxOAuthUtil by lazy {
-        DropboxOAuthUtil(
-            dropboxAppConfig = dropboxAppConfig,
-            dropboxCredentialUtil = dropboxCredentialUtil
-        )
-    }
+    protected val dropboxCredentialUtil get() = appGraph.dropboxCredentialUtil
 
-    protected val dropboxApiWrapper
-        get() = DropboxApiWrapper(
-            dbxCredential = dropboxCredentialUtil.getLocalCredential()!!,
-            clientIdentifier = dropboxAppConfig.clientIdentifier
-        )
+    protected val dropboxApiWrapper get() = appGraph.dropboxApiWrapper
 
     // will use our Short Lived Token.
     override fun onResume() {
         super.onResume()
+        dropboxOAuthUtil.onResume()
         if (isAuthenticated()) {
             loadData()
         }
@@ -53,7 +42,7 @@ abstract class BaseSampleActivity : AppCompatActivity() {
     protected abstract fun loadData()
 
     protected fun isAuthenticated(): Boolean {
-        return dropboxCredentialUtil.getLocalCredential() != null
+        return dropboxCredentialUtil.isAuthenticated()
     }
 
 }

@@ -31,10 +31,6 @@ class HomeActivity : BaseSampleActivity() {
 
         val toolbar = findViewById<Toolbar>(R.id.app_bar)
         setSupportActionBar(toolbar)
-        val loginButton = findViewById<Button>(R.id.login_button)
-        loginButton.setOnClickListener {
-            dropboxOAuthUtil.startDropboxAuthorization(this)
-        }
         filesButton.setOnClickListener {
             startActivity(
                 FilesActivity.getIntent(
@@ -111,7 +107,7 @@ class HomeActivity : BaseSampleActivity() {
             dropboxOAuthUtil.startDropboxAuthorization(this)
         }
         logoutButton.setOnClickListener {
-            dropboxOAuthUtil.revokeDropboxAuthorization(lifecycleScope)
+            dropboxOAuthUtil.revokeDropboxAuthorization(dropboxApiWrapper)
             resetUi()
         }
         uploadImageButton.setOnClickListener {
