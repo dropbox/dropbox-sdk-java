@@ -21,7 +21,6 @@ ext {
 sourceSets {
     main {
         java {
-            srcDir 'src/main/java'
             srcDir '../dropbox-sdk-android/src/main/java'
         }
     }
