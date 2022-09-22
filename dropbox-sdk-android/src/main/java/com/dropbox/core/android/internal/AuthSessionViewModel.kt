@@ -43,10 +43,9 @@ internal class AuthSessionViewModel {
     }
 
     companion object {
-
         private var _state: State = State()
 
-        var authInProgress = false
+        private var authInProgress = false
 
         val state: State get() = _state
 
@@ -61,7 +60,7 @@ internal class AuthSessionViewModel {
 
         fun endAuthSession() {
             authInProgress = false
-            _state = State()
+            this._state = State()
         }
     }
 }

@@ -54,8 +54,8 @@ public open class AuthActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         if (!AuthSessionViewModel.isAuthInProgress()) {
-            val newState = AuthSessionViewModel.State.fromAuthParams(sAuthParams)
-            AuthSessionViewModel.startAuthSession(newState)
+            val newStateFromAuthParams = AuthSessionViewModel.State.fromAuthParams(sAuthParams)
+            AuthSessionViewModel.startAuthSession(newStateFromAuthParams)
         }
         setTheme(R.style.Theme_Translucent_NoTitleBar)
         super.onCreate(savedInstanceState)
@@ -163,7 +163,6 @@ public open class AuthActivity : Activity() {
             // Save state that indicates we started a request, only after
             // we started one successfully.
             mState.mAuthStateNonce = stateNonce
-            setAuthParams(null, null, null)
         })
         mActivityDispatchHandlerPosted = true
     }
@@ -268,8 +267,6 @@ public open class AuthActivity : Activity() {
 
     private fun authFinished(authResult: Intent?) {
         result = authResult
-        mState.mAuthStateNonce = null
-        setAuthParams(null, null, null)
         AuthSessionViewModel.endAuthSession()
         finish()
     }

@@ -13,16 +13,6 @@ class DropboxCredentialUtil(appContext: Context) {
         AppCompatActivity.MODE_PRIVATE
     )
 
-//    //deserialize the credential from SharedPreferences if it exists
-//    fun getDbxCredential(): DbxCredential? {
-//        val credentialFromSharedPref = readCredentialLocally()
-//        if (credentialFromSharedPref != null) {
-//            return credentialFromSharedPref
-//        }
-//
-//        return null
-//    }
-
     fun readCredentialLocally(): DbxCredential? {
         val serializedCredentialJson = sharedPreferences.getString("credential", null)
         Log.d(TAG, "Local Credential Value from Shared Preferences: $serializedCredentialJson")
