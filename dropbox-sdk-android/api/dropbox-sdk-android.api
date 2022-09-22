@@ -43,7 +43,6 @@ public class com/dropbox/core/android/AuthActivity : android/app/Activity {
 	protected fun onCreate (Landroid/os/Bundle;)V
 	protected fun onNewIntent (Landroid/content/Intent;)V
 	protected fun onResume ()V
-	protected fun onSaveInstanceState (Landroid/os/Bundle;)V
 	public fun onTopResumedActivityChanged (Z)V
 	public static final fun setSecurityProvider (Lcom/dropbox/core/android/AuthActivity$SecurityProvider;)V
 }

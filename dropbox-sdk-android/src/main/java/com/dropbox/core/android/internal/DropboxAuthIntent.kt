@@ -17,7 +17,7 @@ internal object DropboxAuthIntent {
      * Extras should be filled in by callee
      */
     fun buildOfficialAuthIntent(
-        mState: AuthActivity.AuthActivityState,
+        mState: AuthSessionViewModel.State,
         stateNonce: String,
         packageName: String,
         queryParams: String,

@@ -13,7 +13,6 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import com.dropbox.core.DbxHost
-import com.dropbox.core.DbxPKCEManager
 import com.dropbox.core.DbxRequestConfig
 import com.dropbox.core.DbxRequestUtil
 import com.dropbox.core.IncludeGrantedScopes
@@ -21,6 +20,7 @@ import com.dropbox.core.TokenAccessType
 import com.dropbox.core.android.internal.AuthParameters
 import com.dropbox.core.android.internal.AuthUtils.createPKCEStateNonce
 import com.dropbox.core.android.internal.AuthUtils.createStateNonce
+import com.dropbox.core.android.internal.AuthSessionViewModel
 import com.dropbox.core.android.internal.DropboxAuthIntent
 import com.dropbox.core.android.internal.QueryParamsUtil
 import com.dropbox.core.android.internal.TokenRequestAsyncTask
@@ -50,67 +50,15 @@ public open class AuthActivity : Activity() {
         public val secureRandom: SecureRandom
     }
 
-    /**
-     * These instance variables need not be stored in savedInstanceState as onNewIntent()
-     * does not read them.
-     */
-    internal data class AuthActivityState(
-        val mAppKey: String? = null,
-        val mApiType: String? = null,
-        val mDesiredUid: String? = null,
-        val mAlreadyAuthedUids: List<String> = emptyList(),
-        val mSessionId: String? = null,
-        val mTokenAccessType: TokenAccessType? = null,
-        val mRequestConfig: DbxRequestConfig? = null,
-        val mHost: DbxHost? = null,
-        val mScope: String? = null,
-        val mIncludeGrantedScopes: IncludeGrantedScopes? = null,
-    ) {
-        companion object {
-            fun fromAuthParams(sAuthParams: AuthParameters?): AuthActivityState {
-                return AuthActivityState(
-                    mAppKey = sAuthParams?.sAppKey,
-                    mApiType = sAuthParams?.sApiType,
-                    mDesiredUid = sAuthParams?.sDesiredUid,
-                    mAlreadyAuthedUids = sAuthParams?.sAlreadyAuthedUids ?: emptyList(),
-                    mSessionId = sAuthParams?.sSessionId,
-                    mTokenAccessType = sAuthParams?.sTokenAccessType,
-                    mRequestConfig = sAuthParams?.sRequestConfig,
-                    mHost = sAuthParams?.sHost,
-                    mScope = sAuthParams?.sScope,
-                    mIncludeGrantedScopes = sAuthParams?.sIncludeGrantedScopes,
-                )
-            }
-        }
-    }
-
-    private var mState: AuthActivityState = AuthActivityState()
-
-    // Stored in savedInstanceState to track an ongoing auth attempt, which
-    // must include a locally-generated nonce in the response.
-    private var mAuthStateNonce: String? = null
     private var mActivityDispatchHandlerPosted = false
-    private lateinit var mPKCEManager: DbxPKCEManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        mState = AuthActivityState.fromAuthParams(sAuthParams)
-        if (savedInstanceState == null) {
-            result = null
-            mAuthStateNonce = null
-            mPKCEManager = DbxPKCEManager()
-        } else {
-            mAuthStateNonce = savedInstanceState.getString(SIS_KEY_AUTH_STATE_NONCE)
-            mPKCEManager = DbxPKCEManager(savedInstanceState.getString(SIS_KEY_PKCE_CODE_VERIFIER))
+        if (!AuthSessionViewModel.isAuthInProgress()) {
+            val newStateFromAuthParams = AuthSessionViewModel.State.fromAuthParams(sAuthParams)
+            AuthSessionViewModel.startAuthSession(newStateFromAuthParams)
         }
-
         setTheme(R.style.Theme_Translucent_NoTitleBar)
         super.onCreate(savedInstanceState)
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString(SIS_KEY_AUTH_STATE_NONCE, mAuthStateNonce)
-        outState.putString(SIS_KEY_PKCE_CODE_VERIFIER, mPKCEManager.codeVerifier)
     }
 
     override fun onResume() {
@@ -121,6 +69,8 @@ public open class AuthActivity : Activity() {
             onTopResumedActivityChanged(true /* onTop */)
         }
     }
+
+    private val mState : AuthSessionViewModel.State get() = AuthSessionViewModel.state
 
     /**
      * AuthActivity is launched first time, or user didn't finish oauth/dauth flow but
@@ -136,7 +86,7 @@ public open class AuthActivity : Activity() {
         if (isFinishing || !onTop) {
             return
         }
-        val authNotFinish = mAuthStateNonce != null || mState.mAppKey == null
+        val authNotFinish = mState.mAuthStateNonce != null || mState.mAppKey == null
         if (authNotFinish) {
             // We somehow returned to this activity without being forwarded
             // here by the official app.
@@ -159,7 +109,7 @@ public open class AuthActivity : Activity() {
         val stateNonce: String = if (mState.mTokenAccessType != null) {
             // short live token flow
             createPKCEStateNonce(
-                codeChallenge = mPKCEManager.codeChallenge,
+                codeChallenge = mState.mPKCEManager.codeChallenge,
                 tokenAccessType = mState.mTokenAccessType.toString(),
                 scope = mState.mScope,
                 mIncludeGrantedScopes = mState.mIncludeGrantedScopes
@@ -173,7 +123,7 @@ public open class AuthActivity : Activity() {
             tokenAccessType = mState.mTokenAccessType,
             scope = mState.mScope,
             includeGrantedScopes = mState.mIncludeGrantedScopes,
-            pkceManagerCodeChallenge = mPKCEManager.codeChallenge
+            pkceManagerCodeChallenge = mState.mPKCEManager.codeChallenge
         )
 
         // Create intent to auth with official app.
@@ -212,15 +162,14 @@ public open class AuthActivity : Activity() {
             }
             // Save state that indicates we started a request, only after
             // we started one successfully.
-            mAuthStateNonce = stateNonce
-            setAuthParams(null, null, null)
+            mState.mAuthStateNonce = stateNonce
         })
         mActivityDispatchHandlerPosted = true
     }
 
     override fun onNewIntent(intent: Intent) {
         // Reject attempt to finish authentication if we never started (nonce=null)
-        if (null == mAuthStateNonce) {
+        if (null == mState.mAuthStateNonce) {
             authFinished(null)
             return
         }
@@ -254,7 +203,7 @@ public open class AuthActivity : Activity() {
         if (token != null && token != "" && secret != null && secret != "" && uid != null && uid != "" && state != null && state != "") {
             // Reject attempt to link if the nonce in the auth state doesn't match,
             // or if we never asked for auth at all.
-            if (mAuthStateNonce != state) {
+            if (mState.mAuthStateNonce != state) {
                 authFinished(null)
                 return
             }
@@ -270,7 +219,7 @@ public open class AuthActivity : Activity() {
                 // code flow with PKCE
                 val tokenRequest = TokenRequestAsyncTask(
                     secret,
-                    mPKCEManager,
+                    mState.mPKCEManager,
                     mState.mRequestConfig!!,
                     mState.mAppKey!!,
                     mState.mHost!!
@@ -283,10 +232,22 @@ public open class AuthActivity : Activity() {
                         newResult = Intent()
                         // access_token and access_secret are OAuth1 concept. In OAuth2 we only
                         // have access token. So I put both of them to be the same.
-                        newResult.putExtra(DropboxAuthIntent.EXTRA_ACCESS_TOKEN, dbxAuthFinish.accessToken)
-                        newResult.putExtra(DropboxAuthIntent.EXTRA_ACCESS_SECRET, dbxAuthFinish.accessToken)
-                        newResult.putExtra(DropboxAuthIntent.EXTRA_REFRESH_TOKEN, dbxAuthFinish.refreshToken)
-                        newResult.putExtra(DropboxAuthIntent.EXTRA_EXPIRES_AT, dbxAuthFinish.expiresAt)
+                        newResult.putExtra(
+                            DropboxAuthIntent.EXTRA_ACCESS_TOKEN,
+                            dbxAuthFinish.accessToken
+                        )
+                        newResult.putExtra(
+                            DropboxAuthIntent.EXTRA_ACCESS_SECRET,
+                            dbxAuthFinish.accessToken
+                        )
+                        newResult.putExtra(
+                            DropboxAuthIntent.EXTRA_REFRESH_TOKEN,
+                            dbxAuthFinish.refreshToken
+                        )
+                        newResult.putExtra(
+                            DropboxAuthIntent.EXTRA_EXPIRES_AT,
+                            dbxAuthFinish.expiresAt
+                        )
                         newResult.putExtra(DropboxAuthIntent.EXTRA_UID, dbxAuthFinish.userId)
                         newResult.putExtra(DropboxAuthIntent.EXTRA_CONSUMER_KEY, mState.mAppKey)
                         newResult.putExtra(DropboxAuthIntent.EXTRA_SCOPE, dbxAuthFinish.scope)
@@ -306,8 +267,7 @@ public open class AuthActivity : Activity() {
 
     private fun authFinished(authResult: Intent?) {
         result = authResult
-        mAuthStateNonce = null
-        setAuthParams(null, null, null)
+        AuthSessionViewModel.endAuthSession()
         finish()
     }
 
@@ -319,7 +279,8 @@ public open class AuthActivity : Activity() {
         // Web Auth currently does not support desiredUid and only one alreadyAuthUid (param n).
         // We use first alreadyAuthUid arbitrarily.
         // Note that the API treats alreadyAuthUid of 0 and not present equivalently.
-        val alreadyAuthedUid = if (mState.mAlreadyAuthedUids.isNotEmpty()) mState.mAlreadyAuthedUids[0] else "0"
+        val alreadyAuthedUid =
+            if (mState.mAlreadyAuthedUids.isNotEmpty()) mState.mAlreadyAuthedUids[0] else "0"
         val params: MutableList<String?> =
             mutableListOf(
                 "k", mState.mAppKey,
@@ -334,7 +295,7 @@ public open class AuthActivity : Activity() {
                     tokenAccessType = mState.mTokenAccessType,
                     scope = mState.mScope,
                     includeGrantedScopes = mState.mIncludeGrantedScopes,
-                    pkceManagerCodeChallenge = mPKCEManager.codeChallenge,
+                    pkceManagerCodeChallenge = mState.mPKCEManager.codeChallenge,
                 )
             )
         }
@@ -370,12 +331,6 @@ public open class AuthActivity : Activity() {
          * The path for a successful callback with token (not the initial auth request).
          */
         const val AUTH_PATH_CONNECT: String = "/connect"
-
-        // saved instance state keys
-        private const val SIS_KEY_AUTH_STATE_NONCE = "SIS_KEY_AUTH_STATE_NONCE"
-
-        // saved instance PKCE manger key
-        private const val SIS_KEY_PKCE_CODE_VERIFIER = "SIS_KEY_PKCE_CODE_VERIFIER"
 
         // Class-level state used to replace the default SecureRandom implementation
         // if desired.
@@ -612,7 +567,11 @@ public open class AuthActivity : Activity() {
          */
         @JvmStatic
         @Deprecated("Use Methods in com.dropbox.core.android.Auth, This will be removed in future versions.")
-        public fun checkAppBeforeAuth(context: Context, appKey: String, alertUser: Boolean): Boolean {
+        public fun checkAppBeforeAuth(
+            context: Context,
+            appKey: String,
+            alertUser: Boolean
+        ): Boolean {
             // Check if the app has set up its manifest properly.
             val testIntent = Intent(Intent.ACTION_VIEW)
             val scheme = "db-$appKey"
