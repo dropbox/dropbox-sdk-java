@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    alias(dropboxJavaSdkLibs.plugins.dependency.guard)
 }
 
 android {
@@ -86,4 +87,8 @@ def getLocalProperties() {
         props.load(new FileInputStream(file('local.properties')))
     }
     return props
+}
+
+dependencyGuard {
+    configuration("releaseRuntimeClasspath")
 }
