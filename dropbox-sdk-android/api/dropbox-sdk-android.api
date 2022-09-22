@@ -30,7 +30,7 @@ public final class com/dropbox/core/android/Auth$Companion {
 	public static synthetic fun startOAuth2PKCE$default (Lcom/dropbox/core/android/Auth$Companion;Landroid/content/Context;Ljava/lang/String;Lcom/dropbox/core/DbxRequestConfig;Ljava/util/Collection;ILjava/lang/Object;)V
 }
 
-public final class com/dropbox/core/android/AuthActivity : android/app/Activity {
+public class com/dropbox/core/android/AuthActivity : android/app/Activity {
 	public static final field ACTION_AUTHENTICATE_V1 Ljava/lang/String;
 	public static final field ACTION_AUTHENTICATE_V2 Ljava/lang/String;
 	public static final field AUTH_PATH_CONNECT Ljava/lang/String;
@@ -40,6 +40,10 @@ public final class com/dropbox/core/android/AuthActivity : android/app/Activity 
 	public static final fun checkAppBeforeAuth (Landroid/content/Context;Ljava/lang/String;Z)Z
 	public static final fun makeIntent (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
 	public static final fun makeIntent (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
+	protected fun onCreate (Landroid/os/Bundle;)V
+	protected fun onNewIntent (Landroid/content/Intent;)V
+	protected fun onResume ()V
+	protected fun onSaveInstanceState (Landroid/os/Bundle;)V
 	public fun onTopResumedActivityChanged (Z)V
 	public static final fun setSecurityProvider (Lcom/dropbox/core/android/AuthActivity$SecurityProvider;)V
 }
