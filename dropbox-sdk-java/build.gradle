@@ -1,6 +1,7 @@
 plugins {
     id 'java-library'
     id "com.github.blindpirate.osgi" version "0.0.6"
+    id "org.jetbrains.kotlin.jvm"
     alias(dropboxJavaSdkLibs.plugins.gradle.version.plugin)
     alias(dropboxJavaSdkLibs.plugins.maven.publish.plugin)
     alias(dropboxJavaSdkLibs.plugins.dependency.guard)
@@ -17,11 +18,21 @@ ext {
     authInfoPropertyName = 'com.dropbox.test.authInfoFile'
 }
 
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/java'
+            srcDir '../dropbox-sdk-android/src/main/java'
+        }
+    }
+}
+
 dependencies {
     // Important: Jackson 2.8+ will be free to use JDK7 features and no longer guarantees JDK6
     //            compatibility
     api(dropboxJavaSdkLibs.jackson.core)
 
+    compileOnly 'com.google.android:android:4.1.1.4' // Until 6.x when we have an Android Artifact
     compileOnly(dropboxJavaSdkLibs.servlet.api)
     compileOnly(dropboxJavaSdkLibs.okhttp2)  // support both v2 and v3 to avoid
     compileOnly(dropboxJavaSdkLibs.okhttp3) // method count bloat
