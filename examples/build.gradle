@@ -11,6 +11,10 @@ buildscript {
     }
 }
 
+plugins {
+    alias(dropboxJavaSdkLibs.plugins.maven.publish.plugin) apply false
+}
+
 allprojects {
     repositories {
         google()
