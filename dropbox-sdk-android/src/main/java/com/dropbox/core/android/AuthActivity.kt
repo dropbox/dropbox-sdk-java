@@ -28,20 +28,16 @@ import com.dropbox.core.android.internal.TokenType
 import java.security.SecureRandom
 import java.util.*
 
-//Note: This class's code is duplicated between Core SDK and Sync SDK.  For now,
-//it has to be manually copied, but the code is set up so that it can be used in both
-//places, with only a few import changes above.  If you're making changes here, you
-//should consider if the other side needs them.  Don't break compatibility if you
-//don't have to.  This is a hack we should get away from eventually.
 /**
  * This activity is used internally for authentication, but must be exposed both
  * so that Android can launch it and for backwards compatibility.
+ *
+ * This class has been marked as "open" for binary compatibility reasons,
+ * but will be "final" in the next major version.
  */
-public class AuthActivity : Activity() {
+public open class AuthActivity : Activity() {
     /**
      * Provider of the local security needs of an AuthActivity.
-     *
-     *
      *
      * You shouldn't need to use this class directly in your app.  Instead,
      * simply configure `java.security`'s providers to match your preferences.
