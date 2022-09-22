@@ -28,9 +28,8 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Parcel
 import android.util.Base64
-import com.dropbox.core.android.AuthActivity.Companion.officialAuthIntent
-import com.dropbox.core.android.DropboxParseException
 import com.dropbox.core.android.DropboxUidNotInitializedException
+import com.dropbox.core.android.internal.DropboxAuthIntent
 
 /**
  * The DbxOfficialAppConnector is used by an app to communicate with the Official Android Dropbox
@@ -176,7 +175,7 @@ public class DbxOfficialAppConnector(uid: String?) {
         public fun isInstalled(context: Context): DbxOfficialAppInstallInfo? {
 
             // For now, use dAuth intent
-            val authIntent = officialAuthIntent
+            val authIntent = DropboxAuthIntent.buildActionAuthenticateIntent()
             val dropboxPackage = getDropboxAppPackage(context, authIntent) ?: return null
             val versionCode = dropboxPackage.versionCode
             val supportsOpenWith = versionCode >= MIN_OPENWITH_VERSION
@@ -275,7 +274,7 @@ public class DbxOfficialAppConnector(uid: String?) {
          *
          * @return PackageInfo of DropboxApp if Dropbox App can process intent, else null
          */
-        public fun getDropboxAppPackage(context: Context, intent: Intent?): PackageInfo? {
+        internal fun getDropboxAppPackage(context: Context, intent: Intent?): PackageInfo? {
             val manager = context.packageManager
             val infos = manager.queryIntentActivities(intent!!, 0)
             if (1 != infos.size) {
