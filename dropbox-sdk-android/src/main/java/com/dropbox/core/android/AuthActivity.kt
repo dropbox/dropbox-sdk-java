@@ -95,6 +95,7 @@ public class AuthActivity : Activity() {
     private var mAuthStateNonce: String? = null
     private var mActivityDispatchHandlerPosted = false
     private lateinit var mPKCEManager: DbxPKCEManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         mState = AuthActivityState.fromAuthParams(sAuthParams)
         if (savedInstanceState == null) {
@@ -181,6 +182,7 @@ public class AuthActivity : Activity() {
 
         // Create intent to auth with official app.
         val officialAuthIntent = DropboxAuthIntent.buildOfficialAuthIntent(
+            callingActivityFullyQualifiedClassName = this@AuthActivity::class.java.name,
             mState = mState,
             stateNonce = stateNonce,
             packageName = this@AuthActivity.packageName,
