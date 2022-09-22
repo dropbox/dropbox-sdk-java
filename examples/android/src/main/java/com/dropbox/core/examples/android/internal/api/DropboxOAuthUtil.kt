@@ -5,6 +5,7 @@ import androidx.appcompat.app.AlertDialog
 import com.dropbox.core.DbxRequestConfig
 import com.dropbox.core.android.Auth
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class DropboxOAuthUtil(
@@ -27,6 +28,8 @@ class DropboxOAuthUtil(
         }
     }
 
+    var isAwaitingResult: Boolean = false
+
     /**
      * Starts the Dropbox OAuth process by launching the Dropbox official app or web
      * browser if dropbox official app is not available. In browser flow, normally user needs to
@@ -40,17 +43,36 @@ class DropboxOAuthUtil(
 
         // The scope's your app will need from Dropbox
         // Read more about Scopes here: https://developers.dropbox.com/oauth-guide#dropbox-api-permissions
-        val scopes =
-            listOf("account_info.read", "files.content.write", "files.content.read", "sharing.read")
+        val scopes = listOf(
+            "account_info.read",
+            "files.content.write",
+            "files.content.read",
+            "sharing.read"
+        )
         Auth.startOAuth2PKCE(context, dropboxAppConfig.apiKey, requestConfig, scopes)
+        isAwaitingResult = true
     }
 
-    fun revokeDropboxAuthorization(scope: CoroutineScope) {
-        val credential = dropboxCredentialUtil.getLocalCredential()
-        val dropboxApiWrapper = DropboxApiWrapper(credential!!, dropboxAppConfig.clientIdentifier)
-        scope.launch {
-            dropboxApiWrapper.revokeDropboxAuthorization()
+    fun revokeDropboxAuthorization(dropboxApiWrapper: DropboxApiWrapper) {
+        if (dropboxCredentialUtil.isAuthenticated()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                dropboxApiWrapper.revokeDropboxAuthorization()
+            }
+            dropboxCredentialUtil.removeCredentialLocally()
         }
-        dropboxCredentialUtil.removeCredentialLocally()
     }
+
+    /**
+     * Call this from onResume() in the activity you are awaiting an Auth Result
+     */
+    fun onResume() {
+        if (isAwaitingResult) {
+            val authDbxCredential = Auth.dbxCredential //fetch the result from the AuthActivity
+            isAwaitingResult = false
+            if (authDbxCredential != null) {
+                dropboxCredentialUtil.storeCredentialLocally(authDbxCredential)
+            }
+        }
+    }
+
 }
