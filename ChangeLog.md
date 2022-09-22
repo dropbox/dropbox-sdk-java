@@ -2,7 +2,7 @@
 ---------------------------------------------
 - Update dropbox-api-spec to point to more recent version (Sept 01, 2022) [#431](https://github.com/dropbox/dropbox-sdk-java/pull/431)
 - Generated stone api code is now checked into repository for greater visibility of spec changes [#418](https://github.com/dropbox/dropbox-sdk-java/pull/418)
-- Changed from `Master` -> `Main` [#424](https://github.com/dropbox/dropbox-sdk-java/pull/424)
+- Changed from `master` -> `main` [#424](https://github.com/dropbox/dropbox-sdk-java/pull/424)
 - Created android artifact and added gradle version catalog [#414](https://github.com/dropbox/dropbox-sdk-java/pull/414)
 - Refactored codebase to have multiple modules (sdk-android, sdk-java, examples) [#425](https://github.com/dropbox/dropbox-sdk-java/pull/425)
 - Examples module now uses `/dropbox-sdk-java` instead of published maven artifact, enabling an easier development loop [#426](https://github.com/dropbox/dropbox-sdk-java/pull/426)

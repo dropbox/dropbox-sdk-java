@@ -1,3 +1,4 @@
+
 buildscript {
     repositories {
         google()
@@ -12,6 +13,10 @@ buildscript {
     }
 }
 
+plugins {
+    alias(dropboxJavaSdkLibs.plugins.maven.publish.plugin) apply false
+    alias(dropboxJavaSdkLibs.plugins.gradle.version.plugin) apply false
+}
 
 allprojects {
     repositories {
