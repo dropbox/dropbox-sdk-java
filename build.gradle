@@ -16,6 +16,7 @@ buildscript {
 plugins {
     alias(dropboxJavaSdkLibs.plugins.maven.publish.plugin) apply false
     alias(dropboxJavaSdkLibs.plugins.gradle.version.plugin) apply false
+    alias(dropboxJavaSdkLibs.plugins.dependency.guard)
 }
 
 allprojects {
@@ -29,4 +30,8 @@ allprojects {
             sonatypeHost = "S01"
         }
     }
+}
+
+dependencyGuard {
+    configuration("classpath")
 }

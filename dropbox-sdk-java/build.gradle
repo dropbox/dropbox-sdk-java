@@ -3,6 +3,7 @@ plugins {
     id "com.github.blindpirate.osgi" version "0.0.6"
     alias(dropboxJavaSdkLibs.plugins.gradle.version.plugin)
     alias(dropboxJavaSdkLibs.plugins.maven.publish.plugin)
+    alias(dropboxJavaSdkLibs.plugins.dependency.guard)
 }
 
 
@@ -229,3 +230,8 @@ dependencyUpdates.resolutionStrategy = {
 }
 
 apply from: 'stone.gradle'
+
+dependencyGuard {
+    configuration("runtimeClasspath")
+    configuration("compileClasspath")
+}
