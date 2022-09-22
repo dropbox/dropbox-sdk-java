@@ -1,7 +1,11 @@
-apply plugin: 'java-library'
-apply plugin: 'com.github.blindpirate.osgi'
-apply plugin: 'com.github.ben-manes.versions' // dependencyUpdates task
-apply plugin: 'com.vanniktech.maven.publish'
+plugins {
+    id 'java-library'
+    id "com.github.blindpirate.osgi" version "0.0.6"
+    alias(dropboxJavaSdkLibs.plugins.gradle.version.plugin)
+    alias(dropboxJavaSdkLibs.plugins.maven.publish.plugin)
+    alias(dropboxJavaSdkLibs.plugins.dependency.guard)
+}
+
 
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
@@ -16,12 +20,12 @@ ext {
 dependencies {
     // Important: Jackson 2.8+ will be free to use JDK7 features and no longer guarantees JDK6
     //            compatibility
-    api 'com.fasterxml.jackson.core:jackson-core:2.7.9'
+    api(dropboxJavaSdkLibs.jackson.core)
 
-    compileOnly 'javax.servlet:servlet-api:2.5'
-    compileOnly 'com.squareup.okhttp:okhttp:2.7.5'  // support both v2 and v3 to avoid
-    compileOnly 'com.squareup.okhttp3:okhttp:4.0.0' // method count bloat
-    compileOnly 'com.google.appengine:appengine-api-1.0-sdk:1.9.38'
+    compileOnly(dropboxJavaSdkLibs.servlet.api)
+    compileOnly(dropboxJavaSdkLibs.okhttp2)  // support both v2 and v3 to avoid
+    compileOnly(dropboxJavaSdkLibs.okhttp3) // method count bloat
+    compileOnly(dropboxJavaSdkLibs.appengine.api)
 
     testImplementation 'org.testng:testng:6.9.10'
     testImplementation 'org.mockito:mockito-core:1.10.19'
@@ -226,3 +230,8 @@ dependencyUpdates.resolutionStrategy = {
 }
 
 apply from: 'stone.gradle'
+
+dependencyGuard {
+    configuration("runtimeClasspath")
+    configuration("compileClasspath")
+}

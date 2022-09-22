@@ -1,3 +1,4 @@
+
 buildscript {
     repositories {
         google()
@@ -6,15 +7,17 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.github.ben-manes:gradle-versions-plugin:0.27.0'
         classpath files('gradle/dropbox-pem-converter-plugin')
-        classpath 'gradle.plugin.com.github.blindpirate:gradle-legacy-osgi-plugin:0.0.6'
-        classpath "com.vanniktech:gradle-maven-publish-plugin:0.18.0"
         classpath(dropboxJavaSdkLibs.android.gradle.plugin)
         classpath(dropboxJavaSdkLibs.kotlin.gradle.plugin)
     }
 }
 
+plugins {
+    alias(dropboxJavaSdkLibs.plugins.maven.publish.plugin) apply false
+    alias(dropboxJavaSdkLibs.plugins.gradle.version.plugin) apply false
+    alias(dropboxJavaSdkLibs.plugins.dependency.guard)
+}
 
 allprojects {
     repositories {
@@ -27,4 +30,8 @@ allprojects {
             sonatypeHost = "S01"
         }
     }
+}
+
+dependencyGuard {
+    configuration("classpath")
 }

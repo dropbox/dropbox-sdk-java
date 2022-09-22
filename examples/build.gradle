@@ -2,16 +2,17 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        maven { url 'https://plugins.gradle.org/m2/' }
+        gradlePluginPortal()
     }
     dependencies {
         classpath "com.android.tools.build:gradle:7.2.1"
-        classpath 'com.github.ben-manes:gradle-versions-plugin:0.27.0'
         classpath files('../gradle/dropbox-pem-converter-plugin')
-        classpath 'gradle.plugin.com.github.blindpirate:gradle-legacy-osgi-plugin:0.0.6'
-        classpath "com.vanniktech:gradle-maven-publish-plugin:0.18.0"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.21"
     }
+}
+
+plugins {
+    alias(dropboxJavaSdkLibs.plugins.maven.publish.plugin) apply false
 }
 
 allprojects {

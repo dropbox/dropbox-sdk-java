@@ -41,7 +41,7 @@ You can also download the Java SDK JAR and and its required dependencies directl
 
 ## Dropbox for Java tutorial
 
-A good way to start using the Java SDK is to follow this quick tutorial. Just make sure you have the the Java SDK [installed](#setup) first!
+A good way to start using the Java SDK is to follow this quick tutorial. Just make sure you have the Java SDK [installed](#setup) first!
 
 ### Register a Dropbox API app
 
