@@ -20,12 +20,13 @@ internal object DropboxAuthIntent {
         mState: AuthActivity.AuthActivityState,
         stateNonce: String,
         packageName: String,
-        queryParams: String
+        queryParams: String,
+        callingActivityFullyQualifiedClassName: String
     ): Intent {
         return buildActionAuthenticateIntent().apply {
             putExtra(EXTRA_CONSUMER_KEY, mState.mAppKey)
             putExtra(EXTRA_CONSUMER_SIG, "")
-            putExtra(EXTRA_CALLING_CLASS, javaClass.name)
+            putExtra(EXTRA_CALLING_CLASS, callingActivityFullyQualifiedClassName)
             putExtra(EXTRA_DESIRED_UID, mState.mDesiredUid)
             putExtra(EXTRA_ALREADY_AUTHED_UIDS, mState.mAlreadyAuthedUids.toTypedArray())
             putExtra(EXTRA_SESSION_ID, mState.mSessionId)
