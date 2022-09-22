@@ -50,6 +50,9 @@ jobs:
         REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
       run: ./generate-ci-auth-file
 
+    - name: Dependency Guard
+      run: ./gradlew dependencyGuard
+
     - name: Check
       run: ./gradlew check
 
