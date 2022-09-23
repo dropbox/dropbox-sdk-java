@@ -1,5 +1,6 @@
 androidx.databinding:databinding-common:7.2.2
 androidx.databinding:databinding-compiler-common:7.2.2
+biz.aQute.bnd:biz.aQute.bndlib:5.2.0
 com.android.databinding:baseLibrary:7.2.2
 com.android.tools.analytics-library:crash:30.2.2
 com.android.tools.analytics-library:protos:30.2.2
@@ -48,6 +49,7 @@ com.fasterxml.jackson.module:jackson-module-kotlin:2.11.1
 com.fasterxml.woodstox:woodstox-core:6.2.1
 com.github.ben-manes.versions:com.github.ben-manes.versions.gradle.plugin:0.42.0
 com.github.ben-manes:gradle-versions-plugin:0.42.0
+com.github.blindpirate.osgi:com.github.blindpirate.osgi.gradle.plugin:0.0.6
 com.github.gundy:semver4j:0.16.4
 com.google.android:annotations:4.1.1.4
 com.google.api.grpc:proto-google-common-protos:1.12.0
@@ -85,6 +87,7 @@ commons-codec:commons-codec:1.11
 commons-io:commons-io:2.4
 commons-logging:commons-logging:1.2
 de.undercouch:gradle-download-task:4.1.1
+gradle.plugin.com.github.blindpirate:gradle-legacy-osgi-plugin:0.0.6
 io.github.x-stream:mxparser:1.2.1
 io.grpc:grpc-api:1.21.1
 io.grpc:grpc-context:1.21.1
