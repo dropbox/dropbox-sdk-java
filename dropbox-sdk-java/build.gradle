@@ -1,10 +1,10 @@
 plugins {
     id 'java-library'
-    id "com.github.blindpirate.osgi"
+    alias(dropboxJavaSdkLibs.plugins.blind.pirate.osgi)
     id "org.jetbrains.kotlin.jvm"
     id "com.vanniktech.maven.publish"
-    id "com.github.ben-manes.versions"
-    id "com.dropbox.dependency-guard"
+    alias(dropboxJavaSdkLibs.plugins.gradle.version.plugin)
+    alias(dropboxJavaSdkLibs.plugins.dependency.guard)
 }
 
 
