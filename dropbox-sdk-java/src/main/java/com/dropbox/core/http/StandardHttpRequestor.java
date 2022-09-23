@@ -195,7 +195,7 @@ public class StandardHttpRequestor extends HttpRequestor {
     }
 
 
-    private HttpURLConnection prepRequest(String url, Iterable<Header> headers, boolean streaming) throws IOException {
+    protected HttpURLConnection prepRequest(String url, Iterable<Header> headers, boolean streaming) throws IOException {
         URL urlObject = new URL(url);
         HttpURLConnection conn = (HttpURLConnection) urlObject.openConnection(config.getProxy());
 
