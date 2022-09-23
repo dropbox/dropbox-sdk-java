@@ -82,7 +82,7 @@ public open class AuthActivity : Activity() {
      * See:
      * https://developer.android.com/reference/android/app/Activity#onTopResumedActivityChanged(boolean)
      */
-    override fun onTopResumedActivityChanged(onTop: Boolean) {
+    fun onTopResumedActivityChanged(onTop: Boolean) {
         if (isFinishing || !onTop) {
             return
         }

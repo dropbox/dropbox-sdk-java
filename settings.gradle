@@ -1,6 +1,5 @@
 include ':proguard'
 include ':dropbox-sdk-java'
-include ':dropbox-sdk-android'
 include ':examples:android'
 
 dependencyResolutionManagement {

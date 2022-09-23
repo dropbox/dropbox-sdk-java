@@ -11,9 +11,7 @@ include ':upload-file'
 include ':web-file-browser'
 include ':android'
 include ':dropbox-sdk-java'
-include ':dropbox-sdk-android'
 
-project(":dropbox-sdk-android").projectDir = file("../dropbox-sdk-android")
 project(":dropbox-sdk-java").projectDir = file("../dropbox-sdk-java")
 
 dependencyResolutionManagement {
