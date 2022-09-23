@@ -10,9 +10,11 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.21"
     }
 }
-
 plugins {
     alias(dropboxJavaSdkLibs.plugins.maven.publish.plugin) apply false
+    alias(dropboxJavaSdkLibs.plugins.gradle.version.plugin) apply false
+    alias(dropboxJavaSdkLibs.plugins.dependency.guard) apply false
+    alias(dropboxJavaSdkLibs.plugins.blind.pirate.osgi) apply false
 }
 
 allprojects {
