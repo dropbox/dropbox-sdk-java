@@ -175,12 +175,12 @@ public class DbxClientV2 extends DbxClientV2Base {
         }
 
         @Override
-        boolean canRefreshAccessToken() {
+        public boolean canRefreshAccessToken() {
             return credential.getRefreshToken() != null;
         }
 
         @Override
-        boolean needsRefreshAccessToken() {
+        public boolean needsRefreshAccessToken() {
             return canRefreshAccessToken() && credential.aboutToExpire();
         }
 

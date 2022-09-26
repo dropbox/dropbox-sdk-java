@@ -218,12 +218,12 @@ public class DbxTeamClientV2 extends DbxTeamClientV2Base {
         }
 
         @Override
-        boolean canRefreshAccessToken() {
+        public boolean canRefreshAccessToken() {
             return credential.getRefreshToken() != null;
         }
 
         @Override
-        boolean needsRefreshAccessToken() {
+        public boolean needsRefreshAccessToken() {
             return canRefreshAccessToken() && credential.aboutToExpire();
         }
 
