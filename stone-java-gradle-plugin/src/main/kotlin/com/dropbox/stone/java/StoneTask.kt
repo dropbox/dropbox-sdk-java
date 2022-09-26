@@ -161,8 +161,7 @@ abstract class StoneTask : DefaultTask() {
                         args("--clean-build")
                     }
                     if (stoneConfig.routeWhitelistFilter != null) {
-                        args("--route-whitelist-filter")
-                        args(getRouteWhitelistFilter().get())
+                        args("--route-whitelist-filter", getRouteWhitelistFilter().get())
                     }
                     args(generatorFile.absolutePath)
                     args(srcOutputDir.absolutePath)
@@ -170,8 +169,7 @@ abstract class StoneTask : DefaultTask() {
                         args(it)
                     }
                     args("--")
-                    args("--package")
-                    args(stoneConfig.packageName)
+                    args("--package", stoneConfig.packageName)
                     args("--data-types-only")
                 }
             } else {
@@ -187,15 +185,12 @@ abstract class StoneTask : DefaultTask() {
                     if (isFirst) {
                         args("--clean-build")
                     }
-                    args("--attribute")
-                    args(":all")
+                    args("--attribute", ":all")
                     if (routeFilter.isNotEmpty()) {
-                        args("--filter-by-route-attr")
-                        args(routeFilter)
+                        args("--filter-by-route-attr", routeFilter)
                     }
                     if (stoneConfig.routeWhitelistFilter != null) {
-                        args("--route-whitelist-filter")
-                        args(stoneConfig.routeWhitelistFilter)
+                        args("--route-whitelist-filter", stoneConfig.routeWhitelistFilter)
                     }
                     args(generatorFile.absolutePath)
                     args(srcOutputDir.absolutePath)
@@ -203,26 +198,20 @@ abstract class StoneTask : DefaultTask() {
                         args(it)
                     }
                     args("--")
-                    args("--package")
-                    args(stoneConfig.packageName)
-                    args("--javadoc-refs")
-                    args(refsFile.absolutePath)
+                    args("--package", stoneConfig.packageName)
+                    args("--javadoc-refs", refsFile.absolutePath)
 
                     if (client?.name != null) {
-                        args("--client-class")
-                        args(client.name)
+                        args("--client-class", client.name)
                     }
                     if (client?.javadoc != null) {
-                        args("--client-javadoc")
-                        args(client.javadoc)
+                        args("--client-javadoc", client.javadoc)
                     }
                     if (client?.requestsClassnamePrefix != null) {
-                        args("--requests-classname-prefix")
-                        args(client.requestsClassnamePrefix)
+                        args("--requests-classname-prefix", client.requestsClassnamePrefix)
                     }
                     if (client?.unusedClassesToGenerate != null) {
-                        args("--unused-classes-to-generate")
-                        args(client.unusedClassesToGenerate)
+                        args("--unused-classes-to-generate", client.unusedClassesToGenerate)
                     }
                 }
             }
