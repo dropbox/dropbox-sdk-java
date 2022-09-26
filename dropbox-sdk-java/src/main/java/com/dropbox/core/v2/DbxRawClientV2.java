@@ -89,9 +89,9 @@ public abstract class DbxRawClientV2 {
 
     public abstract DbxRefreshResult refreshAccessToken() throws DbxException;
 
-    abstract boolean canRefreshAccessToken();
+    protected abstract boolean canRefreshAccessToken();
 
-    abstract boolean needsRefreshAccessToken();
+    protected abstract boolean needsRefreshAccessToken();
 
     private void refreshAccessTokenIfNeeded() throws DbxException {
         if (needsRefreshAccessToken()) {

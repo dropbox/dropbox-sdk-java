@@ -84,12 +84,12 @@ public class DbxAppClientV2 extends DbxAppClientV2Base {
         }
 
         @Override
-        boolean canRefreshAccessToken() {
+        public boolean canRefreshAccessToken() {
             return false;
         }
 
         @Override
-        boolean needsRefreshAccessToken() {
+        public boolean needsRefreshAccessToken() {
             return false;
         }
 
