@@ -58,12 +58,14 @@ public class DropboxStonePlugin : Plugin<Project> {
                     .withPathSensitivity(PathSensitivity.RELATIVE)
                     .withPropertyName("stoneSpec")
                     .skipWhenEmpty(true)
-//                val configsValue: String = groovy.json.JsonBuilder(stoneTask.getStoneConfigs().get()).toPrettyString()
-//                stoneTask.inputs.properties["configs"] = configsValue
                 stoneTask.outputs.dir { stoneTask.getOutputDir() }.withPropertyName("generatedStone")
                 stoneTask.outputs.cacheIf { true }
-//
-                sourceSet.java.srcDir(stoneTask.getOutputDir().get().toString() + "/src")
+                project.afterEvaluate {
+                    // Must run afterEvaluate so we can honor any output directory specified in config
+                    val outputDirStr = stoneTask.getOutputDir().get().toString()
+                    project.logger.info("outputDirStr $outputDirStr")
+                    sourceSet.java.srcDir("$outputDirStr/src")
+                }
                 val compile: Task = project.tasks.getByName(sourceSet.getCompileTaskName("java"))
                 val logger = project.logger
                 logger.info("-------------------")
