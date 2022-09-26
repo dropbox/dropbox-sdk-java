@@ -126,7 +126,9 @@ public class IOUtil {
      */
     public static void closeInput(InputStream in) {
         try {
-            in.close();
+            if (in != null) {
+                in.close();
+            }
         } catch (IOException ex) {
             // Ignore.  We're done reading from it so we don't care if there are input errors.
         }
@@ -137,7 +139,9 @@ public class IOUtil {
      */
     public static void closeInput(Reader in) {
         try {
-            in.close();
+            if (in != null) {
+                in.close();
+            }
         } catch (IOException ex) {
             // Ignore.  We're done reading from it so we don't care if there are input errors.
         }

@@ -516,7 +516,9 @@ public final class DbxRequestUtil {
         try {
             return handler.handle(response);
         } finally {
-            IOUtil.closeInput(response.getBody());
+            if (response != null) {
+                IOUtil.closeInput(response.getBody());
+            }
         }
     }
 
