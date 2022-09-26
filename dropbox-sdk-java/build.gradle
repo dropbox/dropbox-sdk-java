@@ -242,7 +242,6 @@ dependencyUpdates.resolutionStrategy = {
     }
 }
 
-//apply from: "stone.gradle"
 apply plugin: "com.dropbox.stone.java"
 
 generateStone {
