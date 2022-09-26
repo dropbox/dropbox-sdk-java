@@ -18,7 +18,7 @@ import java.io.FileOutputStream
 import java.nio.file.Files
 import javax.inject.Inject
 
-abstract class StoneTask  : DefaultTask() {
+abstract class StoneTask : DefaultTask() {
 
     init {
         group = "Dropbox Stone Java Generator"
@@ -85,17 +85,17 @@ abstract class StoneTask  : DefaultTask() {
     public fun processStone() {
         val generatorFileTree = getObjectFactory().fileTree().from(getGeneratorDir().get())
         generatorFileTree.include("**/*stoneg.py")
-        val generatorFile = generatorFileTree.getSingleFile()
-        val specFiles = getSpecFiles(getObjectFactory(), getSpecDir().get()).getFiles()
+        val generatorFile = generatorFileTree.singleFile
+        val specFiles = getSpecFiles(getObjectFactory(), getSpecDir().get()).files
         for (config: StoneConfig in getStoneConfigs().get()) {
-            config.routeWhitelistFilter = getRouteWhitelistFilter().getOrNull()
+            config.routeWhitelistFilter = getRouteWhitelistFilter().orNull
         }
         runStoneGenerator(
             getStoneConfigs().get(),
             getObjectFactory().fileTree().from(getStoneDir().get()).getDir(),
             generatorFile,
             specFiles,
-            getOutputDir().getAsFile().get(),
+            getOutputDir().asFile.get(),
             getPythonCommand().get()
         )
     }
@@ -145,7 +145,7 @@ abstract class StoneTask  : DefaultTask() {
 
         configs.forEachIndexed { index, stoneConfig ->
             val isFirst = (index == 0)
-            var append: Boolean = !isFirst
+            val append: Boolean = !isFirst
             if (stoneConfig.dataTypesOnly) {
                 // generate only data types. This is a much simpler call
                 if (stoneConfig.client != null) {
@@ -158,21 +158,21 @@ abstract class StoneTask  : DefaultTask() {
                     environment["PYTHONPATH"] = stoneDir.absolutePath
 
                     if (isFirst) {
-                        args.add("--clean-build")
+                        args("--clean-build")
                     }
                     if (stoneConfig.routeWhitelistFilter != null) {
-                        args.add("--route-whitelist-filter")
-                        args.add(getRouteWhitelistFilter().get())
+                        args("--route-whitelist-filter")
+                        args(getRouteWhitelistFilter().get())
                     }
-                    args.add(generatorFile.absolutePath)
-                    args.add(srcOutputDir.absolutePath)
+                    args(generatorFile.absolutePath)
+                    args(srcOutputDir.absolutePath)
                     specFiles.map { f -> f.absolutePath }.forEach {
-                        args.add(it)
+                        args(it)
                     }
-                    args.add("--")
-                    args.add("--package")
-                    args.add(stoneConfig.packageName)
-                    args.add("--data-types-only")
+                    args("--")
+                    args("--package")
+                    args(stoneConfig.packageName)
+                    args("--data-types-only")
                 }
             } else {
                 val client = stoneConfig.client
@@ -181,48 +181,48 @@ abstract class StoneTask  : DefaultTask() {
 
                 getExecOperations().exec {
                     standardOutput = FileOutputStream(logFile, append)
-                    commandLine("pythonCommand", "-m", "stone.cli")
-
                     environment["PYTHONPATH"] = stoneDir.absolutePath
+                    commandLine(this@StoneTask.getPythonCommand().get(), "-m", "stone.cli")
+
                     if (isFirst) {
-                        args.add("--clean-build")
+                        args("--clean-build")
                     }
-                    args.add("--attribute")
-                    args.add(":all")
+                    args("--attribute")
+                    args(":all")
                     if (routeFilter.isNotEmpty()) {
-                        args.add("--filter-by-route-attr")
-                        args.add(routeFilter)
+                        args("--filter-by-route-attr")
+                        args(routeFilter)
                     }
                     if (stoneConfig.routeWhitelistFilter != null) {
-                        args.add("--route-whitelist-filter")
-                        args.add(stoneConfig.routeWhitelistFilter)
+                        args("--route-whitelist-filter")
+                        args(stoneConfig.routeWhitelistFilter)
                     }
-                    args.add(generatorFile.absolutePath)
-                    args.add(srcOutputDir.absolutePath)
+                    args(generatorFile.absolutePath)
+                    args(srcOutputDir.absolutePath)
                     specFiles.map { f -> f.absolutePath }.forEach {
-                        args.add(it)
+                        args(it)
                     }
-                    args.add("--")
-                    args.add("--package")
-                    args.add(stoneConfig.packageName)
-                    args.add("--javadoc-refs")
-                    args.add(refsFile.absolutePath)
+                    args("--")
+                    args("--package")
+                    args(stoneConfig.packageName)
+                    args("--javadoc-refs")
+                    args(refsFile.absolutePath)
 
                     if (client?.name != null) {
-                        args.add("--client-class")
-                        args.add(client.name)
+                        args("--client-class")
+                        args(client.name)
                     }
                     if (client?.javadoc != null) {
-                        args.add("--client-javadoc")
-                        args.add(client.javadoc)
+                        args("--client-javadoc")
+                        args(client.javadoc)
                     }
                     if (client?.requestsClassnamePrefix != null) {
-                        args.add("--requests-classname-prefix")
-                        args.add(client.requestsClassnamePrefix)
+                        args("--requests-classname-prefix")
+                        args(client.requestsClassnamePrefix)
                     }
                     if (client?.unusedClassesToGenerate != null) {
-                        args.add("--unused-classes-to-generate")
-                        args.add(client.unusedClassesToGenerate)
+                        args("--unused-classes-to-generate")
+                        args(client.unusedClassesToGenerate)
                     }
                 }
             }

@@ -242,63 +242,63 @@ dependencyUpdates.resolutionStrategy = {
     }
 }
 
-apply from: "stone.gradle"
-//apply plugin: "com.dropbox.stone.java"
-//
-//generateStone {
-//    String unusedClassesToGenerate = 'AuthError, PathRoot, PathRootError, AccessError, RateLimitError'
-//    String packageName = 'com.dropbox.core.v2'
-//    String globalRouteFilter = 'alpha_group=null and beta_group=null'
-//    config [
-//            new StoneConfig(
-//                    packageName: packageName,
-//                    globalRouteFilter: globalRouteFilter,
-//                    client: new ClientSpec(
-//                            name: 'DbxClientV2Base',
-//                            javadoc: 'Base class for user auth clients.',
-//                            requestsClassnamePrefix: "DbxUser",
-//                            routeFilter: 'auth="user" or auth="noauth" or auth="app, user"',
-//                            unusedClassesToGenerate: unusedClassesToGenerate,
-//                    ),
-//            ),
-//            new StoneConfig(
-//                    packageName: packageName,
-//                    globalRouteFilter: globalRouteFilter,
-//                    client:  new ClientSpec(
-//                            name: 'DbxTeamClientV2Base',
-//                            javadoc: 'Base class for team auth clients.',
-//                            requestsClassnamePrefix: 'DbxTeam',
-//                            routeFilter: 'auth="team"',
-//                    ),
-//            ),
-//            new StoneConfig(
-//                    packageName: packageName,
-//                    globalRouteFilter: globalRouteFilter,
-//                    client: new ClientSpec(
-//                            name: 'DbxAppClientV2Base',
-//                            javadoc: 'Base class for app auth clients.',
-//                            requestsClassnamePrefix: "DbxApp",
-//                            routeFilter: 'auth="app" or auth="app, user"',
-//                    )
-//            ),
-//
-//    ]
-//}
-//
-//generateTestStone {
-//    String packageName = 'com.dropbox.core.stone'
-//    config [
-//            new StoneConfig(
-//                    packageName: packageName,
-//                    dataTypesOnly: true,
-//            ),
-//            new StoneConfig(
-//                    packageName: packageName,
-//                    client: new ClientSpec(
-//                            name: 'DbxClientV2Base',
-//                            javadoc: 'TestClass.',
-//                            requestsClassnamePrefix: "DbxTest",
-//                    )
-//            ),
-//    ]
-//}
+//apply from: "stone.gradle"
+apply plugin: "com.dropbox.stone.java"
+
+generateStone {
+    String unusedClassesToGenerate = 'AuthError, PathRoot, PathRootError, AccessError, RateLimitError'
+    String packageName = 'com.dropbox.core.v2'
+    String globalRouteFilter = 'alpha_group=null and beta_group=null'
+    config [
+            new StoneConfig(
+                    packageName: packageName,
+                    globalRouteFilter: globalRouteFilter,
+                    client: new ClientSpec(
+                            name: 'DbxClientV2Base',
+                            javadoc: 'Base class for user auth clients.',
+                            requestsClassnamePrefix: "DbxUser",
+                            routeFilter: 'auth="user" or auth="noauth" or auth="app, user"',
+                            unusedClassesToGenerate: unusedClassesToGenerate,
+                    ),
+            ),
+            new StoneConfig(
+                    packageName: packageName,
+                    globalRouteFilter: globalRouteFilter,
+                    client:  new ClientSpec(
+                            name: 'DbxTeamClientV2Base',
+                            javadoc: 'Base class for team auth clients.',
+                            requestsClassnamePrefix: 'DbxTeam',
+                            routeFilter: 'auth="team"',
+                    ),
+            ),
+            new StoneConfig(
+                    packageName: packageName,
+                    globalRouteFilter: globalRouteFilter,
+                    client: new ClientSpec(
+                            name: 'DbxAppClientV2Base',
+                            javadoc: 'Base class for app auth clients.',
+                            requestsClassnamePrefix: "DbxApp",
+                            routeFilter: 'auth="app" or auth="app, user"',
+                    )
+            ),
+
+    ]
+}
+
+generateTestStone {
+    String packageName = 'com.dropbox.core.stone'
+    config [
+            new StoneConfig(
+                    packageName: packageName,
+                    dataTypesOnly: true,
+            ),
+            new StoneConfig(
+                    packageName: packageName,
+                    client: new ClientSpec(
+                            name: 'DbxClientV2Base',
+                            javadoc: 'TestClass.',
+                            requestsClassnamePrefix: "DbxTest",
+                    )
+            ),
+    ]
+}
