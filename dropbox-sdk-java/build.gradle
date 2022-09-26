@@ -10,6 +10,9 @@ plugins {
     id "com.dropbox.dependency-guard"
 }
 
+dependencyGuard {
+    configuration("runtimeClasspath")
+}
 
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
@@ -248,7 +251,7 @@ generateStone {
     String unusedClassesToGenerate = 'AuthError, PathRoot, PathRootError, AccessError, RateLimitError'
     String packageName = 'com.dropbox.core.v2'
     String globalRouteFilter = 'alpha_group=null and beta_group=null'
-    config [
+    config[
             new StoneConfig(
                     packageName: packageName,
                     globalRouteFilter: globalRouteFilter,
@@ -263,7 +266,7 @@ generateStone {
             new StoneConfig(
                     packageName: packageName,
                     globalRouteFilter: globalRouteFilter,
-                    client:  new ClientSpec(
+                    client: new ClientSpec(
                             name: 'DbxTeamClientV2Base',
                             javadoc: 'Base class for team auth clients.',
                             requestsClassnamePrefix: 'DbxTeam',
@@ -287,7 +290,7 @@ generateStone {
 
 generateTestStone {
     String packageName = 'com.dropbox.core.stone'
-    config [
+    config[
             new StoneConfig(
                     packageName: packageName,
                     dataTypesOnly: true,
