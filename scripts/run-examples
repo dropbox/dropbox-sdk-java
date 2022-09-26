@@ -23,10 +23,6 @@ gradle() {
     (cd "${DIR}" && run ./gradlew "$@")
 }
 
-examples_gradle() {
-    (cd "${DIR}/examples" && run ./gradlew "$@")
-}
-
 run_example() {
     (cd "${DIR}/examples" && run ./run --fail-on-error "$@")
 }
@@ -56,8 +52,7 @@ gradle clean
 gradle check
 
 # prepare examples to be run
-examples_gradle clean
-examples_gradle classes
+gradle classes
 
 # run examples
 DATE=$(date -u '+%Y%m%d%H%M%S')

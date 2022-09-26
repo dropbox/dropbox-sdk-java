@@ -1,6 +1,16 @@
 include ':proguard'
 include ':dropbox-sdk-java'
 include ':examples:android'
+include ':examples:account-info-legacy'
+include ':examples:account-info'
+include ':examples:authorize-legacy'
+include ':examples:authorize'
+include ':examples:global-callbacks'
+include ':examples:longpoll'
+include ':examples:tutorial'
+include ':examples:upgrade-oauth1-token'
+include ':examples:upload-file'
+include ':examples:web-file-browser'
 
 dependencyResolutionManagement {
     versionCatalogs {

@@ -1,5 +1,5 @@
 apply plugin: 'java'
-apply from: '../gradle/integration-test-config.gradle'
+apply from: '../../gradle/integration-test-config.gradle'
 
 description = 'Authorize Example (Dropbox Core API SDK) with legacy OAuth2 flow which use long ' +
         'live token'

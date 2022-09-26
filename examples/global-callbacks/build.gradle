@@ -1,4 +1,4 @@
 apply plugin: 'java'
-apply from: '../gradle/integration-test-config.gradle'
+apply from: '../../gradle/integration-test-config.gradle'
 
 description = 'Global Callbacks Example (Dropbox Core API SDK)'
