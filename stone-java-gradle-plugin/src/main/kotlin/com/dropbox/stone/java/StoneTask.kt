@@ -1,5 +1,6 @@
-package plugins
+package com.dropbox.stone.java
 
+import com.dropbox.stone.java.model.StoneConfig
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.file.DirectoryProperty
@@ -12,7 +13,6 @@ import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 import org.gradle.process.ExecOperations
-import plugins.model.StoneConfig
 import java.io.File
 import java.io.FileOutputStream
 import java.nio.file.Files

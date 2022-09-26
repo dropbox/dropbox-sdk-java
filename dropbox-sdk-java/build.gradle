@@ -1,5 +1,5 @@
-import plugins.model.ClientSpec
-import plugins.model.StoneConfig
+import com.dropbox.stone.java.model.ClientSpec
+import com.dropbox.stone.java.model.StoneConfig
 
 plugins {
     id 'java-library'

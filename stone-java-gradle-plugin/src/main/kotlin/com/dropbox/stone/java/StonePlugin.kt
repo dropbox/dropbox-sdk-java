@@ -1,4 +1,4 @@
-package plugins
+package com.dropbox.stone.java
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -13,7 +13,7 @@ import org.gradle.api.tasks.TaskProvider
  *
  * We'll apply all of Dropbox's Custom Config here.
  */
-public class DropboxStonePlugin : Plugin<Project> {
+public class StonePlugin : Plugin<Project> {
     override fun apply(project: Project) {
 
         val javaPluginExtension = project.extensions.getByType(JavaPluginExtension::class.java)

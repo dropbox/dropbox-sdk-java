@@ -1,4 +1,4 @@
-package plugins.model
+package com.dropbox.stone.java.model
 
 import java.io.Serializable
 

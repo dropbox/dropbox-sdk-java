@@ -25,7 +25,7 @@ gradlePlugin {
         }
         createPlugin(
             id = "com.dropbox.stone.java",
-            className = "plugins.DropboxStonePlugin"
+            className = "com.dropbox.stone.java.StonePlugin"
         )
     }
 }
