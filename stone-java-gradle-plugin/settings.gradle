@@ -1,0 +1,9 @@
+rootProject.setName("stone-java-gradle-plugin")
+
+dependencyResolutionManagement {
+    versionCatalogs {
+        dropboxJavaSdkLibs {
+            from(files("../gradle/dropboxJavaSdkLibs.versions.toml"))
+        }
+    }
+}

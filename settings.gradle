@@ -9,3 +9,9 @@ dependencyResolutionManagement {
         }
     }
 }
+
+includeBuild("stone-java-gradle-plugin") {
+    dependencySubstitution {
+        substitute module('com.dropbox.gradle.plugins:stone-java-gradle-plugin')
+    }
+}
