@@ -42,7 +42,7 @@ public class DropboxStonePlugin : Plugin<Project> {
                     stoneTask.routeWhitelistFilter(it)
                 }
                 stoneTask.pythonCommand("python")
-                stoneTask.outputDir("${project.projectDir}/generated_stone_source/${sourceSet.name}")
+                stoneTask.outputDir("${project.buildDir}/generated/source/stone/${sourceSet.name}")
 
                 stoneTask.inputs
                     .dir {

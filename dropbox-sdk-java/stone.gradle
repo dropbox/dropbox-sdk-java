@@ -271,6 +271,7 @@ generateStone {
             ),
 
     ]
+    outputDir "${project.projectDir}/generated_stone_source/main"
 }
 
 generateTestStone {
@@ -289,4 +290,5 @@ generateTestStone {
                 )
             ),
     ]
+    outputDir "${project.projectDir}/generated_stone_source/test"
 }
