@@ -2,7 +2,7 @@
 # Because secrets are not available on external forks, this job is expected to fail
 # on external pull requests.
 
-name: Build project & run examples
+name: Run Examples
 
 on:
   push:
