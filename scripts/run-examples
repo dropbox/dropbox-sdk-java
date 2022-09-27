@@ -2,10 +2,14 @@
 
 AUTH_FILE="${1}"
 
+
 if [ ! -f "${AUTH_FILE}" ] ; then
     echo >&2 "Error: auth json file not found at: '${AUTH_FILE}'"
     exit 1
 fi
+
+
+AUTH_FILE="../../${AUTH_FILE}"
 
 tempfile=$(mktemp -t `basename "${BASH_SOURCE[0]}"`.XXXXXXXXXX)
 function cleanup() {
@@ -18,11 +22,11 @@ DATE=$(date -u '+%Y%m%d%H%M%S')
 echo "Running examples..."
 
 # Account Info Endpoints
-./gradlew :examples:account-info:run "${AUTH_FILE}"
+./gradlew :examples:account-info:run -PfailOnError=true --args="${AUTH_FILE}"
 
 # Upload 1 KB File
 cat /dev/urandom | head -c 1024 > "${tempfile}"
-./gradlew :examples:upload-file:run "${AUTH_FILE}" "${tempfile}" /test/dropbox-sdk-java/${DATE}/examples/upload-file/small-1KiB.dat
+./gradlew :examples:upload-file:run -PfailOnError=true --args="${AUTH_FILE} ${tempfile} /test/dropbox-sdk-java/${DATE}/examples/upload-file/small-1KiB.dat"
 
 # Upload 32 MB File
 cat /dev/urandom | head -c $(( 32 << 20 )) > "${tempfile}"
