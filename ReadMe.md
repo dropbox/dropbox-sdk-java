@@ -1,4 +1,4 @@
-# ⚠️ Version `5.4.0` was published early and still has a few issues being sorted out.  A `5.4.1` release is actively being worked on and will be released either September 27 or 28th.  Please use version `5.3.0` until `5.4.1` is published.  Thank you! ⚠️
+# ⚠️ Please use version `5.3.0` or `5.4.1` (These versions are identical).   Version `5.4.0` was published prematurely due to a scripting misconfiguration. A follow up release is actively being worked on and will be released during this week (September 27th-30th).  Thank you! ⚠️
 
 # Dropbox Core SDK for Java
 
