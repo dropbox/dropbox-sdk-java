@@ -1,3 +1,12 @@
+## 5.4.1 (2022-09-27)
+---------------------------------------------
+- Republished `5.3.0` as `5.4.1` due to the premature publishing of `5.4.0`.
+- No other changes.
+
+## 5.4.0 (2022-09-26)
+---------------------------------------------
+- ⚠️ Published prematurely. Please stay on `5.3.0` or update to `5.4.1` (which is just a republished version of `5.3.0`)
+
 ## 5.3.0 (2022-07-20) [Milestone](https://github.com/dropbox/dropbox-sdk-java/milestone/1?closed=1)
 ---------------------------------------------
 - Update dropbox-api-spec to point to more recent version (July 13, 2022) [#400](https://github.com/dropbox/dropbox-sdk-java/pull/400)
