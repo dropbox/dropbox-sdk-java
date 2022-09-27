@@ -14,7 +14,7 @@ object CredentialsUtil {
     private val okhttp = OkHttpClient.Builder().build()
 
     fun isRunningInCI(): Boolean {
-        return System.getProperty("ci") != "true"
+        return System.getProperty("ci") == "true"
     }
 
     private val creds: DbxCredential by lazy {
