@@ -1,42 +1,9 @@
 #!/usr/bin/env bash
 
-die() {
-    echo >&2 "error: examples failed"
-    exit 1
-}
-
-# Exit immediately on any error.
-set -euf
-trap die SIGTERM
-
-DIR=`dirname $(dirname "${BASH_SOURCE[0]}")`
-
-run() {
-    echo "================================================================================"
-    echo "    CMD: $@"
-    echo " OUTPUT:"
-    $@ || die
-    echo "================================================================================"
-}
-
-gradle() {
-    (cd "${DIR}" && run ./gradlew "$@")
-}
-
-run_example() {
-    (cd "${DIR}/examples" && run ./run --fail-on-error "$@")
-}
-
-if [ $# -ne 1 ] ; then
-    script=`basename "${0}"`
-    echo >&2 "usage: $script production-user-auth.json"
-    exit 1
-fi
-
 AUTH_FILE="${1}"
 
 if [ ! -f "${AUTH_FILE}" ] ; then
-    echo >&2 "error: no such file: ${AUTH_FILE}"
+    echo >&2 "Error: auth json file not found at: '${AUTH_FILE}'"
     exit 1
 fi
 
@@ -46,18 +13,17 @@ function cleanup() {
 }
 trap cleanup EXIT
 
+DATE=$(date -u '+%Y%m%d%H%M%S')
+
 echo "Running examples..."
 
-gradle clean
-gradle check
+# Account Info Endpoints
+./gradlew :examples:account-info:run "${AUTH_FILE}"
 
-# prepare examples to be run
-gradle classes
-
-# run examples
-DATE=$(date -u '+%Y%m%d%H%M%S')
-run_example account-info "${AUTH_FILE}"
+# Upload 1 KB File
 cat /dev/urandom | head -c 1024 > "${tempfile}"
-run_example upload-file "${AUTH_FILE}" "${tempfile}" /test/dropbox-sdk-java/${DATE}/examples/upload-file/small-1KiB.dat
+./gradlew :examples:upload-file:run "${AUTH_FILE}" "${tempfile}" /test/dropbox-sdk-java/${DATE}/examples/upload-file/small-1KiB.dat
+
+# Upload 32 MB File
 cat /dev/urandom | head -c $(( 32 << 20 )) > "${tempfile}"
-run_example upload-file "${AUTH_FILE}" "${tempfile}" /test/dropbox-sdk-java/${DATE}/examples/upload-file/large-32MiB.dat
+./gradlew :examples:upload-file:run "${AUTH_FILE}" "${tempfile}" /test/dropbox-sdk-java/${DATE}/examples/upload-file/large-32MiB.dat
