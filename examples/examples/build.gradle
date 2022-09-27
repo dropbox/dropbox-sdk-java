@@ -2,7 +2,7 @@ apply plugin: 'java'
 apply plugin: 'kotlin'
 apply from: '../../gradle/integration-test-config.gradle'
 
-description = 'Account Info Example (Dropbox Core API SDK)'
+description = 'Consolidated Examples'
 
 dependencies {
     testImplementation 'org.eclipse.jetty.aggregate:jetty-server:8.1.18.v20150929'
