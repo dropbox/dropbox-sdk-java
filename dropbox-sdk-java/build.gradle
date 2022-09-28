@@ -246,8 +246,6 @@ dependencyUpdates.resolutionStrategy = {
     }
 }
 
-apply plugin: "com.dropbox.stone.java"
-
 generateStone {
     String unusedClassesToGenerate = 'AuthError, PathRoot, PathRootError, AccessError, RateLimitError'
     String packageName = 'com.dropbox.core.v2'
