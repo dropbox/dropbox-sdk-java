@@ -1,29 +1,19 @@
 package com.dropbox.core.examples.upload_file;
 
-import com.dropbox.core.DbxAuthInfo;
-import com.dropbox.core.DbxException;
-import com.dropbox.core.DbxRequestConfig;
-import com.dropbox.core.DbxWebAuth;
-import com.dropbox.core.NetworkIOException;
-import com.dropbox.core.RetryException;
+import com.dropbox.core.*;
 import com.dropbox.core.json.JsonReader;
 import com.dropbox.core.util.IOUtil.ProgressListener;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.DbxPathV2;
-import com.dropbox.core.v2.files.CommitInfo;
-import com.dropbox.core.v2.files.FileMetadata;
-import com.dropbox.core.v2.files.UploadErrorException;
-import com.dropbox.core.v2.files.UploadSessionCursor;
-import com.dropbox.core.v2.files.UploadSessionFinishErrorException;
-import com.dropbox.core.v2.files.WriteMode;
+import com.dropbox.core.v2.files.*;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.Date;
 
 /**
  * An example command-line application that runs through the web-based OAuth
@@ -40,8 +30,8 @@ public class UploadFileExample {
      * Uploads a file in a single request. This approach is preferred for small files since it
      * eliminates unnecessary round-trips to the servers.
      *
-     * @param dbxClient Dropbox user authenticated client
-     * @param localFile local file to upload
+     * @param dbxClient   Dropbox user authenticated client
+     * @param localFile   local file to upload
      * @param dropboxPath Where to upload the file to within Dropbox
      */
     private static void uploadFile(DbxClientV2 dbxClient, File localFile, String dropboxPath) {
@@ -49,9 +39,9 @@ public class UploadFileExample {
             ProgressListener progressListener = l -> printProgress(l, localFile.length());
 
             FileMetadata metadata = dbxClient.files().uploadBuilder(dropboxPath)
-                .withMode(WriteMode.ADD)
-                .withClientModified(new Date(localFile.lastModified()))
-                .uploadAndFinish(in, progressListener);
+                    .withMode(WriteMode.ADD)
+                    .withClientModified(new Date(localFile.lastModified()))
+                    .uploadAndFinish(in, progressListener);
 
             System.out.println(metadata.toStringMultiline());
         } catch (DbxException ex) {
@@ -69,8 +59,8 @@ public class UploadFileExample {
      * also allows partial uploads to be retried (e.g. network connection problem will not cause you
      * to re-upload all the bytes).
      *
-     * @param dbxClient Dropbox user authenticated client
-     * @param localFile local file to upload
+     * @param dbxClient   Dropbox user authenticated client
+     * @param localFile   local file to upload
      * @param dropboxPath Where to upload the file to within Dropbox
      */
     private static void chunkedUploadFile(DbxClientV2 dbxClient, File localFile, String dropboxPath) {
@@ -89,6 +79,7 @@ public class UploadFileExample {
 
         ProgressListener progressListener = new ProgressListener() {
             long uploadedBytes = 0;
+
             @Override
             public void onProgress(long l) {
                 printProgress(l + uploadedBytes, size);
@@ -116,8 +107,8 @@ public class UploadFileExample {
                 // (1) Start
                 if (sessionId == null) {
                     sessionId = dbxClient.files().uploadSessionStart()
-                        .uploadAndFinish(in, CHUNKED_UPLOAD_CHUNK_SIZE, progressListener)
-                        .getSessionId();
+                            .uploadAndFinish(in, CHUNKED_UPLOAD_CHUNK_SIZE, progressListener)
+                            .getSessionId();
                     uploaded += CHUNKED_UPLOAD_CHUNK_SIZE;
                     printProgress(uploaded, size);
                 }
@@ -127,7 +118,7 @@ public class UploadFileExample {
                 // (2) Append
                 while ((size - uploaded) > CHUNKED_UPLOAD_CHUNK_SIZE) {
                     dbxClient.files().uploadSessionAppendV2(cursor)
-                        .uploadAndFinish(in, CHUNKED_UPLOAD_CHUNK_SIZE, progressListener);
+                            .uploadAndFinish(in, CHUNKED_UPLOAD_CHUNK_SIZE, progressListener);
                     uploaded += CHUNKED_UPLOAD_CHUNK_SIZE;
                     printProgress(uploaded, size);
                     cursor = new UploadSessionCursor(sessionId, uploaded);
@@ -136,11 +127,11 @@ public class UploadFileExample {
                 // (3) Finish
                 long remaining = size - uploaded;
                 CommitInfo commitInfo = CommitInfo.newBuilder(dropboxPath)
-                    .withMode(WriteMode.ADD)
-                    .withClientModified(new Date(localFile.lastModified()))
-                    .build();
+                        .withMode(WriteMode.ADD)
+                        .withClientModified(new Date(localFile.lastModified()))
+                        .build();
                 FileMetadata metadata = dbxClient.files().uploadSessionFinish(cursor, commitInfo)
-                    .uploadAndFinish(in, remaining, progressListener);
+                        .uploadAndFinish(in, remaining, progressListener);
 
                 System.out.println(metadata.toStringMultiline());
                 return;
@@ -160,9 +151,9 @@ public class UploadFileExample {
                     // server offset into the stream doesn't match our offset (uploaded). Seek to
                     // the expected offset according to the server and try again.
                     uploaded = ex.errorValue
-                        .getLookupFailedValue()
-                        .getIncorrectOffsetValue()
-                        .getCorrectOffset();
+                            .getLookupFailedValue()
+                            .getIncorrectOffsetValue()
+                            .getCorrectOffset();
                     continue;
                 } else {
                     // some other error occurred, give up.
@@ -234,6 +225,12 @@ public class UploadFileExample {
             return;
         }
 
+        runExample(authInfo, localPath, dropboxPath);
+
+        System.exit(0);
+    }
+
+    public static void runExample(DbxAuthInfo authInfo, String localPath, String dropboxPath) {
         String pathError = DbxPathV2.findError(dropboxPath);
         if (pathError != null) {
             System.err.println("Invalid <dropbox-path>: " + pathError);
@@ -267,14 +264,12 @@ public class UploadFileExample {
         } else {
             chunkedUploadFile(dbxClient, localFile, dropboxPath);
         }
-        
+
         try {
             // Delete the file we uploaded so we don't run out of space on the integration test account
             dbxClient.files().deleteV2(dropboxPath);
         } catch (DbxException e) {
             throw new RuntimeException("Could not cleanup the test file we just uploaded at " + dropboxPath, e);
         }
-
-        System.exit(0);
     }
 }
