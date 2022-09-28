@@ -8,6 +8,7 @@ plugins {
     id "com.vanniktech.maven.publish"
     id "com.github.ben-manes.versions"
     id "com.dropbox.dependency-guard"
+    id "com.dropbox.stone.java"
 }
 
 dependencyGuard {
@@ -27,6 +28,7 @@ ext {
 sourceSets {
     main {
         java {
+            // Including the Android Code this way until it is later released as a separate artifact
             srcDir '../dropbox-sdk-android/src/main/java'
         }
     }
@@ -244,8 +246,6 @@ dependencyUpdates.resolutionStrategy = {
         }
     }
 }
-
-apply plugin: "com.dropbox.stone.java"
 
 generateStone {
     String unusedClassesToGenerate = 'AuthError, PathRoot, PathRootError, AccessError, RateLimitError'

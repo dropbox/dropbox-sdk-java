@@ -1,4 +1,3 @@
-
 buildscript {
     repositories {
         google()
@@ -38,4 +37,17 @@ apply plugin: "com.dropbox.dependency-guard"
 
 dependencyGuard {
     configuration("classpath")
+}
+
+// configure SDK to use the generated_stone_source output directory so we can track changes in Git
+def sdkProject = findProject(':dropbox-sdk-java')
+sdkProject.configure(sdkProject) {
+    afterEvaluate {
+        generateStone {
+            outputDir "${project.projectDir}/generated_stone_source/main"
+        }
+        generateTestStone {
+            outputDir "${project.projectDir}/generated_stone_source/test"
+        }
+    }
 }
