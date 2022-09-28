@@ -26,4 +26,7 @@ dependencies {
 test {
     // Uses the "ci" gradle property and sets it as an environment variable for the test
     environment("ci", project.findProperty("ci"))
+
+    // Ensure that tests are always run because integration tests are non-deterministic
+    outputs.upToDateWhen { false }
 }
