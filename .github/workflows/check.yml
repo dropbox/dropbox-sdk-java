@@ -58,12 +58,6 @@ jobs:
     - name: Check
       run: ./gradlew check
 
-    - name: Check Examples
-      run: cd examples && ./gradlew check
-
-    - name: Assemble Examples
-      run: cd examples && ./gradlew assemble
-
     - name: Run Integration Tests - OkHttpRequestor
       run: ./gradlew -Pcom.dropbox.test.httpRequestor=OkHttpRequestor -Pcom.dropbox.test.authInfoFile=../auth_output integrationTest &&
            ./gradlew -Pcom.dropbox.test.httpRequestor=OkHttpRequestor -Pcom.dropbox.test.authInfoFile=../auth_output proguardTest

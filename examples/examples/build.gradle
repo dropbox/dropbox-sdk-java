@@ -1,0 +1,16 @@
+apply plugin: 'java'
+apply plugin: 'kotlin'
+apply from: '../../gradle/integration-test-config.gradle'
+
+description = 'Consolidated Examples'
+
+dependencies {
+    testImplementation 'org.eclipse.jetty.aggregate:jetty-server:8.1.18.v20150929'
+    testImplementation 'javax.servlet:javax.servlet-api:3.1.0'
+    testImplementation 'org.apache.commons:commons-lang3:3.4'
+    testImplementation 'com.fasterxml.jackson.core:jackson-core:2.7.9'
+    testImplementation 'com.fasterxml.jackson.core:jackson-databind:2.7.4'
+    testImplementation(dropboxJavaSdkLibs.test.junit)
+    testImplementation(dropboxJavaSdkLibs.okhttp3)
+    testImplementation("org.json:json:20220320")
+}
