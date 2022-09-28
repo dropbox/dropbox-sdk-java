@@ -278,6 +278,7 @@ public class Auth {
                 return credential.accessToken
             }
 
+        @JvmStatic
         public val uid: String?
             get() {
                 if (dbxCredential == null) {

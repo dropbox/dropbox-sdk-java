@@ -39,8 +39,9 @@ test-junit = 'junit:junit:4.13.2'
 
 
 [plugins]
+binary-compatibility-validator = "org.jetbrains.kotlinx.binary-compatibility-validator:0.11.1"
+blind-pirate-osgi = "com.github.blindpirate.osgi:0.0.6"
 dependency-guard = { id = "com.dropbox.dependency-guard", version.ref = "dependency-guard" }
 gradle-version-plugin = "com.github.ben-manes.versions:0.42.0"
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 maven-publish-plugin = "com.vanniktech.maven.publish:0.18.0"
-blind-pirate-osgi = "com.github.blindpirate.osgi:0.0.6"

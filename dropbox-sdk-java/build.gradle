@@ -9,6 +9,7 @@ plugins {
     id "com.github.ben-manes.versions"
     id "com.dropbox.dependency-guard"
     id "com.dropbox.stone.java"
+    id "org.jetbrains.kotlinx.binary-compatibility-validator"
 }
 
 dependencyGuard {

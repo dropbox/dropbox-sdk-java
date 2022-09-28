@@ -435,20 +435,37 @@ public final class com/dropbox/core/TokenAccessType : java/lang/Enum {
 	public static fun values ()[Lcom/dropbox/core/TokenAccessType;
 }
 
-public class com/dropbox/core/android/Auth {
+public final class com/dropbox/core/android/Auth {
+	public static final field Companion Lcom/dropbox/core/android/Auth$Companion;
 	public fun <init> ()V
-	public static fun getDbxCredential ()Lcom/dropbox/core/oauth/DbxCredential;
-	public static fun getOAuth2Token ()Ljava/lang/String;
-	public static fun getScope ()Ljava/lang/String;
-	public static fun getUid ()Ljava/lang/String;
-	public static fun startOAuth2Authentication (Landroid/content/Context;Ljava/lang/String;)V
-	public static fun startOAuth2Authentication (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;)V
-	public static fun startOAuth2Authentication (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
-	public static fun startOAuth2PKCE (Landroid/content/Context;Ljava/lang/String;Lcom/dropbox/core/DbxRequestConfig;)V
-	public static fun startOAuth2PKCE (Landroid/content/Context;Ljava/lang/String;Lcom/dropbox/core/DbxRequestConfig;Lcom/dropbox/core/DbxHost;)V
-	public static fun startOAuth2PKCE (Landroid/content/Context;Ljava/lang/String;Lcom/dropbox/core/DbxRequestConfig;Lcom/dropbox/core/DbxHost;Ljava/util/Collection;)V
-	public static fun startOAuth2PKCE (Landroid/content/Context;Ljava/lang/String;Lcom/dropbox/core/DbxRequestConfig;Lcom/dropbox/core/DbxHost;Ljava/util/Collection;Lcom/dropbox/core/IncludeGrantedScopes;)V
-	public static fun startOAuth2PKCE (Landroid/content/Context;Ljava/lang/String;Lcom/dropbox/core/DbxRequestConfig;Ljava/util/Collection;)V
+	public static final fun getDbxCredential ()Lcom/dropbox/core/oauth/DbxCredential;
+	public static final fun getOAuth2Token ()Ljava/lang/String;
+	public static final fun getScope ()Ljava/lang/String;
+	public static final fun getUid ()Ljava/lang/String;
+	public static final fun startOAuth2Authentication (Landroid/content/Context;Ljava/lang/String;)V
+	public static final fun startOAuth2Authentication (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;)V
+	public static final fun startOAuth2Authentication (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public static final fun startOAuth2PKCE (Landroid/content/Context;Ljava/lang/String;Lcom/dropbox/core/DbxRequestConfig;)V
+	public static final fun startOAuth2PKCE (Landroid/content/Context;Ljava/lang/String;Lcom/dropbox/core/DbxRequestConfig;Lcom/dropbox/core/DbxHost;)V
+	public static final fun startOAuth2PKCE (Landroid/content/Context;Ljava/lang/String;Lcom/dropbox/core/DbxRequestConfig;Lcom/dropbox/core/DbxHost;Ljava/util/Collection;)V
+	public static final fun startOAuth2PKCE (Landroid/content/Context;Ljava/lang/String;Lcom/dropbox/core/DbxRequestConfig;Lcom/dropbox/core/DbxHost;Ljava/util/Collection;Lcom/dropbox/core/IncludeGrantedScopes;)V
+	public static final fun startOAuth2PKCE (Landroid/content/Context;Ljava/lang/String;Lcom/dropbox/core/DbxRequestConfig;Ljava/util/Collection;)V
+}
+
+public final class com/dropbox/core/android/Auth$Companion {
+	public final fun getDbxCredential ()Lcom/dropbox/core/oauth/DbxCredential;
+	public final fun getOAuth2Token ()Ljava/lang/String;
+	public final fun getScope ()Ljava/lang/String;
+	public final fun getUid ()Ljava/lang/String;
+	public final fun startOAuth2Authentication (Landroid/content/Context;Ljava/lang/String;)V
+	public final fun startOAuth2Authentication (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;)V
+	public final fun startOAuth2Authentication (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public final fun startOAuth2PKCE (Landroid/content/Context;Ljava/lang/String;Lcom/dropbox/core/DbxRequestConfig;)V
+	public final fun startOAuth2PKCE (Landroid/content/Context;Ljava/lang/String;Lcom/dropbox/core/DbxRequestConfig;Lcom/dropbox/core/DbxHost;)V
+	public final fun startOAuth2PKCE (Landroid/content/Context;Ljava/lang/String;Lcom/dropbox/core/DbxRequestConfig;Lcom/dropbox/core/DbxHost;Ljava/util/Collection;)V
+	public final fun startOAuth2PKCE (Landroid/content/Context;Ljava/lang/String;Lcom/dropbox/core/DbxRequestConfig;Lcom/dropbox/core/DbxHost;Ljava/util/Collection;Lcom/dropbox/core/IncludeGrantedScopes;)V
+	public final fun startOAuth2PKCE (Landroid/content/Context;Ljava/lang/String;Lcom/dropbox/core/DbxRequestConfig;Ljava/util/Collection;)V
+	public static synthetic fun startOAuth2PKCE$default (Lcom/dropbox/core/android/Auth$Companion;Landroid/content/Context;Ljava/lang/String;Lcom/dropbox/core/DbxRequestConfig;Ljava/util/Collection;ILjava/lang/Object;)V
 }
 
 public class com/dropbox/core/android/AuthActivity : android/app/Activity {
@@ -456,86 +473,64 @@ public class com/dropbox/core/android/AuthActivity : android/app/Activity {
 	public static final field ACTION_AUTHENTICATE_V2 Ljava/lang/String;
 	public static final field AUTH_PATH_CONNECT Ljava/lang/String;
 	public static final field AUTH_VERSION I
-	public static final field EXTRA_ACCESS_SECRET Ljava/lang/String;
-	public static final field EXTRA_ACCESS_TOKEN Ljava/lang/String;
-	public static final field EXTRA_ALREADY_AUTHED_UIDS Ljava/lang/String;
-	public static final field EXTRA_AUTH_QUERY_PARAMS Ljava/lang/String;
-	public static final field EXTRA_AUTH_STATE Ljava/lang/String;
-	public static final field EXTRA_CALLING_CLASS Ljava/lang/String;
-	public static final field EXTRA_CALLING_PACKAGE Ljava/lang/String;
-	public static final field EXTRA_CONSUMER_KEY Ljava/lang/String;
-	public static final field EXTRA_CONSUMER_SIG Ljava/lang/String;
-	public static final field EXTRA_DESIRED_UID Ljava/lang/String;
-	public static final field EXTRA_EXPIRES_AT Ljava/lang/String;
-	public static final field EXTRA_REFRESH_TOKEN Ljava/lang/String;
-	public static final field EXTRA_SCOPE Ljava/lang/String;
-	public static final field EXTRA_SESSION_ID Ljava/lang/String;
-	public static final field EXTRA_UID Ljava/lang/String;
 	public static field result Landroid/content/Intent;
 	public fun <init> ()V
-	public static fun checkAppBeforeAuth (Landroid/content/Context;Ljava/lang/String;Z)Z
-	public static fun makeIntent (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
-	public static fun makeIntent (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
+	public static final fun checkAppBeforeAuth (Landroid/content/Context;Ljava/lang/String;Z)Z
+	public static final fun makeIntent (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
+	public static final fun makeIntent (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
 	protected fun onCreate (Landroid/os/Bundle;)V
 	protected fun onNewIntent (Landroid/content/Intent;)V
 	protected fun onResume ()V
-	protected fun onSaveInstanceState (Landroid/os/Bundle;)V
-	protected fun onTopResumedActivityChanged (Z)V
-	public static fun setSecurityProvider (Lcom/dropbox/core/android/AuthActivity$SecurityProvider;)V
+	public final fun onTopResumedActivityChanged (Z)V
+	public static final fun setSecurityProvider (Lcom/dropbox/core/android/AuthActivity$SecurityProvider;)V
 }
 
 public abstract interface class com/dropbox/core/android/AuthActivity$SecurityProvider {
 	public abstract fun getSecureRandom ()Ljava/security/SecureRandom;
 }
 
-public class com/dropbox/core/android/DbxOfficialAppConnector {
+public final class com/dropbox/core/android/DbxOfficialAppConnector {
 	public static final field ACTION_DBXC_EDIT Ljava/lang/String;
 	public static final field ACTION_DBXC_VIEW Ljava/lang/String;
 	public static final field ACTION_SHOW_DROPBOX_PREVIEW Ljava/lang/String;
 	public static final field ACTION_SHOW_UPGRADE Ljava/lang/String;
+	public static final field Companion Lcom/dropbox/core/android/DbxOfficialAppConnector$Companion;
 	public static final field EXTRA_CALLING_PACKAGE Ljava/lang/String;
 	public static final field EXTRA_DROPBOX_PATH Ljava/lang/String;
 	public static final field EXTRA_DROPBOX_READ_ONLY Ljava/lang/String;
 	public static final field EXTRA_DROPBOX_REV Ljava/lang/String;
 	public static final field EXTRA_DROPBOX_SESSION_ID Ljava/lang/String;
 	public static final field EXTRA_DROPBOX_UID Ljava/lang/String;
-	protected field uid Ljava/lang/String;
 	public fun <init> (Ljava/lang/String;)V
-	protected fun addExtrasToIntent (Landroid/content/Context;Landroid/content/Intent;)V
-	public static fun generateOpenWithIntentFromUtmContent (Ljava/lang/String;)Landroid/content/Intent;
-	public static fun getDropboxPlayStoreIntent ()Landroid/content/Intent;
-	public fun getPreviewFileIntent (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
-	public fun getUpgradeAccountIntent (Landroid/content/Context;)Landroid/content/Intent;
-	public static fun isAnySignedIn (Landroid/content/Context;)Z
-	public static fun isInstalled (Landroid/content/Context;)Lcom/dropbox/core/android/DbxOfficialAppConnector$DbxOfficialAppInstallInfo;
-	public fun isSignedIn (Landroid/content/Context;)Z
-	protected fun launchDropbox (Landroid/content/Context;)Landroid/content/Intent;
+	public static final fun generateOpenWithIntentFromUtmContent (Ljava/lang/String;)Landroid/content/Intent;
+	public static final fun getDropboxPlayStoreIntent ()Landroid/content/Intent;
+	public final fun getPreviewFileIntent (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
+	public final fun getUpgradeAccountIntent (Landroid/content/Context;)Landroid/content/Intent;
+	public static final fun isAnySignedIn (Landroid/content/Context;)Z
+	public static final fun isInstalled (Landroid/content/Context;)Lcom/dropbox/core/android/DbxOfficialAppConnector$DbxOfficialAppInstallInfo;
+	public final fun isSignedIn (Landroid/content/Context;)Z
 }
 
-public class com/dropbox/core/android/DbxOfficialAppConnector$DbxOfficialAppInstallInfo {
+public final class com/dropbox/core/android/DbxOfficialAppConnector$Companion {
+	public final fun generateOpenWithIntentFromUtmContent (Ljava/lang/String;)Landroid/content/Intent;
+	public final fun getDropboxPlayStoreIntent ()Landroid/content/Intent;
+	public final fun isAnySignedIn (Landroid/content/Context;)Z
+	public final fun isInstalled (Landroid/content/Context;)Lcom/dropbox/core/android/DbxOfficialAppConnector$DbxOfficialAppInstallInfo;
+}
+
+public final class com/dropbox/core/android/DbxOfficialAppConnector$DbxOfficialAppInstallInfo {
 	public final field supportsOpenWith Z
 	public final field versionCode I
 	public fun <init> (ZI)V
 	public fun toString ()Ljava/lang/String;
 }
 
-public class com/dropbox/core/android/DropboxParseException : com/dropbox/core/DbxException {
+public final class com/dropbox/core/android/DropboxParseException : com/dropbox/core/DbxException {
 	public fun <init> (Ljava/lang/String;)V
 }
 
-public class com/dropbox/core/android/DropboxUidNotInitializedException : com/dropbox/core/DbxException {
+public final class com/dropbox/core/android/DropboxUidNotInitializedException : com/dropbox/core/DbxException {
 	public fun <init> (Ljava/lang/String;)V
-}
-
-public final class com/dropbox/core/android/FixedSecureRandom : java/security/SecureRandom {
-	public static fun get ()Ljava/security/SecureRandom;
-}
-
-public class com/dropbox/core/android/FixedSecureRandom$LinuxPrngSecureRandomSpi : java/security/SecureRandomSpi {
-	public fun <init> ()V
-	protected fun engineGenerateSeed (I)[B
-	protected fun engineNextBytes ([B)V
-	protected fun engineSetSeed ([B)V
 }
 
 public class com/dropbox/core/http/GoogleAppEngineRequestor : com/dropbox/core/http/HttpRequestor {
@@ -640,6 +635,7 @@ public class com/dropbox/core/http/StandardHttpRequestor : com/dropbox/core/http
 	protected fun configureConnection (Ljavax/net/ssl/HttpsURLConnection;)V
 	public fun doGet (Ljava/lang/String;Ljava/lang/Iterable;)Lcom/dropbox/core/http/HttpRequestor$Response;
 	protected fun interceptResponse (Ljava/net/HttpURLConnection;)V
+	protected fun prepRequest (Ljava/lang/String;Ljava/lang/Iterable;Z)Ljava/net/HttpURLConnection;
 	public synthetic fun startPost (Ljava/lang/String;Ljava/lang/Iterable;)Lcom/dropbox/core/http/HttpRequestor$Uploader;
 	public fun startPost (Ljava/lang/String;Ljava/lang/Iterable;)Lcom/dropbox/core/http/StandardHttpRequestor$Uploader;
 	public synthetic fun startPostInStreamingMode (Ljava/lang/String;Ljava/lang/Iterable;)Lcom/dropbox/core/http/HttpRequestor$Uploader;
@@ -1481,6 +1477,7 @@ public class com/dropbox/core/v2/DbxClientV2Base {
 	public fun fileProperties ()Lcom/dropbox/core/v2/fileproperties/DbxUserFilePropertiesRequests;
 	public fun fileRequests ()Lcom/dropbox/core/v2/filerequests/DbxUserFileRequestsRequests;
 	public fun files ()Lcom/dropbox/core/v2/files/DbxUserFilesRequests;
+	public fun openid ()Lcom/dropbox/core/v2/openid/DbxUserOpenidRequests;
 	public fun paper ()Lcom/dropbox/core/v2/paper/DbxUserPaperRequests;
 	public fun sharing ()Lcom/dropbox/core/v2/sharing/DbxUserSharingRequests;
 	public fun users ()Lcom/dropbox/core/v2/users/DbxUserUsersRequests;
@@ -1508,10 +1505,12 @@ public abstract class com/dropbox/core/v2/DbxRawClientV2 {
 	public static final field USER_AGENT_ID Ljava/lang/String;
 	protected fun <init> (Lcom/dropbox/core/DbxRequestConfig;Lcom/dropbox/core/DbxHost;Ljava/lang/String;Lcom/dropbox/core/v2/common/PathRoot;)V
 	protected abstract fun addAuthHeaders (Ljava/util/List;)V
+	protected abstract fun canRefreshAccessToken ()Z
 	public fun downloadStyle (Ljava/lang/String;Ljava/lang/String;Ljava/lang/Object;ZLjava/util/List;Lcom/dropbox/core/stone/StoneSerializer;Lcom/dropbox/core/stone/StoneSerializer;Lcom/dropbox/core/stone/StoneSerializer;)Lcom/dropbox/core/DbxDownloader;
 	public fun getHost ()Lcom/dropbox/core/DbxHost;
 	public fun getRequestConfig ()Lcom/dropbox/core/DbxRequestConfig;
 	public fun getUserId ()Ljava/lang/String;
+	protected abstract fun needsRefreshAccessToken ()Z
 	public abstract fun refreshAccessToken ()Lcom/dropbox/core/oauth/DbxRefreshResult;
 	public fun rpcStyle (Ljava/lang/String;Ljava/lang/String;Ljava/lang/Object;ZLcom/dropbox/core/stone/StoneSerializer;Lcom/dropbox/core/stone/StoneSerializer;Lcom/dropbox/core/stone/StoneSerializer;)Ljava/lang/Object;
 	public fun uploadStyle (Ljava/lang/String;Ljava/lang/String;Ljava/lang/Object;ZLcom/dropbox/core/stone/StoneSerializer;)Lcom/dropbox/core/http/HttpRequestor$Uploader;
@@ -7043,6 +7042,98 @@ public class com/dropbox/core/v2/openid/AuthError$Serializer : com/dropbox/core/
 	public synthetic fun deserialize (Lcom/fasterxml/jackson/core/JsonParser;)Ljava/lang/Object;
 	public fun serialize (Lcom/dropbox/core/v2/openid/AuthError;Lcom/fasterxml/jackson/core/JsonGenerator;)V
 	public synthetic fun serialize (Ljava/lang/Object;Lcom/fasterxml/jackson/core/JsonGenerator;)V
+}
+
+public class com/dropbox/core/v2/openid/DbxUserOpenidRequests {
+	public fun <init> (Lcom/dropbox/core/v2/DbxRawClientV2;)V
+	public fun userinfo ()Lcom/dropbox/core/v2/openid/UserInfoResult;
+}
+
+public final class com/dropbox/core/v2/openid/ErrUnion {
+	public static final field OTHER Lcom/dropbox/core/v2/openid/ErrUnion;
+	public static fun authError (Lcom/dropbox/core/v2/openid/AuthError;)Lcom/dropbox/core/v2/openid/ErrUnion;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getAuthErrorValue ()Lcom/dropbox/core/v2/openid/AuthError;
+	public fun hashCode ()I
+	public fun isAuthError ()Z
+	public fun isOther ()Z
+	public fun tag ()Lcom/dropbox/core/v2/openid/ErrUnion$Tag;
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public final class com/dropbox/core/v2/openid/ErrUnion$Tag : java/lang/Enum {
+	public static final field AUTH_ERROR Lcom/dropbox/core/v2/openid/ErrUnion$Tag;
+	public static final field OTHER Lcom/dropbox/core/v2/openid/ErrUnion$Tag;
+	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/openid/ErrUnion$Tag;
+	public static fun values ()[Lcom/dropbox/core/v2/openid/ErrUnion$Tag;
+}
+
+public class com/dropbox/core/v2/openid/UserInfoError {
+	protected final field err Lcom/dropbox/core/v2/openid/ErrUnion;
+	protected final field errorMessage Ljava/lang/String;
+	public fun <init> ()V
+	public fun <init> (Lcom/dropbox/core/v2/openid/ErrUnion;Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getErr ()Lcom/dropbox/core/v2/openid/ErrUnion;
+	public fun getErrorMessage ()Ljava/lang/String;
+	public fun hashCode ()I
+	public static fun newBuilder ()Lcom/dropbox/core/v2/openid/UserInfoError$Builder;
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/openid/UserInfoError$Builder {
+	protected field err Lcom/dropbox/core/v2/openid/ErrUnion;
+	protected field errorMessage Ljava/lang/String;
+	protected fun <init> ()V
+	public fun build ()Lcom/dropbox/core/v2/openid/UserInfoError;
+	public fun withErr (Lcom/dropbox/core/v2/openid/ErrUnion;)Lcom/dropbox/core/v2/openid/UserInfoError$Builder;
+	public fun withErrorMessage (Ljava/lang/String;)Lcom/dropbox/core/v2/openid/UserInfoError$Builder;
+}
+
+public class com/dropbox/core/v2/openid/UserInfoErrorException : com/dropbox/core/DbxApiException {
+	public final field errorValue Lcom/dropbox/core/v2/openid/UserInfoError;
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lcom/dropbox/core/LocalizedText;Lcom/dropbox/core/v2/openid/UserInfoError;)V
+}
+
+public class com/dropbox/core/v2/openid/UserInfoResult {
+	protected final field email Ljava/lang/String;
+	protected final field emailVerified Ljava/lang/Boolean;
+	protected final field familyName Ljava/lang/String;
+	protected final field givenName Ljava/lang/String;
+	protected final field iss Ljava/lang/String;
+	protected final field sub Ljava/lang/String;
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Boolean;Ljava/lang/String;Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getEmail ()Ljava/lang/String;
+	public fun getEmailVerified ()Ljava/lang/Boolean;
+	public fun getFamilyName ()Ljava/lang/String;
+	public fun getGivenName ()Ljava/lang/String;
+	public fun getIss ()Ljava/lang/String;
+	public fun getSub ()Ljava/lang/String;
+	public fun hashCode ()I
+	public static fun newBuilder ()Lcom/dropbox/core/v2/openid/UserInfoResult$Builder;
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/openid/UserInfoResult$Builder {
+	protected field email Ljava/lang/String;
+	protected field emailVerified Ljava/lang/Boolean;
+	protected field familyName Ljava/lang/String;
+	protected field givenName Ljava/lang/String;
+	protected field iss Ljava/lang/String;
+	protected field sub Ljava/lang/String;
+	protected fun <init> ()V
+	public fun build ()Lcom/dropbox/core/v2/openid/UserInfoResult;
+	public fun withEmail (Ljava/lang/String;)Lcom/dropbox/core/v2/openid/UserInfoResult$Builder;
+	public fun withEmailVerified (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/openid/UserInfoResult$Builder;
+	public fun withFamilyName (Ljava/lang/String;)Lcom/dropbox/core/v2/openid/UserInfoResult$Builder;
+	public fun withGivenName (Ljava/lang/String;)Lcom/dropbox/core/v2/openid/UserInfoResult$Builder;
+	public fun withIss (Ljava/lang/String;)Lcom/dropbox/core/v2/openid/UserInfoResult$Builder;
+	public fun withSub (Ljava/lang/String;)Lcom/dropbox/core/v2/openid/UserInfoResult$Builder;
 }
 
 public class com/dropbox/core/v2/paper/AddMember {
@@ -17433,6 +17524,7 @@ public final class com/dropbox/core/v2/teamlog/EventDetails {
 	public static fun fileMoveDetails (Lcom/dropbox/core/v2/teamlog/FileMoveDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun filePermanentlyDeleteDetails (Lcom/dropbox/core/v2/teamlog/FilePermanentlyDeleteDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun filePreviewDetails (Lcom/dropbox/core/v2/teamlog/FilePreviewDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
+	public static fun fileProviderMigrationPolicyChangedDetails (Lcom/dropbox/core/v2/teamlog/FileProviderMigrationPolicyChangedDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun fileRenameDetails (Lcom/dropbox/core/v2/teamlog/FileRenameDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun fileRequestChangeDetails (Lcom/dropbox/core/v2/teamlog/FileRequestChangeDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun fileRequestCloseDetails (Lcom/dropbox/core/v2/teamlog/FileRequestCloseDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
@@ -17572,6 +17664,7 @@ public final class com/dropbox/core/v2/teamlog/EventDetails {
 	public fun getFileMoveDetailsValue ()Lcom/dropbox/core/v2/teamlog/FileMoveDetails;
 	public fun getFilePermanentlyDeleteDetailsValue ()Lcom/dropbox/core/v2/teamlog/FilePermanentlyDeleteDetails;
 	public fun getFilePreviewDetailsValue ()Lcom/dropbox/core/v2/teamlog/FilePreviewDetails;
+	public fun getFileProviderMigrationPolicyChangedDetailsValue ()Lcom/dropbox/core/v2/teamlog/FileProviderMigrationPolicyChangedDetails;
 	public fun getFileRenameDetailsValue ()Lcom/dropbox/core/v2/teamlog/FileRenameDetails;
 	public fun getFileRequestChangeDetailsValue ()Lcom/dropbox/core/v2/teamlog/FileRequestChangeDetails;
 	public fun getFileRequestCloseDetailsValue ()Lcom/dropbox/core/v2/teamlog/FileRequestCloseDetails;
@@ -18090,6 +18183,7 @@ public final class com/dropbox/core/v2/teamlog/EventDetails {
 	public fun isFileMoveDetails ()Z
 	public fun isFilePermanentlyDeleteDetails ()Z
 	public fun isFilePreviewDetails ()Z
+	public fun isFileProviderMigrationPolicyChangedDetails ()Z
 	public fun isFileRenameDetails ()Z
 	public fun isFileRequestChangeDetails ()Z
 	public fun isFileRequestCloseDetails ()Z
@@ -18890,6 +18984,7 @@ public final class com/dropbox/core/v2/teamlog/EventDetails$Tag : java/lang/Enum
 	public static final field FILE_MOVE_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field FILE_PERMANENTLY_DELETE_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field FILE_PREVIEW_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
+	public static final field FILE_PROVIDER_MIGRATION_POLICY_CHANGED_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field FILE_RENAME_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field FILE_REQUESTS_CHANGE_POLICY_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field FILE_REQUESTS_EMAILS_ENABLED_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
@@ -19381,6 +19476,7 @@ public final class com/dropbox/core/v2/teamlog/EventType {
 	public static fun fileMove (Lcom/dropbox/core/v2/teamlog/FileMoveType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun filePermanentlyDelete (Lcom/dropbox/core/v2/teamlog/FilePermanentlyDeleteType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun filePreview (Lcom/dropbox/core/v2/teamlog/FilePreviewType;)Lcom/dropbox/core/v2/teamlog/EventType;
+	public static fun fileProviderMigrationPolicyChanged (Lcom/dropbox/core/v2/teamlog/FileProviderMigrationPolicyChangedType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun fileRename (Lcom/dropbox/core/v2/teamlog/FileRenameType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun fileRequestChange (Lcom/dropbox/core/v2/teamlog/FileRequestChangeType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun fileRequestClose (Lcom/dropbox/core/v2/teamlog/FileRequestCloseType;)Lcom/dropbox/core/v2/teamlog/EventType;
@@ -19520,6 +19616,7 @@ public final class com/dropbox/core/v2/teamlog/EventType {
 	public fun getFileMoveValue ()Lcom/dropbox/core/v2/teamlog/FileMoveType;
 	public fun getFilePermanentlyDeleteValue ()Lcom/dropbox/core/v2/teamlog/FilePermanentlyDeleteType;
 	public fun getFilePreviewValue ()Lcom/dropbox/core/v2/teamlog/FilePreviewType;
+	public fun getFileProviderMigrationPolicyChangedValue ()Lcom/dropbox/core/v2/teamlog/FileProviderMigrationPolicyChangedType;
 	public fun getFileRenameValue ()Lcom/dropbox/core/v2/teamlog/FileRenameType;
 	public fun getFileRequestChangeValue ()Lcom/dropbox/core/v2/teamlog/FileRequestChangeType;
 	public fun getFileRequestCloseValue ()Lcom/dropbox/core/v2/teamlog/FileRequestCloseType;
@@ -20037,6 +20134,7 @@ public final class com/dropbox/core/v2/teamlog/EventType {
 	public fun isFileMove ()Z
 	public fun isFilePermanentlyDelete ()Z
 	public fun isFilePreview ()Z
+	public fun isFileProviderMigrationPolicyChanged ()Z
 	public fun isFileRename ()Z
 	public fun isFileRequestChange ()Z
 	public fun isFileRequestClose ()Z
@@ -20835,6 +20933,7 @@ public final class com/dropbox/core/v2/teamlog/EventType$Tag : java/lang/Enum {
 	public static final field FILE_MOVE Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field FILE_PERMANENTLY_DELETE Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field FILE_PREVIEW Lcom/dropbox/core/v2/teamlog/EventType$Tag;
+	public static final field FILE_PROVIDER_MIGRATION_POLICY_CHANGED Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field FILE_RENAME Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field FILE_REQUESTS_CHANGE_POLICY Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field FILE_REQUESTS_EMAILS_ENABLED Lcom/dropbox/core/v2/teamlog/EventType$Tag;
@@ -21323,6 +21422,7 @@ public final class com/dropbox/core/v2/teamlog/EventTypeArg : java/lang/Enum {
 	public static final field FILE_MOVE Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field FILE_PERMANENTLY_DELETE Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field FILE_PREVIEW Lcom/dropbox/core/v2/teamlog/EventTypeArg;
+	public static final field FILE_PROVIDER_MIGRATION_POLICY_CHANGED Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field FILE_RENAME Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field FILE_REQUESTS_CHANGE_POLICY Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field FILE_REQUESTS_EMAILS_ENABLED Lcom/dropbox/core/v2/teamlog/EventTypeArg;
@@ -22416,6 +22516,28 @@ public class com/dropbox/core/v2/teamlog/FilePreviewDetails {
 }
 
 public class com/dropbox/core/v2/teamlog/FilePreviewType {
+	protected final field description Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getDescription ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/FileProviderMigrationPolicyChangedDetails {
+	protected final field newValue Lcom/dropbox/core/v2/teampolicies/FileProviderMigrationPolicyState;
+	protected final field previousValue Lcom/dropbox/core/v2/teampolicies/FileProviderMigrationPolicyState;
+	public fun <init> (Lcom/dropbox/core/v2/teampolicies/FileProviderMigrationPolicyState;Lcom/dropbox/core/v2/teampolicies/FileProviderMigrationPolicyState;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getNewValue ()Lcom/dropbox/core/v2/teampolicies/FileProviderMigrationPolicyState;
+	public fun getPreviousValue ()Lcom/dropbox/core/v2/teampolicies/FileProviderMigrationPolicyState;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/FileProviderMigrationPolicyChangedType {
 	protected final field description Ljava/lang/String;
 	public fun <init> (Ljava/lang/String;)V
 	public fun equals (Ljava/lang/Object;)Z
@@ -30952,6 +31074,7 @@ public class com/dropbox/core/v2/teamlog/TeamMemberLogInfo$Builder : com/dropbox
 public final class com/dropbox/core/v2/teamlog/TeamMembershipType : java/lang/Enum {
 	public static final field FREE Lcom/dropbox/core/v2/teamlog/TeamMembershipType;
 	public static final field FULL Lcom/dropbox/core/v2/teamlog/TeamMembershipType;
+	public static final field GUEST Lcom/dropbox/core/v2/teamlog/TeamMembershipType;
 	public static final field OTHER Lcom/dropbox/core/v2/teamlog/TeamMembershipType;
 	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/teamlog/TeamMembershipType;
 	public static fun values ()[Lcom/dropbox/core/v2/teamlog/TeamMembershipType;
@@ -32455,6 +32578,24 @@ public class com/dropbox/core/v2/teampolicies/FileLockingPolicyState$Serializer 
 	public fun deserialize (Lcom/fasterxml/jackson/core/JsonParser;)Lcom/dropbox/core/v2/teampolicies/FileLockingPolicyState;
 	public synthetic fun deserialize (Lcom/fasterxml/jackson/core/JsonParser;)Ljava/lang/Object;
 	public fun serialize (Lcom/dropbox/core/v2/teampolicies/FileLockingPolicyState;Lcom/fasterxml/jackson/core/JsonGenerator;)V
+	public synthetic fun serialize (Ljava/lang/Object;Lcom/fasterxml/jackson/core/JsonGenerator;)V
+}
+
+public final class com/dropbox/core/v2/teampolicies/FileProviderMigrationPolicyState : java/lang/Enum {
+	public static final field DEFAULT Lcom/dropbox/core/v2/teampolicies/FileProviderMigrationPolicyState;
+	public static final field DISABLED Lcom/dropbox/core/v2/teampolicies/FileProviderMigrationPolicyState;
+	public static final field ENABLED Lcom/dropbox/core/v2/teampolicies/FileProviderMigrationPolicyState;
+	public static final field OTHER Lcom/dropbox/core/v2/teampolicies/FileProviderMigrationPolicyState;
+	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/teampolicies/FileProviderMigrationPolicyState;
+	public static fun values ()[Lcom/dropbox/core/v2/teampolicies/FileProviderMigrationPolicyState;
+}
+
+public class com/dropbox/core/v2/teampolicies/FileProviderMigrationPolicyState$Serializer : com/dropbox/core/stone/UnionSerializer {
+	public static final field INSTANCE Lcom/dropbox/core/v2/teampolicies/FileProviderMigrationPolicyState$Serializer;
+	public fun <init> ()V
+	public fun deserialize (Lcom/fasterxml/jackson/core/JsonParser;)Lcom/dropbox/core/v2/teampolicies/FileProviderMigrationPolicyState;
+	public synthetic fun deserialize (Lcom/fasterxml/jackson/core/JsonParser;)Ljava/lang/Object;
+	public fun serialize (Lcom/dropbox/core/v2/teampolicies/FileProviderMigrationPolicyState;Lcom/fasterxml/jackson/core/JsonGenerator;)V
 	public synthetic fun serialize (Ljava/lang/Object;Lcom/fasterxml/jackson/core/JsonGenerator;)V
 }
 

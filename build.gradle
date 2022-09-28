@@ -18,6 +18,7 @@ plugins {
     alias(dropboxJavaSdkLibs.plugins.gradle.version.plugin) apply false
     alias(dropboxJavaSdkLibs.plugins.dependency.guard) apply false
     alias(dropboxJavaSdkLibs.plugins.blind.pirate.osgi) apply false
+    alias(dropboxJavaSdkLibs.plugins.binary.compatibility.validator) apply false
 }
 
 allprojects {

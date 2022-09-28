@@ -1,5 +1,5 @@
 plugins {
-    id 'org.jetbrains.kotlinx.binary-compatibility-validator' version '0.11.1'
+    id "org.jetbrains.kotlinx.binary-compatibility-validator"
     alias(dropboxJavaSdkLibs.plugins.maven.publish.plugin)
     alias(dropboxJavaSdkLibs.plugins.gradle.version.plugin)
     id 'com.android.library'

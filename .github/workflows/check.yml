@@ -52,6 +52,9 @@ jobs:
         REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
       run: ./generate-ci-auth-file
 
+    - name: Ensure Binary Compatibility
+      run: ./gradlew :dropbox-sdk-java:apiCheck
+
     - name: Dependency Guard
       run: ./gradlew dependencyGuard
 
