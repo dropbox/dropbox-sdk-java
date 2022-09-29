@@ -2,26 +2,24 @@ package com.dropbox.core.examples.account_info
 
 import com.dropbox.core.DbxException
 import com.dropbox.core.DbxRequestConfig
-import com.dropbox.core.examples.CredentialsUtil.getDbxCredential
-import com.dropbox.core.examples.CredentialsUtil.isRunningInCI
+import com.dropbox.core.examples.CredentialsUtil
+import com.dropbox.core.oauth.DbxCredential
 import com.dropbox.core.v2.DbxClientV2
-import org.junit.Test
-import java.io.IOException
 
 /**
  * An example command-line application that grab access token and refresh token from credential
  * file, and then call APIV2. If the access token has expired, SDK will automatically refresh and
  * get a new one, and store them into the original DbxCredential object.
  */
-class AccountInfoExample {
+object AccountInfoExample {
 
-    @Test
-    fun test() {
-        if (!isRunningInCI()) {
-            // Only run in CI
-            return
-        }
-        val credential = getDbxCredential()
+    @JvmStatic
+    fun main(args: Array<String>) {
+        val credential = CredentialsUtil.getDbxCredential()
+        runExample(credential)
+    }
+
+    fun runExample(credential: DbxCredential) {
         // Create a DbxClientV2, which is what you use to make API calls.
         val requestConfig = DbxRequestConfig("examples-account-info")
         // Use DbxCredential to create dbx client.

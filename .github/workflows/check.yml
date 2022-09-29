@@ -32,9 +32,10 @@ jobs:
     - run: python -m pip install ply && pip install six
 
     - name: Grant execute permissions
-      run: chmod +x gradlew && chmod +x update-submodules
-            && chmod +x generate-ci-auth-file && chmod +x scripts/run-examples
-            && chmod +x scripts/check-clean-git-status
+      run: chmod +x gradlew 
+        && chmod +x update-submodules
+        && chmod +x generate-ci-auth-file
+        && chmod +x scripts/check-clean-git-status
 
     - name: Set up submodules
       run: ./update-submodules
@@ -60,6 +61,9 @@ jobs:
 
     - name: Check
       run: ./gradlew check
+
+    - name: Run Integration Tests for Examples
+      run: ./gradlew :examples:examples:test -Pci=true --info
 
     - name: Run Integration Tests - OkHttpRequestor
       run: ./gradlew -Pcom.dropbox.test.httpRequestor=OkHttpRequestor -Pcom.dropbox.test.authInfoFile=../auth_output integrationTest &&

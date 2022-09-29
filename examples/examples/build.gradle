@@ -1,16 +1,32 @@
-apply plugin: 'java'
-apply plugin: 'kotlin'
-apply from: '../../gradle/integration-test-config.gradle'
+plugins {
+    id("java")
+    id("kotlin")
+}
 
 description = 'Consolidated Examples'
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
 dependencies {
-    testImplementation 'org.eclipse.jetty.aggregate:jetty-server:8.1.18.v20150929'
-    testImplementation 'javax.servlet:javax.servlet-api:3.1.0'
-    testImplementation 'org.apache.commons:commons-lang3:3.4'
-    testImplementation 'com.fasterxml.jackson.core:jackson-core:2.7.9'
-    testImplementation 'com.fasterxml.jackson.core:jackson-databind:2.7.4'
+    implementation(project(":dropbox-sdk-java"))
+    implementation("org.eclipse.jetty.aggregate:jetty-server:8.1.18.v20150929")
+    implementation("javax.servlet:javax.servlet-api:3.1.0")
+    implementation("org.apache.commons:commons-lang3:3.4")
+    implementation("com.fasterxml.jackson.core:jackson-core:2.7.9")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.7.4")
+    implementation(dropboxJavaSdkLibs.okhttp3)
+    implementation("org.json:json:20220320")
+
     testImplementation(dropboxJavaSdkLibs.test.junit)
-    testImplementation(dropboxJavaSdkLibs.okhttp3)
-    testImplementation("org.json:json:20220320")
+}
+
+test {
+    // Uses the "ci" gradle property and sets it as an environment variable for the test
+    environment("ci", project.findProperty("ci"))
+
+    // Ensure that tests are always run because integration tests are non-deterministic
+    outputs.upToDateWhen { false }
 }
