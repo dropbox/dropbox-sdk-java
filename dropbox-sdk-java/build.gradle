@@ -45,6 +45,7 @@ dependencies {
     compileOnly(dropboxJavaSdkLibs.okhttp2)  // support both v2 and v3 to avoid
     compileOnly(dropboxJavaSdkLibs.okhttp3) // method count bloat
     compileOnly(dropboxJavaSdkLibs.appengine.api)
+    compileOnly(dropboxJavaSdkLibs.kotlin.stdlib)
 
     testImplementation 'org.testng:testng:6.9.10'
     testImplementation 'org.mockito:mockito-core:1.10.19'
