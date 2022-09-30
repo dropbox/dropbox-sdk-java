@@ -1,0 +1,24 @@
+plugins {
+    id("java")
+}
+
+description = 'Java Examples'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+dependencies {
+    implementation(project(":dropbox-sdk-java"))
+
+    testImplementation(dropboxJavaSdkLibs.test.junit)
+}
+
+test {
+    // Uses the "ci" gradle property and sets it as an environment variable for the test
+    environment("ci", project.findProperty("ci"))
+
+    // Ensure that tests are always run because integration tests are non-deterministic
+    outputs.upToDateWhen { false }
+}

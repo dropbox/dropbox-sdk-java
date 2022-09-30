@@ -62,6 +62,10 @@ object CredentialsUtil {
         return DbxCredential(accessToken)
     }
 
+    /**
+     * JSON file that is generated at auth_output when the ./generate-ci-auth-file script is run
+     * with the required parameters.  This is read in CI during integration tests.
+     */
     private val authOutputFile = File("../../auth_output")
 
     fun getDbxCredential(): DbxCredential {
