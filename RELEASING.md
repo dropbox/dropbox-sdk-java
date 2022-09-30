@@ -4,7 +4,7 @@ Releasing
  1. Update the top level [gradle.properties](gradle.properties) to a non-SNAPSHOT version.
  2. Update [DbxSdkVersion.java](DbxSdkVersion.java) to a non-SNAPSHOT version.
  3. Update the [ChangeLog.md](ChangeLog.md) for the impending release.
- 4. Update the [ReadMe.md](ReadMe.md) with the new version.
+ 4. Update the [README.md](README.md) with the new version.
  5. `git commit -am "Prepare for release X.Y.Z"` (where X.Y.Z is the new version)
  6. `git tag -a vX.Y.Z -m "Version X.Y.Z"` (where X.Y.Z is the new version)
     * Run `git tag` to verify it

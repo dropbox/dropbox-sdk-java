@@ -1,5 +1,3 @@
-# ⚠️ Please use version `5.3.0` or `5.4.1` (These versions are identical).   Version `5.4.0` was published prematurely due to a scripting misconfiguration. A follow up release is actively being worked on and will be released during this week (September 27th-30th).  Thank you! ⚠️
-
 # Dropbox Core SDK for Java
 
 ![GitHub](https://img.shields.io/github/license/dropbox/dropbox-sdk-java)
@@ -10,7 +8,7 @@ A Java library to access [Dropbox's HTTP-based Core API v2](https://www.dropbox.
 
 License: [MIT](License.txt)
 
-Documentation: [Javadocs](https://dropbox.github.io/dropbox-sdk-java/api-docs/v5.4.0/)
+Documentation: [Javadocs](https://dropbox.github.io/dropbox-sdk-java/api-docs/v5.4.2/)
 
 ## Setup
 
@@ -26,7 +24,7 @@ If you're using Maven, then edit your project's "pom.xml" and add this to the `<
 <dependency>
     <groupId>com.dropbox.core</groupId>
     <artifactId>dropbox-core-sdk</artifactId>
-    <version>5.4.0</version>
+    <version>5.4.2</version>
 </dependency>
 ```
 
@@ -35,7 +33,7 @@ If you are using Gradle, then edit your project's "build.gradle" and add this to
 ```groovy
 dependencies {
     // ...
-    implementation 'com.dropbox.core:dropbox-core-sdk:5.4.0'
+    implementation 'com.dropbox.core:dropbox-core-sdk:5.4.2'
 }
 ```
 
@@ -161,9 +159,8 @@ public class Main {
 
 Some more complete examples can be found here:
 
-* Example for a simple web app: [Web File Browser example](examples/web-file-browser/src/main/java/com/dropbox/core/examples/web_file_browser/DropboxAuth.java)
+* Example for a simple web app: [Web File Browser example](examples/examples/src/main/java/com/dropbox/core/examples/web_file_browser/DropboxAuth.java)
 * Example for an Android app written in Kotlin: [Android Kotlin Example](examples/android)
-* Example for a command-line tool: [Command-Line Authorization example](examples/authorize/src/main/java/com/dropbox/core/examples/authorize/Main.java)
 
 To try out running these examples, please follow the instructions below.
 
@@ -292,7 +289,7 @@ Example in Gradle:
 ```gradle
 dependencies {
     // ...
-    api 'com.squareup.okhttp3:okhttp:3.11.0'
+    api 'com.squareup.okhttp3:okhttp:4.0.0'
 }
 ```
 
@@ -301,16 +298,16 @@ dependencies {
 The JAR's manifest has the following line:
 
 ```
-Require-Capability: osgi.ee;filter="(&(osgi.ee=JavaSE)(version=1.6))"
+Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=11))"
 ```
 
-OSGi containers running on Java 1.6 or above should provide this capability.  Unfortunately, some OSGi containers don't do this correctly and will reject the bundle JAR in the OSGi subsystem context.
+Most OSGi containers should provide this capability.  Unfortunately, some OSGi containers don't do this correctly and will reject the bundle JAR in the OSGi subsystem context.
 
 As a workaround, you can build your own version of the JAR that omits the "osgi.ee" capability by running:
 
 ```shell
 ./gradlew clean
-./gradlew -Posgi.bnd.noee=true jar
+./gradlew -Posgi.bnd.noee=true :dropbox-sdk-java:jar
 ```
 
 (This is equivalent to passing the "-noee" option to the OSGi "bnd" tool.)
@@ -334,5 +331,3 @@ Versions 2.0.0-2.0.3 of this SDK require SDK-specific ProGuard rules when shrink
 -dontwarn javax.servlet.**
 -dontwarn org.apache.**
 ```
-
-**IMPORTANT: If you are running version 2.0.x before 2.0.3, you should update to the latest Dropbox SDK version to avoid a deserialization bug that can cause Android apps that use ProGuard to crash.**
