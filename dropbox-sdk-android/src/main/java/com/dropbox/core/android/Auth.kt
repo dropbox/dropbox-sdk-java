@@ -12,7 +12,7 @@ import com.dropbox.core.android.AuthActivity.Companion.makeIntent
 import com.dropbox.core.android.internal.DropboxAuthIntent
 import com.dropbox.core.oauth.DbxCredential
 import com.dropbox.core.util.StringUtil
-import java.util.*
+import java.util.Arrays
 
 /**
  * Helper class for integrating with [AuthActivity]
@@ -25,11 +25,15 @@ public class Auth {
          */
         @JvmStatic
         public fun startOAuth2Authentication(
-                context: Context,
-                appKey: String?,
-                ) {
+            context: Context,
+            appKey: String?,
+        ) {
             startOAuth2Authentication(
-                    context, appKey, null, null, null
+                context = context,
+                appKey = appKey,
+                desiredUid = null,
+                alreadyAuthedUids = null,
+                sessionId = null
             )
         }
 
@@ -38,16 +42,22 @@ public class Auth {
          */
         @JvmStatic
         public fun startOAuth2Authentication(
-                context: Context,
-                appKey: String?,
-                desiredUid: String?,
-                alreadyAuthedUids: Array<String>?,
-                sessionId: String?,
+            context: Context,
+            appKey: String?,
+            desiredUid: String?,
+            alreadyAuthedUids: Array<String>?,
+            sessionId: String?,
         ) {
             startOAuth2Authentication(
-                    context, appKey, desiredUid, alreadyAuthedUids, sessionId, "www.dropbox.com"
+                context = context,
+                appKey = appKey,
+                desiredUid = desiredUid,
+                alreadyAuthedUids = alreadyAuthedUids,
+                sessionId = sessionId,
+                webHost = "www.dropbox.com"
             )
         }
+
         /**
          *
          *
@@ -64,12 +74,16 @@ public class Auth {
             requestConfig: DbxRequestConfig?,
             scope: Collection<String?>? = null
         ) {
-            startOAuth2PKCE(context, appKey, requestConfig, null, scope)
+            startOAuth2PKCE(
+                context = context,
+                appKey = appKey,
+                requestConfig = requestConfig,
+                host = null,
+                scope = scope
+            )
         }
 
         /**
-         *
-         *
          * Starts the Dropbox OAuth process by launching the Dropbox official app (AKA DAuth) or web
          * browser if dropbox official app is not available. In browser flow, normally user needs to
          * sign in.
@@ -168,19 +182,20 @@ public class Auth {
                         " must ask for specific new scopes"
             }
             startOAuth2Authentication(
-                context,
-                appKey,
-                null,
-                null,
-                null,
-                null,
-                TokenAccessType.OFFLINE,
-                requestConfig,
-                host,
-                scope,
-                includeGrantedScopes
+                context = context,
+                appKey = appKey,
+                desiredUid = null,
+                alreadyAuthedUids = null,
+                sessionId = null,
+                webHost = null,
+                tokenAccessType = TokenAccessType.OFFLINE,
+                requestConfig = requestConfig,
+                host = host,
+                scope = scope,
+                includeGrantedScopes = includeGrantedScopes
             )
         }
+
         /**
          * Starts the Dropbox authentication process by launching an external app
          * (either the Dropbox app if available or a web browser) where the user
@@ -223,8 +238,15 @@ public class Auth {
             webHost: String?
         ) {
             startOAuth2Authentication(
-                context, appKey, desiredUid, alreadyAuthedUids, sessionId,
-                webHost, null, null, null
+                context = context,
+                appKey = appKey,
+                desiredUid = desiredUid,
+                alreadyAuthedUids = alreadyAuthedUids,
+                sessionId = sessionId,
+                webHost = webHost,
+                tokenAccessType = null,
+                requestConfig = null,
+                host = null
             )
         }
 

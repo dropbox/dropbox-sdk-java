@@ -9,8 +9,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import com.dropbox.core.DbxHost
 import com.dropbox.core.DbxRequestConfig
@@ -18,9 +16,9 @@ import com.dropbox.core.DbxRequestUtil
 import com.dropbox.core.IncludeGrantedScopes
 import com.dropbox.core.TokenAccessType
 import com.dropbox.core.android.internal.AuthParameters
+import com.dropbox.core.android.internal.AuthSessionViewModel
 import com.dropbox.core.android.internal.AuthUtils.createPKCEStateNonce
 import com.dropbox.core.android.internal.AuthUtils.createStateNonce
-import com.dropbox.core.android.internal.AuthSessionViewModel
 import com.dropbox.core.android.internal.DropboxAuthIntent
 import com.dropbox.core.android.internal.QueryParamsUtil
 import com.dropbox.core.android.internal.TokenRequestAsyncTask
@@ -70,7 +68,7 @@ public open class AuthActivity : Activity() {
         }
     }
 
-    private val mState : AuthSessionViewModel.State get() = AuthSessionViewModel.state
+    private val mState: AuthSessionViewModel.State get() = AuthSessionViewModel.state
 
     /**
      * AuthActivity is launched first time, or user didn't finish oauth/dauth flow but
@@ -119,20 +117,12 @@ public open class AuthActivity : Activity() {
             createStateNonce(getSecurityProvider())
         }
 
-        val queryParams = QueryParamsUtil.createExtraQueryParams(
-            tokenAccessType = mState.mTokenAccessType,
-            scope = mState.mScope,
-            includeGrantedScopes = mState.mIncludeGrantedScopes,
-            pkceManagerCodeChallenge = mState.mPKCEManager.codeChallenge
-        )
-
         // Create intent to auth with official app.
         val officialAuthIntent = DropboxAuthIntent.buildOfficialAuthIntent(
             callingActivityFullyQualifiedClassName = this@AuthActivity::class.java.name,
             mState = mState,
             stateNonce = stateNonce,
-            packageName = this@AuthActivity.packageName,
-            queryParams = queryParams
+            packageName = this@AuthActivity.packageName
         )
 
         /*
@@ -142,15 +132,14 @@ public open class AuthActivity : Activity() {
          * mitigates the issue by delaying remainder of auth logic to after the
          * previously posted onResume.
          */
-        Handler(Looper.getMainLooper()).post(Runnable {
+        runOnUiThread {
             Log.d(TAG, "running startActivity in handler")
             try {
+                val dropboxAppPackage = DbxOfficialAppConnector
+                    .getDropboxAppPackage(applicationContext, officialAuthIntent)
+
                 // Auth with official app, or fall back to web.
-                if (DbxOfficialAppConnector.getDropboxAppPackage(
-                        this@AuthActivity,
-                        officialAuthIntent
-                    ) != null
-                ) {
+                if (dropboxAppPackage != null) {
                     startActivity(officialAuthIntent)
                 } else {
                     startWebAuth(stateNonce)
@@ -158,12 +147,12 @@ public open class AuthActivity : Activity() {
             } catch (e: ActivityNotFoundException) {
                 Log.e(TAG, "Could not launch intent. User may have restricted profile", e)
                 finish()
-                return@Runnable
+                return@runOnUiThread
             }
             // Save state that indicates we started a request, only after
             // we started one successfully.
             mState.mAuthStateNonce = stateNonce
-        })
+        }
         mActivityDispatchHandlerPosted = true
     }
 

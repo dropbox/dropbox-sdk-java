@@ -88,7 +88,8 @@ class HomeActivity : BaseSampleActivity() {
         fetchAccountInfo()
     }
 
-    private val loginButton get() = findViewById<Button>(R.id.login_button)
+    private val loginWithOAuth2PXCEButton get() = findViewById<Button>(R.id.login_button_pkce)
+    private val loginWithOAuth2Button get() = findViewById<Button>(R.id.login_button_oauth)
     private val logoutButton get() = findViewById<Button>(R.id.logout_button)
     private val uploadImageButton get() = findViewById<Button>(R.id.upload_button)
     private val accountPhoto get() = findViewById<ImageView>(R.id.account_photo)
@@ -103,8 +104,11 @@ class HomeActivity : BaseSampleActivity() {
 
     override fun onStart() {
         super.onStart()
-        loginButton.setOnClickListener {
-            dropboxOAuthUtil.startDropboxAuthorization(this)
+        loginWithOAuth2PXCEButton.setOnClickListener {
+            dropboxOAuthUtil.startDropboxAuthorization2PKCE(this)
+        }
+        loginWithOAuth2Button.setOnClickListener {
+            dropboxOAuthUtil.startDropboxAuthorizationOAuth2(this)
         }
         logoutButton.setOnClickListener {
             dropboxOAuthUtil.revokeDropboxAuthorization(dropboxApiWrapper)
@@ -125,7 +129,8 @@ class HomeActivity : BaseSampleActivity() {
             loggedInContent.visibility = View.VISIBLE
             logoutButton.visibility = View.VISIBLE
 
-            loginButton.visibility = View.GONE
+            loginWithOAuth2Button.visibility = View.GONE
+            loginWithOAuth2PXCEButton.visibility = View.GONE
 
             filesButton.isEnabled = true
             openWithButton.isEnabled = true
@@ -137,7 +142,8 @@ class HomeActivity : BaseSampleActivity() {
             typeText.visibility = View.GONE
             logoutButton.visibility = View.GONE
 
-            loginButton.visibility = View.VISIBLE
+            loginWithOAuth2Button.visibility = View.VISIBLE
+            loginWithOAuth2PXCEButton.visibility = View.VISIBLE
 
             uploadImageButton.isEnabled = false
             filesButton.isEnabled = false
