@@ -3,6 +3,9 @@ package com.dropbox.core.examples.android
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import com.dropbox.core.android.Auth
+import com.dropbox.core.examples.android.internal.api.DropboxApiWrapper
+import com.dropbox.core.examples.android.internal.api.DropboxCredentialUtil
+import com.dropbox.core.examples.android.internal.api.DropboxOAuthUtil
 import com.dropbox.core.examples.android.internal.di.AppGraph
 
 
@@ -12,13 +15,13 @@ import com.dropbox.core.examples.android.internal.di.AppGraph
  */
 abstract class BaseSampleActivity : AppCompatActivity() {
 
-    val appGraph: AppGraph get() = (this.applicationContext as DropboxAndroidSampleApplication).appGraph
+    private val appGraph: AppGraph get() = (this.applicationContext as DropboxAndroidSampleApplication).appGraph
 
-    protected val dropboxOAuthUtil get() = appGraph.dropboxOAuthUtil
+    protected val dropboxOAuthUtil: DropboxOAuthUtil get() = appGraph.dropboxOAuthUtil
 
-    protected val dropboxCredentialUtil get() = appGraph.dropboxCredentialUtil
+    private val dropboxCredentialUtil: DropboxCredentialUtil get() = appGraph.dropboxCredentialUtil
 
-    protected val dropboxApiWrapper get() = appGraph.dropboxApiWrapper
+    protected val dropboxApiWrapper: DropboxApiWrapper get() = appGraph.dropboxApiWrapper
 
     // will use our Short Lived Token.
     override fun onResume() {

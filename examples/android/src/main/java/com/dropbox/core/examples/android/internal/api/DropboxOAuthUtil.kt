@@ -38,7 +38,7 @@ class DropboxOAuthUtil(
      * Because mobile apps need to keep Dropbox secrets in their binaries we need to use PKCE.
      * Read more about this here: https://dropbox.tech/developers/pkce--what-and-why-
      **/
-    fun startDropboxAuthorization(context: Context) {
+    fun startDropboxAuthorization2PKCE(context: Context) {
         val requestConfig = DbxRequestConfig(dropboxAppConfig.clientIdentifier)
 
         // The scope's your app will need from Dropbox
@@ -50,6 +50,19 @@ class DropboxOAuthUtil(
             "sharing.read"
         )
         Auth.startOAuth2PKCE(context, dropboxAppConfig.apiKey, requestConfig, scopes)
+        isAwaitingResult = true
+    }
+
+    /**
+     * Starts the Dropbox OAuth process by launching the Dropbox official app or web
+     * browser if dropbox official app is not available. In browser flow, normally user needs to
+     * sign in.
+     *
+     * Because mobile apps need to keep Dropbox secrets in their binaries we need to use PKCE.
+     * Read more about this here: https://dropbox.tech/developers/pkce--what-and-why-
+     **/
+    fun startDropboxAuthorizationOAuth2(context: Context) {
+        Auth.startOAuth2Authentication(context, dropboxAppConfig.apiKey)
         isAwaitingResult = true
     }
 

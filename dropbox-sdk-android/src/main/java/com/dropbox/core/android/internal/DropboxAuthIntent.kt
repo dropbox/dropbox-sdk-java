@@ -20,7 +20,6 @@ internal object DropboxAuthIntent {
         mState: AuthSessionViewModel.State,
         stateNonce: String,
         packageName: String,
-        queryParams: String,
         callingActivityFullyQualifiedClassName: String
     ): Intent {
         return buildActionAuthenticateIntent().apply {
@@ -32,7 +31,14 @@ internal object DropboxAuthIntent {
             putExtra(EXTRA_SESSION_ID, mState.mSessionId)
             putExtra(EXTRA_CALLING_PACKAGE, packageName)
             putExtra(EXTRA_AUTH_STATE, stateNonce)
+
             mState.mTokenAccessType?.apply {
+                val queryParams = QueryParamsUtil.createExtraQueryParams(
+                    tokenAccessType = mState.mTokenAccessType,
+                    scope = mState.mScope,
+                    includeGrantedScopes = mState.mIncludeGrantedScopes,
+                    pkceManagerCodeChallenge = mState.mPKCEManager.codeChallenge
+                )
                 // to support legacy DBApp with V1 flow with
                 putExtra(EXTRA_AUTH_QUERY_PARAMS, queryParams)
             }
