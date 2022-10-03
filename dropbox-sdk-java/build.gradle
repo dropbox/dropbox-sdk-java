@@ -36,16 +36,16 @@ sourceSets {
 }
 
 dependencies {
-    // Important: Jackson 2.8+ will be free to use JDK7 features and no longer guarantees JDK6
-    //            compatibility
     api(dropboxJavaSdkLibs.jackson.core)
 
+    // Android
     compileOnly 'com.google.android:android:4.1.1.4' // Until 6.x when we have an Android Artifact
+    compileOnly(dropboxJavaSdkLibs.kotlin.stdlib) // Only used in Android Code
+
     compileOnly(dropboxJavaSdkLibs.servlet.api)
     compileOnly(dropboxJavaSdkLibs.okhttp2)  // support both v2 and v3 to avoid
     compileOnly(dropboxJavaSdkLibs.okhttp3) // method count bloat
     compileOnly(dropboxJavaSdkLibs.appengine.api)
-    compileOnly(dropboxJavaSdkLibs.kotlin.stdlib)
 
     testImplementation 'org.testng:testng:6.9.10'
     testImplementation 'org.mockito:mockito-core:1.10.19'
