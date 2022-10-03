@@ -99,7 +99,7 @@ class OpenWithActivity : BaseSampleActivity() {
          * Generate an OpenWithIntent.
          * Real 3rd party apps should never run this function as DropboxApp does this entirely
          */
-        val uid = Auth.uid
+        val uid = Auth.getUid()
 
         // fake the URI
         // WARNING: URI FORMAT IS NOT FINALIZED AND MAY CHANGE AT ANY TIME
@@ -150,7 +150,7 @@ class OpenWithActivity : BaseSampleActivity() {
 
     override fun loadData() {
         try {
-            var uid = Auth.uid
+            var uid = Auth.getUid()
             if (uid == null) {
                 val prefs = getSharedPreferences("dropbox-sample", Context.MODE_PRIVATE)
                 uid = prefs.getString("user-id", null)

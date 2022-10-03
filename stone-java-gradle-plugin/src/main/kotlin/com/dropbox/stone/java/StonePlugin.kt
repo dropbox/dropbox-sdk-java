@@ -52,7 +52,7 @@ public class StonePlugin : Plugin<Project> {
             val mySpecDir: String = specDirPropNameValue ?: "src/${sourceSet.name}/stone"
 
             stoneTask.specDir(mySpecDir)
-            stoneTask.generatorDir("generator")
+            stoneTask.generatorDir("${project.projectDir.absoluteFile}/generator")
             stoneTask.stoneDir("stone")
             stoneTask.pythonCommand("python")
             stoneTask.outputDir("${project.buildDir}/generated/source/stone/${sourceSet.name}")
@@ -72,8 +72,10 @@ public class StonePlugin : Plugin<Project> {
                 .withPropertyName("generatedStone")
             stoneTask.outputs.cacheIf { true }
 
-            val compile: Task = project.tasks.getByName(sourceSet.getCompileTaskName("java"))
-            compile.dependsOn(stoneTask)
+            val compileJava: Task = project.tasks.getByName(sourceSet.getCompileTaskName("java"))
+            compileJava.dependsOn(stoneTask)
+            val compileKotlin: Task = project.tasks.getByName(sourceSet.getCompileTaskName("kotlin"))
+            compileKotlin.dependsOn(stoneTask)
 
             project.afterEvaluate {
                 // Must run afterEvaluate so we can honor any output directory specified in user's config
@@ -81,5 +83,4 @@ public class StonePlugin : Plugin<Project> {
             }
         }
     }
-
 }

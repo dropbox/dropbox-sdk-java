@@ -473,6 +473,7 @@ public class com/dropbox/core/android/AuthActivity : android/app/Activity {
 	public static final field ACTION_AUTHENTICATE_V2 Ljava/lang/String;
 	public static final field AUTH_PATH_CONNECT Ljava/lang/String;
 	public static final field AUTH_VERSION I
+	public static final field Companion Lcom/dropbox/core/android/AuthActivity$Companion;
 	public static field result Landroid/content/Intent;
 	public fun <init> ()V
 	public static final fun checkAppBeforeAuth (Landroid/content/Context;Ljava/lang/String;Z)Z
@@ -483,6 +484,16 @@ public class com/dropbox/core/android/AuthActivity : android/app/Activity {
 	protected fun onResume ()V
 	public final fun onTopResumedActivityChanged (Z)V
 	public static final fun setSecurityProvider (Lcom/dropbox/core/android/AuthActivity$SecurityProvider;)V
+}
+
+public final class com/dropbox/core/android/AuthActivity$Companion {
+	public final fun checkAppBeforeAuth (Landroid/content/Context;Ljava/lang/String;Z)Z
+	public final fun makeIntent (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
+	public final fun makeIntent (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
+	public final fun setAuthParams (Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)V
+	public final fun setAuthParams (Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;)V
+	public final fun setAuthParams (Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public final fun setSecurityProvider (Lcom/dropbox/core/android/AuthActivity$SecurityProvider;)V
 }
 
 public abstract interface class com/dropbox/core/android/AuthActivity$SecurityProvider {
