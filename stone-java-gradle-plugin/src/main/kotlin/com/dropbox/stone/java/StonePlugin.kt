@@ -80,6 +80,8 @@ public class StonePlugin : Plugin<Project> {
                 sourceSet.java.srcDir("${stoneTask.getOutputDir().get()}/src")
             }
         }
-    }
 
+        // Require the Kotlin Compile Step to Happen Before Generate Stone
+        stoneTaskProvider.get().dependsOn("compileKotlin")
+    }
 }
