@@ -80,7 +80,7 @@ class DropboxOAuthUtil(
      */
     fun onResume() {
         if (isAwaitingResult) {
-            val authDbxCredential = Auth.dbxCredential //fetch the result from the AuthActivity
+            val authDbxCredential = Auth.getDbxCredential() //fetch the result from the AuthActivity
             isAwaitingResult = false
             if (authDbxCredential != null) {
                 dropboxCredentialUtil.storeCredentialLocally(authDbxCredential)
