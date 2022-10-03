@@ -59,8 +59,6 @@ public class Auth {
         }
 
         /**
-         *
-         *
          * @param scope A list of scope strings. Each scope correspond to a group of
          * API endpoints. To call one API endpoint you have to obtains the scope first otherwise you
          * will get HTTP 401.
@@ -294,21 +292,19 @@ public class Auth {
         }
 
         @JvmStatic
-        public val oAuth2Token: String?
-            get() {
-                val credential = dbxCredential ?: return null
-                return credential.accessToken
-            }
+        public fun getOAuth2Token(): String? {
+            val credential = getDbxCredential() ?: return null
+            return credential.accessToken
+        }
 
         @JvmStatic
-        public val uid: String?
-            get() {
-                if (dbxCredential == null) {
-                    return null
-                }
-                val data = AuthActivity.result
-                return data!!.getStringExtra(DropboxAuthIntent.EXTRA_UID)
+        public fun getUid(): String? {
+            if (getDbxCredential() == null) {
+                return null
             }
+            val data = AuthActivity.result
+            return data!!.getStringExtra(DropboxAuthIntent.EXTRA_UID)
+        }
 
         /**
          *
@@ -316,21 +312,20 @@ public class Auth {
          * @return The result after
          */
         @JvmStatic
-        public val dbxCredential: DbxCredential?
-            get() {
-                val data = AuthActivity.result ?: return null
-                val token = data.getStringExtra(DropboxAuthIntent.EXTRA_ACCESS_TOKEN)
-                val secret = data.getStringExtra(DropboxAuthIntent.EXTRA_ACCESS_SECRET)
-                val uid = data.getStringExtra(DropboxAuthIntent.EXTRA_UID)
-                if (token == null || "" == token || secret == null || "" == secret || uid == null || "" == uid) {
-                    return null
-                }
-                val appKey = data.getStringExtra(DropboxAuthIntent.EXTRA_CONSUMER_KEY)
-                val refreshToken = data.getStringExtra(DropboxAuthIntent.EXTRA_REFRESH_TOKEN)
-                val expiresAt = data.getLongExtra(DropboxAuthIntent.EXTRA_EXPIRES_AT, -1)
-                val nullableExpiresAt = if (expiresAt >= 0) expiresAt else null
-                return DbxCredential(secret, nullableExpiresAt, refreshToken, appKey)
+        public fun getDbxCredential(): DbxCredential? {
+            val data = AuthActivity.result ?: return null
+            val token = data.getStringExtra(DropboxAuthIntent.EXTRA_ACCESS_TOKEN)
+            val secret = data.getStringExtra(DropboxAuthIntent.EXTRA_ACCESS_SECRET)
+            val uid = data.getStringExtra(DropboxAuthIntent.EXTRA_UID)
+            if (token == null || "" == token || secret == null || "" == secret || uid == null || "" == uid) {
+                return null
             }
+            val appKey = data.getStringExtra(DropboxAuthIntent.EXTRA_CONSUMER_KEY)
+            val refreshToken = data.getStringExtra(DropboxAuthIntent.EXTRA_REFRESH_TOKEN)
+            val expiresAt = data.getLongExtra(DropboxAuthIntent.EXTRA_EXPIRES_AT, -1)
+            val nullableExpiresAt = if (expiresAt >= 0) expiresAt else null
+            return DbxCredential(secret, nullableExpiresAt, refreshToken, appKey)
+        }
 
         /**
          *
@@ -342,10 +337,9 @@ public class Auth {
          * will get HTTP 401.
          */
         @JvmStatic
-        public val scope: String?
-            get() {
-                val data = AuthActivity.result ?: return null
-                return data.getStringExtra(DropboxAuthIntent.EXTRA_SCOPE)
-            }
+        public fun getScope(): String? {
+            val data = AuthActivity.result ?: return null
+            return data.getStringExtra(DropboxAuthIntent.EXTRA_SCOPE)
+        }
     }
 }

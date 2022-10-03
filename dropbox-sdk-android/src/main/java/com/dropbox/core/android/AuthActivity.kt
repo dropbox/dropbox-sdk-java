@@ -296,7 +296,7 @@ public open class AuthActivity : Activity() {
         startActivity(intent)
     }
 
-    internal companion object {
+    public companion object {
         private val TAG = AuthActivity::class.java.name
 
         /**
