@@ -52,7 +52,7 @@ public class StonePlugin : Plugin<Project> {
             val mySpecDir: String = specDirPropNameValue ?: "src/${sourceSet.name}/stone"
 
             stoneTask.specDir(mySpecDir)
-            stoneTask.generatorDir("generator")
+            stoneTask.generatorDir("${project.projectDir.absoluteFile}/generator")
             stoneTask.stoneDir("stone")
             stoneTask.pythonCommand("python")
             stoneTask.outputDir("${project.buildDir}/generated/source/stone/${sourceSet.name}")
