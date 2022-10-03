@@ -2,10 +2,8 @@
 ---------------------------------------------
 - Update dropbox-api-spec to point to more recent version (Sept 01, 2022) [#431](https://github.com/dropbox/dropbox-sdk-java/pull/431)
 - Generated stone api code is now checked into repository for greater visibility of spec changes [#418](https://github.com/dropbox/dropbox-sdk-java/pull/418)
-- Changed from `master` -> `main` [#424](https://github.com/dropbox/dropbox-sdk-java/pull/424)
-- Created android artifact and added gradle version catalog [#414](https://github.com/dropbox/dropbox-sdk-java/pull/414)[#436](https://github.com/dropbox/dropbox-sdk-java/pull/436)
-- Refactored codebase to have multiple modules (sdk-android, sdk-java, examples) [#425](https://github.com/dropbox/dropbox-sdk-java/pull/425)
-- Examples module now uses `/dropbox-sdk-java` instead of published maven artifact, enabling an easier development loop [#426](https://github.com/dropbox/dropbox-sdk-java/pull/426)
+- Renamed `master` -> `main` [#424](https://github.com/dropbox/dropbox-sdk-java/pull/424)
+- Added gradle version catalog [#414](https://github.com/dropbox/dropbox-sdk-java/pull/414)[#436](https://github.com/dropbox/dropbox-sdk-java/pull/436)
 - Moved android code from `dropbox-sdk-java` into `dropbox-sdk-android` [#429](https://github.com/dropbox/dropbox-sdk-java/pull/429)
 - Converted Java code to Kotlin in `dropbox-sdk-android` while mostly maintaining binary compatibility. [#430](https://github.com/dropbox/dropbox-sdk-java/pull/430) 
 - Binary Compatibility Changes since `v5.3.0`[#449](https://github.com/dropbox/dropbox-sdk-java/pull/449) ([see changes](https://github.com/dropbox/dropbox-sdk-java/pull/441/commits/fd9b0a56152d72cd8310c849dbbe42ee239ff371?diff=unified&w=0)):
