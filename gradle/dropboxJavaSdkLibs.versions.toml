@@ -4,6 +4,7 @@ android-gradle-plugin = "7.2.2"
 android-min-sdk = "21"
 android-target-sdk = "33"
 androidx-activity = "1.5.0"
+binary-compatibility-validator = "0.11.1"
 dependency-guard = "0.3.2"
 junit-jupiter = "5.8.2"
 kotlin = "1.6.21"
@@ -39,7 +40,7 @@ test-junit = 'junit:junit:4.13.2'
 
 
 [plugins]
-binary-compatibility-validator = "org.jetbrains.kotlinx.binary-compatibility-validator:0.11.1"
+binary-compatibility-validator = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "binary-compatibility-validator" }
 blind-pirate-osgi = "com.github.blindpirate.osgi:0.0.6"
 dependency-guard = { id = "com.dropbox.dependency-guard", version.ref = "dependency-guard" }
 gradle-version-plugin = "com.github.ben-manes.versions:0.42.0"
