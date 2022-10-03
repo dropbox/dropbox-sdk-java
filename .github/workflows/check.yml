@@ -63,7 +63,7 @@ jobs:
       run: ./gradlew check
 
     - name: Run Integration Tests for Examples
-      run: ./gradlew :examples:examples:test -Pci=true --info
+      run: ./gradlew :examples:examples:test :examples:java:test -Pci=true --info
 
     - name: Run Integration Tests - OkHttpRequestor
       run: ./gradlew -Pcom.dropbox.test.httpRequestor=OkHttpRequestor -Pcom.dropbox.test.authInfoFile=../auth_output integrationTest &&
