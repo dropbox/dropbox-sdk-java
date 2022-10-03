@@ -262,18 +262,34 @@ To run individual tests, use the `--tests` gradle test filter:
 ./gradlew -Pcom.dropbox.test.authInfoFile=<path-to-test.auth> integrationTest --tests '*.DbxClientV1IT.testAccountInfo'
 ```
 
-## Android 11 Updates
+## Usage on Android
 
-In the event you are using the Android-specific code in this library (i.e. the code in `com.dropbox.core.android` package), you will need to add some code to your `AndroidManifest.xml` when you bump your target SDK version to 30. If your app does not use this code, you can ignore this section.
+Android support *** CALL OUT METHODS USED TO AUTHENTICATE ***
 
-When targeting/running on Android 11 (targetSdk 30 in your app's `build.gradle`), the Android OS will restrict what installed apps your app can query for through the `PackageManager`. Since the android code in this library queries for the official Dropbox app, those restrictions will affect your app when you target SDK 30. In particular, if you don't declare that your app queries for the official Dropbox app, then you will see crashes when you hit the code that talks to the official Dropbox app.
+### Required Dependencies For Android
+The Android code in this SDK is written in Kotlin and is now a runtime dependency. If you do not already have Kotlin in your project, you will need to add `implementation("org.jetbrains.kotlin:kotlin-stdlib:1.6.21")` to your dependencies block.
 
-To resolve the issue, add the following to your `AndroidManifest.xml`
+The last published version without Kotlin is `5.3.0`. All future Android code will be written in Kotlin.
 
+### `AndroidManifest.xml`
+
+The following two entries may need to be added to your `AndroidManifest.xml` depending on your target SDK level.
+
+For SDK levels >= `30`
 ```xml
 <queries>
     <package android:name="com.dropbox.android" />
 </queries>
+```
+
+For SDK levels >= `33`
+
+See [#406](https://github.com/dropbox/dropbox-sdk-java/issues/406) for context
+```xml
+<intent-filter>
+    <action android:name="android.intent.action.VIEW" />
+    <category android:name="android.intent.category.DEFAULT" />
+</intent-filter>
 ```
 
 We are working on pulling out this Android-specific code into its own android library with an `AndroidManifest.xml` that can be merged with your existing manifest, but in the meantime, this will work.

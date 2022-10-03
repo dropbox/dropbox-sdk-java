@@ -1,4 +1,4 @@
-## 5.4.0 (2022-09-26)
+## 5.4.2 (2022-10-03)
 ---------------------------------------------
 - Update dropbox-api-spec to point to more recent version (Sept 01, 2022) [#431](https://github.com/dropbox/dropbox-sdk-java/pull/431)
 - Generated stone api code is now checked into repository for greater visibility of spec changes [#418](https://github.com/dropbox/dropbox-sdk-java/pull/418)
@@ -7,13 +7,21 @@
 - Refactored codebase to have multiple modules (sdk-android, sdk-java, examples) [#425](https://github.com/dropbox/dropbox-sdk-java/pull/425)
 - Examples module now uses `/dropbox-sdk-java` instead of published maven artifact, enabling an easier development loop [#426](https://github.com/dropbox/dropbox-sdk-java/pull/426)
 - Moved android code from `dropbox-sdk-java` into `dropbox-sdk-android` [#429](https://github.com/dropbox/dropbox-sdk-java/pull/429)
-- Converted Java code to Kotlin in `dropbox-sdk-android` while maintaining binary compatibility. [#430](https://github.com/dropbox/dropbox-sdk-java/pull/430) 
+- Converted Java code to Kotlin in `dropbox-sdk-android` while mostly maintaining binary compatibility. [#430](https://github.com/dropbox/dropbox-sdk-java/pull/430) 
 - Binary Compatibility Changes since `v5.3.0`[#449](https://github.com/dropbox/dropbox-sdk-java/pull/449) ([see changes](https://github.com/dropbox/dropbox-sdk-java/pull/441/commits/fd9b0a56152d72cd8310c849dbbe42ee239ff371?diff=unified&w=0)):
   - The following classes are now `final` and cannot be extended. 
     - `com.dropbox.core.android.Auth`
     - `com.dropbox.core.android.DbxOfficialAppConnector`
   - In `com.dropbox.core.android.AuthActivity`, constants for the Intent Extra Keys were moved to `com.dropbox.core.android.internal.DropboxAuthIntent`
 - Fixed NPE bug in login flow [#347](https://github.com/dropbox/dropbox-sdk-java/issues/347)
+
+5.4.1 (2022-09-27)
+---------------------------------------------
+- Republished 5.3.0 due to premature release of 5.4.0
+
+5.4.0 (2022-09-26)
+---------------------------------------------
+- Published prematurely due to misconfiguration of GH Action, do not use.
 
 5.3.0 (2022-07-20) [Milestone](https://github.com/dropbox/dropbox-sdk-java/milestone/1?closed=1)
 ---------------------------------------------
