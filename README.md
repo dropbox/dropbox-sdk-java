@@ -1,5 +1,3 @@
-# ⚠️ Please use version `5.3.0` or `5.4.1` (These versions are identical).   Version `5.4.0` was published prematurely due to a scripting misconfiguration. A follow up release is actively being worked on and will be released during this week (September 27th-30th).  Thank you! ⚠️
-
 # Dropbox Core SDK for Java
 
 ![GitHub](https://img.shields.io/github/license/dropbox/dropbox-sdk-java)
@@ -10,7 +8,7 @@ A Java library to access [Dropbox's HTTP-based Core API v2](https://www.dropbox.
 
 License: [MIT](License.txt)
 
-Documentation: [Javadocs](https://dropbox.github.io/dropbox-sdk-java/api-docs/v5.3.0/)
+Documentation: [Javadocs](https://dropbox.github.io/dropbox-sdk-java/api-docs/v5.4.2/)
 
 ## Setup
 
@@ -26,7 +24,7 @@ If you're using Maven, then edit your project's "pom.xml" and add this to the `<
 <dependency>
     <groupId>com.dropbox.core</groupId>
     <artifactId>dropbox-core-sdk</artifactId>
-    <version>5.3.0</version>
+    <version>5.4.2</version>
 </dependency>
 ```
 
@@ -35,7 +33,7 @@ If you are using Gradle, then edit your project's "build.gradle" and add this to
 ```groovy
 dependencies {
     // ...
-    implementation 'com.dropbox.core:dropbox-core-sdk:5.3.0'
+    implementation 'com.dropbox.core:dropbox-core-sdk:5.4.2'
 }
 ```
 
@@ -161,9 +159,8 @@ public class Main {
 
 Some more complete examples can be found here:
 
-* Example for a simple web app: [Web File Browser example](examples/web-file-browser/src/main/java/com/dropbox/core/examples/web_file_browser/DropboxAuth.java)
+* Example for a simple web app: [Web File Browser example](examples/examples/src/main/java/com/dropbox/core/examples/web_file_browser/DropboxAuth.java)
 * Example for an Android app written in Kotlin: [Android Kotlin Example](examples/android)
-* Example for a command-line tool: [Command-Line Authorization example](examples/authorize/src/main/java/com/dropbox/core/examples/authorize/Main.java)
 
 To try out running these examples, please follow the instructions below.
 
@@ -265,18 +262,34 @@ To run individual tests, use the `--tests` gradle test filter:
 ./gradlew -Pcom.dropbox.test.authInfoFile=<path-to-test.auth> integrationTest --tests '*.DbxClientV1IT.testAccountInfo'
 ```
 
-## Android 11 Updates
+## Usage on Android
 
-In the event you are using the Android-specific code in this library (i.e. the code in `com.dropbox.core.android` package), you will need to add some code to your `AndroidManifest.xml` when you bump your target SDK version to 30. If your app does not use this code, you can ignore this section.
+Android support *** CALL OUT METHODS USED TO AUTHENTICATE ***
 
-When targeting/running on Android 11 (targetSdk 30 in your app's `build.gradle`), the Android OS will restrict what installed apps your app can query for through the `PackageManager`. Since the android code in this library queries for the official Dropbox app, those restrictions will affect your app when you target SDK 30. In particular, if you don't declare that your app queries for the official Dropbox app, then you will see crashes when you hit the code that talks to the official Dropbox app.
+### Required Dependencies For Android
+The Android code in this SDK is written in Kotlin and is now a runtime dependency. If you do not already have Kotlin in your project, you will need to add `implementation("org.jetbrains.kotlin:kotlin-stdlib:1.6.21")` to your dependencies block.
 
-To resolve the issue, add the following to your `AndroidManifest.xml`
+The last published version without Kotlin is `5.3.0`. All future Android code will be written in Kotlin.
 
+### `AndroidManifest.xml`
+
+The following two entries may need to be added to your `AndroidManifest.xml` depending on your target SDK level.
+
+For SDK levels >= `30`
 ```xml
 <queries>
     <package android:name="com.dropbox.android" />
 </queries>
+```
+
+For SDK levels >= `33`
+
+See [#406](https://github.com/dropbox/dropbox-sdk-java/issues/406) for context
+```xml
+<intent-filter>
+    <action android:name="android.intent.action.VIEW" />
+    <category android:name="android.intent.category.DEFAULT" />
+</intent-filter>
 ```
 
 We are working on pulling out this Android-specific code into its own android library with an `AndroidManifest.xml` that can be merged with your existing manifest, but in the meantime, this will work.
@@ -292,7 +305,7 @@ Example in Gradle:
 ```gradle
 dependencies {
     // ...
-    api 'com.squareup.okhttp3:okhttp:3.11.0'
+    api 'com.squareup.okhttp3:okhttp:4.0.0'
 }
 ```
 
@@ -301,16 +314,16 @@ dependencies {
 The JAR's manifest has the following line:
 
 ```
-Require-Capability: osgi.ee;filter="(&(osgi.ee=JavaSE)(version=1.6))"
+Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=11))"
 ```
 
-OSGi containers running on Java 1.6 or above should provide this capability.  Unfortunately, some OSGi containers don't do this correctly and will reject the bundle JAR in the OSGi subsystem context.
+Most OSGi containers should provide this capability.  Unfortunately, some OSGi containers don't do this correctly and will reject the bundle JAR in the OSGi subsystem context.
 
 As a workaround, you can build your own version of the JAR that omits the "osgi.ee" capability by running:
 
 ```shell
 ./gradlew clean
-./gradlew -Posgi.bnd.noee=true jar
+./gradlew -Posgi.bnd.noee=true :dropbox-sdk-java:jar
 ```
 
 (This is equivalent to passing the "-noee" option to the OSGi "bnd" tool.)
@@ -334,5 +347,3 @@ Versions 2.0.0-2.0.3 of this SDK require SDK-specific ProGuard rules when shrink
 -dontwarn javax.servlet.**
 -dontwarn org.apache.**
 ```
-
-**IMPORTANT: If you are running version 2.0.x before 2.0.3, you should update to the latest Dropbox SDK version to avoid a deserialization bug that can cause Android apps that use ProGuard to crash.**

@@ -13,7 +13,7 @@ Prerequisites: Apache Maven (to build the SDK), [Android Studio](http://develope
 1. Download this repository.
 2. Build the SDK: run `./gradlew build` in the SDK root directory (two levels up from this folder).
 3. In Android Studio, choose "Import Project" and select this folder.
-4. Edit local.properties and add `DROPBOX_APP_KEY=YOUR_KEY_HERE` with your Dropbox API key ([how to get a Dropbox API key](../../ReadMe.md#get-a-dropbox-api-key)).
+4. Edit local.properties and add `DROPBOX_APP_KEY=YOUR_KEY_HERE` with your Dropbox API key ([how to get a Dropbox API key](../../README.md#get-a-dropbox-api-key)).
 5. Build and run.
 
 If you don't have Android Studio, you can use the command-line:

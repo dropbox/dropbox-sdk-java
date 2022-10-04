@@ -12,7 +12,7 @@ intellij/
 *.iml
 local.properties
 
-# Output file when rendering ReadMe.md locally.
+# Output file when rendering README.md locally.
 /ReadMe.html
 
 # editor temp files
