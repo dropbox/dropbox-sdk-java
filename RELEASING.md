@@ -3,7 +3,7 @@ Please follow the steps in each one of the following sections to complete a rele
 ## Merge the Release to Trigger Publishing to Maven Central
  1. Update the top level [gradle.properties](gradle.properties) to a non-SNAPSHOT version.
  2. Update [DbxSdkVersion.java](DbxSdkVersion.java) to a non-SNAPSHOT version.
- 3. Update the [ChangeLog.md](ChangeLog.md) for the impending release.
+ 3. Update the [CHANGELOG.md](CHANGELOG.md) for the impending release.
  4. Update the [README.md](README.md) with the new version.
  5. `git commit -am "Prepare for release X.Y.Z"` (where X.Y.Z is the new version)
  6. Create a PR titled "Release vX.Y.Z"
