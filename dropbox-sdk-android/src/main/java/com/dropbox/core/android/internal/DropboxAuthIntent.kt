@@ -48,7 +48,7 @@ internal object DropboxAuthIntent {
             putExtra(EXTRA_SESSION_ID, mState.mSessionId)
             putExtra(EXTRA_CALLING_PACKAGE, packageName)
             putExtra(EXTRA_AUTH_STATE, stateNonce)
-            putExtra(EXTRA_JAVA_SDK_VERSION, DbxSdkVersion.Version)
+            putExtra(EXTRA_DROPBOX_SDK_JAVA_VERSION, DbxSdkVersion.Version)
             authActivity.getTargetSdkVersion()?.let { targetSdkVersion ->
                 putExtra(EXTRA_TARGET_SDK_VERSION, targetSdkVersion)
             }
@@ -117,14 +117,14 @@ internal object DropboxAuthIntent {
     const val EXTRA_AUTH_STATE: String = "AUTH_STATE"
 
     /**
-     * Used for internal authentication logic. You won't ever have to use this.
+     * Used for internal authentication logic. The targetSdk version of the application using the Dropbox SDK Java.
      */
     const val EXTRA_TARGET_SDK_VERSION: String = "TARGET_SDK_VERSION"
 
     /**
-     * Used for internal authentication logic. You won't ever have to use this.
+     * Used for internal authentication logic. The version of this Dropbox SDK Java.
      */
-    const val EXTRA_JAVA_SDK_VERSION: String = "JAVA_SDK_VERSION"
+    const val EXTRA_DROPBOX_SDK_JAVA_VERSION: String = "DROPBOX_SDK_JAVA_VERSION"
 
     /**
      * Used for internal authentication. Allows app to request a specific UID to auth against
