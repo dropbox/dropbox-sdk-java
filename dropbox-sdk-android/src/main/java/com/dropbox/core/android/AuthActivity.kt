@@ -119,10 +119,9 @@ public open class AuthActivity : Activity() {
 
         // Create intent to auth with official app.
         val officialAuthIntent = DropboxAuthIntent.buildOfficialAuthIntent(
-            callingActivityFullyQualifiedClassName = this@AuthActivity::class.java.name,
+            authActivity = this@AuthActivity,
             mState = mState,
             stateNonce = stateNonce,
-            packageName = this@AuthActivity.packageName
         )
 
         /*
