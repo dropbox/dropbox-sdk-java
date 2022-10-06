@@ -264,35 +264,71 @@ To run individual tests, use the `--tests` gradle test filter:
 
 ## Usage on Android
 
-Android support *** CALL OUT METHODS USED TO AUTHENTICATE ***
+The Android code in this SDK is written in Kotlin (as of 5.4.x) and Kotlin is now a runtime dependency. If you do not already have Kotlin in your project, you will need to add `implementation("org.jetbrains.kotlin:kotlin-stdlib:1.6.21")` to your dependencies block in order to avoid a runtime exception.
 
-### Required Dependencies For Android
-The Android code in this SDK is written in Kotlin and is now a runtime dependency. If you do not already have Kotlin in your project, you will need to add `implementation("org.jetbrains.kotlin:kotlin-stdlib:1.6.21")` to your dependencies block.
+At this point in time, the Android code is bundled with the main Java artifact, but will be published as a separate artifact at some point in the future.
 
-The last published version without Kotlin is `5.3.0`. All future Android code will be written in Kotlin.
+If the [official Dropbox App](https://play.google.com/store/apps/details?id=com.dropbox.android) is installed, it will attempt to use it to do authorization.  If it is not, a web authentication flow is launched in-browser.
 
-### `AndroidManifest.xml`
+Use the methods in the [`Auth`](https://github.com/dropbox/dropbox-sdk-java/blob/main/dropbox-sdk-android/src/main/java/com/dropbox/core/android/Auth.kt) to start an authentication sessions.
+* [`Auth.startOAuth2Authentication(...)`](https://github.com/dropbox/dropbox-sdk-java/blob/main/dropbox-sdk-android/src/main/java/com/dropbox/core/android/Auth.kt)
+* [`Auth.startOAuth2PKCE(...)`](https://github.com/dropbox/dropbox-sdk-java/blob/main/dropbox-sdk-android/src/main/java/com/dropbox/core/android/Auth.kt)
 
-The following two entries may need to be added to your `AndroidManifest.xml` depending on your target SDK level.
+Please look at the `examples/android` sample app for usage as well.
 
-For SDK levels >= `30`
-```xml
-<queries>
-    <package android:name="com.dropbox.android" />
-</queries>
+### Required Configuration for Authentication on Android
+
+The following below is required configuration when using the SDK on Android.
+
+#### AndroidManifest.xml
+
+Add these following pieces to your `AndroidManifest.xml` to use Dropbox for Authentication in Android.
+
+##### Add `AuthActivity` to the manifest
+Use your Dropbox APP Key in place of `dropboxKey` below.  You need to add the `AuthActivity` entry, and it's associated `intent-filter`.  
+```
+<manifest>
+    ...
+    <application>
+        <activity
+            android:name="com.dropbox.core.android.AuthActivity"
+            android:exported="true"
+            android:configChanges="orientation|keyboard"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <data android:scheme="db-${dropboxKey}" />
+        
+                <action android:name="android.intent.action.VIEW" />
+        
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            
+            <!-- Additional intent-filter required as a workaround for Apps using targetSdk=33 until the fix in the Dropbox app is available to all users. -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+    </application>
+    ...
+</manifest>
 ```
 
-For SDK levels >= `33`
+🚨[There is a known issue regarding apps with `targetSdk=33` regarding app-to-app authentication when the Dropbox App is installed](https://github.com/dropbox/dropbox-sdk-java/pull/471) 🚨
+A fix is being worked on and will be released in an upcoming version of the Dropbox Mobile App.
 
-See [#406](https://github.com/dropbox/dropbox-sdk-java/issues/406) for context
-```xml
-<intent-filter>
-    <action android:name="android.intent.action.VIEW" />
-    <category android:name="android.intent.category.DEFAULT" />
-</intent-filter>
+##### Add Dropbox `package` to `queries`
+Additionally, you need to allow `queries` from the Dropbox official app for verification during the app-to-app authentication flow.
 ```
-
-We are working on pulling out this Android-specific code into its own android library with an `AndroidManifest.xml` that can be merged with your existing manifest, but in the meantime, this will work.
+<manifest>
+    ...
+    <queries>
+        <package android:name="com.dropbox.android" />
+    </queries>
+    ...
+</manifest>
+```
 
 ## FAQ
 
