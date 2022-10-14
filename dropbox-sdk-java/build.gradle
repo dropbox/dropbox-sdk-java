@@ -203,6 +203,7 @@ jar {
                 'com.squareup.okhttp;resolution:=optional',
                 'okhttp3;resolution:=optional',
                 'okio;resolution:=optional',
+                'kotlin.*;resolution:=optional',
                 '*'
 
         def noeeProp = 'osgi.bnd.noee'
