@@ -1,0 +1,106 @@
+[
+    {
+        "merged": "com.dropbox.core.examples.android-merged_res-28:/drawable-hdpi_dropbox_big.png.flat",
+        "source": "com.dropbox.core.examples.android-main-30:/drawable-hdpi/dropbox_big.png"
+    },
+    {
+        "merged": "com.dropbox.core.examples.android-merged_res-28:/xml_provider_paths.xml.flat",
+        "source": "com.dropbox.core.examples.android-main-30:/xml/provider_paths.xml"
+    },
+    {
+        "merged": "com.dropbox.core.examples.android-merged_res-28:/layout_activity_open_with.xml.flat",
+        "source": "com.dropbox.core.examples.android-main-30:/layout/activity_open_with.xml"
+    },
+    {
+        "merged": "com.dropbox.core.examples.android-merged_res-28:/drawable_ic_folder.xml.flat",
+        "source": "com.dropbox.core.examples.android-main-30:/drawable/ic_folder.xml"
+    },
+    {
+        "merged": "com.dropbox.core.examples.android-merged_res-28:/layout_files_item.xml.flat",
+        "source": "com.dropbox.core.examples.android-main-30:/layout/files_item.xml"
+    },
+    {
+        "merged": "com.dropbox.core.examples.android-merged_res-28:/drawable-xxhdpi_ic_folder_blue_36dp.png.flat",
+        "source": "com.dropbox.core.examples.android-main-30:/drawable-xxhdpi/ic_folder_blue_36dp.png"
+    },
+    {
+        "merged": "com.dropbox.core.examples.android-merged_res-28:/drawable-mdpi_ic_add_white_24dp.png.flat",
+        "source": "com.dropbox.core.examples.android-main-30:/drawable-mdpi/ic_add_white_24dp.png"
+    },
+    {
+        "merged": "com.dropbox.core.examples.android-merged_res-28:/drawable-xhdpi_ic_insert_drive_file_blue_36dp.png.flat",
+        "source": "com.dropbox.core.examples.android-main-30:/drawable-xhdpi/ic_insert_drive_file_blue_36dp.png"
+    },
+    {
+        "merged": "com.dropbox.core.examples.android-merged_res-28:/layout_app_bar.xml.flat",
+        "source": "com.dropbox.core.examples.android-main-30:/layout/app_bar.xml"
+    },
+    {
+        "merged": "com.dropbox.core.examples.android-merged_res-28:/layout_activity_home.xml.flat",
+        "source": "com.dropbox.core.examples.android-main-30:/layout/activity_home.xml"
+    },
+    {
+        "merged": "com.dropbox.core.examples.android-merged_res-28:/drawable-xxhdpi_ic_photo_grey_600_36dp.png.flat",
+        "source": "com.dropbox.core.examples.android-main-30:/drawable-xxhdpi/ic_photo_grey_600_36dp.png"
+    },
+    {
+        "merged": "com.dropbox.core.examples.android-merged_res-28:/drawable-hdpi_ic_add_white_24dp.png.flat",
+        "source": "com.dropbox.core.examples.android-main-30:/drawable-hdpi/ic_add_white_24dp.png"
+    },
+    {
+        "merged": "com.dropbox.core.examples.android-merged_res-28:/drawable-hdpi_ic_photo_grey_600_36dp.png.flat",
+        "source": "com.dropbox.core.examples.android-main-30:/drawable-hdpi/ic_photo_grey_600_36dp.png"
+    },
+    {
+        "merged": "com.dropbox.core.examples.android-merged_res-28:/drawable-hdpi_ic_insert_drive_file_blue_36dp.png.flat",
+        "source": "com.dropbox.core.examples.android-main-30:/drawable-hdpi/ic_insert_drive_file_blue_36dp.png"
+    },
+    {
+        "merged": "com.dropbox.core.examples.android-merged_res-28:/drawable-mdpi_ic_folder_blue_36dp.png.flat",
+        "source": "com.dropbox.core.examples.android-main-30:/drawable-mdpi/ic_folder_blue_36dp.png"
+    },
+    {
+        "merged": "com.dropbox.core.examples.android-merged_res-28:/drawable-mdpi_ic_photo_grey_600_36dp.png.flat",
+        "source": "com.dropbox.core.examples.android-main-30:/drawable-mdpi/ic_photo_grey_600_36dp.png"
+    },
+    {
+        "merged": "com.dropbox.core.examples.android-merged_res-28:/drawable-hdpi_ic_folder_blue_36dp.png.flat",
+        "source": "com.dropbox.core.examples.android-main-30:/drawable-hdpi/ic_folder_blue_36dp.png"
+    },
+    {
+        "merged": "com.dropbox.core.examples.android-merged_res-28:/drawable_ic_dropbox_android.xml.flat",
+        "source": "com.dropbox.core.examples.android-main-30:/drawable/ic_dropbox_android.xml"
+    },
+    {
+        "merged": "com.dropbox.core.examples.android-merged_res-28:/drawable-xhdpi_ic_add_white_24dp.png.flat",
+        "source": "com.dropbox.core.examples.android-main-30:/drawable-xhdpi/ic_add_white_24dp.png"
+    },
+    {
+        "merged": "com.dropbox.core.examples.android-merged_res-28:/drawable_ic_file.xml.flat",
+        "source": "com.dropbox.core.examples.android-main-30:/drawable/ic_file.xml"
+    },
+    {
+        "merged": "com.dropbox.core.examples.android-merged_res-28:/drawable-xxhdpi_ic_add_white_24dp.png.flat",
+        "source": "com.dropbox.core.examples.android-main-30:/drawable-xxhdpi/ic_add_white_24dp.png"
+    },
+    {
+        "merged": "com.dropbox.core.examples.android-merged_res-28:/drawable-mdpi_ic_insert_drive_file_blue_36dp.png.flat",
+        "source": "com.dropbox.core.examples.android-main-30:/drawable-mdpi/ic_insert_drive_file_blue_36dp.png"
+    },
+    {
+        "merged": "com.dropbox.core.examples.android-merged_res-28:/layout_activity_files.xml.flat",
+        "source": "com.dropbox.core.examples.android-main-30:/layout/activity_files.xml"
+    },
+    {
+        "merged": "com.dropbox.core.examples.android-merged_res-28:/drawable-xhdpi_ic_folder_blue_36dp.png.flat",
+        "source": "com.dropbox.core.examples.android-main-30:/drawable-xhdpi/ic_folder_blue_36dp.png"
+    },
+    {
+        "merged": "com.dropbox.core.examples.android-merged_res-28:/drawable-xhdpi_ic_photo_grey_600_36dp.png.flat",
+        "source": "com.dropbox.core.examples.android-main-30:/drawable-xhdpi/ic_photo_grey_600_36dp.png"
+    },
+    {
+        "merged": "com.dropbox.core.examples.android-merged_res-28:/drawable-xxhdpi_ic_insert_drive_file_blue_36dp.png.flat",
+        "source": "com.dropbox.core.examples.android-main-30:/drawable-xxhdpi/ic_insert_drive_file_blue_36dp.png"
+    }
+]
