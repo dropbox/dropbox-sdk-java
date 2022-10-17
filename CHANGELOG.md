@@ -1,3 +1,7 @@
+## 5.4.4 (2022-10-17)
+---------------------------------------------
+- [Downgrade target back down to Java 1.8 as requested by a user. #476](https://github.com/dropbox/dropbox-sdk-java/issues/476)
+
 ## 5.4.3 (2022-10-14)
 ---------------------------------------------
 - Fix: [Make Kotlin optional in OSGI Import-Package statement](https://github.com/dropbox/dropbox-sdk-java/pull/473)
