@@ -3,8 +3,8 @@ apply plugin: 'java'
 description = 'ProGuard minified SDK test suite for ProGuard compatibility tests.'
 group = 'com.dropbox.core.test'
 archivesBaseName = 'dropbox-proguard-test'
-sourceCompatibility = JavaVersion.VERSION_11
-targetCompatibility = JavaVersion.VERSION_11
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
 
 ext {
     authInfoPropertyName = 'com.dropbox.test.authInfoFile'
@@ -28,8 +28,8 @@ repositories {
 }
 
 dependencies {
-    implementation group: 'com.dropbox.core', name: 'dropbox-core-sdk', version: '+', changing: true
-    implementation 'org.testng:testng:6.9.10'
+    implementation(project(":dropbox-sdk-java"))
+    implementation("org.testng:testng:6.9.10")
 }
 
 compileJava {
