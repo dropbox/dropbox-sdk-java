@@ -28,8 +28,8 @@ repositories {
 }
 
 dependencies {
-    implementation group: 'com.dropbox.core', name: 'dropbox-core-sdk', version: '+', changing: true
-    implementation 'org.testng:testng:6.9.10'
+    implementation(project(":dropbox-sdk-java"))
+    implementation("org.testng:testng:6.9.10")
 }
 
 compileJava {
