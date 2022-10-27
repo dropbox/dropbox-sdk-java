@@ -96,7 +96,7 @@ abstract class StoneTask : DefaultTask() {
             generatorFile,
             specFiles,
             getOutputDir().asFile.get(),
-            getPythonCommand().get()
+            getPythonCommand().get(),
         )
     }
 
