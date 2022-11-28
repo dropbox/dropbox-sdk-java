@@ -14,7 +14,7 @@ Documentation: [Javadocs](https://dropbox.github.io/dropbox-sdk-java/api-docs/v5
 
 ### Java Version
 
-The current release of Dropbox SDK Java supports Java 11+. If you are running Java 8 and want to use the SDK, you should use version `4.0.1`.
+The current release of Dropbox SDK Java supports Java 8+.
 
 ### Add a dependency on the Dropbox Java SDK to your project
 
