@@ -8,23 +8,17 @@ This example is backwards compatible with Android 5.0 (Lollipop). Ensure your bu
 
 ## Running the example
 
-Prerequisites: Apache Maven (to build the SDK), [Android Studio](http://developer.android.com/sdk/installing/) (not strictly necessary)
+Running in [Android Studio](https://developer.android.com/studio) (not strictly necessary)
 
-1. Download this repository.
-2. Build the SDK: run `./gradlew build` in the SDK root directory (two levels up from this folder).
-3. In Android Studio, choose "Import Project" and select this folder.
-4. Edit local.properties and add `DROPBOX_APP_KEY=YOUR_KEY_HERE` with your Dropbox API key ([how to get a Dropbox API key](../../README.md#get-a-dropbox-api-key)).
-5. Build and run.
+* Download this `dropbox-sdk-java` repository or clone it using `git clone https://github.com/dropbox/dropbox-sdk-java`.
+* Open the root folder `dropbox-sdk-java` in the terminal, or open it in Android Studio.
+* Create a `local.properties` manually in the Android example project at `examples/android/local.properties` with the content `DROPBOX_APP_KEY=YOUR_KEY_HERE` where `YOUR_KEY_HERE` is your [Dropbox App/Api Key](../../README.md#get-a-dropbox-api-key). 
+  * TIP: You can create this `local.properties` file with the appropriate contents by runing this command `echo "DROPBOX_APP_KEY=YOUR_KEY_HERE" > examples/android/local.properties` on the terminal from the `dropbox-sdk-java`.
+  * NOTE: This step of creating the `examples/android/local.properties` file is not required to build the app, but is required if you would like to test authentication.
+5. Build and run the Android sample via the Android Studio UI.
 
-If you don't have Android Studio, you can use the command-line:
+# Notes
 
-1. Make sure you have the standalone [Android SDK Tools](http://developer.android.com/sdk/installing/).
-2. Make sure your `ANDROID_SDK` environment variable is set to the path where the standalone Android SDK Tools are installed.
-3. To build: run `./gradlew assemble`.
-4. The example app's ".apk" files should now be in "build/outputs/apk".  You can use "adb install" to install them to the emulator or to a real device.
-
-## ProGuard
-
-The Dropbox Java SDK supports ProGuard class file shrinking optimizations. The only requirements to
-your ProGuard configuration are to ensure [Jackson Databind](https://github.com/FasterXML/jackson-databind)
-classes are handled correctly and annotations are kept. See [proguard-rules.pro](proguard-rules.pro) for an example.
+This example project uses the source version of `dropbox-sdk-java`.  If you would like to use the published version of the SDK, replace the following in the `examples/android/build.gradle` file.
+* Replace `implementation(project(":dropbox-sdk-java"))` 
+* with `implementation("com.dropbox.core:dropbox-core-sdk:LATEST_VERSION_GOES_HERE")`
