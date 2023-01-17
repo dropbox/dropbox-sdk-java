@@ -14,9 +14,9 @@ buildscript {
 }
 
 plugins {
+    alias(dropboxJavaSdkLibs.plugins.dependency.guard)
     alias(dropboxJavaSdkLibs.plugins.maven.publish.plugin) apply false
     alias(dropboxJavaSdkLibs.plugins.gradle.version.plugin) apply false
-    alias(dropboxJavaSdkLibs.plugins.dependency.guard) apply false
     alias(dropboxJavaSdkLibs.plugins.blind.pirate.osgi) apply false
     alias(dropboxJavaSdkLibs.plugins.binary.compatibility.validator) apply false
 }
@@ -34,7 +34,6 @@ allprojects {
     }
 }
 
-apply plugin: "com.dropbox.dependency-guard"
 
 dependencyGuard {
     configuration("classpath")
