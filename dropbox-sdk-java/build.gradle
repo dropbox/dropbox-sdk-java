@@ -1,3 +1,4 @@
+import com.dropbox.stone.java.StoneTask
 import com.dropbox.stone.java.model.ClientSpec
 import com.dropbox.stone.java.model.StoneConfig
 
@@ -85,14 +86,20 @@ processResources { task ->
     }
 }
 
-compileJava {
+tasks.named("compileJava", JavaCompile) {
+    dependsOn(tasks.named("generateStone"))
     options.compilerArgs << '-Xlint:all'
     options.warnings = true
     options.deprecation = true
     options.encoding = 'utf-8'
 }
 
-test {
+tasks.named("compileTestKotlin") {
+    dependsOn(tasks.named("generateTestStone"))
+}
+
+tasks.named("test", Test) {
+    dependsOn(tasks.named("generateTestStone"))
     useTestNG()
 
     // TestNG specific options
@@ -129,7 +136,7 @@ def getAuthInfoFile() {
     return authInfoFile
 }
 
-task integrationTest(type: Test) {
+tasks.register('integrationTest', Test) {
     description 'Runs integration tests against Production or Dev servers.'
 
     useTestNG()
@@ -152,23 +159,21 @@ task integrationTest(type: Test) {
         }
     }
 
-    ext {
-        authInfoPropertyName = 'com.dropbox.test.authInfoFile'
+    project.ext {
         httpRequestorPropertyName = 'com.dropbox.test.httpRequestor'
     }
 
-    doFirst {
-        systemProperty authInfoPropertyName, getAuthInfoFile().absolutePath
-        if (project.hasProperty(httpRequestorPropertyName)) {
-            systemProperty httpRequestorPropertyName, project.property(httpRequestorPropertyName)
-        }
+    systemProperty project.authInfoPropertyName.toString(), getAuthInfoFile().absolutePath
+    if (project.hasProperty(httpRequestorPropertyName)) {
+        systemProperty project.httpRequestorPropertyName.toString(), project.property(httpRequestorPropertyName)
     }
 
     // Will ensure that integration tests are re-run every time because they are not hermetic
     outputs.upToDateWhen { false }
 }
 
-javadoc {
+
+tasks.named("javadoc", Javadoc) {
     String versionName
     if (project.hasProperty("VERSION_NAME")) {
         versionName = "${project.property("VERSION_NAME")}"
@@ -190,7 +195,7 @@ javadoc {
     options.addStringOption "link", "http://docs.oracle.com/javase/8/docs/api/"
 }
 
-jar {
+tasks.named("jar", Jar) {
     // OsgiManifest since we import 'osgi' plugin
     manifest {
         name project.name
@@ -213,17 +218,20 @@ jar {
     }
 }
 
-task jarWithoutOsgi(type: Jar, dependsOn: classes) {
+tasks.register('jarWithoutOsgi', Jar) {
+    dependsOn(tasks.named("classes"))
     archiveClassifier.set('withoutOsgi')
     from sourceSets.main.output
 }
 
-task sourcesJar(type: Jar, dependsOn: classes) {
+tasks.register('sourcesJar', Jar) {
+    dependsOn(tasks.named("classes"))
     archiveClassifier.set('sources')
     from sourceSets.main.allSource
 }
 
-task javadocJar(type: Jar, dependsOn: javadoc) {
+tasks.register('javadocJar', Jar) {
+    dependsOn(tasks.named("javadoc"))
     archiveClassifier.set('javadoc')
     from javadoc.destinationDir
 }
@@ -235,20 +243,22 @@ artifacts {
 }
 
 // reject dependencyUpdates candidates with alpha or beta in their names:
-dependencyUpdates.resolutionStrategy = {
-    componentSelection { rules ->
-        rules.all { ComponentSelection selection ->
-            boolean rejected = ['alpha', 'beta', 'rc'].any { qualifier ->
-                selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
-            }
-            if (rejected) {
-                selection.reject('Release candidate')
+tasks.named("dependencyUpdates") {
+    resolutionStrategy {
+        componentSelection { rules ->
+            rules.all { ComponentSelection selection ->
+                boolean rejected = ['alpha', 'beta', 'rc'].any { qualifier ->
+                    selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
+                }
+                if (rejected) {
+                    selection.reject('Release candidate')
+                }
             }
         }
     }
 }
 
-generateStone {
+tasks.named("generateStone", StoneTask) {
     String unusedClassesToGenerate = 'AuthError, PathRoot, PathRootError, AccessError, RateLimitError'
     String packageName = 'com.dropbox.core.v2'
     String globalRouteFilter = 'alpha_group=null and beta_group=null'
@@ -286,9 +296,11 @@ generateStone {
             ),
 
     ]
+    outputDir "${project.projectDir}/generated_stone_source/main"
+    sourceSets { main { java.srcDir "${outputDir.get()}/src" } }
 }
 
-generateTestStone {
+tasks.named("generateTestStone", StoneTask) {
     String packageName = 'com.dropbox.core.stone'
     config[
             new StoneConfig(
@@ -304,4 +316,6 @@ generateTestStone {
                     )
             ),
     ]
+    outputDir "${project.projectDir}/generated_stone_source/test"
+    sourceSets { test { java.srcDir "${outputDir.get()}/src" } }
 }
