@@ -21,20 +21,6 @@ plugins {
     alias(dropboxJavaSdkLibs.plugins.binary.compatibility.validator) apply false
 }
 
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-    }
-
-    plugins.withId("com.vanniktech.maven.publish") {
-        mavenPublish {
-            sonatypeHost = "S01"
-        }
-    }
-}
-
-
 dependencyGuard {
     configuration("classpath")
 }

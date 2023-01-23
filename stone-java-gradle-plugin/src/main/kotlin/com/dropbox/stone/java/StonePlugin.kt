@@ -2,10 +2,12 @@ package com.dropbox.stone.java
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.Task
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.SourceSet
+import org.gradle.api.tasks.compile.JavaCompile
+import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 /**
  * Stone Plugin
@@ -23,6 +25,15 @@ public class StonePlugin : Plugin<Project> {
         // add generateStone task for all source sets (e.g. generateTestStone, etc)
         javaPluginExtension.sourceSets.forEach { sourceSet: SourceSet ->
             createTaskForSourceSet(project, sourceSet)
+        }
+
+        //Declare dependency of compile tasks on stone tasks.
+        //We need the generated code first or the project won't compile.
+        project.tasks.withType<JavaCompile>().configureEach{
+            dependsOn(project.tasks.withType<StoneTask>())
+        }
+        project.tasks.withType<KotlinCompile>().configureEach{
+            dependsOn(project.tasks.withType<StoneTask>())
         }
     }
 
@@ -71,10 +82,6 @@ public class StonePlugin : Plugin<Project> {
                 .withPropertyName("generatedStone")
             outputs.cacheIf { true }
 
-            val compileJava: Task = project.tasks.getByName(sourceSet.getCompileTaskName("java"))
-            compileJava.dependsOn(project.tasks.named(taskName))
-            val compileKotlin: Task = project.tasks.getByName(sourceSet.getCompileTaskName("kotlin"))
-            compileKotlin.dependsOn(project.tasks.named(taskName))
 
             sourceSet.java.srcDir("${getOutputDir().get()}/src")
         }

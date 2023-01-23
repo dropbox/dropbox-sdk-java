@@ -87,7 +87,6 @@ processResources { task ->
 }
 
 tasks.named("compileJava", JavaCompile) {
-    dependsOn(tasks.named("generateStone"))
     options.compilerArgs << '-Xlint:all'
     options.warnings = true
     options.deprecation = true
@@ -99,7 +98,6 @@ tasks.named("compileTestKotlin") {
 }
 
 tasks.named("test", Test) {
-    dependsOn(tasks.named("generateTestStone"))
     useTestNG()
 
     // TestNG specific options
@@ -318,4 +316,8 @@ tasks.named("generateTestStone", StoneTask) {
     ]
     outputDir "${project.projectDir}/generated_stone_source/test"
     sourceSets { test { java.srcDir "${outputDir.get()}/src" } }
+}
+
+mavenPublish {
+    sonatypeHost = "S01"
 }
