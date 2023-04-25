@@ -1,2 +1,1 @@
-com.fasterxml.jackson.core:jackson-core:2.14.2
-com.fasterxml.jackson:jackson-bom:2.14.2
+com.fasterxml.jackson.core:jackson-core:2.8.6
