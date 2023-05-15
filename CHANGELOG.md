@@ -1,4 +1,4 @@
-## 5.4.5 (TBD - Unreleased)
+## 5.4.5 (2023-05-16)
 - Update jackson-core to 2.15.0 [#492](https://github.com/dropbox/dropbox-sdk-java/issues/476)
 
 ## 5.4.4 (2022-10-17)
