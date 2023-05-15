@@ -1,3 +1,6 @@
+## 5.4.5 (TBD - Unreleased)
+- Update jackson-core to 2.15.0 [#492](https://github.com/dropbox/dropbox-sdk-java/issues/476)
+
 ## 5.4.4 (2022-10-17)
 ---------------------------------------------
 - [Downgrade target back down to Java 1.8 as requested by a user. #476](https://github.com/dropbox/dropbox-sdk-java/issues/476)
