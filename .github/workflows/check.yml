@@ -66,7 +66,7 @@ jobs:
       run: ./gradlew :examples:examples:test :examples:java:test -Pci=true --info
 
     - name: Run Integration Tests - OkHttpRequestor
-      run: ./gradlew -Pcom.dropbox.test.httpRequestor=OkHttpRequestor -Pcom.dropbox.test.authInfoFile=../auth_output integrationTest --stacktrace &&
+      run: ./gradlew -Pcom.dropbox.test.httpRequestor=OkHttpRequestor -Pcom.dropbox.test.authInfoFile=../auth_output integrationTest &&
            ./gradlew -Pcom.dropbox.test.httpRequestor=OkHttpRequestor -Pcom.dropbox.test.authInfoFile=../auth_output proguardTest
 
     - name: Run Integration Tests - OkHttp3Requestor
