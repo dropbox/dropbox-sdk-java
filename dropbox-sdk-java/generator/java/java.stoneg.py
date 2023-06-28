@@ -9,7 +9,13 @@ import six
 import sys
 import types
 
-from collections import defaultdict, OrderedDict, Sequence
+from collections import defaultdict, OrderedDict
+
+if sys.version_info >= (3, 10):
+    from collections.abc import Sequence
+else:
+    from collections import Sequence
+
 from contextlib import contextmanager
 from functools import (
     partial,
