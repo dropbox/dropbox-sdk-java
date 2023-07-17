@@ -188,7 +188,7 @@ tasks.named("javadoc", Javadoc) {
     if (JavaVersion.current().isJava8Compatible()) {
         options.addBooleanOption "Xdoclint:all,-missing", true
     }
-    options.addStringOption "link", "http://docs.oracle.com/javase/8/docs/api/"
+    options.addStringOption "link", "http://docs.oracle.com/javase/6/docs/api/"
 }
 
 tasks.named("jar", Jar) {
