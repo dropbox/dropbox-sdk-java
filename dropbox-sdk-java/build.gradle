@@ -1,7 +1,6 @@
 import com.dropbox.stone.java.StoneTask
 import com.dropbox.stone.java.model.ClientSpec
 import com.dropbox.stone.java.model.StoneConfig
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id 'java-library'
@@ -18,16 +17,8 @@ dependencyGuard {
     configuration("runtimeClasspath")
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-}
-
-tasks.withType(KotlinCompile).configureEach {
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-}
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
 
 ext {
     mavenName = 'Official Dropbox Java SDK'
