@@ -60,25 +60,21 @@ android {
 
 dependencies {
     implementation(project(":dropbox-sdk-java"))
-
-    implementation(dropboxJavaSdkLibs.kotlin.stdlib)
-    implementation(dropboxJavaSdkLibs.kotlin.coroutines)
-
-    implementation(dropboxJavaSdkLibs.androidx.appcompat)
-    implementation(dropboxJavaSdkLibs.androidx.recyclerview)
-    implementation(dropboxJavaSdkLibs.androidx.core.ktx)
-    implementation(dropboxJavaSdkLibs.androidx.constraintlayout)
-    implementation(dropboxJavaSdkLibs.androidx.lifecycle.runtime.ktx)
     implementation(dropboxJavaSdkLibs.android.material)
-
+    implementation(dropboxJavaSdkLibs.androidx.appcompat)
+    implementation(dropboxJavaSdkLibs.androidx.constraintlayout)
+    implementation(dropboxJavaSdkLibs.androidx.core.ktx)
+    implementation(dropboxJavaSdkLibs.androidx.lifecycle.runtime.ktx)
+    implementation(dropboxJavaSdkLibs.androidx.recyclerview)
     implementation(dropboxJavaSdkLibs.glide)
-
+    implementation(dropboxJavaSdkLibs.kotlin.coroutines)
+    implementation(dropboxJavaSdkLibs.kotlin.stdlib)
     implementation(dropboxJavaSdkLibs.okhttp3)
 
     testImplementation(dropboxJavaSdkLibs.test.junit)
 
-    androidTestImplementation(dropboxJavaSdkLibs.androidx.test.junit)
     androidTestImplementation(dropboxJavaSdkLibs.androidx.test.espresso.core)
+    androidTestImplementation(dropboxJavaSdkLibs.androidx.test.junit)
 }
 
 def getLocalProperties() {

@@ -19,9 +19,13 @@ androidx-constraintlayout = 'androidx.constraintlayout:constraintlayout:2.1.4'
 androidx-core-ktx = 'androidx.core:core-ktx:1.8.0'
 androidx-lifecycle-runtime-ktx = "androidx.lifecycle:lifecycle-runtime-ktx:2.5.1"
 androidx-recyclerview = 'androidx.recyclerview:recyclerview:1.2.1'
+apache-commons-lang = "org.apache.commons:commons-lang3:3.4"
 appengine-api = 'com.google.appengine:appengine-api-1.0-sdk:1.9.38'
 glide = 'com.github.bumptech.glide:glide:4.12.0'
 jackson-core = 'com.fasterxml.jackson.core:jackson-core:2.15.0'
+jackson-databind = 'com.fasterxml.jackson.core:jackson-databind:2.15.0'
+jetty-server = "org.eclipse.jetty:jetty-server:11.0.15"
+json = "org.json:json:20230618"
 jakarta-servlet-api = 'jakarta.servlet:jakarta.servlet-api:5.0.0'
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
