@@ -26,8 +26,8 @@
 -dontwarn com.google.protos.cloud.sql.**
 -dontwarn com.google.cloud.sql.**
 -dontwarn javax.activation.**
--dontwarn javax.mail.**
--dontwarn javax.servlet.**
+-dontwarn jakarta.mail.**
+-dontwarn jakarta.servlet.**
 -dontwarn org.apache.**
 
 # Support classes for compatibility with older API versions

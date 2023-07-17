@@ -37,11 +37,11 @@ import com.dropbox.core.v2.DbxRawClientV2;
  * <h2> Part 1 </h2>
  * <p> Handler for "http://my-server.com/dropbox-auth-start": </p>
  * <pre>
- *     {@link javax.servlet.http.HttpServletRequest} request = ...
- *     {@link javax.servlet.http.HttpServletResponse} response = ...
+ *     {@link jakarta.servlet.http.HttpServletRequest} request = ...
+ *     {@link jakarta.servlet.http.HttpServletResponse} response = ...
  *
  *     <b>// Select a spot in the session for DbxWebAuth to store the CSRF token.</b>
- *     {@link javax.servlet.http.HttpSession} session = request.getSession(true);
+ *     {@link jakarta.servlet.http.HttpSession} session = request.getSession(true);
  *     String sessionKey = "dropbox-auth-csrf-token";
  *     {@link DbxSessionStore} csrfTokenStore = new DbxStandardSessionStore(session, sessionKey);
  *
@@ -62,11 +62,11 @@ import com.dropbox.core.v2.DbxRawClientV2;
  * <h2> Part 2 </h2>
  * <p> Handler for "http://my-server.com/dropbox-auth-finish": </p>
  * <pre>
- *     {@link javax.servlet.http.HttpServletRequest} request = ...
- *     {@link javax.servlet.http.HttpServletResponse} response = ...
+ *     {@link jakarta.servlet.http.HttpServletRequest} request = ...
+ *     {@link jakarta.servlet.http.HttpServletResponse} response = ...
  *
  *     <b>// Fetch the session to verify our CSRF token</b>
- *     {@link javax.servlet.http.HttpSession} session = request.getSession(true);
+ *     {@link jakarta.servlet.http.HttpSession} session = request.getSession(true);
  *     String sessionKey = "dropbox-auth-csrf-token";
  *     {@link DbxSessionStore} csrfTokenStore = new DbxStandardSessionStore(session, sessionKey);
  *     String redirectUri = "http://my-server.com/dropbox-auth-finish";

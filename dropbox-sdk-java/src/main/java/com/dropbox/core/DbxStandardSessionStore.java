@@ -1,6 +1,6 @@
 package com.dropbox.core;
 
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSession;
 
 /*>>> import checkers.nullness.quals.Nullable; */
 

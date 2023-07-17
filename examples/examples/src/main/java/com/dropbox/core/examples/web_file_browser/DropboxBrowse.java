@@ -18,11 +18,11 @@ import com.dropbox.core.v2.files.ListFolderResult;
 import com.dropbox.core.v2.files.LookupError;
 import com.dropbox.core.v2.files.Metadata;
 
-import javax.servlet.MultipartConfigElement;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
+import jakarta.servlet.MultipartConfigElement;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;

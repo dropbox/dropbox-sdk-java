@@ -32,7 +32,6 @@ kotlin-test-jvm = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "
 kotlin-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlin-coroutines" }
 okhttp2 = 'com.squareup.okhttp:okhttp:2.7.5'
 okhttp3 = 'com.squareup.okhttp3:okhttp:4.0.0'
-servlet-api = 'javax.servlet:servlet-api:2.5'
 
 androidx-test-junit = 'androidx.test.ext:junit:1.1.3'
 androidx-test-espresso-core = 'androidx.test.espresso:espresso-core:3.4.0'

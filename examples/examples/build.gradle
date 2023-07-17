@@ -12,13 +12,13 @@ java {
 
 dependencies {
     implementation(project(":dropbox-sdk-java"))
-    implementation("org.eclipse.jetty.aggregate:jetty-server:8.1.18.v20150929")
-    implementation("javax.servlet:javax.servlet-api:3.1.0")
+    implementation("org.eclipse.jetty:jetty-server:11.0.15")
+    implementation("jakarta.servlet:jakarta.servlet-api:6.0.0")
     implementation("org.apache.commons:commons-lang3:3.4")
     implementation(dropboxJavaSdkLibs.jackson.core)
     implementation("com.fasterxml.jackson.core:jackson-databind:2.15.0")
     implementation(dropboxJavaSdkLibs.okhttp3)
-    implementation("org.json:json:20220320")
+    implementation("org.json:json:20230618")
 
     testImplementation(dropboxJavaSdkLibs.test.junit)
 }
