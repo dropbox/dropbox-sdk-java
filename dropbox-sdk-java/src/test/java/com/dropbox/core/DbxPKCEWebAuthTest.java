@@ -17,8 +17,8 @@ import java.util.regex.Pattern;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
-import static org.mockito.Matchers.anyListOf;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
@@ -89,7 +89,7 @@ public class DbxPKCEWebAuthTest extends DbxOAuthTestBase {
                 .thenReturn(body);
         when(mockUploader.finish())
                 .thenReturn(finishResponse);
-        when(mockRequestor.startPost(anyString(), anyListOf(HttpRequestor.Header.class)))
+        when(mockRequestor.startPost(anyString(), anyList()))
                 .thenReturn(mockUploader);
 
         DbxRequestConfig mockConfig = CONFIG.copy()
@@ -199,7 +199,7 @@ public class DbxPKCEWebAuthTest extends DbxOAuthTestBase {
         HttpRequestor.Uploader mockUploader = mock(HttpRequestor.Uploader.class);
         when(mockUploader.finish())
             .thenReturn(finishResponse);
-        when(mockRequestor.startPost(anyString(), anyListOf(HttpRequestor.Header.class)))
+        when(mockRequestor.startPost(anyString(), anyList()))
             .thenReturn(mockUploader);
 
         DbxRequestConfig mockConfig = CONFIG.copy()
