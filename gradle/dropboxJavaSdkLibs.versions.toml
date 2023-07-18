@@ -12,6 +12,7 @@ kotlin-coroutines = "1.6.4"
 
 [libraries]
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "android-gradle-plugin" }
+android-jar = 'com.google.android:android:4.1.1.4'
 android-material = 'com.google.android.material:material:1.6.1'
 androidx-activity = { module = "androidx.activity:activity", version.ref = "androidx-activity" }
 androidx-appcompat = 'androidx.appcompat:appcompat:1.4.2'
@@ -22,6 +23,7 @@ androidx-recyclerview = 'androidx.recyclerview:recyclerview:1.2.1'
 apache-commons-lang = "org.apache.commons:commons-lang3:3.4"
 appengine-api = 'com.google.appengine:appengine-api-1.0-sdk:1.9.38'
 glide = 'com.github.bumptech.glide:glide:4.12.0'
+guardsquare-proguard-gradle = 'com.guardsquare:proguard-gradle:7.1.0'
 jackson-core = 'com.fasterxml.jackson.core:jackson-core:2.15.0'
 jackson-databind = 'com.fasterxml.jackson.core:jackson-databind:2.15.0'
 jetty-server = "org.eclipse.jetty:jetty-server:11.0.15"
@@ -40,8 +42,16 @@ okhttp3 = 'com.squareup.okhttp3:okhttp:4.0.0'
 
 androidx-test-junit = 'androidx.test.ext:junit:1.1.3'
 androidx-test-espresso-core = 'androidx.test.espresso:espresso-core:3.4.0'
+appengine-api-labs = 'com.google.appengine:appengine-api-labs:1.9.38'
+appengine-api-stubs = 'com.google.appengine:appengine-api-stubs:1.9.38'
+appengine-testing = 'com.google.appengine:appengine-testing:1.9.38'
+guava = 'com.google.guava:guava:19.0'
+jmh-core = 'org.openjdk.jmh:jmh-core:1.12'
+jmh-generator = 'org.openjdk.jmh:jmh-generator-annprocess:1.12'
+mockito-core = 'org.mockito:mockito-core:5.4.0'
 test-junit = 'junit:junit:4.13.2'
-
+testng = 'org.testng:testng:6.9.10'
+truth = "com.google.truth:truth:1.1.2"
 
 [plugins]
 binary-compatibility-validator = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "binary-compatibility-validator" }

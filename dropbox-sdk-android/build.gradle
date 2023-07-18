@@ -8,10 +8,10 @@ plugins {
 }
 
 android {
-    compileSdk 33
+    compileSdk dropboxJavaSdkLibs.versions.android.compile.sdk.get().toInteger()
     defaultConfig {
-        minSdk 21
-        targetSdk 33
+        minSdk dropboxJavaSdkLibs.versions.android.min.sdk.get().toInteger()
+        targetSdk dropboxJavaSdkLibs.versions.android.target.sdk.get().toInteger()
     }
 
     kotlinOptions {
