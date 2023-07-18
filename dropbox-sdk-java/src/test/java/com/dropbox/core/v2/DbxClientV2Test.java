@@ -13,16 +13,14 @@ import com.dropbox.core.v2.auth.AuthError;
 import com.dropbox.core.v2.files.FileMetadata;
 import com.dropbox.core.v2.files.Metadata;
 
+import org.mockito.ArgumentMatchers;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-import org.mockito.Matchers;
 
 import org.testng.annotations.Test;
 
-import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Constructor;
@@ -693,7 +691,7 @@ public class DbxClientV2Test {
     }
 
     private static Iterable<HttpRequestor.Header> anyHeaders() {
-        return Matchers.<Iterable<HttpRequestor.Header>>any();
+        return ArgumentMatchers.anyIterable();
     }
 
     private static byte [] serialize(Metadata metadata) {

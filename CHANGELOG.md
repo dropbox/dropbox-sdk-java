@@ -1,3 +1,9 @@
+## 5.4.6-SNAPSHOT
+- Added better error messaging when trying to build the project without submodules initialized.
+- Removed obsolete javadoc flag
+- Updated test dependencies
+- Removed redundant gradle wrappers
+
 ## 5.4.5 (2023-05-16)
 - Update jackson-core to 2.15.0 [#492](https://github.com/dropbox/dropbox-sdk-java/issues/476)
 
