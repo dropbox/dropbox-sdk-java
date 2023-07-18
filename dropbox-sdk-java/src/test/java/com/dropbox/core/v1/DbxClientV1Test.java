@@ -12,9 +12,9 @@ import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.RetryException;
 import com.dropbox.core.util.IOUtil;
 
+import org.mockito.ArgumentMatchers;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-import org.mockito.Matchers;
 import org.testng.annotations.Test;
 
 import java.io.ByteArrayInputStream;
@@ -184,7 +184,7 @@ public class DbxClientV1Test {
         return new HttpRequestor.Response(
             statusCode,
             new ByteArrayInputStream(body),
-            Collections.<String,List<String>>emptyMap()
+            Collections.emptyMap()
         );
     }
 
@@ -248,6 +248,6 @@ public class DbxClientV1Test {
     }
 
     private static Iterable<HttpRequestor.Header> anyHeaders() {
-        return Matchers.<Iterable<HttpRequestor.Header>>any();
+        return ArgumentMatchers.anyIterable();
     }
 }

@@ -83,6 +83,14 @@ abstract class StoneTask : DefaultTask() {
 
     @TaskAction
     public fun processStone() {
+        val stoneDir = File("${project.projectDir}/stone/stone")
+        if (!stoneDir.exists()) {
+            throw GradleException(
+                "Stone directory ${stoneDir.absolutePath} does not exist. " +
+                        "Please run `./update-submodules` to download the stone submodule."
+            )
+        }
+
         val generatorFileTree = getObjectFactory().fileTree().from(getGeneratorDir().get())
         generatorFileTree.include("**/*stoneg.py")
         val generatorFile = generatorFileTree.singleFile
