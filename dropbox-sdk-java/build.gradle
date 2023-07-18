@@ -42,7 +42,7 @@ dependencies {
     // Android
     compileOnly 'com.google.android:android:4.1.1.4' // Until 6.x when we have an Android Artifact
     compileOnly(dropboxJavaSdkLibs.kotlin.stdlib) // Only used in Android Code
-    compileOnly("jakarta.servlet:jakarta.servlet-api:6.0.0")
+    compileOnly(dropboxJavaSdkLibs.jakarta.servlet.api)
     compileOnly(dropboxJavaSdkLibs.okhttp2)  // support both v2 and v3 to avoid
     compileOnly(dropboxJavaSdkLibs.okhttp3) // method count bloat
     compileOnly(dropboxJavaSdkLibs.appengine.api)
