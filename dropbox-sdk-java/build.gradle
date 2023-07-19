@@ -260,7 +260,7 @@ tasks.named("generateStone", StoneTask) {
     String unusedClassesToGenerate = 'AuthError, PathRoot, PathRootError, AccessError, RateLimitError'
     String packageName = 'com.dropbox.core.v2'
     String globalRouteFilter = 'alpha_group=null and beta_group=null'
-    config[
+    stoneConfigs.addAll([
             new StoneConfig(
                     packageName: packageName,
                     globalRouteFilter: globalRouteFilter,
@@ -293,14 +293,14 @@ tasks.named("generateStone", StoneTask) {
                     )
             ),
 
-    ]
-    outputDir "${project.projectDir}/generated_stone_source/main"
-    sourceSets { main { java.srcDir "${outputDir.get()}/src" } }
+    ])
+    outputDir.set(project.layout.buildDirectory.dir("generated_stone_source/main"))
+    sourceSets { main { java.srcDir(outputDir.file("src")) } }
 }
 
 tasks.named("generateTestStone", StoneTask) {
     String packageName = 'com.dropbox.core.stone'
-    config[
+    stoneConfigs.addAll([
             new StoneConfig(
                     packageName: packageName,
                     dataTypesOnly: true,
@@ -313,9 +313,9 @@ tasks.named("generateTestStone", StoneTask) {
                             requestsClassnamePrefix: "DbxTest",
                     )
             ),
-    ]
-    outputDir "${project.projectDir}/generated_stone_source/test"
-    sourceSets { test { java.srcDir "${outputDir.get()}/src" } }
+    ])
+    outputDir.set(project.layout.buildDirectory.dir("generated_stone_source/test"))
+    sourceSets { test { java.srcDir(outputDir.file("src")) } }
 }
 
 mavenPublish {
