@@ -48,6 +48,7 @@ abstract class StoneTask : DefaultTask() {
             "Stone directory ${stoneDir} does not exist. " +
                     "Please run `./update-submodules` to download the stone submodule."
         }
+        check(pythonCommand.get().isNotEmpty())
 
         val outputDirectory = outputDir.asFile.get()
         outputDirectory.deleteRecursively()
@@ -58,9 +59,7 @@ abstract class StoneTask : DefaultTask() {
         }.singleFile
 
         val specFiles = specDir.asFileTree.matching {
-            include { file ->
-                !file.isDirectory && file.name.endsWith(".stone")
-            }
+            include("**/*.stone")
         }.files
 
         val refsFile = File(outputDirectory, "refs/javadoc-refs.json")
