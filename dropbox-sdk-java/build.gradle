@@ -318,6 +318,6 @@ tasks.named("generateTestStone", StoneTask) {
     sourceSets { test { java.srcDir(outputDir.file("src")) } }
 }
 
-mavenPublish {
-    sonatypeHost = "S01"
+mavenPublishing {
+    publishToMavenCentral("S01")
 }
