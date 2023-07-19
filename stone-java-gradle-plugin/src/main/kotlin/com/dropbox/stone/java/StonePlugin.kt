@@ -51,7 +51,7 @@ class StonePlugin : Plugin<Project> {
 
             val routeWhitelistFilterPropName = "com.dropbox.api.${sourceSet.name}.routeWhitelistFilter"
             val routeWhitelistFilterValue: String? = project.properties[routeWhitelistFilterPropName] as String?
-            if (!routeWhitelistFilterValue.isNullOrBlank()) routeWhitelistFilter.set(routeWhitelistFilterValue)
+            if (!routeWhitelistFilterValue.isNullOrBlank()) routeWhitelistFilter.set(File(routeWhitelistFilterValue))
 
             val specDirPropName = "com.dropbox.api.${sourceSet.name}.specDir"
             val specDirPropNameValue: String? = project.properties[specDirPropName] as String?

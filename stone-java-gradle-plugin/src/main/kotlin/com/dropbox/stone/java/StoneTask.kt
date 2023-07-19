@@ -3,10 +3,12 @@ package com.dropbox.stone.java
 import com.dropbox.stone.java.model.StoneConfig
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputDirectory
+import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.Optional
@@ -30,8 +32,8 @@ abstract class StoneTask : DefaultTask() {
     abstract val specDir: DirectoryProperty
 
     @get:Optional
-    @get:Input
-    abstract val routeWhitelistFilter: Property<String>
+    @get:InputFile
+    abstract val routeWhitelistFilter: RegularFileProperty
 
     @get:InputDirectory
     abstract val stoneDir: DirectoryProperty
@@ -48,7 +50,6 @@ abstract class StoneTask : DefaultTask() {
             "Stone directory ${stoneDir} does not exist. " +
                     "Please run `./update-submodules` to download the stone submodule."
         }
-        check(pythonCommand.get().isNotEmpty())
 
         val outputDirectory = outputDir.asFile.get()
         outputDirectory.deleteRecursively()
@@ -68,6 +69,12 @@ abstract class StoneTask : DefaultTask() {
         val logFile = File(outputDir.asFile.get(), "log/stone.log")
         logFile.parentFile.mkdirs()
 
+        if (routeWhitelistFilter.isPresent) {
+            for (config: StoneConfig in stoneConfigs.get()) {
+                config.routeWhitelistFilter = routeWhitelistFilter.get().toString()
+            }
+        }
+
         stoneConfigs.get().forEachIndexed { index, stoneConfig ->
             val isFirst = index == 0
             val append: Boolean = !isFirst
@@ -83,9 +90,9 @@ abstract class StoneTask : DefaultTask() {
             )
 
             if (isFirst) generatorArgs.add(generatorArgs.indexOf("stone.cli") + 1, "--clean-build")
-            stoneConfig.routeWhitelistFilter?.let { filter ->
-                generatorArgs.add("--route-whitelist-filter")
-                generatorArgs.add(filter)
+
+            if (stoneConfig.routeWhitelistFilter?.isNotEmpty() == true){
+                generatorArgs.addAll(generatorArgs.indexOf(":all") + 1, listOf("--route-whitelist-filter", stoneConfig.routeWhitelistFilter))
             }
 
             if (buildRouteFilter(stoneConfig).isNotEmpty()) {
