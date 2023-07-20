@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId "com.dropbox.core.examples.android"
-        minSdkVersion 21
+        minSdkVersion dropboxJavaSdkLibs.versions.android.min.sdk.get()
         targetSdkVersion dropboxJavaSdkLibs.versions.android.target.sdk.get()
         versionCode 1
         versionName "1.0"
