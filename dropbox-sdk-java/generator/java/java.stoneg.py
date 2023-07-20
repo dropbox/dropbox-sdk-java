@@ -1,11 +1,8 @@
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 import abc
 import argparse
 import json
 import os
 import re
-import six
 import sys
 import types
 
@@ -18,14 +15,12 @@ else:
 
 from contextlib import contextmanager
 from functools import (
-    partial,
     total_ordering,
     wraps,
 )
 from itertools import chain
 
 from stone.ir import (
-    Api,
     ApiNamespace,
     ApiRoute,
     DataType,
@@ -38,7 +33,6 @@ from stone.ir import (
     is_map_type,
     is_nullable_type,
     is_numeric_type,
-    is_primitive_type,
     is_string_type,
     is_struct_type,
     is_timestamp_type,
@@ -47,22 +41,22 @@ from stone.ir import (
     is_void_type,
     StructField,
     TagRef,
-    Union,
     UnionField,
     unwrap_nullable,
-    Void,
 )
 from stone.backend import CodeBackend
 from stone.frontend.ir_generator import parse_data_types_from_doc_ref
 
-@six.add_metaclass(abc.ABCMeta)
-class StoneType:
+
+class StoneType(metaclass=abc.ABCMeta):
     pass
+
 
 StoneType.register(ApiNamespace)
 StoneType.register(ApiRoute)
 StoneType.register(DataType)
 StoneType.register(Field)
+
 
 def cached(f):
     cache = {}
@@ -79,10 +73,12 @@ def cached(f):
 
     return wrapper
 
-class cached_property(object):
+
+class cached_property:
     """
     Decorator similar to @property, but which caches the results permanently.
     """
+
     def __init__(self, func):
         self._func = func
         self._attr_name = func.__name__
@@ -150,7 +146,7 @@ def split_paragraphs(s):
 
 
 def split_stone_name(stone_fq_name, max_parts):
-    assert isinstance(stone_fq_name, six.text_type), repr(stone_fq_name)
+    assert isinstance(stone_fq_name, str), repr(stone_fq_name)
     assert max_parts > 0, "max_parts must be positive"
 
     parts = stone_fq_name.split('.')
@@ -170,6 +166,8 @@ _JAVADOC_REPLACEMENT_CHARS = (
     ('<', '&lt;'),
     ('>', '&gt;'),
 )
+
+
 def sanitize_javadoc(doc):
     # sanitize &, <, > characters
     for char, code in _JAVADOC_REPLACEMENT_CHARS:
@@ -189,9 +187,9 @@ def oxford_comma_list(values, conjunction='and'):
     elif len(values) == 1:
         return values[0]
     elif len(values) == 2:
-        return '%s %s %s' % (values[0], conjunction, values[1])
+        return '{} {} {}'.format(values[0], conjunction, values[1])
     else:
-        return '%s, %s %s' % (', '.join(values[:-1]), conjunction, values[-1])
+        return '{}, {} {}'.format(', '.join(values[:-1]), conjunction, values[-1])
 
 
 def classname(s):
@@ -244,8 +242,8 @@ def get_ancestors(data_type):
                     tag = field.name
                     break
             else:
-                assert False, "Type %s not found in subtypes of ancestor %s" % (data_type.name,
-                                                                                parent_type.name)
+                assert False, "Type {} not found in subtypes of ancestor {}".format(data_type.name,
+                                                                                    parent_type.name)
         ancestors.append((tag, data_type))
         data_type = parent_type
     ancestors.reverse()
@@ -286,6 +284,7 @@ def get_enumerated_subtypes_recursively(data_type):
         return []
 
     subtypes = []
+
     def add_subtype(data_type):
         subtypes.append(data_type)
         if data_type.has_enumerated_subtypes():
@@ -331,7 +330,7 @@ def format_func_name(route):
 
 
 @total_ordering
-class JavaClass(object):
+class JavaClass:
     """
     Represents a Java class name.
 
@@ -342,7 +341,7 @@ class JavaClass(object):
     """
 
     def __init__(self, fq_name, generics=()):
-        assert isinstance(fq_name, six.text_type), repr(fq_name)
+        assert isinstance(fq_name, str), repr(fq_name)
         assert isinstance(generics, Sequence), repr(generics)
 
         # Find/Replace ".Tag" with ".TagObject" due to name conflict WEBSERVDB-18031
@@ -353,8 +352,8 @@ class JavaClass(object):
         self._generics = generics
 
         for g in generics:
-            assert isinstance(g, (JavaClass, six.text_type)), repr(generics)
-            if isinstance(g, six.text_type):
+            assert isinstance(g, (JavaClass, str)), repr(generics)
+            if isinstance(g, str):
                 assert '.' not in g, repr(generics)
 
         package_parts = fq_name.split('.')
@@ -376,7 +375,7 @@ class JavaClass(object):
             if is_last or is_class_name:
                 self._package = '.'.join(package_parts[:i])
                 self._static_name = '.'.join(package_parts[i:])
-                self._import_name = '.'.join(package_parts[:i+1])
+                self._import_name = '.'.join(package_parts[:i + 1])
                 break
 
     @classmethod
@@ -428,7 +427,7 @@ class JavaClass(object):
     @property
     def name_with_generics(self):
         if self._generics and all('.' in g for g in self._generics):
-            return '%s<%s>' % (self._name, ', '.join(self._generics))
+            return '{}<{}>'.format(self._name, ', '.join(self._generics))
         else:
             return self._name
 
@@ -458,7 +457,7 @@ class JavaClass(object):
                 g.resolved_name(current_class, imports, generics) if isinstance(g, JavaClass) else g
                 for g in self._generics
             )
-            return '%s<%s>' % (resolved, resolved_generics)
+            return '{}<{}>'.format(resolved, resolved_generics)
         else:
             return resolved
 
@@ -521,11 +520,11 @@ class JavaClass(object):
         return JavaClass(self._import_name)
 
     def __repr__(self):
-        return '%s(%s)' % (type(self), str(self))
+        return '{}({})'.format(type(self), str(self))
 
     def __str__(self):
         if self._generics:
-            return '%s<%s>' % (self._fq_name, ', '.join(str(g) for g in self._generics))
+            return '{}<{}>'.format(self._fq_name, ', '.join(str(g) for g in self._generics))
         else:
             return self._fq_name
 
@@ -546,7 +545,7 @@ class JavaClass(object):
 
 
 @total_ordering
-class Visibility(object):
+class Visibility:
     def __init__(self, rank, name, modifier):
         self._rank = rank
         self._name = name
@@ -591,36 +590,37 @@ class Visibility(object):
         assert isinstance(other, type(self)), repr(other)
         return self._rank < other._rank
 
+
 Visibility.NONE = Visibility(0, 'NONE', None)
 Visibility.PRIVATE = Visibility(1, 'PRIVATE', 'private')
 Visibility.PACKAGE = Visibility(2, 'PACKAGE', '')
 Visibility.PUBLIC = Visibility(3, 'PUBLIC', 'public')
 Visibility._VALUES = (Visibility.NONE, Visibility.PRIVATE, Visibility.PACKAGE, Visibility.PUBLIC)
 
-
 _CMDLINE_PARSER = argparse.ArgumentParser(prog='java-generator')
-_CMDLINE_PARSER.add_argument('--package', type=six.text_type, required=True,
+_CMDLINE_PARSER.add_argument('--package', type=str, required=True,
                              help='base package name')
-_CMDLINE_PARSER.add_argument('--client-class', type=six.text_type, default='StoneClient',
+_CMDLINE_PARSER.add_argument('--client-class', type=str, default='StoneClient',
                              help='Name of client class to generate.')
-_CMDLINE_PARSER.add_argument('--client-javadoc', type=six.text_type,
+_CMDLINE_PARSER.add_argument('--client-javadoc', type=str,
                              default='Auto-generated Stone client',
                              help='Class Javadoc to use for auto-generated client.')
-_CMDLINE_PARSER.add_argument('--requests-classname-prefix', type=six.text_type, default=None,
+_CMDLINE_PARSER.add_argument('--requests-classname-prefix', type=str, default=None,
                              help=('Prefix to prepend to the per-namespace requests classes. '
                                    'Defaults to using the name of the client class.'))
 _CMDLINE_PARSER.add_argument('--data-types-only', action="store_true", default=False,
                              help='Generate all data types but no routes or clients.')
-_CMDLINE_PARSER.add_argument('--javadoc-refs', type=six.text_type, default=None,
+_CMDLINE_PARSER.add_argument('--javadoc-refs', type=str, default=None,
                              help='Path to Javadoc references file. If a file exists at this ' +
-                             'path, it will be loaded and used for generating correct Javadoc ' +
-                             'references based off previous generator runs. This is useful when ' +
-                             'generating multiple clients for a single project. ' +
-                             'If this argument is specified, an update Javadoc references file ' +
-                             'will be saved to the given location. It is OK if this file does not ' +
-                             'exist.')
+                                  'path, it will be loaded and used for generating correct Javadoc ' +
+                                  'references based off previous generator runs. This is useful when ' +
+                                  'generating multiple clients for a single project. ' +
+                                  'If this argument is specified, an update Javadoc references file ' +
+                                  'will be saved to the given location. It is OK if this file does not ' +
+                                  'exist.')
 _CMDLINE_PARSER.add_argument('--unused-classes-to-generate', default=None, help='Specify types ' +
-                             'that we want to generate regardless of whether they are used.')
+                                                                                'that we want to generate regardless of whether they are used.')
+
 
 class JavaCodeGenerator(CodeBackend):
     cmdline_parser = _CMDLINE_PARSER
@@ -639,7 +639,7 @@ class JavaCodeGenerator(CodeBackend):
             generator.generate_all()
 
 
-class JavaImporter(object):
+class JavaImporter:
     def __init__(self, current_class, j):
         assert isinstance(current_class, JavaClass), repr(current_class)
         assert isinstance(j, JavaApi), repr(j)
@@ -660,12 +660,12 @@ class JavaImporter(object):
         Imports must be fully-qualified class name strings (e.g. ``"com.foo.Bar"``) or JavaClass
         instances.
         """
-        assert all(isinstance(i, (six.text_type, JavaClass)) for i in imports), repr(imports)
+        assert all(isinstance(i, (str, JavaClass)) for i in imports), repr(imports)
 
         def convert(val):
             if isinstance(val, JavaClass):
                 return val
-            elif isinstance(val, six.string_types):
+            elif isinstance(val, str):
                 return JavaClass(val)
             else:
                 raise AssertionError(repr(type(val)))
@@ -890,10 +890,10 @@ class JavaImporter(object):
             self.add_imports('com.dropbox.core.stone.UnionSerializer')
 
     def __repr__(self):
-        return '%s(class=%s,imports=%s)' % (type(self).__name__, self._class, self._imports)
+        return '{}(class={},imports={})'.format(type(self).__name__, self._class, self._imports)
 
 
-class JavaClassWriter(object):
+class JavaClassWriter:
     def __init__(self, g, j, refs, java_class, stone_element=None, package_doc=None):
         assert isinstance(java_class, JavaClass), repr(java_class)
         assert java_class.package, repr(java_class)
@@ -935,7 +935,7 @@ class JavaClassWriter(object):
         return ret
 
     def fmt(self, fmt_str, *args, **kwargs):
-        assert isinstance(fmt_str, six.text_type), repr(fmt_str)
+        assert isinstance(fmt_str, str), repr(fmt_str)
         generics = kwargs.get('generics', True)
         # resolve JavaClass to appropriate names based on our current imports
         resolved_args = tuple(
@@ -990,7 +990,7 @@ class JavaClassWriter(object):
             return self.block('%s %s %s', ' '.join(modifiers), class_type, class_name)
 
     def resolved_class(self, val, generics=True):
-        if isinstance(val, six.text_type):
+        if isinstance(val, str):
             val = JavaClass(val)
         else:
             assert isinstance(val, JavaClass), repr(val)
@@ -1047,8 +1047,8 @@ class JavaClassWriter(object):
 
         needs_newline = bool(project_imports)
         for _, imports in chain(sorted(grouped.items()), [
-                ('java', java_imports),
-                ('javax', javax_imports)
+            ('java', java_imports),
+            ('javax', javax_imports)
         ]):
             if imports:
                 if needs_newline:
@@ -1072,9 +1072,9 @@ class JavaClassWriter(object):
         elif data_type.name == 'String':
             return self.fmt('"%s"', stone_value.replace('\\', '\\\\').replace('"', '\\"'))
         elif data_type.name == 'Float32':
-            return repr(stone_value) + 'f' # append a f at the end for float value
+            return repr(stone_value) + 'f'  # append a f at the end for float value
         elif data_type.name == 'Float64':
-            return repr(stone_value) # Because str() drops the last few digits.
+            return repr(stone_value)  # Because str() drops the last few digits.
         elif data_type.name in ('Int64', 'UInt64', 'UInt32'):
             return str(stone_value) + 'L'  # Need exact type match for boxed values.
         elif is_union_type(data_type):
@@ -1090,7 +1090,7 @@ class JavaClassWriter(object):
                         value = self.fmt('%s.%s()', j.java_class(data_type), j.field_factory_method(field))
                     return value
             else:
-                assert False, "Could not find tag '%s' in '%s'" % (stone_value.tag_name, data_type)
+                assert False, "Could not find tag '{}' in '{}'".format(stone_value.tag_name, data_type)
         else:
             return str(stone_value)
 
@@ -1139,12 +1139,12 @@ class JavaClassWriter(object):
 
         doc = doc or ''
 
-        assert isinstance(doc, six.text_type), repr((doc, stone_elem))
+        assert isinstance(doc, str), repr((doc, stone_elem))
         assert isinstance(stone_elem, StoneType) or stone_elem is None, repr(stone_elem)
         assert isinstance(fields, Sequence), repr(fields)
         assert all(isinstance(f, Field) for f in fields), repr(fields)
         assert isinstance(params, (Sequence, OrderedDict)), repr(params)
-        assert isinstance(returns, (six.text_type, StoneType)) or returns is None, repr(returns)
+        assert isinstance(returns, (str, StoneType)) or returns is None, repr(returns)
         assert isinstance(throws, (Sequence, OrderedDict)), repr(throws)
         assert isinstance(deprecated, (ApiRoute, bool)) or deprecated is None, repr(deprecated)
 
@@ -1186,14 +1186,14 @@ class JavaClassWriter(object):
 
     def throws(self, field, value_name=None):
         assert isinstance(field, Field), repr(field)
-        assert value_name is None or isinstance(value_name, six.text_type), repr(value_name)
+        assert value_name is None or isinstance(value_name, str), repr(value_name)
 
         reasons = self._field_validation_requirements(field, as_failure_reasons=True)
         throws = OrderedDict()
 
         if reasons:
             reasons_list = oxford_comma_list(reasons, conjunction='or')
-            throws["IllegalArgumentException"] = "if {@code %s} %s." % (value_name, reasons_list)
+            throws["IllegalArgumentException"] = "if {{@code {}}} {}.".format(value_name, reasons_list)
 
         return throws
 
@@ -1277,10 +1277,10 @@ class JavaClassWriter(object):
                 self._g.emit_wrapped_text(paragraph, initial_prefix=prefix, subsequent_prefix=prefix)
 
         emit_attrs('@param', params)
-        emit_attrs('@return', { "": returns } if returns else None)
+        emit_attrs('@return', {"": returns} if returns else None)
         emit_attrs('@throws', throws)
         # deprecated can be empty string, which still means we should emit
-        emit_attrs('@deprecated', { "": deprecated } if deprecated is not None else None)
+        emit_attrs('@deprecated', {"": deprecated} if deprecated is not None else None)
 
         self.out(' */')
         # compiler requires a separate annotation outside the javadoc to display warnings about
@@ -1358,6 +1358,7 @@ class JavaClassWriter(object):
             data_type = data_type.data_type
 
         requirements = []
+
         def add_req(precondition, failure_reason):
             if as_failure_reasons:
                 requirements.append(failure_reason)
@@ -1389,7 +1390,7 @@ class JavaClassWriter(object):
         return requirements
 
     def _translate_stone_doc(self, doc, stone_elem=None):
-        assert isinstance(doc, six.text_type) or doc is None, repr(doc)
+        assert isinstance(doc, str) or doc is None, repr(doc)
         if doc:
             handler = lambda tag, val: self._javadoc_ref_handler(tag, val, stone_elem=stone_elem)
             return self._g.process_doc(sanitize_javadoc(doc), handler)
@@ -1409,7 +1410,7 @@ class JavaClassWriter(object):
         """
         element = self._lookup_stone_ref(tag, val, stone_elem)
         if element is None and tag in ('route', 'type', 'field'):
-            self._g.logger.warn('Unable to resolve Stone reference (:%s:`%s`) [ctx=%s]' % (tag, val, stone_elem))
+            self._g.logger.warn('Unable to resolve Stone reference (:{}:`{}`) [ctx={}]'.format(tag, val, stone_elem))
             return sanitize_javadoc('{@code %s}' % camelcase(val))
 
         # use {@code ...} tag for unresolved references so we don't have broken links in our Javadoc
@@ -1424,18 +1425,18 @@ class JavaClassWriter(object):
             # unsanitize from previous sanitize calls
             anchor = unsanitize_javadoc(anchor)
             # do not sanitize this HTML
-            return '<a href="%s">%s</a>' % (link, anchor)
+            return '<a href="{}">{}</a>'.format(link, anchor)
         elif tag == 'val':
             # Note that all valid Stone literals happen to be valid Java literals.
             ref = '{@code %s}' % val
         else:
-            assert False, 'Unsupported tag (:%s:`%s`)' % (tag, val)
+            assert False, 'Unsupported tag (:{}:`{}`)'.format(tag, val)
 
         return sanitize_javadoc(ref)
 
     def _lookup_stone_ref(self, tag, val, stone_elem):
-        assert isinstance(tag, six.text_type), repr(tag)
-        assert isinstance(val, six.text_type), repr(val)
+        assert isinstance(tag, str), repr(tag)
+        assert isinstance(val, str), repr(val)
         assert isinstance(stone_elem, StoneType) or stone_elem is None, repr(stone_elem)
         assert val, repr(val)
 
@@ -1446,13 +1447,13 @@ class JavaClassWriter(object):
                 parts = split_stone_name(val, max_parts)
             except ValueError as e:
                 # mark tag as invalid... can't raise exception here since we don't validate stone docs
-                self._g.logger.warn('Malformed Stone reference value: `%s`. %s' % (val, str(e)))
+                self._g.logger.warn('Malformed Stone reference value: `{}`. {}'.format(val, str(e)))
                 return None
             else:
                 if stone_elem and None in parts:
                     context_parts = j.stone_fq_name(stone_elem).split('.')
                     # pad the end with None's
-                    context_parts += [None,] * (max_parts - len(context_parts))
+                    context_parts += [None, ] * (max_parts - len(context_parts))
                     parts = [(orig or context) for orig, context in zip(parts, context_parts)]
                 if None in parts:
                     return None
@@ -1473,7 +1474,7 @@ class JavaClassWriter(object):
         elif tag == 'val':
             return None
         else:
-            assert False, 'Unsupported tag (:%s:`%s`)' % (tag, val)
+            assert False, 'Unsupported tag (:{}:`{}`)'.format(tag, val)
 
     def _javadoc_route_ref(self, route_ref, builder=False):
         assert isinstance(route_ref, RouteReference), repr(route_ref)
@@ -1521,7 +1522,7 @@ class JavaClassWriter(object):
         # make the Javadoc reference point to the route method instead of the struct class.
         if field_ref.route_refs and not self._g.args.data_types_only:
             # the struct should not appear anywhere else besides as a route argument
-            return 'the {@code %s} argument to %s' % (
+            return 'the {{@code {}}} argument to {}'.format(
                 field_ref.param_name,
                 oxford_comma_list([
                     self._javadoc_route_ref(route_ref)
@@ -1542,7 +1543,7 @@ class JavaClassWriter(object):
         )
 
 
-class JavaApi(object):
+class JavaApi:
     def __init__(self, api, generator_args):
         self.stone_api = api
         self._args = generator_args
@@ -1764,7 +1765,7 @@ class JavaApi(object):
 
     def get_spec_filenames(self, element):
         assert isinstance(element, StoneType), repr(element)
-        filenames = OrderedDict() # ordered set
+        filenames = OrderedDict()  # ordered set
         if isinstance(element, ApiNamespace):
             for child in chain(element.data_types, element.routes):
                 filenames[self.get_spec_filename(child)] = None
@@ -1920,7 +1921,7 @@ class JavaApi(object):
         Server URL path associated with this route.
         """
         assert isinstance(route, ApiRoute), repr(route)
-        return '2/%s/%s' % (self._namespaces_by_route[route].name, format_func_name(route))
+        return '2/{}/{}'.format(self._namespaces_by_route[route].name, format_func_name(route))
 
     @staticmethod
     def has_arg(route):
@@ -1989,7 +1990,7 @@ class JavaApi(object):
             namespace = stone_elem
             package = self.namespace_package(namespace, base_package)
             prefix = self._args.requests_classname_prefix or self._args.client_class
-            return JavaClass(package + '.' + classname('%s_%s_Requests' % (prefix, namespace.name)))
+            return JavaClass(package + '.' + classname('{}_{}_Requests'.format(prefix, namespace.name)))
         elif isinstance(stone_elem, ApiRoute):
             route = stone_elem
             return self.java_class(self._namespaces_by_route[route])
@@ -2029,7 +2030,7 @@ class JavaApi(object):
             else:
                 prefix = ""
             package = self.java_class(route).package
-            return JavaClass(package + '.' + classname('%s%s_builder' % (prefix, format_func_name(route))))
+            return JavaClass(package + '.' + classname('{}{}_builder'.format(prefix, format_func_name(route))))
         else:
             data_type = stone_elem
             assert is_user_defined_type(data_type), repr(data_type)
@@ -2113,7 +2114,7 @@ class JavaApi(object):
         return self._namespaces_by_route[route]
 
     def _lookup_data_type(self, fq_name):
-        assert isinstance(fq_name, six.text_type), repr(fq_name)
+        assert isinstance(fq_name, str), repr(fq_name)
         assert '.' in fq_name, repr(fq_name)
         namespace_name, data_type_name = split_stone_name(fq_name, max_parts=2)
         namespace = self.stone_api.namespaces.get(namespace_name)
@@ -2153,7 +2154,7 @@ class JavaApi(object):
         self._client_data_types.add(data_type)
 
 
-class JavaReferences(object):
+class JavaReferences:
 
     def __init__(self, j):
         self.j = j
@@ -2248,7 +2249,7 @@ class JavaReferences(object):
         if isinstance(data_type, DataType):
             name = j.stone_fq_name(data_type)
         else:
-            assert isinstance(data_type, six.text_type), repr(data_type)
+            assert isinstance(data_type, str), repr(data_type)
             name = data_type
         assert '.' in name, "Must use fully-qualified stone name: %s" % name
         return self.data_types.get(name)
@@ -2260,7 +2261,7 @@ class JavaReferences(object):
         else:
             # we expect fully-qualified names for string field references
             assert containing_data_type is None, repr(field)
-            assert isinstance(field, six.text_type), repr(field)
+            assert isinstance(field, str), repr(field)
             name = field
         assert '.' in name, "Must use fully-qualified stone name: %s" % name
         return self.fields.get(name)
@@ -2270,7 +2271,7 @@ class JavaReferences(object):
         if isinstance(route, ApiRoute):
             name = j.stone_fq_name(route)
         else:
-            assert isinstance(route, six.text_type), repr(route)
+            assert isinstance(route, str), repr(route)
             name = route
         assert '.' in name, "Must use fully-qualified stone name: %s" % name
         return self.routes.get(name)
@@ -2312,16 +2313,16 @@ class JavaReferences(object):
                     )
 
 
-class JavaReference(object):
+class JavaReference:
     def __init__(self, fq_name):
-        assert isinstance(fq_name, six.text_type), repr(fq_name)
+        assert isinstance(fq_name, str), repr(fq_name)
         self.fq_name = fq_name
 
     def __repr__(self):
-        return '%s(%s)' % (type(self).__name__, self.__dict__)
+        return '{}({})'.format(type(self).__name__, self.__dict__)
 
     def __str__(self):
-        return '%s(%s)' % (type(self).__name__, self.fq_name)
+        return '{}({})'.format(type(self).__name__, self.fq_name)
 
     def _as_json(self):
         dct = {}
@@ -2366,7 +2367,7 @@ class JavaClassReference(JavaReference):
     def __init__(self, name, java_class, visibility=Visibility.NONE):
         assert isinstance(java_class, JavaClass), repr(java_class)
         assert isinstance(visibility, Visibility), repr(visibility)
-        super(JavaClassReference, self).__init__(name)
+        super().__init__(name)
         self.java_class = java_class
         self.visibility = visibility
 
@@ -2376,13 +2377,13 @@ class JavaClassReference(JavaReference):
     def _from_json(self, obj):
         self.java_class = JavaClass.from_str(obj.pop('java_class'))
         self.visibility = Visibility.from_name(obj.pop('visibility'))
-        super(JavaClassReference, self)._from_json(obj)
+        super()._from_json(obj)
 
 
 class RouteReference(JavaClassReference):
     def __init__(self, j, route, error_ref):
         assert isinstance(route, ApiRoute), repr(route)
-        super(RouteReference, self).__init__(
+        super().__init__(
             j.stone_fq_name(route),
             j.java_class(route),
             Visibility.PUBLIC
@@ -2397,7 +2398,7 @@ class RouteReference(JavaClassReference):
 
         if is_struct_type(route.arg_data_type):
             self.is_method_overloaded = (
-                any(route.arg_data_type.all_optional_fields) and not j.has_builder(route.arg_data_type)
+                    any(route.arg_data_type.all_optional_fields) and not j.has_builder(route.arg_data_type)
             )
             if self.is_method_overloaded:
                 fields = route.arg_data_type.all_fields
@@ -2412,13 +2413,13 @@ class RouteReference(JavaClassReference):
         self.method_arg_classes = tuple(
             JavaClass.from_str(c) for c in obj.pop('method_arg_classes')
         )
-        super(RouteReference, self)._from_json(obj)
+        super()._from_json(obj)
 
 
 class DataTypeReference(JavaClassReference):
     def __init__(self, j, data_type):
         assert isinstance(data_type, DataType), repr(data_type)
-        super(DataTypeReference, self).__init__(
+        super().__init__(
             j.stone_fq_name(data_type),
             j.java_class(data_type),
             visibility=j.data_type_visibility(data_type)
@@ -2434,7 +2435,7 @@ class DataTypeReference(JavaClassReference):
     def _from_json(self, obj):
         self.builder_class = JavaClass.from_str(obj.pop('builder_class')) if obj['builder_class'] else None
         self.serializer_visibility = Visibility.from_name(obj.pop('serializer_visibility'))
-        super(DataTypeReference, self)._from_json(obj)
+        super()._from_json(obj)
 
 
 class FieldReference(JavaReference):
@@ -2444,7 +2445,7 @@ class FieldReference(JavaReference):
         assert isinstance(route_refs, Sequence), repr(route_refs)
         assert all(isinstance(r, RouteReference) for r in route_refs), repr(route_refs)
 
-        super(FieldReference, self).__init__(fq_name)
+        super().__init__(fq_name)
 
         self.param_name = j.param_name(field)
         self.static_instance = j.field_static_instance(field)
@@ -2454,7 +2455,7 @@ class FieldReference(JavaReference):
         self.route_refs = route_refs
 
 
-class JavaCodeGenerationInstance(object):
+class JavaCodeGenerationInstance:
     """
     Java code generation instance for a particular Stone tree (:class:`stone.api.Api`).
 
@@ -2482,7 +2483,8 @@ class JavaCodeGenerationInstance(object):
             java_class = self.j.java_class(stone_type_or_class)
             stone_element = stone_type_or_class
 
-        with JavaClassWriter(self.g, self.j, self.refs, java_class, stone_element=stone_element, package_doc=package_doc) as w:
+        with JavaClassWriter(self.g, self.j, self.refs, java_class, stone_element=stone_element,
+                             package_doc=package_doc) as w:
             assert self.w is None, self.w
             self.w = w
             yield w
@@ -2509,7 +2511,7 @@ class JavaCodeGenerationInstance(object):
 
         # load existing file and merge it with our current state
         if os.path.exists(javadoc_refs_path):
-            with open(javadoc_refs_path, 'r') as f:
+            with open(javadoc_refs_path) as f:
                 self.refs.load(f)
 
         # save our updated state back to the file
@@ -2669,7 +2671,8 @@ class JavaCodeGenerationInstance(object):
                     # we don't use builders if we have too few optional fields. Instead we just
                     # create another method call. We have an exception for download endpoints, which
                     # recently added builders for previous routes that had no builders
-                    has_optional_fields = is_struct_type(route.arg_data_type) and route.arg_data_type.all_optional_fields
+                    has_optional_fields = is_struct_type(
+                        route.arg_data_type) and route.arg_data_type.all_optional_fields
                     if has_optional_fields and not j.has_builder(route.arg_data_type):
                         self.generate_route(route, required_only=False)
 
@@ -2700,10 +2703,10 @@ class JavaCodeGenerationInstance(object):
 
         package_doc = (
             """
-            %s
+            {}
 
-            %s
-            """ % (namespace.doc or '', requests_reference_doc)
+            {}
+            """.format(namespace.doc or '', requests_reference_doc)
         )
 
         package_info_class = JavaClass(j.java_class(namespace).package + '.' + 'package-info')
@@ -2735,11 +2738,11 @@ class JavaCodeGenerationInstance(object):
             return_class = JavaClass('void')
 
         if is_public:
-            deprecated = None # automatically determine from route
+            deprecated = None  # automatically determine from route
             visibility = 'public'
         else:
-            deprecated = False # Don't mark private methods deprecated since we don't care
-            visibility = ''    # package private
+            deprecated = False  # Don't mark private methods deprecated since we don't care
+            visibility = ''  # package private
 
         throws_classes = j.route_throws_classes(route)
         throws = ', '.join(w.resolved_class(c) for c in throws_classes)
@@ -2814,7 +2817,6 @@ class JavaCodeGenerationInstance(object):
             # you want to support this.
             assert n_optional == 1, "More than one optional field should permit boxing! %s" % repr(route)
 
-
         if j.request_style(route) == 'upload':
             returns = "Uploader used to upload the request body and finish request."
             return_class = j.route_uploader_class(route)
@@ -2825,7 +2827,7 @@ class JavaCodeGenerationInstance(object):
             returns = result
             return_class = j.java_class(route.result_data_type)
         else:
-            returns=None
+            returns = None
             return_class = JavaClass('void')
 
         if required_only:
@@ -2849,7 +2851,7 @@ class JavaCodeGenerationInstance(object):
                 default_field = default_fields[0]
                 doc += """
 
-                The {@code %s} request parameter will default to {@code %s} (see {@link #%s(%s)}).""" % (
+                The {{@code {}}} request parameter will default to {{@code {}}} (see {{@link #{}({})}}).""".format(
                     j.param_name(default_field),
                     w.java_default_value(default_field),
                     j.route_method(route),
@@ -2907,11 +2909,11 @@ class JavaCodeGenerationInstance(object):
         return_class = j.builder_class(route)
 
         if j.request_style(route) == 'upload':
-            returns="Uploader builder for configuring request parameters and instantiating an uploader."
+            returns = "Uploader builder for configuring request parameters and instantiating an uploader."
         elif j.request_style(route) == 'download':
-            returns="Downloader builder for configuring the request parameters and instantiating a downloader."
+            returns = "Downloader builder for configuring the request parameters and instantiating a downloader."
         else:
-            returns="Request builder for configuring request parameters and completing the request."
+            returns = "Request builder for configuring request parameters and completing the request."
 
         required_fields = arg.all_required_fields
         args = ', '.join(
@@ -2928,14 +2930,14 @@ class JavaCodeGenerationInstance(object):
                       j.builder_class(arg),
                       j.java_class(arg),
                       builder_args,
-                )
+                      )
                 w.out('return new %s(this, argBuilder_);', return_class)
             else:
                 w.out('return new %s(this, %s);', return_class, builder_args)
 
     def translate_error_wrapper(self, route, error_wrapper_var):
         assert isinstance(route, ApiRoute), repr(route)
-        assert isinstance(error_wrapper_var, six.text_type), repr(error_wrapper_var)
+        assert isinstance(error_wrapper_var, str), repr(error_wrapper_var)
 
         w = self.w
         j = self.j
@@ -2949,11 +2951,11 @@ class JavaCodeGenerationInstance(object):
                          j.java_class(route.error_data_type),
                          error_wrapper_var)
         else:
-            message = '"Unexpected error response for \\"%s\\":" + %s.getErrorValue()' % (
+            message = '"Unexpected error response for \\"{}\\":" + {}.getErrorValue()'.format(
                 format_func_name(route),
                 error_wrapper_var,
             )
-            return 'new DbxApiException(%s.getRequestId(), %s.getUserMessage(), %s);' % (
+            return 'new DbxApiException({}.getRequestId(), {}.getUserMessage(), {});'.format(
                 error_wrapper_var,
                 error_wrapper_var,
                 message)
@@ -3106,19 +3108,18 @@ class JavaCodeGenerationInstance(object):
         w = self.w
         j = self.j
 
-        class_doc = """%s
+        class_doc = """{}
 
-            This class is %s union.  Tagged unions instances are always associated to a
-            specific tag.  This means only one of the {@code isAbc()} methods will return {@code
-            true}. You can use {@link #tag()} to determine the tag associated with this instance.
-            """ % (data_type.doc or '', 'an open tagged' if data_type.catch_all_field else 'a tagged')
+            This class is {} union.  Tagged unions instances are always associated to a
+            specific tag.  This means only one of the {{@code isAbc()}} methods will return {{@code
+            true}}. You can use {{@link #tag()}} to determine the tag associated with this instance.
+            """.format(data_type.doc or '', 'an open tagged' if data_type.catch_all_field else 'a tagged')
         if data_type.catch_all_field:
-                class_doc += """
+            class_doc += """
 
                 Open unions may be extended in the future with additional tags. If a new tag is
                 introduced that this SDK does not recognized, the {@link #%s} value will be used.
                 """ % j.field_static_instance(data_type.catch_all_field)
-
 
         visibility = j.data_type_visibility(data_type)
 
@@ -3154,7 +3155,7 @@ class JavaCodeGenerationInstance(object):
                       j.java_class(data_type),
                       method_name,
                       singleton_args,
-                )
+                      )
 
             #
             # Instance fields
@@ -3206,7 +3207,7 @@ class JavaCodeGenerationInstance(object):
             w.out('')
             if data_type.catch_all_field:
                 catch_all_doc = (
-                    """
+                        """
                     If a tag returned by the server is unrecognized by this SDK,
                     the {@link Tag#%s} value will be used.
                     """ % j.field_tag_enum_name(data_type.catch_all_field)
@@ -3218,11 +3219,11 @@ class JavaCodeGenerationInstance(object):
                 Returns the tag for this instance.
 
                 This class is a tagged union.  Tagged unions instances are always associated to a
-                specific tag.  This means only one of the {@code isXyz()} methods will return {@code
-                true}. Callers are recommended to use the tag value in a {@code switch} statement to
-                properly handle the different values for this {@code %s}.
+                specific tag.  This means only one of the {{@code isXyz()}} methods will return {{@code
+                true}}. Callers are recommended to use the tag value in a {{@code switch}} statement to
+                properly handle the different values for this {{@code {}}}.
 
-                %s""" % (j.java_class(data_type).name, catch_all_doc),
+                {}""".format(j.java_class(data_type).name, catch_all_doc),
                 stone_elem=data_type,
                 returns="the tag for this instance."
             )
@@ -3261,11 +3262,11 @@ class JavaCodeGenerationInstance(object):
                 otherwise.
                 """ % j.field_tag_enum_name(field),
                 returns=(
-                    """
+                            """
                     {@code true} if this instance is tagged as {@link Tag#%s},
                     {@code false} otherwise.
                     """
-                ) % j.field_tag_enum_name(field)
+                        ) % j.field_tag_enum_name(field)
             )
             with w.block('public boolean %s()' % j.field_tag_match_method_name(field)):
                 w.out('return this._tag == Tag.%s;', j.field_tag_enum_name(field))
@@ -3277,12 +3278,12 @@ class JavaCodeGenerationInstance(object):
                 w.out('')
                 doc = (
                     """
-                    Returns an instance of {@code %s} that has its tag set to {@link Tag#%s}.
+                    Returns an instance of {{@code {}}} that has its tag set to {{@link Tag#{}}}.
 
-                    %s
-                    """ % (j.java_class(data_type).name, j.field_tag_enum_name(field), field.doc)
+                    {}
+                    """.format(j.java_class(data_type).name, j.field_tag_enum_name(field), field.doc)
                 )
-                returns = "Instance of {@code %s} with its tag set to {@link Tag#%s}." % (
+                returns = "Instance of {{@code {}}} with its tag set to {{@link Tag#{}}}.".format(
                     j.java_class(data_type).name, j.field_tag_enum_name(field))
                 w.javadoc(
                     doc,
@@ -3296,8 +3297,9 @@ class JavaCodeGenerationInstance(object):
                                  j.java_class(data_type),
                                  j.field_factory_method(field),
                                  j.java_class(field),
-                    ):
-                        self.generate_field_validation(field, value_name="value", omit_arg_name=True, allow_default=False)
+                                 ):
+                        self.generate_field_validation(field, value_name="value", omit_arg_name=True,
+                                                       allow_default=False)
                         method_name = union_create_with_method_name(data_type, [field])
                         w.out('return new %s().%s(Tag.%s, %s);',
                               j.java_class(data_type),
@@ -3317,24 +3319,25 @@ class JavaCodeGenerationInstance(object):
                 w.out('')
                 w.javadoc(
                     """
-                    %s
+                    {}
 
-                    This instance must be tagged as {@link Tag#%s}.
-                    """ % (field.doc or '', j.field_tag_enum_name(field)),
+                    This instance must be tagged as {{@link Tag#{}}}.
+                    """.format(field.doc or '', j.field_tag_enum_name(field)),
                     stone_elem=field,
                     returns="""
-                    The %s value associated with this instance if {@link #%s} is
-                    {@code true}.
-                    """ % (w.javadoc_ref(field.data_type), j.field_tag_match_method_name(field)),
+                    The {} value associated with this instance if {{@link #{}}} is
+                    {{@code true}}.
+                    """.format(w.javadoc_ref(field.data_type), j.field_tag_match_method_name(field)),
                     throws=OrderedDict(
                         IllegalStateException="If {@link #%s} is {@code false}." % j.field_tag_match_method_name(field),
                     )
                 )
                 with w.block('public %s %s()', j.java_class(field), j.field_getter_method(field)):
                     with w.block('if (this._tag != Tag.%s)', j.field_tag_enum_name(field)):
-                        w.out('throw new IllegalStateException("Invalid tag: required Tag.%s, but was Tag." + this._tag.name());', j.field_tag_enum_name(field))
+                        w.out(
+                            'throw new IllegalStateException("Invalid tag: required Tag.%s, but was Tag." + this._tag.name());',
+                            j.field_tag_enum_name(field))
                     w.out('return %s;', j.param_name(field))
-
 
     def generate_data_type_struct(self, data_type):
         assert is_struct_type(data_type), repr(data_type)
@@ -3432,7 +3435,6 @@ class JavaCodeGenerationInstance(object):
                 w.javadoc(field.doc or '', stone_elem=field, returns=returns)
                 with w.block('public %s %s()', j.java_class(field), j.field_getter_method(field)):
                     w.out('return %s;' % j.param_name(field))
-
 
             #
             # builder
@@ -3576,7 +3578,6 @@ class JavaCodeGenerationInstance(object):
                 If left unset or set to {@code null}, defaults to {@code %s}.
                 """ % w.java_default_value(field)
 
-
             #
             # withFieldName(FieldType fieldValue);
             #
@@ -3585,7 +3586,7 @@ class JavaCodeGenerationInstance(object):
             with w.block('public %s %s(%s %s)',
                          builder_class,
                          j.field_builder_method(field),
-                         j.java_class(field, boxed=True), # null treated as default
+                         j.java_class(field, boxed=True),  # null treated as default
                          j.param_name(field)):
                 if wrapped_builder_name:
                     w.out('%s.%s(%s);',
@@ -3619,10 +3620,10 @@ class JavaCodeGenerationInstance(object):
             w.out('')
             w.javadoc(
                 """
-                Exception thrown when the server responds with a %s error.
+                Exception thrown when the server responds with a {} error.
 
-                This exception is raised by %s.
-                """ % (w.javadoc_ref(data_type), route_javadoc_refs)
+                This exception is raised by {}.
+                """.format(w.javadoc_ref(data_type), route_javadoc_refs)
             )
             with w.class_block(exception_class, parent_class=JavaClass('com.dropbox.core.DbxApiException')):
                 w.out('// exception for routes:')
@@ -3664,14 +3665,14 @@ class JavaCodeGenerationInstance(object):
             w.out('')
             w.javadoc(
                 """
-                The {@link DbxUploader} returned by %s.
+                The {{@link DbxUploader}} returned by {}.
 
                 Use this class to upload data to the server and complete the request.
 
                 This class should be properly closed after use to prevent resource leaks and allow
-                network connection reuse. Always call {@link #close} when complete (see %s
+                network connection reuse. Always call {{@link #close}} when complete (see {}
                 for examples).
-                """ % (w.javadoc_ref(route), w.javadoc_ref(JavaClass('com.dropbox.core.DbxUploader')))
+                """.format(w.javadoc_ref(route), w.javadoc_ref(JavaClass('com.dropbox.core.DbxUploader')))
             )
             with w.class_block(j.route_uploader_class(route), parent_class=parent_class):
                 w.out('')
@@ -3680,7 +3681,8 @@ class JavaCodeGenerationInstance(object):
                     params=(('httpUploader', 'Initiated HTTP upload request'),),
                     throws=(('NullPointerException', 'if {@code httpUploader} is {@code null}'),)
                 )
-                with w.block('public %s(HttpRequestor.Uploader httpUploader, String userId)', j.route_uploader_class(route)):
+                with w.block('public %s(HttpRequestor.Uploader httpUploader, String userId)',
+                             j.route_uploader_class(route)):
                     w.out('super(httpUploader, %s, %s, userId);',
                           w.java_serializer(route.result_data_type),
                           w.java_serializer(route.error_data_type))
@@ -3743,8 +3745,9 @@ class JavaCodeGenerationInstance(object):
                 # CONSTRUCTOR
                 #
 
-                params=[
-                    ('_client', 'Dropbox namespace-specific client used to issue %s requests.' % j.route_namespace(route).name)
+                params = [
+                    ('_client',
+                     'Dropbox namespace-specific client used to issue %s requests.' % j.route_namespace(route).name)
                 ]
                 if j.has_builder(arg):
                     fields = ()
@@ -3789,7 +3792,8 @@ class JavaCodeGenerationInstance(object):
                 #
 
                 wrapped_builder_name = '_builder' if j.has_builder(arg) else None
-                self.generate_builder_methods(j.builder_class(route), arg.all_fields, wrapped_builder_name=wrapped_builder_name)
+                self.generate_builder_methods(j.builder_class(route), arg.all_fields,
+                                              wrapped_builder_name=wrapped_builder_name)
 
                 #
                 # BUILD method to start request
@@ -3934,7 +3938,9 @@ class JavaCodeGenerationInstance(object):
 
         w.out('')
         w.out('@Override')
-        with w.block('public void serialize(%s value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException', j.java_class(data_type)):
+        with w.block(
+                'public void serialize(%s value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException',
+                j.java_class(data_type)):
 
             if data_type.has_enumerated_subtypes():
                 for subtype in data_type.get_enumerated_subtypes():
@@ -3971,7 +3977,8 @@ class JavaCodeGenerationInstance(object):
 
         w.out('')
         w.out('@Override')
-        with w.block('public %s deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException', j.java_class(data_type)):
+        with w.block('public %s deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException',
+                     j.java_class(data_type)):
             w.out('%s value;', j.java_class(data_type))
             w.out('String tag = null;')
 
@@ -4006,7 +4013,7 @@ class JavaCodeGenerationInstance(object):
                 for field in data_type.all_fields:
                     if field not in data_type.all_optional_fields:
                         with w.block('if (f_%s == null)', j.param_name(field)):
-                            w.out('throw new JsonParseException(p, "Required field \\"%s\\" missing.");' , field.name)
+                            w.out('throw new JsonParseException(p, "Required field \\"%s\\" missing.");', field.name)
                 args = ['f_%s' % j.param_name(f) for f in data_type.all_fields]
                 w.out('value = new %s(%s);', j.java_class(data_type), ', '.join(args))
 
@@ -4031,7 +4038,8 @@ class JavaCodeGenerationInstance(object):
 
         w.out('')
         w.out('@Override')
-        with w.block('public void serialize(%s value, JsonGenerator g) throws IOException, JsonGenerationException', j.java_class(data_type)):
+        with w.block('public void serialize(%s value, JsonGenerator g) throws IOException, JsonGenerationException',
+                     j.java_class(data_type)):
             tag = 'value' if j.is_enum(data_type) else 'value.tag()'
             with w.block('switch (%s)' % tag):
                 for field in data_type.all_fields:
@@ -4045,7 +4053,8 @@ class JavaCodeGenerationInstance(object):
                             w.out('writeTag("%s", g);', field.name)
                             serializer = w.java_serializer(field.data_type)
                             value = 'value.%s' % j.param_name(field)
-                            if j.is_collapsible(field.data_type) or is_nullable_type(field.data_type) and j.is_collapsible(field.data_type.data_type):
+                            if j.is_collapsible(field.data_type) or is_nullable_type(
+                                    field.data_type) and j.is_collapsible(field.data_type.data_type):
                                 w.out('%s.serialize(%s, g, true);', serializer, value)
                             else:
                                 w.out('g.writeFieldName("%s");', field.name)
@@ -4067,7 +4076,8 @@ class JavaCodeGenerationInstance(object):
 
         w.out('')
         w.out('@Override')
-        with w.block('public %s deserialize(JsonParser p) throws IOException, JsonParseException', j.java_class(data_type)):
+        with w.block('public %s deserialize(JsonParser p) throws IOException, JsonParseException',
+                     j.java_class(data_type)):
             w.out('%s value;', j.java_class(data_type))
             w.out('boolean collapsed;')
             w.out('String tag;')
@@ -4094,9 +4104,11 @@ class JavaCodeGenerationInstance(object):
                         w.out('value = %s.%s;', j.java_class(data_type), j.field_static_instance(field))
                     else:
                         w.out('%s fieldValue = null;', j.java_class(field_dt, boxed=True, generics=True))
-                        with w.conditional_block(is_nullable_type(field.data_type), 'if (p.getCurrentToken() != JsonToken.END_OBJECT)'):
+                        with w.conditional_block(is_nullable_type(field.data_type),
+                                                 'if (p.getCurrentToken() != JsonToken.END_OBJECT)'):
                             field_serializer = w.java_serializer(field_dt)
-                            if j.is_collapsible(field_dt) or is_nullable_type(field_dt) and j.is_collapsible(field_dt.data_type):
+                            if j.is_collapsible(field_dt) or is_nullable_type(field_dt) and j.is_collapsible(
+                                    field_dt.data_type):
                                 w.out('fieldValue = %s.deserialize(p, true);', field_serializer)
                             else:
                                 w.out('expectField("%s", p);', field.name)
@@ -4106,7 +4118,8 @@ class JavaCodeGenerationInstance(object):
                             with w.block('if (fieldValue == null)'):
                                 w.out('value = %s.%s();', j.java_class(data_type), j.field_factory_method(field))
                             with w.block('else'):
-                                w.out('value = %s.%s(fieldValue);', j.java_class(data_type), j.field_factory_method(field))
+                                w.out('value = %s.%s(fieldValue);', j.java_class(data_type),
+                                      j.field_factory_method(field))
                         else:
                             w.out('value = %s.%s(fieldValue);', j.java_class(data_type), j.field_factory_method(field))
             with w.block('else'):
@@ -4148,7 +4161,8 @@ class JavaCodeGenerationInstance(object):
             with w.block('for (%s %s : %s)', list_item_type, xn, value_name):
                 with w.block('if (%s == null)', xn):
                     w.out('throw new IllegalArgumentException("An item in list%s is null");', description)
-                self.generate_data_type_validation(data_type.data_type, xn, 'an item in list%s' % description, level=level+1)
+                self.generate_data_type_validation(data_type.data_type, xn, 'an item in list%s' % description,
+                                                   level=level + 1)
 
         elif is_map_type(data_type):
             xn = 'x' if level == 0 else 'x%d' % level
@@ -4156,7 +4170,8 @@ class JavaCodeGenerationInstance(object):
             with w.block('for (%s %s : %s.values())', map_item_type, xn, value_name):
                 with w.block('if (%s == null)', xn):
                     w.out('throw new IllegalArgumentException("An item in map%s is null");', description)
-                self.generate_data_type_validation(data_type.value_data_type, xn, 'an item in map%s' % description, level=level+1)
+                self.generate_data_type_validation(data_type.value_data_type, xn, 'an item in map%s' % description,
+                                                   level=level + 1)
 
         elif is_numeric_type(data_type):
             if data_type.min_value is not None:
@@ -4262,7 +4277,8 @@ class JavaCodeGenerationInstance(object):
         elif not is_nullable_type(field.data_type):
             return '(this.%(f)s == other.%(f)s) || (this.%(f)s.equals(other.%(f)s))' % dict(f=name)
         else:
-            return '(this.%(f)s == other.%(f)s) || (this.%(f)s != null && this.%(f)s.equals(other.%(f)s))' % dict(f=name)
+            return '(this.%(f)s == other.%(f)s) || (this.%(f)s != null && this.%(f)s.equals(other.%(f)s))' % dict(
+                f=name)
 
     def generate_equals(self, data_type):
         assert isinstance(data_type, DataType), repr(data_type)
@@ -4338,8 +4354,6 @@ class JavaCodeGenerationInstance(object):
                 w.out('return false;')
 
 
-
-
 # TODO: Add all Java reserved words.
 _RESERVED_KEYWORDS = {
     'Enum',
@@ -4397,7 +4411,6 @@ _RESERVED_KEYWORDS = {
     'while',
 }
 
-
 _TYPE_MAP_UNBOXED = {
     'UInt64': 'long',
     'Int64': 'long',
@@ -4413,7 +4426,6 @@ _TYPE_MAP_UNBOXED = {
     'List': 'java.util.List',
     'Map': 'java.util.Map',
 }
-
 
 _TYPE_MAP_BOXED = {
     'UInt64': 'Long',
