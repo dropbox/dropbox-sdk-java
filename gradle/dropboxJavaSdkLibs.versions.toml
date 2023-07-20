@@ -1,11 +1,11 @@
 [versions]
 android-compile-sdk = "33"
-android-gradle-plugin = "7.2.2"
+android-gradle-plugin = "7.4.2"
 android-min-sdk = "21"
 android-target-sdk = "33"
 androidx-activity = "1.5.0"
 binary-compatibility-validator = "0.11.1"
-dependency-guard = "0.4.0"
+dependency-guard = "0.4.3"
 junit-jupiter = "5.8.2"
 kotlin = "1.6.21"
 kotlin-coroutines = "1.6.4"
@@ -45,4 +45,4 @@ blind-pirate-osgi = "com.github.blindpirate.osgi:0.0.6"
 dependency-guard = { id = "com.dropbox.dependency-guard", version.ref = "dependency-guard" }
 gradle-version-plugin = "com.github.ben-manes.versions:0.42.0"
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-maven-publish-plugin = "com.vanniktech.maven.publish:0.18.0"
+maven-publish-plugin = "com.vanniktech.maven.publish:0.23.2"

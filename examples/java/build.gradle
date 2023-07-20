@@ -21,7 +21,7 @@ dependencies {
     testImplementation(dropboxJavaSdkLibs.test.junit)
 }
 
-test {
+tasks.named("test", Test).configure {
     // Uses the "ci" gradle property and sets it as an environment variable for the test
     environment("ci", project.findProperty("ci"))
 
