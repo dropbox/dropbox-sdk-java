@@ -2,227 +2,129 @@ package com.dropbox.stone.java
 
 import com.dropbox.stone.java.model.StoneConfig
 import org.gradle.api.DefaultTask
-import org.gradle.api.GradleException
 import org.gradle.api.file.DirectoryProperty
-import org.gradle.api.file.FileTree
-import org.gradle.api.model.ObjectFactory
+import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.Optional
+import org.gradle.api.tasks.InputDirectory
+import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
+import org.gradle.api.tasks.Optional
 import org.gradle.process.ExecOperations
 import java.io.File
 import java.io.FileOutputStream
-import java.nio.file.Files
 import javax.inject.Inject
 
 abstract class StoneTask : DefaultTask() {
 
-    init {
-        group = "Dropbox Stone Java Generator"
-    }
+    @get:Inject
+    abstract val exec: ExecOperations
 
-    @Input
-    abstract fun getStoneConfigs(): ListProperty<StoneConfig>
+    @get:Input
+    abstract val stoneConfigs: ListProperty<StoneConfig>
 
-    @Input
-    abstract fun getGeneratorDir(): Property<String>
+    @get:InputDirectory
+    abstract val generatorDir: DirectoryProperty
 
-    @Input
-    abstract fun getSpecDir(): Property<String>
+    @get:InputDirectory
+    abstract val specDir: DirectoryProperty
 
-    @Optional
-    @Input
-    abstract fun getRouteWhitelistFilter(): Property<String>
+    @get:Optional
+    @get:InputFile
+    abstract val routeWhitelistFilter: RegularFileProperty
 
-    @Input
-    abstract fun getStoneDir(): Property<String>
+    @get:InputDirectory
+    abstract val stoneDir: DirectoryProperty
 
-    @Input
-    abstract fun getPythonCommand(): Property<String>
+    @get:Input
+    abstract val pythonCommand: Property<String>
 
-    @OutputDirectory
-    abstract fun getOutputDir(): DirectoryProperty
-
-    @Inject
-    abstract fun getObjectFactory(): ObjectFactory
-
-    @Inject
-    abstract fun getExecOperations(): ExecOperations
-
-
-    public fun config(configs: List<StoneConfig>) {
-        getStoneConfigs().set(configs)
-    }
-
-    public fun generatorDir(generatorDir: String) {
-        getGeneratorDir().set(generatorDir)
-    }
-
-    public fun routeWhitelistFilter(routeWhitelistFilter: String) {
-        getRouteWhitelistFilter().set(routeWhitelistFilter)
-    }
-
-    public fun stoneDir(stoneDir: String) {
-        getStoneDir().set(stoneDir)
-    }
-
-    public fun pythonCommand(pythonCommand: String) {
-        getPythonCommand().set(pythonCommand)
-    }
-
-    public fun specDir(specDir: String) {
-        getSpecDir().set(specDir)
-    }
-
-    public fun outputDir(outputDir: String) {
-        getOutputDir().set(File(outputDir))
-    }
+    @get:OutputDirectory
+    abstract val outputDir: DirectoryProperty
 
     @TaskAction
-    public fun processStone() {
-        val stoneDir = File("${project.projectDir}/stone/stone")
-        if (!stoneDir.exists()) {
-            throw GradleException(
-                "Stone directory ${stoneDir.absolutePath} does not exist. " +
-                        "Please run `./update-submodules` to download the stone submodule."
-            )
+    fun processStone() {
+        check(stoneDir.get().asFile.exists()) {
+            "Stone directory ${stoneDir} does not exist. " +
+                    "Please run `./update-submodules` to download the stone submodule."
         }
 
-        val generatorFileTree = getObjectFactory().fileTree().from(getGeneratorDir().get())
-        generatorFileTree.include("**/*stoneg.py")
-        val generatorFile = generatorFileTree.singleFile
-        val specFiles = getSpecFiles(getObjectFactory(), getSpecDir().get()).files
-        for (config: StoneConfig in getStoneConfigs().get()) {
-            config.routeWhitelistFilter = getRouteWhitelistFilter().orNull
-        }
-        runStoneGenerator(
-            getStoneConfigs().get(),
-            getObjectFactory().fileTree().from(getStoneDir().get()).getDir(),
-            generatorFile,
-            specFiles,
-            getOutputDir().asFile.get(),
-            getPythonCommand().get(),
-        )
-    }
+        val outputDirectory = outputDir.asFile.get()
+        outputDirectory.deleteRecursively()
+        outputDirectory.mkdirs()
 
-    fun getSpecFiles(objectFactory: ObjectFactory, specDir: String): FileTree {
-        val fileTree = objectFactory.fileTree().from(specDir)
-        fileTree.include("**/*.stone")
-        return fileTree
-    }
+        val generatorFile = generatorDir.asFileTree.matching {
+            exclude("**/*.pyc")
+        }.singleFile
 
-    fun deleteDir(file: File) {
-        val contents = file.listFiles()
-        if (contents != null) {
-            for (f in contents) {
-                if (!Files.isSymbolicLink(f.toPath())) {
-                    deleteDir(f)
-                }
-            }
-        }
-        file.delete()
-    }
+        val specFiles = specDir.asFileTree.matching {
+            include("**/*.stone")
+        }.files
 
-    fun runStoneGenerator(
-        configs: List<StoneConfig>,
-        stoneDir: File,
-        generatorFile: File,
-        specFiles: Collection<File>,
-        outputDir: File,
-        pythonCommand: String,
-    ) {
-        val srcOutputDir = File(outputDir, "src")
-        val refsFile = File(outputDir, "refs/javadoc-refs.json")
-        val logFile = File(outputDir, "log/stone.log")
-
-        // delete output dir for a clean build
-        if (outputDir.exists()) {
-            try {
-                deleteDir(outputDir)
-            } catch (e: Exception) {
-                throw GradleException("Failed to delete output directory: ${outputDir.absolutePath}")
-            }
-        }
-
-        srcOutputDir.mkdirs()
-        logFile.parentFile.mkdirs()
+        val refsFile = File(outputDirectory, "refs/javadoc-refs.json")
         refsFile.parentFile.mkdirs()
 
-        configs.forEachIndexed { index, stoneConfig ->
-            val isFirst = (index == 0)
-            val append: Boolean = !isFirst
-            if (stoneConfig.dataTypesOnly) {
-                // generate only data types. This is a much simpler call
-                if (stoneConfig.client != null) {
-                    throw GradleException("Cannot specify dataTypesOnly and clients for Stone generation.")
-                }
-                getExecOperations().exec {
-                    standardOutput = FileOutputStream(logFile, append)
-                    commandLine(pythonCommand, "-m", "stone.cli")
+        val logFile = File(outputDir.asFile.get(), "log/stone.log")
+        logFile.parentFile.mkdirs()
 
-                    environment["PYTHONPATH"] = stoneDir.absolutePath
-
-                    if (isFirst) {
-                        args("--clean-build")
-                    }
-                    if (stoneConfig.routeWhitelistFilter != null) {
-                        args("--route-whitelist-filter", getRouteWhitelistFilter().get())
-                    }
-                    args(generatorFile.absolutePath)
-                    args(srcOutputDir.absolutePath)
-                    specFiles.map { f -> f.absolutePath }.forEach {
-                        args(it)
-                    }
-                    args("--")
-                    args("--package", stoneConfig.packageName)
-                    args("--data-types-only")
-                }
-            } else {
-                val client = stoneConfig.client
-                val routeFilters = listOf(stoneConfig.globalRouteFilter, client?.routeFilter).filterNotNull()
-                val routeFilter = routeFilters.joinToString(" and ") { filter -> "(${filter})" }
-
-                getExecOperations().exec {
-                    standardOutput = FileOutputStream(logFile, append)
-                    environment["PYTHONPATH"] = stoneDir.absolutePath
-                    commandLine(this@StoneTask.getPythonCommand().get(), "-m", "stone.cli")
-
-                    if (isFirst) {
-                        args("--clean-build")
-                    }
-                    args("--attribute", ":all")
-                    if (routeFilter.isNotEmpty()) {
-                        args("--filter-by-route-attr", routeFilter)
-                    }
-                    if (stoneConfig.routeWhitelistFilter != null) {
-                        args("--route-whitelist-filter", stoneConfig.routeWhitelistFilter)
-                    }
-                    args(generatorFile.absolutePath)
-                    args(srcOutputDir.absolutePath)
-                    specFiles.map { f -> f.absolutePath }.forEach {
-                        args(it)
-                    }
-                    args("--")
-                    args("--package", stoneConfig.packageName)
-                    args("--javadoc-refs", refsFile.absolutePath)
-
-                    if (client?.name != null) {
-                        args("--client-class", client.name)
-                    }
-                    if (client?.javadoc != null) {
-                        args("--client-javadoc", client.javadoc)
-                    }
-                    if (client?.requestsClassnamePrefix != null) {
-                        args("--requests-classname-prefix", client.requestsClassnamePrefix)
-                    }
-                    if (client?.unusedClassesToGenerate != null) {
-                        args("--unused-classes-to-generate", client.unusedClassesToGenerate)
-                    }
-                }
+        if (routeWhitelistFilter.isPresent) {
+            for (config: StoneConfig in stoneConfigs.get()) {
+                config.routeWhitelistFilter = routeWhitelistFilter.get().toString()
             }
         }
+
+        stoneConfigs.get().forEachIndexed { index, stoneConfig ->
+            val isFirst = index == 0
+            val append: Boolean = !isFirst
+
+            val generatorArgs = mutableListOf(
+                    pythonCommand.get(), "-m", "stone.cli",
+                    "--attribute", ":all",
+
+                    generatorFile.absolutePath,
+                    outputDirectory.resolve("src").absolutePath,
+                    *specFiles.map { it.absolutePath }.toTypedArray(),
+                    "--", "--package", stoneConfig.packageName,
+            )
+
+            if (isFirst) generatorArgs.add(generatorArgs.indexOf("stone.cli") + 1, "--clean-build")
+
+            if (stoneConfig.routeWhitelistFilter?.isNotEmpty() == true){
+                generatorArgs.addAll(generatorArgs.indexOf(":all") + 1, listOf("--route-whitelist-filter", stoneConfig.routeWhitelistFilter))
+            }
+
+            if (buildRouteFilter(stoneConfig).isNotEmpty()) {
+                generatorArgs.addAll(generatorArgs.indexOf(":all") + 1, listOf("--filter-by-route-attr", buildRouteFilter(stoneConfig)))
+            }
+
+            if (stoneConfig.dataTypesOnly) {
+                generatorArgs += "--data-types-only"
+            } else {
+                generatorArgs.addAll(listOf("--javadoc-refs", refsFile.absolutePath))
+                stoneConfig.client?.let { client ->
+                    generatorArgs += listOfNotNull(
+                            client.name?.let { "--client-class" to it },
+                            client.javadoc?.let { "--client-javadoc" to it },
+                            client.requestsClassnamePrefix?.takeIf { it.isNotBlank() }?.let { "--requests-classname-prefix" to it },
+                            client.unusedClassesToGenerate?.takeIf { it.isNotBlank() }?.let { "--unused-classes-to-generate" to it }
+                    ).flatMap { (arg, value) -> listOfNotNull(arg, value) }
+                }
+            }
+
+            exec.exec {
+                standardOutput = FileOutputStream(logFile, append)
+                environment["PYTHONPATH"] = stoneDir.get()
+                logger.info("Calling stone generator: {${generatorArgs.joinToString(" ")}}")
+                commandLine(generatorArgs)
+            }
+        }
+    }
+
+    private fun buildRouteFilter(stoneConfig: StoneConfig): String {
+        val client = stoneConfig.client
+        val routeFilters = listOf(stoneConfig.globalRouteFilter, client?.routeFilter).filterNotNull()
+        return routeFilters.joinToString(" and ") { "(${it})" }
     }
 }

@@ -17,7 +17,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.guardsquare:proguard-gradle:7.1.0'
+        classpath 'com.guardsquare:proguard-gradle:7.3.1'
     }
 }
 
@@ -32,7 +32,7 @@ dependencies {
     implementation("org.testng:testng:6.9.10")
 }
 
-compileJava {
+tasks.named("compileJava", JavaCompile).configure {
     options.compilerArgs << '-Xlint:all'
     options.warnings = true
     options.deprecation = true
@@ -61,17 +61,21 @@ def getAuthInfoFile() {
     return authInfoFile
 }
 
-task proguard(type: proguard.gradle.ProGuardTask) {
+
+tasks.register('proguard', proguard.gradle.ProGuardTask) {
+    def buildDir = project.buildDir
+    def archivesBaseName = project.archivesBaseName
+    def version = project.version
     ext {
         configDir = file("src/main/resources/proguard/")
         configFile = file("../examples/android/proguard-rules.pro")
-        proguardJar = file("${project.buildDir}/${project.archivesBaseName}-${project.version}-proguard.jar")
+        proguardJar = file("$buildDir/$archivesBaseName-$version-proguard.jar")
     }
 
     inputs.dir configDir
     inputs.file configFile
 
-    injars sourceSets.main.runtimeClasspath, filter:'!META-INF/*'
+    injars sourceSets.main.runtimeClasspath, filter: '!META-INF/*'
     if (System.getProperty('java.version').startsWith('1.')) {
         libraryjars "${System.getProperty('java.home')}/lib/rt.jar"
     } else {
@@ -93,8 +97,8 @@ task proguard(type: proguard.gradle.ProGuardTask) {
     configuration configFile
 }
 
-task proguardTest(type: JavaExec) {
-    dependsOn proguard
+tasks.register('proguardTest', JavaExec) {
+    dependsOn(tasks.named("proguard"))
     classpath = files(proguard.proguardJar)
     main = 'com.dropbox.core.test.proguard.Main'
     ignoreExitValue false
