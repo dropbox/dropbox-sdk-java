@@ -368,7 +368,7 @@ Another workaround is to tell your OSGi container to provide that requirement: [
 
 ### Does this SDK require any special ProGuard rules for shrink optimizations?
 
-Versions 2.0.0-2.0.3 of this SDK require SDK-specific ProGuard rules when shrinking is enabled. However, since version **2.0.4**, the only ProGuard rules necessary are for the SDK's required and optional dependencies. If you encounter ProGuard warnings, consider adding the following "-dontwarn" directives to your ProGuard configuration file:
+The only ProGuard rules necessary are for the SDK's required and optional dependencies. If you encounter ProGuard warnings, consider adding the following "-dontwarn" directives to your ProGuard configuration file:
 
 ```
 -dontwarn okio.**
