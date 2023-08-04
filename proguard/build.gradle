@@ -17,7 +17,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.guardsquare:proguard-gradle:7.3.1'
+        classpath dropboxJavaSdkLibs.guardsquare.proguard.gradle
     }
 }
 
@@ -29,7 +29,7 @@ repositories {
 
 dependencies {
     implementation(project(":dropbox-sdk-java"))
-    implementation("org.testng:testng:6.9.10")
+    implementation(dropboxJavaSdkLibs.testng)
 }
 
 tasks.named("compileJava", JavaCompile).configure {
