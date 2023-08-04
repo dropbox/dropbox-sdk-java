@@ -345,7 +345,7 @@ public class DbxClientV2Test {
         verify(mockRequestor, times(2)).startPost(anyString(), anyHeaders());
 
         assertThat(credential.getAccessToken()).isEqualTo("accesstoken");
-        assertThat(credential.getExpiresAt()).isEqualTo(new Long(10));
+        assertThat(credential.getExpiresAt()).isEqualTo(10L);
 
         assertThat(actual.getName()).isEqualTo(expected.getName());
         assertWithMessage(actual.getClass().toString()).that(actual instanceof FileMetadata).isTrue();
