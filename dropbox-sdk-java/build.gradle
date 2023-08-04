@@ -46,17 +46,17 @@ dependencies {
     compileOnly dropboxJavaSdkLibs.okhttp2
     compileOnly dropboxJavaSdkLibs.okhttp3
 
-    testImplementation dropboxJavaSdkLibs.testng
-    testImplementation dropboxJavaSdkLibs.mockito.core
-    testImplementation dropboxJavaSdkLibs.jmh.core
-    testImplementation dropboxJavaSdkLibs.jmh.generator
     testImplementation dropboxJavaSdkLibs.appengine.api
     testImplementation dropboxJavaSdkLibs.appengine.api.labs
     testImplementation dropboxJavaSdkLibs.appengine.api.stubs
     testImplementation dropboxJavaSdkLibs.appengine.testing
+    testImplementation dropboxJavaSdkLibs.guava
+    testImplementation dropboxJavaSdkLibs.jmh.core
+    testImplementation dropboxJavaSdkLibs.jmh.generator
+    testImplementation dropboxJavaSdkLibs.mockito.core
     testImplementation dropboxJavaSdkLibs.okhttp2
     testImplementation dropboxJavaSdkLibs.okhttp3
-    testImplementation dropboxJavaSdkLibs.guava
+    testImplementation dropboxJavaSdkLibs.testng
     testImplementation dropboxJavaSdkLibs.truth
 }
 
