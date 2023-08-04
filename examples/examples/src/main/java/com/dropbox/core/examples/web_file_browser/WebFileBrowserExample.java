@@ -4,6 +4,9 @@ import com.dropbox.core.DbxAppInfo;
 import com.dropbox.core.json.JsonReader;
 import static com.dropbox.core.util.StringUtil.jq;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.AbstractHandler;
@@ -13,10 +16,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
 
@@ -38,9 +37,9 @@ public class WebFileBrowserExample extends AbstractHandler {
     // -------------------------------------------------------------------------------------------
     // URI Routing
     // -------------------------------------------------------------------------------------------
-
+    @Override
     public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response)
-        throws IOException, ServletException {
+            throws IOException, ServletException {
         // Don't pollute the logging with the favicon.ico requests that browsers issue.
         if (target.equals("/favicon.ico")) {
             response.sendError(404);

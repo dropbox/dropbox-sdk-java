@@ -1,7 +1,10 @@
-## 5.4.6-SNAPSHOT
+## 6.0.0-SNAPSHOT
+- Updated to `jakarta.servlet` to unblock adoption of Spring Boot v3, **this is a breaking change if you use `DbxSessionStore`.**
 - Added better error messaging when trying to build the project without submodules initialized.
+- Improved generateStone task to properly declare inputs and outputs
 - Removed obsolete javadoc flag
 - Updated test dependencies
+- Updated to Gradle 7.6.2
 - Removed redundant gradle wrappers
 
 ## 5.4.5 (2023-05-16)

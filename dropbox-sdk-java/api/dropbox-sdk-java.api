@@ -218,11 +218,11 @@ public abstract interface class com/dropbox/core/DbxSessionStore {
 }
 
 public final class com/dropbox/core/DbxStandardSessionStore : com/dropbox/core/DbxSessionStore {
-	public fun <init> (Ljavax/servlet/http/HttpSession;Ljava/lang/String;)V
+	public fun <init> (Ljakarta/servlet/http/HttpSession;Ljava/lang/String;)V
 	public fun clear ()V
 	public fun get ()Ljava/lang/String;
 	public fun getKey ()Ljava/lang/String;
-	public fun getSession ()Ljavax/servlet/http/HttpSession;
+	public fun getSession ()Ljakarta/servlet/http/HttpSession;
 	public fun set (Ljava/lang/String;)V
 }
 
