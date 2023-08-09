@@ -359,7 +359,7 @@ As a workaround, you can build your own version of the JAR that omits the "osgi.
 
 ```shell
 ./gradlew clean
-./gradlew -Posgi.bnd.noee=true :dropbox-sdk-java:jar
+./gradlew -Posgi.bnd.noee=true :dropbox:jar
 ```
 
 (This is equivalent to passing the "-noee" option to the OSGi "bnd" tool.)

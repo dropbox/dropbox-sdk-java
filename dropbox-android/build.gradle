@@ -20,7 +20,7 @@ android {
 }
 
 dependencies {
-    api(project(path: ":dropbox-sdk-java", configuration: "withoutOsgi"))
+    api(project(path: ":dropbox", configuration: "withoutOsgi"))
 }
 
 dependencyGuard {
