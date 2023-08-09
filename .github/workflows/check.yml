@@ -41,7 +41,7 @@ jobs:
       run: ./update-submodules
 
     - name: Generate Stone
-      run: ./gradlew :dropbox-sdk-java:generateStone
+      run: ./gradlew :dropbox:generateStone
 
     - name: Ensure no changes in Generated Code
       run: ./scripts/check-clean-git-status
@@ -54,7 +54,7 @@ jobs:
       run: ./generate-ci-auth-file
 
     - name: Ensure Binary Compatibility
-      run: ./gradlew :dropbox-sdk-java:apiCheck
+      run: ./gradlew :dropbox:apiCheck :dropbox-android:apiCheck
 
     - name: Dependency Guard
       run: ./gradlew dependencyGuard

@@ -435,115 +435,6 @@ public final class com/dropbox/core/TokenAccessType : java/lang/Enum {
 	public static fun values ()[Lcom/dropbox/core/TokenAccessType;
 }
 
-public final class com/dropbox/core/android/Auth {
-	public static final field Companion Lcom/dropbox/core/android/Auth$Companion;
-	public fun <init> ()V
-	public static final fun getDbxCredential ()Lcom/dropbox/core/oauth/DbxCredential;
-	public static final fun getOAuth2Token ()Ljava/lang/String;
-	public static final fun getScope ()Ljava/lang/String;
-	public static final fun getUid ()Ljava/lang/String;
-	public static final fun startOAuth2Authentication (Landroid/content/Context;Ljava/lang/String;)V
-	public static final fun startOAuth2Authentication (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;)V
-	public static final fun startOAuth2Authentication (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
-	public static final fun startOAuth2PKCE (Landroid/content/Context;Ljava/lang/String;Lcom/dropbox/core/DbxRequestConfig;)V
-	public static final fun startOAuth2PKCE (Landroid/content/Context;Ljava/lang/String;Lcom/dropbox/core/DbxRequestConfig;Lcom/dropbox/core/DbxHost;)V
-	public static final fun startOAuth2PKCE (Landroid/content/Context;Ljava/lang/String;Lcom/dropbox/core/DbxRequestConfig;Lcom/dropbox/core/DbxHost;Ljava/util/Collection;)V
-	public static final fun startOAuth2PKCE (Landroid/content/Context;Ljava/lang/String;Lcom/dropbox/core/DbxRequestConfig;Lcom/dropbox/core/DbxHost;Ljava/util/Collection;Lcom/dropbox/core/IncludeGrantedScopes;)V
-	public static final fun startOAuth2PKCE (Landroid/content/Context;Ljava/lang/String;Lcom/dropbox/core/DbxRequestConfig;Ljava/util/Collection;)V
-}
-
-public final class com/dropbox/core/android/Auth$Companion {
-	public final fun getDbxCredential ()Lcom/dropbox/core/oauth/DbxCredential;
-	public final fun getOAuth2Token ()Ljava/lang/String;
-	public final fun getScope ()Ljava/lang/String;
-	public final fun getUid ()Ljava/lang/String;
-	public final fun startOAuth2Authentication (Landroid/content/Context;Ljava/lang/String;)V
-	public final fun startOAuth2Authentication (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;)V
-	public final fun startOAuth2Authentication (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
-	public final fun startOAuth2PKCE (Landroid/content/Context;Ljava/lang/String;Lcom/dropbox/core/DbxRequestConfig;)V
-	public final fun startOAuth2PKCE (Landroid/content/Context;Ljava/lang/String;Lcom/dropbox/core/DbxRequestConfig;Lcom/dropbox/core/DbxHost;)V
-	public final fun startOAuth2PKCE (Landroid/content/Context;Ljava/lang/String;Lcom/dropbox/core/DbxRequestConfig;Lcom/dropbox/core/DbxHost;Ljava/util/Collection;)V
-	public final fun startOAuth2PKCE (Landroid/content/Context;Ljava/lang/String;Lcom/dropbox/core/DbxRequestConfig;Lcom/dropbox/core/DbxHost;Ljava/util/Collection;Lcom/dropbox/core/IncludeGrantedScopes;)V
-	public final fun startOAuth2PKCE (Landroid/content/Context;Ljava/lang/String;Lcom/dropbox/core/DbxRequestConfig;Ljava/util/Collection;)V
-	public static synthetic fun startOAuth2PKCE$default (Lcom/dropbox/core/android/Auth$Companion;Landroid/content/Context;Ljava/lang/String;Lcom/dropbox/core/DbxRequestConfig;Ljava/util/Collection;ILjava/lang/Object;)V
-}
-
-public class com/dropbox/core/android/AuthActivity : android/app/Activity {
-	public static final field ACTION_AUTHENTICATE_V1 Ljava/lang/String;
-	public static final field ACTION_AUTHENTICATE_V2 Ljava/lang/String;
-	public static final field AUTH_PATH_CONNECT Ljava/lang/String;
-	public static final field AUTH_VERSION I
-	public static final field Companion Lcom/dropbox/core/android/AuthActivity$Companion;
-	public static field result Landroid/content/Intent;
-	public fun <init> ()V
-	public static final fun checkAppBeforeAuth (Landroid/content/Context;Ljava/lang/String;Z)Z
-	public static final fun makeIntent (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
-	public static final fun makeIntent (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
-	protected fun onCreate (Landroid/os/Bundle;)V
-	protected fun onNewIntent (Landroid/content/Intent;)V
-	protected fun onResume ()V
-	public final fun onTopResumedActivityChanged (Z)V
-	public static final fun setSecurityProvider (Lcom/dropbox/core/android/AuthActivity$SecurityProvider;)V
-}
-
-public final class com/dropbox/core/android/AuthActivity$Companion {
-	public final fun checkAppBeforeAuth (Landroid/content/Context;Ljava/lang/String;Z)Z
-	public final fun makeIntent (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
-	public final fun makeIntent (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
-	public final fun setAuthParams (Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)V
-	public final fun setAuthParams (Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;)V
-	public final fun setAuthParams (Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
-	public final fun setSecurityProvider (Lcom/dropbox/core/android/AuthActivity$SecurityProvider;)V
-}
-
-public abstract interface class com/dropbox/core/android/AuthActivity$SecurityProvider {
-	public abstract fun getSecureRandom ()Ljava/security/SecureRandom;
-}
-
-public final class com/dropbox/core/android/DbxOfficialAppConnector {
-	public static final field ACTION_DBXC_EDIT Ljava/lang/String;
-	public static final field ACTION_DBXC_VIEW Ljava/lang/String;
-	public static final field ACTION_SHOW_DROPBOX_PREVIEW Ljava/lang/String;
-	public static final field ACTION_SHOW_UPGRADE Ljava/lang/String;
-	public static final field Companion Lcom/dropbox/core/android/DbxOfficialAppConnector$Companion;
-	public static final field EXTRA_CALLING_PACKAGE Ljava/lang/String;
-	public static final field EXTRA_DROPBOX_PATH Ljava/lang/String;
-	public static final field EXTRA_DROPBOX_READ_ONLY Ljava/lang/String;
-	public static final field EXTRA_DROPBOX_REV Ljava/lang/String;
-	public static final field EXTRA_DROPBOX_SESSION_ID Ljava/lang/String;
-	public static final field EXTRA_DROPBOX_UID Ljava/lang/String;
-	public fun <init> (Ljava/lang/String;)V
-	public static final fun generateOpenWithIntentFromUtmContent (Ljava/lang/String;)Landroid/content/Intent;
-	public static final fun getDropboxPlayStoreIntent ()Landroid/content/Intent;
-	public final fun getPreviewFileIntent (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
-	public final fun getUpgradeAccountIntent (Landroid/content/Context;)Landroid/content/Intent;
-	public static final fun isAnySignedIn (Landroid/content/Context;)Z
-	public static final fun isInstalled (Landroid/content/Context;)Lcom/dropbox/core/android/DbxOfficialAppConnector$DbxOfficialAppInstallInfo;
-	public final fun isSignedIn (Landroid/content/Context;)Z
-}
-
-public final class com/dropbox/core/android/DbxOfficialAppConnector$Companion {
-	public final fun generateOpenWithIntentFromUtmContent (Ljava/lang/String;)Landroid/content/Intent;
-	public final fun getDropboxPlayStoreIntent ()Landroid/content/Intent;
-	public final fun isAnySignedIn (Landroid/content/Context;)Z
-	public final fun isInstalled (Landroid/content/Context;)Lcom/dropbox/core/android/DbxOfficialAppConnector$DbxOfficialAppInstallInfo;
-}
-
-public final class com/dropbox/core/android/DbxOfficialAppConnector$DbxOfficialAppInstallInfo {
-	public final field supportsOpenWith Z
-	public final field versionCode I
-	public fun <init> (ZI)V
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class com/dropbox/core/android/DropboxParseException : com/dropbox/core/DbxException {
-	public fun <init> (Ljava/lang/String;)V
-}
-
-public final class com/dropbox/core/android/DropboxUidNotInitializedException : com/dropbox/core/DbxException {
-	public fun <init> (Ljava/lang/String;)V
-}
-
 public class com/dropbox/core/http/GoogleAppEngineRequestor : com/dropbox/core/http/HttpRequestor {
 	public fun <init> ()V
 	public fun <init> (Lcom/google/appengine/api/urlfetch/FetchOptions;)V
@@ -7038,69 +6929,36 @@ public final class com/dropbox/core/v2/files/WriteMode$Tag : java/lang/Enum {
 	public static fun values ()[Lcom/dropbox/core/v2/files/WriteMode$Tag;
 }
 
-public final class com/dropbox/core/v2/openid/AuthError : java/lang/Enum {
-	public static final field INVALID_TOKEN Lcom/dropbox/core/v2/openid/AuthError;
-	public static final field NO_OPENID_AUTH Lcom/dropbox/core/v2/openid/AuthError;
-	public static final field OTHER Lcom/dropbox/core/v2/openid/AuthError;
-	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/openid/AuthError;
-	public static fun values ()[Lcom/dropbox/core/v2/openid/AuthError;
-}
-
-public class com/dropbox/core/v2/openid/AuthError$Serializer : com/dropbox/core/stone/UnionSerializer {
-	public static final field INSTANCE Lcom/dropbox/core/v2/openid/AuthError$Serializer;
-	public fun <init> ()V
-	public fun deserialize (Lcom/fasterxml/jackson/core/JsonParser;)Lcom/dropbox/core/v2/openid/AuthError;
-	public synthetic fun deserialize (Lcom/fasterxml/jackson/core/JsonParser;)Ljava/lang/Object;
-	public fun serialize (Lcom/dropbox/core/v2/openid/AuthError;Lcom/fasterxml/jackson/core/JsonGenerator;)V
-	public synthetic fun serialize (Ljava/lang/Object;Lcom/fasterxml/jackson/core/JsonGenerator;)V
-}
-
 public class com/dropbox/core/v2/openid/DbxUserOpenidRequests {
 	public fun <init> (Lcom/dropbox/core/v2/DbxRawClientV2;)V
 	public fun userinfo ()Lcom/dropbox/core/v2/openid/UserInfoResult;
 }
 
-public final class com/dropbox/core/v2/openid/ErrUnion {
-	public static final field OTHER Lcom/dropbox/core/v2/openid/ErrUnion;
-	public static fun authError (Lcom/dropbox/core/v2/openid/AuthError;)Lcom/dropbox/core/v2/openid/ErrUnion;
+public final class com/dropbox/core/v2/openid/OpenIdError : java/lang/Enum {
+	public static final field INCORRECT_OPENID_SCOPES Lcom/dropbox/core/v2/openid/OpenIdError;
+	public static final field OTHER Lcom/dropbox/core/v2/openid/OpenIdError;
+	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/openid/OpenIdError;
+	public static fun values ()[Lcom/dropbox/core/v2/openid/OpenIdError;
+}
+
+public final class com/dropbox/core/v2/openid/UserInfoError {
+	public static final field OTHER Lcom/dropbox/core/v2/openid/UserInfoError;
 	public fun equals (Ljava/lang/Object;)Z
-	public fun getAuthErrorValue ()Lcom/dropbox/core/v2/openid/AuthError;
+	public fun getOpenidErrorValue ()Lcom/dropbox/core/v2/openid/OpenIdError;
 	public fun hashCode ()I
-	public fun isAuthError ()Z
+	public fun isOpenidError ()Z
 	public fun isOther ()Z
-	public fun tag ()Lcom/dropbox/core/v2/openid/ErrUnion$Tag;
+	public static fun openidError (Lcom/dropbox/core/v2/openid/OpenIdError;)Lcom/dropbox/core/v2/openid/UserInfoError;
+	public fun tag ()Lcom/dropbox/core/v2/openid/UserInfoError$Tag;
 	public fun toString ()Ljava/lang/String;
 	public fun toStringMultiline ()Ljava/lang/String;
 }
 
-public final class com/dropbox/core/v2/openid/ErrUnion$Tag : java/lang/Enum {
-	public static final field AUTH_ERROR Lcom/dropbox/core/v2/openid/ErrUnion$Tag;
-	public static final field OTHER Lcom/dropbox/core/v2/openid/ErrUnion$Tag;
-	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/openid/ErrUnion$Tag;
-	public static fun values ()[Lcom/dropbox/core/v2/openid/ErrUnion$Tag;
-}
-
-public class com/dropbox/core/v2/openid/UserInfoError {
-	protected final field err Lcom/dropbox/core/v2/openid/ErrUnion;
-	protected final field errorMessage Ljava/lang/String;
-	public fun <init> ()V
-	public fun <init> (Lcom/dropbox/core/v2/openid/ErrUnion;Ljava/lang/String;)V
-	public fun equals (Ljava/lang/Object;)Z
-	public fun getErr ()Lcom/dropbox/core/v2/openid/ErrUnion;
-	public fun getErrorMessage ()Ljava/lang/String;
-	public fun hashCode ()I
-	public static fun newBuilder ()Lcom/dropbox/core/v2/openid/UserInfoError$Builder;
-	public fun toString ()Ljava/lang/String;
-	public fun toStringMultiline ()Ljava/lang/String;
-}
-
-public class com/dropbox/core/v2/openid/UserInfoError$Builder {
-	protected field err Lcom/dropbox/core/v2/openid/ErrUnion;
-	protected field errorMessage Ljava/lang/String;
-	protected fun <init> ()V
-	public fun build ()Lcom/dropbox/core/v2/openid/UserInfoError;
-	public fun withErr (Lcom/dropbox/core/v2/openid/ErrUnion;)Lcom/dropbox/core/v2/openid/UserInfoError$Builder;
-	public fun withErrorMessage (Ljava/lang/String;)Lcom/dropbox/core/v2/openid/UserInfoError$Builder;
+public final class com/dropbox/core/v2/openid/UserInfoError$Tag : java/lang/Enum {
+	public static final field OPENID_ERROR Lcom/dropbox/core/v2/openid/UserInfoError$Tag;
+	public static final field OTHER Lcom/dropbox/core/v2/openid/UserInfoError$Tag;
+	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/openid/UserInfoError$Tag;
+	public static fun values ()[Lcom/dropbox/core/v2/openid/UserInfoError$Tag;
 }
 
 public class com/dropbox/core/v2/openid/UserInfoErrorException : com/dropbox/core/DbxApiException {
@@ -7710,6 +7568,7 @@ public final class com/dropbox/core/v2/sharing/AccessInheritance : java/lang/Enu
 
 public final class com/dropbox/core/v2/sharing/AccessLevel : java/lang/Enum {
 	public static final field EDITOR Lcom/dropbox/core/v2/sharing/AccessLevel;
+	public static final field NO_ACCESS Lcom/dropbox/core/v2/sharing/AccessLevel;
 	public static final field OTHER Lcom/dropbox/core/v2/sharing/AccessLevel;
 	public static final field OWNER Lcom/dropbox/core/v2/sharing/AccessLevel;
 	public static final field TRAVERSE Lcom/dropbox/core/v2/sharing/AccessLevel;
@@ -9799,6 +9658,7 @@ public final class com/dropbox/core/v2/sharing/RemoveMemberJobStatus$Tag : java/
 }
 
 public final class com/dropbox/core/v2/sharing/RequestedLinkAccessLevel : java/lang/Enum {
+	public static final field DEFAULT Lcom/dropbox/core/v2/sharing/RequestedLinkAccessLevel;
 	public static final field EDITOR Lcom/dropbox/core/v2/sharing/RequestedLinkAccessLevel;
 	public static final field MAX Lcom/dropbox/core/v2/sharing/RequestedLinkAccessLevel;
 	public static final field OTHER Lcom/dropbox/core/v2/sharing/RequestedLinkAccessLevel;
@@ -10192,6 +10052,7 @@ public class com/dropbox/core/v2/sharing/SharedFileMetadata$Builder {
 public final class com/dropbox/core/v2/sharing/SharedFolderAccessError : java/lang/Enum {
 	public static final field EMAIL_UNVERIFIED Lcom/dropbox/core/v2/sharing/SharedFolderAccessError;
 	public static final field INVALID_ID Lcom/dropbox/core/v2/sharing/SharedFolderAccessError;
+	public static final field INVALID_MEMBER Lcom/dropbox/core/v2/sharing/SharedFolderAccessError;
 	public static final field NOT_A_MEMBER Lcom/dropbox/core/v2/sharing/SharedFolderAccessError;
 	public static final field OTHER Lcom/dropbox/core/v2/sharing/SharedFolderAccessError;
 	public static final field UNMOUNTED Lcom/dropbox/core/v2/sharing/SharedFolderAccessError;
@@ -10257,7 +10118,7 @@ public class com/dropbox/core/v2/sharing/SharedFolderMetadata : com/dropbox/core
 	protected final field sharedFolderId Ljava/lang/String;
 	protected final field timeInvited Ljava/util/Date;
 	public fun <init> (Lcom/dropbox/core/v2/sharing/AccessLevel;ZZLjava/lang/String;Lcom/dropbox/core/v2/sharing/FolderPolicy;Ljava/lang/String;Ljava/lang/String;Ljava/util/Date;)V
-	public fun <init> (Lcom/dropbox/core/v2/sharing/AccessLevel;ZZLjava/lang/String;Lcom/dropbox/core/v2/sharing/FolderPolicy;Ljava/lang/String;Ljava/lang/String;Ljava/util/Date;Ljava/util/List;Lcom/dropbox/core/v2/users/Team;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/dropbox/core/v2/sharing/SharedContentLinkMetadata;Ljava/util/List;Lcom/dropbox/core/v2/sharing/AccessInheritance;)V
+	public fun <init> (Lcom/dropbox/core/v2/sharing/AccessLevel;ZZLjava/lang/String;Lcom/dropbox/core/v2/sharing/FolderPolicy;Ljava/lang/String;Ljava/lang/String;Ljava/util/Date;Ljava/util/List;Lcom/dropbox/core/v2/users/Team;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/dropbox/core/v2/sharing/SharedContentLinkMetadata;Ljava/util/List;Lcom/dropbox/core/v2/sharing/AccessInheritance;)V
 	public fun equals (Ljava/lang/Object;)Z
 	public fun getAccessInheritance ()Lcom/dropbox/core/v2/sharing/AccessInheritance;
 	public fun getAccessType ()Lcom/dropbox/core/v2/sharing/AccessLevel;
@@ -10269,6 +10130,7 @@ public class com/dropbox/core/v2/sharing/SharedFolderMetadata : com/dropbox/core
 	public fun getOwnerTeam ()Lcom/dropbox/core/v2/users/Team;
 	public fun getParentFolderName ()Ljava/lang/String;
 	public fun getParentSharedFolderId ()Ljava/lang/String;
+	public fun getPathDisplay ()Ljava/lang/String;
 	public fun getPathLower ()Ljava/lang/String;
 	public fun getPermissions ()Ljava/util/List;
 	public fun getPolicy ()Lcom/dropbox/core/v2/sharing/FolderPolicy;
@@ -10303,6 +10165,8 @@ public class com/dropbox/core/v2/sharing/SharedFolderMetadata$Builder : com/drop
 	public synthetic fun withParentFolderName (Ljava/lang/String;)Lcom/dropbox/core/v2/sharing/SharedFolderMetadataBase$Builder;
 	public fun withParentSharedFolderId (Ljava/lang/String;)Lcom/dropbox/core/v2/sharing/SharedFolderMetadata$Builder;
 	public synthetic fun withParentSharedFolderId (Ljava/lang/String;)Lcom/dropbox/core/v2/sharing/SharedFolderMetadataBase$Builder;
+	public fun withPathDisplay (Ljava/lang/String;)Lcom/dropbox/core/v2/sharing/SharedFolderMetadata$Builder;
+	public synthetic fun withPathDisplay (Ljava/lang/String;)Lcom/dropbox/core/v2/sharing/SharedFolderMetadataBase$Builder;
 	public fun withPathLower (Ljava/lang/String;)Lcom/dropbox/core/v2/sharing/SharedFolderMetadata$Builder;
 	public synthetic fun withPathLower (Ljava/lang/String;)Lcom/dropbox/core/v2/sharing/SharedFolderMetadataBase$Builder;
 	public fun withPermissions (Ljava/util/List;)Lcom/dropbox/core/v2/sharing/SharedFolderMetadata$Builder;
@@ -10316,9 +10180,10 @@ public class com/dropbox/core/v2/sharing/SharedFolderMetadataBase {
 	protected final field ownerTeam Lcom/dropbox/core/v2/users/Team;
 	protected final field parentFolderName Ljava/lang/String;
 	protected final field parentSharedFolderId Ljava/lang/String;
+	protected final field pathDisplay Ljava/lang/String;
 	protected final field pathLower Ljava/lang/String;
 	public fun <init> (Lcom/dropbox/core/v2/sharing/AccessLevel;ZZ)V
-	public fun <init> (Lcom/dropbox/core/v2/sharing/AccessLevel;ZZLjava/util/List;Lcom/dropbox/core/v2/users/Team;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public fun <init> (Lcom/dropbox/core/v2/sharing/AccessLevel;ZZLjava/util/List;Lcom/dropbox/core/v2/users/Team;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
 	public fun equals (Ljava/lang/Object;)Z
 	public fun getAccessType ()Lcom/dropbox/core/v2/sharing/AccessLevel;
 	public fun getIsInsideTeamFolder ()Z
@@ -10327,6 +10192,7 @@ public class com/dropbox/core/v2/sharing/SharedFolderMetadataBase {
 	public fun getOwnerTeam ()Lcom/dropbox/core/v2/users/Team;
 	public fun getParentFolderName ()Ljava/lang/String;
 	public fun getParentSharedFolderId ()Ljava/lang/String;
+	public fun getPathDisplay ()Ljava/lang/String;
 	public fun getPathLower ()Ljava/lang/String;
 	public fun hashCode ()I
 	public static fun newBuilder (Lcom/dropbox/core/v2/sharing/AccessLevel;ZZ)Lcom/dropbox/core/v2/sharing/SharedFolderMetadataBase$Builder;
@@ -10342,6 +10208,7 @@ public class com/dropbox/core/v2/sharing/SharedFolderMetadataBase$Builder {
 	protected field ownerTeam Lcom/dropbox/core/v2/users/Team;
 	protected field parentFolderName Ljava/lang/String;
 	protected field parentSharedFolderId Ljava/lang/String;
+	protected field pathDisplay Ljava/lang/String;
 	protected field pathLower Ljava/lang/String;
 	protected fun <init> (Lcom/dropbox/core/v2/sharing/AccessLevel;ZZ)V
 	public fun build ()Lcom/dropbox/core/v2/sharing/SharedFolderMetadataBase;
@@ -10349,6 +10216,7 @@ public class com/dropbox/core/v2/sharing/SharedFolderMetadataBase$Builder {
 	public fun withOwnerTeam (Lcom/dropbox/core/v2/users/Team;)Lcom/dropbox/core/v2/sharing/SharedFolderMetadataBase$Builder;
 	public fun withParentFolderName (Ljava/lang/String;)Lcom/dropbox/core/v2/sharing/SharedFolderMetadataBase$Builder;
 	public fun withParentSharedFolderId (Ljava/lang/String;)Lcom/dropbox/core/v2/sharing/SharedFolderMetadataBase$Builder;
+	public fun withPathDisplay (Ljava/lang/String;)Lcom/dropbox/core/v2/sharing/SharedFolderMetadataBase$Builder;
 	public fun withPathLower (Ljava/lang/String;)Lcom/dropbox/core/v2/sharing/SharedFolderMetadataBase$Builder;
 }
 
@@ -11260,6 +11128,13 @@ public class com/dropbox/core/v2/team/DbxTeamTeamRequests {
 	public fun reportsGetMembershipBuilder ()Lcom/dropbox/core/v2/team/ReportsGetMembershipBuilder;
 	public fun reportsGetStorage ()Lcom/dropbox/core/v2/team/GetStorageReport;
 	public fun reportsGetStorageBuilder ()Lcom/dropbox/core/v2/team/ReportsGetStorageBuilder;
+	public fun sharingAllowlistAdd ()Lcom/dropbox/core/v2/team/SharingAllowlistAddResponse;
+	public fun sharingAllowlistAddBuilder ()Lcom/dropbox/core/v2/team/SharingAllowlistAddBuilder;
+	public fun sharingAllowlistList ()Lcom/dropbox/core/v2/team/SharingAllowlistListResponse;
+	public fun sharingAllowlistList (J)Lcom/dropbox/core/v2/team/SharingAllowlistListResponse;
+	public fun sharingAllowlistListContinue (Ljava/lang/String;)Lcom/dropbox/core/v2/team/SharingAllowlistListResponse;
+	public fun sharingAllowlistRemove ()Lcom/dropbox/core/v2/team/SharingAllowlistRemoveResponse;
+	public fun sharingAllowlistRemoveBuilder ()Lcom/dropbox/core/v2/team/SharingAllowlistRemoveBuilder;
 	public fun teamFolderActivate (Ljava/lang/String;)Lcom/dropbox/core/v2/team/TeamFolderMetadata;
 	public fun teamFolderArchive (Ljava/lang/String;)Lcom/dropbox/core/v2/team/TeamFolderArchiveLaunch;
 	public fun teamFolderArchive (Ljava/lang/String;Z)Lcom/dropbox/core/v2/team/TeamFolderArchiveLaunch;
@@ -13764,6 +13639,167 @@ public class com/dropbox/core/v2/team/SetCustomQuotaErrorException : com/dropbox
 	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lcom/dropbox/core/LocalizedText;Lcom/dropbox/core/v2/team/SetCustomQuotaError;)V
 }
 
+public class com/dropbox/core/v2/team/SharingAllowlistAddBuilder {
+	public fun start ()Lcom/dropbox/core/v2/team/SharingAllowlistAddResponse;
+	public fun withDomains (Ljava/util/List;)Lcom/dropbox/core/v2/team/SharingAllowlistAddBuilder;
+	public fun withEmails (Ljava/util/List;)Lcom/dropbox/core/v2/team/SharingAllowlistAddBuilder;
+}
+
+public final class com/dropbox/core/v2/team/SharingAllowlistAddError {
+	public static final field NO_ENTRIES_PROVIDED Lcom/dropbox/core/v2/team/SharingAllowlistAddError;
+	public static final field OTHER Lcom/dropbox/core/v2/team/SharingAllowlistAddError;
+	public static final field TEAM_LIMIT_REACHED Lcom/dropbox/core/v2/team/SharingAllowlistAddError;
+	public static final field TOO_MANY_ENTRIES_PROVIDED Lcom/dropbox/core/v2/team/SharingAllowlistAddError;
+	public static final field UNKNOWN_ERROR Lcom/dropbox/core/v2/team/SharingAllowlistAddError;
+	public static fun entriesAlreadyExist (Ljava/lang/String;)Lcom/dropbox/core/v2/team/SharingAllowlistAddError;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getEntriesAlreadyExistValue ()Ljava/lang/String;
+	public fun getMalformedEntryValue ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun isEntriesAlreadyExist ()Z
+	public fun isMalformedEntry ()Z
+	public fun isNoEntriesProvided ()Z
+	public fun isOther ()Z
+	public fun isTeamLimitReached ()Z
+	public fun isTooManyEntriesProvided ()Z
+	public fun isUnknownError ()Z
+	public static fun malformedEntry (Ljava/lang/String;)Lcom/dropbox/core/v2/team/SharingAllowlistAddError;
+	public fun tag ()Lcom/dropbox/core/v2/team/SharingAllowlistAddError$Tag;
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public final class com/dropbox/core/v2/team/SharingAllowlistAddError$Tag : java/lang/Enum {
+	public static final field ENTRIES_ALREADY_EXIST Lcom/dropbox/core/v2/team/SharingAllowlistAddError$Tag;
+	public static final field MALFORMED_ENTRY Lcom/dropbox/core/v2/team/SharingAllowlistAddError$Tag;
+	public static final field NO_ENTRIES_PROVIDED Lcom/dropbox/core/v2/team/SharingAllowlistAddError$Tag;
+	public static final field OTHER Lcom/dropbox/core/v2/team/SharingAllowlistAddError$Tag;
+	public static final field TEAM_LIMIT_REACHED Lcom/dropbox/core/v2/team/SharingAllowlistAddError$Tag;
+	public static final field TOO_MANY_ENTRIES_PROVIDED Lcom/dropbox/core/v2/team/SharingAllowlistAddError$Tag;
+	public static final field UNKNOWN_ERROR Lcom/dropbox/core/v2/team/SharingAllowlistAddError$Tag;
+	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/team/SharingAllowlistAddError$Tag;
+	public static fun values ()[Lcom/dropbox/core/v2/team/SharingAllowlistAddError$Tag;
+}
+
+public class com/dropbox/core/v2/team/SharingAllowlistAddErrorException : com/dropbox/core/DbxApiException {
+	public final field errorValue Lcom/dropbox/core/v2/team/SharingAllowlistAddError;
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lcom/dropbox/core/LocalizedText;Lcom/dropbox/core/v2/team/SharingAllowlistAddError;)V
+}
+
+public class com/dropbox/core/v2/team/SharingAllowlistAddResponse {
+	public fun <init> ()V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public final class com/dropbox/core/v2/team/SharingAllowlistListContinueError : java/lang/Enum {
+	public static final field INVALID_CURSOR Lcom/dropbox/core/v2/team/SharingAllowlistListContinueError;
+	public static final field OTHER Lcom/dropbox/core/v2/team/SharingAllowlistListContinueError;
+	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/team/SharingAllowlistListContinueError;
+	public static fun values ()[Lcom/dropbox/core/v2/team/SharingAllowlistListContinueError;
+}
+
+public class com/dropbox/core/v2/team/SharingAllowlistListContinueErrorException : com/dropbox/core/DbxApiException {
+	public final field errorValue Lcom/dropbox/core/v2/team/SharingAllowlistListContinueError;
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lcom/dropbox/core/LocalizedText;Lcom/dropbox/core/v2/team/SharingAllowlistListContinueError;)V
+}
+
+public class com/dropbox/core/v2/team/SharingAllowlistListError {
+	public fun <init> ()V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/team/SharingAllowlistListErrorException : com/dropbox/core/DbxApiException {
+	public final field errorValue Lcom/dropbox/core/v2/team/SharingAllowlistListError;
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lcom/dropbox/core/LocalizedText;Lcom/dropbox/core/v2/team/SharingAllowlistListError;)V
+}
+
+public class com/dropbox/core/v2/team/SharingAllowlistListResponse {
+	protected final field cursor Ljava/lang/String;
+	protected final field domains Ljava/util/List;
+	protected final field emails Ljava/util/List;
+	protected final field hasMore Z
+	public fun <init> (Ljava/util/List;Ljava/util/List;)V
+	public fun <init> (Ljava/util/List;Ljava/util/List;Ljava/lang/String;Z)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getCursor ()Ljava/lang/String;
+	public fun getDomains ()Ljava/util/List;
+	public fun getEmails ()Ljava/util/List;
+	public fun getHasMore ()Z
+	public fun hashCode ()I
+	public static fun newBuilder (Ljava/util/List;Ljava/util/List;)Lcom/dropbox/core/v2/team/SharingAllowlistListResponse$Builder;
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/team/SharingAllowlistListResponse$Builder {
+	protected field cursor Ljava/lang/String;
+	protected final field domains Ljava/util/List;
+	protected final field emails Ljava/util/List;
+	protected field hasMore Z
+	protected fun <init> (Ljava/util/List;Ljava/util/List;)V
+	public fun build ()Lcom/dropbox/core/v2/team/SharingAllowlistListResponse;
+	public fun withCursor (Ljava/lang/String;)Lcom/dropbox/core/v2/team/SharingAllowlistListResponse$Builder;
+	public fun withHasMore (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/team/SharingAllowlistListResponse$Builder;
+}
+
+public class com/dropbox/core/v2/team/SharingAllowlistRemoveBuilder {
+	public fun start ()Lcom/dropbox/core/v2/team/SharingAllowlistRemoveResponse;
+	public fun withDomains (Ljava/util/List;)Lcom/dropbox/core/v2/team/SharingAllowlistRemoveBuilder;
+	public fun withEmails (Ljava/util/List;)Lcom/dropbox/core/v2/team/SharingAllowlistRemoveBuilder;
+}
+
+public final class com/dropbox/core/v2/team/SharingAllowlistRemoveError {
+	public static final field NO_ENTRIES_PROVIDED Lcom/dropbox/core/v2/team/SharingAllowlistRemoveError;
+	public static final field OTHER Lcom/dropbox/core/v2/team/SharingAllowlistRemoveError;
+	public static final field TOO_MANY_ENTRIES_PROVIDED Lcom/dropbox/core/v2/team/SharingAllowlistRemoveError;
+	public static final field UNKNOWN_ERROR Lcom/dropbox/core/v2/team/SharingAllowlistRemoveError;
+	public static fun entriesDoNotExist (Ljava/lang/String;)Lcom/dropbox/core/v2/team/SharingAllowlistRemoveError;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getEntriesDoNotExistValue ()Ljava/lang/String;
+	public fun getMalformedEntryValue ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun isEntriesDoNotExist ()Z
+	public fun isMalformedEntry ()Z
+	public fun isNoEntriesProvided ()Z
+	public fun isOther ()Z
+	public fun isTooManyEntriesProvided ()Z
+	public fun isUnknownError ()Z
+	public static fun malformedEntry (Ljava/lang/String;)Lcom/dropbox/core/v2/team/SharingAllowlistRemoveError;
+	public fun tag ()Lcom/dropbox/core/v2/team/SharingAllowlistRemoveError$Tag;
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public final class com/dropbox/core/v2/team/SharingAllowlistRemoveError$Tag : java/lang/Enum {
+	public static final field ENTRIES_DO_NOT_EXIST Lcom/dropbox/core/v2/team/SharingAllowlistRemoveError$Tag;
+	public static final field MALFORMED_ENTRY Lcom/dropbox/core/v2/team/SharingAllowlistRemoveError$Tag;
+	public static final field NO_ENTRIES_PROVIDED Lcom/dropbox/core/v2/team/SharingAllowlistRemoveError$Tag;
+	public static final field OTHER Lcom/dropbox/core/v2/team/SharingAllowlistRemoveError$Tag;
+	public static final field TOO_MANY_ENTRIES_PROVIDED Lcom/dropbox/core/v2/team/SharingAllowlistRemoveError$Tag;
+	public static final field UNKNOWN_ERROR Lcom/dropbox/core/v2/team/SharingAllowlistRemoveError$Tag;
+	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/team/SharingAllowlistRemoveError$Tag;
+	public static fun values ()[Lcom/dropbox/core/v2/team/SharingAllowlistRemoveError$Tag;
+}
+
+public class com/dropbox/core/v2/team/SharingAllowlistRemoveErrorException : com/dropbox/core/DbxApiException {
+	public final field errorValue Lcom/dropbox/core/v2/team/SharingAllowlistRemoveError;
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lcom/dropbox/core/LocalizedText;Lcom/dropbox/core/v2/team/SharingAllowlistRemoveError;)V
+}
+
+public class com/dropbox/core/v2/team/SharingAllowlistRemoveResponse {
+	public fun <init> ()V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
 public class com/dropbox/core/v2/team/StorageBucket {
 	protected final field bucket Ljava/lang/String;
 	protected final field users J
@@ -14167,13 +14203,16 @@ public class com/dropbox/core/v2/team/TeamGetInfoResult {
 	protected final field name Ljava/lang/String;
 	protected final field numLicensedUsers J
 	protected final field numProvisionedUsers J
+	protected final field numUsedLicenses J
 	protected final field policies Lcom/dropbox/core/v2/teampolicies/TeamMemberPolicies;
 	protected final field teamId Ljava/lang/String;
 	public fun <init> (Ljava/lang/String;Ljava/lang/String;JJLcom/dropbox/core/v2/teampolicies/TeamMemberPolicies;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;JJLcom/dropbox/core/v2/teampolicies/TeamMemberPolicies;J)V
 	public fun equals (Ljava/lang/Object;)Z
 	public fun getName ()Ljava/lang/String;
 	public fun getNumLicensedUsers ()J
 	public fun getNumProvisionedUsers ()J
+	public fun getNumUsedLicenses ()J
 	public fun getPolicies ()Lcom/dropbox/core/v2/teampolicies/TeamMemberPolicies;
 	public fun getTeamId ()Ljava/lang/String;
 	public fun hashCode ()I
@@ -14875,6 +14914,7 @@ public final class com/dropbox/core/v2/teamlog/AccountCapturePolicy : java/lang/
 	public static final field DISABLED Lcom/dropbox/core/v2/teamlog/AccountCapturePolicy;
 	public static final field INVITED_USERS Lcom/dropbox/core/v2/teamlog/AccountCapturePolicy;
 	public static final field OTHER Lcom/dropbox/core/v2/teamlog/AccountCapturePolicy;
+	public static final field PREVENT_PERSONAL_CREATION Lcom/dropbox/core/v2/teamlog/AccountCapturePolicy;
 	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/teamlog/AccountCapturePolicy;
 	public static fun values ()[Lcom/dropbox/core/v2/teamlog/AccountCapturePolicy;
 }
@@ -15499,6 +15539,42 @@ public final class com/dropbox/core/v2/teamlog/AssetLogInfo$Tag : java/lang/Enum
 	public static final field SHOWCASE_DOCUMENT Lcom/dropbox/core/v2/teamlog/AssetLogInfo$Tag;
 	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/teamlog/AssetLogInfo$Tag;
 	public static fun values ()[Lcom/dropbox/core/v2/teamlog/AssetLogInfo$Tag;
+}
+
+public class com/dropbox/core/v2/teamlog/BackupAdminInvitationSentDetails {
+	public fun <init> ()V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/BackupAdminInvitationSentType {
+	protected final field description Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getDescription ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/BackupInvitationOpenedDetails {
+	public fun <init> ()V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/BackupInvitationOpenedType {
+	protected final field description Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getDescription ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
 }
 
 public final class com/dropbox/core/v2/teamlog/BackupStatus : java/lang/Enum {
@@ -17397,6 +17473,7 @@ public final class com/dropbox/core/v2/teamlog/EventCategory : java/lang/Enum {
 	public static final field DATA_GOVERNANCE Lcom/dropbox/core/v2/teamlog/EventCategory;
 	public static final field DEVICES Lcom/dropbox/core/v2/teamlog/EventCategory;
 	public static final field DOMAINS Lcom/dropbox/core/v2/teamlog/EventCategory;
+	public static final field ENCRYPTION Lcom/dropbox/core/v2/teamlog/EventCategory;
 	public static final field FILE_OPERATIONS Lcom/dropbox/core/v2/teamlog/EventCategory;
 	public static final field FILE_REQUESTS Lcom/dropbox/core/v2/teamlog/EventCategory;
 	public static final field GROUPS Lcom/dropbox/core/v2/teamlog/EventCategory;
@@ -17439,6 +17516,8 @@ public final class com/dropbox/core/v2/teamlog/EventDetails {
 	public static fun appUnlinkTeamDetails (Lcom/dropbox/core/v2/teamlog/AppUnlinkTeamDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun appUnlinkUserDetails (Lcom/dropbox/core/v2/teamlog/AppUnlinkUserDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun applyNamingConventionDetails (Lcom/dropbox/core/v2/teamlog/ApplyNamingConventionDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
+	public static fun backupAdminInvitationSentDetails (Lcom/dropbox/core/v2/teamlog/BackupAdminInvitationSentDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
+	public static fun backupInvitationOpenedDetails (Lcom/dropbox/core/v2/teamlog/BackupInvitationOpenedDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun binderAddPageDetails (Lcom/dropbox/core/v2/teamlog/BinderAddPageDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun binderAddSectionDetails (Lcom/dropbox/core/v2/teamlog/BinderAddSectionDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun binderRemovePageDetails (Lcom/dropbox/core/v2/teamlog/BinderRemovePageDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
@@ -17520,6 +17599,7 @@ public final class com/dropbox/core/v2/teamlog/EventDetails {
 	public static fun externalSharingReportFailedDetails (Lcom/dropbox/core/v2/teamlog/ExternalSharingReportFailedDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun fileAddCommentDetails (Lcom/dropbox/core/v2/teamlog/FileAddCommentDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun fileAddDetails (Lcom/dropbox/core/v2/teamlog/FileAddDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
+	public static fun fileAddFromAutomationDetails (Lcom/dropbox/core/v2/teamlog/FileAddFromAutomationDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun fileChangeCommentSubscriptionDetails (Lcom/dropbox/core/v2/teamlog/FileChangeCommentSubscriptionDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun fileCommentsChangePolicyDetails (Lcom/dropbox/core/v2/teamlog/FileCommentsChangePolicyDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun fileCopyDetails (Lcom/dropbox/core/v2/teamlog/FileCopyDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
@@ -17558,6 +17638,7 @@ public final class com/dropbox/core/v2/teamlog/EventDetails {
 	public static fun fileTransfersTransferViewDetails (Lcom/dropbox/core/v2/teamlog/FileTransfersTransferViewDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun fileUnlikeCommentDetails (Lcom/dropbox/core/v2/teamlog/FileUnlikeCommentDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun fileUnresolveCommentDetails (Lcom/dropbox/core/v2/teamlog/FileUnresolveCommentDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
+	public static fun folderLinkRestrictionPolicyChangedDetails (Lcom/dropbox/core/v2/teamlog/FolderLinkRestrictionPolicyChangedDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun folderOverviewDescriptionChangedDetails (Lcom/dropbox/core/v2/teamlog/FolderOverviewDescriptionChangedDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun folderOverviewItemPinnedDetails (Lcom/dropbox/core/v2/teamlog/FolderOverviewItemPinnedDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun folderOverviewItemUnpinnedDetails (Lcom/dropbox/core/v2/teamlog/FolderOverviewItemUnpinnedDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
@@ -17580,6 +17661,8 @@ public final class com/dropbox/core/v2/teamlog/EventDetails {
 	public fun getAppUnlinkTeamDetailsValue ()Lcom/dropbox/core/v2/teamlog/AppUnlinkTeamDetails;
 	public fun getAppUnlinkUserDetailsValue ()Lcom/dropbox/core/v2/teamlog/AppUnlinkUserDetails;
 	public fun getApplyNamingConventionDetailsValue ()Lcom/dropbox/core/v2/teamlog/ApplyNamingConventionDetails;
+	public fun getBackupAdminInvitationSentDetailsValue ()Lcom/dropbox/core/v2/teamlog/BackupAdminInvitationSentDetails;
+	public fun getBackupInvitationOpenedDetailsValue ()Lcom/dropbox/core/v2/teamlog/BackupInvitationOpenedDetails;
 	public fun getBinderAddPageDetailsValue ()Lcom/dropbox/core/v2/teamlog/BinderAddPageDetails;
 	public fun getBinderAddSectionDetailsValue ()Lcom/dropbox/core/v2/teamlog/BinderAddSectionDetails;
 	public fun getBinderRemovePageDetailsValue ()Lcom/dropbox/core/v2/teamlog/BinderRemovePageDetails;
@@ -17660,6 +17743,7 @@ public final class com/dropbox/core/v2/teamlog/EventDetails {
 	public fun getExternalSharingReportFailedDetailsValue ()Lcom/dropbox/core/v2/teamlog/ExternalSharingReportFailedDetails;
 	public fun getFileAddCommentDetailsValue ()Lcom/dropbox/core/v2/teamlog/FileAddCommentDetails;
 	public fun getFileAddDetailsValue ()Lcom/dropbox/core/v2/teamlog/FileAddDetails;
+	public fun getFileAddFromAutomationDetailsValue ()Lcom/dropbox/core/v2/teamlog/FileAddFromAutomationDetails;
 	public fun getFileChangeCommentSubscriptionDetailsValue ()Lcom/dropbox/core/v2/teamlog/FileChangeCommentSubscriptionDetails;
 	public fun getFileCommentsChangePolicyDetailsValue ()Lcom/dropbox/core/v2/teamlog/FileCommentsChangePolicyDetails;
 	public fun getFileCopyDetailsValue ()Lcom/dropbox/core/v2/teamlog/FileCopyDetails;
@@ -17698,6 +17782,7 @@ public final class com/dropbox/core/v2/teamlog/EventDetails {
 	public fun getFileTransfersTransferViewDetailsValue ()Lcom/dropbox/core/v2/teamlog/FileTransfersTransferViewDetails;
 	public fun getFileUnlikeCommentDetailsValue ()Lcom/dropbox/core/v2/teamlog/FileUnlikeCommentDetails;
 	public fun getFileUnresolveCommentDetailsValue ()Lcom/dropbox/core/v2/teamlog/FileUnresolveCommentDetails;
+	public fun getFolderLinkRestrictionPolicyChangedDetailsValue ()Lcom/dropbox/core/v2/teamlog/FolderLinkRestrictionPolicyChangedDetails;
 	public fun getFolderOverviewDescriptionChangedDetailsValue ()Lcom/dropbox/core/v2/teamlog/FolderOverviewDescriptionChangedDetails;
 	public fun getFolderOverviewItemPinnedDetailsValue ()Lcom/dropbox/core/v2/teamlog/FolderOverviewItemPinnedDetails;
 	public fun getFolderOverviewItemUnpinnedDetailsValue ()Lcom/dropbox/core/v2/teamlog/FolderOverviewItemUnpinnedDetails;
@@ -17853,6 +17938,15 @@ public final class com/dropbox/core/v2/teamlog/EventDetails {
 	public fun getPasswordStrengthRequirementsChangePolicyDetailsValue ()Lcom/dropbox/core/v2/teamlog/PasswordStrengthRequirementsChangePolicyDetails;
 	public fun getPendingSecondaryEmailAddedDetailsValue ()Lcom/dropbox/core/v2/teamlog/PendingSecondaryEmailAddedDetails;
 	public fun getPermanentDeleteChangePolicyDetailsValue ()Lcom/dropbox/core/v2/teamlog/PermanentDeleteChangePolicyDetails;
+	public fun getRansomwareAlertCreateReportDetailsValue ()Lcom/dropbox/core/v2/teamlog/RansomwareAlertCreateReportDetails;
+	public fun getRansomwareAlertCreateReportFailedDetailsValue ()Lcom/dropbox/core/v2/teamlog/RansomwareAlertCreateReportFailedDetails;
+	public fun getRansomwareRestoreProcessCompletedDetailsValue ()Lcom/dropbox/core/v2/teamlog/RansomwareRestoreProcessCompletedDetails;
+	public fun getRansomwareRestoreProcessStartedDetailsValue ()Lcom/dropbox/core/v2/teamlog/RansomwareRestoreProcessStartedDetails;
+	public fun getReplayFileDeleteDetailsValue ()Lcom/dropbox/core/v2/teamlog/ReplayFileDeleteDetails;
+	public fun getReplayFileSharedLinkCreatedDetailsValue ()Lcom/dropbox/core/v2/teamlog/ReplayFileSharedLinkCreatedDetails;
+	public fun getReplayFileSharedLinkModifiedDetailsValue ()Lcom/dropbox/core/v2/teamlog/ReplayFileSharedLinkModifiedDetails;
+	public fun getReplayProjectTeamAddDetailsValue ()Lcom/dropbox/core/v2/teamlog/ReplayProjectTeamAddDetails;
+	public fun getReplayProjectTeamDeleteDetailsValue ()Lcom/dropbox/core/v2/teamlog/ReplayProjectTeamDeleteDetails;
 	public fun getResellerSupportChangePolicyDetailsValue ()Lcom/dropbox/core/v2/teamlog/ResellerSupportChangePolicyDetails;
 	public fun getResellerSupportSessionEndDetailsValue ()Lcom/dropbox/core/v2/teamlog/ResellerSupportSessionEndDetails;
 	public fun getResellerSupportSessionStartDetailsValue ()Lcom/dropbox/core/v2/teamlog/ResellerSupportSessionStartDetails;
@@ -17988,6 +18082,13 @@ public final class com/dropbox/core/v2/teamlog/EventDetails {
 	public fun getTeamActivityCreateReportDetailsValue ()Lcom/dropbox/core/v2/teamlog/TeamActivityCreateReportDetails;
 	public fun getTeamActivityCreateReportFailDetailsValue ()Lcom/dropbox/core/v2/teamlog/TeamActivityCreateReportFailDetails;
 	public fun getTeamBrandingPolicyChangedDetailsValue ()Lcom/dropbox/core/v2/teamlog/TeamBrandingPolicyChangedDetails;
+	public fun getTeamEncryptionKeyCancelKeyDeletionDetailsValue ()Lcom/dropbox/core/v2/teamlog/TeamEncryptionKeyCancelKeyDeletionDetails;
+	public fun getTeamEncryptionKeyCreateKeyDetailsValue ()Lcom/dropbox/core/v2/teamlog/TeamEncryptionKeyCreateKeyDetails;
+	public fun getTeamEncryptionKeyDeleteKeyDetailsValue ()Lcom/dropbox/core/v2/teamlog/TeamEncryptionKeyDeleteKeyDetails;
+	public fun getTeamEncryptionKeyDisableKeyDetailsValue ()Lcom/dropbox/core/v2/teamlog/TeamEncryptionKeyDisableKeyDetails;
+	public fun getTeamEncryptionKeyEnableKeyDetailsValue ()Lcom/dropbox/core/v2/teamlog/TeamEncryptionKeyEnableKeyDetails;
+	public fun getTeamEncryptionKeyRotateKeyDetailsValue ()Lcom/dropbox/core/v2/teamlog/TeamEncryptionKeyRotateKeyDetails;
+	public fun getTeamEncryptionKeyScheduleKeyDeletionDetailsValue ()Lcom/dropbox/core/v2/teamlog/TeamEncryptionKeyScheduleKeyDeletionDetails;
 	public fun getTeamExtensionsPolicyChangedDetailsValue ()Lcom/dropbox/core/v2/teamlog/TeamExtensionsPolicyChangedDetails;
 	public fun getTeamFolderChangeStatusDetailsValue ()Lcom/dropbox/core/v2/teamlog/TeamFolderChangeStatusDetails;
 	public fun getTeamFolderCreateDetailsValue ()Lcom/dropbox/core/v2/teamlog/TeamFolderCreateDetails;
@@ -18099,6 +18200,8 @@ public final class com/dropbox/core/v2/teamlog/EventDetails {
 	public fun isAppUnlinkTeamDetails ()Z
 	public fun isAppUnlinkUserDetails ()Z
 	public fun isApplyNamingConventionDetails ()Z
+	public fun isBackupAdminInvitationSentDetails ()Z
+	public fun isBackupInvitationOpenedDetails ()Z
 	public fun isBinderAddPageDetails ()Z
 	public fun isBinderAddSectionDetails ()Z
 	public fun isBinderRemovePageDetails ()Z
@@ -18179,6 +18282,7 @@ public final class com/dropbox/core/v2/teamlog/EventDetails {
 	public fun isExternalSharingReportFailedDetails ()Z
 	public fun isFileAddCommentDetails ()Z
 	public fun isFileAddDetails ()Z
+	public fun isFileAddFromAutomationDetails ()Z
 	public fun isFileChangeCommentSubscriptionDetails ()Z
 	public fun isFileCommentsChangePolicyDetails ()Z
 	public fun isFileCopyDetails ()Z
@@ -18217,6 +18321,7 @@ public final class com/dropbox/core/v2/teamlog/EventDetails {
 	public fun isFileTransfersTransferViewDetails ()Z
 	public fun isFileUnlikeCommentDetails ()Z
 	public fun isFileUnresolveCommentDetails ()Z
+	public fun isFolderLinkRestrictionPolicyChangedDetails ()Z
 	public fun isFolderOverviewDescriptionChangedDetails ()Z
 	public fun isFolderOverviewItemPinnedDetails ()Z
 	public fun isFolderOverviewItemUnpinnedDetails ()Z
@@ -18373,6 +18478,15 @@ public final class com/dropbox/core/v2/teamlog/EventDetails {
 	public fun isPasswordStrengthRequirementsChangePolicyDetails ()Z
 	public fun isPendingSecondaryEmailAddedDetails ()Z
 	public fun isPermanentDeleteChangePolicyDetails ()Z
+	public fun isRansomwareAlertCreateReportDetails ()Z
+	public fun isRansomwareAlertCreateReportFailedDetails ()Z
+	public fun isRansomwareRestoreProcessCompletedDetails ()Z
+	public fun isRansomwareRestoreProcessStartedDetails ()Z
+	public fun isReplayFileDeleteDetails ()Z
+	public fun isReplayFileSharedLinkCreatedDetails ()Z
+	public fun isReplayFileSharedLinkModifiedDetails ()Z
+	public fun isReplayProjectTeamAddDetails ()Z
+	public fun isReplayProjectTeamDeleteDetails ()Z
 	public fun isResellerSupportChangePolicyDetails ()Z
 	public fun isResellerSupportSessionEndDetails ()Z
 	public fun isResellerSupportSessionStartDetails ()Z
@@ -18508,6 +18622,13 @@ public final class com/dropbox/core/v2/teamlog/EventDetails {
 	public fun isTeamActivityCreateReportDetails ()Z
 	public fun isTeamActivityCreateReportFailDetails ()Z
 	public fun isTeamBrandingPolicyChangedDetails ()Z
+	public fun isTeamEncryptionKeyCancelKeyDeletionDetails ()Z
+	public fun isTeamEncryptionKeyCreateKeyDetails ()Z
+	public fun isTeamEncryptionKeyDeleteKeyDetails ()Z
+	public fun isTeamEncryptionKeyDisableKeyDetails ()Z
+	public fun isTeamEncryptionKeyEnableKeyDetails ()Z
+	public fun isTeamEncryptionKeyRotateKeyDetails ()Z
+	public fun isTeamEncryptionKeyScheduleKeyDeletionDetails ()Z
 	public fun isTeamExtensionsPolicyChangedDetails ()Z
 	public fun isTeamFolderChangeStatusDetails ()Z
 	public fun isTeamFolderCreateDetails ()Z
@@ -18683,6 +18804,15 @@ public final class com/dropbox/core/v2/teamlog/EventDetails {
 	public static fun passwordStrengthRequirementsChangePolicyDetails (Lcom/dropbox/core/v2/teamlog/PasswordStrengthRequirementsChangePolicyDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun pendingSecondaryEmailAddedDetails (Lcom/dropbox/core/v2/teamlog/PendingSecondaryEmailAddedDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun permanentDeleteChangePolicyDetails (Lcom/dropbox/core/v2/teamlog/PermanentDeleteChangePolicyDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
+	public static fun ransomwareAlertCreateReportDetails (Lcom/dropbox/core/v2/teamlog/RansomwareAlertCreateReportDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
+	public static fun ransomwareAlertCreateReportFailedDetails (Lcom/dropbox/core/v2/teamlog/RansomwareAlertCreateReportFailedDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
+	public static fun ransomwareRestoreProcessCompletedDetails (Lcom/dropbox/core/v2/teamlog/RansomwareRestoreProcessCompletedDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
+	public static fun ransomwareRestoreProcessStartedDetails (Lcom/dropbox/core/v2/teamlog/RansomwareRestoreProcessStartedDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
+	public static fun replayFileDeleteDetails (Lcom/dropbox/core/v2/teamlog/ReplayFileDeleteDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
+	public static fun replayFileSharedLinkCreatedDetails (Lcom/dropbox/core/v2/teamlog/ReplayFileSharedLinkCreatedDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
+	public static fun replayFileSharedLinkModifiedDetails (Lcom/dropbox/core/v2/teamlog/ReplayFileSharedLinkModifiedDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
+	public static fun replayProjectTeamAddDetails (Lcom/dropbox/core/v2/teamlog/ReplayProjectTeamAddDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
+	public static fun replayProjectTeamDeleteDetails (Lcom/dropbox/core/v2/teamlog/ReplayProjectTeamDeleteDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun resellerSupportChangePolicyDetails (Lcom/dropbox/core/v2/teamlog/ResellerSupportChangePolicyDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun resellerSupportSessionEndDetails (Lcom/dropbox/core/v2/teamlog/ResellerSupportSessionEndDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun resellerSupportSessionStartDetails (Lcom/dropbox/core/v2/teamlog/ResellerSupportSessionStartDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
@@ -18819,6 +18949,13 @@ public final class com/dropbox/core/v2/teamlog/EventDetails {
 	public static fun teamActivityCreateReportDetails (Lcom/dropbox/core/v2/teamlog/TeamActivityCreateReportDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun teamActivityCreateReportFailDetails (Lcom/dropbox/core/v2/teamlog/TeamActivityCreateReportFailDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun teamBrandingPolicyChangedDetails (Lcom/dropbox/core/v2/teamlog/TeamBrandingPolicyChangedDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
+	public static fun teamEncryptionKeyCancelKeyDeletionDetails (Lcom/dropbox/core/v2/teamlog/TeamEncryptionKeyCancelKeyDeletionDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
+	public static fun teamEncryptionKeyCreateKeyDetails (Lcom/dropbox/core/v2/teamlog/TeamEncryptionKeyCreateKeyDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
+	public static fun teamEncryptionKeyDeleteKeyDetails (Lcom/dropbox/core/v2/teamlog/TeamEncryptionKeyDeleteKeyDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
+	public static fun teamEncryptionKeyDisableKeyDetails (Lcom/dropbox/core/v2/teamlog/TeamEncryptionKeyDisableKeyDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
+	public static fun teamEncryptionKeyEnableKeyDetails (Lcom/dropbox/core/v2/teamlog/TeamEncryptionKeyEnableKeyDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
+	public static fun teamEncryptionKeyRotateKeyDetails (Lcom/dropbox/core/v2/teamlog/TeamEncryptionKeyRotateKeyDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
+	public static fun teamEncryptionKeyScheduleKeyDeletionDetails (Lcom/dropbox/core/v2/teamlog/TeamEncryptionKeyScheduleKeyDeletionDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun teamExtensionsPolicyChangedDetails (Lcom/dropbox/core/v2/teamlog/TeamExtensionsPolicyChangedDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun teamFolderChangeStatusDetails (Lcom/dropbox/core/v2/teamlog/TeamFolderChangeStatusDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun teamFolderCreateDetails (Lcom/dropbox/core/v2/teamlog/TeamFolderCreateDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
@@ -18900,6 +19037,8 @@ public final class com/dropbox/core/v2/teamlog/EventDetails$Tag : java/lang/Enum
 	public static final field APP_PERMISSIONS_CHANGED_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field APP_UNLINK_TEAM_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field APP_UNLINK_USER_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
+	public static final field BACKUP_ADMIN_INVITATION_SENT_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
+	public static final field BACKUP_INVITATION_OPENED_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field BINDER_ADD_PAGE_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field BINDER_ADD_SECTION_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field BINDER_REMOVE_PAGE_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
@@ -18980,6 +19119,7 @@ public final class com/dropbox/core/v2/teamlog/EventDetails$Tag : java/lang/Enum
 	public static final field EXTERNAL_SHARING_REPORT_FAILED_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field FILE_ADD_COMMENT_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field FILE_ADD_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
+	public static final field FILE_ADD_FROM_AUTOMATION_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field FILE_CHANGE_COMMENT_SUBSCRIPTION_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field FILE_COMMENTS_CHANGE_POLICY_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field FILE_COPY_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
@@ -19018,6 +19158,7 @@ public final class com/dropbox/core/v2/teamlog/EventDetails$Tag : java/lang/Enum
 	public static final field FILE_TRANSFERS_TRANSFER_VIEW_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field FILE_UNLIKE_COMMENT_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field FILE_UNRESOLVE_COMMENT_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
+	public static final field FOLDER_LINK_RESTRICTION_POLICY_CHANGED_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field FOLDER_OVERVIEW_DESCRIPTION_CHANGED_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field FOLDER_OVERVIEW_ITEM_PINNED_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field FOLDER_OVERVIEW_ITEM_UNPINNED_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
@@ -19174,6 +19315,15 @@ public final class com/dropbox/core/v2/teamlog/EventDetails$Tag : java/lang/Enum
 	public static final field PASSWORD_STRENGTH_REQUIREMENTS_CHANGE_POLICY_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field PENDING_SECONDARY_EMAIL_ADDED_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field PERMANENT_DELETE_CHANGE_POLICY_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
+	public static final field RANSOMWARE_ALERT_CREATE_REPORT_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
+	public static final field RANSOMWARE_ALERT_CREATE_REPORT_FAILED_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
+	public static final field RANSOMWARE_RESTORE_PROCESS_COMPLETED_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
+	public static final field RANSOMWARE_RESTORE_PROCESS_STARTED_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
+	public static final field REPLAY_FILE_DELETE_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
+	public static final field REPLAY_FILE_SHARED_LINK_CREATED_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
+	public static final field REPLAY_FILE_SHARED_LINK_MODIFIED_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
+	public static final field REPLAY_PROJECT_TEAM_ADD_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
+	public static final field REPLAY_PROJECT_TEAM_DELETE_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field RESELLER_SUPPORT_CHANGE_POLICY_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field RESELLER_SUPPORT_SESSION_END_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field RESELLER_SUPPORT_SESSION_START_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
@@ -19309,6 +19459,13 @@ public final class com/dropbox/core/v2/teamlog/EventDetails$Tag : java/lang/Enum
 	public static final field TEAM_ACTIVITY_CREATE_REPORT_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field TEAM_ACTIVITY_CREATE_REPORT_FAIL_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field TEAM_BRANDING_POLICY_CHANGED_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
+	public static final field TEAM_ENCRYPTION_KEY_CANCEL_KEY_DELETION_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
+	public static final field TEAM_ENCRYPTION_KEY_CREATE_KEY_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
+	public static final field TEAM_ENCRYPTION_KEY_DELETE_KEY_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
+	public static final field TEAM_ENCRYPTION_KEY_DISABLE_KEY_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
+	public static final field TEAM_ENCRYPTION_KEY_ENABLE_KEY_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
+	public static final field TEAM_ENCRYPTION_KEY_ROTATE_KEY_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
+	public static final field TEAM_ENCRYPTION_KEY_SCHEDULE_KEY_DELETION_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field TEAM_EXTENSIONS_POLICY_CHANGED_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field TEAM_FOLDER_CHANGE_STATUS_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field TEAM_FOLDER_CREATE_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
@@ -19391,6 +19548,8 @@ public final class com/dropbox/core/v2/teamlog/EventType {
 	public static fun appUnlinkTeam (Lcom/dropbox/core/v2/teamlog/AppUnlinkTeamType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun appUnlinkUser (Lcom/dropbox/core/v2/teamlog/AppUnlinkUserType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun applyNamingConvention (Lcom/dropbox/core/v2/teamlog/ApplyNamingConventionType;)Lcom/dropbox/core/v2/teamlog/EventType;
+	public static fun backupAdminInvitationSent (Lcom/dropbox/core/v2/teamlog/BackupAdminInvitationSentType;)Lcom/dropbox/core/v2/teamlog/EventType;
+	public static fun backupInvitationOpened (Lcom/dropbox/core/v2/teamlog/BackupInvitationOpenedType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun binderAddPage (Lcom/dropbox/core/v2/teamlog/BinderAddPageType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun binderAddSection (Lcom/dropbox/core/v2/teamlog/BinderAddSectionType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun binderRemovePage (Lcom/dropbox/core/v2/teamlog/BinderRemovePageType;)Lcom/dropbox/core/v2/teamlog/EventType;
@@ -19472,6 +19631,7 @@ public final class com/dropbox/core/v2/teamlog/EventType {
 	public static fun externalSharingReportFailed (Lcom/dropbox/core/v2/teamlog/ExternalSharingReportFailedType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun fileAdd (Lcom/dropbox/core/v2/teamlog/FileAddType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun fileAddComment (Lcom/dropbox/core/v2/teamlog/FileAddCommentType;)Lcom/dropbox/core/v2/teamlog/EventType;
+	public static fun fileAddFromAutomation (Lcom/dropbox/core/v2/teamlog/FileAddFromAutomationType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun fileChangeCommentSubscription (Lcom/dropbox/core/v2/teamlog/FileChangeCommentSubscriptionType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun fileCommentsChangePolicy (Lcom/dropbox/core/v2/teamlog/FileCommentsChangePolicyType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun fileCopy (Lcom/dropbox/core/v2/teamlog/FileCopyType;)Lcom/dropbox/core/v2/teamlog/EventType;
@@ -19510,6 +19670,7 @@ public final class com/dropbox/core/v2/teamlog/EventType {
 	public static fun fileTransfersTransferView (Lcom/dropbox/core/v2/teamlog/FileTransfersTransferViewType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun fileUnlikeComment (Lcom/dropbox/core/v2/teamlog/FileUnlikeCommentType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun fileUnresolveComment (Lcom/dropbox/core/v2/teamlog/FileUnresolveCommentType;)Lcom/dropbox/core/v2/teamlog/EventType;
+	public static fun folderLinkRestrictionPolicyChanged (Lcom/dropbox/core/v2/teamlog/FolderLinkRestrictionPolicyChangedType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun folderOverviewDescriptionChanged (Lcom/dropbox/core/v2/teamlog/FolderOverviewDescriptionChangedType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun folderOverviewItemPinned (Lcom/dropbox/core/v2/teamlog/FolderOverviewItemPinnedType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun folderOverviewItemUnpinned (Lcom/dropbox/core/v2/teamlog/FolderOverviewItemUnpinnedType;)Lcom/dropbox/core/v2/teamlog/EventType;
@@ -19532,6 +19693,8 @@ public final class com/dropbox/core/v2/teamlog/EventType {
 	public fun getAppUnlinkTeamValue ()Lcom/dropbox/core/v2/teamlog/AppUnlinkTeamType;
 	public fun getAppUnlinkUserValue ()Lcom/dropbox/core/v2/teamlog/AppUnlinkUserType;
 	public fun getApplyNamingConventionValue ()Lcom/dropbox/core/v2/teamlog/ApplyNamingConventionType;
+	public fun getBackupAdminInvitationSentValue ()Lcom/dropbox/core/v2/teamlog/BackupAdminInvitationSentType;
+	public fun getBackupInvitationOpenedValue ()Lcom/dropbox/core/v2/teamlog/BackupInvitationOpenedType;
 	public fun getBinderAddPageValue ()Lcom/dropbox/core/v2/teamlog/BinderAddPageType;
 	public fun getBinderAddSectionValue ()Lcom/dropbox/core/v2/teamlog/BinderAddSectionType;
 	public fun getBinderRemovePageValue ()Lcom/dropbox/core/v2/teamlog/BinderRemovePageType;
@@ -19611,6 +19774,7 @@ public final class com/dropbox/core/v2/teamlog/EventType {
 	public fun getExternalSharingCreateReportValue ()Lcom/dropbox/core/v2/teamlog/ExternalSharingCreateReportType;
 	public fun getExternalSharingReportFailedValue ()Lcom/dropbox/core/v2/teamlog/ExternalSharingReportFailedType;
 	public fun getFileAddCommentValue ()Lcom/dropbox/core/v2/teamlog/FileAddCommentType;
+	public fun getFileAddFromAutomationValue ()Lcom/dropbox/core/v2/teamlog/FileAddFromAutomationType;
 	public fun getFileAddValue ()Lcom/dropbox/core/v2/teamlog/FileAddType;
 	public fun getFileChangeCommentSubscriptionValue ()Lcom/dropbox/core/v2/teamlog/FileChangeCommentSubscriptionType;
 	public fun getFileCommentsChangePolicyValue ()Lcom/dropbox/core/v2/teamlog/FileCommentsChangePolicyType;
@@ -19650,6 +19814,7 @@ public final class com/dropbox/core/v2/teamlog/EventType {
 	public fun getFileTransfersTransferViewValue ()Lcom/dropbox/core/v2/teamlog/FileTransfersTransferViewType;
 	public fun getFileUnlikeCommentValue ()Lcom/dropbox/core/v2/teamlog/FileUnlikeCommentType;
 	public fun getFileUnresolveCommentValue ()Lcom/dropbox/core/v2/teamlog/FileUnresolveCommentType;
+	public fun getFolderLinkRestrictionPolicyChangedValue ()Lcom/dropbox/core/v2/teamlog/FolderLinkRestrictionPolicyChangedType;
 	public fun getFolderOverviewDescriptionChangedValue ()Lcom/dropbox/core/v2/teamlog/FolderOverviewDescriptionChangedType;
 	public fun getFolderOverviewItemPinnedValue ()Lcom/dropbox/core/v2/teamlog/FolderOverviewItemPinnedType;
 	public fun getFolderOverviewItemUnpinnedValue ()Lcom/dropbox/core/v2/teamlog/FolderOverviewItemUnpinnedType;
@@ -19804,6 +19969,15 @@ public final class com/dropbox/core/v2/teamlog/EventType {
 	public fun getPasswordStrengthRequirementsChangePolicyValue ()Lcom/dropbox/core/v2/teamlog/PasswordStrengthRequirementsChangePolicyType;
 	public fun getPendingSecondaryEmailAddedValue ()Lcom/dropbox/core/v2/teamlog/PendingSecondaryEmailAddedType;
 	public fun getPermanentDeleteChangePolicyValue ()Lcom/dropbox/core/v2/teamlog/PermanentDeleteChangePolicyType;
+	public fun getRansomwareAlertCreateReportFailedValue ()Lcom/dropbox/core/v2/teamlog/RansomwareAlertCreateReportFailedType;
+	public fun getRansomwareAlertCreateReportValue ()Lcom/dropbox/core/v2/teamlog/RansomwareAlertCreateReportType;
+	public fun getRansomwareRestoreProcessCompletedValue ()Lcom/dropbox/core/v2/teamlog/RansomwareRestoreProcessCompletedType;
+	public fun getRansomwareRestoreProcessStartedValue ()Lcom/dropbox/core/v2/teamlog/RansomwareRestoreProcessStartedType;
+	public fun getReplayFileDeleteValue ()Lcom/dropbox/core/v2/teamlog/ReplayFileDeleteType;
+	public fun getReplayFileSharedLinkCreatedValue ()Lcom/dropbox/core/v2/teamlog/ReplayFileSharedLinkCreatedType;
+	public fun getReplayFileSharedLinkModifiedValue ()Lcom/dropbox/core/v2/teamlog/ReplayFileSharedLinkModifiedType;
+	public fun getReplayProjectTeamAddValue ()Lcom/dropbox/core/v2/teamlog/ReplayProjectTeamAddType;
+	public fun getReplayProjectTeamDeleteValue ()Lcom/dropbox/core/v2/teamlog/ReplayProjectTeamDeleteType;
 	public fun getResellerSupportChangePolicyValue ()Lcom/dropbox/core/v2/teamlog/ResellerSupportChangePolicyType;
 	public fun getResellerSupportSessionEndValue ()Lcom/dropbox/core/v2/teamlog/ResellerSupportSessionEndType;
 	public fun getResellerSupportSessionStartValue ()Lcom/dropbox/core/v2/teamlog/ResellerSupportSessionStartType;
@@ -19939,6 +20113,13 @@ public final class com/dropbox/core/v2/teamlog/EventType {
 	public fun getTeamActivityCreateReportFailValue ()Lcom/dropbox/core/v2/teamlog/TeamActivityCreateReportFailType;
 	public fun getTeamActivityCreateReportValue ()Lcom/dropbox/core/v2/teamlog/TeamActivityCreateReportType;
 	public fun getTeamBrandingPolicyChangedValue ()Lcom/dropbox/core/v2/teamlog/TeamBrandingPolicyChangedType;
+	public fun getTeamEncryptionKeyCancelKeyDeletionValue ()Lcom/dropbox/core/v2/teamlog/TeamEncryptionKeyCancelKeyDeletionType;
+	public fun getTeamEncryptionKeyCreateKeyValue ()Lcom/dropbox/core/v2/teamlog/TeamEncryptionKeyCreateKeyType;
+	public fun getTeamEncryptionKeyDeleteKeyValue ()Lcom/dropbox/core/v2/teamlog/TeamEncryptionKeyDeleteKeyType;
+	public fun getTeamEncryptionKeyDisableKeyValue ()Lcom/dropbox/core/v2/teamlog/TeamEncryptionKeyDisableKeyType;
+	public fun getTeamEncryptionKeyEnableKeyValue ()Lcom/dropbox/core/v2/teamlog/TeamEncryptionKeyEnableKeyType;
+	public fun getTeamEncryptionKeyRotateKeyValue ()Lcom/dropbox/core/v2/teamlog/TeamEncryptionKeyRotateKeyType;
+	public fun getTeamEncryptionKeyScheduleKeyDeletionValue ()Lcom/dropbox/core/v2/teamlog/TeamEncryptionKeyScheduleKeyDeletionType;
 	public fun getTeamExtensionsPolicyChangedValue ()Lcom/dropbox/core/v2/teamlog/TeamExtensionsPolicyChangedType;
 	public fun getTeamFolderChangeStatusValue ()Lcom/dropbox/core/v2/teamlog/TeamFolderChangeStatusType;
 	public fun getTeamFolderCreateValue ()Lcom/dropbox/core/v2/teamlog/TeamFolderCreateType;
@@ -20050,6 +20231,8 @@ public final class com/dropbox/core/v2/teamlog/EventType {
 	public fun isAppUnlinkTeam ()Z
 	public fun isAppUnlinkUser ()Z
 	public fun isApplyNamingConvention ()Z
+	public fun isBackupAdminInvitationSent ()Z
+	public fun isBackupInvitationOpened ()Z
 	public fun isBinderAddPage ()Z
 	public fun isBinderAddSection ()Z
 	public fun isBinderRemovePage ()Z
@@ -20130,6 +20313,7 @@ public final class com/dropbox/core/v2/teamlog/EventType {
 	public fun isExternalSharingReportFailed ()Z
 	public fun isFileAdd ()Z
 	public fun isFileAddComment ()Z
+	public fun isFileAddFromAutomation ()Z
 	public fun isFileChangeCommentSubscription ()Z
 	public fun isFileCommentsChangePolicy ()Z
 	public fun isFileCopy ()Z
@@ -20168,6 +20352,7 @@ public final class com/dropbox/core/v2/teamlog/EventType {
 	public fun isFileTransfersTransferView ()Z
 	public fun isFileUnlikeComment ()Z
 	public fun isFileUnresolveComment ()Z
+	public fun isFolderLinkRestrictionPolicyChanged ()Z
 	public fun isFolderOverviewDescriptionChanged ()Z
 	public fun isFolderOverviewItemPinned ()Z
 	public fun isFolderOverviewItemUnpinned ()Z
@@ -20323,6 +20508,15 @@ public final class com/dropbox/core/v2/teamlog/EventType {
 	public fun isPasswordStrengthRequirementsChangePolicy ()Z
 	public fun isPendingSecondaryEmailAdded ()Z
 	public fun isPermanentDeleteChangePolicy ()Z
+	public fun isRansomwareAlertCreateReport ()Z
+	public fun isRansomwareAlertCreateReportFailed ()Z
+	public fun isRansomwareRestoreProcessCompleted ()Z
+	public fun isRansomwareRestoreProcessStarted ()Z
+	public fun isReplayFileDelete ()Z
+	public fun isReplayFileSharedLinkCreated ()Z
+	public fun isReplayFileSharedLinkModified ()Z
+	public fun isReplayProjectTeamAdd ()Z
+	public fun isReplayProjectTeamDelete ()Z
 	public fun isResellerSupportChangePolicy ()Z
 	public fun isResellerSupportSessionEnd ()Z
 	public fun isResellerSupportSessionStart ()Z
@@ -20458,6 +20652,13 @@ public final class com/dropbox/core/v2/teamlog/EventType {
 	public fun isTeamActivityCreateReport ()Z
 	public fun isTeamActivityCreateReportFail ()Z
 	public fun isTeamBrandingPolicyChanged ()Z
+	public fun isTeamEncryptionKeyCancelKeyDeletion ()Z
+	public fun isTeamEncryptionKeyCreateKey ()Z
+	public fun isTeamEncryptionKeyDeleteKey ()Z
+	public fun isTeamEncryptionKeyDisableKey ()Z
+	public fun isTeamEncryptionKeyEnableKey ()Z
+	public fun isTeamEncryptionKeyRotateKey ()Z
+	public fun isTeamEncryptionKeyScheduleKeyDeletion ()Z
 	public fun isTeamExtensionsPolicyChanged ()Z
 	public fun isTeamFolderChangeStatus ()Z
 	public fun isTeamFolderCreate ()Z
@@ -20632,6 +20833,15 @@ public final class com/dropbox/core/v2/teamlog/EventType {
 	public static fun passwordStrengthRequirementsChangePolicy (Lcom/dropbox/core/v2/teamlog/PasswordStrengthRequirementsChangePolicyType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun pendingSecondaryEmailAdded (Lcom/dropbox/core/v2/teamlog/PendingSecondaryEmailAddedType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun permanentDeleteChangePolicy (Lcom/dropbox/core/v2/teamlog/PermanentDeleteChangePolicyType;)Lcom/dropbox/core/v2/teamlog/EventType;
+	public static fun ransomwareAlertCreateReport (Lcom/dropbox/core/v2/teamlog/RansomwareAlertCreateReportType;)Lcom/dropbox/core/v2/teamlog/EventType;
+	public static fun ransomwareAlertCreateReportFailed (Lcom/dropbox/core/v2/teamlog/RansomwareAlertCreateReportFailedType;)Lcom/dropbox/core/v2/teamlog/EventType;
+	public static fun ransomwareRestoreProcessCompleted (Lcom/dropbox/core/v2/teamlog/RansomwareRestoreProcessCompletedType;)Lcom/dropbox/core/v2/teamlog/EventType;
+	public static fun ransomwareRestoreProcessStarted (Lcom/dropbox/core/v2/teamlog/RansomwareRestoreProcessStartedType;)Lcom/dropbox/core/v2/teamlog/EventType;
+	public static fun replayFileDelete (Lcom/dropbox/core/v2/teamlog/ReplayFileDeleteType;)Lcom/dropbox/core/v2/teamlog/EventType;
+	public static fun replayFileSharedLinkCreated (Lcom/dropbox/core/v2/teamlog/ReplayFileSharedLinkCreatedType;)Lcom/dropbox/core/v2/teamlog/EventType;
+	public static fun replayFileSharedLinkModified (Lcom/dropbox/core/v2/teamlog/ReplayFileSharedLinkModifiedType;)Lcom/dropbox/core/v2/teamlog/EventType;
+	public static fun replayProjectTeamAdd (Lcom/dropbox/core/v2/teamlog/ReplayProjectTeamAddType;)Lcom/dropbox/core/v2/teamlog/EventType;
+	public static fun replayProjectTeamDelete (Lcom/dropbox/core/v2/teamlog/ReplayProjectTeamDeleteType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun resellerSupportChangePolicy (Lcom/dropbox/core/v2/teamlog/ResellerSupportChangePolicyType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun resellerSupportSessionEnd (Lcom/dropbox/core/v2/teamlog/ResellerSupportSessionEndType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun resellerSupportSessionStart (Lcom/dropbox/core/v2/teamlog/ResellerSupportSessionStartType;)Lcom/dropbox/core/v2/teamlog/EventType;
@@ -20768,6 +20978,13 @@ public final class com/dropbox/core/v2/teamlog/EventType {
 	public static fun teamActivityCreateReport (Lcom/dropbox/core/v2/teamlog/TeamActivityCreateReportType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun teamActivityCreateReportFail (Lcom/dropbox/core/v2/teamlog/TeamActivityCreateReportFailType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun teamBrandingPolicyChanged (Lcom/dropbox/core/v2/teamlog/TeamBrandingPolicyChangedType;)Lcom/dropbox/core/v2/teamlog/EventType;
+	public static fun teamEncryptionKeyCancelKeyDeletion (Lcom/dropbox/core/v2/teamlog/TeamEncryptionKeyCancelKeyDeletionType;)Lcom/dropbox/core/v2/teamlog/EventType;
+	public static fun teamEncryptionKeyCreateKey (Lcom/dropbox/core/v2/teamlog/TeamEncryptionKeyCreateKeyType;)Lcom/dropbox/core/v2/teamlog/EventType;
+	public static fun teamEncryptionKeyDeleteKey (Lcom/dropbox/core/v2/teamlog/TeamEncryptionKeyDeleteKeyType;)Lcom/dropbox/core/v2/teamlog/EventType;
+	public static fun teamEncryptionKeyDisableKey (Lcom/dropbox/core/v2/teamlog/TeamEncryptionKeyDisableKeyType;)Lcom/dropbox/core/v2/teamlog/EventType;
+	public static fun teamEncryptionKeyEnableKey (Lcom/dropbox/core/v2/teamlog/TeamEncryptionKeyEnableKeyType;)Lcom/dropbox/core/v2/teamlog/EventType;
+	public static fun teamEncryptionKeyRotateKey (Lcom/dropbox/core/v2/teamlog/TeamEncryptionKeyRotateKeyType;)Lcom/dropbox/core/v2/teamlog/EventType;
+	public static fun teamEncryptionKeyScheduleKeyDeletion (Lcom/dropbox/core/v2/teamlog/TeamEncryptionKeyScheduleKeyDeletionType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun teamExtensionsPolicyChanged (Lcom/dropbox/core/v2/teamlog/TeamExtensionsPolicyChangedType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun teamFolderChangeStatus (Lcom/dropbox/core/v2/teamlog/TeamFolderChangeStatusType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun teamFolderCreate (Lcom/dropbox/core/v2/teamlog/TeamFolderCreateType;)Lcom/dropbox/core/v2/teamlog/EventType;
@@ -20849,6 +21066,8 @@ public final class com/dropbox/core/v2/teamlog/EventType$Tag : java/lang/Enum {
 	public static final field APP_PERMISSIONS_CHANGED Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field APP_UNLINK_TEAM Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field APP_UNLINK_USER Lcom/dropbox/core/v2/teamlog/EventType$Tag;
+	public static final field BACKUP_ADMIN_INVITATION_SENT Lcom/dropbox/core/v2/teamlog/EventType$Tag;
+	public static final field BACKUP_INVITATION_OPENED Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field BINDER_ADD_PAGE Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field BINDER_ADD_SECTION Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field BINDER_REMOVE_PAGE Lcom/dropbox/core/v2/teamlog/EventType$Tag;
@@ -20929,6 +21148,7 @@ public final class com/dropbox/core/v2/teamlog/EventType$Tag : java/lang/Enum {
 	public static final field EXTERNAL_SHARING_REPORT_FAILED Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field FILE_ADD Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field FILE_ADD_COMMENT Lcom/dropbox/core/v2/teamlog/EventType$Tag;
+	public static final field FILE_ADD_FROM_AUTOMATION Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field FILE_CHANGE_COMMENT_SUBSCRIPTION Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field FILE_COMMENTS_CHANGE_POLICY Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field FILE_COPY Lcom/dropbox/core/v2/teamlog/EventType$Tag;
@@ -20967,6 +21187,7 @@ public final class com/dropbox/core/v2/teamlog/EventType$Tag : java/lang/Enum {
 	public static final field FILE_TRANSFERS_TRANSFER_VIEW Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field FILE_UNLIKE_COMMENT Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field FILE_UNRESOLVE_COMMENT Lcom/dropbox/core/v2/teamlog/EventType$Tag;
+	public static final field FOLDER_LINK_RESTRICTION_POLICY_CHANGED Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field FOLDER_OVERVIEW_DESCRIPTION_CHANGED Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field FOLDER_OVERVIEW_ITEM_PINNED Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field FOLDER_OVERVIEW_ITEM_UNPINNED Lcom/dropbox/core/v2/teamlog/EventType$Tag;
@@ -21122,6 +21343,15 @@ public final class com/dropbox/core/v2/teamlog/EventType$Tag : java/lang/Enum {
 	public static final field PASSWORD_STRENGTH_REQUIREMENTS_CHANGE_POLICY Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field PENDING_SECONDARY_EMAIL_ADDED Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field PERMANENT_DELETE_CHANGE_POLICY Lcom/dropbox/core/v2/teamlog/EventType$Tag;
+	public static final field RANSOMWARE_ALERT_CREATE_REPORT Lcom/dropbox/core/v2/teamlog/EventType$Tag;
+	public static final field RANSOMWARE_ALERT_CREATE_REPORT_FAILED Lcom/dropbox/core/v2/teamlog/EventType$Tag;
+	public static final field RANSOMWARE_RESTORE_PROCESS_COMPLETED Lcom/dropbox/core/v2/teamlog/EventType$Tag;
+	public static final field RANSOMWARE_RESTORE_PROCESS_STARTED Lcom/dropbox/core/v2/teamlog/EventType$Tag;
+	public static final field REPLAY_FILE_DELETE Lcom/dropbox/core/v2/teamlog/EventType$Tag;
+	public static final field REPLAY_FILE_SHARED_LINK_CREATED Lcom/dropbox/core/v2/teamlog/EventType$Tag;
+	public static final field REPLAY_FILE_SHARED_LINK_MODIFIED Lcom/dropbox/core/v2/teamlog/EventType$Tag;
+	public static final field REPLAY_PROJECT_TEAM_ADD Lcom/dropbox/core/v2/teamlog/EventType$Tag;
+	public static final field REPLAY_PROJECT_TEAM_DELETE Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field RESELLER_SUPPORT_CHANGE_POLICY Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field RESELLER_SUPPORT_SESSION_END Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field RESELLER_SUPPORT_SESSION_START Lcom/dropbox/core/v2/teamlog/EventType$Tag;
@@ -21257,6 +21487,13 @@ public final class com/dropbox/core/v2/teamlog/EventType$Tag : java/lang/Enum {
 	public static final field TEAM_ACTIVITY_CREATE_REPORT Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field TEAM_ACTIVITY_CREATE_REPORT_FAIL Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field TEAM_BRANDING_POLICY_CHANGED Lcom/dropbox/core/v2/teamlog/EventType$Tag;
+	public static final field TEAM_ENCRYPTION_KEY_CANCEL_KEY_DELETION Lcom/dropbox/core/v2/teamlog/EventType$Tag;
+	public static final field TEAM_ENCRYPTION_KEY_CREATE_KEY Lcom/dropbox/core/v2/teamlog/EventType$Tag;
+	public static final field TEAM_ENCRYPTION_KEY_DELETE_KEY Lcom/dropbox/core/v2/teamlog/EventType$Tag;
+	public static final field TEAM_ENCRYPTION_KEY_DISABLE_KEY Lcom/dropbox/core/v2/teamlog/EventType$Tag;
+	public static final field TEAM_ENCRYPTION_KEY_ENABLE_KEY Lcom/dropbox/core/v2/teamlog/EventType$Tag;
+	public static final field TEAM_ENCRYPTION_KEY_ROTATE_KEY Lcom/dropbox/core/v2/teamlog/EventType$Tag;
+	public static final field TEAM_ENCRYPTION_KEY_SCHEDULE_KEY_DELETION Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field TEAM_EXTENSIONS_POLICY_CHANGED Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field TEAM_FOLDER_CHANGE_STATUS Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field TEAM_FOLDER_CREATE Lcom/dropbox/core/v2/teamlog/EventType$Tag;
@@ -21338,6 +21575,8 @@ public final class com/dropbox/core/v2/teamlog/EventTypeArg : java/lang/Enum {
 	public static final field APP_PERMISSIONS_CHANGED Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field APP_UNLINK_TEAM Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field APP_UNLINK_USER Lcom/dropbox/core/v2/teamlog/EventTypeArg;
+	public static final field BACKUP_ADMIN_INVITATION_SENT Lcom/dropbox/core/v2/teamlog/EventTypeArg;
+	public static final field BACKUP_INVITATION_OPENED Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field BINDER_ADD_PAGE Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field BINDER_ADD_SECTION Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field BINDER_REMOVE_PAGE Lcom/dropbox/core/v2/teamlog/EventTypeArg;
@@ -21418,6 +21657,7 @@ public final class com/dropbox/core/v2/teamlog/EventTypeArg : java/lang/Enum {
 	public static final field EXTERNAL_SHARING_REPORT_FAILED Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field FILE_ADD Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field FILE_ADD_COMMENT Lcom/dropbox/core/v2/teamlog/EventTypeArg;
+	public static final field FILE_ADD_FROM_AUTOMATION Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field FILE_CHANGE_COMMENT_SUBSCRIPTION Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field FILE_COMMENTS_CHANGE_POLICY Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field FILE_COPY Lcom/dropbox/core/v2/teamlog/EventTypeArg;
@@ -21456,6 +21696,7 @@ public final class com/dropbox/core/v2/teamlog/EventTypeArg : java/lang/Enum {
 	public static final field FILE_TRANSFERS_TRANSFER_VIEW Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field FILE_UNLIKE_COMMENT Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field FILE_UNRESOLVE_COMMENT Lcom/dropbox/core/v2/teamlog/EventTypeArg;
+	public static final field FOLDER_LINK_RESTRICTION_POLICY_CHANGED Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field FOLDER_OVERVIEW_DESCRIPTION_CHANGED Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field FOLDER_OVERVIEW_ITEM_PINNED Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field FOLDER_OVERVIEW_ITEM_UNPINNED Lcom/dropbox/core/v2/teamlog/EventTypeArg;
@@ -21611,6 +21852,15 @@ public final class com/dropbox/core/v2/teamlog/EventTypeArg : java/lang/Enum {
 	public static final field PASSWORD_STRENGTH_REQUIREMENTS_CHANGE_POLICY Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field PENDING_SECONDARY_EMAIL_ADDED Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field PERMANENT_DELETE_CHANGE_POLICY Lcom/dropbox/core/v2/teamlog/EventTypeArg;
+	public static final field RANSOMWARE_ALERT_CREATE_REPORT Lcom/dropbox/core/v2/teamlog/EventTypeArg;
+	public static final field RANSOMWARE_ALERT_CREATE_REPORT_FAILED Lcom/dropbox/core/v2/teamlog/EventTypeArg;
+	public static final field RANSOMWARE_RESTORE_PROCESS_COMPLETED Lcom/dropbox/core/v2/teamlog/EventTypeArg;
+	public static final field RANSOMWARE_RESTORE_PROCESS_STARTED Lcom/dropbox/core/v2/teamlog/EventTypeArg;
+	public static final field REPLAY_FILE_DELETE Lcom/dropbox/core/v2/teamlog/EventTypeArg;
+	public static final field REPLAY_FILE_SHARED_LINK_CREATED Lcom/dropbox/core/v2/teamlog/EventTypeArg;
+	public static final field REPLAY_FILE_SHARED_LINK_MODIFIED Lcom/dropbox/core/v2/teamlog/EventTypeArg;
+	public static final field REPLAY_PROJECT_TEAM_ADD Lcom/dropbox/core/v2/teamlog/EventTypeArg;
+	public static final field REPLAY_PROJECT_TEAM_DELETE Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field RESELLER_SUPPORT_CHANGE_POLICY Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field RESELLER_SUPPORT_SESSION_END Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field RESELLER_SUPPORT_SESSION_START Lcom/dropbox/core/v2/teamlog/EventTypeArg;
@@ -21746,6 +21996,13 @@ public final class com/dropbox/core/v2/teamlog/EventTypeArg : java/lang/Enum {
 	public static final field TEAM_ACTIVITY_CREATE_REPORT Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field TEAM_ACTIVITY_CREATE_REPORT_FAIL Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field TEAM_BRANDING_POLICY_CHANGED Lcom/dropbox/core/v2/teamlog/EventTypeArg;
+	public static final field TEAM_ENCRYPTION_KEY_CANCEL_KEY_DELETION Lcom/dropbox/core/v2/teamlog/EventTypeArg;
+	public static final field TEAM_ENCRYPTION_KEY_CREATE_KEY Lcom/dropbox/core/v2/teamlog/EventTypeArg;
+	public static final field TEAM_ENCRYPTION_KEY_DELETE_KEY Lcom/dropbox/core/v2/teamlog/EventTypeArg;
+	public static final field TEAM_ENCRYPTION_KEY_DISABLE_KEY Lcom/dropbox/core/v2/teamlog/EventTypeArg;
+	public static final field TEAM_ENCRYPTION_KEY_ENABLE_KEY Lcom/dropbox/core/v2/teamlog/EventTypeArg;
+	public static final field TEAM_ENCRYPTION_KEY_ROTATE_KEY Lcom/dropbox/core/v2/teamlog/EventTypeArg;
+	public static final field TEAM_ENCRYPTION_KEY_SCHEDULE_KEY_DELETION Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field TEAM_EXTENSIONS_POLICY_CHANGED Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field TEAM_FOLDER_CHANGE_STATUS Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field TEAM_FOLDER_CREATE Lcom/dropbox/core/v2/teamlog/EventTypeArg;
@@ -22146,6 +22403,24 @@ public class com/dropbox/core/v2/teamlog/FileAddCommentType {
 public class com/dropbox/core/v2/teamlog/FileAddDetails {
 	public fun <init> ()V
 	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/FileAddFromAutomationDetails {
+	public fun <init> ()V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/FileAddFromAutomationType {
+	protected final field description Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getDescription ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 	public fun toStringMultiline ()Ljava/lang/String;
@@ -23118,6 +23393,36 @@ public class com/dropbox/core/v2/teamlog/FileUnresolveCommentDetails {
 }
 
 public class com/dropbox/core/v2/teamlog/FileUnresolveCommentType {
+	protected final field description Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getDescription ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public final class com/dropbox/core/v2/teamlog/FolderLinkRestrictionPolicy : java/lang/Enum {
+	public static final field DISABLED Lcom/dropbox/core/v2/teamlog/FolderLinkRestrictionPolicy;
+	public static final field ENABLED Lcom/dropbox/core/v2/teamlog/FolderLinkRestrictionPolicy;
+	public static final field OTHER Lcom/dropbox/core/v2/teamlog/FolderLinkRestrictionPolicy;
+	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/teamlog/FolderLinkRestrictionPolicy;
+	public static fun values ()[Lcom/dropbox/core/v2/teamlog/FolderLinkRestrictionPolicy;
+}
+
+public class com/dropbox/core/v2/teamlog/FolderLinkRestrictionPolicyChangedDetails {
+	protected final field newValue Lcom/dropbox/core/v2/teamlog/FolderLinkRestrictionPolicy;
+	protected final field previousValue Lcom/dropbox/core/v2/teamlog/FolderLinkRestrictionPolicy;
+	public fun <init> (Lcom/dropbox/core/v2/teamlog/FolderLinkRestrictionPolicy;Lcom/dropbox/core/v2/teamlog/FolderLinkRestrictionPolicy;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getNewValue ()Lcom/dropbox/core/v2/teamlog/FolderLinkRestrictionPolicy;
+	public fun getPreviousValue ()Lcom/dropbox/core/v2/teamlog/FolderLinkRestrictionPolicy;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/FolderLinkRestrictionPolicyChangedType {
 	protected final field description Ljava/lang/String;
 	public fun <init> (Ljava/lang/String;)V
 	public fun equals (Ljava/lang/Object;)Z
@@ -24789,6 +25094,7 @@ public final class com/dropbox/core/v2/teamlog/LoginMethod : java/lang/Enum {
 	public static final field APPLE_OAUTH Lcom/dropbox/core/v2/teamlog/LoginMethod;
 	public static final field FIRST_PARTY_TOKEN_EXCHANGE Lcom/dropbox/core/v2/teamlog/LoginMethod;
 	public static final field GOOGLE_OAUTH Lcom/dropbox/core/v2/teamlog/LoginMethod;
+	public static final field LENOVO_OAUTH Lcom/dropbox/core/v2/teamlog/LoginMethod;
 	public static final field OTHER Lcom/dropbox/core/v2/teamlog/LoginMethod;
 	public static final field PASSWORD Lcom/dropbox/core/v2/teamlog/LoginMethod;
 	public static final field QR_CODE Lcom/dropbox/core/v2/teamlog/LoginMethod;
@@ -27452,6 +27758,88 @@ public class com/dropbox/core/v2/teamlog/PrimaryTeamRequestReminderDetails {
 	public fun toStringMultiline ()Ljava/lang/String;
 }
 
+public class com/dropbox/core/v2/teamlog/RansomwareAlertCreateReportDetails {
+	public fun <init> ()V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/RansomwareAlertCreateReportFailedDetails {
+	protected final field failureReason Lcom/dropbox/core/v2/team/TeamReportFailureReason;
+	public fun <init> (Lcom/dropbox/core/v2/team/TeamReportFailureReason;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getFailureReason ()Lcom/dropbox/core/v2/team/TeamReportFailureReason;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/RansomwareAlertCreateReportFailedType {
+	protected final field description Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getDescription ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/RansomwareAlertCreateReportType {
+	protected final field description Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getDescription ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/RansomwareRestoreProcessCompletedDetails {
+	protected final field restoredFilesCount J
+	protected final field restoredFilesFailedCount J
+	protected final field status Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;JJ)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getRestoredFilesCount ()J
+	public fun getRestoredFilesFailedCount ()J
+	public fun getStatus ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/RansomwareRestoreProcessCompletedType {
+	protected final field description Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getDescription ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/RansomwareRestoreProcessStartedDetails {
+	protected final field extension Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getExtension ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/RansomwareRestoreProcessStartedType {
+	protected final field description Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getDescription ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
 public class com/dropbox/core/v2/teamlog/RecipientsConfiguration {
 	protected final field emails Ljava/util/List;
 	protected final field groups Ljava/util/List;
@@ -27486,6 +27874,96 @@ public class com/dropbox/core/v2/teamlog/RelocateAssetReferencesLogInfo {
 	public fun equals (Ljava/lang/Object;)Z
 	public fun getDestAssetIndex ()J
 	public fun getSrcAssetIndex ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/ReplayFileDeleteDetails {
+	public fun <init> ()V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/ReplayFileDeleteType {
+	protected final field description Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getDescription ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/ReplayFileSharedLinkCreatedDetails {
+	public fun <init> ()V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/ReplayFileSharedLinkCreatedType {
+	protected final field description Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getDescription ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/ReplayFileSharedLinkModifiedDetails {
+	public fun <init> ()V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/ReplayFileSharedLinkModifiedType {
+	protected final field description Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getDescription ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/ReplayProjectTeamAddDetails {
+	public fun <init> ()V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/ReplayProjectTeamAddType {
+	protected final field description Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getDescription ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/ReplayProjectTeamDeleteDetails {
+	public fun <init> ()V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/ReplayProjectTeamDeleteType {
+	protected final field description Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getDescription ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 	public fun toStringMultiline ()Ljava/lang/String;
@@ -30818,6 +31296,132 @@ public class com/dropbox/core/v2/teamlog/TeamDetails {
 	public fun toStringMultiline ()Ljava/lang/String;
 }
 
+public class com/dropbox/core/v2/teamlog/TeamEncryptionKeyCancelKeyDeletionDetails {
+	public fun <init> ()V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/TeamEncryptionKeyCancelKeyDeletionType {
+	protected final field description Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getDescription ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/TeamEncryptionKeyCreateKeyDetails {
+	public fun <init> ()V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/TeamEncryptionKeyCreateKeyType {
+	protected final field description Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getDescription ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/TeamEncryptionKeyDeleteKeyDetails {
+	public fun <init> ()V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/TeamEncryptionKeyDeleteKeyType {
+	protected final field description Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getDescription ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/TeamEncryptionKeyDisableKeyDetails {
+	public fun <init> ()V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/TeamEncryptionKeyDisableKeyType {
+	protected final field description Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getDescription ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/TeamEncryptionKeyEnableKeyDetails {
+	public fun <init> ()V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/TeamEncryptionKeyEnableKeyType {
+	protected final field description Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getDescription ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/TeamEncryptionKeyRotateKeyDetails {
+	public fun <init> ()V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/TeamEncryptionKeyRotateKeyType {
+	protected final field description Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getDescription ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/TeamEncryptionKeyScheduleKeyDeletionDetails {
+	public fun <init> ()V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/TeamEncryptionKeyScheduleKeyDeletionType {
+	protected final field description Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getDescription ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
 public class com/dropbox/core/v2/teamlog/TeamEvent {
 	protected final field actor Lcom/dropbox/core/v2/teamlog/ActorLogInfo;
 	protected final field assets Ljava/util/List;
@@ -32713,6 +33317,14 @@ public class com/dropbox/core/v2/teampolicies/RolloutMethod$Serializer : com/dro
 	public synthetic fun serialize (Ljava/lang/Object;Lcom/fasterxml/jackson/core/JsonGenerator;)V
 }
 
+public final class com/dropbox/core/v2/teampolicies/SharedFolderBlanketLinkRestrictionPolicy : java/lang/Enum {
+	public static final field ANYONE Lcom/dropbox/core/v2/teampolicies/SharedFolderBlanketLinkRestrictionPolicy;
+	public static final field MEMBERS Lcom/dropbox/core/v2/teampolicies/SharedFolderBlanketLinkRestrictionPolicy;
+	public static final field OTHER Lcom/dropbox/core/v2/teampolicies/SharedFolderBlanketLinkRestrictionPolicy;
+	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/teampolicies/SharedFolderBlanketLinkRestrictionPolicy;
+	public static fun values ()[Lcom/dropbox/core/v2/teampolicies/SharedFolderBlanketLinkRestrictionPolicy;
+}
+
 public final class com/dropbox/core/v2/teampolicies/SharedFolderJoinPolicy : java/lang/Enum {
 	public static final field FROM_ANYONE Lcom/dropbox/core/v2/teampolicies/SharedFolderJoinPolicy;
 	public static final field FROM_TEAM_ONLY Lcom/dropbox/core/v2/teampolicies/SharedFolderJoinPolicy;
@@ -32825,12 +33437,16 @@ public class com/dropbox/core/v2/teampolicies/TeamMemberPolicies$Serializer : co
 }
 
 public class com/dropbox/core/v2/teampolicies/TeamSharingPolicies {
+	protected final field groupCreationPolicy Lcom/dropbox/core/v2/teampolicies/GroupCreation;
 	protected final field sharedFolderJoinPolicy Lcom/dropbox/core/v2/teampolicies/SharedFolderJoinPolicy;
+	protected final field sharedFolderLinkRestrictionPolicy Lcom/dropbox/core/v2/teampolicies/SharedFolderBlanketLinkRestrictionPolicy;
 	protected final field sharedFolderMemberPolicy Lcom/dropbox/core/v2/teampolicies/SharedFolderMemberPolicy;
 	protected final field sharedLinkCreatePolicy Lcom/dropbox/core/v2/teampolicies/SharedLinkCreatePolicy;
-	public fun <init> (Lcom/dropbox/core/v2/teampolicies/SharedFolderMemberPolicy;Lcom/dropbox/core/v2/teampolicies/SharedFolderJoinPolicy;Lcom/dropbox/core/v2/teampolicies/SharedLinkCreatePolicy;)V
+	public fun <init> (Lcom/dropbox/core/v2/teampolicies/SharedFolderMemberPolicy;Lcom/dropbox/core/v2/teampolicies/SharedFolderJoinPolicy;Lcom/dropbox/core/v2/teampolicies/SharedLinkCreatePolicy;Lcom/dropbox/core/v2/teampolicies/GroupCreation;Lcom/dropbox/core/v2/teampolicies/SharedFolderBlanketLinkRestrictionPolicy;)V
 	public fun equals (Ljava/lang/Object;)Z
+	public fun getGroupCreationPolicy ()Lcom/dropbox/core/v2/teampolicies/GroupCreation;
 	public fun getSharedFolderJoinPolicy ()Lcom/dropbox/core/v2/teampolicies/SharedFolderJoinPolicy;
+	public fun getSharedFolderLinkRestrictionPolicy ()Lcom/dropbox/core/v2/teampolicies/SharedFolderBlanketLinkRestrictionPolicy;
 	public fun getSharedFolderMemberPolicy ()Lcom/dropbox/core/v2/teampolicies/SharedFolderMemberPolicy;
 	public fun getSharedLinkCreatePolicy ()Lcom/dropbox/core/v2/teampolicies/SharedLinkCreatePolicy;
 	public fun hashCode ()I

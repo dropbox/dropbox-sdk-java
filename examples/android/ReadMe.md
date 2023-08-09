@@ -20,5 +20,5 @@ Running in [Android Studio](https://developer.android.com/studio) (not strictly 
 # Notes
 
 This example project uses the source version of `dropbox-sdk-java`.  If you would like to use the published version of the SDK, replace the following in the `examples/android/build.gradle` file.
-* Replace `implementation(project(":dropbox-sdk-java"))` 
+* Replace `implementation(project(":dropbox"))` 
 * with `implementation("com.dropbox.core:dropbox-core-sdk:LATEST_VERSION_GOES_HERE")`

@@ -47,20 +47,11 @@ public final class DbxSdkVersion {
     }
 }
 
-sourceSets {
-    main {
-        java {
-            // Including the Android Code this way until it is later released as a separate artifact
-            srcDir '../dropbox-sdk-android/src/main/java'
-            srcDir(versionWriterTask)
-        }
-    }
-}
+sourceSets.main.java.srcDir(versionWriterTask)
 
 dependencies {
     api(dropboxJavaSdkLibs.jackson.core)
 
-    compileOnly dropboxJavaSdkLibs.android.jar
     compileOnly dropboxJavaSdkLibs.appengine.api
     compileOnly dropboxJavaSdkLibs.jakarta.servlet.api
     compileOnly dropboxJavaSdkLibs.kotlin.stdlib

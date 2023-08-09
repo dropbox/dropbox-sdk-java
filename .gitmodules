@@ -1,6 +1,6 @@
-[submodule "dropbox-sdk-java/src/main/stone"]
-	path = dropbox-sdk-java/src/main/stone
-	url = https://github.com/dropbox/dropbox-api-spec.git
-[submodule "dropbox-sdk-java/stone"]
-	path = dropbox-sdk-java/stone
+[submodule "dropbox/stone"]
+	path = dropbox/stone
 	url = https://github.com/dropbox/stone.git
+[submodule "dropbox/src/main/stone"]
+	path = dropbox/src/main/stone
+	url = https://github.com/dropbox/dropbox-api-spec.git

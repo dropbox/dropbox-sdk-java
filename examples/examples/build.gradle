@@ -11,7 +11,7 @@ java {
 }
 
 dependencies {
-    implementation(project(":dropbox-sdk-java"))
+    implementation(project(":dropbox"))
     implementation(dropboxJavaSdkLibs.apache.commons.lang)
     implementation(dropboxJavaSdkLibs.jackson.core)
     implementation(dropboxJavaSdkLibs.jackson.databind)

@@ -1,7 +1,7 @@
 # Dropbox Core SDK for Java
 
 ![GitHub](https://img.shields.io/github/license/dropbox/dropbox-sdk-java)
-![Maven Central](https://img.shields.io/maven-central/v/com.dropbox.core/dropbox-core-sdk)
+![Maven Central](https://img.shields.io/maven-central/v/com.dropbox.core/dropbox)
 ![GitHub Release Date](https://img.shields.io/github/release-date/dropbox/dropbox-sdk-java)
 
 A Java library to access [Dropbox's HTTP-based Core API v2](https://www.dropbox.com/developers/documentation/http/documentation).  This SDK also supports the older [Core API v1](https://www.dropbox.com/developers-v1/core/docs), but that support will be removed at some point.
@@ -23,7 +23,7 @@ If you're using Maven, then edit your project's "pom.xml" and add this to the `<
 ```xml
 <dependency>
     <groupId>com.dropbox.core</groupId>
-    <artifactId>dropbox-core-sdk</artifactId>
+    <artifactId>dropbox</artifactId>
     <version>5.4.5</version>
 </dependency>
 ```
@@ -33,11 +33,21 @@ If you are using Gradle, then edit your project's "build.gradle" and add this to
 ```groovy
 dependencies {
     // ...
-    implementation 'com.dropbox.core:dropbox-core-sdk:5.4.5'
+    implementation 'com.dropbox.core:dropbox:5.4.5'
 }
 ```
 
 You can also download the Java SDK JAR and and its required dependencies directly from the [latest release page](https://github.com/dropbox/dropbox-sdk-java/releases/latest). Note that the distribution artifacts on the releases pages do not contain optional dependencies.
+
+### Android
+
+For Android projects we have a specific dependency, `dropbox-android`, which can be included.
+
+```kotlin
+dependencies {
+    implementation("com.dropbox.core:dropbox-android:6.0.0-SNAPSHOT")
+}
+```
 
 ## Dropbox for Java tutorial
 
@@ -359,7 +369,7 @@ As a workaround, you can build your own version of the JAR that omits the "osgi.
 
 ```shell
 ./gradlew clean
-./gradlew -Posgi.bnd.noee=true :dropbox-sdk-java:jar
+./gradlew -Posgi.bnd.noee=true :dropbox:jar
 ```
 
 (This is equivalent to passing the "-noee" option to the OSGi "bnd" tool.)

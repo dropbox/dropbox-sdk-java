@@ -1,5 +1,6 @@
 include ':proguard'
-include ':dropbox-sdk-java'
+include ':dropbox'
+include ':dropbox-android'
 include ':examples:android'
 include ':examples:examples'
 include ':examples:java'
