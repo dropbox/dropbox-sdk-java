@@ -3,7 +3,6 @@ package com.dropbox.core.android.internal
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInfo
-import android.content.pm.PackageManager
 import com.dropbox.core.DbxSdkVersion
 import com.dropbox.core.android.AuthActivity
 
