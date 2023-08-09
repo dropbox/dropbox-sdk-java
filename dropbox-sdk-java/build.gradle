@@ -27,11 +27,32 @@ ext {
     authInfoPropertyName = 'com.dropbox.test.authInfoFile'
 }
 
+tasks.register('versionWriterTask') {
+    def versionName = project.property("VERSION_NAME")
+    it.inputs.property("versionName", versionName)
+
+    def generatedDir = project.layout.buildDirectory.dir("generated/version")
+    it.outputs.dir(generatedDir)
+
+    it.doLast {
+        def versionFile = generatedDir.get().file("com/dropbox/core/DbxSdkVersion.java").asFile
+        versionFile.parentFile.mkdirs()
+        versionFile.text = """// Generated file. Do not edit
+package com.dropbox.core;
+
+public final class DbxSdkVersion {
+    public static final String Version = "${versionName}";
+}
+"""
+    }
+}
+
 sourceSets {
     main {
         java {
             // Including the Android Code this way until it is later released as a separate artifact
             srcDir '../dropbox-sdk-android/src/main/java'
+            srcDir(versionWriterTask)
         }
     }
 }
