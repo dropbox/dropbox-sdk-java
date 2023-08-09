@@ -54,7 +54,7 @@ jobs:
       run: ./generate-ci-auth-file
 
     - name: Ensure Binary Compatibility
-      run: ./gradlew :dropbox-sdk-java:apiCheck
+      run: ./gradlew :dropbox-sdk-java:apiCheck :dropbox-sdk-android:apiCheck
 
     - name: Dependency Guard
       run: ./gradlew dependencyGuard
