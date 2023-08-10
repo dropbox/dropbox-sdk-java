@@ -46,21 +46,11 @@ public final class DbxSdkVersion {
 """
     }
 }
-
-sourceSets {
-    main {
-        java {
-            // Including the Android Code this way until it is later released as a separate artifact
-            srcDir '../dropbox-sdk-android/src/main/java'
-            srcDir(versionWriterTask)
-        }
-    }
-}
+sourceSets.main.java.srcDir(versionWriterTask)
 
 dependencies {
     api(dropboxJavaSdkLibs.jackson.core)
 
-    compileOnly dropboxJavaSdkLibs.android.jar
     compileOnly dropboxJavaSdkLibs.appengine.api
     compileOnly dropboxJavaSdkLibs.jakarta.servlet.api
     compileOnly dropboxJavaSdkLibs.kotlin.stdlib
@@ -155,6 +145,7 @@ def getAuthInfoFile() {
 
 tasks.register('integrationTest', Test) {
     description 'Runs integration tests against Production or Dev servers.'
+    enabled = project.hasProperty(authInfoPropertyName)
 
     useTestNG()
 
@@ -180,7 +171,9 @@ tasks.register('integrationTest', Test) {
         httpRequestorPropertyName = 'com.dropbox.test.httpRequestor'
     }
 
-    systemProperty project.authInfoPropertyName.toString(), getAuthInfoFile().absolutePath
+    if (project.hasProperty(authInfoPropertyName)) {
+        systemProperty project.authInfoPropertyName.toString(), getAuthInfoFile().absolutePath
+    }
     if (project.hasProperty(httpRequestorPropertyName)) {
         systemProperty project.httpRequestorPropertyName.toString(), project.property(httpRequestorPropertyName)
     }

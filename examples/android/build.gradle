@@ -59,7 +59,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":dropbox-sdk-java"))
+    implementation(project(":core"))
     implementation(dropboxJavaSdkLibs.android.material)
     implementation(dropboxJavaSdkLibs.androidx.appcompat)
     implementation(dropboxJavaSdkLibs.androidx.constraintlayout)

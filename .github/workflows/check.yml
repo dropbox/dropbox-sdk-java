@@ -41,7 +41,7 @@ jobs:
       run: ./update-submodules
 
     - name: Generate Stone
-      run: ./gradlew :dropbox-sdk-java:generateStone
+      run: ./gradlew :core:generateStone
 
     - name: Ensure no changes in Generated Code
       run: ./scripts/check-clean-git-status
@@ -54,7 +54,7 @@ jobs:
       run: ./generate-ci-auth-file
 
     - name: Ensure Binary Compatibility
-      run: ./gradlew :dropbox-sdk-java:apiCheck
+      run: ./gradlew :core:apiCheck :android:apiCheck
 
     - name: Dependency Guard
       run: ./gradlew dependencyGuard
@@ -130,18 +130,21 @@ jobs:
         with:
           name: TestReports
           path: |
-            dropbox-sdk-java/build/reports/
+            core/build/reports/
+            android/build/reports/
 
       - name: Upload JavaDocs
         uses: actions/upload-artifact@v3
         with:
           name: JavaDocs
           path: |
-            dropbox-sdk-java/build/docs/javadoc/
+            core/build/docs/javadoc/
+            android/build/docs/javadoc/
 
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v3
         with:
           name: BuildArtifacts
           path: |
-            dropbox-sdk-java/build/distributions/
+            core/build/distributions/
+            android/build/distributions/
