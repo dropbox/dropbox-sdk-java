@@ -80,7 +80,7 @@ public open class AuthActivity : Activity() {
      * See:
      * https://developer.android.com/reference/android/app/Activity#onTopResumedActivityChanged(boolean)
      */
-    fun onTopResumedActivityChanged(onTop: Boolean) {
+    override fun onTopResumedActivityChanged(onTop: Boolean) {
         if (isFinishing || !onTop) {
             return
         }
@@ -302,23 +302,23 @@ public open class AuthActivity : Activity() {
          * The Android action which the official Dropbox app will accept to
          * authenticate a user. You won't ever have to use this.
          */
-        const val ACTION_AUTHENTICATE_V1: String = "com.dropbox.android.AUTHENTICATE_V1"
+        public const val ACTION_AUTHENTICATE_V1: String = "com.dropbox.android.AUTHENTICATE_V1"
 
         /**
          * The Android action which the official Dropbox app will accept to
          * authenticate a user. You won't ever have to use this.
          */
-        const val ACTION_AUTHENTICATE_V2: String = "com.dropbox.android.AUTHENTICATE_V2"
+        public const val ACTION_AUTHENTICATE_V2: String = "com.dropbox.android.AUTHENTICATE_V2"
 
         /**
          * The version of the API for the web-auth callback with token (not the initial auth request).
          */
-        const val AUTH_VERSION: Int = 1
+        public const val AUTH_VERSION: Int = 1
 
         /**
          * The path for a successful callback with token (not the initial auth request).
          */
-        const val AUTH_PATH_CONNECT: String = "/connect"
+        public const val AUTH_PATH_CONNECT: String = "/connect"
 
         // Class-level state used to replace the default SecureRandom implementation
         // if desired.

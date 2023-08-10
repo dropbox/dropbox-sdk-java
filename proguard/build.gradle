@@ -28,7 +28,7 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":dropbox-sdk-java"))
+    implementation(project(":core"))
     implementation(dropboxJavaSdkLibs.testng)
 }
 

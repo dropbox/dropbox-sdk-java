@@ -16,7 +16,7 @@ java {
 }
 
 dependencies {
-    implementation(project(":dropbox-sdk-java"))
+    implementation(project(":core"))
 
     testImplementation(dropboxJavaSdkLibs.test.junit)
 }

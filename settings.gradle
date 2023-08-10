@@ -1,8 +1,9 @@
-include ':proguard'
-include ':dropbox-sdk-java'
+include ':android'
+include ':core'
 include ':examples:android'
 include ':examples:examples'
 include ':examples:java'
+include ':proguard'
 
 dependencyResolutionManagement {
     versionCatalogs {
