@@ -206,7 +206,7 @@ public abstract class com/dropbox/core/DbxRequestUtil$ResponseHandler {
 	public abstract fun handle (Lcom/dropbox/core/http/HttpRequestor$Response;)Ljava/lang/Object;
 }
 
-public class com/dropbox/core/DbxSdkVersion {
+public final class com/dropbox/core/DbxSdkVersion {
 	public static final field Version Ljava/lang/String;
 	public fun <init> ()V
 }
