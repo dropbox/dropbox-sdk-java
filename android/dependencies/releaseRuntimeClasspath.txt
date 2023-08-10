@@ -1,4 +1,6 @@
-com.fasterxml.jackson.core:jackson-core:2.7.9
+ch.randelshofer:fastdoubleparser:0.8.0
+com.fasterxml.jackson.core:jackson-core:2.15.0
+com.fasterxml.jackson:jackson-bom:2.15.0
 org.jetbrains.kotlin:kotlin-stdlib-common:1.6.21
 org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.21
 org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.21
