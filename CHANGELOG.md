@@ -1,10 +1,12 @@
-## 5.4.6
+## 5.4.6 (2023-10-03)
 - Added better error messaging when trying to build the project without submodules initialized.
 - Removed obsolete javadoc flag
 - Updated test dependencies
 - Removed redundant gradle wrappers
-- Downgrade Jackson to maintain compatibility with lower Android API levels
-- Upgrade Gradle to 7.6.2
+- Downgrade Jackson to maintain compatibility with lower Android API levels.
+- Upgrade Gradle to 7.6.2, fixes [#511](https://github.com/dropbox/dropbox-sdk-java/issues/511)
+- Update Stone submodule
+- StoneTask is now @CacheableTask
 
 ## 5.4.5 (2023-05-16)
 - Update jackson-core to 2.15.0 [#492](https://github.com/dropbox/dropbox-sdk-java/issues/476)
