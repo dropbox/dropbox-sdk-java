@@ -79,7 +79,7 @@ jobs:
 
   publish:
     runs-on: ubuntu-latest
-    if: github.repository == 'dropbox/dropbox-sdk-java' && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    if: github.repository == 'dropbox/dropbox-sdk-java' && github.event_name != 'pull_request'
     needs: [build]
     steps:
       - name: Checkout
