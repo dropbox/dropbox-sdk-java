@@ -28,7 +28,12 @@ ext {
 }
 
 tasks.register('versionWriterTask') {
-    def versionName = project.property("VERSION_NAME")
+    String versionName
+    if (project.hasProperty("VERSION_NAME")) {
+        versionName = "${project.property("VERSION_NAME")}"
+    } else {
+        versionName = project.version
+    }
     it.inputs.property("versionName", versionName)
 
     def generatedDir = project.layout.buildDirectory.dir("generated/version")
