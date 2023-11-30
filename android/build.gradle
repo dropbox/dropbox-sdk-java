@@ -2,12 +2,13 @@ plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id "org.jetbrains.kotlinx.binary-compatibility-validator"
-    alias(dropboxJavaSdkLibs.plugins.maven.publish.plugin)
-    alias(dropboxJavaSdkLibs.plugins.gradle.version.plugin)
-    alias(dropboxJavaSdkLibs.plugins.dependency.guard)
+    id "com.vanniktech.maven.publish"
+    id "com.github.ben-manes.versions"
+    id "com.dropbox.dependency-guard"
 }
 
 android {
+    namespace = "com.dropbox.core.sdk.android"
     compileSdk dropboxJavaSdkLibs.versions.android.compile.sdk.get().toInteger()
     defaultConfig {
         minSdk dropboxJavaSdkLibs.versions.android.min.sdk.get().toInteger()
