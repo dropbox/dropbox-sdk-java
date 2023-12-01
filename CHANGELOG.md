@@ -1,10 +1,19 @@
 
 6.0.0 (2023-11-30)
 ---------------------------------------------
+Android dependencies have moved to the drop-sdk-java/android directory of this repo and published as a separate artifact.
+To migrate, add the following to your dependencies block:
+
+```@groovy
+dependencies {
+  implementation 'com.dropbox.core:dropbox-android-sdk:6.0.0'
+}
+```
+
 - [#504](https://github.com/dropbox/dropbox-sdk-java/pull/504) Cleanup python codegen and formats java.stoneg.py
 - [#503](https://github.com/dropbox/dropbox-sdk-java/pull/503) Point to latest stone
 - [#501](https://github.com/dropbox/dropbox-sdk-java/pull/501) Updated to `jakarta.servlet` to unblock adoption of Spring Boot v3, **this is a breaking change if you use `DbxSessionStore`.**
-- Improved generateStone task to properly declare inputs and outputs
+  - Improved generateStone task to properly declare inputs and outputs
 - [#500](https://github.com/dropbox/dropbox-sdk-java/pull/500) Build Improvements
   - Added better error messaging when trying to build the project without submodules initialized.
   - Removed obsolete javadoc flag
