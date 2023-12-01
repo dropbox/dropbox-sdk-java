@@ -76,9 +76,9 @@ com.sun.activation:javax.activation:1.2.0
 com.sun.istack:istack-commons-runtime:3.0.8
 com.sun.xml.fastinfoset:FastInfoset:1.2.16
 com.thoughtworks.xstream:xstream:1.4.17
-com.vanniktech.maven.publish:com.vanniktech.maven.publish.gradle.plugin:0.23.2
-com.vanniktech:gradle-maven-publish-plugin:0.23.2
-com.vanniktech:nexus:0.23.2
+com.vanniktech.maven.publish:com.vanniktech.maven.publish.gradle.plugin:0.24.0
+com.vanniktech:gradle-maven-publish-plugin:0.24.0
+com.vanniktech:nexus:0.24.0
 commons-codec:commons-codec:1.11
 commons-io:commons-io:2.4
 commons-logging:commons-logging:1.2

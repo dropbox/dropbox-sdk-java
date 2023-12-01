@@ -1,6 +1,7 @@
 import com.dropbox.stone.java.StoneTask
 import com.dropbox.stone.java.model.ClientSpec
 import com.dropbox.stone.java.model.StoneConfig
+import com.vanniktech.maven.publish.SonatypeHost
 
 plugins {
     id 'java-library'
@@ -336,5 +337,6 @@ tasks.named("generateTestStone", StoneTask) {
 }
 
 mavenPublishing {
-    publishToMavenCentral("S01")
+    publishToMavenCentral(SonatypeHost.S01)
+    signAllPublications()
 }
