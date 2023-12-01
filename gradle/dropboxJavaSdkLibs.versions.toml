@@ -59,4 +59,4 @@ blind-pirate-osgi = "com.github.blindpirate.osgi:0.0.6"
 dependency-guard = { id = "com.dropbox.dependency-guard", version.ref = "dependency-guard" }
 gradle-version-plugin = "com.github.ben-manes.versions:0.42.0"
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-maven-publish-plugin = "com.vanniktech.maven.publish:0.23.2"
+maven-publish-plugin = "com.vanniktech.maven.publish:0.24.0"
