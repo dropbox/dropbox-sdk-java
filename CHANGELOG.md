@@ -1,24 +1,45 @@
-## 6.0.0-SNAPSHOT
-- Updated to `jakarta.servlet` to unblock adoption of Spring Boot v3, **this is a breaking change if you use `DbxSessionStore`.**
-- Added better error messaging when trying to build the project without submodules initialized.
-- Improved generateStone task to properly declare inputs and outputs
-- Removed obsolete javadoc flag
-- Updated test dependencies
-- Updated to Gradle 7.6.2
-- Removed redundant gradle wrappers
 
-## 5.4.5 (2023-05-16)
+6.0.0 (2023-11-30)
+---------------------------------------------
+Android dependencies have moved to the drop-sdk-java/android directory of this repo and published as a separate artifact.
+To migrate, add the following to your dependencies block:
+
+```@groovy
+dependencies {
+  implementation 'com.dropbox.core:dropbox-android-sdk:6.0.0'
+}
+```
+
+- [#504](https://github.com/dropbox/dropbox-sdk-java/pull/504) Cleanup python codegen and formats java.stoneg.py
+- [#503](https://github.com/dropbox/dropbox-sdk-java/pull/503) Point to latest stone
+- [#501](https://github.com/dropbox/dropbox-sdk-java/pull/501) Updated to `jakarta.servlet` to unblock adoption of Spring Boot v3, **this is a breaking change if you use `DbxSessionStore`.**
+  - Improved generateStone task to properly declare inputs and outputs
+- [#500](https://github.com/dropbox/dropbox-sdk-java/pull/500) Build Improvements
+  - Added better error messaging when trying to build the project without submodules initialized.
+  - Removed obsolete javadoc flag
+  - Updated test dependencies
+  - Removed redundant gradle wrappers
+- [#499](https://github.com/dropbox/dropbox-sdk-java/pull/499) Update java.stoneg.py for python 3.10 compatability
+- [#486](https://github.com/dropbox/dropbox-sdk-java/pull/486) Makes project compatible with config cache
+  - Removed redundant gradle wrappers
+  - Updated to Gradle 7.6.2
+  - Updated test dependencies
+  - Removed obsolete javadoc flag 
+
+
+5.4.5 (2023-05-16)
+---------------------------------------------
 - Update jackson-core to 2.15.0 [#492](https://github.com/dropbox/dropbox-sdk-java/issues/476)
 
-## 5.4.4 (2022-10-17)
+5.4.4 (2022-10-17)
 ---------------------------------------------
 - [Downgrade target back down to Java 1.8 as requested by a user. #476](https://github.com/dropbox/dropbox-sdk-java/issues/476)
 
-## 5.4.3 (2022-10-14)
+5.4.3 (2022-10-14)
 ---------------------------------------------
 - Fix: [Make Kotlin optional in OSGI Import-Package statement](https://github.com/dropbox/dropbox-sdk-java/pull/473)
 
-## 5.4.2 (2022-10-03)
+5.4.2 (2022-10-03)
 ---------------------------------------------
 - Update dropbox-api-spec to point to more recent version (Sept 01, 2022) [#431](https://github.com/dropbox/dropbox-sdk-java/pull/431)
 - Generated stone api code is now checked into repository for greater visibility of spec changes [#418](https://github.com/dropbox/dropbox-sdk-java/pull/418)

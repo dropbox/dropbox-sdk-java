@@ -1,8 +1,8 @@
 Please follow the steps in each one of the following sections to complete a release.
 
 ## Merge the Release to Trigger Publishing to Maven Central
- 1. Update the top level [gradle.properties](gradle.properties) to a non-SNAPSHOT version.
- 2. Update [DbxSdkVersion.java](DbxSdkVersion.java) to a non-SNAPSHOT version.
+ 1. Create new branch `release/X.Y.Z` (where X.Y.Z is the new version)
+ 2. Update the top level [gradle.properties](gradle.properties) to a non-SNAPSHOT version.
  3. Update the [CHANGELOG.md](CHANGELOG.md) for the impending release.
  4. Update the [README.md](README.md) with the new version.
  5. `git commit -am "Prepare for release X.Y.Z"` (where X.Y.Z is the new version)
@@ -24,9 +24,8 @@ Please follow the steps in each one of the following sections to complete a rele
 ## Preparing For Next Snapshot
  1. Checkout the latest code from `main` into a new branch.
  2. Update the top level [gradle.properties](gradle.properties) to the next `-SNAPSHOT` version.
- 3. Update [DbxSdkVersion.java](DbxSdkVersion.java) to the next `-SNAPSHOT` version.
- 4. `git commit -am "Prepare next development version"`
- 5. Create a PR with this commit and merge it.
+ 3. `git commit -am "Prepare next development version"`
+ 4. Create a PR with this commit and merge it.
 
 ## Creating the Release on GitHub and Upload Artifacts
  1. [Create a GitHub release](https://github.com/dropbox/dropbox-sdk-java/releases) with the title from the `vX.Y.Z` tag. Attach the sdk, -javadoc, and -sources .jar files that were [published to Maven Central](https://repo1.maven.org/maven2/com/dropbox/core/dropbox-core-sdk/).
