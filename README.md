@@ -264,6 +264,20 @@ To run individual tests, use the `--tests` gradle test filter:
 
 ## Usage on Android
 
+Edit your project's "build.gradle" and add the following to the dependencies section:
+```
+dependencies {
+    // ...
+    implementation 'com.dropbox.core:dropbox-core-sdk:6.0.0'
+    implementation 'com.dropbox.core:dropbox-android-sdk:6.0.0'
+}
+```
+If you leverage jettifier and see the following errors then please add `android.jetifier.ignorelist = jackson-core,fastdoubleparser` to your `gradle.properties` file.
+
+```
+Failed to transform jackson-core-2.15.0.jar (com.fasterxml.jackson.core:jackson-core:2.15.0) to match attributes {artifactType=android-classes-jar, org.gradle.category=library, org.gradle.dependency.bundling=external, org.gradle.libraryelements=jar, org.gradle.status=release, org.gradle.usage=java-api}.
+```
+
 The Android code in this SDK is written in Kotlin (as of 5.4.x) and Kotlin is now a runtime dependency. If you do not already have Kotlin in your project, you will need to add `implementation("org.jetbrains.kotlin:kotlin-stdlib:1.6.21")` to your dependencies block in order to avoid a runtime exception.
 
 At this point in time, the Android code is bundled with the main Java artifact, but will be published as a separate artifact at some point in the future.
