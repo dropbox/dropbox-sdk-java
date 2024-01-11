@@ -19,8 +19,8 @@ import static com.dropbox.core.util.StringUtil.urlSafeBase64Encode;
  * This class does the OAuth2 "authorization code" flow with Proof Key for Code Exchange(PKCE).
  *
  * PKCE allows "authorization code" flow without "client_secret". It enables "native
- * application", which is ensafe to hardcode client_secret in code, to use "authorization
- * code". If you application has a server, please use regular {@link DbxWebAuth} instead.
+ * application", in which it is unsafe to hardcode client_secret in code, to use "authorization
+ * code". If your application has a server, please use regular {@link DbxWebAuth} instead.
  *
  * PKCE is more secure than "token" flow. If authorization code is compromised during
  * transmission, it can't be used to exchange for access token without random generated
