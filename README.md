@@ -329,6 +329,8 @@ Use your Dropbox APP Key in place of `dropboxKey` below.  You need to add the `A
 </manifest>
 ```
 
+Your activity starting the authorization flow should also configured with `android:launchMode="singleTask"`. Also, if that activity is configured with `android:taskAffinity`, then the `AuthActivity` should also configured with the same task affinity, such that authorization result can be passed back to your activity.
+
 🚨[There is a known issue regarding apps with `targetSdk=33` regarding app-to-app authentication when the Dropbox App is installed](https://github.com/dropbox/dropbox-sdk-java/pull/471) 🚨
 A fix is being worked on and will be released in an upcoming version of the Dropbox Mobile App.
 
