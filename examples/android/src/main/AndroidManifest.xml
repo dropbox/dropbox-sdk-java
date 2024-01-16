@@ -31,6 +31,9 @@
             android:exported="true"
             android:configChanges="orientation|keyboard"
             android:launchMode="singleTask">
+            <!-- Your activity starting authorization flow should also configured with android:launchMode="singleTask".
+                 If that activity is configured with android:taskAffinity, this AuthActivity should also configured
+                 with the same android:taskAffinity so the auth result can be correctly passed back. -->
             <intent-filter>
                 <data android:scheme="db-${dropboxKey}" />
 
