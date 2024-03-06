@@ -1,3 +1,6 @@
+6.1.0 (202X-XX-XX)
+---------------------------------------------
+- [#527](https://github.com/dropbox/dropbox-sdk-java/pull/527) Adds nullability annotations to data models for improved interop with Kotlin
 
 6.0.0 (2023-11-30)
 ---------------------------------------------

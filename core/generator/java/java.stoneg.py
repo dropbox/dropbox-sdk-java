@@ -3433,6 +3433,12 @@ class JavaCodeGenerationInstance:
                     returns += ' Defaults to %s.' % w.java_default_value(field)
 
                 w.javadoc(field.doc or '', stone_elem=field, returns=returns)
+
+                if not field.has_default and field in data_type.all_optional_fields:
+                    w.out('@javax.annotation.Nullable')
+                elif not j.is_java_primitive(field.data_type):
+                    w.out('@javax.annotation.Nonnull')
+
                 with w.block('public %s %s()', j.java_class(field), j.field_getter_method(field)):
                     w.out('return %s;' % j.param_name(field))
 
