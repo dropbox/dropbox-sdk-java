@@ -41,7 +41,7 @@ jobs:
       run: ./update-submodules
 
     - name: Generate Stone
-      run: ./gradlew :core:generateStone versionWriterTask
+      run: ./gradlew :core:generateStone
 
     - name: Ensure no changes in Generated Code
       run: ./scripts/check-clean-git-status

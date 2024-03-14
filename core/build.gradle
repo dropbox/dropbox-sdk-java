@@ -37,7 +37,7 @@ tasks.register('versionWriterTask') {
     }
     it.inputs.property("versionName", versionName)
 
-    def generatedDir = project.layout.buildDirectory.dir("generated_stone_source/main/src")
+    def generatedDir = project.layout.buildDirectory.dir("generated/version")
     it.outputs.dir(generatedDir)
 
     it.doLast {
@@ -314,8 +314,8 @@ tasks.named("generateStone", StoneTask) {
 
     ])
     outputDir.set(project.layout.buildDirectory.dir("generated_stone_source/main"))
-    sourceSets { main { java.srcDir(outputDir.file("src")) } }
 }
+sourceSets.main.java.srcDir(generateStone)
 
 tasks.named("generateTestStone", StoneTask) {
     String packageName = 'com.dropbox.core.stone'
@@ -334,8 +334,8 @@ tasks.named("generateTestStone", StoneTask) {
             ),
     ])
     outputDir.set(project.layout.buildDirectory.dir("generated_stone_source/test"))
-    sourceSets { test { java.srcDir(outputDir.file("src")) } }
 }
+sourceSets.test.java.srcDir(generateTestStone)
 
 mavenPublishing {
     publishToMavenCentral(SonatypeHost.S01)
