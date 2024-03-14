@@ -56,7 +56,7 @@ public class MemberChangeNameDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberChangeNameDetails(UserNameLogInfo newValue) {
+    public MemberChangeNameDetails(@Nonnull UserNameLogInfo newValue) {
         this(newValue, null);
     }
 

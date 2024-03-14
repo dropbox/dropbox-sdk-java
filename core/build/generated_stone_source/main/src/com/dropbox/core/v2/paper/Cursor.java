@@ -66,7 +66,7 @@ public class Cursor {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public Cursor(String value) {
+    public Cursor(@Nonnull String value) {
         this(value, null);
     }
 

@@ -57,7 +57,7 @@ public class SharedFolderChangeMembersManagementPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedFolderChangeMembersManagementPolicyDetails(AclUpdatePolicy newValue) {
+    public SharedFolderChangeMembersManagementPolicyDetails(@Nonnull AclUpdatePolicy newValue) {
         this(newValue, null);
     }
 

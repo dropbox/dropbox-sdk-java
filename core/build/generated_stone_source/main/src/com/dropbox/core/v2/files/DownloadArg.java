@@ -69,7 +69,7 @@ class DownloadArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DownloadArg(String path) {
+    public DownloadArg(@Nonnull String path) {
         this(path, null);
     }
 

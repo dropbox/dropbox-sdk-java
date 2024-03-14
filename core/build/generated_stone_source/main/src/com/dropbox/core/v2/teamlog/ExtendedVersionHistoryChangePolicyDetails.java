@@ -58,7 +58,7 @@ public class ExtendedVersionHistoryChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ExtendedVersionHistoryChangePolicyDetails(ExtendedVersionHistoryPolicy newValue) {
+    public ExtendedVersionHistoryChangePolicyDetails(@Nonnull ExtendedVersionHistoryPolicy newValue) {
         this(newValue, null);
     }
 

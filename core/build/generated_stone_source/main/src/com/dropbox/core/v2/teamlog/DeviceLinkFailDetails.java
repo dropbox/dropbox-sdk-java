@@ -58,7 +58,7 @@ public class DeviceLinkFailDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeviceLinkFailDetails(DeviceType deviceType) {
+    public DeviceLinkFailDetails(@Nonnull DeviceType deviceType) {
         this(deviceType, null);
     }
 

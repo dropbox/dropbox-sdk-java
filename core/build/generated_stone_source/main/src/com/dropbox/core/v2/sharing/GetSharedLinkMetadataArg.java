@@ -65,7 +65,7 @@ class GetSharedLinkMetadataArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetSharedLinkMetadataArg(String url) {
+    public GetSharedLinkMetadataArg(@Nonnull String url) {
         this(url, null, null);
     }
 

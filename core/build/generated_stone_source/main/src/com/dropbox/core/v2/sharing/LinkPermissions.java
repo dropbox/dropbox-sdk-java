@@ -174,7 +174,7 @@ public class LinkPermissions {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LinkPermissions(boolean canRevoke, List<VisibilityPolicy> visibilityPolicies, boolean canSetExpiry, boolean canRemoveExpiry, boolean allowDownload, boolean canAllowDownload, boolean canDisallowDownload, boolean allowComments, boolean teamRestrictsComments) {
+    public LinkPermissions(boolean canRevoke, @Nonnull List<VisibilityPolicy> visibilityPolicies, boolean canSetExpiry, boolean canRemoveExpiry, boolean allowDownload, boolean canAllowDownload, boolean canDisallowDownload, boolean allowComments, boolean teamRestrictsComments) {
         this(canRevoke, visibilityPolicies, canSetExpiry, canRemoveExpiry, allowDownload, canAllowDownload, canDisallowDownload, allowComments, teamRestrictsComments, null, null, null, null, null, null, null, null, null, null);
     }
 

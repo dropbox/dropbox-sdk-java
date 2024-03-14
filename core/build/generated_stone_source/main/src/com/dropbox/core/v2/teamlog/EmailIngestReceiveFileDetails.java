@@ -85,7 +85,7 @@ public class EmailIngestReceiveFileDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public EmailIngestReceiveFileDetails(String inboxName, List<String> attachmentNames) {
+    public EmailIngestReceiveFileDetails(@Nonnull String inboxName, @Nonnull List<String> attachmentNames) {
         this(inboxName, attachmentNames, null, null, null);
     }
 

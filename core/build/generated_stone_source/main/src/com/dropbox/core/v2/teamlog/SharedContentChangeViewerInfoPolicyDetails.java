@@ -56,7 +56,7 @@ public class SharedContentChangeViewerInfoPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentChangeViewerInfoPolicyDetails(ViewerInfoPolicy newValue) {
+    public SharedContentChangeViewerInfoPolicyDetails(@Nonnull ViewerInfoPolicy newValue) {
         this(newValue, null);
     }
 

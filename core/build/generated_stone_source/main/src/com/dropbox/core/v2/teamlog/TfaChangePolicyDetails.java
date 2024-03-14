@@ -57,7 +57,7 @@ public class TfaChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TfaChangePolicyDetails(TwoStepVerificationPolicy newValue) {
+    public TfaChangePolicyDetails(@Nonnull TwoStepVerificationPolicy newValue) {
         this(newValue, null);
     }
 

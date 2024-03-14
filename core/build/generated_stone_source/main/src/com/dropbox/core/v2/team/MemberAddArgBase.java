@@ -109,7 +109,7 @@ public class MemberAddArgBase {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberAddArgBase(String memberEmail) {
+    public MemberAddArgBase(@Nonnull String memberEmail) {
         this(memberEmail, null, null, null, null, true, null);
     }
 

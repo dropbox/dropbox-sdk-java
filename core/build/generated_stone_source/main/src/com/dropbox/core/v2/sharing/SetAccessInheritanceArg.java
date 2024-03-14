@@ -60,7 +60,7 @@ class SetAccessInheritanceArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SetAccessInheritanceArg(String sharedFolderId) {
+    public SetAccessInheritanceArg(@Nonnull String sharedFolderId) {
         this(sharedFolderId, AccessInheritance.INHERIT);
     }
 

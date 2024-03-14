@@ -72,7 +72,7 @@ public class SharedContentChangeInviteeRoleDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentChangeInviteeRoleDetails(AccessLevel newAccessLevel, String invitee) {
+    public SharedContentChangeInviteeRoleDetails(@Nonnull AccessLevel newAccessLevel, @Nonnull String invitee) {
         this(newAccessLevel, invitee, null);
     }
 

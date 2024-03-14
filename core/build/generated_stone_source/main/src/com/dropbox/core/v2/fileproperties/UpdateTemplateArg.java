@@ -88,7 +88,7 @@ public class UpdateTemplateArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UpdateTemplateArg(String templateId) {
+    public UpdateTemplateArg(@Nonnull String templateId) {
         this(templateId, null, null, null);
     }
 

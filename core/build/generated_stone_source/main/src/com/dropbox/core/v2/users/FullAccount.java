@@ -148,7 +148,7 @@ public class FullAccount extends Account {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FullAccount(String accountId, Name name, String email, boolean emailVerified, boolean disabled, String locale, String referralLink, boolean isPaired, AccountType accountType, RootInfo rootInfo) {
+    public FullAccount(@Nonnull String accountId, @Nonnull Name name, @Nonnull String email, boolean emailVerified, boolean disabled, @Nonnull String locale, @Nonnull String referralLink, boolean isPaired, @Nonnull AccountType accountType, @Nonnull RootInfo rootInfo) {
         this(accountId, name, email, emailVerified, disabled, locale, referralLink, isPaired, accountType, rootInfo, null, null, null, null);
     }
 

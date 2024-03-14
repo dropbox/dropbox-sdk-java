@@ -82,7 +82,7 @@ public class BasicAccount extends Account {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public BasicAccount(String accountId, Name name, String email, boolean emailVerified, boolean disabled, boolean isTeammate) {
+    public BasicAccount(@Nonnull String accountId, @Nonnull Name name, @Nonnull String email, boolean emailVerified, boolean disabled, boolean isTeammate) {
         this(accountId, name, email, emailVerified, disabled, isTeammate, null, null);
     }
 

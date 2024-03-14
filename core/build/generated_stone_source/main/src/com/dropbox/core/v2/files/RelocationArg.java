@@ -68,7 +68,7 @@ class RelocationArg extends RelocationPath {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RelocationArg(String fromPath, String toPath) {
+    public RelocationArg(@Nonnull String fromPath, @Nonnull String toPath) {
         this(fromPath, toPath, false, false, false);
     }
 

@@ -83,7 +83,7 @@ class AlphaGetMetadataArg extends GetMetadataArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AlphaGetMetadataArg(String path) {
+    public AlphaGetMetadataArg(@Nonnull String path) {
         this(path, false, false, false, null, null);
     }
 

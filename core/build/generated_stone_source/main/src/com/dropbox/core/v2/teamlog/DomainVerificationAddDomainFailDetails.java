@@ -56,7 +56,7 @@ public class DomainVerificationAddDomainFailDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DomainVerificationAddDomainFailDetails(String domainName) {
+    public DomainVerificationAddDomainFailDetails(@Nonnull String domainName) {
         this(domainName, null);
     }
 

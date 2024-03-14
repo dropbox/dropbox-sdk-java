@@ -76,7 +76,7 @@ public class GovernancePolicyEditDurationDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GovernancePolicyEditDurationDetails(String governancePolicyId, String name, DurationLogInfo previousValue, DurationLogInfo newValue) {
+    public GovernancePolicyEditDurationDetails(@Nonnull String governancePolicyId, @Nonnull String name, @Nonnull DurationLogInfo previousValue, @Nonnull DurationLogInfo newValue) {
         this(governancePolicyId, name, previousValue, newValue, null);
     }
 

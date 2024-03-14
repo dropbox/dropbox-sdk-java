@@ -55,7 +55,7 @@ class ListUsersOnFolderArgs extends RefPaperDoc {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListUsersOnFolderArgs(String docId) {
+    public ListUsersOnFolderArgs(@Nonnull String docId) {
         this(docId, 1000);
     }
 

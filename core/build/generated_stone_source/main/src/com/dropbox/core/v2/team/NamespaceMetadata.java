@@ -78,7 +78,7 @@ public class NamespaceMetadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public NamespaceMetadata(String name, String namespaceId, NamespaceType namespaceType) {
+    public NamespaceMetadata(@Nonnull String name, @Nonnull String namespaceId, @Nonnull NamespaceType namespaceType) {
         this(name, namespaceId, namespaceType, null);
     }
 

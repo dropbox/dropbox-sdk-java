@@ -71,7 +71,7 @@ public class BinderRenameSectionDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public BinderRenameSectionDetails(String eventUuid, String docTitle, String binderItemName) {
+    public BinderRenameSectionDetails(@Nonnull String eventUuid, @Nonnull String docTitle, @Nonnull String binderItemName) {
         this(eventUuid, docTitle, binderItemName, null);
     }
 

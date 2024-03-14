@@ -78,7 +78,7 @@ public class ListTeamAppsResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListTeamAppsResult(List<MemberLinkedApps> apps, boolean hasMore) {
+    public ListTeamAppsResult(@Nonnull List<MemberLinkedApps> apps, boolean hasMore) {
         this(apps, hasMore, null);
     }
 

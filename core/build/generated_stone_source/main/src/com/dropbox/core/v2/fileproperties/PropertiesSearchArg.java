@@ -65,7 +65,7 @@ class PropertiesSearchArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PropertiesSearchArg(List<PropertiesSearchQuery> queries) {
+    public PropertiesSearchArg(@Nonnull List<PropertiesSearchQuery> queries) {
         this(queries, TemplateFilter.FILTER_NONE);
     }
 

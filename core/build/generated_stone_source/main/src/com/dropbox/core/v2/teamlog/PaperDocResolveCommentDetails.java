@@ -55,7 +55,7 @@ public class PaperDocResolveCommentDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperDocResolveCommentDetails(String eventUuid) {
+    public PaperDocResolveCommentDetails(@Nonnull String eventUuid) {
         this(eventUuid, null);
     }
 

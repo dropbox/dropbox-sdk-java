@@ -69,7 +69,7 @@ class RelocationBatchArgBase {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RelocationBatchArgBase(List<RelocationPath> entries) {
+    public RelocationBatchArgBase(@Nonnull List<RelocationPath> entries) {
         this(entries, false);
     }
 

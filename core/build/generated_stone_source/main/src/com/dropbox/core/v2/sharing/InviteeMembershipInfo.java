@@ -71,7 +71,7 @@ public class InviteeMembershipInfo extends MembershipInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public InviteeMembershipInfo(AccessLevel accessType, InviteeInfo invitee) {
+    public InviteeMembershipInfo(@Nonnull AccessLevel accessType, @Nonnull InviteeInfo invitee) {
         this(accessType, invitee, null, null, false, null);
     }
 

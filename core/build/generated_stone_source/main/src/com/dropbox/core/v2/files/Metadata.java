@@ -85,7 +85,7 @@ public class Metadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public Metadata(String name) {
+    public Metadata(@Nonnull String name) {
         this(name, null, null, null, null);
     }
 

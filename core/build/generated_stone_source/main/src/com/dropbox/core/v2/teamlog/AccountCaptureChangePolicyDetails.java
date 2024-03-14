@@ -56,7 +56,7 @@ public class AccountCaptureChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AccountCaptureChangePolicyDetails(AccountCapturePolicy newValue) {
+    public AccountCaptureChangePolicyDetails(@Nonnull AccountCapturePolicy newValue) {
         this(newValue, null);
     }
 

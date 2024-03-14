@@ -75,7 +75,7 @@ public class LegalHoldsExportDownloadedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LegalHoldsExportDownloadedDetails(String legalHoldId, String name, String exportName) {
+    public LegalHoldsExportDownloadedDetails(@Nonnull String legalHoldId, @Nonnull String name, @Nonnull String exportName) {
         this(legalHoldId, name, exportName, null, null);
     }
 

@@ -152,7 +152,7 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedFolderMetadata(AccessLevel accessType, boolean isInsideTeamFolder, boolean isTeamFolder, String name, FolderPolicy policy, String previewUrl, String sharedFolderId, Date timeInvited) {
+    public SharedFolderMetadata(@Nonnull AccessLevel accessType, boolean isInsideTeamFolder, boolean isTeamFolder, @Nonnull String name, @Nonnull FolderPolicy policy, @Nonnull String previewUrl, @Nonnull String sharedFolderId, @Nonnull Date timeInvited) {
         this(accessType, isInsideTeamFolder, isTeamFolder, name, policy, previewUrl, sharedFolderId, timeInvited, null, null, null, null, null, null, null, null, AccessInheritance.INHERIT);
     }
 

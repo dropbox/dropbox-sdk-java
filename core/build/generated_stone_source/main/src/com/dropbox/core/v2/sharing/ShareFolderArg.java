@@ -81,7 +81,7 @@ class ShareFolderArg extends ShareFolderArgBase {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ShareFolderArg(String path) {
+    public ShareFolderArg(@Nonnull String path) {
         this(path, null, false, null, null, null, AccessInheritance.INHERIT, null, null);
     }
 

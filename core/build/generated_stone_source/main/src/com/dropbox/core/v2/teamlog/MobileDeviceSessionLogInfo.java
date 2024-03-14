@@ -81,7 +81,7 @@ public class MobileDeviceSessionLogInfo extends DeviceSessionLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MobileDeviceSessionLogInfo(String deviceName, MobileClientPlatform clientType) {
+    public MobileDeviceSessionLogInfo(@Nonnull String deviceName, @Nonnull MobileClientPlatform clientType) {
         this(deviceName, clientType, null, null, null, null, null, null, null);
     }
 

@@ -92,7 +92,7 @@ public class FileRequestReceiveFileDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileRequestReceiveFileDetails(List<String> submittedFileNames) {
+    public FileRequestReceiveFileDetails(@Nonnull List<String> submittedFileNames) {
         this(submittedFileNames, null, null, null, null);
     }
 

@@ -3410,7 +3410,7 @@ class JavaCodeGenerationInstance:
                 # create a constructor with just required fields (for convenience)
                 required_fields = data_type.all_required_fields
                 required_args = ', '.join(
-                    w.fmt('%s %s', j.java_class(f), j.param_name(f))
+                    w.fmt('%s %s %s', j.nullability_annotation(f), j.java_class(f), j.param_name(f)).lstrip()
                     for f in required_fields
                 )
                 w.out('')

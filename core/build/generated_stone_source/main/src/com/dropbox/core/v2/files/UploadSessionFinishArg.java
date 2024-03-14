@@ -75,7 +75,7 @@ public class UploadSessionFinishArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UploadSessionFinishArg(UploadSessionCursor cursor, CommitInfo commit) {
+    public UploadSessionFinishArg(@Nonnull UploadSessionCursor cursor, @Nonnull CommitInfo commit) {
         this(cursor, commit, null);
     }
 

@@ -70,7 +70,7 @@ public class DeletedMetadata extends Metadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeletedMetadata(String name) {
+    public DeletedMetadata(@Nonnull String name) {
         this(name, null, null, null, null);
     }
 

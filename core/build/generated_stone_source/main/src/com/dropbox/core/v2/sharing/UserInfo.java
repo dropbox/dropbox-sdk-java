@@ -95,7 +95,7 @@ public class UserInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UserInfo(String accountId, String email, String displayName, boolean sameTeam) {
+    public UserInfo(@Nonnull String accountId, @Nonnull String email, @Nonnull String displayName, boolean sameTeam) {
         this(accountId, email, displayName, sameTeam, null);
     }
 

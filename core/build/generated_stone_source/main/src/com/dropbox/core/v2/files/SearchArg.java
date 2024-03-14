@@ -100,7 +100,7 @@ class SearchArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SearchArg(String path, String query) {
+    public SearchArg(@Nonnull String path, @Nonnull String query) {
         this(path, query, 0L, 100L, SearchMode.FILENAME);
     }
 

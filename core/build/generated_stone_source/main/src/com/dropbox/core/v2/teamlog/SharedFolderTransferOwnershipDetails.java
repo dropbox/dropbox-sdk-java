@@ -66,7 +66,7 @@ public class SharedFolderTransferOwnershipDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedFolderTransferOwnershipDetails(String newOwnerEmail) {
+    public SharedFolderTransferOwnershipDetails(@Nonnull String newOwnerEmail) {
         this(newOwnerEmail, null);
     }
 

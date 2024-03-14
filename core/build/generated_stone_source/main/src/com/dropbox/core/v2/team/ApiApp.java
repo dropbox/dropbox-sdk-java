@@ -79,7 +79,7 @@ public class ApiApp {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ApiApp(String appId, String appName, boolean isAppFolder) {
+    public ApiApp(@Nonnull String appId, @Nonnull String appName, boolean isAppFolder) {
         this(appId, appName, isAppFolder, null, null, null);
     }
 

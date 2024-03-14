@@ -104,7 +104,7 @@ public class FolderMetadata extends Metadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FolderMetadata(String name, String id) {
+    public FolderMetadata(@Nonnull String name, @Nonnull String id) {
         this(name, id, null, null, null, null, null, null, null);
     }
 

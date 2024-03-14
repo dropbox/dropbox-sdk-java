@@ -56,7 +56,7 @@ public class SharedLinkChangeVisibilityDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedLinkChangeVisibilityDetails(SharedLinkVisibility newValue) {
+    public SharedLinkChangeVisibilityDetails(@Nonnull SharedLinkVisibility newValue) {
         this(newValue, null);
     }
 

@@ -58,7 +58,7 @@ public class PermanentDeleteChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PermanentDeleteChangePolicyDetails(ContentPermanentDeletePolicy newValue) {
+    public PermanentDeleteChangePolicyDetails(@Nonnull ContentPermanentDeletePolicy newValue) {
         this(newValue, null);
     }
 

@@ -117,7 +117,7 @@ class MembersSetProfileArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MembersSetProfileArg(UserSelectorArg user) {
+    public MembersSetProfileArg(@Nonnull UserSelectorArg user) {
         this(user, null, null, null, null, null, null);
     }
 

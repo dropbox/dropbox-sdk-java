@@ -85,7 +85,7 @@ public class FolderPolicy {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FolderPolicy(AclUpdatePolicy aclUpdatePolicy, SharedLinkPolicy sharedLinkPolicy) {
+    public FolderPolicy(@Nonnull AclUpdatePolicy aclUpdatePolicy, @Nonnull SharedLinkPolicy sharedLinkPolicy) {
         this(aclUpdatePolicy, sharedLinkPolicy, null, null, null);
     }
 

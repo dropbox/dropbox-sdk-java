@@ -95,7 +95,7 @@ class ListFileMembersArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFileMembersArg(String file) {
+    public ListFileMembersArg(@Nonnull String file) {
         this(file, null, true, 100L);
     }
 

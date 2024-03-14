@@ -64,7 +64,7 @@ class ListUsersOnPaperDocArgs extends RefPaperDoc {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListUsersOnPaperDocArgs(String docId) {
+    public ListUsersOnPaperDocArgs(@Nonnull String docId) {
         this(docId, 1000, UserOnPaperDocFilter.SHARED);
     }
 

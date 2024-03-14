@@ -80,7 +80,7 @@ public class GroupFullInfo extends GroupSummary {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupFullInfo(String groupName, String groupId, GroupManagementType groupManagementType, long created) {
+    public GroupFullInfo(@Nonnull String groupName, @Nonnull String groupId, @Nonnull GroupManagementType groupManagementType, long created) {
         this(groupName, groupId, groupManagementType, created, null, null, null);
     }
 

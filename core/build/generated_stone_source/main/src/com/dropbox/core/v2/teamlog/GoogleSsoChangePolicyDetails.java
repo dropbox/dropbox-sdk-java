@@ -58,7 +58,7 @@ public class GoogleSsoChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GoogleSsoChangePolicyDetails(GoogleSsoPolicy newValue) {
+    public GoogleSsoChangePolicyDetails(@Nonnull GoogleSsoPolicy newValue) {
         this(newValue, null);
     }
 

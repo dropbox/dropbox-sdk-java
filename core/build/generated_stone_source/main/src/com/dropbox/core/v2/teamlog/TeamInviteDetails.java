@@ -58,7 +58,7 @@ public class TeamInviteDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamInviteDetails(InviteMethod inviteMethod) {
+    public TeamInviteDetails(@Nonnull InviteMethod inviteMethod) {
         this(inviteMethod, null);
     }
 

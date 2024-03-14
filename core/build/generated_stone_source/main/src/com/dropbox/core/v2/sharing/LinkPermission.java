@@ -56,7 +56,7 @@ public class LinkPermission {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LinkPermission(LinkAction action, boolean allow) {
+    public LinkPermission(@Nonnull LinkAction action, boolean allow) {
         this(action, allow, null);
     }
 

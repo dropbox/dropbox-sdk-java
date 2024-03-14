@@ -77,7 +77,7 @@ class ListFileMembersBatchArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFileMembersBatchArg(List<String> files) {
+    public ListFileMembersBatchArg(@Nonnull List<String> files) {
         this(files, 10L);
     }
 

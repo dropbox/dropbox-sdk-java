@@ -67,7 +67,7 @@ public class SharedLinkSettingsRemoveExpirationDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedLinkSettingsRemoveExpirationDetails(AccessLevel sharedContentAccessLevel) {
+    public SharedLinkSettingsRemoveExpirationDetails(@Nonnull AccessLevel sharedContentAccessLevel) {
         this(sharedContentAccessLevel, null, null);
     }
 

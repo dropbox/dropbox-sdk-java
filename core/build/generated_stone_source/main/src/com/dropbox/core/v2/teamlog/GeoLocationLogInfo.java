@@ -64,7 +64,7 @@ public class GeoLocationLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GeoLocationLogInfo(String ipAddress) {
+    public GeoLocationLogInfo(@Nonnull String ipAddress) {
         this(ipAddress, null, null, null);
     }
 

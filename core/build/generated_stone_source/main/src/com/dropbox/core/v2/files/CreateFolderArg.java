@@ -57,7 +57,7 @@ class CreateFolderArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public CreateFolderArg(String path) {
+    public CreateFolderArg(@Nonnull String path) {
         this(path, false);
     }
 

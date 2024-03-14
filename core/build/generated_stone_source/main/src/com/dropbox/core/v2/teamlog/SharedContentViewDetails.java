@@ -65,7 +65,7 @@ public class SharedContentViewDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentViewDetails(String sharedContentLink, AccessLevel sharedContentAccessLevel) {
+    public SharedContentViewDetails(@Nonnull String sharedContentLink, @Nonnull AccessLevel sharedContentAccessLevel) {
         this(sharedContentLink, sharedContentAccessLevel, null);
     }
 

@@ -58,7 +58,7 @@ class RelinquishFolderMembershipArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RelinquishFolderMembershipArg(String sharedFolderId) {
+    public RelinquishFolderMembershipArg(@Nonnull String sharedFolderId) {
         this(sharedFolderId, false);
     }
 

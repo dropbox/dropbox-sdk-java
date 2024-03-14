@@ -88,7 +88,7 @@ public class SharingAllowlistListResponse {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharingAllowlistListResponse(List<String> domains, List<String> emails) {
+    public SharingAllowlistListResponse(@Nonnull List<String> domains, @Nonnull List<String> emails) {
         this(domains, emails, "", false);
     }
 

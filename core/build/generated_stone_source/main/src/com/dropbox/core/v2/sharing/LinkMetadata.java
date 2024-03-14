@@ -68,7 +68,7 @@ public class LinkMetadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LinkMetadata(String url, Visibility visibility) {
+    public LinkMetadata(@Nonnull String url, @Nonnull Visibility visibility) {
         this(url, visibility, null);
     }
 

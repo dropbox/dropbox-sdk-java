@@ -67,7 +67,7 @@ class SearchV2Arg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SearchV2Arg(String query) {
+    public SearchV2Arg(@Nonnull String query) {
         this(query, null, null, null);
     }
 

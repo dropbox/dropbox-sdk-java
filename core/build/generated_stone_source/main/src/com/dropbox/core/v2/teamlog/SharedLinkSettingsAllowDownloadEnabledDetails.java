@@ -58,7 +58,7 @@ public class SharedLinkSettingsAllowDownloadEnabledDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedLinkSettingsAllowDownloadEnabledDetails(AccessLevel sharedContentAccessLevel) {
+    public SharedLinkSettingsAllowDownloadEnabledDetails(@Nonnull AccessLevel sharedContentAccessLevel) {
         this(sharedContentAccessLevel, null);
     }
 

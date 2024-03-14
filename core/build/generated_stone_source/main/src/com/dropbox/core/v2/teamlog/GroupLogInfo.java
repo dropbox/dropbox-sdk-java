@@ -61,7 +61,7 @@ public class GroupLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupLogInfo(String displayName) {
+    public GroupLogInfo(@Nonnull String displayName) {
         this(displayName, null, null);
     }
 

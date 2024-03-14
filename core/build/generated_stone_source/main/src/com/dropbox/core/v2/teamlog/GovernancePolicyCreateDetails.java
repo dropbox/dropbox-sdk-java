@@ -83,7 +83,7 @@ public class GovernancePolicyCreateDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GovernancePolicyCreateDetails(String governancePolicyId, String name, DurationLogInfo duration) {
+    public GovernancePolicyCreateDetails(@Nonnull String governancePolicyId, @Nonnull String name, @Nonnull DurationLogInfo duration) {
         this(governancePolicyId, name, duration, null, null);
     }
 

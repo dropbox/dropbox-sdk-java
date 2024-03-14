@@ -57,7 +57,7 @@ public class FileEditCommentDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileEditCommentDetails(String previousCommentText) {
+    public FileEditCommentDetails(@Nonnull String previousCommentText) {
         this(previousCommentText, null);
     }
 

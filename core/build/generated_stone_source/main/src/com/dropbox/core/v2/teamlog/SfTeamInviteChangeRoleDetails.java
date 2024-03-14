@@ -67,7 +67,7 @@ public class SfTeamInviteChangeRoleDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SfTeamInviteChangeRoleDetails(long targetAssetIndex, String originalFolderName) {
+    public SfTeamInviteChangeRoleDetails(long targetAssetIndex, @Nonnull String originalFolderName) {
         this(targetAssetIndex, originalFolderName, null, null);
     }
 

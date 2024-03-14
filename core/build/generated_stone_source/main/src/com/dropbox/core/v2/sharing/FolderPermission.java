@@ -62,7 +62,7 @@ public class FolderPermission {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FolderPermission(FolderAction action, boolean allow) {
+    public FolderPermission(@Nonnull FolderAction action, boolean allow) {
         this(action, allow, null);
     }
 

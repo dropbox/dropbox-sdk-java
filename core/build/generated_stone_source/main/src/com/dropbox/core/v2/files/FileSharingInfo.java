@@ -76,7 +76,7 @@ public class FileSharingInfo extends SharingInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileSharingInfo(boolean readOnly, String parentSharedFolderId) {
+    public FileSharingInfo(boolean readOnly, @Nonnull String parentSharedFolderId) {
         this(readOnly, parentSharedFolderId, null);
     }
 

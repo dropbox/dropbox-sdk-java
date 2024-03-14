@@ -71,7 +71,7 @@ public class SingleUserLock {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SingleUserLock(Date created, String lockHolderAccountId) {
+    public SingleUserLock(@Nonnull Date created, @Nonnull String lockHolderAccountId) {
         this(created, lockHolderAccountId, null);
     }
 

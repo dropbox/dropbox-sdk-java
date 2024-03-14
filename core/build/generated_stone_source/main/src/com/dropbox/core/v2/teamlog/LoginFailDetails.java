@@ -63,7 +63,7 @@ public class LoginFailDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LoginFailDetails(LoginMethod loginMethod, FailureDetailsLogInfo errorDetails) {
+    public LoginFailDetails(@Nonnull LoginMethod loginMethod, @Nonnull FailureDetailsLogInfo errorDetails) {
         this(loginMethod, errorDetails, null);
     }
 

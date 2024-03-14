@@ -78,7 +78,7 @@ class GetFileMetadataArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetFileMetadataArg(String file) {
+    public GetFileMetadataArg(@Nonnull String file) {
         this(file, null);
     }
 

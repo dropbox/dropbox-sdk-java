@@ -109,7 +109,7 @@ public class SharedFolderMetadataBase {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedFolderMetadataBase(AccessLevel accessType, boolean isInsideTeamFolder, boolean isTeamFolder) {
+    public SharedFolderMetadataBase(@Nonnull AccessLevel accessType, boolean isInsideTeamFolder, boolean isTeamFolder) {
         this(accessType, isInsideTeamFolder, isTeamFolder, null, null, null, null, null, null);
     }
 

@@ -63,7 +63,7 @@ public class UserCustomQuotaResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UserCustomQuotaResult(UserSelectorArg user) {
+    public UserCustomQuotaResult(@Nonnull UserSelectorArg user) {
         this(user, null);
     }
 

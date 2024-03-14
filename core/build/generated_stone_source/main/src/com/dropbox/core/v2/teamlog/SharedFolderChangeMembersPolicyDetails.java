@@ -57,7 +57,7 @@ public class SharedFolderChangeMembersPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedFolderChangeMembersPolicyDetails(MemberPolicy newValue) {
+    public SharedFolderChangeMembersPolicyDetails(@Nonnull MemberPolicy newValue) {
         this(newValue, null);
     }
 

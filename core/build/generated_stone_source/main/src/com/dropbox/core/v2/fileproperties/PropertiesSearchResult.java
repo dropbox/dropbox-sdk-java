@@ -67,7 +67,7 @@ public class PropertiesSearchResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PropertiesSearchResult(List<PropertiesSearchMatch> matches) {
+    public PropertiesSearchResult(@Nonnull List<PropertiesSearchMatch> matches) {
         this(matches, null);
     }
 

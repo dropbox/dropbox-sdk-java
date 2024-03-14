@@ -61,7 +61,7 @@ public class SfAllowNonMembersToViewSharedLinksDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SfAllowNonMembersToViewSharedLinksDetails(long targetAssetIndex, String originalFolderName) {
+    public SfAllowNonMembersToViewSharedLinksDetails(long targetAssetIndex, @Nonnull String originalFolderName) {
         this(targetAssetIndex, originalFolderName, null);
     }
 

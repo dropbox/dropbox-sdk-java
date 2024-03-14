@@ -56,7 +56,7 @@ public class SharingChangeFolderJoinPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharingChangeFolderJoinPolicyDetails(SharingFolderJoinPolicy newValue) {
+    public SharingChangeFolderJoinPolicyDetails(@Nonnull SharingFolderJoinPolicy newValue) {
         this(newValue, null);
     }
 

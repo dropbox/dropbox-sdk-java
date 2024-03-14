@@ -61,7 +61,7 @@ public class LinkAudienceOption {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LinkAudienceOption(LinkAudience audience, boolean allowed) {
+    public LinkAudienceOption(@Nonnull LinkAudience audience, boolean allowed) {
         this(audience, allowed, null);
     }
 

@@ -53,7 +53,7 @@ public class CollectionLinkMetadata extends LinkMetadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public CollectionLinkMetadata(String url, Visibility visibility) {
+    public CollectionLinkMetadata(@Nonnull String url, @Nonnull Visibility visibility) {
         this(url, visibility, null);
     }
 

@@ -56,7 +56,7 @@ public class SharedContentChangeLinkAudienceDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentChangeLinkAudienceDetails(LinkAudience newValue) {
+    public SharedContentChangeLinkAudienceDetails(@Nonnull LinkAudience newValue) {
         this(newValue, null);
     }
 

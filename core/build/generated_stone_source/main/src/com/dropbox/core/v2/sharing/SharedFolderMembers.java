@@ -94,7 +94,7 @@ public class SharedFolderMembers {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedFolderMembers(List<UserMembershipInfo> users, List<GroupMembershipInfo> groups, List<InviteeMembershipInfo> invitees) {
+    public SharedFolderMembers(@Nonnull List<UserMembershipInfo> users, @Nonnull List<GroupMembershipInfo> groups, @Nonnull List<InviteeMembershipInfo> invitees) {
         this(users, groups, invitees, null);
     }
 

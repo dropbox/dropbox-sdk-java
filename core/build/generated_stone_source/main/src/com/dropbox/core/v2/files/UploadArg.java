@@ -94,7 +94,7 @@ class UploadArg extends CommitInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UploadArg(String path) {
+    public UploadArg(@Nonnull String path) {
         this(path, WriteMode.ADD, false, null, false, null, false, null);
     }
 

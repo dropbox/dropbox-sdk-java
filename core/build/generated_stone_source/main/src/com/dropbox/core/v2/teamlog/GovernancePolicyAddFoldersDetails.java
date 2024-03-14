@@ -76,7 +76,7 @@ public class GovernancePolicyAddFoldersDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GovernancePolicyAddFoldersDetails(String governancePolicyId, String name) {
+    public GovernancePolicyAddFoldersDetails(@Nonnull String governancePolicyId, @Nonnull String name) {
         this(governancePolicyId, name, null, null);
     }
 

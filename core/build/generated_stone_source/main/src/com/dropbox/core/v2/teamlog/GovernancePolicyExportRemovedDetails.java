@@ -69,7 +69,7 @@ public class GovernancePolicyExportRemovedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GovernancePolicyExportRemovedDetails(String governancePolicyId, String name, String exportName) {
+    public GovernancePolicyExportRemovedDetails(@Nonnull String governancePolicyId, @Nonnull String name, @Nonnull String exportName) {
         this(governancePolicyId, name, exportName, null);
     }
 

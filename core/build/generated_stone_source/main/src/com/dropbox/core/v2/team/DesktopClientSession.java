@@ -98,7 +98,7 @@ public class DesktopClientSession extends DeviceSession {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DesktopClientSession(String sessionId, String hostName, DesktopPlatform clientType, String clientVersion, String platform, boolean isDeleteOnUnlinkSupported) {
+    public DesktopClientSession(@Nonnull String sessionId, @Nonnull String hostName, @Nonnull DesktopPlatform clientType, @Nonnull String clientVersion, @Nonnull String platform, boolean isDeleteOnUnlinkSupported) {
         this(sessionId, hostName, clientType, clientVersion, platform, isDeleteOnUnlinkSupported, null, null, null, null);
     }
 

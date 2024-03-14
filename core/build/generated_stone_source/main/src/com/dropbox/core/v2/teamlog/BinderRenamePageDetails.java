@@ -71,7 +71,7 @@ public class BinderRenamePageDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public BinderRenamePageDetails(String eventUuid, String docTitle, String binderItemName) {
+    public BinderRenamePageDetails(@Nonnull String eventUuid, @Nonnull String docTitle, @Nonnull String binderItemName) {
         this(eventUuid, docTitle, binderItemName, null);
     }
 

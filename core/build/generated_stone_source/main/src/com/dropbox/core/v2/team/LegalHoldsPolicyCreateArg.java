@@ -87,7 +87,7 @@ class LegalHoldsPolicyCreateArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LegalHoldsPolicyCreateArg(String name, List<String> members) {
+    public LegalHoldsPolicyCreateArg(@Nonnull String name, @Nonnull List<String> members) {
         this(name, members, null, null, null);
     }
 

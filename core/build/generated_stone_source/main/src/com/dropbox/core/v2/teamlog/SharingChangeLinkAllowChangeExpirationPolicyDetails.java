@@ -58,7 +58,7 @@ public class SharingChangeLinkAllowChangeExpirationPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharingChangeLinkAllowChangeExpirationPolicyDetails(EnforceLinkPasswordPolicy newValue) {
+    public SharingChangeLinkAllowChangeExpirationPolicyDetails(@Nonnull EnforceLinkPasswordPolicy newValue) {
         this(newValue, null);
     }
 

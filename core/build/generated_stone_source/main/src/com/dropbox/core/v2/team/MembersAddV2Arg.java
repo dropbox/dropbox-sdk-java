@@ -57,7 +57,7 @@ class MembersAddV2Arg extends MembersAddArgBase {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MembersAddV2Arg(List<MemberAddV2Arg> newMembers) {
+    public MembersAddV2Arg(@Nonnull List<MemberAddV2Arg> newMembers) {
         this(newMembers, false);
     }
 

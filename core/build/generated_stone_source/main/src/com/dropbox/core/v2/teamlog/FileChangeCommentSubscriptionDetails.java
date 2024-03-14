@@ -56,7 +56,7 @@ public class FileChangeCommentSubscriptionDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileChangeCommentSubscriptionDetails(FileCommentNotificationPolicy newValue) {
+    public FileChangeCommentSubscriptionDetails(@Nonnull FileCommentNotificationPolicy newValue) {
         this(newValue, null);
     }
 

@@ -71,7 +71,7 @@ public class MemberChangeStatusDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberChangeStatusDetails(MemberStatus newValue) {
+    public MemberChangeStatusDetails(@Nonnull MemberStatus newValue) {
         this(newValue, null, null, null, null);
     }
 

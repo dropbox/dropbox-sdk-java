@@ -61,7 +61,7 @@ public class PathLinkMetadata extends LinkMetadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PathLinkMetadata(String url, Visibility visibility, String path) {
+    public PathLinkMetadata(@Nonnull String url, @Nonnull Visibility visibility, @Nonnull String path) {
         this(url, visibility, path, null);
     }
 

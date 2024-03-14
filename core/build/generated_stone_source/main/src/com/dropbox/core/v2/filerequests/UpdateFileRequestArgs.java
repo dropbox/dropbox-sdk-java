@@ -100,7 +100,7 @@ class UpdateFileRequestArgs {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UpdateFileRequestArgs(String id) {
+    public UpdateFileRequestArgs(@Nonnull String id) {
         this(id, null, null, UpdateFileRequestDeadline.NO_UPDATE, null, null);
     }
 

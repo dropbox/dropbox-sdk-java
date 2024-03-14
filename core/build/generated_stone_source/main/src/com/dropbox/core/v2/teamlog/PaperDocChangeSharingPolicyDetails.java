@@ -61,7 +61,7 @@ public class PaperDocChangeSharingPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperDocChangeSharingPolicyDetails(String eventUuid) {
+    public PaperDocChangeSharingPolicyDetails(@Nonnull String eventUuid) {
         this(eventUuid, null, null);
     }
 

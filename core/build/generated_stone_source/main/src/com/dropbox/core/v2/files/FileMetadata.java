@@ -193,7 +193,7 @@ public class FileMetadata extends Metadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileMetadata(String name, String id, Date clientModified, Date serverModified, String rev, long size) {
+    public FileMetadata(@Nonnull String name, @Nonnull String id, @Nonnull Date clientModified, @Nonnull Date serverModified, @Nonnull String rev, long size) {
         this(name, id, clientModified, serverModified, rev, size, null, null, null, null, null, null, null, true, null, null, null, null, null);
     }
 

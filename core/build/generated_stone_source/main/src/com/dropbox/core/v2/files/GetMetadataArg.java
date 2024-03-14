@@ -79,7 +79,7 @@ class GetMetadataArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetMetadataArg(String path) {
+    public GetMetadataArg(@Nonnull String path) {
         this(path, false, false, false, null);
     }
 

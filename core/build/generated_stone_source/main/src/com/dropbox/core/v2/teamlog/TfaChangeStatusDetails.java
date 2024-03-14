@@ -66,7 +66,7 @@ public class TfaChangeStatusDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TfaChangeStatusDetails(TfaConfiguration newValue) {
+    public TfaChangeStatusDetails(@Nonnull TfaConfiguration newValue) {
         this(newValue, null, null);
     }
 

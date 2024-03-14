@@ -96,7 +96,7 @@ class UpdateFolderPolicyArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UpdateFolderPolicyArg(String sharedFolderId) {
+    public UpdateFolderPolicyArg(@Nonnull String sharedFolderId) {
         this(sharedFolderId, null, null, null, null, null, null);
     }
 

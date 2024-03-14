@@ -77,7 +77,7 @@ public class ExportMetadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ExportMetadata(String name, long size) {
+    public ExportMetadata(@Nonnull String name, long size) {
         this(name, size, null, null);
     }
 

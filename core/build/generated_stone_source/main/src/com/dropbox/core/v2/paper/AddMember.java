@@ -57,7 +57,7 @@ public class AddMember {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AddMember(MemberSelector member) {
+    public AddMember(@Nonnull MemberSelector member) {
         this(member, PaperDocPermissionLevel.EDIT);
     }
 

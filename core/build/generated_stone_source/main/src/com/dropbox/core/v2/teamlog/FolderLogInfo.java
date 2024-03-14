@@ -57,7 +57,7 @@ public class FolderLogInfo extends FileOrFolderLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FolderLogInfo(PathLogInfo path) {
+    public FolderLogInfo(@Nonnull PathLogInfo path) {
         this(path, null, null, null, null);
     }
 

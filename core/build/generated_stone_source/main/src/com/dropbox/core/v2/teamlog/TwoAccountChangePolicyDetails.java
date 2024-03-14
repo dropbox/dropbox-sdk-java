@@ -59,7 +59,7 @@ public class TwoAccountChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TwoAccountChangePolicyDetails(TwoAccountPolicy newValue) {
+    public TwoAccountChangePolicyDetails(@Nonnull TwoAccountPolicy newValue) {
         this(newValue, null);
     }
 

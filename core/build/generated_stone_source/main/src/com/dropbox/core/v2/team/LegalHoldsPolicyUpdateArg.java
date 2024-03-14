@@ -85,7 +85,7 @@ class LegalHoldsPolicyUpdateArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LegalHoldsPolicyUpdateArg(String id) {
+    public LegalHoldsPolicyUpdateArg(@Nonnull String id) {
         this(id, null, null, null);
     }
 

@@ -76,7 +76,7 @@ public class VisibilityPolicy {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public VisibilityPolicy(RequestedVisibility policy, AlphaResolvedVisibility resolvedPolicy, boolean allowed) {
+    public VisibilityPolicy(@Nonnull RequestedVisibility policy, @Nonnull AlphaResolvedVisibility resolvedPolicy, boolean allowed) {
         this(policy, resolvedPolicy, allowed, null);
     }
 

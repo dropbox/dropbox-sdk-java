@@ -81,7 +81,7 @@ public class MobileClientSession extends DeviceSession {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MobileClientSession(String sessionId, String deviceName, MobileClientPlatform clientType) {
+    public MobileClientSession(@Nonnull String sessionId, @Nonnull String deviceName, @Nonnull MobileClientPlatform clientType) {
         this(sessionId, deviceName, clientType, null, null, null, null, null, null, null);
     }
 

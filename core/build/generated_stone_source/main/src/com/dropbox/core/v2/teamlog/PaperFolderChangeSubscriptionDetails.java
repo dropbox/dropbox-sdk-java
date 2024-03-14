@@ -65,7 +65,7 @@ public class PaperFolderChangeSubscriptionDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperFolderChangeSubscriptionDetails(String eventUuid, String newSubscriptionLevel) {
+    public PaperFolderChangeSubscriptionDetails(@Nonnull String eventUuid, @Nonnull String newSubscriptionLevel) {
         this(eventUuid, newSubscriptionLevel, null);
     }
 

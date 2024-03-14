@@ -76,7 +76,7 @@ public class LegalHoldsListHeldRevisionResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LegalHoldsListHeldRevisionResult(List<LegalHoldHeldRevisionMetadata> entries, boolean hasMore) {
+    public LegalHoldsListHeldRevisionResult(@Nonnull List<LegalHoldHeldRevisionMetadata> entries, boolean hasMore) {
         this(entries, hasMore, null);
     }
 

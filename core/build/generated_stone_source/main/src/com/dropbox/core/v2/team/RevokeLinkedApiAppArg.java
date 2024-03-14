@@ -60,7 +60,7 @@ public class RevokeLinkedApiAppArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RevokeLinkedApiAppArg(String appId, String teamMemberId) {
+    public RevokeLinkedApiAppArg(@Nonnull String appId, @Nonnull String teamMemberId) {
         this(appId, teamMemberId, true);
     }
 

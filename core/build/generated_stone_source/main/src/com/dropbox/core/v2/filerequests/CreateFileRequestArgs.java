@@ -89,7 +89,7 @@ class CreateFileRequestArgs {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public CreateFileRequestArgs(String title, String destination) {
+    public CreateFileRequestArgs(@Nonnull String title, @Nonnull String destination) {
         this(title, destination, null, true, null);
     }
 

@@ -59,7 +59,7 @@ public class EmmChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public EmmChangePolicyDetails(EmmState newValue) {
+    public EmmChangePolicyDetails(@Nonnull EmmState newValue) {
         this(newValue, null);
     }
 

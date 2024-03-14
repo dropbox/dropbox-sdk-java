@@ -57,7 +57,7 @@ public class GroupChangeManagementTypeDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupChangeManagementTypeDetails(GroupManagementType newValue) {
+    public GroupChangeManagementTypeDetails(@Nonnull GroupManagementType newValue) {
         this(newValue, null);
     }
 

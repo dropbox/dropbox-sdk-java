@@ -79,7 +79,7 @@ public class GuestAdminChangeStatusDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GuestAdminChangeStatusDetails(boolean isGuest, TrustedTeamsRequestState previousValue, TrustedTeamsRequestState newValue, TrustedTeamsRequestAction actionDetails) {
+    public GuestAdminChangeStatusDetails(boolean isGuest, @Nonnull TrustedTeamsRequestState previousValue, @Nonnull TrustedTeamsRequestState newValue, @Nonnull TrustedTeamsRequestAction actionDetails) {
         this(isGuest, previousValue, newValue, actionDetails, null, null);
     }
 

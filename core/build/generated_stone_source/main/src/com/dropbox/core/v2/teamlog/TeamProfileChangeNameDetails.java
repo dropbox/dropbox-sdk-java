@@ -56,7 +56,7 @@ public class TeamProfileChangeNameDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamProfileChangeNameDetails(TeamName newValue) {
+    public TeamProfileChangeNameDetails(@Nonnull TeamName newValue) {
         this(newValue, null);
     }
 

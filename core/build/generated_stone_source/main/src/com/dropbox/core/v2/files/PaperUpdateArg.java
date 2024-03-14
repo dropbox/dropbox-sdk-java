@@ -81,7 +81,7 @@ class PaperUpdateArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperUpdateArg(String path, ImportFormat importFormat, PaperDocUpdatePolicy docUpdatePolicy) {
+    public PaperUpdateArg(@Nonnull String path, @Nonnull ImportFormat importFormat, @Nonnull PaperDocUpdatePolicy docUpdatePolicy) {
         this(path, importFormat, docUpdatePolicy, null);
     }
 

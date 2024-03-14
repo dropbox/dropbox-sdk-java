@@ -94,7 +94,7 @@ public class Certificate {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public Certificate(String subject, String issuer, String issueDate, String expirationDate, String serialNumber, String sha1Fingerprint) {
+    public Certificate(@Nonnull String subject, @Nonnull String issuer, @Nonnull String issueDate, @Nonnull String expirationDate, @Nonnull String serialNumber, @Nonnull String sha1Fingerprint) {
         this(subject, issuer, issueDate, expirationDate, serialNumber, sha1Fingerprint, null);
     }
 

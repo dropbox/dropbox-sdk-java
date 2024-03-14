@@ -72,7 +72,7 @@ public class MemberAddArg extends MemberAddArgBase {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberAddArg(String memberEmail) {
+    public MemberAddArg(@Nonnull String memberEmail) {
         this(memberEmail, null, null, null, null, true, null, AdminTier.MEMBER_ONLY);
     }
 

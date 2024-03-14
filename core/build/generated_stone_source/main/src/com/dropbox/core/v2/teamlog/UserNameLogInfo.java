@@ -62,7 +62,7 @@ public class UserNameLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UserNameLogInfo(String givenName, String surname) {
+    public UserNameLogInfo(@Nonnull String givenName, @Nonnull String surname) {
         this(givenName, surname, null);
     }
 

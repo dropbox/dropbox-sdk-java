@@ -84,7 +84,7 @@ public class WebDeviceSessionLogInfo extends DeviceSessionLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public WebDeviceSessionLogInfo(String userAgent, String os, String browser) {
+    public WebDeviceSessionLogInfo(@Nonnull String userAgent, @Nonnull String os, @Nonnull String browser) {
         this(userAgent, os, browser, null, null, null, null);
     }
 

@@ -84,7 +84,7 @@ public class ExpectedSharedContentLinkMetadata extends SharedContentLinkMetadata
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ExpectedSharedContentLinkMetadata(List<LinkAudience> audienceOptions, LinkAudience currentAudience, List<LinkPermission> linkPermissions, boolean passwordProtected) {
+    public ExpectedSharedContentLinkMetadata(@Nonnull List<LinkAudience> audienceOptions, @Nonnull LinkAudience currentAudience, @Nonnull List<LinkPermission> linkPermissions, boolean passwordProtected) {
         this(audienceOptions, currentAudience, linkPermissions, passwordProtected, null, null, null);
     }
 

@@ -65,7 +65,7 @@ public class SharedLinkFileInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedLinkFileInfo(String url) {
+    public SharedLinkFileInfo(@Nonnull String url) {
         this(url, null, null);
     }
 

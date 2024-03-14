@@ -133,7 +133,7 @@ public class TeamEvent {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamEvent(Date timestamp, EventCategory eventCategory, EventType eventType, EventDetails details) {
+    public TeamEvent(@Nonnull Date timestamp, @Nonnull EventCategory eventCategory, @Nonnull EventType eventType, @Nonnull EventDetails details) {
         this(timestamp, eventCategory, eventType, details, null, null, null, null, null, null);
     }
 

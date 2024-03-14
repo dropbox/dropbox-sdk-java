@@ -57,7 +57,7 @@ public class TeamFolderChangeStatusDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamFolderChangeStatusDetails(TeamFolderStatus newValue) {
+    public TeamFolderChangeStatusDetails(@Nonnull TeamFolderStatus newValue) {
         this(newValue, null);
     }
 

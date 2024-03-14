@@ -75,7 +75,7 @@ public class TeamGetInfoResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamGetInfoResult(String name, String teamId, long numLicensedUsers, long numProvisionedUsers, TeamMemberPolicies policies) {
+    public TeamGetInfoResult(@Nonnull String name, @Nonnull String teamId, long numLicensedUsers, long numProvisionedUsers, @Nonnull TeamMemberPolicies policies) {
         this(name, teamId, numLicensedUsers, numProvisionedUsers, policies, 0L);
     }
 

@@ -64,7 +64,7 @@ public class FileOrFolderLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileOrFolderLogInfo(PathLogInfo path) {
+    public FileOrFolderLogInfo(@Nonnull PathLogInfo path) {
         this(path, null, null, null);
     }
 

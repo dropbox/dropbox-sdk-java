@@ -61,7 +61,7 @@ public class SfFbInviteDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SfFbInviteDetails(long targetAssetIndex, String originalFolderName) {
+    public SfFbInviteDetails(long targetAssetIndex, @Nonnull String originalFolderName) {
         this(targetAssetIndex, originalFolderName, null);
     }
 

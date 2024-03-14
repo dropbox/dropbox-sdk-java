@@ -74,7 +74,7 @@ class UploadSessionAppendArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UploadSessionAppendArg(UploadSessionCursor cursor) {
+    public UploadSessionAppendArg(@Nonnull UploadSessionCursor cursor) {
         this(cursor, false, null);
     }
 

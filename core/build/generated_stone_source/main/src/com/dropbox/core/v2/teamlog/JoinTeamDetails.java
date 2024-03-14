@@ -120,7 +120,7 @@ public class JoinTeamDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public JoinTeamDetails(List<UserLinkedAppLogInfo> linkedApps, List<LinkedDeviceLogInfo> linkedDevices, List<FolderLogInfo> linkedSharedFolders) {
+    public JoinTeamDetails(@Nonnull List<UserLinkedAppLogInfo> linkedApps, @Nonnull List<LinkedDeviceLogInfo> linkedDevices, @Nonnull List<FolderLogInfo> linkedSharedFolders) {
         this(linkedApps, linkedDevices, linkedSharedFolders, null, null, null, null, null, null);
     }
 

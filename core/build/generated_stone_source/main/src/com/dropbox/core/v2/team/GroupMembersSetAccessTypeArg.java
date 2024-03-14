@@ -65,7 +65,7 @@ class GroupMembersSetAccessTypeArg extends GroupMemberSelector {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupMembersSetAccessTypeArg(GroupSelector group, UserSelectorArg user, GroupAccessType accessType) {
+    public GroupMembersSetAccessTypeArg(@Nonnull GroupSelector group, @Nonnull UserSelectorArg user, @Nonnull GroupAccessType accessType) {
         this(group, user, accessType, true);
     }
 

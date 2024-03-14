@@ -65,7 +65,7 @@ public class PropertiesSearchQuery {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PropertiesSearchQuery(String query, PropertiesSearchMode mode) {
+    public PropertiesSearchQuery(@Nonnull String query, @Nonnull PropertiesSearchMode mode) {
         this(query, mode, LogicalOperator.OR_OPERATOR);
     }
 

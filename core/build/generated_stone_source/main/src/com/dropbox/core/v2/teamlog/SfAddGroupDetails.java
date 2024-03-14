@@ -68,7 +68,7 @@ public class SfAddGroupDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SfAddGroupDetails(long targetAssetIndex, String originalFolderName, String teamName) {
+    public SfAddGroupDetails(long targetAssetIndex, @Nonnull String originalFolderName, @Nonnull String teamName) {
         this(targetAssetIndex, originalFolderName, teamName, null);
     }
 

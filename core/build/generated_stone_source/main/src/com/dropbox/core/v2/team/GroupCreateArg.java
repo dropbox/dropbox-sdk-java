@@ -62,7 +62,7 @@ class GroupCreateArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupCreateArg(String groupName) {
+    public GroupCreateArg(@Nonnull String groupName) {
         this(groupName, false, null, null);
     }
 

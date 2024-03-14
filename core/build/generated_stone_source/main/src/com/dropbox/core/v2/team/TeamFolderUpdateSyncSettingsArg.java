@@ -67,7 +67,7 @@ class TeamFolderUpdateSyncSettingsArg extends TeamFolderIdArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamFolderUpdateSyncSettingsArg(String teamFolderId) {
+    public TeamFolderUpdateSyncSettingsArg(@Nonnull String teamFolderId) {
         this(teamFolderId, null, null);
     }
 

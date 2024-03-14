@@ -58,7 +58,7 @@ public class MemberRequestsChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberRequestsChangePolicyDetails(MemberRequestsPolicy newValue) {
+    public MemberRequestsChangePolicyDetails(@Nonnull MemberRequestsPolicy newValue) {
         this(newValue, null);
     }
 

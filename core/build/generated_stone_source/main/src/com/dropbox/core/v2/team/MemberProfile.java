@@ -158,7 +158,7 @@ public class MemberProfile {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberProfile(String teamMemberId, String email, boolean emailVerified, TeamMemberStatus status, Name name, TeamMembershipType membershipType) {
+    public MemberProfile(@Nonnull String teamMemberId, @Nonnull String email, boolean emailVerified, @Nonnull TeamMemberStatus status, @Nonnull Name name, @Nonnull TeamMembershipType membershipType) {
         this(teamMemberId, email, emailVerified, status, name, membershipType, null, null, null, null, null, null, null, null, null);
     }
 

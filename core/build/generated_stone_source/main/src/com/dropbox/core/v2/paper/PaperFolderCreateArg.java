@@ -63,7 +63,7 @@ class PaperFolderCreateArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperFolderCreateArg(String name) {
+    public PaperFolderCreateArg(@Nonnull String name) {
         this(name, null, null);
     }
 

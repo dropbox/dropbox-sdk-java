@@ -74,7 +74,7 @@ public class SharedContentCopyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentCopyDetails(String sharedContentLink, AccessLevel sharedContentAccessLevel, String destinationPath) {
+    public SharedContentCopyDetails(@Nonnull String sharedContentLink, @Nonnull AccessLevel sharedContentAccessLevel, @Nonnull String destinationPath) {
         this(sharedContentLink, sharedContentAccessLevel, destinationPath, null);
     }
 

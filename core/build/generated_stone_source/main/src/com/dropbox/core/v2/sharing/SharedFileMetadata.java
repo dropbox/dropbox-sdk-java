@@ -165,7 +165,7 @@ public class SharedFileMetadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedFileMetadata(String id, String name, FolderPolicy policy, String previewUrl) {
+    public SharedFileMetadata(@Nonnull String id, @Nonnull String name, @Nonnull FolderPolicy policy, @Nonnull String previewUrl) {
         this(id, name, policy, previewUrl, null, null, null, null, null, null, null, null, null, null);
     }
 

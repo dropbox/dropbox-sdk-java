@@ -62,7 +62,7 @@ class ModifySharedLinkSettingsArgs {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ModifySharedLinkSettingsArgs(String url, SharedLinkSettings settings) {
+    public ModifySharedLinkSettingsArgs(@Nonnull String url, @Nonnull SharedLinkSettings settings) {
         this(url, settings, false);
     }
 

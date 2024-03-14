@@ -87,7 +87,7 @@ public class MemberAddV2Arg extends MemberAddArgBase {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberAddV2Arg(String memberEmail) {
+    public MemberAddV2Arg(@Nonnull String memberEmail) {
         this(memberEmail, null, null, null, null, true, null, null);
     }
 

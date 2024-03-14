@@ -78,7 +78,7 @@ public class MembershipInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MembershipInfo(AccessLevel accessType) {
+    public MembershipInfo(@Nonnull AccessLevel accessType) {
         this(accessType, null, null, false);
     }
 

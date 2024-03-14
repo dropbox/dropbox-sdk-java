@@ -59,7 +59,7 @@ class GroupsMembersListArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupsMembersListArg(GroupSelector group) {
+    public GroupsMembersListArg(@Nonnull GroupSelector group) {
         this(group, 1000L);
     }
 

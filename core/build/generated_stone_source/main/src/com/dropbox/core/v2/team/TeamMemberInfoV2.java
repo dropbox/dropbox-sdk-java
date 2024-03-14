@@ -66,7 +66,7 @@ public class TeamMemberInfoV2 {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamMemberInfoV2(TeamMemberProfile profile) {
+    public TeamMemberInfoV2(@Nonnull TeamMemberProfile profile) {
         this(profile, null);
     }
 

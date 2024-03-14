@@ -88,7 +88,7 @@ public class ActiveWebSession extends DeviceSession {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ActiveWebSession(String sessionId, String userAgent, String os, String browser) {
+    public ActiveWebSession(@Nonnull String sessionId, @Nonnull String userAgent, @Nonnull String os, @Nonnull String browser) {
         this(sessionId, userAgent, os, browser, null, null, null, null, null);
     }
 

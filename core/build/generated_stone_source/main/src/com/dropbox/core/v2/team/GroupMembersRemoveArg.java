@@ -68,7 +68,7 @@ class GroupMembersRemoveArg extends IncludeMembersArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupMembersRemoveArg(GroupSelector group, List<UserSelectorArg> users) {
+    public GroupMembersRemoveArg(@Nonnull GroupSelector group, @Nonnull List<UserSelectorArg> users) {
         this(group, users, true);
     }
 

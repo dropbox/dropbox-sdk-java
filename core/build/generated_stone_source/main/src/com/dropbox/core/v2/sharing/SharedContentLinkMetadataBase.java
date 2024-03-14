@@ -109,7 +109,7 @@ public class SharedContentLinkMetadataBase {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentLinkMetadataBase(List<LinkAudience> audienceOptions, LinkAudience currentAudience, List<LinkPermission> linkPermissions, boolean passwordProtected) {
+    public SharedContentLinkMetadataBase(@Nonnull List<LinkAudience> audienceOptions, @Nonnull LinkAudience currentAudience, @Nonnull List<LinkPermission> linkPermissions, boolean passwordProtected) {
         this(audienceOptions, currentAudience, linkPermissions, passwordProtected, null, null, null);
     }
 

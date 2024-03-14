@@ -75,7 +75,7 @@ public class ExcludedUsersListResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ExcludedUsersListResult(List<MemberProfile> users, boolean hasMore) {
+    public ExcludedUsersListResult(@Nonnull List<MemberProfile> users, boolean hasMore) {
         this(users, hasMore, null);
     }
 

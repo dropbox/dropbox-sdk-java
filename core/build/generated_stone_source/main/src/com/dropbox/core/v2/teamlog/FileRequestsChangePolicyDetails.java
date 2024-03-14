@@ -56,7 +56,7 @@ public class FileRequestsChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileRequestsChangePolicyDetails(FileRequestsPolicy newValue) {
+    public FileRequestsChangePolicyDetails(@Nonnull FileRequestsPolicy newValue) {
         this(newValue, null);
     }
 

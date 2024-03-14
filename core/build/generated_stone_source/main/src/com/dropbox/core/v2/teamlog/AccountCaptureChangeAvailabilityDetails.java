@@ -58,7 +58,7 @@ public class AccountCaptureChangeAvailabilityDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AccountCaptureChangeAvailabilityDetails(AccountCaptureAvailability newValue) {
+    public AccountCaptureChangeAvailabilityDetails(@Nonnull AccountCaptureAvailability newValue) {
         this(newValue, null);
     }
 

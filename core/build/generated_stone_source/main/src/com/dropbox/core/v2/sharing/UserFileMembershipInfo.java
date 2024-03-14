@@ -80,7 +80,7 @@ public class UserFileMembershipInfo extends UserMembershipInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UserFileMembershipInfo(AccessLevel accessType, UserInfo user) {
+    public UserFileMembershipInfo(@Nonnull AccessLevel accessType, @Nonnull UserInfo user) {
         this(accessType, user, null, null, false, null, null);
     }
 

@@ -56,7 +56,7 @@ public class NetworkControlChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public NetworkControlChangePolicyDetails(NetworkControlPolicy newValue) {
+    public NetworkControlChangePolicyDetails(@Nonnull NetworkControlPolicy newValue) {
         this(newValue, null);
     }
 

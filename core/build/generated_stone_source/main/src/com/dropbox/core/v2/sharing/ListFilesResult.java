@@ -63,7 +63,7 @@ public class ListFilesResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFilesResult(List<SharedFileMetadata> entries) {
+    public ListFilesResult(@Nonnull List<SharedFileMetadata> entries) {
         this(entries, null);
     }
 

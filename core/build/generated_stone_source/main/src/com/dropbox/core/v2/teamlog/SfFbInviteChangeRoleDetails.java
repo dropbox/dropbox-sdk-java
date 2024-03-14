@@ -67,7 +67,7 @@ public class SfFbInviteChangeRoleDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SfFbInviteChangeRoleDetails(long targetAssetIndex, String originalFolderName) {
+    public SfFbInviteChangeRoleDetails(long targetAssetIndex, @Nonnull String originalFolderName) {
         this(targetAssetIndex, originalFolderName, null, null);
     }
 

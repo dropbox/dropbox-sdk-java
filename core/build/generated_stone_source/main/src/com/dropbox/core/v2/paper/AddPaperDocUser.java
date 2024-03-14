@@ -74,7 +74,7 @@ class AddPaperDocUser extends RefPaperDoc {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AddPaperDocUser(String docId, List<AddMember> members) {
+    public AddPaperDocUser(@Nonnull String docId, @Nonnull List<AddMember> members) {
         this(docId, members, null, false);
     }
 

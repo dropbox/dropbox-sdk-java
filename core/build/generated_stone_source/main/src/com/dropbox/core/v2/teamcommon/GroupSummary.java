@@ -78,7 +78,7 @@ public class GroupSummary {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupSummary(String groupName, String groupId, GroupManagementType groupManagementType) {
+    public GroupSummary(@Nonnull String groupName, @Nonnull String groupId, @Nonnull GroupManagementType groupManagementType) {
         this(groupName, groupId, groupManagementType, null, null);
     }
 

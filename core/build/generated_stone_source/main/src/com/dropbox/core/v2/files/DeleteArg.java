@@ -69,7 +69,7 @@ public class DeleteArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeleteArg(String path) {
+    public DeleteArg(@Nonnull String path) {
         this(path, null);
     }
 

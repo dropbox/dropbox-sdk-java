@@ -80,7 +80,7 @@ public class ThumbnailArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ThumbnailArg(String path) {
+    public ThumbnailArg(@Nonnull String path) {
         this(path, ThumbnailFormat.JPEG, ThumbnailSize.W64H64, ThumbnailMode.STRICT);
     }
 

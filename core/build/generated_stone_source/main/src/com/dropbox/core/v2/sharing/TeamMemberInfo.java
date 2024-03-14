@@ -68,7 +68,7 @@ public class TeamMemberInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamMemberInfo(Team teamInfo, String displayName) {
+    public TeamMemberInfo(@Nonnull Team teamInfo, @Nonnull String displayName) {
         this(teamInfo, displayName, null);
     }
 

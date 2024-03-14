@@ -61,7 +61,7 @@ public class PaperContentRemoveFromFolderDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperContentRemoveFromFolderDetails(String eventUuid) {
+    public PaperContentRemoveFromFolderDetails(@Nonnull String eventUuid) {
         this(eventUuid, null, null);
     }
 

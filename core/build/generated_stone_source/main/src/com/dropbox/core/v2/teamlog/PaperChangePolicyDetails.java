@@ -57,7 +57,7 @@ public class PaperChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperChangePolicyDetails(PaperEnabledPolicy newValue) {
+    public PaperChangePolicyDetails(@Nonnull PaperEnabledPolicy newValue) {
         this(newValue, null);
     }
 

@@ -56,7 +56,7 @@ public class LoginSuccessDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LoginSuccessDetails(LoginMethod loginMethod) {
+    public LoginSuccessDetails(@Nonnull LoginMethod loginMethod) {
         this(loginMethod, null);
     }
 

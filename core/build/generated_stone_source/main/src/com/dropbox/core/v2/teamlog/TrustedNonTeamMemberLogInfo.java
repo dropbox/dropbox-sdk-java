@@ -65,7 +65,7 @@ public class TrustedNonTeamMemberLogInfo extends UserLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TrustedNonTeamMemberLogInfo(TrustedNonTeamMemberType trustedNonTeamMemberType) {
+    public TrustedNonTeamMemberLogInfo(@Nonnull TrustedNonTeamMemberType trustedNonTeamMemberType) {
         this(trustedNonTeamMemberType, null, null, null, null);
     }
 

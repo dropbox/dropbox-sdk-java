@@ -62,7 +62,7 @@ public class MemberPermission {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberPermission(MemberAction action, boolean allow) {
+    public MemberPermission(@Nonnull MemberAction action, boolean allow) {
         this(action, allow, null);
     }
 

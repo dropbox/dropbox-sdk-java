@@ -74,7 +74,7 @@ class CreateFolderBatchArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public CreateFolderBatchArg(List<String> paths) {
+    public CreateFolderBatchArg(@Nonnull List<String> paths) {
         this(paths, false, false);
     }
 

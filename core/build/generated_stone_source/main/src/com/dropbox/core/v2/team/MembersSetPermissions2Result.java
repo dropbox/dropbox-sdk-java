@@ -62,7 +62,7 @@ public class MembersSetPermissions2Result {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MembersSetPermissions2Result(String teamMemberId) {
+    public MembersSetPermissions2Result(@Nonnull String teamMemberId) {
         this(teamMemberId, null);
     }
 

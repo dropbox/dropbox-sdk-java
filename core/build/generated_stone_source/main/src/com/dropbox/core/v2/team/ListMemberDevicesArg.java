@@ -61,7 +61,7 @@ class ListMemberDevicesArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListMemberDevicesArg(String teamMemberId) {
+    public ListMemberDevicesArg(@Nonnull String teamMemberId) {
         this(teamMemberId, true, true, true);
     }
 

@@ -75,7 +75,7 @@ public class GovernancePolicyZipPartDownloadedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GovernancePolicyZipPartDownloadedDetails(String governancePolicyId, String name, String exportName) {
+    public GovernancePolicyZipPartDownloadedDetails(@Nonnull String governancePolicyId, @Nonnull String name, @Nonnull String exportName) {
         this(governancePolicyId, name, exportName, null, null);
     }
 

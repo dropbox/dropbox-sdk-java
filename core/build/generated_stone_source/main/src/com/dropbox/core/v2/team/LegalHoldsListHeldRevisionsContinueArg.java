@@ -64,7 +64,7 @@ class LegalHoldsListHeldRevisionsContinueArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LegalHoldsListHeldRevisionsContinueArg(String id) {
+    public LegalHoldsListHeldRevisionsContinueArg(@Nonnull String id) {
         this(id, null);
     }
 

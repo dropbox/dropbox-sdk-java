@@ -89,7 +89,7 @@ public class MemberDevices {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberDevices(String teamMemberId) {
+    public MemberDevices(@Nonnull String teamMemberId) {
         this(teamMemberId, null, null, null);
     }
 

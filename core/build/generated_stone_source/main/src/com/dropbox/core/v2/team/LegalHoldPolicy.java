@@ -110,7 +110,7 @@ public class LegalHoldPolicy {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LegalHoldPolicy(String id, String name, MembersInfo members, LegalHoldStatus status, Date startDate) {
+    public LegalHoldPolicy(@Nonnull String id, @Nonnull String name, @Nonnull MembersInfo members, @Nonnull LegalHoldStatus status, @Nonnull Date startDate) {
         this(id, name, members, status, startDate, null, null, null);
     }
 

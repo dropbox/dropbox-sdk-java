@@ -55,7 +55,7 @@ public class InsufficientPlan {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public InsufficientPlan(String message) {
+    public InsufficientPlan(@Nonnull String message) {
         this(message, null);
     }
 

@@ -65,7 +65,7 @@ class ListFolderMembersArgs extends ListFolderMembersCursorArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFolderMembersArgs(String sharedFolderId) {
+    public ListFolderMembersArgs(@Nonnull String sharedFolderId) {
         this(sharedFolderId, null, 1000L);
     }
 

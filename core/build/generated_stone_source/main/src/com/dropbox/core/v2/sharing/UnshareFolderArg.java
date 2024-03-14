@@ -59,7 +59,7 @@ class UnshareFolderArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UnshareFolderArg(String sharedFolderId) {
+    public UnshareFolderArg(@Nonnull String sharedFolderId) {
         this(sharedFolderId, false);
     }
 

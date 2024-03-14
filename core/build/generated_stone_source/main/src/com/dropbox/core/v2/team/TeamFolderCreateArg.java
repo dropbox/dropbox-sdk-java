@@ -53,7 +53,7 @@ class TeamFolderCreateArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamFolderCreateArg(String name) {
+    public TeamFolderCreateArg(@Nonnull String name) {
         this(name, null);
     }
 

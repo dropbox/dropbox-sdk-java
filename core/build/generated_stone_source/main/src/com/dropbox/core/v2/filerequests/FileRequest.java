@@ -131,7 +131,7 @@ public class FileRequest {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileRequest(String id, String url, String title, Date created, boolean isOpen, long fileCount) {
+    public FileRequest(@Nonnull String id, @Nonnull String url, @Nonnull String title, @Nonnull Date created, boolean isOpen, long fileCount) {
         this(id, url, title, created, isOpen, fileCount, null, null, null);
     }
 

@@ -58,7 +58,7 @@ public class SsoChangeCertDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SsoChangeCertDetails(Certificate newCertificateDetails) {
+    public SsoChangeCertDetails(@Nonnull Certificate newCertificateDetails) {
         this(newCertificateDetails, null);
     }
 

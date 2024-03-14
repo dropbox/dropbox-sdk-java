@@ -67,7 +67,7 @@ public class SharedLinkSettingsAddExpirationDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedLinkSettingsAddExpirationDetails(AccessLevel sharedContentAccessLevel) {
+    public SharedLinkSettingsAddExpirationDetails(@Nonnull AccessLevel sharedContentAccessLevel) {
         this(sharedContentAccessLevel, null, null);
     }
 

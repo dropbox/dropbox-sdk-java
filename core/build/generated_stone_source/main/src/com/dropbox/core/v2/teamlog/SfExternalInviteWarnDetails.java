@@ -67,7 +67,7 @@ public class SfExternalInviteWarnDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SfExternalInviteWarnDetails(long targetAssetIndex, String originalFolderName) {
+    public SfExternalInviteWarnDetails(long targetAssetIndex, @Nonnull String originalFolderName) {
         this(targetAssetIndex, originalFolderName, null, null);
     }
 

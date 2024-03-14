@@ -69,7 +69,7 @@ public class ListSharedLinksResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListSharedLinksResult(List<SharedLinkMetadata> links, boolean hasMore) {
+    public ListSharedLinksResult(@Nonnull List<SharedLinkMetadata> links, boolean hasMore) {
         this(links, hasMore, null);
     }
 

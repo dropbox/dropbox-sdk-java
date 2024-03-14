@@ -68,7 +68,7 @@ public class AppPermissionsChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AppPermissionsChangedDetails(AdminConsoleAppPolicy previousValue, AdminConsoleAppPolicy newValue) {
+    public AppPermissionsChangedDetails(@Nonnull AdminConsoleAppPolicy previousValue, @Nonnull AdminConsoleAppPolicy newValue) {
         this(previousValue, newValue, null, null);
     }
 

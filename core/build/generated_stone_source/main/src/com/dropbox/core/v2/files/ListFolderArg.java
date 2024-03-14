@@ -112,7 +112,7 @@ class ListFolderArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFolderArg(String path) {
+    public ListFolderArg(@Nonnull String path) {
         this(path, false, false, false, false, true, null, null, null, true);
     }
 

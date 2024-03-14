@@ -56,7 +56,7 @@ public class SharingChangeMemberPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharingChangeMemberPolicyDetails(SharingMemberPolicy newValue) {
+    public SharingChangeMemberPolicyDetails(@Nonnull SharingMemberPolicy newValue) {
         this(newValue, null);
     }
 

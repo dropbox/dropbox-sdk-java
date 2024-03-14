@@ -72,7 +72,7 @@ public class FileRequestChangeDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileRequestChangeDetails(FileRequestDetails newDetails) {
+    public FileRequestChangeDetails(@Nonnull FileRequestDetails newDetails) {
         this(newDetails, null, null);
     }
 

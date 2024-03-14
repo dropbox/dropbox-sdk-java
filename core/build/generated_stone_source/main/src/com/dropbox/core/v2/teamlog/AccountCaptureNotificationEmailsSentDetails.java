@@ -55,7 +55,7 @@ public class AccountCaptureNotificationEmailsSentDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AccountCaptureNotificationEmailsSentDetails(String domainName) {
+    public AccountCaptureNotificationEmailsSentDetails(@Nonnull String domainName) {
         this(domainName, null);
     }
 

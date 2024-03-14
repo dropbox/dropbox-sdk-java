@@ -85,7 +85,7 @@ public class GroupInfo extends GroupSummary {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupInfo(String groupName, String groupId, GroupManagementType groupManagementType, GroupType groupType, boolean isMember, boolean isOwner, boolean sameTeam) {
+    public GroupInfo(@Nonnull String groupName, @Nonnull String groupId, @Nonnull GroupManagementType groupManagementType, @Nonnull GroupType groupType, boolean isMember, boolean isOwner, boolean sameTeam) {
         this(groupName, groupId, groupManagementType, groupType, isMember, isOwner, sameTeam, null, null);
     }
 

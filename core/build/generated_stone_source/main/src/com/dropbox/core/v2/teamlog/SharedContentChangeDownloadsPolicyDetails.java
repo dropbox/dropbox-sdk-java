@@ -56,7 +56,7 @@ public class SharedContentChangeDownloadsPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentChangeDownloadsPolicyDetails(DownloadPolicyType newValue) {
+    public SharedContentChangeDownloadsPolicyDetails(@Nonnull DownloadPolicyType newValue) {
         this(newValue, null);
     }
 

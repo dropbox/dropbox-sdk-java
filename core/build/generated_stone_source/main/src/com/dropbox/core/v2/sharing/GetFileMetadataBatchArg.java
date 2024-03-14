@@ -85,7 +85,7 @@ class GetFileMetadataBatchArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetFileMetadataBatchArg(List<String> files) {
+    public GetFileMetadataBatchArg(@Nonnull List<String> files) {
         this(files, null);
     }
 

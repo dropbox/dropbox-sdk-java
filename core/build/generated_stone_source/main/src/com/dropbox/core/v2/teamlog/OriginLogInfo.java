@@ -57,7 +57,7 @@ public class OriginLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public OriginLogInfo(AccessMethodLogInfo accessMethod) {
+    public OriginLogInfo(@Nonnull AccessMethodLogInfo accessMethod) {
         this(accessMethod, null);
     }
 

@@ -58,7 +58,7 @@ class CreateSharedLinkArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public CreateSharedLinkArg(String path) {
+    public CreateSharedLinkArg(@Nonnull String path) {
         this(path, false, null);
     }
 

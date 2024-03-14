@@ -61,7 +61,7 @@ public class SharingChangeLinkPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharingChangeLinkPolicyDetails(SharingLinkPolicy newValue) {
+    public SharingChangeLinkPolicyDetails(@Nonnull SharingLinkPolicy newValue) {
         this(newValue, null);
     }
 

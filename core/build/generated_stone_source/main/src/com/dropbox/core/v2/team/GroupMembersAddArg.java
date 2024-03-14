@@ -68,7 +68,7 @@ class GroupMembersAddArg extends IncludeMembersArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupMembersAddArg(GroupSelector group, List<MemberAccess> members) {
+    public GroupMembersAddArg(@Nonnull GroupSelector group, @Nonnull List<MemberAccess> members) {
         this(group, members, true);
     }
 

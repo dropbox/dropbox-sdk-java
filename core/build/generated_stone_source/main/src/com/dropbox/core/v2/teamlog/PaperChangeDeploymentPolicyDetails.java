@@ -62,7 +62,7 @@ public class PaperChangeDeploymentPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperChangeDeploymentPolicyDetails(PaperDeploymentPolicy newValue) {
+    public PaperChangeDeploymentPolicyDetails(@Nonnull PaperDeploymentPolicy newValue) {
         this(newValue, null);
     }
 

@@ -68,7 +68,7 @@ public class SearchMatchV2 {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SearchMatchV2(MetadataV2 metadata) {
+    public SearchMatchV2(@Nonnull MetadataV2 metadata) {
         this(metadata, null, null);
     }
 

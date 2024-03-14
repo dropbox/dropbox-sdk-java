@@ -52,7 +52,7 @@ public class RevokeDesktopClientArg extends DeviceSessionArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RevokeDesktopClientArg(String sessionId, String teamMemberId) {
+    public RevokeDesktopClientArg(@Nonnull String sessionId, @Nonnull String teamMemberId) {
         this(sessionId, teamMemberId, false);
     }
 

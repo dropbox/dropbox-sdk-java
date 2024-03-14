@@ -74,7 +74,7 @@ public class SearchV2Result {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SearchV2Result(List<SearchMatchV2> matches, boolean hasMore) {
+    public SearchV2Result(@Nonnull List<SearchMatchV2> matches, boolean hasMore) {
         this(matches, hasMore, null);
     }
 

@@ -49,7 +49,7 @@ class MembersDeactivateArg extends MembersDeactivateBaseArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MembersDeactivateArg(UserSelectorArg user) {
+    public MembersDeactivateArg(@Nonnull UserSelectorArg user) {
         this(user, true);
     }
 

@@ -57,7 +57,7 @@ public class SharedFolderChangeLinkPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedFolderChangeLinkPolicyDetails(SharedLinkPolicy newValue) {
+    public SharedFolderChangeLinkPolicyDetails(@Nonnull SharedLinkPolicy newValue) {
         this(newValue, null);
     }
 

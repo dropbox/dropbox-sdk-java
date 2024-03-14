@@ -95,7 +95,7 @@ public class SharedContentLinkMetadata extends SharedContentLinkMetadataBase {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentLinkMetadata(List<LinkAudience> audienceOptions, LinkAudience currentAudience, List<LinkPermission> linkPermissions, boolean passwordProtected, String url) {
+    public SharedContentLinkMetadata(@Nonnull List<LinkAudience> audienceOptions, @Nonnull LinkAudience currentAudience, @Nonnull List<LinkPermission> linkPermissions, boolean passwordProtected, @Nonnull String url) {
         this(audienceOptions, currentAudience, linkPermissions, passwordProtected, url, null, null, null, null);
     }
 

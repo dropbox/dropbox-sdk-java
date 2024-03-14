@@ -55,7 +55,7 @@ public class ShowcaseUnresolveCommentDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ShowcaseUnresolveCommentDetails(String eventUuid) {
+    public ShowcaseUnresolveCommentDetails(@Nonnull String eventUuid) {
         this(eventUuid, null);
     }
 

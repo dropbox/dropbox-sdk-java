@@ -79,7 +79,7 @@ class MembersSetPermissions2Arg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MembersSetPermissions2Arg(UserSelectorArg user) {
+    public MembersSetPermissions2Arg(@Nonnull UserSelectorArg user) {
         this(user, null);
     }
 

@@ -62,7 +62,7 @@ public class FilePermission {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FilePermission(FileAction action, boolean allow) {
+    public FilePermission(@Nonnull FileAction action, boolean allow) {
         this(action, allow, null);
     }
 

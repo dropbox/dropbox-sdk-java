@@ -67,7 +67,7 @@ public class SfTeamJoinFromOobLinkDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SfTeamJoinFromOobLinkDetails(long targetAssetIndex, String originalFolderName) {
+    public SfTeamJoinFromOobLinkDetails(long targetAssetIndex, @Nonnull String originalFolderName) {
         this(targetAssetIndex, originalFolderName, null, null);
     }
 

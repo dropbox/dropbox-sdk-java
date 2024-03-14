@@ -58,7 +58,7 @@ public class FileCommentsChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileCommentsChangePolicyDetails(FileCommentsPolicy newValue) {
+    public FileCommentsChangePolicyDetails(@Nonnull FileCommentsPolicy newValue) {
         this(newValue, null);
     }
 

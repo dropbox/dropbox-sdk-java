@@ -79,7 +79,7 @@ public class ListFoldersResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFoldersResult(List<SharedFolderMetadata> entries) {
+    public ListFoldersResult(@Nonnull List<SharedFolderMetadata> entries) {
         this(entries, null);
     }
 

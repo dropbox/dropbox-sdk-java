@@ -71,7 +71,7 @@ public class LegalHoldsActivateAHoldDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LegalHoldsActivateAHoldDetails(String legalHoldId, String name, Date startDate) {
+    public LegalHoldsActivateAHoldDetails(@Nonnull String legalHoldId, @Nonnull String name, @Nonnull Date startDate) {
         this(legalHoldId, name, startDate, null);
     }
 

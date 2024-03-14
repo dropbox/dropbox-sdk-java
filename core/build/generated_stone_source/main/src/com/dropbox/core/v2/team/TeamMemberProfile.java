@@ -126,7 +126,7 @@ public class TeamMemberProfile extends MemberProfile {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamMemberProfile(String teamMemberId, String email, boolean emailVerified, TeamMemberStatus status, Name name, TeamMembershipType membershipType, List<String> groups, String memberFolderId) {
+    public TeamMemberProfile(@Nonnull String teamMemberId, @Nonnull String email, boolean emailVerified, @Nonnull TeamMemberStatus status, @Nonnull Name name, @Nonnull TeamMembershipType membershipType, @Nonnull List<String> groups, @Nonnull String memberFolderId) {
         this(teamMemberId, email, emailVerified, status, name, membershipType, groups, memberFolderId, null, null, null, null, null, null, null, null, null);
     }
 

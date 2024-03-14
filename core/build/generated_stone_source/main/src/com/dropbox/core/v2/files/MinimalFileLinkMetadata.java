@@ -84,7 +84,7 @@ public class MinimalFileLinkMetadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MinimalFileLinkMetadata(String url, String rev) {
+    public MinimalFileLinkMetadata(@Nonnull String url, @Nonnull String rev) {
         this(url, rev, null, null);
     }
 

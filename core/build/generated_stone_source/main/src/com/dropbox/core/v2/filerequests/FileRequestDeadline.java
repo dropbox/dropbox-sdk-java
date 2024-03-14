@@ -56,7 +56,7 @@ public class FileRequestDeadline {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileRequestDeadline(Date deadline) {
+    public FileRequestDeadline(@Nonnull Date deadline) {
         this(deadline, null);
     }
 

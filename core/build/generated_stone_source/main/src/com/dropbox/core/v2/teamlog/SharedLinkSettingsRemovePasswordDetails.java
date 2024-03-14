@@ -58,7 +58,7 @@ public class SharedLinkSettingsRemovePasswordDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedLinkSettingsRemovePasswordDetails(AccessLevel sharedContentAccessLevel) {
+    public SharedLinkSettingsRemovePasswordDetails(@Nonnull AccessLevel sharedContentAccessLevel) {
         this(sharedContentAccessLevel, null);
     }
 

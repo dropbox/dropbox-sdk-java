@@ -57,7 +57,7 @@ public class PathLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PathLogInfo(NamespaceRelativePathLogInfo namespaceRelative) {
+    public PathLogInfo(@Nonnull NamespaceRelativePathLogInfo namespaceRelative) {
         this(namespaceRelative, null);
     }
 

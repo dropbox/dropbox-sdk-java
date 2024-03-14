@@ -69,7 +69,7 @@ class PreviewArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PreviewArg(String path) {
+    public PreviewArg(@Nonnull String path) {
         this(path, null);
     }
 

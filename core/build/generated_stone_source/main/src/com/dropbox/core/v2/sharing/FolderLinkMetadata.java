@@ -75,7 +75,7 @@ public class FolderLinkMetadata extends SharedLinkMetadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FolderLinkMetadata(String url, String name, LinkPermissions linkPermissions) {
+    public FolderLinkMetadata(@Nonnull String url, @Nonnull String name, @Nonnull LinkPermissions linkPermissions) {
         this(url, name, linkPermissions, null, null, null, null, null);
     }
 

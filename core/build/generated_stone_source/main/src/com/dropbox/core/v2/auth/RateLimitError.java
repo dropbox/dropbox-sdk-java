@@ -57,7 +57,7 @@ public class RateLimitError {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RateLimitError(RateLimitReason reason) {
+    public RateLimitError(@Nonnull RateLimitReason reason) {
         this(reason, 1L);
     }
 

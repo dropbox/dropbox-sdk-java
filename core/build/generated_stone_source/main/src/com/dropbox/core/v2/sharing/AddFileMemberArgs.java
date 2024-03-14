@@ -106,7 +106,7 @@ class AddFileMemberArgs {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AddFileMemberArgs(String file, List<MemberSelector> members) {
+    public AddFileMemberArgs(@Nonnull String file, @Nonnull List<MemberSelector> members) {
         this(file, members, null, false, AccessLevel.VIEWER, false);
     }
 

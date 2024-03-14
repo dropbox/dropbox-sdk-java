@@ -57,7 +57,7 @@ public class SsoChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SsoChangePolicyDetails(SsoPolicy newValue) {
+    public SsoChangePolicyDetails(@Nonnull SsoPolicy newValue) {
         this(newValue, null);
     }
 

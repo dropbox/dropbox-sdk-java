@@ -69,7 +69,7 @@ public class ListRevisionsResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListRevisionsResult(boolean isDeleted, List<FileMetadata> entries) {
+    public ListRevisionsResult(boolean isDeleted, @Nonnull List<FileMetadata> entries) {
         this(isDeleted, entries, null);
     }
 

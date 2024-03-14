@@ -66,7 +66,7 @@ public class MemberChangeEmailDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberChangeEmailDetails(String newValue) {
+    public MemberChangeEmailDetails(@Nonnull String newValue) {
         this(newValue, null);
     }
 

@@ -70,7 +70,7 @@ public class GroupMembershipInfo extends MembershipInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupMembershipInfo(AccessLevel accessType, GroupInfo group) {
+    public GroupMembershipInfo(@Nonnull AccessLevel accessType, @Nonnull GroupInfo group) {
         this(accessType, group, null, null, false);
     }
 

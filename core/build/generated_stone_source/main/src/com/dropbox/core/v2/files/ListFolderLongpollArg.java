@@ -74,7 +74,7 @@ class ListFolderLongpollArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFolderLongpollArg(String cursor) {
+    public ListFolderLongpollArg(@Nonnull String cursor) {
         this(cursor, 30L);
     }
 

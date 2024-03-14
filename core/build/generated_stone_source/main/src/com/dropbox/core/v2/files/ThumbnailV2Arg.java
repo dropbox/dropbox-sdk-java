@@ -76,7 +76,7 @@ class ThumbnailV2Arg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ThumbnailV2Arg(PathOrLink resource) {
+    public ThumbnailV2Arg(@Nonnull PathOrLink resource) {
         this(resource, ThumbnailFormat.JPEG, ThumbnailSize.W64H64, ThumbnailMode.STRICT);
     }
 

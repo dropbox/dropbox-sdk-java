@@ -64,7 +64,7 @@ public class ExportArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ExportArg(String path) {
+    public ExportArg(@Nonnull String path) {
         this(path, null);
     }
 

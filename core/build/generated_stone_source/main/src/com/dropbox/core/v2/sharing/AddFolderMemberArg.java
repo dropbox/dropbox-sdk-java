@@ -86,7 +86,7 @@ class AddFolderMemberArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AddFolderMemberArg(String sharedFolderId, List<AddMember> members) {
+    public AddFolderMemberArg(@Nonnull String sharedFolderId, @Nonnull List<AddMember> members) {
         this(sharedFolderId, members, false, null);
     }
 

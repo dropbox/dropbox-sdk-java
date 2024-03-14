@@ -58,7 +58,7 @@ public class MicrosoftOfficeAddinChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MicrosoftOfficeAddinChangePolicyDetails(MicrosoftOfficeAddinPolicy newValue) {
+    public MicrosoftOfficeAddinChangePolicyDetails(@Nonnull MicrosoftOfficeAddinPolicy newValue) {
         this(newValue, null);
     }
 

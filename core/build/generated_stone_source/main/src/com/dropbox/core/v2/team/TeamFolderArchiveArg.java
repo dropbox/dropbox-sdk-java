@@ -50,7 +50,7 @@ class TeamFolderArchiveArg extends TeamFolderIdArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamFolderArchiveArg(String teamFolderId) {
+    public TeamFolderArchiveArg(@Nonnull String teamFolderId) {
         this(teamFolderId, false);
     }
 

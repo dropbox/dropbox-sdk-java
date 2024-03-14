@@ -58,7 +58,7 @@ public class SharedLinkSettingsAddPasswordDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedLinkSettingsAddPasswordDetails(AccessLevel sharedContentAccessLevel) {
+    public SharedLinkSettingsAddPasswordDetails(@Nonnull AccessLevel sharedContentAccessLevel) {
         this(sharedContentAccessLevel, null);
     }
 

@@ -126,7 +126,7 @@ public class FileLinkMetadata extends SharedLinkMetadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileLinkMetadata(String url, String name, LinkPermissions linkPermissions, Date clientModified, Date serverModified, String rev, long size) {
+    public FileLinkMetadata(@Nonnull String url, @Nonnull String name, @Nonnull LinkPermissions linkPermissions, @Nonnull Date clientModified, @Nonnull Date serverModified, @Nonnull String rev, long size) {
         this(url, name, linkPermissions, clientModified, serverModified, rev, size, null, null, null, null, null);
     }
 

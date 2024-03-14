@@ -86,7 +86,7 @@ public class PropertyGroupUpdate {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PropertyGroupUpdate(String templateId) {
+    public PropertyGroupUpdate(@Nonnull String templateId) {
         this(templateId, null, null);
     }
 

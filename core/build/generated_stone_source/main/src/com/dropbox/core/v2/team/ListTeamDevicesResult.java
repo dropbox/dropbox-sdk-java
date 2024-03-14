@@ -69,7 +69,7 @@ public class ListTeamDevicesResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListTeamDevicesResult(List<MemberDevices> devices, boolean hasMore) {
+    public ListTeamDevicesResult(@Nonnull List<MemberDevices> devices, boolean hasMore) {
         this(devices, hasMore, null);
     }
 

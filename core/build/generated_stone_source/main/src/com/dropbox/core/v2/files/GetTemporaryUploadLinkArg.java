@@ -63,7 +63,7 @@ class GetTemporaryUploadLinkArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetTemporaryUploadLinkArg(CommitInfo commitInfo) {
+    public GetTemporaryUploadLinkArg(@Nonnull CommitInfo commitInfo) {
         this(commitInfo, 14400.0);
     }
 

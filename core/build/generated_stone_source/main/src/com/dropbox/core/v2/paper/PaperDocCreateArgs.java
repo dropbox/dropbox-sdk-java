@@ -55,7 +55,7 @@ class PaperDocCreateArgs {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperDocCreateArgs(ImportFormat importFormat) {
+    public PaperDocCreateArgs(@Nonnull ImportFormat importFormat) {
         this(importFormat, null);
     }
 

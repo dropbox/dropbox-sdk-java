@@ -65,7 +65,7 @@ public class DeviceSession {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeviceSession(String sessionId) {
+    public DeviceSession(@Nonnull String sessionId) {
         this(sessionId, null, null, null, null);
     }
 

@@ -79,7 +79,7 @@ public class PaperDocOwnershipChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperDocOwnershipChangedDetails(String eventUuid, String newOwnerUserId) {
+    public PaperDocOwnershipChangedDetails(@Nonnull String eventUuid, @Nonnull String newOwnerUserId) {
         this(eventUuid, newOwnerUserId, null);
     }
 

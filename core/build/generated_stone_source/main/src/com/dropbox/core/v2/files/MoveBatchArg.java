@@ -59,7 +59,7 @@ class MoveBatchArg extends RelocationBatchArgBase {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MoveBatchArg(List<RelocationPath> entries) {
+    public MoveBatchArg(@Nonnull List<RelocationPath> entries) {
         this(entries, false, false);
     }
 

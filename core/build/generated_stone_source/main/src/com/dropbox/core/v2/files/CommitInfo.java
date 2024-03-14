@@ -107,7 +107,7 @@ public class CommitInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public CommitInfo(String path) {
+    public CommitInfo(@Nonnull String path) {
         this(path, WriteMode.ADD, false, null, false, null, false);
     }
 

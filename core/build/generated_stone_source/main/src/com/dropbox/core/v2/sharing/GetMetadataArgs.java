@@ -69,7 +69,7 @@ class GetMetadataArgs {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetMetadataArgs(String sharedFolderId) {
+    public GetMetadataArgs(@Nonnull String sharedFolderId) {
         this(sharedFolderId, null);
     }
 

@@ -69,7 +69,7 @@ class GroupUpdateArgs extends IncludeMembersArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupUpdateArgs(GroupSelector group) {
+    public GroupUpdateArgs(@Nonnull GroupSelector group) {
         this(group, true, null, null, null);
     }
 

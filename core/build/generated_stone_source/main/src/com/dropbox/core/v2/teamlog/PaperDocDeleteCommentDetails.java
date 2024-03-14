@@ -55,7 +55,7 @@ public class PaperDocDeleteCommentDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperDocDeleteCommentDetails(String eventUuid) {
+    public PaperDocDeleteCommentDetails(@Nonnull String eventUuid) {
         this(eventUuid, null);
     }
 

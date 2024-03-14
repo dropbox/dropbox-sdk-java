@@ -74,7 +74,7 @@ class ListRevisionsArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListRevisionsArg(String path) {
+    public ListRevisionsArg(@Nonnull String path) {
         this(path, ListRevisionsMode.PATH, 10L);
     }
 

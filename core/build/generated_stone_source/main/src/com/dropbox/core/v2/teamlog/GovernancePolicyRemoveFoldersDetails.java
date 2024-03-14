@@ -79,7 +79,7 @@ public class GovernancePolicyRemoveFoldersDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GovernancePolicyRemoveFoldersDetails(String governancePolicyId, String name) {
+    public GovernancePolicyRemoveFoldersDetails(@Nonnull String governancePolicyId, @Nonnull String name) {
         this(governancePolicyId, name, null, null, null);
     }
 

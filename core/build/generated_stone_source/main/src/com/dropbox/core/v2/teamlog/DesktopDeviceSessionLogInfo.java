@@ -92,7 +92,7 @@ public class DesktopDeviceSessionLogInfo extends DeviceSessionLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DesktopDeviceSessionLogInfo(String hostName, DesktopPlatform clientType, String platform, boolean isDeleteOnUnlinkSupported) {
+    public DesktopDeviceSessionLogInfo(@Nonnull String hostName, @Nonnull DesktopPlatform clientType, @Nonnull String platform, boolean isDeleteOnUnlinkSupported) {
         this(hostName, clientType, platform, isDeleteOnUnlinkSupported, null, null, null, null, null);
     }
 

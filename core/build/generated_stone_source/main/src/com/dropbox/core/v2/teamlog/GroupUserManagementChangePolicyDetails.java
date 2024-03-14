@@ -59,7 +59,7 @@ public class GroupUserManagementChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupUserManagementChangePolicyDetails(GroupCreation newValue) {
+    public GroupUserManagementChangePolicyDetails(@Nonnull GroupCreation newValue) {
         this(newValue, null);
     }
 

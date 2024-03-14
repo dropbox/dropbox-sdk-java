@@ -95,7 +95,7 @@ public class Account {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public Account(String accountId, Name name, String email, boolean emailVerified, boolean disabled) {
+    public Account(@Nonnull String accountId, @Nonnull Name name, @Nonnull String email, boolean emailVerified, boolean disabled) {
         this(accountId, name, email, emailVerified, disabled, null);
     }
 

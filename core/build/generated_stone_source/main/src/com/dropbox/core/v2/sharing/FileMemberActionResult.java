@@ -84,7 +84,7 @@ public class FileMemberActionResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileMemberActionResult(MemberSelector member, FileMemberActionIndividualResult result) {
+    public FileMemberActionResult(@Nonnull MemberSelector member, @Nonnull FileMemberActionIndividualResult result) {
         this(member, result, null, null);
     }
 
