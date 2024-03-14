@@ -37,7 +37,7 @@ tasks.register('versionWriterTask') {
     }
     it.inputs.property("versionName", versionName)
 
-    def generatedDir = project.layout.buildDirectory.dir("generated/version")
+    def generatedDir = project.layout.buildDirectory.dir("generated_stone_source/main/src")
     it.outputs.dir(generatedDir)
 
     it.doLast {
