@@ -36,7 +36,7 @@ public class SharedLinkSettingsRemovePasswordDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedLinkSettingsRemovePasswordDetails(AccessLevel sharedContentAccessLevel, String sharedContentLink) {
+    public SharedLinkSettingsRemovePasswordDetails(@javax.annotation.Nonnull AccessLevel sharedContentAccessLevel, @javax.annotation.Nullable String sharedContentLink) {
         if (sharedContentAccessLevel == null) {
             throw new IllegalArgumentException("Required value for 'sharedContentAccessLevel' is null");
         }

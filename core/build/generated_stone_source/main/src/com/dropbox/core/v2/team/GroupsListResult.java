@@ -39,7 +39,7 @@ public class GroupsListResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupsListResult(List<GroupSummary> groups, String cursor, boolean hasMore) {
+    public GroupsListResult(@javax.annotation.Nonnull List<GroupSummary> groups, @javax.annotation.Nonnull String cursor, boolean hasMore) {
         if (groups == null) {
             throw new IllegalArgumentException("Required value for 'groups' is null");
         }

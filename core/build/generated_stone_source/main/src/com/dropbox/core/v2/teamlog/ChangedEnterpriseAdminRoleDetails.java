@@ -39,7 +39,7 @@ public class ChangedEnterpriseAdminRoleDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ChangedEnterpriseAdminRoleDetails(FedAdminRole previousValue, FedAdminRole newValue, String teamName) {
+    public ChangedEnterpriseAdminRoleDetails(@javax.annotation.Nonnull FedAdminRole previousValue, @javax.annotation.Nonnull FedAdminRole newValue, @javax.annotation.Nonnull String teamName) {
         if (previousValue == null) {
             throw new IllegalArgumentException("Required value for 'previousValue' is null");
         }

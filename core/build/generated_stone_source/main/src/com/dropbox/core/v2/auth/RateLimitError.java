@@ -36,7 +36,7 @@ public class RateLimitError {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RateLimitError(RateLimitReason reason, long retryAfter) {
+    public RateLimitError(@javax.annotation.Nonnull RateLimitReason reason, long retryAfter) {
         if (reason == null) {
             throw new IllegalArgumentException("Required value for 'reason' is null");
         }

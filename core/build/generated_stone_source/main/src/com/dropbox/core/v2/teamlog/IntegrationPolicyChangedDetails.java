@@ -38,7 +38,7 @@ public class IntegrationPolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public IntegrationPolicyChangedDetails(String integrationName, IntegrationPolicy newValue, IntegrationPolicy previousValue) {
+    public IntegrationPolicyChangedDetails(@javax.annotation.Nonnull String integrationName, @javax.annotation.Nonnull IntegrationPolicy newValue, @javax.annotation.Nonnull IntegrationPolicy previousValue) {
         if (integrationName == null) {
             throw new IllegalArgumentException("Required value for 'integrationName' is null");
         }

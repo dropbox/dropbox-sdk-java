@@ -29,7 +29,7 @@ class GetTeamEventsContinueArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetTeamEventsContinueArg(String cursor) {
+    public GetTeamEventsContinueArg(@javax.annotation.Nonnull String cursor) {
         if (cursor == null) {
             throw new IllegalArgumentException("Required value for 'cursor' is null");
         }

@@ -40,7 +40,7 @@ public class ExportInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ExportInfo(String exportAs, List<String> exportOptions) {
+    public ExportInfo(@javax.annotation.Nullable String exportAs, @javax.annotation.Nullable List<String> exportOptions) {
         this.exportAs = exportAs;
         if (exportOptions != null) {
             for (String x : exportOptions) {

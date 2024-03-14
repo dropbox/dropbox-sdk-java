@@ -38,7 +38,7 @@ class ListSharedLinksArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListSharedLinksArg(String path, String cursor, Boolean directOnly) {
+    public ListSharedLinksArg(@javax.annotation.Nullable String path, @javax.annotation.Nullable String cursor, @javax.annotation.Nullable Boolean directOnly) {
         if (path != null) {
             if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)", path)) {
                 throw new IllegalArgumentException("String 'path' does not match pattern");

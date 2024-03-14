@@ -30,7 +30,7 @@ class DeleteBatchArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeleteBatchArg(List<DeleteArg> entries) {
+    public DeleteBatchArg(@javax.annotation.Nonnull List<DeleteArg> entries) {
         if (entries == null) {
             throw new IllegalArgumentException("Required value for 'entries' is null");
         }

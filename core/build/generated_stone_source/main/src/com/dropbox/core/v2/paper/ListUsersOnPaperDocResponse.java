@@ -53,7 +53,7 @@ public class ListUsersOnPaperDocResponse {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListUsersOnPaperDocResponse(List<InviteeInfoWithPermissionLevel> invitees, List<UserInfoWithPermissionLevel> users, UserInfo docOwner, Cursor cursor, boolean hasMore) {
+    public ListUsersOnPaperDocResponse(@javax.annotation.Nonnull List<InviteeInfoWithPermissionLevel> invitees, @javax.annotation.Nonnull List<UserInfoWithPermissionLevel> users, @javax.annotation.Nonnull UserInfo docOwner, @javax.annotation.Nonnull Cursor cursor, boolean hasMore) {
         if (invitees == null) {
             throw new IllegalArgumentException("Required value for 'invitees' is null");
         }

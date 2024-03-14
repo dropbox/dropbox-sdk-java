@@ -35,7 +35,7 @@ public class DeviceDeleteOnUnlinkSuccessDetails {
      * @param displayName  The device name. Might be missing due to historical
      *     data gap.
      */
-    public DeviceDeleteOnUnlinkSuccessDetails(SessionLogInfo sessionInfo, String displayName) {
+    public DeviceDeleteOnUnlinkSuccessDetails(@javax.annotation.Nullable SessionLogInfo sessionInfo, @javax.annotation.Nullable String displayName) {
         this.sessionInfo = sessionInfo;
         this.displayName = displayName;
     }

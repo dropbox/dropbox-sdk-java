@@ -55,7 +55,7 @@ public class DesktopClientSession extends DeviceSession {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DesktopClientSession(String sessionId, String hostName, DesktopPlatform clientType, String clientVersion, String platform, boolean isDeleteOnUnlinkSupported, String ipAddress, String country, Date created, Date updated) {
+    public DesktopClientSession(@javax.annotation.Nonnull String sessionId, @javax.annotation.Nonnull String hostName, @javax.annotation.Nonnull DesktopPlatform clientType, @javax.annotation.Nonnull String clientVersion, @javax.annotation.Nonnull String platform, boolean isDeleteOnUnlinkSupported, @javax.annotation.Nullable String ipAddress, @javax.annotation.Nullable String country, @javax.annotation.Nullable Date created, @javax.annotation.Nullable Date updated) {
         super(sessionId, ipAddress, country, created, updated);
         if (hostName == null) {
             throw new IllegalArgumentException("Required value for 'hostName' is null");

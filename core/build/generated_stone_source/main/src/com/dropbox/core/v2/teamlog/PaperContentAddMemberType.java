@@ -28,7 +28,7 @@ public class PaperContentAddMemberType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperContentAddMemberType(String description) {
+    public PaperContentAddMemberType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

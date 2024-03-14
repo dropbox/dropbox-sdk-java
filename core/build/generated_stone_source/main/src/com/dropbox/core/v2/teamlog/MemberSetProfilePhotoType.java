@@ -28,7 +28,7 @@ public class MemberSetProfilePhotoType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberSetProfilePhotoType(String description) {
+    public MemberSetProfilePhotoType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

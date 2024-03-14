@@ -62,7 +62,7 @@ public class FolderMetadata extends Metadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FolderMetadata(String name, String id, String pathLower, String pathDisplay, String parentSharedFolderId, String previewUrl, String sharedFolderId, FolderSharingInfo sharingInfo, List<PropertyGroup> propertyGroups) {
+    public FolderMetadata(@javax.annotation.Nonnull String name, @javax.annotation.Nonnull String id, @javax.annotation.Nullable String pathLower, @javax.annotation.Nullable String pathDisplay, @javax.annotation.Nullable String parentSharedFolderId, @javax.annotation.Nullable String previewUrl, @javax.annotation.Nullable String sharedFolderId, @javax.annotation.Nullable FolderSharingInfo sharingInfo, @javax.annotation.Nullable List<PropertyGroup> propertyGroups) {
         super(name, pathLower, pathDisplay, parentSharedFolderId, previewUrl);
         if (id == null) {
             throw new IllegalArgumentException("Required value for 'id' is null");

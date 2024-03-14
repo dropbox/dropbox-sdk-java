@@ -35,7 +35,7 @@ public class PrimaryTeamRequestReminderDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PrimaryTeamRequestReminderDetails(String secondaryTeam, String sentTo) {
+    public PrimaryTeamRequestReminderDetails(@javax.annotation.Nonnull String secondaryTeam, @javax.annotation.Nonnull String sentTo) {
         if (secondaryTeam == null) {
             throw new IllegalArgumentException("Required value for 'secondaryTeam' is null");
         }

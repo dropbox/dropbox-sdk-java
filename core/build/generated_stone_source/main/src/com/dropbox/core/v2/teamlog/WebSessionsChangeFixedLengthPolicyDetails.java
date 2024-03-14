@@ -36,7 +36,7 @@ public class WebSessionsChangeFixedLengthPolicyDetails {
      * @param previousValue  Previous session length policy. Might be missing
      *     due to historical data gap.
      */
-    public WebSessionsChangeFixedLengthPolicyDetails(WebSessionsFixedLengthPolicy newValue, WebSessionsFixedLengthPolicy previousValue) {
+    public WebSessionsChangeFixedLengthPolicyDetails(@javax.annotation.Nullable WebSessionsFixedLengthPolicy newValue, @javax.annotation.Nullable WebSessionsFixedLengthPolicy previousValue) {
         this.newValue = newValue;
         this.previousValue = previousValue;
     }

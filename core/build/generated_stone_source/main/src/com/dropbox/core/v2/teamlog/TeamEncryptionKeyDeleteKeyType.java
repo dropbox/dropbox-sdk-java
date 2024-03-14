@@ -28,7 +28,7 @@ public class TeamEncryptionKeyDeleteKeyType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamEncryptionKeyDeleteKeyType(String description) {
+    public TeamEncryptionKeyDeleteKeyType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

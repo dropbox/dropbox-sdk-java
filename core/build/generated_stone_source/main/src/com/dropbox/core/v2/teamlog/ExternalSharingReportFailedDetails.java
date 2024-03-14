@@ -33,7 +33,7 @@ public class ExternalSharingReportFailedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ExternalSharingReportFailedDetails(TeamReportFailureReason failureReason) {
+    public ExternalSharingReportFailedDetails(@javax.annotation.Nonnull TeamReportFailureReason failureReason) {
         if (failureReason == null) {
             throw new IllegalArgumentException("Required value for 'failureReason' is null");
         }

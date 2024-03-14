@@ -39,7 +39,7 @@ public class LinkSettings {
      * @param expiry  An expiry timestamp to set on a link.
      * @param password  The password for the link.
      */
-    public LinkSettings(AccessLevel accessLevel, LinkAudience audience, LinkExpiry expiry, LinkPassword password) {
+    public LinkSettings(@javax.annotation.Nullable AccessLevel accessLevel, @javax.annotation.Nullable LinkAudience audience, @javax.annotation.Nullable LinkExpiry expiry, @javax.annotation.Nullable LinkPassword password) {
         this.accessLevel = accessLevel;
         this.audience = audience;
         this.expiry = expiry;

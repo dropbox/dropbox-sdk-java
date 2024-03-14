@@ -34,7 +34,7 @@ class CreateSharedLinkWithSettingsArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public CreateSharedLinkWithSettingsArg(String path, SharedLinkSettings settings) {
+    public CreateSharedLinkWithSettingsArg(@javax.annotation.Nonnull String path, @javax.annotation.Nullable SharedLinkSettings settings) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }

@@ -52,7 +52,7 @@ public class BasicAccount extends Account {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public BasicAccount(String accountId, Name name, String email, boolean emailVerified, boolean disabled, boolean isTeammate, String profilePhotoUrl, String teamMemberId) {
+    public BasicAccount(@javax.annotation.Nonnull String accountId, @javax.annotation.Nonnull Name name, @javax.annotation.Nonnull String email, boolean emailVerified, boolean disabled, boolean isTeammate, @javax.annotation.Nullable String profilePhotoUrl, @javax.annotation.Nullable String teamMemberId) {
         super(accountId, name, email, emailVerified, disabled, profilePhotoUrl);
         this.isTeammate = isTeammate;
         this.teamMemberId = teamMemberId;

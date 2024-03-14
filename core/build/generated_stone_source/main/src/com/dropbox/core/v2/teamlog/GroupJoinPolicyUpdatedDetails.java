@@ -34,7 +34,7 @@ public class GroupJoinPolicyUpdatedDetails {
      * @param isCompanyManaged  Is company managed group.
      * @param joinPolicy  Group join policy.
      */
-    public GroupJoinPolicyUpdatedDetails(Boolean isCompanyManaged, GroupJoinPolicy joinPolicy) {
+    public GroupJoinPolicyUpdatedDetails(@javax.annotation.Nullable Boolean isCompanyManaged, @javax.annotation.Nullable GroupJoinPolicy joinPolicy) {
         this.isCompanyManaged = isCompanyManaged;
         this.joinPolicy = joinPolicy;
     }

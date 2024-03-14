@@ -36,7 +36,7 @@ public class SsoChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SsoChangePolicyDetails(SsoPolicy newValue, SsoPolicy previousValue) {
+    public SsoChangePolicyDetails(@javax.annotation.Nonnull SsoPolicy newValue, @javax.annotation.Nullable SsoPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

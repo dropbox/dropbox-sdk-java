@@ -28,7 +28,7 @@ public class ResellerSupportSessionStartType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ResellerSupportSessionStartType(String description) {
+    public ResellerSupportSessionStartType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

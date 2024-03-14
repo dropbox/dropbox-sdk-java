@@ -36,7 +36,7 @@ public class DeviceApprovalsChangeUnlinkActionDetails {
      * @param previousValue  Previous device unlink policy. Might be missing due
      *     to historical data gap.
      */
-    public DeviceApprovalsChangeUnlinkActionDetails(DeviceUnlinkPolicy newValue, DeviceUnlinkPolicy previousValue) {
+    public DeviceApprovalsChangeUnlinkActionDetails(@javax.annotation.Nullable DeviceUnlinkPolicy newValue, @javax.annotation.Nullable DeviceUnlinkPolicy previousValue) {
         this.newValue = newValue;
         this.previousValue = previousValue;
     }

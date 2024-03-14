@@ -61,7 +61,7 @@ public class SharedContentLinkMetadata extends SharedContentLinkMetadataBase {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentLinkMetadata(List<LinkAudience> audienceOptions, LinkAudience currentAudience, List<LinkPermission> linkPermissions, boolean passwordProtected, String url, AccessLevel accessLevel, AudienceRestrictingSharedFolder audienceRestrictingSharedFolder, Date expiry, AudienceExceptions audienceExceptions) {
+    public SharedContentLinkMetadata(@javax.annotation.Nonnull List<LinkAudience> audienceOptions, @javax.annotation.Nonnull LinkAudience currentAudience, @javax.annotation.Nonnull List<LinkPermission> linkPermissions, boolean passwordProtected, @javax.annotation.Nonnull String url, @javax.annotation.Nullable AccessLevel accessLevel, @javax.annotation.Nullable AudienceRestrictingSharedFolder audienceRestrictingSharedFolder, @javax.annotation.Nullable Date expiry, @javax.annotation.Nullable AudienceExceptions audienceExceptions) {
         super(audienceOptions, currentAudience, linkPermissions, passwordProtected, accessLevel, audienceRestrictingSharedFolder, expiry);
         this.audienceExceptions = audienceExceptions;
         if (url == null) {

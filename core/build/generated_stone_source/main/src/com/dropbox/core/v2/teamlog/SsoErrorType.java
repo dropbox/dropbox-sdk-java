@@ -28,7 +28,7 @@ public class SsoErrorType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SsoErrorType(String description) {
+    public SsoErrorType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

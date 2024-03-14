@@ -38,7 +38,7 @@ public class SharedContentDownloadDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentDownloadDetails(String sharedContentLink, AccessLevel sharedContentAccessLevel, UserLogInfo sharedContentOwner) {
+    public SharedContentDownloadDetails(@javax.annotation.Nonnull String sharedContentLink, @javax.annotation.Nonnull AccessLevel sharedContentAccessLevel, @javax.annotation.Nullable UserLogInfo sharedContentOwner) {
         if (sharedContentLink == null) {
             throw new IllegalArgumentException("Required value for 'sharedContentLink' is null");
         }

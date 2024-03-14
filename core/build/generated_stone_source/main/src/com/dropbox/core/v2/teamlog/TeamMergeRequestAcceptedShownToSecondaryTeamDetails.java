@@ -35,7 +35,7 @@ public class TeamMergeRequestAcceptedShownToSecondaryTeamDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamMergeRequestAcceptedShownToSecondaryTeamDetails(String primaryTeam, String sentBy) {
+    public TeamMergeRequestAcceptedShownToSecondaryTeamDetails(@javax.annotation.Nonnull String primaryTeam, @javax.annotation.Nonnull String sentBy) {
         if (primaryTeam == null) {
             throw new IllegalArgumentException("Required value for 'primaryTeam' is null");
         }

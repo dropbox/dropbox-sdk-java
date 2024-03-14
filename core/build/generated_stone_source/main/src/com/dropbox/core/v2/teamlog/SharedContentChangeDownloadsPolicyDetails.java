@@ -35,7 +35,7 @@ public class SharedContentChangeDownloadsPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentChangeDownloadsPolicyDetails(DownloadPolicyType newValue, DownloadPolicyType previousValue) {
+    public SharedContentChangeDownloadsPolicyDetails(@javax.annotation.Nonnull DownloadPolicyType newValue, @javax.annotation.Nullable DownloadPolicyType previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

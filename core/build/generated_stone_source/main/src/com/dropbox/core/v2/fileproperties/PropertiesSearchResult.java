@@ -35,7 +35,7 @@ public class PropertiesSearchResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PropertiesSearchResult(List<PropertiesSearchMatch> matches, String cursor) {
+    public PropertiesSearchResult(@javax.annotation.Nonnull List<PropertiesSearchMatch> matches, @javax.annotation.Nullable String cursor) {
         if (matches == null) {
             throw new IllegalArgumentException("Required value for 'matches' is null");
         }

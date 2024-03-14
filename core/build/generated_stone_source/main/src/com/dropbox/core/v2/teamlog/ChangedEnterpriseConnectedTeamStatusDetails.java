@@ -40,7 +40,7 @@ public class ChangedEnterpriseConnectedTeamStatusDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ChangedEnterpriseConnectedTeamStatusDetails(FedHandshakeAction action, FederationStatusChangeAdditionalInfo additionalInfo, TrustedTeamsRequestState previousValue, TrustedTeamsRequestState newValue) {
+    public ChangedEnterpriseConnectedTeamStatusDetails(@javax.annotation.Nonnull FedHandshakeAction action, @javax.annotation.Nonnull FederationStatusChangeAdditionalInfo additionalInfo, @javax.annotation.Nonnull TrustedTeamsRequestState previousValue, @javax.annotation.Nonnull TrustedTeamsRequestState newValue) {
         if (action == null) {
             throw new IllegalArgumentException("Required value for 'action' is null");
         }

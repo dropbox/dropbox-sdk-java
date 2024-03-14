@@ -90,7 +90,7 @@ public class GetActivityReport extends BaseDfbReport {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetActivityReport(String startDate, List<Long> adds, List<Long> edits, List<Long> deletes, List<Long> activeUsers28Day, List<Long> activeUsers7Day, List<Long> activeUsers1Day, List<Long> activeSharedFolders28Day, List<Long> activeSharedFolders7Day, List<Long> activeSharedFolders1Day, List<Long> sharedLinksCreated, List<Long> sharedLinksViewedByTeam, List<Long> sharedLinksViewedByOutsideUser, List<Long> sharedLinksViewedByNotLoggedIn, List<Long> sharedLinksViewedTotal) {
+    public GetActivityReport(@javax.annotation.Nonnull String startDate, @javax.annotation.Nonnull List<Long> adds, @javax.annotation.Nonnull List<Long> edits, @javax.annotation.Nonnull List<Long> deletes, @javax.annotation.Nonnull List<Long> activeUsers28Day, @javax.annotation.Nonnull List<Long> activeUsers7Day, @javax.annotation.Nonnull List<Long> activeUsers1Day, @javax.annotation.Nonnull List<Long> activeSharedFolders28Day, @javax.annotation.Nonnull List<Long> activeSharedFolders7Day, @javax.annotation.Nonnull List<Long> activeSharedFolders1Day, @javax.annotation.Nonnull List<Long> sharedLinksCreated, @javax.annotation.Nonnull List<Long> sharedLinksViewedByTeam, @javax.annotation.Nonnull List<Long> sharedLinksViewedByOutsideUser, @javax.annotation.Nonnull List<Long> sharedLinksViewedByNotLoggedIn, @javax.annotation.Nonnull List<Long> sharedLinksViewedTotal) {
         super(startDate);
         if (adds == null) {
             throw new IllegalArgumentException("Required value for 'adds' is null");

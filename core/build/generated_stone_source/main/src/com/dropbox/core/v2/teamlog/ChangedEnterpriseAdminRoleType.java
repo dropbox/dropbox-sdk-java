@@ -28,7 +28,7 @@ public class ChangedEnterpriseAdminRoleType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ChangedEnterpriseAdminRoleType(String description) {
+    public ChangedEnterpriseAdminRoleType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

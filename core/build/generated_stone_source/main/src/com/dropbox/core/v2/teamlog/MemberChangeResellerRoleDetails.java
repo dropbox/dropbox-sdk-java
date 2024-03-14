@@ -37,7 +37,7 @@ public class MemberChangeResellerRoleDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberChangeResellerRoleDetails(ResellerRole newValue, ResellerRole previousValue) {
+    public MemberChangeResellerRoleDetails(@javax.annotation.Nonnull ResellerRole newValue, @javax.annotation.Nonnull ResellerRole previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

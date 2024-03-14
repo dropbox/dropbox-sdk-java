@@ -42,7 +42,7 @@ public class TrustedNonTeamMemberLogInfo extends UserLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TrustedNonTeamMemberLogInfo(TrustedNonTeamMemberType trustedNonTeamMemberType, String accountId, String displayName, String email, TeamLogInfo team) {
+    public TrustedNonTeamMemberLogInfo(@javax.annotation.Nonnull TrustedNonTeamMemberType trustedNonTeamMemberType, @javax.annotation.Nullable String accountId, @javax.annotation.Nullable String displayName, @javax.annotation.Nullable String email, @javax.annotation.Nullable TeamLogInfo team) {
         super(accountId, displayName, email);
         if (trustedNonTeamMemberType == null) {
             throw new IllegalArgumentException("Required value for 'trustedNonTeamMemberType' is null");

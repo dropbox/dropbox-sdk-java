@@ -40,7 +40,7 @@ public class FileRequestCloseDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileRequestCloseDetails(String fileRequestId, FileRequestDetails previousDetails) {
+    public FileRequestCloseDetails(@javax.annotation.Nullable String fileRequestId, @javax.annotation.Nullable FileRequestDetails previousDetails) {
         if (fileRequestId != null) {
             if (fileRequestId.length() < 1) {
                 throw new IllegalArgumentException("String 'fileRequestId' is shorter than 1");

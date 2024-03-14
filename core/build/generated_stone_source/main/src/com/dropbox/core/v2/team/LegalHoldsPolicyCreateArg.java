@@ -44,7 +44,7 @@ class LegalHoldsPolicyCreateArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LegalHoldsPolicyCreateArg(String name, List<String> members, String description, Date startDate, Date endDate) {
+    public LegalHoldsPolicyCreateArg(@javax.annotation.Nonnull String name, @javax.annotation.Nonnull List<String> members, @javax.annotation.Nullable String description, @javax.annotation.Nullable Date startDate, @javax.annotation.Nullable Date endDate) {
         if (name == null) {
             throw new IllegalArgumentException("Required value for 'name' is null");
         }

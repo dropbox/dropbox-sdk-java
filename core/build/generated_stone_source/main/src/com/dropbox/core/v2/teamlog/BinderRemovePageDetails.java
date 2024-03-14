@@ -37,7 +37,7 @@ public class BinderRemovePageDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public BinderRemovePageDetails(String eventUuid, String docTitle, String binderItemName) {
+    public BinderRemovePageDetails(@javax.annotation.Nonnull String eventUuid, @javax.annotation.Nonnull String docTitle, @javax.annotation.Nonnull String binderItemName) {
         if (eventUuid == null) {
             throw new IllegalArgumentException("Required value for 'eventUuid' is null");
         }

@@ -46,7 +46,7 @@ public class Name {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public Name(String givenName, String surname, String familiarName, String displayName, String abbreviatedName) {
+    public Name(@javax.annotation.Nonnull String givenName, @javax.annotation.Nonnull String surname, @javax.annotation.Nonnull String familiarName, @javax.annotation.Nonnull String displayName, @javax.annotation.Nonnull String abbreviatedName) {
         if (givenName == null) {
             throw new IllegalArgumentException("Required value for 'givenName' is null");
         }

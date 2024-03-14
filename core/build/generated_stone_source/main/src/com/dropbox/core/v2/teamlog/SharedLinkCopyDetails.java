@@ -30,7 +30,7 @@ public class SharedLinkCopyDetails {
      * @param sharedLinkOwner  Shared link owner details. Might be missing due
      *     to historical data gap.
      */
-    public SharedLinkCopyDetails(UserLogInfo sharedLinkOwner) {
+    public SharedLinkCopyDetails(@javax.annotation.Nullable UserLogInfo sharedLinkOwner) {
         this.sharedLinkOwner = sharedLinkOwner;
     }
 

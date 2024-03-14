@@ -34,7 +34,7 @@ public class ListTemplateResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListTemplateResult(List<String> templateIds) {
+    public ListTemplateResult(@javax.annotation.Nonnull List<String> templateIds) {
         if (templateIds == null) {
             throw new IllegalArgumentException("Required value for 'templateIds' is null");
         }

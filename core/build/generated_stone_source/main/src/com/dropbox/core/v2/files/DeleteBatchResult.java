@@ -32,7 +32,7 @@ public class DeleteBatchResult extends FileOpsResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeleteBatchResult(List<DeleteBatchResultEntry> entries) {
+    public DeleteBatchResult(@javax.annotation.Nonnull List<DeleteBatchResultEntry> entries) {
         if (entries == null) {
             throw new IllegalArgumentException("Required value for 'entries' is null");
         }

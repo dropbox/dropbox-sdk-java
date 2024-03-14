@@ -36,7 +36,7 @@ public class ShowcaseChangeDownloadPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ShowcaseChangeDownloadPolicyDetails(ShowcaseDownloadPolicy newValue, ShowcaseDownloadPolicy previousValue) {
+    public ShowcaseChangeDownloadPolicyDetails(@javax.annotation.Nonnull ShowcaseDownloadPolicy newValue, @javax.annotation.Nonnull ShowcaseDownloadPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

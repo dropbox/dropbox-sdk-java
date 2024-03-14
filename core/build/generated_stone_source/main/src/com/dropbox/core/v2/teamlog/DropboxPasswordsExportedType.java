@@ -28,7 +28,7 @@ public class DropboxPasswordsExportedType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DropboxPasswordsExportedType(String description) {
+    public DropboxPasswordsExportedType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

@@ -35,7 +35,7 @@ public class SmartSyncChangePolicyDetails {
      * @param newValue  New smart sync policy.
      * @param previousValue  Previous smart sync policy.
      */
-    public SmartSyncChangePolicyDetails(SmartSyncPolicy newValue, SmartSyncPolicy previousValue) {
+    public SmartSyncChangePolicyDetails(@javax.annotation.Nullable SmartSyncPolicy newValue, @javax.annotation.Nullable SmartSyncPolicy previousValue) {
         this.newValue = newValue;
         this.previousValue = previousValue;
     }

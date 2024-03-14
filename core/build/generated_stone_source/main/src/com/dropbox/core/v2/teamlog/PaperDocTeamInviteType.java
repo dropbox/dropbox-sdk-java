@@ -28,7 +28,7 @@ public class PaperDocTeamInviteType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperDocTeamInviteType(String description) {
+    public PaperDocTeamInviteType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

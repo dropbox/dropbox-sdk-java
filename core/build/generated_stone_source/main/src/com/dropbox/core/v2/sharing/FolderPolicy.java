@@ -54,7 +54,7 @@ public class FolderPolicy {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FolderPolicy(AclUpdatePolicy aclUpdatePolicy, SharedLinkPolicy sharedLinkPolicy, MemberPolicy memberPolicy, MemberPolicy resolvedMemberPolicy, ViewerInfoPolicy viewerInfoPolicy) {
+    public FolderPolicy(@javax.annotation.Nonnull AclUpdatePolicy aclUpdatePolicy, @javax.annotation.Nonnull SharedLinkPolicy sharedLinkPolicy, @javax.annotation.Nullable MemberPolicy memberPolicy, @javax.annotation.Nullable MemberPolicy resolvedMemberPolicy, @javax.annotation.Nullable ViewerInfoPolicy viewerInfoPolicy) {
         this.memberPolicy = memberPolicy;
         this.resolvedMemberPolicy = resolvedMemberPolicy;
         if (aclUpdatePolicy == null) {

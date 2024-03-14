@@ -29,7 +29,7 @@ class MembersDeleteProfilePhotoArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MembersDeleteProfilePhotoArg(UserSelectorArg user) {
+    public MembersDeleteProfilePhotoArg(@javax.annotation.Nonnull UserSelectorArg user) {
         if (user == null) {
             throw new IllegalArgumentException("Required value for 'user' is null");
         }

@@ -37,7 +37,7 @@ public class PaperDocExportResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperDocExportResult(String owner, String title, long revision, String mimeType) {
+    public PaperDocExportResult(@javax.annotation.Nonnull String owner, @javax.annotation.Nonnull String title, long revision, @javax.annotation.Nonnull String mimeType) {
         if (owner == null) {
             throw new IllegalArgumentException("Required value for 'owner' is null");
         }

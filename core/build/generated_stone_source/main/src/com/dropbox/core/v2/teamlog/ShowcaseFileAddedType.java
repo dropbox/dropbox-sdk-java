@@ -28,7 +28,7 @@ public class ShowcaseFileAddedType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ShowcaseFileAddedType(String description) {
+    public ShowcaseFileAddedType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

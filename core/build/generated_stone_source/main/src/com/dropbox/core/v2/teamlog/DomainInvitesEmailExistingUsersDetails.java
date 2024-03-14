@@ -34,7 +34,7 @@ public class DomainInvitesEmailExistingUsersDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DomainInvitesEmailExistingUsersDetails(String domainName, long numRecipients) {
+    public DomainInvitesEmailExistingUsersDetails(@javax.annotation.Nonnull String domainName, long numRecipients) {
         if (domainName == null) {
             throw new IllegalArgumentException("Required value for 'domainName' is null");
         }

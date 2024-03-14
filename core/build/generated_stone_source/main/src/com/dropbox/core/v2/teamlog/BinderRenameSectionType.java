@@ -28,7 +28,7 @@ public class BinderRenameSectionType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public BinderRenameSectionType(String description) {
+    public BinderRenameSectionType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

@@ -38,7 +38,7 @@ public class PathLinkMetadata extends LinkMetadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PathLinkMetadata(String url, Visibility visibility, String path, Date expires) {
+    public PathLinkMetadata(@javax.annotation.Nonnull String url, @javax.annotation.Nonnull Visibility visibility, @javax.annotation.Nonnull String path, @javax.annotation.Nullable Date expires) {
         super(url, visibility, expires);
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");

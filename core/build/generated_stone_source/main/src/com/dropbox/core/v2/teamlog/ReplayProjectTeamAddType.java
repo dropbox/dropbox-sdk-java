@@ -28,7 +28,7 @@ public class ReplayProjectTeamAddType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ReplayProjectTeamAddType(String description) {
+    public ReplayProjectTeamAddType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

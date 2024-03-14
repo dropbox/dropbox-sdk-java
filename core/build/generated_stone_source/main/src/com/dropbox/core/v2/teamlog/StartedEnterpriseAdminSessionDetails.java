@@ -33,7 +33,7 @@ public class StartedEnterpriseAdminSessionDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public StartedEnterpriseAdminSessionDetails(FedExtraDetails federationExtraDetails) {
+    public StartedEnterpriseAdminSessionDetails(@javax.annotation.Nonnull FedExtraDetails federationExtraDetails) {
         if (federationExtraDetails == null) {
             throw new IllegalArgumentException("Required value for 'federationExtraDetails' is null");
         }

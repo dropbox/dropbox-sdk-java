@@ -28,7 +28,7 @@ public class BinderAddSectionType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public BinderAddSectionType(String description) {
+    public BinderAddSectionType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

@@ -34,7 +34,7 @@ public class DeleteAllClosedFileRequestsResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeleteAllClosedFileRequestsResult(List<FileRequest> fileRequests) {
+    public DeleteAllClosedFileRequestsResult(@javax.annotation.Nonnull List<FileRequest> fileRequests) {
         if (fileRequests == null) {
             throw new IllegalArgumentException("Required value for 'fileRequests' is null");
         }

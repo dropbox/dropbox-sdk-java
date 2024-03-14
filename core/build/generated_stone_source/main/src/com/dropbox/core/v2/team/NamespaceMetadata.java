@@ -42,7 +42,7 @@ public class NamespaceMetadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public NamespaceMetadata(String name, String namespaceId, NamespaceType namespaceType, String teamMemberId) {
+    public NamespaceMetadata(@javax.annotation.Nonnull String name, @javax.annotation.Nonnull String namespaceId, @javax.annotation.Nonnull NamespaceType namespaceType, @javax.annotation.Nullable String teamMemberId) {
         if (name == null) {
             throw new IllegalArgumentException("Required value for 'name' is null");
         }

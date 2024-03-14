@@ -39,7 +39,7 @@ public class SfAddGroupDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SfAddGroupDetails(long targetAssetIndex, String originalFolderName, String teamName, String sharingPermission) {
+    public SfAddGroupDetails(long targetAssetIndex, @javax.annotation.Nonnull String originalFolderName, @javax.annotation.Nonnull String teamName, @javax.annotation.Nullable String sharingPermission) {
         this.targetAssetIndex = targetAssetIndex;
         if (originalFolderName == null) {
             throw new IllegalArgumentException("Required value for 'originalFolderName' is null");

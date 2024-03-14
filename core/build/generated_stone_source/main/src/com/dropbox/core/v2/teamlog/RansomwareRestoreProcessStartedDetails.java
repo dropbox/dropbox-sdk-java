@@ -33,7 +33,7 @@ public class RansomwareRestoreProcessStartedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RansomwareRestoreProcessStartedDetails(String extension) {
+    public RansomwareRestoreProcessStartedDetails(@javax.annotation.Nonnull String extension) {
         if (extension == null) {
             throw new IllegalArgumentException("Required value for 'extension' is null");
         }

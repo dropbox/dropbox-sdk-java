@@ -43,7 +43,7 @@ public class ParentFolderAccessInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ParentFolderAccessInfo(String folderName, String sharedFolderId, List<MemberPermission> permissions, String path) {
+    public ParentFolderAccessInfo(@javax.annotation.Nonnull String folderName, @javax.annotation.Nonnull String sharedFolderId, @javax.annotation.Nonnull List<MemberPermission> permissions, @javax.annotation.Nonnull String path) {
         if (folderName == null) {
             throw new IllegalArgumentException("Required value for 'folderName' is null");
         }

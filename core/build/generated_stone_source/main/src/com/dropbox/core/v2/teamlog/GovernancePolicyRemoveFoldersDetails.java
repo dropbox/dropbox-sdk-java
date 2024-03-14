@@ -44,7 +44,7 @@ public class GovernancePolicyRemoveFoldersDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GovernancePolicyRemoveFoldersDetails(String governancePolicyId, String name, PolicyType policyType, List<String> folders, String reason) {
+    public GovernancePolicyRemoveFoldersDetails(@javax.annotation.Nonnull String governancePolicyId, @javax.annotation.Nonnull String name, @javax.annotation.Nullable PolicyType policyType, @javax.annotation.Nullable List<String> folders, @javax.annotation.Nullable String reason) {
         if (governancePolicyId == null) {
             throw new IllegalArgumentException("Required value for 'governancePolicyId' is null");
         }

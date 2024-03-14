@@ -28,7 +28,7 @@ public class DeviceChangeIpDesktopType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeviceChangeIpDesktopType(String description) {
+    public DeviceChangeIpDesktopType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

@@ -35,7 +35,7 @@ public class DomainVerificationAddDomainFailDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DomainVerificationAddDomainFailDetails(String domainName, String verificationMethod) {
+    public DomainVerificationAddDomainFailDetails(@javax.annotation.Nonnull String domainName, @javax.annotation.Nullable String verificationMethod) {
         if (domainName == null) {
             throw new IllegalArgumentException("Required value for 'domainName' is null");
         }

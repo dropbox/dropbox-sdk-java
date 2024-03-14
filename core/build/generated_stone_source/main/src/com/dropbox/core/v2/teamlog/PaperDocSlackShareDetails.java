@@ -32,7 +32,7 @@ public class PaperDocSlackShareDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperDocSlackShareDetails(String eventUuid) {
+    public PaperDocSlackShareDetails(@javax.annotation.Nonnull String eventUuid) {
         if (eventUuid == null) {
             throw new IllegalArgumentException("Required value for 'eventUuid' is null");
         }

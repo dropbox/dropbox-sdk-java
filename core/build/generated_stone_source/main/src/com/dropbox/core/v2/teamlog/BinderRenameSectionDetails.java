@@ -39,7 +39,7 @@ public class BinderRenameSectionDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public BinderRenameSectionDetails(String eventUuid, String docTitle, String binderItemName, String previousBinderItemName) {
+    public BinderRenameSectionDetails(@javax.annotation.Nonnull String eventUuid, @javax.annotation.Nonnull String docTitle, @javax.annotation.Nonnull String binderItemName, @javax.annotation.Nullable String previousBinderItemName) {
         if (eventUuid == null) {
             throw new IllegalArgumentException("Required value for 'eventUuid' is null");
         }

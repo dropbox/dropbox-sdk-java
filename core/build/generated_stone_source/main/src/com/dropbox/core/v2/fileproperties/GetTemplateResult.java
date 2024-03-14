@@ -33,7 +33,7 @@ public class GetTemplateResult extends PropertyGroupTemplate {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetTemplateResult(String name, String description, List<PropertyFieldTemplate> fields) {
+    public GetTemplateResult(@javax.annotation.Nonnull String name, @javax.annotation.Nonnull String description, @javax.annotation.Nonnull List<PropertyFieldTemplate> fields) {
         super(name, description, fields);
     }
 

@@ -30,7 +30,7 @@ class MountFolderArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MountFolderArg(String sharedFolderId) {
+    public MountFolderArg(@javax.annotation.Nonnull String sharedFolderId) {
         if (sharedFolderId == null) {
             throw new IllegalArgumentException("Required value for 'sharedFolderId' is null");
         }

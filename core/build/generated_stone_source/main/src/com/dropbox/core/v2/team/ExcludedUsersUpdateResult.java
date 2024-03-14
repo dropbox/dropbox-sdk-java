@@ -32,7 +32,7 @@ public class ExcludedUsersUpdateResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ExcludedUsersUpdateResult(ExcludedUsersUpdateStatus status) {
+    public ExcludedUsersUpdateResult(@javax.annotation.Nonnull ExcludedUsersUpdateStatus status) {
         if (status == null) {
             throw new IllegalArgumentException("Required value for 'status' is null");
         }

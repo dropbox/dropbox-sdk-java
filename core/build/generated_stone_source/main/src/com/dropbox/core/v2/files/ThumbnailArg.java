@@ -43,7 +43,7 @@ public class ThumbnailArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ThumbnailArg(String path, ThumbnailFormat format, ThumbnailSize size, ThumbnailMode mode) {
+    public ThumbnailArg(@javax.annotation.Nonnull String path, @javax.annotation.Nonnull ThumbnailFormat format, @javax.annotation.Nonnull ThumbnailSize size, @javax.annotation.Nonnull ThumbnailMode mode) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }

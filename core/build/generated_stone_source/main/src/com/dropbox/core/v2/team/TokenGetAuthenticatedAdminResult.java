@@ -33,7 +33,7 @@ public class TokenGetAuthenticatedAdminResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TokenGetAuthenticatedAdminResult(TeamMemberProfile adminProfile) {
+    public TokenGetAuthenticatedAdminResult(@javax.annotation.Nonnull TeamMemberProfile adminProfile) {
         if (adminProfile == null) {
             throw new IllegalArgumentException("Required value for 'adminProfile' is null");
         }

@@ -77,7 +77,7 @@ public class FullAccount extends Account {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FullAccount(String accountId, Name name, String email, boolean emailVerified, boolean disabled, String locale, String referralLink, boolean isPaired, AccountType accountType, RootInfo rootInfo, String profilePhotoUrl, String country, FullTeam team, String teamMemberId) {
+    public FullAccount(@javax.annotation.Nonnull String accountId, @javax.annotation.Nonnull Name name, @javax.annotation.Nonnull String email, boolean emailVerified, boolean disabled, @javax.annotation.Nonnull String locale, @javax.annotation.Nonnull String referralLink, boolean isPaired, @javax.annotation.Nonnull AccountType accountType, @javax.annotation.Nonnull RootInfo rootInfo, @javax.annotation.Nullable String profilePhotoUrl, @javax.annotation.Nullable String country, @javax.annotation.Nullable FullTeam team, @javax.annotation.Nullable String teamMemberId) {
         super(accountId, name, email, emailVerified, disabled, profilePhotoUrl);
         if (country != null) {
             if (country.length() < 2) {

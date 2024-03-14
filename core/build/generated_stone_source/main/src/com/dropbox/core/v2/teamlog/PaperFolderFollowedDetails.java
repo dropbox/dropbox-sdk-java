@@ -32,7 +32,7 @@ public class PaperFolderFollowedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperFolderFollowedDetails(String eventUuid) {
+    public PaperFolderFollowedDetails(@javax.annotation.Nonnull String eventUuid) {
         if (eventUuid == null) {
             throw new IllegalArgumentException("Required value for 'eventUuid' is null");
         }

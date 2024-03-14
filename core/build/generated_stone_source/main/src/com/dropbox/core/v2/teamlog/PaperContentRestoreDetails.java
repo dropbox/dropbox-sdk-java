@@ -32,7 +32,7 @@ public class PaperContentRestoreDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperContentRestoreDetails(String eventUuid) {
+    public PaperContentRestoreDetails(@javax.annotation.Nonnull String eventUuid) {
         if (eventUuid == null) {
             throw new IllegalArgumentException("Required value for 'eventUuid' is null");
         }

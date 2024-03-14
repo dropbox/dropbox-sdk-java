@@ -28,7 +28,7 @@ public class GroupDeleteType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupDeleteType(String description) {
+    public GroupDeleteType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

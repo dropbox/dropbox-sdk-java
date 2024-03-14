@@ -29,7 +29,7 @@ public class GetAccountArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetAccountArg(String accountId) {
+    public GetAccountArg(@javax.annotation.Nonnull String accountId) {
         if (accountId == null) {
             throw new IllegalArgumentException("Required value for 'accountId' is null");
         }

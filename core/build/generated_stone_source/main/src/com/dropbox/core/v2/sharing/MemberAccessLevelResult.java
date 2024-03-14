@@ -46,7 +46,7 @@ public class MemberAccessLevelResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberAccessLevelResult(AccessLevel accessLevel, String warning, List<ParentFolderAccessInfo> accessDetails) {
+    public MemberAccessLevelResult(@javax.annotation.Nullable AccessLevel accessLevel, @javax.annotation.Nullable String warning, @javax.annotation.Nullable List<ParentFolderAccessInfo> accessDetails) {
         this.accessLevel = accessLevel;
         this.warning = warning;
         if (accessDetails != null) {

@@ -28,7 +28,7 @@ public class WebSessionsChangeFixedLengthPolicyType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public WebSessionsChangeFixedLengthPolicyType(String description) {
+    public WebSessionsChangeFixedLengthPolicyType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

@@ -28,7 +28,7 @@ public class GovernancePolicyExportRemovedType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GovernancePolicyExportRemovedType(String description) {
+    public GovernancePolicyExportRemovedType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

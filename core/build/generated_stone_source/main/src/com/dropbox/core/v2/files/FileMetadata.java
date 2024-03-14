@@ -110,7 +110,7 @@ public class FileMetadata extends Metadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileMetadata(String name, String id, Date clientModified, Date serverModified, String rev, long size, String pathLower, String pathDisplay, String parentSharedFolderId, String previewUrl, MediaInfo mediaInfo, SymlinkInfo symlinkInfo, FileSharingInfo sharingInfo, boolean isDownloadable, ExportInfo exportInfo, List<PropertyGroup> propertyGroups, Boolean hasExplicitSharedMembers, String contentHash, FileLockMetadata fileLockInfo) {
+    public FileMetadata(@javax.annotation.Nonnull String name, @javax.annotation.Nonnull String id, @javax.annotation.Nonnull Date clientModified, @javax.annotation.Nonnull Date serverModified, @javax.annotation.Nonnull String rev, long size, @javax.annotation.Nullable String pathLower, @javax.annotation.Nullable String pathDisplay, @javax.annotation.Nullable String parentSharedFolderId, @javax.annotation.Nullable String previewUrl, @javax.annotation.Nullable MediaInfo mediaInfo, @javax.annotation.Nullable SymlinkInfo symlinkInfo, @javax.annotation.Nullable FileSharingInfo sharingInfo, boolean isDownloadable, @javax.annotation.Nullable ExportInfo exportInfo, @javax.annotation.Nullable List<PropertyGroup> propertyGroups, @javax.annotation.Nullable Boolean hasExplicitSharedMembers, @javax.annotation.Nullable String contentHash, @javax.annotation.Nullable FileLockMetadata fileLockInfo) {
         super(name, pathLower, pathDisplay, parentSharedFolderId, previewUrl);
         if (id == null) {
             throw new IllegalArgumentException("Required value for 'id' is null");

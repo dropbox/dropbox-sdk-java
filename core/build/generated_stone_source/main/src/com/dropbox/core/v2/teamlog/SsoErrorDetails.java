@@ -32,7 +32,7 @@ public class SsoErrorDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SsoErrorDetails(FailureDetailsLogInfo errorDetails) {
+    public SsoErrorDetails(@javax.annotation.Nonnull FailureDetailsLogInfo errorDetails) {
         if (errorDetails == null) {
             throw new IllegalArgumentException("Required value for 'errorDetails' is null");
         }

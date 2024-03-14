@@ -29,7 +29,7 @@ public class RelocationBatchResultData {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RelocationBatchResultData(Metadata metadata) {
+    public RelocationBatchResultData(@javax.annotation.Nonnull Metadata metadata) {
         if (metadata == null) {
             throw new IllegalArgumentException("Required value for 'metadata' is null");
         }

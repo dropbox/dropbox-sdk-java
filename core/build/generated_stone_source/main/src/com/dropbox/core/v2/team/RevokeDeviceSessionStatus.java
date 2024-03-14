@@ -27,7 +27,7 @@ public class RevokeDeviceSessionStatus {
      * @param success  Result of the revoking request.
      * @param errorType  The error cause in case of a failure.
      */
-    public RevokeDeviceSessionStatus(boolean success, RevokeDeviceSessionError errorType) {
+    public RevokeDeviceSessionStatus(boolean success, @javax.annotation.Nullable RevokeDeviceSessionError errorType) {
         this.success = success;
         this.errorType = errorType;
     }

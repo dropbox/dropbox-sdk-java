@@ -30,7 +30,7 @@ public class SharedContentRemoveMemberDetails {
      *
      * @param sharedContentAccessLevel  Shared content access level.
      */
-    public SharedContentRemoveMemberDetails(AccessLevel sharedContentAccessLevel) {
+    public SharedContentRemoveMemberDetails(@javax.annotation.Nullable AccessLevel sharedContentAccessLevel) {
         this.sharedContentAccessLevel = sharedContentAccessLevel;
     }
 

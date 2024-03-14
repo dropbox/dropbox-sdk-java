@@ -36,7 +36,7 @@ public class MemberChangeEmailDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberChangeEmailDetails(String newValue, String previousValue) {
+    public MemberChangeEmailDetails(@javax.annotation.Nonnull String newValue, @javax.annotation.Nullable String previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

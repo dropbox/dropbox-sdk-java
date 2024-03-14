@@ -28,7 +28,7 @@ public class PaperDocChangeMemberRoleType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperDocChangeMemberRoleType(String description) {
+    public PaperDocChangeMemberRoleType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

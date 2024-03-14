@@ -28,7 +28,7 @@ public class TfaAddBackupPhoneType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TfaAddBackupPhoneType(String description) {
+    public TfaAddBackupPhoneType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

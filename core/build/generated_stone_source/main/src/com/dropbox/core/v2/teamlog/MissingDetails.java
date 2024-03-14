@@ -32,7 +32,7 @@ public class MissingDetails {
      * @param sourceEventFields  All the data that could be retrieved and
      *     converted from the source event.
      */
-    public MissingDetails(String sourceEventFields) {
+    public MissingDetails(@javax.annotation.Nullable String sourceEventFields) {
         this.sourceEventFields = sourceEventFields;
     }
 

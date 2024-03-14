@@ -38,7 +38,7 @@ public class PropertyField {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PropertyField(String name, String value) {
+    public PropertyField(@javax.annotation.Nonnull String name, @javax.annotation.Nonnull String value) {
         if (name == null) {
             throw new IllegalArgumentException("Required value for 'name' is null");
         }

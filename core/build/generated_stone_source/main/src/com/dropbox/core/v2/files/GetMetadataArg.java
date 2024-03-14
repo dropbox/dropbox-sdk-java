@@ -50,7 +50,7 @@ class GetMetadataArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetMetadataArg(String path, boolean includeMediaInfo, boolean includeDeleted, boolean includeHasExplicitSharedMembers, TemplateFilterBase includePropertyGroups) {
+    public GetMetadataArg(@javax.annotation.Nonnull String path, boolean includeMediaInfo, boolean includeDeleted, boolean includeHasExplicitSharedMembers, @javax.annotation.Nullable TemplateFilterBase includePropertyGroups) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }

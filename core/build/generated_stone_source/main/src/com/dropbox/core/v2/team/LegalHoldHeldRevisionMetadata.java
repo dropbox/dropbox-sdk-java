@@ -63,7 +63,7 @@ public class LegalHoldHeldRevisionMetadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LegalHoldHeldRevisionMetadata(String newFilename, String originalRevisionId, String originalFilePath, Date serverModified, String authorMemberId, TeamMemberStatus authorMemberStatus, String authorEmail, String fileType, long size, String contentHash) {
+    public LegalHoldHeldRevisionMetadata(@javax.annotation.Nonnull String newFilename, @javax.annotation.Nonnull String originalRevisionId, @javax.annotation.Nonnull String originalFilePath, @javax.annotation.Nonnull Date serverModified, @javax.annotation.Nonnull String authorMemberId, @javax.annotation.Nonnull TeamMemberStatus authorMemberStatus, @javax.annotation.Nonnull String authorEmail, @javax.annotation.Nonnull String fileType, long size, @javax.annotation.Nonnull String contentHash) {
         if (newFilename == null) {
             throw new IllegalArgumentException("Required value for 'newFilename' is null");
         }

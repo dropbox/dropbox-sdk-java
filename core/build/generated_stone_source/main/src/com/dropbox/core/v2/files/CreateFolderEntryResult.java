@@ -29,7 +29,7 @@ public class CreateFolderEntryResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public CreateFolderEntryResult(FolderMetadata metadata) {
+    public CreateFolderEntryResult(@javax.annotation.Nonnull FolderMetadata metadata) {
         if (metadata == null) {
             throw new IllegalArgumentException("Required value for 'metadata' is null");
         }

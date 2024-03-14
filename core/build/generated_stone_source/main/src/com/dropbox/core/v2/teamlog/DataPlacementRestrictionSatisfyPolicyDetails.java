@@ -33,7 +33,7 @@ public class DataPlacementRestrictionSatisfyPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DataPlacementRestrictionSatisfyPolicyDetails(PlacementRestriction placementRestriction) {
+    public DataPlacementRestrictionSatisfyPolicyDetails(@javax.annotation.Nonnull PlacementRestriction placementRestriction) {
         if (placementRestriction == null) {
             throw new IllegalArgumentException("Required value for 'placementRestriction' is null");
         }

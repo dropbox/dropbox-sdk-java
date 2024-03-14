@@ -44,7 +44,7 @@ class UpdateFileMemberArgs {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UpdateFileMemberArgs(String file, MemberSelector member, AccessLevel accessLevel) {
+    public UpdateFileMemberArgs(@javax.annotation.Nonnull String file, @javax.annotation.Nonnull MemberSelector member, @javax.annotation.Nonnull AccessLevel accessLevel) {
         if (file == null) {
             throw new IllegalArgumentException("Required value for 'file' is null");
         }

@@ -35,7 +35,7 @@ public class ResellerSupportChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ResellerSupportChangePolicyDetails(ResellerSupportPolicy newValue, ResellerSupportPolicy previousValue) {
+    public ResellerSupportChangePolicyDetails(@javax.annotation.Nonnull ResellerSupportPolicy newValue, @javax.annotation.Nonnull ResellerSupportPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

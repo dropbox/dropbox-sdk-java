@@ -59,7 +59,7 @@ class MembersSetProfileArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MembersSetProfileArg(UserSelectorArg user, String newEmail, String newExternalId, String newGivenName, String newSurname, String newPersistentId, Boolean newIsDirectoryRestricted) {
+    public MembersSetProfileArg(@javax.annotation.Nonnull UserSelectorArg user, @javax.annotation.Nullable String newEmail, @javax.annotation.Nullable String newExternalId, @javax.annotation.Nullable String newGivenName, @javax.annotation.Nullable String newSurname, @javax.annotation.Nullable String newPersistentId, @javax.annotation.Nullable Boolean newIsDirectoryRestricted) {
         if (user == null) {
             throw new IllegalArgumentException("Required value for 'user' is null");
         }

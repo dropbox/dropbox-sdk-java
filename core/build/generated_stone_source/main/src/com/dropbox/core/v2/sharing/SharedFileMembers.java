@@ -54,7 +54,7 @@ public class SharedFileMembers {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedFileMembers(List<UserFileMembershipInfo> users, List<GroupMembershipInfo> groups, List<InviteeMembershipInfo> invitees, String cursor) {
+    public SharedFileMembers(@javax.annotation.Nonnull List<UserFileMembershipInfo> users, @javax.annotation.Nonnull List<GroupMembershipInfo> groups, @javax.annotation.Nonnull List<InviteeMembershipInfo> invitees, @javax.annotation.Nullable String cursor) {
         if (users == null) {
             throw new IllegalArgumentException("Required value for 'users' is null");
         }

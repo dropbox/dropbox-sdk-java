@@ -34,7 +34,7 @@ public class PaperDocDeleteCommentDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperDocDeleteCommentDetails(String eventUuid, String commentText) {
+    public PaperDocDeleteCommentDetails(@javax.annotation.Nonnull String eventUuid, @javax.annotation.Nullable String commentText) {
         if (eventUuid == null) {
             throw new IllegalArgumentException("Required value for 'eventUuid' is null");
         }

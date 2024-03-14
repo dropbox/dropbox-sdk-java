@@ -28,7 +28,7 @@ public class SharedFolderUnmountType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedFolderUnmountType(String description) {
+    public SharedFolderUnmountType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

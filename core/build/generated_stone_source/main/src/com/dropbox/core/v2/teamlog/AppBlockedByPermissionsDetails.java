@@ -32,7 +32,7 @@ public class AppBlockedByPermissionsDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AppBlockedByPermissionsDetails(AppLogInfo appInfo) {
+    public AppBlockedByPermissionsDetails(@javax.annotation.Nonnull AppLogInfo appInfo) {
         if (appInfo == null) {
             throw new IllegalArgumentException("Required value for 'appInfo' is null");
         }

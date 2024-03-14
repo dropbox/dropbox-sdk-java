@@ -28,7 +28,7 @@ public class SharedLinkSettingsAddPasswordType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedLinkSettingsAddPasswordType(String description) {
+    public SharedLinkSettingsAddPasswordType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

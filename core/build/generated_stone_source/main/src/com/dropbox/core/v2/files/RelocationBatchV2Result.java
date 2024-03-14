@@ -33,7 +33,7 @@ public class RelocationBatchV2Result extends FileOpsResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RelocationBatchV2Result(List<RelocationBatchResultEntry> entries) {
+    public RelocationBatchV2Result(@javax.annotation.Nonnull List<RelocationBatchResultEntry> entries) {
         if (entries == null) {
             throw new IllegalArgumentException("Required value for 'entries' is null");
         }

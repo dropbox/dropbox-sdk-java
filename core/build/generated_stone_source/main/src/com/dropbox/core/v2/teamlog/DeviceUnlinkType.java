@@ -28,7 +28,7 @@ public class DeviceUnlinkType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeviceUnlinkType(String description) {
+    public DeviceUnlinkType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

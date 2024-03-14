@@ -41,7 +41,7 @@ public class LinkMetadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LinkMetadata(String url, Visibility visibility, Date expires) {
+    public LinkMetadata(@javax.annotation.Nonnull String url, @javax.annotation.Nonnull Visibility visibility, @javax.annotation.Nullable Date expires) {
         if (url == null) {
             throw new IllegalArgumentException("Required value for 'url' is null");
         }

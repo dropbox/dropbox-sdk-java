@@ -37,7 +37,7 @@ class GroupMemberSelector {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupMemberSelector(GroupSelector group, UserSelectorArg user) {
+    public GroupMemberSelector(@javax.annotation.Nonnull GroupSelector group, @javax.annotation.Nonnull UserSelectorArg user) {
         if (group == null) {
             throw new IllegalArgumentException("Required value for 'group' is null");
         }

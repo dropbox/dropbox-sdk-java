@@ -29,7 +29,7 @@ public class SetProfilePhotoResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SetProfilePhotoResult(String profilePhotoUrl) {
+    public SetProfilePhotoResult(@javax.annotation.Nonnull String profilePhotoUrl) {
         if (profilePhotoUrl == null) {
             throw new IllegalArgumentException("Required value for 'profilePhotoUrl' is null");
         }

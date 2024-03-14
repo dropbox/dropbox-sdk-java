@@ -35,7 +35,7 @@ public class OriginLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public OriginLogInfo(AccessMethodLogInfo accessMethod, GeoLocationLogInfo geoLocation) {
+    public OriginLogInfo(@javax.annotation.Nonnull AccessMethodLogInfo accessMethod, @javax.annotation.Nullable GeoLocationLogInfo geoLocation) {
         this.geoLocation = geoLocation;
         if (accessMethod == null) {
             throw new IllegalArgumentException("Required value for 'accessMethod' is null");

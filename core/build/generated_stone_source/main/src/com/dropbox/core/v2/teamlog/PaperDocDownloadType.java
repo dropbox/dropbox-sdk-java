@@ -28,7 +28,7 @@ public class PaperDocDownloadType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperDocDownloadType(String description) {
+    public PaperDocDownloadType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

@@ -37,7 +37,7 @@ public class SmarterSmartSyncPolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SmarterSmartSyncPolicyChangedDetails(SmarterSmartSyncPolicyState previousValue, SmarterSmartSyncPolicyState newValue) {
+    public SmarterSmartSyncPolicyChangedDetails(@javax.annotation.Nonnull SmarterSmartSyncPolicyState previousValue, @javax.annotation.Nonnull SmarterSmartSyncPolicyState newValue) {
         if (previousValue == null) {
             throw new IllegalArgumentException("Required value for 'previousValue' is null");
         }

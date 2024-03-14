@@ -28,7 +28,7 @@ public class TeamMergeRequestAutoCanceledType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamMergeRequestAutoCanceledType(String description) {
+    public TeamMergeRequestAutoCanceledType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

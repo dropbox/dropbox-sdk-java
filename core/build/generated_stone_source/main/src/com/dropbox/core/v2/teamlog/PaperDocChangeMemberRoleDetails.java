@@ -34,7 +34,7 @@ public class PaperDocChangeMemberRoleDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperDocChangeMemberRoleDetails(String eventUuid, PaperAccessType accessType) {
+    public PaperDocChangeMemberRoleDetails(@javax.annotation.Nonnull String eventUuid, @javax.annotation.Nonnull PaperAccessType accessType) {
         if (eventUuid == null) {
             throw new IllegalArgumentException("Required value for 'eventUuid' is null");
         }

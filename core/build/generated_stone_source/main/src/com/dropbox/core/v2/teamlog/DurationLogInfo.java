@@ -34,7 +34,7 @@ public class DurationLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DurationLogInfo(TimeUnit unit, long amount) {
+    public DurationLogInfo(@javax.annotation.Nonnull TimeUnit unit, long amount) {
         if (unit == null) {
             throw new IllegalArgumentException("Required value for 'unit' is null");
         }

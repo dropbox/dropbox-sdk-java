@@ -28,7 +28,7 @@ public class GovernancePolicyExportCreatedType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GovernancePolicyExportCreatedType(String description) {
+    public GovernancePolicyExportCreatedType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

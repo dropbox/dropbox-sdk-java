@@ -35,7 +35,7 @@ class RelocationBatchArgBase {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RelocationBatchArgBase(List<RelocationPath> entries, boolean autorename) {
+    public RelocationBatchArgBase(@javax.annotation.Nonnull List<RelocationPath> entries, boolean autorename) {
         if (entries == null) {
             throw new IllegalArgumentException("Required value for 'entries' is null");
         }

@@ -35,7 +35,7 @@ class PreviewArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PreviewArg(String path, String rev) {
+    public PreviewArg(@javax.annotation.Nonnull String path, @javax.annotation.Nullable String rev) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }

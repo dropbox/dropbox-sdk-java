@@ -41,7 +41,7 @@ public class AudienceRestrictingSharedFolder {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AudienceRestrictingSharedFolder(String sharedFolderId, String name, LinkAudience audience) {
+    public AudienceRestrictingSharedFolder(@javax.annotation.Nonnull String sharedFolderId, @javax.annotation.Nonnull String name, @javax.annotation.Nonnull LinkAudience audience) {
         if (sharedFolderId == null) {
             throw new IllegalArgumentException("Required value for 'sharedFolderId' is null");
         }

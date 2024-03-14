@@ -42,7 +42,7 @@ public class VisibilityPolicy {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public VisibilityPolicy(RequestedVisibility policy, AlphaResolvedVisibility resolvedPolicy, boolean allowed, VisibilityPolicyDisallowedReason disallowedReason) {
+    public VisibilityPolicy(@javax.annotation.Nonnull RequestedVisibility policy, @javax.annotation.Nonnull AlphaResolvedVisibility resolvedPolicy, boolean allowed, @javax.annotation.Nullable VisibilityPolicyDisallowedReason disallowedReason) {
         if (policy == null) {
             throw new IllegalArgumentException("Required value for 'policy' is null");
         }

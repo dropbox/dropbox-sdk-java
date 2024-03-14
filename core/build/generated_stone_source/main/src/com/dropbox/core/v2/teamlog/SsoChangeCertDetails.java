@@ -36,7 +36,7 @@ public class SsoChangeCertDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SsoChangeCertDetails(Certificate newCertificateDetails, Certificate previousCertificateDetails) {
+    public SsoChangeCertDetails(@javax.annotation.Nonnull Certificate newCertificateDetails, @javax.annotation.Nullable Certificate previousCertificateDetails) {
         this.previousCertificateDetails = previousCertificateDetails;
         if (newCertificateDetails == null) {
             throw new IllegalArgumentException("Required value for 'newCertificateDetails' is null");

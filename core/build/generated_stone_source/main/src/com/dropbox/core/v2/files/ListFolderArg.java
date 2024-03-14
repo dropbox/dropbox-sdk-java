@@ -71,7 +71,7 @@ class ListFolderArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFolderArg(String path, boolean recursive, boolean includeMediaInfo, boolean includeDeleted, boolean includeHasExplicitSharedMembers, boolean includeMountedFolders, Long limit, SharedLink sharedLink, TemplateFilterBase includePropertyGroups, boolean includeNonDownloadableFiles) {
+    public ListFolderArg(@javax.annotation.Nonnull String path, boolean recursive, boolean includeMediaInfo, boolean includeDeleted, boolean includeHasExplicitSharedMembers, boolean includeMountedFolders, @javax.annotation.Nullable Long limit, @javax.annotation.Nullable SharedLink sharedLink, @javax.annotation.Nullable TemplateFilterBase includePropertyGroups, boolean includeNonDownloadableFiles) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }

@@ -49,7 +49,7 @@ public class GetTeamEventsResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetTeamEventsResult(List<TeamEvent> events, String cursor, boolean hasMore) {
+    public GetTeamEventsResult(@javax.annotation.Nonnull List<TeamEvent> events, @javax.annotation.Nonnull String cursor, boolean hasMore) {
         if (events == null) {
             throw new IllegalArgumentException("Required value for 'events' is null");
         }

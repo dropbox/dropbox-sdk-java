@@ -33,7 +33,7 @@ public class MembersSetPermissions2Result {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MembersSetPermissions2Result(String teamMemberId, List<TeamMemberRole> roles) {
+    public MembersSetPermissions2Result(@javax.annotation.Nonnull String teamMemberId, @javax.annotation.Nullable List<TeamMemberRole> roles) {
         if (teamMemberId == null) {
             throw new IllegalArgumentException("Required value for 'teamMemberId' is null");
         }

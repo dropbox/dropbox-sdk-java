@@ -28,7 +28,7 @@ public class SharedFolderNestType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedFolderNestType(String description) {
+    public SharedFolderNestType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

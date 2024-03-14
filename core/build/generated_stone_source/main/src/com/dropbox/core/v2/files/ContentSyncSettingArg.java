@@ -32,7 +32,7 @@ public class ContentSyncSettingArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ContentSyncSettingArg(String id, SyncSettingArg syncSetting) {
+    public ContentSyncSettingArg(@javax.annotation.Nonnull String id, @javax.annotation.Nonnull SyncSettingArg syncSetting) {
         if (id == null) {
             throw new IllegalArgumentException("Required value for 'id' is null");
         }

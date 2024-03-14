@@ -29,7 +29,7 @@ class SetProfilePhotoArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SetProfilePhotoArg(PhotoSourceArg photo) {
+    public SetProfilePhotoArg(@javax.annotation.Nonnull PhotoSourceArg photo) {
         if (photo == null) {
             throw new IllegalArgumentException("Required value for 'photo' is null");
         }

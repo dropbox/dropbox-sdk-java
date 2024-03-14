@@ -38,7 +38,7 @@ public class FolderPermission {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FolderPermission(FolderAction action, boolean allow, PermissionDeniedReason reason) {
+    public FolderPermission(@javax.annotation.Nonnull FolderAction action, boolean allow, @javax.annotation.Nullable PermissionDeniedReason reason) {
         if (action == null) {
             throw new IllegalArgumentException("Required value for 'action' is null");
         }

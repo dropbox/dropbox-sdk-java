@@ -43,7 +43,7 @@ public class UserInfoResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UserInfoResult(String familyName, String givenName, String email, Boolean emailVerified, String iss, String sub) {
+    public UserInfoResult(@javax.annotation.Nullable String familyName, @javax.annotation.Nullable String givenName, @javax.annotation.Nullable String email, @javax.annotation.Nullable Boolean emailVerified, @javax.annotation.Nonnull String iss, @javax.annotation.Nonnull String sub) {
         this.familyName = familyName;
         this.givenName = givenName;
         this.email = email;

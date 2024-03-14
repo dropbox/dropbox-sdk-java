@@ -53,7 +53,7 @@ public class GroupInfo extends GroupSummary {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupInfo(String groupName, String groupId, GroupManagementType groupManagementType, GroupType groupType, boolean isMember, boolean isOwner, boolean sameTeam, String groupExternalId, Long memberCount) {
+    public GroupInfo(@javax.annotation.Nonnull String groupName, @javax.annotation.Nonnull String groupId, @javax.annotation.Nonnull GroupManagementType groupManagementType, @javax.annotation.Nonnull GroupType groupType, boolean isMember, boolean isOwner, boolean sameTeam, @javax.annotation.Nullable String groupExternalId, @javax.annotation.Nullable Long memberCount) {
         super(groupName, groupId, groupManagementType, groupExternalId, memberCount);
         if (groupType == null) {
             throw new IllegalArgumentException("Required value for 'groupType' is null");

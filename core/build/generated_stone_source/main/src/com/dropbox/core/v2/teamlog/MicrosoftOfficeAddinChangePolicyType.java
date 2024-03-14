@@ -28,7 +28,7 @@ public class MicrosoftOfficeAddinChangePolicyType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MicrosoftOfficeAddinChangePolicyType(String description) {
+    public MicrosoftOfficeAddinChangePolicyType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

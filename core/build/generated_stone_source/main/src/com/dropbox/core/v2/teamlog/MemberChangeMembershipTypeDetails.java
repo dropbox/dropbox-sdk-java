@@ -34,7 +34,7 @@ public class MemberChangeMembershipTypeDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberChangeMembershipTypeDetails(TeamMembershipType prevValue, TeamMembershipType newValue) {
+    public MemberChangeMembershipTypeDetails(@javax.annotation.Nonnull TeamMembershipType prevValue, @javax.annotation.Nonnull TeamMembershipType newValue) {
         if (prevValue == null) {
             throw new IllegalArgumentException("Required value for 'prevValue' is null");
         }

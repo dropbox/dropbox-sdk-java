@@ -50,7 +50,7 @@ public class UserInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UserInfo(String accountId, String email, String displayName, boolean sameTeam, String teamMemberId) {
+    public UserInfo(@javax.annotation.Nonnull String accountId, @javax.annotation.Nonnull String email, @javax.annotation.Nonnull String displayName, boolean sameTeam, @javax.annotation.Nullable String teamMemberId) {
         if (accountId == null) {
             throw new IllegalArgumentException("Required value for 'accountId' is null");
         }

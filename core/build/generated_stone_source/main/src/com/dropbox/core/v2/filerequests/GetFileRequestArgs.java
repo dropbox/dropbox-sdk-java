@@ -35,7 +35,7 @@ class GetFileRequestArgs {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetFileRequestArgs(String id) {
+    public GetFileRequestArgs(@javax.annotation.Nonnull String id) {
         if (id == null) {
             throw new IllegalArgumentException("Required value for 'id' is null");
         }

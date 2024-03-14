@@ -33,7 +33,7 @@ public class PreviewResult {
      *     as an argument. Will be populated if the endpoint is called using a
      *     shared link (SharedLinkFileInfo).
      */
-    public PreviewResult(FileMetadata fileMetadata, MinimalFileLinkMetadata linkMetadata) {
+    public PreviewResult(@javax.annotation.Nullable FileMetadata fileMetadata, @javax.annotation.Nullable MinimalFileLinkMetadata linkMetadata) {
         this.fileMetadata = fileMetadata;
         this.linkMetadata = linkMetadata;
     }

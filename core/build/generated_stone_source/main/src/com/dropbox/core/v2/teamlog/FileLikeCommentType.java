@@ -28,7 +28,7 @@ public class FileLikeCommentType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileLikeCommentType(String description) {
+    public FileLikeCommentType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

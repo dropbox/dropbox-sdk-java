@@ -37,7 +37,7 @@ public class MemberChangeAdminRoleDetails {
      * @param previousValue  Previous admin role. This field is relevant when
      *     the admin role is changed or when the admin role is removed.
      */
-    public MemberChangeAdminRoleDetails(AdminRole newValue, AdminRole previousValue) {
+    public MemberChangeAdminRoleDetails(@javax.annotation.Nullable AdminRole newValue, @javax.annotation.Nullable AdminRole previousValue) {
         this.newValue = newValue;
         this.previousValue = previousValue;
     }

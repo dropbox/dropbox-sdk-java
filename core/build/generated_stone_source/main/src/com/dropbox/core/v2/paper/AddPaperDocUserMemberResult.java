@@ -38,7 +38,7 @@ public class AddPaperDocUserMemberResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AddPaperDocUserMemberResult(MemberSelector member, AddPaperDocUserResult result) {
+    public AddPaperDocUserMemberResult(@javax.annotation.Nonnull MemberSelector member, @javax.annotation.Nonnull AddPaperDocUserResult result) {
         if (member == null) {
             throw new IllegalArgumentException("Required value for 'member' is null");
         }

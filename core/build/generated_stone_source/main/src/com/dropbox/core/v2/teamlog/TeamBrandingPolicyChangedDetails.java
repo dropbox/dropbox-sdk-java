@@ -35,7 +35,7 @@ public class TeamBrandingPolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamBrandingPolicyChangedDetails(TeamBrandingPolicy newValue, TeamBrandingPolicy previousValue) {
+    public TeamBrandingPolicyChangedDetails(@javax.annotation.Nonnull TeamBrandingPolicy newValue, @javax.annotation.Nonnull TeamBrandingPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

@@ -39,7 +39,7 @@ public class PaperContentRemoveFromFolderDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperContentRemoveFromFolderDetails(String eventUuid, Long targetAssetIndex, Long parentAssetIndex) {
+    public PaperContentRemoveFromFolderDetails(@javax.annotation.Nonnull String eventUuid, @javax.annotation.Nullable Long targetAssetIndex, @javax.annotation.Nullable Long parentAssetIndex) {
         if (eventUuid == null) {
             throw new IllegalArgumentException("Required value for 'eventUuid' is null");
         }

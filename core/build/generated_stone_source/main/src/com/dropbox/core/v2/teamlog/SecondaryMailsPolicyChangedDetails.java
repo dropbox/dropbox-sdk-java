@@ -35,7 +35,7 @@ public class SecondaryMailsPolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SecondaryMailsPolicyChangedDetails(SecondaryMailsPolicy previousValue, SecondaryMailsPolicy newValue) {
+    public SecondaryMailsPolicyChangedDetails(@javax.annotation.Nonnull SecondaryMailsPolicy previousValue, @javax.annotation.Nonnull SecondaryMailsPolicy newValue) {
         if (previousValue == null) {
             throw new IllegalArgumentException("Required value for 'previousValue' is null");
         }

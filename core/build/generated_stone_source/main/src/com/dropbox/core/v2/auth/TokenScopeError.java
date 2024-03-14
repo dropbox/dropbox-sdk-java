@@ -29,7 +29,7 @@ public class TokenScopeError {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TokenScopeError(String requiredScope) {
+    public TokenScopeError(@javax.annotation.Nonnull String requiredScope) {
         if (requiredScope == null) {
             throw new IllegalArgumentException("Required value for 'requiredScope' is null");
         }

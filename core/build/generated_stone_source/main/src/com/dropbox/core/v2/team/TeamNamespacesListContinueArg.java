@@ -29,7 +29,7 @@ class TeamNamespacesListContinueArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamNamespacesListContinueArg(String cursor) {
+    public TeamNamespacesListContinueArg(@javax.annotation.Nonnull String cursor) {
         if (cursor == null) {
             throw new IllegalArgumentException("Required value for 'cursor' is null");
         }

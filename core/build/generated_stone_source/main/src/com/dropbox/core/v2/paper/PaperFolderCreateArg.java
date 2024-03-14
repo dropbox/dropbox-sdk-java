@@ -41,7 +41,7 @@ class PaperFolderCreateArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperFolderCreateArg(String name, String parentFolderId, Boolean isTeamFolder) {
+    public PaperFolderCreateArg(@javax.annotation.Nonnull String name, @javax.annotation.Nullable String parentFolderId, @javax.annotation.Nullable Boolean isTeamFolder) {
         if (name == null) {
             throw new IllegalArgumentException("Required value for 'name' is null");
         }

@@ -32,7 +32,7 @@ public class ShowcaseUntrashedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ShowcaseUntrashedDetails(String eventUuid) {
+    public ShowcaseUntrashedDetails(@javax.annotation.Nonnull String eventUuid) {
         if (eventUuid == null) {
             throw new IllegalArgumentException("Required value for 'eventUuid' is null");
         }

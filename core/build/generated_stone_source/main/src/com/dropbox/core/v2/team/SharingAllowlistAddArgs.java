@@ -42,7 +42,7 @@ class SharingAllowlistAddArgs {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharingAllowlistAddArgs(List<String> domains, List<String> emails) {
+    public SharingAllowlistAddArgs(@javax.annotation.Nullable List<String> domains, @javax.annotation.Nullable List<String> emails) {
         if (domains != null) {
             for (String x : domains) {
                 if (x == null) {

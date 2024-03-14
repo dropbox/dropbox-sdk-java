@@ -33,7 +33,7 @@ public class AddMember {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AddMember(MemberSelector member, PaperDocPermissionLevel permissionLevel) {
+    public AddMember(@javax.annotation.Nonnull MemberSelector member, @javax.annotation.Nonnull PaperDocPermissionLevel permissionLevel) {
         if (permissionLevel == null) {
             throw new IllegalArgumentException("Required value for 'permissionLevel' is null");
         }

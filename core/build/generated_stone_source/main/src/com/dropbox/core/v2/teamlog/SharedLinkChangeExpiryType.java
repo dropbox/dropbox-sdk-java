@@ -28,7 +28,7 @@ public class SharedLinkChangeExpiryType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedLinkChangeExpiryType(String description) {
+    public SharedLinkChangeExpiryType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

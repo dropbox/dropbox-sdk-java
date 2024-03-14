@@ -38,7 +38,7 @@ public class LegalHoldsChangeHoldDetailsDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LegalHoldsChangeHoldDetailsDetails(String legalHoldId, String name, String previousValue, String newValue) {
+    public LegalHoldsChangeHoldDetailsDetails(@javax.annotation.Nonnull String legalHoldId, @javax.annotation.Nonnull String name, @javax.annotation.Nonnull String previousValue, @javax.annotation.Nonnull String newValue) {
         if (legalHoldId == null) {
             throw new IllegalArgumentException("Required value for 'legalHoldId' is null");
         }

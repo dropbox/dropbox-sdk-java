@@ -34,7 +34,7 @@ class MembersDataTransferArg extends MembersDeactivateBaseArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MembersDataTransferArg(UserSelectorArg user, UserSelectorArg transferDestId, UserSelectorArg transferAdminId) {
+    public MembersDataTransferArg(@javax.annotation.Nonnull UserSelectorArg user, @javax.annotation.Nonnull UserSelectorArg transferDestId, @javax.annotation.Nonnull UserSelectorArg transferAdminId) {
         super(user);
         if (transferDestId == null) {
             throw new IllegalArgumentException("Required value for 'transferDestId' is null");

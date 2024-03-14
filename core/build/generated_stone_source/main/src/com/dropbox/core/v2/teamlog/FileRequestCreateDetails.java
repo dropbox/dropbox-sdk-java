@@ -40,7 +40,7 @@ public class FileRequestCreateDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileRequestCreateDetails(String fileRequestId, FileRequestDetails requestDetails) {
+    public FileRequestCreateDetails(@javax.annotation.Nullable String fileRequestId, @javax.annotation.Nullable FileRequestDetails requestDetails) {
         if (fileRequestId != null) {
             if (fileRequestId.length() < 1) {
                 throw new IllegalArgumentException("String 'fileRequestId' is shorter than 1");

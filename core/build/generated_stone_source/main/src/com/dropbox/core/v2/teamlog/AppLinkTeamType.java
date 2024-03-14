@@ -28,7 +28,7 @@ public class AppLinkTeamType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AppLinkTeamType(String description) {
+    public AppLinkTeamType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

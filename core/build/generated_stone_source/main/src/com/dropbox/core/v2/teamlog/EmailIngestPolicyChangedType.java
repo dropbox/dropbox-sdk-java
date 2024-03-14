@@ -28,7 +28,7 @@ public class EmailIngestPolicyChangedType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public EmailIngestPolicyChangedType(String description) {
+    public EmailIngestPolicyChangedType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

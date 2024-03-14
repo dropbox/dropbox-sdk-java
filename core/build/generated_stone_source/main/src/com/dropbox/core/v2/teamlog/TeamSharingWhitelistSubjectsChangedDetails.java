@@ -39,7 +39,7 @@ public class TeamSharingWhitelistSubjectsChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamSharingWhitelistSubjectsChangedDetails(List<String> addedWhitelistSubjects, List<String> removedWhitelistSubjects) {
+    public TeamSharingWhitelistSubjectsChangedDetails(@javax.annotation.Nonnull List<String> addedWhitelistSubjects, @javax.annotation.Nonnull List<String> removedWhitelistSubjects) {
         if (addedWhitelistSubjects == null) {
             throw new IllegalArgumentException("Required value for 'addedWhitelistSubjects' is null");
         }

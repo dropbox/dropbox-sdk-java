@@ -29,7 +29,7 @@ public class TokenFromOAuth1Result {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TokenFromOAuth1Result(String oauth2Token) {
+    public TokenFromOAuth1Result(@javax.annotation.Nonnull String oauth2Token) {
         if (oauth2Token == null) {
             throw new IllegalArgumentException("Required value for 'oauth2Token' is null");
         }

@@ -28,7 +28,7 @@ public class SharedLinkSettingsChangeAudienceType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedLinkSettingsChangeAudienceType(String description) {
+    public SharedLinkSettingsChangeAudienceType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

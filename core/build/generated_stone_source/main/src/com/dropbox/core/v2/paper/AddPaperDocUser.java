@@ -40,7 +40,7 @@ class AddPaperDocUser extends RefPaperDoc {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AddPaperDocUser(String docId, List<AddMember> members, String customMessage, boolean quiet) {
+    public AddPaperDocUser(@javax.annotation.Nonnull String docId, @javax.annotation.Nonnull List<AddMember> members, @javax.annotation.Nullable String customMessage, boolean quiet) {
         super(docId);
         if (members == null) {
             throw new IllegalArgumentException("Required value for 'members' is null");

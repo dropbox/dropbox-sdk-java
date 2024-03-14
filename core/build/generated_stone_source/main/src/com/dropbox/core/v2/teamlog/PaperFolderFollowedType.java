@@ -28,7 +28,7 @@ public class PaperFolderFollowedType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperFolderFollowedType(String description) {
+    public PaperFolderFollowedType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

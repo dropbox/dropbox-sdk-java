@@ -86,7 +86,7 @@ public class MemberProfile {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberProfile(String teamMemberId, String email, boolean emailVerified, TeamMemberStatus status, Name name, TeamMembershipType membershipType, String externalId, String accountId, List<SecondaryEmail> secondaryEmails, Date invitedOn, Date joinedOn, Date suspendedOn, String persistentId, Boolean isDirectoryRestricted, String profilePhotoUrl) {
+    public MemberProfile(@javax.annotation.Nonnull String teamMemberId, @javax.annotation.Nonnull String email, boolean emailVerified, @javax.annotation.Nonnull TeamMemberStatus status, @javax.annotation.Nonnull Name name, @javax.annotation.Nonnull TeamMembershipType membershipType, @javax.annotation.Nullable String externalId, @javax.annotation.Nullable String accountId, @javax.annotation.Nullable List<SecondaryEmail> secondaryEmails, @javax.annotation.Nullable Date invitedOn, @javax.annotation.Nullable Date joinedOn, @javax.annotation.Nullable Date suspendedOn, @javax.annotation.Nullable String persistentId, @javax.annotation.Nullable Boolean isDirectoryRestricted, @javax.annotation.Nullable String profilePhotoUrl) {
         if (teamMemberId == null) {
             throw new IllegalArgumentException("Required value for 'teamMemberId' is null");
         }

@@ -46,7 +46,7 @@ public class EmailIngestReceiveFileDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public EmailIngestReceiveFileDetails(String inboxName, List<String> attachmentNames, String subject, String fromName, String fromEmail) {
+    public EmailIngestReceiveFileDetails(@javax.annotation.Nonnull String inboxName, @javax.annotation.Nonnull List<String> attachmentNames, @javax.annotation.Nullable String subject, @javax.annotation.Nullable String fromName, @javax.annotation.Nullable String fromEmail) {
         if (inboxName == null) {
             throw new IllegalArgumentException("Required value for 'inboxName' is null");
         }

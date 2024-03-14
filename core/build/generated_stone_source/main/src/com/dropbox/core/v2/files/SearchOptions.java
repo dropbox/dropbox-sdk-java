@@ -55,7 +55,7 @@ public class SearchOptions {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SearchOptions(String path, long maxResults, SearchOrderBy orderBy, FileStatus fileStatus, boolean filenameOnly, List<String> fileExtensions, List<FileCategory> fileCategories, String accountId) {
+    public SearchOptions(@javax.annotation.Nullable String path, long maxResults, @javax.annotation.Nullable SearchOrderBy orderBy, @javax.annotation.Nonnull FileStatus fileStatus, boolean filenameOnly, @javax.annotation.Nullable List<String> fileExtensions, @javax.annotation.Nullable List<FileCategory> fileCategories, @javax.annotation.Nullable String accountId) {
         if (path != null) {
             if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*)?|id:.*|(ns:[0-9]+(/.*)?)", path)) {
                 throw new IllegalArgumentException("String 'path' does not match pattern");

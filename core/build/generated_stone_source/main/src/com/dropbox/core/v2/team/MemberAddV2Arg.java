@@ -50,7 +50,7 @@ public class MemberAddV2Arg extends MemberAddArgBase {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberAddV2Arg(String memberEmail, String memberGivenName, String memberSurname, String memberExternalId, String memberPersistentId, boolean sendWelcomeEmail, Boolean isDirectoryRestricted, List<String> roleIds) {
+    public MemberAddV2Arg(@javax.annotation.Nonnull String memberEmail, @javax.annotation.Nullable String memberGivenName, @javax.annotation.Nullable String memberSurname, @javax.annotation.Nullable String memberExternalId, @javax.annotation.Nullable String memberPersistentId, boolean sendWelcomeEmail, @javax.annotation.Nullable Boolean isDirectoryRestricted, @javax.annotation.Nullable List<String> roleIds) {
         super(memberEmail, memberGivenName, memberSurname, memberExternalId, memberPersistentId, sendWelcomeEmail, isDirectoryRestricted);
         if (roleIds != null) {
             if (roleIds.size() > 1) {

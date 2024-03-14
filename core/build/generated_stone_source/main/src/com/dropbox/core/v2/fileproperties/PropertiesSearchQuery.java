@@ -35,7 +35,7 @@ public class PropertiesSearchQuery {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PropertiesSearchQuery(String query, PropertiesSearchMode mode, LogicalOperator logicalOperator) {
+    public PropertiesSearchQuery(@javax.annotation.Nonnull String query, @javax.annotation.Nonnull PropertiesSearchMode mode, @javax.annotation.Nonnull LogicalOperator logicalOperator) {
         if (query == null) {
             throw new IllegalArgumentException("Required value for 'query' is null");
         }

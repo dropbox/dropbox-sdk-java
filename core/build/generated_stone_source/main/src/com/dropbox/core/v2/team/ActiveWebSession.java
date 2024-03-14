@@ -52,7 +52,7 @@ public class ActiveWebSession extends DeviceSession {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ActiveWebSession(String sessionId, String userAgent, String os, String browser, String ipAddress, String country, Date created, Date updated, Date expires) {
+    public ActiveWebSession(@javax.annotation.Nonnull String sessionId, @javax.annotation.Nonnull String userAgent, @javax.annotation.Nonnull String os, @javax.annotation.Nonnull String browser, @javax.annotation.Nullable String ipAddress, @javax.annotation.Nullable String country, @javax.annotation.Nullable Date created, @javax.annotation.Nullable Date updated, @javax.annotation.Nullable Date expires) {
         super(sessionId, ipAddress, country, created, updated);
         if (userAgent == null) {
             throw new IllegalArgumentException("Required value for 'userAgent' is null");

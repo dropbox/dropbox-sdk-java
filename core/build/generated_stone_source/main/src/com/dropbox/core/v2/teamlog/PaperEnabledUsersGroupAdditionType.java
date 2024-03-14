@@ -28,7 +28,7 @@ public class PaperEnabledUsersGroupAdditionType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperEnabledUsersGroupAdditionType(String description) {
+    public PaperEnabledUsersGroupAdditionType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

@@ -33,7 +33,7 @@ public class DeleteTeamInviteLinkDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeleteTeamInviteLinkDetails(String linkUrl) {
+    public DeleteTeamInviteLinkDetails(@javax.annotation.Nonnull String linkUrl) {
         if (linkUrl == null) {
             throw new IllegalArgumentException("Required value for 'linkUrl' is null");
         }

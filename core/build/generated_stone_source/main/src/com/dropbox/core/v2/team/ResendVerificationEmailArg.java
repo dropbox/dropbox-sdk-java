@@ -31,7 +31,7 @@ class ResendVerificationEmailArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ResendVerificationEmailArg(List<UserSecondaryEmailsArg> emailsToResend) {
+    public ResendVerificationEmailArg(@javax.annotation.Nonnull List<UserSecondaryEmailsArg> emailsToResend) {
         if (emailsToResend == null) {
             throw new IllegalArgumentException("Required value for 'emailsToResend' is null");
         }

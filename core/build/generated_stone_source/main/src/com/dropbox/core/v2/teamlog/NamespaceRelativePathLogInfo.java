@@ -36,7 +36,7 @@ public class NamespaceRelativePathLogInfo {
      * @param relativePath  A path relative to the specified namespace ID.
      * @param isSharedNamespace  True if the namespace is shared.
      */
-    public NamespaceRelativePathLogInfo(String nsId, String relativePath, Boolean isSharedNamespace) {
+    public NamespaceRelativePathLogInfo(@javax.annotation.Nullable String nsId, @javax.annotation.Nullable String relativePath, @javax.annotation.Nullable Boolean isSharedNamespace) {
         this.nsId = nsId;
         this.relativePath = relativePath;
         this.isSharedNamespace = isSharedNamespace;

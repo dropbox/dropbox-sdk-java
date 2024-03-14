@@ -38,7 +38,7 @@ public class DeviceApprovalsChangeDesktopPolicyDetails {
      * @param previousValue  Previous desktop device approvals policy. Might be
      *     missing due to historical data gap.
      */
-    public DeviceApprovalsChangeDesktopPolicyDetails(DeviceApprovalsPolicy newValue, DeviceApprovalsPolicy previousValue) {
+    public DeviceApprovalsChangeDesktopPolicyDetails(@javax.annotation.Nullable DeviceApprovalsPolicy newValue, @javax.annotation.Nullable DeviceApprovalsPolicy previousValue) {
         this.newValue = newValue;
         this.previousValue = previousValue;
     }

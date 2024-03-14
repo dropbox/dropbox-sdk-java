@@ -45,7 +45,7 @@ public class ListMembersAppsResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListMembersAppsResult(List<MemberLinkedApps> apps, boolean hasMore, String cursor) {
+    public ListMembersAppsResult(@javax.annotation.Nonnull List<MemberLinkedApps> apps, boolean hasMore, @javax.annotation.Nullable String cursor) {
         if (apps == null) {
             throw new IllegalArgumentException("Required value for 'apps' is null");
         }

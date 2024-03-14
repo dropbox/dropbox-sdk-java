@@ -28,7 +28,7 @@ public class FileLockingLockStatusChangedType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileLockingLockStatusChangedType(String description) {
+    public FileLockingLockStatusChangedType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

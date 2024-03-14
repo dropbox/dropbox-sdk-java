@@ -32,7 +32,7 @@ class TokenFromOAuth1Arg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TokenFromOAuth1Arg(String oauth1Token, String oauth1TokenSecret) {
+    public TokenFromOAuth1Arg(@javax.annotation.Nonnull String oauth1Token, @javax.annotation.Nonnull String oauth1TokenSecret) {
         if (oauth1Token == null) {
             throw new IllegalArgumentException("Required value for 'oauth1Token' is null");
         }

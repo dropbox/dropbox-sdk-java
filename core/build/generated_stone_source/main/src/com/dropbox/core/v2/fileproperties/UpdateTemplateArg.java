@@ -47,7 +47,7 @@ public class UpdateTemplateArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UpdateTemplateArg(String templateId, String name, String description, List<PropertyFieldTemplate> addFields) {
+    public UpdateTemplateArg(@javax.annotation.Nonnull String templateId, @javax.annotation.Nullable String name, @javax.annotation.Nullable String description, @javax.annotation.Nullable List<PropertyFieldTemplate> addFields) {
         if (templateId == null) {
             throw new IllegalArgumentException("Required value for 'templateId' is null");
         }

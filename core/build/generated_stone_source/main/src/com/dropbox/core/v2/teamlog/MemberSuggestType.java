@@ -28,7 +28,7 @@ public class MemberSuggestType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberSuggestType(String description) {
+    public MemberSuggestType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

@@ -38,7 +38,7 @@ public class ListMembersDevicesResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListMembersDevicesResult(List<MemberDevices> devices, boolean hasMore, String cursor) {
+    public ListMembersDevicesResult(@javax.annotation.Nonnull List<MemberDevices> devices, boolean hasMore, @javax.annotation.Nullable String cursor) {
         if (devices == null) {
             throw new IllegalArgumentException("Required value for 'devices' is null");
         }

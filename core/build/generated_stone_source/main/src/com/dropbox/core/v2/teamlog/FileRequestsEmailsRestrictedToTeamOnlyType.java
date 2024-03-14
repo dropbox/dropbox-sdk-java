@@ -28,7 +28,7 @@ public class FileRequestsEmailsRestrictedToTeamOnlyType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileRequestsEmailsRestrictedToTeamOnlyType(String description) {
+    public FileRequestsEmailsRestrictedToTeamOnlyType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

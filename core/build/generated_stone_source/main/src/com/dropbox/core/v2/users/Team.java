@@ -34,7 +34,7 @@ public class Team {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public Team(String id, String name) {
+    public Team(@javax.annotation.Nonnull String id, @javax.annotation.Nonnull String name) {
         if (id == null) {
             throw new IllegalArgumentException("Required value for 'id' is null");
         }

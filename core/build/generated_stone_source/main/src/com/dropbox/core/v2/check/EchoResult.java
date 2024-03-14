@@ -33,7 +33,7 @@ public class EchoResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public EchoResult(String result) {
+    public EchoResult(@javax.annotation.Nonnull String result) {
         if (result == null) {
             throw new IllegalArgumentException("Required value for 'result' is null");
         }

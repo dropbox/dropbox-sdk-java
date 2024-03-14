@@ -34,7 +34,7 @@ public class UserTagsRemovedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UserTagsRemovedDetails(List<String> values) {
+    public UserTagsRemovedDetails(@javax.annotation.Nonnull List<String> values) {
         if (values == null) {
             throw new IllegalArgumentException("Required value for 'values' is null");
         }

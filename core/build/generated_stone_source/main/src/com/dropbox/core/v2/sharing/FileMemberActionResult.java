@@ -48,7 +48,7 @@ public class FileMemberActionResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileMemberActionResult(MemberSelector member, FileMemberActionIndividualResult result, String sckeySha1, List<String> invitationSignature) {
+    public FileMemberActionResult(@javax.annotation.Nonnull MemberSelector member, @javax.annotation.Nonnull FileMemberActionIndividualResult result, @javax.annotation.Nullable String sckeySha1, @javax.annotation.Nullable List<String> invitationSignature) {
         if (member == null) {
             throw new IllegalArgumentException("Required value for 'member' is null");
         }

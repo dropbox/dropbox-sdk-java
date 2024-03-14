@@ -35,7 +35,7 @@ public class TeamMemberInfoV2Result {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamMemberInfoV2Result(TeamMemberInfoV2 memberInfo) {
+    public TeamMemberInfoV2Result(@javax.annotation.Nonnull TeamMemberInfoV2 memberInfo) {
         if (memberInfo == null) {
             throw new IllegalArgumentException("Required value for 'memberInfo' is null");
         }

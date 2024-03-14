@@ -28,7 +28,7 @@ public class TeamActivityCreateReportType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamActivityCreateReportType(String description) {
+    public TeamActivityCreateReportType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

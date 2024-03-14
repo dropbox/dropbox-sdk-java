@@ -33,7 +33,7 @@ public class InviteeInfoWithPermissionLevel {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public InviteeInfoWithPermissionLevel(InviteeInfo invitee, PaperDocPermissionLevel permissionLevel) {
+    public InviteeInfoWithPermissionLevel(@javax.annotation.Nonnull InviteeInfo invitee, @javax.annotation.Nonnull PaperDocPermissionLevel permissionLevel) {
         if (invitee == null) {
             throw new IllegalArgumentException("Required value for 'invitee' is null");
         }

@@ -36,7 +36,7 @@ public class WebSessionsChangeActiveSessionLimitDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public WebSessionsChangeActiveSessionLimitDetails(String previousValue, String newValue) {
+    public WebSessionsChangeActiveSessionLimitDetails(@javax.annotation.Nonnull String previousValue, @javax.annotation.Nonnull String newValue) {
         if (previousValue == null) {
             throw new IllegalArgumentException("Required value for 'previousValue' is null");
         }

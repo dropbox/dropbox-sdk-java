@@ -34,7 +34,7 @@ public class PhotoMetadata extends MediaMetadata {
      * @param location  The GPS coordinate of the photo/video.
      * @param timeTaken  The timestamp when the photo/video is taken.
      */
-    public PhotoMetadata(Dimensions dimensions, GpsCoordinates location, Date timeTaken) {
+    public PhotoMetadata(@javax.annotation.Nullable Dimensions dimensions, @javax.annotation.Nullable GpsCoordinates location, @javax.annotation.Nullable Date timeTaken) {
         super(dimensions, location, timeTaken);
     }
 

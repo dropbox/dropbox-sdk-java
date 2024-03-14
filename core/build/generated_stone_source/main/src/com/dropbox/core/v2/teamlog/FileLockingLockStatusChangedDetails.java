@@ -35,7 +35,7 @@ public class FileLockingLockStatusChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileLockingLockStatusChangedDetails(LockStatus previousValue, LockStatus newValue) {
+    public FileLockingLockStatusChangedDetails(@javax.annotation.Nonnull LockStatus previousValue, @javax.annotation.Nonnull LockStatus newValue) {
         if (previousValue == null) {
             throw new IllegalArgumentException("Required value for 'previousValue' is null");
         }

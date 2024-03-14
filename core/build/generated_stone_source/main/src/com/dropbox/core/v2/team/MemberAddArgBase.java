@@ -53,7 +53,7 @@ public class MemberAddArgBase {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberAddArgBase(String memberEmail, String memberGivenName, String memberSurname, String memberExternalId, String memberPersistentId, boolean sendWelcomeEmail, Boolean isDirectoryRestricted) {
+    public MemberAddArgBase(@javax.annotation.Nonnull String memberEmail, @javax.annotation.Nullable String memberGivenName, @javax.annotation.Nullable String memberSurname, @javax.annotation.Nullable String memberExternalId, @javax.annotation.Nullable String memberPersistentId, boolean sendWelcomeEmail, @javax.annotation.Nullable Boolean isDirectoryRestricted) {
         if (memberEmail == null) {
             throw new IllegalArgumentException("Required value for 'memberEmail' is null");
         }

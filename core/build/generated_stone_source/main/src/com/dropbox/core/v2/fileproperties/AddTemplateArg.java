@@ -33,7 +33,7 @@ public class AddTemplateArg extends PropertyGroupTemplate {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AddTemplateArg(String name, String description, List<PropertyFieldTemplate> fields) {
+    public AddTemplateArg(@javax.annotation.Nonnull String name, @javax.annotation.Nonnull String description, @javax.annotation.Nonnull List<PropertyFieldTemplate> fields) {
         super(name, description, fields);
     }
 

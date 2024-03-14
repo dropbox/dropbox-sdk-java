@@ -29,7 +29,7 @@ public class SaveCopyReferenceResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SaveCopyReferenceResult(Metadata metadata) {
+    public SaveCopyReferenceResult(@javax.annotation.Nonnull Metadata metadata) {
         if (metadata == null) {
             throw new IllegalArgumentException("Required value for 'metadata' is null");
         }

@@ -28,7 +28,7 @@ public class MemberAddExternalIdType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberAddExternalIdType(String description) {
+    public MemberAddExternalIdType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

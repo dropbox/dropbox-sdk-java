@@ -31,7 +31,7 @@ public class ListFolderLongpollResult {
      *     calling {@link DbxUserFilesRequests#listFolderLongpoll(String,long)}
      *     again.
      */
-    public ListFolderLongpollResult(boolean changes, Long backoff) {
+    public ListFolderLongpollResult(boolean changes, @javax.annotation.Nullable Long backoff) {
         this.changes = changes;
         this.backoff = backoff;
     }

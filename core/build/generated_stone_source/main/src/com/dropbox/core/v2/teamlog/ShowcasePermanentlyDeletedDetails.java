@@ -32,7 +32,7 @@ public class ShowcasePermanentlyDeletedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ShowcasePermanentlyDeletedDetails(String eventUuid) {
+    public ShowcasePermanentlyDeletedDetails(@javax.annotation.Nonnull String eventUuid) {
         if (eventUuid == null) {
             throw new IllegalArgumentException("Required value for 'eventUuid' is null");
         }

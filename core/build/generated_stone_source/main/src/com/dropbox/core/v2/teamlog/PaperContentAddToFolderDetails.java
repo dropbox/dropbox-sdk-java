@@ -36,7 +36,7 @@ public class PaperContentAddToFolderDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperContentAddToFolderDetails(String eventUuid, long targetAssetIndex, long parentAssetIndex) {
+    public PaperContentAddToFolderDetails(@javax.annotation.Nonnull String eventUuid, long targetAssetIndex, long parentAssetIndex) {
         if (eventUuid == null) {
             throw new IllegalArgumentException("Required value for 'eventUuid' is null");
         }

@@ -1890,6 +1890,15 @@ class JavaApi:
             return camelcase('with_' + field.name)
         return None
 
+    def nullability_annotation(self, field):
+        containing_data_type = self._containing_data_types[field]
+        if not field.has_default and field in containing_data_type.all_optional_fields:
+            return '@javax.annotation.Nullable'
+        elif not self.is_java_primitive(field.data_type):
+            return '@javax.annotation.Nonnull'
+        else:
+            return ''
+
     def is_java_primitive(self, data_type):
         return self.java_class(data_type, generics=False).name[0].islower()
 
@@ -3366,7 +3375,7 @@ class JavaCodeGenerationInstance:
 
             # use builder or required-only constructor for default values
             args = ', '.join(
-                w.fmt('%s %s', j.java_class(f), j.param_name(f))
+                w.fmt('%s %s %s', j.nullability_annotation(f), j.java_class(f), j.param_name(f)).lstrip()
                 for f in data_type.all_fields
             )
             doc = data_type.doc or ''
@@ -3433,12 +3442,9 @@ class JavaCodeGenerationInstance:
                     returns += ' Defaults to %s.' % w.java_default_value(field)
 
                 w.javadoc(field.doc or '', stone_elem=field, returns=returns)
-
-                if not field.has_default and field in data_type.all_optional_fields:
-                    w.out('@javax.annotation.Nullable')
-                elif not j.is_java_primitive(field.data_type):
-                    w.out('@javax.annotation.Nonnull')
-
+                annotation = j.nullability_annotation(field)
+                if len(annotation) > 0:
+                    w.out(annotation)
                 with w.block('public %s %s()', j.java_class(field), j.field_getter_method(field)):
                     w.out('return %s;' % j.param_name(field))
 

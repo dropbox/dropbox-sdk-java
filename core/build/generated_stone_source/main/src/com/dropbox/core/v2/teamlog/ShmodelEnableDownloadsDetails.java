@@ -30,7 +30,7 @@ public class ShmodelEnableDownloadsDetails {
      * @param sharedLinkOwner  Shared link owner details. Might be missing due
      *     to historical data gap.
      */
-    public ShmodelEnableDownloadsDetails(UserLogInfo sharedLinkOwner) {
+    public ShmodelEnableDownloadsDetails(@javax.annotation.Nullable UserLogInfo sharedLinkOwner) {
         this.sharedLinkOwner = sharedLinkOwner;
     }
 

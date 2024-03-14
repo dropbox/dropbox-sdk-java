@@ -39,7 +39,7 @@ public class GroupLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupLogInfo(String displayName, String groupId, String externalId) {
+    public GroupLogInfo(@javax.annotation.Nonnull String displayName, @javax.annotation.Nullable String groupId, @javax.annotation.Nullable String externalId) {
         this.groupId = groupId;
         if (displayName == null) {
             throw new IllegalArgumentException("Required value for 'displayName' is null");

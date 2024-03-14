@@ -28,7 +28,7 @@ public class ShowcaseUnresolveCommentType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ShowcaseUnresolveCommentType(String description) {
+    public ShowcaseUnresolveCommentType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

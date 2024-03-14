@@ -28,7 +28,7 @@ public class SharedContentChangeViewerInfoPolicyType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentChangeViewerInfoPolicyType(String description) {
+    public SharedContentChangeViewerInfoPolicyType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

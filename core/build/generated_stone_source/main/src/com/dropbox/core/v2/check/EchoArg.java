@@ -33,7 +33,7 @@ class EchoArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public EchoArg(String query) {
+    public EchoArg(@javax.annotation.Nonnull String query) {
         if (query == null) {
             throw new IllegalArgumentException("Required value for 'query' is null");
         }

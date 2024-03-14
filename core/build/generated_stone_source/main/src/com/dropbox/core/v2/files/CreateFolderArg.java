@@ -33,7 +33,7 @@ class CreateFolderArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public CreateFolderArg(String path, boolean autorename) {
+    public CreateFolderArg(@javax.annotation.Nonnull String path, boolean autorename) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }

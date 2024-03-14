@@ -28,7 +28,7 @@ public class TeamFolderPermanentlyDeleteType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamFolderPermanentlyDeleteType(String description) {
+    public TeamFolderPermanentlyDeleteType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

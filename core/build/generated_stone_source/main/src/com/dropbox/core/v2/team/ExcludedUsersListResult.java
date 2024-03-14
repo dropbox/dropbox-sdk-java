@@ -43,7 +43,7 @@ public class ExcludedUsersListResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ExcludedUsersListResult(List<MemberProfile> users, boolean hasMore, String cursor) {
+    public ExcludedUsersListResult(@javax.annotation.Nonnull List<MemberProfile> users, boolean hasMore, @javax.annotation.Nullable String cursor) {
         if (users == null) {
             throw new IllegalArgumentException("Required value for 'users' is null");
         }

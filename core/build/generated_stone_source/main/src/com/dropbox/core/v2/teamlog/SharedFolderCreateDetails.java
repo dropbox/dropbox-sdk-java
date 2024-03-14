@@ -29,7 +29,7 @@ public class SharedFolderCreateDetails {
      *
      * @param targetNsId  Target namespace ID.
      */
-    public SharedFolderCreateDetails(String targetNsId) {
+    public SharedFolderCreateDetails(@javax.annotation.Nullable String targetNsId) {
         this.targetNsId = targetNsId;
     }
 

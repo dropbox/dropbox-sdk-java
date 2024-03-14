@@ -36,7 +36,7 @@ public class SharedFolderChangeLinkPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedFolderChangeLinkPolicyDetails(SharedLinkPolicy newValue, SharedLinkPolicy previousValue) {
+    public SharedFolderChangeLinkPolicyDetails(@javax.annotation.Nonnull SharedLinkPolicy newValue, @javax.annotation.Nullable SharedLinkPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

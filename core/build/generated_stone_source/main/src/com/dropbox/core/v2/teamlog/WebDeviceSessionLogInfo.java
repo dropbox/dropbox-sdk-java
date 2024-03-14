@@ -49,7 +49,7 @@ public class WebDeviceSessionLogInfo extends DeviceSessionLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public WebDeviceSessionLogInfo(String userAgent, String os, String browser, String ipAddress, Date created, Date updated, WebSessionLogInfo sessionInfo) {
+    public WebDeviceSessionLogInfo(@javax.annotation.Nonnull String userAgent, @javax.annotation.Nonnull String os, @javax.annotation.Nonnull String browser, @javax.annotation.Nullable String ipAddress, @javax.annotation.Nullable Date created, @javax.annotation.Nullable Date updated, @javax.annotation.Nullable WebSessionLogInfo sessionInfo) {
         super(ipAddress, created, updated);
         this.sessionInfo = sessionInfo;
         if (userAgent == null) {

@@ -39,7 +39,7 @@ public class UserRootInfo extends RootInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UserRootInfo(String rootNamespaceId, String homeNamespaceId) {
+    public UserRootInfo(@javax.annotation.Nonnull String rootNamespaceId, @javax.annotation.Nonnull String homeNamespaceId) {
         super(rootNamespaceId, homeNamespaceId);
     }
 

@@ -46,7 +46,7 @@ public class PropertyGroup {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PropertyGroup(String templateId, List<PropertyField> fields) {
+    public PropertyGroup(@javax.annotation.Nonnull String templateId, @javax.annotation.Nonnull List<PropertyField> fields) {
         if (templateId == null) {
             throw new IllegalArgumentException("Required value for 'templateId' is null");
         }

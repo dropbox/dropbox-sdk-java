@@ -28,7 +28,7 @@ public class TeamMergeRequestRejectedShownToPrimaryTeamType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamMergeRequestRejectedShownToPrimaryTeamType(String description) {
+    public TeamMergeRequestRejectedShownToPrimaryTeamType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

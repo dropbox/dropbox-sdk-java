@@ -34,7 +34,7 @@ public class FileMoveDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileMoveDetails(List<RelocateAssetReferencesLogInfo> relocateActionDetails) {
+    public FileMoveDetails(@javax.annotation.Nonnull List<RelocateAssetReferencesLogInfo> relocateActionDetails) {
         if (relocateActionDetails == null) {
             throw new IllegalArgumentException("Required value for 'relocateActionDetails' is null");
         }

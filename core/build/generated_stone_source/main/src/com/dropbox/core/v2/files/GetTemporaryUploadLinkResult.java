@@ -29,7 +29,7 @@ public class GetTemporaryUploadLinkResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetTemporaryUploadLinkResult(String link) {
+    public GetTemporaryUploadLinkResult(@javax.annotation.Nonnull String link) {
         if (link == null) {
             throw new IllegalArgumentException("Required value for 'link' is null");
         }

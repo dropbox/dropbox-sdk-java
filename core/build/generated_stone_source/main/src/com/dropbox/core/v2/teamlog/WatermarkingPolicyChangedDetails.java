@@ -35,7 +35,7 @@ public class WatermarkingPolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public WatermarkingPolicyChangedDetails(WatermarkingPolicy newValue, WatermarkingPolicy previousValue) {
+    public WatermarkingPolicyChangedDetails(@javax.annotation.Nonnull WatermarkingPolicy newValue, @javax.annotation.Nonnull WatermarkingPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

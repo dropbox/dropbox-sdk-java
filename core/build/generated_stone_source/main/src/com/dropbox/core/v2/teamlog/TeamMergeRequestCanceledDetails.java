@@ -33,7 +33,7 @@ public class TeamMergeRequestCanceledDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamMergeRequestCanceledDetails(TeamMergeRequestCanceledExtraDetails requestCanceledDetails) {
+    public TeamMergeRequestCanceledDetails(@javax.annotation.Nonnull TeamMergeRequestCanceledExtraDetails requestCanceledDetails) {
         if (requestCanceledDetails == null) {
             throw new IllegalArgumentException("Required value for 'requestCanceledDetails' is null");
         }

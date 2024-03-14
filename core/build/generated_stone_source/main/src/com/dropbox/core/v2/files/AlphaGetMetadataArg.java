@@ -50,7 +50,7 @@ class AlphaGetMetadataArg extends GetMetadataArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AlphaGetMetadataArg(String path, boolean includeMediaInfo, boolean includeDeleted, boolean includeHasExplicitSharedMembers, TemplateFilterBase includePropertyGroups, List<String> includePropertyTemplates) {
+    public AlphaGetMetadataArg(@javax.annotation.Nonnull String path, boolean includeMediaInfo, boolean includeDeleted, boolean includeHasExplicitSharedMembers, @javax.annotation.Nullable TemplateFilterBase includePropertyGroups, @javax.annotation.Nullable List<String> includePropertyTemplates) {
         super(path, includeMediaInfo, includeDeleted, includeHasExplicitSharedMembers, includePropertyGroups);
         if (includePropertyTemplates != null) {
             for (String x : includePropertyTemplates) {

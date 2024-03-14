@@ -36,7 +36,7 @@ public class TeamActivityCreateReportDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamActivityCreateReportDetails(Date startDate, Date endDate) {
+    public TeamActivityCreateReportDetails(@javax.annotation.Nonnull Date startDate, @javax.annotation.Nonnull Date endDate) {
         if (startDate == null) {
             throw new IllegalArgumentException("Required value for 'startDate' is null");
         }

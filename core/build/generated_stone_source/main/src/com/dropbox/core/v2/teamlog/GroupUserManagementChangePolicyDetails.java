@@ -37,7 +37,7 @@ public class GroupUserManagementChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupUserManagementChangePolicyDetails(GroupCreation newValue, GroupCreation previousValue) {
+    public GroupUserManagementChangePolicyDetails(@javax.annotation.Nonnull GroupCreation newValue, @javax.annotation.Nullable GroupCreation previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

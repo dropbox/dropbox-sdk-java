@@ -35,7 +35,7 @@ class ListFilesContinueArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFilesContinueArg(String cursor) {
+    public ListFilesContinueArg(@javax.annotation.Nonnull String cursor) {
         if (cursor == null) {
             throw new IllegalArgumentException("Required value for 'cursor' is null");
         }

@@ -42,7 +42,7 @@ public class RecipientsConfiguration {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RecipientsConfiguration(AlertRecipientsSettingType recipientSettingType, List<String> emails, List<String> groups) {
+    public RecipientsConfiguration(@javax.annotation.Nullable AlertRecipientsSettingType recipientSettingType, @javax.annotation.Nullable List<String> emails, @javax.annotation.Nullable List<String> groups) {
         this.recipientSettingType = recipientSettingType;
         if (emails != null) {
             for (String x : emails) {

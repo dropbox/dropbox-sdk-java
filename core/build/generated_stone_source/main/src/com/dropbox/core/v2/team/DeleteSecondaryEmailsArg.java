@@ -30,7 +30,7 @@ class DeleteSecondaryEmailsArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeleteSecondaryEmailsArg(List<UserSecondaryEmailsArg> emailsToDelete) {
+    public DeleteSecondaryEmailsArg(@javax.annotation.Nonnull List<UserSecondaryEmailsArg> emailsToDelete) {
         if (emailsToDelete == null) {
             throw new IllegalArgumentException("Required value for 'emailsToDelete' is null");
         }

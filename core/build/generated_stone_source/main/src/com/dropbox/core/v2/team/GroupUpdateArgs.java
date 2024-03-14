@@ -45,7 +45,7 @@ class GroupUpdateArgs extends IncludeMembersArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupUpdateArgs(GroupSelector group, boolean returnMembers, String newGroupName, String newGroupExternalId, GroupManagementType newGroupManagementType) {
+    public GroupUpdateArgs(@javax.annotation.Nonnull GroupSelector group, boolean returnMembers, @javax.annotation.Nullable String newGroupName, @javax.annotation.Nullable String newGroupExternalId, @javax.annotation.Nullable GroupManagementType newGroupManagementType) {
         super(returnMembers);
         if (group == null) {
             throw new IllegalArgumentException("Required value for 'group' is null");

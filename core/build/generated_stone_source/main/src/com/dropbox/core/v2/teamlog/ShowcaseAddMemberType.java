@@ -28,7 +28,7 @@ public class ShowcaseAddMemberType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ShowcaseAddMemberType(String description) {
+    public ShowcaseAddMemberType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

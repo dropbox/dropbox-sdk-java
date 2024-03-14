@@ -39,7 +39,7 @@ class ListMemberDevicesArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListMemberDevicesArg(String teamMemberId, boolean includeWebSessions, boolean includeDesktopClients, boolean includeMobileClients) {
+    public ListMemberDevicesArg(@javax.annotation.Nonnull String teamMemberId, boolean includeWebSessions, boolean includeDesktopClients, boolean includeMobileClients) {
         if (teamMemberId == null) {
             throw new IllegalArgumentException("Required value for 'teamMemberId' is null");
         }

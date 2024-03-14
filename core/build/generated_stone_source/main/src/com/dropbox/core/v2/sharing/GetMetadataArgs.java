@@ -37,7 +37,7 @@ class GetMetadataArgs {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetMetadataArgs(String sharedFolderId, List<FolderAction> actions) {
+    public GetMetadataArgs(@javax.annotation.Nonnull String sharedFolderId, @javax.annotation.Nullable List<FolderAction> actions) {
         if (sharedFolderId == null) {
             throw new IllegalArgumentException("Required value for 'sharedFolderId' is null");
         }

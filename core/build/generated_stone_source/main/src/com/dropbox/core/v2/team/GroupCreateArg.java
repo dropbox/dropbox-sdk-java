@@ -39,7 +39,7 @@ class GroupCreateArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupCreateArg(String groupName, boolean addCreatorAsOwner, String groupExternalId, GroupManagementType groupManagementType) {
+    public GroupCreateArg(@javax.annotation.Nonnull String groupName, boolean addCreatorAsOwner, @javax.annotation.Nullable String groupExternalId, @javax.annotation.Nullable GroupManagementType groupManagementType) {
         if (groupName == null) {
             throw new IllegalArgumentException("Required value for 'groupName' is null");
         }

@@ -39,7 +39,7 @@ class MoveBatchArg extends RelocationBatchArgBase {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MoveBatchArg(List<RelocationPath> entries, boolean autorename, boolean allowOwnershipTransfer) {
+    public MoveBatchArg(@javax.annotation.Nonnull List<RelocationPath> entries, boolean autorename, boolean allowOwnershipTransfer) {
         super(entries, autorename);
         this.allowOwnershipTransfer = allowOwnershipTransfer;
     }

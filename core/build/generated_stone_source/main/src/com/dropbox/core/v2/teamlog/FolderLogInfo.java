@@ -39,7 +39,7 @@ public class FolderLogInfo extends FileOrFolderLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FolderLogInfo(PathLogInfo path, String displayName, String fileId, Long fileSize, Long fileCount) {
+    public FolderLogInfo(@javax.annotation.Nonnull PathLogInfo path, @javax.annotation.Nullable String displayName, @javax.annotation.Nullable String fileId, @javax.annotation.Nullable Long fileSize, @javax.annotation.Nullable Long fileCount) {
         super(path, displayName, fileId, fileSize);
         this.fileCount = fileCount;
     }

@@ -28,7 +28,7 @@ public class SfTeamGrantAccessType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SfTeamGrantAccessType(String description) {
+    public SfTeamGrantAccessType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

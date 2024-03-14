@@ -49,7 +49,7 @@ class SearchArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SearchArg(String path, String query, long start, long maxResults, SearchMode mode) {
+    public SearchArg(@javax.annotation.Nonnull String path, @javax.annotation.Nonnull String query, long start, long maxResults, @javax.annotation.Nonnull SearchMode mode) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }

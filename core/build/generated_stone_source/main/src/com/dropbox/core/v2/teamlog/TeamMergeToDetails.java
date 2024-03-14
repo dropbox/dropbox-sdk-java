@@ -33,7 +33,7 @@ public class TeamMergeToDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamMergeToDetails(String teamName) {
+    public TeamMergeToDetails(@javax.annotation.Nonnull String teamName) {
         if (teamName == null) {
             throw new IllegalArgumentException("Required value for 'teamName' is null");
         }

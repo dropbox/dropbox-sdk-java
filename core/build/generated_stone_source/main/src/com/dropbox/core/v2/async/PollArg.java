@@ -34,7 +34,7 @@ public class PollArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PollArg(String asyncJobId) {
+    public PollArg(@javax.annotation.Nonnull String asyncJobId) {
         if (asyncJobId == null) {
             throw new IllegalArgumentException("Required value for 'asyncJobId' is null");
         }

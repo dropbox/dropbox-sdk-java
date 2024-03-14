@@ -32,7 +32,7 @@ public class LockFileBatchResult extends FileOpsResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LockFileBatchResult(List<LockFileResultEntry> entries) {
+    public LockFileBatchResult(@javax.annotation.Nonnull List<LockFileResultEntry> entries) {
         if (entries == null) {
             throw new IllegalArgumentException("Required value for 'entries' is null");
         }

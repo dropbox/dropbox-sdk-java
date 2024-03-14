@@ -36,7 +36,7 @@ class GroupMembersAddArg extends IncludeMembersArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupMembersAddArg(GroupSelector group, List<MemberAccess> members, boolean returnMembers) {
+    public GroupMembersAddArg(@javax.annotation.Nonnull GroupSelector group, @javax.annotation.Nonnull List<MemberAccess> members, boolean returnMembers) {
         super(returnMembers);
         if (group == null) {
             throw new IllegalArgumentException("Required value for 'group' is null");

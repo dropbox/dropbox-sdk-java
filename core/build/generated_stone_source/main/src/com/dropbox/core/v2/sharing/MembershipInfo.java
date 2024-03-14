@@ -46,7 +46,7 @@ public class MembershipInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MembershipInfo(AccessLevel accessType, List<MemberPermission> permissions, String initials, boolean isInherited) {
+    public MembershipInfo(@javax.annotation.Nonnull AccessLevel accessType, @javax.annotation.Nullable List<MemberPermission> permissions, @javax.annotation.Nullable String initials, boolean isInherited) {
         if (accessType == null) {
             throw new IllegalArgumentException("Required value for 'accessType' is null");
         }

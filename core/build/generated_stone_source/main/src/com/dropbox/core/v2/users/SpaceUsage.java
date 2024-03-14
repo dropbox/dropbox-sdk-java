@@ -34,7 +34,7 @@ public class SpaceUsage {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SpaceUsage(long used, SpaceAllocation allocation) {
+    public SpaceUsage(long used, @javax.annotation.Nonnull SpaceAllocation allocation) {
         this.used = used;
         if (allocation == null) {
             throw new IllegalArgumentException("Required value for 'allocation' is null");

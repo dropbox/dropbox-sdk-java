@@ -38,7 +38,7 @@ public class MemberPermission {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberPermission(MemberAction action, boolean allow, PermissionDeniedReason reason) {
+    public MemberPermission(@javax.annotation.Nonnull MemberAction action, boolean allow, @javax.annotation.Nullable PermissionDeniedReason reason) {
         if (action == null) {
             throw new IllegalArgumentException("Required value for 'action' is null");
         }

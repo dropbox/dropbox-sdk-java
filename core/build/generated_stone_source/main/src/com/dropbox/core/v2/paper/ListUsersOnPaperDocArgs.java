@@ -37,7 +37,7 @@ class ListUsersOnPaperDocArgs extends RefPaperDoc {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListUsersOnPaperDocArgs(String docId, int limit, UserOnPaperDocFilter filterBy) {
+    public ListUsersOnPaperDocArgs(@javax.annotation.Nonnull String docId, int limit, @javax.annotation.Nonnull UserOnPaperDocFilter filterBy) {
         super(docId);
         if (limit < 1) {
             throw new IllegalArgumentException("Number 'limit' is smaller than 1");

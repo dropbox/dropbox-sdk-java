@@ -43,7 +43,7 @@ public class MinimalFileLinkMetadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MinimalFileLinkMetadata(String url, String rev, String id, String path) {
+    public MinimalFileLinkMetadata(@javax.annotation.Nonnull String url, @javax.annotation.Nonnull String rev, @javax.annotation.Nullable String id, @javax.annotation.Nullable String path) {
         if (url == null) {
             throw new IllegalArgumentException("Required value for 'url' is null");
         }

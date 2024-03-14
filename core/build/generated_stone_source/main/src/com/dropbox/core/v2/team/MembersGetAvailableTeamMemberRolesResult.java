@@ -36,7 +36,7 @@ public class MembersGetAvailableTeamMemberRolesResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MembersGetAvailableTeamMemberRolesResult(List<TeamMemberRole> roles) {
+    public MembersGetAvailableTeamMemberRolesResult(@javax.annotation.Nonnull List<TeamMemberRole> roles) {
         if (roles == null) {
             throw new IllegalArgumentException("Required value for 'roles' is null");
         }

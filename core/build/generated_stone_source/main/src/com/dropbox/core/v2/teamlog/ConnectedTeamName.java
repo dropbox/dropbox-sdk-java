@@ -32,7 +32,7 @@ public class ConnectedTeamName {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ConnectedTeamName(String team) {
+    public ConnectedTeamName(@javax.annotation.Nonnull String team) {
         if (team == null) {
             throw new IllegalArgumentException("Required value for 'team' is null");
         }

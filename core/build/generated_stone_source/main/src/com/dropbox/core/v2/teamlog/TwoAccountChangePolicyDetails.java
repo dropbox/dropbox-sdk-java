@@ -37,7 +37,7 @@ public class TwoAccountChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TwoAccountChangePolicyDetails(TwoAccountPolicy newValue, TwoAccountPolicy previousValue) {
+    public TwoAccountChangePolicyDetails(@javax.annotation.Nonnull TwoAccountPolicy newValue, @javax.annotation.Nullable TwoAccountPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

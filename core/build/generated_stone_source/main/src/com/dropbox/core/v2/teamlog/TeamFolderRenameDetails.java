@@ -35,7 +35,7 @@ public class TeamFolderRenameDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamFolderRenameDetails(String previousFolderName, String newFolderName) {
+    public TeamFolderRenameDetails(@javax.annotation.Nonnull String previousFolderName, @javax.annotation.Nonnull String newFolderName) {
         if (previousFolderName == null) {
             throw new IllegalArgumentException("Required value for 'previousFolderName' is null");
         }

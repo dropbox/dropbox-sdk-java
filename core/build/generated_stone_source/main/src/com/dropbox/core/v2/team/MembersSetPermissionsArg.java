@@ -37,7 +37,7 @@ class MembersSetPermissionsArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MembersSetPermissionsArg(UserSelectorArg user, AdminTier newRole) {
+    public MembersSetPermissionsArg(@javax.annotation.Nonnull UserSelectorArg user, @javax.annotation.Nonnull AdminTier newRole) {
         if (user == null) {
             throw new IllegalArgumentException("Required value for 'user' is null");
         }

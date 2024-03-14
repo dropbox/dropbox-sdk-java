@@ -33,7 +33,7 @@ public class DeviceChangeIpDesktopDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeviceChangeIpDesktopDetails(DeviceSessionLogInfo deviceSessionInfo) {
+    public DeviceChangeIpDesktopDetails(@javax.annotation.Nonnull DeviceSessionLogInfo deviceSessionInfo) {
         if (deviceSessionInfo == null) {
             throw new IllegalArgumentException("Required value for 'deviceSessionInfo' is null");
         }

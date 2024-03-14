@@ -36,7 +36,7 @@ public class GroupChangeManagementTypeDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupChangeManagementTypeDetails(GroupManagementType newValue, GroupManagementType previousValue) {
+    public GroupChangeManagementTypeDetails(@javax.annotation.Nonnull GroupManagementType newValue, @javax.annotation.Nullable GroupManagementType previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

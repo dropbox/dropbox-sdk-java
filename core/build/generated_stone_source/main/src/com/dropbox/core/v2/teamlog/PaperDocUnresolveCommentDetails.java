@@ -34,7 +34,7 @@ public class PaperDocUnresolveCommentDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperDocUnresolveCommentDetails(String eventUuid, String commentText) {
+    public PaperDocUnresolveCommentDetails(@javax.annotation.Nonnull String eventUuid, @javax.annotation.Nullable String commentText) {
         if (eventUuid == null) {
             throw new IllegalArgumentException("Required value for 'eventUuid' is null");
         }

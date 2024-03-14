@@ -34,7 +34,7 @@ class LegalHoldsListHeldRevisionsContinueArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LegalHoldsListHeldRevisionsContinueArg(String id, String cursor) {
+    public LegalHoldsListHeldRevisionsContinueArg(@javax.annotation.Nonnull String id, @javax.annotation.Nullable String cursor) {
         if (id == null) {
             throw new IllegalArgumentException("Required value for 'id' is null");
         }

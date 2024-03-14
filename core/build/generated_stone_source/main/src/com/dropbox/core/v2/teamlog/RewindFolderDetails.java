@@ -35,7 +35,7 @@ public class RewindFolderDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RewindFolderDetails(Date rewindFolderTargetTsMs) {
+    public RewindFolderDetails(@javax.annotation.Nonnull Date rewindFolderTargetTsMs) {
         if (rewindFolderTargetTsMs == null) {
             throw new IllegalArgumentException("Required value for 'rewindFolderTargetTsMs' is null");
         }

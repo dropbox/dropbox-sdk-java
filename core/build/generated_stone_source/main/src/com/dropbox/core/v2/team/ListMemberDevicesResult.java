@@ -38,7 +38,7 @@ public class ListMemberDevicesResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListMemberDevicesResult(List<ActiveWebSession> activeWebSessions, List<DesktopClientSession> desktopClientSessions, List<MobileClientSession> mobileClientSessions) {
+    public ListMemberDevicesResult(@javax.annotation.Nullable List<ActiveWebSession> activeWebSessions, @javax.annotation.Nullable List<DesktopClientSession> desktopClientSessions, @javax.annotation.Nullable List<MobileClientSession> mobileClientSessions) {
         if (activeWebSessions != null) {
             for (ActiveWebSession x : activeWebSessions) {
                 if (x == null) {

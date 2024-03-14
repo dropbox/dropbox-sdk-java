@@ -40,7 +40,7 @@ class ListFolderLongpollArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFolderLongpollArg(String cursor, long timeout) {
+    public ListFolderLongpollArg(@javax.annotation.Nonnull String cursor, long timeout) {
         if (cursor == null) {
             throw new IllegalArgumentException("Required value for 'cursor' is null");
         }

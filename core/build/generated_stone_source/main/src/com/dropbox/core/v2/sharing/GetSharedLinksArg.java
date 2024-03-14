@@ -26,7 +26,7 @@ class GetSharedLinksArg {
      * @param path  See {@link DbxUserSharingRequests#getSharedLinks(String)}
      *     description.
      */
-    public GetSharedLinksArg(String path) {
+    public GetSharedLinksArg(@javax.annotation.Nullable String path) {
         this.path = path;
     }
 

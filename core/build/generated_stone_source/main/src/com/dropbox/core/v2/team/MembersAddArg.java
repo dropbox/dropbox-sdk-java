@@ -31,7 +31,7 @@ class MembersAddArg extends MembersAddArgBase {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MembersAddArg(List<MemberAddArg> newMembers, boolean forceAsync) {
+    public MembersAddArg(@javax.annotation.Nonnull List<MemberAddArg> newMembers, boolean forceAsync) {
         super(forceAsync);
         if (newMembers == null) {
             throw new IllegalArgumentException("Required value for 'newMembers' is null");

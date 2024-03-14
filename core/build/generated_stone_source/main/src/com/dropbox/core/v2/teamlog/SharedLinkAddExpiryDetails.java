@@ -35,7 +35,7 @@ public class SharedLinkAddExpiryDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedLinkAddExpiryDetails(Date newValue) {
+    public SharedLinkAddExpiryDetails(@javax.annotation.Nonnull Date newValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

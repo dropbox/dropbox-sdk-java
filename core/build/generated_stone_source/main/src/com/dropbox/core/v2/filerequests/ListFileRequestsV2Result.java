@@ -45,7 +45,7 @@ public class ListFileRequestsV2Result {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFileRequestsV2Result(List<FileRequest> fileRequests, String cursor, boolean hasMore) {
+    public ListFileRequestsV2Result(@javax.annotation.Nonnull List<FileRequest> fileRequests, @javax.annotation.Nonnull String cursor, boolean hasMore) {
         if (fileRequests == null) {
             throw new IllegalArgumentException("Required value for 'fileRequests' is null");
         }

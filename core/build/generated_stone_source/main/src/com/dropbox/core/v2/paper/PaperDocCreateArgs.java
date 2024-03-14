@@ -33,7 +33,7 @@ class PaperDocCreateArgs {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperDocCreateArgs(ImportFormat importFormat, String parentFolderId) {
+    public PaperDocCreateArgs(@javax.annotation.Nonnull ImportFormat importFormat, @javax.annotation.Nullable String parentFolderId) {
         this.parentFolderId = parentFolderId;
         if (importFormat == null) {
             throw new IllegalArgumentException("Required value for 'importFormat' is null");

@@ -28,7 +28,7 @@ public class AdminAlertingChangedAlertConfigType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AdminAlertingChangedAlertConfigType(String description) {
+    public AdminAlertingChangedAlertConfigType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

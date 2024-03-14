@@ -37,7 +37,7 @@ public class BinderAddPageDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public BinderAddPageDetails(String eventUuid, String docTitle, String binderItemName) {
+    public BinderAddPageDetails(@javax.annotation.Nonnull String eventUuid, @javax.annotation.Nonnull String docTitle, @javax.annotation.Nonnull String binderItemName) {
         if (eventUuid == null) {
             throw new IllegalArgumentException("Required value for 'eventUuid' is null");
         }

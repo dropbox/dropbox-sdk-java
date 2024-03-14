@@ -40,7 +40,7 @@ public class FileSharingInfo extends SharingInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileSharingInfo(boolean readOnly, String parentSharedFolderId, String modifiedBy) {
+    public FileSharingInfo(boolean readOnly, @javax.annotation.Nonnull String parentSharedFolderId, @javax.annotation.Nullable String modifiedBy) {
         super(readOnly);
         if (parentSharedFolderId == null) {
             throw new IllegalArgumentException("Required value for 'parentSharedFolderId' is null");

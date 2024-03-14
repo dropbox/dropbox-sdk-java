@@ -46,7 +46,7 @@ public class Certificate {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public Certificate(String subject, String issuer, String issueDate, String expirationDate, String serialNumber, String sha1Fingerprint, String commonName) {
+    public Certificate(@javax.annotation.Nonnull String subject, @javax.annotation.Nonnull String issuer, @javax.annotation.Nonnull String issueDate, @javax.annotation.Nonnull String expirationDate, @javax.annotation.Nonnull String serialNumber, @javax.annotation.Nonnull String sha1Fingerprint, @javax.annotation.Nullable String commonName) {
         if (subject == null) {
             throw new IllegalArgumentException("Required value for 'subject' is null");
         }

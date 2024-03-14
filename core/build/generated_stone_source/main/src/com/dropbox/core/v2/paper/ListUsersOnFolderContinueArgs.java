@@ -32,7 +32,7 @@ class ListUsersOnFolderContinueArgs extends RefPaperDoc {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListUsersOnFolderContinueArgs(String docId, String cursor) {
+    public ListUsersOnFolderContinueArgs(@javax.annotation.Nonnull String docId, @javax.annotation.Nonnull String cursor) {
         super(docId);
         if (cursor == null) {
             throw new IllegalArgumentException("Required value for 'cursor' is null");

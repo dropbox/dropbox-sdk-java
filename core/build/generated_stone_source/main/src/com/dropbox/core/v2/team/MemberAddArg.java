@@ -48,7 +48,7 @@ public class MemberAddArg extends MemberAddArgBase {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberAddArg(String memberEmail, String memberGivenName, String memberSurname, String memberExternalId, String memberPersistentId, boolean sendWelcomeEmail, Boolean isDirectoryRestricted, AdminTier role) {
+    public MemberAddArg(@javax.annotation.Nonnull String memberEmail, @javax.annotation.Nullable String memberGivenName, @javax.annotation.Nullable String memberSurname, @javax.annotation.Nullable String memberExternalId, @javax.annotation.Nullable String memberPersistentId, boolean sendWelcomeEmail, @javax.annotation.Nullable Boolean isDirectoryRestricted, @javax.annotation.Nonnull AdminTier role) {
         super(memberEmail, memberGivenName, memberSurname, memberExternalId, memberPersistentId, sendWelcomeEmail, isDirectoryRestricted);
         if (role == null) {
             throw new IllegalArgumentException("Required value for 'role' is null");

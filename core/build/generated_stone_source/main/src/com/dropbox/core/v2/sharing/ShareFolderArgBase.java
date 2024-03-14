@@ -51,7 +51,7 @@ class ShareFolderArgBase {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ShareFolderArgBase(String path, AclUpdatePolicy aclUpdatePolicy, boolean forceAsync, MemberPolicy memberPolicy, SharedLinkPolicy sharedLinkPolicy, ViewerInfoPolicy viewerInfoPolicy, AccessInheritance accessInheritance) {
+    public ShareFolderArgBase(@javax.annotation.Nonnull String path, @javax.annotation.Nullable AclUpdatePolicy aclUpdatePolicy, boolean forceAsync, @javax.annotation.Nullable MemberPolicy memberPolicy, @javax.annotation.Nullable SharedLinkPolicy sharedLinkPolicy, @javax.annotation.Nullable ViewerInfoPolicy viewerInfoPolicy, @javax.annotation.Nonnull AccessInheritance accessInheritance) {
         this.aclUpdatePolicy = aclUpdatePolicy;
         this.forceAsync = forceAsync;
         this.memberPolicy = memberPolicy;

@@ -28,7 +28,7 @@ public class SharingChangeMemberPolicyType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharingChangeMemberPolicyType(String description) {
+    public SharingChangeMemberPolicyType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

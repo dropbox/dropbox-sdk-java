@@ -30,7 +30,7 @@ class AddSecondaryEmailsArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AddSecondaryEmailsArg(List<UserSecondaryEmailsArg> newSecondaryEmails) {
+    public AddSecondaryEmailsArg(@javax.annotation.Nonnull List<UserSecondaryEmailsArg> newSecondaryEmails) {
         if (newSecondaryEmails == null) {
             throw new IllegalArgumentException("Required value for 'newSecondaryEmails' is null");
         }

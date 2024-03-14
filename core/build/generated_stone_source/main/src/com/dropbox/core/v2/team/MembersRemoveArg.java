@@ -57,7 +57,7 @@ class MembersRemoveArg extends MembersDeactivateArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MembersRemoveArg(UserSelectorArg user, boolean wipeData, UserSelectorArg transferDestId, UserSelectorArg transferAdminId, boolean keepAccount, boolean retainTeamShares) {
+    public MembersRemoveArg(@javax.annotation.Nonnull UserSelectorArg user, boolean wipeData, @javax.annotation.Nullable UserSelectorArg transferDestId, @javax.annotation.Nullable UserSelectorArg transferAdminId, boolean keepAccount, boolean retainTeamShares) {
         super(user, wipeData);
         this.transferDestId = transferDestId;
         this.transferAdminId = transferAdminId;

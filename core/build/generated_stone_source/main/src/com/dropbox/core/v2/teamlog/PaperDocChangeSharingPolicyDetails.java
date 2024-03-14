@@ -39,7 +39,7 @@ public class PaperDocChangeSharingPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperDocChangeSharingPolicyDetails(String eventUuid, String publicSharingPolicy, String teamSharingPolicy) {
+    public PaperDocChangeSharingPolicyDetails(@javax.annotation.Nonnull String eventUuid, @javax.annotation.Nullable String publicSharingPolicy, @javax.annotation.Nullable String teamSharingPolicy) {
         if (eventUuid == null) {
             throw new IllegalArgumentException("Required value for 'eventUuid' is null");
         }

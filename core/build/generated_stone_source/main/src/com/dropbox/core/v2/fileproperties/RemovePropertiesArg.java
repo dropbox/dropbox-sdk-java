@@ -38,7 +38,7 @@ public class RemovePropertiesArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RemovePropertiesArg(String path, List<String> propertyTemplateIds) {
+    public RemovePropertiesArg(@javax.annotation.Nonnull String path, @javax.annotation.Nonnull List<String> propertyTemplateIds) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }

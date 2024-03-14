@@ -35,7 +35,7 @@ public class Folder {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public Folder(String id, String name) {
+    public Folder(@javax.annotation.Nonnull String id, @javax.annotation.Nonnull String name) {
         if (id == null) {
             throw new IllegalArgumentException("Required value for 'id' is null");
         }

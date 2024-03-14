@@ -30,7 +30,7 @@ class UnmountFolderArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UnmountFolderArg(String sharedFolderId) {
+    public UnmountFolderArg(@javax.annotation.Nonnull String sharedFolderId) {
         if (sharedFolderId == null) {
             throw new IllegalArgumentException("Required value for 'sharedFolderId' is null");
         }

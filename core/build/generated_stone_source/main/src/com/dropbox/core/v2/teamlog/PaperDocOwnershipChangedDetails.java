@@ -38,7 +38,7 @@ public class PaperDocOwnershipChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperDocOwnershipChangedDetails(String eventUuid, String newOwnerUserId, String oldOwnerUserId) {
+    public PaperDocOwnershipChangedDetails(@javax.annotation.Nonnull String eventUuid, @javax.annotation.Nonnull String newOwnerUserId, @javax.annotation.Nullable String oldOwnerUserId) {
         if (eventUuid == null) {
             throw new IllegalArgumentException("Required value for 'eventUuid' is null");
         }

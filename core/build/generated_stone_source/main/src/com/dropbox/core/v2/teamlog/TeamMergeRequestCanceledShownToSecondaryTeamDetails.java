@@ -36,7 +36,7 @@ public class TeamMergeRequestCanceledShownToSecondaryTeamDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamMergeRequestCanceledShownToSecondaryTeamDetails(String sentTo, String sentBy) {
+    public TeamMergeRequestCanceledShownToSecondaryTeamDetails(@javax.annotation.Nonnull String sentTo, @javax.annotation.Nonnull String sentBy) {
         if (sentTo == null) {
             throw new IllegalArgumentException("Required value for 'sentTo' is null");
         }

@@ -28,7 +28,7 @@ public class ShowcaseTrashedType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ShowcaseTrashedType(String description) {
+    public ShowcaseTrashedType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

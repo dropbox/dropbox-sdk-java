@@ -37,7 +37,7 @@ public class BinderReorderPageDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public BinderReorderPageDetails(String eventUuid, String docTitle, String binderItemName) {
+    public BinderReorderPageDetails(@javax.annotation.Nonnull String eventUuid, @javax.annotation.Nonnull String docTitle, @javax.annotation.Nonnull String binderItemName) {
         if (eventUuid == null) {
             throw new IllegalArgumentException("Required value for 'eventUuid' is null");
         }

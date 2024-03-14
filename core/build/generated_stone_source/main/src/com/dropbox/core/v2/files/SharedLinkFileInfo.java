@@ -40,7 +40,7 @@ public class SharedLinkFileInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedLinkFileInfo(String url, String path, String password) {
+    public SharedLinkFileInfo(@javax.annotation.Nonnull String url, @javax.annotation.Nullable String path, @javax.annotation.Nullable String password) {
         if (url == null) {
             throw new IllegalArgumentException("Required value for 'url' is null");
         }

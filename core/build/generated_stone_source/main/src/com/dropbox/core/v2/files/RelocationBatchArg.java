@@ -41,7 +41,7 @@ class RelocationBatchArg extends RelocationBatchArgBase {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RelocationBatchArg(List<RelocationPath> entries, boolean autorename, boolean allowSharedFolder, boolean allowOwnershipTransfer) {
+    public RelocationBatchArg(@javax.annotation.Nonnull List<RelocationPath> entries, boolean autorename, boolean allowSharedFolder, boolean allowOwnershipTransfer) {
         super(entries, autorename);
         this.allowSharedFolder = allowSharedFolder;
         this.allowOwnershipTransfer = allowOwnershipTransfer;

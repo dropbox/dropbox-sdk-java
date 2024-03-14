@@ -37,7 +37,7 @@ public class FolderOverviewItemPinnedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FolderOverviewItemPinnedDetails(long folderOverviewLocationAsset, List<Long> pinnedItemsAssetIndices) {
+    public FolderOverviewItemPinnedDetails(long folderOverviewLocationAsset, @javax.annotation.Nonnull List<Long> pinnedItemsAssetIndices) {
         this.folderOverviewLocationAsset = folderOverviewLocationAsset;
         if (pinnedItemsAssetIndices == null) {
             throw new IllegalArgumentException("Required value for 'pinnedItemsAssetIndices' is null");

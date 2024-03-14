@@ -30,7 +30,7 @@ public class SharedLinkCreateDetails {
      * @param sharedLinkAccessLevel  Defines who can access the shared link.
      *     Might be missing due to historical data gap.
      */
-    public SharedLinkCreateDetails(SharedLinkAccessLevel sharedLinkAccessLevel) {
+    public SharedLinkCreateDetails(@javax.annotation.Nullable SharedLinkAccessLevel sharedLinkAccessLevel) {
         this.sharedLinkAccessLevel = sharedLinkAccessLevel;
     }
 

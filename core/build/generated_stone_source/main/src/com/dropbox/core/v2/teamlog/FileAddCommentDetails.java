@@ -29,7 +29,7 @@ public class FileAddCommentDetails {
      *
      * @param commentText  Comment text.
      */
-    public FileAddCommentDetails(String commentText) {
+    public FileAddCommentDetails(@javax.annotation.Nullable String commentText) {
         this.commentText = commentText;
     }
 

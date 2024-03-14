@@ -28,7 +28,7 @@ public class OpenNoteSharedType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public OpenNoteSharedType(String description) {
+    public OpenNoteSharedType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

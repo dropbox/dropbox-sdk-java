@@ -29,7 +29,7 @@ public class DeleteBatchResultData {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeleteBatchResultData(Metadata metadata) {
+    public DeleteBatchResultData(@javax.annotation.Nonnull Metadata metadata) {
         if (metadata == null) {
             throw new IllegalArgumentException("Required value for 'metadata' is null");
         }

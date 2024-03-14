@@ -34,7 +34,7 @@ class GetThumbnailBatchArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetThumbnailBatchArg(List<ThumbnailArg> entries) {
+    public GetThumbnailBatchArg(@javax.annotation.Nonnull List<ThumbnailArg> entries) {
         if (entries == null) {
             throw new IllegalArgumentException("Required value for 'entries' is null");
         }

@@ -66,7 +66,7 @@ class UploadArg extends CommitInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UploadArg(String path, WriteMode mode, boolean autorename, Date clientModified, boolean mute, List<PropertyGroup> propertyGroups, boolean strictConflict, String contentHash) {
+    public UploadArg(@javax.annotation.Nonnull String path, @javax.annotation.Nonnull WriteMode mode, boolean autorename, @javax.annotation.Nullable Date clientModified, boolean mute, @javax.annotation.Nullable List<PropertyGroup> propertyGroups, boolean strictConflict, @javax.annotation.Nullable String contentHash) {
         super(path, mode, autorename, clientModified, mute, propertyGroups, strictConflict);
         if (contentHash != null) {
             if (contentHash.length() < 64) {

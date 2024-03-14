@@ -59,7 +59,7 @@ class UpdateFolderPolicyArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UpdateFolderPolicyArg(String sharedFolderId, MemberPolicy memberPolicy, AclUpdatePolicy aclUpdatePolicy, ViewerInfoPolicy viewerInfoPolicy, SharedLinkPolicy sharedLinkPolicy, LinkSettings linkSettings, List<FolderAction> actions) {
+    public UpdateFolderPolicyArg(@javax.annotation.Nonnull String sharedFolderId, @javax.annotation.Nullable MemberPolicy memberPolicy, @javax.annotation.Nullable AclUpdatePolicy aclUpdatePolicy, @javax.annotation.Nullable ViewerInfoPolicy viewerInfoPolicy, @javax.annotation.Nullable SharedLinkPolicy sharedLinkPolicy, @javax.annotation.Nullable LinkSettings linkSettings, @javax.annotation.Nullable List<FolderAction> actions) {
         if (sharedFolderId == null) {
             throw new IllegalArgumentException("Required value for 'sharedFolderId' is null");
         }

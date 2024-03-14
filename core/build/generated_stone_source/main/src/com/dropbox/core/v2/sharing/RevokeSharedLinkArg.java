@@ -28,7 +28,7 @@ class RevokeSharedLinkArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RevokeSharedLinkArg(String url) {
+    public RevokeSharedLinkArg(@javax.annotation.Nonnull String url) {
         if (url == null) {
             throw new IllegalArgumentException("Required value for 'url' is null");
         }

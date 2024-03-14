@@ -61,7 +61,7 @@ public class LegacyDeviceSessionLogInfo extends DeviceSessionLogInfo {
      * @param legacyUniqId  Alternative unique device session id, instead of
      *     session id field. Might be missing due to historical data gap.
      */
-    public LegacyDeviceSessionLogInfo(String ipAddress, Date created, Date updated, SessionLogInfo sessionInfo, String displayName, Boolean isEmmManaged, String platform, String macAddress, String osVersion, String deviceType, String clientVersion, String legacyUniqId) {
+    public LegacyDeviceSessionLogInfo(@javax.annotation.Nullable String ipAddress, @javax.annotation.Nullable Date created, @javax.annotation.Nullable Date updated, @javax.annotation.Nullable SessionLogInfo sessionInfo, @javax.annotation.Nullable String displayName, @javax.annotation.Nullable Boolean isEmmManaged, @javax.annotation.Nullable String platform, @javax.annotation.Nullable String macAddress, @javax.annotation.Nullable String osVersion, @javax.annotation.Nullable String deviceType, @javax.annotation.Nullable String clientVersion, @javax.annotation.Nullable String legacyUniqId) {
         super(ipAddress, created, updated);
         this.sessionInfo = sessionInfo;
         this.displayName = displayName;

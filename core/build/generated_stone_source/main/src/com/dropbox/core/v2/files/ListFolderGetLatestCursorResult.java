@@ -31,7 +31,7 @@ public class ListFolderGetLatestCursorResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFolderGetLatestCursorResult(String cursor) {
+    public ListFolderGetLatestCursorResult(@javax.annotation.Nonnull String cursor) {
         if (cursor == null) {
             throw new IllegalArgumentException("Required value for 'cursor' is null");
         }

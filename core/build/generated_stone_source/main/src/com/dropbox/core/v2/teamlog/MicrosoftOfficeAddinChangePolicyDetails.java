@@ -36,7 +36,7 @@ public class MicrosoftOfficeAddinChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MicrosoftOfficeAddinChangePolicyDetails(MicrosoftOfficeAddinPolicy newValue, MicrosoftOfficeAddinPolicy previousValue) {
+    public MicrosoftOfficeAddinChangePolicyDetails(@javax.annotation.Nonnull MicrosoftOfficeAddinPolicy newValue, @javax.annotation.Nullable MicrosoftOfficeAddinPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

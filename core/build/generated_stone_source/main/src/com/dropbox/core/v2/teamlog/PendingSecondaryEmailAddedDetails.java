@@ -33,7 +33,7 @@ public class PendingSecondaryEmailAddedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PendingSecondaryEmailAddedDetails(String secondaryEmail) {
+    public PendingSecondaryEmailAddedDetails(@javax.annotation.Nonnull String secondaryEmail) {
         if (secondaryEmail == null) {
             throw new IllegalArgumentException("Required value for 'secondaryEmail' is null");
         }

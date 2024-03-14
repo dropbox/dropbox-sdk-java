@@ -28,7 +28,7 @@ public class GroupCreateType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupCreateType(String description) {
+    public GroupCreateType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

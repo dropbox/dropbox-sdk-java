@@ -35,7 +35,7 @@ class UnshareFolderArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UnshareFolderArg(String sharedFolderId, boolean leaveACopy) {
+    public UnshareFolderArg(@javax.annotation.Nonnull String sharedFolderId, boolean leaveACopy) {
         if (sharedFolderId == null) {
             throw new IllegalArgumentException("Required value for 'sharedFolderId' is null");
         }

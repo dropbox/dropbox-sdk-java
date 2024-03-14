@@ -36,7 +36,7 @@ public class NoExpirationLinkGenCreateReportDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public NoExpirationLinkGenCreateReportDetails(Date startDate, Date endDate) {
+    public NoExpirationLinkGenCreateReportDetails(@javax.annotation.Nonnull Date startDate, @javax.annotation.Nonnull Date endDate) {
         if (startDate == null) {
             throw new IllegalArgumentException("Required value for 'startDate' is null");
         }

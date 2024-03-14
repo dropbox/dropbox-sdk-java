@@ -57,7 +57,7 @@ class AddFileMemberArgs {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AddFileMemberArgs(String file, List<MemberSelector> members, String customMessage, boolean quiet, AccessLevel accessLevel, boolean addMessageAsComment) {
+    public AddFileMemberArgs(@javax.annotation.Nonnull String file, @javax.annotation.Nonnull List<MemberSelector> members, @javax.annotation.Nullable String customMessage, boolean quiet, @javax.annotation.Nonnull AccessLevel accessLevel, boolean addMessageAsComment) {
         if (file == null) {
             throw new IllegalArgumentException("Required value for 'file' is null");
         }

@@ -44,7 +44,7 @@ class ListFilesArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFilesArg(long limit, List<FileAction> actions) {
+    public ListFilesArg(long limit, @javax.annotation.Nullable List<FileAction> actions) {
         if (limit < 1L) {
             throw new IllegalArgumentException("Number 'limit' is smaller than 1L");
         }

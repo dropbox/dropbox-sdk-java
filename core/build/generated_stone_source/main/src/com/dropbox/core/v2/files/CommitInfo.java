@@ -66,7 +66,7 @@ public class CommitInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public CommitInfo(String path, WriteMode mode, boolean autorename, Date clientModified, boolean mute, List<PropertyGroup> propertyGroups, boolean strictConflict) {
+    public CommitInfo(@javax.annotation.Nonnull String path, @javax.annotation.Nonnull WriteMode mode, boolean autorename, @javax.annotation.Nullable Date clientModified, boolean mute, @javax.annotation.Nullable List<PropertyGroup> propertyGroups, boolean strictConflict) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }

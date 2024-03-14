@@ -28,7 +28,7 @@ public class AccountCaptureChangeAvailabilityType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AccountCaptureChangeAvailabilityType(String description) {
+    public AccountCaptureChangeAvailabilityType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

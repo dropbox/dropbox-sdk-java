@@ -41,7 +41,7 @@ public class SharedContentChangeInviteeRoleDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentChangeInviteeRoleDetails(AccessLevel newAccessLevel, String invitee, AccessLevel previousAccessLevel) {
+    public SharedContentChangeInviteeRoleDetails(@javax.annotation.Nonnull AccessLevel newAccessLevel, @javax.annotation.Nonnull String invitee, @javax.annotation.Nullable AccessLevel previousAccessLevel) {
         this.previousAccessLevel = previousAccessLevel;
         if (newAccessLevel == null) {
             throw new IllegalArgumentException("Required value for 'newAccessLevel' is null");

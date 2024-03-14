@@ -32,7 +32,7 @@ public class CollectionShareDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public CollectionShareDetails(String albumName) {
+    public CollectionShareDetails(@javax.annotation.Nonnull String albumName) {
         if (albumName == null) {
             throw new IllegalArgumentException("Required value for 'albumName' is null");
         }

@@ -35,7 +35,7 @@ class ModifySharedLinkSettingsArgs {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ModifySharedLinkSettingsArgs(String url, SharedLinkSettings settings, boolean removeExpiration) {
+    public ModifySharedLinkSettingsArgs(@javax.annotation.Nonnull String url, @javax.annotation.Nonnull SharedLinkSettings settings, boolean removeExpiration) {
         if (url == null) {
             throw new IllegalArgumentException("Required value for 'url' is null");
         }

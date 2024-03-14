@@ -41,7 +41,7 @@ public class FileOrFolderLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileOrFolderLogInfo(PathLogInfo path, String displayName, String fileId, Long fileSize) {
+    public FileOrFolderLogInfo(@javax.annotation.Nonnull PathLogInfo path, @javax.annotation.Nullable String displayName, @javax.annotation.Nullable String fileId, @javax.annotation.Nullable Long fileSize) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }

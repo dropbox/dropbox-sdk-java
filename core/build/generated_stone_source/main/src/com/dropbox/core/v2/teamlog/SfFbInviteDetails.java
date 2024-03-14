@@ -37,7 +37,7 @@ public class SfFbInviteDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SfFbInviteDetails(long targetAssetIndex, String originalFolderName, String sharingPermission) {
+    public SfFbInviteDetails(long targetAssetIndex, @javax.annotation.Nonnull String originalFolderName, @javax.annotation.Nullable String sharingPermission) {
         this.targetAssetIndex = targetAssetIndex;
         if (originalFolderName == null) {
             throw new IllegalArgumentException("Required value for 'originalFolderName' is null");

@@ -28,7 +28,7 @@ public class EmmRemoveExceptionType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public EmmRemoveExceptionType(String description) {
+    public EmmRemoveExceptionType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

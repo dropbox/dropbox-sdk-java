@@ -29,7 +29,7 @@ public class TeamMergeRequestAutoCanceledDetails {
      *
      * @param details  The cancellation reason.
      */
-    public TeamMergeRequestAutoCanceledDetails(String details) {
+    public TeamMergeRequestAutoCanceledDetails(@javax.annotation.Nullable String details) {
         this.details = details;
     }
 

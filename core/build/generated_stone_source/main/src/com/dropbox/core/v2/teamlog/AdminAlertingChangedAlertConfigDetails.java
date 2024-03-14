@@ -37,7 +37,7 @@ public class AdminAlertingChangedAlertConfigDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AdminAlertingChangedAlertConfigDetails(String alertName, AdminAlertingAlertConfiguration previousAlertConfig, AdminAlertingAlertConfiguration newAlertConfig) {
+    public AdminAlertingChangedAlertConfigDetails(@javax.annotation.Nonnull String alertName, @javax.annotation.Nonnull AdminAlertingAlertConfiguration previousAlertConfig, @javax.annotation.Nonnull AdminAlertingAlertConfiguration newAlertConfig) {
         if (alertName == null) {
             throw new IllegalArgumentException("Required value for 'alertName' is null");
         }

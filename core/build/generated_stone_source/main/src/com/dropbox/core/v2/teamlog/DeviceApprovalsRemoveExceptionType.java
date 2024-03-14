@@ -28,7 +28,7 @@ public class DeviceApprovalsRemoveExceptionType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeviceApprovalsRemoveExceptionType(String description) {
+    public DeviceApprovalsRemoveExceptionType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

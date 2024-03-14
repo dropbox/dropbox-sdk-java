@@ -47,7 +47,7 @@ public class GetDevicesReport extends BaseDfbReport {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetDevicesReport(String startDate, DevicesActive active1Day, DevicesActive active7Day, DevicesActive active28Day) {
+    public GetDevicesReport(@javax.annotation.Nonnull String startDate, @javax.annotation.Nonnull DevicesActive active1Day, @javax.annotation.Nonnull DevicesActive active7Day, @javax.annotation.Nonnull DevicesActive active28Day) {
         super(startDate);
         if (active1Day == null) {
             throw new IllegalArgumentException("Required value for 'active1Day' is null");

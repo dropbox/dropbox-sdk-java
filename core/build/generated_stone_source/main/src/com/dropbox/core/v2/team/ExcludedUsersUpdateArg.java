@@ -38,7 +38,7 @@ class ExcludedUsersUpdateArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ExcludedUsersUpdateArg(List<UserSelectorArg> users) {
+    public ExcludedUsersUpdateArg(@javax.annotation.Nullable List<UserSelectorArg> users) {
         if (users != null) {
             for (UserSelectorArg x : users) {
                 if (x == null) {

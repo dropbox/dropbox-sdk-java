@@ -52,7 +52,7 @@ public class FolderSharingInfo extends SharingInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FolderSharingInfo(boolean readOnly, String parentSharedFolderId, String sharedFolderId, boolean traverseOnly, boolean noAccess) {
+    public FolderSharingInfo(boolean readOnly, @javax.annotation.Nullable String parentSharedFolderId, @javax.annotation.Nullable String sharedFolderId, boolean traverseOnly, boolean noAccess) {
         super(readOnly);
         if (parentSharedFolderId != null) {
             if (!java.util.regex.Pattern.matches("[-_0-9a-zA-Z:]+", parentSharedFolderId)) {

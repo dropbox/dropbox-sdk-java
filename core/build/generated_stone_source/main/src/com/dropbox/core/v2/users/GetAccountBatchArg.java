@@ -31,7 +31,7 @@ public class GetAccountBatchArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetAccountBatchArg(List<String> accountIds) {
+    public GetAccountBatchArg(@javax.annotation.Nonnull List<String> accountIds) {
         if (accountIds == null) {
             throw new IllegalArgumentException("Required value for 'accountIds' is null");
         }

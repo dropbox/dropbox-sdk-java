@@ -33,7 +33,7 @@ public class TeamMergeRequestReminderDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamMergeRequestReminderDetails(TeamMergeRequestReminderExtraDetails requestReminderDetails) {
+    public TeamMergeRequestReminderDetails(@javax.annotation.Nonnull TeamMergeRequestReminderExtraDetails requestReminderDetails) {
         if (requestReminderDetails == null) {
             throw new IllegalArgumentException("Required value for 'requestReminderDetails' is null");
         }

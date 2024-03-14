@@ -30,7 +30,7 @@ public class UserGeneratedTag {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UserGeneratedTag(String tagText) {
+    public UserGeneratedTag(@javax.annotation.Nonnull String tagText) {
         if (tagText == null) {
             throw new IllegalArgumentException("Required value for 'tagText' is null");
         }

@@ -36,7 +36,7 @@ public class TimeRange {
      * @param startTime  Optional starting time (inclusive).
      * @param endTime  Optional ending time (exclusive).
      */
-    public TimeRange(Date startTime, Date endTime) {
+    public TimeRange(@javax.annotation.Nullable Date startTime, @javax.annotation.Nullable Date endTime) {
         this.startTime = LangUtil.truncateMillis(startTime);
         this.endTime = LangUtil.truncateMillis(endTime);
     }

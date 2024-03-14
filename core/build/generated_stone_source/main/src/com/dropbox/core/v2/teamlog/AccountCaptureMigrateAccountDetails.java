@@ -32,7 +32,7 @@ public class AccountCaptureMigrateAccountDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AccountCaptureMigrateAccountDetails(String domainName) {
+    public AccountCaptureMigrateAccountDetails(@javax.annotation.Nonnull String domainName) {
         if (domainName == null) {
             throw new IllegalArgumentException("Required value for 'domainName' is null");
         }

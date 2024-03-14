@@ -32,7 +32,7 @@ public class AppUnlinkTeamDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AppUnlinkTeamDetails(AppLogInfo appInfo) {
+    public AppUnlinkTeamDetails(@javax.annotation.Nonnull AppLogInfo appInfo) {
         if (appInfo == null) {
             throw new IllegalArgumentException("Required value for 'appInfo' is null");
         }

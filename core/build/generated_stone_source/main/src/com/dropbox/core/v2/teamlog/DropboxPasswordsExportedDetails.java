@@ -33,7 +33,7 @@ public class DropboxPasswordsExportedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DropboxPasswordsExportedDetails(String platform) {
+    public DropboxPasswordsExportedDetails(@javax.annotation.Nonnull String platform) {
         if (platform == null) {
             throw new IllegalArgumentException("Required value for 'platform' is null");
         }

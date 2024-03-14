@@ -28,7 +28,7 @@ public class MemberSpaceLimitsRemoveCustomQuotaType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberSpaceLimitsRemoveCustomQuotaType(String description) {
+    public MemberSpaceLimitsRemoveCustomQuotaType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

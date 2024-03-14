@@ -37,7 +37,7 @@ public class ClassificationChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ClassificationChangePolicyDetails(ClassificationPolicyEnumWrapper previousValue, ClassificationPolicyEnumWrapper newValue, ClassificationType classificationType) {
+    public ClassificationChangePolicyDetails(@javax.annotation.Nonnull ClassificationPolicyEnumWrapper previousValue, @javax.annotation.Nonnull ClassificationPolicyEnumWrapper newValue, @javax.annotation.Nonnull ClassificationType classificationType) {
         if (previousValue == null) {
             throw new IllegalArgumentException("Required value for 'previousValue' is null");
         }

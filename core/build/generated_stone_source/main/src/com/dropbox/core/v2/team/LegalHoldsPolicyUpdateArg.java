@@ -41,7 +41,7 @@ class LegalHoldsPolicyUpdateArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LegalHoldsPolicyUpdateArg(String id, String name, String description, List<String> members) {
+    public LegalHoldsPolicyUpdateArg(@javax.annotation.Nonnull String id, @javax.annotation.Nullable String name, @javax.annotation.Nullable String description, @javax.annotation.Nullable List<String> members) {
         if (id == null) {
             throw new IllegalArgumentException("Required value for 'id' is null");
         }

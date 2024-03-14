@@ -31,7 +31,7 @@ class MembersDeactivateArg extends MembersDeactivateBaseArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MembersDeactivateArg(UserSelectorArg user, boolean wipeData) {
+    public MembersDeactivateArg(@javax.annotation.Nonnull UserSelectorArg user, boolean wipeData) {
         super(user);
         this.wipeData = wipeData;
     }

@@ -32,7 +32,7 @@ public class GroupAddExternalIdDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupAddExternalIdDetails(String newValue) {
+    public GroupAddExternalIdDetails(@javax.annotation.Nonnull String newValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

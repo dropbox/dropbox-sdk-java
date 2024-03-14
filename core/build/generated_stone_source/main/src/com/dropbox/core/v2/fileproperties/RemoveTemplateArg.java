@@ -34,7 +34,7 @@ class RemoveTemplateArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RemoveTemplateArg(String templateId) {
+    public RemoveTemplateArg(@javax.annotation.Nonnull String templateId) {
         if (templateId == null) {
             throw new IllegalArgumentException("Required value for 'templateId' is null");
         }

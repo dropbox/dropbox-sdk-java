@@ -35,7 +35,7 @@ public class PrimaryTeamRequestExpiredDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PrimaryTeamRequestExpiredDetails(String secondaryTeam, String sentBy) {
+    public PrimaryTeamRequestExpiredDetails(@javax.annotation.Nonnull String secondaryTeam, @javax.annotation.Nonnull String sentBy) {
         if (secondaryTeam == null) {
             throw new IllegalArgumentException("Required value for 'secondaryTeam' is null");
         }

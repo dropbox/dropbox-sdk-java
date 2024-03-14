@@ -28,7 +28,7 @@ public class ShowcaseUntrashedDeprecatedType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ShowcaseUntrashedDeprecatedType(String description) {
+    public ShowcaseUntrashedDeprecatedType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

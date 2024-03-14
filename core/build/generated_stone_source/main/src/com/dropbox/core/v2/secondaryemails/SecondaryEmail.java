@@ -35,7 +35,7 @@ public class SecondaryEmail {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SecondaryEmail(String email, boolean isVerified) {
+    public SecondaryEmail(@javax.annotation.Nonnull String email, boolean isVerified) {
         if (email == null) {
             throw new IllegalArgumentException("Required value for 'email' is null");
         }

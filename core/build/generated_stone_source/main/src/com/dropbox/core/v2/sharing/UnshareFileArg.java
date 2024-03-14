@@ -35,7 +35,7 @@ class UnshareFileArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UnshareFileArg(String file) {
+    public UnshareFileArg(@javax.annotation.Nonnull String file) {
         if (file == null) {
             throw new IllegalArgumentException("Required value for 'file' is null");
         }

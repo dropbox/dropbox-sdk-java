@@ -28,7 +28,7 @@ public class GuestAdminSignedInViaTrustedTeamsType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GuestAdminSignedInViaTrustedTeamsType(String description) {
+    public GuestAdminSignedInViaTrustedTeamsType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

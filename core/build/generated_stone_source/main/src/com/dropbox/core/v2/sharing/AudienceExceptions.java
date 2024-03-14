@@ -41,7 +41,7 @@ public class AudienceExceptions {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AudienceExceptions(long count, List<AudienceExceptionContentInfo> exceptions) {
+    public AudienceExceptions(long count, @javax.annotation.Nonnull List<AudienceExceptionContentInfo> exceptions) {
         this.count = count;
         if (exceptions == null) {
             throw new IllegalArgumentException("Required value for 'exceptions' is null");

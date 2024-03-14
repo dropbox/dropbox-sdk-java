@@ -27,7 +27,7 @@ public class DesktopSessionLogInfo extends SessionLogInfo {
      *
      * @param sessionId  Session ID.
      */
-    public DesktopSessionLogInfo(String sessionId) {
+    public DesktopSessionLogInfo(@javax.annotation.Nullable String sessionId) {
         super(sessionId);
     }
 

@@ -36,7 +36,7 @@ public class SharedFolderTransferOwnershipDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedFolderTransferOwnershipDetails(String newOwnerEmail, String previousOwnerEmail) {
+    public SharedFolderTransferOwnershipDetails(@javax.annotation.Nonnull String newOwnerEmail, @javax.annotation.Nullable String previousOwnerEmail) {
         if (previousOwnerEmail != null) {
             if (previousOwnerEmail.length() > 255) {
                 throw new IllegalArgumentException("String 'previousOwnerEmail' is longer than 255");

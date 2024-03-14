@@ -36,7 +36,7 @@ public class TeamSelectiveSyncPolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamSelectiveSyncPolicyChangedDetails(TeamSelectiveSyncPolicy newValue, TeamSelectiveSyncPolicy previousValue) {
+    public TeamSelectiveSyncPolicyChangedDetails(@javax.annotation.Nonnull TeamSelectiveSyncPolicy newValue, @javax.annotation.Nonnull TeamSelectiveSyncPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

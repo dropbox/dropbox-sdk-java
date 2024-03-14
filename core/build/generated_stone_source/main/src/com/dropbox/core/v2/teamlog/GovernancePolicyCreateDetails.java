@@ -44,7 +44,7 @@ public class GovernancePolicyCreateDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GovernancePolicyCreateDetails(String governancePolicyId, String name, DurationLogInfo duration, PolicyType policyType, List<String> folders) {
+    public GovernancePolicyCreateDetails(@javax.annotation.Nonnull String governancePolicyId, @javax.annotation.Nonnull String name, @javax.annotation.Nonnull DurationLogInfo duration, @javax.annotation.Nullable PolicyType policyType, @javax.annotation.Nullable List<String> folders) {
         if (governancePolicyId == null) {
             throw new IllegalArgumentException("Required value for 'governancePolicyId' is null");
         }

@@ -34,7 +34,7 @@ public class ShowcaseFileDownloadDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ShowcaseFileDownloadDetails(String eventUuid, String downloadType) {
+    public ShowcaseFileDownloadDetails(@javax.annotation.Nonnull String eventUuid, @javax.annotation.Nonnull String downloadType) {
         if (eventUuid == null) {
             throw new IllegalArgumentException("Required value for 'eventUuid' is null");
         }

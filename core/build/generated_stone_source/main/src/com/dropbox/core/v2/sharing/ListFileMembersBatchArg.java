@@ -38,7 +38,7 @@ class ListFileMembersBatchArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFileMembersBatchArg(List<String> files, long limit) {
+    public ListFileMembersBatchArg(@javax.annotation.Nonnull List<String> files, long limit) {
         if (files == null) {
             throw new IllegalArgumentException("Required value for 'files' is null");
         }

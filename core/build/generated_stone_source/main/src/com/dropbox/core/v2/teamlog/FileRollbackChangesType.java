@@ -28,7 +28,7 @@ public class FileRollbackChangesType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileRollbackChangesType(String description) {
+    public FileRollbackChangesType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

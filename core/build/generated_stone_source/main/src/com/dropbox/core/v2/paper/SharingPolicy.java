@@ -35,7 +35,7 @@ public class SharingPolicy {
      * @param teamSharingPolicy  This value applies to the team members only.
      *     The value is null for all personal accounts.
      */
-    public SharingPolicy(SharingPublicPolicyType publicSharingPolicy, SharingTeamPolicyType teamSharingPolicy) {
+    public SharingPolicy(@javax.annotation.Nullable SharingPublicPolicyType publicSharingPolicy, @javax.annotation.Nullable SharingTeamPolicyType teamSharingPolicy) {
         this.publicSharingPolicy = publicSharingPolicy;
         this.teamSharingPolicy = teamSharingPolicy;
     }

@@ -29,7 +29,7 @@ public class PaperFolderCreateResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperFolderCreateResult(String folderId) {
+    public PaperFolderCreateResult(@javax.annotation.Nonnull String folderId) {
         if (folderId == null) {
             throw new IllegalArgumentException("Required value for 'folderId' is null");
         }

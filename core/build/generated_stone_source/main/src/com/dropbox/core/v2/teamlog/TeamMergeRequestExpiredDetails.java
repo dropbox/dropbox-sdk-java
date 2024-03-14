@@ -33,7 +33,7 @@ public class TeamMergeRequestExpiredDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamMergeRequestExpiredDetails(TeamMergeRequestExpiredExtraDetails requestExpiredDetails) {
+    public TeamMergeRequestExpiredDetails(@javax.annotation.Nonnull TeamMergeRequestExpiredExtraDetails requestExpiredDetails) {
         if (requestExpiredDetails == null) {
             throw new IllegalArgumentException("Required value for 'requestExpiredDetails' is null");
         }

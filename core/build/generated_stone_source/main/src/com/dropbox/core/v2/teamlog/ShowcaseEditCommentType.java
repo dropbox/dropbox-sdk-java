@@ -28,7 +28,7 @@ public class ShowcaseEditCommentType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ShowcaseEditCommentType(String description) {
+    public ShowcaseEditCommentType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

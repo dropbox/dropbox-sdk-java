@@ -28,7 +28,7 @@ public class TeamMergeRequestReminderType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamMergeRequestReminderType(String description) {
+    public TeamMergeRequestReminderType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

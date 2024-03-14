@@ -28,7 +28,7 @@ public class OutdatedLinkViewReportFailedType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public OutdatedLinkViewReportFailedType(String description) {
+    public OutdatedLinkViewReportFailedType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

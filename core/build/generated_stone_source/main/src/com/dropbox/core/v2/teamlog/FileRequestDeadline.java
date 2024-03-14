@@ -38,7 +38,7 @@ public class FileRequestDeadline {
      * @param allowLateUploads  If set, allow uploads after the deadline has
      *     passed.
      */
-    public FileRequestDeadline(Date deadline, String allowLateUploads) {
+    public FileRequestDeadline(@javax.annotation.Nullable Date deadline, @javax.annotation.Nullable String allowLateUploads) {
         this.deadline = LangUtil.truncateMillis(deadline);
         this.allowLateUploads = allowLateUploads;
     }

@@ -28,7 +28,7 @@ public class SharedLinkCopyType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedLinkCopyType(String description) {
+    public SharedLinkCopyType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

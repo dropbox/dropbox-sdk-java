@@ -36,7 +36,7 @@ public class UserCustomQuotaResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UserCustomQuotaResult(UserSelectorArg user, Long quotaGb) {
+    public UserCustomQuotaResult(@javax.annotation.Nonnull UserSelectorArg user, @javax.annotation.Nullable Long quotaGb) {
         if (user == null) {
             throw new IllegalArgumentException("Required value for 'user' is null");
         }

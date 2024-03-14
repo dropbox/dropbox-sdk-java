@@ -28,7 +28,7 @@ public class ViewerInfoPolicyChangedType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ViewerInfoPolicyChangedType(String description) {
+    public ViewerInfoPolicyChangedType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

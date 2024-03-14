@@ -40,7 +40,7 @@ class ListMembersDevicesArg {
      * @param includeMobileClients  Whether to list mobile clients of the team
      *     members.
      */
-    public ListMembersDevicesArg(String cursor, boolean includeWebSessions, boolean includeDesktopClients, boolean includeMobileClients) {
+    public ListMembersDevicesArg(@javax.annotation.Nullable String cursor, boolean includeWebSessions, boolean includeDesktopClients, boolean includeMobileClients) {
         this.cursor = cursor;
         this.includeWebSessions = includeWebSessions;
         this.includeDesktopClients = includeDesktopClients;

@@ -51,7 +51,7 @@ public class MobileClientSession extends DeviceSession {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MobileClientSession(String sessionId, String deviceName, MobileClientPlatform clientType, String ipAddress, String country, Date created, Date updated, String clientVersion, String osVersion, String lastCarrier) {
+    public MobileClientSession(@javax.annotation.Nonnull String sessionId, @javax.annotation.Nonnull String deviceName, @javax.annotation.Nonnull MobileClientPlatform clientType, @javax.annotation.Nullable String ipAddress, @javax.annotation.Nullable String country, @javax.annotation.Nullable Date created, @javax.annotation.Nullable Date updated, @javax.annotation.Nullable String clientVersion, @javax.annotation.Nullable String osVersion, @javax.annotation.Nullable String lastCarrier) {
         super(sessionId, ipAddress, country, created, updated);
         if (deviceName == null) {
             throw new IllegalArgumentException("Required value for 'deviceName' is null");

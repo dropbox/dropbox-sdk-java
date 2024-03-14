@@ -28,7 +28,7 @@ public class PaperDocChangeSharingPolicyType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperDocChangeSharingPolicyType(String description) {
+    public PaperDocChangeSharingPolicyType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

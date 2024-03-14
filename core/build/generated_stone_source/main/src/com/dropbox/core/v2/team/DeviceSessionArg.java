@@ -31,7 +31,7 @@ public class DeviceSessionArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeviceSessionArg(String sessionId, String teamMemberId) {
+    public DeviceSessionArg(@javax.annotation.Nonnull String sessionId, @javax.annotation.Nonnull String teamMemberId) {
         if (sessionId == null) {
             throw new IllegalArgumentException("Required value for 'sessionId' is null");
         }

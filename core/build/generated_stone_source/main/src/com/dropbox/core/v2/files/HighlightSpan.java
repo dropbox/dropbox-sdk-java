@@ -31,7 +31,7 @@ public class HighlightSpan {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public HighlightSpan(String highlightStr, boolean isHighlighted) {
+    public HighlightSpan(@javax.annotation.Nonnull String highlightStr, boolean isHighlighted) {
         if (highlightStr == null) {
             throw new IllegalArgumentException("Required value for 'highlightStr' is null");
         }

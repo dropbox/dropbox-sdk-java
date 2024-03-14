@@ -28,7 +28,7 @@ public class UndoOrganizeFolderWithTidyType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UndoOrganizeFolderWithTidyType(String description) {
+    public UndoOrganizeFolderWithTidyType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

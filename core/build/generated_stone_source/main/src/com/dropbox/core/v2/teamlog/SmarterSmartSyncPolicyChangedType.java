@@ -28,7 +28,7 @@ public class SmarterSmartSyncPolicyChangedType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SmarterSmartSyncPolicyChangedType(String description) {
+    public SmarterSmartSyncPolicyChangedType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

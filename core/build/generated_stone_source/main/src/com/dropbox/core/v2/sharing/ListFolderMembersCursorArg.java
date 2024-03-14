@@ -38,7 +38,7 @@ class ListFolderMembersCursorArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFolderMembersCursorArg(List<MemberAction> actions, long limit) {
+    public ListFolderMembersCursorArg(@javax.annotation.Nullable List<MemberAction> actions, long limit) {
         if (actions != null) {
             for (MemberAction x : actions) {
                 if (x == null) {

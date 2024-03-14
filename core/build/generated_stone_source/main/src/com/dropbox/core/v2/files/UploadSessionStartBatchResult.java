@@ -34,7 +34,7 @@ public class UploadSessionStartBatchResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UploadSessionStartBatchResult(List<String> sessionIds) {
+    public UploadSessionStartBatchResult(@javax.annotation.Nonnull List<String> sessionIds) {
         if (sessionIds == null) {
             throw new IllegalArgumentException("Required value for 'sessionIds' is null");
         }

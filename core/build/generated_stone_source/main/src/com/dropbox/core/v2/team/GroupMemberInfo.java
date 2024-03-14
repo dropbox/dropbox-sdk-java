@@ -35,7 +35,7 @@ public class GroupMemberInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupMemberInfo(MemberProfile profile, GroupAccessType accessType) {
+    public GroupMemberInfo(@javax.annotation.Nonnull MemberProfile profile, @javax.annotation.Nonnull GroupAccessType accessType) {
         if (profile == null) {
             throw new IllegalArgumentException("Required value for 'profile' is null");
         }

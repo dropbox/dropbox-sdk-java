@@ -28,7 +28,7 @@ public class SharedLinkChangeVisibilityType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedLinkChangeVisibilityType(String description) {
+    public SharedLinkChangeVisibilityType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

@@ -35,7 +35,7 @@ public class TeamMergeRequestReminderShownToPrimaryTeamDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamMergeRequestReminderShownToPrimaryTeamDetails(String secondaryTeam, String sentTo) {
+    public TeamMergeRequestReminderShownToPrimaryTeamDetails(@javax.annotation.Nonnull String secondaryTeam, @javax.annotation.Nonnull String sentTo) {
         if (secondaryTeam == null) {
             throw new IllegalArgumentException("Required value for 'secondaryTeam' is null");
         }

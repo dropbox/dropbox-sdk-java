@@ -32,7 +32,7 @@ public class DeviceChangeIpWebDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeviceChangeIpWebDetails(String userAgent) {
+    public DeviceChangeIpWebDetails(@javax.annotation.Nonnull String userAgent) {
         if (userAgent == null) {
             throw new IllegalArgumentException("Required value for 'userAgent' is null");
         }

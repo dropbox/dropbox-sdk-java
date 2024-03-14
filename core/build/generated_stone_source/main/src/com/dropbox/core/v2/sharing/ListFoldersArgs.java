@@ -38,7 +38,7 @@ class ListFoldersArgs {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFoldersArgs(long limit, List<FolderAction> actions) {
+    public ListFoldersArgs(long limit, @javax.annotation.Nullable List<FolderAction> actions) {
         if (limit < 1L) {
             throw new IllegalArgumentException("Number 'limit' is smaller than 1L");
         }

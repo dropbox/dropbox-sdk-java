@@ -34,7 +34,7 @@ public class GuestAdminSignedOutViaTrustedTeamsDetails {
      * @param teamName  Host team name.
      * @param trustedTeamName  Trusted team name.
      */
-    public GuestAdminSignedOutViaTrustedTeamsDetails(String teamName, String trustedTeamName) {
+    public GuestAdminSignedOutViaTrustedTeamsDetails(@javax.annotation.Nullable String teamName, @javax.annotation.Nullable String trustedTeamName) {
         this.teamName = teamName;
         this.trustedTeamName = trustedTeamName;
     }

@@ -46,7 +46,7 @@ public class TeamMemberPolicies {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamMemberPolicies(TeamSharingPolicies sharing, EmmState emmState, OfficeAddInPolicy officeAddin, SuggestMembersPolicy suggestMembersPolicy) {
+    public TeamMemberPolicies(@javax.annotation.Nonnull TeamSharingPolicies sharing, @javax.annotation.Nonnull EmmState emmState, @javax.annotation.Nonnull OfficeAddInPolicy officeAddin, @javax.annotation.Nonnull SuggestMembersPolicy suggestMembersPolicy) {
         if (sharing == null) {
             throw new IllegalArgumentException("Required value for 'sharing' is null");
         }

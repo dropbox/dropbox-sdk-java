@@ -32,7 +32,7 @@ public class FileTransfersTransferDownloadDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileTransfersTransferDownloadDetails(String fileTransferId) {
+    public FileTransfersTransferDownloadDetails(@javax.annotation.Nonnull String fileTransferId) {
         if (fileTransferId == null) {
             throw new IllegalArgumentException("Required value for 'fileTransferId' is null");
         }

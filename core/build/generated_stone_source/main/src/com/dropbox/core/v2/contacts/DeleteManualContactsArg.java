@@ -30,7 +30,7 @@ class DeleteManualContactsArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeleteManualContactsArg(List<String> emailAddresses) {
+    public DeleteManualContactsArg(@javax.annotation.Nonnull List<String> emailAddresses) {
         if (emailAddresses == null) {
             throw new IllegalArgumentException("Required value for 'emailAddresses' is null");
         }

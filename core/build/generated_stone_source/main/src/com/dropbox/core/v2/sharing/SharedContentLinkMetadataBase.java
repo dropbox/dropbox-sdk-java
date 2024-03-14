@@ -56,7 +56,7 @@ public class SharedContentLinkMetadataBase {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentLinkMetadataBase(List<LinkAudience> audienceOptions, LinkAudience currentAudience, List<LinkPermission> linkPermissions, boolean passwordProtected, AccessLevel accessLevel, AudienceRestrictingSharedFolder audienceRestrictingSharedFolder, Date expiry) {
+    public SharedContentLinkMetadataBase(@javax.annotation.Nonnull List<LinkAudience> audienceOptions, @javax.annotation.Nonnull LinkAudience currentAudience, @javax.annotation.Nonnull List<LinkPermission> linkPermissions, boolean passwordProtected, @javax.annotation.Nullable AccessLevel accessLevel, @javax.annotation.Nullable AudienceRestrictingSharedFolder audienceRestrictingSharedFolder, @javax.annotation.Nullable Date expiry) {
         this.accessLevel = accessLevel;
         if (audienceOptions == null) {
             throw new IllegalArgumentException("Required value for 'audienceOptions' is null");

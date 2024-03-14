@@ -28,7 +28,7 @@ public class NoteSharedType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public NoteSharedType(String description) {
+    public NoteSharedType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

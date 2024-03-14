@@ -34,7 +34,7 @@ public class ResendVerificationEmailResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ResendVerificationEmailResult(List<UserResendResult> results) {
+    public ResendVerificationEmailResult(@javax.annotation.Nonnull List<UserResendResult> results) {
         if (results == null) {
             throw new IllegalArgumentException("Required value for 'results' is null");
         }

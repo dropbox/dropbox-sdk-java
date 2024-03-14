@@ -28,7 +28,7 @@ public class ExtendedVersionHistoryChangePolicyType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ExtendedVersionHistoryChangePolicyType(String description) {
+    public ExtendedVersionHistoryChangePolicyType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

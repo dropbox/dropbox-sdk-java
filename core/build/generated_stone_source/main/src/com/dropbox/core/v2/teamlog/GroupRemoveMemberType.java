@@ -28,7 +28,7 @@ public class GroupRemoveMemberType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupRemoveMemberType(String description) {
+    public GroupRemoveMemberType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

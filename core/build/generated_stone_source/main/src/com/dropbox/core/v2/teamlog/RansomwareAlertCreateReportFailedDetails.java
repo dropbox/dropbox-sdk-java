@@ -33,7 +33,7 @@ public class RansomwareAlertCreateReportFailedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RansomwareAlertCreateReportFailedDetails(TeamReportFailureReason failureReason) {
+    public RansomwareAlertCreateReportFailedDetails(@javax.annotation.Nonnull TeamReportFailureReason failureReason) {
         if (failureReason == null) {
             throw new IllegalArgumentException("Required value for 'failureReason' is null");
         }

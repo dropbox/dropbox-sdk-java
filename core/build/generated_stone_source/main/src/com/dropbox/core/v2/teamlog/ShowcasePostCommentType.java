@@ -28,7 +28,7 @@ public class ShowcasePostCommentType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ShowcasePostCommentType(String description) {
+    public ShowcasePostCommentType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

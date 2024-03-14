@@ -42,7 +42,7 @@ class PaperUpdateArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperUpdateArg(String path, ImportFormat importFormat, PaperDocUpdatePolicy docUpdatePolicy, Long paperRevision) {
+    public PaperUpdateArg(@javax.annotation.Nonnull String path, @javax.annotation.Nonnull ImportFormat importFormat, @javax.annotation.Nonnull PaperDocUpdatePolicy docUpdatePolicy, @javax.annotation.Nullable Long paperRevision) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }

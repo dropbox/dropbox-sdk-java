@@ -39,7 +39,7 @@ class CreateFolderBatchArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public CreateFolderBatchArg(List<String> paths, boolean autorename, boolean forceAsync) {
+    public CreateFolderBatchArg(@javax.annotation.Nonnull List<String> paths, boolean autorename, boolean forceAsync) {
         if (paths == null) {
             throw new IllegalArgumentException("Required value for 'paths' is null");
         }

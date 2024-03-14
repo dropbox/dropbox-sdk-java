@@ -33,7 +33,7 @@ public class TeamMergeRequestExpiredShownToSecondaryTeamDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamMergeRequestExpiredShownToSecondaryTeamDetails(String sentTo) {
+    public TeamMergeRequestExpiredShownToSecondaryTeamDetails(@javax.annotation.Nonnull String sentTo) {
         if (sentTo == null) {
             throw new IllegalArgumentException("Required value for 'sentTo' is null");
         }

@@ -28,7 +28,7 @@ public class PaperContentRemoveFromFolderType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperContentRemoveFromFolderType(String description) {
+    public PaperContentRemoveFromFolderType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

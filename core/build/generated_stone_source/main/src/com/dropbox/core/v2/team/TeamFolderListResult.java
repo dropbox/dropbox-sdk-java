@@ -45,7 +45,7 @@ public class TeamFolderListResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamFolderListResult(List<TeamFolderMetadata> teamFolders, String cursor, boolean hasMore) {
+    public TeamFolderListResult(@javax.annotation.Nonnull List<TeamFolderMetadata> teamFolders, @javax.annotation.Nonnull String cursor, boolean hasMore) {
         if (teamFolders == null) {
             throw new IllegalArgumentException("Required value for 'teamFolders' is null");
         }

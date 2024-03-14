@@ -28,7 +28,7 @@ public class SsoChangeLoginUrlType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SsoChangeLoginUrlType(String description) {
+    public SsoChangeLoginUrlType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

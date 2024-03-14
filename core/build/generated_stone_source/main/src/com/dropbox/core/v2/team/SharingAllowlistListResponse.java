@@ -45,7 +45,7 @@ public class SharingAllowlistListResponse {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharingAllowlistListResponse(List<String> domains, List<String> emails, String cursor, boolean hasMore) {
+    public SharingAllowlistListResponse(@javax.annotation.Nonnull List<String> domains, @javax.annotation.Nonnull List<String> emails, @javax.annotation.Nonnull String cursor, boolean hasMore) {
         if (domains == null) {
             throw new IllegalArgumentException("Required value for 'domains' is null");
         }

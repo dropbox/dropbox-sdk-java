@@ -28,7 +28,7 @@ public class DownloadZipResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DownloadZipResult(FolderMetadata metadata) {
+    public DownloadZipResult(@javax.annotation.Nonnull FolderMetadata metadata) {
         if (metadata == null) {
             throw new IllegalArgumentException("Required value for 'metadata' is null");
         }

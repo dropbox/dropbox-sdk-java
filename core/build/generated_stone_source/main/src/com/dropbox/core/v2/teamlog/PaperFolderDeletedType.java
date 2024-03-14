@@ -28,7 +28,7 @@ public class PaperFolderDeletedType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperFolderDeletedType(String description) {
+    public PaperFolderDeletedType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

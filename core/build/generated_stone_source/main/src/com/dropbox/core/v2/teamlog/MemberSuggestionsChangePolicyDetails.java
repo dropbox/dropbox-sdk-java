@@ -37,7 +37,7 @@ public class MemberSuggestionsChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberSuggestionsChangePolicyDetails(MemberSuggestionsPolicy newValue, MemberSuggestionsPolicy previousValue) {
+    public MemberSuggestionsChangePolicyDetails(@javax.annotation.Nonnull MemberSuggestionsPolicy newValue, @javax.annotation.Nullable MemberSuggestionsPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

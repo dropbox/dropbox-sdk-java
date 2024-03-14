@@ -30,7 +30,7 @@ public class GetTagsResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetTagsResult(List<PathToTags> pathsToTags) {
+    public GetTagsResult(@javax.annotation.Nonnull List<PathToTags> pathsToTags) {
         if (pathsToTags == null) {
             throw new IllegalArgumentException("Required value for 'pathsToTags' is null");
         }

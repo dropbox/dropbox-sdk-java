@@ -28,7 +28,7 @@ public class PaperPublishedLinkChangePermissionType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperPublishedLinkChangePermissionType(String description) {
+    public PaperPublishedLinkChangePermissionType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

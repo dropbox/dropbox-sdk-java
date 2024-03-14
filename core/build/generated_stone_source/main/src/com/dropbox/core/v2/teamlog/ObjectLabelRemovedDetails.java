@@ -32,7 +32,7 @@ public class ObjectLabelRemovedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ObjectLabelRemovedDetails(LabelType labelType) {
+    public ObjectLabelRemovedDetails(@javax.annotation.Nonnull LabelType labelType) {
         if (labelType == null) {
             throw new IllegalArgumentException("Required value for 'labelType' is null");
         }

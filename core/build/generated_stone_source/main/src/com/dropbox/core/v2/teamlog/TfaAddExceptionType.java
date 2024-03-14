@@ -28,7 +28,7 @@ public class TfaAddExceptionType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TfaAddExceptionType(String description) {
+    public TfaAddExceptionType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

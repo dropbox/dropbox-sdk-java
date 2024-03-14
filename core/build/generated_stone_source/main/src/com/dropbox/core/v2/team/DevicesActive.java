@@ -60,7 +60,7 @@ public class DevicesActive {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DevicesActive(List<Long> windows, List<Long> macos, List<Long> linux, List<Long> ios, List<Long> android, List<Long> other, List<Long> total) {
+    public DevicesActive(@javax.annotation.Nonnull List<Long> windows, @javax.annotation.Nonnull List<Long> macos, @javax.annotation.Nonnull List<Long> linux, @javax.annotation.Nonnull List<Long> ios, @javax.annotation.Nonnull List<Long> android, @javax.annotation.Nonnull List<Long> other, @javax.annotation.Nonnull List<Long> total) {
         if (windows == null) {
             throw new IllegalArgumentException("Required value for 'windows' is null");
         }

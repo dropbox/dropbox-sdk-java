@@ -35,7 +35,7 @@ public class DataPlacementRestrictionChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DataPlacementRestrictionChangePolicyDetails(PlacementRestriction previousValue, PlacementRestriction newValue) {
+    public DataPlacementRestrictionChangePolicyDetails(@javax.annotation.Nonnull PlacementRestriction previousValue, @javax.annotation.Nonnull PlacementRestriction newValue) {
         if (previousValue == null) {
             throw new IllegalArgumentException("Required value for 'previousValue' is null");
         }

@@ -38,7 +38,7 @@ public class SharedFolderNestDetails {
      * @param previousNsPath  Previous namespace path.
      * @param newNsPath  New namespace path.
      */
-    public SharedFolderNestDetails(String previousParentNsId, String newParentNsId, String previousNsPath, String newNsPath) {
+    public SharedFolderNestDetails(@javax.annotation.Nullable String previousParentNsId, @javax.annotation.Nullable String newParentNsId, @javax.annotation.Nullable String previousNsPath, @javax.annotation.Nullable String newNsPath) {
         this.previousParentNsId = previousParentNsId;
         this.newParentNsId = newParentNsId;
         this.previousNsPath = previousNsPath;

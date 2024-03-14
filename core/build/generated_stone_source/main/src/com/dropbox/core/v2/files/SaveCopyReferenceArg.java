@@ -34,7 +34,7 @@ class SaveCopyReferenceArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SaveCopyReferenceArg(String copyReference, String path) {
+    public SaveCopyReferenceArg(@javax.annotation.Nonnull String copyReference, @javax.annotation.Nonnull String path) {
         if (copyReference == null) {
             throw new IllegalArgumentException("Required value for 'copyReference' is null");
         }

@@ -36,7 +36,7 @@ public class FileCommentsChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileCommentsChangePolicyDetails(FileCommentsPolicy newValue, FileCommentsPolicy previousValue) {
+    public FileCommentsChangePolicyDetails(@javax.annotation.Nonnull FileCommentsPolicy newValue, @javax.annotation.Nullable FileCommentsPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

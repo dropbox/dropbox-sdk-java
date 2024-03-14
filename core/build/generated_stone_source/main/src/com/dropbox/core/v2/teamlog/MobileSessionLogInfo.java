@@ -27,7 +27,7 @@ public class MobileSessionLogInfo extends SessionLogInfo {
      *
      * @param sessionId  Session ID.
      */
-    public MobileSessionLogInfo(String sessionId) {
+    public MobileSessionLogInfo(@javax.annotation.Nullable String sessionId) {
         super(sessionId);
     }
 

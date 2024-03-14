@@ -28,7 +28,7 @@ public class GroupAddExternalIdType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupAddExternalIdType(String description) {
+    public GroupAddExternalIdType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

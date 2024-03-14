@@ -31,7 +31,7 @@ public class GetTemporaryLinkResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetTemporaryLinkResult(FileMetadata metadata, String link) {
+    public GetTemporaryLinkResult(@javax.annotation.Nonnull FileMetadata metadata, @javax.annotation.Nonnull String link) {
         if (metadata == null) {
             throw new IllegalArgumentException("Required value for 'metadata' is null");
         }

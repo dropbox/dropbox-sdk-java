@@ -35,7 +35,7 @@ public class TeamSelectiveSyncSettingsChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamSelectiveSyncSettingsChangedDetails(SyncSetting previousValue, SyncSetting newValue) {
+    public TeamSelectiveSyncSettingsChangedDetails(@javax.annotation.Nonnull SyncSetting previousValue, @javax.annotation.Nonnull SyncSetting newValue) {
         if (previousValue == null) {
             throw new IllegalArgumentException("Required value for 'previousValue' is null");
         }

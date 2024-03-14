@@ -35,7 +35,7 @@ class DownloadArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DownloadArg(String path, String rev) {
+    public DownloadArg(@javax.annotation.Nonnull String path, @javax.annotation.Nullable String rev) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }

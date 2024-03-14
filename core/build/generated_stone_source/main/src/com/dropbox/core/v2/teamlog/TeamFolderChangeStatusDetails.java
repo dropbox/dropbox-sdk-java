@@ -36,7 +36,7 @@ public class TeamFolderChangeStatusDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamFolderChangeStatusDetails(TeamFolderStatus newValue, TeamFolderStatus previousValue) {
+    public TeamFolderChangeStatusDetails(@javax.annotation.Nonnull TeamFolderStatus newValue, @javax.annotation.Nullable TeamFolderStatus previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

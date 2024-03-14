@@ -50,7 +50,7 @@ class ListFileMembersArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFileMembersArg(String file, List<MemberAction> actions, boolean includeInherited, long limit) {
+    public ListFileMembersArg(@javax.annotation.Nonnull String file, @javax.annotation.Nullable List<MemberAction> actions, boolean includeInherited, long limit) {
         if (file == null) {
             throw new IllegalArgumentException("Required value for 'file' is null");
         }

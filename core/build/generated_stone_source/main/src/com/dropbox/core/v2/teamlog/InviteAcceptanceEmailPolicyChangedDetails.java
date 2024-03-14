@@ -34,7 +34,7 @@ public class InviteAcceptanceEmailPolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public InviteAcceptanceEmailPolicyChangedDetails(InviteAcceptanceEmailPolicy newValue, InviteAcceptanceEmailPolicy previousValue) {
+    public InviteAcceptanceEmailPolicyChangedDetails(@javax.annotation.Nonnull InviteAcceptanceEmailPolicy newValue, @javax.annotation.Nonnull InviteAcceptanceEmailPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

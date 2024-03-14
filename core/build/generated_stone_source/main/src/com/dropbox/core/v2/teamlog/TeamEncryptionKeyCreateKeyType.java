@@ -28,7 +28,7 @@ public class TeamEncryptionKeyCreateKeyType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamEncryptionKeyCreateKeyType(String description) {
+    public TeamEncryptionKeyCreateKeyType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

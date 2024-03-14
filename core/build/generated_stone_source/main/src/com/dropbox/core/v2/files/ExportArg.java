@@ -38,7 +38,7 @@ public class ExportArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ExportArg(String path, String exportFormat) {
+    public ExportArg(@javax.annotation.Nonnull String path, @javax.annotation.Nullable String exportFormat) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }

@@ -30,7 +30,7 @@ public class RevokeLinkedAppBatchResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RevokeLinkedAppBatchResult(List<RevokeLinkedAppStatus> revokeLinkedAppStatus) {
+    public RevokeLinkedAppBatchResult(@javax.annotation.Nonnull List<RevokeLinkedAppStatus> revokeLinkedAppStatus) {
         if (revokeLinkedAppStatus == null) {
             throw new IllegalArgumentException("Required value for 'revokeLinkedAppStatus' is null");
         }

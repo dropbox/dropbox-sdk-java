@@ -41,7 +41,7 @@ public class AppPermissionsChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AppPermissionsChangedDetails(AdminConsoleAppPolicy previousValue, AdminConsoleAppPolicy newValue, String appName, AdminConsoleAppPermission permission) {
+    public AppPermissionsChangedDetails(@javax.annotation.Nonnull AdminConsoleAppPolicy previousValue, @javax.annotation.Nonnull AdminConsoleAppPolicy newValue, @javax.annotation.Nullable String appName, @javax.annotation.Nullable AdminConsoleAppPermission permission) {
         this.appName = appName;
         this.permission = permission;
         if (previousValue == null) {

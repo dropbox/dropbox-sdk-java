@@ -33,7 +33,7 @@ public class OutdatedLinkViewReportFailedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public OutdatedLinkViewReportFailedDetails(TeamReportFailureReason failureReason) {
+    public OutdatedLinkViewReportFailedDetails(@javax.annotation.Nonnull TeamReportFailureReason failureReason) {
         if (failureReason == null) {
             throw new IllegalArgumentException("Required value for 'failureReason' is null");
         }

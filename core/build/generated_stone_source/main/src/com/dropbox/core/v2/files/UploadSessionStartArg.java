@@ -43,7 +43,7 @@ class UploadSessionStartArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UploadSessionStartArg(boolean close, UploadSessionType sessionType, String contentHash) {
+    public UploadSessionStartArg(boolean close, @javax.annotation.Nullable UploadSessionType sessionType, @javax.annotation.Nullable String contentHash) {
         this.close = close;
         this.sessionType = sessionType;
         if (contentHash != null) {

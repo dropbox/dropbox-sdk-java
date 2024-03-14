@@ -28,7 +28,7 @@ public class PaperContentArchiveType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperContentArchiveType(String description) {
+    public PaperContentArchiveType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

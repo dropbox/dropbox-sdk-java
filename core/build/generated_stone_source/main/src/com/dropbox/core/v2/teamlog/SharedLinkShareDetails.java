@@ -40,7 +40,7 @@ public class SharedLinkShareDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedLinkShareDetails(UserLogInfo sharedLinkOwner, List<ExternalUserLogInfo> externalUsers) {
+    public SharedLinkShareDetails(@javax.annotation.Nullable UserLogInfo sharedLinkOwner, @javax.annotation.Nullable List<ExternalUserLogInfo> externalUsers) {
         this.sharedLinkOwner = sharedLinkOwner;
         if (externalUsers != null) {
             for (ExternalUserLogInfo x : externalUsers) {

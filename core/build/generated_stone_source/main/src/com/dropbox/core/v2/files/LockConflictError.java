@@ -28,7 +28,7 @@ public class LockConflictError {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LockConflictError(FileLock lock) {
+    public LockConflictError(@javax.annotation.Nonnull FileLock lock) {
         if (lock == null) {
             throw new IllegalArgumentException("Required value for 'lock' is null");
         }

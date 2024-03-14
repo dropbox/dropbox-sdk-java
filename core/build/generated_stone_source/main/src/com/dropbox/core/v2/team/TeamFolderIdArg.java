@@ -30,7 +30,7 @@ class TeamFolderIdArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamFolderIdArg(String teamFolderId) {
+    public TeamFolderIdArg(@javax.annotation.Nonnull String teamFolderId) {
         if (teamFolderId == null) {
             throw new IllegalArgumentException("Required value for 'teamFolderId' is null");
         }

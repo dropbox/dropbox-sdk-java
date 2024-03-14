@@ -35,7 +35,7 @@ public class DropboxPasswordsNewDeviceEnrolledDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DropboxPasswordsNewDeviceEnrolledDetails(boolean isFirstDevice, String platform) {
+    public DropboxPasswordsNewDeviceEnrolledDetails(boolean isFirstDevice, @javax.annotation.Nonnull String platform) {
         this.isFirstDevice = isFirstDevice;
         if (platform == null) {
             throw new IllegalArgumentException("Required value for 'platform' is null");

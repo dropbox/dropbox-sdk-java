@@ -33,7 +33,7 @@ public class NonTrustedTeamDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public NonTrustedTeamDetails(String team) {
+    public NonTrustedTeamDetails(@javax.annotation.Nonnull String team) {
         if (team == null) {
             throw new IllegalArgumentException("Required value for 'team' is null");
         }

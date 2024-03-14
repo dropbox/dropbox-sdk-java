@@ -38,7 +38,7 @@ public class PaperFolderChangeSubscriptionDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperFolderChangeSubscriptionDetails(String eventUuid, String newSubscriptionLevel, String previousSubscriptionLevel) {
+    public PaperFolderChangeSubscriptionDetails(@javax.annotation.Nonnull String eventUuid, @javax.annotation.Nonnull String newSubscriptionLevel, @javax.annotation.Nullable String previousSubscriptionLevel) {
         if (eventUuid == null) {
             throw new IllegalArgumentException("Required value for 'eventUuid' is null");
         }

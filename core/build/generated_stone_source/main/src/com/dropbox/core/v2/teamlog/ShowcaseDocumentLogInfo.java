@@ -34,7 +34,7 @@ public class ShowcaseDocumentLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ShowcaseDocumentLogInfo(String showcaseId, String showcaseTitle) {
+    public ShowcaseDocumentLogInfo(@javax.annotation.Nonnull String showcaseId, @javax.annotation.Nonnull String showcaseTitle) {
         if (showcaseId == null) {
             throw new IllegalArgumentException("Required value for 'showcaseId' is null");
         }

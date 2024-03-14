@@ -31,7 +31,7 @@ public class ListFileMembersCountResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFileMembersCountResult(SharedFileMembers members, long memberCount) {
+    public ListFileMembersCountResult(@javax.annotation.Nonnull SharedFileMembers members, long memberCount) {
         if (members == null) {
             throw new IllegalArgumentException("Required value for 'members' is null");
         }

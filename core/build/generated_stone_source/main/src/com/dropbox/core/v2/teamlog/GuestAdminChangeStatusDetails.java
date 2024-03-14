@@ -45,7 +45,7 @@ public class GuestAdminChangeStatusDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GuestAdminChangeStatusDetails(boolean isGuest, TrustedTeamsRequestState previousValue, TrustedTeamsRequestState newValue, TrustedTeamsRequestAction actionDetails, String guestTeamName, String hostTeamName) {
+    public GuestAdminChangeStatusDetails(boolean isGuest, @javax.annotation.Nonnull TrustedTeamsRequestState previousValue, @javax.annotation.Nonnull TrustedTeamsRequestState newValue, @javax.annotation.Nonnull TrustedTeamsRequestAction actionDetails, @javax.annotation.Nullable String guestTeamName, @javax.annotation.Nullable String hostTeamName) {
         this.isGuest = isGuest;
         this.guestTeamName = guestTeamName;
         this.hostTeamName = hostTeamName;

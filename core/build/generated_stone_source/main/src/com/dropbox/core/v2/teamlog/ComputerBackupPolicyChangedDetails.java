@@ -35,7 +35,7 @@ public class ComputerBackupPolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ComputerBackupPolicyChangedDetails(ComputerBackupPolicy newValue, ComputerBackupPolicy previousValue) {
+    public ComputerBackupPolicyChangedDetails(@javax.annotation.Nonnull ComputerBackupPolicy newValue, @javax.annotation.Nonnull ComputerBackupPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

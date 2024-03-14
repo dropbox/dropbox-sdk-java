@@ -44,7 +44,7 @@ public class ExportMetadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ExportMetadata(String name, long size, String exportHash, Long paperRevision) {
+    public ExportMetadata(@javax.annotation.Nonnull String name, long size, @javax.annotation.Nullable String exportHash, @javax.annotation.Nullable Long paperRevision) {
         if (name == null) {
             throw new IllegalArgumentException("Required value for 'name' is null");
         }

@@ -35,7 +35,7 @@ public class MemberSpaceLimitsChangeCapsTypePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberSpaceLimitsChangeCapsTypePolicyDetails(SpaceCapsType previousValue, SpaceCapsType newValue) {
+    public MemberSpaceLimitsChangeCapsTypePolicyDetails(@javax.annotation.Nonnull SpaceCapsType previousValue, @javax.annotation.Nonnull SpaceCapsType newValue) {
         if (previousValue == null) {
             throw new IllegalArgumentException("Required value for 'previousValue' is null");
         }

@@ -49,7 +49,7 @@ public class ListUsersOnFolderResponse {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListUsersOnFolderResponse(List<InviteeInfo> invitees, List<UserInfo> users, Cursor cursor, boolean hasMore) {
+    public ListUsersOnFolderResponse(@javax.annotation.Nonnull List<InviteeInfo> invitees, @javax.annotation.Nonnull List<UserInfo> users, @javax.annotation.Nonnull Cursor cursor, boolean hasMore) {
         if (invitees == null) {
             throw new IllegalArgumentException("Required value for 'invitees' is null");
         }

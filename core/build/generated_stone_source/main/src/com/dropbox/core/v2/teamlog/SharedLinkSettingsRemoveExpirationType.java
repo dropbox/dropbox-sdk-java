@@ -28,7 +28,7 @@ public class SharedLinkSettingsRemoveExpirationType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedLinkSettingsRemoveExpirationType(String description) {
+    public SharedLinkSettingsRemoveExpirationType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

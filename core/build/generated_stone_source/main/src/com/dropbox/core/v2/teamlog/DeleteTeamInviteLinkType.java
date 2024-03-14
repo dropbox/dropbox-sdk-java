@@ -28,7 +28,7 @@ public class DeleteTeamInviteLinkType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeleteTeamInviteLinkType(String description) {
+    public DeleteTeamInviteLinkType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

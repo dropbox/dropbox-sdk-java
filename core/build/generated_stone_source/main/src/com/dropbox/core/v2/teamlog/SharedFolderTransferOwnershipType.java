@@ -28,7 +28,7 @@ public class SharedFolderTransferOwnershipType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedFolderTransferOwnershipType(String description) {
+    public SharedFolderTransferOwnershipType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

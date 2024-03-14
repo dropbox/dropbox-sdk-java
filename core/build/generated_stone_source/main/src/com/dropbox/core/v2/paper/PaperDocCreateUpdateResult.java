@@ -33,7 +33,7 @@ public class PaperDocCreateUpdateResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperDocCreateUpdateResult(String docId, long revision, String title) {
+    public PaperDocCreateUpdateResult(@javax.annotation.Nonnull String docId, long revision, @javax.annotation.Nonnull String title) {
         if (docId == null) {
             throw new IllegalArgumentException("Required value for 'docId' is null");
         }

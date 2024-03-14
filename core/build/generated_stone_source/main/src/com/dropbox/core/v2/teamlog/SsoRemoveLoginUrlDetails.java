@@ -33,7 +33,7 @@ public class SsoRemoveLoginUrlDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SsoRemoveLoginUrlDetails(String previousValue) {
+    public SsoRemoveLoginUrlDetails(@javax.annotation.Nonnull String previousValue) {
         if (previousValue == null) {
             throw new IllegalArgumentException("Required value for 'previousValue' is null");
         }

@@ -28,7 +28,7 @@ public class CreateTeamInviteLinkType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public CreateTeamInviteLinkType(String description) {
+    public CreateTeamInviteLinkType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

@@ -38,7 +38,7 @@ class GetSharedLinkMetadataArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetSharedLinkMetadataArg(String url, String path, String linkPassword) {
+    public GetSharedLinkMetadataArg(@javax.annotation.Nonnull String url, @javax.annotation.Nullable String path, @javax.annotation.Nullable String linkPassword) {
         if (url == null) {
             throw new IllegalArgumentException("Required value for 'url' is null");
         }

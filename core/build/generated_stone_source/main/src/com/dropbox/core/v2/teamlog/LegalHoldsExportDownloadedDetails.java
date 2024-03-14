@@ -43,7 +43,7 @@ public class LegalHoldsExportDownloadedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LegalHoldsExportDownloadedDetails(String legalHoldId, String name, String exportName, String part, String fileName) {
+    public LegalHoldsExportDownloadedDetails(@javax.annotation.Nonnull String legalHoldId, @javax.annotation.Nonnull String name, @javax.annotation.Nonnull String exportName, @javax.annotation.Nullable String part, @javax.annotation.Nullable String fileName) {
         if (legalHoldId == null) {
             throw new IllegalArgumentException("Required value for 'legalHoldId' is null");
         }

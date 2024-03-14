@@ -38,7 +38,7 @@ public class GovernancePolicyExportRemovedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GovernancePolicyExportRemovedDetails(String governancePolicyId, String name, String exportName, PolicyType policyType) {
+    public GovernancePolicyExportRemovedDetails(@javax.annotation.Nonnull String governancePolicyId, @javax.annotation.Nonnull String name, @javax.annotation.Nonnull String exportName, @javax.annotation.Nullable PolicyType policyType) {
         if (governancePolicyId == null) {
             throw new IllegalArgumentException("Required value for 'governancePolicyId' is null");
         }

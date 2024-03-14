@@ -64,7 +64,7 @@ public class SharedFolderMetadataBase {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedFolderMetadataBase(AccessLevel accessType, boolean isInsideTeamFolder, boolean isTeamFolder, List<String> ownerDisplayNames, Team ownerTeam, String parentSharedFolderId, String pathDisplay, String pathLower, String parentFolderName) {
+    public SharedFolderMetadataBase(@javax.annotation.Nonnull AccessLevel accessType, boolean isInsideTeamFolder, boolean isTeamFolder, @javax.annotation.Nullable List<String> ownerDisplayNames, @javax.annotation.Nullable Team ownerTeam, @javax.annotation.Nullable String parentSharedFolderId, @javax.annotation.Nullable String pathDisplay, @javax.annotation.Nullable String pathLower, @javax.annotation.Nullable String parentFolderName) {
         if (accessType == null) {
             throw new IllegalArgumentException("Required value for 'accessType' is null");
         }

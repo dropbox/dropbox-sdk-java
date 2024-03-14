@@ -35,7 +35,7 @@ public class AudienceExceptionContentInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AudienceExceptionContentInfo(String name) {
+    public AudienceExceptionContentInfo(@javax.annotation.Nonnull String name) {
         if (name == null) {
             throw new IllegalArgumentException("Required value for 'name' is null");
         }

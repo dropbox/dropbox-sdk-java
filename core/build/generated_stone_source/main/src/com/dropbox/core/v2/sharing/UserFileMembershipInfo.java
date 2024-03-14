@@ -56,7 +56,7 @@ public class UserFileMembershipInfo extends UserMembershipInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UserFileMembershipInfo(AccessLevel accessType, UserInfo user, List<MemberPermission> permissions, String initials, boolean isInherited, Date timeLastSeen, PlatformType platformType) {
+    public UserFileMembershipInfo(@javax.annotation.Nonnull AccessLevel accessType, @javax.annotation.Nonnull UserInfo user, @javax.annotation.Nullable List<MemberPermission> permissions, @javax.annotation.Nullable String initials, boolean isInherited, @javax.annotation.Nullable Date timeLastSeen, @javax.annotation.Nullable PlatformType platformType) {
         super(accessType, user, permissions, initials, isInherited);
         this.timeLastSeen = LangUtil.truncateMillis(timeLastSeen);
         this.platformType = platformType;

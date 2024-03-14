@@ -35,7 +35,7 @@ class ListMembersAppsArg {
      *     a cursor, the following requests should include the received cursors
      *     in order to receive the next sub list of the team applications.
      */
-    public ListMembersAppsArg(String cursor) {
+    public ListMembersAppsArg(@javax.annotation.Nullable String cursor) {
         this.cursor = cursor;
     }
 

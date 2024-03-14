@@ -30,7 +30,7 @@ public class FeaturesGetValuesBatchResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FeaturesGetValuesBatchResult(List<FeatureValue> values) {
+    public FeaturesGetValuesBatchResult(@javax.annotation.Nonnull List<FeatureValue> values) {
         if (values == null) {
             throw new IllegalArgumentException("Required value for 'values' is null");
         }

@@ -28,7 +28,7 @@ public class SharedContentRemoveLinkPasswordType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentRemoveLinkPasswordType(String description) {
+    public SharedContentRemoveLinkPasswordType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

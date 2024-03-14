@@ -37,7 +37,7 @@ public class DeviceDeleteOnUnlinkFailDetails {
      * @param displayName  The device name. Might be missing due to historical
      *     data gap.
      */
-    public DeviceDeleteOnUnlinkFailDetails(long numFailures, SessionLogInfo sessionInfo, String displayName) {
+    public DeviceDeleteOnUnlinkFailDetails(long numFailures, @javax.annotation.Nullable SessionLogInfo sessionInfo, @javax.annotation.Nullable String displayName) {
         this.sessionInfo = sessionInfo;
         this.displayName = displayName;
         this.numFailures = numFailures;

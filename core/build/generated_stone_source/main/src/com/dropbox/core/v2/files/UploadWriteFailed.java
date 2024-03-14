@@ -35,7 +35,7 @@ public class UploadWriteFailed {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UploadWriteFailed(WriteError reason, String uploadSessionId) {
+    public UploadWriteFailed(@javax.annotation.Nonnull WriteError reason, @javax.annotation.Nonnull String uploadSessionId) {
         if (reason == null) {
             throw new IllegalArgumentException("Required value for 'reason' is null");
         }

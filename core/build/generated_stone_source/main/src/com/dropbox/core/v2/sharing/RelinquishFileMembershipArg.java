@@ -31,7 +31,7 @@ class RelinquishFileMembershipArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RelinquishFileMembershipArg(String file) {
+    public RelinquishFileMembershipArg(@javax.annotation.Nonnull String file) {
         if (file == null) {
             throw new IllegalArgumentException("Required value for 'file' is null");
         }

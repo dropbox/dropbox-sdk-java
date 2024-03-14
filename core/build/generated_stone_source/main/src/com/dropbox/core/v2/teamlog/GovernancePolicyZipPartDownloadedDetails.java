@@ -43,7 +43,7 @@ public class GovernancePolicyZipPartDownloadedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GovernancePolicyZipPartDownloadedDetails(String governancePolicyId, String name, String exportName, PolicyType policyType, String part) {
+    public GovernancePolicyZipPartDownloadedDetails(@javax.annotation.Nonnull String governancePolicyId, @javax.annotation.Nonnull String name, @javax.annotation.Nonnull String exportName, @javax.annotation.Nullable PolicyType policyType, @javax.annotation.Nullable String part) {
         if (governancePolicyId == null) {
             throw new IllegalArgumentException("Required value for 'governancePolicyId' is null");
         }

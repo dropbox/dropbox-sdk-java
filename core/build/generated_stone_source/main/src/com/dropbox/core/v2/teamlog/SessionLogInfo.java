@@ -29,7 +29,7 @@ public class SessionLogInfo {
      *
      * @param sessionId  Session ID.
      */
-    public SessionLogInfo(String sessionId) {
+    public SessionLogInfo(@javax.annotation.Nullable String sessionId) {
         this.sessionId = sessionId;
     }
 

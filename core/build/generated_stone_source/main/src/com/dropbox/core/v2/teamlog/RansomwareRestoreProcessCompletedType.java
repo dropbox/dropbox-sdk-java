@@ -28,7 +28,7 @@ public class RansomwareRestoreProcessCompletedType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RansomwareRestoreProcessCompletedType(String description) {
+    public RansomwareRestoreProcessCompletedType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

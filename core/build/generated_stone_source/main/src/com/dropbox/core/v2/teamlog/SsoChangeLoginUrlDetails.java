@@ -35,7 +35,7 @@ public class SsoChangeLoginUrlDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SsoChangeLoginUrlDetails(String previousValue, String newValue) {
+    public SsoChangeLoginUrlDetails(@javax.annotation.Nonnull String previousValue, @javax.annotation.Nonnull String newValue) {
         if (previousValue == null) {
             throw new IllegalArgumentException("Required value for 'previousValue' is null");
         }

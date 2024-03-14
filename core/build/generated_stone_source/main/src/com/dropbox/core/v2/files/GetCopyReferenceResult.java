@@ -38,7 +38,7 @@ public class GetCopyReferenceResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetCopyReferenceResult(Metadata metadata, String copyReference, Date expires) {
+    public GetCopyReferenceResult(@javax.annotation.Nonnull Metadata metadata, @javax.annotation.Nonnull String copyReference, @javax.annotation.Nonnull Date expires) {
         if (metadata == null) {
             throw new IllegalArgumentException("Required value for 'metadata' is null");
         }

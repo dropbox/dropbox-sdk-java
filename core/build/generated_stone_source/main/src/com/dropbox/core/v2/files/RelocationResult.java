@@ -29,7 +29,7 @@ public class RelocationResult extends FileOpsResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RelocationResult(Metadata metadata) {
+    public RelocationResult(@javax.annotation.Nonnull Metadata metadata) {
         if (metadata == null) {
             throw new IllegalArgumentException("Required value for 'metadata' is null");
         }

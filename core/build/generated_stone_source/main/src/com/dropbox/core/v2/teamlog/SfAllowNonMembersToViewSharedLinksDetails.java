@@ -37,7 +37,7 @@ public class SfAllowNonMembersToViewSharedLinksDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SfAllowNonMembersToViewSharedLinksDetails(long targetAssetIndex, String originalFolderName, String sharedFolderType) {
+    public SfAllowNonMembersToViewSharedLinksDetails(long targetAssetIndex, @javax.annotation.Nonnull String originalFolderName, @javax.annotation.Nullable String sharedFolderType) {
         this.targetAssetIndex = targetAssetIndex;
         if (originalFolderName == null) {
             throw new IllegalArgumentException("Required value for 'originalFolderName' is null");

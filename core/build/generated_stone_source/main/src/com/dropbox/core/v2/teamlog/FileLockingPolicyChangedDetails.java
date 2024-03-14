@@ -36,7 +36,7 @@ public class FileLockingPolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileLockingPolicyChangedDetails(FileLockingPolicyState newValue, FileLockingPolicyState previousValue) {
+    public FileLockingPolicyChangedDetails(@javax.annotation.Nonnull FileLockingPolicyState newValue, @javax.annotation.Nonnull FileLockingPolicyState previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

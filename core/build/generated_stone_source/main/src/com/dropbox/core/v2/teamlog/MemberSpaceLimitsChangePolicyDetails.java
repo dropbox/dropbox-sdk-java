@@ -36,7 +36,7 @@ public class MemberSpaceLimitsChangePolicyDetails {
      * @param newValue  New team default limit value in bytes. Might be missing
      *     due to historical data gap.
      */
-    public MemberSpaceLimitsChangePolicyDetails(Long previousValue, Long newValue) {
+    public MemberSpaceLimitsChangePolicyDetails(@javax.annotation.Nullable Long previousValue, @javax.annotation.Nullable Long newValue) {
         this.previousValue = previousValue;
         this.newValue = newValue;
     }

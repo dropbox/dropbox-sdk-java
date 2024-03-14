@@ -73,7 +73,7 @@ public class FileLinkMetadata extends SharedLinkMetadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileLinkMetadata(String url, String name, LinkPermissions linkPermissions, Date clientModified, Date serverModified, String rev, long size, String id, Date expires, String pathLower, TeamMemberInfo teamMemberInfo, Team contentOwnerTeamInfo) {
+    public FileLinkMetadata(@javax.annotation.Nonnull String url, @javax.annotation.Nonnull String name, @javax.annotation.Nonnull LinkPermissions linkPermissions, @javax.annotation.Nonnull Date clientModified, @javax.annotation.Nonnull Date serverModified, @javax.annotation.Nonnull String rev, long size, @javax.annotation.Nullable String id, @javax.annotation.Nullable Date expires, @javax.annotation.Nullable String pathLower, @javax.annotation.Nullable TeamMemberInfo teamMemberInfo, @javax.annotation.Nullable Team contentOwnerTeamInfo) {
         super(url, name, linkPermissions, id, expires, pathLower, teamMemberInfo, contentOwnerTeamInfo);
         if (clientModified == null) {
             throw new IllegalArgumentException("Required value for 'clientModified' is null");

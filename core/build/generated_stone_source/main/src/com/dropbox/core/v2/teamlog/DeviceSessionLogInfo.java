@@ -38,7 +38,7 @@ public class DeviceSessionLogInfo {
      * @param created  The time this session was created.
      * @param updated  The time of the last activity from this session.
      */
-    public DeviceSessionLogInfo(String ipAddress, Date created, Date updated) {
+    public DeviceSessionLogInfo(@javax.annotation.Nullable String ipAddress, @javax.annotation.Nullable Date created, @javax.annotation.Nullable Date updated) {
         this.ipAddress = ipAddress;
         this.created = LangUtil.truncateMillis(created);
         this.updated = LangUtil.truncateMillis(updated);

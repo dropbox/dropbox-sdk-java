@@ -28,7 +28,7 @@ public class ExportMembersReportFailType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ExportMembersReportFailType(String description) {
+    public ExportMembersReportFailType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

@@ -28,7 +28,7 @@ public class TeamFolderListError {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamFolderListError(TeamFolderAccessError accessError) {
+    public TeamFolderListError(@javax.annotation.Nonnull TeamFolderAccessError accessError) {
         if (accessError == null) {
             throw new IllegalArgumentException("Required value for 'accessError' is null");
         }

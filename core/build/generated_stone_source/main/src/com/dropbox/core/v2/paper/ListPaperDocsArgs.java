@@ -42,7 +42,7 @@ class ListPaperDocsArgs {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListPaperDocsArgs(ListPaperDocsFilterBy filterBy, ListPaperDocsSortBy sortBy, ListPaperDocsSortOrder sortOrder, int limit) {
+    public ListPaperDocsArgs(@javax.annotation.Nonnull ListPaperDocsFilterBy filterBy, @javax.annotation.Nonnull ListPaperDocsSortBy sortBy, @javax.annotation.Nonnull ListPaperDocsSortOrder sortOrder, int limit) {
         if (filterBy == null) {
             throw new IllegalArgumentException("Required value for 'filterBy' is null");
         }

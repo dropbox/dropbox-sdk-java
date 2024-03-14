@@ -28,7 +28,7 @@ public class SharedLinkDownloadType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedLinkDownloadType(String description) {
+    public SharedLinkDownloadType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

@@ -28,7 +28,7 @@ public class MemberSpaceLimitsChangeStatusType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberSpaceLimitsChangeStatusType(String description) {
+    public MemberSpaceLimitsChangeStatusType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

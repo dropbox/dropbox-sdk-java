@@ -28,7 +28,7 @@ public class FileTransfersPolicyChangedType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileTransfersPolicyChangedType(String description) {
+    public FileTransfersPolicyChangedType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

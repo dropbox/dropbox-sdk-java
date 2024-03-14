@@ -32,7 +32,7 @@ public class ObjectLabelAddedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ObjectLabelAddedDetails(LabelType labelType) {
+    public ObjectLabelAddedDetails(@javax.annotation.Nonnull LabelType labelType) {
         if (labelType == null) {
             throw new IllegalArgumentException("Required value for 'labelType' is null");
         }

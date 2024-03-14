@@ -28,7 +28,7 @@ public class TeamSharingWhitelistSubjectsChangedType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamSharingWhitelistSubjectsChangedType(String description) {
+    public TeamSharingWhitelistSubjectsChangedType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

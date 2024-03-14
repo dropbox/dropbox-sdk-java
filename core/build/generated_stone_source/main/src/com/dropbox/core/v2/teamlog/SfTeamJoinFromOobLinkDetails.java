@@ -42,7 +42,7 @@ public class SfTeamJoinFromOobLinkDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SfTeamJoinFromOobLinkDetails(long targetAssetIndex, String originalFolderName, String tokenKey, String sharingPermission) {
+    public SfTeamJoinFromOobLinkDetails(long targetAssetIndex, @javax.annotation.Nonnull String originalFolderName, @javax.annotation.Nullable String tokenKey, @javax.annotation.Nullable String sharingPermission) {
         this.targetAssetIndex = targetAssetIndex;
         if (originalFolderName == null) {
             throw new IllegalArgumentException("Required value for 'originalFolderName' is null");

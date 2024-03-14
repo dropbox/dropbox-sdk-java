@@ -28,7 +28,7 @@ public class PaperExternalViewAllowType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperExternalViewAllowType(String description) {
+    public PaperExternalViewAllowType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

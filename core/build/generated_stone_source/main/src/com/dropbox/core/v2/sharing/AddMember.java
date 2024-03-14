@@ -39,7 +39,7 @@ public class AddMember {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AddMember(MemberSelector member, AccessLevel accessLevel) {
+    public AddMember(@javax.annotation.Nonnull MemberSelector member, @javax.annotation.Nonnull AccessLevel accessLevel) {
         if (member == null) {
             throw new IllegalArgumentException("Required value for 'member' is null");
         }

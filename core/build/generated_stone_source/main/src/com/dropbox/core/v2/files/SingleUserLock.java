@@ -37,7 +37,7 @@ public class SingleUserLock {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SingleUserLock(Date created, String lockHolderAccountId, String lockHolderTeamId) {
+    public SingleUserLock(@javax.annotation.Nonnull Date created, @javax.annotation.Nonnull String lockHolderAccountId, @javax.annotation.Nullable String lockHolderTeamId) {
         if (created == null) {
             throw new IllegalArgumentException("Required value for 'created' is null");
         }

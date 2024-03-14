@@ -32,7 +32,7 @@ class ListUsersOnFolderArgs extends RefPaperDoc {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListUsersOnFolderArgs(String docId, int limit) {
+    public ListUsersOnFolderArgs(@javax.annotation.Nonnull String docId, int limit) {
         super(docId);
         if (limit < 1) {
             throw new IllegalArgumentException("Number 'limit' is smaller than 1");

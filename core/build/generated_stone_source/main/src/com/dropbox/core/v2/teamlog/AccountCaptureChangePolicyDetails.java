@@ -35,7 +35,7 @@ public class AccountCaptureChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AccountCaptureChangePolicyDetails(AccountCapturePolicy newValue, AccountCapturePolicy previousValue) {
+    public AccountCaptureChangePolicyDetails(@javax.annotation.Nonnull AccountCapturePolicy newValue, @javax.annotation.Nullable AccountCapturePolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

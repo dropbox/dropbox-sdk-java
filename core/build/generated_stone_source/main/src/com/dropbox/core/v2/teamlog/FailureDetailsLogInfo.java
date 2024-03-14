@@ -35,7 +35,7 @@ public class FailureDetailsLogInfo {
      * @param technicalErrorMessage  A technical explanation of the error. This
      *     is relevant for some errors.
      */
-    public FailureDetailsLogInfo(String userFriendlyMessage, String technicalErrorMessage) {
+    public FailureDetailsLogInfo(@javax.annotation.Nullable String userFriendlyMessage, @javax.annotation.Nullable String technicalErrorMessage) {
         this.userFriendlyMessage = userFriendlyMessage;
         this.technicalErrorMessage = technicalErrorMessage;
     }

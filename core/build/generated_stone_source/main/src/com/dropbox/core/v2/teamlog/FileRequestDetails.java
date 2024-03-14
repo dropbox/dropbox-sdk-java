@@ -31,7 +31,7 @@ public class FileRequestDetails {
      * @param assetIndex  Asset position in the Assets list.
      * @param deadline  File request deadline.
      */
-    public FileRequestDetails(long assetIndex, FileRequestDeadline deadline) {
+    public FileRequestDetails(long assetIndex, @javax.annotation.Nullable FileRequestDeadline deadline) {
         this.assetIndex = assetIndex;
         this.deadline = deadline;
     }

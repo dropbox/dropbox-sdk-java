@@ -54,7 +54,7 @@ public class GetMembershipReport extends BaseDfbReport {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetMembershipReport(String startDate, List<Long> teamSize, List<Long> pendingInvites, List<Long> membersJoined, List<Long> suspendedMembers, List<Long> licenses) {
+    public GetMembershipReport(@javax.annotation.Nonnull String startDate, @javax.annotation.Nonnull List<Long> teamSize, @javax.annotation.Nonnull List<Long> pendingInvites, @javax.annotation.Nonnull List<Long> membersJoined, @javax.annotation.Nonnull List<Long> suspendedMembers, @javax.annotation.Nonnull List<Long> licenses) {
         super(startDate);
         if (teamSize == null) {
             throw new IllegalArgumentException("Required value for 'teamSize' is null");

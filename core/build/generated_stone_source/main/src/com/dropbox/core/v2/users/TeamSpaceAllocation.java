@@ -42,7 +42,7 @@ public class TeamSpaceAllocation {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamSpaceAllocation(long used, long allocated, long userWithinTeamSpaceAllocated, MemberSpaceLimitType userWithinTeamSpaceLimitType, long userWithinTeamSpaceUsedCached) {
+    public TeamSpaceAllocation(long used, long allocated, long userWithinTeamSpaceAllocated, @javax.annotation.Nonnull MemberSpaceLimitType userWithinTeamSpaceLimitType, long userWithinTeamSpaceUsedCached) {
         this.used = used;
         this.allocated = allocated;
         this.userWithinTeamSpaceAllocated = userWithinTeamSpaceAllocated;

@@ -29,7 +29,7 @@ public class DeviceLinkSuccessDetails {
      *
      * @param deviceSessionInfo  Device's session logged information.
      */
-    public DeviceLinkSuccessDetails(DeviceSessionLogInfo deviceSessionInfo) {
+    public DeviceLinkSuccessDetails(@javax.annotation.Nullable DeviceSessionLogInfo deviceSessionInfo) {
         this.deviceSessionInfo = deviceSessionInfo;
     }
 

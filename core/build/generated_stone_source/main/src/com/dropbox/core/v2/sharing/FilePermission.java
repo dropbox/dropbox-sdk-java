@@ -38,7 +38,7 @@ public class FilePermission {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FilePermission(FileAction action, boolean allow, PermissionDeniedReason reason) {
+    public FilePermission(@javax.annotation.Nonnull FileAction action, boolean allow, @javax.annotation.Nullable PermissionDeniedReason reason) {
         if (action == null) {
             throw new IllegalArgumentException("Required value for 'action' is null");
         }

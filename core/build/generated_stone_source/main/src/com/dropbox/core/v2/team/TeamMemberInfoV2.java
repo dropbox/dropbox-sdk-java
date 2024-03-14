@@ -37,7 +37,7 @@ public class TeamMemberInfoV2 {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamMemberInfoV2(TeamMemberProfile profile, List<TeamMemberRole> roles) {
+    public TeamMemberInfoV2(@javax.annotation.Nonnull TeamMemberProfile profile, @javax.annotation.Nullable List<TeamMemberRole> roles) {
         if (profile == null) {
             throw new IllegalArgumentException("Required value for 'profile' is null");
         }

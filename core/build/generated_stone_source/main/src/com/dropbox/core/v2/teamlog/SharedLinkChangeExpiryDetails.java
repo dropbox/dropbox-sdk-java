@@ -38,7 +38,7 @@ public class SharedLinkChangeExpiryDetails {
      * @param previousValue  Previous shared link expiration date. Might be
      *     missing due to historical data gap.
      */
-    public SharedLinkChangeExpiryDetails(Date newValue, Date previousValue) {
+    public SharedLinkChangeExpiryDetails(@javax.annotation.Nullable Date newValue, @javax.annotation.Nullable Date previousValue) {
         this.newValue = LangUtil.truncateMillis(newValue);
         this.previousValue = LangUtil.truncateMillis(previousValue);
     }

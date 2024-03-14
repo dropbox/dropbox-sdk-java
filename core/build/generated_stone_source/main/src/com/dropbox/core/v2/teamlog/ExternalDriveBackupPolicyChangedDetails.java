@@ -36,7 +36,7 @@ public class ExternalDriveBackupPolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ExternalDriveBackupPolicyChangedDetails(ExternalDriveBackupPolicy newValue, ExternalDriveBackupPolicy previousValue) {
+    public ExternalDriveBackupPolicyChangedDetails(@javax.annotation.Nonnull ExternalDriveBackupPolicy newValue, @javax.annotation.Nonnull ExternalDriveBackupPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

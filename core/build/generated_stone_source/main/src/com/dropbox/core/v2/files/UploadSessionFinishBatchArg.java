@@ -31,7 +31,7 @@ class UploadSessionFinishBatchArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UploadSessionFinishBatchArg(List<UploadSessionFinishArg> entries) {
+    public UploadSessionFinishBatchArg(@javax.annotation.Nonnull List<UploadSessionFinishArg> entries) {
         if (entries == null) {
             throw new IllegalArgumentException("Required value for 'entries' is null");
         }

@@ -35,7 +35,7 @@ public class PrimaryTeamRequestCanceledDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PrimaryTeamRequestCanceledDetails(String secondaryTeam, String sentBy) {
+    public PrimaryTeamRequestCanceledDetails(@javax.annotation.Nonnull String secondaryTeam, @javax.annotation.Nonnull String sentBy) {
         if (secondaryTeam == null) {
             throw new IllegalArgumentException("Required value for 'secondaryTeam' is null");
         }

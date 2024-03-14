@@ -35,7 +35,7 @@ public class AccountLockOrUnlockedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AccountLockOrUnlockedDetails(AccountState previousValue, AccountState newValue) {
+    public AccountLockOrUnlockedDetails(@javax.annotation.Nonnull AccountState previousValue, @javax.annotation.Nonnull AccountState newValue) {
         if (previousValue == null) {
             throw new IllegalArgumentException("Required value for 'previousValue' is null");
         }

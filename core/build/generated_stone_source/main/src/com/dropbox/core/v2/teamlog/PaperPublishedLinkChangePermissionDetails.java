@@ -38,7 +38,7 @@ public class PaperPublishedLinkChangePermissionDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperPublishedLinkChangePermissionDetails(String eventUuid, String newPermissionLevel, String previousPermissionLevel) {
+    public PaperPublishedLinkChangePermissionDetails(@javax.annotation.Nonnull String eventUuid, @javax.annotation.Nonnull String newPermissionLevel, @javax.annotation.Nonnull String previousPermissionLevel) {
         if (eventUuid == null) {
             throw new IllegalArgumentException("Required value for 'eventUuid' is null");
         }

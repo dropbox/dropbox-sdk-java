@@ -35,7 +35,7 @@ public class SfTeamGrantAccessDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SfTeamGrantAccessDetails(long targetAssetIndex, String originalFolderName) {
+    public SfTeamGrantAccessDetails(long targetAssetIndex, @javax.annotation.Nonnull String originalFolderName) {
         this.targetAssetIndex = targetAssetIndex;
         if (originalFolderName == null) {
             throw new IllegalArgumentException("Required value for 'originalFolderName' is null");

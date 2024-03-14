@@ -35,7 +35,7 @@ public class FileProviderMigrationPolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileProviderMigrationPolicyChangedDetails(FileProviderMigrationPolicyState newValue, FileProviderMigrationPolicyState previousValue) {
+    public FileProviderMigrationPolicyChangedDetails(@javax.annotation.Nonnull FileProviderMigrationPolicyState newValue, @javax.annotation.Nonnull FileProviderMigrationPolicyState previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

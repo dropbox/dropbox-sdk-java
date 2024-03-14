@@ -36,7 +36,7 @@ public class PermanentDeleteChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PermanentDeleteChangePolicyDetails(ContentPermanentDeletePolicy newValue, ContentPermanentDeletePolicy previousValue) {
+    public PermanentDeleteChangePolicyDetails(@javax.annotation.Nonnull ContentPermanentDeletePolicy newValue, @javax.annotation.Nullable ContentPermanentDeletePolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

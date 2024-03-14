@@ -45,7 +45,7 @@ public class GroupMembershipInfo extends MembershipInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupMembershipInfo(AccessLevel accessType, GroupInfo group, List<MemberPermission> permissions, String initials, boolean isInherited) {
+    public GroupMembershipInfo(@javax.annotation.Nonnull AccessLevel accessType, @javax.annotation.Nonnull GroupInfo group, @javax.annotation.Nullable List<MemberPermission> permissions, @javax.annotation.Nullable String initials, boolean isInherited) {
         super(accessType, permissions, initials, isInherited);
         if (group == null) {
             throw new IllegalArgumentException("Required value for 'group' is null");

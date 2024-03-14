@@ -28,7 +28,7 @@ public class SharedContentAddMemberType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentAddMemberType(String description) {
+    public SharedContentAddMemberType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

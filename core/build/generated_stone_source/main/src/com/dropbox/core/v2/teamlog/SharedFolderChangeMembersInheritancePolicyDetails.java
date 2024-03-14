@@ -35,7 +35,7 @@ public class SharedFolderChangeMembersInheritancePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedFolderChangeMembersInheritancePolicyDetails(SharedFolderMembersInheritancePolicy newValue, SharedFolderMembersInheritancePolicy previousValue) {
+    public SharedFolderChangeMembersInheritancePolicyDetails(@javax.annotation.Nonnull SharedFolderMembersInheritancePolicy newValue, @javax.annotation.Nullable SharedFolderMembersInheritancePolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

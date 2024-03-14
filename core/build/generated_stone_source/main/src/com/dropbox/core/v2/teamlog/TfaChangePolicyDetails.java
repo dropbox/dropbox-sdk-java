@@ -36,7 +36,7 @@ public class TfaChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TfaChangePolicyDetails(TwoStepVerificationPolicy newValue, TwoStepVerificationPolicy previousValue) {
+    public TfaChangePolicyDetails(@javax.annotation.Nonnull TwoStepVerificationPolicy newValue, @javax.annotation.Nullable TwoStepVerificationPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

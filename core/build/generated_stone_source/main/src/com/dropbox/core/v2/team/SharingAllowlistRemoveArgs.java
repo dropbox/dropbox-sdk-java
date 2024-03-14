@@ -35,7 +35,7 @@ class SharingAllowlistRemoveArgs {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharingAllowlistRemoveArgs(List<String> domains, List<String> emails) {
+    public SharingAllowlistRemoveArgs(@javax.annotation.Nullable List<String> domains, @javax.annotation.Nullable List<String> emails) {
         if (domains != null) {
             for (String x : domains) {
                 if (x == null) {

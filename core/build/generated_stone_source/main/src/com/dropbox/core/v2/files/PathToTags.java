@@ -34,7 +34,7 @@ public class PathToTags {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PathToTags(String path, List<TagObject> tags) {
+    public PathToTags(@javax.annotation.Nonnull String path, @javax.annotation.Nonnull List<TagObject> tags) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }

@@ -34,7 +34,7 @@ public class SharedContentRemoveInviteesDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentRemoveInviteesDetails(List<String> invitees) {
+    public SharedContentRemoveInviteesDetails(@javax.annotation.Nonnull List<String> invitees) {
         if (invitees == null) {
             throw new IllegalArgumentException("Required value for 'invitees' is null");
         }

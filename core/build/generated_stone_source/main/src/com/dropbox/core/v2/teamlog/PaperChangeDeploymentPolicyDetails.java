@@ -39,7 +39,7 @@ public class PaperChangeDeploymentPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperChangeDeploymentPolicyDetails(PaperDeploymentPolicy newValue, PaperDeploymentPolicy previousValue) {
+    public PaperChangeDeploymentPolicyDetails(@javax.annotation.Nonnull PaperDeploymentPolicy newValue, @javax.annotation.Nullable PaperDeploymentPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

@@ -34,7 +34,7 @@ public class SharedContentAddMemberDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentAddMemberDetails(AccessLevel sharedContentAccessLevel) {
+    public SharedContentAddMemberDetails(@javax.annotation.Nonnull AccessLevel sharedContentAccessLevel) {
         if (sharedContentAccessLevel == null) {
             throw new IllegalArgumentException("Required value for 'sharedContentAccessLevel' is null");
         }

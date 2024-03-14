@@ -43,7 +43,7 @@ class AddFolderMemberArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AddFolderMemberArg(String sharedFolderId, List<AddMember> members, boolean quiet, String customMessage) {
+    public AddFolderMemberArg(@javax.annotation.Nonnull String sharedFolderId, @javax.annotation.Nonnull List<AddMember> members, boolean quiet, @javax.annotation.Nullable String customMessage) {
         if (sharedFolderId == null) {
             throw new IllegalArgumentException("Required value for 'sharedFolderId' is null");
         }

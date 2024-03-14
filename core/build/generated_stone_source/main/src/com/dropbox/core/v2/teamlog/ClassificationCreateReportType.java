@@ -28,7 +28,7 @@ public class ClassificationCreateReportType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ClassificationCreateReportType(String description) {
+    public ClassificationCreateReportType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

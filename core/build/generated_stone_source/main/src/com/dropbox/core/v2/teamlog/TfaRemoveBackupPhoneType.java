@@ -28,7 +28,7 @@ public class TfaRemoveBackupPhoneType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TfaRemoveBackupPhoneType(String description) {
+    public TfaRemoveBackupPhoneType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

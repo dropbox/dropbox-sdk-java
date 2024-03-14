@@ -28,7 +28,7 @@ public class SmartSyncNotOptOutType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SmartSyncNotOptOutType(String description) {
+    public SmartSyncNotOptOutType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

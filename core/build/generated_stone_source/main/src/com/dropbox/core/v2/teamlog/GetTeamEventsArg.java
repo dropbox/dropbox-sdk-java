@@ -48,7 +48,7 @@ class GetTeamEventsArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetTeamEventsArg(long limit, String accountId, TimeRange time, EventCategory category, EventTypeArg eventType) {
+    public GetTeamEventsArg(long limit, @javax.annotation.Nullable String accountId, @javax.annotation.Nullable TimeRange time, @javax.annotation.Nullable EventCategory category, @javax.annotation.Nullable EventTypeArg eventType) {
         if (limit < 1L) {
             throw new IllegalArgumentException("Number 'limit' is smaller than 1L");
         }

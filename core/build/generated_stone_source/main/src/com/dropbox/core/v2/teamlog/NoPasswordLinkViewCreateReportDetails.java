@@ -36,7 +36,7 @@ public class NoPasswordLinkViewCreateReportDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public NoPasswordLinkViewCreateReportDetails(Date startDate, Date endDate) {
+    public NoPasswordLinkViewCreateReportDetails(@javax.annotation.Nonnull Date startDate, @javax.annotation.Nonnull Date endDate) {
         if (startDate == null) {
             throw new IllegalArgumentException("Required value for 'startDate' is null");
         }

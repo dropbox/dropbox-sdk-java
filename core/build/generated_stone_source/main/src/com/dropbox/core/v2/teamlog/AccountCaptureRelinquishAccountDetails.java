@@ -32,7 +32,7 @@ public class AccountCaptureRelinquishAccountDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AccountCaptureRelinquishAccountDetails(String domainName) {
+    public AccountCaptureRelinquishAccountDetails(@javax.annotation.Nonnull String domainName) {
         if (domainName == null) {
             throw new IllegalArgumentException("Required value for 'domainName' is null");
         }

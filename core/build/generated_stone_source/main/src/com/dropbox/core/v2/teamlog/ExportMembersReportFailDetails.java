@@ -33,7 +33,7 @@ public class ExportMembersReportFailDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ExportMembersReportFailDetails(TeamReportFailureReason failureReason) {
+    public ExportMembersReportFailDetails(@javax.annotation.Nonnull TeamReportFailureReason failureReason) {
         if (failureReason == null) {
             throw new IllegalArgumentException("Required value for 'failureReason' is null");
         }

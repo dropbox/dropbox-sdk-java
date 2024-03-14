@@ -45,7 +45,7 @@ public class TeamMemberLogInfo extends UserLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamMemberLogInfo(String accountId, String displayName, String email, String teamMemberId, String memberExternalId, TeamLogInfo team) {
+    public TeamMemberLogInfo(@javax.annotation.Nullable String accountId, @javax.annotation.Nullable String displayName, @javax.annotation.Nullable String email, @javax.annotation.Nullable String teamMemberId, @javax.annotation.Nullable String memberExternalId, @javax.annotation.Nullable TeamLogInfo team) {
         super(accountId, displayName, email);
         this.teamMemberId = teamMemberId;
         if (memberExternalId != null) {

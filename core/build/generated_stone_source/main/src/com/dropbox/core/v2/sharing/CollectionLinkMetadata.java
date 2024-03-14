@@ -35,7 +35,7 @@ public class CollectionLinkMetadata extends LinkMetadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public CollectionLinkMetadata(String url, Visibility visibility, Date expires) {
+    public CollectionLinkMetadata(@javax.annotation.Nonnull String url, @javax.annotation.Nonnull Visibility visibility, @javax.annotation.Nullable Date expires) {
         super(url, visibility, expires);
     }
 

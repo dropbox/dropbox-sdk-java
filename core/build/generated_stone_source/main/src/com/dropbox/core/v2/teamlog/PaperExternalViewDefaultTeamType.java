@@ -28,7 +28,7 @@ public class PaperExternalViewDefaultTeamType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperExternalViewDefaultTeamType(String description) {
+    public PaperExternalViewDefaultTeamType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

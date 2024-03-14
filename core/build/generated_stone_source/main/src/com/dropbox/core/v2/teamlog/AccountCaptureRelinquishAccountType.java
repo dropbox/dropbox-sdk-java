@@ -28,7 +28,7 @@ public class AccountCaptureRelinquishAccountType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AccountCaptureRelinquishAccountType(String description) {
+    public AccountCaptureRelinquishAccountType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

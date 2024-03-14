@@ -38,7 +38,7 @@ public class PropertiesSearchMatch {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PropertiesSearchMatch(String id, String path, boolean isDeleted, List<PropertyGroup> propertyGroups) {
+    public PropertiesSearchMatch(@javax.annotation.Nonnull String id, @javax.annotation.Nonnull String path, boolean isDeleted, @javax.annotation.Nonnull List<PropertyGroup> propertyGroups) {
         if (id == null) {
             throw new IllegalArgumentException("Required value for 'id' is null");
         }

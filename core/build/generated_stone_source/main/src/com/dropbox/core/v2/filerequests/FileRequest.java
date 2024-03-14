@@ -66,7 +66,7 @@ public class FileRequest {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileRequest(String id, String url, String title, Date created, boolean isOpen, long fileCount, String destination, FileRequestDeadline deadline, String description) {
+    public FileRequest(@javax.annotation.Nonnull String id, @javax.annotation.Nonnull String url, @javax.annotation.Nonnull String title, @javax.annotation.Nonnull Date created, boolean isOpen, long fileCount, @javax.annotation.Nullable String destination, @javax.annotation.Nullable FileRequestDeadline deadline, @javax.annotation.Nullable String description) {
         if (id == null) {
             throw new IllegalArgumentException("Required value for 'id' is null");
         }

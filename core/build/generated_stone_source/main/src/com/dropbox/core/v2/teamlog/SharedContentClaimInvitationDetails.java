@@ -29,7 +29,7 @@ public class SharedContentClaimInvitationDetails {
      *
      * @param sharedContentLink  Shared content link.
      */
-    public SharedContentClaimInvitationDetails(String sharedContentLink) {
+    public SharedContentClaimInvitationDetails(@javax.annotation.Nullable String sharedContentLink) {
         this.sharedContentLink = sharedContentLink;
     }
 

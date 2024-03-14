@@ -35,7 +35,7 @@ public class SharedContentChangeLinkAudienceDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentChangeLinkAudienceDetails(LinkAudience newValue, LinkAudience previousValue) {
+    public SharedContentChangeLinkAudienceDetails(@javax.annotation.Nonnull LinkAudience newValue, @javax.annotation.Nullable LinkAudience previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

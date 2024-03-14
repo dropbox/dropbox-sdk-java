@@ -40,7 +40,7 @@ public class EnterpriseSettingsLockingDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public EnterpriseSettingsLockingDetails(String teamName, String settingsPageName, String previousSettingsPageLockingState, String newSettingsPageLockingState) {
+    public EnterpriseSettingsLockingDetails(@javax.annotation.Nonnull String teamName, @javax.annotation.Nonnull String settingsPageName, @javax.annotation.Nonnull String previousSettingsPageLockingState, @javax.annotation.Nonnull String newSettingsPageLockingState) {
         if (teamName == null) {
             throw new IllegalArgumentException("Required value for 'teamName' is null");
         }

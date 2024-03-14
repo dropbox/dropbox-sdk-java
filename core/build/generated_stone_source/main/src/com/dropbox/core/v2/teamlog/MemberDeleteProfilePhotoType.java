@@ -28,7 +28,7 @@ public class MemberDeleteProfilePhotoType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberDeleteProfilePhotoType(String description) {
+    public MemberDeleteProfilePhotoType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

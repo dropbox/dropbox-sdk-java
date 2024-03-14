@@ -35,7 +35,7 @@ public class PathLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PathLogInfo(NamespaceRelativePathLogInfo namespaceRelative, String contextual) {
+    public PathLogInfo(@javax.annotation.Nonnull NamespaceRelativePathLogInfo namespaceRelative, @javax.annotation.Nullable String contextual) {
         this.contextual = contextual;
         if (namespaceRelative == null) {
             throw new IllegalArgumentException("Required value for 'namespaceRelative' is null");

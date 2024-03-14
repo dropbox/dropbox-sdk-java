@@ -29,7 +29,7 @@ public class SsoAddLogoutUrlDetails {
      *
      * @param newValue  New single sign-on logout URL.
      */
-    public SsoAddLogoutUrlDetails(String newValue) {
+    public SsoAddLogoutUrlDetails(@javax.annotation.Nullable String newValue) {
         this.newValue = newValue;
     }
 

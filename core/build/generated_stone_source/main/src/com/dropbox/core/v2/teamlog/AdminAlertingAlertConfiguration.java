@@ -40,7 +40,7 @@ public class AdminAlertingAlertConfiguration {
      * @param text  Text.
      * @param excludedFileExtensions  Excluded file extensions.
      */
-    public AdminAlertingAlertConfiguration(AdminAlertingAlertStatePolicy alertState, AdminAlertingAlertSensitivity sensitivityLevel, RecipientsConfiguration recipientsSettings, String text, String excludedFileExtensions) {
+    public AdminAlertingAlertConfiguration(@javax.annotation.Nullable AdminAlertingAlertStatePolicy alertState, @javax.annotation.Nullable AdminAlertingAlertSensitivity sensitivityLevel, @javax.annotation.Nullable RecipientsConfiguration recipientsSettings, @javax.annotation.Nullable String text, @javax.annotation.Nullable String excludedFileExtensions) {
         this.alertState = alertState;
         this.sensitivityLevel = sensitivityLevel;
         this.recipientsSettings = recipientsSettings;

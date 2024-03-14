@@ -30,7 +30,7 @@ class LegalHoldsPolicyReleaseArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LegalHoldsPolicyReleaseArg(String id) {
+    public LegalHoldsPolicyReleaseArg(@javax.annotation.Nonnull String id) {
         if (id == null) {
             throw new IllegalArgumentException("Required value for 'id' is null");
         }

@@ -28,7 +28,7 @@ public class SsoAddLogoutUrlType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SsoAddLogoutUrlType(String description) {
+    public SsoAddLogoutUrlType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

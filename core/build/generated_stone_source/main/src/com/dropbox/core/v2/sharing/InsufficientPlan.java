@@ -33,7 +33,7 @@ public class InsufficientPlan {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public InsufficientPlan(String message, String upsellUrl) {
+    public InsufficientPlan(@javax.annotation.Nonnull String message, @javax.annotation.Nullable String upsellUrl) {
         if (message == null) {
             throw new IllegalArgumentException("Required value for 'message' is null");
         }

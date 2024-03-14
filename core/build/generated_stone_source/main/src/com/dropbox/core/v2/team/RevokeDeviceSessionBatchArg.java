@@ -30,7 +30,7 @@ class RevokeDeviceSessionBatchArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RevokeDeviceSessionBatchArg(List<RevokeDeviceSessionArg> revokeDevices) {
+    public RevokeDeviceSessionBatchArg(@javax.annotation.Nonnull List<RevokeDeviceSessionArg> revokeDevices) {
         if (revokeDevices == null) {
             throw new IllegalArgumentException("Required value for 'revokeDevices' is null");
         }

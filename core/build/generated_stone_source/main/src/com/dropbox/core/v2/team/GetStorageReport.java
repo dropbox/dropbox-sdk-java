@@ -61,7 +61,7 @@ public class GetStorageReport extends BaseDfbReport {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetStorageReport(String startDate, List<Long> totalUsage, List<Long> sharedUsage, List<Long> unsharedUsage, List<Long> sharedFolders, List<List<StorageBucket>> memberStorageMap) {
+    public GetStorageReport(@javax.annotation.Nonnull String startDate, @javax.annotation.Nonnull List<Long> totalUsage, @javax.annotation.Nonnull List<Long> sharedUsage, @javax.annotation.Nonnull List<Long> unsharedUsage, @javax.annotation.Nonnull List<Long> sharedFolders, @javax.annotation.Nonnull List<List<StorageBucket>> memberStorageMap) {
         super(startDate);
         if (totalUsage == null) {
             throw new IllegalArgumentException("Required value for 'totalUsage' is null");

@@ -37,7 +37,7 @@ class DateRange {
      *     None or too long ago, this field will  be set to 6 months ago.
      * @param endDate  Optional ending date (exclusive).
      */
-    public DateRange(Date startDate, Date endDate) {
+    public DateRange(@javax.annotation.Nullable Date startDate, @javax.annotation.Nullable Date endDate) {
         this.startDate = LangUtil.truncateMillis(startDate);
         this.endDate = LangUtil.truncateMillis(endDate);
     }

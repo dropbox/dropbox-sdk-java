@@ -55,7 +55,7 @@ public class Metadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public Metadata(String name, String pathLower, String pathDisplay, String parentSharedFolderId, String previewUrl) {
+    public Metadata(@javax.annotation.Nonnull String name, @javax.annotation.Nullable String pathLower, @javax.annotation.Nullable String pathDisplay, @javax.annotation.Nullable String parentSharedFolderId, @javax.annotation.Nullable String previewUrl) {
         if (name == null) {
             throw new IllegalArgumentException("Required value for 'name' is null");
         }

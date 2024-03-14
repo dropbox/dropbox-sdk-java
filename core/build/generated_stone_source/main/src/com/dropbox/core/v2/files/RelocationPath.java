@@ -35,7 +35,7 @@ public class RelocationPath {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RelocationPath(String fromPath, String toPath) {
+    public RelocationPath(@javax.annotation.Nonnull String fromPath, @javax.annotation.Nonnull String toPath) {
         if (fromPath == null) {
             throw new IllegalArgumentException("Required value for 'fromPath' is null");
         }

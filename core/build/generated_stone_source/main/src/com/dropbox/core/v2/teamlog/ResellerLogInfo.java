@@ -35,7 +35,7 @@ public class ResellerLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ResellerLogInfo(String resellerName, String resellerEmail) {
+    public ResellerLogInfo(@javax.annotation.Nonnull String resellerName, @javax.annotation.Nonnull String resellerEmail) {
         if (resellerName == null) {
             throw new IllegalArgumentException("Required value for 'resellerName' is null");
         }

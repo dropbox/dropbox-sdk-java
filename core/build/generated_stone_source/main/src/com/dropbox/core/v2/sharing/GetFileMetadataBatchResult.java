@@ -43,7 +43,7 @@ public class GetFileMetadataBatchResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetFileMetadataBatchResult(String file, GetFileMetadataIndividualResult result) {
+    public GetFileMetadataBatchResult(@javax.annotation.Nonnull String file, @javax.annotation.Nonnull GetFileMetadataIndividualResult result) {
         if (file == null) {
             throw new IllegalArgumentException("Required value for 'file' is null");
         }

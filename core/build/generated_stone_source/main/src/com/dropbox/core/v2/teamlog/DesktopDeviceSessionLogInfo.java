@@ -54,7 +54,7 @@ public class DesktopDeviceSessionLogInfo extends DeviceSessionLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DesktopDeviceSessionLogInfo(String hostName, DesktopPlatform clientType, String platform, boolean isDeleteOnUnlinkSupported, String ipAddress, Date created, Date updated, DesktopSessionLogInfo sessionInfo, String clientVersion) {
+    public DesktopDeviceSessionLogInfo(@javax.annotation.Nonnull String hostName, @javax.annotation.Nonnull DesktopPlatform clientType, @javax.annotation.Nonnull String platform, boolean isDeleteOnUnlinkSupported, @javax.annotation.Nullable String ipAddress, @javax.annotation.Nullable Date created, @javax.annotation.Nullable Date updated, @javax.annotation.Nullable DesktopSessionLogInfo sessionInfo, @javax.annotation.Nullable String clientVersion) {
         super(ipAddress, created, updated);
         this.sessionInfo = sessionInfo;
         if (hostName == null) {

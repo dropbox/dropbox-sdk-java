@@ -28,7 +28,7 @@ class ListMemberAppsArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListMemberAppsArg(String teamMemberId) {
+    public ListMemberAppsArg(@javax.annotation.Nonnull String teamMemberId) {
         if (teamMemberId == null) {
             throw new IllegalArgumentException("Required value for 'teamMemberId' is null");
         }

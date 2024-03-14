@@ -49,7 +49,7 @@ public class GroupFullInfo extends GroupSummary {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupFullInfo(String groupName, String groupId, GroupManagementType groupManagementType, long created, String groupExternalId, Long memberCount, List<GroupMemberInfo> members) {
+    public GroupFullInfo(@javax.annotation.Nonnull String groupName, @javax.annotation.Nonnull String groupId, @javax.annotation.Nonnull GroupManagementType groupManagementType, long created, @javax.annotation.Nullable String groupExternalId, @javax.annotation.Nullable Long memberCount, @javax.annotation.Nullable List<GroupMemberInfo> members) {
         super(groupName, groupId, groupManagementType, groupExternalId, memberCount);
         if (members != null) {
             for (GroupMemberInfo x : members) {

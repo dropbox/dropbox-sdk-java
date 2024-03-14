@@ -32,7 +32,7 @@ class GetCopyReferenceArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetCopyReferenceArg(String path) {
+    public GetCopyReferenceArg(@javax.annotation.Nonnull String path) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }

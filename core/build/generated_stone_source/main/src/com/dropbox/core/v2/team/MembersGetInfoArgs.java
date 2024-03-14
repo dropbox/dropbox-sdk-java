@@ -30,7 +30,7 @@ class MembersGetInfoArgs {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MembersGetInfoArgs(List<UserSelectorArg> members) {
+    public MembersGetInfoArgs(@javax.annotation.Nonnull List<UserSelectorArg> members) {
         if (members == null) {
             throw new IllegalArgumentException("Required value for 'members' is null");
         }

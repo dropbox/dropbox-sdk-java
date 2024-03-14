@@ -33,7 +33,7 @@ class TransferFolderArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TransferFolderArg(String sharedFolderId, String toDropboxId) {
+    public TransferFolderArg(@javax.annotation.Nonnull String sharedFolderId, @javax.annotation.Nonnull String toDropboxId) {
         if (sharedFolderId == null) {
             throw new IllegalArgumentException("Required value for 'sharedFolderId' is null");
         }

@@ -34,7 +34,7 @@ public class MemberSuggestDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberSuggestDetails(List<String> suggestedMembers) {
+    public MemberSuggestDetails(@javax.annotation.Nonnull List<String> suggestedMembers) {
         if (suggestedMembers == null) {
             throw new IllegalArgumentException("Required value for 'suggestedMembers' is null");
         }

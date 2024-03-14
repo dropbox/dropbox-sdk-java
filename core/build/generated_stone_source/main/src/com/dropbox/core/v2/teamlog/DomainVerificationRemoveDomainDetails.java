@@ -34,7 +34,7 @@ public class DomainVerificationRemoveDomainDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DomainVerificationRemoveDomainDetails(List<String> domainNames) {
+    public DomainVerificationRemoveDomainDetails(@javax.annotation.Nonnull List<String> domainNames) {
         if (domainNames == null) {
             throw new IllegalArgumentException("Required value for 'domainNames' is null");
         }

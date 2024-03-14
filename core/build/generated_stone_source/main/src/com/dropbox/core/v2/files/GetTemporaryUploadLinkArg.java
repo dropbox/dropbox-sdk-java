@@ -35,7 +35,7 @@ class GetTemporaryUploadLinkArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetTemporaryUploadLinkArg(CommitInfo commitInfo, double duration) {
+    public GetTemporaryUploadLinkArg(@javax.annotation.Nonnull CommitInfo commitInfo, double duration) {
         if (commitInfo == null) {
             throw new IllegalArgumentException("Required value for 'commitInfo' is null");
         }

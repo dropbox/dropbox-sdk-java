@@ -35,7 +35,7 @@ public class CameraUploadsPolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public CameraUploadsPolicyChangedDetails(CameraUploadsPolicy newValue, CameraUploadsPolicy previousValue) {
+    public CameraUploadsPolicyChangedDetails(@javax.annotation.Nonnull CameraUploadsPolicy newValue, @javax.annotation.Nonnull CameraUploadsPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

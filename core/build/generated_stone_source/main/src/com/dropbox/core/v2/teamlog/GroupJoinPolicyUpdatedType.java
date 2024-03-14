@@ -28,7 +28,7 @@ public class GroupJoinPolicyUpdatedType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupJoinPolicyUpdatedType(String description) {
+    public GroupJoinPolicyUpdatedType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

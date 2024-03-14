@@ -40,7 +40,7 @@ public class UserLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UserLogInfo(String accountId, String displayName, String email) {
+    public UserLogInfo(@javax.annotation.Nullable String accountId, @javax.annotation.Nullable String displayName, @javax.annotation.Nullable String email) {
         if (accountId != null) {
             if (accountId.length() < 40) {
                 throw new IllegalArgumentException("String 'accountId' is shorter than 40");

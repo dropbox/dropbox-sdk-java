@@ -31,7 +31,7 @@ class RemovePaperDocUser extends RefPaperDoc {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RemovePaperDocUser(String docId, MemberSelector member) {
+    public RemovePaperDocUser(@javax.annotation.Nonnull String docId, @javax.annotation.Nonnull MemberSelector member) {
         super(docId);
         if (member == null) {
             throw new IllegalArgumentException("Required value for 'member' is null");

@@ -32,7 +32,7 @@ public class TeamLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamLogInfo(String displayName) {
+    public TeamLogInfo(@javax.annotation.Nonnull String displayName) {
         if (displayName == null) {
             throw new IllegalArgumentException("Required value for 'displayName' is null");
         }

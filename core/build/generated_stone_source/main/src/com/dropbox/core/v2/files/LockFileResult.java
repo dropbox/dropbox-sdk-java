@@ -31,7 +31,7 @@ public class LockFileResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LockFileResult(Metadata metadata, FileLock lock) {
+    public LockFileResult(@javax.annotation.Nonnull Metadata metadata, @javax.annotation.Nonnull FileLock lock) {
         if (metadata == null) {
             throw new IllegalArgumentException("Required value for 'metadata' is null");
         }

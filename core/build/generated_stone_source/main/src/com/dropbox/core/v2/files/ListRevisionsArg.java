@@ -39,7 +39,7 @@ class ListRevisionsArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListRevisionsArg(String path, ListRevisionsMode mode, long limit) {
+    public ListRevisionsArg(@javax.annotation.Nonnull String path, @javax.annotation.Nonnull ListRevisionsMode mode, long limit) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }

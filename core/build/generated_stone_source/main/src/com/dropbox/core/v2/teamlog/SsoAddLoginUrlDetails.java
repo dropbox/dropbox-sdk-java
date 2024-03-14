@@ -32,7 +32,7 @@ public class SsoAddLoginUrlDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SsoAddLoginUrlDetails(String newValue) {
+    public SsoAddLoginUrlDetails(@javax.annotation.Nonnull String newValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

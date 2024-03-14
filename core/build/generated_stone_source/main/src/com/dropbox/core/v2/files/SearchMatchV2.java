@@ -38,7 +38,7 @@ public class SearchMatchV2 {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SearchMatchV2(MetadataV2 metadata, SearchMatchTypeV2 matchType, List<HighlightSpan> highlightSpans) {
+    public SearchMatchV2(@javax.annotation.Nonnull MetadataV2 metadata, @javax.annotation.Nullable SearchMatchTypeV2 matchType, @javax.annotation.Nullable List<HighlightSpan> highlightSpans) {
         if (metadata == null) {
             throw new IllegalArgumentException("Required value for 'metadata' is null");
         }

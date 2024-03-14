@@ -40,7 +40,7 @@ public class FullTeam extends Team {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FullTeam(String id, String name, TeamSharingPolicies sharingPolicies, OfficeAddInPolicy officeAddinPolicy) {
+    public FullTeam(@javax.annotation.Nonnull String id, @javax.annotation.Nonnull String name, @javax.annotation.Nonnull TeamSharingPolicies sharingPolicies, @javax.annotation.Nonnull OfficeAddInPolicy officeAddinPolicy) {
         super(id, name);
         if (sharingPolicies == null) {
             throw new IllegalArgumentException("Required value for 'sharingPolicies' is null");

@@ -45,7 +45,7 @@ public class TeamSharingPolicies {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamSharingPolicies(SharedFolderMemberPolicy sharedFolderMemberPolicy, SharedFolderJoinPolicy sharedFolderJoinPolicy, SharedLinkCreatePolicy sharedLinkCreatePolicy, GroupCreation groupCreationPolicy, SharedFolderBlanketLinkRestrictionPolicy sharedFolderLinkRestrictionPolicy) {
+    public TeamSharingPolicies(@javax.annotation.Nonnull SharedFolderMemberPolicy sharedFolderMemberPolicy, @javax.annotation.Nonnull SharedFolderJoinPolicy sharedFolderJoinPolicy, @javax.annotation.Nonnull SharedLinkCreatePolicy sharedLinkCreatePolicy, @javax.annotation.Nonnull GroupCreation groupCreationPolicy, @javax.annotation.Nonnull SharedFolderBlanketLinkRestrictionPolicy sharedFolderLinkRestrictionPolicy) {
         if (sharedFolderMemberPolicy == null) {
             throw new IllegalArgumentException("Required value for 'sharedFolderMemberPolicy' is null");
         }

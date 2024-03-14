@@ -38,7 +38,7 @@ public class SearchV2Result {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SearchV2Result(List<SearchMatchV2> matches, boolean hasMore, String cursor) {
+    public SearchV2Result(@javax.annotation.Nonnull List<SearchMatchV2> matches, boolean hasMore, @javax.annotation.Nullable String cursor) {
         if (matches == null) {
             throw new IllegalArgumentException("Required value for 'matches' is null");
         }

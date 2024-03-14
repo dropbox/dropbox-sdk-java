@@ -29,7 +29,7 @@ public class FileLikeCommentDetails {
      *
      * @param commentText  Comment text.
      */
-    public FileLikeCommentDetails(String commentText) {
+    public FileLikeCommentDetails(@javax.annotation.Nullable String commentText) {
         this.commentText = commentText;
     }
 

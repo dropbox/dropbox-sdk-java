@@ -35,7 +35,7 @@ public class SsoChangeLogoutUrlDetails {
      *     missing due to historical data gap.
      * @param newValue  New single sign-on logout URL.
      */
-    public SsoChangeLogoutUrlDetails(String previousValue, String newValue) {
+    public SsoChangeLogoutUrlDetails(@javax.annotation.Nullable String previousValue, @javax.annotation.Nullable String newValue) {
         this.previousValue = previousValue;
         this.newValue = newValue;
     }

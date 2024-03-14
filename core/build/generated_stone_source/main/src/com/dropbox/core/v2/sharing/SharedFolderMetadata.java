@@ -84,7 +84,7 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedFolderMetadata(AccessLevel accessType, boolean isInsideTeamFolder, boolean isTeamFolder, String name, FolderPolicy policy, String previewUrl, String sharedFolderId, Date timeInvited, List<String> ownerDisplayNames, Team ownerTeam, String parentSharedFolderId, String pathDisplay, String pathLower, String parentFolderName, SharedContentLinkMetadata linkMetadata, List<FolderPermission> permissions, AccessInheritance accessInheritance) {
+    public SharedFolderMetadata(@javax.annotation.Nonnull AccessLevel accessType, boolean isInsideTeamFolder, boolean isTeamFolder, @javax.annotation.Nonnull String name, @javax.annotation.Nonnull FolderPolicy policy, @javax.annotation.Nonnull String previewUrl, @javax.annotation.Nonnull String sharedFolderId, @javax.annotation.Nonnull Date timeInvited, @javax.annotation.Nullable List<String> ownerDisplayNames, @javax.annotation.Nullable Team ownerTeam, @javax.annotation.Nullable String parentSharedFolderId, @javax.annotation.Nullable String pathDisplay, @javax.annotation.Nullable String pathLower, @javax.annotation.Nullable String parentFolderName, @javax.annotation.Nullable SharedContentLinkMetadata linkMetadata, @javax.annotation.Nullable List<FolderPermission> permissions, @javax.annotation.Nonnull AccessInheritance accessInheritance) {
         super(accessType, isInsideTeamFolder, isTeamFolder, ownerDisplayNames, ownerTeam, parentSharedFolderId, pathDisplay, pathLower, parentFolderName);
         this.linkMetadata = linkMetadata;
         if (name == null) {

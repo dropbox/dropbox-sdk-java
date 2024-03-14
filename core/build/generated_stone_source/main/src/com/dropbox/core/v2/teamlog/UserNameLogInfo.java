@@ -36,7 +36,7 @@ public class UserNameLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UserNameLogInfo(String givenName, String surname, String locale) {
+    public UserNameLogInfo(@javax.annotation.Nonnull String givenName, @javax.annotation.Nonnull String surname, @javax.annotation.Nullable String locale) {
         if (givenName == null) {
             throw new IllegalArgumentException("Required value for 'givenName' is null");
         }

@@ -30,7 +30,7 @@ class PaperDocSharingPolicy extends RefPaperDoc {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperDocSharingPolicy(String docId, SharingPolicy sharingPolicy) {
+    public PaperDocSharingPolicy(@javax.annotation.Nonnull String docId, @javax.annotation.Nonnull SharingPolicy sharingPolicy) {
         super(docId);
         if (sharingPolicy == null) {
             throw new IllegalArgumentException("Required value for 'sharingPolicy' is null");

@@ -33,7 +33,7 @@ public class OrganizationDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public OrganizationDetails(String organization) {
+    public OrganizationDetails(@javax.annotation.Nonnull String organization) {
         if (organization == null) {
             throw new IllegalArgumentException("Required value for 'organization' is null");
         }

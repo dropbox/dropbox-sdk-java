@@ -32,7 +32,7 @@ class ListUsersOnPaperDocContinueArgs extends RefPaperDoc {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListUsersOnPaperDocContinueArgs(String docId, String cursor) {
+    public ListUsersOnPaperDocContinueArgs(@javax.annotation.Nonnull String docId, @javax.annotation.Nonnull String cursor) {
         super(docId);
         if (cursor == null) {
             throw new IllegalArgumentException("Required value for 'cursor' is null");

@@ -35,7 +35,7 @@ public class FileRequestsChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileRequestsChangePolicyDetails(FileRequestsPolicy newValue, FileRequestsPolicy previousValue) {
+    public FileRequestsChangePolicyDetails(@javax.annotation.Nonnull FileRequestsPolicy newValue, @javax.annotation.Nullable FileRequestsPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

@@ -28,7 +28,7 @@ public class GroupChangeMemberRoleType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupChangeMemberRoleType(String description) {
+    public GroupChangeMemberRoleType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

@@ -37,7 +37,7 @@ public class StorageBucket {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public StorageBucket(String bucket, long users) {
+    public StorageBucket(@javax.annotation.Nonnull String bucket, long users) {
         if (bucket == null) {
             throw new IllegalArgumentException("Required value for 'bucket' is null");
         }

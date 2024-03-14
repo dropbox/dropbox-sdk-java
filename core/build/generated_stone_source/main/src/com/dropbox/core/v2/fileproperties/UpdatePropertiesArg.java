@@ -35,7 +35,7 @@ public class UpdatePropertiesArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UpdatePropertiesArg(String path, List<PropertyGroupUpdate> updatePropertyGroups) {
+    public UpdatePropertiesArg(@javax.annotation.Nonnull String path, @javax.annotation.Nonnull List<PropertyGroupUpdate> updatePropertyGroups) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }

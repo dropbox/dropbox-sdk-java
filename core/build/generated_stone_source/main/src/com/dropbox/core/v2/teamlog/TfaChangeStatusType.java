@@ -28,7 +28,7 @@ public class TfaChangeStatusType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TfaChangeStatusType(String description) {
+    public TfaChangeStatusType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

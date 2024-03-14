@@ -28,7 +28,7 @@ public class PaperPublishedLinkDisabledType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperPublishedLinkDisabledType(String description) {
+    public PaperPublishedLinkDisabledType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

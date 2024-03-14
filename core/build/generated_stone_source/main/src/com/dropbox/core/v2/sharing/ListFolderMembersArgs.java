@@ -40,7 +40,7 @@ class ListFolderMembersArgs extends ListFolderMembersCursorArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFolderMembersArgs(String sharedFolderId, List<MemberAction> actions, long limit) {
+    public ListFolderMembersArgs(@javax.annotation.Nonnull String sharedFolderId, @javax.annotation.Nullable List<MemberAction> actions, long limit) {
         super(actions, limit);
         if (sharedFolderId == null) {
             throw new IllegalArgumentException("Required value for 'sharedFolderId' is null");

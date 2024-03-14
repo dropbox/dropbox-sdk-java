@@ -36,7 +36,7 @@ public class GoogleSsoChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GoogleSsoChangePolicyDetails(GoogleSsoPolicy newValue, GoogleSsoPolicy previousValue) {
+    public GoogleSsoChangePolicyDetails(@javax.annotation.Nonnull GoogleSsoPolicy newValue, @javax.annotation.Nullable GoogleSsoPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

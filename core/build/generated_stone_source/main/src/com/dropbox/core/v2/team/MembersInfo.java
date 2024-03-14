@@ -33,7 +33,7 @@ public class MembersInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MembersInfo(List<String> teamMemberIds, long permanentlyDeletedUsers) {
+    public MembersInfo(@javax.annotation.Nonnull List<String> teamMemberIds, long permanentlyDeletedUsers) {
         if (teamMemberIds == null) {
             throw new IllegalArgumentException("Required value for 'teamMemberIds' is null");
         }

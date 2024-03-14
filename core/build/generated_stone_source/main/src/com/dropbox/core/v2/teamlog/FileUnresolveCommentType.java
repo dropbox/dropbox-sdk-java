@@ -28,7 +28,7 @@ public class FileUnresolveCommentType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileUnresolveCommentType(String description) {
+    public FileUnresolveCommentType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

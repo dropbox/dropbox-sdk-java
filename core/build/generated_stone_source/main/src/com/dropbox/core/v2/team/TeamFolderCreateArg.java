@@ -32,7 +32,7 @@ class TeamFolderCreateArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamFolderCreateArg(String name, SyncSettingArg syncSetting) {
+    public TeamFolderCreateArg(@javax.annotation.Nonnull String name, @javax.annotation.Nullable SyncSettingArg syncSetting) {
         if (name == null) {
             throw new IllegalArgumentException("Required value for 'name' is null");
         }

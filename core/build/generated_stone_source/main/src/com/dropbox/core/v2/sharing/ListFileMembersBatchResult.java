@@ -41,7 +41,7 @@ public class ListFileMembersBatchResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFileMembersBatchResult(String file, ListFileMembersIndividualResult result) {
+    public ListFileMembersBatchResult(@javax.annotation.Nonnull String file, @javax.annotation.Nonnull ListFileMembersIndividualResult result) {
         if (file == null) {
             throw new IllegalArgumentException("Required value for 'file' is null");
         }

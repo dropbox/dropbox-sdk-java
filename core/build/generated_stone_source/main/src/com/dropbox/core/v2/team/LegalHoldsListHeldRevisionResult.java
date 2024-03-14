@@ -40,7 +40,7 @@ public class LegalHoldsListHeldRevisionResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LegalHoldsListHeldRevisionResult(List<LegalHoldHeldRevisionMetadata> entries, boolean hasMore, String cursor) {
+    public LegalHoldsListHeldRevisionResult(@javax.annotation.Nonnull List<LegalHoldHeldRevisionMetadata> entries, boolean hasMore, @javax.annotation.Nullable String cursor) {
         if (entries == null) {
             throw new IllegalArgumentException("Required value for 'entries' is null");
         }

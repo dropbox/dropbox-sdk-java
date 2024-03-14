@@ -38,7 +38,7 @@ public class MediaMetadata {
      * @param location  The GPS coordinate of the photo/video.
      * @param timeTaken  The timestamp when the photo/video is taken.
      */
-    public MediaMetadata(Dimensions dimensions, GpsCoordinates location, Date timeTaken) {
+    public MediaMetadata(@javax.annotation.Nullable Dimensions dimensions, @javax.annotation.Nullable GpsCoordinates location, @javax.annotation.Nullable Date timeTaken) {
         this.dimensions = dimensions;
         this.location = location;
         this.timeTaken = LangUtil.truncateMillis(timeTaken);

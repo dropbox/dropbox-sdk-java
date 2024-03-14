@@ -35,7 +35,7 @@ public class RewindPolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RewindPolicyChangedDetails(RewindPolicy newValue, RewindPolicy previousValue) {
+    public RewindPolicyChangedDetails(@javax.annotation.Nonnull RewindPolicy newValue, @javax.annotation.Nonnull RewindPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

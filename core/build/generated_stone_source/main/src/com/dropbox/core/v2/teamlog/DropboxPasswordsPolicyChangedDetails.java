@@ -34,7 +34,7 @@ public class DropboxPasswordsPolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DropboxPasswordsPolicyChangedDetails(DropboxPasswordsPolicy newValue, DropboxPasswordsPolicy previousValue) {
+    public DropboxPasswordsPolicyChangedDetails(@javax.annotation.Nonnull DropboxPasswordsPolicy newValue, @javax.annotation.Nonnull DropboxPasswordsPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

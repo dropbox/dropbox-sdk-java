@@ -35,7 +35,7 @@ class PaperCreateArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperCreateArg(String path, ImportFormat importFormat) {
+    public PaperCreateArg(@javax.annotation.Nonnull String path, @javax.annotation.Nonnull ImportFormat importFormat) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }

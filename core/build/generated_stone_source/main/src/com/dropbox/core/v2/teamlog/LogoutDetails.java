@@ -29,7 +29,7 @@ public class LogoutDetails {
      *
      * @param loginId  Login session id.
      */
-    public LogoutDetails(String loginId) {
+    public LogoutDetails(@javax.annotation.Nullable String loginId) {
         this.loginId = loginId;
     }
 

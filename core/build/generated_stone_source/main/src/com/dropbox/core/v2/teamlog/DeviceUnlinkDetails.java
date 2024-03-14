@@ -38,7 +38,7 @@ public class DeviceUnlinkDetails {
      * @param displayName  The device name. Might be missing due to historical
      *     data gap.
      */
-    public DeviceUnlinkDetails(boolean deleteData, SessionLogInfo sessionInfo, String displayName) {
+    public DeviceUnlinkDetails(boolean deleteData, @javax.annotation.Nullable SessionLogInfo sessionInfo, @javax.annotation.Nullable String displayName) {
         this.sessionInfo = sessionInfo;
         this.displayName = displayName;
         this.deleteData = deleteData;

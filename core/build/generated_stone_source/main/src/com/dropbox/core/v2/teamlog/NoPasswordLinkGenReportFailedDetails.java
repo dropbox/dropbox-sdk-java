@@ -33,7 +33,7 @@ public class NoPasswordLinkGenReportFailedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public NoPasswordLinkGenReportFailedDetails(TeamReportFailureReason failureReason) {
+    public NoPasswordLinkGenReportFailedDetails(@javax.annotation.Nonnull TeamReportFailureReason failureReason) {
         if (failureReason == null) {
             throw new IllegalArgumentException("Required value for 'failureReason' is null");
         }

@@ -32,7 +32,7 @@ public class GroupRemoveExternalIdDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupRemoveExternalIdDetails(String previousValue) {
+    public GroupRemoveExternalIdDetails(@javax.annotation.Nonnull String previousValue) {
         if (previousValue == null) {
             throw new IllegalArgumentException("Required value for 'previousValue' is null");
         }

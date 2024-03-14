@@ -31,7 +31,7 @@ public class GetThumbnailBatchResultData {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetThumbnailBatchResultData(FileMetadata metadata, String thumbnail) {
+    public GetThumbnailBatchResultData(@javax.annotation.Nonnull FileMetadata metadata, @javax.annotation.Nonnull String thumbnail) {
         if (metadata == null) {
             throw new IllegalArgumentException("Required value for 'metadata' is null");
         }

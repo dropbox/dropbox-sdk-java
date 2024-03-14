@@ -40,7 +40,7 @@ public class RootInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RootInfo(String rootNamespaceId, String homeNamespaceId) {
+    public RootInfo(@javax.annotation.Nonnull String rootNamespaceId, @javax.annotation.Nonnull String homeNamespaceId) {
         if (rootNamespaceId == null) {
             throw new IllegalArgumentException("Required value for 'rootNamespaceId' is null");
         }

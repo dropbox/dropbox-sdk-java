@@ -44,7 +44,7 @@ public class SharedLinkSettingsChangeAudienceDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedLinkSettingsChangeAudienceDetails(AccessLevel sharedContentAccessLevel, LinkAudience newValue, String sharedContentLink, LinkAudience previousValue) {
+    public SharedLinkSettingsChangeAudienceDetails(@javax.annotation.Nonnull AccessLevel sharedContentAccessLevel, @javax.annotation.Nonnull LinkAudience newValue, @javax.annotation.Nullable String sharedContentLink, @javax.annotation.Nullable LinkAudience previousValue) {
         if (sharedContentAccessLevel == null) {
             throw new IllegalArgumentException("Required value for 'sharedContentAccessLevel' is null");
         }

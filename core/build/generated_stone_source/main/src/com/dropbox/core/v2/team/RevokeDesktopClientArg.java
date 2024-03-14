@@ -33,7 +33,7 @@ public class RevokeDesktopClientArg extends DeviceSessionArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RevokeDesktopClientArg(String sessionId, String teamMemberId, boolean deleteOnUnlink) {
+    public RevokeDesktopClientArg(@javax.annotation.Nonnull String sessionId, @javax.annotation.Nonnull String teamMemberId, boolean deleteOnUnlink) {
         super(sessionId, teamMemberId);
         this.deleteOnUnlink = deleteOnUnlink;
     }

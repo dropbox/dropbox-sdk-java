@@ -45,7 +45,7 @@ public class GroupMembersChangeResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupMembersChangeResult(GroupFullInfo groupInfo, String asyncJobId) {
+    public GroupMembersChangeResult(@javax.annotation.Nonnull GroupFullInfo groupInfo, @javax.annotation.Nonnull String asyncJobId) {
         if (groupInfo == null) {
             throw new IllegalArgumentException("Required value for 'groupInfo' is null");
         }

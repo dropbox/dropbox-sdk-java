@@ -28,7 +28,7 @@ public class PermanentDeleteChangePolicyType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PermanentDeleteChangePolicyType(String description) {
+    public PermanentDeleteChangePolicyType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

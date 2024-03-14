@@ -36,7 +36,7 @@ public class WebSessionsChangeIdleLengthPolicyDetails {
      * @param previousValue  Previous idle length policy. Might be missing due
      *     to historical data gap.
      */
-    public WebSessionsChangeIdleLengthPolicyDetails(WebSessionsIdleLengthPolicy newValue, WebSessionsIdleLengthPolicy previousValue) {
+    public WebSessionsChangeIdleLengthPolicyDetails(@javax.annotation.Nullable WebSessionsIdleLengthPolicy newValue, @javax.annotation.Nullable WebSessionsIdleLengthPolicy previousValue) {
         this.newValue = newValue;
         this.previousValue = previousValue;
     }

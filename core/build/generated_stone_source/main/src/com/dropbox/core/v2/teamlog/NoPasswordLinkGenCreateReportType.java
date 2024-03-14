@@ -28,7 +28,7 @@ public class NoPasswordLinkGenCreateReportType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public NoPasswordLinkGenCreateReportType(String description) {
+    public NoPasswordLinkGenCreateReportType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

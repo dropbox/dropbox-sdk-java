@@ -30,7 +30,7 @@ class LegalHoldsListHeldRevisionsArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LegalHoldsListHeldRevisionsArg(String id) {
+    public LegalHoldsListHeldRevisionsArg(@javax.annotation.Nonnull String id) {
         if (id == null) {
             throw new IllegalArgumentException("Required value for 'id' is null");
         }

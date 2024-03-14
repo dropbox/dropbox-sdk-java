@@ -36,7 +36,7 @@ public class ListFilesResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFilesResult(List<SharedFileMetadata> entries, String cursor) {
+    public ListFilesResult(@javax.annotation.Nonnull List<SharedFileMetadata> entries, @javax.annotation.Nullable String cursor) {
         if (entries == null) {
             throw new IllegalArgumentException("Required value for 'entries' is null");
         }

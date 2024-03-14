@@ -28,7 +28,7 @@ public class DomainVerificationAddDomainSuccessType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DomainVerificationAddDomainSuccessType(String description) {
+    public DomainVerificationAddDomainSuccessType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

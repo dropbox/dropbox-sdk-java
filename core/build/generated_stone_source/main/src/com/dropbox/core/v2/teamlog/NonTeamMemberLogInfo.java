@@ -36,7 +36,7 @@ public class NonTeamMemberLogInfo extends UserLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public NonTeamMemberLogInfo(String accountId, String displayName, String email) {
+    public NonTeamMemberLogInfo(@javax.annotation.Nullable String accountId, @javax.annotation.Nullable String displayName, @javax.annotation.Nullable String email) {
         super(accountId, displayName, email);
     }
 

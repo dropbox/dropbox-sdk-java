@@ -34,7 +34,7 @@ public class FileSaveCopyReferenceDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileSaveCopyReferenceDetails(List<RelocateAssetReferencesLogInfo> relocateActionDetails) {
+    public FileSaveCopyReferenceDetails(@javax.annotation.Nonnull List<RelocateAssetReferencesLogInfo> relocateActionDetails) {
         if (relocateActionDetails == null) {
             throw new IllegalArgumentException("Required value for 'relocateActionDetails' is null");
         }

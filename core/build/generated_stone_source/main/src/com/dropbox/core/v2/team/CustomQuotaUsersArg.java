@@ -30,7 +30,7 @@ class CustomQuotaUsersArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public CustomQuotaUsersArg(List<UserSelectorArg> users) {
+    public CustomQuotaUsersArg(@javax.annotation.Nonnull List<UserSelectorArg> users) {
         if (users == null) {
             throw new IllegalArgumentException("Required value for 'users' is null");
         }

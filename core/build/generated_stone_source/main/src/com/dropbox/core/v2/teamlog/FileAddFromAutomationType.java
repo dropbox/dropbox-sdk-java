@@ -28,7 +28,7 @@ public class FileAddFromAutomationType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileAddFromAutomationType(String description) {
+    public FileAddFromAutomationType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

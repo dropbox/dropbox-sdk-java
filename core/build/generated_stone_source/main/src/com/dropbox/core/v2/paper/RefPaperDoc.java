@@ -28,7 +28,7 @@ class RefPaperDoc {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RefPaperDoc(String docId) {
+    public RefPaperDoc(@javax.annotation.Nonnull String docId) {
         if (docId == null) {
             throw new IllegalArgumentException("Required value for 'docId' is null");
         }

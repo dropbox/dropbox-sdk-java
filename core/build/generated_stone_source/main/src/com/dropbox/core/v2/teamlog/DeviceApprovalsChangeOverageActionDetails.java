@@ -37,7 +37,7 @@ public class DeviceApprovalsChangeOverageActionDetails {
      * @param previousValue  Previous over the limit policy. Might be missing
      *     due to historical data gap.
      */
-    public DeviceApprovalsChangeOverageActionDetails(RolloutMethod newValue, RolloutMethod previousValue) {
+    public DeviceApprovalsChangeOverageActionDetails(@javax.annotation.Nullable RolloutMethod newValue, @javax.annotation.Nullable RolloutMethod previousValue) {
         this.newValue = newValue;
         this.previousValue = previousValue;
     }

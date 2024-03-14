@@ -34,7 +34,7 @@ public class FileRequestDeadline {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileRequestDeadline(Date deadline, GracePeriod allowLateUploads) {
+    public FileRequestDeadline(@javax.annotation.Nonnull Date deadline, @javax.annotation.Nullable GracePeriod allowLateUploads) {
         if (deadline == null) {
             throw new IllegalArgumentException("Required value for 'deadline' is null");
         }

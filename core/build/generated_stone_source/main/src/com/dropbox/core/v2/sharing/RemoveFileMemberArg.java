@@ -43,7 +43,7 @@ class RemoveFileMemberArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RemoveFileMemberArg(String file, MemberSelector member) {
+    public RemoveFileMemberArg(@javax.annotation.Nonnull String file, @javax.annotation.Nonnull MemberSelector member) {
         if (file == null) {
             throw new IllegalArgumentException("Required value for 'file' is null");
         }

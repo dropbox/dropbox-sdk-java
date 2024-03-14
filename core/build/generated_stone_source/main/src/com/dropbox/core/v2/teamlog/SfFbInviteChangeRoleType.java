@@ -28,7 +28,7 @@ public class SfFbInviteChangeRoleType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SfFbInviteChangeRoleType(String description) {
+    public SfFbInviteChangeRoleType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

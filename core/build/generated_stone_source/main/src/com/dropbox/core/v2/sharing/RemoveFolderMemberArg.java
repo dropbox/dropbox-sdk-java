@@ -39,7 +39,7 @@ class RemoveFolderMemberArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RemoveFolderMemberArg(String sharedFolderId, MemberSelector member, boolean leaveACopy) {
+    public RemoveFolderMemberArg(@javax.annotation.Nonnull String sharedFolderId, @javax.annotation.Nonnull MemberSelector member, boolean leaveACopy) {
         if (sharedFolderId == null) {
             throw new IllegalArgumentException("Required value for 'sharedFolderId' is null");
         }

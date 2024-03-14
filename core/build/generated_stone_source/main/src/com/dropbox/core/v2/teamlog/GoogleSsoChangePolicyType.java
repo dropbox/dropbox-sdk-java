@@ -28,7 +28,7 @@ public class GoogleSsoChangePolicyType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GoogleSsoChangePolicyType(String description) {
+    public GoogleSsoChangePolicyType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

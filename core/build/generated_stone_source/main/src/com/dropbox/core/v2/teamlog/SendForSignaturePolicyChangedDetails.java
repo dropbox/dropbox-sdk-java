@@ -35,7 +35,7 @@ public class SendForSignaturePolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SendForSignaturePolicyChangedDetails(SendForSignaturePolicy newValue, SendForSignaturePolicy previousValue) {
+    public SendForSignaturePolicyChangedDetails(@javax.annotation.Nonnull SendForSignaturePolicy newValue, @javax.annotation.Nonnull SendForSignaturePolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

@@ -38,7 +38,7 @@ public class PaperChangeMemberPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperChangeMemberPolicyDetails(PaperMemberPolicy newValue, PaperMemberPolicy previousValue) {
+    public PaperChangeMemberPolicyDetails(@javax.annotation.Nonnull PaperMemberPolicy newValue, @javax.annotation.Nullable PaperMemberPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

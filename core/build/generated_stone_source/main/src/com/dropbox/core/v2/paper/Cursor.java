@@ -45,7 +45,7 @@ public class Cursor {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public Cursor(String value, Date expiration) {
+    public Cursor(@javax.annotation.Nonnull String value, @javax.annotation.Nullable Date expiration) {
         if (value == null) {
             throw new IllegalArgumentException("Required value for 'value' is null");
         }

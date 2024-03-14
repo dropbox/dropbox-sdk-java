@@ -32,7 +32,7 @@ public class CreateFolderBatchResult extends FileOpsResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public CreateFolderBatchResult(List<CreateFolderBatchResultEntry> entries) {
+    public CreateFolderBatchResult(@javax.annotation.Nonnull List<CreateFolderBatchResultEntry> entries) {
         if (entries == null) {
             throw new IllegalArgumentException("Required value for 'entries' is null");
         }

@@ -43,7 +43,7 @@ class UploadSessionAppendArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UploadSessionAppendArg(UploadSessionCursor cursor, boolean close, String contentHash) {
+    public UploadSessionAppendArg(@javax.annotation.Nonnull UploadSessionCursor cursor, boolean close, @javax.annotation.Nullable String contentHash) {
         if (cursor == null) {
             throw new IllegalArgumentException("Required value for 'cursor' is null");
         }

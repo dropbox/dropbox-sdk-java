@@ -40,7 +40,7 @@ class TeamFolderUpdateSyncSettingsArg extends TeamFolderIdArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamFolderUpdateSyncSettingsArg(String teamFolderId, SyncSettingArg syncSetting, List<ContentSyncSettingArg> contentSyncSettings) {
+    public TeamFolderUpdateSyncSettingsArg(@javax.annotation.Nonnull String teamFolderId, @javax.annotation.Nullable SyncSettingArg syncSetting, @javax.annotation.Nullable List<ContentSyncSettingArg> contentSyncSettings) {
         super(teamFolderId);
         this.syncSetting = syncSetting;
         if (contentSyncSettings != null) {

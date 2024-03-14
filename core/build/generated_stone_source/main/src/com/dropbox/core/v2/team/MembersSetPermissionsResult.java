@@ -31,7 +31,7 @@ public class MembersSetPermissionsResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MembersSetPermissionsResult(String teamMemberId, AdminTier role) {
+    public MembersSetPermissionsResult(@javax.annotation.Nonnull String teamMemberId, @javax.annotation.Nonnull AdminTier role) {
         if (teamMemberId == null) {
             throw new IllegalArgumentException("Required value for 'teamMemberId' is null");
         }

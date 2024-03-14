@@ -34,7 +34,7 @@ public class RevokeLinkedApiAppArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RevokeLinkedApiAppArg(String appId, String teamMemberId, boolean keepAppFolder) {
+    public RevokeLinkedApiAppArg(@javax.annotation.Nonnull String appId, @javax.annotation.Nonnull String teamMemberId, boolean keepAppFolder) {
         if (appId == null) {
             throw new IllegalArgumentException("Required value for 'appId' is null");
         }

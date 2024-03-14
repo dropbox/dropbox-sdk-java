@@ -53,7 +53,7 @@ public class SharedLinkSettings {
      * @param allowDownload  Boolean flag to allow or not download capabilities
      *     for shared links.
      */
-    public SharedLinkSettings(Boolean requirePassword, String linkPassword, Date expires, LinkAudience audience, RequestedLinkAccessLevel access, RequestedVisibility requestedVisibility, Boolean allowDownload) {
+    public SharedLinkSettings(@javax.annotation.Nullable Boolean requirePassword, @javax.annotation.Nullable String linkPassword, @javax.annotation.Nullable Date expires, @javax.annotation.Nullable LinkAudience audience, @javax.annotation.Nullable RequestedLinkAccessLevel access, @javax.annotation.Nullable RequestedVisibility requestedVisibility, @javax.annotation.Nullable Boolean allowDownload) {
         this.requirePassword = requirePassword;
         this.linkPassword = linkPassword;
         this.expires = LangUtil.truncateMillis(expires);

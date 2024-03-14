@@ -48,7 +48,7 @@ public class ListFoldersResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFoldersResult(List<SharedFolderMetadata> entries, String cursor) {
+    public ListFoldersResult(@javax.annotation.Nonnull List<SharedFolderMetadata> entries, @javax.annotation.Nullable String cursor) {
         if (entries == null) {
             throw new IllegalArgumentException("Required value for 'entries' is null");
         }

@@ -35,7 +35,7 @@ public class PaperDesktopPolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperDesktopPolicyChangedDetails(PaperDesktopPolicy newValue, PaperDesktopPolicy previousValue) {
+    public PaperDesktopPolicyChangedDetails(@javax.annotation.Nonnull PaperDesktopPolicy newValue, @javax.annotation.Nonnull PaperDesktopPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

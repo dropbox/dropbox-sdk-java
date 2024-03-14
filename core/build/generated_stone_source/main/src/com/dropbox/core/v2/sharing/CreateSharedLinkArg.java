@@ -36,7 +36,7 @@ class CreateSharedLinkArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public CreateSharedLinkArg(String path, boolean shortUrl, PendingUploadMode pendingUpload) {
+    public CreateSharedLinkArg(@javax.annotation.Nonnull String path, boolean shortUrl, @javax.annotation.Nullable PendingUploadMode pendingUpload) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }

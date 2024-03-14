@@ -29,7 +29,7 @@ public class SymlinkInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SymlinkInfo(String target) {
+    public SymlinkInfo(@javax.annotation.Nonnull String target) {
         if (target == null) {
             throw new IllegalArgumentException("Required value for 'target' is null");
         }

@@ -28,7 +28,7 @@ public class DeviceApprovalsChangeMobilePolicyType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeviceApprovalsChangeMobilePolicyType(String description) {
+    public DeviceApprovalsChangeMobilePolicyType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

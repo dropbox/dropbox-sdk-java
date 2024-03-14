@@ -36,7 +36,7 @@ public class DeviceLinkFailDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeviceLinkFailDetails(DeviceType deviceType, String ipAddress) {
+    public DeviceLinkFailDetails(@javax.annotation.Nonnull DeviceType deviceType, @javax.annotation.Nullable String ipAddress) {
         this.ipAddress = ipAddress;
         if (deviceType == null) {
             throw new IllegalArgumentException("Required value for 'deviceType' is null");

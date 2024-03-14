@@ -29,7 +29,7 @@ public class GroupDeleteDetails {
      *
      * @param isCompanyManaged  Is company managed group.
      */
-    public GroupDeleteDetails(Boolean isCompanyManaged) {
+    public GroupDeleteDetails(@javax.annotation.Nullable Boolean isCompanyManaged) {
         this.isCompanyManaged = isCompanyManaged;
     }
 

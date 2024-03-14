@@ -39,7 +39,7 @@ public class UploadSessionFinishArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UploadSessionFinishArg(UploadSessionCursor cursor, CommitInfo commit, String contentHash) {
+    public UploadSessionFinishArg(@javax.annotation.Nonnull UploadSessionCursor cursor, @javax.annotation.Nonnull CommitInfo commit, @javax.annotation.Nullable String contentHash) {
         if (cursor == null) {
             throw new IllegalArgumentException("Required value for 'cursor' is null");
         }

@@ -35,7 +35,7 @@ class MembersDeactivateBaseArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MembersDeactivateBaseArg(UserSelectorArg user) {
+    public MembersDeactivateBaseArg(@javax.annotation.Nonnull UserSelectorArg user) {
         if (user == null) {
             throw new IllegalArgumentException("Required value for 'user' is null");
         }

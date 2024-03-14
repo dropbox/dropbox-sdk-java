@@ -34,7 +34,7 @@ public class MemberAccess {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberAccess(UserSelectorArg user, GroupAccessType accessType) {
+    public MemberAccess(@javax.annotation.Nonnull UserSelectorArg user, @javax.annotation.Nonnull GroupAccessType accessType) {
         if (user == null) {
             throw new IllegalArgumentException("Required value for 'user' is null");
         }

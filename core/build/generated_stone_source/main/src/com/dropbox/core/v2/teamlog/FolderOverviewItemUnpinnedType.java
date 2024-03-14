@@ -28,7 +28,7 @@ public class FolderOverviewItemUnpinnedType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FolderOverviewItemUnpinnedType(String description) {
+    public FolderOverviewItemUnpinnedType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

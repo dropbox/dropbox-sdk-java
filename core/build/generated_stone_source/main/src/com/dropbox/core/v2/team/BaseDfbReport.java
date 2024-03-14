@@ -33,7 +33,7 @@ public class BaseDfbReport {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public BaseDfbReport(String startDate) {
+    public BaseDfbReport(@javax.annotation.Nonnull String startDate) {
         if (startDate == null) {
             throw new IllegalArgumentException("Required value for 'startDate' is null");
         }

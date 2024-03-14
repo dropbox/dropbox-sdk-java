@@ -34,7 +34,7 @@ public class PaperDocumentLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperDocumentLogInfo(String docId, String docTitle) {
+    public PaperDocumentLogInfo(@javax.annotation.Nonnull String docId, @javax.annotation.Nonnull String docTitle) {
         if (docId == null) {
             throw new IllegalArgumentException("Required value for 'docId' is null");
         }

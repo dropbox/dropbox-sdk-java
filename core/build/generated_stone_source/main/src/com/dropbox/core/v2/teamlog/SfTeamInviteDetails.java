@@ -37,7 +37,7 @@ public class SfTeamInviteDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SfTeamInviteDetails(long targetAssetIndex, String originalFolderName, String sharingPermission) {
+    public SfTeamInviteDetails(long targetAssetIndex, @javax.annotation.Nonnull String originalFolderName, @javax.annotation.Nullable String sharingPermission) {
         this.targetAssetIndex = targetAssetIndex;
         if (originalFolderName == null) {
             throw new IllegalArgumentException("Required value for 'originalFolderName' is null");

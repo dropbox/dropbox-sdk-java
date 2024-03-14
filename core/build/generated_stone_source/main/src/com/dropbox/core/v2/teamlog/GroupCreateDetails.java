@@ -34,7 +34,7 @@ public class GroupCreateDetails {
      * @param isCompanyManaged  Is company managed group.
      * @param joinPolicy  Group join policy.
      */
-    public GroupCreateDetails(Boolean isCompanyManaged, GroupJoinPolicy joinPolicy) {
+    public GroupCreateDetails(@javax.annotation.Nullable Boolean isCompanyManaged, @javax.annotation.Nullable GroupJoinPolicy joinPolicy) {
         this.isCompanyManaged = isCompanyManaged;
         this.joinPolicy = joinPolicy;
     }

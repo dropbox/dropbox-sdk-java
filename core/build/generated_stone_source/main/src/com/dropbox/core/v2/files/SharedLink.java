@@ -30,7 +30,7 @@ public class SharedLink {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedLink(String url, String password) {
+    public SharedLink(@javax.annotation.Nonnull String url, @javax.annotation.Nullable String password) {
         if (url == null) {
             throw new IllegalArgumentException("Required value for 'url' is null");
         }

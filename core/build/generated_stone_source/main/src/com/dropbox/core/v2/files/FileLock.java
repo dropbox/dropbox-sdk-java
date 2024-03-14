@@ -28,7 +28,7 @@ public class FileLock {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileLock(FileLockContent content) {
+    public FileLock(@javax.annotation.Nonnull FileLockContent content) {
         if (content == null) {
             throw new IllegalArgumentException("Required value for 'content' is null");
         }

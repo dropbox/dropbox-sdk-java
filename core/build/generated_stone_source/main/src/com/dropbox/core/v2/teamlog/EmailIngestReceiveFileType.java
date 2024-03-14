@@ -28,7 +28,7 @@ public class EmailIngestReceiveFileType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public EmailIngestReceiveFileType(String description) {
+    public EmailIngestReceiveFileType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

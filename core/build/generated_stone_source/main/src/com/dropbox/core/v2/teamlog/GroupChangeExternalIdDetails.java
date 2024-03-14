@@ -34,7 +34,7 @@ public class GroupChangeExternalIdDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupChangeExternalIdDetails(String newValue, String previousValue) {
+    public GroupChangeExternalIdDetails(@javax.annotation.Nonnull String newValue, @javax.annotation.Nonnull String previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

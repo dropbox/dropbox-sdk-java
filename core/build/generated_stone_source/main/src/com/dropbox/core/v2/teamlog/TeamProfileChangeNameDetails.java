@@ -35,7 +35,7 @@ public class TeamProfileChangeNameDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamProfileChangeNameDetails(TeamName newValue, TeamName previousValue) {
+    public TeamProfileChangeNameDetails(@javax.annotation.Nonnull TeamName newValue, @javax.annotation.Nullable TeamName previousValue) {
         this.previousValue = previousValue;
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");

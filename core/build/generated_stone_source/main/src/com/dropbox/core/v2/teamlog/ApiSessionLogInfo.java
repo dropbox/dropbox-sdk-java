@@ -32,7 +32,7 @@ public class ApiSessionLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ApiSessionLogInfo(String requestId) {
+    public ApiSessionLogInfo(@javax.annotation.Nonnull String requestId) {
         if (requestId == null) {
             throw new IllegalArgumentException("Required value for 'requestId' is null");
         }

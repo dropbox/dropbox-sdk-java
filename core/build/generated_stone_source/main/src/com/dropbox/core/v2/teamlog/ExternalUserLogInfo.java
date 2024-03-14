@@ -35,7 +35,7 @@ public class ExternalUserLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ExternalUserLogInfo(String userIdentifier, IdentifierType identifierType) {
+    public ExternalUserLogInfo(@javax.annotation.Nonnull String userIdentifier, @javax.annotation.Nonnull IdentifierType identifierType) {
         if (userIdentifier == null) {
             throw new IllegalArgumentException("Required value for 'userIdentifier' is null");
         }

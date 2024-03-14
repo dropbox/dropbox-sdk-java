@@ -47,7 +47,7 @@ public class SharedLinkSettingsChangeExpirationDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedLinkSettingsChangeExpirationDetails(AccessLevel sharedContentAccessLevel, String sharedContentLink, Date newValue, Date previousValue) {
+    public SharedLinkSettingsChangeExpirationDetails(@javax.annotation.Nonnull AccessLevel sharedContentAccessLevel, @javax.annotation.Nullable String sharedContentLink, @javax.annotation.Nullable Date newValue, @javax.annotation.Nullable Date previousValue) {
         if (sharedContentAccessLevel == null) {
             throw new IllegalArgumentException("Required value for 'sharedContentAccessLevel' is null");
         }

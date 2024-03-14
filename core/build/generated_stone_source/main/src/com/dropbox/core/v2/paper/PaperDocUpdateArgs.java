@@ -37,7 +37,7 @@ class PaperDocUpdateArgs extends RefPaperDoc {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperDocUpdateArgs(String docId, PaperDocUpdatePolicy docUpdatePolicy, long revision, ImportFormat importFormat) {
+    public PaperDocUpdateArgs(@javax.annotation.Nonnull String docId, @javax.annotation.Nonnull PaperDocUpdatePolicy docUpdatePolicy, long revision, @javax.annotation.Nonnull ImportFormat importFormat) {
         super(docId);
         if (docUpdatePolicy == null) {
             throw new IllegalArgumentException("Required value for 'docUpdatePolicy' is null");

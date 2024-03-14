@@ -33,7 +33,7 @@ public class SsoAddCertDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SsoAddCertDetails(Certificate certificateDetails) {
+    public SsoAddCertDetails(@javax.annotation.Nonnull Certificate certificateDetails) {
         if (certificateDetails == null) {
             throw new IllegalArgumentException("Required value for 'certificateDetails' is null");
         }

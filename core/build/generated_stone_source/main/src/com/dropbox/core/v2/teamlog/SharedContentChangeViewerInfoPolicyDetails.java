@@ -35,7 +35,7 @@ public class SharedContentChangeViewerInfoPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentChangeViewerInfoPolicyDetails(ViewerInfoPolicy newValue, ViewerInfoPolicy previousValue) {
+    public SharedContentChangeViewerInfoPolicyDetails(@javax.annotation.Nonnull ViewerInfoPolicy newValue, @javax.annotation.Nullable ViewerInfoPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

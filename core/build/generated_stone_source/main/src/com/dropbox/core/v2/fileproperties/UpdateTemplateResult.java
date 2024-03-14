@@ -34,7 +34,7 @@ public class UpdateTemplateResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UpdateTemplateResult(String templateId) {
+    public UpdateTemplateResult(@javax.annotation.Nonnull String templateId) {
         if (templateId == null) {
             throw new IllegalArgumentException("Required value for 'templateId' is null");
         }

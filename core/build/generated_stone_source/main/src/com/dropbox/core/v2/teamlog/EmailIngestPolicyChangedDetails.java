@@ -34,7 +34,7 @@ public class EmailIngestPolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public EmailIngestPolicyChangedDetails(EmailIngestPolicy newValue, EmailIngestPolicy previousValue) {
+    public EmailIngestPolicyChangedDetails(@javax.annotation.Nonnull EmailIngestPolicy newValue, @javax.annotation.Nonnull EmailIngestPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

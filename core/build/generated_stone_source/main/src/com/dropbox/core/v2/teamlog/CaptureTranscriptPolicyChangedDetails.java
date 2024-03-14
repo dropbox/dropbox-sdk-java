@@ -34,7 +34,7 @@ public class CaptureTranscriptPolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public CaptureTranscriptPolicyChangedDetails(CaptureTranscriptPolicy newValue, CaptureTranscriptPolicy previousValue) {
+    public CaptureTranscriptPolicyChangedDetails(@javax.annotation.Nonnull CaptureTranscriptPolicy newValue, @javax.annotation.Nonnull CaptureTranscriptPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

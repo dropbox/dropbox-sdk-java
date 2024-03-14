@@ -38,7 +38,7 @@ public class ListRevisionsResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListRevisionsResult(boolean isDeleted, List<FileMetadata> entries, Date serverDeleted) {
+    public ListRevisionsResult(boolean isDeleted, @javax.annotation.Nonnull List<FileMetadata> entries, @javax.annotation.Nullable Date serverDeleted) {
         this.isDeleted = isDeleted;
         this.serverDeleted = LangUtil.truncateMillis(serverDeleted);
         if (entries == null) {

@@ -33,7 +33,7 @@ public class SecondaryEmailDeletedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SecondaryEmailDeletedDetails(String secondaryEmail) {
+    public SecondaryEmailDeletedDetails(@javax.annotation.Nonnull String secondaryEmail) {
         if (secondaryEmail == null) {
             throw new IllegalArgumentException("Required value for 'secondaryEmail' is null");
         }

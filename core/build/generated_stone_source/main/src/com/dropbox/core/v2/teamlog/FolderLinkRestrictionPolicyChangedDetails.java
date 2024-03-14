@@ -34,7 +34,7 @@ public class FolderLinkRestrictionPolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FolderLinkRestrictionPolicyChangedDetails(FolderLinkRestrictionPolicy newValue, FolderLinkRestrictionPolicy previousValue) {
+    public FolderLinkRestrictionPolicyChangedDetails(@javax.annotation.Nonnull FolderLinkRestrictionPolicy newValue, @javax.annotation.Nonnull FolderLinkRestrictionPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

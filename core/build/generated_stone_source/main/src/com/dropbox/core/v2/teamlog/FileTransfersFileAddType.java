@@ -28,7 +28,7 @@ public class FileTransfersFileAddType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileTransfersFileAddType(String description) {
+    public FileTransfersFileAddType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

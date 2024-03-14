@@ -32,7 +32,7 @@ class UploadSessionStartBatchArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UploadSessionStartBatchArg(long numSessions, UploadSessionType sessionType) {
+    public UploadSessionStartBatchArg(long numSessions, @javax.annotation.Nullable UploadSessionType sessionType) {
         this.sessionType = sessionType;
         if (numSessions < 1L) {
             throw new IllegalArgumentException("Number 'numSessions' is smaller than 1L");

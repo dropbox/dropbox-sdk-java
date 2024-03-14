@@ -40,7 +40,7 @@ public class TeamGetInfoResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamGetInfoResult(String name, String teamId, long numLicensedUsers, long numProvisionedUsers, TeamMemberPolicies policies, long numUsedLicenses) {
+    public TeamGetInfoResult(@javax.annotation.Nonnull String name, @javax.annotation.Nonnull String teamId, long numLicensedUsers, long numProvisionedUsers, @javax.annotation.Nonnull TeamMemberPolicies policies, long numUsedLicenses) {
         if (name == null) {
             throw new IllegalArgumentException("Required value for 'name' is null");
         }

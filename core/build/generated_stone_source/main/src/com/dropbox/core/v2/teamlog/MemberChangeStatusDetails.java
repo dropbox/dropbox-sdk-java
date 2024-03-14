@@ -47,7 +47,7 @@ public class MemberChangeStatusDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberChangeStatusDetails(MemberStatus newValue, MemberStatus previousValue, ActionDetails action, String newTeam, String previousTeam) {
+    public MemberChangeStatusDetails(@javax.annotation.Nonnull MemberStatus newValue, @javax.annotation.Nullable MemberStatus previousValue, @javax.annotation.Nullable ActionDetails action, @javax.annotation.Nullable String newTeam, @javax.annotation.Nullable String previousTeam) {
         this.previousValue = previousValue;
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");

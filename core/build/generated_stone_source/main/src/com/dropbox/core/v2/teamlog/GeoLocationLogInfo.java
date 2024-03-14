@@ -41,7 +41,7 @@ public class GeoLocationLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GeoLocationLogInfo(String ipAddress, String city, String region, String country) {
+    public GeoLocationLogInfo(@javax.annotation.Nonnull String ipAddress, @javax.annotation.Nullable String city, @javax.annotation.Nullable String region, @javax.annotation.Nullable String country) {
         this.city = city;
         this.region = region;
         this.country = country;

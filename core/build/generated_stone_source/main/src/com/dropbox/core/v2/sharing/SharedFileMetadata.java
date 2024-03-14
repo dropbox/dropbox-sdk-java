@@ -92,7 +92,7 @@ public class SharedFileMetadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedFileMetadata(String id, String name, FolderPolicy policy, String previewUrl, AccessLevel accessType, ExpectedSharedContentLinkMetadata expectedLinkMetadata, SharedContentLinkMetadata linkMetadata, List<String> ownerDisplayNames, Team ownerTeam, String parentSharedFolderId, String pathDisplay, String pathLower, List<FilePermission> permissions, Date timeInvited) {
+    public SharedFileMetadata(@javax.annotation.Nonnull String id, @javax.annotation.Nonnull String name, @javax.annotation.Nonnull FolderPolicy policy, @javax.annotation.Nonnull String previewUrl, @javax.annotation.Nullable AccessLevel accessType, @javax.annotation.Nullable ExpectedSharedContentLinkMetadata expectedLinkMetadata, @javax.annotation.Nullable SharedContentLinkMetadata linkMetadata, @javax.annotation.Nullable List<String> ownerDisplayNames, @javax.annotation.Nullable Team ownerTeam, @javax.annotation.Nullable String parentSharedFolderId, @javax.annotation.Nullable String pathDisplay, @javax.annotation.Nullable String pathLower, @javax.annotation.Nullable List<FilePermission> permissions, @javax.annotation.Nullable Date timeInvited) {
         this.accessType = accessType;
         if (id == null) {
             throw new IllegalArgumentException("Required value for 'id' is null");

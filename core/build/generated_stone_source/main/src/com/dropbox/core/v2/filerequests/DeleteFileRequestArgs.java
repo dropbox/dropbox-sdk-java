@@ -34,7 +34,7 @@ class DeleteFileRequestArgs {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeleteFileRequestArgs(List<String> ids) {
+    public DeleteFileRequestArgs(@javax.annotation.Nonnull List<String> ids) {
         if (ids == null) {
             throw new IllegalArgumentException("Required value for 'ids' is null");
         }

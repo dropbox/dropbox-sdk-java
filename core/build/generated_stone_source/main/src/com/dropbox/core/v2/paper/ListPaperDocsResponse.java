@@ -46,7 +46,7 @@ public class ListPaperDocsResponse {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListPaperDocsResponse(List<String> docIds, Cursor cursor, boolean hasMore) {
+    public ListPaperDocsResponse(@javax.annotation.Nonnull List<String> docIds, @javax.annotation.Nonnull Cursor cursor, boolean hasMore) {
         if (docIds == null) {
             throw new IllegalArgumentException("Required value for 'docIds' is null");
         }

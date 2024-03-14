@@ -29,7 +29,7 @@ public class CreateFolderResult extends FileOpsResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public CreateFolderResult(FolderMetadata metadata) {
+    public CreateFolderResult(@javax.annotation.Nonnull FolderMetadata metadata) {
         if (metadata == null) {
             throw new IllegalArgumentException("Required value for 'metadata' is null");
         }

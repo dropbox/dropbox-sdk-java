@@ -28,7 +28,7 @@ public class DeviceApprovalsChangeUnlinkActionType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeviceApprovalsChangeUnlinkActionType(String description) {
+    public DeviceApprovalsChangeUnlinkActionType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

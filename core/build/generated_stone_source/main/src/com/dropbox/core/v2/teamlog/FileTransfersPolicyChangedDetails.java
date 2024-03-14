@@ -35,7 +35,7 @@ public class FileTransfersPolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileTransfersPolicyChangedDetails(FileTransfersPolicy newValue, FileTransfersPolicy previousValue) {
+    public FileTransfersPolicyChangedDetails(@javax.annotation.Nonnull FileTransfersPolicy newValue, @javax.annotation.Nonnull FileTransfersPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

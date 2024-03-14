@@ -28,7 +28,7 @@ public class DomainInvitesSetInviteNewUserPrefToNoType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DomainInvitesSetInviteNewUserPrefToNoType(String description) {
+    public DomainInvitesSetInviteNewUserPrefToNoType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

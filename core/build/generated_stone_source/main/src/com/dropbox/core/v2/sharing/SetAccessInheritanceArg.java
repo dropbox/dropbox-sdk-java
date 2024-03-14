@@ -33,7 +33,7 @@ class SetAccessInheritanceArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SetAccessInheritanceArg(String sharedFolderId, AccessInheritance accessInheritance) {
+    public SetAccessInheritanceArg(@javax.annotation.Nonnull String sharedFolderId, @javax.annotation.Nonnull AccessInheritance accessInheritance) {
         if (accessInheritance == null) {
             throw new IllegalArgumentException("Required value for 'accessInheritance' is null");
         }

@@ -29,7 +29,7 @@ class PaperDocExport extends RefPaperDoc {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperDocExport(String docId, ExportFormat exportFormat) {
+    public PaperDocExport(@javax.annotation.Nonnull String docId, @javax.annotation.Nonnull ExportFormat exportFormat) {
         super(docId);
         if (exportFormat == null) {
             throw new IllegalArgumentException("Required value for 'exportFormat' is null");

@@ -28,7 +28,7 @@ public class PaperDocResolveCommentType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperDocResolveCommentType(String description) {
+    public PaperDocResolveCommentType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

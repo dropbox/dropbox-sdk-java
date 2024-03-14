@@ -51,7 +51,7 @@ public class MobileDeviceSessionLogInfo extends DeviceSessionLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MobileDeviceSessionLogInfo(String deviceName, MobileClientPlatform clientType, String ipAddress, Date created, Date updated, MobileSessionLogInfo sessionInfo, String clientVersion, String osVersion, String lastCarrier) {
+    public MobileDeviceSessionLogInfo(@javax.annotation.Nonnull String deviceName, @javax.annotation.Nonnull MobileClientPlatform clientType, @javax.annotation.Nullable String ipAddress, @javax.annotation.Nullable Date created, @javax.annotation.Nullable Date updated, @javax.annotation.Nullable MobileSessionLogInfo sessionInfo, @javax.annotation.Nullable String clientVersion, @javax.annotation.Nullable String osVersion, @javax.annotation.Nullable String lastCarrier) {
         super(ipAddress, created, updated);
         this.sessionInfo = sessionInfo;
         if (deviceName == null) {

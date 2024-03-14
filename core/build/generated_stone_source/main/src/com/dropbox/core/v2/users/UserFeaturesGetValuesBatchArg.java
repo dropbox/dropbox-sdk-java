@@ -32,7 +32,7 @@ class UserFeaturesGetValuesBatchArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UserFeaturesGetValuesBatchArg(List<UserFeature> features) {
+    public UserFeaturesGetValuesBatchArg(@javax.annotation.Nonnull List<UserFeature> features) {
         if (features == null) {
             throw new IllegalArgumentException("Required value for 'features' is null");
         }

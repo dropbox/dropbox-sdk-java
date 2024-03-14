@@ -41,7 +41,7 @@ class GetFileMetadataBatchArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetFileMetadataBatchArg(List<String> files, List<FileAction> actions) {
+    public GetFileMetadataBatchArg(@javax.annotation.Nonnull List<String> files, @javax.annotation.Nullable List<FileAction> actions) {
         if (files == null) {
             throw new IllegalArgumentException("Required value for 'files' is null");
         }

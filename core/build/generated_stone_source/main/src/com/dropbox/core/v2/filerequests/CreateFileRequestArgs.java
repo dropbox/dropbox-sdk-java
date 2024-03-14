@@ -51,7 +51,7 @@ class CreateFileRequestArgs {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public CreateFileRequestArgs(String title, String destination, FileRequestDeadline deadline, boolean open, String description) {
+    public CreateFileRequestArgs(@javax.annotation.Nonnull String title, @javax.annotation.Nonnull String destination, @javax.annotation.Nullable FileRequestDeadline deadline, boolean open, @javax.annotation.Nullable String description) {
         if (title == null) {
             throw new IllegalArgumentException("Required value for 'title' is null");
         }

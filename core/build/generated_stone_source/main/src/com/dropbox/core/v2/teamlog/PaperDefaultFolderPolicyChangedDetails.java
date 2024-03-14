@@ -36,7 +36,7 @@ public class PaperDefaultFolderPolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperDefaultFolderPolicyChangedDetails(PaperDefaultFolderPolicy newValue, PaperDefaultFolderPolicy previousValue) {
+    public PaperDefaultFolderPolicyChangedDetails(@javax.annotation.Nonnull PaperDefaultFolderPolicy newValue, @javax.annotation.Nonnull PaperDefaultFolderPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

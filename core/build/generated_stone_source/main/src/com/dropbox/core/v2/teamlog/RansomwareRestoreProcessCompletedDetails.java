@@ -37,7 +37,7 @@ public class RansomwareRestoreProcessCompletedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RansomwareRestoreProcessCompletedDetails(String status, long restoredFilesCount, long restoredFilesFailedCount) {
+    public RansomwareRestoreProcessCompletedDetails(@javax.annotation.Nonnull String status, long restoredFilesCount, long restoredFilesFailedCount) {
         if (status == null) {
             throw new IllegalArgumentException("Required value for 'status' is null");
         }

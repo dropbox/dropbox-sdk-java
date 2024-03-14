@@ -28,7 +28,7 @@ public class ExternalSharingReportFailedType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ExternalSharingReportFailedType(String description) {
+    public ExternalSharingReportFailedType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

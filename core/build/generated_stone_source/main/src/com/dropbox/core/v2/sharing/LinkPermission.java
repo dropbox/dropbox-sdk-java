@@ -34,7 +34,7 @@ public class LinkPermission {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LinkPermission(LinkAction action, boolean allow, PermissionDeniedReason reason) {
+    public LinkPermission(@javax.annotation.Nonnull LinkAction action, boolean allow, @javax.annotation.Nullable PermissionDeniedReason reason) {
         if (action == null) {
             throw new IllegalArgumentException("Required value for 'action' is null");
         }

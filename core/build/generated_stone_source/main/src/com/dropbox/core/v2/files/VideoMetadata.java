@@ -37,7 +37,7 @@ public class VideoMetadata extends MediaMetadata {
      * @param timeTaken  The timestamp when the photo/video is taken.
      * @param duration  The duration of the video in milliseconds.
      */
-    public VideoMetadata(Dimensions dimensions, GpsCoordinates location, Date timeTaken, Long duration) {
+    public VideoMetadata(@javax.annotation.Nullable Dimensions dimensions, @javax.annotation.Nullable GpsCoordinates location, @javax.annotation.Nullable Date timeTaken, @javax.annotation.Nullable Long duration) {
         super(dimensions, location, timeTaken);
         this.duration = duration;
     }

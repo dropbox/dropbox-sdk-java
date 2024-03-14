@@ -28,7 +28,7 @@ public class ExternalSharingCreateReportType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ExternalSharingCreateReportType(String description) {
+    public ExternalSharingCreateReportType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

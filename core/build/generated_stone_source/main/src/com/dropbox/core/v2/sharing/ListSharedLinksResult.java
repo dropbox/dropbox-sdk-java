@@ -38,7 +38,7 @@ public class ListSharedLinksResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListSharedLinksResult(List<SharedLinkMetadata> links, boolean hasMore, String cursor) {
+    public ListSharedLinksResult(@javax.annotation.Nonnull List<SharedLinkMetadata> links, boolean hasMore, @javax.annotation.Nullable String cursor) {
         if (links == null) {
             throw new IllegalArgumentException("Required value for 'links' is null");
         }

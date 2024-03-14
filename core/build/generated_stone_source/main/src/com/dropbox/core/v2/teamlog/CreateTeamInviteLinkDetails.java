@@ -36,7 +36,7 @@ public class CreateTeamInviteLinkDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public CreateTeamInviteLinkDetails(String linkUrl, String expiryDate) {
+    public CreateTeamInviteLinkDetails(@javax.annotation.Nonnull String linkUrl, @javax.annotation.Nonnull String expiryDate) {
         if (linkUrl == null) {
             throw new IllegalArgumentException("Required value for 'linkUrl' is null");
         }

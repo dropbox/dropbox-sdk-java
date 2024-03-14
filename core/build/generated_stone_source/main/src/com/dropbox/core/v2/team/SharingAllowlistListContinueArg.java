@@ -31,7 +31,7 @@ class SharingAllowlistListContinueArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharingAllowlistListContinueArg(String cursor) {
+    public SharingAllowlistListContinueArg(@javax.annotation.Nonnull String cursor) {
         if (cursor == null) {
             throw new IllegalArgumentException("Required value for 'cursor' is null");
         }

@@ -41,7 +41,7 @@ public class DeviceSession {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeviceSession(String sessionId, String ipAddress, String country, Date created, Date updated) {
+    public DeviceSession(@javax.annotation.Nonnull String sessionId, @javax.annotation.Nullable String ipAddress, @javax.annotation.Nullable String country, @javax.annotation.Nullable Date created, @javax.annotation.Nullable Date updated) {
         if (sessionId == null) {
             throw new IllegalArgumentException("Required value for 'sessionId' is null");
         }

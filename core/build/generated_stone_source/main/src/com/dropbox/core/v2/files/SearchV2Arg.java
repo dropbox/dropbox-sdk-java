@@ -39,7 +39,7 @@ class SearchV2Arg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SearchV2Arg(String query, SearchOptions options, SearchMatchFieldOptions matchFieldOptions, Boolean includeHighlights) {
+    public SearchV2Arg(@javax.annotation.Nonnull String query, @javax.annotation.Nullable SearchOptions options, @javax.annotation.Nullable SearchMatchFieldOptions matchFieldOptions, @javax.annotation.Nullable Boolean includeHighlights) {
         if (query == null) {
             throw new IllegalArgumentException("Required value for 'query' is null");
         }

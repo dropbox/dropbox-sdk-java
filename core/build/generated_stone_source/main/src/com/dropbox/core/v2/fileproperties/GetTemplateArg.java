@@ -34,7 +34,7 @@ public class GetTemplateArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetTemplateArg(String templateId) {
+    public GetTemplateArg(@javax.annotation.Nonnull String templateId) {
         if (templateId == null) {
             throw new IllegalArgumentException("Required value for 'templateId' is null");
         }

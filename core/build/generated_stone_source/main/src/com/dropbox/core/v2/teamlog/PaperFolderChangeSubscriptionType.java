@@ -28,7 +28,7 @@ public class PaperFolderChangeSubscriptionType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperFolderChangeSubscriptionType(String description) {
+    public PaperFolderChangeSubscriptionType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

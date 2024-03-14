@@ -35,7 +35,7 @@ public class ListFileRequestsResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFileRequestsResult(List<FileRequest> fileRequests) {
+    public ListFileRequestsResult(@javax.annotation.Nonnull List<FileRequest> fileRequests) {
         if (fileRequests == null) {
             throw new IllegalArgumentException("Required value for 'fileRequests' is null");
         }

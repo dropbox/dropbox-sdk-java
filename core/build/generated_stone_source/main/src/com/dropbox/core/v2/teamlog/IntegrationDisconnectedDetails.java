@@ -33,7 +33,7 @@ public class IntegrationDisconnectedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public IntegrationDisconnectedDetails(String integrationName) {
+    public IntegrationDisconnectedDetails(@javax.annotation.Nonnull String integrationName) {
         if (integrationName == null) {
             throw new IllegalArgumentException("Required value for 'integrationName' is null");
         }

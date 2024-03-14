@@ -49,7 +49,7 @@ public class FileRequestReceiveFileDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileRequestReceiveFileDetails(List<String> submittedFileNames, String fileRequestId, FileRequestDetails fileRequestDetails, String submitterName, String submitterEmail) {
+    public FileRequestReceiveFileDetails(@javax.annotation.Nonnull List<String> submittedFileNames, @javax.annotation.Nullable String fileRequestId, @javax.annotation.Nullable FileRequestDetails fileRequestDetails, @javax.annotation.Nullable String submitterName, @javax.annotation.Nullable String submitterEmail) {
         if (fileRequestId != null) {
             if (fileRequestId.length() < 1) {
                 throw new IllegalArgumentException("String 'fileRequestId' is shorter than 1");

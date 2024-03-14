@@ -31,7 +31,7 @@ public class LockFileArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LockFileArg(String path) {
+    public LockFileArg(@javax.annotation.Nonnull String path) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }

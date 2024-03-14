@@ -39,7 +39,7 @@ public class ExternalDriveBackupEligibilityStatusCheckedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ExternalDriveBackupEligibilityStatusCheckedDetails(DesktopDeviceSessionLogInfo desktopDeviceSessionInfo, ExternalDriveBackupEligibilityStatus status, long numberOfExternalDriveBackup) {
+    public ExternalDriveBackupEligibilityStatusCheckedDetails(@javax.annotation.Nonnull DesktopDeviceSessionLogInfo desktopDeviceSessionInfo, @javax.annotation.Nonnull ExternalDriveBackupEligibilityStatus status, long numberOfExternalDriveBackup) {
         if (desktopDeviceSessionInfo == null) {
             throw new IllegalArgumentException("Required value for 'desktopDeviceSessionInfo' is null");
         }

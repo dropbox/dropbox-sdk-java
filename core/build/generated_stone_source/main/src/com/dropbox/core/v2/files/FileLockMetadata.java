@@ -39,7 +39,7 @@ public class FileLockMetadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileLockMetadata(Boolean isLockholder, String lockholderName, String lockholderAccountId, Date created) {
+    public FileLockMetadata(@javax.annotation.Nullable Boolean isLockholder, @javax.annotation.Nullable String lockholderName, @javax.annotation.Nullable String lockholderAccountId, @javax.annotation.Nullable Date created) {
         this.isLockholder = isLockholder;
         this.lockholderName = lockholderName;
         if (lockholderAccountId != null) {

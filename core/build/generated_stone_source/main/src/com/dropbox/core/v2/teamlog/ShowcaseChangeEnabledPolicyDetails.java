@@ -35,7 +35,7 @@ public class ShowcaseChangeEnabledPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ShowcaseChangeEnabledPolicyDetails(ShowcaseEnabledPolicy newValue, ShowcaseEnabledPolicy previousValue) {
+    public ShowcaseChangeEnabledPolicyDetails(@javax.annotation.Nonnull ShowcaseEnabledPolicy newValue, @javax.annotation.Nonnull ShowcaseEnabledPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

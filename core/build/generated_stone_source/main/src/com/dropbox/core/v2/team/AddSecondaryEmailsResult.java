@@ -30,7 +30,7 @@ public class AddSecondaryEmailsResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AddSecondaryEmailsResult(List<UserAddResult> results) {
+    public AddSecondaryEmailsResult(@javax.annotation.Nonnull List<UserAddResult> results) {
         if (results == null) {
             throw new IllegalArgumentException("Required value for 'results' is null");
         }

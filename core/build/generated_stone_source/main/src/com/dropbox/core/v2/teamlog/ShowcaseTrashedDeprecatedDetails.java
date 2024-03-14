@@ -32,7 +32,7 @@ public class ShowcaseTrashedDeprecatedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ShowcaseTrashedDeprecatedDetails(String eventUuid) {
+    public ShowcaseTrashedDeprecatedDetails(@javax.annotation.Nonnull String eventUuid) {
         if (eventUuid == null) {
             throw new IllegalArgumentException("Required value for 'eventUuid' is null");
         }

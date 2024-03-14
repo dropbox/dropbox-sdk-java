@@ -35,7 +35,7 @@ public class LoginSuccessDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LoginSuccessDetails(LoginMethod loginMethod, Boolean isEmmManaged) {
+    public LoginSuccessDetails(@javax.annotation.Nonnull LoginMethod loginMethod, @javax.annotation.Nullable Boolean isEmmManaged) {
         this.isEmmManaged = isEmmManaged;
         if (loginMethod == null) {
             throw new IllegalArgumentException("Required value for 'loginMethod' is null");

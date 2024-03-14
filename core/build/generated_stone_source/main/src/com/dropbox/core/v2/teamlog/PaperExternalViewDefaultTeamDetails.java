@@ -32,7 +32,7 @@ public class PaperExternalViewDefaultTeamDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperExternalViewDefaultTeamDetails(String eventUuid) {
+    public PaperExternalViewDefaultTeamDetails(@javax.annotation.Nonnull String eventUuid) {
         if (eventUuid == null) {
             throw new IllegalArgumentException("Required value for 'eventUuid' is null");
         }

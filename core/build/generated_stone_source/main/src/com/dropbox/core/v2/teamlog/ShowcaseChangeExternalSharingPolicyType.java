@@ -28,7 +28,7 @@ public class ShowcaseChangeExternalSharingPolicyType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ShowcaseChangeExternalSharingPolicyType(String description) {
+    public ShowcaseChangeExternalSharingPolicyType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

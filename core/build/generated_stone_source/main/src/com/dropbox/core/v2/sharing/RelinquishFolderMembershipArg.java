@@ -34,7 +34,7 @@ class RelinquishFolderMembershipArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RelinquishFolderMembershipArg(String sharedFolderId, boolean leaveACopy) {
+    public RelinquishFolderMembershipArg(@javax.annotation.Nonnull String sharedFolderId, boolean leaveACopy) {
         if (sharedFolderId == null) {
             throw new IllegalArgumentException("Required value for 'sharedFolderId' is null");
         }

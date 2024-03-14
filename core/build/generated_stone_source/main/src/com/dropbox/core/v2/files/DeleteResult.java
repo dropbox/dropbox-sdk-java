@@ -29,7 +29,7 @@ public class DeleteResult extends FileOpsResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeleteResult(Metadata metadata) {
+    public DeleteResult(@javax.annotation.Nonnull Metadata metadata) {
         if (metadata == null) {
             throw new IllegalArgumentException("Required value for 'metadata' is null");
         }

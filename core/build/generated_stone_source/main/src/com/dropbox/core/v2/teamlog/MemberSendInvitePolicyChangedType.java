@@ -28,7 +28,7 @@ public class MemberSendInvitePolicyChangedType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberSendInvitePolicyChangedType(String description) {
+    public MemberSendInvitePolicyChangedType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

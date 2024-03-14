@@ -35,7 +35,7 @@ public class TeamExtensionsPolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamExtensionsPolicyChangedDetails(TeamExtensionsPolicy newValue, TeamExtensionsPolicy previousValue) {
+    public TeamExtensionsPolicyChangedDetails(@javax.annotation.Nonnull TeamExtensionsPolicy newValue, @javax.annotation.Nonnull TeamExtensionsPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

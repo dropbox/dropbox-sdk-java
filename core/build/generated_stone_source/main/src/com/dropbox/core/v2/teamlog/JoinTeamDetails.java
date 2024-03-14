@@ -63,7 +63,7 @@ public class JoinTeamDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public JoinTeamDetails(List<UserLinkedAppLogInfo> linkedApps, List<LinkedDeviceLogInfo> linkedDevices, List<FolderLogInfo> linkedSharedFolders, Boolean wasLinkedAppsTruncated, Boolean wasLinkedDevicesTruncated, Boolean wasLinkedSharedFoldersTruncated, Boolean hasLinkedApps, Boolean hasLinkedDevices, Boolean hasLinkedSharedFolders) {
+    public JoinTeamDetails(@javax.annotation.Nonnull List<UserLinkedAppLogInfo> linkedApps, @javax.annotation.Nonnull List<LinkedDeviceLogInfo> linkedDevices, @javax.annotation.Nonnull List<FolderLogInfo> linkedSharedFolders, @javax.annotation.Nullable Boolean wasLinkedAppsTruncated, @javax.annotation.Nullable Boolean wasLinkedDevicesTruncated, @javax.annotation.Nullable Boolean wasLinkedSharedFoldersTruncated, @javax.annotation.Nullable Boolean hasLinkedApps, @javax.annotation.Nullable Boolean hasLinkedDevices, @javax.annotation.Nullable Boolean hasLinkedSharedFolders) {
         if (linkedApps == null) {
             throw new IllegalArgumentException("Required value for 'linkedApps' is null");
         }

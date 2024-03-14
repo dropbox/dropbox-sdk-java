@@ -28,7 +28,7 @@ public class PasswordResetAllType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PasswordResetAllType(String description) {
+    public PasswordResetAllType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

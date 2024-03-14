@@ -48,7 +48,7 @@ public class ApiApp {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ApiApp(String appId, String appName, boolean isAppFolder, String publisher, String publisherUrl, Date linked) {
+    public ApiApp(@javax.annotation.Nonnull String appId, @javax.annotation.Nonnull String appName, boolean isAppFolder, @javax.annotation.Nullable String publisher, @javax.annotation.Nullable String publisherUrl, @javax.annotation.Nullable Date linked) {
         if (appId == null) {
             throw new IllegalArgumentException("Required value for 'appId' is null");
         }

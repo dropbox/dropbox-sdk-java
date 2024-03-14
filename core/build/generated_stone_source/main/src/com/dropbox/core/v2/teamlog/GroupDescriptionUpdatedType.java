@@ -28,7 +28,7 @@ public class GroupDescriptionUpdatedType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupDescriptionUpdatedType(String description) {
+    public GroupDescriptionUpdatedType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

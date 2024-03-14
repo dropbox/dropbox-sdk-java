@@ -36,7 +36,7 @@ public class LinkAudienceOption {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LinkAudienceOption(LinkAudience audience, boolean allowed, LinkAudienceDisallowedReason disallowedReason) {
+    public LinkAudienceOption(@javax.annotation.Nonnull LinkAudience audience, boolean allowed, @javax.annotation.Nullable LinkAudienceDisallowedReason disallowedReason) {
         if (audience == null) {
             throw new IllegalArgumentException("Required value for 'audience' is null");
         }

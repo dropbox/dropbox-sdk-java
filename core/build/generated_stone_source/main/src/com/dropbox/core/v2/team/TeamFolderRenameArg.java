@@ -31,7 +31,7 @@ class TeamFolderRenameArg extends TeamFolderIdArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamFolderRenameArg(String teamFolderId, String name) {
+    public TeamFolderRenameArg(@javax.annotation.Nonnull String teamFolderId, @javax.annotation.Nonnull String name) {
         super(teamFolderId);
         if (name == null) {
             throw new IllegalArgumentException("Required value for 'name' is null");

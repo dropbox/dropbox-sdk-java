@@ -28,7 +28,7 @@ public class BackupInvitationOpenedType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public BackupInvitationOpenedType(String description) {
+    public BackupInvitationOpenedType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

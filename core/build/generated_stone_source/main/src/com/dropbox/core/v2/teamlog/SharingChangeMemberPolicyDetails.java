@@ -35,7 +35,7 @@ public class SharingChangeMemberPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharingChangeMemberPolicyDetails(SharingMemberPolicy newValue, SharingMemberPolicy previousValue) {
+    public SharingChangeMemberPolicyDetails(@javax.annotation.Nonnull SharingMemberPolicy newValue, @javax.annotation.Nullable SharingMemberPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

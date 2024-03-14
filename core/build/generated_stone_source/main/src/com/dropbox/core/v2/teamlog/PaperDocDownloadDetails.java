@@ -34,7 +34,7 @@ public class PaperDocDownloadDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperDocDownloadDetails(String eventUuid, PaperDownloadFormat exportFileFormat) {
+    public PaperDocDownloadDetails(@javax.annotation.Nonnull String eventUuid, @javax.annotation.Nonnull PaperDownloadFormat exportFileFormat) {
         if (eventUuid == null) {
             throw new IllegalArgumentException("Required value for 'eventUuid' is null");
         }

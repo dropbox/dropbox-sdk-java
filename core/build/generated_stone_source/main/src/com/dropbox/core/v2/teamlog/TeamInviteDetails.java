@@ -36,7 +36,7 @@ public class TeamInviteDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamInviteDetails(InviteMethod inviteMethod, Boolean additionalLicensePurchase) {
+    public TeamInviteDetails(@javax.annotation.Nonnull InviteMethod inviteMethod, @javax.annotation.Nullable Boolean additionalLicensePurchase) {
         if (inviteMethod == null) {
             throw new IllegalArgumentException("Required value for 'inviteMethod' is null");
         }

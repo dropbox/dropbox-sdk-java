@@ -36,7 +36,7 @@ public class UserSecondaryEmailsArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UserSecondaryEmailsArg(UserSelectorArg user, List<String> secondaryEmails) {
+    public UserSecondaryEmailsArg(@javax.annotation.Nonnull UserSelectorArg user, @javax.annotation.Nonnull List<String> secondaryEmails) {
         if (user == null) {
             throw new IllegalArgumentException("Required value for 'user' is null");
         }

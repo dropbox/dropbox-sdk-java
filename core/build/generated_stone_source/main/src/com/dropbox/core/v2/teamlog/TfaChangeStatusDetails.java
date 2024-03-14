@@ -43,7 +43,7 @@ public class TfaChangeStatusDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TfaChangeStatusDetails(TfaConfiguration newValue, TfaConfiguration previousValue, Boolean usedRescueCode) {
+    public TfaChangeStatusDetails(@javax.annotation.Nonnull TfaConfiguration newValue, @javax.annotation.Nullable TfaConfiguration previousValue, @javax.annotation.Nullable Boolean usedRescueCode) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

@@ -32,7 +32,7 @@ class TeamFolderArchiveArg extends TeamFolderIdArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamFolderArchiveArg(String teamFolderId, boolean forceAsyncOff) {
+    public TeamFolderArchiveArg(@javax.annotation.Nonnull String teamFolderId, boolean forceAsyncOff) {
         super(teamFolderId);
         this.forceAsyncOff = forceAsyncOff;
     }

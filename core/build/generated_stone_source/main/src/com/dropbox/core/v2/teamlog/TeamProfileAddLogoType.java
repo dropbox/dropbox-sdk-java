@@ -28,7 +28,7 @@ public class TeamProfileAddLogoType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamProfileAddLogoType(String description) {
+    public TeamProfileAddLogoType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

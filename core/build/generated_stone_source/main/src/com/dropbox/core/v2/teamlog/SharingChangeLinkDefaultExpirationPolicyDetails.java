@@ -34,7 +34,7 @@ public class SharingChangeLinkDefaultExpirationPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharingChangeLinkDefaultExpirationPolicyDetails(DefaultLinkExpirationDaysPolicy newValue, DefaultLinkExpirationDaysPolicy previousValue) {
+    public SharingChangeLinkDefaultExpirationPolicyDetails(@javax.annotation.Nonnull DefaultLinkExpirationDaysPolicy newValue, @javax.annotation.Nullable DefaultLinkExpirationDaysPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

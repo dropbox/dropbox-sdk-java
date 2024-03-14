@@ -32,7 +32,7 @@ public class EmmErrorDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public EmmErrorDetails(FailureDetailsLogInfo errorDetails) {
+    public EmmErrorDetails(@javax.annotation.Nonnull FailureDetailsLogInfo errorDetails) {
         if (errorDetails == null) {
             throw new IllegalArgumentException("Required value for 'errorDetails' is null");
         }

@@ -42,7 +42,7 @@ class ThumbnailV2Arg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ThumbnailV2Arg(PathOrLink resource, ThumbnailFormat format, ThumbnailSize size, ThumbnailMode mode) {
+    public ThumbnailV2Arg(@javax.annotation.Nonnull PathOrLink resource, @javax.annotation.Nonnull ThumbnailFormat format, @javax.annotation.Nonnull ThumbnailSize size, @javax.annotation.Nonnull ThumbnailMode mode) {
         if (resource == null) {
             throw new IllegalArgumentException("Required value for 'resource' is null");
         }

@@ -28,7 +28,7 @@ public class SharingChangeLinkDefaultExpirationPolicyType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharingChangeLinkDefaultExpirationPolicyType(String description) {
+    public SharingChangeLinkDefaultExpirationPolicyType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

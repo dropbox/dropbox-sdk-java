@@ -36,7 +36,7 @@ public class SharedFolderChangeMembersPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedFolderChangeMembersPolicyDetails(MemberPolicy newValue, MemberPolicy previousValue) {
+    public SharedFolderChangeMembersPolicyDetails(@javax.annotation.Nonnull MemberPolicy newValue, @javax.annotation.Nullable MemberPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

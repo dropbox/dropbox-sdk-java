@@ -30,7 +30,7 @@ class SetCustomQuotaArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SetCustomQuotaArg(List<UserCustomQuotaArg> usersAndQuotas) {
+    public SetCustomQuotaArg(@javax.annotation.Nonnull List<UserCustomQuotaArg> usersAndQuotas) {
         if (usersAndQuotas == null) {
             throw new IllegalArgumentException("Required value for 'usersAndQuotas' is null");
         }

@@ -32,7 +32,7 @@ public class PaperContentPermanentlyDeleteDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperContentPermanentlyDeleteDetails(String eventUuid) {
+    public PaperContentPermanentlyDeleteDetails(@javax.annotation.Nonnull String eventUuid) {
         if (eventUuid == null) {
             throw new IllegalArgumentException("Required value for 'eventUuid' is null");
         }

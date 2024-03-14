@@ -37,7 +37,7 @@ public class EmmChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public EmmChangePolicyDetails(EmmState newValue, EmmState previousValue) {
+    public EmmChangePolicyDetails(@javax.annotation.Nonnull EmmState newValue, @javax.annotation.Nullable EmmState previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

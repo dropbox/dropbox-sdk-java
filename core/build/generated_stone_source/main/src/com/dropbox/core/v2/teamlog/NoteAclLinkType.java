@@ -28,7 +28,7 @@ public class NoteAclLinkType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public NoteAclLinkType(String description) {
+    public NoteAclLinkType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

@@ -28,7 +28,7 @@ public class SecondaryMailsPolicyChangedType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SecondaryMailsPolicyChangedType(String description) {
+    public SecondaryMailsPolicyChangedType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

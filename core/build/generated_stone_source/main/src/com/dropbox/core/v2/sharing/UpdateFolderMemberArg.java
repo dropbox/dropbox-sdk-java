@@ -38,7 +38,7 @@ class UpdateFolderMemberArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UpdateFolderMemberArg(String sharedFolderId, MemberSelector member, AccessLevel accessLevel) {
+    public UpdateFolderMemberArg(@javax.annotation.Nonnull String sharedFolderId, @javax.annotation.Nonnull MemberSelector member, @javax.annotation.Nonnull AccessLevel accessLevel) {
         if (sharedFolderId == null) {
             throw new IllegalArgumentException("Required value for 'sharedFolderId' is null");
         }

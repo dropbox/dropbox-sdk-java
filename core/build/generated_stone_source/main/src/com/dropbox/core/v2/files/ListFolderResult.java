@@ -39,7 +39,7 @@ public class ListFolderResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFolderResult(List<Metadata> entries, String cursor, boolean hasMore) {
+    public ListFolderResult(@javax.annotation.Nonnull List<Metadata> entries, @javax.annotation.Nonnull String cursor, boolean hasMore) {
         if (entries == null) {
             throw new IllegalArgumentException("Required value for 'entries' is null");
         }

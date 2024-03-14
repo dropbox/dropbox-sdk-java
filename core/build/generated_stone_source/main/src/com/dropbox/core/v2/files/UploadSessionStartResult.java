@@ -33,7 +33,7 @@ public class UploadSessionStartResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UploadSessionStartResult(String sessionId) {
+    public UploadSessionStartResult(@javax.annotation.Nonnull String sessionId) {
         if (sessionId == null) {
             throw new IllegalArgumentException("Required value for 'sessionId' is null");
         }

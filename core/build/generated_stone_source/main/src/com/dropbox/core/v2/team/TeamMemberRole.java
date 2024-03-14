@@ -45,7 +45,7 @@ public class TeamMemberRole {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamMemberRole(String roleId, String name, String description) {
+    public TeamMemberRole(@javax.annotation.Nonnull String roleId, @javax.annotation.Nonnull String name, @javax.annotation.Nonnull String description) {
         if (roleId == null) {
             throw new IllegalArgumentException("Required value for 'roleId' is null");
         }

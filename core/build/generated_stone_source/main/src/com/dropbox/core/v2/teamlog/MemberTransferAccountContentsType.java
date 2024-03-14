@@ -28,7 +28,7 @@ public class MemberTransferAccountContentsType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberTransferAccountContentsType(String description) {
+    public MemberTransferAccountContentsType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

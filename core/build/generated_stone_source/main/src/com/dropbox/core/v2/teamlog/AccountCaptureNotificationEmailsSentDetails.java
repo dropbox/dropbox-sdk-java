@@ -34,7 +34,7 @@ public class AccountCaptureNotificationEmailsSentDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AccountCaptureNotificationEmailsSentDetails(String domainName, AccountCaptureNotificationType notificationType) {
+    public AccountCaptureNotificationEmailsSentDetails(@javax.annotation.Nonnull String domainName, @javax.annotation.Nullable AccountCaptureNotificationType notificationType) {
         if (domainName == null) {
             throw new IllegalArgumentException("Required value for 'domainName' is null");
         }

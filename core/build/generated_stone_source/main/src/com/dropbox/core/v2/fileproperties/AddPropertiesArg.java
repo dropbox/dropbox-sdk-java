@@ -37,7 +37,7 @@ public class AddPropertiesArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AddPropertiesArg(String path, List<PropertyGroup> propertyGroups) {
+    public AddPropertiesArg(@javax.annotation.Nonnull String path, @javax.annotation.Nonnull List<PropertyGroup> propertyGroups) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }

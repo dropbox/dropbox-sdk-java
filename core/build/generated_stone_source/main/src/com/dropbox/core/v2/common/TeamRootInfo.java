@@ -42,7 +42,7 @@ public class TeamRootInfo extends RootInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamRootInfo(String rootNamespaceId, String homeNamespaceId, String homePath) {
+    public TeamRootInfo(@javax.annotation.Nonnull String rootNamespaceId, @javax.annotation.Nonnull String homeNamespaceId, @javax.annotation.Nonnull String homePath) {
         super(rootNamespaceId, homeNamespaceId);
         if (homePath == null) {
             throw new IllegalArgumentException("Required value for 'homePath' is null");

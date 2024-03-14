@@ -28,7 +28,7 @@ public class LegalHoldsAddMembersType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LegalHoldsAddMembersType(String description) {
+    public LegalHoldsAddMembersType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

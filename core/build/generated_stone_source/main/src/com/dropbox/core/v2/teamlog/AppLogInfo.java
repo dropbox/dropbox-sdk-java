@@ -34,7 +34,7 @@ public class AppLogInfo {
      * @param appId  App unique ID.
      * @param displayName  App display name.
      */
-    public AppLogInfo(String appId, String displayName) {
+    public AppLogInfo(@javax.annotation.Nullable String appId, @javax.annotation.Nullable String displayName) {
         this.appId = appId;
         this.displayName = displayName;
     }

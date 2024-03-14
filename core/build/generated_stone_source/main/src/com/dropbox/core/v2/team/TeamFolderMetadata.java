@@ -51,7 +51,7 @@ public class TeamFolderMetadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamFolderMetadata(String teamFolderId, String name, TeamFolderStatus status, boolean isTeamSharedDropbox, SyncSetting syncSetting, List<ContentSyncSetting> contentSyncSettings) {
+    public TeamFolderMetadata(@javax.annotation.Nonnull String teamFolderId, @javax.annotation.Nonnull String name, @javax.annotation.Nonnull TeamFolderStatus status, boolean isTeamSharedDropbox, @javax.annotation.Nonnull SyncSetting syncSetting, @javax.annotation.Nonnull List<ContentSyncSetting> contentSyncSettings) {
         if (teamFolderId == null) {
             throw new IllegalArgumentException("Required value for 'teamFolderId' is null");
         }

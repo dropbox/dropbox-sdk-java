@@ -28,7 +28,7 @@ public class BinderAddPageType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public BinderAddPageType(String description) {
+    public BinderAddPageType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

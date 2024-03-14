@@ -33,7 +33,7 @@ class PropertiesSearchArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PropertiesSearchArg(List<PropertiesSearchQuery> queries, TemplateFilter templateFilter) {
+    public PropertiesSearchArg(@javax.annotation.Nonnull List<PropertiesSearchQuery> queries, @javax.annotation.Nonnull TemplateFilter templateFilter) {
         if (queries == null) {
             throw new IllegalArgumentException("Required value for 'queries' is null");
         }

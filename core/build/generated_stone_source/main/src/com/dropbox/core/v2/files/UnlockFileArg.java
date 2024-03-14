@@ -31,7 +31,7 @@ public class UnlockFileArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UnlockFileArg(String path) {
+    public UnlockFileArg(@javax.annotation.Nonnull String path) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }

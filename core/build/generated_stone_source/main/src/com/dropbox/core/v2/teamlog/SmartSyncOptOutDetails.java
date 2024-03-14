@@ -35,7 +35,7 @@ public class SmartSyncOptOutDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SmartSyncOptOutDetails(SmartSyncOptOutPolicy previousValue, SmartSyncOptOutPolicy newValue) {
+    public SmartSyncOptOutDetails(@javax.annotation.Nonnull SmartSyncOptOutPolicy previousValue, @javax.annotation.Nonnull SmartSyncOptOutPolicy newValue) {
         if (previousValue == null) {
             throw new IllegalArgumentException("Required value for 'previousValue' is null");
         }

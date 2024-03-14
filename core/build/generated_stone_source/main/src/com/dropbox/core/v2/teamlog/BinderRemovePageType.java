@@ -28,7 +28,7 @@ public class BinderRemovePageType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public BinderRemovePageType(String description) {
+    public BinderRemovePageType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

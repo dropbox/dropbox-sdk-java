@@ -28,7 +28,7 @@ public class TeamMergeRequestExpiredShownToSecondaryTeamType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamMergeRequestExpiredShownToSecondaryTeamType(String description) {
+    public TeamMergeRequestExpiredShownToSecondaryTeamType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

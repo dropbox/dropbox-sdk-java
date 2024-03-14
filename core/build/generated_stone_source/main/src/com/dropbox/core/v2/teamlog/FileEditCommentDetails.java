@@ -35,7 +35,7 @@ public class FileEditCommentDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileEditCommentDetails(String previousCommentText, String commentText) {
+    public FileEditCommentDetails(@javax.annotation.Nonnull String previousCommentText, @javax.annotation.Nullable String commentText) {
         this.commentText = commentText;
         if (previousCommentText == null) {
             throw new IllegalArgumentException("Required value for 'previousCommentText' is null");

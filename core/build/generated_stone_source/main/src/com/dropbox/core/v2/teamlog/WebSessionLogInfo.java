@@ -27,7 +27,7 @@ public class WebSessionLogInfo extends SessionLogInfo {
      *
      * @param sessionId  Session ID.
      */
-    public WebSessionLogInfo(String sessionId) {
+    public WebSessionLogInfo(@javax.annotation.Nullable String sessionId) {
         super(sessionId);
     }
 

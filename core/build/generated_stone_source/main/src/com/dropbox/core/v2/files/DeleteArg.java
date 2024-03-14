@@ -35,7 +35,7 @@ public class DeleteArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeleteArg(String path, String parentRev) {
+    public DeleteArg(@javax.annotation.Nonnull String path, @javax.annotation.Nullable String parentRev) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }

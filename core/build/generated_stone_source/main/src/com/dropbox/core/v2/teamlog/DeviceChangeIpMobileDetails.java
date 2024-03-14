@@ -29,7 +29,7 @@ public class DeviceChangeIpMobileDetails {
      *
      * @param deviceSessionInfo  Device's session logged information.
      */
-    public DeviceChangeIpMobileDetails(DeviceSessionLogInfo deviceSessionInfo) {
+    public DeviceChangeIpMobileDetails(@javax.annotation.Nullable DeviceSessionLogInfo deviceSessionInfo) {
         this.deviceSessionInfo = deviceSessionInfo;
     }
 

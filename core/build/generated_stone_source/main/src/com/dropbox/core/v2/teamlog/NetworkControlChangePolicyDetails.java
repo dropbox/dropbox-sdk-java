@@ -35,7 +35,7 @@ public class NetworkControlChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public NetworkControlChangePolicyDetails(NetworkControlPolicy newValue, NetworkControlPolicy previousValue) {
+    public NetworkControlChangePolicyDetails(@javax.annotation.Nonnull NetworkControlPolicy newValue, @javax.annotation.Nullable NetworkControlPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

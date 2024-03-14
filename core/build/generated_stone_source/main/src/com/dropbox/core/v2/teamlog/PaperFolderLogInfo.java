@@ -34,7 +34,7 @@ public class PaperFolderLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperFolderLogInfo(String folderId, String folderName) {
+    public PaperFolderLogInfo(@javax.annotation.Nonnull String folderId, @javax.annotation.Nonnull String folderName) {
         if (folderId == null) {
             throw new IllegalArgumentException("Required value for 'folderId' is null");
         }

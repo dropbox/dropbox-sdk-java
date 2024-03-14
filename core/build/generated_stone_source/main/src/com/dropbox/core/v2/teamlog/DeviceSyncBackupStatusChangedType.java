@@ -28,7 +28,7 @@ public class DeviceSyncBackupStatusChangedType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeviceSyncBackupStatusChangedType(String description) {
+    public DeviceSyncBackupStatusChangedType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

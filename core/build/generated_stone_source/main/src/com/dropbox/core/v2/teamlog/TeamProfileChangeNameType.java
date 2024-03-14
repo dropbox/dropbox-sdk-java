@@ -28,7 +28,7 @@ public class TeamProfileChangeNameType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamProfileChangeNameType(String description) {
+    public TeamProfileChangeNameType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

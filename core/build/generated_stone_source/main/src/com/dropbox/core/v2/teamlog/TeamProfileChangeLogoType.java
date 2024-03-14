@@ -28,7 +28,7 @@ public class TeamProfileChangeLogoType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamProfileChangeLogoType(String description) {
+    public TeamProfileChangeLogoType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

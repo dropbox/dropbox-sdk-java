@@ -32,7 +32,7 @@ public class UserInfoWithPermissionLevel {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UserInfoWithPermissionLevel(UserInfo user, PaperDocPermissionLevel permissionLevel) {
+    public UserInfoWithPermissionLevel(@javax.annotation.Nonnull UserInfo user, @javax.annotation.Nonnull PaperDocPermissionLevel permissionLevel) {
         if (user == null) {
             throw new IllegalArgumentException("Required value for 'user' is null");
         }

@@ -52,7 +52,7 @@ public class LegalHoldPolicy {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LegalHoldPolicy(String id, String name, MembersInfo members, LegalHoldStatus status, Date startDate, String description, Date activationTime, Date endDate) {
+    public LegalHoldPolicy(@javax.annotation.Nonnull String id, @javax.annotation.Nonnull String name, @javax.annotation.Nonnull MembersInfo members, @javax.annotation.Nonnull LegalHoldStatus status, @javax.annotation.Nonnull Date startDate, @javax.annotation.Nullable String description, @javax.annotation.Nullable Date activationTime, @javax.annotation.Nullable Date endDate) {
         if (id == null) {
             throw new IllegalArgumentException("Required value for 'id' is null");
         }

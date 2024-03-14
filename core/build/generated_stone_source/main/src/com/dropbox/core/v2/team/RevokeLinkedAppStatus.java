@@ -27,7 +27,7 @@ public class RevokeLinkedAppStatus {
      * @param success  Result of the revoking request.
      * @param errorType  The error cause in case of a failure.
      */
-    public RevokeLinkedAppStatus(boolean success, RevokeLinkedAppError errorType) {
+    public RevokeLinkedAppStatus(boolean success, @javax.annotation.Nullable RevokeLinkedAppError errorType) {
         this.success = success;
         this.errorType = errorType;
     }

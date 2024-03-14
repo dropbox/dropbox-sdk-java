@@ -35,7 +35,7 @@ public class SharedLinkChangeVisibilityDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedLinkChangeVisibilityDetails(SharedLinkVisibility newValue, SharedLinkVisibility previousValue) {
+    public SharedLinkChangeVisibilityDetails(@javax.annotation.Nonnull SharedLinkVisibility newValue, @javax.annotation.Nullable SharedLinkVisibility previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

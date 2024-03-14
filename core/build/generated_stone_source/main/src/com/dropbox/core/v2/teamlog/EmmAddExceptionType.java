@@ -28,7 +28,7 @@ public class EmmAddExceptionType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public EmmAddExceptionType(String description) {
+    public EmmAddExceptionType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

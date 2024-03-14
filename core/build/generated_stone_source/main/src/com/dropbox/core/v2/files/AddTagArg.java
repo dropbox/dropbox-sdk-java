@@ -35,7 +35,7 @@ class AddTagArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AddTagArg(String path, String tagText) {
+    public AddTagArg(@javax.annotation.Nonnull String path, @javax.annotation.Nonnull String tagText) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }

@@ -28,7 +28,7 @@ public class SharedLinkViewType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedLinkViewType(String description) {
+    public SharedLinkViewType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

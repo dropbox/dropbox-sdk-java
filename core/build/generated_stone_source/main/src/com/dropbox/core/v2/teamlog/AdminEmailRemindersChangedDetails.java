@@ -34,7 +34,7 @@ public class AdminEmailRemindersChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AdminEmailRemindersChangedDetails(AdminEmailRemindersPolicy newValue, AdminEmailRemindersPolicy previousValue) {
+    public AdminEmailRemindersChangedDetails(@javax.annotation.Nonnull AdminEmailRemindersPolicy newValue, @javax.annotation.Nonnull AdminEmailRemindersPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

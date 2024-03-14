@@ -44,7 +44,7 @@ class RelocationArg extends RelocationPath {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RelocationArg(String fromPath, String toPath, boolean allowSharedFolder, boolean autorename, boolean allowOwnershipTransfer) {
+    public RelocationArg(@javax.annotation.Nonnull String fromPath, @javax.annotation.Nonnull String toPath, boolean allowSharedFolder, boolean autorename, boolean allowOwnershipTransfer) {
         super(fromPath, toPath);
         this.allowSharedFolder = allowSharedFolder;
         this.autorename = autorename;

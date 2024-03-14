@@ -40,7 +40,7 @@ public class FoldersContainingPaperDoc {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FoldersContainingPaperDoc(FolderSharingPolicyType folderSharingPolicyType, List<Folder> folders) {
+    public FoldersContainingPaperDoc(@javax.annotation.Nullable FolderSharingPolicyType folderSharingPolicyType, @javax.annotation.Nullable List<Folder> folders) {
         this.folderSharingPolicyType = folderSharingPolicyType;
         if (folders != null) {
             for (Folder x : folders) {

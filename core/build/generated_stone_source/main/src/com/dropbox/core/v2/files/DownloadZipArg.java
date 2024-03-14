@@ -31,7 +31,7 @@ class DownloadZipArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DownloadZipArg(String path) {
+    public DownloadZipArg(@javax.annotation.Nonnull String path) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }

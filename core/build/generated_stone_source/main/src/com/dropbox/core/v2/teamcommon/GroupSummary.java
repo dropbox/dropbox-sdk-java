@@ -45,7 +45,7 @@ public class GroupSummary {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupSummary(String groupName, String groupId, GroupManagementType groupManagementType, String groupExternalId, Long memberCount) {
+    public GroupSummary(@javax.annotation.Nonnull String groupName, @javax.annotation.Nonnull String groupId, @javax.annotation.Nonnull GroupManagementType groupManagementType, @javax.annotation.Nullable String groupExternalId, @javax.annotation.Nullable Long memberCount) {
         if (groupName == null) {
             throw new IllegalArgumentException("Required value for 'groupName' is null");
         }

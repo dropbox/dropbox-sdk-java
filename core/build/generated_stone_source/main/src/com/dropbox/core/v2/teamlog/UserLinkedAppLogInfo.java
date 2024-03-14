@@ -31,7 +31,7 @@ public class UserLinkedAppLogInfo extends AppLogInfo {
      * @param appId  App unique ID.
      * @param displayName  App display name.
      */
-    public UserLinkedAppLogInfo(String appId, String displayName) {
+    public UserLinkedAppLogInfo(@javax.annotation.Nullable String appId, @javax.annotation.Nullable String displayName) {
         super(appId, displayName);
     }
 

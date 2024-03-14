@@ -35,7 +35,7 @@ public class FileChangeCommentSubscriptionDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileChangeCommentSubscriptionDetails(FileCommentNotificationPolicy newValue, FileCommentNotificationPolicy previousValue) {
+    public FileChangeCommentSubscriptionDetails(@javax.annotation.Nonnull FileCommentNotificationPolicy newValue, @javax.annotation.Nullable FileCommentNotificationPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

@@ -34,7 +34,7 @@ public class GroupRenameDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupRenameDetails(String previousValue, String newValue) {
+    public GroupRenameDetails(@javax.annotation.Nonnull String previousValue, @javax.annotation.Nonnull String newValue) {
         if (previousValue == null) {
             throw new IllegalArgumentException("Required value for 'previousValue' is null");
         }

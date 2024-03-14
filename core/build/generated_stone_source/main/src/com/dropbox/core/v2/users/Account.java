@@ -49,7 +49,7 @@ public class Account {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public Account(String accountId, Name name, String email, boolean emailVerified, boolean disabled, String profilePhotoUrl) {
+    public Account(@javax.annotation.Nonnull String accountId, @javax.annotation.Nonnull Name name, @javax.annotation.Nonnull String email, boolean emailVerified, boolean disabled, @javax.annotation.Nullable String profilePhotoUrl) {
         if (accountId == null) {
             throw new IllegalArgumentException("Required value for 'accountId' is null");
         }

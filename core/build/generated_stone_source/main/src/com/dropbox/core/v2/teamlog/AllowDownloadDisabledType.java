@@ -28,7 +28,7 @@ public class AllowDownloadDisabledType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AllowDownloadDisabledType(String description) {
+    public AllowDownloadDisabledType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

@@ -28,7 +28,7 @@ public class TeamSelectiveSyncPolicyChangedType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamSelectiveSyncPolicyChangedType(String description) {
+    public TeamSelectiveSyncPolicyChangedType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

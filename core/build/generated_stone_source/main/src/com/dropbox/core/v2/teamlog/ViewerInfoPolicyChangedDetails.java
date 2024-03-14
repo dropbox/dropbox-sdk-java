@@ -35,7 +35,7 @@ public class ViewerInfoPolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ViewerInfoPolicyChangedDetails(PassPolicy previousValue, PassPolicy newValue) {
+    public ViewerInfoPolicyChangedDetails(@javax.annotation.Nonnull PassPolicy previousValue, @javax.annotation.Nonnull PassPolicy newValue) {
         if (previousValue == null) {
             throw new IllegalArgumentException("Required value for 'previousValue' is null");
         }

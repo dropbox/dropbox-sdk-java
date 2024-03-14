@@ -73,7 +73,7 @@ public class TeamEvent {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamEvent(Date timestamp, EventCategory eventCategory, EventType eventType, EventDetails details, ActorLogInfo actor, OriginLogInfo origin, Boolean involveNonTeamMember, ContextLogInfo context, List<ParticipantLogInfo> participants, List<AssetLogInfo> assets) {
+    public TeamEvent(@javax.annotation.Nonnull Date timestamp, @javax.annotation.Nonnull EventCategory eventCategory, @javax.annotation.Nonnull EventType eventType, @javax.annotation.Nonnull EventDetails details, @javax.annotation.Nullable ActorLogInfo actor, @javax.annotation.Nullable OriginLogInfo origin, @javax.annotation.Nullable Boolean involveNonTeamMember, @javax.annotation.Nullable ContextLogInfo context, @javax.annotation.Nullable List<ParticipantLogInfo> participants, @javax.annotation.Nullable List<AssetLogInfo> assets) {
         if (timestamp == null) {
             throw new IllegalArgumentException("Required value for 'timestamp' is null");
         }

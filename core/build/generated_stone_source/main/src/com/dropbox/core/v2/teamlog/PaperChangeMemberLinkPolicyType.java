@@ -28,7 +28,7 @@ public class PaperChangeMemberLinkPolicyType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperChangeMemberLinkPolicyType(String description) {
+    public PaperChangeMemberLinkPolicyType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

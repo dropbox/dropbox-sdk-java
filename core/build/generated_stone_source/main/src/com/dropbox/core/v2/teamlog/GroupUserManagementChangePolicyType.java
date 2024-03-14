@@ -28,7 +28,7 @@ public class GroupUserManagementChangePolicyType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupUserManagementChangePolicyType(String description) {
+    public GroupUserManagementChangePolicyType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

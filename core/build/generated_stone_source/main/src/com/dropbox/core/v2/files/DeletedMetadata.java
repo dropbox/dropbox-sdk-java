@@ -51,7 +51,7 @@ public class DeletedMetadata extends Metadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeletedMetadata(String name, String pathLower, String pathDisplay, String parentSharedFolderId, String previewUrl) {
+    public DeletedMetadata(@javax.annotation.Nonnull String name, @javax.annotation.Nullable String pathLower, @javax.annotation.Nullable String pathDisplay, @javax.annotation.Nullable String parentSharedFolderId, @javax.annotation.Nullable String previewUrl) {
         super(name, pathLower, pathDisplay, parentSharedFolderId, previewUrl);
     }
 

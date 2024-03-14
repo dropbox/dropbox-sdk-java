@@ -28,7 +28,7 @@ public class PaperDocRequestAccessType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperDocRequestAccessType(String description) {
+    public PaperDocRequestAccessType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

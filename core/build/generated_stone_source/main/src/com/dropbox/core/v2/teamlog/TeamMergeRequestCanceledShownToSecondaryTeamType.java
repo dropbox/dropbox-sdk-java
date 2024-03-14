@@ -28,7 +28,7 @@ public class TeamMergeRequestCanceledShownToSecondaryTeamType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamMergeRequestCanceledShownToSecondaryTeamType(String description) {
+    public TeamMergeRequestCanceledShownToSecondaryTeamType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

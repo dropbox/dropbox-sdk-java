@@ -38,7 +38,7 @@ public class DeviceApprovalsChangeMobilePolicyDetails {
      * @param previousValue  Previous mobile device approvals policy. Might be
      *     missing due to historical data gap.
      */
-    public DeviceApprovalsChangeMobilePolicyDetails(DeviceApprovalsPolicy newValue, DeviceApprovalsPolicy previousValue) {
+    public DeviceApprovalsChangeMobilePolicyDetails(@javax.annotation.Nullable DeviceApprovalsPolicy newValue, @javax.annotation.Nullable DeviceApprovalsPolicy previousValue) {
         this.newValue = newValue;
         this.previousValue = previousValue;
     }

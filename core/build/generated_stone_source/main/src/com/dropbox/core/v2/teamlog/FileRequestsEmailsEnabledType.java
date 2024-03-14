@@ -28,7 +28,7 @@ public class FileRequestsEmailsEnabledType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileRequestsEmailsEnabledType(String description) {
+    public FileRequestsEmailsEnabledType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

@@ -42,7 +42,7 @@ public class TeamNamespacesListResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamNamespacesListResult(List<NamespaceMetadata> namespaces, String cursor, boolean hasMore) {
+    public TeamNamespacesListResult(@javax.annotation.Nonnull List<NamespaceMetadata> namespaces, @javax.annotation.Nonnull String cursor, boolean hasMore) {
         if (namespaces == null) {
             throw new IllegalArgumentException("Required value for 'namespaces' is null");
         }

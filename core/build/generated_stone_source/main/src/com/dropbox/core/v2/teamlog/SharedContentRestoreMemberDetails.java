@@ -34,7 +34,7 @@ public class SharedContentRestoreMemberDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentRestoreMemberDetails(AccessLevel sharedContentAccessLevel) {
+    public SharedContentRestoreMemberDetails(@javax.annotation.Nonnull AccessLevel sharedContentAccessLevel) {
         if (sharedContentAccessLevel == null) {
             throw new IllegalArgumentException("Required value for 'sharedContentAccessLevel' is null");
         }

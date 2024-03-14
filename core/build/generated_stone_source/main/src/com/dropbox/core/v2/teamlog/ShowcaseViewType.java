@@ -28,7 +28,7 @@ public class ShowcaseViewType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ShowcaseViewType(String description) {
+    public ShowcaseViewType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

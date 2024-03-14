@@ -35,7 +35,7 @@ public class MemberSpaceLimitsChangeStatusDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberSpaceLimitsChangeStatusDetails(SpaceLimitsStatus previousValue, SpaceLimitsStatus newValue) {
+    public MemberSpaceLimitsChangeStatusDetails(@javax.annotation.Nonnull SpaceLimitsStatus previousValue, @javax.annotation.Nonnull SpaceLimitsStatus newValue) {
         if (previousValue == null) {
             throw new IllegalArgumentException("Required value for 'previousValue' is null");
         }

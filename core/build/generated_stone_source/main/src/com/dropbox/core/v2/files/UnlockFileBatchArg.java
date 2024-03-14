@@ -32,7 +32,7 @@ class UnlockFileBatchArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UnlockFileBatchArg(List<UnlockFileArg> entries) {
+    public UnlockFileBatchArg(@javax.annotation.Nonnull List<UnlockFileArg> entries) {
         if (entries == null) {
             throw new IllegalArgumentException("Required value for 'entries' is null");
         }

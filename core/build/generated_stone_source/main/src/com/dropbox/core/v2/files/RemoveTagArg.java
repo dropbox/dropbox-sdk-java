@@ -34,7 +34,7 @@ class RemoveTagArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RemoveTagArg(String path, String tagText) {
+    public RemoveTagArg(@javax.annotation.Nonnull String path, @javax.annotation.Nonnull String tagText) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }

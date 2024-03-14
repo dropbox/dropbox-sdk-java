@@ -30,7 +30,7 @@ public class LegalHoldsListPoliciesResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LegalHoldsListPoliciesResult(List<LegalHoldPolicy> policies) {
+    public LegalHoldsListPoliciesResult(@javax.annotation.Nonnull List<LegalHoldPolicy> policies) {
         if (policies == null) {
             throw new IllegalArgumentException("Required value for 'policies' is null");
         }

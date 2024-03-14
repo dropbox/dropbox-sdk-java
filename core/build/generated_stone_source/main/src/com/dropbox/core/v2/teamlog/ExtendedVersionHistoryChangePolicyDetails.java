@@ -36,7 +36,7 @@ public class ExtendedVersionHistoryChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ExtendedVersionHistoryChangePolicyDetails(ExtendedVersionHistoryPolicy newValue, ExtendedVersionHistoryPolicy previousValue) {
+    public ExtendedVersionHistoryChangePolicyDetails(@javax.annotation.Nonnull ExtendedVersionHistoryPolicy newValue, @javax.annotation.Nullable ExtendedVersionHistoryPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

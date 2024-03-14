@@ -36,7 +36,7 @@ class GroupMembersRemoveArg extends IncludeMembersArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupMembersRemoveArg(GroupSelector group, List<UserSelectorArg> users, boolean returnMembers) {
+    public GroupMembersRemoveArg(@javax.annotation.Nonnull GroupSelector group, @javax.annotation.Nonnull List<UserSelectorArg> users, boolean returnMembers) {
         super(returnMembers);
         if (group == null) {
             throw new IllegalArgumentException("Required value for 'group' is null");

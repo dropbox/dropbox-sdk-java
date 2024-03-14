@@ -33,7 +33,7 @@ public class UploadSessionCursor {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UploadSessionCursor(String sessionId, long offset) {
+    public UploadSessionCursor(@javax.annotation.Nonnull String sessionId, long offset) {
         if (sessionId == null) {
             throw new IllegalArgumentException("Required value for 'sessionId' is null");
         }

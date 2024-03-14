@@ -28,7 +28,7 @@ public class FileRequestReceiveFileType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileRequestReceiveFileType(String description) {
+    public FileRequestReceiveFileType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

@@ -31,7 +31,7 @@ class ListFolderMembersContinueArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFolderMembersContinueArg(String cursor) {
+    public ListFolderMembersContinueArg(@javax.annotation.Nonnull String cursor) {
         if (cursor == null) {
             throw new IllegalArgumentException("Required value for 'cursor' is null");
         }

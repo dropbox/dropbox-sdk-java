@@ -28,7 +28,7 @@ public class SharedContentRequestAccessType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentRequestAccessType(String description) {
+    public SharedContentRequestAccessType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

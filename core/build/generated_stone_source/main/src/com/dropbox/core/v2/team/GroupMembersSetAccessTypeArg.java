@@ -38,7 +38,7 @@ class GroupMembersSetAccessTypeArg extends GroupMemberSelector {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupMembersSetAccessTypeArg(GroupSelector group, UserSelectorArg user, GroupAccessType accessType, boolean returnMembers) {
+    public GroupMembersSetAccessTypeArg(@javax.annotation.Nonnull GroupSelector group, @javax.annotation.Nonnull UserSelectorArg user, @javax.annotation.Nonnull GroupAccessType accessType, boolean returnMembers) {
         super(group, user);
         if (accessType == null) {
             throw new IllegalArgumentException("Required value for 'accessType' is null");

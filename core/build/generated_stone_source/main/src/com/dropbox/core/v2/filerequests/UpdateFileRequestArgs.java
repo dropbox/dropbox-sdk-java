@@ -54,7 +54,7 @@ class UpdateFileRequestArgs {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UpdateFileRequestArgs(String id, String title, String destination, UpdateFileRequestDeadline deadline, Boolean open, String description) {
+    public UpdateFileRequestArgs(@javax.annotation.Nonnull String id, @javax.annotation.Nullable String title, @javax.annotation.Nullable String destination, @javax.annotation.Nonnull UpdateFileRequestDeadline deadline, @javax.annotation.Nullable Boolean open, @javax.annotation.Nullable String description) {
         if (id == null) {
             throw new IllegalArgumentException("Required value for 'id' is null");
         }

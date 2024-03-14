@@ -31,7 +31,7 @@ public class SearchMatch {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SearchMatch(SearchMatchType matchType, Metadata metadata) {
+    public SearchMatch(@javax.annotation.Nonnull SearchMatchType matchType, @javax.annotation.Nonnull Metadata metadata) {
         if (matchType == null) {
             throw new IllegalArgumentException("Required value for 'matchType' is null");
         }

@@ -35,7 +35,7 @@ public class MemberChangeNameDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberChangeNameDetails(UserNameLogInfo newValue, UserNameLogInfo previousValue) {
+    public MemberChangeNameDetails(@javax.annotation.Nonnull UserNameLogInfo newValue, @javax.annotation.Nullable UserNameLogInfo previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }

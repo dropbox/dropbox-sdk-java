@@ -28,7 +28,7 @@ public class NoteAclInviteOnlyType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public NoteAclInviteOnlyType(String description) {
+    public NoteAclInviteOnlyType(@javax.annotation.Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }

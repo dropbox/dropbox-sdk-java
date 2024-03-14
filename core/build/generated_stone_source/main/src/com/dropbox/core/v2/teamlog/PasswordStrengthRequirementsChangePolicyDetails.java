@@ -36,7 +36,7 @@ public class PasswordStrengthRequirementsChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PasswordStrengthRequirementsChangePolicyDetails(PasswordStrengthPolicy previousValue, PasswordStrengthPolicy newValue) {
+    public PasswordStrengthRequirementsChangePolicyDetails(@javax.annotation.Nonnull PasswordStrengthPolicy previousValue, @javax.annotation.Nonnull PasswordStrengthPolicy newValue) {
         if (previousValue == null) {
             throw new IllegalArgumentException("Required value for 'previousValue' is null");
         }

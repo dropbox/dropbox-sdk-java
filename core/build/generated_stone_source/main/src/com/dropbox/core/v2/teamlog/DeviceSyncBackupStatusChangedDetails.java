@@ -39,7 +39,7 @@ public class DeviceSyncBackupStatusChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeviceSyncBackupStatusChangedDetails(DesktopDeviceSessionLogInfo desktopDeviceSessionInfo, BackupStatus previousValue, BackupStatus newValue) {
+    public DeviceSyncBackupStatusChangedDetails(@javax.annotation.Nonnull DesktopDeviceSessionLogInfo desktopDeviceSessionInfo, @javax.annotation.Nonnull BackupStatus previousValue, @javax.annotation.Nonnull BackupStatus newValue) {
         if (desktopDeviceSessionInfo == null) {
             throw new IllegalArgumentException("Required value for 'desktopDeviceSessionInfo' is null");
         }

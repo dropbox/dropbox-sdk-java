@@ -38,7 +38,7 @@ public class SearchResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SearchResult(List<SearchMatch> matches, boolean more, long start) {
+    public SearchResult(@javax.annotation.Nonnull List<SearchMatch> matches, boolean more, long start) {
         if (matches == null) {
             throw new IllegalArgumentException("Required value for 'matches' is null");
         }

@@ -42,7 +42,7 @@ public class PropertyFieldTemplate {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PropertyFieldTemplate(String name, String description, PropertyType type) {
+    public PropertyFieldTemplate(@javax.annotation.Nonnull String name, @javax.annotation.Nonnull String description, @javax.annotation.Nonnull PropertyType type) {
         if (name == null) {
             throw new IllegalArgumentException("Required value for 'name' is null");
         }

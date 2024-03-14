@@ -32,7 +32,7 @@ public class ExportResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ExportResult(ExportMetadata exportMetadata, FileMetadata fileMetadata) {
+    public ExportResult(@javax.annotation.Nonnull ExportMetadata exportMetadata, @javax.annotation.Nonnull FileMetadata fileMetadata) {
         if (exportMetadata == null) {
             throw new IllegalArgumentException("Required value for 'exportMetadata' is null");
         }

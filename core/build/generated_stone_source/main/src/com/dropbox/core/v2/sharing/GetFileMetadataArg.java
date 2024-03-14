@@ -42,7 +42,7 @@ class GetFileMetadataArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetFileMetadataArg(String file, List<FileAction> actions) {
+    public GetFileMetadataArg(@javax.annotation.Nonnull String file, @javax.annotation.Nullable List<FileAction> actions) {
         if (file == null) {
             throw new IllegalArgumentException("Required value for 'file' is null");
         }

@@ -42,7 +42,7 @@ public class PropertyGroupUpdate {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PropertyGroupUpdate(String templateId, List<PropertyField> addOrUpdateFields, List<String> removeFields) {
+    public PropertyGroupUpdate(@javax.annotation.Nonnull String templateId, @javax.annotation.Nullable List<PropertyField> addOrUpdateFields, @javax.annotation.Nullable List<String> removeFields) {
         if (templateId == null) {
             throw new IllegalArgumentException("Required value for 'templateId' is null");
         }
