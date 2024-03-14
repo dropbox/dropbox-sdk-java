@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 class ThumbnailV2Arg {
     // struct files.ThumbnailV2Arg (files.stone)
 
@@ -42,7 +44,7 @@ class ThumbnailV2Arg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ThumbnailV2Arg(@javax.annotation.Nonnull PathOrLink resource, @javax.annotation.Nonnull ThumbnailFormat format, @javax.annotation.Nonnull ThumbnailSize size, @javax.annotation.Nonnull ThumbnailMode mode) {
+    public ThumbnailV2Arg(@Nonnull PathOrLink resource, @Nonnull ThumbnailFormat format, @Nonnull ThumbnailSize size, @Nonnull ThumbnailMode mode) {
         if (resource == null) {
             throw new IllegalArgumentException("Required value for 'resource' is null");
         }
@@ -85,7 +87,7 @@ class ThumbnailV2Arg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public PathOrLink getResource() {
         return resource;
     }
@@ -98,7 +100,7 @@ class ThumbnailV2Arg {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     ThumbnailFormat.JPEG.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public ThumbnailFormat getFormat() {
         return format;
     }
@@ -109,7 +111,7 @@ class ThumbnailV2Arg {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     ThumbnailSize.W64H64.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public ThumbnailSize getSize() {
         return size;
     }
@@ -120,7 +122,7 @@ class ThumbnailV2Arg {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     ThumbnailMode.STRICT.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public ThumbnailMode getMode() {
         return mode;
     }

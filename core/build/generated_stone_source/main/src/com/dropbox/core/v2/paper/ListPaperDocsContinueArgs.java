@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 class ListPaperDocsContinueArgs {
     // struct paper.ListPaperDocsContinueArgs (paper.stone)
 
@@ -31,7 +33,7 @@ class ListPaperDocsContinueArgs {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListPaperDocsContinueArgs(@javax.annotation.Nonnull String cursor) {
+    public ListPaperDocsContinueArgs(@Nonnull String cursor) {
         if (cursor == null) {
             throw new IllegalArgumentException("Required value for 'cursor' is null");
         }
@@ -44,7 +46,7 @@ class ListPaperDocsContinueArgs {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getCursor() {
         return cursor;
     }

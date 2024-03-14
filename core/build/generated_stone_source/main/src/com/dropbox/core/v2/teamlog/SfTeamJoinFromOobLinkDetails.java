@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Joined team member's shared folder from link.
  */
@@ -42,7 +45,7 @@ public class SfTeamJoinFromOobLinkDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SfTeamJoinFromOobLinkDetails(long targetAssetIndex, @javax.annotation.Nonnull String originalFolderName, @javax.annotation.Nullable String tokenKey, @javax.annotation.Nullable String sharingPermission) {
+    public SfTeamJoinFromOobLinkDetails(long targetAssetIndex, @Nonnull String originalFolderName, @Nullable String tokenKey, @Nullable String sharingPermission) {
         this.targetAssetIndex = targetAssetIndex;
         if (originalFolderName == null) {
             throw new IllegalArgumentException("Required value for 'originalFolderName' is null");
@@ -82,7 +85,7 @@ public class SfTeamJoinFromOobLinkDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getOriginalFolderName() {
         return originalFolderName;
     }
@@ -92,7 +95,7 @@ public class SfTeamJoinFromOobLinkDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getTokenKey() {
         return tokenKey;
     }
@@ -102,7 +105,7 @@ public class SfTeamJoinFromOobLinkDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getSharingPermission() {
         return sharingPermission;
     }

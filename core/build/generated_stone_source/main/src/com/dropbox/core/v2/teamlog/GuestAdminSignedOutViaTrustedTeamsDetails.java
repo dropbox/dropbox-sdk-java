@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Ended trusted team admin session.
  */
@@ -34,7 +37,7 @@ public class GuestAdminSignedOutViaTrustedTeamsDetails {
      * @param teamName  Host team name.
      * @param trustedTeamName  Trusted team name.
      */
-    public GuestAdminSignedOutViaTrustedTeamsDetails(@javax.annotation.Nullable String teamName, @javax.annotation.Nullable String trustedTeamName) {
+    public GuestAdminSignedOutViaTrustedTeamsDetails(@Nullable String teamName, @Nullable String trustedTeamName) {
         this.teamName = teamName;
         this.trustedTeamName = trustedTeamName;
     }
@@ -53,7 +56,7 @@ public class GuestAdminSignedOutViaTrustedTeamsDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getTeamName() {
         return teamName;
     }
@@ -63,7 +66,7 @@ public class GuestAdminSignedOutViaTrustedTeamsDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getTrustedTeamName() {
         return trustedTeamName;
     }

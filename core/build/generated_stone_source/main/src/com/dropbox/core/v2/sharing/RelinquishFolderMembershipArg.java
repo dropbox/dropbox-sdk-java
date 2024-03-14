@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 class RelinquishFolderMembershipArg {
     // struct sharing.RelinquishFolderMembershipArg (sharing_folders.stone)
 
@@ -34,7 +36,7 @@ class RelinquishFolderMembershipArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RelinquishFolderMembershipArg(@javax.annotation.Nonnull String sharedFolderId, boolean leaveACopy) {
+    public RelinquishFolderMembershipArg(@Nonnull String sharedFolderId, boolean leaveACopy) {
         if (sharedFolderId == null) {
             throw new IllegalArgumentException("Required value for 'sharedFolderId' is null");
         }
@@ -65,7 +67,7 @@ class RelinquishFolderMembershipArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getSharedFolderId() {
         return sharedFolderId;
     }

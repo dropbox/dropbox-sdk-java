@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed whether members can share files/folders outside team.
  */
@@ -35,7 +38,7 @@ public class SharingChangeMemberPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharingChangeMemberPolicyDetails(@javax.annotation.Nonnull SharingMemberPolicy newValue, @javax.annotation.Nullable SharingMemberPolicy previousValue) {
+    public SharingChangeMemberPolicyDetails(@Nonnull SharingMemberPolicy newValue, @Nullable SharingMemberPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -62,7 +65,7 @@ public class SharingChangeMemberPolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public SharingMemberPolicy getNewValue() {
         return newValue;
     }
@@ -73,7 +76,7 @@ public class SharingChangeMemberPolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public SharingMemberPolicy getPreviousValue() {
         return previousValue;
     }

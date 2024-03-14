@@ -18,6 +18,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 public class ListUsersOnPaperDocResponse {
     // struct paper.ListUsersOnPaperDocResponse (paper.stone)
 
@@ -53,7 +55,7 @@ public class ListUsersOnPaperDocResponse {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListUsersOnPaperDocResponse(@javax.annotation.Nonnull List<InviteeInfoWithPermissionLevel> invitees, @javax.annotation.Nonnull List<UserInfoWithPermissionLevel> users, @javax.annotation.Nonnull UserInfo docOwner, @javax.annotation.Nonnull Cursor cursor, boolean hasMore) {
+    public ListUsersOnPaperDocResponse(@Nonnull List<InviteeInfoWithPermissionLevel> invitees, @Nonnull List<UserInfoWithPermissionLevel> users, @Nonnull UserInfo docOwner, @Nonnull Cursor cursor, boolean hasMore) {
         if (invitees == null) {
             throw new IllegalArgumentException("Required value for 'invitees' is null");
         }
@@ -89,7 +91,7 @@ public class ListUsersOnPaperDocResponse {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<InviteeInfoWithPermissionLevel> getInvitees() {
         return invitees;
     }
@@ -100,7 +102,7 @@ public class ListUsersOnPaperDocResponse {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<UserInfoWithPermissionLevel> getUsers() {
         return users;
     }
@@ -110,7 +112,7 @@ public class ListUsersOnPaperDocResponse {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public UserInfo getDocOwner() {
         return docOwner;
     }
@@ -123,7 +125,7 @@ public class ListUsersOnPaperDocResponse {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public Cursor getCursor() {
         return cursor;
     }

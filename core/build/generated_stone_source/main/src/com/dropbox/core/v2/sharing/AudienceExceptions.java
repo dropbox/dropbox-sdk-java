@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 /**
  * The total count and truncated list of information of content inside this
  * folder that has a different audience than the link on this folder. This is
@@ -41,7 +43,7 @@ public class AudienceExceptions {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AudienceExceptions(long count, @javax.annotation.Nonnull List<AudienceExceptionContentInfo> exceptions) {
+    public AudienceExceptions(long count, @Nonnull List<AudienceExceptionContentInfo> exceptions) {
         this.count = count;
         if (exceptions == null) {
             throw new IllegalArgumentException("Required value for 'exceptions' is null");
@@ -69,7 +71,7 @@ public class AudienceExceptions {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<AudienceExceptionContentInfo> getExceptions() {
         return exceptions;
     }

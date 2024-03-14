@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Success results for {@link DbxUserSharingRequests#listReceivedFiles}.
  */
@@ -36,7 +39,7 @@ public class ListFilesResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFilesResult(@javax.annotation.Nonnull List<SharedFileMetadata> entries, @javax.annotation.Nullable String cursor) {
+    public ListFilesResult(@Nonnull List<SharedFileMetadata> entries, @Nullable String cursor) {
         if (entries == null) {
             throw new IllegalArgumentException("Required value for 'entries' is null");
         }
@@ -69,7 +72,7 @@ public class ListFilesResult {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<SharedFileMetadata> getEntries() {
         return entries;
     }
@@ -79,7 +82,7 @@ public class ListFilesResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getCursor() {
         return cursor;
     }

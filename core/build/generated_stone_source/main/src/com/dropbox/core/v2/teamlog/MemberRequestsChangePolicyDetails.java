@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed whether users can find team when not invited.
  */
@@ -36,7 +39,7 @@ public class MemberRequestsChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberRequestsChangePolicyDetails(@javax.annotation.Nonnull MemberRequestsPolicy newValue, @javax.annotation.Nullable MemberRequestsPolicy previousValue) {
+    public MemberRequestsChangePolicyDetails(@Nonnull MemberRequestsPolicy newValue, @Nullable MemberRequestsPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -64,7 +67,7 @@ public class MemberRequestsChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public MemberRequestsPolicy getNewValue() {
         return newValue;
     }
@@ -75,7 +78,7 @@ public class MemberRequestsChangePolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public MemberRequestsPolicy getPreviousValue() {
         return previousValue;
     }

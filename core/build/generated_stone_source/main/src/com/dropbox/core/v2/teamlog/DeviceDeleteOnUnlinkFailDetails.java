@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Failed to delete all files from unlinked device.
  */
@@ -37,7 +40,7 @@ public class DeviceDeleteOnUnlinkFailDetails {
      * @param displayName  The device name. Might be missing due to historical
      *     data gap.
      */
-    public DeviceDeleteOnUnlinkFailDetails(long numFailures, @javax.annotation.Nullable SessionLogInfo sessionInfo, @javax.annotation.Nullable String displayName) {
+    public DeviceDeleteOnUnlinkFailDetails(long numFailures, @Nullable SessionLogInfo sessionInfo, @Nullable String displayName) {
         this.sessionInfo = sessionInfo;
         this.displayName = displayName;
         this.numFailures = numFailures;
@@ -68,7 +71,7 @@ public class DeviceDeleteOnUnlinkFailDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public SessionLogInfo getSessionInfo() {
         return sessionInfo;
     }
@@ -78,7 +81,7 @@ public class DeviceDeleteOnUnlinkFailDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getDisplayName() {
         return displayName;
     }

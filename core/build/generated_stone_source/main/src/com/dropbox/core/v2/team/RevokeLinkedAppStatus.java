@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class RevokeLinkedAppStatus {
     // struct team.RevokeLinkedAppStatus (team_linked_apps.stone)
 
@@ -27,7 +30,7 @@ public class RevokeLinkedAppStatus {
      * @param success  Result of the revoking request.
      * @param errorType  The error cause in case of a failure.
      */
-    public RevokeLinkedAppStatus(boolean success, @javax.annotation.Nullable RevokeLinkedAppError errorType) {
+    public RevokeLinkedAppStatus(boolean success, @Nullable RevokeLinkedAppError errorType) {
         this.success = success;
         this.errorType = errorType;
     }
@@ -57,7 +60,7 @@ public class RevokeLinkedAppStatus {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public RevokeLinkedAppError getErrorType() {
         return errorType;
     }

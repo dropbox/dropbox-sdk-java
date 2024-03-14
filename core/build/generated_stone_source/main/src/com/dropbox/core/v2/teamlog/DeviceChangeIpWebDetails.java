@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed IP address associated with active web session.
  */
@@ -32,7 +34,7 @@ public class DeviceChangeIpWebDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeviceChangeIpWebDetails(@javax.annotation.Nonnull String userAgent) {
+    public DeviceChangeIpWebDetails(@Nonnull String userAgent) {
         if (userAgent == null) {
             throw new IllegalArgumentException("Required value for 'userAgent' is null");
         }
@@ -44,7 +46,7 @@ public class DeviceChangeIpWebDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getUserAgent() {
         return userAgent;
     }

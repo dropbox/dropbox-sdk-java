@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Invited team members to shared folder.
  */
@@ -37,7 +40,7 @@ public class SfTeamInviteDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SfTeamInviteDetails(long targetAssetIndex, @javax.annotation.Nonnull String originalFolderName, @javax.annotation.Nullable String sharingPermission) {
+    public SfTeamInviteDetails(long targetAssetIndex, @Nonnull String originalFolderName, @Nullable String sharingPermission) {
         this.targetAssetIndex = targetAssetIndex;
         if (originalFolderName == null) {
             throw new IllegalArgumentException("Required value for 'originalFolderName' is null");
@@ -76,7 +79,7 @@ public class SfTeamInviteDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getOriginalFolderName() {
         return originalFolderName;
     }
@@ -86,7 +89,7 @@ public class SfTeamInviteDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getSharingPermission() {
         return sharingPermission;
     }

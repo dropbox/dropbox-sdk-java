@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 public class GetTeamEventsResult {
     // struct team_log.GetTeamEventsResult (team_log.stone)
 
@@ -49,7 +51,7 @@ public class GetTeamEventsResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetTeamEventsResult(@javax.annotation.Nonnull List<TeamEvent> events, @javax.annotation.Nonnull String cursor, boolean hasMore) {
+    public GetTeamEventsResult(@Nonnull List<TeamEvent> events, @Nonnull String cursor, boolean hasMore) {
         if (events == null) {
             throw new IllegalArgumentException("Required value for 'events' is null");
         }
@@ -72,7 +74,7 @@ public class GetTeamEventsResult {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<TeamEvent> getEvents() {
         return events;
     }
@@ -91,7 +93,7 @@ public class GetTeamEventsResult {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getCursor() {
         return cursor;
     }

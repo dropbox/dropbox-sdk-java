@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Restored showcase.
  */
@@ -32,7 +34,7 @@ public class ShowcaseUntrashedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ShowcaseUntrashedDetails(@javax.annotation.Nonnull String eventUuid) {
+    public ShowcaseUntrashedDetails(@Nonnull String eventUuid) {
         if (eventUuid == null) {
             throw new IllegalArgumentException("Required value for 'eventUuid' is null");
         }
@@ -44,7 +46,7 @@ public class ShowcaseUntrashedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getEventUuid() {
         return eventUuid;
     }

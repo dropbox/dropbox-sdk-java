@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Failed to link device.
  */
@@ -36,7 +39,7 @@ public class DeviceLinkFailDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeviceLinkFailDetails(@javax.annotation.Nonnull DeviceType deviceType, @javax.annotation.Nullable String ipAddress) {
+    public DeviceLinkFailDetails(@Nonnull DeviceType deviceType, @Nullable String ipAddress) {
         this.ipAddress = ipAddress;
         if (deviceType == null) {
             throw new IllegalArgumentException("Required value for 'deviceType' is null");
@@ -64,7 +67,7 @@ public class DeviceLinkFailDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public DeviceType getDeviceType() {
         return deviceType;
     }
@@ -74,7 +77,7 @@ public class DeviceLinkFailDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getIpAddress() {
         return ipAddress;
     }

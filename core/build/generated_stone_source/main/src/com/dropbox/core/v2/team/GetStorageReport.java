@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 /**
  * Storage Report Result. Each of the items in the storage report is an array of
  * values, one value per day. If there is no data for a day, then the value will
@@ -61,7 +63,7 @@ public class GetStorageReport extends BaseDfbReport {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetStorageReport(@javax.annotation.Nonnull String startDate, @javax.annotation.Nonnull List<Long> totalUsage, @javax.annotation.Nonnull List<Long> sharedUsage, @javax.annotation.Nonnull List<Long> unsharedUsage, @javax.annotation.Nonnull List<Long> sharedFolders, @javax.annotation.Nonnull List<List<StorageBucket>> memberStorageMap) {
+    public GetStorageReport(@Nonnull String startDate, @Nonnull List<Long> totalUsage, @Nonnull List<Long> sharedUsage, @Nonnull List<Long> unsharedUsage, @Nonnull List<Long> sharedFolders, @Nonnull List<List<StorageBucket>> memberStorageMap) {
         super(startDate);
         if (totalUsage == null) {
             throw new IllegalArgumentException("Required value for 'totalUsage' is null");
@@ -120,7 +122,7 @@ public class GetStorageReport extends BaseDfbReport {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getStartDate() {
         return startDate;
     }
@@ -130,7 +132,7 @@ public class GetStorageReport extends BaseDfbReport {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<Long> getTotalUsage() {
         return totalUsage;
     }
@@ -141,7 +143,7 @@ public class GetStorageReport extends BaseDfbReport {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<Long> getSharedUsage() {
         return sharedUsage;
     }
@@ -152,7 +154,7 @@ public class GetStorageReport extends BaseDfbReport {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<Long> getUnsharedUsage() {
         return unsharedUsage;
     }
@@ -163,7 +165,7 @@ public class GetStorageReport extends BaseDfbReport {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<Long> getSharedFolders() {
         return sharedFolders;
     }
@@ -178,7 +180,7 @@ public class GetStorageReport extends BaseDfbReport {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<List<StorageBucket>> getMemberStorageMap() {
         return memberStorageMap;
     }

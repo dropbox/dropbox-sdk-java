@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Information on devices of a team's member.
  */
@@ -45,7 +48,7 @@ public class MemberDevices {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberDevices(@javax.annotation.Nonnull String teamMemberId, @javax.annotation.Nullable List<ActiveWebSession> webSessions, @javax.annotation.Nullable List<DesktopClientSession> desktopClients, @javax.annotation.Nullable List<MobileClientSession> mobileClients) {
+    public MemberDevices(@Nonnull String teamMemberId, @Nullable List<ActiveWebSession> webSessions, @Nullable List<DesktopClientSession> desktopClients, @Nullable List<MobileClientSession> mobileClients) {
         if (teamMemberId == null) {
             throw new IllegalArgumentException("Required value for 'teamMemberId' is null");
         }
@@ -95,7 +98,7 @@ public class MemberDevices {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getTeamMemberId() {
         return teamMemberId;
     }
@@ -105,7 +108,7 @@ public class MemberDevices {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public List<ActiveWebSession> getWebSessions() {
         return webSessions;
     }
@@ -115,7 +118,7 @@ public class MemberDevices {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public List<DesktopClientSession> getDesktopClients() {
         return desktopClients;
     }
@@ -125,7 +128,7 @@ public class MemberDevices {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public List<MobileClientSession> getMobileClients() {
         return mobileClients;
     }

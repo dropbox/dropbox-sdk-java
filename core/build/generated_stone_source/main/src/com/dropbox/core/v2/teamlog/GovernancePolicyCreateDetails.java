@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Activated a new policy.
  */
@@ -44,7 +47,7 @@ public class GovernancePolicyCreateDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GovernancePolicyCreateDetails(@javax.annotation.Nonnull String governancePolicyId, @javax.annotation.Nonnull String name, @javax.annotation.Nonnull DurationLogInfo duration, @javax.annotation.Nullable PolicyType policyType, @javax.annotation.Nullable List<String> folders) {
+    public GovernancePolicyCreateDetails(@Nonnull String governancePolicyId, @Nonnull String name, @Nonnull DurationLogInfo duration, @Nullable PolicyType policyType, @Nullable List<String> folders) {
         if (governancePolicyId == null) {
             throw new IllegalArgumentException("Required value for 'governancePolicyId' is null");
         }
@@ -89,7 +92,7 @@ public class GovernancePolicyCreateDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getGovernancePolicyId() {
         return governancePolicyId;
     }
@@ -99,7 +102,7 @@ public class GovernancePolicyCreateDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -109,7 +112,7 @@ public class GovernancePolicyCreateDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public DurationLogInfo getDuration() {
         return duration;
     }
@@ -119,7 +122,7 @@ public class GovernancePolicyCreateDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public PolicyType getPolicyType() {
         return policyType;
     }
@@ -129,7 +132,7 @@ public class GovernancePolicyCreateDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public List<String> getFolders() {
         return folders;
     }

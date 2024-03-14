@@ -17,6 +17,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Downloaded shared file/folder.
  */
@@ -38,7 +41,7 @@ public class SharedContentDownloadDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentDownloadDetails(@javax.annotation.Nonnull String sharedContentLink, @javax.annotation.Nonnull AccessLevel sharedContentAccessLevel, @javax.annotation.Nullable UserLogInfo sharedContentOwner) {
+    public SharedContentDownloadDetails(@Nonnull String sharedContentLink, @Nonnull AccessLevel sharedContentAccessLevel, @Nullable UserLogInfo sharedContentOwner) {
         if (sharedContentLink == null) {
             throw new IllegalArgumentException("Required value for 'sharedContentLink' is null");
         }
@@ -71,7 +74,7 @@ public class SharedContentDownloadDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getSharedContentLink() {
         return sharedContentLink;
     }
@@ -81,7 +84,7 @@ public class SharedContentDownloadDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public AccessLevel getSharedContentAccessLevel() {
         return sharedContentAccessLevel;
     }
@@ -91,7 +94,7 @@ public class SharedContentDownloadDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public UserLogInfo getSharedContentOwner() {
         return sharedContentOwner;
     }

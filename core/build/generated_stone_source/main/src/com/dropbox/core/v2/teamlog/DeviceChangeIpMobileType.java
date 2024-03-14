@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class DeviceChangeIpMobileType {
     // struct team_log.DeviceChangeIpMobileType (team_log_generated.stone)
 
@@ -28,7 +30,7 @@ public class DeviceChangeIpMobileType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeviceChangeIpMobileType(@javax.annotation.Nonnull String description) {
+    public DeviceChangeIpMobileType(@Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }
@@ -39,7 +41,7 @@ public class DeviceChangeIpMobileType {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getDescription() {
         return description;
     }

@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 public class UploadSessionStartBatchResult {
     // struct files.UploadSessionStartBatchResult (files.stone)
 
@@ -34,7 +36,7 @@ public class UploadSessionStartBatchResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UploadSessionStartBatchResult(@javax.annotation.Nonnull List<String> sessionIds) {
+    public UploadSessionStartBatchResult(@Nonnull List<String> sessionIds) {
         if (sessionIds == null) {
             throw new IllegalArgumentException("Required value for 'sessionIds' is null");
         }
@@ -55,7 +57,7 @@ public class UploadSessionStartBatchResult {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<String> getSessionIds() {
         return sessionIds;
     }

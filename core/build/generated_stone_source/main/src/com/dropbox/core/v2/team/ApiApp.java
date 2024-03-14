@@ -18,6 +18,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Information on linked third party applications.
  */
@@ -48,7 +51,7 @@ public class ApiApp {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ApiApp(@javax.annotation.Nonnull String appId, @javax.annotation.Nonnull String appName, boolean isAppFolder, @javax.annotation.Nullable String publisher, @javax.annotation.Nullable String publisherUrl, @javax.annotation.Nullable Date linked) {
+    public ApiApp(@Nonnull String appId, @Nonnull String appName, boolean isAppFolder, @Nullable String publisher, @Nullable String publisherUrl, @Nullable Date linked) {
         if (appId == null) {
             throw new IllegalArgumentException("Required value for 'appId' is null");
         }
@@ -85,7 +88,7 @@ public class ApiApp {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getAppId() {
         return appId;
     }
@@ -95,7 +98,7 @@ public class ApiApp {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getAppName() {
         return appName;
     }
@@ -114,7 +117,7 @@ public class ApiApp {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getPublisher() {
         return publisher;
     }
@@ -124,7 +127,7 @@ public class ApiApp {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getPublisherUrl() {
         return publisherUrl;
     }
@@ -134,7 +137,7 @@ public class ApiApp {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Date getLinked() {
         return linked;
     }

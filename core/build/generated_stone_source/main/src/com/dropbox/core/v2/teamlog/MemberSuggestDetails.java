@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 /**
  * Suggested person to add to team.
  */
@@ -34,7 +36,7 @@ public class MemberSuggestDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberSuggestDetails(@javax.annotation.Nonnull List<String> suggestedMembers) {
+    public MemberSuggestDetails(@Nonnull List<String> suggestedMembers) {
         if (suggestedMembers == null) {
             throw new IllegalArgumentException("Required value for 'suggestedMembers' is null");
         }
@@ -54,7 +56,7 @@ public class MemberSuggestDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<String> getSuggestedMembers() {
         return suggestedMembers;
     }

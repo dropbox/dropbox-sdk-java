@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed team member's role in shared folder.
  */
@@ -42,7 +45,7 @@ public class SfTeamInviteChangeRoleDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SfTeamInviteChangeRoleDetails(long targetAssetIndex, @javax.annotation.Nonnull String originalFolderName, @javax.annotation.Nullable String newSharingPermission, @javax.annotation.Nullable String previousSharingPermission) {
+    public SfTeamInviteChangeRoleDetails(long targetAssetIndex, @Nonnull String originalFolderName, @Nullable String newSharingPermission, @Nullable String previousSharingPermission) {
         this.targetAssetIndex = targetAssetIndex;
         if (originalFolderName == null) {
             throw new IllegalArgumentException("Required value for 'originalFolderName' is null");
@@ -82,7 +85,7 @@ public class SfTeamInviteChangeRoleDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getOriginalFolderName() {
         return originalFolderName;
     }
@@ -92,7 +95,7 @@ public class SfTeamInviteChangeRoleDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getNewSharingPermission() {
         return newSharingPermission;
     }
@@ -102,7 +105,7 @@ public class SfTeamInviteChangeRoleDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getPreviousSharingPermission() {
         return previousSharingPermission;
     }

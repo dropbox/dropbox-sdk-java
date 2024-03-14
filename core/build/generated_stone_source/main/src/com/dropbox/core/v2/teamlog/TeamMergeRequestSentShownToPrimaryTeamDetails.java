@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Requested to merge their Dropbox team into yours.
  */
@@ -35,7 +37,7 @@ public class TeamMergeRequestSentShownToPrimaryTeamDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamMergeRequestSentShownToPrimaryTeamDetails(@javax.annotation.Nonnull String secondaryTeam, @javax.annotation.Nonnull String sentTo) {
+    public TeamMergeRequestSentShownToPrimaryTeamDetails(@Nonnull String secondaryTeam, @Nonnull String sentTo) {
         if (secondaryTeam == null) {
             throw new IllegalArgumentException("Required value for 'secondaryTeam' is null");
         }
@@ -51,7 +53,7 @@ public class TeamMergeRequestSentShownToPrimaryTeamDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getSecondaryTeam() {
         return secondaryTeam;
     }
@@ -61,7 +63,7 @@ public class TeamMergeRequestSentShownToPrimaryTeamDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getSentTo() {
         return sentTo;
     }

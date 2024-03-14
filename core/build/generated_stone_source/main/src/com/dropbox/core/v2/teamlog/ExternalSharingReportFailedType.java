@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class ExternalSharingReportFailedType {
     // struct team_log.ExternalSharingReportFailedType (team_log_generated.stone)
 
@@ -28,7 +30,7 @@ public class ExternalSharingReportFailedType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ExternalSharingReportFailedType(@javax.annotation.Nonnull String description) {
+    public ExternalSharingReportFailedType(@Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }
@@ -39,7 +41,7 @@ public class ExternalSharingReportFailedType {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getDescription() {
         return description;
     }

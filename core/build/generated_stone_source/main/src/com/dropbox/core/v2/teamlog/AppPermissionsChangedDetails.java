@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed app permissions.
  */
@@ -41,7 +44,7 @@ public class AppPermissionsChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AppPermissionsChangedDetails(@javax.annotation.Nonnull AdminConsoleAppPolicy previousValue, @javax.annotation.Nonnull AdminConsoleAppPolicy newValue, @javax.annotation.Nullable String appName, @javax.annotation.Nullable AdminConsoleAppPermission permission) {
+    public AppPermissionsChangedDetails(@Nonnull AdminConsoleAppPolicy previousValue, @Nonnull AdminConsoleAppPolicy newValue, @Nullable String appName, @Nullable AdminConsoleAppPermission permission) {
         this.appName = appName;
         this.permission = permission;
         if (previousValue == null) {
@@ -74,7 +77,7 @@ public class AppPermissionsChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public AdminConsoleAppPolicy getPreviousValue() {
         return previousValue;
     }
@@ -84,7 +87,7 @@ public class AppPermissionsChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public AdminConsoleAppPolicy getNewValue() {
         return newValue;
     }
@@ -94,7 +97,7 @@ public class AppPermissionsChangedDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getAppName() {
         return appName;
     }
@@ -104,7 +107,7 @@ public class AppPermissionsChangedDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public AdminConsoleAppPermission getPermission() {
         return permission;
     }

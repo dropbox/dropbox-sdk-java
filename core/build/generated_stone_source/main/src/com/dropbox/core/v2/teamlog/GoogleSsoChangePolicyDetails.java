@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Enabled/disabled Google single sign-on for team.
  */
@@ -36,7 +39,7 @@ public class GoogleSsoChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GoogleSsoChangePolicyDetails(@javax.annotation.Nonnull GoogleSsoPolicy newValue, @javax.annotation.Nullable GoogleSsoPolicy previousValue) {
+    public GoogleSsoChangePolicyDetails(@Nonnull GoogleSsoPolicy newValue, @Nullable GoogleSsoPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -64,7 +67,7 @@ public class GoogleSsoChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public GoogleSsoPolicy getNewValue() {
         return newValue;
     }
@@ -75,7 +78,7 @@ public class GoogleSsoChangePolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public GoogleSsoPolicy getPreviousValue() {
         return previousValue;
     }

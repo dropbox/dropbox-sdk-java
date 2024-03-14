@@ -18,6 +18,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class SingleUserLock {
     // struct files.SingleUserLock (files.stone)
 
@@ -37,7 +40,7 @@ public class SingleUserLock {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SingleUserLock(@javax.annotation.Nonnull Date created, @javax.annotation.Nonnull String lockHolderAccountId, @javax.annotation.Nullable String lockHolderTeamId) {
+    public SingleUserLock(@Nonnull Date created, @Nonnull String lockHolderAccountId, @Nullable String lockHolderTeamId) {
         if (created == null) {
             throw new IllegalArgumentException("Required value for 'created' is null");
         }
@@ -77,7 +80,7 @@ public class SingleUserLock {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public Date getCreated() {
         return created;
     }
@@ -87,7 +90,7 @@ public class SingleUserLock {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getLockHolderAccountId() {
         return lockHolderAccountId;
     }
@@ -97,7 +100,7 @@ public class SingleUserLock {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getLockHolderTeamId() {
         return lockHolderTeamId;
     }

@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Information returned by {@link
  * DbxTeamTeamRequests#linkedAppsListTeamLinkedApps(String)}.
@@ -45,7 +48,7 @@ public class ListTeamAppsResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListTeamAppsResult(@javax.annotation.Nonnull List<MemberLinkedApps> apps, boolean hasMore, @javax.annotation.Nullable String cursor) {
+    public ListTeamAppsResult(@Nonnull List<MemberLinkedApps> apps, boolean hasMore, @Nullable String cursor) {
         if (apps == null) {
             throw new IllegalArgumentException("Required value for 'apps' is null");
         }
@@ -84,7 +87,7 @@ public class ListTeamAppsResult {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<MemberLinkedApps> getApps() {
         return apps;
     }
@@ -107,7 +110,7 @@ public class ListTeamAppsResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getCursor() {
         return cursor;
     }

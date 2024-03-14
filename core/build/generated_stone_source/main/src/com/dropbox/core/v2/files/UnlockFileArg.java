@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 public class UnlockFileArg {
     // struct files.UnlockFileArg (files.stone)
 
@@ -31,7 +33,7 @@ public class UnlockFileArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UnlockFileArg(@javax.annotation.Nonnull String path) {
+    public UnlockFileArg(@Nonnull String path) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
@@ -46,7 +48,7 @@ public class UnlockFileArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getPath() {
         return path;
     }

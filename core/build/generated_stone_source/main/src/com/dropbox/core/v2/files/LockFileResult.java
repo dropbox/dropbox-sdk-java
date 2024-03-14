@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class LockFileResult {
     // struct files.LockFileResult (files.stone)
 
@@ -31,7 +33,7 @@ public class LockFileResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LockFileResult(@javax.annotation.Nonnull Metadata metadata, @javax.annotation.Nonnull FileLock lock) {
+    public LockFileResult(@Nonnull Metadata metadata, @Nonnull FileLock lock) {
         if (metadata == null) {
             throw new IllegalArgumentException("Required value for 'metadata' is null");
         }
@@ -47,7 +49,7 @@ public class LockFileResult {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public Metadata getMetadata() {
         return metadata;
     }
@@ -57,7 +59,7 @@ public class LockFileResult {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public FileLock getLock() {
         return lock;
     }

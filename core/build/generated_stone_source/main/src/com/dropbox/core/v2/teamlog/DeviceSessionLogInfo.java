@@ -18,6 +18,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Device's session logged information.
  */
@@ -38,7 +41,7 @@ public class DeviceSessionLogInfo {
      * @param created  The time this session was created.
      * @param updated  The time of the last activity from this session.
      */
-    public DeviceSessionLogInfo(@javax.annotation.Nullable String ipAddress, @javax.annotation.Nullable Date created, @javax.annotation.Nullable Date updated) {
+    public DeviceSessionLogInfo(@Nullable String ipAddress, @Nullable Date created, @Nullable Date updated) {
         this.ipAddress = ipAddress;
         this.created = LangUtil.truncateMillis(created);
         this.updated = LangUtil.truncateMillis(updated);
@@ -58,7 +61,7 @@ public class DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getIpAddress() {
         return ipAddress;
     }
@@ -68,7 +71,7 @@ public class DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Date getCreated() {
         return created;
     }
@@ -78,7 +81,7 @@ public class DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Date getUpdated() {
         return updated;
     }

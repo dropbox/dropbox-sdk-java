@@ -17,6 +17,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 class GetTeamEventsArg {
     // struct team_log.GetTeamEventsArg (team_log.stone)
 
@@ -48,7 +51,7 @@ class GetTeamEventsArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetTeamEventsArg(long limit, @javax.annotation.Nullable String accountId, @javax.annotation.Nullable TimeRange time, @javax.annotation.Nullable EventCategory category, @javax.annotation.Nullable EventTypeArg eventType) {
+    public GetTeamEventsArg(long limit, @Nullable String accountId, @Nullable TimeRange time, @Nullable EventCategory category, @Nullable EventTypeArg eventType) {
         if (limit < 1L) {
             throw new IllegalArgumentException("Number 'limit' is smaller than 1L");
         }
@@ -99,7 +102,7 @@ class GetTeamEventsArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getAccountId() {
         return accountId;
     }
@@ -109,7 +112,7 @@ class GetTeamEventsArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public TimeRange getTime() {
         return time;
     }
@@ -120,7 +123,7 @@ class GetTeamEventsArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public EventCategory getCategory() {
         return category;
     }
@@ -131,7 +134,7 @@ class GetTeamEventsArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public EventTypeArg getEventType() {
         return eventType;
     }

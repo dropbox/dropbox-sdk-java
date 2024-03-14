@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Followed/unfollowed Paper doc.
  */
@@ -38,7 +41,7 @@ public class PaperDocChangeSubscriptionDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperDocChangeSubscriptionDetails(@javax.annotation.Nonnull String eventUuid, @javax.annotation.Nonnull String newSubscriptionLevel, @javax.annotation.Nullable String previousSubscriptionLevel) {
+    public PaperDocChangeSubscriptionDetails(@Nonnull String eventUuid, @Nonnull String newSubscriptionLevel, @Nullable String previousSubscriptionLevel) {
         if (eventUuid == null) {
             throw new IllegalArgumentException("Required value for 'eventUuid' is null");
         }
@@ -71,7 +74,7 @@ public class PaperDocChangeSubscriptionDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getEventUuid() {
         return eventUuid;
     }
@@ -81,7 +84,7 @@ public class PaperDocChangeSubscriptionDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getNewSubscriptionLevel() {
         return newSubscriptionLevel;
     }
@@ -92,7 +95,7 @@ public class PaperDocChangeSubscriptionDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getPreviousSubscriptionLevel() {
         return previousSubscriptionLevel;
     }

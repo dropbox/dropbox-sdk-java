@@ -17,6 +17,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed who can create groups.
  */
@@ -37,7 +40,7 @@ public class GroupUserManagementChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupUserManagementChangePolicyDetails(@javax.annotation.Nonnull GroupCreation newValue, @javax.annotation.Nullable GroupCreation previousValue) {
+    public GroupUserManagementChangePolicyDetails(@Nonnull GroupCreation newValue, @Nullable GroupCreation previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -65,7 +68,7 @@ public class GroupUserManagementChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public GroupCreation getNewValue() {
         return newValue;
     }
@@ -76,7 +79,7 @@ public class GroupUserManagementChangePolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public GroupCreation getPreviousValue() {
         return previousValue;
     }

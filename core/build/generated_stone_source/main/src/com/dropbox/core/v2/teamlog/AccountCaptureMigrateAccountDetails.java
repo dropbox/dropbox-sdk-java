@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Account-captured user migrated account to team.
  */
@@ -32,7 +34,7 @@ public class AccountCaptureMigrateAccountDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AccountCaptureMigrateAccountDetails(@javax.annotation.Nonnull String domainName) {
+    public AccountCaptureMigrateAccountDetails(@Nonnull String domainName) {
         if (domainName == null) {
             throw new IllegalArgumentException("Required value for 'domainName' is null");
         }
@@ -44,7 +46,7 @@ public class AccountCaptureMigrateAccountDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getDomainName() {
         return domainName;
     }

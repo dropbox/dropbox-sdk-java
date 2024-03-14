@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class FileTransfersTransferSendType {
     // struct team_log.FileTransfersTransferSendType (team_log_generated.stone)
 
@@ -28,7 +30,7 @@ public class FileTransfersTransferSendType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileTransfersTransferSendType(@javax.annotation.Nonnull String description) {
+    public FileTransfersTransferSendType(@Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }
@@ -39,7 +41,7 @@ public class FileTransfersTransferSendType {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getDescription() {
         return description;
     }

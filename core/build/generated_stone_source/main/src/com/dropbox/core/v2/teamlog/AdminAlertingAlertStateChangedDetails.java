@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed an alert state.
  */
@@ -43,7 +45,7 @@ public class AdminAlertingAlertStateChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AdminAlertingAlertStateChangedDetails(@javax.annotation.Nonnull String alertName, @javax.annotation.Nonnull AdminAlertSeverityEnum alertSeverity, @javax.annotation.Nonnull AdminAlertCategoryEnum alertCategory, @javax.annotation.Nonnull String alertInstanceId, @javax.annotation.Nonnull AdminAlertGeneralStateEnum previousValue, @javax.annotation.Nonnull AdminAlertGeneralStateEnum newValue) {
+    public AdminAlertingAlertStateChangedDetails(@Nonnull String alertName, @Nonnull AdminAlertSeverityEnum alertSeverity, @Nonnull AdminAlertCategoryEnum alertCategory, @Nonnull String alertInstanceId, @Nonnull AdminAlertGeneralStateEnum previousValue, @Nonnull AdminAlertGeneralStateEnum newValue) {
         if (alertName == null) {
             throw new IllegalArgumentException("Required value for 'alertName' is null");
         }
@@ -75,7 +77,7 @@ public class AdminAlertingAlertStateChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getAlertName() {
         return alertName;
     }
@@ -85,7 +87,7 @@ public class AdminAlertingAlertStateChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public AdminAlertSeverityEnum getAlertSeverity() {
         return alertSeverity;
     }
@@ -95,7 +97,7 @@ public class AdminAlertingAlertStateChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public AdminAlertCategoryEnum getAlertCategory() {
         return alertCategory;
     }
@@ -105,7 +107,7 @@ public class AdminAlertingAlertStateChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getAlertInstanceId() {
         return alertInstanceId;
     }
@@ -115,7 +117,7 @@ public class AdminAlertingAlertStateChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public AdminAlertGeneralStateEnum getPreviousValue() {
         return previousValue;
     }
@@ -125,7 +127,7 @@ public class AdminAlertingAlertStateChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public AdminAlertGeneralStateEnum getNewValue() {
         return newValue;
     }

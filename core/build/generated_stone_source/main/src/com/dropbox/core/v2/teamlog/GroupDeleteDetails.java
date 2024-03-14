@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Deleted group.
  */
@@ -29,7 +32,7 @@ public class GroupDeleteDetails {
      *
      * @param isCompanyManaged  Is company managed group.
      */
-    public GroupDeleteDetails(@javax.annotation.Nullable Boolean isCompanyManaged) {
+    public GroupDeleteDetails(@Nullable Boolean isCompanyManaged) {
         this.isCompanyManaged = isCompanyManaged;
     }
 
@@ -47,7 +50,7 @@ public class GroupDeleteDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Boolean getIsCompanyManaged() {
         return isCompanyManaged;
     }

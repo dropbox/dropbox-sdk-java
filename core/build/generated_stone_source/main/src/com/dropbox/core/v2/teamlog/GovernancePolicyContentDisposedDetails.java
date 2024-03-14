@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Content disposed.
  */
@@ -38,7 +41,7 @@ public class GovernancePolicyContentDisposedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GovernancePolicyContentDisposedDetails(@javax.annotation.Nonnull String governancePolicyId, @javax.annotation.Nonnull String name, @javax.annotation.Nonnull DispositionActionType dispositionType, @javax.annotation.Nullable PolicyType policyType) {
+    public GovernancePolicyContentDisposedDetails(@Nonnull String governancePolicyId, @Nonnull String name, @Nonnull DispositionActionType dispositionType, @Nullable PolicyType policyType) {
         if (governancePolicyId == null) {
             throw new IllegalArgumentException("Required value for 'governancePolicyId' is null");
         }
@@ -75,7 +78,7 @@ public class GovernancePolicyContentDisposedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getGovernancePolicyId() {
         return governancePolicyId;
     }
@@ -85,7 +88,7 @@ public class GovernancePolicyContentDisposedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -95,7 +98,7 @@ public class GovernancePolicyContentDisposedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public DispositionActionType getDispositionType() {
         return dispositionType;
     }
@@ -105,7 +108,7 @@ public class GovernancePolicyContentDisposedDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public PolicyType getPolicyType() {
         return policyType;
     }

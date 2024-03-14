@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Base report structure.
  */
@@ -33,7 +35,7 @@ public class BaseDfbReport {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public BaseDfbReport(@javax.annotation.Nonnull String startDate) {
+    public BaseDfbReport(@Nonnull String startDate) {
         if (startDate == null) {
             throw new IllegalArgumentException("Required value for 'startDate' is null");
         }
@@ -45,7 +47,7 @@ public class BaseDfbReport {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getStartDate() {
         return startDate;
     }

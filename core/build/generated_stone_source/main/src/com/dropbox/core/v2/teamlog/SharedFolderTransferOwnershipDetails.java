@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Transferred ownership of shared folder to another member.
  */
@@ -36,7 +39,7 @@ public class SharedFolderTransferOwnershipDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedFolderTransferOwnershipDetails(@javax.annotation.Nonnull String newOwnerEmail, @javax.annotation.Nullable String previousOwnerEmail) {
+    public SharedFolderTransferOwnershipDetails(@Nonnull String newOwnerEmail, @Nullable String previousOwnerEmail) {
         if (previousOwnerEmail != null) {
             if (previousOwnerEmail.length() > 255) {
                 throw new IllegalArgumentException("String 'previousOwnerEmail' is longer than 255");
@@ -72,7 +75,7 @@ public class SharedFolderTransferOwnershipDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getNewOwnerEmail() {
         return newOwnerEmail;
     }
@@ -82,7 +85,7 @@ public class SharedFolderTransferOwnershipDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getPreviousOwnerEmail() {
         return previousOwnerEmail;
     }

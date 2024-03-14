@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Created group.
  */
@@ -34,7 +37,7 @@ public class GroupCreateDetails {
      * @param isCompanyManaged  Is company managed group.
      * @param joinPolicy  Group join policy.
      */
-    public GroupCreateDetails(@javax.annotation.Nullable Boolean isCompanyManaged, @javax.annotation.Nullable GroupJoinPolicy joinPolicy) {
+    public GroupCreateDetails(@Nullable Boolean isCompanyManaged, @Nullable GroupJoinPolicy joinPolicy) {
         this.isCompanyManaged = isCompanyManaged;
         this.joinPolicy = joinPolicy;
     }
@@ -53,7 +56,7 @@ public class GroupCreateDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Boolean getIsCompanyManaged() {
         return isCompanyManaged;
     }
@@ -63,7 +66,7 @@ public class GroupCreateDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public GroupJoinPolicy getJoinPolicy() {
         return joinPolicy;
     }

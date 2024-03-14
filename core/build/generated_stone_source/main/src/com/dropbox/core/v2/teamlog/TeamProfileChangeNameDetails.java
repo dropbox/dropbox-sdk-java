@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed team name.
  */
@@ -35,7 +38,7 @@ public class TeamProfileChangeNameDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamProfileChangeNameDetails(@javax.annotation.Nonnull TeamName newValue, @javax.annotation.Nullable TeamName previousValue) {
+    public TeamProfileChangeNameDetails(@Nonnull TeamName newValue, @Nullable TeamName previousValue) {
         this.previousValue = previousValue;
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
@@ -62,7 +65,7 @@ public class TeamProfileChangeNameDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public TeamName getNewValue() {
         return newValue;
     }
@@ -72,7 +75,7 @@ public class TeamProfileChangeNameDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public TeamName getPreviousValue() {
         return previousValue;
     }

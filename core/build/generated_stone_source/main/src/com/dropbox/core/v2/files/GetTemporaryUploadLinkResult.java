@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class GetTemporaryUploadLinkResult {
     // struct files.GetTemporaryUploadLinkResult (files.stone)
 
@@ -29,7 +31,7 @@ public class GetTemporaryUploadLinkResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetTemporaryUploadLinkResult(@javax.annotation.Nonnull String link) {
+    public GetTemporaryUploadLinkResult(@Nonnull String link) {
         if (link == null) {
             throw new IllegalArgumentException("Required value for 'link' is null");
         }
@@ -42,7 +44,7 @@ public class GetTemporaryUploadLinkResult {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getLink() {
         return link;
     }

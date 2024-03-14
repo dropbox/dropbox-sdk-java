@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Contains the arguments to be sent to the Dropbox servers.
  */
@@ -33,7 +35,7 @@ class EchoArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public EchoArg(@javax.annotation.Nonnull String query) {
+    public EchoArg(@Nonnull String query) {
         if (query == null) {
             throw new IllegalArgumentException("Required value for 'query' is null");
         }
@@ -58,7 +60,7 @@ class EchoArg {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     "".
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getQuery() {
         return query;
     }

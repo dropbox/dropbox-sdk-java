@@ -19,6 +19,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Information about linked Dropbox desktop client sessions
  */
@@ -54,7 +57,7 @@ public class DesktopDeviceSessionLogInfo extends DeviceSessionLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DesktopDeviceSessionLogInfo(@javax.annotation.Nonnull String hostName, @javax.annotation.Nonnull DesktopPlatform clientType, @javax.annotation.Nonnull String platform, boolean isDeleteOnUnlinkSupported, @javax.annotation.Nullable String ipAddress, @javax.annotation.Nullable Date created, @javax.annotation.Nullable Date updated, @javax.annotation.Nullable DesktopSessionLogInfo sessionInfo, @javax.annotation.Nullable String clientVersion) {
+    public DesktopDeviceSessionLogInfo(@Nonnull String hostName, @Nonnull DesktopPlatform clientType, @Nonnull String platform, boolean isDeleteOnUnlinkSupported, @Nullable String ipAddress, @Nullable Date created, @Nullable Date updated, @Nullable DesktopSessionLogInfo sessionInfo, @Nullable String clientVersion) {
         super(ipAddress, created, updated);
         this.sessionInfo = sessionInfo;
         if (hostName == null) {
@@ -98,7 +101,7 @@ public class DesktopDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getHostName() {
         return hostName;
     }
@@ -108,7 +111,7 @@ public class DesktopDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public DesktopPlatform getClientType() {
         return clientType;
     }
@@ -118,7 +121,7 @@ public class DesktopDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getPlatform() {
         return platform;
     }
@@ -138,7 +141,7 @@ public class DesktopDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getIpAddress() {
         return ipAddress;
     }
@@ -148,7 +151,7 @@ public class DesktopDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Date getCreated() {
         return created;
     }
@@ -158,7 +161,7 @@ public class DesktopDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Date getUpdated() {
         return updated;
     }
@@ -168,7 +171,7 @@ public class DesktopDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public DesktopSessionLogInfo getSessionInfo() {
         return sessionInfo;
     }
@@ -178,7 +181,7 @@ public class DesktopDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getClientVersion() {
         return clientVersion;
     }

@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class ListMemberDevicesResult {
     // struct team.ListMemberDevicesResult (team_devices.stone)
 
@@ -38,7 +41,7 @@ public class ListMemberDevicesResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListMemberDevicesResult(@javax.annotation.Nullable List<ActiveWebSession> activeWebSessions, @javax.annotation.Nullable List<DesktopClientSession> desktopClientSessions, @javax.annotation.Nullable List<MobileClientSession> mobileClientSessions) {
+    public ListMemberDevicesResult(@Nullable List<ActiveWebSession> activeWebSessions, @Nullable List<DesktopClientSession> desktopClientSessions, @Nullable List<MobileClientSession> mobileClientSessions) {
         if (activeWebSessions != null) {
             for (ActiveWebSession x : activeWebSessions) {
                 if (x == null) {
@@ -79,7 +82,7 @@ public class ListMemberDevicesResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public List<ActiveWebSession> getActiveWebSessions() {
         return activeWebSessions;
     }
@@ -89,7 +92,7 @@ public class ListMemberDevicesResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public List<DesktopClientSession> getDesktopClientSessions() {
         return desktopClientSessions;
     }
@@ -99,7 +102,7 @@ public class ListMemberDevicesResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public List<MobileClientSession> getMobileClientSessions() {
         return mobileClientSessions;
     }

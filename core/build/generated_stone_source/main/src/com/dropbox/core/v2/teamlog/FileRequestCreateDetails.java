@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Created file request.
  */
@@ -40,7 +43,7 @@ public class FileRequestCreateDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileRequestCreateDetails(@javax.annotation.Nullable String fileRequestId, @javax.annotation.Nullable FileRequestDetails requestDetails) {
+    public FileRequestCreateDetails(@Nullable String fileRequestId, @Nullable FileRequestDetails requestDetails) {
         if (fileRequestId != null) {
             if (fileRequestId.length() < 1) {
                 throw new IllegalArgumentException("String 'fileRequestId' is shorter than 1");
@@ -67,7 +70,7 @@ public class FileRequestCreateDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getFileRequestId() {
         return fileRequestId;
     }
@@ -77,7 +80,7 @@ public class FileRequestCreateDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public FileRequestDetails getRequestDetails() {
         return requestDetails;
     }

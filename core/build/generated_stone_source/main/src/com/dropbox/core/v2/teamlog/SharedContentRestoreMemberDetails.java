@@ -17,6 +17,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Restored users and/or groups to membership of shared file/folder.
  */
@@ -34,7 +36,7 @@ public class SharedContentRestoreMemberDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentRestoreMemberDetails(@javax.annotation.Nonnull AccessLevel sharedContentAccessLevel) {
+    public SharedContentRestoreMemberDetails(@Nonnull AccessLevel sharedContentAccessLevel) {
         if (sharedContentAccessLevel == null) {
             throw new IllegalArgumentException("Required value for 'sharedContentAccessLevel' is null");
         }
@@ -46,7 +48,7 @@ public class SharedContentRestoreMemberDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public AccessLevel getSharedContentAccessLevel() {
         return sharedContentAccessLevel;
     }

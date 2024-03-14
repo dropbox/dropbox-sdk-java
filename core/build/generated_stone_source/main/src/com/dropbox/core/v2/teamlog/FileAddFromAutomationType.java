@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class FileAddFromAutomationType {
     // struct team_log.FileAddFromAutomationType (team_log_generated.stone)
 
@@ -28,7 +30,7 @@ public class FileAddFromAutomationType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileAddFromAutomationType(@javax.annotation.Nonnull String description) {
+    public FileAddFromAutomationType(@Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }
@@ -39,7 +41,7 @@ public class FileAddFromAutomationType {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getDescription() {
         return description;
     }

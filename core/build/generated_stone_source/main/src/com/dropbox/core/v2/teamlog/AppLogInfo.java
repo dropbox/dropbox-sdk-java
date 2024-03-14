@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * App's logged information.
  */
@@ -34,7 +37,7 @@ public class AppLogInfo {
      * @param appId  App unique ID.
      * @param displayName  App display name.
      */
-    public AppLogInfo(@javax.annotation.Nullable String appId, @javax.annotation.Nullable String displayName) {
+    public AppLogInfo(@Nullable String appId, @Nullable String displayName) {
         this.appId = appId;
         this.displayName = displayName;
     }
@@ -53,7 +56,7 @@ public class AppLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getAppId() {
         return appId;
     }
@@ -63,7 +66,7 @@ public class AppLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getDisplayName() {
         return displayName;
     }

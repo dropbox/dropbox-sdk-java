@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Accepted a team merge request.
  */
@@ -33,7 +35,7 @@ public class TeamMergeRequestAcceptedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamMergeRequestAcceptedDetails(@javax.annotation.Nonnull TeamMergeRequestAcceptedExtraDetails requestAcceptedDetails) {
+    public TeamMergeRequestAcceptedDetails(@Nonnull TeamMergeRequestAcceptedExtraDetails requestAcceptedDetails) {
         if (requestAcceptedDetails == null) {
             throw new IllegalArgumentException("Required value for 'requestAcceptedDetails' is null");
         }
@@ -45,7 +47,7 @@ public class TeamMergeRequestAcceptedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public TeamMergeRequestAcceptedExtraDetails getRequestAcceptedDetails() {
         return requestAcceptedDetails;
     }

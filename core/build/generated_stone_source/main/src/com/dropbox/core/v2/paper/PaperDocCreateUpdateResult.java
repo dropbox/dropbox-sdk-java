@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class PaperDocCreateUpdateResult {
     // struct paper.PaperDocCreateUpdateResult (paper.stone)
 
@@ -33,7 +35,7 @@ public class PaperDocCreateUpdateResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperDocCreateUpdateResult(@javax.annotation.Nonnull String docId, long revision, @javax.annotation.Nonnull String title) {
+    public PaperDocCreateUpdateResult(@Nonnull String docId, long revision, @Nonnull String title) {
         if (docId == null) {
             throw new IllegalArgumentException("Required value for 'docId' is null");
         }
@@ -50,7 +52,7 @@ public class PaperDocCreateUpdateResult {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getDocId() {
         return docId;
     }
@@ -69,7 +71,7 @@ public class PaperDocCreateUpdateResult {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getTitle() {
         return title;
     }

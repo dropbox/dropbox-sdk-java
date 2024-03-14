@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Provides details about a failure
  */
@@ -35,7 +38,7 @@ public class FailureDetailsLogInfo {
      * @param technicalErrorMessage  A technical explanation of the error. This
      *     is relevant for some errors.
      */
-    public FailureDetailsLogInfo(@javax.annotation.Nullable String userFriendlyMessage, @javax.annotation.Nullable String technicalErrorMessage) {
+    public FailureDetailsLogInfo(@Nullable String userFriendlyMessage, @Nullable String technicalErrorMessage) {
         this.userFriendlyMessage = userFriendlyMessage;
         this.technicalErrorMessage = technicalErrorMessage;
     }
@@ -54,7 +57,7 @@ public class FailureDetailsLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getUserFriendlyMessage() {
         return userFriendlyMessage;
     }
@@ -64,7 +67,7 @@ public class FailureDetailsLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getTechnicalErrorMessage() {
         return technicalErrorMessage;
     }

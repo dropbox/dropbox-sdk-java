@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Details about team invites
  */
@@ -36,7 +39,7 @@ public class TeamInviteDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamInviteDetails(@javax.annotation.Nonnull InviteMethod inviteMethod, @javax.annotation.Nullable Boolean additionalLicensePurchase) {
+    public TeamInviteDetails(@Nonnull InviteMethod inviteMethod, @Nullable Boolean additionalLicensePurchase) {
         if (inviteMethod == null) {
             throw new IllegalArgumentException("Required value for 'inviteMethod' is null");
         }
@@ -64,7 +67,7 @@ public class TeamInviteDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public InviteMethod getInviteMethod() {
         return inviteMethod;
     }
@@ -74,7 +77,7 @@ public class TeamInviteDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Boolean getAdditionalLicensePurchase() {
         return additionalLicensePurchase;
     }

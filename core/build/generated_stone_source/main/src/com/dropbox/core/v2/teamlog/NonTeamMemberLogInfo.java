@@ -15,6 +15,9 @@ import com.fasterxml.jackson.core.JsonToken;
 
 import java.io.IOException;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Non team member's logged information.
  */
@@ -36,7 +39,7 @@ public class NonTeamMemberLogInfo extends UserLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public NonTeamMemberLogInfo(@javax.annotation.Nullable String accountId, @javax.annotation.Nullable String displayName, @javax.annotation.Nullable String email) {
+    public NonTeamMemberLogInfo(@Nullable String accountId, @Nullable String displayName, @Nullable String email) {
         super(accountId, displayName, email);
     }
 
@@ -54,7 +57,7 @@ public class NonTeamMemberLogInfo extends UserLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getAccountId() {
         return accountId;
     }
@@ -64,7 +67,7 @@ public class NonTeamMemberLogInfo extends UserLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getDisplayName() {
         return displayName;
     }
@@ -74,7 +77,7 @@ public class NonTeamMemberLogInfo extends UserLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getEmail() {
         return email;
     }

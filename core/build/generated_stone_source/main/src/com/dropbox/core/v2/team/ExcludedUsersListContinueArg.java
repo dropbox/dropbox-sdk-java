@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Excluded users list continue argument.
  */
@@ -33,7 +35,7 @@ class ExcludedUsersListContinueArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ExcludedUsersListContinueArg(@javax.annotation.Nonnull String cursor) {
+    public ExcludedUsersListContinueArg(@Nonnull String cursor) {
         if (cursor == null) {
             throw new IllegalArgumentException("Required value for 'cursor' is null");
         }
@@ -45,7 +47,7 @@ class ExcludedUsersListContinueArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getCursor() {
         return cursor;
     }

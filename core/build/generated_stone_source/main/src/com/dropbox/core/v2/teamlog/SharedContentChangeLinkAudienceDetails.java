@@ -17,6 +17,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed link audience of shared file/folder.
  */
@@ -35,7 +38,7 @@ public class SharedContentChangeLinkAudienceDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentChangeLinkAudienceDetails(@javax.annotation.Nonnull LinkAudience newValue, @javax.annotation.Nullable LinkAudience previousValue) {
+    public SharedContentChangeLinkAudienceDetails(@Nonnull LinkAudience newValue, @Nullable LinkAudience previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -62,7 +65,7 @@ public class SharedContentChangeLinkAudienceDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public LinkAudience getNewValue() {
         return newValue;
     }
@@ -72,7 +75,7 @@ public class SharedContentChangeLinkAudienceDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public LinkAudience getPreviousValue() {
         return previousValue;
     }

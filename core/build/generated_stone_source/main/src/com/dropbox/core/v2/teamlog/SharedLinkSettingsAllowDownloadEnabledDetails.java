@@ -17,6 +17,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Enabled downloads.
  */
@@ -36,7 +39,7 @@ public class SharedLinkSettingsAllowDownloadEnabledDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedLinkSettingsAllowDownloadEnabledDetails(@javax.annotation.Nonnull AccessLevel sharedContentAccessLevel, @javax.annotation.Nullable String sharedContentLink) {
+    public SharedLinkSettingsAllowDownloadEnabledDetails(@Nonnull AccessLevel sharedContentAccessLevel, @Nullable String sharedContentLink) {
         if (sharedContentAccessLevel == null) {
             throw new IllegalArgumentException("Required value for 'sharedContentAccessLevel' is null");
         }
@@ -64,7 +67,7 @@ public class SharedLinkSettingsAllowDownloadEnabledDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public AccessLevel getSharedContentAccessLevel() {
         return sharedContentAccessLevel;
     }
@@ -74,7 +77,7 @@ public class SharedLinkSettingsAllowDownloadEnabledDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getSharedContentLink() {
         return sharedContentLink;
     }

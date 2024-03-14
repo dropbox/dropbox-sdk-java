@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed visibility of shared link.
  */
@@ -35,7 +38,7 @@ public class SharedLinkChangeVisibilityDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedLinkChangeVisibilityDetails(@javax.annotation.Nonnull SharedLinkVisibility newValue, @javax.annotation.Nullable SharedLinkVisibility previousValue) {
+    public SharedLinkChangeVisibilityDetails(@Nonnull SharedLinkVisibility newValue, @Nullable SharedLinkVisibility previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -62,7 +65,7 @@ public class SharedLinkChangeVisibilityDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public SharedLinkVisibility getNewValue() {
         return newValue;
     }
@@ -73,7 +76,7 @@ public class SharedLinkChangeVisibilityDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public SharedLinkVisibility getPreviousValue() {
         return previousValue;
     }

@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed permissions for published doc.
  */
@@ -38,7 +40,7 @@ public class PaperPublishedLinkChangePermissionDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperPublishedLinkChangePermissionDetails(@javax.annotation.Nonnull String eventUuid, @javax.annotation.Nonnull String newPermissionLevel, @javax.annotation.Nonnull String previousPermissionLevel) {
+    public PaperPublishedLinkChangePermissionDetails(@Nonnull String eventUuid, @Nonnull String newPermissionLevel, @Nonnull String previousPermissionLevel) {
         if (eventUuid == null) {
             throw new IllegalArgumentException("Required value for 'eventUuid' is null");
         }
@@ -58,7 +60,7 @@ public class PaperPublishedLinkChangePermissionDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getEventUuid() {
         return eventUuid;
     }
@@ -68,7 +70,7 @@ public class PaperPublishedLinkChangePermissionDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getNewPermissionLevel() {
         return newPermissionLevel;
     }
@@ -78,7 +80,7 @@ public class PaperPublishedLinkChangePermissionDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getPreviousPermissionLevel() {
         return previousPermissionLevel;
     }

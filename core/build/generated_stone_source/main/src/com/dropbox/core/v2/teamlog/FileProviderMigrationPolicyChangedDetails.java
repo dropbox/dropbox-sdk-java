@@ -17,6 +17,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed File Provider Migration policy for team.
  */
@@ -35,7 +37,7 @@ public class FileProviderMigrationPolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileProviderMigrationPolicyChangedDetails(@javax.annotation.Nonnull FileProviderMigrationPolicyState newValue, @javax.annotation.Nonnull FileProviderMigrationPolicyState previousValue) {
+    public FileProviderMigrationPolicyChangedDetails(@Nonnull FileProviderMigrationPolicyState newValue, @Nonnull FileProviderMigrationPolicyState previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -51,7 +53,7 @@ public class FileProviderMigrationPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public FileProviderMigrationPolicyState getNewValue() {
         return newValue;
     }
@@ -61,7 +63,7 @@ public class FileProviderMigrationPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public FileProviderMigrationPolicyState getPreviousValue() {
         return previousValue;
     }

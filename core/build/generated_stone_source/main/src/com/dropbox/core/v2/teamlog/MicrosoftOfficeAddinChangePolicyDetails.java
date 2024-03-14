@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Enabled/disabled Microsoft Office add-in.
  */
@@ -36,7 +39,7 @@ public class MicrosoftOfficeAddinChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MicrosoftOfficeAddinChangePolicyDetails(@javax.annotation.Nonnull MicrosoftOfficeAddinPolicy newValue, @javax.annotation.Nullable MicrosoftOfficeAddinPolicy previousValue) {
+    public MicrosoftOfficeAddinChangePolicyDetails(@Nonnull MicrosoftOfficeAddinPolicy newValue, @Nullable MicrosoftOfficeAddinPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -64,7 +67,7 @@ public class MicrosoftOfficeAddinChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public MicrosoftOfficeAddinPolicy getNewValue() {
         return newValue;
     }
@@ -75,7 +78,7 @@ public class MicrosoftOfficeAddinChangePolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public MicrosoftOfficeAddinPolicy getPreviousValue() {
         return previousValue;
     }

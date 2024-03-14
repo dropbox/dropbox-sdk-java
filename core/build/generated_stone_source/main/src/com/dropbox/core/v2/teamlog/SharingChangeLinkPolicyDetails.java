@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed whether members can share links outside team, and if links are
  * accessible only by team members or anyone by default.
@@ -38,7 +41,7 @@ public class SharingChangeLinkPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharingChangeLinkPolicyDetails(@javax.annotation.Nonnull SharingLinkPolicy newValue, @javax.annotation.Nullable SharingLinkPolicy previousValue) {
+    public SharingChangeLinkPolicyDetails(@Nonnull SharingLinkPolicy newValue, @Nullable SharingLinkPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -67,7 +70,7 @@ public class SharingChangeLinkPolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public SharingLinkPolicy getNewValue() {
         return newValue;
     }
@@ -78,7 +81,7 @@ public class SharingChangeLinkPolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public SharingLinkPolicy getPreviousValue() {
         return previousValue;
     }

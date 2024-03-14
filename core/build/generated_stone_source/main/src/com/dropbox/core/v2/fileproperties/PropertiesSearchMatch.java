@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 public class PropertiesSearchMatch {
     // struct file_properties.PropertiesSearchMatch (file_properties.stone)
 
@@ -38,7 +40,7 @@ public class PropertiesSearchMatch {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PropertiesSearchMatch(@javax.annotation.Nonnull String id, @javax.annotation.Nonnull String path, boolean isDeleted, @javax.annotation.Nonnull List<PropertyGroup> propertyGroups) {
+    public PropertiesSearchMatch(@Nonnull String id, @Nonnull String path, boolean isDeleted, @Nonnull List<PropertyGroup> propertyGroups) {
         if (id == null) {
             throw new IllegalArgumentException("Required value for 'id' is null");
         }
@@ -67,7 +69,7 @@ public class PropertiesSearchMatch {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getId() {
         return id;
     }
@@ -77,7 +79,7 @@ public class PropertiesSearchMatch {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getPath() {
         return path;
     }
@@ -96,7 +98,7 @@ public class PropertiesSearchMatch {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<PropertyGroup> getPropertyGroups() {
         return propertyGroups;
     }

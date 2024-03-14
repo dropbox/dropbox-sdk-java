@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Representations for a person's name to assist with internationalization.
  */
@@ -46,7 +48,7 @@ public class Name {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public Name(@javax.annotation.Nonnull String givenName, @javax.annotation.Nonnull String surname, @javax.annotation.Nonnull String familiarName, @javax.annotation.Nonnull String displayName, @javax.annotation.Nonnull String abbreviatedName) {
+    public Name(@Nonnull String givenName, @Nonnull String surname, @Nonnull String familiarName, @Nonnull String displayName, @Nonnull String abbreviatedName) {
         if (givenName == null) {
             throw new IllegalArgumentException("Required value for 'givenName' is null");
         }
@@ -74,7 +76,7 @@ public class Name {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getGivenName() {
         return givenName;
     }
@@ -84,7 +86,7 @@ public class Name {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getSurname() {
         return surname;
     }
@@ -96,7 +98,7 @@ public class Name {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getFamiliarName() {
         return familiarName;
     }
@@ -107,7 +109,7 @@ public class Name {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getDisplayName() {
         return displayName;
     }
@@ -117,7 +119,7 @@ public class Name {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getAbbreviatedName() {
         return abbreviatedName;
     }

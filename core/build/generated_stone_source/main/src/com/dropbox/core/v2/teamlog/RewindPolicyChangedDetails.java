@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed Rewind policy for team.
  */
@@ -35,7 +37,7 @@ public class RewindPolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RewindPolicyChangedDetails(@javax.annotation.Nonnull RewindPolicy newValue, @javax.annotation.Nonnull RewindPolicy previousValue) {
+    public RewindPolicyChangedDetails(@Nonnull RewindPolicy newValue, @Nonnull RewindPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -51,7 +53,7 @@ public class RewindPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public RewindPolicy getNewValue() {
         return newValue;
     }
@@ -61,7 +63,7 @@ public class RewindPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public RewindPolicy getPreviousValue() {
         return previousValue;
     }

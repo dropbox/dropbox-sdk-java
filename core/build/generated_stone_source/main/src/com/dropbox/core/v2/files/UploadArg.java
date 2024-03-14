@@ -21,6 +21,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 class UploadArg extends CommitInfo {
     // struct files.UploadArg (files.stone)
 
@@ -66,7 +69,7 @@ class UploadArg extends CommitInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UploadArg(@javax.annotation.Nonnull String path, @javax.annotation.Nonnull WriteMode mode, boolean autorename, @javax.annotation.Nullable Date clientModified, boolean mute, @javax.annotation.Nullable List<PropertyGroup> propertyGroups, boolean strictConflict, @javax.annotation.Nullable String contentHash) {
+    public UploadArg(@Nonnull String path, @Nonnull WriteMode mode, boolean autorename, @Nullable Date clientModified, boolean mute, @Nullable List<PropertyGroup> propertyGroups, boolean strictConflict, @Nullable String contentHash) {
         super(path, mode, autorename, clientModified, mute, propertyGroups, strictConflict);
         if (contentHash != null) {
             if (contentHash.length() < 64) {
@@ -100,7 +103,7 @@ class UploadArg extends CommitInfo {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getPath() {
         return path;
     }
@@ -111,7 +114,7 @@ class UploadArg extends CommitInfo {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     WriteMode.ADD.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public WriteMode getMode() {
         return mode;
     }
@@ -136,7 +139,7 @@ class UploadArg extends CommitInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Date getClientModified() {
         return clientModified;
     }
@@ -159,7 +162,7 @@ class UploadArg extends CommitInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public List<PropertyGroup> getPropertyGroups() {
         return propertyGroups;
     }
@@ -188,7 +191,7 @@ class UploadArg extends CommitInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getContentHash() {
         return contentHash;
     }

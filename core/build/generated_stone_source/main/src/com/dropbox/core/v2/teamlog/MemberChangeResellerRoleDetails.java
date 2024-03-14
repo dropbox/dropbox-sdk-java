@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed team member reseller role.
  */
@@ -37,7 +39,7 @@ public class MemberChangeResellerRoleDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberChangeResellerRoleDetails(@javax.annotation.Nonnull ResellerRole newValue, @javax.annotation.Nonnull ResellerRole previousValue) {
+    public MemberChangeResellerRoleDetails(@Nonnull ResellerRole newValue, @Nonnull ResellerRole previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -54,7 +56,7 @@ public class MemberChangeResellerRoleDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public ResellerRole getNewValue() {
         return newValue;
     }
@@ -65,7 +67,7 @@ public class MemberChangeResellerRoleDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public ResellerRole getPreviousValue() {
         return previousValue;
     }

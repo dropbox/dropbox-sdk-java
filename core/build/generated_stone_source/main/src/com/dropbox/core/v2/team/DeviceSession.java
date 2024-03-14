@@ -18,6 +18,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class DeviceSession {
     // struct team.DeviceSession (team_devices.stone)
 
@@ -41,7 +44,7 @@ public class DeviceSession {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeviceSession(@javax.annotation.Nonnull String sessionId, @javax.annotation.Nullable String ipAddress, @javax.annotation.Nullable String country, @javax.annotation.Nullable Date created, @javax.annotation.Nullable Date updated) {
+    public DeviceSession(@Nonnull String sessionId, @Nullable String ipAddress, @Nullable String country, @Nullable Date created, @Nullable Date updated) {
         if (sessionId == null) {
             throw new IllegalArgumentException("Required value for 'sessionId' is null");
         }
@@ -71,7 +74,7 @@ public class DeviceSession {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getSessionId() {
         return sessionId;
     }
@@ -81,7 +84,7 @@ public class DeviceSession {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getIpAddress() {
         return ipAddress;
     }
@@ -91,7 +94,7 @@ public class DeviceSession {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getCountry() {
         return country;
     }
@@ -101,7 +104,7 @@ public class DeviceSession {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Date getCreated() {
         return created;
     }
@@ -111,7 +114,7 @@ public class DeviceSession {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Date getUpdated() {
         return updated;
     }

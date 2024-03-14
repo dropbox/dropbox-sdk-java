@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class EmmCreateUsageReportType {
     // struct team_log.EmmCreateUsageReportType (team_log_generated.stone)
 
@@ -28,7 +30,7 @@ public class EmmCreateUsageReportType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public EmmCreateUsageReportType(@javax.annotation.Nonnull String description) {
+    public EmmCreateUsageReportType(@Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }
@@ -39,7 +41,7 @@ public class EmmCreateUsageReportType {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getDescription() {
         return description;
     }

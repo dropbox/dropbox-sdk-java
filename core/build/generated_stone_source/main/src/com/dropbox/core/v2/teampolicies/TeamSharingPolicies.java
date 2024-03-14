@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Policies governing sharing within and outside of the team.
  */
@@ -45,7 +47,7 @@ public class TeamSharingPolicies {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamSharingPolicies(@javax.annotation.Nonnull SharedFolderMemberPolicy sharedFolderMemberPolicy, @javax.annotation.Nonnull SharedFolderJoinPolicy sharedFolderJoinPolicy, @javax.annotation.Nonnull SharedLinkCreatePolicy sharedLinkCreatePolicy, @javax.annotation.Nonnull GroupCreation groupCreationPolicy, @javax.annotation.Nonnull SharedFolderBlanketLinkRestrictionPolicy sharedFolderLinkRestrictionPolicy) {
+    public TeamSharingPolicies(@Nonnull SharedFolderMemberPolicy sharedFolderMemberPolicy, @Nonnull SharedFolderJoinPolicy sharedFolderJoinPolicy, @Nonnull SharedLinkCreatePolicy sharedLinkCreatePolicy, @Nonnull GroupCreation groupCreationPolicy, @Nonnull SharedFolderBlanketLinkRestrictionPolicy sharedFolderLinkRestrictionPolicy) {
         if (sharedFolderMemberPolicy == null) {
             throw new IllegalArgumentException("Required value for 'sharedFolderMemberPolicy' is null");
         }
@@ -73,7 +75,7 @@ public class TeamSharingPolicies {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public SharedFolderMemberPolicy getSharedFolderMemberPolicy() {
         return sharedFolderMemberPolicy;
     }
@@ -83,7 +85,7 @@ public class TeamSharingPolicies {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public SharedFolderJoinPolicy getSharedFolderJoinPolicy() {
         return sharedFolderJoinPolicy;
     }
@@ -93,7 +95,7 @@ public class TeamSharingPolicies {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public SharedLinkCreatePolicy getSharedLinkCreatePolicy() {
         return sharedLinkCreatePolicy;
     }
@@ -103,7 +105,7 @@ public class TeamSharingPolicies {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public GroupCreation getGroupCreationPolicy() {
         return groupCreationPolicy;
     }
@@ -113,7 +115,7 @@ public class TeamSharingPolicies {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public SharedFolderBlanketLinkRestrictionPolicy getSharedFolderLinkRestrictionPolicy() {
         return sharedFolderLinkRestrictionPolicy;
     }

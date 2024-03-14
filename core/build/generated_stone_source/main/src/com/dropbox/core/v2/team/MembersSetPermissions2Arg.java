@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Exactly one of team_member_id, email, or external_id must be provided to
  * identify the user account.
@@ -40,7 +43,7 @@ class MembersSetPermissions2Arg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MembersSetPermissions2Arg(@javax.annotation.Nonnull UserSelectorArg user, @javax.annotation.Nullable List<String> newRoles) {
+    public MembersSetPermissions2Arg(@Nonnull UserSelectorArg user, @Nullable List<String> newRoles) {
         if (user == null) {
             throw new IllegalArgumentException("Required value for 'user' is null");
         }
@@ -85,7 +88,7 @@ class MembersSetPermissions2Arg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public UserSelectorArg getUser() {
         return user;
     }
@@ -96,7 +99,7 @@ class MembersSetPermissions2Arg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public List<String> getNewRoles() {
         return newRoles;
     }

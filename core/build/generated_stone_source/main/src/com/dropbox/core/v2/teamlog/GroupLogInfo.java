@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Group's logged information.
  */
@@ -39,7 +42,7 @@ public class GroupLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupLogInfo(@javax.annotation.Nonnull String displayName, @javax.annotation.Nullable String groupId, @javax.annotation.Nullable String externalId) {
+    public GroupLogInfo(@Nonnull String displayName, @Nullable String groupId, @Nullable String externalId) {
         this.groupId = groupId;
         if (displayName == null) {
             throw new IllegalArgumentException("Required value for 'displayName' is null");
@@ -67,7 +70,7 @@ public class GroupLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getDisplayName() {
         return displayName;
     }
@@ -77,7 +80,7 @@ public class GroupLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getGroupId() {
         return groupId;
     }
@@ -87,7 +90,7 @@ public class GroupLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getExternalId() {
         return externalId;
     }

@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 /**
  * Arguments for {@link DbxUserFileRequestsRequests#get(String)}.
  */
@@ -35,7 +37,7 @@ class GetFileRequestArgs {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetFileRequestArgs(@javax.annotation.Nonnull String id) {
+    public GetFileRequestArgs(@Nonnull String id) {
         if (id == null) {
             throw new IllegalArgumentException("Required value for 'id' is null");
         }
@@ -53,7 +55,7 @@ class GetFileRequestArgs {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getId() {
         return id;
     }

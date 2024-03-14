@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class SecondaryEmailDeletedType {
     // struct team_log.SecondaryEmailDeletedType (team_log_generated.stone)
 
@@ -28,7 +30,7 @@ public class SecondaryEmailDeletedType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SecondaryEmailDeletedType(@javax.annotation.Nonnull String description) {
+    public SecondaryEmailDeletedType(@Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }
@@ -39,7 +41,7 @@ public class SecondaryEmailDeletedType {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getDescription() {
         return description;
     }

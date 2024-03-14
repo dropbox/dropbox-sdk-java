@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class DeviceLinkSuccessType {
     // struct team_log.DeviceLinkSuccessType (team_log_generated.stone)
 
@@ -28,7 +30,7 @@ public class DeviceLinkSuccessType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeviceLinkSuccessType(@javax.annotation.Nonnull String description) {
+    public DeviceLinkSuccessType(@Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }
@@ -39,7 +41,7 @@ public class DeviceLinkSuccessType {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getDescription() {
         return description;
     }

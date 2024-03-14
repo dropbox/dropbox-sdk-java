@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 class ModifySharedLinkSettingsArgs {
     // struct sharing.ModifySharedLinkSettingsArgs (shared_links.stone)
 
@@ -35,7 +37,7 @@ class ModifySharedLinkSettingsArgs {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ModifySharedLinkSettingsArgs(@javax.annotation.Nonnull String url, @javax.annotation.Nonnull SharedLinkSettings settings, boolean removeExpiration) {
+    public ModifySharedLinkSettingsArgs(@Nonnull String url, @Nonnull SharedLinkSettings settings, boolean removeExpiration) {
         if (url == null) {
             throw new IllegalArgumentException("Required value for 'url' is null");
         }
@@ -69,7 +71,7 @@ class ModifySharedLinkSettingsArgs {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getUrl() {
         return url;
     }
@@ -79,7 +81,7 @@ class ModifySharedLinkSettingsArgs {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public SharedLinkSettings getSettings() {
         return settings;
     }

@@ -17,6 +17,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 class GroupCreateArg {
     // struct team.GroupCreateArg (team_groups.stone)
 
@@ -39,7 +42,7 @@ class GroupCreateArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupCreateArg(@javax.annotation.Nonnull String groupName, boolean addCreatorAsOwner, @javax.annotation.Nullable String groupExternalId, @javax.annotation.Nullable GroupManagementType groupManagementType) {
+    public GroupCreateArg(@Nonnull String groupName, boolean addCreatorAsOwner, @Nullable String groupExternalId, @Nullable GroupManagementType groupManagementType) {
         if (groupName == null) {
             throw new IllegalArgumentException("Required value for 'groupName' is null");
         }
@@ -68,7 +71,7 @@ class GroupCreateArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getGroupName() {
         return groupName;
     }
@@ -89,7 +92,7 @@ class GroupCreateArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getGroupExternalId() {
         return groupExternalId;
     }
@@ -100,7 +103,7 @@ class GroupCreateArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public GroupManagementType getGroupManagementType() {
         return groupManagementType;
     }

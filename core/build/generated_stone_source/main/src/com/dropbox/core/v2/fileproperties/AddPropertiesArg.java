@@ -18,6 +18,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 public class AddPropertiesArg {
     // struct file_properties.AddPropertiesArg (file_properties.stone)
 
@@ -37,7 +39,7 @@ public class AddPropertiesArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AddPropertiesArg(@javax.annotation.Nonnull String path, @javax.annotation.Nonnull List<PropertyGroup> propertyGroups) {
+    public AddPropertiesArg(@Nonnull String path, @Nonnull List<PropertyGroup> propertyGroups) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
@@ -61,7 +63,7 @@ public class AddPropertiesArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getPath() {
         return path;
     }
@@ -72,7 +74,7 @@ public class AddPropertiesArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<PropertyGroup> getPropertyGroups() {
         return propertyGroups;
     }

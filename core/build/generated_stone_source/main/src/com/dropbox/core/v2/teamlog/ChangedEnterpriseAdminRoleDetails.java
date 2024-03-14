@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed enterprise admin role.
  */
@@ -39,7 +41,7 @@ public class ChangedEnterpriseAdminRoleDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ChangedEnterpriseAdminRoleDetails(@javax.annotation.Nonnull FedAdminRole previousValue, @javax.annotation.Nonnull FedAdminRole newValue, @javax.annotation.Nonnull String teamName) {
+    public ChangedEnterpriseAdminRoleDetails(@Nonnull FedAdminRole previousValue, @Nonnull FedAdminRole newValue, @Nonnull String teamName) {
         if (previousValue == null) {
             throw new IllegalArgumentException("Required value for 'previousValue' is null");
         }
@@ -59,7 +61,7 @@ public class ChangedEnterpriseAdminRoleDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public FedAdminRole getPreviousValue() {
         return previousValue;
     }
@@ -69,7 +71,7 @@ public class ChangedEnterpriseAdminRoleDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public FedAdminRole getNewValue() {
         return newValue;
     }
@@ -79,7 +81,7 @@ public class ChangedEnterpriseAdminRoleDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getTeamName() {
         return teamName;
     }

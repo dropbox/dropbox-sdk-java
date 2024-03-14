@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * The information about a member of the shared content.
  */
@@ -46,7 +49,7 @@ public class MembershipInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MembershipInfo(@javax.annotation.Nonnull AccessLevel accessType, @javax.annotation.Nullable List<MemberPermission> permissions, @javax.annotation.Nullable String initials, boolean isInherited) {
+    public MembershipInfo(@Nonnull AccessLevel accessType, @Nullable List<MemberPermission> permissions, @Nullable String initials, boolean isInherited) {
         if (accessType == null) {
             throw new IllegalArgumentException("Required value for 'accessType' is null");
         }
@@ -85,7 +88,7 @@ public class MembershipInfo {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public AccessLevel getAccessType() {
         return accessType;
     }
@@ -96,7 +99,7 @@ public class MembershipInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public List<MemberPermission> getPermissions() {
         return permissions;
     }
@@ -106,7 +109,7 @@ public class MembershipInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getInitials() {
         return initials;
     }

@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class UserInfoResult {
     // struct openid.UserInfoResult (openid_openid_types.stone)
 
@@ -43,7 +46,7 @@ public class UserInfoResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UserInfoResult(@javax.annotation.Nullable String familyName, @javax.annotation.Nullable String givenName, @javax.annotation.Nullable String email, @javax.annotation.Nullable Boolean emailVerified, @javax.annotation.Nonnull String iss, @javax.annotation.Nonnull String sub) {
+    public UserInfoResult(@Nullable String familyName, @Nullable String givenName, @Nullable String email, @Nullable Boolean emailVerified, @Nonnull String iss, @Nonnull String sub) {
         this.familyName = familyName;
         this.givenName = givenName;
         this.email = email;
@@ -72,7 +75,7 @@ public class UserInfoResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getFamilyName() {
         return familyName;
     }
@@ -82,7 +85,7 @@ public class UserInfoResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getGivenName() {
         return givenName;
     }
@@ -92,7 +95,7 @@ public class UserInfoResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getEmail() {
         return email;
     }
@@ -102,7 +105,7 @@ public class UserInfoResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Boolean getEmailVerified() {
         return emailVerified;
     }
@@ -113,7 +116,7 @@ public class UserInfoResult {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     "".
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getIss() {
         return iss;
     }
@@ -125,7 +128,7 @@ public class UserInfoResult {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     "".
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getSub() {
         return sub;
     }

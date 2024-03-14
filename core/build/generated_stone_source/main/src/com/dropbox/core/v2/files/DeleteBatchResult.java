@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 public class DeleteBatchResult extends FileOpsResult {
     // struct files.DeleteBatchResult (files.stone)
 
@@ -32,7 +34,7 @@ public class DeleteBatchResult extends FileOpsResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeleteBatchResult(@javax.annotation.Nonnull List<DeleteBatchResultEntry> entries) {
+    public DeleteBatchResult(@Nonnull List<DeleteBatchResultEntry> entries) {
         if (entries == null) {
             throw new IllegalArgumentException("Required value for 'entries' is null");
         }
@@ -50,7 +52,7 @@ public class DeleteBatchResult extends FileOpsResult {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<DeleteBatchResultEntry> getEntries() {
         return entries;
     }

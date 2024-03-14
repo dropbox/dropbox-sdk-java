@@ -18,6 +18,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+
 /**
  * Report created: Links created with no expiration.
  */
@@ -36,7 +38,7 @@ public class NoExpirationLinkGenCreateReportDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public NoExpirationLinkGenCreateReportDetails(@javax.annotation.Nonnull Date startDate, @javax.annotation.Nonnull Date endDate) {
+    public NoExpirationLinkGenCreateReportDetails(@Nonnull Date startDate, @Nonnull Date endDate) {
         if (startDate == null) {
             throw new IllegalArgumentException("Required value for 'startDate' is null");
         }
@@ -52,7 +54,7 @@ public class NoExpirationLinkGenCreateReportDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public Date getStartDate() {
         return startDate;
     }
@@ -62,7 +64,7 @@ public class NoExpirationLinkGenCreateReportDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public Date getEndDate() {
         return endDate;
     }

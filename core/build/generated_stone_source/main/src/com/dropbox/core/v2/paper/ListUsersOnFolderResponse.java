@@ -19,6 +19,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 public class ListUsersOnFolderResponse {
     // struct paper.ListUsersOnFolderResponse (paper.stone)
 
@@ -49,7 +51,7 @@ public class ListUsersOnFolderResponse {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListUsersOnFolderResponse(@javax.annotation.Nonnull List<InviteeInfo> invitees, @javax.annotation.Nonnull List<UserInfo> users, @javax.annotation.Nonnull Cursor cursor, boolean hasMore) {
+    public ListUsersOnFolderResponse(@Nonnull List<InviteeInfo> invitees, @Nonnull List<UserInfo> users, @Nonnull Cursor cursor, boolean hasMore) {
         if (invitees == null) {
             throw new IllegalArgumentException("Required value for 'invitees' is null");
         }
@@ -80,7 +82,7 @@ public class ListUsersOnFolderResponse {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<InviteeInfo> getInvitees() {
         return invitees;
     }
@@ -90,7 +92,7 @@ public class ListUsersOnFolderResponse {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<UserInfo> getUsers() {
         return users;
     }
@@ -104,7 +106,7 @@ public class ListUsersOnFolderResponse {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public Cursor getCursor() {
         return cursor;
     }

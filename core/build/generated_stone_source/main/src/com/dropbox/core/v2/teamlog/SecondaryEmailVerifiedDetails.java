@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Verified secondary email.
  */
@@ -33,7 +35,7 @@ public class SecondaryEmailVerifiedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SecondaryEmailVerifiedDetails(@javax.annotation.Nonnull String secondaryEmail) {
+    public SecondaryEmailVerifiedDetails(@Nonnull String secondaryEmail) {
         if (secondaryEmail == null) {
             throw new IllegalArgumentException("Required value for 'secondaryEmail' is null");
         }
@@ -48,7 +50,7 @@ public class SecondaryEmailVerifiedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getSecondaryEmail() {
         return secondaryEmail;
     }

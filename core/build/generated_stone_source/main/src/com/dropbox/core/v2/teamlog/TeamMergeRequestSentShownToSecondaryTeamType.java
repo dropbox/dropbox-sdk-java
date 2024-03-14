@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class TeamMergeRequestSentShownToSecondaryTeamType {
     // struct team_log.TeamMergeRequestSentShownToSecondaryTeamType (team_log_generated.stone)
 
@@ -28,7 +30,7 @@ public class TeamMergeRequestSentShownToSecondaryTeamType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamMergeRequestSentShownToSecondaryTeamType(@javax.annotation.Nonnull String description) {
+    public TeamMergeRequestSentShownToSecondaryTeamType(@Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }
@@ -39,7 +41,7 @@ public class TeamMergeRequestSentShownToSecondaryTeamType {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getDescription() {
         return description;
     }

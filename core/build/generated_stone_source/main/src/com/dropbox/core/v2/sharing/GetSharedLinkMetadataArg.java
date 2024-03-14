@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 class GetSharedLinkMetadataArg {
     // struct sharing.GetSharedLinkMetadataArg (shared_links.stone)
 
@@ -38,7 +41,7 @@ class GetSharedLinkMetadataArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetSharedLinkMetadataArg(@javax.annotation.Nonnull String url, @javax.annotation.Nullable String path, @javax.annotation.Nullable String linkPassword) {
+    public GetSharedLinkMetadataArg(@Nonnull String url, @Nullable String path, @Nullable String linkPassword) {
         if (url == null) {
             throw new IllegalArgumentException("Required value for 'url' is null");
         }
@@ -71,7 +74,7 @@ class GetSharedLinkMetadataArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getUrl() {
         return url;
     }
@@ -83,7 +86,7 @@ class GetSharedLinkMetadataArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getPath() {
         return path;
     }
@@ -93,7 +96,7 @@ class GetSharedLinkMetadataArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getLinkPassword() {
         return linkPassword;
     }

@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Renamed a hold.
  */
@@ -36,7 +38,7 @@ public class LegalHoldsChangeHoldNameDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LegalHoldsChangeHoldNameDetails(@javax.annotation.Nonnull String legalHoldId, @javax.annotation.Nonnull String previousValue, @javax.annotation.Nonnull String newValue) {
+    public LegalHoldsChangeHoldNameDetails(@Nonnull String legalHoldId, @Nonnull String previousValue, @Nonnull String newValue) {
         if (legalHoldId == null) {
             throw new IllegalArgumentException("Required value for 'legalHoldId' is null");
         }
@@ -56,7 +58,7 @@ public class LegalHoldsChangeHoldNameDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getLegalHoldId() {
         return legalHoldId;
     }
@@ -66,7 +68,7 @@ public class LegalHoldsChangeHoldNameDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getPreviousValue() {
         return previousValue;
     }
@@ -76,7 +78,7 @@ public class LegalHoldsChangeHoldNameDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getNewValue() {
         return newValue;
     }

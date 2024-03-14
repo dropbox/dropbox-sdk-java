@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Signed out.
  */
@@ -29,7 +32,7 @@ public class LogoutDetails {
      *
      * @param loginId  Login session id.
      */
-    public LogoutDetails(@javax.annotation.Nullable String loginId) {
+    public LogoutDetails(@Nullable String loginId) {
         this.loginId = loginId;
     }
 
@@ -47,7 +50,7 @@ public class LogoutDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getLoginId() {
         return loginId;
     }

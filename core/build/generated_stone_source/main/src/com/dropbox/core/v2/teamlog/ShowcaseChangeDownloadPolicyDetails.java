@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Enabled/disabled downloading files from Dropbox Showcase for team.
  */
@@ -36,7 +38,7 @@ public class ShowcaseChangeDownloadPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ShowcaseChangeDownloadPolicyDetails(@javax.annotation.Nonnull ShowcaseDownloadPolicy newValue, @javax.annotation.Nonnull ShowcaseDownloadPolicy previousValue) {
+    public ShowcaseChangeDownloadPolicyDetails(@Nonnull ShowcaseDownloadPolicy newValue, @Nonnull ShowcaseDownloadPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -52,7 +54,7 @@ public class ShowcaseChangeDownloadPolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public ShowcaseDownloadPolicy getNewValue() {
         return newValue;
     }
@@ -62,7 +64,7 @@ public class ShowcaseChangeDownloadPolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public ShowcaseDownloadPolicy getPreviousValue() {
         return previousValue;
     }

@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed App Integrations setting for team.
  */
@@ -35,7 +37,7 @@ public class TeamExtensionsPolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamExtensionsPolicyChangedDetails(@javax.annotation.Nonnull TeamExtensionsPolicy newValue, @javax.annotation.Nonnull TeamExtensionsPolicy previousValue) {
+    public TeamExtensionsPolicyChangedDetails(@Nonnull TeamExtensionsPolicy newValue, @Nonnull TeamExtensionsPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -51,7 +53,7 @@ public class TeamExtensionsPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public TeamExtensionsPolicy getNewValue() {
         return newValue;
     }
@@ -61,7 +63,7 @@ public class TeamExtensionsPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public TeamExtensionsPolicy getPreviousValue() {
         return previousValue;
     }

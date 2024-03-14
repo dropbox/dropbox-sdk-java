@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed default language for team.
  */
@@ -36,7 +38,7 @@ public class TeamProfileChangeDefaultLanguageDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamProfileChangeDefaultLanguageDetails(@javax.annotation.Nonnull String newValue, @javax.annotation.Nonnull String previousValue) {
+    public TeamProfileChangeDefaultLanguageDetails(@Nonnull String newValue, @Nonnull String previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -58,7 +60,7 @@ public class TeamProfileChangeDefaultLanguageDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getNewValue() {
         return newValue;
     }
@@ -68,7 +70,7 @@ public class TeamProfileChangeDefaultLanguageDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getPreviousValue() {
         return previousValue;
     }

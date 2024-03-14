@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 class CreateFolderArg {
     // struct files.CreateFolderArg (files.stone)
 
@@ -33,7 +35,7 @@ class CreateFolderArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public CreateFolderArg(@javax.annotation.Nonnull String path, boolean autorename) {
+    public CreateFolderArg(@Nonnull String path, boolean autorename) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
@@ -64,7 +66,7 @@ class CreateFolderArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getPath() {
         return path;
     }

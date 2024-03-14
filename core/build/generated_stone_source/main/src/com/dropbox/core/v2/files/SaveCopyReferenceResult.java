@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class SaveCopyReferenceResult {
     // struct files.SaveCopyReferenceResult (files.stone)
 
@@ -29,7 +31,7 @@ public class SaveCopyReferenceResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SaveCopyReferenceResult(@javax.annotation.Nonnull Metadata metadata) {
+    public SaveCopyReferenceResult(@Nonnull Metadata metadata) {
         if (metadata == null) {
             throw new IllegalArgumentException("Required value for 'metadata' is null");
         }
@@ -41,7 +43,7 @@ public class SaveCopyReferenceResult {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public Metadata getMetadata() {
         return metadata;
     }

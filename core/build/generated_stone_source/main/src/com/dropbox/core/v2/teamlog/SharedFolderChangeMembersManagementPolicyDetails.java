@@ -17,6 +17,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed who can add/remove members of shared folder.
  */
@@ -36,7 +39,7 @@ public class SharedFolderChangeMembersManagementPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedFolderChangeMembersManagementPolicyDetails(@javax.annotation.Nonnull AclUpdatePolicy newValue, @javax.annotation.Nullable AclUpdatePolicy previousValue) {
+    public SharedFolderChangeMembersManagementPolicyDetails(@Nonnull AclUpdatePolicy newValue, @Nullable AclUpdatePolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -63,7 +66,7 @@ public class SharedFolderChangeMembersManagementPolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public AclUpdatePolicy getNewValue() {
         return newValue;
     }
@@ -74,7 +77,7 @@ public class SharedFolderChangeMembersManagementPolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public AclUpdatePolicy getPreviousValue() {
         return previousValue;
     }

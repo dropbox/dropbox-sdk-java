@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Raw key/value data to be associated with a Dropbox file. Property fields are
  * added to Dropbox files as a {@link PropertyGroup}.
@@ -38,7 +40,7 @@ public class PropertyField {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PropertyField(@javax.annotation.Nonnull String name, @javax.annotation.Nonnull String value) {
+    public PropertyField(@Nonnull String name, @Nonnull String value) {
         if (name == null) {
             throw new IllegalArgumentException("Required value for 'name' is null");
         }
@@ -55,7 +57,7 @@ public class PropertyField {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -66,7 +68,7 @@ public class PropertyField {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getValue() {
         return value;
     }

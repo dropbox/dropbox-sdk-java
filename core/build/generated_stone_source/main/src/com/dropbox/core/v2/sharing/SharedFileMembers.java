@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Shared file user, group, and invitee membership. Used for the results of
  * {@link DbxUserSharingRequests#listFileMembers(String)} and {@link
@@ -54,7 +57,7 @@ public class SharedFileMembers {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedFileMembers(@javax.annotation.Nonnull List<UserFileMembershipInfo> users, @javax.annotation.Nonnull List<GroupMembershipInfo> groups, @javax.annotation.Nonnull List<InviteeMembershipInfo> invitees, @javax.annotation.Nullable String cursor) {
+    public SharedFileMembers(@Nonnull List<UserFileMembershipInfo> users, @Nonnull List<GroupMembershipInfo> groups, @Nonnull List<InviteeMembershipInfo> invitees, @Nullable String cursor) {
         if (users == null) {
             throw new IllegalArgumentException("Required value for 'users' is null");
         }
@@ -114,7 +117,7 @@ public class SharedFileMembers {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<UserFileMembershipInfo> getUsers() {
         return users;
     }
@@ -124,7 +127,7 @@ public class SharedFileMembers {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<GroupMembershipInfo> getGroups() {
         return groups;
     }
@@ -135,7 +138,7 @@ public class SharedFileMembers {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<InviteeMembershipInfo> getInvitees() {
         return invitees;
     }
@@ -148,7 +151,7 @@ public class SharedFileMembers {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getCursor() {
         return cursor;
     }

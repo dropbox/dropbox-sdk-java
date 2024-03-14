@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 public class ContentSyncSettingArg {
     // struct files.ContentSyncSettingArg (files.stone)
 
@@ -32,7 +34,7 @@ public class ContentSyncSettingArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ContentSyncSettingArg(@javax.annotation.Nonnull String id, @javax.annotation.Nonnull SyncSettingArg syncSetting) {
+    public ContentSyncSettingArg(@Nonnull String id, @Nonnull SyncSettingArg syncSetting) {
         if (id == null) {
             throw new IllegalArgumentException("Required value for 'id' is null");
         }
@@ -54,7 +56,7 @@ public class ContentSyncSettingArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getId() {
         return id;
     }
@@ -64,7 +66,7 @@ public class ContentSyncSettingArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public SyncSettingArg getSyncSetting() {
         return syncSetting;
     }

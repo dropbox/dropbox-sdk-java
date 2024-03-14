@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 class PaperDocCreateArgs {
     // struct paper.PaperDocCreateArgs (paper.stone)
 
@@ -33,7 +36,7 @@ class PaperDocCreateArgs {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperDocCreateArgs(@javax.annotation.Nonnull ImportFormat importFormat, @javax.annotation.Nullable String parentFolderId) {
+    public PaperDocCreateArgs(@Nonnull ImportFormat importFormat, @Nullable String parentFolderId) {
         this.parentFolderId = parentFolderId;
         if (importFormat == null) {
             throw new IllegalArgumentException("Required value for 'importFormat' is null");
@@ -61,7 +64,7 @@ class PaperDocCreateArgs {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public ImportFormat getImportFormat() {
         return importFormat;
     }
@@ -72,7 +75,7 @@ class PaperDocCreateArgs {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getParentFolderId() {
         return parentFolderId;
     }

@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 /**
  * Information on linked applications of a team member.
  */
@@ -37,7 +39,7 @@ public class MemberLinkedApps {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberLinkedApps(@javax.annotation.Nonnull String teamMemberId, @javax.annotation.Nonnull List<ApiApp> linkedApiApps) {
+    public MemberLinkedApps(@Nonnull String teamMemberId, @Nonnull List<ApiApp> linkedApiApps) {
         if (teamMemberId == null) {
             throw new IllegalArgumentException("Required value for 'teamMemberId' is null");
         }
@@ -58,7 +60,7 @@ public class MemberLinkedApps {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getTeamMemberId() {
         return teamMemberId;
     }
@@ -68,7 +70,7 @@ public class MemberLinkedApps {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<ApiApp> getLinkedApiApps() {
         return linkedApiApps;
     }

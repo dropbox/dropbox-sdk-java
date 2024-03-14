@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Added X.509 certificate for SSO.
  */
@@ -33,7 +35,7 @@ public class SsoAddCertDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SsoAddCertDetails(@javax.annotation.Nonnull Certificate certificateDetails) {
+    public SsoAddCertDetails(@Nonnull Certificate certificateDetails) {
         if (certificateDetails == null) {
             throw new IllegalArgumentException("Required value for 'certificateDetails' is null");
         }
@@ -45,7 +47,7 @@ public class SsoAddCertDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public Certificate getCertificateDetails() {
         return certificateDetails;
     }

@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 class MembersDataTransferArg extends MembersDeactivateBaseArg {
     // struct team.MembersDataTransferArg (team_members.stone)
 
@@ -34,7 +36,7 @@ class MembersDataTransferArg extends MembersDeactivateBaseArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MembersDataTransferArg(@javax.annotation.Nonnull UserSelectorArg user, @javax.annotation.Nonnull UserSelectorArg transferDestId, @javax.annotation.Nonnull UserSelectorArg transferAdminId) {
+    public MembersDataTransferArg(@Nonnull UserSelectorArg user, @Nonnull UserSelectorArg transferDestId, @Nonnull UserSelectorArg transferAdminId) {
         super(user);
         if (transferDestId == null) {
             throw new IllegalArgumentException("Required value for 'transferDestId' is null");
@@ -51,7 +53,7 @@ class MembersDataTransferArg extends MembersDeactivateBaseArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public UserSelectorArg getUser() {
         return user;
     }
@@ -61,7 +63,7 @@ class MembersDataTransferArg extends MembersDeactivateBaseArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public UserSelectorArg getTransferDestId() {
         return transferDestId;
     }
@@ -71,7 +73,7 @@ class MembersDataTransferArg extends MembersDeactivateBaseArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public UserSelectorArg getTransferAdminId() {
         return transferAdminId;
     }

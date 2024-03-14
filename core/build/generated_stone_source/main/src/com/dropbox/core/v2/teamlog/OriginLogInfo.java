@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * The origin from which the actor performed the action.
  */
@@ -35,7 +38,7 @@ public class OriginLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public OriginLogInfo(@javax.annotation.Nonnull AccessMethodLogInfo accessMethod, @javax.annotation.Nullable GeoLocationLogInfo geoLocation) {
+    public OriginLogInfo(@Nonnull AccessMethodLogInfo accessMethod, @Nullable GeoLocationLogInfo geoLocation) {
         this.geoLocation = geoLocation;
         if (accessMethod == null) {
             throw new IllegalArgumentException("Required value for 'accessMethod' is null");
@@ -63,7 +66,7 @@ public class OriginLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public AccessMethodLogInfo getAccessMethod() {
         return accessMethod;
     }
@@ -73,7 +76,7 @@ public class OriginLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public GeoLocationLogInfo getGeoLocation() {
         return geoLocation;
     }

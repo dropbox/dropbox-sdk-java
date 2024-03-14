@@ -17,6 +17,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed two-step verification setting for team.
  */
@@ -36,7 +39,7 @@ public class TfaChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TfaChangePolicyDetails(@javax.annotation.Nonnull TwoStepVerificationPolicy newValue, @javax.annotation.Nullable TwoStepVerificationPolicy previousValue) {
+    public TfaChangePolicyDetails(@Nonnull TwoStepVerificationPolicy newValue, @Nullable TwoStepVerificationPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -63,7 +66,7 @@ public class TfaChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public TwoStepVerificationPolicy getNewValue() {
         return newValue;
     }
@@ -73,7 +76,7 @@ public class TfaChangePolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public TwoStepVerificationPolicy getPreviousValue() {
         return previousValue;
     }

@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Granted/revoked option to enable account capture on team domains.
  */
@@ -36,7 +39,7 @@ public class AccountCaptureChangeAvailabilityDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AccountCaptureChangeAvailabilityDetails(@javax.annotation.Nonnull AccountCaptureAvailability newValue, @javax.annotation.Nullable AccountCaptureAvailability previousValue) {
+    public AccountCaptureChangeAvailabilityDetails(@Nonnull AccountCaptureAvailability newValue, @Nullable AccountCaptureAvailability previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -64,7 +67,7 @@ public class AccountCaptureChangeAvailabilityDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public AccountCaptureAvailability getNewValue() {
         return newValue;
     }
@@ -75,7 +78,7 @@ public class AccountCaptureChangeAvailabilityDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public AccountCaptureAvailability getPreviousValue() {
         return previousValue;
     }

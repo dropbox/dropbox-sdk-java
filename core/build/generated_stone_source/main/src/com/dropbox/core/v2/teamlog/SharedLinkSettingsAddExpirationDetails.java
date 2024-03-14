@@ -19,6 +19,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Added an expiration date to the shared link.
  */
@@ -44,7 +47,7 @@ public class SharedLinkSettingsAddExpirationDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedLinkSettingsAddExpirationDetails(@javax.annotation.Nonnull AccessLevel sharedContentAccessLevel, @javax.annotation.Nullable String sharedContentLink, @javax.annotation.Nullable Date newValue) {
+    public SharedLinkSettingsAddExpirationDetails(@Nonnull AccessLevel sharedContentAccessLevel, @Nullable String sharedContentLink, @Nullable Date newValue) {
         if (sharedContentAccessLevel == null) {
             throw new IllegalArgumentException("Required value for 'sharedContentAccessLevel' is null");
         }
@@ -73,7 +76,7 @@ public class SharedLinkSettingsAddExpirationDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public AccessLevel getSharedContentAccessLevel() {
         return sharedContentAccessLevel;
     }
@@ -83,7 +86,7 @@ public class SharedLinkSettingsAddExpirationDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getSharedContentLink() {
         return sharedContentLink;
     }
@@ -94,7 +97,7 @@ public class SharedLinkSettingsAddExpirationDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Date getNewValue() {
         return newValue;
     }

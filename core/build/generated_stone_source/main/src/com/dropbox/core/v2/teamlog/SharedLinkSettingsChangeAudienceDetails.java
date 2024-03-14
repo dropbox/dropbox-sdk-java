@@ -18,6 +18,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed the audience of the shared link.
  */
@@ -44,7 +47,7 @@ public class SharedLinkSettingsChangeAudienceDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedLinkSettingsChangeAudienceDetails(@javax.annotation.Nonnull AccessLevel sharedContentAccessLevel, @javax.annotation.Nonnull LinkAudience newValue, @javax.annotation.Nullable String sharedContentLink, @javax.annotation.Nullable LinkAudience previousValue) {
+    public SharedLinkSettingsChangeAudienceDetails(@Nonnull AccessLevel sharedContentAccessLevel, @Nonnull LinkAudience newValue, @Nullable String sharedContentLink, @Nullable LinkAudience previousValue) {
         if (sharedContentAccessLevel == null) {
             throw new IllegalArgumentException("Required value for 'sharedContentAccessLevel' is null");
         }
@@ -78,7 +81,7 @@ public class SharedLinkSettingsChangeAudienceDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public AccessLevel getSharedContentAccessLevel() {
         return sharedContentAccessLevel;
     }
@@ -88,7 +91,7 @@ public class SharedLinkSettingsChangeAudienceDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public LinkAudience getNewValue() {
         return newValue;
     }
@@ -98,7 +101,7 @@ public class SharedLinkSettingsChangeAudienceDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getSharedContentLink() {
         return sharedContentLink;
     }
@@ -108,7 +111,7 @@ public class SharedLinkSettingsChangeAudienceDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public LinkAudience getPreviousValue() {
         return previousValue;
     }

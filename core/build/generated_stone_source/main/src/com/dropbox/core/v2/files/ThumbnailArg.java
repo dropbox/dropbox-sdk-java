@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 public class ThumbnailArg {
     // struct files.ThumbnailArg (files.stone)
 
@@ -43,7 +45,7 @@ public class ThumbnailArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ThumbnailArg(@javax.annotation.Nonnull String path, @javax.annotation.Nonnull ThumbnailFormat format, @javax.annotation.Nonnull ThumbnailSize size, @javax.annotation.Nonnull ThumbnailMode mode) {
+    public ThumbnailArg(@Nonnull String path, @Nonnull ThumbnailFormat format, @Nonnull ThumbnailSize size, @Nonnull ThumbnailMode mode) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
@@ -87,7 +89,7 @@ public class ThumbnailArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getPath() {
         return path;
     }
@@ -100,7 +102,7 @@ public class ThumbnailArg {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     ThumbnailFormat.JPEG.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public ThumbnailFormat getFormat() {
         return format;
     }
@@ -111,7 +113,7 @@ public class ThumbnailArg {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     ThumbnailSize.W64H64.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public ThumbnailSize getSize() {
         return size;
     }
@@ -122,7 +124,7 @@ public class ThumbnailArg {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     ThumbnailMode.STRICT.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public ThumbnailMode getMode() {
         return mode;
     }

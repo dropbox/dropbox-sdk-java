@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 class GetTemporaryUploadLinkArg {
     // struct files.GetTemporaryUploadLinkArg (files.stone)
 
@@ -35,7 +37,7 @@ class GetTemporaryUploadLinkArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetTemporaryUploadLinkArg(@javax.annotation.Nonnull CommitInfo commitInfo, double duration) {
+    public GetTemporaryUploadLinkArg(@Nonnull CommitInfo commitInfo, double duration) {
         if (commitInfo == null) {
             throw new IllegalArgumentException("Required value for 'commitInfo' is null");
         }
@@ -72,7 +74,7 @@ class GetTemporaryUploadLinkArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public CommitInfo getCommitInfo() {
         return commitInfo;
     }

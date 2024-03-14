@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Exported hold.
  */
@@ -36,7 +39,7 @@ public class LegalHoldsExportAHoldDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LegalHoldsExportAHoldDetails(@javax.annotation.Nonnull String legalHoldId, @javax.annotation.Nonnull String name, @javax.annotation.Nullable String exportName) {
+    public LegalHoldsExportAHoldDetails(@Nonnull String legalHoldId, @Nonnull String name, @Nullable String exportName) {
         if (legalHoldId == null) {
             throw new IllegalArgumentException("Required value for 'legalHoldId' is null");
         }
@@ -68,7 +71,7 @@ public class LegalHoldsExportAHoldDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getLegalHoldId() {
         return legalHoldId;
     }
@@ -78,7 +81,7 @@ public class LegalHoldsExportAHoldDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -88,7 +91,7 @@ public class LegalHoldsExportAHoldDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getExportName() {
         return exportName;
     }

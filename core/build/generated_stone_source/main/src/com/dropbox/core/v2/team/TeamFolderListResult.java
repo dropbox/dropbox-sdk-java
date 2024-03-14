@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 /**
  * Result for {@link DbxTeamTeamRequests#teamFolderList(long)} and {@link
  * DbxTeamTeamRequests#teamFolderListContinue(String)}.
@@ -45,7 +47,7 @@ public class TeamFolderListResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamFolderListResult(@javax.annotation.Nonnull List<TeamFolderMetadata> teamFolders, @javax.annotation.Nonnull String cursor, boolean hasMore) {
+    public TeamFolderListResult(@Nonnull List<TeamFolderMetadata> teamFolders, @Nonnull String cursor, boolean hasMore) {
         if (teamFolders == null) {
             throw new IllegalArgumentException("Required value for 'teamFolders' is null");
         }
@@ -67,7 +69,7 @@ public class TeamFolderListResult {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<TeamFolderMetadata> getTeamFolders() {
         return teamFolders;
     }
@@ -79,7 +81,7 @@ public class TeamFolderListResult {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getCursor() {
         return cursor;
     }

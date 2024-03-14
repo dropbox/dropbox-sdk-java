@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed the allow remove or change expiration policy for the links shared
  * outside of the team.
@@ -36,7 +39,7 @@ public class SharingChangeLinkAllowChangeExpirationPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharingChangeLinkAllowChangeExpirationPolicyDetails(@javax.annotation.Nonnull EnforceLinkPasswordPolicy newValue, @javax.annotation.Nullable EnforceLinkPasswordPolicy previousValue) {
+    public SharingChangeLinkAllowChangeExpirationPolicyDetails(@Nonnull EnforceLinkPasswordPolicy newValue, @Nullable EnforceLinkPasswordPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -64,7 +67,7 @@ public class SharingChangeLinkAllowChangeExpirationPolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public EnforceLinkPasswordPolicy getNewValue() {
         return newValue;
     }
@@ -74,7 +77,7 @@ public class SharingChangeLinkAllowChangeExpirationPolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public EnforceLinkPasswordPolicy getPreviousValue() {
         return previousValue;
     }

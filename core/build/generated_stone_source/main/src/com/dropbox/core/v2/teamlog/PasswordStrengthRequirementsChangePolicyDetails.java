@@ -17,6 +17,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed team password strength requirements.
  */
@@ -36,7 +38,7 @@ public class PasswordStrengthRequirementsChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PasswordStrengthRequirementsChangePolicyDetails(@javax.annotation.Nonnull PasswordStrengthPolicy previousValue, @javax.annotation.Nonnull PasswordStrengthPolicy newValue) {
+    public PasswordStrengthRequirementsChangePolicyDetails(@Nonnull PasswordStrengthPolicy previousValue, @Nonnull PasswordStrengthPolicy newValue) {
         if (previousValue == null) {
             throw new IllegalArgumentException("Required value for 'previousValue' is null");
         }
@@ -52,7 +54,7 @@ public class PasswordStrengthRequirementsChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public PasswordStrengthPolicy getPreviousValue() {
         return previousValue;
     }
@@ -62,7 +64,7 @@ public class PasswordStrengthRequirementsChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public PasswordStrengthPolicy getNewValue() {
         return newValue;
     }

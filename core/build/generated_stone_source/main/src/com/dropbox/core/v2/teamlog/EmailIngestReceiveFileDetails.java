@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Received files via Email to Dropbox.
  */
@@ -46,7 +49,7 @@ public class EmailIngestReceiveFileDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public EmailIngestReceiveFileDetails(@javax.annotation.Nonnull String inboxName, @javax.annotation.Nonnull List<String> attachmentNames, @javax.annotation.Nullable String subject, @javax.annotation.Nullable String fromName, @javax.annotation.Nullable String fromEmail) {
+    public EmailIngestReceiveFileDetails(@Nonnull String inboxName, @Nonnull List<String> attachmentNames, @Nullable String subject, @Nullable String fromName, @Nullable String fromEmail) {
         if (inboxName == null) {
             throw new IllegalArgumentException("Required value for 'inboxName' is null");
         }
@@ -91,7 +94,7 @@ public class EmailIngestReceiveFileDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getInboxName() {
         return inboxName;
     }
@@ -101,7 +104,7 @@ public class EmailIngestReceiveFileDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<String> getAttachmentNames() {
         return attachmentNames;
     }
@@ -111,7 +114,7 @@ public class EmailIngestReceiveFileDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getSubject() {
         return subject;
     }
@@ -121,7 +124,7 @@ public class EmailIngestReceiveFileDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getFromName() {
         return fromName;
     }
@@ -131,7 +134,7 @@ public class EmailIngestReceiveFileDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getFromEmail() {
         return fromEmail;
     }

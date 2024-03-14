@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Exactly one of team_member_id, email, or external_id must be provided to
  * identify the user account.
@@ -34,7 +36,7 @@ class MembersUnsuspendArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MembersUnsuspendArg(@javax.annotation.Nonnull UserSelectorArg user) {
+    public MembersUnsuspendArg(@Nonnull UserSelectorArg user) {
         if (user == null) {
             throw new IllegalArgumentException("Required value for 'user' is null");
         }
@@ -46,7 +48,7 @@ class MembersUnsuspendArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public UserSelectorArg getUser() {
         return user;
     }

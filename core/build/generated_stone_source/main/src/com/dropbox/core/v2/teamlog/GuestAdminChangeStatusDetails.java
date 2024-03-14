@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed guest team admin status.
  */
@@ -45,7 +48,7 @@ public class GuestAdminChangeStatusDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GuestAdminChangeStatusDetails(boolean isGuest, @javax.annotation.Nonnull TrustedTeamsRequestState previousValue, @javax.annotation.Nonnull TrustedTeamsRequestState newValue, @javax.annotation.Nonnull TrustedTeamsRequestAction actionDetails, @javax.annotation.Nullable String guestTeamName, @javax.annotation.Nullable String hostTeamName) {
+    public GuestAdminChangeStatusDetails(boolean isGuest, @Nonnull TrustedTeamsRequestState previousValue, @Nonnull TrustedTeamsRequestState newValue, @Nonnull TrustedTeamsRequestAction actionDetails, @Nullable String guestTeamName, @Nullable String hostTeamName) {
         this.isGuest = isGuest;
         this.guestTeamName = guestTeamName;
         this.hostTeamName = hostTeamName;
@@ -94,7 +97,7 @@ public class GuestAdminChangeStatusDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public TrustedTeamsRequestState getPreviousValue() {
         return previousValue;
     }
@@ -104,7 +107,7 @@ public class GuestAdminChangeStatusDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public TrustedTeamsRequestState getNewValue() {
         return newValue;
     }
@@ -114,7 +117,7 @@ public class GuestAdminChangeStatusDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public TrustedTeamsRequestAction getActionDetails() {
         return actionDetails;
     }
@@ -124,7 +127,7 @@ public class GuestAdminChangeStatusDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getGuestTeamName() {
         return guestTeamName;
     }
@@ -134,7 +137,7 @@ public class GuestAdminChangeStatusDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getHostTeamName() {
         return hostTeamName;
     }

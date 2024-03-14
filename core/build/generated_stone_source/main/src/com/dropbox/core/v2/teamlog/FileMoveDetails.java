@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 /**
  * Moved files and/or folders.
  */
@@ -34,7 +36,7 @@ public class FileMoveDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileMoveDetails(@javax.annotation.Nonnull List<RelocateAssetReferencesLogInfo> relocateActionDetails) {
+    public FileMoveDetails(@Nonnull List<RelocateAssetReferencesLogInfo> relocateActionDetails) {
         if (relocateActionDetails == null) {
             throw new IllegalArgumentException("Required value for 'relocateActionDetails' is null");
         }
@@ -51,7 +53,7 @@ public class FileMoveDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<RelocateAssetReferencesLogInfo> getRelocateActionDetails() {
         return relocateActionDetails;
     }

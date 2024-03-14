@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed enterprise-connected team status.
  */
@@ -40,7 +42,7 @@ public class ChangedEnterpriseConnectedTeamStatusDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ChangedEnterpriseConnectedTeamStatusDetails(@javax.annotation.Nonnull FedHandshakeAction action, @javax.annotation.Nonnull FederationStatusChangeAdditionalInfo additionalInfo, @javax.annotation.Nonnull TrustedTeamsRequestState previousValue, @javax.annotation.Nonnull TrustedTeamsRequestState newValue) {
+    public ChangedEnterpriseConnectedTeamStatusDetails(@Nonnull FedHandshakeAction action, @Nonnull FederationStatusChangeAdditionalInfo additionalInfo, @Nonnull TrustedTeamsRequestState previousValue, @Nonnull TrustedTeamsRequestState newValue) {
         if (action == null) {
             throw new IllegalArgumentException("Required value for 'action' is null");
         }
@@ -64,7 +66,7 @@ public class ChangedEnterpriseConnectedTeamStatusDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public FedHandshakeAction getAction() {
         return action;
     }
@@ -74,7 +76,7 @@ public class ChangedEnterpriseConnectedTeamStatusDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public FederationStatusChangeAdditionalInfo getAdditionalInfo() {
         return additionalInfo;
     }
@@ -84,7 +86,7 @@ public class ChangedEnterpriseConnectedTeamStatusDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public TrustedTeamsRequestState getPreviousValue() {
         return previousValue;
     }
@@ -94,7 +96,7 @@ public class ChangedEnterpriseConnectedTeamStatusDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public TrustedTeamsRequestState getNewValue() {
         return newValue;
     }

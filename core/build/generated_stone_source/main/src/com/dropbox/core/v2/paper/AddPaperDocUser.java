@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 class AddPaperDocUser extends RefPaperDoc {
     // struct paper.AddPaperDocUser (paper.stone)
 
@@ -40,7 +43,7 @@ class AddPaperDocUser extends RefPaperDoc {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AddPaperDocUser(@javax.annotation.Nonnull String docId, @javax.annotation.Nonnull List<AddMember> members, @javax.annotation.Nullable String customMessage, boolean quiet) {
+    public AddPaperDocUser(@Nonnull String docId, @Nonnull List<AddMember> members, @Nullable String customMessage, boolean quiet) {
         super(docId);
         if (members == null) {
             throw new IllegalArgumentException("Required value for 'members' is null");
@@ -80,7 +83,7 @@ class AddPaperDocUser extends RefPaperDoc {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getDocId() {
         return docId;
     }
@@ -91,7 +94,7 @@ class AddPaperDocUser extends RefPaperDoc {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<AddMember> getMembers() {
         return members;
     }
@@ -102,7 +105,7 @@ class AddPaperDocUser extends RefPaperDoc {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getCustomMessage() {
         return customMessage;
     }

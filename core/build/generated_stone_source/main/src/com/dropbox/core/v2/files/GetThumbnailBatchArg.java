@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 /**
  * Arguments for {@link DbxUserFilesRequests#getThumbnailBatch(List)}.
  */
@@ -34,7 +36,7 @@ class GetThumbnailBatchArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetThumbnailBatchArg(@javax.annotation.Nonnull List<ThumbnailArg> entries) {
+    public GetThumbnailBatchArg(@Nonnull List<ThumbnailArg> entries) {
         if (entries == null) {
             throw new IllegalArgumentException("Required value for 'entries' is null");
         }
@@ -51,7 +53,7 @@ class GetThumbnailBatchArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<ThumbnailArg> getEntries() {
         return entries;
     }

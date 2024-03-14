@@ -19,6 +19,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Information about linked Dropbox mobile client sessions
  */
@@ -51,7 +54,7 @@ public class MobileDeviceSessionLogInfo extends DeviceSessionLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MobileDeviceSessionLogInfo(@javax.annotation.Nonnull String deviceName, @javax.annotation.Nonnull MobileClientPlatform clientType, @javax.annotation.Nullable String ipAddress, @javax.annotation.Nullable Date created, @javax.annotation.Nullable Date updated, @javax.annotation.Nullable MobileSessionLogInfo sessionInfo, @javax.annotation.Nullable String clientVersion, @javax.annotation.Nullable String osVersion, @javax.annotation.Nullable String lastCarrier) {
+    public MobileDeviceSessionLogInfo(@Nonnull String deviceName, @Nonnull MobileClientPlatform clientType, @Nullable String ipAddress, @Nullable Date created, @Nullable Date updated, @Nullable MobileSessionLogInfo sessionInfo, @Nullable String clientVersion, @Nullable String osVersion, @Nullable String lastCarrier) {
         super(ipAddress, created, updated);
         this.sessionInfo = sessionInfo;
         if (deviceName == null) {
@@ -87,7 +90,7 @@ public class MobileDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getDeviceName() {
         return deviceName;
     }
@@ -97,7 +100,7 @@ public class MobileDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public MobileClientPlatform getClientType() {
         return clientType;
     }
@@ -107,7 +110,7 @@ public class MobileDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getIpAddress() {
         return ipAddress;
     }
@@ -117,7 +120,7 @@ public class MobileDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Date getCreated() {
         return created;
     }
@@ -127,7 +130,7 @@ public class MobileDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Date getUpdated() {
         return updated;
     }
@@ -137,7 +140,7 @@ public class MobileDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public MobileSessionLogInfo getSessionInfo() {
         return sessionInfo;
     }
@@ -147,7 +150,7 @@ public class MobileDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getClientVersion() {
         return clientVersion;
     }
@@ -157,7 +160,7 @@ public class MobileDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getOsVersion() {
         return osVersion;
     }
@@ -167,7 +170,7 @@ public class MobileDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getLastCarrier() {
         return lastCarrier;
     }

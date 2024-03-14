@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Added members to a hold.
  */
@@ -34,7 +36,7 @@ public class LegalHoldsAddMembersDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LegalHoldsAddMembersDetails(@javax.annotation.Nonnull String legalHoldId, @javax.annotation.Nonnull String name) {
+    public LegalHoldsAddMembersDetails(@Nonnull String legalHoldId, @Nonnull String name) {
         if (legalHoldId == null) {
             throw new IllegalArgumentException("Required value for 'legalHoldId' is null");
         }
@@ -50,7 +52,7 @@ public class LegalHoldsAddMembersDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getLegalHoldId() {
         return legalHoldId;
     }
@@ -60,7 +62,7 @@ public class LegalHoldsAddMembersDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getName() {
         return name;
     }

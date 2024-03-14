@@ -17,6 +17,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed who can become member of shared folder.
  */
@@ -36,7 +39,7 @@ public class SharedFolderChangeMembersPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedFolderChangeMembersPolicyDetails(@javax.annotation.Nonnull MemberPolicy newValue, @javax.annotation.Nullable MemberPolicy previousValue) {
+    public SharedFolderChangeMembersPolicyDetails(@Nonnull MemberPolicy newValue, @Nullable MemberPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -63,7 +66,7 @@ public class SharedFolderChangeMembersPolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public MemberPolicy getNewValue() {
         return newValue;
     }
@@ -74,7 +77,7 @@ public class SharedFolderChangeMembersPolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public MemberPolicy getPreviousValue() {
         return previousValue;
     }

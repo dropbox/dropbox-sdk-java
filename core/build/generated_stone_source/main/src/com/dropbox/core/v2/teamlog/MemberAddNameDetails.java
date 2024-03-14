@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Added team member name.
  */
@@ -32,7 +34,7 @@ public class MemberAddNameDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberAddNameDetails(@javax.annotation.Nonnull UserNameLogInfo newValue) {
+    public MemberAddNameDetails(@Nonnull UserNameLogInfo newValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -44,7 +46,7 @@ public class MemberAddNameDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public UserNameLogInfo getNewValue() {
         return newValue;
     }

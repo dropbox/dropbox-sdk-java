@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Uninvited Facebook user from shared folder.
  */
@@ -35,7 +37,7 @@ public class SfFbUninviteDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SfFbUninviteDetails(long targetAssetIndex, @javax.annotation.Nonnull String originalFolderName) {
+    public SfFbUninviteDetails(long targetAssetIndex, @Nonnull String originalFolderName) {
         this.targetAssetIndex = targetAssetIndex;
         if (originalFolderName == null) {
             throw new IllegalArgumentException("Required value for 'originalFolderName' is null");
@@ -57,7 +59,7 @@ public class SfFbUninviteDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getOriginalFolderName() {
         return originalFolderName;
     }

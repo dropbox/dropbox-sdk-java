@@ -17,6 +17,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed single sign-on setting for team.
  */
@@ -36,7 +39,7 @@ public class SsoChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SsoChangePolicyDetails(@javax.annotation.Nonnull SsoPolicy newValue, @javax.annotation.Nullable SsoPolicy previousValue) {
+    public SsoChangePolicyDetails(@Nonnull SsoPolicy newValue, @Nullable SsoPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -63,7 +66,7 @@ public class SsoChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public SsoPolicy getNewValue() {
         return newValue;
     }
@@ -74,7 +77,7 @@ public class SsoChangePolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public SsoPolicy getPreviousValue() {
         return previousValue;
     }

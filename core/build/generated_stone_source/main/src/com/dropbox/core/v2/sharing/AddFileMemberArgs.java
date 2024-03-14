@@ -18,6 +18,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Arguments for {@link DbxUserSharingRequests#addFileMember(String,List)}.
  */
@@ -57,7 +60,7 @@ class AddFileMemberArgs {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AddFileMemberArgs(@javax.annotation.Nonnull String file, @javax.annotation.Nonnull List<MemberSelector> members, @javax.annotation.Nullable String customMessage, boolean quiet, @javax.annotation.Nonnull AccessLevel accessLevel, boolean addMessageAsComment) {
+    public AddFileMemberArgs(@Nonnull String file, @Nonnull List<MemberSelector> members, @Nullable String customMessage, boolean quiet, @Nonnull AccessLevel accessLevel, boolean addMessageAsComment) {
         if (file == null) {
             throw new IllegalArgumentException("Required value for 'file' is null");
         }
@@ -112,7 +115,7 @@ class AddFileMemberArgs {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getFile() {
         return file;
     }
@@ -124,7 +127,7 @@ class AddFileMemberArgs {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<MemberSelector> getMembers() {
         return members;
     }
@@ -134,7 +137,7 @@ class AddFileMemberArgs {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getCustomMessage() {
         return customMessage;
     }
@@ -157,7 +160,7 @@ class AddFileMemberArgs {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     AccessLevel.VIEWER.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public AccessLevel getAccessLevel() {
         return accessLevel;
     }

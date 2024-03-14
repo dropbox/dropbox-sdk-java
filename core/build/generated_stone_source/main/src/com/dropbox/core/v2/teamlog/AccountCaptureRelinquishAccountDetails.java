@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Account-captured user changed account email to personal email.
  */
@@ -32,7 +34,7 @@ public class AccountCaptureRelinquishAccountDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AccountCaptureRelinquishAccountDetails(@javax.annotation.Nonnull String domainName) {
+    public AccountCaptureRelinquishAccountDetails(@Nonnull String domainName) {
         if (domainName == null) {
             throw new IllegalArgumentException("Required value for 'domainName' is null");
         }
@@ -44,7 +46,7 @@ public class AccountCaptureRelinquishAccountDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getDomainName() {
         return domainName;
     }

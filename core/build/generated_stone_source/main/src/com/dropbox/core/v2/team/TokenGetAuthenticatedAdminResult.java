@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Results for {@link DbxTeamTeamRequests#tokenGetAuthenticatedAdmin}.
  */
@@ -33,7 +35,7 @@ public class TokenGetAuthenticatedAdminResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TokenGetAuthenticatedAdminResult(@javax.annotation.Nonnull TeamMemberProfile adminProfile) {
+    public TokenGetAuthenticatedAdminResult(@Nonnull TeamMemberProfile adminProfile) {
         if (adminProfile == null) {
             throw new IllegalArgumentException("Required value for 'adminProfile' is null");
         }
@@ -45,7 +47,7 @@ public class TokenGetAuthenticatedAdminResult {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public TeamMemberProfile getAdminProfile() {
         return adminProfile;
     }

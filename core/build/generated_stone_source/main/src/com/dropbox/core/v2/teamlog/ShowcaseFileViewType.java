@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class ShowcaseFileViewType {
     // struct team_log.ShowcaseFileViewType (team_log_generated.stone)
 
@@ -28,7 +30,7 @@ public class ShowcaseFileViewType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ShowcaseFileViewType(@javax.annotation.Nonnull String description) {
+    public ShowcaseFileViewType(@Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }
@@ -39,7 +41,7 @@ public class ShowcaseFileViewType {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getDescription() {
         return description;
     }

@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed team member admin role.
  */
@@ -37,7 +40,7 @@ public class MemberChangeAdminRoleDetails {
      * @param previousValue  Previous admin role. This field is relevant when
      *     the admin role is changed or when the admin role is removed.
      */
-    public MemberChangeAdminRoleDetails(@javax.annotation.Nullable AdminRole newValue, @javax.annotation.Nullable AdminRole previousValue) {
+    public MemberChangeAdminRoleDetails(@Nullable AdminRole newValue, @Nullable AdminRole previousValue) {
         this.newValue = newValue;
         this.previousValue = previousValue;
     }
@@ -57,7 +60,7 @@ public class MemberChangeAdminRoleDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public AdminRole getNewValue() {
         return newValue;
     }
@@ -68,7 +71,7 @@ public class MemberChangeAdminRoleDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public AdminRole getPreviousValue() {
         return previousValue;
     }

@@ -18,6 +18,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 class LegalHoldsPolicyUpdateArg {
     // struct team.LegalHoldsPolicyUpdateArg (team_legal_holds.stone)
 
@@ -41,7 +44,7 @@ class LegalHoldsPolicyUpdateArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LegalHoldsPolicyUpdateArg(@javax.annotation.Nonnull String id, @javax.annotation.Nullable String name, @javax.annotation.Nullable String description, @javax.annotation.Nullable List<String> members) {
+    public LegalHoldsPolicyUpdateArg(@Nonnull String id, @Nullable String name, @Nullable String description, @Nullable List<String> members) {
         if (id == null) {
             throw new IllegalArgumentException("Required value for 'id' is null");
         }
@@ -91,7 +94,7 @@ class LegalHoldsPolicyUpdateArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getId() {
         return id;
     }
@@ -101,7 +104,7 @@ class LegalHoldsPolicyUpdateArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getName() {
         return name;
     }
@@ -111,7 +114,7 @@ class LegalHoldsPolicyUpdateArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getDescription() {
         return description;
     }
@@ -121,7 +124,7 @@ class LegalHoldsPolicyUpdateArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public List<String> getMembers() {
         return members;
     }

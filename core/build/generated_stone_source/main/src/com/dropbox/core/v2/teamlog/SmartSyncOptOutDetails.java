@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Opted team out of Smart Sync.
  */
@@ -35,7 +37,7 @@ public class SmartSyncOptOutDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SmartSyncOptOutDetails(@javax.annotation.Nonnull SmartSyncOptOutPolicy previousValue, @javax.annotation.Nonnull SmartSyncOptOutPolicy newValue) {
+    public SmartSyncOptOutDetails(@Nonnull SmartSyncOptOutPolicy previousValue, @Nonnull SmartSyncOptOutPolicy newValue) {
         if (previousValue == null) {
             throw new IllegalArgumentException("Required value for 'previousValue' is null");
         }
@@ -51,7 +53,7 @@ public class SmartSyncOptOutDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public SmartSyncOptOutPolicy getPreviousValue() {
         return previousValue;
     }
@@ -61,7 +63,7 @@ public class SmartSyncOptOutDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public SmartSyncOptOutPolicy getNewValue() {
         return newValue;
     }

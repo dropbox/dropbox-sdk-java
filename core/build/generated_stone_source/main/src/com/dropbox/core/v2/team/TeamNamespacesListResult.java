@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 /**
  * Result for {@link DbxTeamTeamRequests#namespacesList(long)}.
  */
@@ -42,7 +44,7 @@ public class TeamNamespacesListResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamNamespacesListResult(@javax.annotation.Nonnull List<NamespaceMetadata> namespaces, @javax.annotation.Nonnull String cursor, boolean hasMore) {
+    public TeamNamespacesListResult(@Nonnull List<NamespaceMetadata> namespaces, @Nonnull String cursor, boolean hasMore) {
         if (namespaces == null) {
             throw new IllegalArgumentException("Required value for 'namespaces' is null");
         }
@@ -64,7 +66,7 @@ public class TeamNamespacesListResult {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<NamespaceMetadata> getNamespaces() {
         return namespaces;
     }
@@ -76,7 +78,7 @@ public class TeamNamespacesListResult {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getCursor() {
         return cursor;
     }

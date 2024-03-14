@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Reordered Binder section.
  */
@@ -37,7 +39,7 @@ public class BinderReorderSectionDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public BinderReorderSectionDetails(@javax.annotation.Nonnull String eventUuid, @javax.annotation.Nonnull String docTitle, @javax.annotation.Nonnull String binderItemName) {
+    public BinderReorderSectionDetails(@Nonnull String eventUuid, @Nonnull String docTitle, @Nonnull String binderItemName) {
         if (eventUuid == null) {
             throw new IllegalArgumentException("Required value for 'eventUuid' is null");
         }
@@ -57,7 +59,7 @@ public class BinderReorderSectionDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getEventUuid() {
         return eventUuid;
     }
@@ -67,7 +69,7 @@ public class BinderReorderSectionDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getDocTitle() {
         return docTitle;
     }
@@ -77,7 +79,7 @@ public class BinderReorderSectionDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getBinderItemName() {
         return binderItemName;
     }

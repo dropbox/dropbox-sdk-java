@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 /**
  * Available TeamMemberRole for the connected team. To be used with {@link
  * DbxTeamTeamRequests#membersSetAdminPermissionsV2(UserSelectorArg,List)}.
@@ -36,7 +38,7 @@ public class MembersGetAvailableTeamMemberRolesResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MembersGetAvailableTeamMemberRolesResult(@javax.annotation.Nonnull List<TeamMemberRole> roles) {
+    public MembersGetAvailableTeamMemberRolesResult(@Nonnull List<TeamMemberRole> roles) {
         if (roles == null) {
             throw new IllegalArgumentException("Required value for 'roles' is null");
         }
@@ -53,7 +55,7 @@ public class MembersGetAvailableTeamMemberRolesResult {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<TeamMemberRole> getRoles() {
         return roles;
     }

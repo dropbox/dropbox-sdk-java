@@ -17,6 +17,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Enabled/disabled Dropbox Paper for team.
  */
@@ -36,7 +39,7 @@ public class PaperChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperChangePolicyDetails(@javax.annotation.Nonnull PaperEnabledPolicy newValue, @javax.annotation.Nullable PaperEnabledPolicy previousValue) {
+    public PaperChangePolicyDetails(@Nonnull PaperEnabledPolicy newValue, @Nullable PaperEnabledPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -63,7 +66,7 @@ public class PaperChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public PaperEnabledPolicy getNewValue() {
         return newValue;
     }
@@ -74,7 +77,7 @@ public class PaperChangePolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public PaperEnabledPolicy getPreviousValue() {
         return previousValue;
     }

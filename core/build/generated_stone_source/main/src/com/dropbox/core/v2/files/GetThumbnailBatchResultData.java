@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class GetThumbnailBatchResultData {
     // struct files.GetThumbnailBatchResultData (files.stone)
 
@@ -31,7 +33,7 @@ public class GetThumbnailBatchResultData {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetThumbnailBatchResultData(@javax.annotation.Nonnull FileMetadata metadata, @javax.annotation.Nonnull String thumbnail) {
+    public GetThumbnailBatchResultData(@Nonnull FileMetadata metadata, @Nonnull String thumbnail) {
         if (metadata == null) {
             throw new IllegalArgumentException("Required value for 'metadata' is null");
         }
@@ -46,7 +48,7 @@ public class GetThumbnailBatchResultData {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public FileMetadata getMetadata() {
         return metadata;
     }
@@ -56,7 +58,7 @@ public class GetThumbnailBatchResultData {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getThumbnail() {
         return thumbnail;
     }

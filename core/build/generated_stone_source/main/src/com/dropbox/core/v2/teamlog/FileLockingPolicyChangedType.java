@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class FileLockingPolicyChangedType {
     // struct team_log.FileLockingPolicyChangedType (team_log_generated.stone)
 
@@ -28,7 +30,7 @@ public class FileLockingPolicyChangedType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileLockingPolicyChangedType(@javax.annotation.Nonnull String description) {
+    public FileLockingPolicyChangedType(@Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }
@@ -39,7 +41,7 @@ public class FileLockingPolicyChangedType {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getDescription() {
         return description;
     }

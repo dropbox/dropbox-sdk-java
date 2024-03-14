@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class ListTeamDevicesResult {
     // struct team.ListTeamDevicesResult (team_devices.stone)
 
@@ -38,7 +41,7 @@ public class ListTeamDevicesResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListTeamDevicesResult(@javax.annotation.Nonnull List<MemberDevices> devices, boolean hasMore, @javax.annotation.Nullable String cursor) {
+    public ListTeamDevicesResult(@Nonnull List<MemberDevices> devices, boolean hasMore, @Nullable String cursor) {
         if (devices == null) {
             throw new IllegalArgumentException("Required value for 'devices' is null");
         }
@@ -75,7 +78,7 @@ public class ListTeamDevicesResult {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<MemberDevices> getDevices() {
         return devices;
     }
@@ -96,7 +99,7 @@ public class ListTeamDevicesResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getCursor() {
         return cursor;
     }

@@ -19,6 +19,9 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class SharedContentLinkMetadataBase {
     // struct sharing.SharedContentLinkMetadataBase (shared_content_links.stone)
 
@@ -56,7 +59,7 @@ public class SharedContentLinkMetadataBase {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentLinkMetadataBase(@javax.annotation.Nonnull List<LinkAudience> audienceOptions, @javax.annotation.Nonnull LinkAudience currentAudience, @javax.annotation.Nonnull List<LinkPermission> linkPermissions, boolean passwordProtected, @javax.annotation.Nullable AccessLevel accessLevel, @javax.annotation.Nullable AudienceRestrictingSharedFolder audienceRestrictingSharedFolder, @javax.annotation.Nullable Date expiry) {
+    public SharedContentLinkMetadataBase(@Nonnull List<LinkAudience> audienceOptions, @Nonnull LinkAudience currentAudience, @Nonnull List<LinkPermission> linkPermissions, boolean passwordProtected, @Nullable AccessLevel accessLevel, @Nullable AudienceRestrictingSharedFolder audienceRestrictingSharedFolder, @Nullable Date expiry) {
         this.accessLevel = accessLevel;
         if (audienceOptions == null) {
             throw new IllegalArgumentException("Required value for 'audienceOptions' is null");
@@ -118,7 +121,7 @@ public class SharedContentLinkMetadataBase {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<LinkAudience> getAudienceOptions() {
         return audienceOptions;
     }
@@ -128,7 +131,7 @@ public class SharedContentLinkMetadataBase {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public LinkAudience getCurrentAudience() {
         return currentAudience;
     }
@@ -138,7 +141,7 @@ public class SharedContentLinkMetadataBase {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<LinkPermission> getLinkPermissions() {
         return linkPermissions;
     }
@@ -157,7 +160,7 @@ public class SharedContentLinkMetadataBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public AccessLevel getAccessLevel() {
         return accessLevel;
     }
@@ -168,7 +171,7 @@ public class SharedContentLinkMetadataBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public AudienceRestrictingSharedFolder getAudienceRestrictingSharedFolder() {
         return audienceRestrictingSharedFolder;
     }
@@ -179,7 +182,7 @@ public class SharedContentLinkMetadataBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Date getExpiry() {
         return expiry;
     }

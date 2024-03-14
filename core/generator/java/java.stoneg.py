@@ -825,6 +825,14 @@ class JavaImporter:
             if is_string_type(field.data_type) and field.data_type.pattern is not None:
                 self.add_imports('java.util.regex.Pattern')
 
+            if is_struct_type(data_type):
+                # for nullable fields
+                if not field.has_default and field in data_type.all_optional_fields:
+                    self.add_imports('javax.annotation.Nullable')
+                # for nonnull fields
+                if not j.is_java_primitive(field.data_type):
+                    self.add_imports('javax.annotation.Nonnull')
+
         # check if we need to import parent type
         if is_struct_type(data_type) and data_type.parent_type:
             self._add_imports_for_data_type(data_type.parent_type)
@@ -1893,9 +1901,9 @@ class JavaApi:
     def nullability_annotation(self, field):
         containing_data_type = self._containing_data_types[field]
         if not field.has_default and field in containing_data_type.all_optional_fields:
-            return '@javax.annotation.Nullable'
+            return '@Nullable'
         elif not self.is_java_primitive(field.data_type):
-            return '@javax.annotation.Nonnull'
+            return '@Nonnull'
         else:
             return ''
 

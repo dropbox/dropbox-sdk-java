@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 class SearchV2ContinueArg {
     // struct files.SearchV2ContinueArg (files.stone)
 
@@ -30,7 +32,7 @@ class SearchV2ContinueArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SearchV2ContinueArg(@javax.annotation.Nonnull String cursor) {
+    public SearchV2ContinueArg(@Nonnull String cursor) {
         if (cursor == null) {
             throw new IllegalArgumentException("Required value for 'cursor' is null");
         }
@@ -47,7 +49,7 @@ class SearchV2ContinueArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getCursor() {
         return cursor;
     }

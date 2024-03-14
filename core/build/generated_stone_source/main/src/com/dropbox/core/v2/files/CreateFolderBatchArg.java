@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 class CreateFolderBatchArg {
     // struct files.CreateFolderBatchArg (files.stone)
 
@@ -39,7 +41,7 @@ class CreateFolderBatchArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public CreateFolderBatchArg(@javax.annotation.Nonnull List<String> paths, boolean autorename, boolean forceAsync) {
+    public CreateFolderBatchArg(@Nonnull List<String> paths, boolean autorename, boolean forceAsync) {
         if (paths == null) {
             throw new IllegalArgumentException("Required value for 'paths' is null");
         }
@@ -82,7 +84,7 @@ class CreateFolderBatchArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<String> getPaths() {
         return paths;
     }

@@ -18,6 +18,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Removed shared link expiration date.
  */
@@ -32,7 +35,7 @@ public class SharedLinkRemoveExpiryDetails {
      * @param previousValue  Previous shared link expiration date. Might be
      *     missing due to historical data gap.
      */
-    public SharedLinkRemoveExpiryDetails(@javax.annotation.Nullable Date previousValue) {
+    public SharedLinkRemoveExpiryDetails(@Nullable Date previousValue) {
         this.previousValue = LangUtil.truncateMillis(previousValue);
     }
 
@@ -51,7 +54,7 @@ public class SharedLinkRemoveExpiryDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Date getPreviousValue() {
         return previousValue;
     }

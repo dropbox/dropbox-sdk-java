@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Liked file comment.
  */
@@ -29,7 +32,7 @@ public class FileLikeCommentDetails {
      *
      * @param commentText  Comment text.
      */
-    public FileLikeCommentDetails(@javax.annotation.Nullable String commentText) {
+    public FileLikeCommentDetails(@Nullable String commentText) {
         this.commentText = commentText;
     }
 
@@ -47,7 +50,7 @@ public class FileLikeCommentDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getCommentText() {
         return commentText;
     }

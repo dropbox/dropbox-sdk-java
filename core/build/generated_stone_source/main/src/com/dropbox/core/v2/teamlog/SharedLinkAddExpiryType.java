@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class SharedLinkAddExpiryType {
     // struct team_log.SharedLinkAddExpiryType (team_log_generated.stone)
 
@@ -28,7 +30,7 @@ public class SharedLinkAddExpiryType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedLinkAddExpiryType(@javax.annotation.Nonnull String description) {
+    public SharedLinkAddExpiryType(@Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }
@@ -39,7 +41,7 @@ public class SharedLinkAddExpiryType {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getDescription() {
         return description;
     }

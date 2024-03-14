@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 /**
  * Information about current user's root.
  */
@@ -40,7 +42,7 @@ public class RootInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RootInfo(@javax.annotation.Nonnull String rootNamespaceId, @javax.annotation.Nonnull String homeNamespaceId) {
+    public RootInfo(@Nonnull String rootNamespaceId, @Nonnull String homeNamespaceId) {
         if (rootNamespaceId == null) {
             throw new IllegalArgumentException("Required value for 'rootNamespaceId' is null");
         }
@@ -65,7 +67,7 @@ public class RootInfo {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getRootNamespaceId() {
         return rootNamespaceId;
     }
@@ -75,7 +77,7 @@ public class RootInfo {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getHomeNamespaceId() {
         return homeNamespaceId;
     }

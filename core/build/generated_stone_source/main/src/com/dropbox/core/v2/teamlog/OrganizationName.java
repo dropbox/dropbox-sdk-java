@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * The name of the organization
  */
@@ -33,7 +35,7 @@ public class OrganizationName {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public OrganizationName(@javax.annotation.Nonnull String organization) {
+    public OrganizationName(@Nonnull String organization) {
         if (organization == null) {
             throw new IllegalArgumentException("Required value for 'organization' is null");
         }
@@ -45,7 +47,7 @@ public class OrganizationName {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getOrganization() {
         return organization;
     }

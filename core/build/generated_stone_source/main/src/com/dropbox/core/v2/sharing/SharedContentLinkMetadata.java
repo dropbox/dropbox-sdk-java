@@ -19,6 +19,9 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Metadata of a shared link for a file or folder.
  */
@@ -61,7 +64,7 @@ public class SharedContentLinkMetadata extends SharedContentLinkMetadataBase {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentLinkMetadata(@javax.annotation.Nonnull List<LinkAudience> audienceOptions, @javax.annotation.Nonnull LinkAudience currentAudience, @javax.annotation.Nonnull List<LinkPermission> linkPermissions, boolean passwordProtected, @javax.annotation.Nonnull String url, @javax.annotation.Nullable AccessLevel accessLevel, @javax.annotation.Nullable AudienceRestrictingSharedFolder audienceRestrictingSharedFolder, @javax.annotation.Nullable Date expiry, @javax.annotation.Nullable AudienceExceptions audienceExceptions) {
+    public SharedContentLinkMetadata(@Nonnull List<LinkAudience> audienceOptions, @Nonnull LinkAudience currentAudience, @Nonnull List<LinkPermission> linkPermissions, boolean passwordProtected, @Nonnull String url, @Nullable AccessLevel accessLevel, @Nullable AudienceRestrictingSharedFolder audienceRestrictingSharedFolder, @Nullable Date expiry, @Nullable AudienceExceptions audienceExceptions) {
         super(audienceOptions, currentAudience, linkPermissions, passwordProtected, accessLevel, audienceRestrictingSharedFolder, expiry);
         this.audienceExceptions = audienceExceptions;
         if (url == null) {
@@ -104,7 +107,7 @@ public class SharedContentLinkMetadata extends SharedContentLinkMetadataBase {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<LinkAudience> getAudienceOptions() {
         return audienceOptions;
     }
@@ -114,7 +117,7 @@ public class SharedContentLinkMetadata extends SharedContentLinkMetadataBase {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public LinkAudience getCurrentAudience() {
         return currentAudience;
     }
@@ -124,7 +127,7 @@ public class SharedContentLinkMetadata extends SharedContentLinkMetadataBase {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<LinkPermission> getLinkPermissions() {
         return linkPermissions;
     }
@@ -143,7 +146,7 @@ public class SharedContentLinkMetadata extends SharedContentLinkMetadataBase {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getUrl() {
         return url;
     }
@@ -153,7 +156,7 @@ public class SharedContentLinkMetadata extends SharedContentLinkMetadataBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public AccessLevel getAccessLevel() {
         return accessLevel;
     }
@@ -164,7 +167,7 @@ public class SharedContentLinkMetadata extends SharedContentLinkMetadataBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public AudienceRestrictingSharedFolder getAudienceRestrictingSharedFolder() {
         return audienceRestrictingSharedFolder;
     }
@@ -175,7 +178,7 @@ public class SharedContentLinkMetadata extends SharedContentLinkMetadataBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Date getExpiry() {
         return expiry;
     }
@@ -187,7 +190,7 @@ public class SharedContentLinkMetadata extends SharedContentLinkMetadataBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public AudienceExceptions getAudienceExceptions() {
         return audienceExceptions;
     }

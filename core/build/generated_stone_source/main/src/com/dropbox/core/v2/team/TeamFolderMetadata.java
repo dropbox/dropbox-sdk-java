@@ -20,6 +20,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 /**
  * Properties of a team folder.
  */
@@ -51,7 +53,7 @@ public class TeamFolderMetadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamFolderMetadata(@javax.annotation.Nonnull String teamFolderId, @javax.annotation.Nonnull String name, @javax.annotation.Nonnull TeamFolderStatus status, boolean isTeamSharedDropbox, @javax.annotation.Nonnull SyncSetting syncSetting, @javax.annotation.Nonnull List<ContentSyncSetting> contentSyncSettings) {
+    public TeamFolderMetadata(@Nonnull String teamFolderId, @Nonnull String name, @Nonnull TeamFolderStatus status, boolean isTeamSharedDropbox, @Nonnull SyncSetting syncSetting, @Nonnull List<ContentSyncSetting> contentSyncSettings) {
         if (teamFolderId == null) {
             throw new IllegalArgumentException("Required value for 'teamFolderId' is null");
         }
@@ -88,7 +90,7 @@ public class TeamFolderMetadata {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getTeamFolderId() {
         return teamFolderId;
     }
@@ -98,7 +100,7 @@ public class TeamFolderMetadata {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -108,7 +110,7 @@ public class TeamFolderMetadata {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public TeamFolderStatus getStatus() {
         return status;
     }
@@ -127,7 +129,7 @@ public class TeamFolderMetadata {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public SyncSetting getSyncSetting() {
         return syncSetting;
     }
@@ -137,7 +139,7 @@ public class TeamFolderMetadata {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<ContentSyncSetting> getContentSyncSettings() {
         return contentSyncSettings;
     }

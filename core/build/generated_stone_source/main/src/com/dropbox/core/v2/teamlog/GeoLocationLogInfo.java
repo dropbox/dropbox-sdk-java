@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Geographic location details.
  */
@@ -41,7 +44,7 @@ public class GeoLocationLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GeoLocationLogInfo(@javax.annotation.Nonnull String ipAddress, @javax.annotation.Nullable String city, @javax.annotation.Nullable String region, @javax.annotation.Nullable String country) {
+    public GeoLocationLogInfo(@Nonnull String ipAddress, @Nullable String city, @Nullable String region, @Nullable String country) {
         this.city = city;
         this.region = region;
         this.country = country;
@@ -70,7 +73,7 @@ public class GeoLocationLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getIpAddress() {
         return ipAddress;
     }
@@ -80,7 +83,7 @@ public class GeoLocationLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getCity() {
         return city;
     }
@@ -90,7 +93,7 @@ public class GeoLocationLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getRegion() {
         return region;
     }
@@ -100,7 +103,7 @@ public class GeoLocationLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getCountry() {
         return country;
     }

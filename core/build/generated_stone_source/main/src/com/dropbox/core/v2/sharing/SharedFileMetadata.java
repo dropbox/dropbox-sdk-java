@@ -21,6 +21,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Properties of the shared file.
  */
@@ -92,7 +95,7 @@ public class SharedFileMetadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedFileMetadata(@javax.annotation.Nonnull String id, @javax.annotation.Nonnull String name, @javax.annotation.Nonnull FolderPolicy policy, @javax.annotation.Nonnull String previewUrl, @javax.annotation.Nullable AccessLevel accessType, @javax.annotation.Nullable ExpectedSharedContentLinkMetadata expectedLinkMetadata, @javax.annotation.Nullable SharedContentLinkMetadata linkMetadata, @javax.annotation.Nullable List<String> ownerDisplayNames, @javax.annotation.Nullable Team ownerTeam, @javax.annotation.Nullable String parentSharedFolderId, @javax.annotation.Nullable String pathDisplay, @javax.annotation.Nullable String pathLower, @javax.annotation.Nullable List<FilePermission> permissions, @javax.annotation.Nullable Date timeInvited) {
+    public SharedFileMetadata(@Nonnull String id, @Nonnull String name, @Nonnull FolderPolicy policy, @Nonnull String previewUrl, @Nullable AccessLevel accessType, @Nullable ExpectedSharedContentLinkMetadata expectedLinkMetadata, @Nullable SharedContentLinkMetadata linkMetadata, @Nullable List<String> ownerDisplayNames, @Nullable Team ownerTeam, @Nullable String parentSharedFolderId, @Nullable String pathDisplay, @Nullable String pathLower, @Nullable List<FilePermission> permissions, @Nullable Date timeInvited) {
         this.accessType = accessType;
         if (id == null) {
             throw new IllegalArgumentException("Required value for 'id' is null");
@@ -171,7 +174,7 @@ public class SharedFileMetadata {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getId() {
         return id;
     }
@@ -181,7 +184,7 @@ public class SharedFileMetadata {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -191,7 +194,7 @@ public class SharedFileMetadata {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public FolderPolicy getPolicy() {
         return policy;
     }
@@ -201,7 +204,7 @@ public class SharedFileMetadata {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getPreviewUrl() {
         return previewUrl;
     }
@@ -211,7 +214,7 @@ public class SharedFileMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public AccessLevel getAccessType() {
         return accessType;
     }
@@ -223,7 +226,7 @@ public class SharedFileMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public ExpectedSharedContentLinkMetadata getExpectedLinkMetadata() {
         return expectedLinkMetadata;
     }
@@ -234,7 +237,7 @@ public class SharedFileMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public SharedContentLinkMetadata getLinkMetadata() {
         return linkMetadata;
     }
@@ -246,7 +249,7 @@ public class SharedFileMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public List<String> getOwnerDisplayNames() {
         return ownerDisplayNames;
     }
@@ -257,7 +260,7 @@ public class SharedFileMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Team getOwnerTeam() {
         return ownerTeam;
     }
@@ -268,7 +271,7 @@ public class SharedFileMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getParentSharedFolderId() {
         return parentSharedFolderId;
     }
@@ -281,7 +284,7 @@ public class SharedFileMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getPathDisplay() {
         return pathDisplay;
     }
@@ -291,7 +294,7 @@ public class SharedFileMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getPathLower() {
         return pathLower;
     }
@@ -305,7 +308,7 @@ public class SharedFileMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public List<FilePermission> getPermissions() {
         return permissions;
     }
@@ -318,7 +321,7 @@ public class SharedFileMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Date getTimeInvited() {
         return timeInvited;
     }

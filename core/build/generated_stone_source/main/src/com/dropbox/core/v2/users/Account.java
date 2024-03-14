@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * The amount of detail revealed about an account depends on the user being
  * queried and the user making the query.
@@ -49,7 +52,7 @@ public class Account {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public Account(@javax.annotation.Nonnull String accountId, @javax.annotation.Nonnull Name name, @javax.annotation.Nonnull String email, boolean emailVerified, boolean disabled, @javax.annotation.Nullable String profilePhotoUrl) {
+    public Account(@Nonnull String accountId, @Nonnull Name name, @Nonnull String email, boolean emailVerified, boolean disabled, @Nullable String profilePhotoUrl) {
         if (accountId == null) {
             throw new IllegalArgumentException("Required value for 'accountId' is null");
         }
@@ -101,7 +104,7 @@ public class Account {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getAccountId() {
         return accountId;
     }
@@ -111,7 +114,7 @@ public class Account {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public Name getName() {
         return name;
     }
@@ -123,7 +126,7 @@ public class Account {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getEmail() {
         return email;
     }
@@ -151,7 +154,7 @@ public class Account {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getProfilePhotoUrl() {
         return profilePhotoUrl;
     }

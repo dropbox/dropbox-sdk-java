@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 class ListFileRequestsContinueArg {
     // struct file_requests.ListFileRequestsContinueArg (file_requests.stone)
 
@@ -29,7 +31,7 @@ class ListFileRequestsContinueArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFileRequestsContinueArg(@javax.annotation.Nonnull String cursor) {
+    public ListFileRequestsContinueArg(@Nonnull String cursor) {
         if (cursor == null) {
             throw new IllegalArgumentException("Required value for 'cursor' is null");
         }
@@ -42,7 +44,7 @@ class ListFileRequestsContinueArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getCursor() {
         return cursor;
     }

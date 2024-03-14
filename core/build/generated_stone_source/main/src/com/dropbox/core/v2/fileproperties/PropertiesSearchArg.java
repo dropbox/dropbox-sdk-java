@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 class PropertiesSearchArg {
     // struct file_properties.PropertiesSearchArg (file_properties.stone)
 
@@ -33,7 +35,7 @@ class PropertiesSearchArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PropertiesSearchArg(@javax.annotation.Nonnull List<PropertiesSearchQuery> queries, @javax.annotation.Nonnull TemplateFilter templateFilter) {
+    public PropertiesSearchArg(@Nonnull List<PropertiesSearchQuery> queries, @Nonnull TemplateFilter templateFilter) {
         if (queries == null) {
             throw new IllegalArgumentException("Required value for 'queries' is null");
         }
@@ -72,7 +74,7 @@ class PropertiesSearchArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<PropertiesSearchQuery> getQueries() {
         return queries;
     }
@@ -84,7 +86,7 @@ class PropertiesSearchArg {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     TemplateFilter.FILTER_NONE.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public TemplateFilter getTemplateFilter() {
         return templateFilter;
     }

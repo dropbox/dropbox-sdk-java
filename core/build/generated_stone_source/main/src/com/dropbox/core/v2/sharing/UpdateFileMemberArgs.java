@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 /**
  * Arguments for {@link
  * DbxUserSharingRequests#updateFileMember(String,MemberSelector,AccessLevel)}.
@@ -44,7 +46,7 @@ class UpdateFileMemberArgs {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UpdateFileMemberArgs(@javax.annotation.Nonnull String file, @javax.annotation.Nonnull MemberSelector member, @javax.annotation.Nonnull AccessLevel accessLevel) {
+    public UpdateFileMemberArgs(@Nonnull String file, @Nonnull MemberSelector member, @Nonnull AccessLevel accessLevel) {
         if (file == null) {
             throw new IllegalArgumentException("Required value for 'file' is null");
         }
@@ -70,7 +72,7 @@ class UpdateFileMemberArgs {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getFile() {
         return file;
     }
@@ -80,7 +82,7 @@ class UpdateFileMemberArgs {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public MemberSelector getMember() {
         return member;
     }
@@ -90,7 +92,7 @@ class UpdateFileMemberArgs {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public AccessLevel getAccessLevel() {
         return accessLevel;
     }

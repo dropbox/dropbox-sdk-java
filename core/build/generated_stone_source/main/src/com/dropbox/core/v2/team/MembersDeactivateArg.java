@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 class MembersDeactivateArg extends MembersDeactivateBaseArg {
     // struct team.MembersDeactivateArg (team_members.stone)
 
@@ -31,7 +33,7 @@ class MembersDeactivateArg extends MembersDeactivateBaseArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MembersDeactivateArg(@javax.annotation.Nonnull UserSelectorArg user, boolean wipeData) {
+    public MembersDeactivateArg(@Nonnull UserSelectorArg user, boolean wipeData) {
         super(user);
         this.wipeData = wipeData;
     }
@@ -56,7 +58,7 @@ class MembersDeactivateArg extends MembersDeactivateBaseArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public UserSelectorArg getUser() {
         return user;
     }

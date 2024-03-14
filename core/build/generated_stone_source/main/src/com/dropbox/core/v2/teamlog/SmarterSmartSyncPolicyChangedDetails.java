@@ -17,6 +17,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed automatic Smart Sync setting for team.
  */
@@ -37,7 +39,7 @@ public class SmarterSmartSyncPolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SmarterSmartSyncPolicyChangedDetails(@javax.annotation.Nonnull SmarterSmartSyncPolicyState previousValue, @javax.annotation.Nonnull SmarterSmartSyncPolicyState newValue) {
+    public SmarterSmartSyncPolicyChangedDetails(@Nonnull SmarterSmartSyncPolicyState previousValue, @Nonnull SmarterSmartSyncPolicyState newValue) {
         if (previousValue == null) {
             throw new IllegalArgumentException("Required value for 'previousValue' is null");
         }
@@ -53,7 +55,7 @@ public class SmarterSmartSyncPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public SmarterSmartSyncPolicyState getPreviousValue() {
         return previousValue;
     }
@@ -63,7 +65,7 @@ public class SmarterSmartSyncPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public SmarterSmartSyncPolicyState getNewValue() {
         return newValue;
     }

@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Downloaded export for a hold.
  */
@@ -43,7 +46,7 @@ public class LegalHoldsExportDownloadedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LegalHoldsExportDownloadedDetails(@javax.annotation.Nonnull String legalHoldId, @javax.annotation.Nonnull String name, @javax.annotation.Nonnull String exportName, @javax.annotation.Nullable String part, @javax.annotation.Nullable String fileName) {
+    public LegalHoldsExportDownloadedDetails(@Nonnull String legalHoldId, @Nonnull String name, @Nonnull String exportName, @Nullable String part, @Nullable String fileName) {
         if (legalHoldId == null) {
             throw new IllegalArgumentException("Required value for 'legalHoldId' is null");
         }
@@ -81,7 +84,7 @@ public class LegalHoldsExportDownloadedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getLegalHoldId() {
         return legalHoldId;
     }
@@ -91,7 +94,7 @@ public class LegalHoldsExportDownloadedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -101,7 +104,7 @@ public class LegalHoldsExportDownloadedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getExportName() {
         return exportName;
     }
@@ -111,7 +114,7 @@ public class LegalHoldsExportDownloadedDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getPart() {
         return part;
     }
@@ -121,7 +124,7 @@ public class LegalHoldsExportDownloadedDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getFileName() {
         return fileName;
     }

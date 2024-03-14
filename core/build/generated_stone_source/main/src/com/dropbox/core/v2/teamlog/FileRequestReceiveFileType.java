@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class FileRequestReceiveFileType {
     // struct team_log.FileRequestReceiveFileType (team_log_generated.stone)
 
@@ -28,7 +30,7 @@ public class FileRequestReceiveFileType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileRequestReceiveFileType(@javax.annotation.Nonnull String description) {
+    public FileRequestReceiveFileType(@Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }
@@ -39,7 +41,7 @@ public class FileRequestReceiveFileType {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getDescription() {
         return description;
     }

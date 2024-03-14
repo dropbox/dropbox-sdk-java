@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed sharing setting for Paper doc.
  */
@@ -39,7 +42,7 @@ public class PaperDocChangeSharingPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperDocChangeSharingPolicyDetails(@javax.annotation.Nonnull String eventUuid, @javax.annotation.Nullable String publicSharingPolicy, @javax.annotation.Nullable String teamSharingPolicy) {
+    public PaperDocChangeSharingPolicyDetails(@Nonnull String eventUuid, @Nullable String publicSharingPolicy, @Nullable String teamSharingPolicy) {
         if (eventUuid == null) {
             throw new IllegalArgumentException("Required value for 'eventUuid' is null");
         }
@@ -67,7 +70,7 @@ public class PaperDocChangeSharingPolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getEventUuid() {
         return eventUuid;
     }
@@ -77,7 +80,7 @@ public class PaperDocChangeSharingPolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getPublicSharingPolicy() {
         return publicSharingPolicy;
     }
@@ -87,7 +90,7 @@ public class PaperDocChangeSharingPolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getTeamSharingPolicy() {
         return teamSharingPolicy;
     }

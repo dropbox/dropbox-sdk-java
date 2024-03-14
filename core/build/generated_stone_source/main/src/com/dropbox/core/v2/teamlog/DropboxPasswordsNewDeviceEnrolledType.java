@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class DropboxPasswordsNewDeviceEnrolledType {
     // struct team_log.DropboxPasswordsNewDeviceEnrolledType (team_log_generated.stone)
 
@@ -28,7 +30,7 @@ public class DropboxPasswordsNewDeviceEnrolledType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DropboxPasswordsNewDeviceEnrolledType(@javax.annotation.Nonnull String description) {
+    public DropboxPasswordsNewDeviceEnrolledType(@Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }
@@ -39,7 +41,7 @@ public class DropboxPasswordsNewDeviceEnrolledType {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getDescription() {
         return description;
     }

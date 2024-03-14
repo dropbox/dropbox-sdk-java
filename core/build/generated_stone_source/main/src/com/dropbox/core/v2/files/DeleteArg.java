@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class DeleteArg {
     // struct files.DeleteArg (files.stone)
 
@@ -35,7 +38,7 @@ public class DeleteArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeleteArg(@javax.annotation.Nonnull String path, @javax.annotation.Nullable String parentRev) {
+    public DeleteArg(@Nonnull String path, @Nullable String parentRev) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
@@ -75,7 +78,7 @@ public class DeleteArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getPath() {
         return path;
     }
@@ -86,7 +89,7 @@ public class DeleteArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getParentRev() {
         return parentRev;
     }

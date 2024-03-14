@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class UploadSessionStartResult {
     // struct files.UploadSessionStartResult (files.stone)
 
@@ -33,7 +35,7 @@ public class UploadSessionStartResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UploadSessionStartResult(@javax.annotation.Nonnull String sessionId) {
+    public UploadSessionStartResult(@Nonnull String sessionId) {
         if (sessionId == null) {
             throw new IllegalArgumentException("Required value for 'sessionId' is null");
         }
@@ -48,7 +50,7 @@ public class UploadSessionStartResult {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getSessionId() {
         return sessionId;
     }

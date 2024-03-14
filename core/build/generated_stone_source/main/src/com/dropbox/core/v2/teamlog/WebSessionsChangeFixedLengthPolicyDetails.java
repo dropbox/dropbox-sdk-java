@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed how long members can stay signed in to Dropbox.com.
  */
@@ -36,7 +39,7 @@ public class WebSessionsChangeFixedLengthPolicyDetails {
      * @param previousValue  Previous session length policy. Might be missing
      *     due to historical data gap.
      */
-    public WebSessionsChangeFixedLengthPolicyDetails(@javax.annotation.Nullable WebSessionsFixedLengthPolicy newValue, @javax.annotation.Nullable WebSessionsFixedLengthPolicy previousValue) {
+    public WebSessionsChangeFixedLengthPolicyDetails(@Nullable WebSessionsFixedLengthPolicy newValue, @Nullable WebSessionsFixedLengthPolicy previousValue) {
         this.newValue = newValue;
         this.previousValue = previousValue;
     }
@@ -55,7 +58,7 @@ public class WebSessionsChangeFixedLengthPolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public WebSessionsFixedLengthPolicy getNewValue() {
         return newValue;
     }
@@ -66,7 +69,7 @@ public class WebSessionsChangeFixedLengthPolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public WebSessionsFixedLengthPolicy getPreviousValue() {
         return previousValue;
     }

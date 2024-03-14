@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 class ListSharedLinksArg {
     // struct sharing.ListSharedLinksArg (shared_links.stone)
 
@@ -38,7 +41,7 @@ class ListSharedLinksArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListSharedLinksArg(@javax.annotation.Nullable String path, @javax.annotation.Nullable String cursor, @javax.annotation.Nullable Boolean directOnly) {
+    public ListSharedLinksArg(@Nullable String path, @Nullable String cursor, @Nullable Boolean directOnly) {
         if (path != null) {
             if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)", path)) {
                 throw new IllegalArgumentException("String 'path' does not match pattern");
@@ -63,7 +66,7 @@ class ListSharedLinksArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getPath() {
         return path;
     }
@@ -74,7 +77,7 @@ class ListSharedLinksArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getCursor() {
         return cursor;
     }
@@ -84,7 +87,7 @@ class ListSharedLinksArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Boolean getDirectOnly() {
         return directOnly;
     }

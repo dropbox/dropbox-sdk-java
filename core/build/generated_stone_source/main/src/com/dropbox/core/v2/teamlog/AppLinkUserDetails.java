@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Linked app for member.
  */
@@ -32,7 +34,7 @@ public class AppLinkUserDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AppLinkUserDetails(@javax.annotation.Nonnull AppLogInfo appInfo) {
+    public AppLinkUserDetails(@Nonnull AppLogInfo appInfo) {
         if (appInfo == null) {
             throw new IllegalArgumentException("Required value for 'appInfo' is null");
         }
@@ -44,7 +46,7 @@ public class AppLinkUserDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public AppLogInfo getAppInfo() {
         return appInfo;
     }

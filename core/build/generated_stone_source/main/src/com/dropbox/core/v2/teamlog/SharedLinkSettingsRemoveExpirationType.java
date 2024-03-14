@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class SharedLinkSettingsRemoveExpirationType {
     // struct team_log.SharedLinkSettingsRemoveExpirationType (team_log_generated.stone)
 
@@ -28,7 +30,7 @@ public class SharedLinkSettingsRemoveExpirationType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedLinkSettingsRemoveExpirationType(@javax.annotation.Nonnull String description) {
+    public SharedLinkSettingsRemoveExpirationType(@Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }
@@ -39,7 +41,7 @@ public class SharedLinkSettingsRemoveExpirationType {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getDescription() {
         return description;
     }

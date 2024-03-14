@@ -17,6 +17,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Added users and/or groups to shared file/folder.
  */
@@ -34,7 +36,7 @@ public class SharedContentAddMemberDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentAddMemberDetails(@javax.annotation.Nonnull AccessLevel sharedContentAccessLevel) {
+    public SharedContentAddMemberDetails(@Nonnull AccessLevel sharedContentAccessLevel) {
         if (sharedContentAccessLevel == null) {
             throw new IllegalArgumentException("Required value for 'sharedContentAccessLevel' is null");
         }
@@ -46,7 +48,7 @@ public class SharedContentAddMemberDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public AccessLevel getSharedContentAccessLevel() {
         return sharedContentAccessLevel;
     }

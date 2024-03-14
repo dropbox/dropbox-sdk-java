@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed integration policy for team.
  */
@@ -38,7 +40,7 @@ public class IntegrationPolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public IntegrationPolicyChangedDetails(@javax.annotation.Nonnull String integrationName, @javax.annotation.Nonnull IntegrationPolicy newValue, @javax.annotation.Nonnull IntegrationPolicy previousValue) {
+    public IntegrationPolicyChangedDetails(@Nonnull String integrationName, @Nonnull IntegrationPolicy newValue, @Nonnull IntegrationPolicy previousValue) {
         if (integrationName == null) {
             throw new IllegalArgumentException("Required value for 'integrationName' is null");
         }
@@ -58,7 +60,7 @@ public class IntegrationPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getIntegrationName() {
         return integrationName;
     }
@@ -68,7 +70,7 @@ public class IntegrationPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public IntegrationPolicy getNewValue() {
         return newValue;
     }
@@ -78,7 +80,7 @@ public class IntegrationPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public IntegrationPolicy getPreviousValue() {
         return previousValue;
     }

@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 /**
  * Result for {@link DbxUserFileRequestsRequests#deleteAllClosed}.
  */
@@ -34,7 +36,7 @@ public class DeleteAllClosedFileRequestsResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeleteAllClosedFileRequestsResult(@javax.annotation.Nonnull List<FileRequest> fileRequests) {
+    public DeleteAllClosedFileRequestsResult(@Nonnull List<FileRequest> fileRequests) {
         if (fileRequests == null) {
             throw new IllegalArgumentException("Required value for 'fileRequests' is null");
         }
@@ -51,7 +53,7 @@ public class DeleteAllClosedFileRequestsResult {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<FileRequest> getFileRequests() {
         return fileRequests;
     }

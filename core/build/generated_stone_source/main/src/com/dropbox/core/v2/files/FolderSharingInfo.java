@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Sharing info for a folder which is contained in a shared folder or is a
  * shared folder mount point.
@@ -52,7 +55,7 @@ public class FolderSharingInfo extends SharingInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FolderSharingInfo(boolean readOnly, @javax.annotation.Nullable String parentSharedFolderId, @javax.annotation.Nullable String sharedFolderId, boolean traverseOnly, boolean noAccess) {
+    public FolderSharingInfo(boolean readOnly, @Nullable String parentSharedFolderId, @Nullable String sharedFolderId, boolean traverseOnly, boolean noAccess) {
         super(readOnly);
         if (parentSharedFolderId != null) {
             if (!java.util.regex.Pattern.matches("[-_0-9a-zA-Z:]+", parentSharedFolderId)) {
@@ -97,7 +100,7 @@ public class FolderSharingInfo extends SharingInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getParentSharedFolderId() {
         return parentSharedFolderId;
     }
@@ -108,7 +111,7 @@ public class FolderSharingInfo extends SharingInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getSharedFolderId() {
         return sharedFolderId;
     }

@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 class RelocationArg extends RelocationPath {
     // struct files.RelocationArg (files.stone)
 
@@ -44,7 +46,7 @@ class RelocationArg extends RelocationPath {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RelocationArg(@javax.annotation.Nonnull String fromPath, @javax.annotation.Nonnull String toPath, boolean allowSharedFolder, boolean autorename, boolean allowOwnershipTransfer) {
+    public RelocationArg(@Nonnull String fromPath, @Nonnull String toPath, boolean allowSharedFolder, boolean autorename, boolean allowOwnershipTransfer) {
         super(fromPath, toPath);
         this.allowSharedFolder = allowSharedFolder;
         this.autorename = autorename;
@@ -75,7 +77,7 @@ class RelocationArg extends RelocationPath {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getFromPath() {
         return fromPath;
     }
@@ -85,7 +87,7 @@ class RelocationArg extends RelocationPath {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getToPath() {
         return toPath;
     }

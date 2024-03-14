@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 /**
  * Root info when user is not member of a team or the user is a member of a team
  * and the team does not have a separate root namespace.
@@ -39,7 +41,7 @@ public class UserRootInfo extends RootInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UserRootInfo(@javax.annotation.Nonnull String rootNamespaceId, @javax.annotation.Nonnull String homeNamespaceId) {
+    public UserRootInfo(@Nonnull String rootNamespaceId, @Nonnull String homeNamespaceId) {
         super(rootNamespaceId, homeNamespaceId);
     }
 
@@ -51,7 +53,7 @@ public class UserRootInfo extends RootInfo {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getRootNamespaceId() {
         return rootNamespaceId;
     }
@@ -61,7 +63,7 @@ public class UserRootInfo extends RootInfo {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getHomeNamespaceId() {
         return homeNamespaceId;
     }

@@ -21,6 +21,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * The metadata which includes basic information about the shared folder.
  */
@@ -84,7 +87,7 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedFolderMetadata(@javax.annotation.Nonnull AccessLevel accessType, boolean isInsideTeamFolder, boolean isTeamFolder, @javax.annotation.Nonnull String name, @javax.annotation.Nonnull FolderPolicy policy, @javax.annotation.Nonnull String previewUrl, @javax.annotation.Nonnull String sharedFolderId, @javax.annotation.Nonnull Date timeInvited, @javax.annotation.Nullable List<String> ownerDisplayNames, @javax.annotation.Nullable Team ownerTeam, @javax.annotation.Nullable String parentSharedFolderId, @javax.annotation.Nullable String pathDisplay, @javax.annotation.Nullable String pathLower, @javax.annotation.Nullable String parentFolderName, @javax.annotation.Nullable SharedContentLinkMetadata linkMetadata, @javax.annotation.Nullable List<FolderPermission> permissions, @javax.annotation.Nonnull AccessInheritance accessInheritance) {
+    public SharedFolderMetadata(@Nonnull AccessLevel accessType, boolean isInsideTeamFolder, boolean isTeamFolder, @Nonnull String name, @Nonnull FolderPolicy policy, @Nonnull String previewUrl, @Nonnull String sharedFolderId, @Nonnull Date timeInvited, @Nullable List<String> ownerDisplayNames, @Nullable Team ownerTeam, @Nullable String parentSharedFolderId, @Nullable String pathDisplay, @Nullable String pathLower, @Nullable String parentFolderName, @Nullable SharedContentLinkMetadata linkMetadata, @Nullable List<FolderPermission> permissions, @Nonnull AccessInheritance accessInheritance) {
         super(accessType, isInsideTeamFolder, isTeamFolder, ownerDisplayNames, ownerTeam, parentSharedFolderId, pathDisplay, pathLower, parentFolderName);
         this.linkMetadata = linkMetadata;
         if (name == null) {
@@ -158,7 +161,7 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public AccessLevel getAccessType() {
         return accessType;
     }
@@ -187,7 +190,7 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -197,7 +200,7 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public FolderPolicy getPolicy() {
         return policy;
     }
@@ -207,7 +210,7 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getPreviewUrl() {
         return previewUrl;
     }
@@ -217,7 +220,7 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getSharedFolderId() {
         return sharedFolderId;
     }
@@ -228,7 +231,7 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public Date getTimeInvited() {
         return timeInvited;
     }
@@ -240,7 +243,7 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public List<String> getOwnerDisplayNames() {
         return ownerDisplayNames;
     }
@@ -251,7 +254,7 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Team getOwnerTeam() {
         return ownerTeam;
     }
@@ -262,7 +265,7 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getParentSharedFolderId() {
         return parentSharedFolderId;
     }
@@ -272,7 +275,7 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getPathDisplay() {
         return pathDisplay;
     }
@@ -283,7 +286,7 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getPathLower() {
         return pathLower;
     }
@@ -293,7 +296,7 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getParentFolderName() {
         return parentFolderName;
     }
@@ -305,7 +308,7 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public SharedContentLinkMetadata getLinkMetadata() {
         return linkMetadata;
     }
@@ -316,7 +319,7 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public List<FolderPermission> getPermissions() {
         return permissions;
     }
@@ -327,7 +330,7 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     AccessInheritance.INHERIT.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public AccessInheritance getAccessInheritance() {
         return accessInheritance;
     }

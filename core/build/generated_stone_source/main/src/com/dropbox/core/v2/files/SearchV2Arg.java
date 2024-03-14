@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 class SearchV2Arg {
     // struct files.SearchV2Arg (files.stone)
 
@@ -39,7 +42,7 @@ class SearchV2Arg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SearchV2Arg(@javax.annotation.Nonnull String query, @javax.annotation.Nullable SearchOptions options, @javax.annotation.Nullable SearchMatchFieldOptions matchFieldOptions, @javax.annotation.Nullable Boolean includeHighlights) {
+    public SearchV2Arg(@Nonnull String query, @Nullable SearchOptions options, @Nullable SearchMatchFieldOptions matchFieldOptions, @Nullable Boolean includeHighlights) {
         if (query == null) {
             throw new IllegalArgumentException("Required value for 'query' is null");
         }
@@ -74,7 +77,7 @@ class SearchV2Arg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getQuery() {
         return query;
     }
@@ -84,7 +87,7 @@ class SearchV2Arg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public SearchOptions getOptions() {
         return options;
     }
@@ -94,7 +97,7 @@ class SearchV2Arg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public SearchMatchFieldOptions getMatchFieldOptions() {
         return matchFieldOptions;
     }
@@ -104,7 +107,7 @@ class SearchV2Arg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Boolean getIncludeHighlights() {
         return includeHighlights;
     }

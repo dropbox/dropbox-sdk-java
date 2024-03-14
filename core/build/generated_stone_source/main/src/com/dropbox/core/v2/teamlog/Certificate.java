@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Certificate details.
  */
@@ -46,7 +49,7 @@ public class Certificate {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public Certificate(@javax.annotation.Nonnull String subject, @javax.annotation.Nonnull String issuer, @javax.annotation.Nonnull String issueDate, @javax.annotation.Nonnull String expirationDate, @javax.annotation.Nonnull String serialNumber, @javax.annotation.Nonnull String sha1Fingerprint, @javax.annotation.Nullable String commonName) {
+    public Certificate(@Nonnull String subject, @Nonnull String issuer, @Nonnull String issueDate, @Nonnull String expirationDate, @Nonnull String serialNumber, @Nonnull String sha1Fingerprint, @Nullable String commonName) {
         if (subject == null) {
             throw new IllegalArgumentException("Required value for 'subject' is null");
         }
@@ -100,7 +103,7 @@ public class Certificate {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getSubject() {
         return subject;
     }
@@ -110,7 +113,7 @@ public class Certificate {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getIssuer() {
         return issuer;
     }
@@ -120,7 +123,7 @@ public class Certificate {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getIssueDate() {
         return issueDate;
     }
@@ -130,7 +133,7 @@ public class Certificate {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getExpirationDate() {
         return expirationDate;
     }
@@ -140,7 +143,7 @@ public class Certificate {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getSerialNumber() {
         return serialNumber;
     }
@@ -150,7 +153,7 @@ public class Certificate {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getSha1Fingerprint() {
         return sha1Fingerprint;
     }
@@ -160,7 +163,7 @@ public class Certificate {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getCommonName() {
         return commonName;
     }

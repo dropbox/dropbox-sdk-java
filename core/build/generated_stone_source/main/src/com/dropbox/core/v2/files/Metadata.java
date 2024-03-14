@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Metadata for a file or folder.
  */
@@ -55,7 +58,7 @@ public class Metadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public Metadata(@javax.annotation.Nonnull String name, @javax.annotation.Nullable String pathLower, @javax.annotation.Nullable String pathDisplay, @javax.annotation.Nullable String parentSharedFolderId, @javax.annotation.Nullable String previewUrl) {
+    public Metadata(@Nonnull String name, @Nullable String pathLower, @Nullable String pathDisplay, @Nullable String parentSharedFolderId, @Nullable String previewUrl) {
         if (name == null) {
             throw new IllegalArgumentException("Required value for 'name' is null");
         }
@@ -92,7 +95,7 @@ public class Metadata {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -103,7 +106,7 @@ public class Metadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getPathLower() {
         return pathLower;
     }
@@ -119,7 +122,7 @@ public class Metadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getPathDisplay() {
         return pathDisplay;
     }
@@ -130,7 +133,7 @@ public class Metadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getParentSharedFolderId() {
         return parentSharedFolderId;
     }
@@ -140,7 +143,7 @@ public class Metadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getPreviewUrl() {
         return previewUrl;
     }

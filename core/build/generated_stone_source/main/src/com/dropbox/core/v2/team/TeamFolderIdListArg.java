@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 class TeamFolderIdListArg {
     // struct team.TeamFolderIdListArg (team_folders.stone)
 
@@ -30,7 +32,7 @@ class TeamFolderIdListArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamFolderIdListArg(@javax.annotation.Nonnull List<String> teamFolderIds) {
+    public TeamFolderIdListArg(@Nonnull List<String> teamFolderIds) {
         if (teamFolderIds == null) {
             throw new IllegalArgumentException("Required value for 'teamFolderIds' is null");
         }
@@ -53,7 +55,7 @@ class TeamFolderIdListArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<String> getTeamFolderIds() {
         return teamFolderIds;
     }

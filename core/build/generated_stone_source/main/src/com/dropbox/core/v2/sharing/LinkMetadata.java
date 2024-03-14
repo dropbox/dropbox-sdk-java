@@ -18,6 +18,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Metadata for a shared link. This can be either a {@link PathLinkMetadata} or
  * {@link CollectionLinkMetadata}.
@@ -41,7 +44,7 @@ public class LinkMetadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LinkMetadata(@javax.annotation.Nonnull String url, @javax.annotation.Nonnull Visibility visibility, @javax.annotation.Nullable Date expires) {
+    public LinkMetadata(@Nonnull String url, @Nonnull Visibility visibility, @Nullable Date expires) {
         if (url == null) {
             throw new IllegalArgumentException("Required value for 'url' is null");
         }
@@ -74,7 +77,7 @@ public class LinkMetadata {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getUrl() {
         return url;
     }
@@ -84,7 +87,7 @@ public class LinkMetadata {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public Visibility getVisibility() {
         return visibility;
     }
@@ -94,7 +97,7 @@ public class LinkMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Date getExpires() {
         return expires;
     }

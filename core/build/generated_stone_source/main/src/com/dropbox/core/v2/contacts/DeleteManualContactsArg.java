@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 class DeleteManualContactsArg {
     // struct contacts.DeleteManualContactsArg (contacts.stone)
 
@@ -30,7 +32,7 @@ class DeleteManualContactsArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeleteManualContactsArg(@javax.annotation.Nonnull List<String> emailAddresses) {
+    public DeleteManualContactsArg(@Nonnull List<String> emailAddresses) {
         if (emailAddresses == null) {
             throw new IllegalArgumentException("Required value for 'emailAddresses' is null");
         }
@@ -53,7 +55,7 @@ class DeleteManualContactsArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<String> getEmailAddresses() {
         return emailAddresses;
     }

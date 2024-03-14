@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Exactly one of team_member_id, email, or external_id must be provided to
  * identify the user account. At least one of new_email, new_external_id,
@@ -59,7 +62,7 @@ class MembersSetProfileArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MembersSetProfileArg(@javax.annotation.Nonnull UserSelectorArg user, @javax.annotation.Nullable String newEmail, @javax.annotation.Nullable String newExternalId, @javax.annotation.Nullable String newGivenName, @javax.annotation.Nullable String newSurname, @javax.annotation.Nullable String newPersistentId, @javax.annotation.Nullable Boolean newIsDirectoryRestricted) {
+    public MembersSetProfileArg(@Nonnull UserSelectorArg user, @Nullable String newEmail, @Nullable String newExternalId, @Nullable String newGivenName, @Nullable String newSurname, @Nullable String newPersistentId, @Nullable Boolean newIsDirectoryRestricted) {
         if (user == null) {
             throw new IllegalArgumentException("Required value for 'user' is null");
         }
@@ -123,7 +126,7 @@ class MembersSetProfileArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public UserSelectorArg getUser() {
         return user;
     }
@@ -133,7 +136,7 @@ class MembersSetProfileArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getNewEmail() {
         return newEmail;
     }
@@ -143,7 +146,7 @@ class MembersSetProfileArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getNewExternalId() {
         return newExternalId;
     }
@@ -153,7 +156,7 @@ class MembersSetProfileArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getNewGivenName() {
         return newGivenName;
     }
@@ -163,7 +166,7 @@ class MembersSetProfileArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getNewSurname() {
         return newSurname;
     }
@@ -174,7 +177,7 @@ class MembersSetProfileArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getNewPersistentId() {
         return newPersistentId;
     }
@@ -184,7 +187,7 @@ class MembersSetProfileArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Boolean getNewIsDirectoryRestricted() {
         return newIsDirectoryRestricted;
     }

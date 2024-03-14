@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Paper document's logged information.
  */
@@ -34,7 +36,7 @@ public class PaperDocumentLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperDocumentLogInfo(@javax.annotation.Nonnull String docId, @javax.annotation.Nonnull String docTitle) {
+    public PaperDocumentLogInfo(@Nonnull String docId, @Nonnull String docTitle) {
         if (docId == null) {
             throw new IllegalArgumentException("Required value for 'docId' is null");
         }
@@ -50,7 +52,7 @@ public class PaperDocumentLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getDocId() {
         return docId;
     }
@@ -60,7 +62,7 @@ public class PaperDocumentLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getDocTitle() {
         return docTitle;
     }

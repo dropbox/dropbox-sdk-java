@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class MemberPermanentlyDeleteAccountContentsType {
     // struct team_log.MemberPermanentlyDeleteAccountContentsType (team_log_generated.stone)
 
@@ -28,7 +30,7 @@ public class MemberPermanentlyDeleteAccountContentsType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberPermanentlyDeleteAccountContentsType(@javax.annotation.Nonnull String description) {
+    public MemberPermanentlyDeleteAccountContentsType(@Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }
@@ -39,7 +41,7 @@ public class MemberPermanentlyDeleteAccountContentsType {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getDescription() {
         return description;
     }

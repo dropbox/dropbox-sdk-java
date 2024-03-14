@@ -18,6 +18,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class Cursor {
     // struct paper.Cursor (paper.stone)
 
@@ -45,7 +48,7 @@ public class Cursor {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public Cursor(@javax.annotation.Nonnull String value, @javax.annotation.Nullable Date expiration) {
+    public Cursor(@Nonnull String value, @Nullable Date expiration) {
         if (value == null) {
             throw new IllegalArgumentException("Required value for 'value' is null");
         }
@@ -72,7 +75,7 @@ public class Cursor {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getValue() {
         return value;
     }
@@ -94,7 +97,7 @@ public class Cursor {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Date getExpiration() {
         return expiration;
     }

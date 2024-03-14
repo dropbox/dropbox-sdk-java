@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Downloaded Paper doc in specific format.
  */
@@ -34,7 +36,7 @@ public class PaperDocDownloadDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperDocDownloadDetails(@javax.annotation.Nonnull String eventUuid, @javax.annotation.Nonnull PaperDownloadFormat exportFileFormat) {
+    public PaperDocDownloadDetails(@Nonnull String eventUuid, @Nonnull PaperDownloadFormat exportFileFormat) {
         if (eventUuid == null) {
             throw new IllegalArgumentException("Required value for 'eventUuid' is null");
         }
@@ -50,7 +52,7 @@ public class PaperDocDownloadDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getEventUuid() {
         return eventUuid;
     }
@@ -60,7 +62,7 @@ public class PaperDocDownloadDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public PaperDownloadFormat getExportFileFormat() {
         return exportFileFormat;
     }

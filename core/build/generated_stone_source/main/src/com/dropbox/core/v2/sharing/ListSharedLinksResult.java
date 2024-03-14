@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class ListSharedLinksResult {
     // struct sharing.ListSharedLinksResult (shared_links.stone)
 
@@ -38,7 +41,7 @@ public class ListSharedLinksResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListSharedLinksResult(@javax.annotation.Nonnull List<SharedLinkMetadata> links, boolean hasMore, @javax.annotation.Nullable String cursor) {
+    public ListSharedLinksResult(@Nonnull List<SharedLinkMetadata> links, boolean hasMore, @Nullable String cursor) {
         if (links == null) {
             throw new IllegalArgumentException("Required value for 'links' is null");
         }
@@ -75,7 +78,7 @@ public class ListSharedLinksResult {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<SharedLinkMetadata> getLinks() {
         return links;
     }
@@ -97,7 +100,7 @@ public class ListSharedLinksResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getCursor() {
         return cursor;
     }

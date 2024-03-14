@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Sent a team merge request reminder.
  */
@@ -33,7 +35,7 @@ public class TeamMergeRequestReminderDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamMergeRequestReminderDetails(@javax.annotation.Nonnull TeamMergeRequestReminderExtraDetails requestReminderDetails) {
+    public TeamMergeRequestReminderDetails(@Nonnull TeamMergeRequestReminderExtraDetails requestReminderDetails) {
         if (requestReminderDetails == null) {
             throw new IllegalArgumentException("Required value for 'requestReminderDetails' is null");
         }
@@ -45,7 +47,7 @@ public class TeamMergeRequestReminderDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public TeamMergeRequestReminderExtraDetails getRequestReminderDetails() {
         return requestReminderDetails;
     }

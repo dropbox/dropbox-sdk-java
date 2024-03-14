@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class AdminAlertingTriggeredAlertType {
     // struct team_log.AdminAlertingTriggeredAlertType (team_log_generated.stone)
 
@@ -28,7 +30,7 @@ public class AdminAlertingTriggeredAlertType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AdminAlertingTriggeredAlertType(@javax.annotation.Nonnull String description) {
+    public AdminAlertingTriggeredAlertType(@Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }
@@ -39,7 +41,7 @@ public class AdminAlertingTriggeredAlertType {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getDescription() {
         return description;
     }

@@ -17,6 +17,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Metadata for a collection-based shared link.
  */
@@ -35,7 +38,7 @@ public class CollectionLinkMetadata extends LinkMetadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public CollectionLinkMetadata(@javax.annotation.Nonnull String url, @javax.annotation.Nonnull Visibility visibility, @javax.annotation.Nullable Date expires) {
+    public CollectionLinkMetadata(@Nonnull String url, @Nonnull Visibility visibility, @Nullable Date expires) {
         super(url, visibility, expires);
     }
 
@@ -59,7 +62,7 @@ public class CollectionLinkMetadata extends LinkMetadata {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getUrl() {
         return url;
     }
@@ -69,7 +72,7 @@ public class CollectionLinkMetadata extends LinkMetadata {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public Visibility getVisibility() {
         return visibility;
     }
@@ -79,7 +82,7 @@ public class CollectionLinkMetadata extends LinkMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Date getExpires() {
         return expires;
     }

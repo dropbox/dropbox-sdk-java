@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Policies governing team members.
  */
@@ -46,7 +48,7 @@ public class TeamMemberPolicies {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamMemberPolicies(@javax.annotation.Nonnull TeamSharingPolicies sharing, @javax.annotation.Nonnull EmmState emmState, @javax.annotation.Nonnull OfficeAddInPolicy officeAddin, @javax.annotation.Nonnull SuggestMembersPolicy suggestMembersPolicy) {
+    public TeamMemberPolicies(@Nonnull TeamSharingPolicies sharing, @Nonnull EmmState emmState, @Nonnull OfficeAddInPolicy officeAddin, @Nonnull SuggestMembersPolicy suggestMembersPolicy) {
         if (sharing == null) {
             throw new IllegalArgumentException("Required value for 'sharing' is null");
         }
@@ -70,7 +72,7 @@ public class TeamMemberPolicies {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public TeamSharingPolicies getSharing() {
         return sharing;
     }
@@ -85,7 +87,7 @@ public class TeamMemberPolicies {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public EmmState getEmmState() {
         return emmState;
     }
@@ -95,7 +97,7 @@ public class TeamMemberPolicies {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public OfficeAddInPolicy getOfficeAddin() {
         return officeAddin;
     }
@@ -106,7 +108,7 @@ public class TeamMemberPolicies {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public SuggestMembersPolicy getSuggestMembersPolicy() {
         return suggestMembersPolicy;
     }

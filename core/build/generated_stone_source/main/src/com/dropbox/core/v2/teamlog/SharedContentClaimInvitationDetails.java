@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Acquired membership of shared file/folder by accepting invite.
  */
@@ -29,7 +32,7 @@ public class SharedContentClaimInvitationDetails {
      *
      * @param sharedContentLink  Shared content link.
      */
-    public SharedContentClaimInvitationDetails(@javax.annotation.Nullable String sharedContentLink) {
+    public SharedContentClaimInvitationDetails(@Nullable String sharedContentLink) {
         this.sharedContentLink = sharedContentLink;
     }
 
@@ -47,7 +50,7 @@ public class SharedContentClaimInvitationDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getSharedContentLink() {
         return sharedContentLink;
     }

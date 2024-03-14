@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Paper folder's logged information.
  */
@@ -34,7 +36,7 @@ public class PaperFolderLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperFolderLogInfo(@javax.annotation.Nonnull String folderId, @javax.annotation.Nonnull String folderName) {
+    public PaperFolderLogInfo(@Nonnull String folderId, @Nonnull String folderName) {
         if (folderId == null) {
             throw new IllegalArgumentException("Required value for 'folderId' is null");
         }
@@ -50,7 +52,7 @@ public class PaperFolderLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getFolderId() {
         return folderId;
     }
@@ -60,7 +62,7 @@ public class PaperFolderLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getFolderName() {
         return folderName;
     }

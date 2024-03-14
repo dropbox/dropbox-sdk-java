@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Sharing info for a file which is contained by a shared folder.
  */
@@ -40,7 +43,7 @@ public class FileSharingInfo extends SharingInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileSharingInfo(boolean readOnly, @javax.annotation.Nonnull String parentSharedFolderId, @javax.annotation.Nullable String modifiedBy) {
+    public FileSharingInfo(boolean readOnly, @Nonnull String parentSharedFolderId, @Nullable String modifiedBy) {
         super(readOnly);
         if (parentSharedFolderId == null) {
             throw new IllegalArgumentException("Required value for 'parentSharedFolderId' is null");
@@ -91,7 +94,7 @@ public class FileSharingInfo extends SharingInfo {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getParentSharedFolderId() {
         return parentSharedFolderId;
     }
@@ -102,7 +105,7 @@ public class FileSharingInfo extends SharingInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getModifiedBy() {
         return modifiedBy;
     }

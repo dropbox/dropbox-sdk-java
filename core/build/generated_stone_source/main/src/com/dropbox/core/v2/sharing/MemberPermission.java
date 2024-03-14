@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Whether the user is allowed to take the action on the associated member.
  */
@@ -38,7 +41,7 @@ public class MemberPermission {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberPermission(@javax.annotation.Nonnull MemberAction action, boolean allow, @javax.annotation.Nullable PermissionDeniedReason reason) {
+    public MemberPermission(@Nonnull MemberAction action, boolean allow, @Nullable PermissionDeniedReason reason) {
         if (action == null) {
             throw new IllegalArgumentException("Required value for 'action' is null");
         }
@@ -68,7 +71,7 @@ public class MemberPermission {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public MemberAction getAction() {
         return action;
     }
@@ -88,7 +91,7 @@ public class MemberPermission {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public PermissionDeniedReason getReason() {
         return reason;
     }

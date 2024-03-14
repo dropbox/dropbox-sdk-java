@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class ListFolderLongpollResult {
     // struct files.ListFolderLongpollResult (files.stone)
 
@@ -31,7 +34,7 @@ public class ListFolderLongpollResult {
      *     calling {@link DbxUserFilesRequests#listFolderLongpoll(String,long)}
      *     again.
      */
-    public ListFolderLongpollResult(boolean changes, @javax.annotation.Nullable Long backoff) {
+    public ListFolderLongpollResult(boolean changes, @Nullable Long backoff) {
         this.changes = changes;
         this.backoff = backoff;
     }
@@ -65,7 +68,7 @@ public class ListFolderLongpollResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Long getBackoff() {
         return backoff;
     }

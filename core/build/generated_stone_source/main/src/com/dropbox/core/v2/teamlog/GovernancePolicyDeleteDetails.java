@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Deleted a policy.
  */
@@ -36,7 +39,7 @@ public class GovernancePolicyDeleteDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GovernancePolicyDeleteDetails(@javax.annotation.Nonnull String governancePolicyId, @javax.annotation.Nonnull String name, @javax.annotation.Nullable PolicyType policyType) {
+    public GovernancePolicyDeleteDetails(@Nonnull String governancePolicyId, @Nonnull String name, @Nullable PolicyType policyType) {
         if (governancePolicyId == null) {
             throw new IllegalArgumentException("Required value for 'governancePolicyId' is null");
         }
@@ -68,7 +71,7 @@ public class GovernancePolicyDeleteDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getGovernancePolicyId() {
         return governancePolicyId;
     }
@@ -78,7 +81,7 @@ public class GovernancePolicyDeleteDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -88,7 +91,7 @@ public class GovernancePolicyDeleteDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public PolicyType getPolicyType() {
         return policyType;
     }

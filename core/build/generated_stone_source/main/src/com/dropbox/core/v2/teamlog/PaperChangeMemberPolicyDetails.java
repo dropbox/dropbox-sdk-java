@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed whether members can share Paper docs outside team, and if docs are
  * accessible only by team members or anyone by default.
@@ -38,7 +41,7 @@ public class PaperChangeMemberPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperChangeMemberPolicyDetails(@javax.annotation.Nonnull PaperMemberPolicy newValue, @javax.annotation.Nullable PaperMemberPolicy previousValue) {
+    public PaperChangeMemberPolicyDetails(@Nonnull PaperMemberPolicy newValue, @Nullable PaperMemberPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -67,7 +70,7 @@ public class PaperChangeMemberPolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public PaperMemberPolicy getNewValue() {
         return newValue;
     }
@@ -78,7 +81,7 @@ public class PaperChangeMemberPolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public PaperMemberPolicy getPreviousValue() {
         return previousValue;
     }

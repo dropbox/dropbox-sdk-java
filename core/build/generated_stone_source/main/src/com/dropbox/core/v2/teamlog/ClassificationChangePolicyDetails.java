@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed classification policy for team.
  */
@@ -37,7 +39,7 @@ public class ClassificationChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ClassificationChangePolicyDetails(@javax.annotation.Nonnull ClassificationPolicyEnumWrapper previousValue, @javax.annotation.Nonnull ClassificationPolicyEnumWrapper newValue, @javax.annotation.Nonnull ClassificationType classificationType) {
+    public ClassificationChangePolicyDetails(@Nonnull ClassificationPolicyEnumWrapper previousValue, @Nonnull ClassificationPolicyEnumWrapper newValue, @Nonnull ClassificationType classificationType) {
         if (previousValue == null) {
             throw new IllegalArgumentException("Required value for 'previousValue' is null");
         }
@@ -57,7 +59,7 @@ public class ClassificationChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public ClassificationPolicyEnumWrapper getPreviousValue() {
         return previousValue;
     }
@@ -67,7 +69,7 @@ public class ClassificationChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public ClassificationPolicyEnumWrapper getNewValue() {
         return newValue;
     }
@@ -77,7 +79,7 @@ public class ClassificationChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public ClassificationType getClassificationType() {
         return classificationType;
     }

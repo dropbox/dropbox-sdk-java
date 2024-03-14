@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class DeleteBatchResultData {
     // struct files.DeleteBatchResultData (files.stone)
 
@@ -29,7 +31,7 @@ public class DeleteBatchResultData {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeleteBatchResultData(@javax.annotation.Nonnull Metadata metadata) {
+    public DeleteBatchResultData(@Nonnull Metadata metadata) {
         if (metadata == null) {
             throw new IllegalArgumentException("Required value for 'metadata' is null");
         }
@@ -41,7 +43,7 @@ public class DeleteBatchResultData {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public Metadata getMetadata() {
         return metadata;
     }

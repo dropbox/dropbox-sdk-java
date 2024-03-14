@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Enabled/disabled backup for computer.
  */
@@ -39,7 +41,7 @@ public class DeviceSyncBackupStatusChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeviceSyncBackupStatusChangedDetails(@javax.annotation.Nonnull DesktopDeviceSessionLogInfo desktopDeviceSessionInfo, @javax.annotation.Nonnull BackupStatus previousValue, @javax.annotation.Nonnull BackupStatus newValue) {
+    public DeviceSyncBackupStatusChangedDetails(@Nonnull DesktopDeviceSessionLogInfo desktopDeviceSessionInfo, @Nonnull BackupStatus previousValue, @Nonnull BackupStatus newValue) {
         if (desktopDeviceSessionInfo == null) {
             throw new IllegalArgumentException("Required value for 'desktopDeviceSessionInfo' is null");
         }
@@ -59,7 +61,7 @@ public class DeviceSyncBackupStatusChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public DesktopDeviceSessionLogInfo getDesktopDeviceSessionInfo() {
         return desktopDeviceSessionInfo;
     }
@@ -69,7 +71,7 @@ public class DeviceSyncBackupStatusChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public BackupStatus getPreviousValue() {
         return previousValue;
     }
@@ -79,7 +81,7 @@ public class DeviceSyncBackupStatusChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public BackupStatus getNewValue() {
         return newValue;
     }

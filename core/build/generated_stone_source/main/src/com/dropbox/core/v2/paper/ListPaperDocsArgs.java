@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 class ListPaperDocsArgs {
     // struct paper.ListPaperDocsArgs (paper.stone)
 
@@ -42,7 +44,7 @@ class ListPaperDocsArgs {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListPaperDocsArgs(@javax.annotation.Nonnull ListPaperDocsFilterBy filterBy, @javax.annotation.Nonnull ListPaperDocsSortBy sortBy, @javax.annotation.Nonnull ListPaperDocsSortOrder sortOrder, int limit) {
+    public ListPaperDocsArgs(@Nonnull ListPaperDocsFilterBy filterBy, @Nonnull ListPaperDocsSortBy sortBy, @Nonnull ListPaperDocsSortOrder sortOrder, int limit) {
         if (filterBy == null) {
             throw new IllegalArgumentException("Required value for 'filterBy' is null");
         }
@@ -79,7 +81,7 @@ class ListPaperDocsArgs {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     ListPaperDocsFilterBy.DOCS_ACCESSED.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public ListPaperDocsFilterBy getFilterBy() {
         return filterBy;
     }
@@ -90,7 +92,7 @@ class ListPaperDocsArgs {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     ListPaperDocsSortBy.ACCESSED.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public ListPaperDocsSortBy getSortBy() {
         return sortBy;
     }
@@ -101,7 +103,7 @@ class ListPaperDocsArgs {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     ListPaperDocsSortOrder.ASCENDING.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public ListPaperDocsSortOrder getSortOrder() {
         return sortOrder;
     }

@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 /**
  * Defines how a property group may be structured.
  */
@@ -41,7 +43,7 @@ public class PropertyGroupTemplate {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PropertyGroupTemplate(@javax.annotation.Nonnull String name, @javax.annotation.Nonnull String description, @javax.annotation.Nonnull List<PropertyFieldTemplate> fields) {
+    public PropertyGroupTemplate(@Nonnull String name, @Nonnull String description, @Nonnull List<PropertyFieldTemplate> fields) {
         if (name == null) {
             throw new IllegalArgumentException("Required value for 'name' is null");
         }
@@ -66,7 +68,7 @@ public class PropertyGroupTemplate {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -77,7 +79,7 @@ public class PropertyGroupTemplate {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getDescription() {
         return description;
     }
@@ -88,7 +90,7 @@ public class PropertyGroupTemplate {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<PropertyFieldTemplate> getFields() {
         return fields;
     }

@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class ShowcasePermanentlyDeletedType {
     // struct team_log.ShowcasePermanentlyDeletedType (team_log_generated.stone)
 
@@ -28,7 +30,7 @@ public class ShowcasePermanentlyDeletedType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ShowcasePermanentlyDeletedType(@javax.annotation.Nonnull String description) {
+    public ShowcasePermanentlyDeletedType(@Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }
@@ -39,7 +41,7 @@ public class ShowcasePermanentlyDeletedType {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getDescription() {
         return description;
     }

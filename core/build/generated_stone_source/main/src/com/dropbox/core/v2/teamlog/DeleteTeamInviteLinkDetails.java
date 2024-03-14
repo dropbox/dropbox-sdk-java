@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Deleted team invite link.
  */
@@ -33,7 +35,7 @@ public class DeleteTeamInviteLinkDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeleteTeamInviteLinkDetails(@javax.annotation.Nonnull String linkUrl) {
+    public DeleteTeamInviteLinkDetails(@Nonnull String linkUrl) {
         if (linkUrl == null) {
             throw new IllegalArgumentException("Required value for 'linkUrl' is null");
         }
@@ -45,7 +47,7 @@ public class DeleteTeamInviteLinkDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getLinkUrl() {
         return linkUrl;
     }

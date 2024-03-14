@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed external ID for group.
  */
@@ -34,7 +36,7 @@ public class GroupChangeExternalIdDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupChangeExternalIdDetails(@javax.annotation.Nonnull String newValue, @javax.annotation.Nonnull String previousValue) {
+    public GroupChangeExternalIdDetails(@Nonnull String newValue, @Nonnull String previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -50,7 +52,7 @@ public class GroupChangeExternalIdDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getNewValue() {
         return newValue;
     }
@@ -60,7 +62,7 @@ public class GroupChangeExternalIdDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getPreviousValue() {
         return previousValue;
     }

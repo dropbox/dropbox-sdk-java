@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class CreateFolderEntryResult {
     // struct files.CreateFolderEntryResult (files.stone)
 
@@ -29,7 +31,7 @@ public class CreateFolderEntryResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public CreateFolderEntryResult(@javax.annotation.Nonnull FolderMetadata metadata) {
+    public CreateFolderEntryResult(@Nonnull FolderMetadata metadata) {
         if (metadata == null) {
             throw new IllegalArgumentException("Required value for 'metadata' is null");
         }
@@ -41,7 +43,7 @@ public class CreateFolderEntryResult {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public FolderMetadata getMetadata() {
         return metadata;
     }

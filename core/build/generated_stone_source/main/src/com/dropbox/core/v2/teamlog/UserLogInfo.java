@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * User's logged information.
  */
@@ -40,7 +43,7 @@ public class UserLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UserLogInfo(@javax.annotation.Nullable String accountId, @javax.annotation.Nullable String displayName, @javax.annotation.Nullable String email) {
+    public UserLogInfo(@Nullable String accountId, @Nullable String displayName, @Nullable String email) {
         if (accountId != null) {
             if (accountId.length() < 40) {
                 throw new IllegalArgumentException("String 'accountId' is shorter than 40");
@@ -73,7 +76,7 @@ public class UserLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getAccountId() {
         return accountId;
     }
@@ -83,7 +86,7 @@ public class UserLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getDisplayName() {
         return displayName;
     }
@@ -93,7 +96,7 @@ public class UserLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getEmail() {
         return email;
     }

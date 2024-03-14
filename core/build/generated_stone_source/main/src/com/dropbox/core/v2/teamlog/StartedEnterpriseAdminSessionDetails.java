@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Started enterprise admin session.
  */
@@ -33,7 +35,7 @@ public class StartedEnterpriseAdminSessionDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public StartedEnterpriseAdminSessionDetails(@javax.annotation.Nonnull FedExtraDetails federationExtraDetails) {
+    public StartedEnterpriseAdminSessionDetails(@Nonnull FedExtraDetails federationExtraDetails) {
         if (federationExtraDetails == null) {
             throw new IllegalArgumentException("Required value for 'federationExtraDetails' is null");
         }
@@ -45,7 +47,7 @@ public class StartedEnterpriseAdminSessionDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public FedExtraDetails getFederationExtraDetails() {
         return federationExtraDetails;
     }

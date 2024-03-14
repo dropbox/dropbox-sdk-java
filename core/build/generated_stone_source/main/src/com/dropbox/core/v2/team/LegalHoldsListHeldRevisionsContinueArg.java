@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 class LegalHoldsListHeldRevisionsContinueArg {
     // struct team.LegalHoldsListHeldRevisionsContinueArg (team_legal_holds.stone)
 
@@ -34,7 +37,7 @@ class LegalHoldsListHeldRevisionsContinueArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LegalHoldsListHeldRevisionsContinueArg(@javax.annotation.Nonnull String id, @javax.annotation.Nullable String cursor) {
+    public LegalHoldsListHeldRevisionsContinueArg(@Nonnull String id, @Nullable String cursor) {
         if (id == null) {
             throw new IllegalArgumentException("Required value for 'id' is null");
         }
@@ -70,7 +73,7 @@ class LegalHoldsListHeldRevisionsContinueArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getId() {
         return id;
     }
@@ -82,7 +85,7 @@ class LegalHoldsListHeldRevisionsContinueArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getCursor() {
         return cursor;
     }

@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed content management setting.
  */
@@ -36,7 +38,7 @@ public class ContentAdministrationPolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ContentAdministrationPolicyChangedDetails(@javax.annotation.Nonnull String newValue, @javax.annotation.Nonnull String previousValue) {
+    public ContentAdministrationPolicyChangedDetails(@Nonnull String newValue, @Nonnull String previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -52,7 +54,7 @@ public class ContentAdministrationPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getNewValue() {
         return newValue;
     }
@@ -62,7 +64,7 @@ public class ContentAdministrationPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getPreviousValue() {
         return previousValue;
     }

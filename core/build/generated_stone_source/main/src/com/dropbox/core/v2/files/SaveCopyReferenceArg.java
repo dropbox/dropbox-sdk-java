@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 class SaveCopyReferenceArg {
     // struct files.SaveCopyReferenceArg (files.stone)
 
@@ -34,7 +36,7 @@ class SaveCopyReferenceArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SaveCopyReferenceArg(@javax.annotation.Nonnull String copyReference, @javax.annotation.Nonnull String path) {
+    public SaveCopyReferenceArg(@Nonnull String copyReference, @Nonnull String path) {
         if (copyReference == null) {
             throw new IllegalArgumentException("Required value for 'copyReference' is null");
         }
@@ -54,7 +56,7 @@ class SaveCopyReferenceArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getCopyReference() {
         return copyReference;
     }
@@ -64,7 +66,7 @@ class SaveCopyReferenceArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getPath() {
         return path;
     }

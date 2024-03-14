@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Contains information about a member's access level to content after an
  * operation.
@@ -46,7 +49,7 @@ public class MemberAccessLevelResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberAccessLevelResult(@javax.annotation.Nullable AccessLevel accessLevel, @javax.annotation.Nullable String warning, @javax.annotation.Nullable List<ParentFolderAccessInfo> accessDetails) {
+    public MemberAccessLevelResult(@Nullable AccessLevel accessLevel, @Nullable String warning, @Nullable List<ParentFolderAccessInfo> accessDetails) {
         this.accessLevel = accessLevel;
         this.warning = warning;
         if (accessDetails != null) {
@@ -75,7 +78,7 @@ public class MemberAccessLevelResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public AccessLevel getAccessLevel() {
         return accessLevel;
     }
@@ -86,7 +89,7 @@ public class MemberAccessLevelResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getWarning() {
         return warning;
     }
@@ -98,7 +101,7 @@ public class MemberAccessLevelResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public List<ParentFolderAccessInfo> getAccessDetails() {
         return accessDetails;
     }

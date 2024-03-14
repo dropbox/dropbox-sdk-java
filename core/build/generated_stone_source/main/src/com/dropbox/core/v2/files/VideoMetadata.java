@@ -18,6 +18,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Metadata for a video.
  */
@@ -37,7 +40,7 @@ public class VideoMetadata extends MediaMetadata {
      * @param timeTaken  The timestamp when the photo/video is taken.
      * @param duration  The duration of the video in milliseconds.
      */
-    public VideoMetadata(@javax.annotation.Nullable Dimensions dimensions, @javax.annotation.Nullable GpsCoordinates location, @javax.annotation.Nullable Date timeTaken, @javax.annotation.Nullable Long duration) {
+    public VideoMetadata(@Nullable Dimensions dimensions, @Nullable GpsCoordinates location, @Nullable Date timeTaken, @Nullable Long duration) {
         super(dimensions, location, timeTaken);
         this.duration = duration;
     }
@@ -56,7 +59,7 @@ public class VideoMetadata extends MediaMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Dimensions getDimensions() {
         return dimensions;
     }
@@ -66,7 +69,7 @@ public class VideoMetadata extends MediaMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public GpsCoordinates getLocation() {
         return location;
     }
@@ -76,7 +79,7 @@ public class VideoMetadata extends MediaMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Date getTimeTaken() {
         return timeTaken;
     }
@@ -86,7 +89,7 @@ public class VideoMetadata extends MediaMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Long getDuration() {
         return duration;
     }

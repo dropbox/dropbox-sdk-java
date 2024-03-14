@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * User's name logged information
  */
@@ -36,7 +39,7 @@ public class UserNameLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UserNameLogInfo(@javax.annotation.Nonnull String givenName, @javax.annotation.Nonnull String surname, @javax.annotation.Nullable String locale) {
+    public UserNameLogInfo(@Nonnull String givenName, @Nonnull String surname, @Nullable String locale) {
         if (givenName == null) {
             throw new IllegalArgumentException("Required value for 'givenName' is null");
         }
@@ -68,7 +71,7 @@ public class UserNameLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getGivenName() {
         return givenName;
     }
@@ -78,7 +81,7 @@ public class UserNameLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getSurname() {
         return surname;
     }
@@ -88,7 +91,7 @@ public class UserNameLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getLocale() {
         return locale;
     }

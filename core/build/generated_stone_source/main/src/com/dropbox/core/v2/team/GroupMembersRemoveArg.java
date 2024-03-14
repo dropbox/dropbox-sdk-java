@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 class GroupMembersRemoveArg extends IncludeMembersArg {
     // struct team.GroupMembersRemoveArg (team_groups.stone)
 
@@ -36,7 +38,7 @@ class GroupMembersRemoveArg extends IncludeMembersArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupMembersRemoveArg(@javax.annotation.Nonnull GroupSelector group, @javax.annotation.Nonnull List<UserSelectorArg> users, boolean returnMembers) {
+    public GroupMembersRemoveArg(@Nonnull GroupSelector group, @Nonnull List<UserSelectorArg> users, boolean returnMembers) {
         super(returnMembers);
         if (group == null) {
             throw new IllegalArgumentException("Required value for 'group' is null");
@@ -75,7 +77,7 @@ class GroupMembersRemoveArg extends IncludeMembersArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public GroupSelector getGroup() {
         return group;
     }
@@ -85,7 +87,7 @@ class GroupMembersRemoveArg extends IncludeMembersArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<UserSelectorArg> getUsers() {
         return users;
     }

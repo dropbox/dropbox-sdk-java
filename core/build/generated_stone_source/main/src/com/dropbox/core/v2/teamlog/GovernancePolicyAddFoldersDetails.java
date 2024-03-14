@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Added folders to policy.
  */
@@ -42,7 +45,7 @@ public class GovernancePolicyAddFoldersDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GovernancePolicyAddFoldersDetails(@javax.annotation.Nonnull String governancePolicyId, @javax.annotation.Nonnull String name, @javax.annotation.Nullable PolicyType policyType, @javax.annotation.Nullable List<String> folders) {
+    public GovernancePolicyAddFoldersDetails(@Nonnull String governancePolicyId, @Nonnull String name, @Nullable PolicyType policyType, @Nullable List<String> folders) {
         if (governancePolicyId == null) {
             throw new IllegalArgumentException("Required value for 'governancePolicyId' is null");
         }
@@ -82,7 +85,7 @@ public class GovernancePolicyAddFoldersDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getGovernancePolicyId() {
         return governancePolicyId;
     }
@@ -92,7 +95,7 @@ public class GovernancePolicyAddFoldersDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -102,7 +105,7 @@ public class GovernancePolicyAddFoldersDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public PolicyType getPolicyType() {
         return policyType;
     }
@@ -112,7 +115,7 @@ public class GovernancePolicyAddFoldersDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public List<String> getFolders() {
         return folders;
     }

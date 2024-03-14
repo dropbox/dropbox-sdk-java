@@ -17,6 +17,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed whether members can see who viewed shared file/folder.
  */
@@ -35,7 +38,7 @@ public class SharedContentChangeViewerInfoPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentChangeViewerInfoPolicyDetails(@javax.annotation.Nonnull ViewerInfoPolicy newValue, @javax.annotation.Nullable ViewerInfoPolicy previousValue) {
+    public SharedContentChangeViewerInfoPolicyDetails(@Nonnull ViewerInfoPolicy newValue, @Nullable ViewerInfoPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -62,7 +65,7 @@ public class SharedContentChangeViewerInfoPolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public ViewerInfoPolicy getNewValue() {
         return newValue;
     }
@@ -72,7 +75,7 @@ public class SharedContentChangeViewerInfoPolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public ViewerInfoPolicy getPreviousValue() {
         return previousValue;
     }

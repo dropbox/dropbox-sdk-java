@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed the default expiration for the links shared outside of the team.
  */
@@ -34,7 +37,7 @@ public class SharingChangeLinkDefaultExpirationPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharingChangeLinkDefaultExpirationPolicyDetails(@javax.annotation.Nonnull DefaultLinkExpirationDaysPolicy newValue, @javax.annotation.Nullable DefaultLinkExpirationDaysPolicy previousValue) {
+    public SharingChangeLinkDefaultExpirationPolicyDetails(@Nonnull DefaultLinkExpirationDaysPolicy newValue, @Nullable DefaultLinkExpirationDaysPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -61,7 +64,7 @@ public class SharingChangeLinkDefaultExpirationPolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public DefaultLinkExpirationDaysPolicy getNewValue() {
         return newValue;
     }
@@ -71,7 +74,7 @@ public class SharingChangeLinkDefaultExpirationPolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public DefaultLinkExpirationDaysPolicy getPreviousValue() {
         return previousValue;
     }

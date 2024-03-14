@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Added sign-out URL for SSO.
  */
@@ -29,7 +32,7 @@ public class SsoAddLogoutUrlDetails {
      *
      * @param newValue  New single sign-on logout URL.
      */
-    public SsoAddLogoutUrlDetails(@javax.annotation.Nullable String newValue) {
+    public SsoAddLogoutUrlDetails(@Nullable String newValue) {
         this.newValue = newValue;
     }
 
@@ -47,7 +50,7 @@ public class SsoAddLogoutUrlDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getNewValue() {
         return newValue;
     }

@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class LinkPermissions {
     // struct sharing.LinkPermissions (shared_links.stone)
 
@@ -105,7 +108,7 @@ public class LinkPermissions {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LinkPermissions(boolean canRevoke, @javax.annotation.Nonnull List<VisibilityPolicy> visibilityPolicies, boolean canSetExpiry, boolean canRemoveExpiry, boolean allowDownload, boolean canAllowDownload, boolean canDisallowDownload, boolean allowComments, boolean teamRestrictsComments, @javax.annotation.Nullable ResolvedVisibility resolvedVisibility, @javax.annotation.Nullable RequestedVisibility requestedVisibility, @javax.annotation.Nullable SharedLinkAccessFailureReason revokeFailureReason, @javax.annotation.Nullable LinkAudience effectiveAudience, @javax.annotation.Nullable LinkAccessLevel linkAccessLevel, @javax.annotation.Nullable List<LinkAudienceOption> audienceOptions, @javax.annotation.Nullable Boolean canSetPassword, @javax.annotation.Nullable Boolean canRemovePassword, @javax.annotation.Nullable Boolean requirePassword, @javax.annotation.Nullable Boolean canUseExtendedSharingControls) {
+    public LinkPermissions(boolean canRevoke, @Nonnull List<VisibilityPolicy> visibilityPolicies, boolean canSetExpiry, boolean canRemoveExpiry, boolean allowDownload, boolean canAllowDownload, boolean canDisallowDownload, boolean allowComments, boolean teamRestrictsComments, @Nullable ResolvedVisibility resolvedVisibility, @Nullable RequestedVisibility requestedVisibility, @Nullable SharedLinkAccessFailureReason revokeFailureReason, @Nullable LinkAudience effectiveAudience, @Nullable LinkAccessLevel linkAccessLevel, @Nullable List<LinkAudienceOption> audienceOptions, @Nullable Boolean canSetPassword, @Nullable Boolean canRemovePassword, @Nullable Boolean requirePassword, @Nullable Boolean canUseExtendedSharingControls) {
         this.resolvedVisibility = resolvedVisibility;
         this.requestedVisibility = requestedVisibility;
         this.canRevoke = canRevoke;
@@ -189,7 +192,7 @@ public class LinkPermissions {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<VisibilityPolicy> getVisibilityPolicies() {
         return visibilityPolicies;
     }
@@ -271,7 +274,7 @@ public class LinkPermissions {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public ResolvedVisibility getResolvedVisibility() {
         return resolvedVisibility;
     }
@@ -286,7 +289,7 @@ public class LinkPermissions {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public RequestedVisibility getRequestedVisibility() {
         return requestedVisibility;
     }
@@ -297,7 +300,7 @@ public class LinkPermissions {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public SharedLinkAccessFailureReason getRevokeFailureReason() {
         return revokeFailureReason;
     }
@@ -308,7 +311,7 @@ public class LinkPermissions {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public LinkAudience getEffectiveAudience() {
         return effectiveAudience;
     }
@@ -325,7 +328,7 @@ public class LinkPermissions {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public LinkAccessLevel getLinkAccessLevel() {
         return linkAccessLevel;
     }
@@ -336,7 +339,7 @@ public class LinkPermissions {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public List<LinkAudienceOption> getAudienceOptions() {
         return audienceOptions;
     }
@@ -346,7 +349,7 @@ public class LinkPermissions {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Boolean getCanSetPassword() {
         return canSetPassword;
     }
@@ -356,7 +359,7 @@ public class LinkPermissions {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Boolean getCanRemovePassword() {
         return canRemovePassword;
     }
@@ -366,7 +369,7 @@ public class LinkPermissions {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Boolean getRequirePassword() {
         return requirePassword;
     }
@@ -377,7 +380,7 @@ public class LinkPermissions {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Boolean getCanUseExtendedSharingControls() {
         return canUseExtendedSharingControls;
     }

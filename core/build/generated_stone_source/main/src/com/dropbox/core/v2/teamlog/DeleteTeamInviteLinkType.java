@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class DeleteTeamInviteLinkType {
     // struct team_log.DeleteTeamInviteLinkType (team_log_generated.stone)
 
@@ -28,7 +30,7 @@ public class DeleteTeamInviteLinkType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeleteTeamInviteLinkType(@javax.annotation.Nonnull String description) {
+    public DeleteTeamInviteLinkType(@Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }
@@ -39,7 +41,7 @@ public class DeleteTeamInviteLinkType {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getDescription() {
         return description;
     }

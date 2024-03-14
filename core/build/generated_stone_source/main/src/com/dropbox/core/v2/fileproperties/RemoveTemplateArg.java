@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 class RemoveTemplateArg {
     // struct file_properties.RemoveTemplateArg (file_properties.stone)
 
@@ -34,7 +36,7 @@ class RemoveTemplateArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RemoveTemplateArg(@javax.annotation.Nonnull String templateId) {
+    public RemoveTemplateArg(@Nonnull String templateId) {
         if (templateId == null) {
             throw new IllegalArgumentException("Required value for 'templateId' is null");
         }
@@ -55,7 +57,7 @@ class RemoveTemplateArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getTemplateId() {
         return templateId;
     }

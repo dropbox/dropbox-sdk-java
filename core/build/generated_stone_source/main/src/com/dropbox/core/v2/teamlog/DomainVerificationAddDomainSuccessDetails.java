@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Verified team domain.
  */
@@ -37,7 +40,7 @@ public class DomainVerificationAddDomainSuccessDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DomainVerificationAddDomainSuccessDetails(@javax.annotation.Nonnull List<String> domainNames, @javax.annotation.Nullable String verificationMethod) {
+    public DomainVerificationAddDomainSuccessDetails(@Nonnull List<String> domainNames, @Nullable String verificationMethod) {
         if (domainNames == null) {
             throw new IllegalArgumentException("Required value for 'domainNames' is null");
         }
@@ -70,7 +73,7 @@ public class DomainVerificationAddDomainSuccessDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<String> getDomainNames() {
         return domainNames;
     }
@@ -81,7 +84,7 @@ public class DomainVerificationAddDomainSuccessDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getVerificationMethod() {
         return verificationMethod;
     }

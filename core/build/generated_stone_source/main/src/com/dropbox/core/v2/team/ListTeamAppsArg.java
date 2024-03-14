@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Arguments for {@link
  * DbxTeamTeamRequests#linkedAppsListTeamLinkedApps(String)}.
@@ -35,7 +38,7 @@ class ListTeamAppsArg {
      *     cursor, the following requests should include the received cursors in
      *     order to receive the next sub list of the team applications.
      */
-    public ListTeamAppsArg(@javax.annotation.Nullable String cursor) {
+    public ListTeamAppsArg(@Nullable String cursor) {
         this.cursor = cursor;
     }
 
@@ -58,7 +61,7 @@ class ListTeamAppsArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getCursor() {
         return cursor;
     }

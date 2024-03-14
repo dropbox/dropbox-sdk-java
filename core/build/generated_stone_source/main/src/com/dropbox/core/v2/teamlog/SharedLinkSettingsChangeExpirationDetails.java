@@ -19,6 +19,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed the expiration date of the shared link.
  */
@@ -47,7 +50,7 @@ public class SharedLinkSettingsChangeExpirationDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedLinkSettingsChangeExpirationDetails(@javax.annotation.Nonnull AccessLevel sharedContentAccessLevel, @javax.annotation.Nullable String sharedContentLink, @javax.annotation.Nullable Date newValue, @javax.annotation.Nullable Date previousValue) {
+    public SharedLinkSettingsChangeExpirationDetails(@Nonnull AccessLevel sharedContentAccessLevel, @Nullable String sharedContentLink, @Nullable Date newValue, @Nullable Date previousValue) {
         if (sharedContentAccessLevel == null) {
             throw new IllegalArgumentException("Required value for 'sharedContentAccessLevel' is null");
         }
@@ -77,7 +80,7 @@ public class SharedLinkSettingsChangeExpirationDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public AccessLevel getSharedContentAccessLevel() {
         return sharedContentAccessLevel;
     }
@@ -87,7 +90,7 @@ public class SharedLinkSettingsChangeExpirationDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getSharedContentLink() {
         return sharedContentLink;
     }
@@ -98,7 +101,7 @@ public class SharedLinkSettingsChangeExpirationDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Date getNewValue() {
         return newValue;
     }
@@ -109,7 +112,7 @@ public class SharedLinkSettingsChangeExpirationDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Date getPreviousValue() {
         return previousValue;
     }

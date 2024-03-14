@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Namespace relative path details.
  */
@@ -36,7 +39,7 @@ public class NamespaceRelativePathLogInfo {
      * @param relativePath  A path relative to the specified namespace ID.
      * @param isSharedNamespace  True if the namespace is shared.
      */
-    public NamespaceRelativePathLogInfo(@javax.annotation.Nullable String nsId, @javax.annotation.Nullable String relativePath, @javax.annotation.Nullable Boolean isSharedNamespace) {
+    public NamespaceRelativePathLogInfo(@Nullable String nsId, @Nullable String relativePath, @Nullable Boolean isSharedNamespace) {
         this.nsId = nsId;
         this.relativePath = relativePath;
         this.isSharedNamespace = isSharedNamespace;
@@ -56,7 +59,7 @@ public class NamespaceRelativePathLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getNsId() {
         return nsId;
     }
@@ -66,7 +69,7 @@ public class NamespaceRelativePathLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getRelativePath() {
         return relativePath;
     }
@@ -76,7 +79,7 @@ public class NamespaceRelativePathLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Boolean getIsSharedNamespace() {
         return isSharedNamespace;
     }

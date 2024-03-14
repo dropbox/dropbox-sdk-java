@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Enabled/disabled/changed two-step verification setting.
  */
@@ -43,7 +46,7 @@ public class TfaChangeStatusDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TfaChangeStatusDetails(@javax.annotation.Nonnull TfaConfiguration newValue, @javax.annotation.Nullable TfaConfiguration previousValue, @javax.annotation.Nullable Boolean usedRescueCode) {
+    public TfaChangeStatusDetails(@Nonnull TfaConfiguration newValue, @Nullable TfaConfiguration previousValue, @Nullable Boolean usedRescueCode) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -72,7 +75,7 @@ public class TfaChangeStatusDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public TfaConfiguration getNewValue() {
         return newValue;
     }
@@ -83,7 +86,7 @@ public class TfaChangeStatusDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public TfaConfiguration getPreviousValue() {
         return previousValue;
     }
@@ -94,7 +97,7 @@ public class TfaChangeStatusDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Boolean getUsedRescueCode() {
         return usedRescueCode;
     }

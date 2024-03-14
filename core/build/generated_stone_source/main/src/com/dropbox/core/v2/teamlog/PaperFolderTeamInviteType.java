@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class PaperFolderTeamInviteType {
     // struct team_log.PaperFolderTeamInviteType (team_log_generated.stone)
 
@@ -28,7 +30,7 @@ public class PaperFolderTeamInviteType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperFolderTeamInviteType(@javax.annotation.Nonnull String description) {
+    public PaperFolderTeamInviteType(@Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }
@@ -39,7 +41,7 @@ public class PaperFolderTeamInviteType {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getDescription() {
         return description;
     }

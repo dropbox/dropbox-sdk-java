@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class SearchV2Result {
     // struct files.SearchV2Result (files.stone)
 
@@ -38,7 +41,7 @@ public class SearchV2Result {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SearchV2Result(@javax.annotation.Nonnull List<SearchMatchV2> matches, boolean hasMore, @javax.annotation.Nullable String cursor) {
+    public SearchV2Result(@Nonnull List<SearchMatchV2> matches, boolean hasMore, @Nullable String cursor) {
         if (matches == null) {
             throw new IllegalArgumentException("Required value for 'matches' is null");
         }
@@ -80,7 +83,7 @@ public class SearchV2Result {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<SearchMatchV2> getMatches() {
         return matches;
     }
@@ -103,7 +106,7 @@ public class SearchV2Result {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getCursor() {
         return cursor;
     }

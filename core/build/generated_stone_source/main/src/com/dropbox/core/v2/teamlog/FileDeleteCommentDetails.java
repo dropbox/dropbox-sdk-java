@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Deleted file comment.
  */
@@ -29,7 +32,7 @@ public class FileDeleteCommentDetails {
      *
      * @param commentText  Comment text.
      */
-    public FileDeleteCommentDetails(@javax.annotation.Nullable String commentText) {
+    public FileDeleteCommentDetails(@Nullable String commentText) {
         this.commentText = commentText;
     }
 
@@ -47,7 +50,7 @@ public class FileDeleteCommentDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getCommentText() {
         return commentText;
     }

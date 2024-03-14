@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 class ResendVerificationEmailArg {
     // struct team.ResendVerificationEmailArg (team_secondary_mails.stone)
 
@@ -31,7 +33,7 @@ class ResendVerificationEmailArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ResendVerificationEmailArg(@javax.annotation.Nonnull List<UserSecondaryEmailsArg> emailsToResend) {
+    public ResendVerificationEmailArg(@Nonnull List<UserSecondaryEmailsArg> emailsToResend) {
         if (emailsToResend == null) {
             throw new IllegalArgumentException("Required value for 'emailsToResend' is null");
         }
@@ -48,7 +50,7 @@ class ResendVerificationEmailArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<UserSecondaryEmailsArg> getEmailsToResend() {
         return emailsToResend;
     }

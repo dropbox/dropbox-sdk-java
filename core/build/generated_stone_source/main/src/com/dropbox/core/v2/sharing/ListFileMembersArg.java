@@ -18,6 +18,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Arguments for {@link DbxUserSharingRequests#listFileMembers(String)}.
  */
@@ -50,7 +53,7 @@ class ListFileMembersArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFileMembersArg(@javax.annotation.Nonnull String file, @javax.annotation.Nullable List<MemberAction> actions, boolean includeInherited, long limit) {
+    public ListFileMembersArg(@Nonnull String file, @Nullable List<MemberAction> actions, boolean includeInherited, long limit) {
         if (file == null) {
             throw new IllegalArgumentException("Required value for 'file' is null");
         }
@@ -101,7 +104,7 @@ class ListFileMembersArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getFile() {
         return file;
     }
@@ -111,7 +114,7 @@ class ListFileMembersArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public List<MemberAction> getActions() {
         return actions;
     }

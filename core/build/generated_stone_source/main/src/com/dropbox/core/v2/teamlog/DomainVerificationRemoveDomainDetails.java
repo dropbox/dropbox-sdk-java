@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 /**
  * Removed domain from list of verified team domains.
  */
@@ -34,7 +36,7 @@ public class DomainVerificationRemoveDomainDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DomainVerificationRemoveDomainDetails(@javax.annotation.Nonnull List<String> domainNames) {
+    public DomainVerificationRemoveDomainDetails(@Nonnull List<String> domainNames) {
         if (domainNames == null) {
             throw new IllegalArgumentException("Required value for 'domainNames' is null");
         }
@@ -51,7 +53,7 @@ public class DomainVerificationRemoveDomainDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<String> getDomainNames() {
         return domainNames;
     }

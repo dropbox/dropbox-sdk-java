@@ -17,6 +17,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Enabled/disabled enterprise mobility management for members.
  */
@@ -37,7 +40,7 @@ public class EmmChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public EmmChangePolicyDetails(@javax.annotation.Nonnull EmmState newValue, @javax.annotation.Nullable EmmState previousValue) {
+    public EmmChangePolicyDetails(@Nonnull EmmState newValue, @Nullable EmmState previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -65,7 +68,7 @@ public class EmmChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public EmmState getNewValue() {
         return newValue;
     }
@@ -76,7 +79,7 @@ public class EmmChangePolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public EmmState getPreviousValue() {
         return previousValue;
     }

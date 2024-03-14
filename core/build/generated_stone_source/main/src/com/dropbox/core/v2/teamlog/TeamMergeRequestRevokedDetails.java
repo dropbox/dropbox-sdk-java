@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Canceled the team merge.
  */
@@ -32,7 +34,7 @@ public class TeamMergeRequestRevokedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamMergeRequestRevokedDetails(@javax.annotation.Nonnull String team) {
+    public TeamMergeRequestRevokedDetails(@Nonnull String team) {
         if (team == null) {
             throw new IllegalArgumentException("Required value for 'team' is null");
         }
@@ -44,7 +46,7 @@ public class TeamMergeRequestRevokedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getTeam() {
         return team;
     }

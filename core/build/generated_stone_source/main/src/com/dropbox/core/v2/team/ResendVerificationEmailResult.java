@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 /**
  * List of users and resend results.
  */
@@ -34,7 +36,7 @@ public class ResendVerificationEmailResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ResendVerificationEmailResult(@javax.annotation.Nonnull List<UserResendResult> results) {
+    public ResendVerificationEmailResult(@Nonnull List<UserResendResult> results) {
         if (results == null) {
             throw new IllegalArgumentException("Required value for 'results' is null");
         }
@@ -50,7 +52,7 @@ public class ResendVerificationEmailResult {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<UserResendResult> getResults() {
         return results;
     }

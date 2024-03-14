@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Added sign-in URL for SSO.
  */
@@ -32,7 +34,7 @@ public class SsoAddLoginUrlDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SsoAddLoginUrlDetails(@javax.annotation.Nonnull String newValue) {
+    public SsoAddLoginUrlDetails(@Nonnull String newValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -44,7 +46,7 @@ public class SsoAddLoginUrlDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getNewValue() {
         return newValue;
     }

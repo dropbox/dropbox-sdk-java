@@ -18,6 +18,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 /**
  * Restored shared file/folder invitees.
  */
@@ -38,7 +40,7 @@ public class SharedContentRestoreInviteesDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentRestoreInviteesDetails(@javax.annotation.Nonnull AccessLevel sharedContentAccessLevel, @javax.annotation.Nonnull List<String> invitees) {
+    public SharedContentRestoreInviteesDetails(@Nonnull AccessLevel sharedContentAccessLevel, @Nonnull List<String> invitees) {
         if (sharedContentAccessLevel == null) {
             throw new IllegalArgumentException("Required value for 'sharedContentAccessLevel' is null");
         }
@@ -62,7 +64,7 @@ public class SharedContentRestoreInviteesDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public AccessLevel getSharedContentAccessLevel() {
         return sharedContentAccessLevel;
     }
@@ -72,7 +74,7 @@ public class SharedContentRestoreInviteesDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<String> getInvitees() {
         return invitees;
     }

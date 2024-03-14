@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed policy duration.
  */
@@ -40,7 +43,7 @@ public class GovernancePolicyEditDurationDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GovernancePolicyEditDurationDetails(@javax.annotation.Nonnull String governancePolicyId, @javax.annotation.Nonnull String name, @javax.annotation.Nonnull DurationLogInfo previousValue, @javax.annotation.Nonnull DurationLogInfo newValue, @javax.annotation.Nullable PolicyType policyType) {
+    public GovernancePolicyEditDurationDetails(@Nonnull String governancePolicyId, @Nonnull String name, @Nonnull DurationLogInfo previousValue, @Nonnull DurationLogInfo newValue, @Nullable PolicyType policyType) {
         if (governancePolicyId == null) {
             throw new IllegalArgumentException("Required value for 'governancePolicyId' is null");
         }
@@ -82,7 +85,7 @@ public class GovernancePolicyEditDurationDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getGovernancePolicyId() {
         return governancePolicyId;
     }
@@ -92,7 +95,7 @@ public class GovernancePolicyEditDurationDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -102,7 +105,7 @@ public class GovernancePolicyEditDurationDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public DurationLogInfo getPreviousValue() {
         return previousValue;
     }
@@ -112,7 +115,7 @@ public class GovernancePolicyEditDurationDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public DurationLogInfo getNewValue() {
         return newValue;
     }
@@ -122,7 +125,7 @@ public class GovernancePolicyEditDurationDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public PolicyType getPolicyType() {
         return policyType;
     }

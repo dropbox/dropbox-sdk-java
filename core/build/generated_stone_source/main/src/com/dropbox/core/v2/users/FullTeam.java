@@ -18,6 +18,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Detailed information about a team.
  */
@@ -40,7 +42,7 @@ public class FullTeam extends Team {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FullTeam(@javax.annotation.Nonnull String id, @javax.annotation.Nonnull String name, @javax.annotation.Nonnull TeamSharingPolicies sharingPolicies, @javax.annotation.Nonnull OfficeAddInPolicy officeAddinPolicy) {
+    public FullTeam(@Nonnull String id, @Nonnull String name, @Nonnull TeamSharingPolicies sharingPolicies, @Nonnull OfficeAddInPolicy officeAddinPolicy) {
         super(id, name);
         if (sharingPolicies == null) {
             throw new IllegalArgumentException("Required value for 'sharingPolicies' is null");
@@ -57,7 +59,7 @@ public class FullTeam extends Team {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getId() {
         return id;
     }
@@ -67,7 +69,7 @@ public class FullTeam extends Team {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -77,7 +79,7 @@ public class FullTeam extends Team {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public TeamSharingPolicies getSharingPolicies() {
         return sharingPolicies;
     }
@@ -87,7 +89,7 @@ public class FullTeam extends Team {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public OfficeAddInPolicy getOfficeAddinPolicy() {
         return officeAddinPolicy;
     }

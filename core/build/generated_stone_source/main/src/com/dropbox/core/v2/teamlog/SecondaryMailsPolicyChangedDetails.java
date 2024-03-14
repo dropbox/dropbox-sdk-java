@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Secondary mails policy changed.
  */
@@ -35,7 +37,7 @@ public class SecondaryMailsPolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SecondaryMailsPolicyChangedDetails(@javax.annotation.Nonnull SecondaryMailsPolicy previousValue, @javax.annotation.Nonnull SecondaryMailsPolicy newValue) {
+    public SecondaryMailsPolicyChangedDetails(@Nonnull SecondaryMailsPolicy previousValue, @Nonnull SecondaryMailsPolicy newValue) {
         if (previousValue == null) {
             throw new IllegalArgumentException("Required value for 'previousValue' is null");
         }
@@ -51,7 +53,7 @@ public class SecondaryMailsPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public SecondaryMailsPolicy getPreviousValue() {
         return previousValue;
     }
@@ -61,7 +63,7 @@ public class SecondaryMailsPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public SecondaryMailsPolicy getNewValue() {
         return newValue;
     }

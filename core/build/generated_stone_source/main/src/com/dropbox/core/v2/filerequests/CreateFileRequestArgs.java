@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Arguments for {@link DbxUserFileRequestsRequests#create(String,String)}.
  */
@@ -51,7 +54,7 @@ class CreateFileRequestArgs {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public CreateFileRequestArgs(@javax.annotation.Nonnull String title, @javax.annotation.Nonnull String destination, @javax.annotation.Nullable FileRequestDeadline deadline, boolean open, @javax.annotation.Nullable String description) {
+    public CreateFileRequestArgs(@Nonnull String title, @Nonnull String destination, @Nullable FileRequestDeadline deadline, boolean open, @Nullable String description) {
         if (title == null) {
             throw new IllegalArgumentException("Required value for 'title' is null");
         }
@@ -95,7 +98,7 @@ class CreateFileRequestArgs {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getTitle() {
         return title;
     }
@@ -107,7 +110,7 @@ class CreateFileRequestArgs {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getDestination() {
         return destination;
     }
@@ -118,7 +121,7 @@ class CreateFileRequestArgs {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public FileRequestDeadline getDeadline() {
         return deadline;
     }
@@ -140,7 +143,7 @@ class CreateFileRequestArgs {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getDescription() {
         return description;
     }

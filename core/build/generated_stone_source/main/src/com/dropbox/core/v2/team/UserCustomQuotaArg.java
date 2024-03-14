@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * User and their required custom quota in GB (1 TB = 1024 GB).
  */
@@ -34,7 +36,7 @@ public class UserCustomQuotaArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UserCustomQuotaArg(@javax.annotation.Nonnull UserSelectorArg user, long quotaGb) {
+    public UserCustomQuotaArg(@Nonnull UserSelectorArg user, long quotaGb) {
         if (user == null) {
             throw new IllegalArgumentException("Required value for 'user' is null");
         }
@@ -49,7 +51,7 @@ public class UserCustomQuotaArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public UserSelectorArg getUser() {
         return user;
     }

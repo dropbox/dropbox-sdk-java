@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 class SearchArg {
     // struct files.SearchArg (files.stone)
 
@@ -49,7 +51,7 @@ class SearchArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SearchArg(@javax.annotation.Nonnull String path, @javax.annotation.Nonnull String query, long start, long maxResults, @javax.annotation.Nonnull SearchMode mode) {
+    public SearchArg(@Nonnull String path, @Nonnull String query, long start, long maxResults, @Nonnull SearchMode mode) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
@@ -107,7 +109,7 @@ class SearchArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getPath() {
         return path;
     }
@@ -120,7 +122,7 @@ class SearchArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getQuery() {
         return query;
     }
@@ -153,7 +155,7 @@ class SearchArg {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     SearchMode.FILENAME.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public SearchMode getMode() {
         return mode;
     }

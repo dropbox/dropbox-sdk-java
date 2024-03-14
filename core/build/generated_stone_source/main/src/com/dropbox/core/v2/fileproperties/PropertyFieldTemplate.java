@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Defines how a single property field may be structured. Used exclusively by
  * {@link PropertyGroupTemplate}.
@@ -42,7 +44,7 @@ public class PropertyFieldTemplate {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PropertyFieldTemplate(@javax.annotation.Nonnull String name, @javax.annotation.Nonnull String description, @javax.annotation.Nonnull PropertyType type) {
+    public PropertyFieldTemplate(@Nonnull String name, @Nonnull String description, @Nonnull PropertyType type) {
         if (name == null) {
             throw new IllegalArgumentException("Required value for 'name' is null");
         }
@@ -63,7 +65,7 @@ public class PropertyFieldTemplate {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -74,7 +76,7 @@ public class PropertyFieldTemplate {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getDescription() {
         return description;
     }
@@ -85,7 +87,7 @@ public class PropertyFieldTemplate {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public PropertyType getType() {
         return type;
     }

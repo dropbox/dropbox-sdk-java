@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Failed to verify team domain.
  */
@@ -35,7 +38,7 @@ public class DomainVerificationAddDomainFailDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DomainVerificationAddDomainFailDetails(@javax.annotation.Nonnull String domainName, @javax.annotation.Nullable String verificationMethod) {
+    public DomainVerificationAddDomainFailDetails(@Nonnull String domainName, @Nullable String verificationMethod) {
         if (domainName == null) {
             throw new IllegalArgumentException("Required value for 'domainName' is null");
         }
@@ -62,7 +65,7 @@ public class DomainVerificationAddDomainFailDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getDomainName() {
         return domainName;
     }
@@ -73,7 +76,7 @@ public class DomainVerificationAddDomainFailDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getVerificationMethod() {
         return verificationMethod;
     }

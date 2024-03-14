@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 class ListUsersOnFolderArgs extends RefPaperDoc {
     // struct paper.ListUsersOnFolderArgs (paper.stone)
 
@@ -32,7 +34,7 @@ class ListUsersOnFolderArgs extends RefPaperDoc {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListUsersOnFolderArgs(@javax.annotation.Nonnull String docId, int limit) {
+    public ListUsersOnFolderArgs(@Nonnull String docId, int limit) {
         super(docId);
         if (limit < 1) {
             throw new IllegalArgumentException("Number 'limit' is smaller than 1");
@@ -62,7 +64,7 @@ class ListUsersOnFolderArgs extends RefPaperDoc {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getDocId() {
         return docId;
     }

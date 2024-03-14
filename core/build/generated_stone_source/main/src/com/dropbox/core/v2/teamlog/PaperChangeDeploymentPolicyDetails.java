@@ -17,6 +17,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed whether Dropbox Paper, when enabled, is deployed to all members or to
  * specific members.
@@ -39,7 +42,7 @@ public class PaperChangeDeploymentPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperChangeDeploymentPolicyDetails(@javax.annotation.Nonnull PaperDeploymentPolicy newValue, @javax.annotation.Nullable PaperDeploymentPolicy previousValue) {
+    public PaperChangeDeploymentPolicyDetails(@Nonnull PaperDeploymentPolicy newValue, @Nullable PaperDeploymentPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -68,7 +71,7 @@ public class PaperChangeDeploymentPolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public PaperDeploymentPolicy getNewValue() {
         return newValue;
     }
@@ -79,7 +82,7 @@ public class PaperChangeDeploymentPolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public PaperDeploymentPolicy getPreviousValue() {
         return previousValue;
     }

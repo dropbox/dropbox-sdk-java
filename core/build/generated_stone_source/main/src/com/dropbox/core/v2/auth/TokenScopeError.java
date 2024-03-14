@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class TokenScopeError {
     // struct auth.TokenScopeError (auth.stone)
 
@@ -29,7 +31,7 @@ public class TokenScopeError {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TokenScopeError(@javax.annotation.Nonnull String requiredScope) {
+    public TokenScopeError(@Nonnull String requiredScope) {
         if (requiredScope == null) {
             throw new IllegalArgumentException("Required value for 'requiredScope' is null");
         }
@@ -41,7 +43,7 @@ public class TokenScopeError {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getRequiredScope() {
         return requiredScope;
     }

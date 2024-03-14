@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Connected integration for member.
  */
@@ -33,7 +35,7 @@ public class IntegrationConnectedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public IntegrationConnectedDetails(@javax.annotation.Nonnull String integrationName) {
+    public IntegrationConnectedDetails(@Nonnull String integrationName) {
         if (integrationName == null) {
             throw new IllegalArgumentException("Required value for 'integrationName' is null");
         }
@@ -45,7 +47,7 @@ public class IntegrationConnectedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getIntegrationName() {
         return integrationName;
     }

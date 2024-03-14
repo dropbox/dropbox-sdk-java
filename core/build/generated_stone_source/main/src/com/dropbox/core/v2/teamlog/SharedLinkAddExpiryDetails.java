@@ -18,6 +18,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+
 /**
  * Added shared link expiration date.
  */
@@ -35,7 +37,7 @@ public class SharedLinkAddExpiryDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedLinkAddExpiryDetails(@javax.annotation.Nonnull Date newValue) {
+    public SharedLinkAddExpiryDetails(@Nonnull Date newValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -47,7 +49,7 @@ public class SharedLinkAddExpiryDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public Date getNewValue() {
         return newValue;
     }

@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Enabled/disabled commenting on team files.
  */
@@ -36,7 +39,7 @@ public class FileCommentsChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileCommentsChangePolicyDetails(@javax.annotation.Nonnull FileCommentsPolicy newValue, @javax.annotation.Nullable FileCommentsPolicy previousValue) {
+    public FileCommentsChangePolicyDetails(@Nonnull FileCommentsPolicy newValue, @Nullable FileCommentsPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -64,7 +67,7 @@ public class FileCommentsChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public FileCommentsPolicy getNewValue() {
         return newValue;
     }
@@ -75,7 +78,7 @@ public class FileCommentsChangePolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public FileCommentsPolicy getPreviousValue() {
         return previousValue;
     }

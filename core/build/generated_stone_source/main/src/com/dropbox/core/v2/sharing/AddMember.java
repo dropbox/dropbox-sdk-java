@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * The member and type of access the member should have when added to a shared
  * folder.
@@ -39,7 +41,7 @@ public class AddMember {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AddMember(@javax.annotation.Nonnull MemberSelector member, @javax.annotation.Nonnull AccessLevel accessLevel) {
+    public AddMember(@Nonnull MemberSelector member, @Nonnull AccessLevel accessLevel) {
         if (member == null) {
             throw new IllegalArgumentException("Required value for 'member' is null");
         }
@@ -71,7 +73,7 @@ public class AddMember {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public MemberSelector getMember() {
         return member;
     }
@@ -83,7 +85,7 @@ public class AddMember {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     AccessLevel.VIEWER.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public AccessLevel getAccessLevel() {
         return accessLevel;
     }

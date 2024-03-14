@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed IP address associated with active mobile session.
  */
@@ -29,7 +32,7 @@ public class DeviceChangeIpMobileDetails {
      *
      * @param deviceSessionInfo  Device's session logged information.
      */
-    public DeviceChangeIpMobileDetails(@javax.annotation.Nullable DeviceSessionLogInfo deviceSessionInfo) {
+    public DeviceChangeIpMobileDetails(@Nullable DeviceSessionLogInfo deviceSessionInfo) {
         this.deviceSessionInfo = deviceSessionInfo;
     }
 
@@ -47,7 +50,7 @@ public class DeviceChangeIpMobileDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public DeviceSessionLogInfo getDeviceSessionInfo() {
         return deviceSessionInfo;
     }

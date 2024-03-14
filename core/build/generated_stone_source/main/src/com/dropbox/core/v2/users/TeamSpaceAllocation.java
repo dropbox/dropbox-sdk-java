@@ -17,6 +17,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class TeamSpaceAllocation {
     // struct users.TeamSpaceAllocation (users.stone)
 
@@ -42,7 +44,7 @@ public class TeamSpaceAllocation {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamSpaceAllocation(long used, long allocated, long userWithinTeamSpaceAllocated, @javax.annotation.Nonnull MemberSpaceLimitType userWithinTeamSpaceLimitType, long userWithinTeamSpaceUsedCached) {
+    public TeamSpaceAllocation(long used, long allocated, long userWithinTeamSpaceAllocated, @Nonnull MemberSpaceLimitType userWithinTeamSpaceLimitType, long userWithinTeamSpaceUsedCached) {
         this.used = used;
         this.allocated = allocated;
         this.userWithinTeamSpaceAllocated = userWithinTeamSpaceAllocated;
@@ -88,7 +90,7 @@ public class TeamSpaceAllocation {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public MemberSpaceLimitType getUserWithinTeamSpaceLimitType() {
         return userWithinTeamSpaceLimitType;
     }

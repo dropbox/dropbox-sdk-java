@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 class GetSharedLinksArg {
     // struct sharing.GetSharedLinksArg (shared_links.stone)
 
@@ -26,7 +29,7 @@ class GetSharedLinksArg {
      * @param path  See {@link DbxUserSharingRequests#getSharedLinks(String)}
      *     description.
      */
-    public GetSharedLinksArg(@javax.annotation.Nullable String path) {
+    public GetSharedLinksArg(@Nullable String path) {
         this.path = path;
     }
 
@@ -44,7 +47,7 @@ class GetSharedLinksArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getPath() {
         return path;
     }

@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 public class ListMemberAppsResult {
     // struct team.ListMemberAppsResult (team_linked_apps.stone)
 
@@ -31,7 +33,7 @@ public class ListMemberAppsResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListMemberAppsResult(@javax.annotation.Nonnull List<ApiApp> linkedApiApps) {
+    public ListMemberAppsResult(@Nonnull List<ApiApp> linkedApiApps) {
         if (linkedApiApps == null) {
             throw new IllegalArgumentException("Required value for 'linkedApiApps' is null");
         }
@@ -48,7 +50,7 @@ public class ListMemberAppsResult {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<ApiApp> getLinkedApiApps() {
         return linkedApiApps;
     }

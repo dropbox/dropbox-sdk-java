@@ -17,6 +17,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed group management type.
  */
@@ -36,7 +39,7 @@ public class GroupChangeManagementTypeDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupChangeManagementTypeDetails(@javax.annotation.Nonnull GroupManagementType newValue, @javax.annotation.Nullable GroupManagementType previousValue) {
+    public GroupChangeManagementTypeDetails(@Nonnull GroupManagementType newValue, @Nullable GroupManagementType previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -63,7 +66,7 @@ public class GroupChangeManagementTypeDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public GroupManagementType getNewValue() {
         return newValue;
     }
@@ -74,7 +77,7 @@ public class GroupChangeManagementTypeDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public GroupManagementType getPreviousValue() {
         return previousValue;
     }

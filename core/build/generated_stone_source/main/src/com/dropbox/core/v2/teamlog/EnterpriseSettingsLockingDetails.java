@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed who can update a setting.
  */
@@ -40,7 +42,7 @@ public class EnterpriseSettingsLockingDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public EnterpriseSettingsLockingDetails(@javax.annotation.Nonnull String teamName, @javax.annotation.Nonnull String settingsPageName, @javax.annotation.Nonnull String previousSettingsPageLockingState, @javax.annotation.Nonnull String newSettingsPageLockingState) {
+    public EnterpriseSettingsLockingDetails(@Nonnull String teamName, @Nonnull String settingsPageName, @Nonnull String previousSettingsPageLockingState, @Nonnull String newSettingsPageLockingState) {
         if (teamName == null) {
             throw new IllegalArgumentException("Required value for 'teamName' is null");
         }
@@ -64,7 +66,7 @@ public class EnterpriseSettingsLockingDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getTeamName() {
         return teamName;
     }
@@ -74,7 +76,7 @@ public class EnterpriseSettingsLockingDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getSettingsPageName() {
         return settingsPageName;
     }
@@ -84,7 +86,7 @@ public class EnterpriseSettingsLockingDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getPreviousSettingsPageLockingState() {
         return previousSettingsPageLockingState;
     }
@@ -94,7 +96,7 @@ public class EnterpriseSettingsLockingDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getNewSettingsPageLockingState() {
         return newSettingsPageLockingState;
     }

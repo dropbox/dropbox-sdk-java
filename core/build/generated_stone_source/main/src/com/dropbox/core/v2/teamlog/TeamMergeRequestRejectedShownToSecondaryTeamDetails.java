@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Rejected a team merge request.
  */
@@ -33,7 +35,7 @@ public class TeamMergeRequestRejectedShownToSecondaryTeamDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamMergeRequestRejectedShownToSecondaryTeamDetails(@javax.annotation.Nonnull String sentBy) {
+    public TeamMergeRequestRejectedShownToSecondaryTeamDetails(@Nonnull String sentBy) {
         if (sentBy == null) {
             throw new IllegalArgumentException("Required value for 'sentBy' is null");
         }
@@ -45,7 +47,7 @@ public class TeamMergeRequestRejectedShownToSecondaryTeamDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getSentBy() {
         return sentBy;
     }

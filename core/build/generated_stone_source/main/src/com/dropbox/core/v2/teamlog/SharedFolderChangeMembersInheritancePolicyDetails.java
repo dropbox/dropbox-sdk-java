@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed whether shared folder inherits members from parent folder.
  */
@@ -35,7 +38,7 @@ public class SharedFolderChangeMembersInheritancePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedFolderChangeMembersInheritancePolicyDetails(@javax.annotation.Nonnull SharedFolderMembersInheritancePolicy newValue, @javax.annotation.Nullable SharedFolderMembersInheritancePolicy previousValue) {
+    public SharedFolderChangeMembersInheritancePolicyDetails(@Nonnull SharedFolderMembersInheritancePolicy newValue, @Nullable SharedFolderMembersInheritancePolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -62,7 +65,7 @@ public class SharedFolderChangeMembersInheritancePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public SharedFolderMembersInheritancePolicy getNewValue() {
         return newValue;
     }
@@ -73,7 +76,7 @@ public class SharedFolderChangeMembersInheritancePolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public SharedFolderMembersInheritancePolicy getPreviousValue() {
         return previousValue;
     }

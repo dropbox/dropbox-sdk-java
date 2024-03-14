@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class GetTemporaryLinkResult {
     // struct files.GetTemporaryLinkResult (files.stone)
 
@@ -31,7 +33,7 @@ public class GetTemporaryLinkResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetTemporaryLinkResult(@javax.annotation.Nonnull FileMetadata metadata, @javax.annotation.Nonnull String link) {
+    public GetTemporaryLinkResult(@Nonnull FileMetadata metadata, @Nonnull String link) {
         if (metadata == null) {
             throw new IllegalArgumentException("Required value for 'metadata' is null");
         }
@@ -47,7 +49,7 @@ public class GetTemporaryLinkResult {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public FileMetadata getMetadata() {
         return metadata;
     }
@@ -57,7 +59,7 @@ public class GetTemporaryLinkResult {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getLink() {
         return link;
     }

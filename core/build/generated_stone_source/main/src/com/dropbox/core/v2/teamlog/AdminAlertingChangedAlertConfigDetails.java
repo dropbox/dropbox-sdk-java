@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed an alert setting.
  */
@@ -37,7 +39,7 @@ public class AdminAlertingChangedAlertConfigDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AdminAlertingChangedAlertConfigDetails(@javax.annotation.Nonnull String alertName, @javax.annotation.Nonnull AdminAlertingAlertConfiguration previousAlertConfig, @javax.annotation.Nonnull AdminAlertingAlertConfiguration newAlertConfig) {
+    public AdminAlertingChangedAlertConfigDetails(@Nonnull String alertName, @Nonnull AdminAlertingAlertConfiguration previousAlertConfig, @Nonnull AdminAlertingAlertConfiguration newAlertConfig) {
         if (alertName == null) {
             throw new IllegalArgumentException("Required value for 'alertName' is null");
         }
@@ -57,7 +59,7 @@ public class AdminAlertingChangedAlertConfigDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getAlertName() {
         return alertName;
     }
@@ -67,7 +69,7 @@ public class AdminAlertingChangedAlertConfigDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public AdminAlertingAlertConfiguration getPreviousAlertConfig() {
         return previousAlertConfig;
     }
@@ -77,7 +79,7 @@ public class AdminAlertingChangedAlertConfigDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public AdminAlertingAlertConfiguration getNewAlertConfig() {
         return newAlertConfig;
     }

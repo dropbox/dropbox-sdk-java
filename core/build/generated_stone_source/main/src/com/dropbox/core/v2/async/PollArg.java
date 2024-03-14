@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Arguments for methods that poll the status of an asynchronous job.
  */
@@ -34,7 +36,7 @@ public class PollArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PollArg(@javax.annotation.Nonnull String asyncJobId) {
+    public PollArg(@Nonnull String asyncJobId) {
         if (asyncJobId == null) {
             throw new IllegalArgumentException("Required value for 'asyncJobId' is null");
         }
@@ -50,7 +52,7 @@ public class PollArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getAsyncJobId() {
         return asyncJobId;
     }

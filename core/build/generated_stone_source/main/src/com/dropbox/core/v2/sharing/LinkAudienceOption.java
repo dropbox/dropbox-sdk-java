@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class LinkAudienceOption {
     // struct sharing.LinkAudienceOption (shared_links.stone)
 
@@ -36,7 +39,7 @@ public class LinkAudienceOption {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LinkAudienceOption(@javax.annotation.Nonnull LinkAudience audience, boolean allowed, @javax.annotation.Nullable LinkAudienceDisallowedReason disallowedReason) {
+    public LinkAudienceOption(@Nonnull LinkAudience audience, boolean allowed, @Nullable LinkAudienceDisallowedReason disallowedReason) {
         if (audience == null) {
             throw new IllegalArgumentException("Required value for 'audience' is null");
         }
@@ -67,7 +70,7 @@ public class LinkAudienceOption {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public LinkAudience getAudience() {
         return audience;
     }
@@ -88,7 +91,7 @@ public class LinkAudienceOption {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public LinkAudienceDisallowedReason getDisallowedReason() {
         return disallowedReason;
     }

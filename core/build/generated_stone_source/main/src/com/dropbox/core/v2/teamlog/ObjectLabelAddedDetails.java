@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Added a label.
  */
@@ -32,7 +34,7 @@ public class ObjectLabelAddedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ObjectLabelAddedDetails(@javax.annotation.Nonnull LabelType labelType) {
+    public ObjectLabelAddedDetails(@Nonnull LabelType labelType) {
         if (labelType == null) {
             throw new IllegalArgumentException("Required value for 'labelType' is null");
         }
@@ -44,7 +46,7 @@ public class ObjectLabelAddedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public LabelType getLabelType() {
         return labelType;
     }

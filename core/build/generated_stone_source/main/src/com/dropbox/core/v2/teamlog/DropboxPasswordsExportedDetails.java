@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Exported passwords.
  */
@@ -33,7 +35,7 @@ public class DropboxPasswordsExportedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DropboxPasswordsExportedDetails(@javax.annotation.Nonnull String platform) {
+    public DropboxPasswordsExportedDetails(@Nonnull String platform) {
         if (platform == null) {
             throw new IllegalArgumentException("Required value for 'platform' is null");
         }
@@ -45,7 +47,7 @@ public class DropboxPasswordsExportedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getPlatform() {
         return platform;
     }

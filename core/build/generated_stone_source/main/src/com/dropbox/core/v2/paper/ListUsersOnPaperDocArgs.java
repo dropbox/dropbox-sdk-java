@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 class ListUsersOnPaperDocArgs extends RefPaperDoc {
     // struct paper.ListUsersOnPaperDocArgs (paper.stone)
 
@@ -37,7 +39,7 @@ class ListUsersOnPaperDocArgs extends RefPaperDoc {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListUsersOnPaperDocArgs(@javax.annotation.Nonnull String docId, int limit, @javax.annotation.Nonnull UserOnPaperDocFilter filterBy) {
+    public ListUsersOnPaperDocArgs(@Nonnull String docId, int limit, @Nonnull UserOnPaperDocFilter filterBy) {
         super(docId);
         if (limit < 1) {
             throw new IllegalArgumentException("Number 'limit' is smaller than 1");
@@ -71,7 +73,7 @@ class ListUsersOnPaperDocArgs extends RefPaperDoc {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getDocId() {
         return docId;
     }
@@ -94,7 +96,7 @@ class ListUsersOnPaperDocArgs extends RefPaperDoc {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     UserOnPaperDocFilter.SHARED.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public UserOnPaperDocFilter getFilterBy() {
         return filterBy;
     }

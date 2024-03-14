@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed the external ID for team member.
  */
@@ -36,7 +38,7 @@ public class MemberChangeExternalIdDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberChangeExternalIdDetails(@javax.annotation.Nonnull String newValue, @javax.annotation.Nonnull String previousValue) {
+    public MemberChangeExternalIdDetails(@Nonnull String newValue, @Nonnull String previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -58,7 +60,7 @@ public class MemberChangeExternalIdDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getNewValue() {
         return newValue;
     }
@@ -68,7 +70,7 @@ public class MemberChangeExternalIdDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getPreviousValue() {
         return previousValue;
     }

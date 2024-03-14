@@ -17,6 +17,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 class TeamFolderCreateArg {
     // struct team.TeamFolderCreateArg (team_folders.stone)
 
@@ -32,7 +35,7 @@ class TeamFolderCreateArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamFolderCreateArg(@javax.annotation.Nonnull String name, @javax.annotation.Nullable SyncSettingArg syncSetting) {
+    public TeamFolderCreateArg(@Nonnull String name, @Nullable SyncSettingArg syncSetting) {
         if (name == null) {
             throw new IllegalArgumentException("Required value for 'name' is null");
         }
@@ -59,7 +62,7 @@ class TeamFolderCreateArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -70,7 +73,7 @@ class TeamFolderCreateArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public SyncSettingArg getSyncSetting() {
         return syncSetting;
     }

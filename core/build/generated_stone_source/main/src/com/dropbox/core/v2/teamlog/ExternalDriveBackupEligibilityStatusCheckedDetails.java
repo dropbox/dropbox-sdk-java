@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Checked external drive backup eligibility status.
  */
@@ -39,7 +41,7 @@ public class ExternalDriveBackupEligibilityStatusCheckedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ExternalDriveBackupEligibilityStatusCheckedDetails(@javax.annotation.Nonnull DesktopDeviceSessionLogInfo desktopDeviceSessionInfo, @javax.annotation.Nonnull ExternalDriveBackupEligibilityStatus status, long numberOfExternalDriveBackup) {
+    public ExternalDriveBackupEligibilityStatusCheckedDetails(@Nonnull DesktopDeviceSessionLogInfo desktopDeviceSessionInfo, @Nonnull ExternalDriveBackupEligibilityStatus status, long numberOfExternalDriveBackup) {
         if (desktopDeviceSessionInfo == null) {
             throw new IllegalArgumentException("Required value for 'desktopDeviceSessionInfo' is null");
         }
@@ -56,7 +58,7 @@ public class ExternalDriveBackupEligibilityStatusCheckedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public DesktopDeviceSessionLogInfo getDesktopDeviceSessionInfo() {
         return desktopDeviceSessionInfo;
     }
@@ -66,7 +68,7 @@ public class ExternalDriveBackupEligibilityStatusCheckedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public ExternalDriveBackupEligibilityStatus getStatus() {
         return status;
     }

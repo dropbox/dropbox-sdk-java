@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Enabled/disabled Paper Desktop for team.
  */
@@ -35,7 +37,7 @@ public class PaperDesktopPolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperDesktopPolicyChangedDetails(@javax.annotation.Nonnull PaperDesktopPolicy newValue, @javax.annotation.Nonnull PaperDesktopPolicy previousValue) {
+    public PaperDesktopPolicyChangedDetails(@Nonnull PaperDesktopPolicy newValue, @Nonnull PaperDesktopPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -51,7 +53,7 @@ public class PaperDesktopPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public PaperDesktopPolicy getNewValue() {
         return newValue;
     }
@@ -61,7 +63,7 @@ public class PaperDesktopPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public PaperDesktopPolicy getPreviousValue() {
         return previousValue;
     }

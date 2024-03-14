@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Specify access type a member should have when joined to a group.
  */
@@ -34,7 +36,7 @@ public class MemberAccess {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberAccess(@javax.annotation.Nonnull UserSelectorArg user, @javax.annotation.Nonnull GroupAccessType accessType) {
+    public MemberAccess(@Nonnull UserSelectorArg user, @Nonnull GroupAccessType accessType) {
         if (user == null) {
             throw new IllegalArgumentException("Required value for 'user' is null");
         }
@@ -50,7 +52,7 @@ public class MemberAccess {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public UserSelectorArg getUser() {
         return user;
     }
@@ -60,7 +62,7 @@ public class MemberAccess {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public GroupAccessType getAccessType() {
         return accessType;
     }

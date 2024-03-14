@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 /**
  * Root info when user is member of a team with a separate root namespace ID.
  */
@@ -42,7 +44,7 @@ public class TeamRootInfo extends RootInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamRootInfo(@javax.annotation.Nonnull String rootNamespaceId, @javax.annotation.Nonnull String homeNamespaceId, @javax.annotation.Nonnull String homePath) {
+    public TeamRootInfo(@Nonnull String rootNamespaceId, @Nonnull String homeNamespaceId, @Nonnull String homePath) {
         super(rootNamespaceId, homeNamespaceId);
         if (homePath == null) {
             throw new IllegalArgumentException("Required value for 'homePath' is null");
@@ -58,7 +60,7 @@ public class TeamRootInfo extends RootInfo {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getRootNamespaceId() {
         return rootNamespaceId;
     }
@@ -68,7 +70,7 @@ public class TeamRootInfo extends RootInfo {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getHomeNamespaceId() {
         return homeNamespaceId;
     }
@@ -78,7 +80,7 @@ public class TeamRootInfo extends RootInfo {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getHomePath() {
         return homePath;
     }

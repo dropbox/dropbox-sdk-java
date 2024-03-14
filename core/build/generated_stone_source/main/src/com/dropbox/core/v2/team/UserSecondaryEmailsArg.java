@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 /**
  * User and a list of secondary emails.
  */
@@ -36,7 +38,7 @@ public class UserSecondaryEmailsArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UserSecondaryEmailsArg(@javax.annotation.Nonnull UserSelectorArg user, @javax.annotation.Nonnull List<String> secondaryEmails) {
+    public UserSecondaryEmailsArg(@Nonnull UserSelectorArg user, @Nonnull List<String> secondaryEmails) {
         if (user == null) {
             throw new IllegalArgumentException("Required value for 'user' is null");
         }
@@ -62,7 +64,7 @@ public class UserSecondaryEmailsArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public UserSelectorArg getUser() {
         return user;
     }
@@ -71,7 +73,7 @@ public class UserSecondaryEmailsArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<String> getSecondaryEmails() {
         return secondaryEmails;
     }

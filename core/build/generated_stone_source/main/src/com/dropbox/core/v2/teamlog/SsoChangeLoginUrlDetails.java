@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed sign-in URL for SSO.
  */
@@ -35,7 +37,7 @@ public class SsoChangeLoginUrlDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SsoChangeLoginUrlDetails(@javax.annotation.Nonnull String previousValue, @javax.annotation.Nonnull String newValue) {
+    public SsoChangeLoginUrlDetails(@Nonnull String previousValue, @Nonnull String newValue) {
         if (previousValue == null) {
             throw new IllegalArgumentException("Required value for 'previousValue' is null");
         }
@@ -51,7 +53,7 @@ public class SsoChangeLoginUrlDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getPreviousValue() {
         return previousValue;
     }
@@ -61,7 +63,7 @@ public class SsoChangeLoginUrlDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getNewValue() {
         return newValue;
     }

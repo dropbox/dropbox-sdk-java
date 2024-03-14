@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Path's details.
  */
@@ -35,7 +38,7 @@ public class PathLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PathLogInfo(@javax.annotation.Nonnull NamespaceRelativePathLogInfo namespaceRelative, @javax.annotation.Nullable String contextual) {
+    public PathLogInfo(@Nonnull NamespaceRelativePathLogInfo namespaceRelative, @Nullable String contextual) {
         this.contextual = contextual;
         if (namespaceRelative == null) {
             throw new IllegalArgumentException("Required value for 'namespaceRelative' is null");
@@ -63,7 +66,7 @@ public class PathLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public NamespaceRelativePathLogInfo getNamespaceRelative() {
         return namespaceRelative;
     }
@@ -73,7 +76,7 @@ public class PathLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getContextual() {
         return contextual;
     }

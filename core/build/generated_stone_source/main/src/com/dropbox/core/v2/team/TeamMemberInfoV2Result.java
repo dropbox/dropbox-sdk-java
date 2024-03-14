@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Information about a team member, after the change, like at {@link
  * DbxTeamTeamRequests#membersSetProfileV2(UserSelectorArg)}.
@@ -35,7 +37,7 @@ public class TeamMemberInfoV2Result {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamMemberInfoV2Result(@javax.annotation.Nonnull TeamMemberInfoV2 memberInfo) {
+    public TeamMemberInfoV2Result(@Nonnull TeamMemberInfoV2 memberInfo) {
         if (memberInfo == null) {
             throw new IllegalArgumentException("Required value for 'memberInfo' is null");
         }
@@ -47,7 +49,7 @@ public class TeamMemberInfoV2Result {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public TeamMemberInfoV2 getMemberInfo() {
         return memberInfo;
     }

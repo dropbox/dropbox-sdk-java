@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Additional information relevant when a new member joins the team.
  */
@@ -63,7 +66,7 @@ public class JoinTeamDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public JoinTeamDetails(@javax.annotation.Nonnull List<UserLinkedAppLogInfo> linkedApps, @javax.annotation.Nonnull List<LinkedDeviceLogInfo> linkedDevices, @javax.annotation.Nonnull List<FolderLogInfo> linkedSharedFolders, @javax.annotation.Nullable Boolean wasLinkedAppsTruncated, @javax.annotation.Nullable Boolean wasLinkedDevicesTruncated, @javax.annotation.Nullable Boolean wasLinkedSharedFoldersTruncated, @javax.annotation.Nullable Boolean hasLinkedApps, @javax.annotation.Nullable Boolean hasLinkedDevices, @javax.annotation.Nullable Boolean hasLinkedSharedFolders) {
+    public JoinTeamDetails(@Nonnull List<UserLinkedAppLogInfo> linkedApps, @Nonnull List<LinkedDeviceLogInfo> linkedDevices, @Nonnull List<FolderLogInfo> linkedSharedFolders, @Nullable Boolean wasLinkedAppsTruncated, @Nullable Boolean wasLinkedDevicesTruncated, @Nullable Boolean wasLinkedSharedFoldersTruncated, @Nullable Boolean hasLinkedApps, @Nullable Boolean hasLinkedDevices, @Nullable Boolean hasLinkedSharedFolders) {
         if (linkedApps == null) {
             throw new IllegalArgumentException("Required value for 'linkedApps' is null");
         }
@@ -127,7 +130,7 @@ public class JoinTeamDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<UserLinkedAppLogInfo> getLinkedApps() {
         return linkedApps;
     }
@@ -138,7 +141,7 @@ public class JoinTeamDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<LinkedDeviceLogInfo> getLinkedDevices() {
         return linkedDevices;
     }
@@ -149,7 +152,7 @@ public class JoinTeamDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<FolderLogInfo> getLinkedSharedFolders() {
         return linkedSharedFolders;
     }
@@ -160,7 +163,7 @@ public class JoinTeamDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Boolean getWasLinkedAppsTruncated() {
         return wasLinkedAppsTruncated;
     }
@@ -171,7 +174,7 @@ public class JoinTeamDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Boolean getWasLinkedDevicesTruncated() {
         return wasLinkedDevicesTruncated;
     }
@@ -182,7 +185,7 @@ public class JoinTeamDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Boolean getWasLinkedSharedFoldersTruncated() {
         return wasLinkedSharedFoldersTruncated;
     }
@@ -192,7 +195,7 @@ public class JoinTeamDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Boolean getHasLinkedApps() {
         return hasLinkedApps;
     }
@@ -202,7 +205,7 @@ public class JoinTeamDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Boolean getHasLinkedDevices() {
         return hasLinkedDevices;
     }
@@ -212,7 +215,7 @@ public class JoinTeamDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Boolean getHasLinkedSharedFolders() {
         return hasLinkedSharedFolders;
     }

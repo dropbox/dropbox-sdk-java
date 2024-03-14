@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Export information for a file.
  */
@@ -40,7 +43,7 @@ public class ExportInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ExportInfo(@javax.annotation.Nullable String exportAs, @javax.annotation.Nullable List<String> exportOptions) {
+    public ExportInfo(@Nullable String exportAs, @Nullable List<String> exportOptions) {
         this.exportAs = exportAs;
         if (exportOptions != null) {
             for (String x : exportOptions) {
@@ -66,7 +69,7 @@ public class ExportInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getExportAs() {
         return exportAs;
     }
@@ -77,7 +80,7 @@ public class ExportInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public List<String> getExportOptions() {
         return exportOptions;
     }

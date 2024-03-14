@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Showcase document's logged information.
  */
@@ -34,7 +36,7 @@ public class ShowcaseDocumentLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ShowcaseDocumentLogInfo(@javax.annotation.Nonnull String showcaseId, @javax.annotation.Nonnull String showcaseTitle) {
+    public ShowcaseDocumentLogInfo(@Nonnull String showcaseId, @Nonnull String showcaseTitle) {
         if (showcaseId == null) {
             throw new IllegalArgumentException("Required value for 'showcaseId' is null");
         }
@@ -50,7 +52,7 @@ public class ShowcaseDocumentLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getShowcaseId() {
         return showcaseId;
     }
@@ -60,7 +62,7 @@ public class ShowcaseDocumentLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getShowcaseTitle() {
         return showcaseTitle;
     }

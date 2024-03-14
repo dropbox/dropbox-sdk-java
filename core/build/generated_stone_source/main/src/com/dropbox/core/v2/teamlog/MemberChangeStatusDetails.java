@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed member status (invited, joined, suspended, etc.).
  */
@@ -47,7 +50,7 @@ public class MemberChangeStatusDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberChangeStatusDetails(@javax.annotation.Nonnull MemberStatus newValue, @javax.annotation.Nullable MemberStatus previousValue, @javax.annotation.Nullable ActionDetails action, @javax.annotation.Nullable String newTeam, @javax.annotation.Nullable String previousTeam) {
+    public MemberChangeStatusDetails(@Nonnull MemberStatus newValue, @Nullable MemberStatus previousValue, @Nullable ActionDetails action, @Nullable String newTeam, @Nullable String previousTeam) {
         this.previousValue = previousValue;
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
@@ -77,7 +80,7 @@ public class MemberChangeStatusDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public MemberStatus getNewValue() {
         return newValue;
     }
@@ -87,7 +90,7 @@ public class MemberChangeStatusDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public MemberStatus getPreviousValue() {
         return previousValue;
     }
@@ -98,7 +101,7 @@ public class MemberChangeStatusDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public ActionDetails getAction() {
         return action;
     }
@@ -109,7 +112,7 @@ public class MemberChangeStatusDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getNewTeam() {
         return newTeam;
     }
@@ -120,7 +123,7 @@ public class MemberChangeStatusDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getPreviousTeam() {
         return previousTeam;
     }

@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Settings that apply to a link.
  */
@@ -39,7 +42,7 @@ public class LinkSettings {
      * @param expiry  An expiry timestamp to set on a link.
      * @param password  The password for the link.
      */
-    public LinkSettings(@javax.annotation.Nullable AccessLevel accessLevel, @javax.annotation.Nullable LinkAudience audience, @javax.annotation.Nullable LinkExpiry expiry, @javax.annotation.Nullable LinkPassword password) {
+    public LinkSettings(@Nullable AccessLevel accessLevel, @Nullable LinkAudience audience, @Nullable LinkExpiry expiry, @Nullable LinkPassword password) {
         this.accessLevel = accessLevel;
         this.audience = audience;
         this.expiry = expiry;
@@ -61,7 +64,7 @@ public class LinkSettings {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public AccessLevel getAccessLevel() {
         return accessLevel;
     }
@@ -71,7 +74,7 @@ public class LinkSettings {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public LinkAudience getAudience() {
         return audience;
     }
@@ -81,7 +84,7 @@ public class LinkSettings {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public LinkExpiry getExpiry() {
         return expiry;
     }
@@ -91,7 +94,7 @@ public class LinkSettings {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public LinkPassword getPassword() {
         return password;
     }

@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 class PaperUpdateArg {
     // struct files.PaperUpdateArg (files.stone)
 
@@ -42,7 +45,7 @@ class PaperUpdateArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperUpdateArg(@javax.annotation.Nonnull String path, @javax.annotation.Nonnull ImportFormat importFormat, @javax.annotation.Nonnull PaperDocUpdatePolicy docUpdatePolicy, @javax.annotation.Nullable Long paperRevision) {
+    public PaperUpdateArg(@Nonnull String path, @Nonnull ImportFormat importFormat, @Nonnull PaperDocUpdatePolicy docUpdatePolicy, @Nullable Long paperRevision) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
@@ -88,7 +91,7 @@ class PaperUpdateArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getPath() {
         return path;
     }
@@ -98,7 +101,7 @@ class PaperUpdateArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public ImportFormat getImportFormat() {
         return importFormat;
     }
@@ -108,7 +111,7 @@ class PaperUpdateArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public PaperDocUpdatePolicy getDocUpdatePolicy() {
         return docUpdatePolicy;
     }
@@ -120,7 +123,7 @@ class PaperUpdateArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Long getPaperRevision() {
         return paperRevision;
     }

@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Excluded users update result.
  */
@@ -32,7 +34,7 @@ public class ExcludedUsersUpdateResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ExcludedUsersUpdateResult(@javax.annotation.Nonnull ExcludedUsersUpdateStatus status) {
+    public ExcludedUsersUpdateResult(@Nonnull ExcludedUsersUpdateStatus status) {
         if (status == null) {
             throw new IllegalArgumentException("Required value for 'status' is null");
         }
@@ -44,7 +46,7 @@ public class ExcludedUsersUpdateResult {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public ExcludedUsersUpdateStatus getStatus() {
         return status;
     }

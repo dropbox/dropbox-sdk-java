@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class PasswordResetType {
     // struct team_log.PasswordResetType (team_log_generated.stone)
 
@@ -28,7 +30,7 @@ public class PasswordResetType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PasswordResetType(@javax.annotation.Nonnull String description) {
+    public PasswordResetType(@Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }
@@ -39,7 +41,7 @@ public class PasswordResetType {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getDescription() {
         return description;
     }

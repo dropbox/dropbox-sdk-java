@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Disconnected integration for member.
  */
@@ -33,7 +35,7 @@ public class IntegrationDisconnectedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public IntegrationDisconnectedDetails(@javax.annotation.Nonnull String integrationName) {
+    public IntegrationDisconnectedDetails(@Nonnull String integrationName) {
         if (integrationName == null) {
             throw new IllegalArgumentException("Required value for 'integrationName' is null");
         }
@@ -45,7 +47,7 @@ public class IntegrationDisconnectedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getIntegrationName() {
         return integrationName;
     }

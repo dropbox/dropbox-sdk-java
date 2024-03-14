@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class DomainInvitesSetInviteNewUserPrefToYesType {
     // struct team_log.DomainInvitesSetInviteNewUserPrefToYesType (team_log_generated.stone)
 
@@ -28,7 +30,7 @@ public class DomainInvitesSetInviteNewUserPrefToYesType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DomainInvitesSetInviteNewUserPrefToYesType(@javax.annotation.Nonnull String description) {
+    public DomainInvitesSetInviteNewUserPrefToYesType(@Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }
@@ -39,7 +41,7 @@ public class DomainInvitesSetInviteNewUserPrefToYesType {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getDescription() {
         return description;
     }

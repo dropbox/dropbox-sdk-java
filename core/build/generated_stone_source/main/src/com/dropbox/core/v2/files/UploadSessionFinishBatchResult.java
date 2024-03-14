@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 public class UploadSessionFinishBatchResult {
     // struct files.UploadSessionFinishBatchResult (files.stone)
 
@@ -32,7 +34,7 @@ public class UploadSessionFinishBatchResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UploadSessionFinishBatchResult(@javax.annotation.Nonnull List<UploadSessionFinishBatchResultEntry> entries) {
+    public UploadSessionFinishBatchResult(@Nonnull List<UploadSessionFinishBatchResultEntry> entries) {
         if (entries == null) {
             throw new IllegalArgumentException("Required value for 'entries' is null");
         }
@@ -51,7 +53,7 @@ public class UploadSessionFinishBatchResult {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<UploadSessionFinishBatchResultEntry> getEntries() {
         return entries;
     }

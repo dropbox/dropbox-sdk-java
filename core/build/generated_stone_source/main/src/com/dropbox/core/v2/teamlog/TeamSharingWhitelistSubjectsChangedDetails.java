@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 /**
  * Edited the approved list for sharing externally.
  */
@@ -39,7 +41,7 @@ public class TeamSharingWhitelistSubjectsChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamSharingWhitelistSubjectsChangedDetails(@javax.annotation.Nonnull List<String> addedWhitelistSubjects, @javax.annotation.Nonnull List<String> removedWhitelistSubjects) {
+    public TeamSharingWhitelistSubjectsChangedDetails(@Nonnull List<String> addedWhitelistSubjects, @Nonnull List<String> removedWhitelistSubjects) {
         if (addedWhitelistSubjects == null) {
             throw new IllegalArgumentException("Required value for 'addedWhitelistSubjects' is null");
         }
@@ -65,7 +67,7 @@ public class TeamSharingWhitelistSubjectsChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<String> getAddedWhitelistSubjects() {
         return addedWhitelistSubjects;
     }
@@ -75,7 +77,7 @@ public class TeamSharingWhitelistSubjectsChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<String> getRemovedWhitelistSubjects() {
         return removedWhitelistSubjects;
     }

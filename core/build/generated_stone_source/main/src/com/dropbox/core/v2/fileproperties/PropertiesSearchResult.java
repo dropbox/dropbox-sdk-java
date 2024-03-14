@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class PropertiesSearchResult {
     // struct file_properties.PropertiesSearchResult (file_properties.stone)
 
@@ -35,7 +38,7 @@ public class PropertiesSearchResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PropertiesSearchResult(@javax.annotation.Nonnull List<PropertiesSearchMatch> matches, @javax.annotation.Nullable String cursor) {
+    public PropertiesSearchResult(@Nonnull List<PropertiesSearchMatch> matches, @Nullable String cursor) {
         if (matches == null) {
             throw new IllegalArgumentException("Required value for 'matches' is null");
         }
@@ -73,7 +76,7 @@ public class PropertiesSearchResult {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<PropertiesSearchMatch> getMatches() {
         return matches;
     }
@@ -86,7 +89,7 @@ public class PropertiesSearchResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getCursor() {
         return cursor;
     }

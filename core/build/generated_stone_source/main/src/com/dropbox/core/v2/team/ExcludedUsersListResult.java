@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Excluded users list result.
  */
@@ -43,7 +46,7 @@ public class ExcludedUsersListResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ExcludedUsersListResult(@javax.annotation.Nonnull List<MemberProfile> users, boolean hasMore, @javax.annotation.Nullable String cursor) {
+    public ExcludedUsersListResult(@Nonnull List<MemberProfile> users, boolean hasMore, @Nullable String cursor) {
         if (users == null) {
             throw new IllegalArgumentException("Required value for 'users' is null");
         }
@@ -80,7 +83,7 @@ public class ExcludedUsersListResult {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<MemberProfile> getUsers() {
         return users;
     }
@@ -104,7 +107,7 @@ public class ExcludedUsersListResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getCursor() {
         return cursor;
     }

@@ -20,6 +20,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 class TeamFolderUpdateSyncSettingsArg extends TeamFolderIdArg {
     // struct team.TeamFolderUpdateSyncSettingsArg (team_folders.stone)
 
@@ -40,7 +43,7 @@ class TeamFolderUpdateSyncSettingsArg extends TeamFolderIdArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamFolderUpdateSyncSettingsArg(@javax.annotation.Nonnull String teamFolderId, @javax.annotation.Nullable SyncSettingArg syncSetting, @javax.annotation.Nullable List<ContentSyncSettingArg> contentSyncSettings) {
+    public TeamFolderUpdateSyncSettingsArg(@Nonnull String teamFolderId, @Nullable SyncSettingArg syncSetting, @Nullable List<ContentSyncSettingArg> contentSyncSettings) {
         super(teamFolderId);
         this.syncSetting = syncSetting;
         if (contentSyncSettings != null) {
@@ -73,7 +76,7 @@ class TeamFolderUpdateSyncSettingsArg extends TeamFolderIdArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getTeamFolderId() {
         return teamFolderId;
     }
@@ -84,7 +87,7 @@ class TeamFolderUpdateSyncSettingsArg extends TeamFolderIdArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public SyncSettingArg getSyncSetting() {
         return syncSetting;
     }
@@ -94,7 +97,7 @@ class TeamFolderUpdateSyncSettingsArg extends TeamFolderIdArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public List<ContentSyncSettingArg> getContentSyncSettings() {
         return contentSyncSettings;
     }

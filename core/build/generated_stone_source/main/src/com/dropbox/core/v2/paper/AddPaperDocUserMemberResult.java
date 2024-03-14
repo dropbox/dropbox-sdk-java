@@ -17,6 +17,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Per-member result for {@link
  * DbxUserPaperRequests#docsUsersAdd(String,java.util.List)}.
@@ -38,7 +40,7 @@ public class AddPaperDocUserMemberResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AddPaperDocUserMemberResult(@javax.annotation.Nonnull MemberSelector member, @javax.annotation.Nonnull AddPaperDocUserResult result) {
+    public AddPaperDocUserMemberResult(@Nonnull MemberSelector member, @Nonnull AddPaperDocUserResult result) {
         if (member == null) {
             throw new IllegalArgumentException("Required value for 'member' is null");
         }
@@ -54,7 +56,7 @@ public class AddPaperDocUserMemberResult {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public MemberSelector getMember() {
         return member;
     }
@@ -64,7 +66,7 @@ public class AddPaperDocUserMemberResult {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public AddPaperDocUserResult getResult() {
         return result;
     }

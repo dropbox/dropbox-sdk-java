@@ -17,6 +17,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class AddMember {
     // struct paper.AddMember (paper.stone)
 
@@ -33,7 +35,7 @@ public class AddMember {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AddMember(@javax.annotation.Nonnull MemberSelector member, @javax.annotation.Nonnull PaperDocPermissionLevel permissionLevel) {
+    public AddMember(@Nonnull MemberSelector member, @Nonnull PaperDocPermissionLevel permissionLevel) {
         if (permissionLevel == null) {
             throw new IllegalArgumentException("Required value for 'permissionLevel' is null");
         }
@@ -65,7 +67,7 @@ public class AddMember {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public MemberSelector getMember() {
         return member;
     }
@@ -76,7 +78,7 @@ public class AddMember {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     PaperDocPermissionLevel.EDIT.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public PaperDocPermissionLevel getPermissionLevel() {
         return permissionLevel;
     }

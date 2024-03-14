@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 class ListFoldersArgs {
     // struct sharing.ListFoldersArgs (sharing_folders.stone)
 
@@ -38,7 +41,7 @@ class ListFoldersArgs {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFoldersArgs(long limit, @javax.annotation.Nullable List<FolderAction> actions) {
+    public ListFoldersArgs(long limit, @Nullable List<FolderAction> actions) {
         if (limit < 1L) {
             throw new IllegalArgumentException("Number 'limit' is smaller than 1L");
         }
@@ -83,7 +86,7 @@ class ListFoldersArgs {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public List<FolderAction> getActions() {
         return actions;
     }

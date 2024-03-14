@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class MemberAddArg extends MemberAddArgBase {
     // struct team.MemberAddArg (team_members.stone)
 
@@ -48,7 +51,7 @@ public class MemberAddArg extends MemberAddArgBase {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberAddArg(@javax.annotation.Nonnull String memberEmail, @javax.annotation.Nullable String memberGivenName, @javax.annotation.Nullable String memberSurname, @javax.annotation.Nullable String memberExternalId, @javax.annotation.Nullable String memberPersistentId, boolean sendWelcomeEmail, @javax.annotation.Nullable Boolean isDirectoryRestricted, @javax.annotation.Nonnull AdminTier role) {
+    public MemberAddArg(@Nonnull String memberEmail, @Nullable String memberGivenName, @Nullable String memberSurname, @Nullable String memberExternalId, @Nullable String memberPersistentId, boolean sendWelcomeEmail, @Nullable Boolean isDirectoryRestricted, @Nonnull AdminTier role) {
         super(memberEmail, memberGivenName, memberSurname, memberExternalId, memberPersistentId, sendWelcomeEmail, isDirectoryRestricted);
         if (role == null) {
             throw new IllegalArgumentException("Required value for 'role' is null");
@@ -77,7 +80,7 @@ public class MemberAddArg extends MemberAddArgBase {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getMemberEmail() {
         return memberEmail;
     }
@@ -87,7 +90,7 @@ public class MemberAddArg extends MemberAddArgBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getMemberGivenName() {
         return memberGivenName;
     }
@@ -97,7 +100,7 @@ public class MemberAddArg extends MemberAddArgBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getMemberSurname() {
         return memberSurname;
     }
@@ -107,7 +110,7 @@ public class MemberAddArg extends MemberAddArgBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getMemberExternalId() {
         return memberExternalId;
     }
@@ -118,7 +121,7 @@ public class MemberAddArg extends MemberAddArgBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getMemberPersistentId() {
         return memberPersistentId;
     }
@@ -141,7 +144,7 @@ public class MemberAddArg extends MemberAddArgBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Boolean getIsDirectoryRestricted() {
         return isDirectoryRestricted;
     }
@@ -151,7 +154,7 @@ public class MemberAddArg extends MemberAddArgBase {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     AdminTier.MEMBER_ONLY.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public AdminTier getRole() {
         return role;
     }

@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class RelocationResult extends FileOpsResult {
     // struct files.RelocationResult (files.stone)
 
@@ -29,7 +31,7 @@ public class RelocationResult extends FileOpsResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RelocationResult(@javax.annotation.Nonnull Metadata metadata) {
+    public RelocationResult(@Nonnull Metadata metadata) {
         if (metadata == null) {
             throw new IllegalArgumentException("Required value for 'metadata' is null");
         }
@@ -41,7 +43,7 @@ public class RelocationResult extends FileOpsResult {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public Metadata getMetadata() {
         return metadata;
     }

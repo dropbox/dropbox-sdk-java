@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 public class ListPaperDocsResponse {
     // struct paper.ListPaperDocsResponse (paper.stone)
 
@@ -46,7 +48,7 @@ public class ListPaperDocsResponse {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListPaperDocsResponse(@javax.annotation.Nonnull List<String> docIds, @javax.annotation.Nonnull Cursor cursor, boolean hasMore) {
+    public ListPaperDocsResponse(@Nonnull List<String> docIds, @Nonnull Cursor cursor, boolean hasMore) {
         if (docIds == null) {
             throw new IllegalArgumentException("Required value for 'docIds' is null");
         }
@@ -70,7 +72,7 @@ public class ListPaperDocsResponse {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<String> getDocIds() {
         return docIds;
     }
@@ -83,7 +85,7 @@ public class ListPaperDocsResponse {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public Cursor getCursor() {
         return cursor;
     }

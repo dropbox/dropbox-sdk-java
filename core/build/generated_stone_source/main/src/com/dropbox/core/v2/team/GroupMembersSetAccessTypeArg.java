@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 class GroupMembersSetAccessTypeArg extends GroupMemberSelector {
     // struct team.GroupMembersSetAccessTypeArg (team_groups.stone)
 
@@ -38,7 +40,7 @@ class GroupMembersSetAccessTypeArg extends GroupMemberSelector {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupMembersSetAccessTypeArg(@javax.annotation.Nonnull GroupSelector group, @javax.annotation.Nonnull UserSelectorArg user, @javax.annotation.Nonnull GroupAccessType accessType, boolean returnMembers) {
+    public GroupMembersSetAccessTypeArg(@Nonnull GroupSelector group, @Nonnull UserSelectorArg user, @Nonnull GroupAccessType accessType, boolean returnMembers) {
         super(group, user);
         if (accessType == null) {
             throw new IllegalArgumentException("Required value for 'accessType' is null");
@@ -72,7 +74,7 @@ class GroupMembersSetAccessTypeArg extends GroupMemberSelector {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public GroupSelector getGroup() {
         return group;
     }
@@ -84,7 +86,7 @@ class GroupMembersSetAccessTypeArg extends GroupMemberSelector {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public UserSelectorArg getUser() {
         return user;
     }
@@ -94,7 +96,7 @@ class GroupMembersSetAccessTypeArg extends GroupMemberSelector {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public GroupAccessType getAccessType() {
         return accessType;
     }

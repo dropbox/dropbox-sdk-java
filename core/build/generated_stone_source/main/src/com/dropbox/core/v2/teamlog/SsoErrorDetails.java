@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Failed to sign in via SSO.
  */
@@ -32,7 +34,7 @@ public class SsoErrorDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SsoErrorDetails(@javax.annotation.Nonnull FailureDetailsLogInfo errorDetails) {
+    public SsoErrorDetails(@Nonnull FailureDetailsLogInfo errorDetails) {
         if (errorDetails == null) {
             throw new IllegalArgumentException("Required value for 'errorDetails' is null");
         }
@@ -44,7 +46,7 @@ public class SsoErrorDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public FailureDetailsLogInfo getErrorDetails() {
         return errorDetails;
     }

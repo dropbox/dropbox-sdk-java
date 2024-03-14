@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class MemberSpaceLimitsAddExceptionType {
     // struct team_log.MemberSpaceLimitsAddExceptionType (team_log_generated.stone)
 
@@ -28,7 +30,7 @@ public class MemberSpaceLimitsAddExceptionType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberSpaceLimitsAddExceptionType(@javax.annotation.Nonnull String description) {
+    public MemberSpaceLimitsAddExceptionType(@Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }
@@ -39,7 +41,7 @@ public class MemberSpaceLimitsAddExceptionType {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getDescription() {
         return description;
     }

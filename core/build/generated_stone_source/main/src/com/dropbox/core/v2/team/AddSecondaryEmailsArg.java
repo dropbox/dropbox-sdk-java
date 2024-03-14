@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 class AddSecondaryEmailsArg {
     // struct team.AddSecondaryEmailsArg (team_secondary_mails.stone)
 
@@ -30,7 +32,7 @@ class AddSecondaryEmailsArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AddSecondaryEmailsArg(@javax.annotation.Nonnull List<UserSecondaryEmailsArg> newSecondaryEmails) {
+    public AddSecondaryEmailsArg(@Nonnull List<UserSecondaryEmailsArg> newSecondaryEmails) {
         if (newSecondaryEmails == null) {
             throw new IllegalArgumentException("Required value for 'newSecondaryEmails' is null");
         }
@@ -47,7 +49,7 @@ class AddSecondaryEmailsArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<UserSecondaryEmailsArg> getNewSecondaryEmails() {
         return newSecondaryEmails;
     }

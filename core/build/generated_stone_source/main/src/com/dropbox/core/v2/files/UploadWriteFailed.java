@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class UploadWriteFailed {
     // struct files.UploadWriteFailed (files.stone)
 
@@ -35,7 +37,7 @@ public class UploadWriteFailed {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UploadWriteFailed(@javax.annotation.Nonnull WriteError reason, @javax.annotation.Nonnull String uploadSessionId) {
+    public UploadWriteFailed(@Nonnull WriteError reason, @Nonnull String uploadSessionId) {
         if (reason == null) {
             throw new IllegalArgumentException("Required value for 'reason' is null");
         }
@@ -51,7 +53,7 @@ public class UploadWriteFailed {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public WriteError getReason() {
         return reason;
     }
@@ -64,7 +66,7 @@ public class UploadWriteFailed {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getUploadSessionId() {
         return uploadSessionId;
     }

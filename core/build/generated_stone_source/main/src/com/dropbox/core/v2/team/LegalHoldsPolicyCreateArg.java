@@ -19,6 +19,9 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 class LegalHoldsPolicyCreateArg {
     // struct team.LegalHoldsPolicyCreateArg (team_legal_holds.stone)
 
@@ -44,7 +47,7 @@ class LegalHoldsPolicyCreateArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LegalHoldsPolicyCreateArg(@javax.annotation.Nonnull String name, @javax.annotation.Nonnull List<String> members, @javax.annotation.Nullable String description, @javax.annotation.Nullable Date startDate, @javax.annotation.Nullable Date endDate) {
+    public LegalHoldsPolicyCreateArg(@Nonnull String name, @Nonnull List<String> members, @Nullable String description, @Nullable Date startDate, @Nullable Date endDate) {
         if (name == null) {
             throw new IllegalArgumentException("Required value for 'name' is null");
         }
@@ -93,7 +96,7 @@ class LegalHoldsPolicyCreateArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -103,7 +106,7 @@ class LegalHoldsPolicyCreateArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<String> getMembers() {
         return members;
     }
@@ -113,7 +116,7 @@ class LegalHoldsPolicyCreateArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getDescription() {
         return description;
     }
@@ -123,7 +126,7 @@ class LegalHoldsPolicyCreateArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Date getStartDate() {
         return startDate;
     }
@@ -133,7 +136,7 @@ class LegalHoldsPolicyCreateArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Date getEndDate() {
         return endDate;
     }

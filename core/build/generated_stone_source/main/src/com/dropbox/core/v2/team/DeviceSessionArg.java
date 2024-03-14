@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class DeviceSessionArg {
     // struct team.DeviceSessionArg (team_devices.stone)
 
@@ -31,7 +33,7 @@ public class DeviceSessionArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeviceSessionArg(@javax.annotation.Nonnull String sessionId, @javax.annotation.Nonnull String teamMemberId) {
+    public DeviceSessionArg(@Nonnull String sessionId, @Nonnull String teamMemberId) {
         if (sessionId == null) {
             throw new IllegalArgumentException("Required value for 'sessionId' is null");
         }
@@ -47,7 +49,7 @@ public class DeviceSessionArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getSessionId() {
         return sessionId;
     }
@@ -57,7 +59,7 @@ public class DeviceSessionArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getTeamMemberId() {
         return teamMemberId;
     }

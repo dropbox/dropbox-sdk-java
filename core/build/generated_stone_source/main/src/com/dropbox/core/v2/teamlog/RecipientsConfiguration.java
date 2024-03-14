@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Recipients Configuration
  */
@@ -42,7 +45,7 @@ public class RecipientsConfiguration {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RecipientsConfiguration(@javax.annotation.Nullable AlertRecipientsSettingType recipientSettingType, @javax.annotation.Nullable List<String> emails, @javax.annotation.Nullable List<String> groups) {
+    public RecipientsConfiguration(@Nullable AlertRecipientsSettingType recipientSettingType, @Nullable List<String> emails, @Nullable List<String> groups) {
         this.recipientSettingType = recipientSettingType;
         if (emails != null) {
             for (String x : emails) {
@@ -79,7 +82,7 @@ public class RecipientsConfiguration {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public AlertRecipientsSettingType getRecipientSettingType() {
         return recipientSettingType;
     }
@@ -89,7 +92,7 @@ public class RecipientsConfiguration {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public List<String> getEmails() {
         return emails;
     }
@@ -99,7 +102,7 @@ public class RecipientsConfiguration {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public List<String> getGroups() {
         return groups;
     }

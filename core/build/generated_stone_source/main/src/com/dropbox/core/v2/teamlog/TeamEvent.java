@@ -19,6 +19,9 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * An audit log event.
  */
@@ -73,7 +76,7 @@ public class TeamEvent {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamEvent(@javax.annotation.Nonnull Date timestamp, @javax.annotation.Nonnull EventCategory eventCategory, @javax.annotation.Nonnull EventType eventType, @javax.annotation.Nonnull EventDetails details, @javax.annotation.Nullable ActorLogInfo actor, @javax.annotation.Nullable OriginLogInfo origin, @javax.annotation.Nullable Boolean involveNonTeamMember, @javax.annotation.Nullable ContextLogInfo context, @javax.annotation.Nullable List<ParticipantLogInfo> participants, @javax.annotation.Nullable List<AssetLogInfo> assets) {
+    public TeamEvent(@Nonnull Date timestamp, @Nonnull EventCategory eventCategory, @Nonnull EventType eventType, @Nonnull EventDetails details, @Nullable ActorLogInfo actor, @Nullable OriginLogInfo origin, @Nullable Boolean involveNonTeamMember, @Nullable ContextLogInfo context, @Nullable List<ParticipantLogInfo> participants, @Nullable List<AssetLogInfo> assets) {
         if (timestamp == null) {
             throw new IllegalArgumentException("Required value for 'timestamp' is null");
         }
@@ -139,7 +142,7 @@ public class TeamEvent {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public Date getTimestamp() {
         return timestamp;
     }
@@ -149,7 +152,7 @@ public class TeamEvent {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public EventCategory getEventCategory() {
         return eventCategory;
     }
@@ -159,7 +162,7 @@ public class TeamEvent {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public EventType getEventType() {
         return eventType;
     }
@@ -170,7 +173,7 @@ public class TeamEvent {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public EventDetails getDetails() {
         return details;
     }
@@ -181,7 +184,7 @@ public class TeamEvent {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public ActorLogInfo getActor() {
         return actor;
     }
@@ -194,7 +197,7 @@ public class TeamEvent {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public OriginLogInfo getOrigin() {
         return origin;
     }
@@ -205,7 +208,7 @@ public class TeamEvent {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Boolean getInvolveNonTeamMember() {
         return involveNonTeamMember;
     }
@@ -216,7 +219,7 @@ public class TeamEvent {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public ContextLogInfo getContext() {
         return context;
     }
@@ -227,7 +230,7 @@ public class TeamEvent {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public List<ParticipantLogInfo> getParticipants() {
         return participants;
     }
@@ -239,7 +242,7 @@ public class TeamEvent {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public List<AssetLogInfo> getAssets() {
         return assets;
     }

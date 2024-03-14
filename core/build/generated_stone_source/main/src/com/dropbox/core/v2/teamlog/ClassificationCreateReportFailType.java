@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class ClassificationCreateReportFailType {
     // struct team_log.ClassificationCreateReportFailType (team_log_generated.stone)
 
@@ -28,7 +30,7 @@ public class ClassificationCreateReportFailType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ClassificationCreateReportFailType(@javax.annotation.Nonnull String description) {
+    public ClassificationCreateReportFailType(@Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }
@@ -39,7 +41,7 @@ public class ClassificationCreateReportFailType {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getDescription() {
         return description;
     }

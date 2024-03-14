@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * EchoResult contains the result returned from the Dropbox servers.
  */
@@ -33,7 +35,7 @@ public class EchoResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public EchoResult(@javax.annotation.Nonnull String result) {
+    public EchoResult(@Nonnull String result) {
         if (result == null) {
             throw new IllegalArgumentException("Required value for 'result' is null");
         }
@@ -55,7 +57,7 @@ public class EchoResult {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     "".
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getResult() {
         return result;
     }

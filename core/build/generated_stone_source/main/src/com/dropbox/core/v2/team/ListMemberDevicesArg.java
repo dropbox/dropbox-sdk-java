@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 class ListMemberDevicesArg {
     // struct team.ListMemberDevicesArg (team_devices.stone)
 
@@ -39,7 +41,7 @@ class ListMemberDevicesArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListMemberDevicesArg(@javax.annotation.Nonnull String teamMemberId, boolean includeWebSessions, boolean includeDesktopClients, boolean includeMobileClients) {
+    public ListMemberDevicesArg(@Nonnull String teamMemberId, boolean includeWebSessions, boolean includeDesktopClients, boolean includeMobileClients) {
         if (teamMemberId == null) {
             throw new IllegalArgumentException("Required value for 'teamMemberId' is null");
         }
@@ -68,7 +70,7 @@ class ListMemberDevicesArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getTeamMemberId() {
         return teamMemberId;
     }

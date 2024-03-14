@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 class PaperDocUpdateArgs extends RefPaperDoc {
     // struct paper.PaperDocUpdateArgs (paper.stone)
 
@@ -37,7 +39,7 @@ class PaperDocUpdateArgs extends RefPaperDoc {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperDocUpdateArgs(@javax.annotation.Nonnull String docId, @javax.annotation.Nonnull PaperDocUpdatePolicy docUpdatePolicy, long revision, @javax.annotation.Nonnull ImportFormat importFormat) {
+    public PaperDocUpdateArgs(@Nonnull String docId, @Nonnull PaperDocUpdatePolicy docUpdatePolicy, long revision, @Nonnull ImportFormat importFormat) {
         super(docId);
         if (docUpdatePolicy == null) {
             throw new IllegalArgumentException("Required value for 'docUpdatePolicy' is null");
@@ -55,7 +57,7 @@ class PaperDocUpdateArgs extends RefPaperDoc {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getDocId() {
         return docId;
     }
@@ -65,7 +67,7 @@ class PaperDocUpdateArgs extends RefPaperDoc {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public PaperDocUpdatePolicy getDocUpdatePolicy() {
         return docUpdatePolicy;
     }
@@ -85,7 +87,7 @@ class PaperDocUpdateArgs extends RefPaperDoc {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public ImportFormat getImportFormat() {
         return importFormat;
     }

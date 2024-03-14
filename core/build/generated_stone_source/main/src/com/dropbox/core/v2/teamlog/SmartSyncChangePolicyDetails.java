@@ -17,6 +17,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed default Smart Sync setting for team members.
  */
@@ -35,7 +38,7 @@ public class SmartSyncChangePolicyDetails {
      * @param newValue  New smart sync policy.
      * @param previousValue  Previous smart sync policy.
      */
-    public SmartSyncChangePolicyDetails(@javax.annotation.Nullable SmartSyncPolicy newValue, @javax.annotation.Nullable SmartSyncPolicy previousValue) {
+    public SmartSyncChangePolicyDetails(@Nullable SmartSyncPolicy newValue, @Nullable SmartSyncPolicy previousValue) {
         this.newValue = newValue;
         this.previousValue = previousValue;
     }
@@ -54,7 +57,7 @@ public class SmartSyncChangePolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public SmartSyncPolicy getNewValue() {
         return newValue;
     }
@@ -64,7 +67,7 @@ public class SmartSyncChangePolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public SmartSyncPolicy getPreviousValue() {
         return previousValue;
     }

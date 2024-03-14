@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Allowed non-collaborators to view links to files in shared folder.
  */
@@ -37,7 +40,7 @@ public class SfAllowNonMembersToViewSharedLinksDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SfAllowNonMembersToViewSharedLinksDetails(long targetAssetIndex, @javax.annotation.Nonnull String originalFolderName, @javax.annotation.Nullable String sharedFolderType) {
+    public SfAllowNonMembersToViewSharedLinksDetails(long targetAssetIndex, @Nonnull String originalFolderName, @Nullable String sharedFolderType) {
         this.targetAssetIndex = targetAssetIndex;
         if (originalFolderName == null) {
             throw new IllegalArgumentException("Required value for 'originalFolderName' is null");
@@ -76,7 +79,7 @@ public class SfAllowNonMembersToViewSharedLinksDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getOriginalFolderName() {
         return originalFolderName;
     }
@@ -86,7 +89,7 @@ public class SfAllowNonMembersToViewSharedLinksDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getSharedFolderType() {
         return sharedFolderType;
     }

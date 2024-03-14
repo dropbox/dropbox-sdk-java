@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Modified external drive backup.
  */
@@ -39,7 +41,7 @@ public class ExternalDriveBackupStatusChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ExternalDriveBackupStatusChangedDetails(@javax.annotation.Nonnull DesktopDeviceSessionLogInfo desktopDeviceSessionInfo, @javax.annotation.Nonnull ExternalDriveBackupStatus previousValue, @javax.annotation.Nonnull ExternalDriveBackupStatus newValue) {
+    public ExternalDriveBackupStatusChangedDetails(@Nonnull DesktopDeviceSessionLogInfo desktopDeviceSessionInfo, @Nonnull ExternalDriveBackupStatus previousValue, @Nonnull ExternalDriveBackupStatus newValue) {
         if (desktopDeviceSessionInfo == null) {
             throw new IllegalArgumentException("Required value for 'desktopDeviceSessionInfo' is null");
         }
@@ -59,7 +61,7 @@ public class ExternalDriveBackupStatusChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public DesktopDeviceSessionLogInfo getDesktopDeviceSessionInfo() {
         return desktopDeviceSessionInfo;
     }
@@ -69,7 +71,7 @@ public class ExternalDriveBackupStatusChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public ExternalDriveBackupStatus getPreviousValue() {
         return previousValue;
     }
@@ -79,7 +81,7 @@ public class ExternalDriveBackupStatusChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public ExternalDriveBackupStatus getNewValue() {
         return newValue;
     }

@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed member send invite policy for team.
  */
@@ -36,7 +38,7 @@ public class MemberSendInvitePolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberSendInvitePolicyChangedDetails(@javax.annotation.Nonnull MemberSendInvitePolicy newValue, @javax.annotation.Nonnull MemberSendInvitePolicy previousValue) {
+    public MemberSendInvitePolicyChangedDetails(@Nonnull MemberSendInvitePolicy newValue, @Nonnull MemberSendInvitePolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -52,7 +54,7 @@ public class MemberSendInvitePolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public MemberSendInvitePolicy getNewValue() {
         return newValue;
     }
@@ -62,7 +64,7 @@ public class MemberSendInvitePolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public MemberSendInvitePolicy getPreviousValue() {
         return previousValue;
     }

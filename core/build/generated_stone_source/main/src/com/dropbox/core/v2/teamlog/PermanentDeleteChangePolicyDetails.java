@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Enabled/disabled ability of team members to permanently delete content.
  */
@@ -36,7 +39,7 @@ public class PermanentDeleteChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PermanentDeleteChangePolicyDetails(@javax.annotation.Nonnull ContentPermanentDeletePolicy newValue, @javax.annotation.Nullable ContentPermanentDeletePolicy previousValue) {
+    public PermanentDeleteChangePolicyDetails(@Nonnull ContentPermanentDeletePolicy newValue, @Nullable ContentPermanentDeletePolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -64,7 +67,7 @@ public class PermanentDeleteChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public ContentPermanentDeletePolicy getNewValue() {
         return newValue;
     }
@@ -75,7 +78,7 @@ public class PermanentDeleteChangePolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public ContentPermanentDeletePolicy getPreviousValue() {
         return previousValue;
     }

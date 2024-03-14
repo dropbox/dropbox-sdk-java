@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed whether non-members can view Paper docs with link.
  */
@@ -33,7 +35,7 @@ public class PaperChangeMemberLinkPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperChangeMemberLinkPolicyDetails(@javax.annotation.Nonnull PaperMemberPolicy newValue) {
+    public PaperChangeMemberLinkPolicyDetails(@Nonnull PaperMemberPolicy newValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -45,7 +47,7 @@ public class PaperChangeMemberLinkPolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public PaperMemberPolicy getNewValue() {
         return newValue;
     }

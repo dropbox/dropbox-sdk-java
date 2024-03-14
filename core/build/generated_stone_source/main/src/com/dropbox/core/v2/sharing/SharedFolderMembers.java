@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Shared folder user and group membership.
  */
@@ -45,7 +48,7 @@ public class SharedFolderMembers {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedFolderMembers(@javax.annotation.Nonnull List<UserMembershipInfo> users, @javax.annotation.Nonnull List<GroupMembershipInfo> groups, @javax.annotation.Nonnull List<InviteeMembershipInfo> invitees, @javax.annotation.Nullable String cursor) {
+    public SharedFolderMembers(@Nonnull List<UserMembershipInfo> users, @Nonnull List<GroupMembershipInfo> groups, @Nonnull List<InviteeMembershipInfo> invitees, @Nullable String cursor) {
         if (users == null) {
             throw new IllegalArgumentException("Required value for 'users' is null");
         }
@@ -100,7 +103,7 @@ public class SharedFolderMembers {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<UserMembershipInfo> getUsers() {
         return users;
     }
@@ -110,7 +113,7 @@ public class SharedFolderMembers {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<GroupMembershipInfo> getGroups() {
         return groups;
     }
@@ -120,7 +123,7 @@ public class SharedFolderMembers {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<InviteeMembershipInfo> getInvitees() {
         return invitees;
     }
@@ -133,7 +136,7 @@ public class SharedFolderMembers {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getCursor() {
         return cursor;
     }

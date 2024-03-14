@@ -18,6 +18,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * File request deadline
  */
@@ -38,7 +41,7 @@ public class FileRequestDeadline {
      * @param allowLateUploads  If set, allow uploads after the deadline has
      *     passed.
      */
-    public FileRequestDeadline(@javax.annotation.Nullable Date deadline, @javax.annotation.Nullable String allowLateUploads) {
+    public FileRequestDeadline(@Nullable Date deadline, @Nullable String allowLateUploads) {
         this.deadline = LangUtil.truncateMillis(deadline);
         this.allowLateUploads = allowLateUploads;
     }
@@ -58,7 +61,7 @@ public class FileRequestDeadline {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Date getDeadline() {
         return deadline;
     }
@@ -68,7 +71,7 @@ public class FileRequestDeadline {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getAllowLateUploads() {
         return allowLateUploads;
     }

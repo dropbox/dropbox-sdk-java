@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Arguments for {@link DbxUserFileRequestsRequests#update(String)}.
  */
@@ -54,7 +57,7 @@ class UpdateFileRequestArgs {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UpdateFileRequestArgs(@javax.annotation.Nonnull String id, @javax.annotation.Nullable String title, @javax.annotation.Nullable String destination, @javax.annotation.Nonnull UpdateFileRequestDeadline deadline, @javax.annotation.Nullable Boolean open, @javax.annotation.Nullable String description) {
+    public UpdateFileRequestArgs(@Nonnull String id, @Nullable String title, @Nullable String destination, @Nonnull UpdateFileRequestDeadline deadline, @Nullable Boolean open, @Nullable String description) {
         if (id == null) {
             throw new IllegalArgumentException("Required value for 'id' is null");
         }
@@ -106,7 +109,7 @@ class UpdateFileRequestArgs {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getId() {
         return id;
     }
@@ -116,7 +119,7 @@ class UpdateFileRequestArgs {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getTitle() {
         return title;
     }
@@ -128,7 +131,7 @@ class UpdateFileRequestArgs {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getDestination() {
         return destination;
     }
@@ -140,7 +143,7 @@ class UpdateFileRequestArgs {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     UpdateFileRequestDeadline.NO_UPDATE.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public UpdateFileRequestDeadline getDeadline() {
         return deadline;
     }
@@ -150,7 +153,7 @@ class UpdateFileRequestArgs {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Boolean getOpen() {
         return open;
     }
@@ -160,7 +163,7 @@ class UpdateFileRequestArgs {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getDescription() {
         return description;
     }

@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 /**
  * Removed invitee from shared file/folder before invite was accepted.
  */
@@ -34,7 +36,7 @@ public class SharedContentRemoveInviteesDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentRemoveInviteesDetails(@javax.annotation.Nonnull List<String> invitees) {
+    public SharedContentRemoveInviteesDetails(@Nonnull List<String> invitees) {
         if (invitees == null) {
             throw new IllegalArgumentException("Required value for 'invitees' is null");
         }
@@ -54,7 +56,7 @@ public class SharedContentRemoveInviteesDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<String> getInvitees() {
         return invitees;
     }

@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 class SetAccessInheritanceArg {
     // struct sharing.SetAccessInheritanceArg (sharing_folders.stone)
 
@@ -33,7 +35,7 @@ class SetAccessInheritanceArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SetAccessInheritanceArg(@javax.annotation.Nonnull String sharedFolderId, @javax.annotation.Nonnull AccessInheritance accessInheritance) {
+    public SetAccessInheritanceArg(@Nonnull String sharedFolderId, @Nonnull AccessInheritance accessInheritance) {
         if (accessInheritance == null) {
             throw new IllegalArgumentException("Required value for 'accessInheritance' is null");
         }
@@ -67,7 +69,7 @@ class SetAccessInheritanceArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getSharedFolderId() {
         return sharedFolderId;
     }
@@ -78,7 +80,7 @@ class SetAccessInheritanceArg {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     AccessInheritance.INHERIT.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public AccessInheritance getAccessInheritance() {
         return accessInheritance;
     }

@@ -18,6 +18,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Metadata for a path-based shared link.
  */
@@ -38,7 +41,7 @@ public class PathLinkMetadata extends LinkMetadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PathLinkMetadata(@javax.annotation.Nonnull String url, @javax.annotation.Nonnull Visibility visibility, @javax.annotation.Nonnull String path, @javax.annotation.Nullable Date expires) {
+    public PathLinkMetadata(@Nonnull String url, @Nonnull Visibility visibility, @Nonnull String path, @Nullable Date expires) {
         super(url, visibility, expires);
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
@@ -67,7 +70,7 @@ public class PathLinkMetadata extends LinkMetadata {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getUrl() {
         return url;
     }
@@ -77,7 +80,7 @@ public class PathLinkMetadata extends LinkMetadata {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public Visibility getVisibility() {
         return visibility;
     }
@@ -87,7 +90,7 @@ public class PathLinkMetadata extends LinkMetadata {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getPath() {
         return path;
     }
@@ -97,7 +100,7 @@ public class PathLinkMetadata extends LinkMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Date getExpires() {
         return expires;
     }

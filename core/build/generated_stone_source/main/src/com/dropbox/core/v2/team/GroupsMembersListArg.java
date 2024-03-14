@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 class GroupsMembersListArg {
     // struct team.GroupsMembersListArg (team_groups.stone)
 
@@ -32,7 +34,7 @@ class GroupsMembersListArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupsMembersListArg(@javax.annotation.Nonnull GroupSelector group, long limit) {
+    public GroupsMembersListArg(@Nonnull GroupSelector group, long limit) {
         if (group == null) {
             throw new IllegalArgumentException("Required value for 'group' is null");
         }
@@ -66,7 +68,7 @@ class GroupsMembersListArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public GroupSelector getGroup() {
         return group;
     }

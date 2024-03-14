@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Permissions for actions that can be performed on a link.
  */
@@ -34,7 +37,7 @@ public class LinkPermission {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LinkPermission(@javax.annotation.Nonnull LinkAction action, boolean allow, @javax.annotation.Nullable PermissionDeniedReason reason) {
+    public LinkPermission(@Nonnull LinkAction action, boolean allow, @Nullable PermissionDeniedReason reason) {
         if (action == null) {
             throw new IllegalArgumentException("Required value for 'action' is null");
         }
@@ -61,7 +64,7 @@ public class LinkPermission {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public LinkAction getAction() {
         return action;
     }
@@ -78,7 +81,7 @@ public class LinkPermission {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public PermissionDeniedReason getReason() {
         return reason;
     }

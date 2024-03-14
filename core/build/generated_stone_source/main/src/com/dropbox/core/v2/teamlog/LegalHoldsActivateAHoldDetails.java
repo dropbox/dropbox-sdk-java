@@ -18,6 +18,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Activated a hold.
  */
@@ -40,7 +43,7 @@ public class LegalHoldsActivateAHoldDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LegalHoldsActivateAHoldDetails(@javax.annotation.Nonnull String legalHoldId, @javax.annotation.Nonnull String name, @javax.annotation.Nonnull Date startDate, @javax.annotation.Nullable Date endDate) {
+    public LegalHoldsActivateAHoldDetails(@Nonnull String legalHoldId, @Nonnull String name, @Nonnull Date startDate, @Nullable Date endDate) {
         if (legalHoldId == null) {
             throw new IllegalArgumentException("Required value for 'legalHoldId' is null");
         }
@@ -77,7 +80,7 @@ public class LegalHoldsActivateAHoldDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getLegalHoldId() {
         return legalHoldId;
     }
@@ -87,7 +90,7 @@ public class LegalHoldsActivateAHoldDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -97,7 +100,7 @@ public class LegalHoldsActivateAHoldDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public Date getStartDate() {
         return startDate;
     }
@@ -107,7 +110,7 @@ public class LegalHoldsActivateAHoldDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Date getEndDate() {
         return endDate;
     }

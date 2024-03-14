@@ -15,6 +15,9 @@ import com.fasterxml.jackson.core.JsonToken;
 
 import java.io.IOException;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Indicates that there used to be a file or folder at this path, but it no
  * longer exists.
@@ -51,7 +54,7 @@ public class DeletedMetadata extends Metadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeletedMetadata(@javax.annotation.Nonnull String name, @javax.annotation.Nullable String pathLower, @javax.annotation.Nullable String pathDisplay, @javax.annotation.Nullable String parentSharedFolderId, @javax.annotation.Nullable String previewUrl) {
+    public DeletedMetadata(@Nonnull String name, @Nullable String pathLower, @Nullable String pathDisplay, @Nullable String parentSharedFolderId, @Nullable String previewUrl) {
         super(name, pathLower, pathDisplay, parentSharedFolderId, previewUrl);
     }
 
@@ -77,7 +80,7 @@ public class DeletedMetadata extends Metadata {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -88,7 +91,7 @@ public class DeletedMetadata extends Metadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getPathLower() {
         return pathLower;
     }
@@ -104,7 +107,7 @@ public class DeletedMetadata extends Metadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getPathDisplay() {
         return pathDisplay;
     }
@@ -115,7 +118,7 @@ public class DeletedMetadata extends Metadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getParentSharedFolderId() {
         return parentSharedFolderId;
     }
@@ -125,7 +128,7 @@ public class DeletedMetadata extends Metadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getPreviewUrl() {
         return previewUrl;
     }

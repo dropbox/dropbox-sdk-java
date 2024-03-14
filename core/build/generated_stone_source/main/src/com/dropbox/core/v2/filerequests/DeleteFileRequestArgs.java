@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 /**
  * Arguments for {@link DbxUserFileRequestsRequests#delete(List)}.
  */
@@ -34,7 +36,7 @@ class DeleteFileRequestArgs {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeleteFileRequestArgs(@javax.annotation.Nonnull List<String> ids) {
+    public DeleteFileRequestArgs(@Nonnull List<String> ids) {
         if (ids == null) {
             throw new IllegalArgumentException("Required value for 'ids' is null");
         }
@@ -57,7 +59,7 @@ class DeleteFileRequestArgs {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<String> getIds() {
         return ids;
     }

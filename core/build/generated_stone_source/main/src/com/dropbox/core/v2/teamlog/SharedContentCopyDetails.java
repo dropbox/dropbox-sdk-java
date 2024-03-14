@@ -17,6 +17,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Copied shared file/folder to own Dropbox.
  */
@@ -41,7 +44,7 @@ public class SharedContentCopyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentCopyDetails(@javax.annotation.Nonnull String sharedContentLink, @javax.annotation.Nonnull AccessLevel sharedContentAccessLevel, @javax.annotation.Nonnull String destinationPath, @javax.annotation.Nullable UserLogInfo sharedContentOwner) {
+    public SharedContentCopyDetails(@Nonnull String sharedContentLink, @Nonnull AccessLevel sharedContentAccessLevel, @Nonnull String destinationPath, @Nullable UserLogInfo sharedContentOwner) {
         if (sharedContentLink == null) {
             throw new IllegalArgumentException("Required value for 'sharedContentLink' is null");
         }
@@ -80,7 +83,7 @@ public class SharedContentCopyDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getSharedContentLink() {
         return sharedContentLink;
     }
@@ -90,7 +93,7 @@ public class SharedContentCopyDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public AccessLevel getSharedContentAccessLevel() {
         return sharedContentAccessLevel;
     }
@@ -100,7 +103,7 @@ public class SharedContentCopyDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getDestinationPath() {
         return destinationPath;
     }
@@ -110,7 +113,7 @@ public class SharedContentCopyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public UserLogInfo getSharedContentOwner() {
         return sharedContentOwner;
     }

@@ -17,6 +17,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed who can access shared folder via link.
  */
@@ -36,7 +39,7 @@ public class SharedFolderChangeLinkPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedFolderChangeLinkPolicyDetails(@javax.annotation.Nonnull SharedLinkPolicy newValue, @javax.annotation.Nullable SharedLinkPolicy previousValue) {
+    public SharedFolderChangeLinkPolicyDetails(@Nonnull SharedLinkPolicy newValue, @Nullable SharedLinkPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -63,7 +66,7 @@ public class SharedFolderChangeLinkPolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public SharedLinkPolicy getNewValue() {
         return newValue;
     }
@@ -74,7 +77,7 @@ public class SharedFolderChangeLinkPolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public SharedLinkPolicy getPreviousValue() {
         return previousValue;
     }

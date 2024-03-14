@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 public class UserFeaturesGetValuesBatchResult {
     // struct users.UserFeaturesGetValuesBatchResult (users.stone)
 
@@ -30,7 +32,7 @@ public class UserFeaturesGetValuesBatchResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UserFeaturesGetValuesBatchResult(@javax.annotation.Nonnull List<UserFeatureValue> values) {
+    public UserFeaturesGetValuesBatchResult(@Nonnull List<UserFeatureValue> values) {
         if (values == null) {
             throw new IllegalArgumentException("Required value for 'values' is null");
         }
@@ -46,7 +48,7 @@ public class UserFeaturesGetValuesBatchResult {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<UserFeatureValue> getValues() {
         return values;
     }

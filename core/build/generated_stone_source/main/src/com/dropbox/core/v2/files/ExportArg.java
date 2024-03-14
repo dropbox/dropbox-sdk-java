@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class ExportArg {
     // struct files.ExportArg (files.stone)
 
@@ -38,7 +41,7 @@ public class ExportArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ExportArg(@javax.annotation.Nonnull String path, @javax.annotation.Nullable String exportFormat) {
+    public ExportArg(@Nonnull String path, @Nullable String exportFormat) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
@@ -70,7 +73,7 @@ public class ExportArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getPath() {
         return path;
     }
@@ -83,7 +86,7 @@ public class ExportArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getExportFormat() {
         return exportFormat;
     }

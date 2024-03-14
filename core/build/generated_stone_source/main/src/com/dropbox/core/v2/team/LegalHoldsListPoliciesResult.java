@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 public class LegalHoldsListPoliciesResult {
     // struct team.LegalHoldsListPoliciesResult (team_legal_holds.stone)
 
@@ -30,7 +32,7 @@ public class LegalHoldsListPoliciesResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LegalHoldsListPoliciesResult(@javax.annotation.Nonnull List<LegalHoldPolicy> policies) {
+    public LegalHoldsListPoliciesResult(@Nonnull List<LegalHoldPolicy> policies) {
         if (policies == null) {
             throw new IllegalArgumentException("Required value for 'policies' is null");
         }
@@ -46,7 +48,7 @@ public class LegalHoldsListPoliciesResult {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<LegalHoldPolicy> getPolicies() {
         return policies;
     }

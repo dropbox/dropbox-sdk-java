@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Transferred ownership of Paper doc.
  */
@@ -38,7 +41,7 @@ public class PaperDocOwnershipChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperDocOwnershipChangedDetails(@javax.annotation.Nonnull String eventUuid, @javax.annotation.Nonnull String newOwnerUserId, @javax.annotation.Nullable String oldOwnerUserId) {
+    public PaperDocOwnershipChangedDetails(@Nonnull String eventUuid, @Nonnull String newOwnerUserId, @Nullable String oldOwnerUserId) {
         if (eventUuid == null) {
             throw new IllegalArgumentException("Required value for 'eventUuid' is null");
         }
@@ -85,7 +88,7 @@ public class PaperDocOwnershipChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getEventUuid() {
         return eventUuid;
     }
@@ -95,7 +98,7 @@ public class PaperDocOwnershipChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getNewOwnerUserId() {
         return newOwnerUserId;
     }
@@ -105,7 +108,7 @@ public class PaperDocOwnershipChangedDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getOldOwnerUserId() {
         return oldOwnerUserId;
     }

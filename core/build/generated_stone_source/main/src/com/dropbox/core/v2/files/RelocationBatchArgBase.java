@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 class RelocationBatchArgBase {
     // struct files.RelocationBatchArgBase (files.stone)
 
@@ -35,7 +37,7 @@ class RelocationBatchArgBase {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RelocationBatchArgBase(@javax.annotation.Nonnull List<RelocationPath> entries, boolean autorename) {
+    public RelocationBatchArgBase(@Nonnull List<RelocationPath> entries, boolean autorename) {
         if (entries == null) {
             throw new IllegalArgumentException("Required value for 'entries' is null");
         }
@@ -77,7 +79,7 @@ class RelocationBatchArgBase {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<RelocationPath> getEntries() {
         return entries;
     }

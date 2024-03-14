@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Basic information about any account.
  */
@@ -52,7 +55,7 @@ public class BasicAccount extends Account {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public BasicAccount(@javax.annotation.Nonnull String accountId, @javax.annotation.Nonnull Name name, @javax.annotation.Nonnull String email, boolean emailVerified, boolean disabled, boolean isTeammate, @javax.annotation.Nullable String profilePhotoUrl, @javax.annotation.Nullable String teamMemberId) {
+    public BasicAccount(@Nonnull String accountId, @Nonnull Name name, @Nonnull String email, boolean emailVerified, boolean disabled, boolean isTeammate, @Nullable String profilePhotoUrl, @Nullable String teamMemberId) {
         super(accountId, name, email, emailVerified, disabled, profilePhotoUrl);
         this.isTeammate = isTeammate;
         this.teamMemberId = teamMemberId;
@@ -88,7 +91,7 @@ public class BasicAccount extends Account {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getAccountId() {
         return accountId;
     }
@@ -98,7 +101,7 @@ public class BasicAccount extends Account {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public Name getName() {
         return name;
     }
@@ -110,7 +113,7 @@ public class BasicAccount extends Account {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getEmail() {
         return email;
     }
@@ -148,7 +151,7 @@ public class BasicAccount extends Account {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getProfilePhotoUrl() {
         return profilePhotoUrl;
     }
@@ -160,7 +163,7 @@ public class BasicAccount extends Account {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getTeamMemberId() {
         return teamMemberId;
     }

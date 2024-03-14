@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 public class UserResendEmailsResult {
     // struct team.UserResendEmailsResult (team_secondary_mails.stone)
 
@@ -32,7 +34,7 @@ public class UserResendEmailsResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UserResendEmailsResult(@javax.annotation.Nonnull UserSelectorArg user, @javax.annotation.Nonnull List<ResendSecondaryEmailResult> results) {
+    public UserResendEmailsResult(@Nonnull UserSelectorArg user, @Nonnull List<ResendSecondaryEmailResult> results) {
         if (user == null) {
             throw new IllegalArgumentException("Required value for 'user' is null");
         }
@@ -52,7 +54,7 @@ public class UserResendEmailsResult {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public UserSelectorArg getUser() {
         return user;
     }
@@ -61,7 +63,7 @@ public class UserResendEmailsResult {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<ResendSecondaryEmailResult> getResults() {
         return results;
     }

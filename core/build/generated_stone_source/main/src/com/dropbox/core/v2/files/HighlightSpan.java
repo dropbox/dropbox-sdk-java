@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class HighlightSpan {
     // struct files.HighlightSpan (files.stone)
 
@@ -31,7 +33,7 @@ public class HighlightSpan {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public HighlightSpan(@javax.annotation.Nonnull String highlightStr, boolean isHighlighted) {
+    public HighlightSpan(@Nonnull String highlightStr, boolean isHighlighted) {
         if (highlightStr == null) {
             throw new IllegalArgumentException("Required value for 'highlightStr' is null");
         }
@@ -44,7 +46,7 @@ public class HighlightSpan {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getHighlightStr() {
         return highlightStr;
     }

@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed account capture setting on team domain.
  */
@@ -35,7 +38,7 @@ public class AccountCaptureChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AccountCaptureChangePolicyDetails(@javax.annotation.Nonnull AccountCapturePolicy newValue, @javax.annotation.Nullable AccountCapturePolicy previousValue) {
+    public AccountCaptureChangePolicyDetails(@Nonnull AccountCapturePolicy newValue, @Nullable AccountCapturePolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -62,7 +65,7 @@ public class AccountCaptureChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public AccountCapturePolicy getNewValue() {
         return newValue;
     }
@@ -73,7 +76,7 @@ public class AccountCaptureChangePolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public AccountCapturePolicy getPreviousValue() {
         return previousValue;
     }

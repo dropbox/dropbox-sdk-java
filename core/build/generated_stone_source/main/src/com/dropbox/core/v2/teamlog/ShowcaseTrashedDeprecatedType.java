@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class ShowcaseTrashedDeprecatedType {
     // struct team_log.ShowcaseTrashedDeprecatedType (team_log_generated.stone)
 
@@ -28,7 +30,7 @@ public class ShowcaseTrashedDeprecatedType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ShowcaseTrashedDeprecatedType(@javax.annotation.Nonnull String description) {
+    public ShowcaseTrashedDeprecatedType(@Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }
@@ -39,7 +41,7 @@ public class ShowcaseTrashedDeprecatedType {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getDescription() {
         return description;
     }

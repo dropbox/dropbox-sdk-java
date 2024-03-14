@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Added team to shared folder.
  */
@@ -39,7 +42,7 @@ public class SfAddGroupDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SfAddGroupDetails(long targetAssetIndex, @javax.annotation.Nonnull String originalFolderName, @javax.annotation.Nonnull String teamName, @javax.annotation.Nullable String sharingPermission) {
+    public SfAddGroupDetails(long targetAssetIndex, @Nonnull String originalFolderName, @Nonnull String teamName, @Nullable String sharingPermission) {
         this.targetAssetIndex = targetAssetIndex;
         if (originalFolderName == null) {
             throw new IllegalArgumentException("Required value for 'originalFolderName' is null");
@@ -83,7 +86,7 @@ public class SfAddGroupDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getOriginalFolderName() {
         return originalFolderName;
     }
@@ -93,7 +96,7 @@ public class SfAddGroupDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getTeamName() {
         return teamName;
     }
@@ -103,7 +106,7 @@ public class SfAddGroupDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getSharingPermission() {
         return sharingPermission;
     }

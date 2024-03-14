@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class UploadSessionCursor {
     // struct files.UploadSessionCursor (files.stone)
 
@@ -33,7 +35,7 @@ public class UploadSessionCursor {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UploadSessionCursor(@javax.annotation.Nonnull String sessionId, long offset) {
+    public UploadSessionCursor(@Nonnull String sessionId, long offset) {
         if (sessionId == null) {
             throw new IllegalArgumentException("Required value for 'sessionId' is null");
         }
@@ -47,7 +49,7 @@ public class UploadSessionCursor {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getSessionId() {
         return sessionId;
     }

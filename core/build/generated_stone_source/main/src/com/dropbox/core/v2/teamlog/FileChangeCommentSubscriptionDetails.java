@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Subscribed to or unsubscribed from comment notifications for file.
  */
@@ -35,7 +38,7 @@ public class FileChangeCommentSubscriptionDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileChangeCommentSubscriptionDetails(@javax.annotation.Nonnull FileCommentNotificationPolicy newValue, @javax.annotation.Nullable FileCommentNotificationPolicy previousValue) {
+    public FileChangeCommentSubscriptionDetails(@Nonnull FileCommentNotificationPolicy newValue, @Nullable FileCommentNotificationPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -62,7 +65,7 @@ public class FileChangeCommentSubscriptionDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public FileCommentNotificationPolicy getNewValue() {
         return newValue;
     }
@@ -73,7 +76,7 @@ public class FileChangeCommentSubscriptionDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public FileCommentNotificationPolicy getPreviousValue() {
         return previousValue;
     }

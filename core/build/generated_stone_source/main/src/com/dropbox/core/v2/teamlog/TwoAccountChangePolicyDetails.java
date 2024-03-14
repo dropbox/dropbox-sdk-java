@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Enabled/disabled option for members to link personal Dropbox account and team
  * account to same computer.
@@ -37,7 +40,7 @@ public class TwoAccountChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TwoAccountChangePolicyDetails(@javax.annotation.Nonnull TwoAccountPolicy newValue, @javax.annotation.Nullable TwoAccountPolicy previousValue) {
+    public TwoAccountChangePolicyDetails(@Nonnull TwoAccountPolicy newValue, @Nullable TwoAccountPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -65,7 +68,7 @@ public class TwoAccountChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public TwoAccountPolicy getNewValue() {
         return newValue;
     }
@@ -75,7 +78,7 @@ public class TwoAccountChangePolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public TwoAccountPolicy getPreviousValue() {
         return previousValue;
     }

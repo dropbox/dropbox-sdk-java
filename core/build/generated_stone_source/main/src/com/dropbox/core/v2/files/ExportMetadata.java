@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class ExportMetadata {
     // struct files.ExportMetadata (files.stone)
 
@@ -44,7 +47,7 @@ public class ExportMetadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ExportMetadata(@javax.annotation.Nonnull String name, long size, @javax.annotation.Nullable String exportHash, @javax.annotation.Nullable Long paperRevision) {
+    public ExportMetadata(@Nonnull String name, long size, @Nullable String exportHash, @Nullable Long paperRevision) {
         if (name == null) {
             throw new IllegalArgumentException("Required value for 'name' is null");
         }
@@ -84,7 +87,7 @@ public class ExportMetadata {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -107,7 +110,7 @@ public class ExportMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getExportHash() {
         return exportHash;
     }
@@ -119,7 +122,7 @@ public class ExportMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Long getPaperRevision() {
         return paperRevision;
     }

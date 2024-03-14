@@ -18,6 +18,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class PropertyGroupUpdate {
     // struct file_properties.PropertyGroupUpdate (file_properties.stone)
 
@@ -42,7 +45,7 @@ public class PropertyGroupUpdate {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PropertyGroupUpdate(@javax.annotation.Nonnull String templateId, @javax.annotation.Nullable List<PropertyField> addOrUpdateFields, @javax.annotation.Nullable List<String> removeFields) {
+    public PropertyGroupUpdate(@Nonnull String templateId, @Nullable List<PropertyField> addOrUpdateFields, @Nullable List<String> removeFields) {
         if (templateId == null) {
             throw new IllegalArgumentException("Required value for 'templateId' is null");
         }
@@ -92,7 +95,7 @@ public class PropertyGroupUpdate {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getTemplateId() {
         return templateId;
     }
@@ -104,7 +107,7 @@ public class PropertyGroupUpdate {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public List<PropertyField> getAddOrUpdateFields() {
         return addOrUpdateFields;
     }
@@ -114,7 +117,7 @@ public class PropertyGroupUpdate {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public List<String> getRemoveFields() {
         return removeFields;
     }

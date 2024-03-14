@@ -18,6 +18,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Added expiration date to link for shared file/folder.
  */
@@ -32,7 +35,7 @@ public class SharedContentAddLinkExpiryDetails {
      * @param newValue  New shared content link expiration date. Might be
      *     missing due to historical data gap.
      */
-    public SharedContentAddLinkExpiryDetails(@javax.annotation.Nullable Date newValue) {
+    public SharedContentAddLinkExpiryDetails(@Nullable Date newValue) {
         this.newValue = LangUtil.truncateMillis(newValue);
     }
 
@@ -51,7 +54,7 @@ public class SharedContentAddLinkExpiryDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Date getNewValue() {
         return newValue;
     }

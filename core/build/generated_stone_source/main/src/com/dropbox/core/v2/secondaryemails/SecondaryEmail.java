@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 public class SecondaryEmail {
     // struct secondary_emails.SecondaryEmail (secondary_emails.stone)
 
@@ -35,7 +37,7 @@ public class SecondaryEmail {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SecondaryEmail(@javax.annotation.Nonnull String email, boolean isVerified) {
+    public SecondaryEmail(@Nonnull String email, boolean isVerified) {
         if (email == null) {
             throw new IllegalArgumentException("Required value for 'email' is null");
         }
@@ -54,7 +56,7 @@ public class SecondaryEmail {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getEmail() {
         return email;
     }

@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Folder's logged information.
  */
@@ -39,7 +42,7 @@ public class FolderLogInfo extends FileOrFolderLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FolderLogInfo(@javax.annotation.Nonnull PathLogInfo path, @javax.annotation.Nullable String displayName, @javax.annotation.Nullable String fileId, @javax.annotation.Nullable Long fileSize, @javax.annotation.Nullable Long fileCount) {
+    public FolderLogInfo(@Nonnull PathLogInfo path, @Nullable String displayName, @Nullable String fileId, @Nullable Long fileSize, @Nullable Long fileCount) {
         super(path, displayName, fileId, fileSize);
         this.fileCount = fileCount;
     }
@@ -63,7 +66,7 @@ public class FolderLogInfo extends FileOrFolderLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public PathLogInfo getPath() {
         return path;
     }
@@ -73,7 +76,7 @@ public class FolderLogInfo extends FileOrFolderLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getDisplayName() {
         return displayName;
     }
@@ -83,7 +86,7 @@ public class FolderLogInfo extends FileOrFolderLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getFileId() {
         return fileId;
     }
@@ -93,7 +96,7 @@ public class FolderLogInfo extends FileOrFolderLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Long getFileSize() {
         return fileSize;
     }
@@ -103,7 +106,7 @@ public class FolderLogInfo extends FileOrFolderLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Long getFileCount() {
         return fileCount;
     }

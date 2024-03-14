@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 public class GetSharedLinksResult {
     // struct sharing.GetSharedLinksResult (shared_links.stone)
 
@@ -30,7 +32,7 @@ public class GetSharedLinksResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetSharedLinksResult(@javax.annotation.Nonnull List<LinkMetadata> links) {
+    public GetSharedLinksResult(@Nonnull List<LinkMetadata> links) {
         if (links == null) {
             throw new IllegalArgumentException("Required value for 'links' is null");
         }
@@ -47,7 +49,7 @@ public class GetSharedLinksResult {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<LinkMetadata> getLinks() {
         return links;
     }

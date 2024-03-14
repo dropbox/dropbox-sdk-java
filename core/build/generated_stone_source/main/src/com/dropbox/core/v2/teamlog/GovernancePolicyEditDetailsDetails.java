@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Edited policy.
  */
@@ -42,7 +45,7 @@ public class GovernancePolicyEditDetailsDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GovernancePolicyEditDetailsDetails(@javax.annotation.Nonnull String governancePolicyId, @javax.annotation.Nonnull String name, @javax.annotation.Nonnull String attribute, @javax.annotation.Nonnull String previousValue, @javax.annotation.Nonnull String newValue, @javax.annotation.Nullable PolicyType policyType) {
+    public GovernancePolicyEditDetailsDetails(@Nonnull String governancePolicyId, @Nonnull String name, @Nonnull String attribute, @Nonnull String previousValue, @Nonnull String newValue, @Nullable PolicyType policyType) {
         if (governancePolicyId == null) {
             throw new IllegalArgumentException("Required value for 'governancePolicyId' is null");
         }
@@ -89,7 +92,7 @@ public class GovernancePolicyEditDetailsDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getGovernancePolicyId() {
         return governancePolicyId;
     }
@@ -99,7 +102,7 @@ public class GovernancePolicyEditDetailsDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -109,7 +112,7 @@ public class GovernancePolicyEditDetailsDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getAttribute() {
         return attribute;
     }
@@ -119,7 +122,7 @@ public class GovernancePolicyEditDetailsDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getPreviousValue() {
         return previousValue;
     }
@@ -129,7 +132,7 @@ public class GovernancePolicyEditDetailsDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getNewValue() {
         return newValue;
     }
@@ -139,7 +142,7 @@ public class GovernancePolicyEditDetailsDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public PolicyType getPolicyType() {
         return policyType;
     }

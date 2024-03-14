@@ -17,6 +17,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 class GroupUpdateArgs extends IncludeMembersArg {
     // struct team.GroupUpdateArgs (team_groups.stone)
 
@@ -45,7 +48,7 @@ class GroupUpdateArgs extends IncludeMembersArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupUpdateArgs(@javax.annotation.Nonnull GroupSelector group, boolean returnMembers, @javax.annotation.Nullable String newGroupName, @javax.annotation.Nullable String newGroupExternalId, @javax.annotation.Nullable GroupManagementType newGroupManagementType) {
+    public GroupUpdateArgs(@Nonnull GroupSelector group, boolean returnMembers, @Nullable String newGroupName, @Nullable String newGroupExternalId, @Nullable GroupManagementType newGroupManagementType) {
         super(returnMembers);
         if (group == null) {
             throw new IllegalArgumentException("Required value for 'group' is null");
@@ -75,7 +78,7 @@ class GroupUpdateArgs extends IncludeMembersArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public GroupSelector getGroup() {
         return group;
     }
@@ -97,7 +100,7 @@ class GroupUpdateArgs extends IncludeMembersArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getNewGroupName() {
         return newGroupName;
     }
@@ -109,7 +112,7 @@ class GroupUpdateArgs extends IncludeMembersArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getNewGroupExternalId() {
         return newGroupExternalId;
     }
@@ -119,7 +122,7 @@ class GroupUpdateArgs extends IncludeMembersArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public GroupManagementType getNewGroupManagementType() {
         return newGroupManagementType;
     }

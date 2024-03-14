@@ -17,6 +17,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed sync default.
  */
@@ -35,7 +37,7 @@ public class TeamSelectiveSyncSettingsChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamSelectiveSyncSettingsChangedDetails(@javax.annotation.Nonnull SyncSetting previousValue, @javax.annotation.Nonnull SyncSetting newValue) {
+    public TeamSelectiveSyncSettingsChangedDetails(@Nonnull SyncSetting previousValue, @Nonnull SyncSetting newValue) {
         if (previousValue == null) {
             throw new IllegalArgumentException("Required value for 'previousValue' is null");
         }
@@ -51,7 +53,7 @@ public class TeamSelectiveSyncSettingsChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public SyncSetting getPreviousValue() {
         return previousValue;
     }
@@ -61,7 +63,7 @@ public class TeamSelectiveSyncSettingsChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public SyncSetting getNewValue() {
         return newValue;
     }

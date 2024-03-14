@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Failed to sign in.
  */
@@ -37,7 +40,7 @@ public class LoginFailDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LoginFailDetails(@javax.annotation.Nonnull LoginMethod loginMethod, @javax.annotation.Nonnull FailureDetailsLogInfo errorDetails, @javax.annotation.Nullable Boolean isEmmManaged) {
+    public LoginFailDetails(@Nonnull LoginMethod loginMethod, @Nonnull FailureDetailsLogInfo errorDetails, @Nullable Boolean isEmmManaged) {
         this.isEmmManaged = isEmmManaged;
         if (loginMethod == null) {
             throw new IllegalArgumentException("Required value for 'loginMethod' is null");
@@ -69,7 +72,7 @@ public class LoginFailDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public LoginMethod getLoginMethod() {
         return loginMethod;
     }
@@ -79,7 +82,7 @@ public class LoginFailDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public FailureDetailsLogInfo getErrorDetails() {
         return errorDetails;
     }
@@ -90,7 +93,7 @@ public class LoginFailDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Boolean getIsEmmManaged() {
         return isEmmManaged;
     }

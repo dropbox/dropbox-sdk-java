@@ -17,6 +17,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed access type of invitee to shared file/folder before invite was
  * accepted.
@@ -41,7 +44,7 @@ public class SharedContentChangeInviteeRoleDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentChangeInviteeRoleDetails(@javax.annotation.Nonnull AccessLevel newAccessLevel, @javax.annotation.Nonnull String invitee, @javax.annotation.Nullable AccessLevel previousAccessLevel) {
+    public SharedContentChangeInviteeRoleDetails(@Nonnull AccessLevel newAccessLevel, @Nonnull String invitee, @Nullable AccessLevel previousAccessLevel) {
         this.previousAccessLevel = previousAccessLevel;
         if (newAccessLevel == null) {
             throw new IllegalArgumentException("Required value for 'newAccessLevel' is null");
@@ -78,7 +81,7 @@ public class SharedContentChangeInviteeRoleDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public AccessLevel getNewAccessLevel() {
         return newAccessLevel;
     }
@@ -88,7 +91,7 @@ public class SharedContentChangeInviteeRoleDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getInvitee() {
         return invitee;
     }
@@ -98,7 +101,7 @@ public class SharedContentChangeInviteeRoleDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public AccessLevel getPreviousAccessLevel() {
         return previousAccessLevel;
     }

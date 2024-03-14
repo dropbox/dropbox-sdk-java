@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed parent of shared folder.
  */
@@ -38,7 +41,7 @@ public class SharedFolderNestDetails {
      * @param previousNsPath  Previous namespace path.
      * @param newNsPath  New namespace path.
      */
-    public SharedFolderNestDetails(@javax.annotation.Nullable String previousParentNsId, @javax.annotation.Nullable String newParentNsId, @javax.annotation.Nullable String previousNsPath, @javax.annotation.Nullable String newNsPath) {
+    public SharedFolderNestDetails(@Nullable String previousParentNsId, @Nullable String newParentNsId, @Nullable String previousNsPath, @Nullable String newNsPath) {
         this.previousParentNsId = previousParentNsId;
         this.newParentNsId = newParentNsId;
         this.previousNsPath = previousNsPath;
@@ -59,7 +62,7 @@ public class SharedFolderNestDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getPreviousParentNsId() {
         return previousParentNsId;
     }
@@ -69,7 +72,7 @@ public class SharedFolderNestDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getNewParentNsId() {
         return newParentNsId;
     }
@@ -79,7 +82,7 @@ public class SharedFolderNestDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getPreviousNsPath() {
         return previousNsPath;
     }
@@ -89,7 +92,7 @@ public class SharedFolderNestDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getNewNsPath() {
         return newNsPath;
     }

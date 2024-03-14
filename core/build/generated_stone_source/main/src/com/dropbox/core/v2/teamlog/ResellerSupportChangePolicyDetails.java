@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Enabled/disabled reseller support.
  */
@@ -35,7 +37,7 @@ public class ResellerSupportChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ResellerSupportChangePolicyDetails(@javax.annotation.Nonnull ResellerSupportPolicy newValue, @javax.annotation.Nonnull ResellerSupportPolicy previousValue) {
+    public ResellerSupportChangePolicyDetails(@Nonnull ResellerSupportPolicy newValue, @Nonnull ResellerSupportPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -51,7 +53,7 @@ public class ResellerSupportChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public ResellerSupportPolicy getNewValue() {
         return newValue;
     }
@@ -61,7 +63,7 @@ public class ResellerSupportChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public ResellerSupportPolicy getPreviousValue() {
         return previousValue;
     }

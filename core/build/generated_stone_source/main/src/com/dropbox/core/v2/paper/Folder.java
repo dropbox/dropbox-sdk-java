@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Data structure representing a Paper folder.
  */
@@ -35,7 +37,7 @@ public class Folder {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public Folder(@javax.annotation.Nonnull String id, @javax.annotation.Nonnull String name) {
+    public Folder(@Nonnull String id, @Nonnull String name) {
         if (id == null) {
             throw new IllegalArgumentException("Required value for 'id' is null");
         }
@@ -51,7 +53,7 @@ public class Folder {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getId() {
         return id;
     }
@@ -61,7 +63,7 @@ public class Folder {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getName() {
         return name;
     }

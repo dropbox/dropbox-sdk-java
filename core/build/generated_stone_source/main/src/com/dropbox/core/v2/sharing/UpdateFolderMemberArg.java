@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 class UpdateFolderMemberArg {
     // struct sharing.UpdateFolderMemberArg (sharing_folders.stone)
 
@@ -38,7 +40,7 @@ class UpdateFolderMemberArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UpdateFolderMemberArg(@javax.annotation.Nonnull String sharedFolderId, @javax.annotation.Nonnull MemberSelector member, @javax.annotation.Nonnull AccessLevel accessLevel) {
+    public UpdateFolderMemberArg(@Nonnull String sharedFolderId, @Nonnull MemberSelector member, @Nonnull AccessLevel accessLevel) {
         if (sharedFolderId == null) {
             throw new IllegalArgumentException("Required value for 'sharedFolderId' is null");
         }
@@ -61,7 +63,7 @@ class UpdateFolderMemberArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getSharedFolderId() {
         return sharedFolderId;
     }
@@ -72,7 +74,7 @@ class UpdateFolderMemberArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public MemberSelector getMember() {
         return member;
     }
@@ -83,7 +85,7 @@ class UpdateFolderMemberArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public AccessLevel getAccessLevel() {
         return accessLevel;
     }

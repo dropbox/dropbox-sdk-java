@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 class MembersGetInfoV2Arg {
     // struct team.MembersGetInfoV2Arg (team_members.stone)
 
@@ -30,7 +32,7 @@ class MembersGetInfoV2Arg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MembersGetInfoV2Arg(@javax.annotation.Nonnull List<UserSelectorArg> members) {
+    public MembersGetInfoV2Arg(@Nonnull List<UserSelectorArg> members) {
         if (members == null) {
             throw new IllegalArgumentException("Required value for 'members' is null");
         }
@@ -47,7 +49,7 @@ class MembersGetInfoV2Arg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<UserSelectorArg> getMembers() {
         return members;
     }

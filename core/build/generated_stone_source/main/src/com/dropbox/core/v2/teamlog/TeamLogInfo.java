@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Team's logged information.
  */
@@ -32,7 +34,7 @@ public class TeamLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamLogInfo(@javax.annotation.Nonnull String displayName) {
+    public TeamLogInfo(@Nonnull String displayName) {
         if (displayName == null) {
             throw new IllegalArgumentException("Required value for 'displayName' is null");
         }
@@ -44,7 +46,7 @@ public class TeamLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getDisplayName() {
         return displayName;
     }

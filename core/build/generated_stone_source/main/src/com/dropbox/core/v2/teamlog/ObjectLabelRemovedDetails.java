@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Removed a label.
  */
@@ -32,7 +34,7 @@ public class ObjectLabelRemovedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ObjectLabelRemovedDetails(@javax.annotation.Nonnull LabelType labelType) {
+    public ObjectLabelRemovedDetails(@Nonnull LabelType labelType) {
         if (labelType == null) {
             throw new IllegalArgumentException("Required value for 'labelType' is null");
         }
@@ -44,7 +46,7 @@ public class ObjectLabelRemovedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public LabelType getLabelType() {
         return labelType;
     }

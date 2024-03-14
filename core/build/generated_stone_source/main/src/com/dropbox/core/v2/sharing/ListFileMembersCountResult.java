@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class ListFileMembersCountResult {
     // struct sharing.ListFileMembersCountResult (sharing_files.stone)
 
@@ -31,7 +33,7 @@ public class ListFileMembersCountResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFileMembersCountResult(@javax.annotation.Nonnull SharedFileMembers members, long memberCount) {
+    public ListFileMembersCountResult(@Nonnull SharedFileMembers members, long memberCount) {
         if (members == null) {
             throw new IllegalArgumentException("Required value for 'members' is null");
         }
@@ -44,7 +46,7 @@ public class ListFileMembersCountResult {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public SharedFileMembers getMembers() {
         return members;
     }

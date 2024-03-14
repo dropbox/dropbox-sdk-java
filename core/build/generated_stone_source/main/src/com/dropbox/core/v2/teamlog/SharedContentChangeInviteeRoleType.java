@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class SharedContentChangeInviteeRoleType {
     // struct team_log.SharedContentChangeInviteeRoleType (team_log_generated.stone)
 
@@ -28,7 +30,7 @@ public class SharedContentChangeInviteeRoleType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentChangeInviteeRoleType(@javax.annotation.Nonnull String description) {
+    public SharedContentChangeInviteeRoleType(@Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }
@@ -39,7 +41,7 @@ public class SharedContentChangeInviteeRoleType {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getDescription() {
         return description;
     }

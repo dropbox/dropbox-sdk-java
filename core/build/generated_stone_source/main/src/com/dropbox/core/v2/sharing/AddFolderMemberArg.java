@@ -18,6 +18,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 class AddFolderMemberArg {
     // struct sharing.AddFolderMemberArg (sharing_folders.stone)
 
@@ -43,7 +46,7 @@ class AddFolderMemberArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AddFolderMemberArg(@javax.annotation.Nonnull String sharedFolderId, @javax.annotation.Nonnull List<AddMember> members, boolean quiet, @javax.annotation.Nullable String customMessage) {
+    public AddFolderMemberArg(@Nonnull String sharedFolderId, @Nonnull List<AddMember> members, boolean quiet, @Nullable String customMessage) {
         if (sharedFolderId == null) {
             throw new IllegalArgumentException("Required value for 'sharedFolderId' is null");
         }
@@ -92,7 +95,7 @@ class AddFolderMemberArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getSharedFolderId() {
         return sharedFolderId;
     }
@@ -103,7 +106,7 @@ class AddFolderMemberArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<AddMember> getMembers() {
         return members;
     }
@@ -124,7 +127,7 @@ class AddFolderMemberArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getCustomMessage() {
         return customMessage;
     }

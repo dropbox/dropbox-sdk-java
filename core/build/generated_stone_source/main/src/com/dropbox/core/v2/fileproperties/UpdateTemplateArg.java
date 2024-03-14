@@ -18,6 +18,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class UpdateTemplateArg {
     // struct file_properties.UpdateTemplateArg (file_properties.stone)
 
@@ -47,7 +50,7 @@ public class UpdateTemplateArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UpdateTemplateArg(@javax.annotation.Nonnull String templateId, @javax.annotation.Nullable String name, @javax.annotation.Nullable String description, @javax.annotation.Nullable List<PropertyFieldTemplate> addFields) {
+    public UpdateTemplateArg(@Nonnull String templateId, @Nullable String name, @Nullable String description, @Nullable List<PropertyFieldTemplate> addFields) {
         if (templateId == null) {
             throw new IllegalArgumentException("Required value for 'templateId' is null");
         }
@@ -97,7 +100,7 @@ public class UpdateTemplateArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getTemplateId() {
         return templateId;
     }
@@ -107,7 +110,7 @@ public class UpdateTemplateArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getName() {
         return name;
     }
@@ -118,7 +121,7 @@ public class UpdateTemplateArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getDescription() {
         return description;
     }
@@ -129,7 +132,7 @@ public class UpdateTemplateArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public List<PropertyFieldTemplate> getAddFields() {
         return addFields;
     }

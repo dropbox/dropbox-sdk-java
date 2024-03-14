@@ -17,6 +17,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Couldn't generate ransomware report.
  */
@@ -33,7 +35,7 @@ public class RansomwareAlertCreateReportFailedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RansomwareAlertCreateReportFailedDetails(@javax.annotation.Nonnull TeamReportFailureReason failureReason) {
+    public RansomwareAlertCreateReportFailedDetails(@Nonnull TeamReportFailureReason failureReason) {
         if (failureReason == null) {
             throw new IllegalArgumentException("Required value for 'failureReason' is null");
         }
@@ -45,7 +47,7 @@ public class RansomwareAlertCreateReportFailedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public TeamReportFailureReason getFailureReason() {
         return failureReason;
     }

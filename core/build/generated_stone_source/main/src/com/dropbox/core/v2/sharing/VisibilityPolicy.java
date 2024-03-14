@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class VisibilityPolicy {
     // struct sharing.VisibilityPolicy (shared_links.stone)
 
@@ -42,7 +45,7 @@ public class VisibilityPolicy {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public VisibilityPolicy(@javax.annotation.Nonnull RequestedVisibility policy, @javax.annotation.Nonnull AlphaResolvedVisibility resolvedPolicy, boolean allowed, @javax.annotation.Nullable VisibilityPolicyDisallowedReason disallowedReason) {
+    public VisibilityPolicy(@Nonnull RequestedVisibility policy, @Nonnull AlphaResolvedVisibility resolvedPolicy, boolean allowed, @Nullable VisibilityPolicyDisallowedReason disallowedReason) {
         if (policy == null) {
             throw new IllegalArgumentException("Required value for 'policy' is null");
         }
@@ -82,7 +85,7 @@ public class VisibilityPolicy {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public RequestedVisibility getPolicy() {
         return policy;
     }
@@ -95,7 +98,7 @@ public class VisibilityPolicy {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public AlphaResolvedVisibility getResolvedPolicy() {
         return resolvedPolicy;
     }
@@ -116,7 +119,7 @@ public class VisibilityPolicy {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public VisibilityPolicyDisallowedReason getDisallowedReason() {
         return disallowedReason;
     }

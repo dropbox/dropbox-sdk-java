@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Enrolled new Dropbox Passwords device.
  */
@@ -35,7 +37,7 @@ public class DropboxPasswordsNewDeviceEnrolledDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DropboxPasswordsNewDeviceEnrolledDetails(boolean isFirstDevice, @javax.annotation.Nonnull String platform) {
+    public DropboxPasswordsNewDeviceEnrolledDetails(boolean isFirstDevice, @Nonnull String platform) {
         this.isFirstDevice = isFirstDevice;
         if (platform == null) {
             throw new IllegalArgumentException("Required value for 'platform' is null");
@@ -57,7 +59,7 @@ public class DropboxPasswordsNewDeviceEnrolledDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getPlatform() {
         return platform;
     }

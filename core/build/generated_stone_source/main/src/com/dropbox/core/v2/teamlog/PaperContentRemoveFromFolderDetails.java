@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Removed Paper doc/folder from folder.
  */
@@ -39,7 +42,7 @@ public class PaperContentRemoveFromFolderDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperContentRemoveFromFolderDetails(@javax.annotation.Nonnull String eventUuid, @javax.annotation.Nullable Long targetAssetIndex, @javax.annotation.Nullable Long parentAssetIndex) {
+    public PaperContentRemoveFromFolderDetails(@Nonnull String eventUuid, @Nullable Long targetAssetIndex, @Nullable Long parentAssetIndex) {
         if (eventUuid == null) {
             throw new IllegalArgumentException("Required value for 'eventUuid' is null");
         }
@@ -67,7 +70,7 @@ public class PaperContentRemoveFromFolderDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getEventUuid() {
         return eventUuid;
     }
@@ -77,7 +80,7 @@ public class PaperContentRemoveFromFolderDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Long getTargetAssetIndex() {
         return targetAssetIndex;
     }
@@ -87,7 +90,7 @@ public class PaperContentRemoveFromFolderDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Long getParentAssetIndex() {
         return parentAssetIndex;
     }

@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 class RestoreArg {
     // struct files.RestoreArg (files.stone)
 
@@ -33,7 +35,7 @@ class RestoreArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RestoreArg(@javax.annotation.Nonnull String path, @javax.annotation.Nonnull String rev) {
+    public RestoreArg(@Nonnull String path, @Nonnull String rev) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
@@ -58,7 +60,7 @@ class RestoreArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getPath() {
         return path;
     }
@@ -68,7 +70,7 @@ class RestoreArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getRev() {
         return rev;
     }

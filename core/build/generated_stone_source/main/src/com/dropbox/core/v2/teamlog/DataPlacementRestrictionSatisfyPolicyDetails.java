@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Completed restrictions on data center locations where team data resides.
  */
@@ -33,7 +35,7 @@ public class DataPlacementRestrictionSatisfyPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DataPlacementRestrictionSatisfyPolicyDetails(@javax.annotation.Nonnull PlacementRestriction placementRestriction) {
+    public DataPlacementRestrictionSatisfyPolicyDetails(@Nonnull PlacementRestriction placementRestriction) {
         if (placementRestriction == null) {
             throw new IllegalArgumentException("Required value for 'placementRestriction' is null");
         }
@@ -45,7 +47,7 @@ public class DataPlacementRestrictionSatisfyPolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public PlacementRestriction getPlacementRestriction() {
         return placementRestriction;
     }

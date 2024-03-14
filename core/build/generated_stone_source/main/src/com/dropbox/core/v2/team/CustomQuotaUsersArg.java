@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 class CustomQuotaUsersArg {
     // struct team.CustomQuotaUsersArg (team_member_space_limits.stone)
 
@@ -30,7 +32,7 @@ class CustomQuotaUsersArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public CustomQuotaUsersArg(@javax.annotation.Nonnull List<UserSelectorArg> users) {
+    public CustomQuotaUsersArg(@Nonnull List<UserSelectorArg> users) {
         if (users == null) {
             throw new IllegalArgumentException("Required value for 'users' is null");
         }
@@ -47,7 +49,7 @@ class CustomQuotaUsersArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<UserSelectorArg> getUsers() {
         return users;
     }

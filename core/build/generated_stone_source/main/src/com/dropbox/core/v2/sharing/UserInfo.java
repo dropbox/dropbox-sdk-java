@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Basic information about a user. Use {@link
  * com.dropbox.core.v2.users.DbxUserUsersRequests#getAccount(String)} and {@link
@@ -50,7 +53,7 @@ public class UserInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UserInfo(@javax.annotation.Nonnull String accountId, @javax.annotation.Nonnull String email, @javax.annotation.Nonnull String displayName, boolean sameTeam, @javax.annotation.Nullable String teamMemberId) {
+    public UserInfo(@Nonnull String accountId, @Nonnull String email, @Nonnull String displayName, boolean sameTeam, @Nullable String teamMemberId) {
         if (accountId == null) {
             throw new IllegalArgumentException("Required value for 'accountId' is null");
         }
@@ -101,7 +104,7 @@ public class UserInfo {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getAccountId() {
         return accountId;
     }
@@ -111,7 +114,7 @@ public class UserInfo {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getEmail() {
         return email;
     }
@@ -121,7 +124,7 @@ public class UserInfo {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getDisplayName() {
         return displayName;
     }
@@ -141,7 +144,7 @@ public class UserInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getTeamMemberId() {
         return teamMemberId;
     }

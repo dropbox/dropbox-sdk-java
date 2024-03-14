@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Enabled/disabled Team Selective Sync for team.
  */
@@ -36,7 +38,7 @@ public class TeamSelectiveSyncPolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamSelectiveSyncPolicyChangedDetails(@javax.annotation.Nonnull TeamSelectiveSyncPolicy newValue, @javax.annotation.Nonnull TeamSelectiveSyncPolicy previousValue) {
+    public TeamSelectiveSyncPolicyChangedDetails(@Nonnull TeamSelectiveSyncPolicy newValue, @Nonnull TeamSelectiveSyncPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -52,7 +54,7 @@ public class TeamSelectiveSyncPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public TeamSelectiveSyncPolicy getNewValue() {
         return newValue;
     }
@@ -62,7 +64,7 @@ public class TeamSelectiveSyncPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public TeamSelectiveSyncPolicy getPreviousValue() {
         return previousValue;
     }

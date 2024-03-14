@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 public class SharingAllowlistListResponse {
     // struct team.SharingAllowlistListResponse (team_sharing_allowlist.stone)
 
@@ -45,7 +47,7 @@ public class SharingAllowlistListResponse {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharingAllowlistListResponse(@javax.annotation.Nonnull List<String> domains, @javax.annotation.Nonnull List<String> emails, @javax.annotation.Nonnull String cursor, boolean hasMore) {
+    public SharingAllowlistListResponse(@Nonnull List<String> domains, @Nonnull List<String> emails, @Nonnull String cursor, boolean hasMore) {
         if (domains == null) {
             throw new IllegalArgumentException("Required value for 'domains' is null");
         }
@@ -95,7 +97,7 @@ public class SharingAllowlistListResponse {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<String> getDomains() {
         return domains;
     }
@@ -105,7 +107,7 @@ public class SharingAllowlistListResponse {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<String> getEmails() {
         return emails;
     }
@@ -117,7 +119,7 @@ public class SharingAllowlistListResponse {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     "".
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getCursor() {
         return cursor;
     }

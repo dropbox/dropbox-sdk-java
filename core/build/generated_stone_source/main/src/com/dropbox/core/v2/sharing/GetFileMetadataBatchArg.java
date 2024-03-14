@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Arguments of {@link DbxUserSharingRequests#getFileMetadataBatch(List,List)}.
  */
@@ -41,7 +44,7 @@ class GetFileMetadataBatchArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetFileMetadataBatchArg(@javax.annotation.Nonnull List<String> files, @javax.annotation.Nullable List<FileAction> actions) {
+    public GetFileMetadataBatchArg(@Nonnull List<String> files, @Nullable List<FileAction> actions) {
         if (files == null) {
             throw new IllegalArgumentException("Required value for 'files' is null");
         }
@@ -91,7 +94,7 @@ class GetFileMetadataBatchArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<String> getFiles() {
         return files;
     }
@@ -103,7 +106,7 @@ class GetFileMetadataBatchArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public List<FileAction> getActions() {
         return actions;
     }

@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed member space limit type for team.
  */
@@ -35,7 +37,7 @@ public class MemberSpaceLimitsChangeCapsTypePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberSpaceLimitsChangeCapsTypePolicyDetails(@javax.annotation.Nonnull SpaceCapsType previousValue, @javax.annotation.Nonnull SpaceCapsType newValue) {
+    public MemberSpaceLimitsChangeCapsTypePolicyDetails(@Nonnull SpaceCapsType previousValue, @Nonnull SpaceCapsType newValue) {
         if (previousValue == null) {
             throw new IllegalArgumentException("Required value for 'previousValue' is null");
         }
@@ -51,7 +53,7 @@ public class MemberSpaceLimitsChangeCapsTypePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public SpaceCapsType getPreviousValue() {
         return previousValue;
     }
@@ -61,7 +63,7 @@ public class MemberSpaceLimitsChangeCapsTypePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public SpaceCapsType getNewValue() {
         return newValue;
     }

@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Accepted/opted out of extended version history.
  */
@@ -36,7 +39,7 @@ public class ExtendedVersionHistoryChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ExtendedVersionHistoryChangePolicyDetails(@javax.annotation.Nonnull ExtendedVersionHistoryPolicy newValue, @javax.annotation.Nullable ExtendedVersionHistoryPolicy previousValue) {
+    public ExtendedVersionHistoryChangePolicyDetails(@Nonnull ExtendedVersionHistoryPolicy newValue, @Nullable ExtendedVersionHistoryPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -64,7 +67,7 @@ public class ExtendedVersionHistoryChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public ExtendedVersionHistoryPolicy getNewValue() {
         return newValue;
     }
@@ -75,7 +78,7 @@ public class ExtendedVersionHistoryChangePolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public ExtendedVersionHistoryPolicy getPreviousValue() {
         return previousValue;
     }

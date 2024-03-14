@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class ChangedEnterpriseAdminRoleType {
     // struct team_log.ChangedEnterpriseAdminRoleType (team_log_generated.stone)
 
@@ -28,7 +30,7 @@ public class ChangedEnterpriseAdminRoleType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ChangedEnterpriseAdminRoleType(@javax.annotation.Nonnull String description) {
+    public ChangedEnterpriseAdminRoleType(@Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }
@@ -39,7 +41,7 @@ public class ChangedEnterpriseAdminRoleType {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getDescription() {
         return description;
     }

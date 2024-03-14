@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 class LegalHoldsGetPolicyArg {
     // struct team.LegalHoldsGetPolicyArg (team_legal_holds.stone)
 
@@ -30,7 +32,7 @@ class LegalHoldsGetPolicyArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LegalHoldsGetPolicyArg(@javax.annotation.Nonnull String id) {
+    public LegalHoldsGetPolicyArg(@Nonnull String id) {
         if (id == null) {
             throw new IllegalArgumentException("Required value for 'id' is null");
         }
@@ -45,7 +47,7 @@ class LegalHoldsGetPolicyArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getId() {
         return id;
     }

@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class GuestAdminChangeStatusType {
     // struct team_log.GuestAdminChangeStatusType (team_log_generated.stone)
 
@@ -28,7 +30,7 @@ public class GuestAdminChangeStatusType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GuestAdminChangeStatusType(@javax.annotation.Nonnull String description) {
+    public GuestAdminChangeStatusType(@Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }
@@ -39,7 +41,7 @@ public class GuestAdminChangeStatusType {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getDescription() {
         return description;
     }

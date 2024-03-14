@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Result for {@link DbxUserSharingRequests#listFolders} or {@link
  * DbxUserSharingRequests#listMountableFolders}, depending on which endpoint was
@@ -48,7 +51,7 @@ public class ListFoldersResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFoldersResult(@javax.annotation.Nonnull List<SharedFolderMetadata> entries, @javax.annotation.Nullable String cursor) {
+    public ListFoldersResult(@Nonnull List<SharedFolderMetadata> entries, @Nullable String cursor) {
         if (entries == null) {
             throw new IllegalArgumentException("Required value for 'entries' is null");
         }
@@ -85,7 +88,7 @@ public class ListFoldersResult {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<SharedFolderMetadata> getEntries() {
         return entries;
     }
@@ -99,7 +102,7 @@ public class ListFoldersResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getCursor() {
         return cursor;
     }

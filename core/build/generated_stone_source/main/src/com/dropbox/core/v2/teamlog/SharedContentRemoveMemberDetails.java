@@ -17,6 +17,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Removed user/group from shared file/folder.
  */
@@ -30,7 +33,7 @@ public class SharedContentRemoveMemberDetails {
      *
      * @param sharedContentAccessLevel  Shared content access level.
      */
-    public SharedContentRemoveMemberDetails(@javax.annotation.Nullable AccessLevel sharedContentAccessLevel) {
+    public SharedContentRemoveMemberDetails(@Nullable AccessLevel sharedContentAccessLevel) {
         this.sharedContentAccessLevel = sharedContentAccessLevel;
     }
 
@@ -48,7 +51,7 @@ public class SharedContentRemoveMemberDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public AccessLevel getSharedContentAccessLevel() {
         return sharedContentAccessLevel;
     }

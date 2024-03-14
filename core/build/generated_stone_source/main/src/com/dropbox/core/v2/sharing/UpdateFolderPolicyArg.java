@@ -18,6 +18,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * If any of the policies are unset, then they retain their current setting.
  */
@@ -59,7 +62,7 @@ class UpdateFolderPolicyArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UpdateFolderPolicyArg(@javax.annotation.Nonnull String sharedFolderId, @javax.annotation.Nullable MemberPolicy memberPolicy, @javax.annotation.Nullable AclUpdatePolicy aclUpdatePolicy, @javax.annotation.Nullable ViewerInfoPolicy viewerInfoPolicy, @javax.annotation.Nullable SharedLinkPolicy sharedLinkPolicy, @javax.annotation.Nullable LinkSettings linkSettings, @javax.annotation.Nullable List<FolderAction> actions) {
+    public UpdateFolderPolicyArg(@Nonnull String sharedFolderId, @Nullable MemberPolicy memberPolicy, @Nullable AclUpdatePolicy aclUpdatePolicy, @Nullable ViewerInfoPolicy viewerInfoPolicy, @Nullable SharedLinkPolicy sharedLinkPolicy, @Nullable LinkSettings linkSettings, @Nullable List<FolderAction> actions) {
         if (sharedFolderId == null) {
             throw new IllegalArgumentException("Required value for 'sharedFolderId' is null");
         }
@@ -102,7 +105,7 @@ class UpdateFolderPolicyArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getSharedFolderId() {
         return sharedFolderId;
     }
@@ -113,7 +116,7 @@ class UpdateFolderPolicyArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public MemberPolicy getMemberPolicy() {
         return memberPolicy;
     }
@@ -123,7 +126,7 @@ class UpdateFolderPolicyArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public AclUpdatePolicy getAclUpdatePolicy() {
         return aclUpdatePolicy;
     }
@@ -133,7 +136,7 @@ class UpdateFolderPolicyArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public ViewerInfoPolicy getViewerInfoPolicy() {
         return viewerInfoPolicy;
     }
@@ -145,7 +148,7 @@ class UpdateFolderPolicyArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public SharedLinkPolicy getSharedLinkPolicy() {
         return sharedLinkPolicy;
     }
@@ -155,7 +158,7 @@ class UpdateFolderPolicyArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public LinkSettings getLinkSettings() {
         return linkSettings;
     }
@@ -168,7 +171,7 @@ class UpdateFolderPolicyArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public List<FolderAction> getActions() {
         return actions;
     }

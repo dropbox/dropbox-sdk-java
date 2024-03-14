@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * A set of policies governing membership and privileges for a shared folder.
  */
@@ -54,7 +57,7 @@ public class FolderPolicy {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FolderPolicy(@javax.annotation.Nonnull AclUpdatePolicy aclUpdatePolicy, @javax.annotation.Nonnull SharedLinkPolicy sharedLinkPolicy, @javax.annotation.Nullable MemberPolicy memberPolicy, @javax.annotation.Nullable MemberPolicy resolvedMemberPolicy, @javax.annotation.Nullable ViewerInfoPolicy viewerInfoPolicy) {
+    public FolderPolicy(@Nonnull AclUpdatePolicy aclUpdatePolicy, @Nonnull SharedLinkPolicy sharedLinkPolicy, @Nullable MemberPolicy memberPolicy, @Nullable MemberPolicy resolvedMemberPolicy, @Nullable ViewerInfoPolicy viewerInfoPolicy) {
         this.memberPolicy = memberPolicy;
         this.resolvedMemberPolicy = resolvedMemberPolicy;
         if (aclUpdatePolicy == null) {
@@ -91,7 +94,7 @@ public class FolderPolicy {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public AclUpdatePolicy getAclUpdatePolicy() {
         return aclUpdatePolicy;
     }
@@ -101,7 +104,7 @@ public class FolderPolicy {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public SharedLinkPolicy getSharedLinkPolicy() {
         return sharedLinkPolicy;
     }
@@ -113,7 +116,7 @@ public class FolderPolicy {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public MemberPolicy getMemberPolicy() {
         return memberPolicy;
     }
@@ -126,7 +129,7 @@ public class FolderPolicy {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public MemberPolicy getResolvedMemberPolicy() {
         return resolvedMemberPolicy;
     }
@@ -136,7 +139,7 @@ public class FolderPolicy {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public ViewerInfoPolicy getViewerInfoPolicy() {
         return viewerInfoPolicy;
     }

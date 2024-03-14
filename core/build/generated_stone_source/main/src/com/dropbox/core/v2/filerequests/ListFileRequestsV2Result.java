@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 /**
  * Result for {@link DbxUserFileRequestsRequests#listV2(long)} and {@link
  * DbxUserFileRequestsRequests#listContinue(String)}.
@@ -45,7 +47,7 @@ public class ListFileRequestsV2Result {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFileRequestsV2Result(@javax.annotation.Nonnull List<FileRequest> fileRequests, @javax.annotation.Nonnull String cursor, boolean hasMore) {
+    public ListFileRequestsV2Result(@Nonnull List<FileRequest> fileRequests, @Nonnull String cursor, boolean hasMore) {
         if (fileRequests == null) {
             throw new IllegalArgumentException("Required value for 'fileRequests' is null");
         }
@@ -68,7 +70,7 @@ public class ListFileRequestsV2Result {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<FileRequest> getFileRequests() {
         return fileRequests;
     }
@@ -80,7 +82,7 @@ public class ListFileRequestsV2Result {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getCursor() {
         return cursor;
     }

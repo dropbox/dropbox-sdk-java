@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Created a summary report for a hold.
  */
@@ -34,7 +36,7 @@ public class LegalHoldsReportAHoldDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LegalHoldsReportAHoldDetails(@javax.annotation.Nonnull String legalHoldId, @javax.annotation.Nonnull String name) {
+    public LegalHoldsReportAHoldDetails(@Nonnull String legalHoldId, @Nonnull String name) {
         if (legalHoldId == null) {
             throw new IllegalArgumentException("Required value for 'legalHoldId' is null");
         }
@@ -50,7 +52,7 @@ public class LegalHoldsReportAHoldDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getLegalHoldId() {
         return legalHoldId;
     }
@@ -60,7 +62,7 @@ public class LegalHoldsReportAHoldDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getName() {
         return name;
     }

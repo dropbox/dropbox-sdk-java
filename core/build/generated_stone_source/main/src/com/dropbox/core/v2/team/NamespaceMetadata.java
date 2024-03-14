@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Properties of a namespace.
  */
@@ -42,7 +45,7 @@ public class NamespaceMetadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public NamespaceMetadata(@javax.annotation.Nonnull String name, @javax.annotation.Nonnull String namespaceId, @javax.annotation.Nonnull NamespaceType namespaceType, @javax.annotation.Nullable String teamMemberId) {
+    public NamespaceMetadata(@Nonnull String name, @Nonnull String namespaceId, @Nonnull NamespaceType namespaceType, @Nullable String teamMemberId) {
         if (name == null) {
             throw new IllegalArgumentException("Required value for 'name' is null");
         }
@@ -84,7 +87,7 @@ public class NamespaceMetadata {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -94,7 +97,7 @@ public class NamespaceMetadata {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getNamespaceId() {
         return namespaceId;
     }
@@ -104,7 +107,7 @@ public class NamespaceMetadata {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public NamespaceType getNamespaceType() {
         return namespaceType;
     }
@@ -115,7 +118,7 @@ public class NamespaceMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getTeamMemberId() {
         return teamMemberId;
     }

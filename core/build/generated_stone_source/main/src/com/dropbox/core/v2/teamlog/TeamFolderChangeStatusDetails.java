@@ -17,6 +17,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed archival status of team folder.
  */
@@ -36,7 +39,7 @@ public class TeamFolderChangeStatusDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamFolderChangeStatusDetails(@javax.annotation.Nonnull TeamFolderStatus newValue, @javax.annotation.Nullable TeamFolderStatus previousValue) {
+    public TeamFolderChangeStatusDetails(@Nonnull TeamFolderStatus newValue, @Nullable TeamFolderStatus previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -63,7 +66,7 @@ public class TeamFolderChangeStatusDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public TeamFolderStatus getNewValue() {
         return newValue;
     }
@@ -73,7 +76,7 @@ public class TeamFolderChangeStatusDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public TeamFolderStatus getPreviousValue() {
         return previousValue;
     }

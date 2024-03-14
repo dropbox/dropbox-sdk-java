@@ -18,6 +18,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Properties of the shared folder.
  */
@@ -64,7 +67,7 @@ public class SharedFolderMetadataBase {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedFolderMetadataBase(@javax.annotation.Nonnull AccessLevel accessType, boolean isInsideTeamFolder, boolean isTeamFolder, @javax.annotation.Nullable List<String> ownerDisplayNames, @javax.annotation.Nullable Team ownerTeam, @javax.annotation.Nullable String parentSharedFolderId, @javax.annotation.Nullable String pathDisplay, @javax.annotation.Nullable String pathLower, @javax.annotation.Nullable String parentFolderName) {
+    public SharedFolderMetadataBase(@Nonnull AccessLevel accessType, boolean isInsideTeamFolder, boolean isTeamFolder, @Nullable List<String> ownerDisplayNames, @Nullable Team ownerTeam, @Nullable String parentSharedFolderId, @Nullable String pathDisplay, @Nullable String pathLower, @Nullable String parentFolderName) {
         if (accessType == null) {
             throw new IllegalArgumentException("Required value for 'accessType' is null");
         }
@@ -115,7 +118,7 @@ public class SharedFolderMetadataBase {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public AccessLevel getAccessType() {
         return accessType;
     }
@@ -146,7 +149,7 @@ public class SharedFolderMetadataBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public List<String> getOwnerDisplayNames() {
         return ownerDisplayNames;
     }
@@ -157,7 +160,7 @@ public class SharedFolderMetadataBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Team getOwnerTeam() {
         return ownerTeam;
     }
@@ -168,7 +171,7 @@ public class SharedFolderMetadataBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getParentSharedFolderId() {
         return parentSharedFolderId;
     }
@@ -178,7 +181,7 @@ public class SharedFolderMetadataBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getPathDisplay() {
         return pathDisplay;
     }
@@ -189,7 +192,7 @@ public class SharedFolderMetadataBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getPathLower() {
         return pathLower;
     }
@@ -199,7 +202,7 @@ public class SharedFolderMetadataBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getParentFolderName() {
         return parentFolderName;
     }

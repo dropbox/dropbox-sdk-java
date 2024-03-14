@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Structure representing Approve List entries. Domain and emails are supported.
  * At least one entry of any supported type is required.
@@ -42,7 +45,7 @@ class SharingAllowlistAddArgs {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharingAllowlistAddArgs(@javax.annotation.Nullable List<String> domains, @javax.annotation.Nullable List<String> emails) {
+    public SharingAllowlistAddArgs(@Nullable List<String> domains, @Nullable List<String> emails) {
         if (domains != null) {
             for (String x : domains) {
                 if (x == null) {
@@ -76,7 +79,7 @@ class SharingAllowlistAddArgs {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public List<String> getDomains() {
         return domains;
     }
@@ -86,7 +89,7 @@ class SharingAllowlistAddArgs {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public List<String> getEmails() {
         return emails;
     }

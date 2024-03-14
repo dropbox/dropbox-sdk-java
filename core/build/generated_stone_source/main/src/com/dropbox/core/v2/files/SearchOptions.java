@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class SearchOptions {
     // struct files.SearchOptions (files.stone)
 
@@ -55,7 +58,7 @@ public class SearchOptions {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SearchOptions(@javax.annotation.Nullable String path, long maxResults, @javax.annotation.Nullable SearchOrderBy orderBy, @javax.annotation.Nonnull FileStatus fileStatus, boolean filenameOnly, @javax.annotation.Nullable List<String> fileExtensions, @javax.annotation.Nullable List<FileCategory> fileCategories, @javax.annotation.Nullable String accountId) {
+    public SearchOptions(@Nullable String path, long maxResults, @Nullable SearchOrderBy orderBy, @Nonnull FileStatus fileStatus, boolean filenameOnly, @Nullable List<String> fileExtensions, @Nullable List<FileCategory> fileCategories, @Nullable String accountId) {
         if (path != null) {
             if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*)?|id:.*|(ns:[0-9]+(/.*)?)", path)) {
                 throw new IllegalArgumentException("String 'path' does not match pattern");
@@ -117,7 +120,7 @@ public class SearchOptions {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getPath() {
         return path;
     }
@@ -138,7 +141,7 @@ public class SearchOptions {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public SearchOrderBy getOrderBy() {
         return orderBy;
     }
@@ -149,7 +152,7 @@ public class SearchOptions {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     FileStatus.ACTIVE.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public FileStatus getFileStatus() {
         return fileStatus;
     }
@@ -170,7 +173,7 @@ public class SearchOptions {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public List<String> getFileExtensions() {
         return fileExtensions;
     }
@@ -181,7 +184,7 @@ public class SearchOptions {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public List<FileCategory> getFileCategories() {
         return fileCategories;
     }
@@ -191,7 +194,7 @@ public class SearchOptions {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getAccountId() {
         return accountId;
     }

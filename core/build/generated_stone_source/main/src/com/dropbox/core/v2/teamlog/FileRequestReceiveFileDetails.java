@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Received files for file request.
  */
@@ -49,7 +52,7 @@ public class FileRequestReceiveFileDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileRequestReceiveFileDetails(@javax.annotation.Nonnull List<String> submittedFileNames, @javax.annotation.Nullable String fileRequestId, @javax.annotation.Nullable FileRequestDetails fileRequestDetails, @javax.annotation.Nullable String submitterName, @javax.annotation.Nullable String submitterEmail) {
+    public FileRequestReceiveFileDetails(@Nonnull List<String> submittedFileNames, @Nullable String fileRequestId, @Nullable FileRequestDetails fileRequestDetails, @Nullable String submitterName, @Nullable String submitterEmail) {
         if (fileRequestId != null) {
             if (fileRequestId.length() < 1) {
                 throw new IllegalArgumentException("String 'fileRequestId' is shorter than 1");
@@ -98,7 +101,7 @@ public class FileRequestReceiveFileDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<String> getSubmittedFileNames() {
         return submittedFileNames;
     }
@@ -108,7 +111,7 @@ public class FileRequestReceiveFileDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getFileRequestId() {
         return fileRequestId;
     }
@@ -118,7 +121,7 @@ public class FileRequestReceiveFileDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public FileRequestDetails getFileRequestDetails() {
         return fileRequestDetails;
     }
@@ -128,7 +131,7 @@ public class FileRequestReceiveFileDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getSubmitterName() {
         return submitterName;
     }
@@ -138,7 +141,7 @@ public class FileRequestReceiveFileDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getSubmitterEmail() {
         return submitterEmail;
     }

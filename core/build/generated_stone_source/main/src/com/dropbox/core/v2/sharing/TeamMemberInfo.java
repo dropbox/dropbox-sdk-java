@@ -17,6 +17,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Information about a team member.
  */
@@ -40,7 +43,7 @@ public class TeamMemberInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamMemberInfo(@javax.annotation.Nonnull Team teamInfo, @javax.annotation.Nonnull String displayName, @javax.annotation.Nullable String memberId) {
+    public TeamMemberInfo(@Nonnull Team teamInfo, @Nonnull String displayName, @Nullable String memberId) {
         if (teamInfo == null) {
             throw new IllegalArgumentException("Required value for 'teamInfo' is null");
         }
@@ -74,7 +77,7 @@ public class TeamMemberInfo {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public Team getTeamInfo() {
         return teamInfo;
     }
@@ -84,7 +87,7 @@ public class TeamMemberInfo {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getDisplayName() {
         return displayName;
     }
@@ -95,7 +98,7 @@ public class TeamMemberInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getMemberId() {
         return memberId;
     }

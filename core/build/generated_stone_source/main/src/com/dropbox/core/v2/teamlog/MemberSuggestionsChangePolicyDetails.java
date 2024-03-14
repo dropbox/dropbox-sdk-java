@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Enabled/disabled option for team members to suggest people to add to team.
  */
@@ -37,7 +40,7 @@ public class MemberSuggestionsChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberSuggestionsChangePolicyDetails(@javax.annotation.Nonnull MemberSuggestionsPolicy newValue, @javax.annotation.Nullable MemberSuggestionsPolicy previousValue) {
+    public MemberSuggestionsChangePolicyDetails(@Nonnull MemberSuggestionsPolicy newValue, @Nullable MemberSuggestionsPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -66,7 +69,7 @@ public class MemberSuggestionsChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public MemberSuggestionsPolicy getNewValue() {
         return newValue;
     }
@@ -77,7 +80,7 @@ public class MemberSuggestionsChangePolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public MemberSuggestionsPolicy getPreviousValue() {
         return previousValue;
     }

@@ -18,6 +18,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Information about linked Dropbox mobile client sessions.
  */
@@ -51,7 +54,7 @@ public class MobileClientSession extends DeviceSession {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MobileClientSession(@javax.annotation.Nonnull String sessionId, @javax.annotation.Nonnull String deviceName, @javax.annotation.Nonnull MobileClientPlatform clientType, @javax.annotation.Nullable String ipAddress, @javax.annotation.Nullable String country, @javax.annotation.Nullable Date created, @javax.annotation.Nullable Date updated, @javax.annotation.Nullable String clientVersion, @javax.annotation.Nullable String osVersion, @javax.annotation.Nullable String lastCarrier) {
+    public MobileClientSession(@Nonnull String sessionId, @Nonnull String deviceName, @Nonnull MobileClientPlatform clientType, @Nullable String ipAddress, @Nullable String country, @Nullable Date created, @Nullable Date updated, @Nullable String clientVersion, @Nullable String osVersion, @Nullable String lastCarrier) {
         super(sessionId, ipAddress, country, created, updated);
         if (deviceName == null) {
             throw new IllegalArgumentException("Required value for 'deviceName' is null");
@@ -87,7 +90,7 @@ public class MobileClientSession extends DeviceSession {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getSessionId() {
         return sessionId;
     }
@@ -97,7 +100,7 @@ public class MobileClientSession extends DeviceSession {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getDeviceName() {
         return deviceName;
     }
@@ -107,7 +110,7 @@ public class MobileClientSession extends DeviceSession {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public MobileClientPlatform getClientType() {
         return clientType;
     }
@@ -117,7 +120,7 @@ public class MobileClientSession extends DeviceSession {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getIpAddress() {
         return ipAddress;
     }
@@ -127,7 +130,7 @@ public class MobileClientSession extends DeviceSession {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getCountry() {
         return country;
     }
@@ -137,7 +140,7 @@ public class MobileClientSession extends DeviceSession {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Date getCreated() {
         return created;
     }
@@ -147,7 +150,7 @@ public class MobileClientSession extends DeviceSession {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Date getUpdated() {
         return updated;
     }
@@ -157,7 +160,7 @@ public class MobileClientSession extends DeviceSession {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getClientVersion() {
         return clientVersion;
     }
@@ -167,7 +170,7 @@ public class MobileClientSession extends DeviceSession {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getOsVersion() {
         return osVersion;
     }
@@ -177,7 +180,7 @@ public class MobileClientSession extends DeviceSession {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getLastCarrier() {
         return lastCarrier;
     }

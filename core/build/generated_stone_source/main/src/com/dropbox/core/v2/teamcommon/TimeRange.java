@@ -18,6 +18,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Time range.
  */
@@ -36,7 +39,7 @@ public class TimeRange {
      * @param startTime  Optional starting time (inclusive).
      * @param endTime  Optional ending time (exclusive).
      */
-    public TimeRange(@javax.annotation.Nullable Date startTime, @javax.annotation.Nullable Date endTime) {
+    public TimeRange(@Nullable Date startTime, @Nullable Date endTime) {
         this.startTime = LangUtil.truncateMillis(startTime);
         this.endTime = LangUtil.truncateMillis(endTime);
     }
@@ -55,7 +58,7 @@ public class TimeRange {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Date getStartTime() {
         return startTime;
     }
@@ -65,7 +68,7 @@ public class TimeRange {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Date getEndTime() {
         return endTime;
     }

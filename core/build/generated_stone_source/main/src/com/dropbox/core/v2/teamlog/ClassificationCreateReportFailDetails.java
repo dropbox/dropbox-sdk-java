@@ -17,6 +17,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Couldn't create Classification report.
  */
@@ -33,7 +35,7 @@ public class ClassificationCreateReportFailDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ClassificationCreateReportFailDetails(@javax.annotation.Nonnull TeamReportFailureReason failureReason) {
+    public ClassificationCreateReportFailDetails(@Nonnull TeamReportFailureReason failureReason) {
         if (failureReason == null) {
             throw new IllegalArgumentException("Required value for 'failureReason' is null");
         }
@@ -45,7 +47,7 @@ public class ClassificationCreateReportFailDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public TeamReportFailureReason getFailureReason() {
         return failureReason;
     }

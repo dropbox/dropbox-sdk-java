@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 public class GetTemplateArg {
     // struct file_properties.GetTemplateArg (file_properties.stone)
 
@@ -34,7 +36,7 @@ public class GetTemplateArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetTemplateArg(@javax.annotation.Nonnull String templateId) {
+    public GetTemplateArg(@Nonnull String templateId) {
         if (templateId == null) {
             throw new IllegalArgumentException("Required value for 'templateId' is null");
         }
@@ -55,7 +57,7 @@ public class GetTemplateArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getTemplateId() {
         return templateId;
     }

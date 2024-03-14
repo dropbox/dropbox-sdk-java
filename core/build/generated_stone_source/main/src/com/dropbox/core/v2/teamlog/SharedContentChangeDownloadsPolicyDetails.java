@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed whether members can download shared file/folder.
  */
@@ -35,7 +38,7 @@ public class SharedContentChangeDownloadsPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentChangeDownloadsPolicyDetails(@javax.annotation.Nonnull DownloadPolicyType newValue, @javax.annotation.Nullable DownloadPolicyType previousValue) {
+    public SharedContentChangeDownloadsPolicyDetails(@Nonnull DownloadPolicyType newValue, @Nullable DownloadPolicyType previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -62,7 +65,7 @@ public class SharedContentChangeDownloadsPolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public DownloadPolicyType getNewValue() {
         return newValue;
     }
@@ -72,7 +75,7 @@ public class SharedContentChangeDownloadsPolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public DownloadPolicyType getPreviousValue() {
         return previousValue;
     }

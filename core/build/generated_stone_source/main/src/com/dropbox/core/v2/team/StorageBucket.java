@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Describes the number of users in a specific storage bucket.
  */
@@ -37,7 +39,7 @@ public class StorageBucket {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public StorageBucket(@javax.annotation.Nonnull String bucket, long users) {
+    public StorageBucket(@Nonnull String bucket, long users) {
         if (bucket == null) {
             throw new IllegalArgumentException("Required value for 'bucket' is null");
         }
@@ -51,7 +53,7 @@ public class StorageBucket {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getBucket() {
         return bucket;
     }

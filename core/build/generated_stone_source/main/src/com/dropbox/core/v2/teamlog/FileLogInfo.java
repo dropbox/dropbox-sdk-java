@@ -15,6 +15,9 @@ import com.fasterxml.jackson.core.JsonToken;
 
 import java.io.IOException;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * File's logged information.
  */
@@ -36,7 +39,7 @@ public class FileLogInfo extends FileOrFolderLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileLogInfo(@javax.annotation.Nonnull PathLogInfo path, @javax.annotation.Nullable String displayName, @javax.annotation.Nullable String fileId, @javax.annotation.Nullable Long fileSize) {
+    public FileLogInfo(@Nonnull PathLogInfo path, @Nullable String displayName, @Nullable String fileId, @Nullable Long fileSize) {
         super(path, displayName, fileId, fileSize);
     }
 
@@ -59,7 +62,7 @@ public class FileLogInfo extends FileOrFolderLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public PathLogInfo getPath() {
         return path;
     }
@@ -69,7 +72,7 @@ public class FileLogInfo extends FileOrFolderLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getDisplayName() {
         return displayName;
     }
@@ -79,7 +82,7 @@ public class FileLogInfo extends FileOrFolderLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getFileId() {
         return fileId;
     }
@@ -89,7 +92,7 @@ public class FileLogInfo extends FileOrFolderLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Long getFileSize() {
         return fileSize;
     }

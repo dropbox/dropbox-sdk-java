@@ -18,6 +18,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 public class PathToTags {
     // struct files.PathToTags (file_tagging.stone)
 
@@ -34,7 +36,7 @@ public class PathToTags {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PathToTags(@javax.annotation.Nonnull String path, @javax.annotation.Nonnull List<TagObject> tags) {
+    public PathToTags(@Nonnull String path, @Nonnull List<TagObject> tags) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
@@ -58,7 +60,7 @@ public class PathToTags {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getPath() {
         return path;
     }
@@ -68,7 +70,7 @@ public class PathToTags {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<TagObject> getTags() {
         return tags;
     }

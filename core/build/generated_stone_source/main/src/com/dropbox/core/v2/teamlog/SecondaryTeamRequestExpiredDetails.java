@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Team merge request expiration details shown to the secondary team
  */
@@ -33,7 +35,7 @@ public class SecondaryTeamRequestExpiredDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SecondaryTeamRequestExpiredDetails(@javax.annotation.Nonnull String sentTo) {
+    public SecondaryTeamRequestExpiredDetails(@Nonnull String sentTo) {
         if (sentTo == null) {
             throw new IllegalArgumentException("Required value for 'sentTo' is null");
         }
@@ -45,7 +47,7 @@ public class SecondaryTeamRequestExpiredDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getSentTo() {
         return sentTo;
     }

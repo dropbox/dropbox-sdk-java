@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * The information about a user member of the shared content.
  */
@@ -45,7 +48,7 @@ public class UserMembershipInfo extends MembershipInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UserMembershipInfo(@javax.annotation.Nonnull AccessLevel accessType, @javax.annotation.Nonnull UserInfo user, @javax.annotation.Nullable List<MemberPermission> permissions, @javax.annotation.Nullable String initials, boolean isInherited) {
+    public UserMembershipInfo(@Nonnull AccessLevel accessType, @Nonnull UserInfo user, @Nullable List<MemberPermission> permissions, @Nullable String initials, boolean isInherited) {
         super(accessType, permissions, initials, isInherited);
         if (user == null) {
             throw new IllegalArgumentException("Required value for 'user' is null");
@@ -77,7 +80,7 @@ public class UserMembershipInfo extends MembershipInfo {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public AccessLevel getAccessType() {
         return accessType;
     }
@@ -87,7 +90,7 @@ public class UserMembershipInfo extends MembershipInfo {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public UserInfo getUser() {
         return user;
     }
@@ -98,7 +101,7 @@ public class UserMembershipInfo extends MembershipInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public List<MemberPermission> getPermissions() {
         return permissions;
     }
@@ -108,7 +111,7 @@ public class UserMembershipInfo extends MembershipInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getInitials() {
         return initials;
     }

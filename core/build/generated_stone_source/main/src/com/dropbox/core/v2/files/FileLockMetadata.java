@@ -18,6 +18,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class FileLockMetadata {
     // struct files.FileLockMetadata (files.stone)
 
@@ -39,7 +42,7 @@ public class FileLockMetadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileLockMetadata(@javax.annotation.Nullable Boolean isLockholder, @javax.annotation.Nullable String lockholderName, @javax.annotation.Nullable String lockholderAccountId, @javax.annotation.Nullable Date created) {
+    public FileLockMetadata(@Nullable Boolean isLockholder, @Nullable String lockholderName, @Nullable String lockholderAccountId, @Nullable Date created) {
         this.isLockholder = isLockholder;
         this.lockholderName = lockholderName;
         if (lockholderAccountId != null) {
@@ -68,7 +71,7 @@ public class FileLockMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Boolean getIsLockholder() {
         return isLockholder;
     }
@@ -78,7 +81,7 @@ public class FileLockMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getLockholderName() {
         return lockholderName;
     }
@@ -88,7 +91,7 @@ public class FileLockMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getLockholderAccountId() {
         return lockholderAccountId;
     }
@@ -98,7 +101,7 @@ public class FileLockMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Date getCreated() {
         return created;
     }

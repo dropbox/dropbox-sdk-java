@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Information about the content that has a link audience different than that of
  * this folder.
@@ -35,7 +37,7 @@ public class AudienceExceptionContentInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AudienceExceptionContentInfo(@javax.annotation.Nonnull String name) {
+    public AudienceExceptionContentInfo(@Nonnull String name) {
         if (name == null) {
             throw new IllegalArgumentException("Required value for 'name' is null");
         }
@@ -47,7 +49,7 @@ public class AudienceExceptionContentInfo {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getName() {
         return name;
     }

@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Information about a group.
  */
@@ -45,7 +48,7 @@ public class GroupSummary {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupSummary(@javax.annotation.Nonnull String groupName, @javax.annotation.Nonnull String groupId, @javax.annotation.Nonnull GroupManagementType groupManagementType, @javax.annotation.Nullable String groupExternalId, @javax.annotation.Nullable Long memberCount) {
+    public GroupSummary(@Nonnull String groupName, @Nonnull String groupId, @Nonnull GroupManagementType groupManagementType, @Nullable String groupExternalId, @Nullable Long memberCount) {
         if (groupName == null) {
             throw new IllegalArgumentException("Required value for 'groupName' is null");
         }
@@ -83,7 +86,7 @@ public class GroupSummary {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getGroupName() {
         return groupName;
     }
@@ -92,7 +95,7 @@ public class GroupSummary {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getGroupId() {
         return groupId;
     }
@@ -102,7 +105,7 @@ public class GroupSummary {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public GroupManagementType getGroupManagementType() {
         return groupManagementType;
     }
@@ -113,7 +116,7 @@ public class GroupSummary {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getGroupExternalId() {
         return groupExternalId;
     }
@@ -123,7 +126,7 @@ public class GroupSummary {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Long getMemberCount() {
         return memberCount;
     }

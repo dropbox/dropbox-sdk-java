@@ -18,6 +18,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Arguments of {@link DbxUserSharingRequests#getFileMetadata(String,List)}.
  */
@@ -42,7 +45,7 @@ class GetFileMetadataArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetFileMetadataArg(@javax.annotation.Nonnull String file, @javax.annotation.Nullable List<FileAction> actions) {
+    public GetFileMetadataArg(@Nonnull String file, @Nullable List<FileAction> actions) {
         if (file == null) {
             throw new IllegalArgumentException("Required value for 'file' is null");
         }
@@ -84,7 +87,7 @@ class GetFileMetadataArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getFile() {
         return file;
     }
@@ -96,7 +99,7 @@ class GetFileMetadataArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public List<FileAction> getActions() {
         return actions;
     }

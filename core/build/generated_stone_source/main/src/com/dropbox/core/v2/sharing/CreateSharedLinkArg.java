@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 class CreateSharedLinkArg {
     // struct sharing.CreateSharedLinkArg (shared_links.stone)
 
@@ -36,7 +39,7 @@ class CreateSharedLinkArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public CreateSharedLinkArg(@javax.annotation.Nonnull String path, boolean shortUrl, @javax.annotation.Nullable PendingUploadMode pendingUpload) {
+    public CreateSharedLinkArg(@Nonnull String path, boolean shortUrl, @Nullable PendingUploadMode pendingUpload) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
@@ -64,7 +67,7 @@ class CreateSharedLinkArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getPath() {
         return path;
     }
@@ -85,7 +88,7 @@ class CreateSharedLinkArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public PendingUploadMode getPendingUpload() {
         return pendingUpload;
     }

@@ -17,6 +17,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class TeamGetInfoResult {
     // struct team.TeamGetInfoResult (team.stone)
 
@@ -40,7 +42,7 @@ public class TeamGetInfoResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamGetInfoResult(@javax.annotation.Nonnull String name, @javax.annotation.Nonnull String teamId, long numLicensedUsers, long numProvisionedUsers, @javax.annotation.Nonnull TeamMemberPolicies policies, long numUsedLicenses) {
+    public TeamGetInfoResult(@Nonnull String name, @Nonnull String teamId, long numLicensedUsers, long numProvisionedUsers, @Nonnull TeamMemberPolicies policies, long numUsedLicenses) {
         if (name == null) {
             throw new IllegalArgumentException("Required value for 'name' is null");
         }
@@ -82,7 +84,7 @@ public class TeamGetInfoResult {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -92,7 +94,7 @@ public class TeamGetInfoResult {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getTeamId() {
         return teamId;
     }
@@ -120,7 +122,7 @@ public class TeamGetInfoResult {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public TeamMemberPolicies getPolicies() {
         return policies;
     }

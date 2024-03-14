@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 public class RevokeLinkedAppBatchResult {
     // struct team.RevokeLinkedAppBatchResult (team_linked_apps.stone)
 
@@ -30,7 +32,7 @@ public class RevokeLinkedAppBatchResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RevokeLinkedAppBatchResult(@javax.annotation.Nonnull List<RevokeLinkedAppStatus> revokeLinkedAppStatus) {
+    public RevokeLinkedAppBatchResult(@Nonnull List<RevokeLinkedAppStatus> revokeLinkedAppStatus) {
         if (revokeLinkedAppStatus == null) {
             throw new IllegalArgumentException("Required value for 'revokeLinkedAppStatus' is null");
         }
@@ -46,7 +48,7 @@ public class RevokeLinkedAppBatchResult {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<RevokeLinkedAppStatus> getRevokeLinkedAppStatus() {
         return revokeLinkedAppStatus;
     }

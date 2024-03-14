@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Enabled/disabled network control.
  */
@@ -35,7 +38,7 @@ public class NetworkControlChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public NetworkControlChangePolicyDetails(@javax.annotation.Nonnull NetworkControlPolicy newValue, @javax.annotation.Nullable NetworkControlPolicy previousValue) {
+    public NetworkControlChangePolicyDetails(@Nonnull NetworkControlPolicy newValue, @Nullable NetworkControlPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -62,7 +65,7 @@ public class NetworkControlChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public NetworkControlPolicy getNewValue() {
         return newValue;
     }
@@ -73,7 +76,7 @@ public class NetworkControlChangePolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public NetworkControlPolicy getPreviousValue() {
         return previousValue;
     }

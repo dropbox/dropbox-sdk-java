@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Started ransomware restore process.
  */
@@ -33,7 +35,7 @@ public class RansomwareRestoreProcessStartedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RansomwareRestoreProcessStartedDetails(@javax.annotation.Nonnull String extension) {
+    public RansomwareRestoreProcessStartedDetails(@Nonnull String extension) {
         if (extension == null) {
             throw new IllegalArgumentException("Required value for 'extension' is null");
         }
@@ -45,7 +47,7 @@ public class RansomwareRestoreProcessStartedDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getExtension() {
         return extension;
     }

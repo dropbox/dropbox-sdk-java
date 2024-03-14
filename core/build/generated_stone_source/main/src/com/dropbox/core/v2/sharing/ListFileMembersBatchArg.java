@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 /**
  * Arguments for {@link DbxUserSharingRequests#listFileMembersBatch(List,long)}.
  */
@@ -38,7 +40,7 @@ class ListFileMembersBatchArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFileMembersBatchArg(@javax.annotation.Nonnull List<String> files, long limit) {
+    public ListFileMembersBatchArg(@Nonnull List<String> files, long limit) {
         if (files == null) {
             throw new IllegalArgumentException("Required value for 'files' is null");
         }
@@ -84,7 +86,7 @@ class ListFileMembersBatchArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public List<String> getFiles() {
         return files;
     }

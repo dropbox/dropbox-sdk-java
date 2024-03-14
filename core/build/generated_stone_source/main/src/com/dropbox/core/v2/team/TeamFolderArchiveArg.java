@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 class TeamFolderArchiveArg extends TeamFolderIdArg {
     // struct team.TeamFolderArchiveArg (team_folders.stone)
 
@@ -32,7 +34,7 @@ class TeamFolderArchiveArg extends TeamFolderIdArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamFolderArchiveArg(@javax.annotation.Nonnull String teamFolderId, boolean forceAsyncOff) {
+    public TeamFolderArchiveArg(@Nonnull String teamFolderId, boolean forceAsyncOff) {
         super(teamFolderId);
         this.forceAsyncOff = forceAsyncOff;
     }
@@ -57,7 +59,7 @@ class TeamFolderArchiveArg extends TeamFolderIdArg {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getTeamFolderId() {
         return teamFolderId;
     }

@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Deleted transfer.
  */
@@ -32,7 +34,7 @@ public class FileTransfersTransferDeleteDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileTransfersTransferDeleteDetails(@javax.annotation.Nonnull String fileTransferId) {
+    public FileTransfersTransferDeleteDetails(@Nonnull String fileTransferId) {
         if (fileTransferId == null) {
             throw new IllegalArgumentException("Required value for 'fileTransferId' is null");
         }
@@ -44,7 +46,7 @@ public class FileTransfersTransferDeleteDetails {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getFileTransferId() {
         return fileTransferId;
     }

@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 class UploadSessionStartBatchArg {
     // struct files.UploadSessionStartBatchArg (files.stone)
 
@@ -32,7 +35,7 @@ class UploadSessionStartBatchArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UploadSessionStartBatchArg(long numSessions, @javax.annotation.Nullable UploadSessionType sessionType) {
+    public UploadSessionStartBatchArg(long numSessions, @Nullable UploadSessionType sessionType) {
         this.sessionType = sessionType;
         if (numSessions < 1L) {
             throw new IllegalArgumentException("Number 'numSessions' is smaller than 1L");
@@ -73,7 +76,7 @@ class UploadSessionStartBatchArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public UploadSessionType getSessionType() {
         return sessionType;
     }
