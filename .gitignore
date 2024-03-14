@@ -1,7 +1,9 @@
 # Gradle
 .gradle/
-build/
 out/
+build/
+core/build/*
+!core/build/generated_stone_source/
 
 # Maven build output folder
 /target/
@@ -29,3 +31,4 @@ classyshark*
 
 # Integration Test Auth Info
 auth_output
+
